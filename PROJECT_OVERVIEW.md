@@ -32,14 +32,12 @@ C:\Project\Rover\Rover\
 ├── CLAUDE.md
 ├── PROJECT_OVERVIEW.md             ← 본 문서
 │
-├── firmware/                       (STM32F405 펌웨어, CubeMX 기반)
-│   ├── src/
-│   │   ├── main.c
-│   │   ├── app/                    (App 레이어)
-│   │   ├── hal/                    (HAL 추상화 인터페이스)
-│   │   ├── drivers/                (저수준 드라이버)
-│   │   └── microros/               (micro-ROS 통합)
-│   └── ...                         (CubeMX 생성 파일)
+├── firmware/                       (펌웨어 컨테이너)
+│   └── rover_jupiter_fw/           (STM32F405 CubeMX 프로젝트)
+│       ├── rover_jupiter_fw.ioc    (CubeMX 설정)
+│       ├── App/                    (우리 코드: app/ hal/ drivers/ microros/)
+│       ├── Core/ Drivers/ Middlewares/   (CubeMX 생성)
+│       └── Makefile                (빌드, CubeMX 생성)
 │
 ├── ros2_ws/                        (Jetson ROS2 workspace)
 │   └── src/
