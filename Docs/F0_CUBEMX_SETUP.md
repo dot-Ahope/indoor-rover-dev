@@ -73,12 +73,22 @@
 - [ ] Combined Channels: `Encoder Mode`
 - [ ] ⚠ **핀 리맵 필요**: 기본은 PA0/PA1 → **PA15=TIM2_CH1, PB3=TIM2_CH2**로 변경
       (PA0/PA1은 TIM5가 사용하므로 반드시 리맵)
-- [ ] Encoder Mode: `TI1 and TI2` (4체배), 카운터 32-bit
+- [ ] **Counter Settings**:
+  - Prescaler: `0`
+  - **Counter Period (ARR): `4294967295`** ← 0xFFFFFFFF, TIM2는 32-bit.
+    기본값 0으로 두면 엔코더 동작 안 함 — 반드시 입력
+  - Counter Mode: `Up` (기본)
+- [ ] **Encoder settings**:
+  - Encoder Mode: `TI1 and TI2` (×4 체배)
+  - IC1/IC2 Polarity: `Rising` (기본 — F3에서 방향 반대면 한쪽만 Falling)
+  - IC1/IC2 Filter: `0` (기본 OK — 노이즈 시 F3에서 ~10)
+- [ ] NVIC: **인터럽트 불필요** (CNT 레지스터 직접 읽음, 32-bit라 오버플로 무시 가능)
 
 ### 5.4 TIM5 — H3 엔코더
 - [ ] Combined Channels: `Encoder Mode`
 - [ ] 핀: **PA0=TIM5_CH1, PA1=TIM5_CH2** (기본 핀, 리맵 불필요)
-- [ ] Encoder Mode: `TI1 and TI2` (4체배), 카운터 32-bit
+- [ ] Counter / Encoder settings: **§5.3 TIM2와 동일**
+  (ARR `4294967295`, Prescaler `0`, `TI1 and TI2` ×4, NVIC 불필요)
 
 ### 5.5 TIM7 — 1kHz 제어 루프 틱
 - [ ] `Activated` 체크
@@ -94,7 +104,10 @@
 - [ ] 핀: **PA9=TX, PA10=RX** (기본)
 - [ ] Baud Rate: `921600`, 8N1
 - [ ] NVIC: `USART1 global interrupt` Enable
-- [ ] DMA: `USART1_RX`, `USART1_TX` 추가 (micro-ROS 트랜스포트용 — F5에서 활용)
+- [ ] DMA 추가 (micro-ROS DMA 트랜스포트용):
+  - `USART1_RX` — **Mode: `Circular`** ← 기본 `Normal`에서 반드시 변경
+  - `USART1_TX` — Mode: `Normal` (기본 그대로)
+  - 스트림 자동할당 / Byte·Byte / Mem 증가 / Direct 모드 / Priority Low → 모두 기본값 OK
 
 ### 6.2 UART5 — 디버그 콘솔
 - [ ] Mode: `Asynchronous`
@@ -150,21 +163,49 @@
 
 ## 9. NVIC (인터럽트)
 
+활성화할 인터럽트:
 - [ ] `TIM7 global interrupt` — 제어 루프 틱
 - [ ] `USART1 global interrupt` — micro-ROS
 - [ ] `EXTI line[9:5] interrupt` — PC5 (IMU INT1)
 - [ ] DMA 인터럽트 (USART1 RX/TX) — DMA 추가 시 자동
-- [ ] 우선순위: FreeRTOS 사용 시 `TIM7` 등 RTOS API 호출 ISR은
-      `configMAX_SYSCALL_INTERRUPT_PRIORITY` 이하 우선순위로 설정
+
+### 9.1 우선순위 규칙 (FreeRTOS 필수)
+
+Cortex-M은 **우선순위 숫자가 작을수록 더 긴급**. CubeMX+FreeRTOS 기본값에서
+기준선 `configLIBRARY_MAX_SYSCALL_INTERRUPT_PRIORITY` = **5**.
+
+| 우선순위 숫자 | FreeRTOS `...FromISR()` 호출 |
+|---|---|
+| 0 ~ 4 | ❌ 금지 (기준선보다 긴급 → 커널 보호 불가 → HardFault) |
+| 5 ~ 15 | ✅ 허용 |
+
+→ FreeRTOS API를 호출하는 ISR은 **Preemption Priority 숫자 ≥ 5**.
+   호출하지 않는 ISR은 0~4도 가능하나, 헷갈리면 전부 5 이상으로 두면 안전.
+
+권장 설정 (NVIC 탭, Preemption Priority):
+
+| 인터럽트 | Preemption Priority |
+|---|---|
+| TIM7 (제어 루프) | 5 |
+| USART1 / DMA | 6 |
+| EXTI (IMU INT1) | 6 |
+
+- [ ] 위 표대로 Preemption Priority 설정
+- SysTick / PendSV / SVC 는 FreeRTOS용 — CubeMX 자동 설정, **수정 금지**
+
+> 참고: 모터 제어를 TIM7 ISR 안에서 직접 수행하고 FreeRTOS 함수를 호출하지
+> 않으면 우선순위 제약이 없어진다(`FIRMWARE_DEV_PLAN.md §3.2` 방식). 그래도
+> 단순화를 위해 TIM7 = 5 로 두는 것을 권장.
 
 ---
 
 ## 10. Project Manager
 
-- [ ] **Project**:
-  - Toolchain/IDE: `Makefile` ← VS Code + Claude Code + `make` 워크플로에 적합
-    (micro_ros_stm32cubemx_utils가 Makefile 빌드 지원)
-  - 프로젝트 위치: `C:\Project\Rover\Rover\firmware\`
+- [ ] **Project Name**: `rover_jupiter_fw`
+- [ ] **Project Location**: `C:\Project\Rover\Rover\firmware\`
+      → CubeMX가 `firmware\rover_jupiter_fw\` 폴더를 생성
+- [ ] **Toolchain/IDE**: `Makefile` (VS Code + Claude Code + `make`,
+      micro_ros_stm32cubemx_utils 빌드 지원)
 - [ ] **Code Generator**:
   - `Generate peripheral initialization as a pair of .c/.h files` 체크
   - `Keep User Code when re-generating` 체크

@@ -1,5 +1,5 @@
 # === 펌웨어 빌드 산출물 ===
-firmware/build/
+firmware/**/build/
 *.o
 *.d
 *.elf
@@ -10,17 +10,16 @@ firmware/build/
 *.su
 
 # === STM32CubeMX ===
-firmware/.mxproject
-# 주의: ROVER_F405.ioc 는 커밋 대상 (제외하지 않음)
+firmware/**/.mxproject
+# 주의: rover_jupiter_fw.ioc 는 커밋 대상 (제외하지 않음)
 
 # === ROS2 workspace (Jetson, 추후) ===
 ros2_ws/build/
 ros2_ws/install/
 ros2_ws/log/
 
-# === micro-ROS 빌드 ===
-firmware/micro_ros_*/
-!firmware/App/microros/
+# === micro-ROS 빌드 라이브러리 ===
+firmware/**/micro_ros_*/
 
 # === IDE / 에디터 ===
 .vscode/
