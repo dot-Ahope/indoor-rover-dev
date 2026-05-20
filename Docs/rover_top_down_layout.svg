@@ -1,0 +1,108 @@
+<svg viewBox="0 0 600 760" xmlns="http://www.w3.org/2000/svg" role="img">
+  <title>Rover Top-Down View</title>
+  <desc>Approximate bird's-eye view of the development rover showing track placement and major component positions. Overall dimensions 24x29x20 cm are confirmed; internal placements are visual estimates from photographs.</desc>
+
+  <style>
+    .lbl { font-family: ui-sans-serif, system-ui, sans-serif; font-size: 12px; fill: #1a202c; }
+    .lbl-b { font-weight: 600; }
+    .lbl-w { fill: white; }
+    .lbl-sm { font-size: 10px; fill: #4a5568; }
+    .lbl-it { font-style: italic; fill: #4a5568; font-size: 10px; }
+    .ttl { font-size: 17px; font-weight: 700; fill: #1a202c; }
+    .sub { font-size: 11px; fill: #4a5568; }
+  </style>
+
+  <defs>
+    <marker id="aR" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <polygon points="0 0, 7 3, 0 6" fill="#dc2626"/>
+    </marker>
+    <marker id="aG" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <polygon points="0 0, 7 3, 0 6" fill="#16a34a"/>
+    </marker>
+  </defs>
+
+  <text x="300" y="28" text-anchor="middle" class="ttl">Rover 조감도 (Top-Down, Approximate)</text>
+  <text x="300" y="46" text-anchor="middle" class="sub">전체 24 × 29 × 20 cm — 부품 위치는 사진 기반 추정</text>
+
+  <g transform="translate(75, 135)">
+    <text x="0" y="-50" text-anchor="middle" class="lbl-b lbl" fill="#dc2626">+X (전방)</text>
+    <line x1="0" y1="0" x2="0" y2="-40" stroke="#dc2626" stroke-width="2.5" marker-end="url(#aR)"/>
+    <line x1="0" y1="0" x2="40" y2="0" stroke="#16a34a" stroke-width="2.5" marker-end="url(#aG)"/>
+    <text x="55" y="5" class="lbl-b lbl" fill="#16a34a">+Y (좌)</text>
+    <circle cx="0" cy="0" r="5" fill="#2563eb"/>
+    <text x="0" y="22" text-anchor="middle" class="lbl-sm lbl-b">base_link</text>
+    <text x="0" y="36" text-anchor="middle" class="lbl-sm">+Z = 지면 → 위</text>
+  </g>
+
+  <rect x="156" y="206" width="288" height="348" rx="6" fill="#7ba368" stroke="#3d5a2a" stroke-width="2"/>
+
+  <rect x="156" y="216" width="42" height="328" rx="3" fill="#1f2937" stroke="#111827"/>
+  <rect x="402" y="216" width="42" height="328" rx="3" fill="#1f2937" stroke="#111827"/>
+
+  <g fill="#4b5563" stroke="#1f2937" stroke-width="0.5">
+    <circle cx="177" cy="240" r="11"/>
+    <circle cx="177" cy="305" r="9"/>
+    <circle cx="177" cy="380" r="9"/>
+    <circle cx="177" cy="455" r="9"/>
+    <circle cx="177" cy="520" r="11"/>
+    <circle cx="423" cy="240" r="11"/>
+    <circle cx="423" cy="305" r="9"/>
+    <circle cx="423" cy="380" r="9"/>
+    <circle cx="423" cy="455" r="9"/>
+    <circle cx="423" cy="520" r="11"/>
+  </g>
+
+  <text x="300" y="195" text-anchor="middle" class="lbl-b lbl" fill="#dc2626">▲ FRONT</text>
+
+  <rect x="232" y="220" width="136" height="26" rx="3" fill="#cbd5e1" stroke="#475569" stroke-width="1"/>
+  <text x="300" y="237" text-anchor="middle" class="lbl-b lbl">RealSense (D435i/D455)</text>
+
+  <circle cx="300" cy="290" r="30" fill="#1f2937" stroke="#000"/>
+  <circle cx="300" cy="290" r="22" fill="none" stroke="#4b5563" stroke-width="1"/>
+  <text x="300" y="294" text-anchor="middle" class="lbl-b lbl lbl-w">RPLidar</text>
+
+  <rect x="246" y="338" width="108" height="92" rx="4" fill="#1e40af" stroke="#172554" stroke-width="1"/>
+  <rect x="252" y="344" width="96" height="80" rx="2" fill="none" stroke="#3b82f6" stroke-width="0.7" stroke-dasharray="2,2"/>
+  <text x="300" y="378" text-anchor="middle" class="lbl-b lbl lbl-w">Jetson Orin</text>
+  <text x="300" y="394" text-anchor="middle" class="lbl-w lbl-sm">Nano Super</text>
+  <text x="300" y="410" text-anchor="middle" class="lbl-w lbl-sm">(히트싱크)</text>
+
+  <rect x="216" y="445" width="62" height="92" rx="3" fill="#2563eb" stroke="#1e40af"/>
+  <text x="247" y="488" text-anchor="middle" class="lbl-b lbl lbl-w">배터리</text>
+  <text x="247" y="504" text-anchor="middle" class="lbl-w lbl-sm">48V Pack</text>
+
+  <rect x="290" y="445" width="100" height="92" rx="3" fill="#fde68a" stroke="#a16207" stroke-width="1" stroke-dasharray="3,3"/>
+  <text x="340" y="485" text-anchor="middle" class="lbl-b lbl">ALOPS</text>
+  <text x="340" y="500" text-anchor="middle" class="lbl-sm">Jupiter R1.4</text>
+  <text x="340" y="514" text-anchor="middle" class="lbl-it">(Jetson 하부 추정)</text>
+
+  <g stroke="#94a3b8" stroke-width="0.7" fill="none">
+    <line x1="156" y1="568" x2="444" y2="568"/>
+    <line x1="156" y1="563" x2="156" y2="573"/>
+    <line x1="444" y1="563" x2="444" y2="573"/>
+  </g>
+  <text x="300" y="584" text-anchor="middle" class="lbl-it lbl-b">24 cm (폭 / Y축)</text>
+
+  <g stroke="#94a3b8" stroke-width="0.7" fill="none">
+    <line x1="120" y1="206" x2="120" y2="554"/>
+    <line x1="115" y1="206" x2="125" y2="206"/>
+    <line x1="115" y1="554" x2="125" y2="554"/>
+  </g>
+  <text x="105" y="385" text-anchor="middle" class="lbl-it lbl-b" transform="rotate(-90, 105, 385)">29 cm (길이 / X축)</text>
+
+  <line x1="40" y1="615" x2="560" y2="615" stroke="#cbd5e1" stroke-width="1"/>
+  <text x="40" y="635" class="lbl-sm lbl-b">확정 치수</text>
+  <text x="125" y="635" class="lbl-sm">외형 24 × 29 × 20 cm (사용자 제공)</text>
+
+  <text x="40" y="655" class="lbl-sm lbl-b" fill="#dc2626">실측 필요</text>
+  <text x="125" y="655" class="lbl-sm">트랙 휠 직경 · 트랙 베이스 폭 · 각 센서 base_link 오프셋 · 무게중심</text>
+
+  <text x="40" y="675" class="lbl-sm lbl-b">좌표계</text>
+  <text x="125" y="675" class="lbl-sm">ROS REP-103 (X 전방, Y 좌, Z 위 — 우손법)</text>
+
+  <text x="40" y="695" class="lbl-sm lbl-b">용도</text>
+  <text x="125" y="695" class="lbl-sm">URDF 부품 배치 참고용 (정확한 기구 도면 아님)</text>
+
+  <text x="40" y="715" class="lbl-sm lbl-b">근거</text>
+  <text x="125" y="715" class="lbl-sm">사진 3매 (정면 · 상부 · 측면) 시각 추정</text>
+</svg>
