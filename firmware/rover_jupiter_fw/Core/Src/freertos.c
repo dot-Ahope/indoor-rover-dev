@@ -31,6 +31,7 @@
 #include "i_encoder.h"
 #include "speed_controller.h"
 #include "safety_monitor.h"
+#include "microros_task.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -72,6 +73,15 @@ const osThreadAttr_t controlTask_attributes = {
   .name = "control",
   .stack_size = 256 * 4,   /* PID·monitor 호출 여유 */
   .priority = (osPriority_t) osPriorityAboveNormal,
+};
+/* F5b: micro-ROS executor + publisher. rclc·rmw 호출 깊이 큼.
+ * 권장 12 KB 였으나 F405 RAM 제약 → 6 KB 로 시작. stack overflow 검출(option 2)
+ * 활성이라 오버 시 hook 에서 잡힘. 부족하면 8 KB 로 상향. */
+osThreadId_t microrosTaskHandle;
+const osThreadAttr_t microrosTask_attributes = {
+  .name = "uros",
+  .stack_size = 1536 * 4,   /* 6 KB */
+  .priority = (osPriority_t) osPriorityNormal,
 };
 /* USER CODE END Variables */
 /* Definitions for defaultTask */
@@ -137,7 +147,10 @@ void MX_FREERTOS_Init(void) {
   /* USER CODE BEGIN RTOS_THREADS */
   f1SanityTaskHandle = osThreadNew(StartF1SanityTask, NULL, &f1SanityTask_attributes);
   controlTaskHandle  = osThreadNew(StartControlTask,  NULL, &controlTask_attributes);
-  f4PidTaskHandle    = osThreadNew(f4_pid_test_run,   NULL, &f4PidTask_attributes);
+  /* F5c: F4 자동 시퀀스 비활성 — /cmd_vel 콜백이 speed_controller 의 target 설정.
+   * 회귀 필요 시 아래 한 줄 다시 활성. */
+  /* f4PidTaskHandle = osThreadNew(f4_pid_test_run, NULL, &f4PidTask_attributes); */
+  microrosTaskHandle = osThreadNew(microros_task_run, NULL, &microrosTask_attributes);
   /* USER CODE END RTOS_THREADS */
 
   /* USER CODE BEGIN RTOS_EVENTS */
