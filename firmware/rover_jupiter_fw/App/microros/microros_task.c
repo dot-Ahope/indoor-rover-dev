@@ -1,12 +1,14 @@
 /**
  * @file    microros_task.c
- * @brief   F5b/F5c micro-ROS 노드.
+ * @brief   F5b/F5c/F6 micro-ROS 노드.
  *
  *   F5b — heartbeat publisher: /rover/f5b_heartbeat (std_msgs/Int32 @ 1Hz)
  *   F5c — cmd_vel subscriber:  /cmd_vel (geometry_msgs/Twist)
  *         차동구동 역기구학 → speed_controller_set_target(L/R)
+ *   F6  — wheel_odom publisher: /wheel_odom (nav_msgs/Odometry @ 50Hz)
+ *         OdomState (control task 가 100Hz 적분) → ROS msg 변환·발행
  *
- * 실행 루프: rclc_executor_spin_some 으로 subscriber 콜백 처리 + 1Hz heartbeat.
+ * 실행 루프: 20ms 마다 spin (cmd_vel 콜백 처리) + odom 발행, 매 50회 heartbeat.
  *
  * 안전: cmd_vel timeout watchdog 미구현 (F8 예정). agent/통신 끊기면 모터가
  * 마지막 명령 유지 → 사용 시 휠 받침대 또는 짧은 명령으로 검증.
@@ -15,9 +17,11 @@
 
 #include <stdio.h>
 #include <stdint.h>
+#include <string.h>
 #include <math.h>
 
 #include "cmsis_os.h"
+#include "stm32f4xx_hal.h"
 #include "usart.h"
 
 #include <rcl/rcl.h>
@@ -31,9 +35,11 @@
 
 #include <std_msgs/msg/int32.h>
 #include <geometry_msgs/msg/twist.h>
+#include <nav_msgs/msg/odometry.h>
 
 #include "rover_platform.h"
 #include "speed_controller.h"
+#include "odometry.h"
 
 /* extra_sources/ 함수들 (Makefile 빌드). */
 extern void *microros_allocate(size_t size, void *state);
@@ -54,6 +60,12 @@ static std_msgs__msg__Int32  s_heartbeat_msg;
 
 static rcl_subscription_t          s_cmdvel_sub;
 static geometry_msgs__msg__Twist   s_cmdvel_msg;
+
+static rcl_publisher_t           s_odom_pub;
+static nav_msgs__msg__Odometry   s_odom_msg;
+/* 정적 프레임 ID 문자열 — micro-ROS String 구조체 init 용. */
+static char s_frame_odom[]      = "odom";
+static char s_frame_base_link[] = "base_link";
 
 static rclc_support_t   s_support;
 static rcl_allocator_t  s_allocator;
@@ -147,7 +159,24 @@ void microros_task_run(void *arg)
         "cmd_vel");
     if (rc != RCL_RET_OK) { printf("[uROS] cmdvel_sub rc=%ld\r\n", (long)rc); goto idle; }
 
-    /* 7) Executor (subscriber 1개). */
+    /* 7) wheel_odom publisher (F6). */
+    rc = rclc_publisher_init_default(
+        &s_odom_pub, &s_node,
+        ROSIDL_GET_MSG_TYPE_SUPPORT(nav_msgs, msg, Odometry),
+        "wheel_odom");
+    if (rc != RCL_RET_OK) { printf("[uROS] odom_pub rc=%ld\r\n", (long)rc); goto idle; }
+
+    /* Odometry msg 정적 필드 1회 초기화. */
+    memset(&s_odom_msg, 0, sizeof(s_odom_msg));
+    s_odom_msg.header.frame_id.data     = s_frame_odom;
+    s_odom_msg.header.frame_id.size     = sizeof(s_frame_odom) - 1;
+    s_odom_msg.header.frame_id.capacity = sizeof(s_frame_odom);
+    s_odom_msg.child_frame_id.data      = s_frame_base_link;
+    s_odom_msg.child_frame_id.size      = sizeof(s_frame_base_link) - 1;
+    s_odom_msg.child_frame_id.capacity  = sizeof(s_frame_base_link);
+    /* covariance: 0 그대로 — Nav2 가 "unknown" 으로 해석. F8 에서 추정값 반영. */
+
+    /* 8) Executor (subscriber 1개). */
     rc = rclc_executor_init(&s_executor, &s_support.context, 1, &s_allocator);
     if (rc != RCL_RET_OK) { printf("[uROS] executor_init rc=%ld\r\n", (long)rc); goto idle; }
     rc = rclc_executor_add_subscription(
@@ -155,20 +184,43 @@ void microros_task_run(void *arg)
         cmdvel_callback, ON_NEW_DATA);
     if (rc != RCL_RET_OK) { printf("[uROS] executor_add rc=%ld\r\n", (long)rc); goto idle; }
 
-    printf("[uROS] ready — pub /rover/f5b_heartbeat, sub /cmd_vel\r\n");
+    printf("[uROS] ready — pub /rover/f5b_heartbeat /wheel_odom, sub /cmd_vel\r\n");
 
-    /* 8) Spin loop — 50ms 마다 executor (cmd_vel 콜백), 1Hz 마다 heartbeat. */
+    /* 9) Spin loop — 20ms 마다: executor + odom 발행 (50Hz). 50 cycle = 1s heartbeat. */
     s_heartbeat_msg.data = 0;
     int hb_counter = 0;
+    rcl_ret_t pr;
     for (;;) {
-        rclc_executor_spin_some(&s_executor, RCL_MS_TO_NS(40));
+        rclc_executor_spin_some(&s_executor, RCL_MS_TO_NS(10));
 
-        if (++hb_counter >= 20) {   /* 20 × 50ms = 1s */
-            (void)rcl_publish(&s_heartbeat_pub, &s_heartbeat_msg, NULL);
+        /* Odometry 스냅샷 → msg 변환 → 발행. */
+        OdomState o;
+        odometry_get(&o);
+        s_odom_msg.header.stamp.sec     = (int32_t)(o.ts_ms / 1000u);
+        s_odom_msg.header.stamp.nanosec = (uint32_t)((o.ts_ms % 1000u) * 1000000u);
+        s_odom_msg.pose.pose.position.x = (double)o.x;
+        s_odom_msg.pose.pose.position.y = (double)o.y;
+        s_odom_msg.pose.pose.position.z = 0.0;
+        /* Quaternion from yaw (Z axis only). */
+        const float half = o.yaw * 0.5f;
+        s_odom_msg.pose.pose.orientation.x = 0.0;
+        s_odom_msg.pose.pose.orientation.y = 0.0;
+        s_odom_msg.pose.pose.orientation.z = (double)sinf(half);
+        s_odom_msg.pose.pose.orientation.w = (double)cosf(half);
+        s_odom_msg.twist.twist.linear.x  = (double)o.v;
+        s_odom_msg.twist.twist.linear.y  = 0.0;
+        s_odom_msg.twist.twist.linear.z  = 0.0;
+        s_odom_msg.twist.twist.angular.x = 0.0;
+        s_odom_msg.twist.twist.angular.y = 0.0;
+        s_odom_msg.twist.twist.angular.z = (double)o.w;
+        pr = rcl_publish(&s_odom_pub, &s_odom_msg, NULL); (void)pr;
+
+        if (++hb_counter >= 50) {   /* 50 × 20ms = 1s */
+            pr = rcl_publish(&s_heartbeat_pub, &s_heartbeat_msg, NULL); (void)pr;
             s_heartbeat_msg.data++;
             hb_counter = 0;
         }
-        osDelay(10);   /* executor 40ms + osDelay 10ms ≈ 50ms loop */
+        osDelay(10);   /* executor 10ms + delay 10ms ≈ 20ms = 50Hz */
     }
 
 idle:
