@@ -6,6 +6,17 @@
  */
 #include "stm32_encoder_driver.h"
 #include "tim.h"
+#include "rover_platform.h"
+
+/* 속도 산출 설정 — encSample task 가 100Hz 로 호출 (freertos.c). */
+#define V_SAMPLE_HZ      100u
+#define V_SAMPLE_DT_S    (1.0f / (float)V_SAMPLE_HZ)
+#define V_EMA_ALPHA      0.2f   /* time constant ≈ 40 ms */
+
+static struct {
+    int32_t prev_cnt;
+    float   v_filt_mps;
+} s_v[ENC_COUNT];
 
 bool encoder_init(void)
 {
@@ -13,6 +24,10 @@ bool encoder_init(void)
     if (HAL_TIM_Encoder_Start(&htim5, TIM_CHANNEL_ALL) != HAL_OK) return false;
     __HAL_TIM_SET_COUNTER(&htim2, 0);
     __HAL_TIM_SET_COUNTER(&htim5, 0);
+    for (int i = 0; i < ENC_COUNT; i++) {
+        s_v[i].prev_cnt   = 0;
+        s_v[i].v_filt_mps = 0.0f;
+    }
     return true;
 }
 
@@ -29,4 +44,33 @@ void encoder_reset(EncoderChannel ch)
 {
     if (ch == ENC_LEFT)  __HAL_TIM_SET_COUNTER(&htim5, 0);
     if (ch == ENC_RIGHT) __HAL_TIM_SET_COUNTER(&htim2, 0);
+    if (ch < ENC_COUNT) {
+        s_v[ch].prev_cnt   = 0;
+        s_v[ch].v_filt_mps = 0.0f;
+    }
+}
+
+void encoder_update_velocity(void)
+{
+    for (int i = 0; i < ENC_COUNT; i++) {
+        const int32_t now = encoder_read_count((EncoderChannel)i);
+        /* int32_t 뺄셈은 modulo-2^32 wrap 안전. 100Hz 샘플·~3000cnt/s 면 |d| ≪ 2^31. */
+        const int32_t d   = now - s_v[i].prev_cnt;
+        s_v[i].prev_cnt   = now;
+        const float v_raw = (float)d * METERS_PER_COUNT / V_SAMPLE_DT_S;
+        s_v[i].v_filt_mps = V_EMA_ALPHA * v_raw +
+                            (1.0f - V_EMA_ALPHA) * s_v[i].v_filt_mps;
+    }
+}
+
+float encoder_read_velocity_mps(EncoderChannel ch)
+{
+    if (ch >= ENC_COUNT) return 0.0f;
+    return s_v[ch].v_filt_mps;
+}
+
+float encoder_read_distance_m(EncoderChannel ch)
+{
+    /* count × m/cnt. count 자체가 부호 처리되므로 거리도 자동 부호. */
+    return (float)encoder_read_count(ch) * METERS_PER_COUNT;
 }

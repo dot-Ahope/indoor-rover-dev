@@ -28,6 +28,7 @@
 #include <stdio.h>
 #include "f1_sanity_task.h"
 #include "f2_motor_test.h"
+#include "i_encoder.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -61,6 +62,14 @@ const osThreadAttr_t f2MotorTask_attributes = {
   .stack_size = 256 * 4,
   .priority = (osPriority_t) osPriorityBelowNormal,
 };
+/* F3: 100 Hz 엔코더 속도 샘플러. 다른 진단/UI 태스크보다 살짝 높은 우선순위로
+   정확한 주기 보장 (속도 산출의 dt 가 흔들리면 잡음 증가). */
+osThreadId_t encSampleTaskHandle;
+const osThreadAttr_t encSampleTask_attributes = {
+  .name = "encSample",
+  .stack_size = 192 * 4,
+  .priority = (osPriority_t) osPriorityAboveNormal,
+};
 /* USER CODE END Variables */
 /* Definitions for defaultTask */
 osThreadId_t defaultTaskHandle;
@@ -73,6 +82,7 @@ const osThreadAttr_t defaultTask_attributes = {
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN FunctionPrototypes */
 void StartF1SanityTask(void *argument);
+void StartEncSampleTask(void *argument);
 /* USER CODE END FunctionPrototypes */
 
 void StartDefaultTask(void *argument);
@@ -122,8 +132,9 @@ void MX_FREERTOS_Init(void) {
   defaultTaskHandle = osThreadNew(StartDefaultTask, NULL, &defaultTask_attributes);
 
   /* USER CODE BEGIN RTOS_THREADS */
-  f1SanityTaskHandle = osThreadNew(StartF1SanityTask, NULL, &f1SanityTask_attributes);
-  f2MotorTaskHandle  = osThreadNew(f2_motor_test_run, NULL, &f2MotorTask_attributes);
+  f1SanityTaskHandle  = osThreadNew(StartF1SanityTask, NULL, &f1SanityTask_attributes);
+  f2MotorTaskHandle   = osThreadNew(f2_motor_test_run, NULL, &f2MotorTask_attributes);
+  encSampleTaskHandle = osThreadNew(StartEncSampleTask, NULL, &encSampleTask_attributes);
   /* USER CODE END RTOS_THREADS */
 
   /* USER CODE BEGIN RTOS_EVENTS */
@@ -168,6 +179,26 @@ void StartF1SanityTask(void *argument)
   {
     f1_sanity_tick();
     osDelay(1000);
+  }
+}
+
+/**
+ * @brief F3 엔코더 100Hz 샘플러 — encoder_update_velocity() 호출.
+ *        osDelayUntil 로 jitter 최소화.
+ */
+void StartEncSampleTask(void *argument)
+{
+  (void)argument;
+  /* f1_sanity_init() 이 encoder_init() 호출하길 기다림. */
+  osDelay(200);
+
+  uint32_t next = osKernelGetTickCount();
+  const uint32_t period_ticks = 10u;  /* 10 ms = 100 Hz (configTICK_RATE_HZ=1000) */
+  for(;;)
+  {
+    encoder_update_velocity();
+    next += period_ticks;
+    osDelayUntil(next);
   }
 }
 /* USER CODE END Application */
