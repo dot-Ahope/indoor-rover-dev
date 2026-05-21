@@ -27,8 +27,10 @@
 /* USER CODE BEGIN Includes */
 #include <stdio.h>
 #include "f1_sanity_task.h"
-#include "f2_motor_test.h"
+#include "f4_pid_test.h"
 #include "i_encoder.h"
+#include "speed_controller.h"
+#include "safety_monitor.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -55,19 +57,20 @@ const osThreadAttr_t f1SanityTask_attributes = {
   .stack_size = 512 * 4,   /* SPI/I2C HAL + printf 여유 */
   .priority = (osPriority_t) osPriorityBelowNormal,
 };
-/* F2 검증: 모터 개방루프 PWM 시퀀스 (휠 받침대 전제). */
-osThreadId_t f2MotorTaskHandle;
-const osThreadAttr_t f2MotorTask_attributes = {
-  .name = "f2Motor",
+/* F4 검증: 폐루프 PID + 스톨 시퀀스 (F2 는 비활성 — 매핑/방향 검증 완료). */
+osThreadId_t f4PidTaskHandle;
+const osThreadAttr_t f4PidTask_attributes = {
+  .name = "f4Pid",
   .stack_size = 256 * 4,
   .priority = (osPriority_t) osPriorityBelowNormal,
 };
-/* F3: 100 Hz 엔코더 속도 샘플러. 다른 진단/UI 태스크보다 살짝 높은 우선순위로
-   정확한 주기 보장 (속도 산출의 dt 가 흔들리면 잡음 증가). */
-osThreadId_t encSampleTaskHandle;
-const osThreadAttr_t encSampleTask_attributes = {
-  .name = "encSample",
-  .stack_size = 192 * 4,
+/* F3/F4 통합: 100 Hz 제어 루프 — encoder_update_velocity →
+   speed_controller_update → safety_monitor_update 를 단일 task 에서 sequencing.
+   다른 진단/UI 태스크보다 살짝 높은 우선순위로 dt jitter 최소화. */
+osThreadId_t controlTaskHandle;
+const osThreadAttr_t controlTask_attributes = {
+  .name = "control",
+  .stack_size = 256 * 4,   /* PID·monitor 호출 여유 */
   .priority = (osPriority_t) osPriorityAboveNormal,
 };
 /* USER CODE END Variables */
@@ -82,7 +85,7 @@ const osThreadAttr_t defaultTask_attributes = {
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN FunctionPrototypes */
 void StartF1SanityTask(void *argument);
-void StartEncSampleTask(void *argument);
+void StartControlTask(void *argument);
 /* USER CODE END FunctionPrototypes */
 
 void StartDefaultTask(void *argument);
@@ -132,9 +135,9 @@ void MX_FREERTOS_Init(void) {
   defaultTaskHandle = osThreadNew(StartDefaultTask, NULL, &defaultTask_attributes);
 
   /* USER CODE BEGIN RTOS_THREADS */
-  f1SanityTaskHandle  = osThreadNew(StartF1SanityTask, NULL, &f1SanityTask_attributes);
-  f2MotorTaskHandle   = osThreadNew(f2_motor_test_run, NULL, &f2MotorTask_attributes);
-  encSampleTaskHandle = osThreadNew(StartEncSampleTask, NULL, &encSampleTask_attributes);
+  f1SanityTaskHandle = osThreadNew(StartF1SanityTask, NULL, &f1SanityTask_attributes);
+  controlTaskHandle  = osThreadNew(StartControlTask,  NULL, &controlTask_attributes);
+  f4PidTaskHandle    = osThreadNew(f4_pid_test_run,   NULL, &f4PidTask_attributes);
   /* USER CODE END RTOS_THREADS */
 
   /* USER CODE BEGIN RTOS_EVENTS */
@@ -183,20 +186,25 @@ void StartF1SanityTask(void *argument)
 }
 
 /**
- * @brief F3 엔코더 100Hz 샘플러 — encoder_update_velocity() 호출.
- *        osDelayUntil 로 jitter 최소화.
+ * @brief F3/F4 통합 제어 루프 — 100 Hz.
+ *        순서: encoder 속도 업데이트 → PID → safety monitor.
+ *        같은 dt 내에 sequencing 함으로써 PID 가 항상 최신 actual 사용.
  */
-void StartEncSampleTask(void *argument)
+void StartControlTask(void *argument)
 {
   (void)argument;
-  /* f1_sanity_init() 이 encoder_init() 호출하길 기다림. */
+  /* f1_sanity_init() 이 encoder_init() · motor_driver_init() 마치길 대기. */
   osDelay(200);
+  speed_controller_init();
+  safety_monitor_init();
 
   uint32_t next = osKernelGetTickCount();
-  const uint32_t period_ticks = 10u;  /* 10 ms = 100 Hz (configTICK_RATE_HZ=1000) */
+  const uint32_t period_ticks = 10u;  /* 10 ms = 100 Hz */
   for(;;)
   {
     encoder_update_velocity();
+    speed_controller_update();
+    safety_monitor_update();
     next += period_ticks;
     osDelayUntil(next);
   }
