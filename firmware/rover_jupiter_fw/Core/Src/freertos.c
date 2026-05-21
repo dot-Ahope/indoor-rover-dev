@@ -31,6 +31,7 @@
 #include "i_encoder.h"
 #include "speed_controller.h"
 #include "safety_monitor.h"
+#include "odometry.h"
 #include "microros_task.h"
 /* USER CODE END Includes */
 
@@ -210,6 +211,7 @@ void StartControlTask(void *argument)
   osDelay(200);
   speed_controller_init();
   safety_monitor_init();
+  odometry_init();
 
   uint32_t next = osKernelGetTickCount();
   const uint32_t period_ticks = 10u;  /* 10 ms = 100 Hz */
@@ -218,6 +220,7 @@ void StartControlTask(void *argument)
     encoder_update_velocity();
     speed_controller_update();
     safety_monitor_update();
+    odometry_update();
     next += period_ticks;
     osDelayUntil(next);
   }
