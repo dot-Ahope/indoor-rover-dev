@@ -24,7 +24,13 @@
 - Spin loop 20ms 주기 (executor 10ms + osDelay 10ms)
 - 매 cycle: `odometry_get()` → quaternion 변환 → `rcl_publish`
 - Heartbeat 는 매 50 cycle (= 1Hz)
-- **실측 발행률 ~16 Hz** (의도 50Hz). Odometry 메시지 720byte + transport write polling + XRCE-DDS framing 으로 cycle 이 ~63ms 까지 늘어남. Nav2 통상 10~30Hz 충분 → 그대로 사용. 더 빠르게 하려면 transport TX 를 DMA complete IRQ callback 화 또는 baud 2Mbps 검토.
+- **실측 발행률 ~29 Hz** (의도 50Hz). 최적화 단계:
+  - 1차 (원본 polling): 15.85 Hz / 63ms cycle
+  - 2차 (TX IRQ semaphore): 18.75 Hz / 53ms (+18%)
+  - 3차 (vTaskDelayUntil + spin_some 1ms): **29.04 Hz / 34ms (+83%)**
+  - 남은 bottleneck: XRCE-DDS framing — Odometry 720byte 가 256byte segment 로 쪼개져 다중 transport_write 호출. 50Hz 도달은 baud 2Mbps 또는 MTU 튜닝 필요.
+  - Nav2 통상 10~30Hz 충분 — 29Hz 그대로 사용.
+- Heartbeat 발행은 HAL_GetTick() 기반 1초 timer (cycle 가변에 robust).
 
 ### 1.4 RAM·Flash
 | 영역 | F5c | F6 | 증가 |
@@ -133,7 +139,7 @@ ros2 run rviz2 rviz2
 | # | 항목 | 통과 조건 |
 |---|---|---|
 | 1 | 토픽 발견 | `/wheel_odom` 보임 |
-| 2 | 발행률 | `ros2 topic hz` ≈ 15~20 Hz (Nav2 충분) |
+| 2 | 발행률 | `ros2 topic hz` ≈ 25~30 Hz (Nav2 충분) |
 | 3 | 정지 시 변화 없음 | cmd_vel=0 일 때 x, y, yaw 일정 |
 | 4 | 직진 누적 | x 증가, y·yaw 거의 변화 없음 |
 | 5 | 회전 누적 | yaw 증가/감소 (z 부호 매칭) |

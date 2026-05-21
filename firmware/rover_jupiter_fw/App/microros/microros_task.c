@@ -36,10 +36,12 @@
 #include <std_msgs/msg/int32.h>
 #include <geometry_msgs/msg/twist.h>
 #include <nav_msgs/msg/odometry.h>
+#include <sensor_msgs/msg/imu.h>
 
 #include "rover_platform.h"
 #include "speed_controller.h"
 #include "odometry.h"
+#include "imu_processor.h"
 
 /* extra_sources/ 함수들 (Makefile 빌드). */
 extern void *microros_allocate(size_t size, void *state);
@@ -66,6 +68,10 @@ static nav_msgs__msg__Odometry   s_odom_msg;
 /* 정적 프레임 ID 문자열 — micro-ROS String 구조체 init 용. */
 static char s_frame_odom[]      = "odom";
 static char s_frame_base_link[] = "base_link";
+static char s_frame_imu_link[]  = "imu_link";
+
+static rcl_publisher_t            s_imu_pub;
+static sensor_msgs__msg__Imu      s_imu_msg;
 
 static rclc_support_t   s_support;
 static rcl_allocator_t  s_allocator;
@@ -176,6 +182,20 @@ void microros_task_run(void *arg)
     s_odom_msg.child_frame_id.capacity  = sizeof(s_frame_base_link);
     /* covariance: 0 그대로 — Nav2 가 "unknown" 으로 해석. F8 에서 추정값 반영. */
 
+    /* 7b) /imu/data_raw publisher (F7). */
+    rc = rclc_publisher_init_default(
+        &s_imu_pub, &s_node,
+        ROSIDL_GET_MSG_TYPE_SUPPORT(sensor_msgs, msg, Imu),
+        "imu/data_raw");
+    if (rc != RCL_RET_OK) { printf("[uROS] imu_pub rc=%ld\r\n", (long)rc); goto idle; }
+
+    memset(&s_imu_msg, 0, sizeof(s_imu_msg));
+    s_imu_msg.header.frame_id.data     = s_frame_imu_link;
+    s_imu_msg.header.frame_id.size     = sizeof(s_frame_imu_link) - 1;
+    s_imu_msg.header.frame_id.capacity = sizeof(s_frame_imu_link);
+    /* orientation 제공 안 함 — covariance[0] = -1 표식 (REP-145). */
+    s_imu_msg.orientation_covariance[0] = -1.0;
+
     /* 8) Executor (subscriber 1개). */
     rc = rclc_executor_init(&s_executor, &s_support.context, 1, &s_allocator);
     if (rc != RCL_RET_OK) { printf("[uROS] executor_init rc=%ld\r\n", (long)rc); goto idle; }
@@ -184,14 +204,19 @@ void microros_task_run(void *arg)
         cmdvel_callback, ON_NEW_DATA);
     if (rc != RCL_RET_OK) { printf("[uROS] executor_add rc=%ld\r\n", (long)rc); goto idle; }
 
-    printf("[uROS] ready — pub /rover/f5b_heartbeat /wheel_odom, sub /cmd_vel\r\n");
+    printf("[uROS] ready — pub /rover/f5b_heartbeat /wheel_odom /imu/data_raw, sub /cmd_vel\r\n");
 
-    /* 9) Spin loop — 20ms 마다: executor + odom 발행 (50Hz). 50 cycle = 1s heartbeat. */
+    /* 9) Spin loop — vTaskDelayUntil 로 20ms cycle 시도. 실측 ~34ms 까지 늘어남
+     *    (XRCE-DDS framing 이 720byte odom msg 를 segment 로 쪼개 다중 transport_write).
+     *    그래도 polling 대비 ×2 개선 → /wheel_odom ~29 Hz.
+     *    Heartbeat 는 cycle 가변에 안정적인 시간 기반 (HAL_GetTick) 으로 1Hz. */
     s_heartbeat_msg.data = 0;
-    int hb_counter = 0;
+    uint32_t last_hb_ms = HAL_GetTick();
     rcl_ret_t pr;
+    TickType_t next_wake = xTaskGetTickCount();
+    const TickType_t period_ticks = pdMS_TO_TICKS(20);
     for (;;) {
-        rclc_executor_spin_some(&s_executor, RCL_MS_TO_NS(10));
+        rclc_executor_spin_some(&s_executor, RCL_MS_TO_NS(1));
 
         /* Odometry 스냅샷 → msg 변환 → 발행. */
         OdomState o;
@@ -215,12 +240,28 @@ void microros_task_run(void *arg)
         s_odom_msg.twist.twist.angular.z = (double)o.w;
         pr = rcl_publish(&s_odom_pub, &s_odom_msg, NULL); (void)pr;
 
-        if (++hb_counter >= 50) {   /* 50 × 20ms = 1s */
+        /* IMU 발행 (F7) — 매 cycle. */
+        ImuSi imu;
+        imu_processor_get(&imu);
+        if (imu.valid) {
+            s_imu_msg.header.stamp.sec     = (int32_t)(imu.ts_ms / 1000u);
+            s_imu_msg.header.stamp.nanosec = (uint32_t)((imu.ts_ms % 1000u) * 1000000u);
+            s_imu_msg.linear_acceleration.x = (double)imu.ax;
+            s_imu_msg.linear_acceleration.y = (double)imu.ay;
+            s_imu_msg.linear_acceleration.z = (double)imu.az;
+            s_imu_msg.angular_velocity.x    = (double)imu.gx;
+            s_imu_msg.angular_velocity.y    = (double)imu.gy;
+            s_imu_msg.angular_velocity.z    = (double)imu.gz;
+            pr = rcl_publish(&s_imu_pub, &s_imu_msg, NULL); (void)pr;
+        }
+
+        const uint32_t now_ms = HAL_GetTick();
+        if (now_ms - last_hb_ms >= 1000u) {
             pr = rcl_publish(&s_heartbeat_pub, &s_heartbeat_msg, NULL); (void)pr;
             s_heartbeat_msg.data++;
-            hb_counter = 0;
+            last_hb_ms = now_ms;
         }
-        osDelay(10);   /* executor 10ms + delay 10ms ≈ 20ms = 50Hz */
+        vTaskDelayUntil(&next_wake, period_ticks);   /* 20ms 목표 (실측 ~34ms — XRCE framing 한계) */
     }
 
 idle:

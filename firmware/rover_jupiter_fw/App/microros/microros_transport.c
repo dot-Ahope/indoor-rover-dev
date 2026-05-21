@@ -21,6 +21,8 @@
 
 #include "main.h"
 #include "cmsis_os.h"
+#include "FreeRTOS.h"
+#include "semphr.h"
 
 #include <stdio.h>
 #include <string.h>
@@ -34,9 +36,16 @@ static uint8_t s_dma_buffer[UART_DMA_BUFFER_SIZE];
 static size_t  s_dma_head = 0;
 static size_t  s_dma_tail = 0;
 
+/* F6+ 최적화: DMA TX 완료를 polling 대신 binary semaphore 로 대기.
+ * HAL_UART_TxCpltCallback (DMA2_Stream7 IRQ, priority 6 = FreeRTOS 안전) 에서 give. */
+static SemaphoreHandle_t s_tx_done = NULL;
+
 bool cubemx_transport_open(struct uxrCustomTransport *transport)
 {
     UART_HandleTypeDef *uart = (UART_HandleTypeDef *)transport->args;
+    if (s_tx_done == NULL) {
+        s_tx_done = xSemaphoreCreateBinary();
+    }
     HAL_UART_Receive_DMA(uart, s_dma_buffer, UART_DMA_BUFFER_SIZE);
     return true;
 }
@@ -61,11 +70,28 @@ size_t cubemx_transport_write(struct uxrCustomTransport *transport,
     HAL_StatusTypeDef ret = HAL_UART_Transmit_DMA(uart, (uint8_t *)buf, len);
     if (ret != HAL_OK) return 0;
 
-    /* DMA TX 완료 대기 — micro-ROS executor 가 다음 호출 전까지 점유 가정. */
-    while (uart->gState != HAL_UART_STATE_READY) {
-        osDelay(1);
+    /* F6+ 최적화: TX complete IRQ semaphore 대기 (polling osDelay(1) 제거).
+     * Timeout 100ms — 비정상 lock-up 방지 safety. */
+    if (s_tx_done != NULL) {
+        if (xSemaphoreTake(s_tx_done, pdMS_TO_TICKS(100)) != pdTRUE) {
+            return 0;   /* TX timeout — agent down 등 */
+        }
+    } else {
+        /* Fallback: semaphore 없으면 옛 polling. (init 전 호출 등) */
+        while (uart->gState != HAL_UART_STATE_READY) osDelay(1);
     }
     return len;
+}
+
+/* HAL UART TX complete callback — DMA2_Stream7 IRQ → HAL → 여기.
+ * USART1 만 micro-ROS 용. 다른 UART 가 DMA TX 사용하면 case 추가. */
+void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart)
+{
+    if (huart->Instance == USART1 && s_tx_done != NULL) {
+        BaseType_t hpw = pdFALSE;
+        xSemaphoreGiveFromISR(s_tx_done, &hpw);
+        portYIELD_FROM_ISR(hpw);
+    }
 }
 
 size_t cubemx_transport_read(struct uxrCustomTransport *transport,

@@ -80,6 +80,7 @@ App/app/speed_controller.c \
 App/app/safety_monitor.c \
 App/app/f4_pid_test.c \
 App/app/odometry.c \
+App/app/imu_processor.c \
 App/microros/microros_task.c \
 App/microros/microros_transport.c \
 App/microros/microros_heap_freertos.c \
