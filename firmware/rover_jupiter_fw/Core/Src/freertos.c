@@ -25,7 +25,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include <stdio.h>
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -45,7 +45,13 @@
 
 /* Private variables ---------------------------------------------------------*/
 /* USER CODE BEGIN Variables */
-
+/* F0 검증: 두 번째 태스크 - heartbeat 메시지를 UART5로 발행 */
+osThreadId_t heartbeatTaskHandle;
+const osThreadAttr_t heartbeatTask_attributes = {
+  .name = "heartbeatTask",
+  .stack_size = 256 * 4,
+  .priority = (osPriority_t) osPriorityBelowNormal,
+};
 /* USER CODE END Variables */
 /* Definitions for defaultTask */
 osThreadId_t defaultTaskHandle;
@@ -57,12 +63,24 @@ const osThreadAttr_t defaultTask_attributes = {
 
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN FunctionPrototypes */
-
+void StartHeartbeatTask(void *argument);
 /* USER CODE END FunctionPrototypes */
 
 void StartDefaultTask(void *argument);
 
 void MX_FREERTOS_Init(void); /* (MISRA C 2004 rule 8.1) */
+
+/* Hook prototypes */
+void vApplicationStackOverflowHook(xTaskHandle xTask, signed char *pcTaskName);
+
+/* USER CODE BEGIN 4 */
+void vApplicationStackOverflowHook(xTaskHandle xTask, signed char *pcTaskName)
+{
+   /* Run time stack overflow checking is performed if
+   configCHECK_FOR_STACK_OVERFLOW is defined to 1 or 2. This hook function is
+   called if a stack overflow is detected. */
+}
+/* USER CODE END 4 */
 
 /**
   * @brief  FreeRTOS initialization
@@ -95,7 +113,7 @@ void MX_FREERTOS_Init(void) {
   defaultTaskHandle = osThreadNew(StartDefaultTask, NULL, &defaultTask_attributes);
 
   /* USER CODE BEGIN RTOS_THREADS */
-  /* add threads, ... */
+  heartbeatTaskHandle = osThreadNew(StartHeartbeatTask, NULL, &heartbeatTask_attributes);
   /* USER CODE END RTOS_THREADS */
 
   /* USER CODE BEGIN RTOS_EVENTS */
@@ -114,16 +132,36 @@ void MX_FREERTOS_Init(void) {
 void StartDefaultTask(void *argument)
 {
   /* USER CODE BEGIN StartDefaultTask */
-  /* Infinite loop */
+  /* F0 검증: PC13 상태 LED 1Hz 토글 (defaultTask 동작 신호) */
   for(;;)
   {
-    osDelay(1);
+    HAL_GPIO_TogglePin(LED_STATUS_GPIO_Port, LED_STATUS_Pin);
+    HAL_GPIO_TogglePin(BUZZER_GPIO_Port, BUZZER_Pin);
+    osDelay(500);
   }
   /* USER CODE END StartDefaultTask */
 }
 
 /* Private application code --------------------------------------------------*/
 /* USER CODE BEGIN Application */
-
+/**
+ * @brief F0 검증용 두 번째 태스크.
+ *        1초마다 UART5(디버그 콘솔)로 카운터·heap·tick 정보 출력.
+ *        defaultTask(LED)와 동시에 동작 → FreeRTOS 스케줄링 검증.
+ */
+void StartHeartbeatTask(void *argument)
+{
+  uint32_t count = 0;
+  for(;;)
+  {
+    printf("[hb %lu] tick=%lu  freeHeap=%u  minEverHeap=%u\r\n",
+           (unsigned long)count,
+           (unsigned long)osKernelGetTickCount(),
+           (unsigned)xPortGetFreeHeapSize(),
+           (unsigned)xPortGetMinimumEverFreeHeapSize());
+    count++;
+    osDelay(1000);
+  }
+}
 /* USER CODE END Application */
 
