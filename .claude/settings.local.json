@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "PowerShell($gcc = Get-Command arm-none-eabi-gcc -ErrorAction SilentlyContinue; if \\($gcc\\) { Write-Output \"FOUND: $\\($gcc.Source\\)\"; & arm-none-eabi-gcc --version | Select-Object -First 1 } else { Write-Output \"NOT FOUND in PATH\" }; $make = Get-Command make -ErrorAction SilentlyContinue; if \\($make\\) { Write-Output \"MAKE: $\\($make.Source\\)\" } else { Write-Output \"MAKE: NOT FOUND\" })",
+      "PowerShell($env:Path = \"C:\\\\ST\\\\STM32CubeCLT_1.21.0\\\\GNU-tools-for-STM32\\\\bin;\" + $env:Path; & \"c:\\\\Program Files \\(x86\\)\\\\GnuWin32\\\\bin\\\\make.exe\" -C firmware\\\\rover_jupiter_fw -j8 2>&1 | Select-Object -Last 80)",
+      "PowerShell($cli = Get-Command STM32_Programmer_CLI -ErrorAction SilentlyContinue; if \\($cli\\) { Write-Output \"FOUND CLI: $\\($cli.Source\\)\" } else { $candidates = @\\(\"C:\\\\ST\\\\STM32CubeCLT_1.21.0\\\\STM32CubeProgrammer\\\\bin\\\\STM32_Programmer_CLI.exe\", \"C:\\\\Program Files\\\\STMicroelectronics\\\\STM32Cube\\\\STM32CubeProgrammer\\\\bin\\\\STM32_Programmer_CLI.exe\"\\); foreach \\($p in $candidates\\) { if \\(Test-Path $p\\) { Write-Output \"FOUND: $p\" } } }; $stflash = Get-Command st-flash -ErrorAction SilentlyContinue; if \\($stflash\\) { Write-Output \"FOUND st-flash: $\\($stflash.Source\\)\" })",
+      "PowerShell(& \"C:\\\\ST\\\\STM32CubeCLT_1.21.0\\\\STM32CubeProgrammer\\\\bin\\\\STM32_Programmer_CLI.exe\" --list 2>&1)",
+      "PowerShell(& \"C:\\\\ST\\\\STM32CubeCLT_1.21.0\\\\STM32CubeProgrammer\\\\bin\\\\STM32_Programmer_CLI.exe\" -c port=SWD reset=HWrst -w firmware\\\\rover_jupiter_fw\\\\build\\\\rover_jupiter_fw.elf -v -rst 2>&1)",
+      "PowerShell($env:Path = \"C:\\\\ST\\\\STM32CubeCLT_1.21.0\\\\GNU-tools-for-STM32\\\\bin;\" + $env:Path; & \"c:\\\\Program Files \\(x86\\)\\\\GnuWin32\\\\bin\\\\make.exe\" -C firmware\\\\rover_jupiter_fw -j8 2>&1 | Select-String -Pattern \"error|warning|undefined|Error|^   text|\\\\.elf$|\\\\.hex$|\\\\.bin$\" | Select-Object -Last 30)"
+    ]
+  }
+}

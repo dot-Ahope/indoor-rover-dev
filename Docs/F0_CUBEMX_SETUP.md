@@ -51,8 +51,16 @@
 
 - [ ] **Middleware → FREERTOS**
 - [ ] Interface: `CMSIS_V2`
+- [ ] **Config parameters** 탭:
+  - `TOTAL_HEAP_SIZE`: **`32768`** (32 KB) — 기본 3 KB는 너무 작음
+    (F5 micro-ROS 통합 시 48~64 KB로 상향 후 실측 튜닝)
+  - `CHECK_FOR_STACK_OVERFLOW`: **`Option 2`** — 개발 중 스택 오버플로 검출
+  - Memory Management scheme: `heap_4` (기본 그대로)
 - [ ] 기본 Task(`defaultTask`) 유지 — F0 단계 골격용
 - [ ] (태스크 구체 설계는 `FIRMWARE_DEV_PLAN.md §3.2` — F1 이후 코드에서)
+
+> heap 적정값은 펌웨어에서 `xPortGetMinimumEverFreeHeapSize()`로 실측해 튜닝.
+> F405 CCM RAM(64 KB)은 DMA 불가 → FreeRTOS heap은 일반 SRAM에 유지.
 
 ---
 
