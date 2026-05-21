@@ -32,6 +32,7 @@
 #include "speed_controller.h"
 #include "safety_monitor.h"
 #include "odometry.h"
+#include "imu_processor.h"
 #include "microros_task.h"
 /* USER CODE END Includes */
 
@@ -212,6 +213,7 @@ void StartControlTask(void *argument)
   speed_controller_init();
   safety_monitor_init();
   odometry_init();
+  imu_processor_init();
 
   uint32_t next = osKernelGetTickCount();
   const uint32_t period_ticks = 10u;  /* 10 ms = 100 Hz */
@@ -221,6 +223,7 @@ void StartControlTask(void *argument)
     speed_controller_update();
     safety_monitor_update();
     odometry_update();
+    imu_processor_update();   /* F7: SPI burst read + SI 변환 */
     next += period_ticks;
     osDelayUntil(next);
   }
