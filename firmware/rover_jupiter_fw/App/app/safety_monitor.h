@@ -26,6 +26,11 @@ bool safety_monitor_is_stalled(MotorChannel ch);
 bool safety_monitor_has_fault(void);
 void safety_monitor_clear(void);
 
+/* F8: cmd_vel watchdog. cmd_vel 콜백에서 매번 호출 → 마지막 수신 시각 갱신.
+ * 500ms 미수신 시 motors 강제 정지 + fault flag. */
+void safety_monitor_cmdvel_received(void);
+bool safety_monitor_cmdvel_timeout(void);
+
 #ifdef __cplusplus
 }
 #endif

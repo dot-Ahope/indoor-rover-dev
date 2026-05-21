@@ -7,6 +7,7 @@
 #include <math.h>
 #include <stdint.h>
 
+#include "stm32f4xx_hal.h"
 #include "i_encoder.h"
 #include "speed_controller.h"
 
@@ -16,6 +17,8 @@
 #define V_TARGET_THRESH    0.05f  /* 50 mm/s — 이상 명령 시에만 stall 의심 */
 #define V_ACTUAL_THRESH    0.02f  /* 20 mm/s — 미만이면 정지로 간주 */
 
+#define CMDVEL_TIMEOUT_MS  500u   /* §7 통신 watchdog — 500ms 미수신 시 정지 */
+
 typedef struct {
     uint16_t stall_counter;
     bool     stalled;
@@ -23,6 +26,9 @@ typedef struct {
 
 static mon_t s_mon[MOTOR_COUNT];
 static bool  s_fault;
+static volatile uint32_t s_last_cmdvel_ms = 0;
+static volatile bool     s_cmdvel_ever_received = false;
+static bool s_cmdvel_timeout = false;
 
 void safety_monitor_init(void)
 {
@@ -31,11 +37,44 @@ void safety_monitor_init(void)
         s_mon[i].stalled       = false;
     }
     s_fault = false;
+    s_last_cmdvel_ms = 0;
+    s_cmdvel_ever_received = false;
+    s_cmdvel_timeout = false;
+}
+
+void safety_monitor_cmdvel_received(void)
+{
+    s_last_cmdvel_ms = HAL_GetTick();
+    s_cmdvel_ever_received = true;
+    s_cmdvel_timeout = false;
+}
+
+bool safety_monitor_cmdvel_timeout(void)
+{
+    return s_cmdvel_timeout;
 }
 
 void safety_monitor_update(void)
 {
-    if (s_fault) return;   /* latching — clear() 전까지 미평가 */
+    /* cmd_vel watchdog — fault 와 무관하게 항상 평가.
+     * cmd_vel 한 번도 안 받으면 timeout 비활성 (boot 초기 상태). */
+    if (s_cmdvel_ever_received) {
+        const uint32_t since = HAL_GetTick() - s_last_cmdvel_ms;
+        if (since > CMDVEL_TIMEOUT_MS) {
+            if (!s_cmdvel_timeout) {
+                /* 진입 transition — 모터 정지, 적분 reset, fault 표시 X (latch 안 함). */
+                speed_controller_set_target(MOTOR_LEFT,  0.0f);
+                speed_controller_set_target(MOTOR_RIGHT, 0.0f);
+                speed_controller_reset();
+                motor_driver_stop_all();
+            }
+            s_cmdvel_timeout = true;
+        } else {
+            s_cmdvel_timeout = false;
+        }
+    }
+
+    if (s_fault) return;   /* stall latching — clear() 전까지 미평가 */
 
     bool any_stall = false;
     for (int i = 0; i < MOTOR_COUNT; i++) {
