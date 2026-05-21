@@ -18,8 +18,11 @@ ros2_ws/build/
 ros2_ws/install/
 ros2_ws/log/
 
-# === micro-ROS 빌드 라이브러리 ===
-firmware/**/micro_ros_*/
+# === micro-ROS ===
+# upstream utility (clone, 재현 가능 — 트래킹 안 함)
+firmware/**/micro_ros_stm32cubemx_utils/
+# 생성된 라이브러리 (~수MB, scripts/build_libmicroros_wsl.sh 로 재생성)
+firmware/**/libmicroros/
 
 # === IDE / 에디터 ===
 .vscode/
