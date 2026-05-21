@@ -25,6 +25,8 @@
 #include "i_magnetometer.h"
 #include "icm20948_driver.h"
 #include "rm3100_driver.h"
+#include "speed_controller.h"
+#include "safety_monitor.h"
 
 static struct {
     bool    motor_ok;
@@ -102,22 +104,21 @@ void f1_sanity_init(void)
 void f1_sanity_tick(void)
 {
     s_st.count++;
-    int32_t enc_l = encoder_read_count(ENC_LEFT);
-    int32_t enc_r = encoder_read_count(ENC_RIGHT);
 
-    /* F3: m/s → mm/s, m → mm 정수. nano-printf float 미지원 회피. */
-    int v_l_mms = (int)(encoder_read_velocity_mps(ENC_LEFT)  * 1000.0f);
-    int v_r_mms = (int)(encoder_read_velocity_mps(ENC_RIGHT) * 1000.0f);
-    int d_l_mm  = (int)(encoder_read_distance_m(ENC_LEFT)    * 1000.0f);
-    int d_r_mm  = (int)(encoder_read_distance_m(ENC_RIGHT)   * 1000.0f);
+    /* F3: 속도·거리 (mm/s, mm 정수 — nano-printf float 미지원 회피). */
+    int v_l = (int)(encoder_read_velocity_mps(ENC_LEFT)  * 1000.0f);
+    int v_r = (int)(encoder_read_velocity_mps(ENC_RIGHT) * 1000.0f);
+    int d_l = (int)(encoder_read_distance_m(ENC_LEFT)    * 1000.0f);
+    int d_r = (int)(encoder_read_distance_m(ENC_RIGHT)   * 1000.0f);
 
-    uint16_t adc_raw = 0;
-    (void)adc_read_once(&adc_raw);
+    /* F4: PID 상태 (target, duty, stall). */
+    int t_l    = (int)(speed_controller_get_target(MOTOR_LEFT)  * 1000.0f);
+    int t_r    = (int)(speed_controller_get_target(MOTOR_RIGHT) * 1000.0f);
+    int duty_l = (int)(speed_controller_get_duty(MOTOR_LEFT)    * 100.0f);
+    int duty_r = (int)(speed_controller_get_duty(MOTOR_RIGHT)   * 100.0f);
+    const char *fault = safety_monitor_has_fault() ? " [FAULT]" : "";
 
-    printf("[F1 %4lu] enc L=%+ld R=%+ld  v L=%+dmm/s R=%+dmm/s  dist L=%+dmm R=%+dmm  adc=%u\r\n",
+    printf("[F1 %4lu] tgt L=%+d R=%+d  v L=%+d R=%+d (mm/s)  duty L=%+d%% R=%+d%%  dist L=%+d R=%+d (mm)%s\r\n",
            (unsigned long)s_st.count,
-           (long)enc_l, (long)enc_r,
-           v_l_mms, v_r_mms,
-           d_l_mm, d_r_mm,
-           (unsigned)adc_raw);
+           t_l, t_r, v_l, v_r, duty_l, duty_r, d_l, d_r, fault);
 }

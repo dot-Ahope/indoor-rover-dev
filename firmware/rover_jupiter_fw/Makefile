@@ -76,6 +76,9 @@ App/drivers/icm20948_driver.c \
 App/drivers/rm3100_driver.c \
 App/app/f1_sanity_task.c \
 App/app/f2_motor_test.c \
+App/app/speed_controller.c \
+App/app/safety_monitor.c \
+App/app/f4_pid_test.c \
 Middlewares/Third_Party/FreeRTOS/Source/croutine.c \
 Middlewares/Third_Party/FreeRTOS/Source/event_groups.c \
 Middlewares/Third_Party/FreeRTOS/Source/list.c \
