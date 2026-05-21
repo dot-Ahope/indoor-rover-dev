@@ -29,7 +29,8 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include <stdio.h>
+#include <string.h>
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -57,7 +58,7 @@
 void SystemClock_Config(void);
 void MX_FREERTOS_Init(void);
 /* USER CODE BEGIN PFP */
-
+int __io_putchar(int ch);
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -107,7 +108,16 @@ int main(void)
   MX_SPI2_Init();
   MX_UART5_Init();
   /* USER CODE BEGIN 2 */
+  /* F0 부팅 사인: 부저 50ms 비프 + UART5 배너 */
+  HAL_GPIO_WritePin(BUZZER_GPIO_Port, BUZZER_Pin, GPIO_PIN_SET);
+  HAL_Delay(50);
+  HAL_GPIO_WritePin(BUZZER_GPIO_Port, BUZZER_Pin, GPIO_PIN_RESET);
 
+  printf("\r\n");
+  printf("=========================================\r\n");
+  printf(" Rover Jupiter F405 - F0 boot OK\r\n");
+  printf(" SYSCLK=168MHz  build=%s %s\r\n", __DATE__, __TIME__);
+  printf("=========================================\r\n");
   /* USER CODE END 2 */
 
   /* Init scheduler */
@@ -176,7 +186,12 @@ void SystemClock_Config(void)
 }
 
 /* USER CODE BEGIN 4 */
-
+/* printf 리타게팅: stdout → UART5 (디버그 콘솔, 115200) */
+int __io_putchar(int ch)
+{
+  HAL_UART_Transmit(&huart5, (uint8_t *)&ch, 1, HAL_MAX_DELAY);
+  return ch;
+}
 /* USER CODE END 4 */
 
 /**
