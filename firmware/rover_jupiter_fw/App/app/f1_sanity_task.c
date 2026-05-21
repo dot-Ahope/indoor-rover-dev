@@ -116,9 +116,14 @@ void f1_sanity_tick(void)
     int t_r    = (int)(speed_controller_get_target(MOTOR_RIGHT) * 1000.0f);
     int duty_l = (int)(speed_controller_get_duty(MOTOR_LEFT)    * 100.0f);
     int duty_r = (int)(speed_controller_get_duty(MOTOR_RIGHT)   * 100.0f);
-    const char *fault = safety_monitor_has_fault() ? " [FAULT]" : "";
+    const char *flags;
+    if (safety_monitor_has_fault())             flags = " [FAULT]";
+    else if (safety_monitor_cmdvel_timeout())   flags = " [CMDVEL_TO]";
+    else                                        flags = "";
 
-    printf("[F1 %4lu] tgt L=%+d R=%+d  v L=%+d R=%+d (mm/s)  duty L=%+d%% R=%+d%%  dist L=%+d R=%+d (mm)%s\r\n",
+    printf("[F1 %4lu] tgt L=%+d R=%+d  v L=%+d R=%+d (mm/s)  duty L=%+d%% R=%+d%%  dist L=%+d R=%+d (mm)  heap=%u%s\r\n",
            (unsigned long)s_st.count,
-           t_l, t_r, v_l, v_r, duty_l, duty_r, d_l, d_r, fault);
+           t_l, t_r, v_l, v_r, duty_l, duty_r, d_l, d_r,
+           (unsigned)xPortGetFreeHeapSize(),
+           flags);
 }

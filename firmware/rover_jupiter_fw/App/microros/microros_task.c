@@ -37,9 +37,16 @@
 #include <geometry_msgs/msg/twist.h>
 #include <nav_msgs/msg/odometry.h>
 #include <sensor_msgs/msg/imu.h>
+#include <sensor_msgs/msg/battery_state.h>
+#include <diagnostic_msgs/msg/diagnostic_array.h>
 
+#include "FreeRTOS.h"
+#include "task.h"
+
+#include "adc.h"
 #include "rover_platform.h"
 #include "speed_controller.h"
+#include "safety_monitor.h"
 #include "odometry.h"
 #include "imu_processor.h"
 
@@ -72,6 +79,18 @@ static char s_frame_imu_link[]  = "imu_link";
 
 static rcl_publisher_t            s_imu_pub;
 static sensor_msgs__msg__Imu      s_imu_msg;
+
+/* F8 토픽 */
+static rcl_publisher_t                    s_battery_pub;
+static sensor_msgs__msg__BatteryState     s_battery_msg;
+static rcl_publisher_t                    s_status_pub;
+static diagnostic_msgs__msg__DiagnosticArray  s_status_msg;
+static diagnostic_msgs__msg__DiagnosticStatus s_status_array_storage[1];
+static char s_status_name[]   = "rover_jupiter_fw";
+static char s_status_hwid[]   = "F405";
+static char s_status_message[64];
+/* time sync 캐시 */
+static int64_t s_time_offset_ns = 0;
 
 static rclc_support_t   s_support;
 static rcl_allocator_t  s_allocator;
@@ -109,6 +128,8 @@ static void cmdvel_callback(const void *msg_in)
     speed_controller_set_target(MOTOR_LEFT,  v_l);
     speed_controller_set_target(MOTOR_RIGHT, v_r);
     s_cmdvel_count++;
+    /* F8: watchdog 시각 갱신 — 500ms 동안 또 안 오면 motor stop. */
+    safety_monitor_cmdvel_received();
 }
 
 void microros_task_run(void *arg)
@@ -196,6 +217,50 @@ void microros_task_run(void *arg)
     /* orientation 제공 안 함 — covariance[0] = -1 표식 (REP-145). */
     s_imu_msg.orientation_covariance[0] = -1.0;
 
+    /* 7c) /battery publisher (F8). */
+    rc = rclc_publisher_init_default(
+        &s_battery_pub, &s_node,
+        ROSIDL_GET_MSG_TYPE_SUPPORT(sensor_msgs, msg, BatteryState),
+        "battery");
+    if (rc != RCL_RET_OK) { printf("[uROS] battery_pub rc=%ld\r\n", (long)rc); goto idle; }
+    memset(&s_battery_msg, 0, sizeof(s_battery_msg));
+    /* BatteryState: 미지 필드는 NaN 표시 (sensor_msgs convention). */
+    s_battery_msg.current     = NAN;
+    s_battery_msg.charge      = NAN;
+    s_battery_msg.capacity    = NAN;
+    s_battery_msg.design_capacity = NAN;
+    s_battery_msg.percentage  = NAN;
+    s_battery_msg.present     = true;
+
+    /* 7d) /rover/status publisher (F8). */
+    rc = rclc_publisher_init_default(
+        &s_status_pub, &s_node,
+        ROSIDL_GET_MSG_TYPE_SUPPORT(diagnostic_msgs, msg, DiagnosticArray),
+        "rover/status");
+    if (rc != RCL_RET_OK) { printf("[uROS] status_pub rc=%ld\r\n", (long)rc); goto idle; }
+    memset(&s_status_msg, 0, sizeof(s_status_msg));
+    memset(&s_status_array_storage[0], 0, sizeof(s_status_array_storage[0]));
+    s_status_msg.status.data     = s_status_array_storage;
+    s_status_msg.status.size     = 1;
+    s_status_msg.status.capacity = 1;
+    s_status_array_storage[0].name.data     = s_status_name;
+    s_status_array_storage[0].name.size     = sizeof(s_status_name) - 1;
+    s_status_array_storage[0].name.capacity = sizeof(s_status_name);
+    s_status_array_storage[0].hardware_id.data     = s_status_hwid;
+    s_status_array_storage[0].hardware_id.size     = sizeof(s_status_hwid) - 1;
+    s_status_array_storage[0].hardware_id.capacity = sizeof(s_status_hwid);
+    s_status_array_storage[0].message.data     = s_status_message;
+    s_status_array_storage[0].message.capacity = sizeof(s_status_message);
+    /* values[] 배열 비워둠 (size=0) — 향후 KeyValue 추가 시 storage 확장 */
+
+    /* time sync — agent 와 boot offset 계산. 실패해도 진행. */
+    if (rmw_uros_sync_session(1000) == RMW_RET_OK) {
+        s_time_offset_ns = rmw_uros_epoch_nanos() - (int64_t)HAL_GetTick() * 1000000LL;
+        printf("[uROS] time sync OK\r\n");
+    } else {
+        printf("[uROS] time sync FAIL — header.stamp 는 boot time 기준\r\n");
+    }
+
     /* 8) Executor (subscriber 1개). */
     rc = rclc_executor_init(&s_executor, &s_support.context, 1, &s_allocator);
     if (rc != RCL_RET_OK) { printf("[uROS] executor_init rc=%ld\r\n", (long)rc); goto idle; }
@@ -204,14 +269,17 @@ void microros_task_run(void *arg)
         cmdvel_callback, ON_NEW_DATA);
     if (rc != RCL_RET_OK) { printf("[uROS] executor_add rc=%ld\r\n", (long)rc); goto idle; }
 
-    printf("[uROS] ready — pub /rover/f5b_heartbeat /wheel_odom /imu/data_raw, sub /cmd_vel\r\n");
+    printf("[uROS] ready — pub heartbeat/odom/imu/battery/status, sub cmd_vel\r\n");
 
     /* 9) Spin loop — vTaskDelayUntil 로 20ms cycle 시도. 실측 ~34ms 까지 늘어남
      *    (XRCE-DDS framing 이 720byte odom msg 를 segment 로 쪼개 다중 transport_write).
      *    그래도 polling 대비 ×2 개선 → /wheel_odom ~29 Hz.
      *    Heartbeat 는 cycle 가변에 안정적인 시간 기반 (HAL_GetTick) 으로 1Hz. */
     s_heartbeat_msg.data = 0;
-    uint32_t last_hb_ms = HAL_GetTick();
+    const uint32_t now0 = HAL_GetTick();
+    uint32_t last_hb_ms      = now0;
+    uint32_t last_battery_ms = now0;
+    uint32_t last_status_ms  = now0;
     rcl_ret_t pr;
     TickType_t next_wake = xTaskGetTickCount();
     const TickType_t period_ticks = pdMS_TO_TICKS(20);
@@ -261,6 +329,47 @@ void microros_task_run(void *arg)
             s_heartbeat_msg.data++;
             last_hb_ms = now_ms;
         }
+
+        /* F8: /battery 1Hz — ADC raw 만 우선 (voltage divider ratio 미정).
+         * voltage 필드에 raw 값 그대로 (사용자가 실측 V 와 비교해 비율 산출 가능). */
+        if (now_ms - last_battery_ms >= 1000u) {
+            uint16_t adc_raw = 0;
+            if (HAL_ADC_Start(&hadc1) == HAL_OK &&
+                HAL_ADC_PollForConversion(&hadc1, 5) == HAL_OK) {
+                adc_raw = (uint16_t)HAL_ADC_GetValue(&hadc1);
+            }
+            HAL_ADC_Stop(&hadc1);
+            /* TODO(F8.5): voltage divider ratio 확정 후 진짜 V 변환.
+             * 잠정: raw [0..4095] 을 그대로 voltage 필드에 (사용자가 raw 모니터링). */
+            s_battery_msg.voltage = (float)adc_raw;
+            s_battery_msg.header.stamp.sec     = (int32_t)(now_ms / 1000u);
+            s_battery_msg.header.stamp.nanosec = (uint32_t)((now_ms % 1000u) * 1000000u);
+            pr = rcl_publish(&s_battery_pub, &s_battery_msg, NULL); (void)pr;
+            last_battery_ms = now_ms;
+        }
+
+        /* F8: /rover/status 5Hz — fault flag 통합. */
+        if (now_ms - last_status_ms >= 200u) {
+            const bool stall_fault = safety_monitor_has_fault();
+            const bool cmdvel_to   = safety_monitor_cmdvel_timeout();
+            uint8_t lvl;
+            const char *msg;
+            if (stall_fault) { lvl = 2; msg = "STALL fault — reset required"; }
+            else if (cmdvel_to) { lvl = 1; msg = "cmd_vel timeout — motors stopped"; }
+            else { lvl = 0; msg = "OK"; }
+            s_status_array_storage[0].level = lvl;
+            const size_t n = strlen(msg);
+            const size_t cp = sizeof(s_status_message) - 1;
+            const size_t cn = (n < cp) ? n : cp;
+            memcpy(s_status_message, msg, cn);
+            s_status_message[cn] = '\0';
+            s_status_array_storage[0].message.size = cn;
+            s_status_msg.header.stamp.sec     = (int32_t)(now_ms / 1000u);
+            s_status_msg.header.stamp.nanosec = (uint32_t)((now_ms % 1000u) * 1000000u);
+            pr = rcl_publish(&s_status_pub, &s_status_msg, NULL); (void)pr;
+            last_status_ms = now_ms;
+        }
+
         vTaskDelayUntil(&next_wake, period_ticks);   /* 20ms 목표 (실측 ~34ms — XRCE framing 한계) */
     }
 
