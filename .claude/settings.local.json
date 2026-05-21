@@ -6,7 +6,15 @@
       "PowerShell($cli = Get-Command STM32_Programmer_CLI -ErrorAction SilentlyContinue; if \\($cli\\) { Write-Output \"FOUND CLI: $\\($cli.Source\\)\" } else { $candidates = @\\(\"C:\\\\ST\\\\STM32CubeCLT_1.21.0\\\\STM32CubeProgrammer\\\\bin\\\\STM32_Programmer_CLI.exe\", \"C:\\\\Program Files\\\\STMicroelectronics\\\\STM32Cube\\\\STM32CubeProgrammer\\\\bin\\\\STM32_Programmer_CLI.exe\"\\); foreach \\($p in $candidates\\) { if \\(Test-Path $p\\) { Write-Output \"FOUND: $p\" } } }; $stflash = Get-Command st-flash -ErrorAction SilentlyContinue; if \\($stflash\\) { Write-Output \"FOUND st-flash: $\\($stflash.Source\\)\" })",
       "PowerShell(& \"C:\\\\ST\\\\STM32CubeCLT_1.21.0\\\\STM32CubeProgrammer\\\\bin\\\\STM32_Programmer_CLI.exe\" --list 2>&1)",
       "PowerShell(& \"C:\\\\ST\\\\STM32CubeCLT_1.21.0\\\\STM32CubeProgrammer\\\\bin\\\\STM32_Programmer_CLI.exe\" -c port=SWD reset=HWrst -w firmware\\\\rover_jupiter_fw\\\\build\\\\rover_jupiter_fw.elf -v -rst 2>&1)",
-      "PowerShell($env:Path = \"C:\\\\ST\\\\STM32CubeCLT_1.21.0\\\\GNU-tools-for-STM32\\\\bin;\" + $env:Path; & \"c:\\\\Program Files \\(x86\\)\\\\GnuWin32\\\\bin\\\\make.exe\" -C firmware\\\\rover_jupiter_fw -j8 2>&1 | Select-String -Pattern \"error|warning|undefined|Error|^   text|\\\\.elf$|\\\\.hex$|\\\\.bin$\" | Select-Object -Last 30)"
+      "PowerShell($env:Path = \"C:\\\\ST\\\\STM32CubeCLT_1.21.0\\\\GNU-tools-for-STM32\\\\bin;\" + $env:Path; & \"c:\\\\Program Files \\(x86\\)\\\\GnuWin32\\\\bin\\\\make.exe\" -C firmware\\\\rover_jupiter_fw -j8 2>&1 | Select-String -Pattern \"error|warning|undefined|Error|^   text|\\\\.elf$|\\\\.hex$|\\\\.bin$\" | Select-Object -Last 30)",
+      "Bash(arm-none-eabi-gcc --version)",
+      "Bash(rm -rf build)",
+      "Bash(make -j)",
+      "Bash(cd \"C:/Project/Rover/Rover/firmware/rover_jupiter_fw\" && tail -30 /c/Users/user/.claude/projects/c--Project-Rover-Rover/021c2e6b-1d83-4130-a133-416e566a5fcf/tool-results/bwlat0upr.txt)",
+      "Read(//c/Users/user/.claude/projects/c--Project-Rover-Rover/021c2e6b-1d83-4130-a133-416e566a5fcf/tool-results/**)",
+      "Bash(make)",
+      "Bash(ls /c/Users/user/.claude/projects/c--Project-Rover-Rover/memory/ 2>&1)",
+      "Read(//c/Users/user/.claude/projects/c--Project-Rover-Rover/**)"
     ]
   }
 }
