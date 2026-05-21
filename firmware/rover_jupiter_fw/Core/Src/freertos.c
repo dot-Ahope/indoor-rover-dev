@@ -26,6 +26,8 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include <stdio.h>
+#include "f1_sanity_task.h"
+#include "f2_motor_test.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -45,10 +47,17 @@
 
 /* Private variables ---------------------------------------------------------*/
 /* USER CODE BEGIN Variables */
-/* F0 검증: 두 번째 태스크 - heartbeat 메시지를 UART5로 발행 */
-osThreadId_t heartbeatTaskHandle;
-const osThreadAttr_t heartbeatTask_attributes = {
-  .name = "heartbeatTask",
+/* F1 검증: 페리페럴 sanity 태스크. heap·tick 정보도 함께 dump. */
+osThreadId_t f1SanityTaskHandle;
+const osThreadAttr_t f1SanityTask_attributes = {
+  .name = "f1Sanity",
+  .stack_size = 512 * 4,   /* SPI/I2C HAL + printf 여유 */
+  .priority = (osPriority_t) osPriorityBelowNormal,
+};
+/* F2 검증: 모터 개방루프 PWM 시퀀스 (휠 받침대 전제). */
+osThreadId_t f2MotorTaskHandle;
+const osThreadAttr_t f2MotorTask_attributes = {
+  .name = "f2Motor",
   .stack_size = 256 * 4,
   .priority = (osPriority_t) osPriorityBelowNormal,
 };
@@ -63,7 +72,7 @@ const osThreadAttr_t defaultTask_attributes = {
 
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN FunctionPrototypes */
-void StartHeartbeatTask(void *argument);
+void StartF1SanityTask(void *argument);
 /* USER CODE END FunctionPrototypes */
 
 void StartDefaultTask(void *argument);
@@ -113,7 +122,8 @@ void MX_FREERTOS_Init(void) {
   defaultTaskHandle = osThreadNew(StartDefaultTask, NULL, &defaultTask_attributes);
 
   /* USER CODE BEGIN RTOS_THREADS */
-  heartbeatTaskHandle = osThreadNew(StartHeartbeatTask, NULL, &heartbeatTask_attributes);
+  f1SanityTaskHandle = osThreadNew(StartF1SanityTask, NULL, &f1SanityTask_attributes);
+  f2MotorTaskHandle  = osThreadNew(f2_motor_test_run, NULL, &f2MotorTask_attributes);
   /* USER CODE END RTOS_THREADS */
 
   /* USER CODE BEGIN RTOS_EVENTS */
@@ -145,21 +155,18 @@ void StartDefaultTask(void *argument)
 /* Private application code --------------------------------------------------*/
 /* USER CODE BEGIN Application */
 /**
- * @brief F0 검증용 두 번째 태스크.
- *        1초마다 UART5(디버그 콘솔)로 카운터·heap·tick 정보 출력.
- *        defaultTask(LED)와 동시에 동작 → FreeRTOS 스케줄링 검증.
+ * @brief F1 검증 태스크.
+ *        시작 시 모든 드라이버 init 호출 → 결과 dump.
+ *        이후 1Hz 로 엔코더 카운트·ADC·IMU WHO_AM_I 라이브 출력.
  */
-void StartHeartbeatTask(void *argument)
+void StartF1SanityTask(void *argument)
 {
-  uint32_t count = 0;
+  /* 스케줄러가 충분히 안정된 후 시작 */
+  osDelay(100);
+  f1_sanity_init();
   for(;;)
   {
-    printf("[hb %lu] tick=%lu  freeHeap=%u  minEverHeap=%u\r\n",
-           (unsigned long)count,
-           (unsigned long)osKernelGetTickCount(),
-           (unsigned)xPortGetFreeHeapSize(),
-           (unsigned)xPortGetMinimumEverFreeHeapSize());
-    count++;
+    f1_sanity_tick();
     osDelay(1000);
   }
 }
