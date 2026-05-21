@@ -170,7 +170,7 @@
       <right_joint>right_track_joint</right_joint>
 
       <wheel_separation>0.190</wheel_separation>
-      <wheel_radius>0.0275</wheel_radius>
+      <wheel_radius>0.025</wheel_radius>
 
       <max_wheel_torque>2.0</max_wheel_torque>
       <max_wheel_acceleration>1.0</max_wheel_acceleration>

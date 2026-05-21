@@ -30,13 +30,33 @@ bool encoder_init(void);
 /**
  * @brief 현재 카운트 (signed). 32-bit TIM2/TIM5 의 CNT 그대로 부호 해석.
  *
- * 카운트당 거리 = 0.131 mm (Ø55 mm, 1320 CPR · ×4 = 5280 cnt/rev / 둘레 0.1728 m).
+ * 카운트당 거리 = 0.119 mm (Ø50 mm, 1320 CPR / 둘레 0.1571 m).
  * 자세한 계산은 FIRMWARE_DEV_PLAN §2.2.
  */
 int32_t encoder_read_count(EncoderChannel ch);
 
 /** 카운트 0으로 리셋 (oдometry 초기화용). */
 void encoder_reset(EncoderChannel ch);
+
+/**
+ * @brief 주기적 샘플 함수. ΔCNT/Δt 로 휠 선속도 산출 후 EMA 필터 갱신.
+ *        100 Hz 호출 권장 (driver 내부 상수 V_SAMPLE_DT_S 와 일치 필요).
+ *        FreeRTOS 일반 태스크에서 호출 — HAL API 호출 가능.
+ */
+void encoder_update_velocity(void);
+
+/**
+ * @brief 마지막 update 시점 기준 EMA 필터된 휠 선속도 (m/s).
+ *        +값 = 전진 방향. encoder_update_velocity() 호출 빈도가 정확도 결정.
+ */
+float encoder_read_velocity_mps(EncoderChannel ch);
+
+/**
+ * @brief 현재 카운트 기준 누적 직선거리 (m).
+ *        encoder_reset() 시점부터의 누적. +값 = 전진.
+ *        검증용: 휠을 손으로 일정 거리 굴려보고 자/줄자와 비교.
+ */
+float encoder_read_distance_m(EncoderChannel ch);
 
 #ifdef __cplusplus
 }
