@@ -105,16 +105,19 @@ void f1_sanity_tick(void)
     int32_t enc_l = encoder_read_count(ENC_LEFT);
     int32_t enc_r = encoder_read_count(ENC_RIGHT);
 
+    /* F3: m/s → mm/s, m → mm 정수. nano-printf float 미지원 회피. */
+    int v_l_mms = (int)(encoder_read_velocity_mps(ENC_LEFT)  * 1000.0f);
+    int v_r_mms = (int)(encoder_read_velocity_mps(ENC_RIGHT) * 1000.0f);
+    int d_l_mm  = (int)(encoder_read_distance_m(ENC_LEFT)    * 1000.0f);
+    int d_r_mm  = (int)(encoder_read_distance_m(ENC_RIGHT)   * 1000.0f);
+
     uint16_t adc_raw = 0;
     (void)adc_read_once(&adc_raw);
 
-    uint8_t whoami = 0;
-    (void)imu_read_whoami(&whoami);
-
-    printf("[F1 %4lu] enc L=%+ld R=%+ld  adc=%u  imu_whoami=0x%02X  freeHeap=%u\r\n",
+    printf("[F1 %4lu] enc L=%+ld R=%+ld  v L=%+dmm/s R=%+dmm/s  dist L=%+dmm R=%+dmm  adc=%u\r\n",
            (unsigned long)s_st.count,
            (long)enc_l, (long)enc_r,
-           (unsigned)adc_raw,
-           whoami,
-           (unsigned)xPortGetFreeHeapSize());
+           v_l_mms, v_r_mms,
+           d_l_mm, d_r_mm,
+           (unsigned)adc_raw);
 }
