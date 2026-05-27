@@ -39,6 +39,7 @@
 #include <sensor_msgs/msg/imu.h>
 #include <sensor_msgs/msg/battery_state.h>
 #include <diagnostic_msgs/msg/diagnostic_array.h>
+#include <builtin_interfaces/msg/time.h>
 
 #include "FreeRTOS.h"
 #include "task.h"
@@ -89,8 +90,18 @@ static diagnostic_msgs__msg__DiagnosticStatus s_status_array_storage[1];
 static char s_status_name[]   = "rover_jupiter_fw";
 static char s_status_hwid[]   = "F405";
 static char s_status_message[64];
-/* time sync 캐시 */
+/* time sync 캐시 — boot 시 1회 계산 (rmw_uros_sync_session).
+ * sync 실패 시 0 유지 → fill_stamp() 가 기존 boot-time stamp 그대로 출력. */
 static int64_t s_time_offset_ns = 0;
+
+/* header.stamp 채움: agent 와 동기 OK 면 epoch ns, 실패면 boot ms.
+ * ts_ms 는 HAL_GetTick() 기반 boot millisec (odometry / imu / now_ms 공통). */
+static inline void fill_stamp(builtin_interfaces__msg__Time *t, uint32_t ts_ms)
+{
+    const int64_t ns = (int64_t)ts_ms * 1000000LL + s_time_offset_ns;
+    t->sec     = (int32_t)(ns / 1000000000LL);
+    t->nanosec = (uint32_t)(ns % 1000000000LL);
+}
 
 static rclc_support_t   s_support;
 static rcl_allocator_t  s_allocator;
@@ -289,8 +300,7 @@ void microros_task_run(void *arg)
         /* Odometry 스냅샷 → msg 변환 → 발행. */
         OdomState o;
         odometry_get(&o);
-        s_odom_msg.header.stamp.sec     = (int32_t)(o.ts_ms / 1000u);
-        s_odom_msg.header.stamp.nanosec = (uint32_t)((o.ts_ms % 1000u) * 1000000u);
+        fill_stamp(&s_odom_msg.header.stamp, o.ts_ms);
         s_odom_msg.pose.pose.position.x = (double)o.x;
         s_odom_msg.pose.pose.position.y = (double)o.y;
         s_odom_msg.pose.pose.position.z = 0.0;
@@ -312,8 +322,7 @@ void microros_task_run(void *arg)
         ImuSi imu;
         imu_processor_get(&imu);
         if (imu.valid) {
-            s_imu_msg.header.stamp.sec     = (int32_t)(imu.ts_ms / 1000u);
-            s_imu_msg.header.stamp.nanosec = (uint32_t)((imu.ts_ms % 1000u) * 1000000u);
+            fill_stamp(&s_imu_msg.header.stamp, imu.ts_ms);
             s_imu_msg.linear_acceleration.x = (double)imu.ax;
             s_imu_msg.linear_acceleration.y = (double)imu.ay;
             s_imu_msg.linear_acceleration.z = (double)imu.az;
@@ -342,8 +351,7 @@ void microros_task_run(void *arg)
             /* TODO(F8.5): voltage divider ratio 확정 후 진짜 V 변환.
              * 잠정: raw [0..4095] 을 그대로 voltage 필드에 (사용자가 raw 모니터링). */
             s_battery_msg.voltage = (float)adc_raw;
-            s_battery_msg.header.stamp.sec     = (int32_t)(now_ms / 1000u);
-            s_battery_msg.header.stamp.nanosec = (uint32_t)((now_ms % 1000u) * 1000000u);
+            fill_stamp(&s_battery_msg.header.stamp, now_ms);
             pr = rcl_publish(&s_battery_pub, &s_battery_msg, NULL); (void)pr;
             last_battery_ms = now_ms;
         }
@@ -364,8 +372,7 @@ void microros_task_run(void *arg)
             memcpy(s_status_message, msg, cn);
             s_status_message[cn] = '\0';
             s_status_array_storage[0].message.size = cn;
-            s_status_msg.header.stamp.sec     = (int32_t)(now_ms / 1000u);
-            s_status_msg.header.stamp.nanosec = (uint32_t)((now_ms % 1000u) * 1000000u);
+            fill_stamp(&s_status_msg.header.stamp, now_ms);
             pr = rcl_publish(&s_status_pub, &s_status_msg, NULL); (void)pr;
             last_status_ms = now_ms;
         }
