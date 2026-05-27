@@ -5,6 +5,7 @@
 #include "speed_controller.h"
 
 #include <math.h>
+#include <stdbool.h>
 #include "i_encoder.h"
 
 #define CTRL_HZ        100u
@@ -14,6 +15,11 @@
 #define I_MAX          0.30f
 #define OUT_MAX        0.80f      /* driver 측 동일 캡 */
 #define TARGET_THRESH  0.01f      /* m/s — 이하면 정지 명령으로 간주 */
+
+/* 정지 명령 시 target_mps 를 0 쪽으로 감속시키는 최대 가속도.
+ * 예: 0.2 m/s 에서 SPACE → 100ms 만에 0 도달. PID 가 ramp 추종하며 능동 제동.
+ * 너무 크면 coast 와 동일해지고 (감속 한 tick 안에 끝남), 너무 작으면 stop 지연. */
+#define STOP_RAMP_MPS2  4.0f
 
 /* Feedforward dead-zone — target 방향으로 항상 더함 (정지마찰 base offset).
  * PID 는 그 위에서 fine-tuning. F4 1차 실측 결과 "강제 jump" 방식에서 변경:
@@ -28,6 +34,7 @@ typedef struct {
     float kp, ki, kd;
     /* state */
     float target_mps;
+    bool  stop_ramp;      /* true 면 update() 가 target_mps 를 0 쪽으로 감속 */
     float integral;
     float prev_err;
     float last_duty;
@@ -49,6 +56,7 @@ void speed_controller_init(void)
 {
     for (int i = 0; i < MOTOR_COUNT; i++) {
         s_pid[i].target_mps = 0.0f;
+        s_pid[i].stop_ramp  = false;
         s_pid[i].integral   = 0.0f;
         s_pid[i].prev_err   = 0.0f;
         s_pid[i].last_duty  = 0.0f;
@@ -57,17 +65,30 @@ void speed_controller_init(void)
 
 void speed_controller_reset(void)
 {
+    /* fault / watchdog 진입에서 호출 — target 과 ramp 상태도 청소해야
+     * 후속 PID tick 이 옛 target 으로 모터를 다시 깨우지 않음.
+     * motor_driver_stop_all() 와 짝지어 호출 가정. */
     for (int i = 0; i < MOTOR_COUNT; i++) {
-        s_pid[i].integral  = 0.0f;
-        s_pid[i].prev_err  = 0.0f;
-        s_pid[i].last_duty = 0.0f;
+        s_pid[i].target_mps = 0.0f;
+        s_pid[i].stop_ramp  = false;
+        s_pid[i].integral   = 0.0f;
+        s_pid[i].prev_err   = 0.0f;
+        s_pid[i].last_duty  = 0.0f;
     }
 }
 
 void speed_controller_set_target(MotorChannel ch, float target_mps)
 {
     if (ch >= MOTOR_COUNT) return;
-    s_pid[ch].target_mps = target_mps;
+    /* 정지 명령: target_mps 즉시 0 으로 두지 않고 ramp 모드 진입.
+     * PID 가 STOP_RAMP_MPS2 감속을 추종하며 능동 제동, ramp 종료 후 coast. */
+    if (fabsf(target_mps) < TARGET_THRESH) {
+        s_pid[ch].stop_ramp = true;
+        /* target_mps 는 현재값 유지 — update() 가 한 tick 단위로 감속 */
+    } else {
+        s_pid[ch].target_mps = target_mps;
+        s_pid[ch].stop_ramp  = false;
+    }
 }
 
 float speed_controller_get_target(MotorChannel ch)
@@ -86,6 +107,18 @@ void speed_controller_update(void)
 {
     for (int i = 0; i < MOTOR_COUNT; i++) {
         pid_t *p = &s_pid[i];
+
+        /* 정지 ramp: target_mps 를 0 쪽으로 한 tick 분만큼 끌어내림.
+         * PID 가 이 ramp 를 추종해서 능동 제동 (역 duty 인가). */
+        if (p->stop_ramp) {
+            const float step = STOP_RAMP_MPS2 * CTRL_DT_S;
+            if (p->target_mps >  step)        p->target_mps -= step;
+            else if (p->target_mps < -step)   p->target_mps += step;
+            else {
+                p->target_mps = 0.0f;
+                p->stop_ramp  = false;        /* 도달 — coast 단계로 인계 */
+            }
+        }
 
         const float actual = encoder_read_velocity_mps((EncoderChannel)i);
         const float err    = p->target_mps - actual;
