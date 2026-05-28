@@ -327,6 +327,7 @@ void microros_task_run(void *arg)
     uint32_t last_hb_ms      = now0;
     uint32_t last_battery_ms = now0;
     uint32_t last_status_ms  = now0;
+    uint32_t last_sync_ms    = now0;   /* F8.5 — 주기 time resync */
     rcl_ret_t pr;
     TickType_t next_wake = xTaskGetTickCount();
     const TickType_t period_ticks = pdMS_TO_TICKS(20);
@@ -428,6 +429,17 @@ void microros_task_run(void *arg)
             fill_stamp(&s_status_msg.header.stamp, now_ms);
             pr = rcl_publish(&s_status_pub, &s_status_msg, NULL); (void)pr;
             last_status_ms = now_ms;
+        }
+
+        /* F8.5 — time resync 60s 주기. clock drift 보정 + agent 재연결 복구.
+         * timeout 100ms 면 worst case 5 spin cycle 누락 (50Hz 운용에서 0.17%). */
+        if (now_ms - last_sync_ms >= 60000u) {
+            if (rmw_uros_sync_session(100) == RMW_RET_OK) {
+                s_time_offset_ns = rmw_uros_epoch_nanos() - (int64_t)HAL_GetTick() * 1000000LL;
+                /* 성공만 로그 — 실패는 흔할 수 있고 노이즈. */
+                printf("[uROS] time resync OK\r\n");
+            }
+            last_sync_ms = now_ms;
         }
 
         vTaskDelayUntil(&next_wake, period_ticks);   /* 20ms 목표 (실측 ~34ms — XRCE framing 한계) */
