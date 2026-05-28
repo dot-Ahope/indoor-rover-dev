@@ -49,8 +49,8 @@
 
 ## 향후 작업
 
-- **F8.5**: voltage divider ratio 측정, IMU gyro.z auto-calibration, header.stamp wall time 변환
-- **Jetson 측**: `rover_description` (URDF), `rover_bringup` (launch), `robot_localization` EKF (odom + IMU fusion)
+- ~~**F8.5**: voltage divider ratio 측정, IMU gyro.z auto-calibration, header.stamp wall time 변환~~ → **완료 (2026-05-28)**. 메모리 `board_voltage_divider`, `icm20948_gyro_z_bias`, `f405_header_stamp_fix` 참조.
+- **Jetson Phase 2**: `rover_description` (URDF), `rover_bringup` (launch + micro_ros_agent), `robot_localization` EKF (wheel_odom + IMU fusion)
 - **양산 이식**: G4/H7 + 외장 모터 드라이버 + 산업급 IMU (App Layer 재사용, Driver Layer 만 교체)
 
 ---
