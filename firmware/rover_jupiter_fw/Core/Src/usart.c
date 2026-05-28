@@ -82,9 +82,11 @@ void MX_USART1_UART_Init(void)
     Error_Handler();
   }
   /* USER CODE BEGIN USART1_Init 2 */
-  /* CubeMX .ioc 는 115200 으로 생성됐으나 micro-ROS 대역폭(§F5 §5) 위해 921600 필수.
-   * .ioc 수정 후 재생성 대신 여기서 override (재생성 안전). */
-  huart1.Init.BaudRate = 921600;
+  /* micro-ROS 발행률 개선용 baudrate override.
+   *   921600 → 2000000 (2 Mbps) — CH340N datasheet 최대치, 정격 내.
+   * CubeMX .ioc 도 921600 으로 돼 있으나 여기서 override (재생성 안전망).
+   * **Jetson 측 micro_ros_agent 도 -b 2000000 으로 맞춰야 함**. */
+  huart1.Init.BaudRate = 2000000;
   if (HAL_UART_Init(&huart1) != HAL_OK)
   {
     Error_Handler();
