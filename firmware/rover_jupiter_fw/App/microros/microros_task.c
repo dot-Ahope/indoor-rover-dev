@@ -66,6 +66,14 @@ extern size_t cubemx_transport_read(struct uxrCustomTransport *transport, uint8_
 #define HALF_WHEEL_BASE  (WHEEL_BASE_M * 0.5f)   /* = 0.095 m */
 #define V_MAX_MPS        MAX_LINEAR_SPEED_MPS    /* 0.654 — 명령 saturation */
 
+/* F8.5 — 배터리 전압 변환. 실측 캘리브레이션 (2026-05-28):
+ *   V_battery = 11.9 V, ADC raw = 3645 → divider ratio = 11.9 / (3645 × 3.3/4095) = 4.05
+ *   회로도 의도값은 4:1 (R1≈30k, R2≈10k) — 저항 tol·VDDA 편차로 4.05 측정.
+ *   양산기 PCB 교체 시 동일 절차로 재캘리브레이션 필요. */
+#define VIN_DIVIDER_RATIO   4.05f
+#define ADC_REF_VOLTS       3.3f
+#define ADC_LSB_TO_VOLTS    (ADC_REF_VOLTS * VIN_DIVIDER_RATIO / 4095.0f)
+
 static rcl_publisher_t       s_heartbeat_pub;
 static std_msgs__msg__Int32  s_heartbeat_msg;
 
@@ -394,9 +402,8 @@ void microros_task_run(void *arg)
                 adc_raw = (uint16_t)HAL_ADC_GetValue(&hadc1);
             }
             HAL_ADC_Stop(&hadc1);
-            /* TODO(F8.5): voltage divider ratio 확정 후 진짜 V 변환.
-             * 잠정: raw [0..4095] 을 그대로 voltage 필드에 (사용자가 raw 모니터링). */
-            s_battery_msg.voltage = (float)adc_raw;
+            /* F8.5 적용 — divider ratio 4.05 (실측). 단위: V (sensor_msgs/BatteryState). */
+            s_battery_msg.voltage = (float)adc_raw * ADC_LSB_TO_VOLTS;
             fill_stamp(&s_battery_msg.header.stamp, now_ms);
             pr = rcl_publish(&s_battery_pub, &s_battery_msg, NULL); (void)pr;
             last_battery_ms = now_ms;
