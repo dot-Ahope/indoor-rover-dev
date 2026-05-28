@@ -58,7 +58,8 @@
       "PowerShell(wsl -d Ubuntu -u root -- bash -c 'cp /mnt/c/Users/user/AppData/Local/Temp/verify_f8.sh /tmp/ && sshpass -p yahboom scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null /tmp/verify_f8.sh jetson@192.168.0.104:/tmp/ && sshpass -p yahboom ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null jetson@192.168.0.104 bash /tmp/verify_f8.sh' 2>&1)",
       "PowerShell(Start-Sleep -Seconds 1; $port = New-Object System.IO.Ports.SerialPort COM9, 115200, None, 8, One; $port.NewLine = \"`r`n\"; $port.ReadTimeout = 1500; try { $port.Open\\(\\); Write-Output \"=== COM9 OPEN — 30s ===\"; $start = Get-Date; while \\(\\(Get-Date\\) - $start -lt [TimeSpan]::FromSeconds\\(30\\)\\) { try { $line = $port.ReadLine\\(\\); Write-Output $line } catch { Start-Sleep -Milliseconds 100 } }; $port.Close\\(\\) } catch { Write-Output \"ERROR: $\\($_.Exception.Message\\)\" })",
       "Bash(make --version)",
-      "Bash(make -C firmware/rover_jupiter_fw -j8)"
+      "Bash(make -C firmware/rover_jupiter_fw -j8)",
+      "PowerShell(\\(Get-Command arm-none-eabi-gcc -ErrorAction SilentlyContinue\\).Source; \\(Get-Command make -ErrorAction SilentlyContinue\\).Source)"
     ]
   }
 }

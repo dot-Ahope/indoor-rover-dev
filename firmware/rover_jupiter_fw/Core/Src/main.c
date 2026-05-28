@@ -31,6 +31,7 @@
 /* USER CODE BEGIN Includes */
 #include <stdio.h>
 #include <string.h>
+#include "imu_processor.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -118,6 +119,12 @@ int main(void)
   printf(" Rover Jupiter F405 - F0 boot OK\r\n");
   printf(" SYSCLK=168MHz  build=%s %s\r\n", __DATE__, __TIME__);
   printf("=========================================\r\n");
+
+  /* ICM-20948 + AK09916 HW init — **scheduler 시작 전** bare-metal 단계에서
+   * 수행. task race 차단 + cold-boot recovery (CS strobe, MISO pull-up,
+   * dummy read) 가 안정적으로 동작. sandbox (c:\Workspace\Code\sandbox\icm20948)
+   * 와 동일한 시점·순서. */
+  imu_processor_init();
   /* USER CODE END 2 */
 
   /* Init scheduler */

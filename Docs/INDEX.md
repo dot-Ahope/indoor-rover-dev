@@ -19,6 +19,7 @@
 | **F5c** | [F5c_VERIFICATION.md](F5c_VERIFICATION.md) | `/cmd_vel` subscriber + 차동구동 역기구학 |
 | **F6** | [F6_VERIFICATION.md](F6_VERIFICATION.md) | 휠 오도메트리 + `/wheel_odom` 발행 + TX IRQ 최적화 |
 | **F7** | [F7_VERIFICATION.md](F7_VERIFICATION.md) | ICM-20948 본 init + `/imu/data_raw` 발행 |
+| **F7.5** | [F7.5_VERIFICATION.md](F7.5_VERIFICATION.md) | AK09916 (ICM 내장) 자기계 + `/imu/mag` 발행 |
 | **F8** | [F8_VERIFICATION.md](F8_VERIFICATION.md) | cmd_vel watchdog + `/battery` + `/rover/status` + time sync |
 
 ## 기타 자료
@@ -39,15 +40,13 @@
 | 구독 | `/cmd_vel` | `geometry_msgs/Twist` | event |
 | 발행 | `/wheel_odom` | `nav_msgs/Odometry` | ~29 Hz |
 | 발행 | `/imu/data_raw` | `sensor_msgs/Imu` | ~16 Hz |
+| 발행 | `/imu/mag` | `sensor_msgs/MagneticField` | ~25 Hz (F7.5) |
 | 발행 | `/battery` | `sensor_msgs/BatteryState` | 1 Hz |
 | 발행 | `/rover/status` | `diagnostic_msgs/DiagnosticArray` | 5 Hz |
 | 발행 | `/rover/f5b_heartbeat` | `std_msgs/Int32` | 1 Hz |
 
-> 미구현: `/imu/mag` (AK09916 — ICM-20948 AUX I2C 마스터 모드 필요, F7.5 예정)
-
 ## 향후 작업
 
-- **F7.5**: AK09916 자기계 → `/imu/mag` 발행
 - **F8.5**: voltage divider ratio 측정, IMU gyro.z auto-calibration, header.stamp wall time 변환
 - **Jetson 측**: `rover_description` (URDF), `rover_bringup` (launch), `robot_localization` EKF (odom + IMU fusion)
 - **양산 이식**: G4/H7 + 외장 모터 드라이버 + 산업급 IMU (App Layer 재사용, Driver Layer 만 교체)

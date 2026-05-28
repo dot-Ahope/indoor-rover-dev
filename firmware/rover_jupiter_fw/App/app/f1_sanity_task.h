@@ -10,11 +10,6 @@
 #ifndef APP_APP_F1_SANITY_TASK_H
 #define APP_APP_F1_SANITY_TASK_H
 
-/* 보드 옵션 — RM3100 자기계 미실장 시 0. ICM-20948 내장 AK09916 으로 대체. */
-#ifndef F1_RM3100_PRESENT
-#define F1_RM3100_PRESENT 0
-#endif
-
 #ifdef __cplusplus
 extern "C" {
 #endif

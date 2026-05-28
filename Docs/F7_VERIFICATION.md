@@ -6,7 +6,7 @@
 | 단계 | F7 (펌웨어 개발 10단계) |
 | 목적 | ICM-20948 본 init (accel + gyro), `sensor_msgs/Imu` 발행 |
 | 전제 | F6 완료 (`/wheel_odom` 정상 발행) |
-| **미포함** | AK09916 자기계 (`/imu/mag`) — ICM AUX I2C 마스터 설정 복잡, F7.5 또는 F8 |
+| **미포함** | AK09916 자기계 (`/imu/mag`) — F7.5 에서 구현 ([F7.5_VERIFICATION.md](F7.5_VERIFICATION.md)) |
 
 ---
 
@@ -110,7 +110,7 @@ F7 검증 결과로 매핑 결정:
 
 ## 4. 알려진 한계 / 다음 단계
 
-- **자기계 미포함**: AK09916 (ICM-20948 내장) AUX I2C 마스터 모드 설정 필요. F7.5 또는 F8.
+- **자기계 미포함**: AK09916 (ICM-20948 내장) — **F7.5 에서 구현** ([F7.5_VERIFICATION.md](F7.5_VERIFICATION.md)).
 - **Calibration 없음**: bias·scale factor 보정 안 함. 정지 시 gyro bias 출력 가능 (dev 단계).
 - **Orientation 미제공**: covariance[0]=-1 표식. Fusion (Madgwick/EKF) 은 Jetson 측 또는 양산기 작업.
 - **Covariance 0**: ROS EKF 노드가 사용 시 작은 값 (예: 1e-3 등) 설정 필요. F8.
@@ -128,7 +128,7 @@ F7 검증 결과로 매핑 결정:
 - [ ] 회전 시 gyro 응답
 - [ ] F6 기능 유지
 
-→ 통과하면 **F7 완료**, F7.5 (AK09916 mag) 또는 F8 (통합·watchdog·status·battery) 진행.
+→ 통과하면 **F7 완료**, [F7.5 (AK09916 mag)](F7.5_VERIFICATION.md) 또는 F8 (통합·watchdog·status·battery) 진행.
 
 ---
 

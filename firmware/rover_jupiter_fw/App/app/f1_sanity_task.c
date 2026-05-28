@@ -3,8 +3,12 @@
  * @brief   F1 페리페럴 검증 구현.
  *
  * 출력 예 (UART5 115200):
- *   [F1-init] motor=OK enc=OK imu=OK(whoami=0xEA) mag=OK(revid=0x22) adc=OK(raw=2350)
- *   [F1   12] enc L=  +123 R=  -45  adc=2348  imu_whoami=0xEA  freeHeap=29800
+ *   [F1-init] motor=OK enc=OK imu=READY(whoami=0xEA) mag=READY adc=OK(raw=2350)
+ *   [F1   12] enc L=  +123 R=  -45  adc=2348  freeHeap=29800
+ *
+ * ICM-20948 SPI HW init (imu_init + mag_init) 은 모두 control task 의
+ * imu_processor_init() 책임 — SPI race 회피. 본 태스크는 status query 만.
+ * f1_sanity 가 액세스하는 페리: 모터·엔코더·I2C·ADC (전부 SPI/ICM 무관).
  */
 #include "f1_sanity_task.h"
 
@@ -21,20 +25,13 @@
 
 #include "i_motor_driver.h"
 #include "i_encoder.h"
-#include "i_imu.h"
-#include "i_magnetometer.h"
-#include "icm20948_driver.h"
-#include "rm3100_driver.h"
+#include "imu_processor.h"
 #include "speed_controller.h"
 #include "safety_monitor.h"
 
 static struct {
     bool    motor_ok;
     bool    enc_ok;
-    bool    imu_ok;
-    uint8_t imu_whoami;
-    bool    mag_ok;
-    uint8_t mag_revid;
     uint32_t count;
 } s_st;
 
@@ -69,36 +66,28 @@ void f1_sanity_init(void)
 {
     s_st.motor_ok = motor_driver_init();
     s_st.enc_ok   = encoder_init();
-    s_st.imu_ok   = imu_init();
-    (void)imu_read_whoami(&s_st.imu_whoami);
 
-    /* I2C 양쪽 버스 스캔 — 디버그 가시성용. 빈 줄 출력해도 정상 (외부 I2C 디바이스 없을 수 있음). */
+    /* I2C 양쪽 버스 스캔 — 디버그 가시성용. AK09916 은 ICM 내장 (AUX bus)
+     * 이라 본 스캔에는 안 잡힘. RM3100 자리 비어있어 외부 디바이스 없으면
+     * (none) 출력이 정상. */
     i2c_scan(&hi2c1, "i2c1");
     i2c_scan(&hi2c2, "i2c2");
-
-#if F1_RM3100_PRESENT
-    s_st.mag_ok = mag_init();
-    (void)mag_read_revid(&s_st.mag_revid);
-#else
-    s_st.mag_ok    = false;
-    s_st.mag_revid = 0;
-#endif
 
     uint16_t adc_raw = 0;
     bool adc_ok = adc_read_once(&adc_raw);
 
-#if F1_RM3100_PRESENT
-    const char *mag_str = s_st.mag_ok ? "OK" : "FAIL";
-#else
-    const char *mag_str = "SKIP";   /* RM3100 미실장 — ICM-20948 내장 AK09916 사용 예정 (F7) */
-#endif
+    /* IMU/Mag status — control task 의 imu_processor_init() 이 끝났는지 query.
+     * i2c_scan 두 번 (~1.1초) 동안 control task 가 imu_init+mag_init 끝낼 시간 충분. */
+    const bool    imu_ready  = imu_processor_imu_ready();
+    const uint8_t imu_whoami = imu_processor_get_whoami();
+    const bool    mag_ready  = imu_processor_mag_ready();
 
-    printf("[F1-init] motor=%s enc=%s imu=%s(whoami=0x%02X) mag=%s(revid=0x%02X) adc=%s(raw=%u)\r\n",
+    printf("[F1-init] motor=%s enc=%s imu=%s(whoami=0x%02X) mag=%s adc=%s(raw=%u)\r\n",
            s_st.motor_ok ? "OK" : "FAIL",
            s_st.enc_ok   ? "OK" : "FAIL",
-           s_st.imu_ok   ? "OK" : "FAIL", s_st.imu_whoami,
-           mag_str, s_st.mag_revid,
-           adc_ok ? "OK" : "FAIL", (unsigned)adc_raw);
+           imu_ready     ? "READY" : "FAIL", imu_whoami,
+           mag_ready     ? "READY" : "FAIL",
+           adc_ok        ? "OK" : "FAIL", (unsigned)adc_raw);
 }
 
 void f1_sanity_tick(void)
