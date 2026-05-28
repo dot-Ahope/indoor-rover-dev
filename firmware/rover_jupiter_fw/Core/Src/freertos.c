@@ -175,7 +175,6 @@ void StartDefaultTask(void *argument)
   for(;;)
   {
     HAL_GPIO_TogglePin(LED_STATUS_GPIO_Port, LED_STATUS_Pin);
-    HAL_GPIO_TogglePin(BUZZER_GPIO_Port, BUZZER_Pin);
     osDelay(500);
   }
   /* USER CODE END StartDefaultTask */
@@ -213,7 +212,7 @@ void StartControlTask(void *argument)
   speed_controller_init();
   safety_monitor_init();
   odometry_init();
-  imu_processor_init();
+  /* imu_processor_init() 은 main.c (scheduler 시작 전) 에서 호출 — SPI race 차단. */
 
   uint32_t next = osKernelGetTickCount();
   const uint32_t period_ticks = 10u;  /* 10 ms = 100 Hz */
