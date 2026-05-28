@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ls \"c:/Workspace/Code/sandbox/icm20948\" 2>&1 | head -40)",
+      "Read(//c/Workspace/Code/sandbox/icm20948/**)"
+    ]
+  }
+}

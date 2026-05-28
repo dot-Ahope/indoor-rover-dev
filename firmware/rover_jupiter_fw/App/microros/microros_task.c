@@ -37,6 +37,7 @@
 #include <geometry_msgs/msg/twist.h>
 #include <nav_msgs/msg/odometry.h>
 #include <sensor_msgs/msg/imu.h>
+#include <sensor_msgs/msg/magnetic_field.h>
 #include <sensor_msgs/msg/battery_state.h>
 #include <diagnostic_msgs/msg/diagnostic_array.h>
 #include <builtin_interfaces/msg/time.h>
@@ -80,6 +81,10 @@ static char s_frame_imu_link[]  = "imu_link";
 
 static rcl_publisher_t            s_imu_pub;
 static sensor_msgs__msg__Imu      s_imu_msg;
+
+/* F7.5 — 자기계 */
+static rcl_publisher_t                  s_mag_pub;
+static sensor_msgs__msg__MagneticField  s_mag_msg;
 
 /* F8 토픽 */
 static rcl_publisher_t                    s_battery_pub;
@@ -228,6 +233,19 @@ void microros_task_run(void *arg)
     /* orientation 제공 안 함 — covariance[0] = -1 표식 (REP-145). */
     s_imu_msg.orientation_covariance[0] = -1.0;
 
+    /* 7b2) /imu/mag publisher (F7.5). */
+    rc = rclc_publisher_init_default(
+        &s_mag_pub, &s_node,
+        ROSIDL_GET_MSG_TYPE_SUPPORT(sensor_msgs, msg, MagneticField),
+        "imu/mag");
+    if (rc != RCL_RET_OK) { printf("[uROS] mag_pub rc=%ld\r\n", (long)rc); goto idle; }
+
+    memset(&s_mag_msg, 0, sizeof(s_mag_msg));
+    s_mag_msg.header.frame_id.data     = s_frame_imu_link;
+    s_mag_msg.header.frame_id.size     = sizeof(s_frame_imu_link) - 1;
+    s_mag_msg.header.frame_id.capacity = sizeof(s_frame_imu_link);
+    /* magnetic_field_covariance: 0 (unknown) — Jetson 측 yaml 에서 override. */
+
     /* 7c) /battery publisher (F8). */
     rc = rclc_publisher_init_default(
         &s_battery_pub, &s_node,
@@ -280,7 +298,7 @@ void microros_task_run(void *arg)
         cmdvel_callback, ON_NEW_DATA);
     if (rc != RCL_RET_OK) { printf("[uROS] executor_add rc=%ld\r\n", (long)rc); goto idle; }
 
-    printf("[uROS] ready — pub heartbeat/odom/imu/battery/status, sub cmd_vel\r\n");
+    printf("[uROS] ready — pub heartbeat/odom/imu/mag/battery/status, sub cmd_vel\r\n");
 
     /* 9) Spin loop — vTaskDelayUntil 로 20ms cycle 시도. 실측 ~34ms 까지 늘어남
      *    (XRCE-DDS framing 이 720byte odom msg 를 segment 로 쪼개 다중 transport_write).
@@ -330,6 +348,18 @@ void microros_task_run(void *arg)
             s_imu_msg.angular_velocity.y    = (double)imu.gy;
             s_imu_msg.angular_velocity.z    = (double)imu.gz;
             pr = rcl_publish(&s_imu_pub, &s_imu_msg, NULL); (void)pr;
+        }
+
+        /* Mag 발행 (F7.5) — 매 cycle. AK09916 50Hz < spin 29Hz 라 일부 cycle
+         * 은 동일 샘플 반복이지만 stamp 는 갱신됨. 대역 절약 필요 시 격번 발행. */
+        MagSi mag;
+        imu_processor_get_mag(&mag);
+        if (mag.valid) {
+            fill_stamp(&s_mag_msg.header.stamp, mag.ts_ms);
+            s_mag_msg.magnetic_field.x = (double)mag.mx;
+            s_mag_msg.magnetic_field.y = (double)mag.my;
+            s_mag_msg.magnetic_field.z = (double)mag.mz;
+            pr = rcl_publish(&s_mag_pub, &s_mag_msg, NULL); (void)pr;
         }
 
         const uint32_t now_ms = HAL_GetTick();
