@@ -1,0 +1,40 @@
+﻿===== Step 0: rosdep init =====
+===== Step 1: clone micro_ros_setup =====
+===== Step 2: rosdep update + install =====
+Skip end-of-life distro "noetic"
+Add distro "rolling"
+updated cache in /root/.ros/rosdep/sources.cache
+#All required rosdeps installed successfully
+===== Step 3: colcon build (micro_ros_setup) =====
+Starting >>> micro_ros_setup
+Finished <<< micro_ros_setup [0.17s]
+
+Summary: 1 package finished [0.39s]
+===== Step 4: create_firmware_ws (generate_lib) =====
+===== Step 5: add tf2_msgs (workaround) =====
+===== Step 6: build firmware (libmicroros.a) =====
+   84 |   char * typeName;
+      |          ^~~~~~~~
+---
+Finished <<< rclc [2.35s]
+Starting >>> rclc_lifecycle
+Starting >>> rclc_parameter
+Finished <<< sensor_msgs [9.37s]
+Starting >>> stereo_msgs
+Starting >>> visualization_msgs
+Starting >>> sensor_msgs_py
+Finished <<< rclc_lifecycle [2.03s]
+Finished <<< rclc_parameter [2.17s]
+Finished <<< sensor_msgs_py [1.10s]
+Finished <<< stereo_msgs [2.52s]
+Finished <<< visualization_msgs [4.77s]
+Starting >>> common_interfaces
+Finished <<< common_interfaces [0.80s]
+
+Summary: 68 packages finished [42.2s]
+  9 packages had stderr output: libyaml_vendor micro_ros_utilities microxrcedds_client rcl rcl_lifecycle rclc rcutils rmw tf2_msgs
+===== Step 7: copy output to project =====
+
+===== DONE =====
+-rwxrwxrwx 1 root root 7761270 May 28 16:12 /mnt/c/Project/Rover/Rover/firmware/rover_jupiter_fw/Middlewares/Third_Party/micro_ros_stm32cubemx_utils/libmicroros/libmicroros.a
+Headers: 1759 files

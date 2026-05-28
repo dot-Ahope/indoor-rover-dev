@@ -38,12 +38,14 @@
 | 방향 | 토픽 | 타입 | 주기 |
 |---|---|---|---|
 | 구독 | `/cmd_vel` | `geometry_msgs/Twist` | event |
-| 발행 | `/wheel_odom` | `nav_msgs/Odometry` | ~29 Hz |
-| 발행 | `/imu/data_raw` | `sensor_msgs/Imu` | ~16 Hz |
-| 발행 | `/imu/mag` | `sensor_msgs/MagneticField` | ~25 Hz (F7.5) |
+| 발행 | `/wheel_odom` | `nav_msgs/Odometry` | **50 Hz** |
+| 발행 | `/imu/data_raw` | `sensor_msgs/Imu` | **50 Hz** |
+| 발행 | `/imu/mag` | `sensor_msgs/MagneticField` | **50 Hz** (F7.5) |
 | 발행 | `/battery` | `sensor_msgs/BatteryState` | 1 Hz |
 | 발행 | `/rover/status` | `diagnostic_msgs/DiagnosticArray` | 5 Hz |
 | 발행 | `/rover/f5b_heartbeat` | `std_msgs/Int32` | 1 Hz |
+
+> 발행률 최적화: F7.5 직후 9.4 Hz → A/B/C 단계 (BEST_EFFORT QoS, UART 2Mbps, MTU 1024) 거쳐 50 Hz 달성. 상세는 메모리 `microros_publish_optimization`.
 
 ## 향후 작업
 

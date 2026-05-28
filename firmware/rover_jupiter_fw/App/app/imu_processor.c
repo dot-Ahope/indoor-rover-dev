@@ -1,10 +1,11 @@
 /**
  * @file    imu_processor.c
- * @brief   F7  IMU raw → SI 변환 + F7.5 Mag raw → Tesla 변환 구현.
+ * @brief   F7  IMU raw → SI 변환 + F7.5 Mag raw → Tesla + F8.5 gyro bias auto-cal.
  */
 #include "imu_processor.h"
 
 #include <string.h>
+#include <stdio.h>
 #include "stm32f4xx_hal.h"
 
 #include "i_imu.h"
@@ -29,6 +30,43 @@ static bool    s_imu_present;   /* imu_init 성공 */
 static bool    s_mag_present;   /* mag_init 성공 */
 static uint8_t s_imu_whoami;    /* WHOAMI 캐시 */
 
+/* F8.5 — Gyro bias auto-calibration. 부팅 시 N 샘플 평균을 bias 로 저장.
+ * icm20948_gyro_z_bias 메모리: z 축 chip-specific bias 약 +0.66 rad/s 알려진 값.
+ * 차감 후 publish 하면 Jetson EKF/Madgwick 가 빠르게 수렴. */
+#define GYRO_CAL_SAMPLES      200
+#define GYRO_CAL_INTERVAL_MS  10
+static float s_gyro_bias[3] = {0.0f, 0.0f, 0.0f};
+
+static void imu_calibrate_gyro_bias(void)
+{
+    int32_t accum[3] = {0, 0, 0};
+    int n_ok = 0;
+    for (int i = 0; i < GYRO_CAL_SAMPLES; i++) {
+        ImuSample raw;
+        if (imu_read(&raw)) {
+            accum[0] += raw.gyro_raw[0];
+            accum[1] += raw.gyro_raw[1];
+            accum[2] += raw.gyro_raw[2];
+            n_ok++;
+        }
+        HAL_Delay(GYRO_CAL_INTERVAL_MS);
+    }
+    if (n_ok < GYRO_CAL_SAMPLES / 2) {
+        printf("[imu_cal] gyro cal FAIL — only %d/%d samples\r\n",
+               n_ok, GYRO_CAL_SAMPLES);
+        return;
+    }
+    s_gyro_bias[0] = ((float)accum[0] / (float)n_ok) * GYRO_LSB_TO_RADPS;
+    s_gyro_bias[1] = ((float)accum[1] / (float)n_ok) * GYRO_LSB_TO_RADPS;
+    s_gyro_bias[2] = ((float)accum[2] / (float)n_ok) * GYRO_LSB_TO_RADPS;
+    /* mrad/s 출력 (nano-printf float 미지원 회피). */
+    printf("[imu_cal] gyro bias (mrad/s): x=%+d y=%+d z=%+d (N=%d)\r\n",
+           (int)(s_gyro_bias[0] * 1000.0f),
+           (int)(s_gyro_bias[1] * 1000.0f),
+           (int)(s_gyro_bias[2] * 1000.0f),
+           n_ok);
+}
+
 void imu_processor_init(void)
 {
     memset(&s_si,  0, sizeof(s_si));
@@ -41,6 +79,9 @@ void imu_processor_init(void)
     if (s_imu_present) {
         (void)imu_read_whoami(&s_imu_whoami);
         s_mag_present = mag_init();
+        /* F8.5 — gyro bias 캘. ~2초 소요 (200 samples × 10ms). 부팅 시 정지 가정.
+         * 실패해도 진행 — bias=0 으로 raw 그대로. */
+        imu_calibrate_gyro_bias();
     } else {
         s_imu_whoami  = 0;
         s_mag_present = false;
@@ -61,9 +102,10 @@ void imu_processor_update(void)
         s_si.ax = (float)raw.accel_raw[0] * ACCEL_LSB_TO_MPS2;
         s_si.ay = (float)raw.accel_raw[1] * ACCEL_LSB_TO_MPS2;
         s_si.az = (float)raw.accel_raw[2] * ACCEL_LSB_TO_MPS2;
-        s_si.gx = (float)raw.gyro_raw[0]  * GYRO_LSB_TO_RADPS;
-        s_si.gy = (float)raw.gyro_raw[1]  * GYRO_LSB_TO_RADPS;
-        s_si.gz = (float)raw.gyro_raw[2]  * GYRO_LSB_TO_RADPS;
+        /* F8.5 — gyro bias 차감 (부팅 시 평균). EKF/Madgwick 빠른 수렴. */
+        s_si.gx = (float)raw.gyro_raw[0]  * GYRO_LSB_TO_RADPS - s_gyro_bias[0];
+        s_si.gy = (float)raw.gyro_raw[1]  * GYRO_LSB_TO_RADPS - s_gyro_bias[1];
+        s_si.gz = (float)raw.gyro_raw[2]  * GYRO_LSB_TO_RADPS - s_gyro_bias[2];
         s_si.temp_c = ((float)raw.temp_raw / TEMP_SENS_LSB_PER_C) + TEMP_ROOM_OFFSET;
         s_si.ts_ms  = raw.ts_ms;
         s_si.valid  = true;
