@@ -210,11 +210,10 @@ void microros_task_run(void *arg)
     if (rc != RCL_RET_OK) { printf("[uROS] cmdvel_sub rc=%ld\r\n", (long)rc); goto idle; }
 
     /* 7) wheel_odom publisher (F6).
-     * **RELIABLE 유지** (init_default) — Odometry 메시지 ~720B 가 micro-XRCE-DDS
-     * 기본 MTU 512B 를 초과. BEST_EFFORT stream 은 fragmentation 미지원이라
-     * 메시지가 silently drop 됨 (rcl_publish 가 에러 반환하지만 우리는 무시).
-     * RELIABLE stream 은 fragmentation 지원 → 720B 도 multi-frame 으로 전송. */
-    rc = rclc_publisher_init_default(
+     * **BEST_EFFORT** — libmicroros 재빌드로 MTU 512→1024 확장 (Phase C, colcon.meta).
+     *   Odometry ~720B 가 단일 frame 에 들어가 best_effort 가능 → ack RTT 제거
+     *   → spin cycle 단축 → 50Hz+ 목표. */
+    rc = rclc_publisher_init_best_effort(
         &s_odom_pub, &s_node,
         ROSIDL_GET_MSG_TYPE_SUPPORT(nav_msgs, msg, Odometry),
         "wheel_odom");
