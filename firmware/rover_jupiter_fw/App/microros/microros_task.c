@@ -188,8 +188,15 @@ void microros_task_run(void *arg)
     rc = rclc_node_init_default(&s_node, "rover_jupiter", "", &s_support);
     if (rc != RCL_RET_OK) { printf("[uROS] node_init rc=%ld\r\n", (long)rc); goto idle; }
 
-    /* 5) Heartbeat publisher (F5b 호환 유지). */
-    rc = rclc_publisher_init_default(
+    /* 5) Heartbeat publisher (F5b 호환 유지).
+     *
+     * QoS 결정 — 모든 텔레메트리 publisher 는 **BEST_EFFORT** 사용:
+     *  - RELIABLE (init_default) 은 agent ack RTT 가 매 publish 마다 누적 →
+     *    실측 spin loop 100ms+ (9.4Hz). best_effort 면 fire-and-forget 으로
+     *    publish 호출이 즉시 반환 → cycle 단축 기대.
+     *  - Nav2/EKF/RViz 모두 sensor 데이터는 best_effort 가 ROS 표준.
+     *  - /cmd_vel subscription 만 default (reliable) 유지 — 명령 누락 방지. */
+    rc = rclc_publisher_init_best_effort(
         &s_heartbeat_pub, &s_node,
         ROSIDL_GET_MSG_TYPE_SUPPORT(std_msgs, msg, Int32),
         "rover/f5b_heartbeat");
@@ -202,7 +209,11 @@ void microros_task_run(void *arg)
         "cmd_vel");
     if (rc != RCL_RET_OK) { printf("[uROS] cmdvel_sub rc=%ld\r\n", (long)rc); goto idle; }
 
-    /* 7) wheel_odom publisher (F6). */
+    /* 7) wheel_odom publisher (F6).
+     * **RELIABLE 유지** (init_default) — Odometry 메시지 ~720B 가 micro-XRCE-DDS
+     * 기본 MTU 512B 를 초과. BEST_EFFORT stream 은 fragmentation 미지원이라
+     * 메시지가 silently drop 됨 (rcl_publish 가 에러 반환하지만 우리는 무시).
+     * RELIABLE stream 은 fragmentation 지원 → 720B 도 multi-frame 으로 전송. */
     rc = rclc_publisher_init_default(
         &s_odom_pub, &s_node,
         ROSIDL_GET_MSG_TYPE_SUPPORT(nav_msgs, msg, Odometry),
@@ -220,7 +231,7 @@ void microros_task_run(void *arg)
     /* covariance: 0 그대로 — Nav2 가 "unknown" 으로 해석. F8 에서 추정값 반영. */
 
     /* 7b) /imu/data_raw publisher (F7). */
-    rc = rclc_publisher_init_default(
+    rc = rclc_publisher_init_best_effort(
         &s_imu_pub, &s_node,
         ROSIDL_GET_MSG_TYPE_SUPPORT(sensor_msgs, msg, Imu),
         "imu/data_raw");
@@ -234,7 +245,7 @@ void microros_task_run(void *arg)
     s_imu_msg.orientation_covariance[0] = -1.0;
 
     /* 7b2) /imu/mag publisher (F7.5). */
-    rc = rclc_publisher_init_default(
+    rc = rclc_publisher_init_best_effort(
         &s_mag_pub, &s_node,
         ROSIDL_GET_MSG_TYPE_SUPPORT(sensor_msgs, msg, MagneticField),
         "imu/mag");
@@ -247,7 +258,7 @@ void microros_task_run(void *arg)
     /* magnetic_field_covariance: 0 (unknown) — Jetson 측 yaml 에서 override. */
 
     /* 7c) /battery publisher (F8). */
-    rc = rclc_publisher_init_default(
+    rc = rclc_publisher_init_best_effort(
         &s_battery_pub, &s_node,
         ROSIDL_GET_MSG_TYPE_SUPPORT(sensor_msgs, msg, BatteryState),
         "battery");
@@ -262,7 +273,7 @@ void microros_task_run(void *arg)
     s_battery_msg.present     = true;
 
     /* 7d) /rover/status publisher (F8). */
-    rc = rclc_publisher_init_default(
+    rc = rclc_publisher_init_best_effort(
         &s_status_pub, &s_node,
         ROSIDL_GET_MSG_TYPE_SUPPORT(diagnostic_msgs, msg, DiagnosticArray),
         "rover/status");
@@ -334,7 +345,13 @@ void microros_task_run(void *arg)
         s_odom_msg.twist.twist.angular.x = 0.0;
         s_odom_msg.twist.twist.angular.y = 0.0;
         s_odom_msg.twist.twist.angular.z = (double)o.w;
-        pr = rcl_publish(&s_odom_pub, &s_odom_msg, NULL); (void)pr;
+        /* 첫 실패만 한 번 로깅 — 디버그 노이즈 방지. */
+        static bool s_odom_err_logged = false;
+        pr = rcl_publish(&s_odom_pub, &s_odom_msg, NULL);
+        if (pr != RCL_RET_OK && !s_odom_err_logged) {
+            printf("[uROS] odom publish FAIL rc=%ld (MTU? stream full?)\r\n", (long)pr);
+            s_odom_err_logged = true;
+        }
 
         /* IMU 발행 (F7) — 매 cycle. */
         ImuSi imu;
