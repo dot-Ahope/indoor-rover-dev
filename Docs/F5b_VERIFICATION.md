@@ -98,7 +98,7 @@ ros2 run micro_ros_agent micro_ros_agent serial --dev /dev/ttyUSB0 -b 921600
 ```bash
 docker run -it --rm -v /dev:/dev --device=/dev/myserial --net=host \
   microros/micro-ros-agent:humble \
-  serial --dev /dev/myserial -b 921600
+  serial --dev /dev/myserial -b 2000000
 ```
 
 ---
