@@ -26,6 +26,7 @@
 
 | 문서 | 내용 |
 |---|---|
+| [BUILD_AND_FLASH_GUIDE.md](BUILD_AND_FLASH_GUIDE.md) | **저장소 clone → 빌드 → ST-Link 플래시 → UART5 검증** 전체 절차 (Windows/Linux/Mac, 트러블슈팅 포함) |
 | [FIRMWARE_DEV_PLAN.md](FIRMWARE_DEV_PLAN.md) | F0~F8 단계 정의 + 아키텍처 + 핀 배정표 (전체 마스터 플랜) |
 | [F103_to_G474_pin_migration.md](F103_to_G474_pin_migration.md) | 양산기 MCU 교체 검토 (참고용) |
 | [rover.urdf](rover.urdf) | 차체 URDF (휠 반경·트랙 폭) |
