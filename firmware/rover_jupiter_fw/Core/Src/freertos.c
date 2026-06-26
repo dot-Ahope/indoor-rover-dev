@@ -28,6 +28,7 @@
 #include <stdio.h>
 #include "f1_sanity_task.h"
 #include "f4_pid_test.h"
+#include "bldc_ramp_test.h"
 #include "i_encoder.h"
 #include "speed_controller.h"
 #include "safety_monitor.h"
@@ -65,6 +66,13 @@ osThreadId_t f4PidTaskHandle;
 const osThreadAttr_t f4PidTask_attributes = {
   .name = "f4Pid",
   .stack_size = 256 * 4,
+  .priority = (osPriority_t) osPriorityBelowNormal,
+};
+/* 0단계 검증: 통합 BLDC 개방루프 duty 램프 테스트 (평소 비활성). */
+osThreadId_t bldcRampTaskHandle;
+const osThreadAttr_t bldcRampTask_attributes = {
+  .name = "bldcRamp",
+  .stack_size = 512 * 4,   /* printf 여유 */
   .priority = (osPriority_t) osPriorityBelowNormal,
 };
 /* F3/F4 통합: 100 Hz 제어 루프 — encoder_update_velocity →
@@ -152,6 +160,9 @@ void MX_FREERTOS_Init(void) {
   /* F5c: F4 자동 시퀀스 비활성 — /cmd_vel 콜백이 speed_controller 의 target 설정.
    * 회귀 필요 시 아래 한 줄 다시 활성. */
   /* f4PidTaskHandle = osThreadNew(f4_pid_test_run, NULL, &f4PidTask_attributes); */
+  /* 0단계 BLDC 램프 테스트 — 활성하려면 아래 한 줄 주석 해제.
+   * ⚠ 동시에 위 controlTask 줄을 주석 처리할 것 (PID 가 duty 0 으로 덮어씀). */
+  /* bldcRampTaskHandle = osThreadNew(bldc_ramp_test_run, NULL, &bldcRampTask_attributes); */
   microrosTaskHandle = osThreadNew(microros_task_run, NULL, &microrosTask_attributes);
   /* USER CODE END RTOS_THREADS */
 

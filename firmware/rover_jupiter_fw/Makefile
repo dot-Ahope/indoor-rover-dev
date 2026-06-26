@@ -77,6 +77,7 @@ App/drivers/icm20948_driver.c \
 App/drivers/ak09916_driver.c \
 App/app/f1_sanity_task.c \
 App/app/f2_motor_test.c \
+App/app/bldc_ramp_test.c \
 App/app/speed_controller.c \
 App/app/safety_monitor.c \
 App/app/f4_pid_test.c \
