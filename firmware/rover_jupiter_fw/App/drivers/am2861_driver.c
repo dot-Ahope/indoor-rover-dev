@@ -9,6 +9,10 @@
  *
  * F1 단계: PWM start + 듀티 0 유지. 실제 모터 회전은 F2에서.
  */
+#include "motor_config.h"
+
+#if MOTOR_TYPE == MOTOR_TYPE_AM2861
+
 #include "am2861_driver.h"
 #include "main.h"
 #include "tim.h"
@@ -88,3 +92,5 @@ void motor_driver_stop_all(void)
     __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_1, 0);
     __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_4, 0);
 }
+
+#endif /* MOTOR_TYPE == MOTOR_TYPE_AM2861 */
