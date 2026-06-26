@@ -32,6 +32,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "imu_processor.h"
+#include "i_motor_driver.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -84,7 +85,25 @@ int main(void)
   HAL_Init();
 
   /* USER CODE BEGIN Init */
-
+  /* 부팅 즉시 모터 속도지령(청색 PWM) 라인을 LOW 로 강제 — 런어웨이 차단.
+   * 통합 BLDC 컨트롤러 청색선 내부 풀업 때문에 리셋 직후 Hi-Z 가 HIGH(=100% 지령)로
+   * 읽혀 모터가 돈다. 가능한 가장 이른 시점에 PP 출력 LOW 로 눌러둔다.
+   * (PC6=우측 M1A, PA11=좌측 M3A) MX_TIMx_Init 가 이 핀을 AF 로 바꾸기 전까지 유효.
+   * TODO(production): 청색선에 HW 풀다운 저항 — 리셋/폴트 전 구간 fail-safe. */
+  __HAL_RCC_GPIOA_CLK_ENABLE();
+  __HAL_RCC_GPIOC_CLK_ENABLE();
+  {
+    GPIO_InitTypeDef gi = {0};
+    gi.Mode  = GPIO_MODE_OUTPUT_PP;
+    gi.Pull  = GPIO_NOPULL;
+    gi.Speed = GPIO_SPEED_FREQ_LOW;
+    gi.Pin   = GPIO_PIN_11;                /* PA11 = M3A (좌측 속도지령) */
+    HAL_GPIO_Init(GPIOA, &gi);
+    gi.Pin   = GPIO_PIN_6;                 /* PC6 = M1A (우측 속도지령) */
+    HAL_GPIO_Init(GPIOC, &gi);
+    HAL_GPIO_WritePin(GPIOA, GPIO_PIN_11, GPIO_PIN_RESET);
+    HAL_GPIO_WritePin(GPIOC, GPIO_PIN_6, GPIO_PIN_RESET);
+  }
   /* USER CODE END Init */
 
   /* Configure the system clock */
@@ -109,6 +128,12 @@ int main(void)
   MX_SPI2_Init();
   MX_UART5_Init();
   /* USER CODE BEGIN 2 */
+  /* 모터 정지선(속도 PWM) 즉시 확보 — MX_TIMx_Init 가 PC6/PA11 을 AF 로 바꾼 직후
+   * PWM 을 start(CCR=0) 해서 능동 LOW 로 구동. 그래야 스케줄러 시작 전 ~수초
+   * 구간(IMU init 등)에 속도선이 떠서 모터가 도는 일이 없다.
+   * f1_sanity_init() 에서 한 번 더 호출되지만 재호출은 무해(멱등). */
+  motor_driver_init();
+
   /* F0 부팅 사인: 부저 50ms 비프 + UART5 배너 */
   HAL_GPIO_WritePin(BUZZER_GPIO_Port, BUZZER_Pin, GPIO_PIN_SET);
   HAL_Delay(50);
