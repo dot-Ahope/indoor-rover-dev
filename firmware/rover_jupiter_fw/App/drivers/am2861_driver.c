@@ -43,15 +43,21 @@ bool motor_driver_init(void)
     __HAL_TIM_SET_COUNTER(&htim1, 0);
     __HAL_TIM_SET_COUNTER(&htim3, 0);
 
-    /* TIM3 (M1: PC6/PC7) — LEFT */
-    if (HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_1) != HAL_OK) return false;
-    if (HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_2) != HAL_OK) return false;
+    /* 멱등: main(부팅 조기) + f1_sanity_init 2회 호출 대비. 이미 start 된 채널에
+     * 재호출 시 HAL 이 ERROR 반환 → s_started 가드로 1회만 start. */
+    static bool s_started = false;
+    if (!s_started) {
+        /* TIM3 (M1: PC6/PC7) — LEFT */
+        if (HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_1) != HAL_OK) return false;
+        if (HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_2) != HAL_OK) return false;
 
-    /* TIM1 (M3: PA11=CH4, PA8=CH1) — RIGHT
-     * TIM1은 어드밴스드 타이머 → 출력 활성에 MOE 필요.
-     * HAL_TIM_PWM_Start가 내부에서 BDTR.MOE를 set 함. */
-    if (HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_1) != HAL_OK) return false;
-    if (HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_4) != HAL_OK) return false;
+        /* TIM1 (M3: PA11=CH4, PA8=CH1) — RIGHT
+         * TIM1은 어드밴스드 타이머 → 출력 활성에 MOE 필요.
+         * HAL_TIM_PWM_Start가 내부에서 BDTR.MOE를 set 함. */
+        if (HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_1) != HAL_OK) return false;
+        if (HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_4) != HAL_OK) return false;
+        s_started = true;
+    }
 
     motor_driver_stop_all();
     return true;

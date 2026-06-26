@@ -45,20 +45,21 @@
 #define BLDC_DUTY_MAX  1.0f
 /* TODO(production): duty 0%=정지 여부 / 최소 기동 duty(deadband)(①) 실측 확인. */
 
-/* ── 방향선(백색) GPIO ─────────────────────────────────────
- * 레벨 방식(사용자 확정 ②). "백색을 흑색(GND)에 접촉 시 방향 전환" →
- * 컨트롤러 내부 풀업 전제로 open-drain 구동:
- *     LOW(드라이브)  = GND 접촉   → 한쪽 방향
- *     HIGH(개방=풀업)             → 반대 방향
- * 어느 레벨이 전진인지는 F2 실측으로 확정 → *_FWD_LEVEL 한 줄로 반전. */
+/* ── 방향선(백색) GPIO — push-pull ─────────────────────────
+ * 레벨 방식(사용자 확정 ②). 처음엔 "컨트롤러 풀업 전제 open-drain" 으로 했으나
+ * 램프 실측 결과 좌측 백색선엔 풀업이 없어 high-Z 가 LOW 로 떠 좌측이 전진만 됨.
+ * → push-pull 로 HIGH(3.3V)/LOW 둘 다 능동 구동, 풀업 유무 무관하게 확정.
+ *
+ * 전진(+duty) 레벨은 컨트롤러별로 달라 좌·우 따로 지정 (램프 실측):
+ *   RIGHT: HIGH=전진 (기존 정상),  LEFT: LOW=전진 (PA8=LOW 일 때 전진 관측). */
 #define DIR_RIGHT_GPIO_Port  GPIOC
 #define DIR_RIGHT_Pin        GPIO_PIN_7   /* M1B = PC7 (구 TIM3_CH2) */
 #define DIR_LEFT_GPIO_Port   GPIOA
 #define DIR_LEFT_Pin         GPIO_PIN_8   /* M3B = PA8 (구 TIM1_CH1) */
 
-/* +duty(전진) 일 때 방향핀 레벨. F2 검증 후 조정. */
-#define DIR_RIGHT_FWD_LEVEL  GPIO_PIN_SET
-#define DIR_LEFT_FWD_LEVEL   GPIO_PIN_SET
+/* +duty(전진) 일 때 방향핀 레벨. 램프 실측 후 좌·우 개별 확정. */
+#define DIR_RIGHT_FWD_LEVEL  GPIO_PIN_SET     /* HIGH = 전진 */
+#define DIR_LEFT_FWD_LEVEL   GPIO_PIN_RESET   /* LOW  = 전진 */
 
 /* CCR = |duty| * (ARR+1). duty=1.0 → CCR=ARR+1 (항상 High = 100% duty). */
 static inline uint32_t duty_to_ccr(float duty_abs)
@@ -74,15 +75,15 @@ static inline GPIO_PinState dir_level(float duty, GPIO_PinState fwd_level)
     return (fwd_level == GPIO_PIN_SET) ? GPIO_PIN_RESET : GPIO_PIN_SET;
 }
 
-/* PC7/PA8 을 방향 GPIO(open-drain)로 재설정. CubeMX MSP 의 AF 설정을 override. */
+/* PC7/PA8 을 방향 GPIO(push-pull)로 재설정. CubeMX MSP 의 AF 설정을 override. */
 static void dir_gpio_init(void)
 {
     GPIO_InitTypeDef g = {0};
     __HAL_RCC_GPIOA_CLK_ENABLE();
     __HAL_RCC_GPIOC_CLK_ENABLE();
 
-    g.Mode  = GPIO_MODE_OUTPUT_OD;  /* open-drain (컨트롤러 풀업 가정) */
-    g.Pull  = GPIO_NOPULL;
+    g.Mode  = GPIO_MODE_OUTPUT_PP;  /* push-pull — HIGH/LOW 능동 구동 */
+    g.Pull  = GPIO_PULLUP;
     g.Speed = GPIO_SPEED_FREQ_LOW;
 
     g.Pin = DIR_RIGHT_Pin;
@@ -113,9 +114,15 @@ bool motor_driver_init(void)
 
     /* 3) 속도지령 PWM 채널만 start. 방향은 GPIO 담당.
      *    RIGHT M1A=TIM3_CH1(PC6), LEFT M3A=TIM1_CH4(PA11).
-     *    TIM1 은 어드밴스드 타이머 → HAL_TIM_PWM_Start 가 MOE set. */
-    if (HAL_TIM_PWM_Start(&htim3, PWM_RIGHT_CH) != HAL_OK) return false;
-    if (HAL_TIM_PWM_Start(&htim1, PWM_LEFT_CH)  != HAL_OK) return false;
+     *    TIM1 은 어드밴스드 타이머 → HAL_TIM_PWM_Start 가 MOE set.
+     *    멱등: main(부팅 조기) + f1_sanity_init 에서 2회 호출되므로, 이미 start 된
+     *    채널에 재호출 시 HAL 이 ERROR 반환 → s_started 가드로 1회만 start. */
+    static bool s_started = false;
+    if (!s_started) {
+        if (HAL_TIM_PWM_Start(&htim3, PWM_RIGHT_CH) != HAL_OK) return false;
+        if (HAL_TIM_PWM_Start(&htim1, PWM_LEFT_CH)  != HAL_OK) return false;
+        s_started = true;
+    }
 
     motor_driver_stop_all();
     return true;
