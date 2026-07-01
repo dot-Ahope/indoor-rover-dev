@@ -22,6 +22,7 @@
 #include "stm32f4xx_it.h"
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include "tim.h"   /* htim2/htim5 — FG Input Capture (통합 BLDC) IRQ 포워딩 */
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -51,7 +52,18 @@
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+/* FG Input Capture 인터럽트 (통합 BLDC: TIM2_CH1=PA15 우, TIM5_CH1=PA0 좌).
+ * AM2861 빌드에선 NVIC 미활성이라 호출되지 않음(무해). 캡처 처리는
+ * HAL_TIM_IC_CaptureCallback (fg_encoder_driver.c) 에서 수행. */
+void TIM2_IRQHandler(void)
+{
+  HAL_TIM_IRQHandler(&htim2);
+}
 
+void TIM5_IRQHandler(void)
+{
+  HAL_TIM_IRQHandler(&htim5);
+}
 /* USER CODE END 0 */
 
 /* External variables --------------------------------------------------------*/
