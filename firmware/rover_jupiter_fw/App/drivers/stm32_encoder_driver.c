@@ -4,9 +4,12 @@
  *
  * TIM2/TIM5 모두 32-bit, ARR=0xFFFFFFFF. CNT 부호 해석으로 양·음 방향 모두 처리.
  */
+#include "rover_platform.h"   /* MOTOR_TYPE (motor_config.h 경유) */
+
+#if MOTOR_TYPE == MOTOR_TYPE_AM2861
+
 #include "stm32_encoder_driver.h"
 #include "tim.h"
-#include "rover_platform.h"
 
 /* 속도 산출 설정 — encSample task 가 100Hz 로 호출 (freertos.c). */
 #define V_SAMPLE_HZ      100u
@@ -74,3 +77,5 @@ float encoder_read_distance_m(EncoderChannel ch)
     /* count × m/cnt. count 자체가 부호 처리되므로 거리도 자동 부호. */
     return (float)encoder_read_count(ch) * METERS_PER_COUNT;
 }
+
+#endif /* MOTOR_TYPE == MOTOR_TYPE_AM2861 */

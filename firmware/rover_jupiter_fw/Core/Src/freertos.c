@@ -29,6 +29,7 @@
 #include "f1_sanity_task.h"
 #include "f4_pid_test.h"
 #include "bldc_ramp_test.h"
+#include "fg_count_test.h"
 #include "i_encoder.h"
 #include "speed_controller.h"
 #include "safety_monitor.h"
@@ -73,6 +74,13 @@ osThreadId_t bldcRampTaskHandle;
 const osThreadAttr_t bldcRampTask_attributes = {
   .name = "bldcRamp",
   .stack_size = 512 * 4,   /* printf 여유 */
+  .priority = (osPriority_t) osPriorityBelowNormal,
+};
+/* FG PPR 측정: 펄스 카운터 진단 (평소 비활성). */
+osThreadId_t fgCountTaskHandle;
+const osThreadAttr_t fgCountTask_attributes = {
+  .name = "fgCount",
+  .stack_size = 512 * 4,
   .priority = (osPriority_t) osPriorityBelowNormal,
 };
 /* F3/F4 통합: 100 Hz 제어 루프 — encoder_update_velocity →
@@ -163,6 +171,8 @@ void MX_FREERTOS_Init(void) {
   /* 0단계 BLDC 램프 테스트 — 활성하려면 아래 한 줄 주석 해제.
    * ⚠ 동시에 위 controlTask 줄을 주석 처리할 것 (PID 가 duty 0 으로 덮어씀). */
   /* bldcRampTaskHandle = osThreadNew(bldc_ramp_test_run, NULL, &bldcRampTask_attributes); */
+  /* FG PPR 측정 — 활성하려면 아래 한 줄 주석 해제. (control 과 공존 가능, 모터 정지) */
+  /* fgCountTaskHandle = osThreadNew(fg_count_test_run, NULL, &fgCountTask_attributes); */
   microrosTaskHandle = osThreadNew(microros_task_run, NULL, &microrosTask_attributes);
   /* USER CODE END RTOS_THREADS */
 
