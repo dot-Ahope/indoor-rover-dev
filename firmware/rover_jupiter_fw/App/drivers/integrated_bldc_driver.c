@@ -75,6 +75,15 @@ static inline GPIO_PinState dir_level(float duty, GPIO_PinState fwd_level)
     return (fwd_level == GPIO_PIN_SET) ? GPIO_PIN_RESET : GPIO_PIN_SET;
 }
 
+/* 마지막 지령 방향 부호 (+1 전진 / -1 후진). FG 엔코더가 속도 부호 주입에 사용
+ * (FG 는 방향정보 없음). duty=0 일 때는 직전 값 유지. 초기값 전진(+1). */
+static volatile int s_dir_sign[MOTOR_COUNT] = { +1, +1 };
+
+int bldc_last_dir_sign(MotorChannel ch)
+{
+    return (ch < MOTOR_COUNT) ? s_dir_sign[ch] : +1;
+}
+
 /* PC7/PA8 을 방향 GPIO(push-pull)로 재설정. CubeMX MSP 의 AF 설정을 override. */
 static void dir_gpio_init(void)
 {
@@ -131,6 +140,11 @@ bool motor_driver_init(void)
 void motor_driver_set_duty(MotorChannel ch, float duty)
 {
     const uint32_t ccr = duty_to_ccr(fabsf(duty));
+
+    /* 방향 부호 기록 (duty=0 이면 직전 유지) — FG 엔코더 속도 부호용 */
+    if (ch < MOTOR_COUNT && duty != 0.0f) {
+        s_dir_sign[ch] = (duty > 0.0f) ? +1 : -1;
+    }
 
     if (ch == MOTOR_LEFT) {
         /* 좌측 휠 = M3 : 방향=PA8, 속도=TIM1_CH4(PA11) */
