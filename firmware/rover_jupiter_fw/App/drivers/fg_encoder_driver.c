@@ -30,7 +30,7 @@
 
 /* 속도 샘플 (encoder_update_velocity 호출 주기, freertos control task 100Hz). */
 #define V_SAMPLE_HZ       100u
-#define V_EMA_ALPHA       0.30f            /* 주기측정이라 필터 약하게 */
+#define V_EMA_ALPHA       0.20f            /* FG 주기 지터 완화 (튜닝 중 0.30→0.20) */
 /* 정지 판정: 이 tick 수 동안 새 펄스 없으면 v=0. 100Hz 기준 6 = 60ms. */
 #define STOP_IDLE_TICKS   6u
 

@@ -7,12 +7,17 @@
 #include <math.h>
 #include <stdbool.h>
 #include "i_encoder.h"
+#include "motor_config.h"   /* MOTOR_TYPE — 게인/deadzone 모델별 분리 */
 
 #define CTRL_HZ        100u
 #define CTRL_DT_S      (1.0f / (float)CTRL_HZ)
 
-/* 적분 클램프 — F4 1차 실측에서 0.16 이 정상오차 못 없애서 0.30 으로 상향. */
-#define I_MAX          0.30f
+/* 적분 클램프. BLDC 는 steady duty(0.3m/s≈45%) - deadzone(13%) ≈ 0.32 필요 → 상향. */
+#if MOTOR_TYPE == MOTOR_TYPE_INTEGRATED_BLDC
+#define I_MAX          0.55f
+#else
+#define I_MAX          0.30f      /* AM2861 (F4 실측) */
+#endif
 #define OUT_MAX        0.80f      /* driver 측 동일 캡 */
 #define TARGET_THRESH  0.01f      /* m/s — 이하면 정지 명령으로 간주 */
 
@@ -22,12 +27,21 @@
 #define STOP_RAMP_MPS2  4.0f
 
 /* Feedforward dead-zone — target 방향으로 항상 더함 (정지마찰 base offset).
- * PID 는 그 위에서 fine-tuning. F4 1차 실측 결과 "강제 jump" 방식에서 변경:
- *   강제 jump: PID < dz 면 dz 로 끌어올림 → 정상오차 해소 불가능
- *   feedforward: duty = sign(tgt)·dz + Kp·err + I → PID 가 ±보정 자유
- * F2 정지마찰 측정: LEFT ~30%, RIGHT ~55%. dz 는 그보다 약간 낮게 잡고
- * 부족분은 P+I 가 채우도록 함. */
+ * PID 는 그 위에서 fine-tuning. duty = sign(tgt)·dz + Kp·err + I.
+ * 모델별 분리:
+ *   - 통합 BLDC: 최소 기동 duty 실측 ~15%(좌·우 대칭) → dz 살짝 아래 0.13.
+ *   - AM2861:    정지마찰 실측 LEFT ~30% / RIGHT ~55% → 비대칭 0.20/0.50. */
+#if MOTOR_TYPE == MOTOR_TYPE_INTEGRATED_BLDC
+static const float DEADZONE[MOTOR_COUNT] = { 0.13f, 0.13f };
+/* BLDC 1차 튜닝: 기존 4/5 는 초기 duty 슬램·진동 → 대폭 하향. steady duty 실측
+ * 0.15→24% / 0.30→45% 기준. ff(0.13)+Kp·err 초기값이 steady 근처가 되도록 Kp≈0.7. */
+#define PID_KP_INIT   0.7f
+#define PID_KI_INIT   3.0f
+#else
 static const float DEADZONE[MOTOR_COUNT] = { 0.20f, 0.50f };
+#define PID_KP_INIT   4.0f
+#define PID_KI_INIT   5.0f
+#endif
 
 typedef struct {
     /* tune */
@@ -43,8 +57,8 @@ typedef struct {
 /* 초기 게인 — 양쪽 동일. RIGHT 비대칭은 dead-zone 으로 1차 보정.
  * 진동/오버슈트 보이면 게인 조정. */
 static pid_t s_pid[MOTOR_COUNT] = {
-    [MOTOR_LEFT]  = { .kp = 4.0f, .ki = 5.0f, .kd = 0.0f },
-    [MOTOR_RIGHT] = { .kp = 4.0f, .ki = 5.0f, .kd = 0.0f },
+    [MOTOR_LEFT]  = { .kp = PID_KP_INIT, .ki = PID_KI_INIT, .kd = 0.0f },
+    [MOTOR_RIGHT] = { .kp = PID_KP_INIT, .ki = PID_KI_INIT, .kd = 0.0f },
 };
 
 static inline float clampf(float x, float lo, float hi)
@@ -145,6 +159,13 @@ void speed_controller_update(void)
         float duty = ff + p->kp * err + p->integral + d_term;
 
         duty = clampf(duty, -OUT_MAX, OUT_MAX);
+
+#if MOTOR_TYPE == MOTOR_TYPE_INTEGRATED_BLDC
+        /* 통합 BLDC: 방향선 액추에이터 → 역 duty(제동)가 방향/FG부호 thrash 유발.
+         * 출력을 target 방향 부호로 제한 (오버슈트 감속은 coast). */
+        if (p->target_mps > 0.0f && duty < 0.0f) duty = 0.0f;
+        if (p->target_mps < 0.0f && duty > 0.0f) duty = 0.0f;
+#endif
 
         p->last_duty = duty;
         motor_driver_set_duty((MotorChannel)i, duty);
