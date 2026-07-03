@@ -22,7 +22,8 @@
 #include "stm32f4xx_it.h"
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include "tim.h"   /* htim2/htim5 — FG Input Capture (통합 BLDC) IRQ 포워딩 */
+#include "tim.h"        /* htim2/htim5 — FG Input Capture (통합 BLDC) IRQ 포워딩 */
+#include "cli_task.h"   /* UART5 RX 인터럽트 (시리얼 CLI) */
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -63,6 +64,12 @@ void TIM2_IRQHandler(void)
 void TIM5_IRQHandler(void)
 {
   HAL_TIM_IRQHandler(&htim5);
+}
+
+/* UART5 RX — 시리얼 CLI. RXNE IT 는 cli_task 가 활성. */
+void UART5_IRQHandler(void)
+{
+  cli_uart5_rx_isr();
 }
 /* USER CODE END 0 */
 
