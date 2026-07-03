@@ -30,6 +30,7 @@
 #include "f4_pid_test.h"
 #include "bldc_ramp_test.h"
 #include "fg_count_test.h"
+#include "cli_task.h"
 #include "i_encoder.h"
 #include "speed_controller.h"
 #include "safety_monitor.h"
@@ -80,6 +81,13 @@ const osThreadAttr_t bldcRampTask_attributes = {
 osThreadId_t fgCountTaskHandle;
 const osThreadAttr_t fgCountTask_attributes = {
   .name = "fgCount",
+  .stack_size = 512 * 4,
+  .priority = (osPriority_t) osPriorityBelowNormal,
+};
+/* 시리얼 CLI: 명령 입력으로 수동 모터 제어 (평소 비활성). */
+osThreadId_t cliTaskHandle;
+const osThreadAttr_t cliTask_attributes = {
+  .name = "cli",
   .stack_size = 512 * 4,
   .priority = (osPriority_t) osPriorityBelowNormal,
 };
@@ -168,6 +176,8 @@ void MX_FREERTOS_Init(void) {
   /* F4 PID step response 시퀀스 (튜닝/회귀 확인용, 평소 비활성).
    * 활성 시 control task 와 함께 켜둘 것 (F4 는 target 설정, control 이 PID). */
   /* f4PidTaskHandle = osThreadNew(f4_pid_test_run, NULL, &f4PidTask_attributes); */
+  /* 시리얼 CLI 수동 제어 — control task 와 함께 활성. 끝나면 아래 한 줄 주석. */
+  cliTaskHandle = osThreadNew(cli_task_run, NULL, &cliTask_attributes);
   /* 0단계 BLDC 램프 테스트 — 활성하려면 아래 한 줄 주석 해제.
    * ⚠ 동시에 위 controlTask 줄을 주석 처리할 것 (PID 가 duty 0 으로 덮어씀). */
   /* bldcRampTaskHandle = osThreadNew(bldc_ramp_test_run, NULL, &bldcRampTask_attributes); */

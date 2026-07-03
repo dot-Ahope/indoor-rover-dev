@@ -80,6 +80,7 @@ App/app/f1_sanity_task.c \
 App/app/f2_motor_test.c \
 App/app/bldc_ramp_test.c \
 App/app/fg_count_test.c \
+App/app/cli_task.c \
 App/app/speed_controller.c \
 App/app/safety_monitor.c \
 App/app/f4_pid_test.c \
