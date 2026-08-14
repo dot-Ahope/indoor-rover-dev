@@ -18,7 +18,14 @@
 #else
 #define I_MAX          0.30f      /* AM2861 (F4 실측) */
 #endif
-#define OUT_MAX        0.80f      /* driver 측 동일 캡 */
+/* duty 상한. 모터 타입별 분리:
+ *   - 통합 BLDC: 컨트롤러가 자체 전류제한 → 상향(0.95). 드라이버는 이미 1.0 허용.
+ *   - AM2861:    스톨 전류(2.3A) 보호로 0.80 유지 (CLAUDE.md 안전 요구). */
+#if MOTOR_TYPE == MOTOR_TYPE_INTEGRATED_BLDC
+#define OUT_MAX        0.95f
+#else
+#define OUT_MAX        0.80f
+#endif
 #define TARGET_THRESH  0.01f      /* m/s — 이하면 정지 명령으로 간주 */
 
 /* 정지 명령 시 target_mps 를 0 쪽으로 감속시키는 최대 가속도.

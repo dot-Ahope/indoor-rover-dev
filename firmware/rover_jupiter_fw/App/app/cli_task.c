@@ -27,6 +27,7 @@
 #include "usart.h"
 #include "speed_controller.h"
 #include "safety_monitor.h"
+#include "i_encoder.h"       /* FG 카운트 읽기·리셋 (기어비 캘리브레이션용) */
 
 #define CLI_LINE_MAX  32
 
@@ -63,8 +64,9 @@ static int rx_pop(char *c)
 
 static void print_help(void)
 {
-    printf("\r\n[cli] 명령: r/l/b <mm/s>, s(정지), c(fault해제), ?(도움말)\r\n");
+    printf("\r\n[cli] 명령: r/l/b <mm/s>, s(정지), c(fault해제), e(FG카운트), z(카운트리셋), ?(도움말)\r\n");
     printf("[cli] 예: 'r 200'  'r -150'  'b 100'  's'\r\n");
+    printf("[cli] 기어비 캘리: z(리셋) → 휠 N턴 손으로 회전 → e(카운트). count/N = FG펄스/회전\r\n");
 }
 
 /* 한 줄 파싱·실행. */
@@ -98,6 +100,18 @@ static void exec_line(char *line)
         case 'c': case 'C':
             safety_monitor_clear();
             printf("[cli] fault cleared\r\n");
+            break;
+        case 'e': case 'E':
+            /* FG 누적 카운트 출력 — 기어비 캘리브레이션용.
+             * 휠 N턴 돌린 뒤 count/N 이 FG_PULSES_PER_REV(현재 336) 확인값. */
+            printf("[cli] FG count  L=%ld  R=%ld\r\n",
+                   (long)encoder_read_count(ENC_LEFT),
+                   (long)encoder_read_count(ENC_RIGHT));
+            break;
+        case 'z': case 'Z':
+            encoder_reset(ENC_LEFT);
+            encoder_reset(ENC_RIGHT);
+            printf("[cli] FG count reset (L=0 R=0)\r\n");
             break;
         case '?': case 'h': case 'H':
             print_help();
