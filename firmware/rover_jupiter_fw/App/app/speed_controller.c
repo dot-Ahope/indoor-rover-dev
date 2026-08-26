@@ -12,17 +12,23 @@
 #define CTRL_HZ        100u
 #define CTRL_DT_S      (1.0f / (float)CTRL_HZ)
 
-/* 적분 클램프. BLDC 는 steady duty(0.3m/s≈45%) - deadzone(13%) ≈ 0.32 필요 → 상향. */
+/* 적분 클램프. BLDC 는 steady duty(0.3m/s≈45%) - deadzone(13%) ≈ 0.32 필요 → 상향.
+ * ⚠ 모터 교체(2026-08-26, 56:1→1:90): 아래 steady duty·deadzone·게인 수치는 전부
+ *   구모터(56:1) 실측 기준 → 새 모터로 재튜닝 필요. TODO(측정): F4 절차 재수행. */
 #if MOTOR_TYPE == MOTOR_TYPE_INTEGRATED_BLDC
-#define I_MAX          0.55f
+/* 1:90 모터 바닥 실주행(2026-08-26): 필요 duty 가 구모터보다 훨씬 높음(50mm/s 지령에
+ * 70% 포화 관측). ff(0.13)+I 로 OUT_MAX(0.95)까지 도달 가능해야 함 → 0.85로 상향.
+ * 0.55 클램프 시 duty 70% 에서 포화 → PID 개방루프화 → 좌우 개체차로 사행 발생했음. */
+#define I_MAX          0.85f
 #else
 #define I_MAX          0.30f      /* AM2861 (F4 실측) */
 #endif
 /* duty 상한. 모터 타입별 분리:
- *   - 통합 BLDC: 컨트롤러가 자체 전류제한 → 상향(0.95). 드라이버는 이미 1.0 허용.
+ *   - 통합 BLDC: 컨트롤러가 자체 전류제한 → 0.98 (2026-08-26 상향, 정상 동작 확인).
+ *     1.0(연속 HIGH, PWM 에지 소멸)은 드라이버 해석 미확인 → 실측 후에만 시도.
  *   - AM2861:    스톨 전류(2.3A) 보호로 0.80 유지 (CLAUDE.md 안전 요구). */
 #if MOTOR_TYPE == MOTOR_TYPE_INTEGRATED_BLDC
-#define OUT_MAX        0.95f
+#define OUT_MAX        0.98f
 #else
 #define OUT_MAX        0.80f
 #endif
@@ -40,10 +46,24 @@
  *   - AM2861:    정지마찰 실측 LEFT ~30% / RIGHT ~55% → 비대칭 0.20/0.50. */
 #if MOTOR_TYPE == MOTOR_TYPE_INTEGRATED_BLDC
 static const float DEADZONE[MOTOR_COUNT] = { 0.13f, 0.13f };
-/* BLDC 1차 튜닝: 기존 4/5 는 초기 duty 슬램·진동 → 대폭 하향. steady duty 실측
- * 0.15→24% / 0.30→45% 기준. ff(0.13)+Kp·err 초기값이 steady 근처가 되도록 Kp≈0.7. */
+/* 속도 feedforward (1:90 모터): 지령 즉시 정상상태 duty 근처를 인가해
+ * 적분 wind-up 대기 제거 + 스톨 오탐 방지. 적분은 잔차만 보정.
+ *
+ * duty-속도 특성 (2026-08-26 받침대·바닥 실측 — **부하 무관**, 모터 내장 속도제어 추정):
+ *   30mm/s→72%, 50→92%, 70→94%, 80→95%, 98%→115±5 (최고속).
+ *   0~72% 완만 / 92~98% 가파름 — 강한 비선형이라 선형 KV 는 절충값.
+ * KV=19(30mm/s 점 기준)는 tgt≥90mm/s 에서 과다 → 필요 적분 −0.88 이 I_MAX(0.85)
+ *   초과 → duty 하한 97% 고착, 정착 실패 관측. → KV=12 로 하향:
+ *   tgt 30 필요 I=+0.23 / 50 +0.19 / 70 −0.03 / 100 −0.36 — 전 구간 클램프 내.
+ * 부족분은 적분이 채움 → Ki 3→6 상향으로 수렴 시간 보상.
+ * 검증(2026-08-26 바닥): 50/70/90/100 모두 정착 ✓, L/R 이동거리 일치 ✓, 스톨 오탐 없음.
+ *   단 지령 ≥110(포화)에선 duty 98% 고착 → 개방루프화 → L/R 5% 사행. V_MAX=100 근거. */
+#define KV_DUTY_PER_MPS  12.0f
+/* BLDC 1차 튜닝: 기존 4/5 는 초기 duty 슬램·진동 → 대폭 하향. (구모터 기준 주석:
+ * steady 0.15→24% / 0.30→45%.) KV 도입 후 Kp 는 외란 보정용으로 유지.
+ * Ki 6.0: KV 하향(19→12) 보상 — 잔차를 적분이 메우는 속도 확보 (2026-08-26). */
 #define PID_KP_INIT   0.7f
-#define PID_KI_INIT   3.0f
+#define PID_KI_INIT   6.0f
 #else
 static const float DEADZONE[MOTOR_COUNT] = { 0.20f, 0.50f };
 #define PID_KP_INIT   4.0f
@@ -163,7 +183,13 @@ void speed_controller_update(void)
         /* Feedforward dead-zone: target 방향으로 base offset 항상 추가.
          * PID 출력이 ±보정으로 작동 → 정상오차 해소 가능. */
         const float ff = (p->target_mps > 0.0f) ? +DEADZONE[i] : -DEADZONE[i];
+#if MOTOR_TYPE == MOTOR_TYPE_INTEGRATED_BLDC
+        /* 속도 feedforward — 정상상태 duty 를 즉시 인가 (KV_DUTY_PER_MPS 주석 참조) */
+        float duty = ff + KV_DUTY_PER_MPS * p->target_mps
+                     + p->kp * err + p->integral + d_term;
+#else
         float duty = ff + p->kp * err + p->integral + d_term;
+#endif
 
         duty = clampf(duty, -OUT_MAX, OUT_MAX);
 

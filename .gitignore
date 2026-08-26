@@ -37,3 +37,6 @@ Thumbs.db
 # === Python 유틸 ===
 __pycache__/
 *.pyc
+
+# === 연구 노트 ===
+research_notes/

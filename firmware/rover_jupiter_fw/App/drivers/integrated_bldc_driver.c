@@ -57,9 +57,11 @@
 #define DIR_LEFT_GPIO_Port   GPIOA
 #define DIR_LEFT_Pin         GPIO_PIN_8   /* M3B = PA8 (구 TIM1_CH1) */
 
-/* +duty(전진) 일 때 방향핀 레벨. 램프 실측 후 좌·우 개별 확정. */
-#define DIR_RIGHT_FWD_LEVEL  GPIO_PIN_SET     /* HIGH = 전진 */
-#define DIR_LEFT_FWD_LEVEL   GPIO_PIN_RESET   /* LOW  = 전진 */
+/* +duty(전진) 일 때 방향핀 레벨. 램프 실측 후 좌·우 개별 확정.
+ * ⚠ 모터 교체(2026-08-26, 1:90)로 극성 반전 실측: b +50 → 양쪽 후진 → 둘 다 반전.
+ *   (구 56:1: RIGHT HIGH=전진 / LEFT LOW=전진 — 모터별로 다르니 교체 시 반드시 실측) */
+#define DIR_RIGHT_FWD_LEVEL  GPIO_PIN_RESET   /* LOW  = 전진 (1:90 실측) */
+#define DIR_LEFT_FWD_LEVEL   GPIO_PIN_SET     /* HIGH = 전진 (1:90 실측) */
 
 /* CCR = |duty| * (ARR+1). duty=1.0 → CCR=ARR+1 (항상 High = 100% duty). */
 static inline uint32_t duty_to_ccr(float duty_abs)
