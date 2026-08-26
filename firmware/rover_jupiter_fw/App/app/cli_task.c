@@ -103,7 +103,7 @@ static void exec_line(char *line)
             break;
         case 'e': case 'E':
             /* FG 누적 카운트 출력 — 기어비 캘리브레이션용.
-             * 휠 N턴 돌린 뒤 count/N 이 FG_PULSES_PER_REV(현재 336) 확인값. */
+             * 휠 N턴 돌린 뒤 count/N 이 FG_PULSES_PER_REV(현재 542) 확인값. */
             printf("[cli] FG count  L=%ld  R=%ld\r\n",
                    (long)encoder_read_count(ENC_LEFT),
                    (long)encoder_read_count(ENC_RIGHT));
