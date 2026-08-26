@@ -64,7 +64,7 @@ extern size_t cubemx_transport_write(struct uxrCustomTransport *transport, const
 extern size_t cubemx_transport_read(struct uxrCustomTransport *transport, uint8_t *buf, size_t len, int timeout, uint8_t *err);
 
 #define HALF_WHEEL_BASE  (WHEEL_BASE_M * 0.5f)   /* = 0.095 m */
-#define V_MAX_MPS        MAX_LINEAR_SPEED_MPS    /* 0.654 — 명령 saturation */
+#define V_MAX_MPS        MAX_LINEAR_SPEED_MPS    /* 0.100 (1:90 모터, duty 98%→115mm/s 실측) — 명령 saturation */
 
 /* F8.5 — 배터리 전압 변환. 실측 캘리브레이션 (2026-05-28):
  *   V_battery = 11.9 V, ADC raw = 3645 → divider ratio = 11.9 / (3645 × 3.3/4095) = 4.05
