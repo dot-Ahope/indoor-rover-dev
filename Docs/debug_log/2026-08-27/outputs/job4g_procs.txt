@@ -1,0 +1,48 @@
+    PID    PPID ELAPSED %CPU COMMAND
+      1       0    4809  0.5 /sbin/init 2
+    822       1    4797  0.5 /usr/libexec/polkitd --no-debug
+    710       1    4797  0.2 @dbus-daemon --system --address=systemd: --nofork --nopidfile --systemd-activation --syslog-only
+ 159241     308       4  0.2 /lib/systemd/systemd-udevd
+    258       1    4802  0.1 /lib/systemd/systemd-journald
+    308       1    4801  0.1 /lib/systemd/systemd-udevd
+    711       1    4797  0.1 /usr/sbin/NetworkManager --no-daemon
+   1888    1873    4794  0.1 /usr/bin/gnome-shell
+   2680       1    4469  0.1 /snap/snapd/current/usr/lib/snapd/snapd
+      2       0    4809  0.0 [kthreadd]
+      3       2    4809  0.0 [rcu_gp]
+===CWD_OF_MAKE===
+===SRC_TREE_SAMPLE===
+arch
+block
+certs
+COPYING
+CREDITS
+crypto
+debian
+debian.master
+debian.nvidia-tegra
+debian.nvidia-tegra-igx
+debian.realtime
+Documentation
+drivers
+fs
+include
+init
+io_uring
+ipc
+Kbuild
+Kconfig
+kernel
+lib
+LICENSES
+MAINTAINERS
+Makefile
+mm
+modules.builtin
+modules.builtin.modinfo
+modules-only.symvers
+modules.order
+fixdep
+fixdep.c
+Makefile
+===RECENT_FILES===

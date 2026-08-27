@@ -1,4 +1,17 @@
 <?xml version="1.0" ?>
+<!-- jupiter_rover — WT-600 강철 탱크 섀시 기준 전면 개정 (2026-08-27)
+     근거:
+     - 섀시: WT-600 강철, 자중 8.5kg, 트랙폭 40mm(캘리퍼 확인), 게이지 0.245m (실측 2026-08-27, 3법 수렴)
+       ※ 리스팅 전폭 330mm는 트랙 가이드 포함(트랙 바깥끝 기준 실측 285mm) — 게이지 계산에 사용 금지
+     - 휠 유효 구름 반경 0.02567m (실주행 캘리브레이션 2026-08-26, rover_platform.h)
+       ※ 스프로킷 피치반경 0.0175 + 트랙 두께 ≈ 유효 0.0257로 정합
+     - 데크 정적 기울기: 전고후저 3.5° 실측. 센서 데크(FUSED_ROVER)는 다리 경사보상으로 수평.
+     - 센서 데크 장착: 데크 최전방(캐노피 X+88mm)이 로버 전방(x=+0.25)에서 10mm 후방, 폭 중앙
+       → 데크 원점(라이다 중심) x = 0.25 − 0.010 − 0.088 = 0.152
+     - 높이 실측(2026-08-27): 지면→상판(뒷다리 접점) 105mm, 지면→데크 판 190mm(상면 가정, ±5mm)
+     - S2L: 스캔면 = 바닥 +20.8mm (데이터시트 p.17, RIG_MOUNT_SPEC.md)
+     - D455f: camera_link = 좌IR이미저, M4면→이미저 (+0.022, +0.0475, 0) — y부호 도면 확정 대기
+-->
 <robot name="jupiter_rover">
 
   <material name="green">
@@ -22,27 +35,30 @@
   <joint name="base_joint" type="fixed">
     <parent link="base_footprint"/>
     <child link="base_link"/>
-    <origin xyz="0 0 0.025" rpy="0 0 0"/>
+    <!-- 유효 구름 반경 (실주행 캘리브레이션 2026-08-26) -->
+    <origin xyz="0 0 0.02567" rpy="0 0 0"/>
   </joint>
 
+  <!-- 차체: WT-600 본체 (트랙 제외 폭 330−2×40=250). 상판 지면高 ≈105mm(뒷다리 접점 실측) -->
   <link name="base_link">
     <visual>
-      <origin xyz="0 0 0.03" rpy="0 0 0"/>
+      <origin xyz="0 0 0.027" rpy="0 0 0"/>
       <geometry>
-        <box size="0.24 0.14 0.06"/>
+        <box size="0.50 0.25 0.105"/>
       </geometry>
       <material name="green"/>
     </visual>
     <collision>
-      <origin xyz="0 0 0.03" rpy="0 0 0"/>
+      <origin xyz="0 0 0.027" rpy="0 0 0"/>
       <geometry>
-        <box size="0.24 0.14 0.06"/>
+        <box size="0.50 0.25 0.105"/>
       </geometry>
     </collision>
     <inertial>
-      <mass value="3.0"/>
-      <origin xyz="0 0 0" rpy="0 0 0"/>
-      <inertia ixx="0.01" ixy="0.0" ixz="0.0" iyy="0.01" iyz="0.0" izz="0.01"/>
+      <!-- 섀시 자중 8.5kg (탑재물 별도 — 총질량 실측 시 갱신) -->
+      <mass value="8.5"/>
+      <origin xyz="0 0 0.027" rpy="0 0 0"/>
+      <inertia ixx="0.0521" ixy="0.0" ixz="0.0" iyy="0.1849" iyz="0.0" izz="0.2214"/>
     </inertial>
   </link>
 
@@ -50,22 +66,27 @@
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <box size="0.29 0.05 0.055"/>
+        <box size="0.50 0.04 0.105"/>
       </geometry>
       <material name="black"/>
     </visual>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <box size="0.29 0.05 0.055"/>
+        <box size="0.50 0.04 0.105"/>
       </geometry>
     </collision>
+    <inertial>
+      <mass value="0.6"/>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <inertia ixx="0.00063" ixy="0.0" ixz="0.0" iyy="0.01305" iyz="0.0" izz="0.01258"/>
+    </inertial>
   </link>
 
   <joint name="left_track_joint" type="continuous">
     <parent link="base_link"/>
     <child link="left_track"/>
-    <origin xyz="0 0.095 0" rpy="0 0 0"/>
+    <origin xyz="0 0.1225 0.027" rpy="0 0 0"/>
     <axis xyz="0 1 0"/>
   </joint>
 
@@ -73,30 +94,94 @@
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <box size="0.29 0.05 0.055"/>
+        <box size="0.50 0.04 0.105"/>
       </geometry>
       <material name="black"/>
     </visual>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <box size="0.29 0.05 0.055"/>
+        <box size="0.50 0.04 0.105"/>
       </geometry>
     </collision>
+    <inertial>
+      <mass value="0.6"/>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <inertia ixx="0.00063" ixy="0.0" ixz="0.0" iyy="0.01305" iyz="0.0" izz="0.01258"/>
+    </inertial>
   </link>
 
   <joint name="right_track_joint" type="continuous">
     <parent link="base_link"/>
     <child link="right_track"/>
-    <origin xyz="0 -0.095 0" rpy="0 0 0"/>
+    <origin xyz="0 -0.1225 0.027" rpy="0 0 0"/>
     <axis xyz="0 1 0"/>
   </joint>
 
+  <!-- 차체 데크 정적 기울기: 실측 3.5° 전고후저 — 데크에 평행 장착된 것(제어보드/IMU)에 적용.
+       센서 데크(FUSED_ROVER)는 다리 경사보상 절삭으로 수평 → lidar/camera는 rpy 0. -->
+
+  <!-- IMU (ICM-20948, ALOPS 보드 — 로버 상판에 장착 → 3.5° 기울기 상속.
+       중력 x축 누설 ≈ 0.60 m/s². 보드 위치는 WT-600 상 실측 필요(현재 개략값).
+       ⚠ 자이로 무반응 이슈(2026-08-26) — 융합 제외 중, D455f IMU로 대체 검토. -->
+  <link name="imu_link"/>
+
+  <joint name="imu_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="imu_link"/>
+    <origin xyz="0 0 0.09" rpy="0 -0.0611 0"/>
+  </joint>
+
+  <!-- 센서 데크: lidar_deck_camera_FUSED_ROVER (3D 프린트, 경사보상 다리로 수평).
+       원점 = 데크 모델 원점(라이다 마운트 중심, 판 하면 Z0). 판 하면 지면高 = 190−5 = 185mm
+       → z = 0.185 − 0.02567 = 0.159. 시각화는 단순 형상(판+다리 4) — 정확 형상은
+       rig_mount_v1/stand/stl/lidar_deck_camera_FUSED_ROVER.stl (mesh 사용 시 패키지에 복사 후
+       <mesh filename="package://rover_description/meshes/..." scale="0.001 0.001 0.001"/>) -->
+  <link name="sensor_deck_link">
+    <visual>
+      <!-- 판+캐노피+패드 개략 (모델 X −90..+88, Y ±66, 두께 5) -->
+      <origin xyz="-0.001 0 0.0025" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.178 0.132 0.005"/>
+      </geometry>
+      <material name="dark_grey"/>
+    </visual>
+    <visual>
+      <origin xyz="0.035 0.032 -0.042" rpy="0 0 0"/>
+      <geometry><cylinder radius="0.0085" length="0.084"/></geometry>
+      <material name="dark_grey"/>
+    </visual>
+    <visual>
+      <origin xyz="0.035 -0.032 -0.042" rpy="0 0 0"/>
+      <geometry><cylinder radius="0.0085" length="0.084"/></geometry>
+      <material name="dark_grey"/>
+    </visual>
+    <visual>
+      <origin xyz="-0.042 0.032 -0.0445" rpy="0 0 0"/>
+      <geometry><cylinder radius="0.0085" length="0.089"/></geometry>
+      <material name="dark_grey"/>
+    </visual>
+    <visual>
+      <origin xyz="-0.042 -0.032 -0.0445" rpy="0 0 0"/>
+      <geometry><cylinder radius="0.0085" length="0.089"/></geometry>
+      <material name="dark_grey"/>
+    </visual>
+  </link>
+
+  <joint name="sensor_deck_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="sensor_deck_link"/>
+    <origin xyz="0.152 0.0 0.159" rpy="0 0 0"/>
+  </joint>
+
+  <!-- LiDAR: RPLidar S2L, lidar_deck_camera_FUSED_ROVER 데크 상면(지면高 190mm 실측)에 장착.
+       lidar_link 원점 = 스캔면 중심 = 데크 상면 +20.8mm (데이터시트 확정).
+       z = (0.190 + 0.0208) − 0.02567 = 0.185. 데크 수평(경사보상 다리) → rpy 0. -->
   <link name="lidar_link">
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <cylinder radius="0.035" length="0.04"/>
+        <cylinder radius="0.0385" length="0.0398"/>
       </geometry>
       <material name="black"/>
     </visual>
@@ -105,14 +190,20 @@
   <joint name="lidar_joint" type="fixed">
     <parent link="base_link"/>
     <child link="lidar_link"/>
-    <origin xyz="0.02 0.0 0.12" rpy="0 0 0"/>
+    <origin xyz="0.152 0.0 0.185" rpy="0 0 0"/>
   </joint>
 
+  <!-- 카메라: RealSense D455f, 데크 일체형 벽(전면 = 데크원점 X+58mm)에 2×M4(±47.5) 체결.
+       camera_link = 좌IR이미저: 데크원점 기준 X = 58+22 = 80mm → x = 0.152+0.080 = 0.232.
+       z = (0.190 − 0.005(데크두께) − 0.0165(축)) − 0.02567 = 0.143.
+       y = +0.0475 (M4면→좌이미저, ⚠ 부호는 도면 337029-017 확정 대기 — RViz 정합으로 검증).
+       realsense2_camera가 camera_link→optical/imu 내부 TF 자동 발행. -->
   <link name="camera_link">
     <visual>
-      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <!-- 몸체(124×26×29)를 이미저 기준에서 중앙 정렬로 표시 -->
+      <origin xyz="-0.003 -0.0475 0" rpy="0 0 0"/>
       <geometry>
-        <box size="0.02 0.11 0.03"/>
+        <box size="0.026 0.124 0.029"/>
       </geometry>
       <material name="grey"/>
     </visual>
@@ -121,39 +212,7 @@
   <joint name="camera_joint" type="fixed">
     <parent link="base_link"/>
     <child link="camera_link"/>
-    <origin xyz="0.13 0.0 0.08" rpy="0 0 0"/>
-  </joint>
-
-  <link name="battery_link">
-    <visual>
-      <origin xyz="0 0 0" rpy="0 0 0"/>
-      <geometry>
-        <box size="0.12 0.04 0.05"/>
-      </geometry>
-      <material name="blue"/>
-    </visual>
-  </link>
-
-  <joint name="battery_joint" type="fixed">
-    <parent link="base_link"/>
-    <child link="battery_link"/>
-    <origin xyz="-0.06 -0.07 0.04" rpy="0 0 0"/>
-  </joint>
-
-  <link name="computing_board_link">
-    <visual>
-      <origin xyz="0 0 0" rpy="0 0 0"/>
-      <geometry>
-        <box size="0.10 0.10 0.03"/>
-      </geometry>
-      <material name="dark_grey"/>
-    </visual>
-  </link>
-
-  <joint name="computing_board_joint" type="fixed">
-    <parent link="base_link"/>
-    <child link="computing_board_link"/>
-    <origin xyz="-0.01 0.01 0.06" rpy="0 0 0"/>
+    <origin xyz="0.232 0.0475 0.143" rpy="0 0 0"/>
   </joint>
 
 <gazebo>
@@ -169,8 +228,11 @@
       <left_joint>left_track_joint</left_joint>
       <right_joint>right_track_joint</right_joint>
 
-      <wheel_separation>0.190</wheel_separation>
-      <wheel_radius>0.025</wheel_radius>
+      <!-- WT-600 게이지 실측 0.245m (2026-08-27, 3법 수렴: 285−40 / 205+40 / 중심간 ~248.
+           리스팅 전폭 330은 트랙 가이드 포함 — 계산치 0.29 폐기. 회전보정으로 유효값 최종 확정) -->
+      <wheel_separation>0.245</wheel_separation>
+      <!-- 유효 구름 반경 (실주행 캘리브레이션 2026-08-26) -->
+      <wheel_radius>0.02567</wheel_radius>
 
       <max_wheel_torque>2.0</max_wheel_torque>
       <max_wheel_acceleration>1.0</max_wheel_acceleration>
@@ -183,5 +245,5 @@
       <robot_base_frame>base_footprint</robot_base_frame>
     </plugin>
   </gazebo>
-  
+
 </robot>

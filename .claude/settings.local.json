@@ -1,5 +1,9 @@
 {
   "permissions": {
+    "deny": [
+      "Read(Docs/전자회로기초/**)",
+      "Read(Docs_Beginner/**)"
+    ],
     "allow": [
       "PowerShell($gcc = Get-Command arm-none-eabi-gcc -ErrorAction SilentlyContinue; if \\($gcc\\) { Write-Output \"FOUND: $\\($gcc.Source\\)\"; & arm-none-eabi-gcc --version | Select-Object -First 1 } else { Write-Output \"NOT FOUND in PATH\" }; $make = Get-Command make -ErrorAction SilentlyContinue; if \\($make\\) { Write-Output \"MAKE: $\\($make.Source\\)\" } else { Write-Output \"MAKE: NOT FOUND\" })",
       "PowerShell($env:Path = \"C:\\\\ST\\\\STM32CubeCLT_1.21.0\\\\GNU-tools-for-STM32\\\\bin;\" + $env:Path; & \"c:\\\\Program Files \\(x86\\)\\\\GnuWin32\\\\bin\\\\make.exe\" -C firmware\\\\rover_jupiter_fw -j8 2>&1 | Select-Object -Last 80)",

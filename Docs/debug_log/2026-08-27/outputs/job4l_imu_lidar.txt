@@ -1,0 +1,53 @@
+===[A] iio permissions===
+/sys/bus/iio/devices/iio:device0 (accel_3d): buffer/enable=-rwxrwxrwx root:root scan_elements=-rwxrwxrwx root:root
+/sys/bus/iio/devices/iio:device1 (gyro_3d): buffer/enable=-rwxrwxrwx root:root scan_elements=-rwxrwxrwx root:root
+video plugdev 
+===[B] RealSense IMU 45s (accel+gyro, unite copy)===
+-- imu hz (15s):
+average rate: 199.637
+-- imu full sample:
+angular_velocity:
+  x: 0.001745329238474369
+  y: 0.0
+  z: 0.0
+--
+linear_acceleration:
+  x: 1.0493115186691284
+  y: -9.767423629760742
+  z: 0.11767979711294174
+-- accel/gyro raw topics:
+/camera/camera/accel/imu_info
+/camera/camera/accel/metadata
+/camera/camera/accel/sample
+/camera/camera/extrinsics/depth_to_accel
+/camera/camera/extrinsics/depth_to_gyro
+/camera/camera/gyro/imu_info
+/camera/camera/gyro/metadata
+/camera/camera/gyro/sample
+/camera/camera/imu
+/imu/data
+/imu/data_raw
+/imu/mag
+-- log warnings:
+      1 [INFO] [1787796361.174166248] [camera.camera]: Stopping Sensor: Motion Module
+      1 [INFO] [1787796361.186472304] [camera.camera]: Starting Sensor: Motion Module
+      1 [INFO] [1787796405.239420623] [camera.camera]: Stop Sensor: Motion Module
+===[C] LiDAR gate===
+lrwxrwxrwx 1 root root 7 Aug 27 10:18 /dev/rplidar -> ttyUSB0
+-- /scan hz:
+average rate: 10.015
+-- scan meta:
+  frame_id: lidar_link
+angle_min: -3.1241390705108643
+angle_max: 3.1415927410125732
+angle_increment: 0.0034828970674425364
+range_min: 0.15000000596046448
+range_max: 16.0
+-- ranges: n=1605 finite, min=0.33 max=7.38 median=1.34
+[rplidar_node-1] [INFO] [1787796407.002149037] [rplidar_node]: Firmware Ver: 1.02
+[rplidar_node-1] [INFO] [1787796407.002183022] [rplidar_node]: Hardware Rev: 18
+[rplidar_node-1] [INFO] [1787796408.505862038] [rplidar_node]: current scan mode: Standard, sample rate: 16 Khz, max_distance: 16.0 m, scan frequency:10.0 Hz, 
+===[D] rover topics===
+average rate: 50.002
+average rate: 26.613
+/imu/data /imu/data_raw /imu/mag /odometry/filtered /scan /wheel_odom /wheel_odom/conditioned 

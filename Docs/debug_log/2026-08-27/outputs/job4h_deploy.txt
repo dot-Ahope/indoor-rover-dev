@@ -1,0 +1,24 @@
+Finished <<< rover_bringup [0.69s]
+
+Summary: 2 packages finished [2.10s]
+===XACRO_CHECK===
+xacro OK (5948 bytes)
+XML valid
+===LAUNCH_FILES===
+/home/jetson/ros2_ws/install/rover_bringup/share/rover_bringup/config/:
+ekf.yaml
+slam.yaml
+
+/home/jetson/ros2_ws/install/rover_bringup/share/rover_bringup/launch/:
+base.launch.py
+camera.launch.py
+ekf.launch.py
+foxglove.launch.py
+lidar.launch.py
+__pycache__
+slam.launch.py
+===BUILD_LOG_TAIL===
+kernel: 5.15.185-tegra
+== [1/6] build deps
+Processing triggers for man-db (2.10.2-1) ...
+== [2/6] kernel sources (auto-detect L4T)

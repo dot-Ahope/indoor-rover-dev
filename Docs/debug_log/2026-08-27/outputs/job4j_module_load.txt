@@ -1,0 +1,27 @@
+===MODINFO===
+hid_sensor_hub           5.15.185-tegra SMP preempt mod_unload modversions aarch64
+hid_sensor_iio_common    5.15.185-tegra SMP preempt mod_unload modversions aarch64
+hid_sensor_trigger       5.15.185-tegra SMP preempt mod_unload modversions aarch64
+hid_sensor_accel_3d      5.15.185-tegra SMP preempt mod_unload modversions aarch64
+hid_sensor_gyro_3d       5.15.185-tegra SMP preempt mod_unload modversions aarch64
+===MODPROBE_HID===
+hid_sensor_hub loaded
+hid_sensor_accel_3d loaded
+hid_sensor_gyro_3d loaded
+hid_sensor_accel_3d    16384  0
+hid_sensor_gyro_3d     16384  0
+hid_sensor_trigger     20480  4 hid_sensor_gyro_3d,hid_sensor_accel_3d
+hid_sensor_iio_common    20480  3 hid_sensor_gyro_3d,hid_sensor_trigger,hid_sensor_accel_3d
+industrialio_triggered_buffer    16384  1 hid_sensor_trigger
+hid_sensor_hub         20480  4 hid_sensor_gyro_3d,hid_sensor_trigger,hid_sensor_iio_common,hid_sensor_accel_3d
+===UVCVIDEO_SWAP (카메라 미연결 → 안전)===
+Bus 001 Device 007: ID 8086:0b5c Intel Corp. Intel(R) RealSense(TM) Depth Camera 455f
+!! RealSense 연결됨 — uvcvideo 교체 보류
+===DMESG===
+[ 2243.101533] hid-generic 0003:8086:0B5C.0001: hidraw0: USB HID v1.10 Device [Intel(R) RealSense(TM) Depth Camera 455f Intel(R) RealSense(TM) Depth Camera 455f] on usb-3610000.usb-2.1.4/input5
+[ 2243.151336] uvcvideo 1-2.1.4:1.1: Unknown video format 00000050-0000-0010-8000-00aa00389b71
+[ 2243.153508] usb 1-2.1.4: Found UVC 1.50 device Intel(R) RealSense(TM) Depth Camera 455f (8086:0b5c)
+[ 2243.162979] usb 1-2.1.4: Found UVC 1.50 device Intel(R) RealSense(TM) Depth Camera 455f (8086:0b5c)
+[ 2243.180663] usbcore: registered new interface driver uvcvideo
+===BRINGUP_ALIVE===
+AGENT_DOWN

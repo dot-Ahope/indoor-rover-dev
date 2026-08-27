@@ -1,0 +1,136 @@
+===PROCS===
+293 /bin/bash /etc/systemd/nv-tee-supplicant.sh
+297 /usr/sbin/tee-supplicant
+299 optee_bus_scan
+159405 bash /tmp/job4g_diag.sh
+===TOP===
+top - 11:01:38 up  1:20,  0 users,  load average: 2.38, 4.36, 4.52
+Tasks: 271 total,   1 running, 270 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 10.5 us,  8.6 sy,  0.0 ni, 80.0 id,  0.0 wa,  0.0 hi,  1.0 si,  0.0 st
+MiB Mem :   7607.4 total,    988.4 free,    768.8 used,   5850.2 buff/cache
+MiB Swap:   3803.7 total,   3803.7 free,      0.0 used.   6568.3 avail Mem 
+
+    PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND
+    822 root      20   0  237040  12336   6384 S  68.8   0.2   0:29.64 polkitd
+    711 root      20   0  264860  18784  14932 S  12.5   0.2   0:05.95 Network+
+      1 root      20   0  169052  12356   7444 S   6.2   0.2   0:25.43 systemd
+    710 message+  20   0   10400   5584   3600 S   6.2   0.1   0:11.25 dbus-da+
+ 122378 root      20   0       0      0      0 I   6.2   0.0   0:00.21 kworker+
+===MEM===
+               total        used        free      shared  buff/cache   available
+Mem:           7.4Gi       768Mi       988Mi        37Mi       5.7Gi       6.4Gi
+Swap:          3.7Gi          0B       3.7Gi
+===OOM/KILL===
+===FULL_LOG===
+# HID MODULE BUILD START 2026-08-27 10:23:44
+kernel: 5.15.185-tegra
+== [1/6] build deps
+Processing triggers for man-db (2.10.2-1) ...
+== [2/6] kernel sources (auto-detect L4T)
+./nvdisplay/kernel-open/nvidia-drm/nvidia-drm-linux.c
+./nvdisplay/kernel-open/nvidia-drm/nvidia-drm.c
+./nvdisplay/kernel-open/Kbuild
+./nvdisplay/kernel-open/Makefile
+./nvdisplay/kernel-open/count-lines.mk
+./nvdisplay/SECURITY.md
+./nvdisplay/CONTRIBUTING.md
+./nvdisplay/COPYING
+./nvdisplay/README.md
+./nvdisplay/Makefile
+./nvdisplay/version.mk
+[INFO] 2026-08-27 10:26:04 - Kernel sources and modules extracted to /usr/src/
+[INFO] 2026-08-27 10:26:04 - Copying current kernel config...
+[INFO] 2026-08-27 10:26:04 - libssl-dev is already installed.
+[INFO] 2026-08-27 10:26:04 - Kernel source setup complete!
+VERSION = 5
+PATCHLEVEL = 15
+SUBLEVEL = 185
+EXTRAVERSION =
+CONFIG_LOCALVERSION="-tegra"
+== [3/6] uvc patches (optional — 실패 시 HID 모듈만 진행)
+Applying patch 1: realsense-metadata-focal-hwe-5.15.patch (Streaming formats)...
+patching file drivers/media/usb/uvc/uvc_driver.c
+Hunk #1 succeeded at 3220 (offset 56 lines).
+patching file drivers/media/usb/uvc/uvcvideo.h
+Applying patch 2: realsense-camera-formats-focal-hwe-5.15.patch (UVC metadata attributes)...
+patching file drivers/media/usb/uvc/uvc_driver.c
+patching file drivers/media/usb/uvc/uvcvideo.h
+patching file drivers/media/v4l2-core/v4l2-ioctl.c
+Hunk #2 succeeded at 1400 (offset 12 lines).
+patching file include/uapi/linux/videodev2.h
+Hunk #1 succeeded at 736 (offset 5 lines).
+All patches applied successfully to kernel source at '/usr/src/kernel/kernel-jammy-src'.
+Next steps: See instructions.
+PATCH_OK
+== [4/6] config: HID sensor modules = m
+CONFIG_LOCALVERSION="-tegra"
+CONFIG_MODVERSIONS=y
+CONFIG_HID_SENSOR_HUB=m
+CONFIG_HID_SENSOR_ACCEL_3D=m
+CONFIG_HID_SENSOR_IIO_COMMON=m
+CONFIG_HID_SENSOR_IIO_TRIGGER=m
+CONFIG_HID_SENSOR_GYRO_3D=m
+== [5/6] build Image + modules (long)
+  HOSTCC  scripts/dtc/libfdt/fdt_strerror.o
+  CC      kernel/trace/error_report-traces.o
+  CC [M]  fs/cifs/smb2maperror.o
+  CC      drivers/acpi/acpica/uterror.o
+  CC      drivers/acpi/acpica/utxferror.o
+  CC      lib/fdt_strerror.o
+  CC      net/9p/error.o
+  CC      drivers/scsi/scsi_error.o
+  LD [M]  drivers/media/usb/uvc/uvcvideo.o
+  CC [M]  drivers/crypto/caam/error.o
+  CC [M]  drivers/hid/hid-sensor-hub.o
+  CC [M]  drivers/iio/accel/hid-sensor-accel-3d.o
+  CC [M]  drivers/iio/common/hid-sensors/hid-sensor-attributes.o
+  CC [M]  drivers/iio/common/hid-sensors/hid-sensor-trigger.o
+  CC [M]  drivers/iio/gyro/hid-sensor-gyro-3d.o
+  CC [M]  drivers/crypto/caam/error.mod.o
+  CC [M]  drivers/hid/hid-sensor-hub.mod.o
+  CC [M]  drivers/iio/accel/hid-sensor-accel-3d.mod.o
+  CC [M]  drivers/iio/common/hid-sensors/hid-sensor-iio-common.mod.o
+  CC [M]  drivers/iio/common/hid-sensors/hid-sensor-trigger.mod.o
+  CC [M]  drivers/iio/gyro/hid-sensor-gyro-3d.mod.o
+  LD [M]  drivers/crypto/caam/error.ko
+  LD [M]  drivers/media/usb/uvc/uvcvideo.ko
+
+real	34m36.984s
+user	153m11.215s
+sys	21m6.462s
+-- vermagic:
+depends:        
+vermagic:       5.15.185-tegra SMP preempt mod_unload modversions aarch64
+== [6/6] install to /lib/modules/5.15.185-tegra + depmod
+installed /lib/modules/5.15.185-tegra/kernel/drivers/hid/hid-sensor-hub.ko
+installed /lib/modules/5.15.185-tegra/kernel/drivers/iio/common/hid-sensors/hid-sensor-iio-common.ko
+installed /lib/modules/5.15.185-tegra/kernel/drivers/iio/common/hid-sensors/hid-sensor-trigger.ko
+installed /lib/modules/5.15.185-tegra/kernel/drivers/iio/accel/hid-sensor-accel-3d.ko
+installed /lib/modules/5.15.185-tegra/kernel/drivers/iio/gyro/hid-sensor-gyro-3d.ko
+installed patched uvcvideo.ko (backup .original)
+filename:       /lib/modules/5.15.185-tegra/kernel/drivers/hid/hid-sensor-hub.ko
+vermagic:       5.15.185-tegra SMP preempt mod_unload modversions aarch64
+# BUILD DONE 2026-08-27 11:00:54
+BUILD_SUCCESS
+===TREE_STATE===
+-rw-r--r-- 1 root root 263696 Aug 27 10:26 /usr/src/kernel/kernel-jammy-src/.config
+-rw-r--r-- 1 root root 125919 Aug 27 10:26 /usr/src/kernel/kernel-jammy-src/include/generated/autoconf.h
+-rwxr-xr-x 1 root root  13856 Aug 27 10:26 /usr/src/kernel/kernel-jammy-src/scripts/basic/fixdep
+-rw-r--r-- 1 root root   32970 10:58:40 /usr/src/kernel/kernel-jammy-src/modules.order
+-rw-r--r-- 1 root root 1147795 10:59:13 /usr/src/kernel/kernel-jammy-src/Module.symvers
+gcc: gcc (Ubuntu 11.4.0-1ubuntu1~22.04.3) 11.4.0
+/usr/bin/aarch64-linux-gnu-gcc
+/usr/bin/gcc
+/usr/bin/make
+/usr/bin/bc
+/usr/bin/flex
+/usr/bin/bison
+===LAST_MODIFIED_IN_TREE===
+15:33:17.0000000000 /usr/src/kernel/kernel-jammy-src/usr/default_cpio_list
+15:33:17.0000000000 /usr/src/kernel/kernel-jammy-src/usr/gen_init_cpio.c
+15:33:17.0000000000 /usr/src/kernel/kernel-jammy-src/usr/gen_initramfs.sh
+15:33:17.0000000000 /usr/src/kernel/kernel-jammy-src/usr/include
+15:33:17.0000000000 /usr/src/kernel/kernel-jammy-src/usr/initramfs_data.S
+15:33:17.0000000000 /usr/src/kernel/kernel-jammy-src/usr/Kconfig
+15:33:17.0000000000 /usr/src/kernel/kernel-jammy-src/usr/Makefile
+15:33:17.0000000000 /usr/src/kernel/kernel-jammy-src/virt/Makefile
