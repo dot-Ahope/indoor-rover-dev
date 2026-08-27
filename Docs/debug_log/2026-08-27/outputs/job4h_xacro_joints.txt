@@ -1,0 +1,13 @@
+118:  <joint name="lidar_joint" type="fixed">
+121-    <origin rpy="0 0 3.14159265" xyz="0.0 0.0 0.28579999999999994"/>
+133:  <joint name="camera_joint" type="fixed">
+136-    <origin rpy="0 0 0" xyz="0.0822 0.0475 0.24349999999999994"/>
+===BUILD===
+CONFIG_HID_SENSOR_IIO_TRIGGER=m
+CONFIG_HID_SENSOR_GYRO_3D=m
+== [5/6] build Image + modules (long)
+total 16
+drwxr-xr-x  3 root  root 4096 Aug 27 10:25 .
+drwxr-xr-x 14 root  root 4096 Aug 27 10:26 ..
+drwxr-xr-x 31 25011 dip  4096 Aug 27 10:26 kernel-jammy-src
+-rw-r--r--  1 25011 dip  3657 Jan 15  2026 Makefile

@@ -23,7 +23,7 @@
 
 #define ODOM_HZ          100u
 #define ODOM_DT_S        (1.0f / (float)ODOM_HZ)
-#define INV_WHEEL_BASE   (1.0f / WHEEL_BASE_M)   /* = 5.263... */
+#define INV_WHEEL_BASE   (1.0f / WHEEL_BASE_M)   /* = 4.082... (WT-600 실측 0.245m, 2026-08-27) */
 #define TWO_PI           6.28318530718f
 #define PI               3.14159265359f
 

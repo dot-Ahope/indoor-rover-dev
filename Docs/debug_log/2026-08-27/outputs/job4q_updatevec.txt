@@ -1,0 +1,11 @@
+
+After applying transform to base_link, update vector is:
+(false false false false false false false false false true false false false false false )
+
+After applying transform to base_link, measurement is:
+Linear: (0 0 0)
+===MEAS===
+After applying transform to base_link, measurement is:
+Linear: (0 0 0)
+Rotational: (0.0003141592629253858889 0.0024286256353370843861 -7.2431163396686248424e-05)
+
