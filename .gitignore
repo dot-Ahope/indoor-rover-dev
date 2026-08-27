@@ -34,6 +34,9 @@ firmware/**/libmicroros/
 .DS_Store
 Thumbs.db
 
+# === 초보자 가이드 (로컬 전용, GitHub 미포함) ===
+Docs_Beginner/
+
 # === Python 유틸 ===
 __pycache__/
 *.pyc

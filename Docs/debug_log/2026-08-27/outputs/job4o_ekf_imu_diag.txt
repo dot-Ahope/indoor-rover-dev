@@ -1,0 +1,37 @@
+===NOW===
+1787796826.908708291
+===/imu/data stamp===
+sec: 1787796828
+nanosec: 881023232
+---
+===/camera/camera/imu stamp===
+sec: 1787796830
+nanosec: 929852160
+---
+===/wheel_odom/conditioned stamp===
+sec: 1787796834
+nanosec: 878685507
+---
+===/odometry/filtered stamp===
+sec: 1787796836
+nanosec: 585461504
+---
+===/imu/data subscribers===
+Node name: sensor_conditioner
+Node namespace: /
+Endpoint type: PUBLISHER
+  Reliability: BEST_EFFORT
+  Durability: VOLATILE
+Node name: ekf_filter_node
+Node namespace: /
+Endpoint type: SUBSCRIPTION
+  Reliability: BEST_EFFORT
+  Durability: VOLATILE
+===gyro z samples (10, conditioned)===
+0.00031415926292538643 0.0020594885013997554 0.00031415926292538643 -0.0014311699755489827 0.00031415926292538643 -0.0014311699755489827 0.00031415926292538643 -0.0014311699755489827 0.00031415926292538643 0.0020594885013997554 
+===filtered vyaw samples (10)===
+0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 
+===camera global time param===
+===EKF params===
+String value is: /imu/data
+Boolean values are: [False, False, False, False, False, False, False, False, False, False, False, True, False, False, Fa

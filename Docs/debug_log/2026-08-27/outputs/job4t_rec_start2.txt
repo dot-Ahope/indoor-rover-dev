@@ -1,0 +1,1 @@
+RECORDING (180s) gyro_lines=694 ekf_lines=106

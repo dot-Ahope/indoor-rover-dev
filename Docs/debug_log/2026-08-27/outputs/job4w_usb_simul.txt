@@ -1,0 +1,12 @@
+-- precheck scan:
+average rate: 10.011
+-- precheck depth:
+average rate: 26.361
+===SIMULTANEOUS 15s===
+  scan   average rate: 10.016  min: 0.095s max: 0.113s std dev: 0.00685s window: 100 
+  depth  average rate: 28.838  min: 0.032s max: 0.067s std dev: 0.00656s window: 100 
+  color  average rate: 13.264  min: 0.064s max: 0.267s std dev: 0.03223s window: 100 
+  imu    average rate: 199.592  min: 0.004s max: 0.006s std dev: 0.00016s window: 100 
+  odom   average rate: 49.994  min: 0.018s max: 0.022s std dev: 0.00035s window: 100 
+-- dmesg usb errors (since boot):
+-- lidar log:

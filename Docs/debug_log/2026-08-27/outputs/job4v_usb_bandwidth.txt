@@ -1,0 +1,50 @@
+===[0] USB topology===
+/:  Bus 02.Port 1: Dev 1, Class=root_hub, Driver=tegra-xusb/4p, 10000M
+    |__ Port 1: Dev 2, If 0, Class=Hub, Driver=hub/4p, 10000M
+        |__ Port 3: Dev 3, If 0, Class=Video, Driver=uvcvideo, 5000M
+        |__ Port 3: Dev 3, If 1, Class=Video, Driver=uvcvideo, 5000M
+        |__ Port 3: Dev 3, If 2, Class=Video, Driver=uvcvideo, 5000M
+        |__ Port 3: Dev 3, If 3, Class=Video, Driver=uvcvideo, 5000M
+        |__ Port 3: Dev 3, If 4, Class=Video, Driver=uvcvideo, 5000M
+        |__ Port 3: Dev 3, If 5, Class=Human Interface Device, Driver=usbhid, 5000M
+/:  Bus 01.Port 1: Dev 1, Class=root_hub, Driver=tegra-xusb/4p, 480M
+    |__ Port 2: Dev 2, If 0, Class=Hub, Driver=hub/4p, 480M
+        |__ Port 1: Dev 10, If 0, Class=Vendor Specific Class, Driver=usb_ch341, 12M
+        |__ Port 4: Dev 11, If 0, Class=Hub, Driver=hub/4p, 480M
+            |__ Port 1: Dev 12, If 0, Class=Vendor Specific Class, Driver=cp210x, 12M
+    |__ Port 3: Dev 3, If 0, Class=Wireless, Driver=rtk_btusb, 12M
+    |__ Port 3: Dev 3, If 1, Class=Wireless, Driver=rtk_btusb, 12M
+  1-2.1: 1a86:7523 speed=12M  USB Serial
+  1-2.4.1: 10c4:ea60 speed=12M  CP2102N USB to UART Bridge Controller
+  2-1.3: 8086:0b5c speed=5000M  Intel(R) RealSense(TM) Depth Camera 455f
+===[1] restart camera FULL (depth 640x480x30 + color 640x480x15 + IMU)===
+camera FULL already running
+[realsense2_camera_node-1] [INFO] [1787800176.813550985] [camera.camera]: Device USB type: 3.2
+[realsense2_camera_node-1] [INFO] [1787800182.857929822] [camera.camera]: Device USB type: 3.2
+[realsense2_camera_node-1] [INFO] [1787800183.188267086] [camera.camera]: Open profile: stream_type: Depth(0), Format: Z16, Width: 640, Heig
+[realsense2_camera_node-1] [INFO] [1787800183.328439171] [camera.camera]: Open profile: stream_type: Color(0), Format: RGB8, Width: 640, Hei
+[realsense2_camera_node-1] [INFO] [1787800183.353446726] [camera.camera]: Open profile: stream_type: Accel(0)Format: MOTION_XYZ32F, FPS: 200
+[realsense2_camera_node-1] [INFO] [1787800183.354508072] [camera.camera]: Open profile: stream_type: Gyro(0)Format: MOTION_XYZ32F, FPS: 200
+===[A] camera FULL + LiDAR simultaneous (15s, window 100)===
+  scan   
+  depth  average rate: 28.839  min: 0.032s max: 0.067s std dev: 0.00650s window: 100 
+  color  average rate: 14.411  min: 0.065s max: 0.134s std dev: 0.01302s window: 100 
+  imu    average rate: 199.588  min: 0.005s max: 0.006s std dev: 0.00019s window: 100 
+  odom   average rate: 49.991  min: 0.017s max: 0.022s std dev: 0.00046s window: 100 
+-- dmesg usb errors during A:
+-- camera log drops:
+===[B] camera FULL alone (LiDAR stopped, 15s)===
+  depth  average rate: 29.117  min: 0.033s max: 0.067s std dev: 0.00574s window: 100 
+  color  average rate: 14.551  min: 0.065s max: 0.134s std dev: 0.01140s window: 100 
+  imu    average rate: 199.641  min: 0.005s max: 0.005s std dev: 0.00014s window: 100 
+-- dmesg usb errors during B:
+===[C] LiDAR restart + CPU===
+average rate: 10.006  min: 0.093s max: 0.115s std dev: 0.00703s window: 65 
+%Cpu(s):  9.7 us,  4.9 sy,  0.0 ni, 82.5 id,  0.0 wa,  1.9 hi,  1.0 si,  0.0 st
+MiB Mem :   7607.4 total,    430.4 free,   1074.0 used,   6103.0 buff/cache
+  python3                cpu=41.2% mem=0.7%
+  realsen+               cpu=17.6% mem=1.2%
+  rplidar+               cpu=11.8% mem=0.3%
+  kworker+               cpu=5.9% mem=0.0%
+  ekf_node               cpu=5.9% mem=0.4%
+  kworker+               cpu=5.9% mem=0.0%
