@@ -1,0 +1,29 @@
+===PROCS===
+160583 /opt/ros/humble/lib/rplidar_ros/rplidar_node --ros-args -r __node:=rplidar_node --p
+160891 /opt/ros/humble/lib/realsense2_camera/realsense2_camera_node --ros-args -r __node:=
+161164 python3 /home/jetson/ros2_ws/install/rover_bringup/lib/rover_bringup/sensor_conditi
+161166 /opt/ros/humble/lib/robot_localization/ekf_node --ros-args -r __node:=ekf_filter_no
+===camera imu hz===
+average rate: 199.628
+===conditioner log===
+[sensor_conditioner.py-1] [INFO] [1787796594.367445679] [sensor_conditioner]: gyro bias calibrated: (-0.00106, -0.00007, -0.00031) rad/s, std=(0.0022, 0.0026, 0.0015)
+===/imu/data hz===
+average rate: 199.686
+===/imu/data frame===
+camera_imu_optical_frame
+---
+===filtered hz===
+average rate: 30.000
+===TF base_link->camera_imu_optical_frame===
+- Translation: [0.066, 0.017, 0.251]
+- Rotation: in RPY (degree) [-90.000, -0.000, -90.000]
+===EKF warnings===
+(end)
+===STATIC 40s yaw===
+z: 0.0
+w: 1.0
+z: 0.0
+w: 1.0
+-- filtered vyaw:
+0.0
+---

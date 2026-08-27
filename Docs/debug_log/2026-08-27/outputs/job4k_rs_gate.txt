@@ -1,0 +1,60 @@
+===[1] uvcvideo swap + USB re-enumerate===
+uvcvideo unloaded
+uvcvideo reloaded: /lib/modules/5.15.185-tegra/kernel/drivers/media/usb/uvc/uvcvideo.ko
+realsense sysfs: /sys/bus/usb/devices/1-2.1.4  speed=480Mbps
+re-enumerated
+-- iio devices:
+iio:device0
+iio:device1
+trigger0
+trigger1
+  /sys/bus/iio/devices/iio:device0: accel_3d
+  /sys/bus/iio/devices/iio:device1: gyro_3d
+-- hid binding:
+total 0
+lrwxrwxrwx 1 root root 0 Aug 27 10:18 0003:8086:0B5C.0001 -> ../../../devices/platform/bus@0/3610000.usb/usb1/1-2/1-2.1/1-2.1.4/1-2.1.4:1.5/0003:8086:0B5C.0001
+  0003:8086:0B5C.0001 -> hid-sensor-hub
+-- dmesg:
+[ 4899.227131] hid-sensor-hub 0003:8086:0B5C.0001: No report with id 0xffffffff found
+[ 4978.915622] usbcore: deregistering interface driver uvcvideo
+[ 4979.072066] usb 1-2.1.4: Found UVC 1.50 device Intel(R) RealSense(TM) Depth Camera 455f (8086:0b5c)
+[ 4979.080524] input: Intel(R) RealSense(TM) Depth Ca as /devices/platform/bus@0/3610000.usb/usb1/1-2/1-2.1/1-2.1.4/1-2.1.4:1.0/input/input6
+[ 4979.082063] usb 1-2.1.4: Found UVC 1.50 device Intel(R) RealSense(TM) Depth Camera 455f (8086:0b5c)
+[ 4979.100794] usbcore: registered new interface driver uvcvideo
+-- lsusb -t (RealSense speed):
+            |__ Port 1: Dev 6, If 0, Class=Vendor Specific Class, Driver=cp210x, 12M
+            |__ Port 4: Dev 7, If 4, Class=Video, Driver=uvcvideo, 480M
+            |__ Port 4: Dev 7, If 2, Class=Video, Driver=uvcvideo, 480M
+            |__ Port 4: Dev 7, If 0, Class=Video, Driver=uvcvideo, 480M
+            |__ Port 4: Dev 7, If 5, Class=Human Interface Device, Driver=usbhid, 480M
+            |__ Port 4: Dev 7, If 3, Class=Video, Driver=uvcvideo, 480M
+            |__ Port 4: Dev 7, If 1, Class=Video, Driver=uvcvideo, 480M
+        |__ Port 4: Dev 4, If 0, Class=Vendor Specific Class, Driver=usb_ch341, 12M
+===[2] RealSense gate: depth 640x480x30 + IMU 200Hz (45s)===
+-- depth hz:
+average rate: 25.505
+-- imu hz:
+average rate: 199.625
+-- imu sample:
+x: 0.0
+y: -0.001745329238474369
+z: 0.0
+-- node log (USB type / errors / IMU):
+[INFO] [1787796236.396327071] [camera.camera]: Built with LibRealSense v2.58.3
+[INFO] [1787796236.396365537] [camera.camera]: Running with LibRealSense v2.58.3
+[INFO] [1787796236.446480273] [camera.camera]: Device USB type: 2.1
+[INFO] [1787796242.501100861] [camera.camera]: Device USB type: 2.1
+[WARN] [1787796242.501858008] [camera.camera]: For the 'unite_imu_method' param update to take effect, re-enable either gyro or accel stream.
+ 27/08 11:04:02,990 WARNING [281472985131232] (ds-calib-parsers.cpp:36) IMU Calibration is not available, default intrinsic and extrinsic will be used.
+[INFO] [1787796243.004610124] [camera.camera]: Open profile: stream_type: Gyro(0)Format: MOTION_XYZ32F, FPS: 200
+ 27/08 11:04:03,004 WARNING [281472636954848] (backend-hid.cpp:740) HID set_power 1 failed for /sys/devices/platform/bus@0/3610000.usb/usb1/1-2/1-2.1/1-2.1.4/1-2.1.4:1.5/0003:8086:0B5C.0002/HID-SENSOR-200073.2.auto/iio:device0/buffer/enable
+[WARN] [1787796243.815950299] [camera.camera]: XXX Hardware Notification:Motion Module failure,1.7878e+12,Error,Hardware Error
+[WARN] [1787796243.816126433] [camera.camera]: Hardware Notification:Motion Module failure,1.7878e+12,Error,Hardware Error
+===[3] restore bringup (agent+RSP+EKF)===
+microros_agent Up 13 seconds
+/ekf_filter_node
+/robot_state_publisher
+/rover_jupiter
+/sensor_conditioner
+/transform_listener_impl_aaaaeaa7c190
+NEXT: 보드 RESET → /rover_jupiter 세션 재수립

@@ -1,0 +1,14 @@
+Summary: 1 package finished [0.81s]
+                  false, true,  false,
+                  false, false, false]
+-- conditioner:
+nsor_conditioner]: gyro bias calibrated: (-0.00079, -0.00015, -0.00022) rad/s, std=(0.0023, 0.0026, 0.0016)
+-- filtered vyaw samples (should be small NONZERO now):
+-0.0001645345638334986 0.0003562319761422508 7.685976779213768e-05 -0.0021886825500740965 -3.000647930429502e-06 0.0021349488865077364 -0.0008617396076124216 0.0010532830931397703 
+-- filtered hz:
+average rate: 29.998
+===STATIC 30s yaw===
+z: 0.0006326884251663242
+w: 0.9999997998526583
+z: 0.0015355513077757346
+w: 0.9999988210403956

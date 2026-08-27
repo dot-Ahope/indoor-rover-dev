@@ -1,0 +1,64 @@
+wsl: ø»ì·´ $±¸ÒÌÆ¹Ð ¨ºÜ´|¹ ¬À©Æ`Õ Lµ”² wsl2.localhostForwarding $ÁÈtÇ È©Æ´ÀÉ JÅµÂÈ²ä².
+===DEBUG FILE SIZE===
+  710900 77682297 /tmp/ekf_debug.txt
+===topic mentions===
+  23518 imu0_twist
+   5892 odom0_twist
+   4712 imu0
+   2354 imu0_twist_twist
+   1183 odom0
+    590 odom0_twist_twist
+      1 odom0_twist_rejection_threshold
+      1 odom0_pose_rejection_threshold
+===transform / ignore / drop lines===
+   2944 Transformed covariance is 
+   2944 After applying transform to base_link, update vector is:
+   2944 After applying transform to base_link, measurement is:
+   2354 camera_imu_optical_frame->base_link transform:
+    590 base_link->base_link transform:
+      1 transform_timeout is 0
+      1 transform_time_offset is 0
+===imu0 callback context (first)===
+41:	imu0_twist_rejection_threshold is 8
+42-	imu0_linear_acceleration_rejection_threshold is 1.7977e+308
+43-	imu0_remove_gravitational_acceleration is true
+44-	imu0 pose update vector is (false false false false false false false false false false false false false false false )
+45-	imu0 twist update vector is (false false false false false false false false false false false true false false false )
+46-	imu0 acceleration update vector is (false false false false false false false false false false false false false false false )
+47------- RosFilter<T>::integrateMeasurements ------
+48-
+49-Integration time is 1787797048.1503961086
+50-0 measurements in queue.
+51-Filter not yet initialized.
+52-
+53------ /RosFilter<T>::integrateMeasurements ------
+--
+629:------ RosFilter<T>::twistCallback (imu0_twist) ------
+630-Twist message:
+631:0xaaaae6e54340Update vector for imu0_twist is:
+632-(false false false false false false false false false false false true false false false )
+633:------ RosFilter<T>::prepareTwist (imu0_twist) ------
+634-Original measurement as tf object:
+635-Linear: (0 0 0)
+636-Rotational: (-0.0024286256353370843861 7.2431163396686316187e-05 0.000314159262925386431)
+637-
+638-Original update vector:
+639-(false false false false false false false false false false false true false false false )
+640-
+641-Original covariance matrix:
+642-[0           0           0           0           0           0           
+643- 0           0           0           0           0           0           
+644- 0           0           0           0           0           0           
+645- 0           0           0           0.0004      0           0           
+--
+669:----- /RosFilter<T>::prepareTwist (imu0_twist) ------
+670:Enqueued new measurement for imu0_twist_twist
+671:Last message time for imu0_twist is now 1.7878e+09
+672-
+673:----- /RosFilter<T>::twistCallback (imu0_twist) ------
+674-
+675------ /RosFilter<T>::imuCallback (imu0) ------
+676------- RosFilter<T>::imuCallback (imu0) ------
+===stdout warnings===
+===RESTORE ekf launch===
+2
