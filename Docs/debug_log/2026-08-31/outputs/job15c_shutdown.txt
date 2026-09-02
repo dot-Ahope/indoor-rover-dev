@@ -1,0 +1,8 @@
+wsl: ø»ì·´ $±¸ÒÌÆ¹Ğ ¨ºÜ´|¹ ¬À©Æ`Õ Lµ”² wsl2.localhostForwarding $ÁÈtÇ È©Æ´ÀÉ JÅµÂÈ²ä².
+=== ëª¨í„° ì •ì§€ (0 cmd_vel) ===
+=== Jetson ë…¸ë“œ ì¢…ë£Œ ===
+=== micro-ROS agent ì¢…ë£Œ ===
+agent ì¢…ë£Œë¨
+=== í™•ì¸ ===
+ë‚¨ì€ ë…¸ë“œ: /camera/camera /foxglove_bridge /joy_node /robot_state_publisher /rover_jupiter /rplidar_node 
+ì™„ë£Œ â€” ë¡œë²„ ì†ìœ¼ë¡œ ì˜®ê²¨ ì¶©ì „ ê°€ëŠ¥

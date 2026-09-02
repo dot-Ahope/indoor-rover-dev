@@ -1,0 +1,14 @@
+/usr/lib/python3/dist-packages/numpy/lib/nanfunctions.py:1670: RuntimeWarning: Degrees of freedom <= 0 for slice.
+  var = nanvar(a, axis=axis, dtype=dtype, out=out, ddof=ddof,
+15초간 로버 정면에서 종이를 흔드세요...
+lidar→base_link yaw = 180.0 deg
+변동 큰(종이) 섹터 — base_link 프레임 30deg bin (0=전방, +90=좌, -90=우, ±180=후):
+  [-180..-150]  std=0.018  near= 2045  ##############################
+  [-150..-120]  std=0.007  near=  444  ###########
+  [-120.. -90]  std=0.019  near= 1797  ##############################
+  [ +30.. +60]  std=0.005  near=  276  ######
+  [ +60.. +90]  std=0.001  near=22500  ##############################
+  [ +90..+120]  std=0.002  near=18787  ##############################
+  [+120..+150]  std=0.002  near=   64  #
+
+=> 종이 중심 ≈ -165 deg → 후방(yaw 여전히 반대)

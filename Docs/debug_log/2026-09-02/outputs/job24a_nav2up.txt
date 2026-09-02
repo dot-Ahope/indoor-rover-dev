@@ -1,0 +1,41 @@
+=== 전제 스택 확인 ===
+  /wheel_odom            average rate: 50.006
+  /odometry/filtered     average rate: 30.102
+  /scan                  average rate: 9.958
+  /map                     map->odom TF: - Translation: [-0.116, 0.085, 0.000]
+
+=== Nav2 기동 ===
+=== 노드 ===
+  /behavior_server
+  /bt_navigator
+  /bt_navigator_navigate_through_poses_rclcpp_node
+  /bt_navigator_navigate_to_pose_rclcpp_node
+  /controller_server
+  /lifecycle_manager_navigation
+  /planner_server
+  /smoother_server
+  /velocity_smoother
+  /waypoint_follower
+
+=== lifecycle 상태 ===
+  /controller_server     active [3]
+  /planner_server        active [3]
+  /bt_navigator          active [3]
+  /behavior_server       active [3]
+  /velocity_smoother     active [3]
+
+=== costmap 발행 ===
+  /local_costmap/costmap     average rate: 1.667
+  /global_costmap/costmap    average rate: 0.667
+
+=== 오류 로그 (있으면) ===
+
+=== CPU/부하 ===
+  load: 7.13 3.06 2.06
+    COMMAND           %CPU%
+    python3           47.1%
+    foxglov+          27.5%
+    rplidar+          18.6%
+    realsen+          12.7%
+    ekf_node          12.7%
+    lifecyc+          10.8%

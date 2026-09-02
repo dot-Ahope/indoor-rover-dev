@@ -1,0 +1,10 @@
+=== 소스별 stamp vs 현재시각 (delay 직접 측정) ===
+현재 ROS시각(Jetson): 1788240046.717  (use_sim_time 아니면 wall clock)
+  /wheel_odom                stamp=1788240046.703  delay(now-stamp)=+0.014s
+  /odometry/filtered         stamp=1788240046.035  delay(now-stamp)=+0.683s
+  /camera/camera/imu         stamp=1788240046.706  delay(now-stamp)=+0.012s
+  /scan_raw                  stamp=1788240046.043  delay(now-stamp)=+0.674s
+  /scan                      stamp=1788240046.042  delay(now-stamp)=+0.675s
+
+  ★ 보드(wheel_odom) vs 카메라(imu) stamp 차이 = -0.002s
+    (0에 가까워야 정상. 크면 보드 micro-ROS 클럭이 Jetson과 어긋남)

@@ -1,0 +1,7 @@
+=== W4 SLIP RECALIB (WT-600, gyro reference) — 사용자 ! 실행 결과 ===
+[L-slow] cmd=+0.30 x4.0s | gyro= +32.95deg wheel= +68.36deg | factor=0.482 @wheel|vyaw|~0.30
+[L-fast] cmd=+0.50 x3.0s | gyro= +46.27deg wheel=+115.08deg | factor=0.402 @wheel|vyaw|~0.54
+[R-slow] cmd=-0.30 x4.0s | gyro= -30.21deg wheel= -70.34deg | factor=0.429 @wheel|vyaw|~0.33
+[R-fast] cmd=-0.50 x3.0s | gyro= -63.84deg wheel=-115.48deg | factor=0.553 @wheel|vyaw|~0.55
+종료 정지 twist: -0.0022 rad/s
+판단: 속도 의존성 없음(평균 0.47, std 0.06), 단일 상수 0.46 채택. 휠 적분 대칭·일관 → 변동은 자이로(실회전)측 = 스키드 물리특성.

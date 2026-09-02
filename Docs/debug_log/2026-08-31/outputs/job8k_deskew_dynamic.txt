@@ -1,0 +1,33 @@
+===spin.log===
+SPIN_START 09:41:52
+START clr=64.7cm
+  ...+0deg
+  ...+5deg
+  ...+13deg
+  ...+24deg
+  ...+34deg
+  ...+45deg
+  ...+55deg
+  ...+63deg
+  ...+71deg
+  ...+78deg
+  ...+85deg
+  ...+92deg
+  ...+102deg
+  ...+113deg
+  ...+124deg
+  ...+135deg
+  ...+149deg
+  ...+165deg
+SPIN_END reason=DONE_180 acc=+177deg
+  회전중 지연: /scan_raw 101ms(밀림 1.28deg) → /scan 9ms(밀림 0.12deg @0.22rad/s)
+SPIN_EXIT 09:42:30
+===회전 중 slam 드롭 (queue full) 최근 수===
+2
+[async_slam_toolbox_node-1] [INFO] [1788135511.142854142] [slam_toolbox]: Message Filter d
+[async_slam_toolbox_node-1] [INFO] [1788136745.934649824] [slam_toolbox]: Message Filter d
+===정지 확인===
+0.0012573568626179634
+---
+===맵 크기===
+width: 202 height: 221 

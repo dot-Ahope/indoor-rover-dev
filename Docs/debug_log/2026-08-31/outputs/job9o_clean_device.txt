@@ -1,0 +1,10 @@
+===모든 joy 프로세스 종료===
+잔존 joy: 0개
+===장치 상태===
+Bus 001 Device 007: ID 0079:181c DragonRise Inc. Controller
+  DragonRise 연결됨
+crw-rw-r--+ 1 root input 13, 0 Aug 31 15:16 /dev/input/js0
+======= 클린 원시 읽기 8초 — 스틱 움직여주세요 =======
+INIT 23, 조작이벤트 0, 움직인축 {}
+=> ❌ 이벤트 0 (장치/케이블/모드 점검 — 조이스틱 USB 재연결 권장)
+END

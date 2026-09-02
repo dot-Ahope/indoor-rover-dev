@@ -1,0 +1,15 @@
+===agent 컨테이너===
+microros_agent Up About an hour
+===agent 최근 로그===
+===토픽 존재===
+/wheel_odom /wheel_odom/conditioned 
+===wheel_odom 10s hz===
+WARNING: topic [/wheel_odom] does not appear to be published yet
+===battery===
+WARNING: topic [/battery] does not appear to be published yet
+NO_BATTERY
+===heartbeat===
+WARNING: topic [/rover/f5b_heartbeat] does not appear to be published yet
+NO_HB
+===imu_data_raw (보드 IMU, 세션 살아있으면 나옴)===
+WARNING: topic [/imu/data_raw] does not appear to be published yet

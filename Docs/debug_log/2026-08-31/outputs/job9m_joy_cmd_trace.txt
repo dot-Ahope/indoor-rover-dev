@@ -1,0 +1,8 @@
+노드: /joy_node /teleop_twist_joy_node 
+/joy 구독자(teleop 연결?): 1
+======= 15초! 좌스틱 앞으로 끝까지 + 우스틱 좌우 크게 =======
+/joy 수신 297, /cmd_vel_test 수신 295
+  axis[1] 범위: +0.00~+0.00   → linear.x: +0.000~+0.000
+  axis[2] 범위: +0.00~+0.00   → angular.z: +0.000~+0.000
+  => /joy 자체가 안 움직임 (스틱 조작 안됨/joy_node 문제)
+END

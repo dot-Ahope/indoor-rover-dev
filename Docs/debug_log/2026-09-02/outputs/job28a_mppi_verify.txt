@@ -1,0 +1,11 @@
+=== 컨트롤러 로드 로그 ===
+[controller_server-1] [INFO] [1788333091.316967604] [controller_server]: Controller Server has general_goal_checker  goal checkers available.
+[controller_server-1] [INFO] [1788333091.318890550] [controller_server]: Created controller : FollowPath of type nav2_regulated_pure_pursuit_controller::RegulatedPurePursuitController
+[controller_server-1] [INFO] [1788333091.341349016] [controller_server]: Created controller : FollowPathMPPI of type nav2_mppi_controller::MPPIController
+[controller_server-1] [INFO] [1788333091.380695932] [controller_server]: Optimizer reset
+[controller_server-1] [INFO] [1788333091.392292778] [MPPIController]: Configured MPPI Controller: FollowPathMPPI
+[controller_server-1] [INFO] [1788333091.392394701] [controller_server]: Controller Server has FollowPath FollowPathMPPI  controllers available.
+
+=== MPPI 파라미터 확인 ===
+String value is: nav2_mppi_controller::MPPIController
+Boolean value is: True

@@ -1,0 +1,28 @@
+===spin.log 전체===
+SPIN_START 11:42:20
+START clr=88.7cm
+  ...-0deg minclr=88.7cm
+  ...+6deg minclr=87.1cm
+  ...+15deg minclr=83.4cm
+  ...+23deg minclr=80.1cm
+  ...+35deg minclr=77.2cm
+  ...+49deg minclr=75.6cm
+  ...+64deg minclr=75.6cm
+  ...+79deg minclr=75.6cm
+  ...+94deg minclr=75.6cm
+  ...+111deg minclr=21.9cm
+  ...+127deg minclr=21.9cm
+  ...+143deg minclr=21.9cm
+  ...+158deg minclr=21.9cm
+  ...+170deg minclr=21.9cm
+  ...+182deg minclr=21.9cm
+===회전 프로세스 생존?===
+===현재 회전율===
+0.08298264533803511
+---
+===맵 크기===
+resolution: 0.05000000074505806 width: 215 height: 225 
+===uptime(재부팅 여부)===
+ 11:42:57 up  2:51,  0 users,  load aver
+===wheel_odom(세션)===
+average rate: 50.004

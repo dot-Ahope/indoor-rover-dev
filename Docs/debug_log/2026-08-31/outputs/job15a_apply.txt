@@ -1,0 +1,13 @@
+wsl: ø»ì·´ $±¸ÒÌÆ¹Ð ¨ºÜ´|¹ ¬À©Æ`Õ Lµ”² wsl2.localhostForwarding $ÁÈtÇ È©Æ´ÀÉ JÅµÂÈ²ä².
+=== ìž¬ë¹Œë“œ ===
+Finished <<< rover_bringup [0.82s]
+
+Summary: 1 package finished [1.60s]
+=== ê¸°ì¡´ EKF/SLAM ì¢…ë£Œ ===
+=== EKF ìž¬ì‹œìž‘ (ìžì´ë¡œ ìº˜ë¦¬ë¸Œ ~10s, ë¡œë²„ ì •ì§€!) ===
+[sensor_conditioner.py-1] [INFO] [1788234997.794007824] [sensor_conditioner]: gyro bias calibrated: (-0.00953, -0.00141, -0.00195) rad/s, std=(0.0026, 0.0024, 0.0018)
+=== SLAM ìž¬ì‹œìž‘ ===
+=== ê²€ì¦ ===
+ë…¸ë“œ: /camera/camera /ekf_filter_node /rplidar_node /scan_deskew /sensor_conditioner /slam_toolbox 
+/odometry/filtered: map->odom TF: - Translation: [0.000, 0.000, 0.000]
+conditioner vxë³´ì •: VX_SCALE = 1.022

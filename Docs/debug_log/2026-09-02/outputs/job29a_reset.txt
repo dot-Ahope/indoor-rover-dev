@@ -1,0 +1,20 @@
+=== Nav2 종료 (프레임 재설정 전) ===
+=== EKF 재시작 (자이로 캘리브 ~10s, 정지!) ===
+[sensor_conditioner.py-1] [INFO] [1788335059.993768875] [sensor_conditioner]: gyro bias calibrated: (-0.01042, -0.00145, -0.00205) rad/s, std=(0.0027, 0.0026, 0.0018)
+=== slam 재시작 ===
+  map->base_link: - Translation: [0.000, 0.000, 0.000]
+=== Nav2 재기동 ===
+  lifecycle:
+    /controller_server   active [3]
+    /planner_server      active [3]
+    /bt_navigator        active [3]
+    /behavior_server     active [3]
+    /velocity_smoother   active [3]
+  local_costmap: average rate: 1.667
+
+=== 공간 판정 (회전 목표용) ===
+  회전 스윕반경 30cm / 최근접 56cm → 회전 OK
+        정면 방향 여유:    97cm
+     좌(90) 방향 여유:    56cm
+        후면 방향 여유:    80cm
+    우(-90) 방향 여유:    67cm

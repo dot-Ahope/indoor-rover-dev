@@ -1,0 +1,15 @@
+=== 자이로 캘리브 재확인 ===
+[sensor_conditioner.py-5] [INFO] [1788239640.195704050] [sensor_conditioner]: gyro bias calibrated: (-0.00671, -0.00090, -0.00180) rad/s, std=(0.0026, 0.0024, 0.0017)
+/imu/data (conditioner 출력, 캘리브 후 발행): average rate: 199.989
+/camera/camera/imu: average rate: 140.243
+/scan: average rate: 9.976
+
+=== ★ TF 진단 (핵심) ===
+--- /tf 전체 발행율 ---
+average rate: 30.998
+--- odom->base_link 브로드캐스트 (EKF, 30Hz 기대) ---
+--- map->odom 브로드캐스트 (slam) ---
+
+=== 조이스틱 기동 ===
+노드: /joy_node /teleop_twist_joy_node 
+완료

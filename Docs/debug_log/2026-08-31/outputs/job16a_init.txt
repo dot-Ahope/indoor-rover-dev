@@ -1,0 +1,13 @@
+wsl: ø»ì·´ $±¸ÒÌÆ¹Ğ ¨ºÜ´|¹ ¬À©Æ`Õ Lµ”² wsl2.localhostForwarding $ÁÈtÇ È©Æ´ÀÉ JÅµÂÈ²ä².
+=== stale ì •ë¦¬ ===
+=== base.launch (agent+rsp) ===
+microros_agent Up 9 seconds
+ë³´ë“œ /wheel_odom: average rate: 50.011
+=== sensors.launch (ìì´ë¡œ ìº˜ë¦¬ë¸Œ ~10s, ë¡œë²„ ì •ì§€!) ===
+=== slam.launch ===
+=== ê²€ì¦ ===
+ë…¸ë“œ: /camera/camera /ekf_filter_node /foxglove_bridge /rover_jupiter /rplidar_node /scan_deskew /sensor_conditioner /slam_toolbox 
+/odometry/filtered: average rate: 29.948
+/scan: map->odom TF: - Translation: [0.000, 0.000, 0.000]
+vxë³´ì •: VX_SCALE = 1.022
+ì™„ë£Œ â€” Foxglove fixed_frame=odomì—ì„œ ê´€ì°° ì¤€ë¹„ë¨

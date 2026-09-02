@@ -1,0 +1,14 @@
+=== slam 로그 (드롭/경고) ===
+[async_slam_toolbox_node-1] [INFO] [1788251574.228111321] [slam_toolbox]: Message Filter dropping message: frame 'lidar_link' at time 1788251574.130 for reason 'discarding message because the queue is full'
+[async_slam_toolbox_node-1] [INFO] [1788251576.820650658] [slam_toolbox]: Message Filter dropping message: frame 'lidar_link' at time 1788251576.722 for reason 'discarding message because the queue is full'
+[async_slam_toolbox_node-1] [WARN] [1788251577.067946326] [slam_toolbox]: minimum laser range setting (0.0 m) exceeds the capabilities of the used Lidar (0.2 m)
+[async_slam_toolbox_node-1] [INFO] [1788251595.012442529] [slam_toolbox]: Message Filter dropping message: frame 'lidar_link' at time 1788251594.914 for reason 'discarding message because the queue is full'
+=== 현재 map->odom (slam이 보정한 양) ===
+- Translation: [-0.370, 0.072, 0.000]
+- Rotation: in RPY (degree) [0.000, 0.000, -1.200]
+=== 현재 odom / map->base ===
+x: 1.633340382694258 y: -0.033530592785708066 
+- Translation: [1.263, 0.004, 0.000]
+=== 휠 오도 원시 vs EKF (슬립 판단용) ===
+  /wheel_odom x: x: 1.5962883234024048
+=== /map 발행 (slam이 맵을 만들고 있나) ===

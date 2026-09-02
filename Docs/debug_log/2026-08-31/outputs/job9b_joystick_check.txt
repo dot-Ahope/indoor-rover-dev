@@ -1,0 +1,19 @@
+===USB 조이스틱 장치===
+crw-rw-r--+ 1 root input 13, 0 Aug 31 15:16 /dev/input/js0
+crw-rw----  1 root input   13, 68 Jan  1  1970 /dev/input/event4
+crw-rw-rw-  1 root plugdev 13, 69 Aug 31 09:18 /dev/input/event5
+crw-rw----+ 1 root input   13, 70 Aug 31 15:16 /dev/input/event6
+crw-rw----  1 root input   13, 71 Aug 31 15:16 /dev/input/event7
+crw-rw----  1 root input   13, 72 Aug 31 15:16 /dev/input/event8
+===USB 목록 (조이스틱 후보)===
+  Bus 001 Device 007: ID 0079:181c DragonRise Inc. Controller
+===입력장치 이름===
+  /dev/input/event6: Controller
+  /dev/input/event7: Controller System Control
+  /dev/input/event8: Controller Consumer Control
+===joy 패키지 설치 여부===
+  joy: 설치됨
+  joy-linux: 없음
+  teleop-twist-joy: 설치됨
+===jstest 가용===
+  jstest 없음(joystick 패키지)

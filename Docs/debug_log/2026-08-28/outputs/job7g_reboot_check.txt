@@ -1,0 +1,28 @@
+===UPTIME (짧으면 재부팅)===
+ 11:23:54 up  2:32,  1 user,  load average: 1.28, 1.21, 1.23
+부팅시각: 2026-08-28 08:51:45
+현재시각: 2026-08-28 11:23:54
+===전원/재부팅 흔적 (dmesg 최근)===
+[ 8762.948121] usb 2-1.3: Failed to query (GET_CUR) UVC control 1 on unit 3: -32 (exp. 1024).
+[ 8797.020338] usb 2-1.3: Failed to query (GET_CUR) UVC control 1 on unit 3: -32 (exp. 1024).
+[ 8797.031658] usb 2-1.3: Failed to query (GET_CUR) UVC control 1 on unit 3: -32 (exp. 1024).
+[ 8797.043118] usb 2-1.3: Failed to query (GET_CUR) UVC control 1 on unit 3: -32 (exp. 1024).
+[ 8797.055305] usb 2-1.3: Failed to query (GET_CUR) UVC control 1 on unit 3: -32 (exp. 1024).
+[ 9044.503197] usb 2-1.3: Failed to query (GET_CUR) UVC control 1 on unit 3: -32 (exp. 1024).
+===지난 재부팅 이력===
+reboot   system boot  5.15.185-tegra   Thu Aug 27 17:48   still running
+reboot   system boot  5.15.185-tegra   Thu Aug 27 17:04   still running
+reboot   system boot  5.15.185-tegra   Wed Aug 26 17:08   still running
+===ROS 노드 생존 (재시작 안됐으면 그대로 있음)===
+6
+  실행중: /camera/camera /ekf_filter_node /foxglove_bridge /robot_state_publisher /rover_jupiter /rplidar_node /sensor_conditioner /slam_toolbox /transform_listener_impl_aaaae6913ba0 /transform_listener_impl_ffffa0003f30 
+===agent 컨테이너 uptime (재부팅이면 사라지거나 재시작)===
+microros_agent Up 2 hours
+===보드 세션 (토픽)===
+wheel_odom: average rate: 49.994
+battery: 11.798406600952148
+---
+===HID 모듈 (재부팅시 자동로드 확인)===
+6
+===WiFi 신호===
+          Link Quality=66/70  Signal level=-44 dBm  

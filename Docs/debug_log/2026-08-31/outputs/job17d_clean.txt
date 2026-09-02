@@ -1,0 +1,24 @@
+=== 프로세스 식별 ===
+  scan_deskew pid=19811
+  sensor_conditioner pid=14964
+=== 가벼운 회전(ros2 topic pub, 12s) 백그라운드 + deskew CPU 측정 ===
+  회전 중 ω 확인:   deskew CPU 샘플(8s):
+    0.0%
+    0.0%
+    0.0%
+    0.0%
+    0.0%
+    0.0%
+    0.0%
+    0.0%
+  → deskew 평균=0.0% (8샘플)
+=== 정지 ===
+=== 최종 상위 CPU (회전 종료 후) ===
+    COMMAND           %CPU%
+    python3           42.2%
+    rplidar+          16.7%
+    ekf_node          11.8%
+    realsen+          10.8%
+    foxglov+          10.8%
+    async_s+           8.8%
+  load: 2.61 4.38 3.90

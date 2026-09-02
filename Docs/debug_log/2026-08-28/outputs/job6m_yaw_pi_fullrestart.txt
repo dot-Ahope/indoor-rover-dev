@@ -1,0 +1,16 @@
+Summary: 1 package finished [0.82s]
+===전체 노드 종료===
+0
+===base.launch 시작===
+microros_agent Up 9 seconds
+===sensors.launch 시작===
+===검증===
+RSP 개수: 1, foxglove: 1
+TF base_link→lidar_link:
+- Rotation: in RPY (degree) [0.000, -0.000, 180.000]
+  /wheel_odom              
+  /scan                    average rate: 10.001
+  /camera/camera/imu       average rate: 200.131
+  /odometry/filtered       average rate: 29.996
+foxglove: ws://192.168.0.101:8765
+DONE — Foxglove에서 로버모델(RobotModel)+TF축 켜고 base_link +x(빨강) 방향 = 로버 전방 기준으로 스캔 확인

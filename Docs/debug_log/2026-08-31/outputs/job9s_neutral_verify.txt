@@ -1,0 +1,10 @@
+Summary: 1 package finished [1.32s]
+===스테일 완전 종료===
+잔존: teleop 0, joy 0
+===단일 기동 (teleop→/cmd_vel_test)===
+노드: /joy_node /teleop_twist_joy_node 
+===★ 스틱에서 손 떼주세요 — 중립 6초 측정 (cmd_vel_test=0이어야 안전)===
+중립 axis1 평균 +0.000
+중립 cmd_vel: linear.x max|0.0000| angular.z max|0.0000|
+=> ✅ 중립 정지 정상(크리프 없음) — 주행 안전
+END

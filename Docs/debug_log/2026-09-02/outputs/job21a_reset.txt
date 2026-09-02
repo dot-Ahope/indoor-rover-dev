@@ -1,0 +1,15 @@
+wsl: ���� $����ƹ� ��ܴ|� ����`� L��� wsl2.localhostForwarding $��t� ȩ���� Jŵ�Ȳ�.
+agent 유지됨(보드 RESET 불필요)
+=== EKF 재시작 (자이로 캘리브 ~10s, 정지!) ===
+[sensor_conditioner.py-1] [INFO] [1788311536.210627642] [sensor_conditioner]: gyro bias calibrated: (-0.00852, -0.00137, -0.00186) rad/s, std=(0.0027, 0.0024, 0.0018)
+=== slam 재시작 ===
+=== 검증 ===
+  /odometry/filtered: average rate: 29.998
+  odom 원점: x: 0.0
+  map->odom: - Translation: [0.000, 0.000, 0.000]
+  map->base_link: - Translation: [0.000, 0.000, 0.000]
+=== 공간 판정 (회전 스윕 반경 기준) ===
+  스윕 반경(필요) = 30.0cm, 가장 가까운 장애물(중심기준) = 16cm
+  회전 여유 = -14cm → X 회전 불가(공간 부족)
+  직진 경로여유: 전방 203cm / 후방 140cm
+  최근접 측면 = 15cm (참고)

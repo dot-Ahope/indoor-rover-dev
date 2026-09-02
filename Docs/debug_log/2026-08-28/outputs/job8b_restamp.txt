@@ -1,0 +1,14 @@
+
+Summary: 1 package finished [1.30s]
+===lidar/slam 재시작 (재스탬프 노드 포함)===
+===노드/토픽===
+/rplidar_node /slam_toolbox 
+  /scan_raw: 
+  /scan:     average rate: 10.052
+===재스탬프 전/후 지연 비교===
+  /scan (재스탬프) now-stamp 평균 = +100.7ms  (스윕중앙 보정 → ~47ms 감소 기대)
+===slam TF (재확인)===
+- Translation: [0.000, 0.000, 0.000]
+===slam 파라미터 확인===
+  minimum_travel_heading: Double value is: 0.08
+  minimum_time_interval: Double value is: 0.3

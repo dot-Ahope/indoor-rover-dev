@@ -1,0 +1,10 @@
+===전체 lidar 관련 종료===
+잔존: 0개
+===단일 lidar.launch (rplidar→scan_deskew→/scan)===
+  rplidar 프로세스: 1개 (1이어야)
+  scan_deskew: 1개
+  /scan_raw hz: average rate: 9.996
+  /scan hz: ===정지 무결성: 같은 순간 /scan_raw vs /scan (deskew, 정지=ω<deadband → 재분류 없이 동일해야)===
+  현재 ω = -0.0000 rad/s (정지 확인)
+  raw 1577점 / deskew 1577점, 공통 최대거리차 0mm
+  → OK(정지 시 동일)

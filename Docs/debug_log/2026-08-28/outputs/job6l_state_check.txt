@@ -1,0 +1,13 @@
+===배포된 install URDF lidar_joint rpy===
+===src URDF lidar_joint rpy===
+===robot_state_publisher 프로세스 수===
+1
+6897 /opt/ros/humble/lib/robot_state_publisher/robot_state_publisher -
+===실제 TF base_link→lidar_link===
+- Translation: [0.152, 0.000, 0.185]
+- Rotation: in RPY (degree) [0.000, -0.000, 0.000]
+===파라미터 robot_description 내 lidar yaw (실행중 노드가 쥔 값)===
+lidar_joint" type="fixed">
+===/tf_static 에 실린 lidar_link 회전===
+===foxglove_bridge 재시작 시각(캐시 의심)===
+2911 /opt/ros/humble/lib/foxglove_bridge/foxglove_

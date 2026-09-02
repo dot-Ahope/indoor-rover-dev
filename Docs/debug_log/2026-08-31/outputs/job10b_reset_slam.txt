@@ -1,0 +1,17 @@
+===세션 재수립 확인===
+  wheel_odom: average rate: 49.994
+  battery: 12.196582794189453
+---
+  imu_data_raw: average rate: 49.997
+===odom 리셋 확인 (0 근처여야)===
+x: -1.7153971735373073
+y: -1.7355510701045451
+===slam 재시작(맵 초기화)===
+  slam OK
+  map→odom TF: - Translation: [-0.000, -0.000, 0.000]
+===센서 파이프라인 확인===
+  /scan                  average rate: 10.168
+  /scan_raw              average rate: 9.964
+  /odometry/filtered     average rate: 27.529
+  /camera/camera/imu     average rate: 150.073
+  scan_deskew: OK

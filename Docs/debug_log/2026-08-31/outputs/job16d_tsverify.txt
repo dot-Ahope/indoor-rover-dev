@@ -1,0 +1,15 @@
+wsl: ø»ì·´ $±¸ÒÌÆ¹Ğ ¨ºÜ´|¹ ¬À©Æ`Õ Lµ”² wsl2.localhostForwarding $ÁÈtÇ È©Æ´ÀÉ JÅµÂÈ²ä².
+=== ì•ˆì • í›„ odom->base ì¬ì¸¡ì • ===
+Net delay     avg = 0.00607404: max = 0.0355792
+Frame: base_link, published by <no authority available>, Average Delay: 1.18546, Max Delay: 372.688
+Frame: odom, published by <no authority available>, Average Delay: -0.128571, Max Delay: 0
+Node: <no authority available> 46.938 Hz, Average Delay: 1.42937 Max Delay: 372.688
+
+=== ê° ì†ŒìŠ¤ stamp vs í˜„ì¬ì‹œê° (delay ì§ì ‘ í™•ì¸) ===
+Traceback (most recent call last):
+  File "<stdin>", line 6, in <module>
+  File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/__init__.py", line 176, in create_node
+    return Node(
+  File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/node.py", line 172, in __init__
+    raise NotInitializedException('cannot create node')
+rclpy.exceptions.NotInitializedException: ('rclpy.init() has not been called', 'cannot create node')

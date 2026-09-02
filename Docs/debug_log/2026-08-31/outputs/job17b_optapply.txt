@@ -1,0 +1,25 @@
+wsl: ø»ì·´ $±¸ÒÌÆ¹Ğ ¨ºÜ´|¹ ¬À©Æ`Õ Lµ”² wsl2.localhostForwarding $ÁÈtÇ È©Æ´ÀÉ JÅµÂÈ²ä².
+=== BEFORE ===
+  deskew(pid 14782) CPU: 9.0%
+  load: 6.42 4.49 3.62
+=== ì†ŒìŠ¤ ê°±ì‹ Â·ì¬ë¹Œë“œ ===
+
+Summary: 1 package finished [0.87s]
+=== scan_deskew ì¬ì‹œì‘ ===
+=== foxglove ì¬ì‹œì‘(whitelist ì ìš©) ===
+=== ê²€ì¦ ===
+  /scan: average rate: 10.014
+  ë…¸ë“œ: /foxglove_bridge /foxglove_bridge /scan_deskew 
+  whitelist ì ìš©: /scan
+(ì„¤ì •ë¨)
+=== AFTER ===
+  deskew(pid 19811) CPU: 0.0%
+  ìƒìœ„ CPU:
+    COMMAND           %CPU%
+    foxglov+          55.9%
+    foxglov+          51.0%
+    ekf_node          40.2%
+    async_s+          39.2%
+    python3           36.3%
+    realsen+          24.5%
+  load: 6.38 4.63 3.69

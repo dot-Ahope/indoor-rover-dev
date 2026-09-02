@@ -1,0 +1,5 @@
+===map→odom 누적 보정량(=주행 중 slam이 보정한 총 드리프트)===
+===slam 루프클로저/스캔매칭 파라미터===
+  do_loop_closing:   loop_search_maximum_distance:   loop_match_minimum_response_fine:   loop_match_minimum_chain_size:   minimum_travel_distance:   minimum_travel_heading:   minimum_time_interval:   link_match_minimum_response_fine:   correlation_search_space_resolution:   scan_buffer_size:   use_scan_matching: ===맵 벽 두께 분석(드리프트 프록시: 두꺼우면 드리프트로 벽이 번진 것)===
+NO_MAP
+END

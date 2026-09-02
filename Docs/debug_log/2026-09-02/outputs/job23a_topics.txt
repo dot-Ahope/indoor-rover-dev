@@ -1,0 +1,37 @@
+wsl: ø»ì·´ $±¸ÒÌÆ¹Ğ ¨ºÜ´|¹ ¬À©Æ`Õ Lµ”² wsl2.localhostForwarding $ÁÈtÇ È©Æ´ÀÉ JÅµÂÈ²ä².
+=== ë³´ë“œ(rover_jupiter) ë°œí–‰ í† í”½ ===
+  Publishers:
+    /battery: sensor_msgs/msg/BatteryState
+    /imu/data_raw: sensor_msgs/msg/Imu
+    /imu/mag: sensor_msgs/msg/MagneticField
+    /rover/f5b_heartbeat: std_msgs/msg/Int32
+    /rover/status: diagnostic_msgs/msg/DiagnosticArray
+    /wheel_odom: nav_msgs/msg/Odometry
+  Service Servers:
+
+=== /rover/status ë‚´ìš© (íœ ë³„ ë°ì´í„° ìˆëŠ”ì§€) ===
+header:
+  stamp:
+    sec: 1788313978
+    nanosec: 674489825
+  frame_id: ''
+status:
+- level: "\x01"
+  name: rover_jupiter_fw
+  message: cmd_vel timeout â€” motors stopped
+  hardware_id: F405
+  values: []
+---
+
+=== /wheel_odom twist (vx, vyaw) ===
+twist:
+  twist:
+    linear:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+    angular:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+  covariance:

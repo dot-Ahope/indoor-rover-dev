@@ -1,0 +1,11 @@
+wsl: ���� $����ƹ� ��ܴ|� ����`� L��� wsl2.localhostForwarding $��t� ȩ���� Jŵ�Ȳ�.
+=== joy 정리 (cmd_vel 단독화) ===
+  완료
+=== 배터리 ===
+voltage: 12.072561264038086
+=== 노드/TF ===
+  노드: /ekf_filter_node /rover_jupiter /sensor_conditioner /slam_toolbox 
+  /odometry/filtered: average rate: 29.992
+  map->base_link TF: === 방향별 여유 (로버 프레임, 풋프린트 기준) ===
+  앞157cm | 뒤152cm | 좌86cm | 우136cm
+  직진2m 판정(전방>=230cm): X 전방 부족 — 더 트인 곳/방향 필요

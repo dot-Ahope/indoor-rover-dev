@@ -1,0 +1,12 @@
+Summary: 1 package finished [1.53s]
+===노드===
+WARNING: Be aware that there are nodes in the graph that share an exact name, which can have unintended side effects.
+/rplidar_node /rplidar_node /scan_deskew 
+  /scan_raw: average rate: 10.052
+  /scan:     average rate: 9.959
+===정지 무결성: 정지 상태에서 /scan(deskew) vs /scan_raw 점 수·거리 비교(같아야 정상)===
+  raw 유효 1584점, deskew 유효 1588점 (정지 시 거의 같아야). 공통점 최대거리차 3193mm
+  → 정지 무결성 점검 필요
+===scan_deskew 로그===
+[INFO] [scan_deskew.py-2]: process started with pid [6494]
+[scan_deskew.py-2] [INFO] [1788136583.657909532] [scan_deskew]: scan_deskew: /scan_raw → /scan (ref=end, EKF ω 기반 회전 디스큐)

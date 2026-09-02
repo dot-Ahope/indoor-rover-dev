@@ -1,0 +1,8 @@
+wsl: ���� $����ƹ� ��ܴ|� ����`� L��� wsl2.localhostForwarding $��t� ȩ���� Jŵ�Ȳ�.
+=== foxglove_bridge 종료 ===
+  load(foxglove off): 4.24 4.74 3.77
+12초 회전 + map->odom 갱신 확인...
+  회전량 157deg
+  ★ map->odom 여전히 변화없음(고정)
+  load(회전 후): 3.73
+완료 — foxglove는 다음 단계에서 재시작

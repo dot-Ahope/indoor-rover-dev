@@ -1,0 +1,8 @@
+===agent 컨테이너(리셋 시 재연결에 필요)===
+microros_agent Up 7 hours
+===현재 세션(리셋 전)===
+  wheel_odom: average rate: 50.028
+===주요 노드===
+/camera/camera /ekf_filter_node /robot_state_publisher /rover_jupiter /rplidar_node /scan_deskew /slam_toolbox 
+===teleop 잔존(정리)===
+teleop/joy 정리됨
