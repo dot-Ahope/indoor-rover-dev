@@ -1,0 +1,25 @@
+# 조이스틱 teleop 설정 (DragonRise USB 패드, joy_linux)
+# 매핑 (사용자 실측 2026-08-31): axis1=좌스틱 전후(양수=전진), axis2=우스틱 좌우(양수=좌회전)
+# ⚠ 이 패드는 버튼이 js0로 안 들어옴 → 데드맨 버튼 불가. 안전모델 = "스틱 중립(데드존) = 정지" + 펌웨어 watchdog.
+joy_node:
+  ros__parameters:
+    dev: /dev/input/js0
+    deadzone: 0.12            # 넉넉히 — 중립 시 미세드리프트로 크리프 방지
+    autorepeat_rate: 20.0
+    coalesce_interval_ms: 20
+
+teleop_twist_joy_node:
+  ros__parameters:
+    # 전진: linear.x = scale × axis[1] (양수 axis1 → +x 전진)
+    axis_linear:
+      x: 1
+    scale_linear:
+      x: 0.08                 # 안전 상한 (MAX_LINEAR_SPEED 0.10 이내)
+    # 조향: angular.z = scale × axis[2] (양수 axis2 → +z 좌회전)
+    axis_angular:
+      yaw: 2
+    scale_angular:
+      yaw: 0.4                # 안전 상한 (슬립 캘리브 신뢰구간)
+    # 데드맨 버튼 없음 (이 패드 버튼 미작동) → 항상 스틱값을 cmd_vel로. 중립=0=정지.
+    require_enable_button: false
+    enable_turbo_button: -1

@@ -1,0 +1,8 @@
+Summary: 1 package finished [1.31s]
+===배포된 teleop 스케일 확인===
+      x: 0.10                 # 로버 최대 = 펌웨어 MAX_LINEAR_SPEED_MPS 0.100 (그 이상은 펌웨어가 saturate)
+      yaw: 0.8                # §3 상한. ⚠ 고속 회전은 슬립↑·맵품질↓ — 맵핑 시엔 살살
+===teleop/joy 정리(마무리) + 정지 확인===
+  정리 완료
+  battery(소진 확인): 12.170473098754883
+---

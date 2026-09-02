@@ -1,0 +1,21 @@
+===NODES===
+/camera/camera /ekf_filter_node /foxglove_bridge /robot_state_publisher /rover_jupiter /rplidar_node /sensor_conditioner /transform_listener_impl_aaaae40b3c30 
+===RATES===
+  /scan                    average rate: 9.963
+  /wheel_odom              average rate: 49.997
+  /odometry/filtered       average rate: 29.999
+  /camera/camera/imu       average rate: 199.642
+===현재 lidar_link yaw (URDF)===
+- Rotation: in RPY (degree) [0.000, -0.000, 0.000]
+===현재 스캔 섹터별 중앙거리 (정렬 기준선 — 손 없이)===
+/usr/lib/python3/dist-packages/numpy/lib/nanfunctions.py:1119: RuntimeWarning: All-NaN slice encountered
+  r, k = function_base._ureduce(a, func=_nanmedian, axis=axis, out=out,
+  sector -180 deg:  1.34 m  ######
+  sector -135 deg:  0.90 m  ####
+  sector  -90 deg:  0.61 m  ###
+  sector  -45 deg:  0.79 m  ###
+  sector   +0 deg:  2.60 m  ############
+  sector  +45 deg:  1.08 m  #####
+  sector  +90 deg:  1.47 m  #######
+  sector +135 deg:  1.38 m  ######
+  (0deg = lidar +x = 현재 URDF상 로버 전방. 정렬 확인은 손 테스트 job4y 로)

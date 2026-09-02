@@ -1,0 +1,9 @@
+=== 현재 배포 TF ===
+- Rotation: in RPY (degree) [0.000, -0.000, 180.000]
+=== /tf_static 발행자 수(중복=stale 원인) ===
+Publisher count: 2
+/usr/lib/python3/dist-packages/numpy/lib/nanfunctions.py:1119: RuntimeWarning: All-NaN slice encountered
+  r, k = function_base._ureduce(a, func=_nanmedian, axis=axis, out=out,
+base_link 프레임(yaw=180°) 벽 위치:
+  좌측벽(325mm) [정답=좌측+90°]: base_link θ=+94deg → 좌측(+y)
+  정면벽(800mm) [정답=정면0°]: base_link θ=+11deg → 정면(+x)

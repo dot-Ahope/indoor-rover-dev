@@ -9,7 +9,7 @@ App Layer가 의존하는 인터페이스 정의. 구체 구현은 없다 (Drive
 - `IMagnetometer` — 자기장 읽기
 
 ## 원칙
-양산기(G4/H7 + 외장 드라이버)로 이식할 때 **이 인터페이스는 유지**하고
-Driver Layer 구현만 교체한다. 이것이 양산 이식성의 핵심.
+다른 MCU(G4/H7 등) + 외장 드라이버로 바꿀 때 **이 인터페이스는 유지**하고
+Driver Layer 구현만 교체한다. 이것이 이 계층 구조의 핵심.
 
 참조: `docs/FIRMWARE_DEV_PLAN.md §3.1`

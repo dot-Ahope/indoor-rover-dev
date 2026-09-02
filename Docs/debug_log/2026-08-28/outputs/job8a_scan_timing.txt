@@ -1,0 +1,21 @@
+===세션 확인===
+average rate: 10.050
+  /scan       : now-stamp mean=+112.0ms max=+354.4 min=+95.6 (n=60)
+  /odom_filtered: now-stamp mean=+12.3ms max=+299.0 min=+3.2 (n=178)
+  scan_time=94.9ms (한 스윕 소요), time_increment=52.8us/점, 1800점
+  → 스캔은 95ms에 걸쳐 취득되나 slam은 1개 스탬프로 처리(deskew 없음).
+    회전 0.28rad/s 시 스윕당 1.5deg 왜곡, 스탬프가 시작이면 반sweep 지연 0.8deg
+  scan-odom 스탬프차 = -160.7ms (0 근처여야 정합)
+===slam_toolbox 보정 관련 파라미터===
+  minimum_travel_heading: Double value is: 0.08
+  minimum_travel_distance: Double value is: 0.08
+  minimum_time_interval: Double value is: 0.3
+  transform_timeout: Double value is: 0.2
+  tf_buffer_duration: Double value is: 30.0
+  use_scan_matching: Boolean value is: True
+  scan_buffer_size: Integer value is: 20
+  resolution: Double value is: 0.05
+===rplidar 파라미터 (타임스탬프 관련)===
+  scan_frequency: Double value is: 10.0
+  angle_compensate: Boolean value is: True
+  scan_mode: String value is: Standard

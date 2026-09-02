@@ -1,0 +1,10 @@
+/usr/lib/python3/dist-packages/numpy/lib/nanfunctions.py:1119: RuntimeWarning: All-NaN slice encountered
+  r, k = function_base._ureduce(a, func=_nanmedian, axis=axis, out=out,
+scan: angle_min=-179.0 angle_increment=0.1996deg (부호: +CCW(오른손 표기))
+거리 밴드로 두 벽 분리:
+  좌측벽(~325mm): raw θ=-86deg  (범위 -118..+54, 323 beams, dist 0.40m)
+  정면벽(~800mm): raw θ=-168deg  (범위 -179..+180, 219 beams, dist 0.91m)
+
+θ_L - θ_F = +82 deg   (ROS: 좌측-정면 = +90 이어야 오른손 일치)
+=> 오른손 일치 ✅ — 순수 회전으로 해결. yaw = -θ_F(정면→0) 스냅:
+   lidar_yaw = +3.1416 rad (+180 deg)

@@ -1,0 +1,47 @@
+wsl: ø»ì·´ $±¸ÒÌÆ¹Ğ ¨ºÜ´|¹ ¬À©Æ`Õ Lµ”² wsl2.localhostForwarding $ÁÈtÇ È©Æ´ÀÉ JÅµÂÈ²ä².
+=== ì¹´ë©”ë¼ í† í”½ ëª©ë¡ ===
+/camera/camera/accel/imu_info
+/camera/camera/accel/metadata
+/camera/camera/accel/sample
+/camera/camera/color/camera_info
+/camera/camera/color/image_raw
+/camera/camera/color/image_raw/compressed
+/camera/camera/color/image_raw/compressedDepth
+/camera/camera/color/image_raw/theora
+/camera/camera/color/metadata
+/camera/camera/depth/camera_info
+/camera/camera/depth/image_rect_raw
+/camera/camera/depth/image_rect_raw/compressed
+/camera/camera/depth/image_rect_raw/compressedDepth
+/camera/camera/depth/image_rect_raw/theora
+/camera/camera/depth/metadata
+/camera/camera/extrinsics/depth_to_accel
+/camera/camera/extrinsics/depth_to_color
+/camera/camera/extrinsics/depth_to_gyro
+/camera/camera/gyro/imu_info
+/camera/camera/gyro/metadata
+/camera/camera/gyro/sample
+/camera/camera/imu
+
+=== ì¹´ë©”ë¼ enable íŒŒë¼ë¯¸í„° ===
+  enable_color: Boolean value is: True
+  enable_depth: Boolean value is: True
+  enable_gyro: Boolean value is: True
+  enable_accel: Boolean value is: True
+  enable_infra1: Boolean value is: False
+  enable_infra2: Boolean value is: False
+  pointcloud.enable:   enable_sync: Boolean value is: False
+  unite_imu_method: value is: 1
+
+=== ì´ë¯¸ì§€ ìŠ¤íŠ¸ë¦¼ ì‹¤ì œ ë°œí–‰ ì—¬ë¶€ (CPU ì†Œë¹„ í™•ì¸) ===
+  /camera/camera/color/image_raw: average rate: 15.005
+  /camera/camera/depth/image_rect_raw:   /camera/camera/infra1/image_rect_raw: 
+=== í˜„ì¬ CPU ìƒìœ„ 6 ===
+  COMMAND           %CPU%
+  python3           45.5%
+  realsen+          30.7%
+  rplidar+          18.8%
+  foxglov+          18.8%
+  ekf_node          11.9%
+  python3            7.9%
+  ros2               7.9%

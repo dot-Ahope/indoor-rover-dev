@@ -1,0 +1,22 @@
+===joy_node 로그 전체===
+===js0 권한 + jetson 그룹===
+crw-rw-r--+ 1 root input 13, 0 Aug 31 15:16 /dev/input/js0
+jetson 그룹: jetson adm dialout cdrom sudo audio dip video plugdev render i2c lpadmin gdm gpio weston-launch sambashare docker ollama
+  input 그룹 소속? NO
+===js0 직접 읽기 테스트 (2초, 조작하면 바이트 나옴)===
+00000000: a47a 6301 0000 8100 a47a 6301 0000 8101  .zc......zc.....
+00000010: a47a 6301 0000 8102 a47a 6301 0000 8103  .zc......zc.....
+00000020: a47a 6301 0000 8104                      .zc.....
+===joy_node 파라미터 확인===
+  autorepeat_rate
+  coalesce_interval_ms
+  deadzone
+  device_id
+  device_name
+  qos_overrides./parameter_events.publisher.depth
+  qos_overrides./parameter_events.publisher.durability
+  qos_overrides./parameter_events.publisher.history
+  qos_overrides./parameter_events.publisher.reliability
+  sticky_buttons
+  device_id: Integer value is: 0
+  device_name: String value is: 

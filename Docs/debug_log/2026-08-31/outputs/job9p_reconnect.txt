@@ -1,0 +1,9 @@
+===장치 재인식 확인===
+Bus 001 Device 008: ID 0079:181c DragonRise Inc. Controller
+  DragonRise 연결됨
+crw-rw-r--+ 1 root input 13, 0 Aug 31 16:12 /dev/input/js0
+  js0 생성시각(재연결시 갱신): 2026-08-31 16:12:07
+======= 클린 원시 읽기 8초 — 스틱 상하좌우 크게 움직여주세요 =======
+INIT 23, 조작이벤트 516, 움직인축 {0: 0, 1: 32767, 2: -32767, 3: 0}
+=> ✅ 장치 정상 — teleop 진행 가능
+END

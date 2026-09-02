@@ -1,0 +1,29 @@
+===UPTIME===
+ 08:53:34 up 1 min,  0 users,  load average: 0.72, 0.51, 0.20
+2026-08-28 08:51:45
+===DEVICES===
+lrwxrwxrwx 1 root root 12 Aug 27 17:48 /dev/rover -> ttyCH341USB0
+lrwxrwxrwx 1 root root  7 Aug 27 17:48 /dev/rplidar -> ttyUSB0
+  Bus 002 Device 003: ID 8086:0b5c Intel Corp. Intel(R) RealSense(TM) Depth Camera 455f
+  Bus 001 Device 006: ID 10c4:ea60 Silicon Labs CP210x UART Bridge
+  Bus 001 Device 004: ID 1a86:7523 QinHeng Electronics CH340 serial converter
+===HID MODULES (재부팅 시 유지 확인)===
+6
+iio:device0 iio:device1 trigger0 trigger1 
+===RUNNING NODES===
+
+===STOP any stale===
+===START base.launch===
+microros_agent Up 9 seconds
+===START sensors.launch===
+nsor_conditioner]: gyro bias calibrated: (-0.00070, -0.00022, 0.00001) rad/s, std=(0.0019, 0.0025, 0.0015)
+===nodes===
+/camera/camera /ekf_filter_node /foxglove_bridge /robot_state_publisher /rover_jupiter /rplidar_node /sensor_conditioner /transform_listener_impl_aaaae40b3c30 
+===rates===
+  /wheel_odom              average rate: 50.016
+  /scan                    average rate: 10.012
+  /camera/camera/imu       average rate: 203.281
+  /odometry/filtered       average rate: 30.001
+===wheel_odom 세션 확인===
+12.085616111755371
+---

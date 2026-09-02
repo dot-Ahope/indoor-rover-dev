@@ -1,0 +1,12 @@
+=== lifecycle ===
+  /controller_server   active [3]
+  /planner_server      active [3]
+  /bt_navigator        active [3]
+  /behavior_server     active [3]
+  /velocity_smoother   active [3]
+=== progress_checker ===
+  조회실패
+Double value is: 0.5
+=== 기동 오류 ===
+[controller_server-1] [WARN] [1788316578.536447695] [controller_server.rclcpp]: failed to send response to /controller_server/get_parameters (timeout): client will not receive response, at ./src/rmw_response.cpp:154, at ./src/rcl/service.c:314
+  load: 6.91 5.46 4.19

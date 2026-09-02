@@ -1,0 +1,29 @@
+===spin.log===
+SPIN_START 09:27:44
+START clr=70.3cm
+  ...+0deg
+  ...+6deg
+  ...+14deg
+  ...+23deg
+  ...+32deg
+  ...+40deg
+  ...+48deg
+  ...+56deg
+  ...+65deg
+  ...+75deg
+  ...+85deg
+  ...+94deg
+  ...+103deg
+  ...+110deg
+  ...+118deg
+  ...+128deg
+  ...+137deg
+  ...+148deg
+  ...+157deg
+  ...+166deg
+SPIN_END reason=TIMEOUT acc=+174deg
+  회전중 지연: /scan_raw 101ms(밀림 1.27deg) → /scan 54ms(밀림 0.68deg @0.22rad/s)
+SPIN_EXIT 09:28:28
+===현재 회전율(정지 확인)===
+0.0012212282860806912
+---

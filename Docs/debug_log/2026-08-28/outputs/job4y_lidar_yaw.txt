@@ -1,0 +1,14 @@
+/usr/lib/python3/dist-packages/numpy/lib/nanfunctions.py:1119: RuntimeWarning: All-NaN slice encountered
+  r, k = function_base._ureduce(a, func=_nanmedian, axis=axis, out=out,
+ sector(deg)  median_m   (현재 lidar_link 프레임, 0deg = +x)
+      -180        1.22   ####
+      -135        0.89   ###
+       -90        0.61   ##
+       -45        0.78   ###
+         0        2.60   ##########
+        45        1.09   ####
+        90        1.46   #####
+       135        1.38   #####
+
+NEAREST sector: -90 deg (0.61 m)  ← 손이 있는 방향이어야 함
+이 값은 '현재 URDF lidar_yaw가 적용된' 프레임 기준. 손이 정면(0deg)에 안 나오면 lidar_yaw를 (현재값 - -1.5708) 로 보정

@@ -190,7 +190,12 @@
   <joint name="lidar_joint" type="fixed">
     <parent link="base_link"/>
     <child link="lidar_link"/>
-    <origin xyz="0.152 0.0 0.185" rpy="0 0 0"/>
+    <!-- lidar_yaw = π 확정 (2026-08-28, 좌측325mm·정면800mm 명확 배치 job6n/6o).
+         /scan은 ROS 오른손계 일치(angle_increment>0, 좌측-정면=+82°≈+90° 방향보존 → 거울 아님, inverted 불필요).
+         원시: 정면벽 raw−168°, 좌측벽 raw−86°. yaw=π 적용 시 base_link: 정면벽 +11°(정면+x)·좌측벽 +94°(좌측+y) 검증.
+         물리 라이다는 왼손(CW)이나 rplidar_ros 드라이버가 오른손 메시지로 변환함. RPLidar 하드웨어 0°=로버 후방 → π 회전.
+         (Foxglove 반전 관찰은 stale tf_static 캐시 — yaw 변경 이력 중 예전 yaw=0을 클라이언트가 쥠. 새로고침으로 해소.) -->
+    <origin xyz="0.152 0.0 0.185" rpy="0 0 3.14159265"/>
   </joint>
 
   <!-- 카메라: RealSense D455f, 데크 일체형 벽(전면 = 데크원점 X+58mm)에 2×M4(±47.5) 체결.
