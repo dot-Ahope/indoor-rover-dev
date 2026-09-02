@@ -1,0 +1,17 @@
+===Nav2 설치 여부===
+  navigation2: 설치됨
+  nav2-bringup: 설치됨
+  nav2-bt-navigator: 설치됨
+  nav2-controller: 설치됨
+  nav2-planner: 설치됨
+  nav2-costmap-2d: 설치됨
+  nav2-mppi-controller: 설치됨
+  nav2-regulated-pure-pursuit-controller: 설치됨
+  twist-mux: 없음
+===apt 가용(미설치 시)===
+  Candidate: 1.1.20-1jammy.20260805.013510
+===현재 스택 (Nav2 입력 준비 확인)===
+  /scan: average rate: 10.004
+  /odometry/filtered: average rate: 28.619
+  map→odom TF: - Translation: [0.000, 0.000, 0.000]
+  /cmd_vel 구독자(보드): Subscription count: 1

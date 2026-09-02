@@ -1,0 +1,21 @@
+wsl: ���� $����ƹ� ��ܴ|� ����`� L��� wsl2.localhostForwarding $��t� ȩ���� Jŵ�Ȳ�.
+=== Nav2 종료 (프레임 재설정 전) ===
+=== EKF 재시작 (자이로 캘리브 ~10s, 정지!) ===
+[sensor_conditioner.py-1] [INFO] [1788316077.673138676] [sensor_conditioner]: gyro bias calibrated: (-0.00892, -0.00142, -0.00187) rad/s, std=(0.0027, 0.0026, 0.0018)
+=== slam 재시작 ===
+  map->base_link: - Translation: [0.000, 0.000, 0.000]
+=== Nav2 재기동 ===
+  lifecycle:
+    /controller_server   active [3]
+    /planner_server      active [3]
+    /bt_navigator        active [3]
+    /behavior_server     ?
+    /velocity_smoother   active [3]
+  local_costmap: average rate: 1.667
+
+=== 공간 판정 (회전 목표용) ===
+  회전 스윕반경 30cm / 최근접 57cm → 회전 OK
+        정면 방향 여유:   204cm
+     좌(90) 방향 여유:    71cm
+        후면 방향 여유:   132cm
+    우(-90) 방향 여유:    57cm

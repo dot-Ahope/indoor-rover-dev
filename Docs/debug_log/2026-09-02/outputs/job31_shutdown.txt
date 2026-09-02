@@ -1,0 +1,8 @@
+wsl: ø»ì·´ $±¸ÒÌÆ¹Ğ ¨ºÜ´|¹ ¬À©Æ`Õ Lµ”² wsl2.localhostForwarding $ÁÈtÇ È©Æ´ÀÉ JÅµÂÈ²ä².
+=== ëª¨í„° ì •ì§€ ===
+=== Nav2/ì„¼ì„œ/slam ì¢…ë£Œ ===
+=== agent ì¢…ë£Œ ===
+agent ì¢…ë£Œë¨
+ë‚¨ì€ ë…¸ë“œ: /behavior_server /bt_navigator /bt_navigator_navigate_through_poses_rclcpp_node /bt_navigator_navigate_to_pose_rclcpp_node /camera/camera /controller_server /ekf_filter_node /global_costmap/global_costmap /lifecycle_manager_navigation /local_costmap/local_costmap /planner_server /robot_state_publisher /rover_jupiter /rplidar_node /scan_deskew /sensor_conditioner /slam_toolbox /smoother_server /transform_listener_impl_aaaaceadf390 /transform_listener_impl_aaaae952fb80 /transform_listener_impl_aaaaebf5e520 /transform_listener_impl_aaaaed8c6500 /transform_listener_impl_aaab1704fac0 /transform_listener_impl_ffff880e25e0 /velocity_smoother /waypoint_follower 
+ë°°í„°ë¦¬(ë§ˆì§€ë§‰): ì¸¡ì •ë¶ˆê°€(agent ì¢…ë£Œë¨)
+ì™„ë£Œ â€” ì¶©ì „ ì§„í–‰í•˜ì…”ë„ ë©ë‹ˆë‹¤

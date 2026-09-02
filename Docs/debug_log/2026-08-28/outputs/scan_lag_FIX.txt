@@ -1,0 +1,9 @@
+=== 스캔 포인트 끌림 진단·수정 (2026-08-28) ===
+증상: 회전 시 lidar 포인트가 회전방향으로 밀리다 특징점에 스냅(사용자 관찰).
+진단: /scan now-stamp +112ms, scan_time 95ms(10Hz 스윕), 스탬프=스윕시작. scan-odom 스탬프차 -160ms.
+  → 10Hz 스윕(95ms)을 slam이 한 순간으로 처리(deskew 없음) + 스탬프가 스윕시작이라 ~47ms 추가 과거앵커.
+  회전 0.28rad/s에서 ~1.8° 자세오차 → 밀림, slam 스캔매칭이 보정 → 스냅(루프클로저 아님).
+수정: (1) scan_restamp 노드 — 스탬프 +scan_time/2(스윕중앙). /scan_raw→/scan. 지연 100.6→52.8ms(-47.8).
+     (2) slam minimum_travel_heading 0.08→0.03, minimum_time_interval 0.3→0.1 (보정 3배 잦게).
+효과: 밀림 ~1.8°→~0.85° + 스냅간격 축소. 잔여 53ms=10Hz 라이다 근본한계(deskew/고속라이다는 양산검토).
+파일: ros2_ws/src/rover_bringup/scripts/scan_restamp.py, launch/lidar.launch.py, config/slam.yaml

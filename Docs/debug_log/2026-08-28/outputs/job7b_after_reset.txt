@@ -1,0 +1,15 @@
+===agent 컨테이너===
+microros_agent Up About an hour
+===agent 최근 로그===
+===토픽 존재===
+/battery /rover/f5b_heartbeat /rover/status /wheel_odom /wheel_odom/conditioned 
+===wheel_odom 10s hz===
+average rate: 48.599
+===battery===
+11.961593627929688
+---
+===heartbeat===
+data: 105
+---
+===imu_data_raw (보드 IMU, 세션 살아있으면 나옴)===
+average rate: 50.001

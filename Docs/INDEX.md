@@ -27,8 +27,9 @@
 | 문서 | 내용 |
 |---|---|
 | [BUILD_AND_FLASH_GUIDE.md](BUILD_AND_FLASH_GUIDE.md) | **저장소 clone → 빌드 → ST-Link 플래시 → UART5 검증** 전체 절차 (Windows/Linux/Mac, 트러블슈팅 포함) |
+| [MOTOR_1TO90_MIGRATION_PLAN.md](MOTOR_1TO90_MIGRATION_PLAN.md) | **신규 1:90 (45rpm) BLDC 교체** — 배선·펌웨어 변경·T0~T6 테스트·자율주행 계획 (2026-08-18) |
 | [FIRMWARE_DEV_PLAN.md](FIRMWARE_DEV_PLAN.md) | F0~F8 단계 정의 + 아키텍처 + 핀 배정표 (전체 마스터 플랜) |
-| [F103_to_G474_pin_migration.md](F103_to_G474_pin_migration.md) | 양산기 MCU 교체 검토 (참고용) |
+| [F103_to_G474_pin_migration.md](F103_to_G474_pin_migration.md) | [철회됨] MCU 교체 검토 이력 (참고용) |
 | [rover.urdf](rover.urdf) | 차체 URDF (휠 반경·트랙 폭) |
 | [rover_top_down_layout.svg](rover_top_down_layout.svg) | 차체 평면도 |
 | [Jetson/](Jetson/) | Jetson Orin Nano 관련 자료 |
@@ -52,7 +53,7 @@
 
 - ~~**F8.5**: voltage divider ratio 측정, IMU gyro.z auto-calibration, header.stamp wall time 변환~~ → **완료 (2026-05-28)**. 메모리 `board_voltage_divider`, `icm20948_gyro_z_bias`, `f405_header_stamp_fix` 참조.
 - **Jetson Phase 2**: `rover_description` (URDF), `rover_bringup` (launch + micro_ros_agent), `robot_localization` EKF (wheel_odom + IMU fusion)
-- **양산 이식**: G4/H7 + 외장 모터 드라이버 + 산업급 IMU (App Layer 재사용, Driver Layer 만 교체)
+- **하드웨어 교체 시**: G4/H7 + 외장 모터 드라이버 + 상위 IMU 로 바꿔도 App Layer 재사용, Driver Layer 만 교체
 
 ---
 

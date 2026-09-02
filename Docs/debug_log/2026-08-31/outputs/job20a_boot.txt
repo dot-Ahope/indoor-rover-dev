@@ -1,0 +1,15 @@
+날짜: 2026-09-02 09:41
+=== 잔여 정리 ===
+=== base.launch (agent+RSP) ===
+microros_agent Up 11 seconds
+보드 /wheel_odom: average rate: 49.992
+배터리: voltage: 12.281439781188965
+=== sensors.launch (자이로 캘리브 ~10s, 정지!) ===
+[sensor_conditioner.py-5] [INFO] [1788309741.053110722] [sensor_conditioner]: gyro bias calibrated: (-0.00521, -0.00097, -0.00158) rad/s, std=(0.0025, 0.0025, 0.0017)
+=== slam.launch ===
+=== 검증 ===
+  노드: /camera/camera /ekf_filter_node /foxglove_bridge /rover_jupiter /rplidar_node /scan_deskew /sensor_conditioner /slam_toolbox 
+  /odometry/filtered:   /scan: average rate: 9.998
+  VX_SCALE: VX_SCALE = 0.783
+  odom 원점: x: 0.0
+  map->odom: - Translation: [0.000, 0.000, 0.000]

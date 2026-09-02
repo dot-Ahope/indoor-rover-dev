@@ -1,0 +1,14 @@
+=== 조이스틱 장치 ===
+crw-rw-r--+ 1 root input 13, 0 Jan  1  1970 /dev/input/js0
+=== 기존 joy/teleop 정리 ===
+=== joy_teleop 기동 ===
+노드: /joy_node /teleop_twist_joy_node 
+/odometry/filtered: average rate: 29.990
+=== /joy 현재값 (스틱 중립 확인) ===
+axes:
+- 0.0
+- 0.0
+=== /cmd_vel (중립이면 0 또는 무발행):   x: 0.0
+  z: 0.0
+  x: 0.0
+map->odom: - Translation: [0.000, 0.000, 0.000]

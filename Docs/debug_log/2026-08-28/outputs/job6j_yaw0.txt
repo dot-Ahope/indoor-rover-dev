@@ -1,0 +1,15 @@
+Summary: 1 package finished [0.80s]
+===lidar_link TF yaw (0 기대)===
+- Rotation: in RPY (degree) [0.000, -0.000, 0.000]
+===참고: base_link 프레임 근거리 방향 (코너 정면+좌측 벽이면 근거리가 0°~+90° 아크여야 정상)===
+/usr/lib/python3/dist-packages/numpy/lib/nanfunctions.py:1119: RuntimeWarning: All-NaN slice encountered
+  r, k = function_base._ureduce(a, func=_nanmedian, axis=axis, out=out,
+  base [-180..-135] 0.70m 벽
+  base [-135.. -90] 0.44m 벽
+  base [ -90.. -45] 0.41m 벽
+  base [ -45..  +0] 0.59m 벽
+  base [  +0.. +45] 3.23m 트임
+  base [ +45.. +90] 1.73m 
+  base [ +90..+135] 1.10m 
+  base [+135..+180] 0.74m 벽
+VERIFY_IN_FOXGLOVE

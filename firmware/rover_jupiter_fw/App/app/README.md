@@ -11,6 +11,6 @@
 ## 원칙
 STM32 HAL · AM2861 · micro-ROS API를 **직접 호출하지 않는다.**
 HAL Layer 인터페이스(`hal/`)를 통해서만 하드웨어에 접근한다.
-→ 양산기(G4/H7) 이식 시 이 레이어는 그대로 재사용.
+→ MCU가 바뀌어도(G4/H7 등) 이 레이어는 그대로 재사용.
 
 참조: `docs/FIRMWARE_DEV_PLAN.md §3.1`

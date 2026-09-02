@@ -1,0 +1,10 @@
+=== odom -> base_link (EKF, 30Hz 기대) ===
+Net delay     avg = 0.00326323: max = 0.0201695
+Frame: base_link, published by <no authority available>, Average Delay: 0.796056, Max Delay: 249.684
+Frame: odom, published by <no authority available>, Average Delay: -0.120357, Max Delay: 0
+Node: <no authority available> 50.2709 Hz, Average Delay: 0.862404 Max Delay: 249.684
+
+=== map -> odom (slam) ===
+Net delay     avg = -0.00942597: max = 0
+Frame: odom, published by <no authority available>, Average Delay: -0.11443, Max Delay: 0
+Node: <no authority available> 50.3505 Hz, Average Delay: 0.909477 Max Delay: 261.833

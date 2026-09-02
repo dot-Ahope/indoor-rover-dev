@@ -1,0 +1,8 @@
+wsl: ���� $����ƹ� ��ܴ|� ����`� L��� wsl2.localhostForwarding $��t� ȩ���� Jŵ�Ȳ�.
+=== slam transform_publish_period (map->odom 재발행 주기) ===
+Double value is: 0.05
+=== 정지 상태 map->odom stamp 갱신율 재측정 ===
+  4초간 서로다른 map->odom stamp 36개 (=재발행 ~9Hz)
+=== foxglove_bridge 재시작 ===
+  foxglove 재시작됨 (클라이언트 재접속하세요)
+  load: 1.90 3.53 3.45

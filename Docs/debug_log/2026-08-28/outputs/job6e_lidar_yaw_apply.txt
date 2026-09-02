@@ -1,0 +1,7 @@
+Summary: 1 package finished [1.11s]
+===lidar_link TF (yaw 확인)===
+- Translation: [0.152, 0.000, 0.185]
+- Rotation: in RPY (degree) [0.000, -0.000, 180.000]
+===nodes===
+/robot_state_publisher 
+READY_FOR_VERIFY

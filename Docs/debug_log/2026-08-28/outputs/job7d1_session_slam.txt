@@ -1,0 +1,9 @@
+===세션 확인===
+wheel_odom: average rate: 49.679
+battery: 11.896319389343262
+---
+===slam_toolbox 재시작 (맵 초기화)===
+/slam_toolbox
+map→odom TF: - Translation: [-0.000, -0.000, 0.000]
+/scan: average rate: 10.010
+READY

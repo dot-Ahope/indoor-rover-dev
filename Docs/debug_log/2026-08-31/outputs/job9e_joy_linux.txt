@@ -1,0 +1,20 @@
+Unpacking ros-humble-joy-linux (3.3.0-1jammy.20260725.160518) ...
+Setting up ros-humble-joy-linux (3.3.0-1jammy.20260725.160518) ...
+jetson→input 그룹 추가(다음 로그인부터, 지금은 others r로 접근)
+===joy_linux_node 상태===
+실행중
+[WARN] [1788157535.007293649] [joy_node]: Couldn't open joystick force feedback: Bad file descriptor
+[INFO] [1788157535.007830147] [joy_node]: Opened joystick: /dev/input/js0. deadzone_: 0.050000.
+  /joy hz: average rate: 19.768
+=== 지금부터 12초간 스틱·버튼 조작해주세요 ===
+수신 238, 축 8, 버튼 15
+  axis[0]: +0.00..+0.00 폭0.00
+  axis[1]: +0.00..+0.00 폭0.00
+  axis[2]: +0.00..+0.00 폭0.00
+  axis[3]: +0.00..+0.00 폭0.00
+  axis[4]: +0.00..+0.00 폭0.00
+  axis[5]: +0.00..+0.00 폭0.00
+  axis[6]: +0.00..+0.00 폭0.00
+  axis[7]: +0.00..+0.00 폭0.00
+눌린 버튼: 없음
+=> 축 움직임+버튼 감지 = 입력 정상

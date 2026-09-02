@@ -1,0 +1,9 @@
+★ 로버를 15초간 가만히 두세요 (자이로 캘리브레이션)
+] [sensor_conditioner]: gyro bias calibrated: (0.00032, 0.00027, -0.00004) rad/s, std=(0.0018, 0.0026, 0.0
+  odom 위치(0 근처여야): x: 0.0 y: 0.0 
+===slam 재시작(맵 초기화)===
+  slam OK
+  map→odom TF: - Translation: [0.000, 0.000, 0.000]
+===전체 노드 확인===
+/camera/camera /ekf_filter_node /robot_state_publisher /rover_jupiter /rplidar_node /scan_deskew /sensor_conditioner /slam_toolbox 
+  /odometry/filtered: average rate: 30.023

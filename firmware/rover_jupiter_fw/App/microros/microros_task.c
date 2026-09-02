@@ -123,6 +123,15 @@ static rclc_executor_t  s_executor;
 
 static volatile uint32_t s_cmdvel_count = 0;   /* 디버그·watchdog 후보 */
 
+/* 기동 데드밴드 보상 — rover_platform.h 의 MIN_WHEEL_SPEED_MPS 주석 참조.
+ * 사실상 0(EPS 미만)은 0 유지, 그 외 최소 기동치 미만은 최소치로 승격(부호 보존). */
+static float apply_min_wheel_speed(float v)
+{
+    if (fabsf(v) < WHEEL_SPEED_EPS_MPS) return 0.0f;
+    if (fabsf(v) < MIN_WHEEL_SPEED_MPS) return copysignf(MIN_WHEEL_SPEED_MPS, v);
+    return v;
+}
+
 /* /cmd_vel 콜백 — Twist (linear.x, angular.z) → 좌·우 휠 속도. */
 static void cmdvel_callback(const void *msg_in)
 {
@@ -148,6 +157,11 @@ static void cmdvel_callback(const void *msg_in)
         v_l *= scale;
         v_r *= scale;
     }
+
+    /* 기동 데드밴드 보상 (2026-09-02): 미세 비영 명령이 모터 무반응 구간에 갇혀
+     * 상위 제어기가 영구 정체하는 문제의 펌웨어측 근본 보상. */
+    v_l = apply_min_wheel_speed(v_l);
+    v_r = apply_min_wheel_speed(v_r);
 
     speed_controller_set_target(MOTOR_LEFT,  v_l);
     speed_controller_set_target(MOTOR_RIGHT, v_r);

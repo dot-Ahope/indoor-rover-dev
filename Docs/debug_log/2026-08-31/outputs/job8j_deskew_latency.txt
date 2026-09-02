@@ -1,0 +1,11 @@
+===/scan 지연 (deskew ref=end → 대폭 감소 기대)===
+  /scan_raw 101ms → /scan 4ms (deskew)
+===slam 건강성 (deskew /scan 소비 확인)===
+  slam 실행중
+  /map→odom TF: - Translation: [0.000, 0.000, 0.000]
+  slam 최근 경고/오류:
+[async_slam_toolbox_node-1] [INFO] [1788135511.142854142] [slam_toolbox]: Message Filter dropping message: frame 'lidar_link' at time 1788135510.984 for reason 'discarding message because the queue is full'
+[async_slam_toolbox_node-1] [INFO] [1788136745.934649824] [slam_toolbox]: Message Filter dropping message: frame 'lidar_link' at time 1788136745.835 for reason 'discarding message because the queue is full'
+===/scan 구독자 (slam·foxglove가 deskew /scan 받는지)===
+Publisher count: 1
+Subscription count: 2

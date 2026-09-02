@@ -1,0 +1,263 @@
+# Nav2 파라미터 — WT-600 스키드스티어 로버 (dev 플랫폼)
+#
+# 로버 특성 (실측 근거):
+#   - 최대 선형속도 0.100 m/s (펌웨어 MAX_LINEAR_SPEED_MPS), 각속도 암묵상한 0.816 rad/s (=V_MAX/0.1225)
+#   - 풋프린트 0.5 × 0.33 m (WT-600), base_link = 기하 중심
+#   - 제자리 회전 스윕 반경 0.30 m (대각 절반) — 좁은 통로 계획 시 유의
+#   - 오도메트리: EKF(휠 vx×0.783 보정 + D455f 자이로), 회전 포함 루프 드리프트 ~1% (2026-09-02 검증)
+#   - map→odom 은 slam_toolbox(온라인 매핑)가 제공 → AMCL·map_server 미사용
+#
+# ⚠ 저속 로봇이라 Nav2 기본값(빠른 로봇 가정)을 그대로 쓰면 progress checker 오탐이 남.
+#   required_movement_radius·movement_time_allowance 를 완화함.
+
+bt_navigator:
+  ros__parameters:
+    global_frame: map
+    robot_base_frame: base_link
+    odom_topic: /odometry/filtered
+    bt_loop_duration: 10
+    default_server_timeout: 20
+    # 기본 BT 사용 (navigate_to_pose / navigate_through_poses)
+
+controller_server:
+  ros__parameters:
+    controller_frequency: 20.0
+    min_x_velocity_threshold: 0.001
+    min_y_velocity_threshold: 0.5
+    min_theta_velocity_threshold: 0.001
+    odom_topic: /odometry/filtered
+    progress_checker_plugin: "progress_checker"
+    goal_checker_plugins: ["general_goal_checker"]
+    controller_plugins: ["FollowPath", "FollowPathRPP"]   # ★현재 FollowPath=MPPI (벤치마크 2라운드). RPP는 대기
+
+    progress_checker:
+      # ⚠ SimpleProgressChecker 는 '병진'만 진행으로 인정 → 제자리 회전이 필요한 목표에서
+      #   20초마다 "Failed to make progress" 로 중단·재시도를 반복함 (2026-09-02 실측).
+      #   스키드스티어는 제자리 회전이 정상 동작이므로 PoseProgressChecker(회전도 인정)를 쓴다.
+      plugin: "nav2_controller::PoseProgressChecker"
+      required_movement_radius: 0.25
+      required_movement_angle: 0.5      # rad — 이만큼 회전해도 '진행'으로 인정
+      movement_time_allowance: 25.0
+
+    general_goal_checker:
+      stateful: True
+      plugin: "nav2_controller::SimpleGoalChecker"
+      # ⚠ 임시 완화 0.15→0.25 (2026-09-02): 기동 데드밴드로 목표 근접 미세조정이 불가능해
+      #   23cm 지점에서 정체(MPPI 실측). 펌웨어 데드밴드 보상(MIN_WHEEL_SPEED_MPS) 플래시 후 0.15 복원할 것.
+      xy_goal_tolerance: 0.25
+      yaw_goal_tolerance: 0.25
+
+    # RPP(Regulated Pure Pursuit) — 차동/스키드스티어 저속에 적합, 튜닝 파라미터가 직관적
+    FollowPathRPP:
+      plugin: "nav2_regulated_pure_pursuit_controller::RegulatedPurePursuitController"
+      desired_linear_vel: 0.10          # 펌웨어 최대치와 동일
+      lookahead_dist: 0.30
+      min_lookahead_dist: 0.20
+      max_lookahead_dist: 0.45
+      lookahead_time: 1.5
+      use_velocity_scaled_lookahead_dist: true
+      transform_tolerance: 0.2
+      min_approach_linear_velocity: 0.02
+      approach_velocity_scaling_dist: 0.30
+      use_collision_detection: true
+      max_allowed_time_to_collision_up_to_carrot: 1.5
+      # 곡률·장애물 근접 시 감속
+      use_regulated_linear_velocity_scaling: true
+      use_cost_regulated_linear_velocity_scaling: true
+      regulated_linear_scaling_min_radius: 0.35
+      regulated_linear_scaling_min_speed: 0.03
+      # 스키드스티어는 제자리 회전 가능 → 경로 시작 시 헤딩 정렬
+      use_rotate_to_heading: true
+      rotate_to_heading_min_angle: 0.5
+      rotate_to_heading_angular_vel: 0.5
+      # ⚠ RPP 는 rotateToHeading 각속도를 '현재 측정속도 ± max_angular_accel×dt' 로 클램프한다.
+      #   1.0 이면 20Hz 제어주기에서 첫 명령이 1.0×0.05 = 0.05 rad/s 뿐 → 로버 기동 임계(정지마찰·
+      #   PWM 데드밴드) 미달로 안 움직임 → 측정속도 0 유지 → 영원히 0.05 반복(데드락). 2026-09-02 실측.
+      #   4.0 으로 첫 명령 0.2 rad/s 확보 (실측상 0.3 rad/s 에서 정상 회전 확인됨).
+      max_angular_accel: 4.0
+      # NavFn 경로엔 후진 cusp 이 없어 RPP 에선 실효 제한적 — 실제 후진 기동은 MPPI(vx_min<0)가 담당.
+      # true 로 두는 건 무해하며, 추후 Smac(후진 경로 생성) 도입 시 바로 유효해짐.
+      allow_reversing: true
+      max_robot_pose_search_dist: 5.0
+
+    # MPPI — N1 벤치마크 후보. 샘플링 기반이라 좁은 공간·후진·장애물 근접 기동이 RPP보다 강함.
+    # ⚠ CPU 무거움(batch 1000×32step@20Hz) → 벤치마크에서 지연 시 batch_size·controller_frequency 하향.
+    # 전환 방법: BT 기본 controller_id 가 "FollowPath" 이므로, 벤치마크 시 두 블록의 이름을 맞바꿔 재기동.
+    FollowPath:
+      plugin: "nav2_mppi_controller::MPPIController"
+      time_steps: 32
+      model_dt: 0.05
+      batch_size: 1000
+      vx_std: 0.05
+      vy_std: 0.0
+      wz_std: 0.3
+      vx_max: 0.10          # 펌웨어 한계
+      vx_min: -0.08         # ★ 후진 허용 — 좁은 공간 이탈 기동
+      vy_max: 0.0
+      wz_max: 0.6
+      iteration_count: 1
+      prune_distance: 1.0
+      transform_tolerance: 0.2
+      temperature: 0.3
+      gamma: 0.015
+      motion_model: "DiffDrive"
+      visualize: false
+      critics: ["ConstraintCritic", "ObstaclesCritic", "GoalCritic", "GoalAngleCritic", "PathAlignCritic", "PathFollowCritic", "PathAngleCritic", "PreferForwardCritic"]
+      ConstraintCritic: {enabled: true, cost_power: 1, cost_weight: 4.0}
+      GoalCritic: {enabled: true, cost_power: 1, cost_weight: 5.0, threshold_to_consider: 1.0}
+      GoalAngleCritic: {enabled: true, cost_power: 1, cost_weight: 3.0, threshold_to_consider: 0.4}
+      PreferForwardCritic: {enabled: true, cost_power: 1, cost_weight: 5.0, threshold_to_consider: 0.4}
+      # consider_footprint: 직사각 풋프린트(0.5×0.33) 정확 반영 — CPU 비용 있으나 좁은 공간 정확성에 필수
+      ObstaclesCritic: {enabled: true, cost_power: 1, repulsion_weight: 1.5, critical_weight: 20.0, consider_footprint: true, collision_cost: 10000.0, collision_margin_distance: 0.05, near_goal_distance: 0.5}
+      PathAlignCritic: {enabled: true, cost_power: 1, cost_weight: 14.0, max_path_occupancy_ratio: 0.05, trajectory_point_step: 3, threshold_to_consider: 0.40, offset_from_furthest: 20}
+      PathFollowCritic: {enabled: true, cost_power: 1, cost_weight: 5.0, offset_from_furthest: 5, threshold_to_consider: 0.6}
+      PathAngleCritic: {enabled: true, cost_power: 1, cost_weight: 2.0, offset_from_furthest: 4, threshold_to_consider: 0.4, max_angle_to_furthest: 1.0}
+
+local_costmap:
+  local_costmap:
+    ros__parameters:
+      update_frequency: 5.0
+      publish_frequency: 2.0
+      global_frame: odom
+      robot_base_frame: base_link
+      rolling_window: true
+      width: 3
+      height: 3
+      resolution: 0.05
+      # 실제 사각 풋프린트 사용 (원형 근사는 좁은 통로에서 과보수적)
+      footprint: "[[0.25, 0.165], [0.25, -0.165], [-0.25, -0.165], [-0.25, 0.165]]"
+      # ⚠ 0.02→0.05 (2026-09-02): S2L 최소감지 0.2m → 앞면 ~10cm 이내 물체는 라이다 사각.
+      #   근접 후 회전 중 벽 접촉·트랙 헛돎 실발생 → 패딩을 키워 계획 단계에서 벽과 거리 유지.
+      footprint_padding: 0.05
+      plugins: ["obstacle_layer", "inflation_layer"]
+      obstacle_layer:
+        plugin: "nav2_costmap_2d::ObstacleLayer"
+        enabled: true
+        observation_sources: scan
+        scan:
+          topic: /scan
+          data_type: "LaserScan"
+          max_obstacle_height: 2.0
+          clearing: true
+          marking: true
+          raytrace_max_range: 12.0
+          raytrace_min_range: 0.2
+          obstacle_max_range: 8.0
+          obstacle_min_range: 0.2
+          inf_is_valid: false
+      inflation_layer:
+        plugin: "nav2_costmap_2d::InflationLayer"
+        # ⚠ 0.35 는 실내 좁은 공간에서 과대 — 장애물·벽 양쪽 팽창이 겹쳐 자유 통로가 소멸,
+        #   우회 경로를 못 찾고 복구동작만 반복하다 ABORTED (2026-09-02 실측).
+        #   로버 내접반경 0.165 보다는 크게 두되 통로를 남기는 값으로 축소.
+        inflation_radius: 0.20
+        cost_scaling_factor: 3.0
+      always_send_full_costmap: true
+
+global_costmap:
+  global_costmap:
+    ros__parameters:
+      update_frequency: 1.0
+      publish_frequency: 1.0
+      global_frame: map
+      robot_base_frame: base_link
+      resolution: 0.05
+      track_unknown_space: true
+      footprint: "[[0.25, 0.165], [0.25, -0.165], [-0.25, -0.165], [-0.25, 0.165]]"
+      # ⚠ 0.02→0.05 (2026-09-02): S2L 최소감지 0.2m → 앞면 ~10cm 이내 물체는 라이다 사각.
+      #   근접 후 회전 중 벽 접촉·트랙 헛돎 실발생 → 패딩을 키워 계획 단계에서 벽과 거리 유지.
+      footprint_padding: 0.05
+      plugins: ["static_layer", "obstacle_layer", "inflation_layer"]
+      static_layer:
+        plugin: "nav2_costmap_2d::StaticLayer"
+        map_subscribe_transient_local: true   # slam_toolbox /map 수신
+      obstacle_layer:
+        plugin: "nav2_costmap_2d::ObstacleLayer"
+        enabled: true
+        observation_sources: scan
+        scan:
+          topic: /scan
+          data_type: "LaserScan"
+          max_obstacle_height: 2.0
+          clearing: true
+          marking: true
+          raytrace_max_range: 12.0
+          raytrace_min_range: 0.2
+          obstacle_max_range: 8.0
+          obstacle_min_range: 0.2
+          inf_is_valid: false
+      inflation_layer:
+        plugin: "nav2_costmap_2d::InflationLayer"
+        inflation_radius: 0.20
+        cost_scaling_factor: 3.0
+      always_send_full_costmap: true
+
+planner_server:
+  ros__parameters:
+    expected_planner_frequency: 1.0
+    planner_plugins: ["GridBased"]
+    GridBased:
+      plugin: "nav2_navfn_planner/NavfnPlanner"
+      tolerance: 0.25
+      use_astar: false
+      allow_unknown: true
+
+smoother_server:
+  ros__parameters:
+    smoother_plugins: ["simple_smoother"]
+    simple_smoother:
+      plugin: "nav2_smoother::SimpleSmoother"
+      tolerance: 1.0e-10
+      max_its: 1000
+      do_refinement: True
+
+behavior_server:
+  ros__parameters:
+    local_costmap_topic: local_costmap/costmap_raw
+    global_costmap_topic: global_costmap/costmap_raw
+    local_footprint_topic: local_costmap/published_footprint
+    global_footprint_topic: global_costmap/published_footprint
+    cycle_frequency: 10.0
+    behavior_plugins: ["spin", "backup", "drive_on_heading", "wait"]
+    spin:
+      plugin: "nav2_behaviors/Spin"
+    backup:
+      plugin: "nav2_behaviors/BackUp"
+    drive_on_heading:
+      plugin: "nav2_behaviors/DriveOnHeading"
+    wait:
+      plugin: "nav2_behaviors/Wait"
+    local_frame: odom
+    global_frame: map
+    robot_base_frame: base_link
+    transform_tolerance: 0.2
+    # ⚠ spin 은 제자리 회전 → 중심기준 0.30m 스윕. 좁은 곳에서 실패할 수 있음.
+    simulate_ahead_time: 2.0
+    max_rotational_vel: 0.6
+    min_rotational_vel: 0.15
+    rotational_acc_lim: 1.0
+
+waypoint_follower:
+  ros__parameters:
+    loop_rate: 20
+    stop_on_failure: false
+    waypoint_task_executor_plugin: "wait_at_waypoint"
+    wait_at_waypoint:
+      plugin: "nav2_waypoint_follower::WaitAtWaypoint"
+      enabled: True
+      waypoint_pause_duration: 200
+
+velocity_smoother:
+  ros__parameters:
+    smoothing_frequency: 20.0
+    scale_velocities: false
+    feedback: "OPEN_LOOP"
+    # 펌웨어 한계와 일치 (초과 지령은 펌웨어가 어차피 포화시킴)
+    max_velocity: [0.10, 0.0, 0.60]
+    min_velocity: [-0.10, 0.0, -0.60]
+    max_accel: [0.20, 0.0, 1.20]
+    max_decel: [-0.30, 0.0, -1.50]
+    odom_topic: "/odometry/filtered"
+    odom_duration: 0.1
+    deadband_velocity: [0.0, 0.0, 0.0]
+    velocity_timeout: 1.0

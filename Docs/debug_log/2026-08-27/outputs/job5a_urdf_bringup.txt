@@ -1,0 +1,22 @@
+
+Summary: 2 packages finished [1.96s]
+URDF valid, links: 8
+===STOP slam / sensors / base===
+===START base.launch (agent + RSP with WT-600 URDF)===
+microros_agent Up 9 seconds
+base_footprint base_link camera_link imu_link left_track lidar_link right_track sensor_deck_link 
+===START sensors.launch===
+nsor_conditioner]: gyro bias calibrated: (-0.00010, 0.00032, -0.00009) rad/s, std=(0.0018, 0.0025, 0.0015)
+===TF tree (static, base_link 기준)===
+  sensor_deck_link           - Translation: [0.152, 0.000, 0.159]
+  lidar_link                 - Translation: [0.152, 0.000, 0.185]
+  camera_link                - Translation: [0.232, 0.048, 0.143]
+  camera_imu_optical_frame   - Translation: [0.216, 0.017, 0.150]
+  imu_link                   - Translation: [0.000, 0.000, 0.090]
+  left_track                 ===nodes===
+/camera/camera /ekf_filter_node /foxglove_bridge /robot_state_publisher /rover_jupiter /rplidar_node /sensor_conditioner /transform_listener_impl_aaaafb3eab90 
+===rates (wheel_odom은 보드 RESET 전엔 없음)===
+  /wheel_odom              average rate: 49.997
+  /scan                    average rate: 10.012
+  /camera/camera/imu       average rate: 199.684
+  /odometry/filtered       average rate: 29.999

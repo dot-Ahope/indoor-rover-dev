@@ -1,0 +1,13 @@
+Summary: 1 package finished [0.85s]
+SLIP_PTS = ((0.20, 0.46), (0.57, 0.46))
+    (x0, y0), (x1, y1) = SLIP_PTS
+nsor_conditioner]: gyro bias calibrated: (0.00009, 0.00012, -0.00011) rad/s, std=(0.0017, 0.0026, 0.0015)
+-- rates:
+  /odometry/filtered         average rate: 29.998
+  /wheel_odom/conditioned    average rate: 49.987
+  /imu/data                  average rate: 199.525
+-- static filtered yaw (30s drift):
+z: 0.0007569809627478239
+w: 0.9999997134898699
+z: 0.0009090869514832428
+w: 0.9999995867803719

@@ -1,0 +1,12 @@
+===stale 정리===
+===base.launch (agent+RSP)===
+microros_agent Up 9 seconds
+===sensors.launch (lidar+scan_restamp+camera+ekf+foxglove)===
+===slam.launch===
+===노드 목록===
+/camera/camera /ekf_filter_node /foxglove_bridge /robot_state_publisher /rover_jupiter /rplidar_node /scan_restamp /sensor_conditioner /slam_toolbox /transform_listener_impl_aaaae6d68080 /transform_listener_impl_aaab12734ac0 
+===scan_restamp 확인===
+scan_restamp OK
+  /scan hz: ===보드 세션 (RESET 전엔 무발행)===
+  wheel_odom: average rate: 50.013
+NEXT: 보드 RESET 버튼 → 세션 재수립

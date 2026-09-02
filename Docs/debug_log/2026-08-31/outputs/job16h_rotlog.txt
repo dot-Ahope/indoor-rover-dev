@@ -1,0 +1,6 @@
+wsl: ���� $����ƹ� ��ܴ|� ����`� L��� wsl2.localhostForwarding $��t� ȩ���� Jŵ�Ȳ�.
+15초 제자리 회전 + TF 로깅 시작...
+=== 결과 (중단=False) ===
+  /odometry/filtered yaw 총 변화 = 202deg (실제 회전 확인)
+  odom->base (로봇 TF): 변화 448회, 간격 평균=33ms 최대=66ms
+  map->odom (slam 보정): 변화 없음(고정)
