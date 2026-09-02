@@ -1,0 +1,18 @@
+slam_toolbox 시작...
+===nodes===
+/camera/camera /ekf_filter_node /foxglove_bridge /robot_state_publisher /rplidar_node /sensor_conditioner /slam_toolbox /transform_listener_impl_aaaab7042da0 /transform_listener_impl_aaaae6913ba0 
+===/map===
+WARNING: topic [/map] does not appear to be published yet
+===map→odom TF===
+- Translation: [0.000, 0.000, 0.000]
+- Rotation: in RPY (degree) [0.000, 0.000, -0.000]
+===map→base_link (전체 체인)===
+- Translation: [0.000, 0.000, 0.000]
+===map info===
+resolution: 0.05000000074505806 width: 87 height: 119 origin: 
+===slam 경고===
+[async_slam_toolbox_node-1] [WARN] [1787881393.118440572] [slam_toolbox]: minimum laser range setting (0.0 m) exceeds the capabilities of the used Lidar (0.2 m)
+===rates 재확인===
+  /scan                average rate: 10.036
+  /wheel_odom          WARNING: topic [/wheel_odom] does not appear to be published yet
+  /odometry/filtered   average rate: 30.028

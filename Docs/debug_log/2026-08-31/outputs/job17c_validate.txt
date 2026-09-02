@@ -1,0 +1,18 @@
+wsl: ø»ì·´ $±¸ÒÌÆ¹Ğ ¨ºÜ´|¹ ¬À©Æ`Õ Lµ”² wsl2.localhostForwarding $ÁÈtÇ È©Æ´ÀÉ JÅµÂÈ²ä².
+=== foxglove 1ê°œë¡œ ì •ë¦¬ ===
+  foxglove í”„ë¡œì„¸ìŠ¤ ìˆ˜: 1
+=== joy ì •ë¦¬(cmd_vel ë‹¨ë…í™”) ===
+  deskew pid=19811
+=== íšŒì „ ìŠ¤í¬ë¦½íŠ¸(15s) ë°±ê·¸ë¼ìš´ë“œ ê¸°ë™ ===
+=== íšŒì „ ì¤‘ deskew CPU ìƒ˜í”Œ(10s í‰ê· ) ===
+  deskew CPU(íšŒì „ì¤‘) í‰ê· =0.0%, ìƒ˜í”Œ10
+=== ìµœì¢… ìƒìœ„ CPU ===
+  COMMAND           %CPU%
+  python3           43.6%
+  rplidar+          16.8%
+  realsen+          11.9%
+  ekf_node          11.9%
+  foxglov+          11.9%
+  python3            8.9%
+  load: 6.65 5.60 4.18
+  /scan: average rate: 9.973

@@ -1,0 +1,25 @@
+cut: '"': No such file or directory
+=== 로버 정지 확인 ===
+
+=== nav2.log 경고/오류 (최근 40줄) ===
+[behavior_server-4] [WARN] [1788316139.288416665] [behavior_server.rclcpp]: failed to send response to /behavior_server/get_state (timeout): client will not receive response, at ./src/rmw_response.cpp:154, at ./src/rcl/service.c:314
+[controller_server-1] [WARN] [1788316212.929648795] [controller_server]: No goal checker was specified in parameter 'current_goal_checker'. Server will use only plugin loaded general_goal_checker . This warning will appear once.
+[controller_server-1] [ERROR] [1788316232.930143280] [controller_server]: Failed to make progress
+[controller_server-1] [WARN] [1788316232.930590880] [controller_server]: [follow_path] [ActionServer] Aborting handle.
+[controller_server-1] [WARN] [1788316233.014483087] [controller_server]: Control loop missed its desired rate of 20.0000Hz
+[controller_server-1] [ERROR] [1788316253.053863956] [controller_server]: Failed to make progress
+[controller_server-1] [WARN] [1788316253.054198848] [controller_server]: [follow_path] [ActionServer] Aborting handle.
+[controller_server-1] [ERROR] [1788316273.869309790] [controller_server]: Failed to make progress
+[controller_server-1] [WARN] [1788316273.869661834] [controller_server]: [follow_path] [ActionServer] Aborting handle.
+[controller_server-1] [WARN] [1788316274.014191266] [controller_server]: Control loop missed its desired rate of 20.0000Hz
+[controller_server-1] [ERROR] [1788316294.014918512] [controller_server]: Failed to make progress
+[controller_server-1] [WARN] [1788316294.015159961] [controller_server]: [follow_path] [ActionServer] Aborting handle.
+
+=== behavior_server 상태 ===
+active [3]
+
+=== costmap / map 상태 ===
+  /map: average rate: 0.500
+  /global_costmap/costmap: average rate: 0.605
+  /plan: 
+  load: 

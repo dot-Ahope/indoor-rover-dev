@@ -1,0 +1,13 @@
+wsl: ���� $����ƹ� ��ܴ|� ����`� L��� wsl2.localhostForwarding $��t� ȩ���� Jŵ�Ȳ�.
+use_sim_time 파라미터 확인:
+  /ekf_filter_node: Boolean value is: False 
+  /rplidar_node: Boolean value is: False 
+  /slam_toolbox: Boolean value is: False 
+  /scan_deskew: Boolean value is: False 
+
+=== 콜백 내 실측 지연 (수신시각 - stamp), 토픽별 평균 ===
+  /wheel_odom                n=40  지연 평균=   16.8ms  최대=   58.0ms  최소=    9.2ms
+  /camera/camera/imu         n=40  지연 평균=    1.6ms  최대=   11.3ms  최소=    0.6ms
+  /odometry/filtered         n=40  지연 평균=   13.5ms  최대=   78.5ms  최소=    3.2ms
+  /scan_raw                  n=31  지연 평균=  102.7ms  최대=  143.5ms  최소=   92.7ms
+  /scan                      n=26  지연 평균=    3.1ms  최대=    5.4ms  최소=    1.7ms

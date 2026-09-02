@@ -1,0 +1,14 @@
+wsl: ø»ì·´ $±¸ÒÌÆ¹Ð ¨ºÜ´|¹ ¬À©Æ`Õ Lµ”² wsl2.localhostForwarding $ÁÈtÇ È©Æ´ÀÉ JÅµÂÈ²ä².
+=== ìž¬ë¹Œë“œ ===
+
+Summary: 1 package finished [0.90s]
+=== EKF/slam ìž¬ì‹œìž‘ (ìžì´ë¡œ ìº˜ë¦¬ë¸Œ ~10s, ì •ì§€ ìœ ì§€!) ===
+[sensor_conditioner.py-1] [INFO] [1788252786.799558910] [sensor_conditioner]: gyro bias calibrated: (-0.00962, -0.00134, -0.00201) rad/s, std=(0.0027, 0.0026, 0.0018)
+=== ê²€ì¦ ===
+  VX_SCALE: VX_SCALE = 0.783
+  ë…¸ë“œ: /ekf_filter_node /sensor_conditioner /slam_toolbox 
+  /odometry/filtered: average rate: 30.013
+  odom ì›ì : x: 0.0
+  map->odom: - Translation: [0.000, 0.000, 0.000]
+=== ë°©í–¥ë³„ ì—¬ìœ  ===
+  ì „ë°© 151cm / í›„ë°© 64cm â†’ ì¶”ì²œ F(ì „ì§„)

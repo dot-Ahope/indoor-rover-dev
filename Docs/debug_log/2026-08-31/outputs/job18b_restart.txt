@@ -1,0 +1,14 @@
+=== base/agent 유지 확인 ===
+  agent 살아있음(보드 RESET 불필요)
+=== sensors/slam 계열만 종료 (base.launch·RSP는 보존) ===
+  남은 관련 노드: /camera/camera /ekf_filter_node /foxglove_bridge /rplidar_node /scan_deskew /sensor_conditioner /slam_toolbox 
+=== sensors.launch 기동 (자이로 캘리브 ~10s, 로버 정지!) ===
+[sensor_conditioner.py-5] [INFO] [1788251572.209872617] [sensor_conditioner]: gyro bias calibrated: (-0.00987, -0.00138, -0.00199) rad/s, std=(0.0026, 0.0025, 0.0018)
+=== slam.launch 기동 ===
+=== 검증 ===
+  노드: /camera/camera /ekf_filter_node /foxglove_bridge /rover_jupiter /rplidar_node /scan_deskew /sensor_conditioner /slam_toolbox 
+  /odometry/filtered: average rate: 30.013
+  /scan: average rate: 9.953
+  odom 원점 확인: x: 0.0
+  map->odom: - Translation: [0.000, 0.000, 0.000]
+  foxglove: 1개, deskew: 1

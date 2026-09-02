@@ -115,10 +115,10 @@ ros2 topic echo /battery --once            # 전압값 정상 (≈12V 계열)
 ### Step 3 — robot_localization EKF
 - `ekf_node`: `/wheel_odom` → `/odometry/filtered` (30Hz). **휠 단독 융합** — 보드 IMU는 자이로 무반응 판명(2026-08-26)으로 제외, D455f IMU 도입 시 `imu0` 복원.
 - 펌웨어 covariance=0(unknown) 보완: `sensor_conditioner` 노드가 `/wheel_odom/conditioned`로 covariance 주입.
-- **회전 슬립 보정 (속도 의존)**: 실측(2026-08-26) 트랙 스크럽 슬립이 속도에 따라 증가 —
-  |vyaw|≈0.20 rad/s에서 계수 0.42 (휠 36.2°/실 15°), ≈0.57 rad/s에서 0.28 (휠 106.4°/실 30°).
-  컨디셔너에서 2점 선형보간 적용. **맵핑·주행 시 각속도 ≤0.4 rad/s 권장** (캘리브레이션 신뢰 구간).
-  LiDAR 확보 후 스캔매칭 기준 다점 정밀 재캘리브레이션 필요.
+- **회전 슬립 보정 (속도 의존)**: 컨디셔너 `SLIP_PTS` 2점 선형보간.
+  **W4 확정(2026-08-27, WT-600 게이지 0.245 + D455f 자이로 기준, 접지 좌/우×2속도)**: 자이로/휠 적분비 0.40~0.55(평균 0.47, ±13%),
+  속도 의존성 없음 → **단일 상수 0.46**. 변동은 강철 탱크 스키드의 물리 특성. yaw는 EKF에서 자이로가 25배 신뢰로 주도(계수는 보조).
+  **맵핑·주행 시 각속도 ≤0.4 rad/s 권장** (캘리브레이션 신뢰 구간).
 - two_d_mode: true. 프레임: odom → base_link.
 - 검증: 제자리 회전·직진 시 `/odometry/filtered` 발산 없음.
 
@@ -134,12 +134,12 @@ ros2 topic echo /battery --once            # 전압값 정상 (≈12V 계열)
 | `camera_link` (D455 좌이미저) | (+82.2 ±2, +47.5, −16.5) | 벽 58 + 몸체중심 13 + Intel xacro 11.2 / py 0.0475 / M4축 높이 |
 | IMU·광학 프레임 | 드라이버 자동 발행 (`camera_link` 하위, imu = (−16.0, −30.2, +7.4)) | realsense2_description |
 
-**장착 후 실측 필요 (데크 원점 ↔ `base_link`)**: ① H = 지면→LiDAR 하면 높이 (스캔면 = H+20.8) ② D_x = LiDAR 중심의 트랙 길이 중점 기준 전후 오프셋 ③ D_y = 좌우 오프셋 ④ 수평 잔류 기울기(3.5° 보상 설계 검증) ⑤ 스캔면보다 높은 로버 부속 유무(음영 필터).
+**실측 완료 (2026-08-27, `WT600_UPDATE_BRIEF.md`)**: 차체 = **WT-600**(500×330×115, 게이지 0.245). 데크 판 지면高 190mm, 최전방 = 로버 전방 −10mm, 폭 중앙 → base_link 기준 `lidar_link` (0.152, 0, 0.185), `camera_link` (0.232, +0.0475, 0.143). **확정본 = `Docs/rover.urdf`** (rover_description은 이를 그대로 로드; xacro는 `use_xacro:=true` 실험용). 미확정: camera_link y 부호, LiDAR yaw(정렬 테스트로 확정).
 
 #### 4-1. LiDAR (S2L)
 - 패키지: `ros-humble-rplidar-ros` 2.1.4 (apt, S2 지원). udev: CP210x `10c4:ea60` → `/dev/rplidar`.
 - 파라미터(이전 프로젝트 실측 확정): `serial_baudrate 1000000`, `scan_mode Standard`(16m, 10Hz), `angle_compensate true`, `inverted false`, `frame_id lidar_link`.
-- **yaw 정렬 필수**: rplidar_ros 출력은 오른손계이나 **x축이 하드웨어 후방**(케이블측 0° 관례) → 이전 리그에서 `lidar_yaw = π` 확정(케이스북 C8). 데크는 케이블 슬롯이 +Y라 방향이 다를 수 있음 → `h_axis_check.sh` 방식(카메라 정면 0.3m 손 → 최근접 섹터 → 90° 격자 스냅)으로 실측해 URDF에 기입.
+- **yaw 정렬 = π 확정 (2026-08-28)**: rplidar_ros 출력 x축이 하드웨어 후방 → `lidar_joint rpy=(0,0,π)`. 코너(정면+좌측 벽) 정지 스캔에서 base_link 근거리 아크가 전방(0°)·좌측(+90°) 벽과 일치 확인. **좌우 반전 없음**(드라이버 π−θ 내장). ⚠ 종이 흔들기 방식은 S2L 스캔면(지면+18.5cm)이 좁아 비신뢰 → **코너 벽 정지 테스트 권장**(전 높이 덮음 + ground truth 명확).
 - 게이트: `/scan` 10Hz, Foxglove에서 벽이 차체 기준 올바른 방향.
 
 #### 4-2. D455f — 설치 (현 Jetson은 RealSense 전제조건 전무 상태, 2026-08-26 진단)

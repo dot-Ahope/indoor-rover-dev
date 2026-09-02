@@ -1,0 +1,12 @@
+===현재 상태===
+ 11:34:32 up  2:12,  0 users,  load aver
+nodes: 
+===agent 확인===
+NO_AGENT
+===stale 정리===
+===base.launch 기동===
+microros_agent Up 9 seconds
+===sensors.launch 기동===
+노드: /camera/camera /ekf_filter_node /rover_jupiter /rplidar_node /scan_deskew 
+  wheel_odom(RESET 전엔 무발행): average rate: 49.997
+NEXT: 보드 RESET 버튼 → 세션 재수립

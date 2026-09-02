@@ -1,0 +1,9 @@
+/usr/lib/python3/dist-packages/numpy/lib/nanfunctions.py:1119: RuntimeWarning: All-NaN slice encountered
+  r, k = function_base._ureduce(a, func=_nanmedian, axis=axis, out=out,
+유일 최근접 물체: θ_lidar = -77.4 deg @ 0.40 m
+  근접 클러스터 각도범위: -125..+105 deg (449 beams)
+  두번째로 가까운 것들(참고): -77deg/0.40m -77deg/0.40m -78deg/0.40m -77deg/0.40m -82deg/0.40m -83deg/0.40m -78deg/0.40m -77deg/0.40m
+
+=> 로버 정면 = 하드웨어 θ_lidar -77 deg (스냅 -90)
+   필요한 lidar_yaw = +1.5708 rad (+90 deg)
+   → yaw=+90deg (하드웨어 축이 로버 좌측 지향)

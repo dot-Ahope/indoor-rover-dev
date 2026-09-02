@@ -1,0 +1,30 @@
+=== Nav2 상태 재확인 ===
+  /controller_server   active [3]
+  /planner_server      active [3]
+  /bt_navigator        active [3]
+  /behavior_server     active [3]
+  /velocity_smoother   active [3]
+  local_costmap: average rate: 1.667
+  global_costmap: average rate: 0.500
+
+=== 전방 형상 프로파일 (로버 기준, 중심으로부터 거리) ===
+  각도(+좌/-우)  최근접거리
+    -70deg       46cm  #########
+    -60deg       47cm  #########
+    -50deg       55cm  ###########
+    -40deg       59cm  ###########
+    -30deg       70cm  #############
+    -20deg       81cm  ################
+    -10deg      170cm  ##################################
+     +0deg      167cm  #################################
+    +10deg       41cm  ########
+    +20deg       41cm  ########
+    +30deg       43cm  ########
+    +40deg       46cm  #########
+    +50deg       51cm  ##########
+    +60deg      192cm  ######################################
+    +70deg       92cm  ##################
+
+  ★ 직진 경로상 최근접 장애물: 14cm (로버 앞면 기준)
+  좌측 우회 방향 최근접: 42cm
+  우측 우회 방향 최근접: 46cm

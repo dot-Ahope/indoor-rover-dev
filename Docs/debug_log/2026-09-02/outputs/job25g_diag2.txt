@@ -1,0 +1,46 @@
+=== nav2.log 최근 30줄 (정지 구간 원인) ===
+[controller_server-1] [INFO] [1788316705.302104898] [controller_server]: Passing new path to controller.
+[controller_server-1] [INFO] [1788316706.302066325] [controller_server]: Passing new path to controller.
+[controller_server-1] [INFO] [1788316707.352092417] [controller_server]: Passing new path to controller.
+[controller_server-1] [INFO] [1788316708.402130737] [controller_server]: Passing new path to controller.
+[controller_server-1] [INFO] [1788316709.402097580] [controller_server]: Passing new path to controller.
+[controller_server-1] [INFO] [1788316710.452090783] [controller_server]: Passing new path to controller.
+[controller_server-1] [INFO] [1788316711.452081537] [controller_server]: Passing new path to controller.
+[controller_server-1] [INFO] [1788316712.502102394] [controller_server]: Passing new path to controller.
+[controller_server-1] [INFO] [1788316713.552095766] [controller_server]: Passing new path to controller.
+[controller_server-1] [ERROR] [1788316714.352255856] [controller_server]: Failed to make progress
+[controller_server-1] [WARN] [1788316714.352610717] [controller_server]: [follow_path] [ActionServer] Aborting handle.
+[behavior_server-4] [INFO] [1788316714.370736282] [behavior_server]: Running spin
+[behavior_server-4] [INFO] [1788316714.372536508] [behavior_server]: Turning 1.57 for spin behavior.
+[behavior_server-4] [INFO] [1788316722.674517900] [behavior_server]: spin completed successfully
+[controller_server-1] [INFO] [1788316722.720162210] [controller_server]: Received a goal, begin computing control effort.
+[controller_server-1] [INFO] [1788316723.772056510] [controller_server]: Passing new path to controller.
+[controller_server-1] [INFO] [1788316724.822015222] [controller_server]: Passing new path to controller.
+[controller_server-1] [INFO] [1788316725.822044413] [controller_server]: Passing new path to controller.
+[controller_server-1] [INFO] [1788316726.872043963] [controller_server]: Passing new path to controller.
+[controller_server-1] [INFO] [1788316727.871992836] [controller_server]: Passing new path to controller.
+[controller_server-1] [INFO] [1788316728.922041513] [controller_server]: Passing new path to controller.
+[controller_server-1] [INFO] [1788316729.972050896] [controller_server]: Passing new path to controller.
+[controller_server-1] [INFO] [1788316730.972045826] [controller_server]: Passing new path to controller.
+[controller_server-1] [INFO] [1788316732.022045582] [controller_server]: Passing new path to controller.
+[controller_server-1] [INFO] [1788316733.022048101] [controller_server]: Passing new path to controller.
+[bt_navigator-5] [ERROR] [1788316733.910258363] [bt_navigator_navigate_to_pose_rclcpp_node]: Failed to get result for follow_path in node halt!
+[bt_navigator-5] [INFO] [1788316733.910638153] [bt_navigator]: [navigate_to_pose] [ActionServer] Client requested to cancel the goal. Cancelling.
+[bt_navigator-5] [INFO] [1788316733.911137052] [bt_navigator]: Goal canceled
+[controller_server-1] [INFO] [1788316733.922041327] [controller_server]: Goal was canceled. Stopping the robot.
+[controller_server-1] [INFO] [1788316733.922173908] [controller_server]: [follow_path] [ActionServer] Client requested to cancel the goal. Cancelling.
+
+=== 반복 패턴 집계 ===
+      4 Failed to make progress
+      4 Aborting handle
+      2 missed its desired rate
+
+=== CPU 확보: foxglove 종료 ===
+  load(직후): 4.53 4.92 4.21
+    COMMAND           %CPU%
+    python3           48.0%
+    rplidar+          18.6%
+    realsen+          13.7%
+    ekf_node          11.8%
+    lifecyc+          10.8%
+    bt_navi+           9.8%

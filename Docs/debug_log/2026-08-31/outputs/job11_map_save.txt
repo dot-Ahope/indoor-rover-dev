@@ -1,0 +1,15 @@
+===teleop 정지(안전)===
+  teleop/joy 종료, 정지 발행
+===현재 로버 위치(주행 후)===
+x: 4.489440269002554
+y: -0.7129421718179416
+===맵 저장===
+[INFO] [1788164539.152832918] [map_io]: Map saved
+[INFO] [1788164539.152856407] [map_saver]: Map saved successfully
+-rw-rw-r-- 1 jetson jetson 69975 Aug 31 17:22 /home/jetson/ros2_ws/maps/rover_map_drive.pgm
+-rw-rw-r-- 1 jetson jetson   133 Aug 31 17:22 /home/jetson/ros2_ws/maps/rover_map_drive.yaml
+===통계 + PNG===
+맵: 318x220 @5cm = 15.9x11.0m, 벽 3190셀, 자유 23514셀
+탐사한 자유공간 ≈ 58.8 m^2
+PNG /tmp/rover_map_drive.png
+END

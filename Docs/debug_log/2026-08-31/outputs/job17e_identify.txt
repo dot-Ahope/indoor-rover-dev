@@ -1,0 +1,17 @@
+=== 중복 인스턴스 확인 ===
+  scan_deskew: 19811 19814  (개수 2)
+  sensor_conditioner: 14964  (개수 1)
+  foxglove_bridge: 1개
+=== 상위 CPU + python3 정체 ===
+  pid=PID    cpu= %CPU% cmd=COMMAND
+  pid=14964  cpu= 44.1% cmd=python3
+  pid=14780  cpu= 18.6% cmd=rplidar+
+  pid=14778  cpu= 11.8% cmd=realsen+
+  pid=14966  cpu= 11.8% cmd=ekf_node
+  pid=15007  cpu=  8.8% cmd=async_s+
+  pid=20112  cpu=  8.8% cmd=foxglov+
+  pid=19814  cpu=  7.8% cmd=python3
+  pid=14721  cpu=  4.9% cmd=micro_r+
+=== python3 PID별 실체 (cmdline) ===
+  [14964] /home/jetson/ros2_ws/install/rover_bringup/lib/rover_bringup/sensor_conditioner.py
+  [19814] /home/jetson/ros2_ws/install/rover_bringup/lib/rover_bringup/scan_deskew.py

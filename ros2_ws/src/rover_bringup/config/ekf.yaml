@@ -1,0 +1,46 @@
+# robot_localization EKF — /wheel_odom(속도) + /imu/data_raw(자이로 yaw rate) 융합
+# 펌웨어 계약: wheel_odom은 odom→base_link, IMU는 orientation 미제공(REP-145) → yaw rate만 사용
+ekf_filter_node:
+  ros__parameters:
+    frequency: 30.0
+    sensor_timeout: 0.1
+    two_d_mode: true
+    publish_tf: true
+    publish_acceleration: false
+
+    map_frame: map
+    odom_frame: odom
+    base_link_frame: base_link
+    world_frame: odom
+
+    # 상태 벡터 15: [x y z, roll pitch yaw, vx vy vz, vroll vpitch vyaw, ax ay az]
+    # sensor_conditioner 경유 토픽 사용 (covariance 주입 + 자이로 바이어스 제거)
+    odom0: /wheel_odom/conditioned
+    odom0_config: [false, false, false,
+                   false, false, false,
+                   true,  true,  false,
+                   false, false, true,
+                   false, false, false]
+    odom0_queue_size: 10
+    odom0_nodelay: true
+    odom0_differential: false
+    odom0_relative: false
+
+    # imu0 = D455f 내장 자이로 (2026-08-27 복원). 보드 IMU는 자이로 무반응으로 제외(2026-08-26).
+    # 경로: /camera/camera/imu(200Hz, frame camera_imu_optical_frame) → sensor_conditioner(바이어스·covariance) → /imu/data
+    # 자이로 1축(로봇 yaw)만 융합. 가속도 융합 금지(바이어스 이중적분 발산, 이전 로버 EKF 2026-05-29 실측).
+    # ⚠ 축 주의(2026-08-27 디버그로 확정): robot_localization은 *_config를 센서 프레임 기준으로 해석해 TF와 함께 회전시킨다.
+    #   camera_imu_optical_frame은 광학 축(x우/y하/z전방) → 로봇 yaw(base z) = 광학 -y = 아래 벡터의 'vpitch' 자리(인덱스 10).
+    #   'vyaw' 자리(광학 z)를 켜면 로봇 롤 속도로 매핑되어 2D 모드에서 무시됨(실측: filtered vyaw 항상 0).
+    imu0: /imu/data
+    imu0_config: [false, false, false,
+                  false, false, false,
+                  false, false, false,
+                  false, true,  false,
+                  false, false, false]
+    imu0_queue_size: 20
+    imu0_nodelay: true
+    imu0_differential: false
+    imu0_relative: false
+    imu0_twist_rejection_threshold: 8.0
+    imu0_remove_gravitational_acceleration: true

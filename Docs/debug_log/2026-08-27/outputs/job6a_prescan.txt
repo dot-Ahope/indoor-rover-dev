@@ -1,0 +1,2 @@
+ssh: connect to host <LAN-B>.101 port 22: No route to host
+lost connection

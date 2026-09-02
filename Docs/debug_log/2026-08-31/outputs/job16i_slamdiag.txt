@@ -1,0 +1,34 @@
+wsl: ���� $����ƹ� ��ܴ|� ����`� L��� wsl2.localhostForwarding $��t� ȩ���� Jŵ�Ȳ�.
+=== slam.log 경고/드롭/타임아웃 (최근) ===
+[async_slam_toolbox_node-1] [WARN] [1788239639.906972858] [slam_toolbox]: minimum laser range setting (0.0 m) exceeds the capabilities of the used Lidar (0.2 m)
+[async_slam_toolbox_node-1] [INFO] [1788239820.865704691] [slam_toolbox]: Message Filter dropping message: frame 'lidar_link' at time 1788239820.810 for reason 'discarding message because the queue is full'
+[async_slam_toolbox_node-1] [INFO] [1788240912.311829426] [slam_toolbox]: Message Filter dropping message: frame 'lidar_link' at time 1788240912.217 for reason 'discarding message because the queue is full'
+
+=== slam.log 마지막 10줄 ===
+[INFO] [launch]: All log files can be found below /home/jetson/.ros/log/2026-09-01-14-13-56-055237-jetson-desktop-15004
+[INFO] [launch]: Default logging verbosity is set to INFO
+[INFO] [async_slam_toolbox_node-1]: process started with pid [15007]
+[async_slam_toolbox_node-1] [INFO] [1788239636.261288168] [slam_toolbox]: Node using stack size 40000000
+[async_slam_toolbox_node-1] [INFO] [1788239636.611040370] [slam_toolbox]: Using solver plugin solver_plugins::CeresSolver
+[async_slam_toolbox_node-1] [INFO] [1788239636.611501185] [slam_toolbox]: CeresSolver: Using SCHUR_JACOBI preconditioner.
+[async_slam_toolbox_node-1] [WARN] [1788239639.906972858] [slam_toolbox]: minimum laser range setting (0.0 m) exceeds the capabilities of the used Lidar (0.2 m)
+[async_slam_toolbox_node-1] Registering sensor: [Custom Described Lidar]
+[async_slam_toolbox_node-1] [INFO] [1788239820.865704691] [slam_toolbox]: Message Filter dropping message: frame 'lidar_link' at time 1788239820.810 for reason 'discarding message because the queue is full'
+[async_slam_toolbox_node-1] [INFO] [1788240912.311829426] [slam_toolbox]: Message Filter dropping message: frame 'lidar_link' at time 1788240912.217 for reason 'discarding message because the queue is full'
+
+=== map->odom 브로드캐스트 지속 확인 (stamp 갱신되나) ===
+  4초간 map->odom stamp 종류 12개: 최신 [1788240973.245, 1788240973.357, 1788240973.453]
+  → stamp가 계속 갱신되면 브로드캐스트는 됨(값만 고정), 안 되면 slam이 발행 중단
+
+=== slam 파라미터 (관련) ===
+  minimum_time_interval: value is: 0.1
+  minimum_travel_distance: value is: 0.05
+  minimum_travel_heading: value is: 0.03
+  transform_timeout: value is: 0.2
+  tf_buffer_duration: value is: 30.0
+  throttle_scans: value is: 1
+  mode: value is: mapping
+
+=== CPU 부하 ===
+load average: 6.21, 5.08, 3.64
+slam CPU%: 
