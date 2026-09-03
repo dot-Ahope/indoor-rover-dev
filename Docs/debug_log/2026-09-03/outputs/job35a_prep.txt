@@ -1,0 +1,43 @@
+wsl: ���� $����ƹ� ��ܴ|� ����`� L��� wsl2.localhostForwarding $��t� ȩ���� Jŵ�Ȳ�.
+=== 1) 보드 세션 (RESET 후) ===
+  agent: microros_agent Up 24 minutes
+  /wheel_odom: average rate: 49.990
+  보드 노드: /rover_jupiter
+  fault 상태: message: OK
+
+=== 2) EKF/slam 초기화 ===
+[sensor_conditioner.py-1] [INFO] [1788425331.211703242] [sensor_conditioner]: gyro bias calibrated: (-0.00821, -0.00129, -0.00190) rad/s, std=(0.0026, 0.0024, 0.0017)
+  /odometry/filtered: average rate: 30.088
+  odom 원점: x: 0.0
+  /scan: average rate: 10.037
+
+=== 3) Nav2 기동 (RPP + no-spin BT) ===
+  /controller_server   active [3]
+  /planner_server      active [3]
+  /bt_navigator        active [3]
+  /behavior_server     active [3]
+  /velocity_smoother   active [3]
+  FollowPath.plugin: nav2_regulated_pure_pursuit_controller::RegulatedPurePursuitController
+  BT xml: nav_to_pose_no_spin.xml
+  inflation: 0.25
+  설정 오류: 0건
+
+=== 4) 공간 ===
+       정면 :   227cm
+      좌30 :   109cm
+      좌60 :    70cm
+    좌(90) :    58cm
+    좌후120 :    72cm
+    좌후150 :    88cm
+       후면 :   118cm
+    우후150 :    95cm
+    우후120 :    72cm
+    우(90) :    67cm
+      우60 :    66cm
+      우30 :   106cm
+
+최근접: 58cm, 방위 +100도 (좌쪽)
+→ 회전 가능
+  ★ 직진 경로상 최근접 장애물: 202cm (로버 앞면 기준)
+  좌측 우회 방향 최근접: 78cm
+  우측 우회 방향 최근접: 69cm

@@ -1,0 +1,30 @@
+=== 보드 상태 ===
+level: "\x02"
+message: STALL fault — reset required
+=== nav2.log (Run2 구간) ===
+[controller_server-1] [WARN] [1788425608.581357762] [controller_server]: [follow_path] [ActionServer] Aborting handle.
+[behavior_server-4] [INFO] [1788425608.597107416] [behavior_server]: Running backup
+[behavior_server-4] [WARN] [1788425617.398133587] [behavior_server]: Collision Ahead - Exiting DriveOnHeading
+[behavior_server-4] [WARN] [1788425617.398654789] [behavior_server]: [backup] [ActionServer] Aborting handle.
+[behavior_server-4] [INFO] [1788425617.426566283] [behavior_server]: Running wait
+[behavior_server-4] [INFO] [1788425622.426951748] [behavior_server]: wait completed successfully
+[controller_server-1] [ERROR] [1788425647.476489922] [controller_server]: Failed to make progress
+[controller_server-1] [WARN] [1788425647.476839118] [controller_server]: [follow_path] [ActionServer] Aborting handle.
+[controller_server-1] [ERROR] [1788425672.597382843] [controller_server]: Failed to make progress
+[controller_server-1] [WARN] [1788425672.597765513] [controller_server]: [follow_path] [ActionServer] Aborting handle.
+=== 사방 여유 ===
+       정면 :   100cm
+      좌30 :   197cm
+      좌60 :    87cm
+    좌(90) :    66cm
+    좌후120 :    61cm
+    좌후150 :   350cm
+       후면 :   110cm
+    우후150 :   103cm
+    우후120 :   118cm
+    우(90) :    56cm
+      우60 :    55cm
+      우30 :    75cm
+
+최근접: 55cm, 방위 -64도 (우쪽)
+→ 회전 가능
