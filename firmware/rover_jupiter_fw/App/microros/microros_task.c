@@ -427,11 +427,13 @@ void microros_task_run(void *arg)
         /* F8: /rover/status 5Hz — fault flag 통합. */
         if (now_ms - last_status_ms >= 200u) {
             const bool stall_fault = safety_monitor_has_fault();
+            const bool stall_latch = safety_monitor_is_latched();
             const bool cmdvel_to   = safety_monitor_cmdvel_timeout();
             uint8_t lvl;
             const char *msg;
-            if (stall_fault) { lvl = 2; msg = "STALL fault — reset required"; }
-            else if (cmdvel_to) { lvl = 1; msg = "cmd_vel timeout — motors stopped"; }
+            if (stall_latch)      { lvl = 2; msg = "STALL latched — reset required"; }
+            else if (stall_fault) { lvl = 1; msg = "STALL — auto-recovering"; }
+            else if (cmdvel_to)   { lvl = 1; msg = "cmd_vel timeout — motors stopped"; }
             else { lvl = 0; msg = "OK"; }
             s_status_array_storage[0].level = lvl;
             const size_t n = strlen(msg);
