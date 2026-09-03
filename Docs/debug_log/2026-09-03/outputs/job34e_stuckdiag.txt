@@ -1,0 +1,32 @@
+=== 현재 사방 여유 ===
+       정면 :   113cm
+      좌30 :   119cm
+      좌60 :    30cm  ← 회전 방해!
+    좌(90) :    28cm  ← 회전 방해!
+    좌후120 :    30cm  ← 회전 방해!
+    좌후150 :    49cm
+       후면 :   129cm
+    우후150 :   202cm
+    우후120 :   101cm
+    우(90) :    91cm
+      우60 :    89cm
+      우30 :   128cm
+
+최근접: 28cm, 방위 +88도 (좌쪽)
+→ 치우거나 로버를 옮겨야 할 방향: 좌60, 좌(90), 좌후120
+=== nav2.log MPPI/컨트롤러 경고 (최근) ===
+[controller_server-1] [WARN] [1788424203.589371242] [controller_server]: [follow_path] [ActionServer] Aborting handle.
+[controller_server-1] [ERROR] [1788424228.805466165] [controller_server]: Failed to make progress
+[controller_server-1] [WARN] [1788424228.805929582] [controller_server]: [follow_path] [ActionServer] Aborting handle.
+[controller_server-1] [ERROR] [1788424254.709191314] [controller_server]: Failed to make progress
+[controller_server-1] [WARN] [1788424254.709508257] [controller_server]: [follow_path] [ActionServer] Aborting handle.
+[controller_server-1] [ERROR] [1788424279.783016626] [controller_server]: Failed to make progress
+[controller_server-1] [WARN] [1788424279.783329664] [controller_server]: [follow_path] [ActionServer] Aborting handle.
+[behavior_server-4] [INFO] [1788424279.797756764] [behavior_server]: Running spin
+[behavior_server-4] [INFO] [1788424279.798202929] [behavior_server]: Turning 1.57 for spin behavior.
+[behavior_server-4] [INFO] [1788424284.898387307] [behavior_server]: Canceling spin
+[bt_navigator-5] [ERROR] [1788424284.898411180] [bt_navigator_navigate_to_pose_rclcpp_node]: Failed to get result for spin in node halt!
+[behavior_server-4] [INFO] [1788424284.898754556] [behavior_server]: [spin] [ActionServer] Client requested to cancel the goal. Cancelling.
+=== 배터리 ===
+voltage: 12.124780654907227
+=== 정지 확인 ===

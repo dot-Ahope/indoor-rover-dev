@@ -1,0 +1,14 @@
+=== lifecycle ===
+  /controller_server   active [3]
+  /planner_server      active [3]
+  /bt_navigator        미기동
+  /behavior_server     active [3]
+  /velocity_smoother   active [3]
+=== progress_checker ===
+String value is: nav2_controller::PoseProgressChecker
+Double value is: 0.5
+=== 기동 오류 ===
+[controller_server-1] [ERROR] [1788423908.422845297] [local_costmap.local_costmap]: The configured inflation radius (0.200) is smaller than the computed inscribed radius (0.215) of your footprint, it is highly recommended to set inflation radius to be at least as big as the inscribed radius to avoid collisions
+[planner_server-3] [ERROR] [1788423909.019496477] [global_costmap.global_costmap]: The configured inflation radius (0.200) is smaller than the computed inscribed radius (0.215) of your footprint, it is highly recommended to set inflation radius to be at least as big as the inscribed radius to avoid collisions
+[bt_navigator-5] [WARN] [1788423937.688234227] [bt_navigator.rclcpp]: failed to send response to /bt_navigator/get_state (timeout): client will not receive response, at ./src/rmw_response.cpp:154, at ./src/rcl/service.c:314
+  load: 7.35 2.16 0.82

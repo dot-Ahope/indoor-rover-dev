@@ -1,0 +1,30 @@
+wsl: ���� $����ƹ� ��ܴ|� ����`� L��� wsl2.localhostForwarding $��t� ȩ���� Jŵ�Ȳ�.
+=== 보드 세션 확인 (유지되어야 함) ===
+  agent: microros_agent
+  /wheel_odom: average rate: 49.955
+  배터리: voltage: 12.092143058776855
+=== EKF/slam 재시작 (자이로 캘리브 ~10s, 정지!) ===
+[sensor_conditioner.py-1] [INFO] [1788396606.465417900] [sensor_conditioner]: gyro bias calibrated: (-0.00786, -0.00123, -0.00185) rad/s, std=(0.0026, 0.0024, 0.0018)
+=== 검증 ===
+  /odometry/filtered: average rate: 30.001
+  odom 원점: x: 0.0
+  /scan: average rate: 9.960
+
+=== 공간 판정 ===
+스윕 반경(필요) = 30cm  (이보다 가까우면 회전 시 충돌)
+방위별 중심기준 최소거리 (로버 기준, 0=정면 / +=좌 / -=우):
+       정면 :   240cm
+      좌30 :   123cm
+      좌60 :    81cm
+    좌(90) :    60cm
+    좌후120 :    80cm
+    좌후150 :    79cm
+       후면 :   153cm
+    우후150 :    89cm
+    우후120 :    64cm
+    우(90) :    60cm
+      우60 :    60cm
+      우30 :    88cm
+
+최근접: 60cm, 방위 -90도 (우쪽)
+→ 회전 가능

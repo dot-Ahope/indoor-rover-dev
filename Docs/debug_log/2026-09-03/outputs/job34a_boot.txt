@@ -1,0 +1,30 @@
+wsl: ø»ì·´ $±¸ÒÌÆ¹Ð ¨ºÜ´|¹ ¬À©Æ`Õ Lµ”² wsl2.localhostForwarding $ÁÈtÇ È©Æ´ÀÉ JÅµÂÈ²ä².
+cp: -r not specified; omitting directory '/mnt/c/Users/magma/AppData/Local/Temp/claude/F--6-Indoor-Rover-Rover/82ce61d4-f5f7-4a25-b2e7-1279291348a9/scratchpad/'
+cp: -r not specified; omitting directory '/mnt/c/Users/magma/AppData/Local/Temp/claude/F--6-Indoor-Rover-Rover/82ce61d4-f5f7-4a25-b2e7-1279291348a9/scratchpad/'
+cp: -r not specified; omitting directory '/mnt/c/Users/magma/AppData/Local/Temp/claude/F--6-Indoor-Rover-Rover/82ce61d4-f5f7-4a25-b2e7-1279291348a9/scratchpad/'
+cp: -r not specified; omitting directory '/mnt/c/Users/magma/AppData/Local/Temp/claude/F--6-Indoor-Rover-Rover/82ce61d4-f5f7-4a25-b2e7-1279291348a9/scratchpad/'
+cp: -r not specified; omitting directory '/mnt/c/Users/magma/AppData/Local/Temp/claude/F--6-Indoor-Rover-Rover/82ce61d4-f5f7-4a25-b2e7-1279291348a9/scratchpad/'
+cp: -r not specified; omitting directory '/mnt/c/Users/magma/AppData/Local/Temp/claude/F--6-Indoor-Rover-Rover/82ce61d4-f5f7-4a25-b2e7-1279291348a9/scratchpad/'
+cp: -r not specified; omitting directory '/mnt/c/Users/magma/AppData/Local/Temp/claude/F--6-Indoor-Rover-Rover/82ce61d4-f5f7-4a25-b2e7-1279291348a9/scratchpad/'
+cp: -r not specified; omitting directory '/mnt/c/Users/magma/AppData/Local/Temp/claude/F--6-Indoor-Rover-Rover/82ce61d4-f5f7-4a25-b2e7-1279291348a9/scratchpad/'
+cp: -r not specified; omitting directory '/mnt/c/Users/magma/AppData/Local/Temp/claude/F--6-Indoor-Rover-Rover/82ce61d4-f5f7-4a25-b2e7-1279291348a9/scratchpad/'
+cp: -r not specified; omitting directory '/mnt/c/Users/magma/AppData/Local/Temp/claude/F--6-Indoor-Rover-Rover/82ce61d4-f5f7-4a25-b2e7-1279291348a9/scratchpad/'
+ìŠ¤í¬ë¦½íŠ¸ ìž¬ì „ì†¡ ì™„ë£Œ
+nav2_params ë™ê¸°í™”
+Summary: 1 package finished [0.90s]
+
+ë‚ ì§œ: 2026-09-03 17:23
+=== ìž”ì—¬ ì •ë¦¬ ===
+=== base.launch (agent+RSP) ===
+microros_agent Up 11 seconds
+ë³´ë“œ /wheel_odom: average rate: 50.002
+ë°°í„°ë¦¬: voltage: 12.281439781188965
+=== sensors.launch (ìžì´ë¡œ ìº˜ë¦¬ë¸Œ ~10s, ì •ì§€!) ===
+[sensor_conditioner.py-5] [INFO] [1788423846.058206034] [sensor_conditioner]: gyro bias calibrated: (-0.00478, -0.00070, -0.00156) rad/s, std=(0.0025, 0.0025, 0.0017)
+=== slam.launch ===
+=== ê²€ì¦ ===
+  ë…¸ë“œ: /camera/camera /ekf_filter_node /foxglove_bridge /rover_jupiter /rplidar_node /scan_deskew /sensor_conditioner /slam_toolbox 
+  /odometry/filtered:   /scan: average rate: 10.135
+  VX_SCALE: VX_SCALE = 0.783
+  odom ì›ì : x: 0.0
+  map->odom: - Translation: [0.000, 0.000, 0.000]

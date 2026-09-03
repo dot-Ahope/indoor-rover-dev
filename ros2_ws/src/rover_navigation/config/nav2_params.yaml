@@ -17,7 +17,8 @@ bt_navigator:
     odom_topic: /odometry/filtered
     bt_loop_duration: 10
     default_server_timeout: 20
-    # 기본 BT 사용 (navigate_to_pose / navigate_through_poses)
+    # 커스텀 BT: Spin 복구 제거판 (config/nav_to_pose_no_spin.xml 주석 참조). Jetson 설치 경로 절대지정.
+    default_nav_to_pose_bt_xml: /home/jetson/ros2_ws/install/rover_navigation/share/rover_navigation/config/nav_to_pose_no_spin.xml
 
 controller_server:
   ros__parameters:
@@ -28,7 +29,7 @@ controller_server:
     odom_topic: /odometry/filtered
     progress_checker_plugin: "progress_checker"
     goal_checker_plugins: ["general_goal_checker"]
-    controller_plugins: ["FollowPath", "FollowPathRPP"]   # ★현재 FollowPath=MPPI (벤치마크 2라운드). RPP는 대기
+    controller_plugins: ["FollowPath", "FollowPathMPPI"]   # ★현재 FollowPath=RPP (09-03 벤치마크 A/B). MPPI 대기
 
     progress_checker:
       # ⚠ SimpleProgressChecker 는 '병진'만 진행으로 인정 → 제자리 회전이 필요한 목표에서
@@ -42,13 +43,13 @@ controller_server:
     general_goal_checker:
       stateful: True
       plugin: "nav2_controller::SimpleGoalChecker"
-      # ⚠ 임시 완화 0.15→0.25 (2026-09-02): 기동 데드밴드로 목표 근접 미세조정이 불가능해
-      #   23cm 지점에서 정체(MPPI 실측). 펌웨어 데드밴드 보상(MIN_WHEEL_SPEED_MPS) 플래시 후 0.15 복원할 것.
-      xy_goal_tolerance: 0.25
+      # 0.15 복원 (2026-09-03): 펌웨어 데드밴드 보상(MIN_WHEEL_SPEED_MPS 0.020) 플래시·검증 완료.
+      #   (09-02 에는 목표 근접 미세명령 정체로 0.25 임시 완화했었음)
+      xy_goal_tolerance: 0.15
       yaw_goal_tolerance: 0.25
 
     # RPP(Regulated Pure Pursuit) — 차동/스키드스티어 저속에 적합, 튜닝 파라미터가 직관적
-    FollowPathRPP:
+    FollowPath:
       plugin: "nav2_regulated_pure_pursuit_controller::RegulatedPurePursuitController"
       desired_linear_vel: 0.10          # 펌웨어 최대치와 동일
       lookahead_dist: 0.30
@@ -83,7 +84,7 @@ controller_server:
     # MPPI — N1 벤치마크 후보. 샘플링 기반이라 좁은 공간·후진·장애물 근접 기동이 RPP보다 강함.
     # ⚠ CPU 무거움(batch 1000×32step@20Hz) → 벤치마크에서 지연 시 batch_size·controller_frequency 하향.
     # 전환 방법: BT 기본 controller_id 가 "FollowPath" 이므로, 벤치마크 시 두 블록의 이름을 맞바꿔 재기동.
-    FollowPath:
+    FollowPathMPPI:
       plugin: "nav2_mppi_controller::MPPIController"
       time_steps: 32
       model_dt: 0.05
@@ -150,7 +151,9 @@ local_costmap:
         # ⚠ 0.35 는 실내 좁은 공간에서 과대 — 장애물·벽 양쪽 팽창이 겹쳐 자유 통로가 소멸,
         #   우회 경로를 못 찾고 복구동작만 반복하다 ABORTED (2026-09-02 실측).
         #   로버 내접반경 0.165 보다는 크게 두되 통로를 남기는 값으로 축소.
-        inflation_radius: 0.20
+        # 0.25 (2026-09-03): footprint_padding 0.05 로 내접반경이 0.215 가 되어 0.20 은 Nav2 오류
+        #   ("inflation radius smaller than inscribed radius" → 충돌 위험). 내접반경 이상으로 재설정.
+        inflation_radius: 0.25
         cost_scaling_factor: 3.0
       always_send_full_costmap: true
 
@@ -188,7 +191,9 @@ global_costmap:
           inf_is_valid: false
       inflation_layer:
         plugin: "nav2_costmap_2d::InflationLayer"
-        inflation_radius: 0.20
+        # 0.25 (2026-09-03): footprint_padding 0.05 로 내접반경이 0.215 가 되어 0.20 은 Nav2 오류
+        #   ("inflation radius smaller than inscribed radius" → 충돌 위험). 내접반경 이상으로 재설정.
+        inflation_radius: 0.25
         cost_scaling_factor: 3.0
       always_send_full_costmap: true
 
