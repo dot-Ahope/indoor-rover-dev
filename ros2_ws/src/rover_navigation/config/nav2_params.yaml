@@ -51,7 +51,7 @@ controller_server:
     # RPP(Regulated Pure Pursuit) — 차동/스키드스티어 저속에 적합, 튜닝 파라미터가 직관적
     FollowPath:
       plugin: "nav2_regulated_pure_pursuit_controller::RegulatedPurePursuitController"
-      desired_linear_vel: 0.08   # 2026-09-07 스케일 정정: 단위가 실속도 → 실 최대 0.085 대비 여유          # 펌웨어 최대치와 동일
+      desired_linear_vel: 0.08          # 2026-09-07 스케일 정정 후 실속도 기준 (펌웨어 최대 0.085 대비 여유)
       lookahead_dist: 0.30
       min_lookahead_dist: 0.20
       max_lookahead_dist: 0.45
@@ -92,7 +92,7 @@ controller_server:
       vx_std: 0.05
       vy_std: 0.0
       wz_std: 0.3
-      vx_max: 0.08              # 2026-09-07 스케일 정정 (실속도 기준)          # 펌웨어 한계
+      vx_max: 0.08          # 2026-09-07 스케일 정정 후 실속도 기준 (펌웨어 한계 0.085)
       vx_min: -0.06             # 2026-09-07 스케일 정정 (실속도 기준)         # ★ 후진 허용 — 좁은 공간 이탈 기동
       vy_max: 0.0
       wz_max: 0.6
