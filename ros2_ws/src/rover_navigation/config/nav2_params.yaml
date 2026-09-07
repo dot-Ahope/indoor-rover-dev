@@ -70,7 +70,7 @@ controller_server:
       # 스키드스티어는 제자리 회전 가능 → 경로 시작 시 헤딩 정렬
       use_rotate_to_heading: true
       rotate_to_heading_min_angle: 0.5
-      rotate_to_heading_angular_vel: 0.35   # 2026-09-07 B_eff 반영: 실 최대 0.416 rad/s 대비 여유
+      rotate_to_heading_angular_vel: 0.32   # 2026-09-07 B_eff 0.443: 실 최대 0.384 rad/s 대비 여유
       # ⚠ RPP 는 rotateToHeading 각속도를 '현재 측정속도 ± max_angular_accel×dt' 로 클램프한다.
       #   1.0 이면 20Hz 제어주기에서 첫 명령이 1.0×0.05 = 0.05 rad/s 뿐 → 로버 기동 임계(정지마찰·
       #   PWM 데드밴드) 미달로 안 움직임 → 측정속도 0 유지 → 영원히 0.05 반복(데드락). 2026-09-02 실측.
@@ -95,7 +95,7 @@ controller_server:
       vx_max: 0.08          # 2026-09-07 스케일 정정 후 실속도 기준 (펌웨어 한계 0.085)
       vx_min: -0.06             # 2026-09-07 스케일 정정 (실속도 기준)         # ★ 후진 허용 — 좁은 공간 이탈 기동
       vy_max: 0.0
-      wz_max: 0.40          # 2026-09-07 B_eff 반영 (실 최대 0.416)
+      wz_max: 0.38          # 2026-09-07 B_eff 0.443 (실 최대 0.384)
       iteration_count: 1
       prune_distance: 1.0
       transform_tolerance: 0.2
@@ -238,7 +238,7 @@ behavior_server:
     transform_tolerance: 0.2
     # ⚠ spin 은 제자리 회전 → 중심기준 0.30m 스윕. 좁은 곳에서 실패할 수 있음.
     simulate_ahead_time: 2.0
-    max_rotational_vel: 0.40   # 2026-09-07 B_eff 반영
+    max_rotational_vel: 0.38   # 2026-09-07 B_eff 0.443
     min_rotational_vel: 0.10   # 2026-09-07: 데드밴드 소멸로 하한 여유
     rotational_acc_lim: 1.0
 
@@ -258,8 +258,8 @@ velocity_smoother:
     scale_velocities: false
     feedback: "OPEN_LOOP"
     # 펌웨어 한계와 일치 (초과 지령은 펌웨어가 어차피 포화시킴)
-    max_velocity: [0.085, 0.0, 0.40]   # 2026-09-07: 실 최고속 0.085 m/s / 0.416 rad/s
-    min_velocity: [-0.085, 0.0, -0.40]
+    max_velocity: [0.085, 0.0, 0.38]   # 2026-09-07: 실 최고속 0.085 m/s / 0.384 rad/s
+    min_velocity: [-0.085, 0.0, -0.38]
     max_accel: [0.20, 0.0, 1.20]
     max_decel: [-0.30, 0.0, -1.50]
     odom_topic: "/odometry/filtered"
