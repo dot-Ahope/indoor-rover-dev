@@ -131,6 +131,22 @@ local_costmap:
       #   근접 후 회전 중 벽 접촉·트랙 헛돎 실발생 → 패딩을 키워 계획 단계에서 벽과 거리 유지.
       footprint_padding: 0.05
       plugins: ["obstacle_layer", "inflation_layer"]
+      # ── N1.5 예비: D455f depth → costmap (라이다 0.2m 사각·낮은 장애물 보완). 2026-09-07 준비만, 미활성.
+      #   활성 절차: ① sensors.launch 의 realsense 에 depth+pointcloud 스트림 켜기(현재 IMU 만) → CPU 여유 확인
+      #   ② plugins 에 "depth_layer" 추가 ③ 아래 블록 주석 해제 ④ 바닥 실주행으로 오탐(바닥 반사) 검증
+      # depth_layer:
+      #   plugin: "nav2_costmap_2d::ObstacleLayer"
+      #   enabled: true
+      #   observation_sources: depth
+      #   depth:
+      #     topic: /camera/camera/depth/color/points
+      #     data_type: "PointCloud2"
+      #     min_obstacle_height: 0.05      # 바닥 반사 제외
+      #     max_obstacle_height: 0.60
+      #     obstacle_max_range: 2.0
+      #     raytrace_max_range: 2.5
+      #     clearing: true
+      #     marking: true
       obstacle_layer:
         plugin: "nav2_costmap_2d::ObstacleLayer"
         enabled: true
@@ -153,8 +169,11 @@ local_costmap:
         #   로버 내접반경 0.165 보다는 크게 두되 통로를 남기는 값으로 축소.
         # 0.25 (2026-09-03): footprint_padding 0.05 로 내접반경이 0.215 가 되어 0.20 은 Nav2 오류
         #   ("inflation radius smaller than inscribed radius" → 충돌 위험). 내접반경 이상으로 재설정.
-        inflation_radius: 0.25
-        cost_scaling_factor: 3.0
+        inflation_radius: 0.35     # 2026-09-07: 0.25→0.35 (local 만). 근거: MPPI 벽 접촉(job54e) —
+                                   #   측면 벽 근접을 컨트롤러가 늦게 인지. RPP 는 고비용 셀을 회피·감속만 하고
+                                   #   차단하진 않으므로 local 상향은 안전. global 은 09-03 0.35 에서 ABORT 이력
+                                   #   (장애물 통로 폐색) 있어 0.25 유지 → 계획은 통과, 주행은 벽에서 멀어짐.
+        cost_scaling_factor: 2.5   # 완만한 감쇠 — 통로 중앙 선호 강화
       always_send_full_costmap: true
 
 global_costmap:
