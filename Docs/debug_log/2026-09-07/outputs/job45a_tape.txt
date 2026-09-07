@@ -1,0 +1,11 @@
+시작: wheel_odom x=0.664  ekf x=0.189 yaw=-1.7°  전방벽=1.988m
+지령 0.06 m/s × 25.0s = 1.500 m 주행 시작
+
+① 지령 적산      :   150.0 cm
+② 원시 휠 오도    :   149.9 cm   (지령 대비 0.9996)
+③ EKF(0.783 적용) :   117.4 cm   (지령 대비 0.7828)
+④ 라이다 전방벽   :   115.6 cm   (원시/라이다 = 1.2971  ← 새 VX_SCALE 후보 = 0.7710)
+요yaw 변화: -1.76°   횡변위(EKF): -5.3 cm
+이상 상태: [(81.5, 1, 'cmd_vel timeout — motors stopped'), (81.7, 1, 'cmd_vel timeout — motors stopped'), (81.9, 1, 'cmd_vel timeout — motors stopped'), (82.1, 1, 'cmd_vel timeout — motors stopped'), (82.3, 1, 'cmd_vel timeout — motors stopped')]
+
+※ 줄자 실측값을 알려주면 라이다 GT 와 교차검증합니다.
