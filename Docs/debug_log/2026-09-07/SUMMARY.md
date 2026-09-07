@@ -365,3 +365,28 @@ B_actual = (v_r−v_l) / ω_gyro 로 환산하면:
 - **측면 근접 안전**: local costmap `inflation_radius 0.25→0.35`, `cost_scaling_factor 3.0→2.5`. global 은 0.25 유지(09-03 0.35 에서 ABORT 이력). RPP 의 `use_cost_regulated_linear_velocity_scaling` 이 이미 켜져 있어 벽 근접 시 감속 강화됨.
 - **depth→costmap**: `depth_layer` 블록 준비(미활성). 활성 전제: realsense depth 스트림 ON + CPU 확인 + 바닥 반사 오탐 검증.
 - 배포·colcon 빌드 완료. **주행 검증은 다음 세션**(stuck_monitor shadow 로 RPP 주행 → 오탐 0 확인 → active 전환).
+
+## 구현 검증 주행 `job55` (RPP + stuck_monitor shadow + local inflation 0.35)
+| Run | 코스 | 결과 | 소요 | 경로/직선 | 위치오차 | 자세오차 | 반전 |
+|---|---|---|---|---|---|---|---|
+| 55a | 직진 1.60m | SUCCEEDED | 19.7s | 1.58/1.60 (1.013) | 14.1cm | −1.5° | 0 |
+| 55b | 180° 선회 + 1.46m | SUCCEEDED | 26.3s | 1.43/1.46 (1.022) | 14.9cm | −12.0° | 0 |
+- inflation 0.35 로 올려도 RPP 성능 동일(54a/b 와 소요·효율 일치). 부작용 없음.
+- **stuck_monitor(shadow) 오탐 0회** — 직진·제자리 180° 회전·근접 감속 구간 포함 약 46s. 정탐 검증(받침대에서 트랙 헛돎 재현)은 다음 세션.
+- 배터리 12.07V 로 종료. 스택 안전 종료·프로세스 0개 확인.
+
+---
+## 마무리 (2026-09-07) — 하루 요약
+1. **모터 PWM 50Hz→20kHz** (이관 계획 T1 미적용 발견): 구속 휠 FG 기저 펄스 소멸 → 스톨 감지·자동복구·래치 전 경로 검증, 데드밴드 소멸(10mm/s 추종).
+2. **휠 둘레 0.16130→0.12533** (라이다 GT 3회, 공칭 Ø40 과 0.3% 일치): 직진 오차 **0.06%**. VX_SCALE 1.0.
+3. **유효 게이지 0.443** (자이로 기준 13회): 지령 ω = 실제 ω, 회전 오도 ±15%(스크럽 변동, 바닥 의존). SLIP 1.0. Nav2 각속도 상한 0.38.
+4. **Nav2 벤치마크: RPP 채택** (3:0). MPPI 실패 원인 6항목 분석·기록. 벽 접촉 사고 1건(MPPI).
+5. **stuck_monitor 신설**(shadow, 오탐 0), local inflation 0.35, depth_layer 예비.
+6. UART5 콘솔은 배선 부재로 불가(문서 정정). Wi-Fi 절전 OFF 유지, 간헐 lost connection 은 러너 재시도로 흡수.
+
+### 다음 세션 할 일 (순서)
+1. **stuck_monitor 정탐 검증**: 받침대에 올려 `job40a_stalltest.py 10 0.05` (휠은 돌고 스캔은 정지 = 헛돎 상황) → shadow 로그에 STUCK 판정이 나와야 함. 통과하면 `stuck_shadow:=false` 로 활성.
+2. N1.5: D455f depth 스트림 ON → CPU 확인 → `depth_layer` 활성 → 낮은 장애물 실주행.
+3. N2 전체 지도 작성 주행(RPP), N3 프론티어 탐사 패키지 도입.
+4. RPP 목표 자세오차(−12°) 개선: `yaw_goal_tolerance` 0.25 → 0.15 + 최종 회전 동작 확인.
+5. 보류: MPPI(N4 이후), 회전 슬립 속도 의존 모델, UART5 배선.
