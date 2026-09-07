@@ -1,0 +1,42 @@
+cmd_vel vx=0.06 wz=0.0 for 7.0s  (20Hz)
+[  0.07s] L=0.0000 R=0.0000 | L[-] R[-]
+[  0.08s] status level=1 'cmd_vel timeout — motors stopped'
+[  0.27s] L=0.1016 R=0.0984 | L[tgt=0 v=0 d=0 pps=0 T=0 cv=0 w=0 sc=0] R[tgt=0 v=0 d=0 pps=0 T=0 cv=0 w=0 sc=0]
+[  0.28s] status level=0 'OK'
+[  0.48s] L=0.0967 R=0.0935 | L[tgt=60 v=102 d=82 pps=270 T=2865 cv=2 w=1428 sc=18] R[tgt=60 v=98 d=82 pps=260 T=2936 cv=0 w=1435 sc=18]
+[  0.67s] L=0.0891 R=0.0862 | L[tgt=60 v=97 d=78 pps=330 T=3179 cv=3 w=1586 sc=38] R[tgt=60 v=93 d=78 pps=325 T=3252 cv=0 w=1598 sc=38]
+[  0.87s] L=0.0827 R=0.0801 | L[tgt=60 v=89 d=74 pps=300 T=3461 cv=2 w=1729 sc=58] R[tgt=60 v=86 d=75 pps=290 T=3515 cv=0 w=1725 sc=58]
+[  1.07s] L=0.0769 R=0.0757 | L[tgt=60 v=83 d=72 pps=280 T=3699 cv=2 w=1883 sc=18] R[tgt=60 v=80 d=73 pps=275 T=3744 cv=0 w=1840 sc=18]
+[  1.27s] L=0.0739 R=0.0727 | L[tgt=60 v=77 d=70 pps=260 T=3938 cv=3 w=1953 sc=38] R[tgt=60 v=76 d=71 pps=260 T=3952 cv=0 w=1940 sc=38]
+[  1.47s] L=0.0707 R=0.0701 | L[tgt=60 v=74 d=68 pps=250 T=4137 cv=2 w=2101 sc=58] R[tgt=60 v=73 d=70 pps=245 T=4130 cv=0 w=2025 sc=58]
+[  1.67s] L=0.0679 R=0.0681 | L[tgt=60 v=71 d=67 pps=235 T=4239 cv=2 w=2173 sc=18] R[tgt=60 v=70 d=68 pps=235 T=4266 cv=0 w=2108 sc=18]
+[  1.87s] L=0.0668 R=0.0666 | L[tgt=60 v=68 d=66 pps=235 T=4386 cv=3 w=2174 sc=38] R[tgt=60 v=68 d=68 pps=230 T=4404 cv=0 w=2153 sc=38]
+[  2.07s] L=0.0644 R=0.0653 | L[tgt=60 v=67 d=65 pps=225 T=4502 cv=2 w=2254 sc=58] R[tgt=60 v=67 d=67 pps=225 T=4495 cv=0 w=2210 sc=58]
+[  2.27s] L=0.0639 R=0.0643 | L[tgt=60 v=65 d=65 pps=220 T=4617 cv=3 w=2327 sc=18] R[tgt=60 v=65 d=66 pps=220 T=4574 cv=0 w=2247 sc=18]
+[  2.47s] L=0.0629 R=0.0637 | L[tgt=60 v=64 d=64 pps=215 T=4709 cv=3 w=2333 sc=38] R[tgt=60 v=64 d=66 pps=220 T=4648 cv=0 w=2270 sc=38]
+[  2.67s] L=0.0624 R=0.0628 | L[tgt=60 v=63 d=64 pps=210 T=4774 cv=2 w=2381 sc=58] R[tgt=60 v=64 d=65 pps=210 T=4670 cv=0 w=2294 sc=58]
+[  2.87s] L=0.0619 R=0.0621 | L[tgt=60 v=62 d=64 pps=210 T=4810 cv=2 w=2385 sc=18] R[tgt=60 v=63 d=65 pps=215 T=4736 cv=0 w=2326 sc=18]
+[  3.07s] L=0.0615 R=0.0612 | L[tgt=60 v=62 d=63 pps=205 T=4862 cv=2 w=2417 sc=38] R[tgt=60 v=62 d=65 pps=210 T=4792 cv=0 w=2356 sc=38]
+[  3.27s] L=0.0608 R=0.0609 | L[tgt=60 v=61 d=63 pps=210 T=4885 cv=3 w=2463 sc=58] R[tgt=60 v=61 d=65 pps=205 T=4862 cv=0 w=2375 sc=58]
+[  3.47s] L=0.0608 R=0.0605 | L[tgt=60 v=61 d=63 pps=205 T=4854 cv=2 w=2447 sc=18] R[tgt=60 v=61 d=64 pps=205 T=4901 cv=0 w=2407 sc=18]
+[  3.67s] L=0.0611 R=0.0607 | L[tgt=60 v=61 d=63 pps=200 T=4896 cv=2 w=2452 sc=38] R[tgt=60 v=60 d=64 pps=200 T=4925 cv=0 w=2414 sc=38]
+[  3.87s] L=0.0606 R=0.0604 | L[tgt=60 v=61 d=63 pps=205 T=4876 cv=2 w=2492 sc=58] R[tgt=60 v=61 d=64 pps=205 T=4903 cv=0 w=2403 sc=58]
+[  4.07s] L=0.0607 R=0.0603 | L[tgt=60 v=61 d=63 pps=205 T=4935 cv=3 w=2448 sc=18] R[tgt=60 v=60 d=64 pps=205 T=4909 cv=0 w=2406 sc=18]
+[  4.27s] L=0.0605 R=0.0600 | L[tgt=60 v=61 d=63 pps=200 T=4892 cv=2 w=2489 sc=38] R[tgt=60 v=60 d=64 pps=200 T=4946 cv=0 w=2418 sc=38]
+[  4.47s] L=0.0606 R=0.0602 | L[tgt=60 v=60 d=63 pps=205 T=4921 cv=3 w=2463 sc=58] R[tgt=60 v=60 d=64 pps=205 T=4949 cv=0 w=2430 sc=58]
+[  4.67s] L=0.0599 R=0.0604 | L[tgt=60 v=61 d=63 pps=205 T=4941 cv=2 w=2512 sc=18] R[tgt=60 v=60 d=64 pps=200 T=4946 cv=1 w=2429 sc=18]
+[  4.87s] L=0.0602 R=0.0606 | L[tgt=60 v=60 d=63 pps=200 T=4983 cv=3 w=2478 sc=38] R[tgt=60 v=60 d=64 pps=205 T=4919 cv=0 w=2413 sc=38]
+[  5.08s] L=0.0596 R=0.0610 | L[tgt=60 v=60 d=63 pps=205 T=4994 cv=3 w=2519 sc=58] R[tgt=60 v=61 d=64 pps=200 T=4912 cv=0 w=2400 sc=58]
+[  5.27s] L=0.0597 R=0.0605 | L[tgt=60 v=60 d=63 pps=200 T=4980 cv=2 w=2499 sc=18] R[tgt=60 v=61 d=64 pps=205 T=4871 cv=0 w=2393 sc=18]
+[  5.47s] L=0.0601 R=0.0603 | L[tgt=60 v=60 d=63 pps=200 T=4921 cv=2 w=2469 sc=38] R[tgt=60 v=61 d=64 pps=205 T=4917 cv=0 w=2416 sc=38]
+[  5.67s] L=0.0599 R=0.0598 | L[tgt=60 v=60 d=63 pps=200 T=4966 cv=3 w=2461 sc=58] R[tgt=60 v=60 d=64 pps=200 T=4929 cv=0 w=2431 sc=58]
+[  5.87s] L=0.0603 R=0.0596 | L[tgt=60 v=60 d=63 pps=200 T=4969 cv=2 w=2486 sc=18] R[tgt=60 v=60 d=64 pps=205 T=4974 cv=0 w=2432 sc=18]
+[  6.07s] L=0.0602 R=0.0597 | L[tgt=60 v=60 d=63 pps=205 T=4978 cv=2 w=2531 sc=38] R[tgt=60 v=60 d=64 pps=200 T=4973 cv=0 w=2443 sc=38]
+[  6.27s] L=0.0603 R=0.0596 | L[tgt=60 v=60 d=63 pps=200 T=4969 cv=2 w=2466 sc=58] R[tgt=60 v=60 d=64 pps=200 T=5005 cv=0 w=2456 sc=58]
+[  6.47s] L=0.0597 R=0.0600 | L[tgt=60 v=60 d=63 pps=200 T=4929 cv=2 w=2502 sc=18] R[tgt=60 v=60 d=64 pps=200 T=4997 cv=0 w=2454 sc=18]
+[  6.67s] L=0.0596 R=0.0601 | L[tgt=60 v=60 d=63 pps=205 T=4977 cv=2 w=2496 sc=38] R[tgt=60 v=60 d=64 pps=200 T=4959 cv=0 w=2439 sc=38]
+[  6.87s] L=0.0603 R=0.0601 | L[tgt=60 v=60 d=63 pps=200 T=4951 cv=2 w=2534 sc=58] R[tgt=60 v=60 d=64 pps=205 T=4955 cv=0 w=2436 sc=58]
+=== 정지. 이벤트 요약 ===
+  [  0.08s] status level=1 'cmd_vel timeout — motors stopped'
+  [  0.28s] status level=0 'OK'
+최종 status: (0, 'OK')

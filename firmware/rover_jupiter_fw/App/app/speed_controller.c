@@ -45,7 +45,10 @@
  *   - 통합 BLDC: 최소 기동 duty 실측 ~15%(좌·우 대칭) → dz 살짝 아래 0.13.
  *   - AM2861:    정지마찰 실측 LEFT ~30% / RIGHT ~55% → 비대칭 0.20/0.50. */
 #if MOTOR_TYPE == MOTOR_TYPE_INTEGRATED_BLDC
-static const float DEADZONE[MOTOR_COUNT] = { 0.13f, 0.13f };
+/* 2026-09-07 PWM 50Hz→20kHz 전환 후 재실측 (받침대 무부하, 폐루프 정착점):
+ *   40mm/s→54%, 60→63%, 80→72%, 98%→117~120 (무부하 최고속). 50Hz 시절의 강한 비선형이 사라지고
+ *   선형: duty ≈ 0.36 + 4.5·v. 절편 0.36 을 dz 로(50Hz 의 0.13 은 무효), 기동 duty 실측은 별도. */
+static const float DEADZONE[MOTOR_COUNT] = { 0.34f, 0.34f };
 /* 속도 feedforward (1:90 모터): 지령 즉시 정상상태 duty 근처를 인가해
  * 적분 wind-up 대기 제거 + 스톨 오탐 방지. 적분은 잔차만 보정.
  *
@@ -58,7 +61,7 @@ static const float DEADZONE[MOTOR_COUNT] = { 0.13f, 0.13f };
  * 부족분은 적분이 채움 → Ki 3→6 상향으로 수렴 시간 보상.
  * 검증(2026-08-26 바닥): 50/70/90/100 모두 정착 ✓, L/R 이동거리 일치 ✓, 스톨 오탐 없음.
  *   단 지령 ≥110(포화)에선 duty 98% 고착 → 개방루프화 → L/R 5% 사행. V_MAX=100 근거. */
-#define KV_DUTY_PER_MPS  12.0f
+#define KV_DUTY_PER_MPS  4.5f   /* 2026-09-07 20kHz 실측 기울기 (50Hz: 12.0). 09-07 SUMMARY */
 /* BLDC 1차 튜닝: 기존 4/5 는 초기 duty 슬램·진동 → 대폭 하향. (구모터 기준 주석:
  * steady 0.15→24% / 0.30→45%.) KV 도입 후 Kp 는 외란 보정용으로 유지.
  * Ki 6.0: KV 하향(19→12) 보상 — 잔차를 적분이 메우는 속도 확보 (2026-08-26). */

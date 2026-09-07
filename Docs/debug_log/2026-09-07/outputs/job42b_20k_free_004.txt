@@ -1,0 +1,41 @@
+ssh: connect to host 192.168.0.101 port 22: Connection timed out
+cmd_vel vx=0.04 wz=0.0 for 7.0s  (20Hz)
+[  0.07s] wheel_odom 없음
+[  0.27s] wheel_odom 없음
+[  0.47s] wheel_odom 없음
+[  0.67s] wheel_odom 없음
+[  0.87s] wheel_odom 없음
+[  1.07s] wheel_odom 없음
+[  1.27s] wheel_odom 없음
+[  1.47s] wheel_odom 없음
+[  1.67s] wheel_odom 없음
+[  1.79s] status level=0 'OK'
+[  1.87s] L=0.0400 R=0.0385 | L[tgt=40 v=0 d=64 pps=0 T=0 cv=0 w=0 sc=1] R[tgt=40 v=0 d=64 pps=0 T=0 cv=0 w=0 sc=1]
+[  2.07s] L=0.0534 R=0.0518 | L[tgt=40 v=55 d=60 pps=180 T=5437 cv=2 w=2715 sc=21] R[tgt=40 v=52 d=61 pps=170 T=5622 cv=1 w=2749 sc=21]
+[  2.27s] L=0.0506 R=0.0498 | L[tgt=40 v=52 d=59 pps=175 T=5755 cv=3 w=2850 sc=0] R[tgt=40 v=50 d=59 pps=175 T=5936 cv=0 w=2917 sc=0]
+[  2.47s] L=0.0486 R=0.0474 | L[tgt=40 v=50 d=58 pps=170 T=6045 cv=2 w=3028 sc=0] R[tgt=40 v=48 d=58 pps=160 T=6200 cv=1 w=3046 sc=0]
+[  2.67s] L=0.0472 R=0.0460 | L[tgt=40 v=47 d=57 pps=160 T=6299 cv=3 w=3123 sc=0] R[tgt=40 v=47 d=58 pps=160 T=6413 cv=0 w=3163 sc=0]
+[  2.87s] L=0.0449 R=0.0454 | L[tgt=40 v=46 d=56 pps=155 T=6524 cv=2 w=3256 sc=0] R[tgt=40 v=46 d=57 pps=155 T=6574 cv=0 w=3231 sc=0]
+[  3.07s] L=0.0435 R=0.0441 | L[tgt=40 v=44 d=56 pps=154 T=6650 cv=2 w=3343 sc=0] R[tgt=40 v=44 d=56 pps=149 T=6755 cv=0 w=3319 sc=0]
+[  3.27s] L=0.0437 R=0.0431 | L[tgt=40 v=43 d=55 pps=148 T=6875 cv=2 w=3452 sc=0] R[tgt=40 v=43 d=56 pps=148 T=6856 cv=0 w=3366 sc=0]
+[  3.47s] L=0.0429 R=0.0430 | L[tgt=40 v=42 d=55 pps=140 T=6960 cv=2 w=3564 sc=0] R[tgt=40 v=43 d=56 pps=145 T=6885 cv=0 w=3388 sc=0]
+[  3.67s] L=0.0425 R=0.0421 | L[tgt=40 v=42 d=55 pps=145 T=7088 cv=3 w=3519 sc=0] R[tgt=40 v=42 d=55 pps=140 T=7067 cv=0 w=3476 sc=0]
+[  3.87s] L=0.0411 R=0.0413 | L[tgt=40 v=42 d=54 pps=140 T=7096 cv=2 w=3578 sc=0] R[tgt=40 v=42 d=55 pps=140 T=7109 cv=0 w=3487 sc=0]
+[  4.07s] L=0.0413 R=0.0411 | L[tgt=40 v=41 d=54 pps=139 T=7210 cv=2 w=3655 sc=0] R[tgt=40 v=41 d=55 pps=139 T=7246 cv=1 w=3566 sc=0]
+[  4.28s] L=0.0406 R=0.0405 | L[tgt=40 v=41 d=54 pps=135 T=7347 cv=3 w=3651 sc=0] R[tgt=40 v=41 d=55 pps=140 T=7327 cv=0 w=3610 sc=0]
+[  4.47s] L=0.0406 R=0.0406 | L[tgt=40 v=41 d=54 pps=135 T=7298 cv=2 w=3662 sc=0] R[tgt=40 v=41 d=55 pps=135 T=7339 cv=0 w=3592 sc=0]
+[  4.67s] L=0.0407 R=0.0401 | L[tgt=40 v=41 d=54 pps=140 T=7324 cv=3 w=3628 sc=0] R[tgt=40 v=40 d=55 pps=135 T=7445 cv=0 w=3672 sc=0]
+[  4.87s] L=0.0402 R=0.0400 | L[tgt=40 v=40 d=54 pps=133 T=7390 cv=2 w=3709 sc=0] R[tgt=40 v=40 d=55 pps=133 T=7409 cv=0 w=3629 sc=0]
+[  5.06s] L=0.0405 R=0.0401 | L[tgt=40 v=40 d=54 pps=133 T=7416 cv=2 w=3716 sc=0] R[tgt=40 v=40 d=55 pps=133 T=7432 cv=0 w=3645 sc=0]
+[  5.27s] L=0.0402 R=0.0400 | L[tgt=40 v=40 d=54 pps=137 T=7541 cv=3 w=3741 sc=0] R[tgt=40 v=40 d=55 pps=137 T=7469 cv=0 w=3680 sc=0]
+[  5.47s] L=0.0405 R=0.0402 | L[tgt=40 v=40 d=54 pps=131 T=7399 cv=3 w=3680 sc=0] R[tgt=40 v=40 d=55 pps=131 T=7376 cv=0 w=3643 sc=0]
+[  5.67s] L=0.0404 R=0.0399 | L[tgt=40 v=40 d=54 pps=135 T=7393 cv=2 w=3703 sc=0] R[tgt=40 v=40 d=55 pps=135 T=7437 cv=0 w=3666 sc=0]
+[  5.87s] L=0.0400 R=0.0401 | L[tgt=40 v=40 d=54 pps=135 T=7478 cv=3 w=3724 sc=0] R[tgt=40 v=40 d=55 pps=135 T=7402 cv=0 w=3657 sc=0]
+[  6.07s] L=0.0408 R=0.0402 | L[tgt=40 v=41 d=54 pps=140 T=7385 cv=2 w=3705 sc=0] R[tgt=40 v=40 d=55 pps=135 T=7382 cv=0 w=3627 sc=0]
+[  6.27s] L=0.0402 R=0.0399 | L[tgt=40 v=40 d=54 pps=130 T=7474 cv=3 w=3711 sc=0] R[tgt=40 v=40 d=55 pps=135 T=7431 cv=1 w=3683 sc=0]
+[  6.47s] L=0.0409 R=0.0401 | L[tgt=40 v=41 d=54 pps=140 T=7387 cv=3 w=3705 sc=0] R[tgt=40 v=40 d=55 pps=135 T=7409 cv=0 w=3640 sc=0]
+[  6.67s] L=0.0404 R=0.0402 | L[tgt=40 v=40 d=54 pps=133 T=7425 cv=2 w=3726 sc=0] R[tgt=40 v=40 d=55 pps=133 T=7412 cv=0 w=3632 sc=0]
+[  6.87s] L=0.0401 R=0.0405 | L[tgt=40 v=40 d=54 pps=135 T=7513 cv=3 w=3791 sc=0] R[tgt=40 v=40 d=55 pps=140 T=7372 cv=0 w=3620 sc=0]
+=== 정지. 이벤트 요약 ===
+  [  1.79s] status level=0 'OK'
+최종 status: (0, 'OK')
