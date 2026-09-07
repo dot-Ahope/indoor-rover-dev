@@ -181,6 +181,11 @@ bool safety_monitor_is_latched(void)
     return s_latched;
 }
 
+uint16_t safety_monitor_get_stall_counter(MotorChannel ch)
+{
+    return (ch < MOTOR_COUNT) ? s_mon[ch].stall_counter : 0u;
+}
+
 void safety_monitor_clear(void)
 {
     safety_monitor_init();

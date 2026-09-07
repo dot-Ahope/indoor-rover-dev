@@ -1,0 +1,35 @@
+cmd_vel vx=0.05 wz=0.0 for 30.0s  (20Hz)
+[  0.07s] wheel_odom v=None w=None
+[  1.07s] wheel_odom v=None w=None
+[  1.75s] status level=0 'OK'
+[  2.07s] wheel_odom v=0.0355 w=0.001
+[  3.07s] wheel_odom v=0.0304 w=-0.042
+[  4.07s] wheel_odom v=0.0505 w=0.01
+[  5.07s] wheel_odom v=0.0572 w=0.031
+[  6.07s] wheel_odom v=0.0551 w=-0.005
+[  7.07s] wheel_odom v=0.0538 w=-0.027
+[  8.07s] wheel_odom v=0.0495 w=-0.009
+[  9.07s] wheel_odom v=0.0526 w=-0.022
+[ 10.07s] wheel_odom v=0.0488 w=-0.003
+[ 11.06s] wheel_odom v=0.0543 w=0.022
+[ 12.07s] wheel_odom v=0.0496 w=-0.028
+[ 13.07s] wheel_odom v=0.0475 w=0.014
+[ 14.06s] wheel_odom v=0.0524 w=0.018
+[ 15.07s] wheel_odom v=0.0514 w=-0.006
+[ 16.07s] wheel_odom v=0.0481 w=0.006
+[ 17.07s] wheel_odom v=0.0515 w=-0.009
+[ 18.07s] wheel_odom v=0.0517 w=0.027
+[ 19.07s] wheel_odom v=0.0523 w=-0.017
+[ 20.07s] wheel_odom v=0.0494 w=-0.017
+[ 21.07s] wheel_odom v=0.0502 w=0.003
+[ 22.07s] wheel_odom v=0.0505 w=-0.003
+[ 23.06s] wheel_odom v=0.0508 w=-0.004
+[ 24.07s] wheel_odom v=0.0494 w=0.023
+[ 25.07s] wheel_odom v=0.0526 w=0.024
+[ 26.07s] wheel_odom v=0.0526 w=-0.008
+[ 27.07s] wheel_odom v=0.0508 w=0.035
+[ 28.06s] wheel_odom v=0.0513 w=-0.007
+[ 29.06s] wheel_odom v=0.0495 w=-0.008
+=== 정지. 이벤트 요약 ===
+  [  1.75s] status level=0 'OK'
+최종 status: (0, 'OK')

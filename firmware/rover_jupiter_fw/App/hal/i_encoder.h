@@ -58,6 +58,22 @@ float encoder_read_velocity_mps(EncoderChannel ch);
  */
 float encoder_read_distance_m(EncoderChannel ch);
 
+/**
+ * @brief 펄스 통계 (진단/텔레메트리용, 2026-09-07).
+ *        배경: FG 펄스는 방향이 없어 구속된 모터의 진동/정류 스텝도 "이동"으로 누적됨
+ *        (받침대 실험: 트랙 고정 상태에서 0.014~0.028 m/s 보고). 이동거리 기반 스톨 감지가
+ *        무력하므로, 펄스율·주기 규칙성으로 "진짜 회전"을 구분할 서명을 수집한다.
+ * @param pps        직전 호출 이후 평균 펄스율 (pulses/s)
+ * @param period_us  최근 N개 펄스 주기 평균 (us). 펄스 없으면 0
+ * @param cv_pct     최근 N개 펄스 주기의 변동계수 (stddev/mean × 100). 펄스 부족 시 0
+ * @param width_us   최근 N개 펄스의 High 폭 평균 (us). 받침대 구속 실험(2026-09-07)에서 정지 휠이
+ *                   PWM 주파수(50Hz)와 정확히 같은 주기의 펄스를 냄 → 실펄스(폭≈T/2)와
+ *                   PWM 누화/정류 스텝 펄스를 폭으로 구분할 수 있는지 보기 위한 계측.
+ *        호출 주기가 통계 창을 결정 (status 5Hz → 200ms).
+ */
+void encoder_get_pulse_stats(EncoderChannel ch, uint32_t *pps, uint32_t *period_us, uint32_t *cv_pct,
+                             uint32_t *width_us);
+
 #ifdef __cplusplus
 }
 #endif
