@@ -26,6 +26,7 @@ void safety_monitor_update(void);   /* 100 Hz */
 bool safety_monitor_is_stalled(MotorChannel ch);
 bool safety_monitor_has_fault(void);   /* 스톨 정지 중 (일시 또는 래치) */
 bool safety_monitor_is_latched(void);  /* 하드 래치 — 리셋/clear 필요 */
+uint16_t safety_monitor_get_stall_counter(MotorChannel ch);  /* 텔레메트리: 감지창 진행 샘플 수 (0=미무장) */
 void safety_monitor_clear(void);
 
 /* F8: cmd_vel watchdog. cmd_vel 콜백에서 매번 호출 → 마지막 수신 시각 갱신.

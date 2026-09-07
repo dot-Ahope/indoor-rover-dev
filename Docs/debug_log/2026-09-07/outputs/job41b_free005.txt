@@ -1,0 +1,35 @@
+cmd_vel vx=0.05 wz=0.0 for 15.0s  (20Hz)
+[  0.07s] wheel_odom 없음
+[  0.56s] wheel_odom 없음
+[  1.06s] L=0.0000 R=0.0000 | L[-] R[-]
+[  1.16s] status level=0 'OK'
+[  1.56s] L=0.0378 R=0.0338 | L[tgt=50 v=38 d=81 pps=99 T=9950 cv=41 sc=53] R[tgt=50 v=32 d=81 pps=89 T=10095 cv=38 sc=53]
+[  2.06s] L=0.0420 R=0.0343 | L[tgt=50 v=37 d=83 pps=105 T=8914 cv=34 sc=32] R[tgt=50 v=36 d=84 pps=100 T=10312 cv=41 sc=32]
+[  2.56s] L=0.0437 R=0.0297 | L[tgt=50 v=40 d=87 pps=114 T=8709 cv=36 sc=33] R[tgt=50 v=29 d=90 pps=94 T=9678 cv=29 sc=33]
+[  3.06s] L=0.0225 R=0.0474 | L[tgt=50 v=36 d=89 pps=115 T=8708 cv=30 sc=12] R[tgt=50 v=46 d=92 pps=150 T=6718 cv=9 sc=12]
+[  3.56s] L=0.0478 R=0.0507 | L[tgt=50 v=48 d=93 pps=154 T=6068 cv=7 sc=13] R[tgt=50 v=51 d=93 pps=174 T=5817 cv=8 sc=13]
+[  4.06s] L=0.0488 R=0.0507 | L[tgt=50 v=47 d=93 pps=170 T=6915 cv=6 sc=52] R[tgt=50 v=48 d=93 pps=160 T=6115 cv=6 sc=52]
+[  4.57s] L=0.0468 R=0.0494 | L[tgt=50 v=46 d=93 pps=164 T=6694 cv=3 sc=53] R[tgt=50 v=50 d=93 pps=154 T=5771 cv=6 sc=53]
+[  5.06s] L=0.0503 R=0.0483 | L[tgt=50 v=48 d=93 pps=170 T=5820 cv=6 sc=32] R[tgt=50 v=50 d=93 pps=165 T=5801 cv=4 sc=32]
+[  5.57s] L=0.0458 R=0.0463 | L[tgt=50 v=46 d=93 pps=169 T=6441 cv=2 sc=33] R[tgt=50 v=48 d=93 pps=159 T=5975 cv=8 sc=33]
+[  6.06s] L=0.0528 R=0.0480 | L[tgt=50 v=45 d=93 pps=160 T=6329 cv=7 sc=12] R[tgt=50 v=49 d=93 pps=175 T=5738 cv=7 sc=12]
+[  6.56s] L=0.0471 R=0.0525 | L[tgt=50 v=46 d=93 pps=169 T=6726 cv=6 sc=13] R[tgt=50 v=54 d=93 pps=169 T=5331 cv=5 sc=13]
+[  7.06s] L=0.0499 R=0.0497 | L[tgt=50 v=46 d=93 pps=165 T=6269 cv=6 sc=52] R[tgt=50 v=48 d=93 pps=155 T=5939 cv=5 sc=52]
+[  7.56s] L=0.0425 R=0.0477 | L[tgt=50 v=44 d=93 pps=164 T=7150 cv=11 sc=53] R[tgt=50 v=48 d=93 pps=159 T=6127 cv=8 sc=53]
+[  8.06s] L=0.0532 R=0.0423 | L[tgt=50 v=50 d=93 pps=155 T=5592 cv=4 sc=32] R[tgt=50 v=52 d=93 pps=180 T=5574 cv=10 sc=32]
+[  8.56s] L=0.0475 R=0.0510 | L[tgt=50 v=49 d=93 pps=154 T=6196 cv=5 sc=33] R[tgt=50 v=51 d=93 pps=179 T=5873 cv=8 sc=33]
+[  9.06s] L=0.0451 R=0.0506 | L[tgt=50 v=59 d=92 pps=180 T=4301 cv=4 sc=12] R[tgt=50 v=50 d=93 pps=165 T=5945 cv=6 sc=12]
+[  9.56s] L=0.0531 R=0.0478 | L[tgt=50 v=53 d=93 pps=169 T=5502 cv=7 sc=13] R[tgt=50 v=47 d=93 pps=159 T=6404 cv=8 sc=13]
+[ 10.06s] L=0.0469 R=0.0512 | L[tgt=50 v=53 d=93 pps=175 T=5851 cv=6 sc=52] R[tgt=50 v=51 d=93 pps=165 T=5590 cv=6 sc=52]
+[ 10.56s] L=0.0474 R=0.0492 | L[tgt=50 v=46 d=93 pps=174 T=6980 cv=4 sc=53] R[tgt=50 v=51 d=93 pps=164 T=5788 cv=6 sc=53]
+[ 11.07s] L=0.0538 R=0.0482 | L[tgt=50 v=48 d=93 pps=160 T=6090 cv=7 sc=32] R[tgt=50 v=49 d=93 pps=160 T=5953 cv=6 sc=32]
+[ 11.56s] L=0.0501 R=0.0470 | L[tgt=50 v=51 d=93 pps=164 T=5767 cv=4 sc=33] R[tgt=50 v=48 d=93 pps=154 T=6179 cv=5 sc=33]
+[ 12.06s] L=0.0492 R=0.0551 | L[tgt=50 v=53 d=93 pps=170 T=5381 cv=5 sc=12] R[tgt=50 v=54 d=93 pps=180 T=4975 cv=13 sc=12]
+[ 12.56s] L=0.0500 R=0.0527 | L[tgt=50 v=50 d=93 pps=169 T=5903 cv=2 sc=13] R[tgt=50 v=53 d=93 pps=174 T=5588 cv=9 sc=13]
+[ 13.06s] L=0.0436 R=0.0480 | L[tgt=50 v=46 d=93 pps=180 T=7017 cv=10 sc=52] R[tgt=50 v=50 d=93 pps=160 T=6067 cv=5 sc=52]
+[ 13.56s] L=0.0492 R=0.0468 | L[tgt=50 v=48 d=93 pps=174 T=6505 cv=12 sc=53] R[tgt=50 v=47 d=93 pps=164 T=6281 cv=7 sc=53]
+[ 14.07s] L=0.0482 R=0.0511 | L[tgt=50 v=46 d=93 pps=175 T=7238 cv=5 sc=32] R[tgt=50 v=50 d=93 pps=155 T=5705 cv=6 sc=32]
+[ 14.56s] L=0.0516 R=0.0487 | L[tgt=50 v=51 d=93 pps=179 T=6207 cv=6 sc=33] R[tgt=50 v=50 d=93 pps=164 T=5969 cv=6 sc=33]
+=== 정지. 이벤트 요약 ===
+  [  1.16s] status level=0 'OK'
+최종 status: (0, 'OK')

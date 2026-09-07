@@ -40,6 +40,7 @@
 #include <sensor_msgs/msg/magnetic_field.h>
 #include <sensor_msgs/msg/battery_state.h>
 #include <diagnostic_msgs/msg/diagnostic_array.h>
+#include <diagnostic_msgs/msg/key_value.h>
 #include <builtin_interfaces/msg/time.h>
 
 #include "FreeRTOS.h"
@@ -49,6 +50,7 @@
 #include "rover_platform.h"
 #include "speed_controller.h"
 #include "safety_monitor.h"
+#include "i_encoder.h"
 #include "odometry.h"
 #include "imu_processor.h"
 
@@ -103,6 +105,12 @@ static diagnostic_msgs__msg__DiagnosticStatus s_status_array_storage[1];
 static char s_status_name[]   = "rover_jupiter_fw";
 static char s_status_hwid[]   = "F405";
 static char s_status_message[64];
+/* values[]: 휠별 텔레메트리 (2026-09-07). key "L"/"R", value 는 정수 필드 문자열
+ *   tgt=목표 mm/s  v=측정 mm/s  d=duty %  pps=펄스/s  T=평균주기 us  cv=주기 변동계수 %  w=High폭 us  sc=스톨창 샘플
+ * 목적: 구속(트랙 정지) 상태에서도 FG 가 펄스를 내는 현상의 서명(pps·cv vs duty) 수집. */
+static diagnostic_msgs__msg__KeyValue s_status_kv[2];
+static char s_status_kv_key[2][2] = { "L", "R" };
+static char s_status_kv_val[2][72];
 /* time sync 캐시 — boot 시 1회 계산 (rmw_uros_sync_session).
  * sync 실패 시 0 유지 → fill_stamp() 가 기존 boot-time stamp 그대로 출력. */
 static int64_t s_time_offset_ns = 0;
@@ -312,7 +320,19 @@ void microros_task_run(void *arg)
     s_status_array_storage[0].hardware_id.capacity = sizeof(s_status_hwid);
     s_status_array_storage[0].message.data     = s_status_message;
     s_status_array_storage[0].message.capacity = sizeof(s_status_message);
-    /* values[] 배열 비워둠 (size=0) — 향후 KeyValue 추가 시 storage 확장 */
+    /* values[]: 휠별 텔레메트리 KeyValue ×2 (정적 스토리지) */
+    memset(s_status_kv, 0, sizeof(s_status_kv));
+    for (int i = 0; i < 2; i++) {
+        s_status_kv[i].key.data       = s_status_kv_key[i];
+        s_status_kv[i].key.size       = 1;
+        s_status_kv[i].key.capacity   = sizeof(s_status_kv_key[i]);
+        s_status_kv[i].value.data     = s_status_kv_val[i];
+        s_status_kv[i].value.size     = 0;
+        s_status_kv[i].value.capacity = sizeof(s_status_kv_val[i]);
+    }
+    s_status_array_storage[0].values.data     = s_status_kv;
+    s_status_array_storage[0].values.size     = 2;
+    s_status_array_storage[0].values.capacity = 2;
 
     /* time sync — agent 와 boot offset 계산. 실패해도 진행. */
     if (rmw_uros_sync_session(1000) == RMW_RET_OK) {
@@ -442,6 +462,22 @@ void microros_task_run(void *arg)
             memcpy(s_status_message, msg, cn);
             s_status_message[cn] = '\0';
             s_status_array_storage[0].message.size = cn;
+            /* 휠별 텔레메트리 (정수 포맷 — nano printf 는 float 미지원) */
+            for (int w = 0; w < 2; w++) {
+                const MotorChannel  mc = (w == 0) ? MOTOR_LEFT : MOTOR_RIGHT;
+                const EncoderChannel ec = (w == 0) ? ENC_LEFT : ENC_RIGHT;
+                uint32_t pps, per_us, cv, wid;
+                encoder_get_pulse_stats(ec, &pps, &per_us, &cv, &wid);
+                const int tgt_mm = (int)lroundf(speed_controller_get_target(mc) * 1000.0f);
+                const int v_mm   = (int)lroundf(encoder_read_velocity_mps(ec) * 1000.0f);
+                const int duty_p = (int)lroundf(speed_controller_get_duty(mc) * 100.0f);
+                const int len = snprintf(s_status_kv_val[w], sizeof(s_status_kv_val[w]),
+                    "tgt=%d v=%d d=%d pps=%lu T=%lu cv=%lu w=%lu sc=%u",
+                    tgt_mm, v_mm, duty_p, (unsigned long)pps, (unsigned long)per_us,
+                    (unsigned long)cv, (unsigned long)wid, (unsigned)safety_monitor_get_stall_counter(mc));
+                s_status_kv[w].value.size = (len > 0 && (size_t)len < sizeof(s_status_kv_val[w]))
+                                          ? (size_t)len : sizeof(s_status_kv_val[w]) - 1;
+            }
             fill_stamp(&s_status_msg.header.stamp, now_ms);
             pr = rcl_publish(&s_status_pub, &s_status_msg, NULL); (void)pr;
             last_status_ms = now_ms;
