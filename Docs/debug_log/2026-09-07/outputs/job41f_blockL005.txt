@@ -1,0 +1,29 @@
+cmd_vel vx=0.05 wz=0.0 for 10.0s  (20Hz)
+[  0.07s] wheel_odom 없음
+[  0.57s] wheel_odom 없음
+[  1.07s] wheel_odom 없음
+[  1.57s] wheel_odom 없음
+[  1.80s] status level=0 'OK'
+[  2.07s] L=0.0195 R=0.0311 | L[tgt=50 v=18 d=81 pps=60 T=17606 cv=23 w=13858 sc=32] R[tgt=50 v=27 d=80 pps=85 T=12228 cv=38 w=8415 sc=32]
+[  2.57s] L=-0.0000 R=0.0344 | L[tgt=50 v=16 d=89 pps=45 T=20793 cv=21 w=12195 sc=12] R[tgt=50 v=37 d=83 pps=100 T=10435 cv=43 w=7019 sc=12]
+[  3.07s] L=0.0504 R=0.0328 | L[tgt=50 v=41 d=97 pps=125 T=6990 cv=7 w=3439 sc=12] R[tgt=50 v=43 d=86 pps=125 T=8079 cv=32 w=5309 sc=12]
+[  3.57s] L=0.0526 R=0.0388 | L[tgt=50 v=49 d=97 pps=145 T=6824 cv=12 w=3383 sc=52] R[tgt=50 v=25 d=92 pps=90 T=13111 cv=13 w=6612 sc=52]
+[  4.07s] L=0.0305 R=0.0482 | L[tgt=50 v=44 d=98 pps=180 T=7477 cv=38 w=3647 sc=52] R[tgt=50 v=50 d=93 pps=165 T=5878 cv=5 w=2846 sc=52]
+[  4.57s] L=0.0002 R=0.0458 | L[tgt=50 v=0 d=98 pps=0 T=0 cv=0 w=0 sc=32] R[tgt=50 v=48 d=93 pps=175 T=5972 cv=7 w=2965 sc=32]
+[  4.80s] status level=1 'STALL — auto-recovering'
+[  5.07s] L=0.0000 R=0.0000 | L[tgt=0 v=0 d=0 pps=0 T=0 cv=0 w=0 sc=60] R[tgt=0 v=0 d=0 pps=0 T=0 cv=0 w=0 sc=0]
+[  5.57s] L=0.0000 R=0.0000 | L[tgt=0 v=0 d=0 pps=0 T=0 cv=0 w=0 sc=60] R[tgt=0 v=0 d=0 pps=0 T=0 cv=0 w=0 sc=0]
+[  6.07s] L=0.0000 R=0.0000 | L[tgt=0 v=0 d=0 pps=0 T=0 cv=0 w=0 sc=60] R[tgt=0 v=0 d=0 pps=0 T=0 cv=0 w=0 sc=0]
+[  6.20s] status level=0 'OK'
+[  6.57s] L=0.0351 R=0.0366 | L[tgt=50 v=36 d=78 pps=90 T=10412 cv=42 w=7154 sc=22] R[tgt=50 v=33 d=78 pps=90 T=10188 cv=40 w=6919 sc=22]
+[  7.07s] L=0.0381 R=0.0352 | L[tgt=50 v=37 d=83 pps=110 T=10011 cv=34 w=6565 sc=22] R[tgt=50 v=37 d=83 pps=105 T=8610 cv=30 w=5470 sc=22]
+[  7.57s] L=0.0432 R=0.0361 | L[tgt=50 v=36 d=85 pps=110 T=8452 cv=31 w=5426 sc=2] R[tgt=50 v=41 d=86 pps=110 T=8139 cv=27 w=5273 sc=2]
+[  8.07s] L=0.0261 R=0.0408 | L[tgt=50 v=32 d=90 pps=110 T=10657 cv=34 w=6306 sc=2] R[tgt=50 v=39 d=92 pps=110 T=7241 cv=5 w=3531 sc=2]
+[  8.57s] L=0.0456 R=0.0412 | L[tgt=50 v=49 d=92 pps=155 T=5608 cv=8 w=2842 sc=42] R[tgt=50 v=53 d=93 pps=170 T=5562 cv=14 w=2673 sc=42]
+[  9.07s] L=0.0494 R=0.0481 | L[tgt=50 v=50 d=93 pps=165 T=5840 cv=3 w=2917 sc=42] R[tgt=50 v=46 d=93 pps=160 T=6605 cv=5 w=3224 sc=42]
+[  9.57s] L=0.0476 R=0.0550 | L[tgt=50 v=53 d=93 pps=170 T=5407 cv=5 w=2724 sc=22] R[tgt=50 v=47 d=93 pps=155 T=5958 cv=6 w=2897 sc=22]
+=== 정지. 이벤트 요약 ===
+  [  1.80s] status level=0 'OK'
+  [  4.80s] status level=1 'STALL — auto-recovering'
+  [  6.20s] status level=0 'OK'
+최종 status: (0, 'OK')

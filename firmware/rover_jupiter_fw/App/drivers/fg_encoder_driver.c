@@ -40,6 +40,15 @@ static volatile uint32_t s_period[ENC_COUNT];      /* 최근 펄스 주기 (tick
 static volatile uint32_t s_cap_seq[ENC_COUNT];     /* 캡처마다 증가 (task 감지용) */
 static volatile int32_t  s_count[ENC_COUNT];       /* 부호 있는 누적 펄스 */
 static volatile bool     s_have_prev[ENC_COUNT];
+/* 펄스 통계용 (encoder_get_pulse_stats): 최근 주기 링 + 부호 없는 총 펄스 수 */
+#define PSTAT_RING        8u
+static volatile uint32_t s_pring[ENC_COUNT][PSTAT_RING];
+static volatile uint8_t  s_pring_idx[ENC_COUNT];
+static volatile uint32_t s_wring[ENC_COUNT][PSTAT_RING];   /* 펄스 High 폭 (us) — CH2 하강에지 캡처 */
+static volatile uint8_t  s_wring_idx[ENC_COUNT];
+static volatile uint32_t s_pulse_total[ENC_COUNT];
+static uint32_t s_pstat_last_total[ENC_COUNT];
+static uint32_t s_pstat_last_ms[ENC_COUNT];
 
 /* ── task 전용 상태 ── */
 static uint32_t s_seq_last[ENC_COUNT];
@@ -81,9 +90,14 @@ static bool fg_ic_init(TIM_HandleTypeDef *htim)
     sic.ICPolarity  = TIM_ICPOLARITY_RISING;
     sic.ICSelection = TIM_ICSELECTION_DIRECTTI;
     sic.ICPrescaler = TIM_ICPSC_DIV1;
-    sic.ICFilter    = 0x0F;                          /* 최대 필터 — FG 노이즈 디바운스 */
+    sic.ICFilter    = 0x0F;                          /* 최대 필터(≈3us) — FG 노이즈 디바운스 */
     if (HAL_TIM_IC_ConfigChannel(htim, &sic, TIM_CHANNEL_1) != HAL_OK) return false;
+    /* CH2: 같은 TI1 입력의 하강에지 (간접 매핑) → 펄스 High 폭 계측 (2026-09-07 진단용) */
+    sic.ICPolarity  = TIM_ICPOLARITY_FALLING;
+    sic.ICSelection = TIM_ICSELECTION_INDIRECTTI;
+    if (HAL_TIM_IC_ConfigChannel(htim, &sic, TIM_CHANNEL_2) != HAL_OK) return false;
     if (HAL_TIM_IC_Start_IT(htim, TIM_CHANNEL_1) != HAL_OK) return false;
+    if (HAL_TIM_IC_Start_IT(htim, TIM_CHANNEL_2) != HAL_OK) return false;
     return true;
 }
 
@@ -115,10 +129,22 @@ void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef *htim)
     else if (htim->Instance == TIM5) ch = ENC_LEFT;
     else return;
 
+    if (htim->Channel == HAL_TIM_ACTIVE_CHANNEL_2) {
+        /* 하강에지: 직전 상승에지부터의 High 폭 */
+        if (s_have_prev[ch]) {
+            s_wring[ch][s_wring_idx[ch]] = htim->Instance->CCR2 - s_cap_prev[ch];
+            s_wring_idx[ch] = (uint8_t)((s_wring_idx[ch] + 1u) % PSTAT_RING);
+        }
+        return;
+    }
+
     const uint32_t cap = htim->Instance->CCR1;
     if (s_have_prev[ch]) {
         s_period[ch] = cap - s_cap_prev[ch];        /* 32-bit wrap-safe */
+        s_pring[ch][s_pring_idx[ch]] = s_period[ch];
+        s_pring_idx[ch] = (uint8_t)((s_pring_idx[ch] + 1u) % PSTAT_RING);
     }
+    s_pulse_total[ch]++;
     s_cap_prev[ch]  = cap;
     s_have_prev[ch] = true;
     s_cap_seq[ch]++;
@@ -179,6 +205,45 @@ float encoder_read_velocity_mps(EncoderChannel ch)
 float encoder_read_distance_m(EncoderChannel ch)
 {
     return (float)encoder_read_count(ch) * METERS_PER_COUNT;
+}
+
+void encoder_get_pulse_stats(EncoderChannel ch, uint32_t *pps, uint32_t *period_us, uint32_t *cv_pct,
+                             uint32_t *width_us)
+{
+    if (ch >= ENC_COUNT) { *pps = 0; *period_us = 0; *cv_pct = 0; *width_us = 0; return; }
+
+    /* 펄스율: 직전 호출 이후 총 펄스 증가분 / 경과시간 */
+    const uint32_t now   = HAL_GetTick();
+    const uint32_t total = s_pulse_total[ch];
+    const uint32_t dt_ms = now - s_pstat_last_ms[ch];
+    const uint32_t dn    = total - s_pstat_last_total[ch];
+    *pps = (dt_ms > 0u) ? (dn * 1000u) / dt_ms : 0u;
+    s_pstat_last_total[ch] = total;
+    s_pstat_last_ms[ch]    = now;
+
+    /* 주기·폭 링 스냅샷 (ISR 갱신 중 찢김 방지) */
+    uint32_t ring[PSTAT_RING], wring[PSTAT_RING];
+    __disable_irq();
+    for (uint32_t i = 0; i < PSTAT_RING; i++) { ring[i] = s_pring[ch][i]; wring[i] = s_wring[ch][i]; }
+    __enable_irq();
+
+    /* 폭 평균: 창 내 펄스가 있으면 최근 링 평균 (dn<8 이면 옛 값 일부 포함 — 진단용 허용) */
+    if (dn > 0u) {
+        uint32_t wsum = 0; for (uint32_t i = 0; i < PSTAT_RING; i++) wsum += wring[i];
+        *width_us = wsum / PSTAT_RING;
+    } else { *width_us = 0u; }
+
+    /* 최근 창(200ms)에 펄스가 PSTAT_RING 개 미만이면 링에 옛 값이 섞임 → 통계 무의미 처리 */
+    if (dn < PSTAT_RING) { *period_us = (dn > 0u) ? s_period[ch] : 0u; *cv_pct = 0u; return; }
+
+    float mean = 0.0f;
+    for (uint32_t i = 0; i < PSTAT_RING; i++) mean += (float)ring[i];
+    mean /= (float)PSTAT_RING;
+    float var = 0.0f;
+    for (uint32_t i = 0; i < PSTAT_RING; i++) { const float d = (float)ring[i] - mean; var += d * d; }
+    var /= (float)PSTAT_RING;
+    *period_us = (uint32_t)mean;
+    *cv_pct    = (mean > 0.0f) ? (uint32_t)(sqrtf(var) * 100.0f / mean) : 0u;
 }
 
 #endif /* MOTOR_TYPE == MOTOR_TYPE_INTEGRATED_BLDC */

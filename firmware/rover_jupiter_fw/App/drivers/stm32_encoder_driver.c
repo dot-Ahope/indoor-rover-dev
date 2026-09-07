@@ -78,4 +78,11 @@ float encoder_read_distance_m(EncoderChannel ch)
     return (float)encoder_read_count(ch) * METERS_PER_COUNT;
 }
 
+/* 펄스 통계는 FG 드라이버 전용 — 쿼드러처 구성에서는 0 반환 (인터페이스 호환용 스텁). */
+void encoder_get_pulse_stats(EncoderChannel ch, uint32_t *pps, uint32_t *period_us, uint32_t *cv_pct,
+                             uint32_t *width_us)
+{
+    (void)ch; *pps = 0; *period_us = 0; *cv_pct = 0; *width_us = 0;
+}
+
 #endif /* MOTOR_TYPE == MOTOR_TYPE_AM2861 */
