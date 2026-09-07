@@ -1,0 +1,7 @@
+    지령 |  L v  L d L pps |  R v  R d R pps | EKF Δ(cm)    실속도 | 판정
+    5  |   10   41    33 |   10   41    32 |       nan    nan | 기동
+   10  |   10   41    33 |   10   41    33 |       2.0      7 | 기동
+   15  |   15   43    50 |   15   43    50 |       3.2     11 | 기동
+   20  |   20   45    68 |   20   45    67 |       4.4     15 | 기동
+   30  |   30   50   100 |   30   50   100 |       6.6     22 | 기동
+이상 상태: [(912.8, 1, 'cmd_vel timeout — motors stopped'), (916.8, 1, 'cmd_vel timeout — motors stopped'), (920.8, 1, 'cmd_vel timeout — motors stopped'), (924.9, 1, 'cmd_vel timeout — motors stopped'), (928.9, 1, 'cmd_vel timeout — motors stopped')]

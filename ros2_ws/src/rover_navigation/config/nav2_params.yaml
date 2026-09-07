@@ -51,7 +51,7 @@ controller_server:
     # RPP(Regulated Pure Pursuit) — 차동/스키드스티어 저속에 적합, 튜닝 파라미터가 직관적
     FollowPath:
       plugin: "nav2_regulated_pure_pursuit_controller::RegulatedPurePursuitController"
-      desired_linear_vel: 0.10          # 펌웨어 최대치와 동일
+      desired_linear_vel: 0.08   # 2026-09-07 스케일 정정: 단위가 실속도 → 실 최대 0.085 대비 여유          # 펌웨어 최대치와 동일
       lookahead_dist: 0.30
       min_lookahead_dist: 0.20
       max_lookahead_dist: 0.45
@@ -92,8 +92,8 @@ controller_server:
       vx_std: 0.05
       vy_std: 0.0
       wz_std: 0.3
-      vx_max: 0.10          # 펌웨어 한계
-      vx_min: -0.08         # ★ 후진 허용 — 좁은 공간 이탈 기동
+      vx_max: 0.08              # 2026-09-07 스케일 정정 (실속도 기준)          # 펌웨어 한계
+      vx_min: -0.06             # 2026-09-07 스케일 정정 (실속도 기준)         # ★ 후진 허용 — 좁은 공간 이탈 기동
       vy_max: 0.0
       wz_max: 0.6
       iteration_count: 1
@@ -258,8 +258,8 @@ velocity_smoother:
     scale_velocities: false
     feedback: "OPEN_LOOP"
     # 펌웨어 한계와 일치 (초과 지령은 펌웨어가 어차피 포화시킴)
-    max_velocity: [0.10, 0.0, 0.60]
-    min_velocity: [-0.10, 0.0, -0.60]
+    max_velocity: [0.085, 0.0, 0.60]   # 2026-09-07: 실 최고속 0.085
+    min_velocity: [-0.085, 0.0, -0.60]
     max_accel: [0.20, 0.0, 1.20]
     max_decel: [-0.30, 0.0, -1.50]
     odom_topic: "/odometry/filtered"

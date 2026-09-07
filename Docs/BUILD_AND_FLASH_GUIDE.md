@@ -307,7 +307,10 @@ STM32_Programmer_CLI -c port=SWD -ob RDP=0xBB
 
 ### 6.2 UART5 디버그 콘솔
 
-ST-Link V3SET의 보조 VCP가 UART5에 연결되어 있습니다. Windows에서 일반적으로 `COM8` 또는 `COM9` 로 잡힙니다.
+> ⚠ **2026-09-07 실측: 현재 배선에서는 동작하지 않음.** ST-Link V3 의 두 VCP(COM5 "Virtual COM Port 2", COM6 "Virtual COM Port")를 열고 보드를 리셋해도 **수신 0 바이트** — 부팅 배너·CLI 도움말이 안 옴. 펌웨어 측은 정상(`__io_putchar` → `huart5`, PC12=TX5/PD2=RX5, 115200, RX IRQ 활성). 즉 **ST-Link VCP 와 PC12/PD2 사이에 물리 배선이 없음**. 아래 절차는 그 배선(VCP TX→PD2, VCP RX→PC12, GND 공통)을 하거나 별도 USB-TTL 어댑터를 PC12/PD2 에 연결한 뒤에만 유효.
+> 대체 수단: 모터 조작·텔레메트리는 ROS 경유(`/cmd_vel`, `/rover/status`)로 가능. **스톨 하드 래치 해제는 보드 리셋(ST-Link `-rst` 또는 물리 버튼)뿐** — CLI `'c'` 경로는 현재 사용 불가.
+
+ST-Link V3SET의 보조 VCP가 UART5에 연결되어 있습니다(제조사 사양 기준). Windows에서 일반적으로 `COM8` 또는 `COM9` 로 잡힙니다.
 
 #### COM 포트 확인
 
