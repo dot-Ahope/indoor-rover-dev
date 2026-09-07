@@ -23,7 +23,7 @@
 
 #define ODOM_HZ          100u
 #define ODOM_DT_S        (1.0f / (float)ODOM_HZ)
-#define INV_WHEEL_BASE   (1.0f / WHEEL_BASE_M)   /* = 2.445 (유효 게이지 0.409m — 스크럽 반영, 2026-09-07) */
+#define INV_WHEEL_BASE   (1.0f / WHEEL_BASE_M)   /* = 2.257 (유효 게이지 0.443m — 스크럽 반영, 2026-09-07) */
 #define TWO_PI           6.28318530718f
 #define PI               3.14159265359f
 
