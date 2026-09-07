@@ -1,0 +1,43 @@
+<!-- [MPPI 변형] 컨트롤러 벤치마크용 — FollowPath 노드의 controller_id 만 FollowPathMPPI 로.
+     goal 의 behavior_tree 필드로 지정해 재시작 없이 전환한다. (2026-09-07)
+     
+  rover_navigation 커스텀 BT (2026-09-03) — 기본 navigate_to_pose_w_replanning_and_recovery.xml 에서
+  복구동작 Spin 제거. 근거: WT-600 은 제자리 회전 스윕 φ60cm 인데 실내 좁은 통로에서 실패 시 벽에
+  붙은 상태가 대부분 → Spin 이 모서리를 벽에 밀어넣어 접촉·헛바퀴 유발 (09-02, 09-03 실발생).
+  라이다 최소감지 0.2m 사각이라 costmap 도 근접 벽을 못 봄. BackUp(0.15m, 0.05m/s) → Wait 순으로 유지.
+-->
+
+<!--
+  This Behavior Tree replans the global path periodically at 1 Hz and it also has
+  recovery actions specific to planning / control as well as general system issues.
+  This will be continuous if a kinematically valid planner is selected.
+-->
+<root main_tree_to_execute="MainTree">
+  <BehaviorTree ID="MainTree">
+    <RecoveryNode number_of_retries="6" name="NavigateRecovery">
+      <PipelineSequence name="NavigateWithReplanning">
+        <RateController hz="1.0">
+          <RecoveryNode number_of_retries="1" name="ComputePathToPose">
+            <ComputePathToPose goal="{goal}" path="{path}" planner_id="GridBased"/>
+            <ClearEntireCostmap name="ClearGlobalCostmap-Context" service_name="global_costmap/clear_entirely_global_costmap"/>
+          </RecoveryNode>
+        </RateController>
+        <RecoveryNode number_of_retries="1" name="FollowPath">
+          <FollowPath path="{path}" controller_id="FollowPathMPPI"/>
+          <ClearEntireCostmap name="ClearLocalCostmap-Context" service_name="local_costmap/clear_entirely_local_costmap"/>
+        </RecoveryNode>
+      </PipelineSequence>
+      <ReactiveFallback name="RecoveryFallback">
+        <GoalUpdated/>
+        <RoundRobin name="RecoveryActions">
+          <Sequence name="ClearingActions">
+            <ClearEntireCostmap name="ClearLocalCostmap-Subtree" service_name="local_costmap/clear_entirely_local_costmap"/>
+            <ClearEntireCostmap name="ClearGlobalCostmap-Subtree" service_name="global_costmap/clear_entirely_global_costmap"/>
+          </Sequence>
+          <BackUp backup_dist="0.15" backup_speed="0.05"/>
+          <Wait wait_duration="5"/>
+        </RoundRobin>
+      </ReactiveFallback>
+    </RecoveryNode>
+  </BehaviorTree>
+</root>
