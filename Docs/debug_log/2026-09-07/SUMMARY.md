@@ -339,3 +339,29 @@ B_actual = (v_r−v_l) / ω_gyro 로 환산하면:
 2. 측면 근접 안전: `inflation_radius` 상향 또는 D455f depth → costmap(N1.5) 로 라이다 사각 보완.
 3. MPPI 는 보류. 재시도 시 batch/time_steps 축소, 크리틱 가중치 튜닝, controller_frequency 실측부터.
 4. RPP 파라미터 미세조정: 목표 도달 후 자세오차 −11~−13° (54a/54d) — `GoalChecker` yaw 허용 0.25rad(14°) 안이지만 개선 여지.
+
+---
+# MPPI 원인 분석 (사용자 요청) — 근거·신뢰도 명시
+## 증거
+- 설정: `controller_frequency 20`, `time_steps 32 × model_dt 0.05 = 1.6s`, `vx_max 0.08 / vx_min −0.06 / wz_max 0.38`, `vx_std 0.05 / wz_std 0.3`, `temperature 0.3`, 크리틱 문턱 Goal 1.0 / GoalAngle 0.4 / PathAlign 0.40 / PathFollow 0.6 / PathAngle 0.4 / PreferForward 0.4, `ObstaclesCritic consider_footprint true, collision_cost 10000`, 풋프린트 0.5×0.33 + 패딩 0.05.
+- 궤적: 54c 정지 직전 20s 동안 x 1.25~1.38 진동 / **y 0.30~0.31 고정** / 반전 21회 / |v|max 0.052(상한 0.08 미달). 54e **0.37m 에서 v≈0.006 정지**, 최종 y −0.32.
+- 횡변위: MPPI 두 번 모두 |y| ≈ 0.31~0.32 (부호 반대). RPP 는 |y| ≤ 0.06.
+- Nav2 로그: "Control loop missed its desired rate of 20Hz" **3회** / 약 5,400 사이클(두 MPPI 런 합 ~270s). Optimizer 오류 없음.
+
+## 원인 (신뢰도 순)
+1. **[높음] 제자리 회전 부재 → U턴이 호(arc)가 됨.** DiffDrive 모델에 PreferForward(5)+PathAlign(14)이 전진을 선호해 회전 중에도 v>0. 최소 회전반경 = v_max/ω_max = 0.08/0.38 = **0.21m** → 180° 호의 횡변위 ≈ 2r = **0.42m**. 실측 ±0.31/0.32(속도 스케일링으로 다소 작음). 통로 폭 ~1.1m 에서 중앙 출발 시 여유 = 0.55 − 0.215(반폭) = **0.33m** → 초과 → 54e 벽 접촉. RPP 는 `use_rotate_to_heading` 으로 제자리 회전 후 직진(y ≤ 0.06).
+2. **[중상] 목표 0.4m 이내 크리틱 공백.** PathAlign/PathAngle/PreferForward 는 목표 0.40m 이내에서, PathFollow 는 0.6m 이내에서 꺼짐(threshold_to_consider 의미: 그 거리 안에서는 미적용). 남는 것은 Goal(5)+GoalAngle(3). 횡오차 0.3m 상태에서 목표 인력(5×거리)이 장애물 반발(풋프린트 벽 근접)과 평형 → 가중평균 제어가 0 근처. 54e 가 **정확히 0.37m** 에서 멈춘 것, 54c 가 **0.40 경계(0.38~0.46)** 를 넘나들며 진동한 것과 정합.
+3. **[중] 직사각 풋프린트 + consider_footprint 의 회전 봉쇄.** 패딩 포함 반대각 = √(0.30²+0.215²) = **0.37m**. 벽이 중심에서 0.26m(54c: 좌벽 0.57 − y 0.31)면 어떤 회전 샘플도 모서리가 치명 셀을 쓸어 collision_cost 10000 → 직진 미세이동 샘플만 생존 → **y 를 못 고치고 x 만 진동**(54c 관측 그대로).
+4. **[중] 예측 지평 불일치.** 1.6s × 0.08 = **12.8cm**. Nav2 기본(56×0.05=2.8s @0.5m/s ≈ 1.4m)의 1/10. 목표 0.37m 가 지평 밖 → GoalCritic 기울기 미약. 같은 지평을 얻으려면 350 스텝 필요 — MPPI 는 이 속도 영역을 상정하지 않음.
+5. **[중하, 기여] 노이즈 대 경계.** vx_std/vx_max = 62%, wz_std/wz_max = 79% (Nav2 기본 40%) → 다수 샘플이 경계에 클리핑 → 뱅뱅 성 지령. 지령 급변합 11.3 vs RPP 1.8.
+6. **[기각] CPU.** 20Hz 유지(미달 0.06%). 09-03 의 "CPU 무거움" 우려는 이 batch 에선 해당 없음.
+
+## RPP 가 되는 이유
+제자리 회전(횡변위 0) → 경로 추종은 결정론적 기하(lookahead 점 추적) → 근접 시 `min_approach_linear_velocity` 로 감속하며 **허용오차 경계(15cm)에 확정적으로 도달**. 샘플링·크리틱 균형 문제가 없음.
+
+## 구현 (1·2번)
+- **`stuck_monitor.py`** (rover_bringup): 지령 적산 vs **라이다 스캔 상관(회전)·섹터 range 변화(병진)·자이로** 로 실제 이동 관측. 휠과 무관 → 트랙 헛돎·벽 긁힘 감지 가능. 기본 shadow(로그·/rover/stuck level1), `stuck_shadow:=false` 시 목표 취소+정지. `navigation.launch.py` 에 포함. 합성 자체시험(15°→15.0, 5cm→5.0cm) 통과, 정적 12s 실행 무오류.
+  - 한계: 정면·후면 3m 내 반사 없으면 병진 판정 보류(오탐 방지). 실주행 오탐 검증 전엔 shadow 유지.
+- **측면 근접 안전**: local costmap `inflation_radius 0.25→0.35`, `cost_scaling_factor 3.0→2.5`. global 은 0.25 유지(09-03 0.35 에서 ABORT 이력). RPP 의 `use_cost_regulated_linear_velocity_scaling` 이 이미 켜져 있어 벽 근접 시 감속 강화됨.
+- **depth→costmap**: `depth_layer` 블록 준비(미활성). 활성 전제: realsense depth 스트림 ON + CPU 확인 + 바닥 반사 오탐 검증.
+- 배포·colcon 빌드 완료. **주행 검증은 다음 세션**(stuck_monitor shadow 로 RPP 주행 → 오탐 0 확인 → active 전환).
