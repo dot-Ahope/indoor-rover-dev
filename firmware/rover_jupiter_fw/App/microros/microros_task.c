@@ -65,7 +65,7 @@ extern bool   cubemx_transport_close(struct uxrCustomTransport *transport);
 extern size_t cubemx_transport_write(struct uxrCustomTransport *transport, const uint8_t *buf, size_t len, uint8_t *err);
 extern size_t cubemx_transport_read(struct uxrCustomTransport *transport, uint8_t *buf, size_t len, int timeout, uint8_t *err);
 
-#define HALF_WHEEL_BASE  (WHEEL_BASE_M * 0.5f)   /* = 0.2045 m (유효 게이지 0.409 — 스크럽 반영, 2026-09-07) */
+#define HALF_WHEEL_BASE  (WHEEL_BASE_M * 0.5f)   /* = 0.2215 m (유효 게이지 0.443 — 스크럽 반영, 2026-09-07) */
 #define V_MAX_MPS        MAX_LINEAR_SPEED_MPS    /* 0.100 (1:90 모터, duty 98%→115mm/s 실측) — 명령 saturation */
 
 /* F8.5 — 배터리 전압 변환. 실측 캘리브레이션 (2026-05-28):
