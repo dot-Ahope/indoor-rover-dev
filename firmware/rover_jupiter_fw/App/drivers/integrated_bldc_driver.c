@@ -3,7 +3,7 @@
  * @brief   통합 드라이버형 모터 드라이버 구현 (i_motor_driver.h).
  *
  * 제어 방식:
- *   - 속도: 청색선에 50Hz PWM duty 인가 (duty 크기 = 속도 크기)
+ *   - 속도: 청색선에 20kHz PWM duty 인가 (duty 크기 = 속도 크기) — 2026-09-07 50Hz→20kHz
  *   - 방향: 백색선(레벨 방식) GPIO 로 결정 (duty 부호 = 방향)
  *   - 피드백(FG/황색)은 본 파일에서 다루지 않음 (step 5)
  *
@@ -25,16 +25,23 @@
 #include "tim.h"
 #include <math.h>
 
-/* ── 속도지령(청색) PWM: 50Hz duty (사용자 확정 ①) ──────────
- * 1MHz tick 으로 prescaler 설정 → ARR=19999 → 정확히 50Hz, duty 분해능 20000 step.
+/* ── 속도지령(청색) PWM ──────────
+ * (구) 50Hz, 1MHz tick, ARR=19999 — 56:1 구모터 실측 확정값이었음.
  *   RIGHT(M1): TIM3 (APB1 timer 84MHz)  PSC=83  → 84M/84 =1MHz, CH1(PC6)
  *   LEFT (M3): TIM1 (APB2 timer 168MHz) PSC=167 → 168M/168=1MHz, CH4(PA11)
  */
-#define PWM_TICK_HZ    1000000u
-#define PWM_FREQ_HZ    50u
-#define PWM_ARR        ((PWM_TICK_HZ / PWM_FREQ_HZ) - 1u)  /* 19999 */
-#define TIM1_PSC_1MHZ  167u
-#define TIM3_PSC_1MHZ  83u
+/* 2026-09-07: 50Hz → 20kHz. 근거: MOTOR_1TO90_MIGRATION_PLAN.md §3.1 (신규 1:90 모터 권장 15~25kHz)
+ * 이 항목(T1)이 미적용 상태로 남아 구모터(56:1) 값 50Hz 로 구동되고 있었음 → 받침대 실험에서
+ * 50Hz 토크 맥동에 의한 회전자 떨림·FG 기저 펄스(50/100Hz 고정 주기)·진동 관측(09-07 SUMMARY).
+ * 롤백: PWM_FREQ_HZ 50u, PSC 167/83, ARR 19999 (1MHz tick). 20kHz 에서 1MHz tick 은 50 step 뿐이라 tick 상향:
+ *   RIGHT TIM3 84MHz  PSC=0 → 84MHz tick,  ARR=4199 → 20kHz, 4200 step
+ *   LEFT  TIM1 168MHz PSC=1 → 84MHz tick,  ARR=4199 → 20kHz, 4200 step
+ * ⚠ speed_controller 의 dz/KV/PID 는 50Hz 에서 튜닝된 값 — 20kHz 전환 후 재실측 필요. */
+#define PWM_TICK_HZ    84000000u
+#define PWM_FREQ_HZ    20000u
+#define PWM_ARR        ((PWM_TICK_HZ / PWM_FREQ_HZ) - 1u)  /* 4199 */
+#define TIM1_PSC_1MHZ  1u    /* (이름은 레거시) 168MHz/2 = 84MHz tick */
+#define TIM3_PSC_1MHZ  0u    /* 84MHz tick */
 
 /* 속도 PWM 채널 (실배선 기준) */
 #define PWM_RIGHT_CH   TIM_CHANNEL_1   /* PC6 */

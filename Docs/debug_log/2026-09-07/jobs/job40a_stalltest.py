@@ -11,6 +11,7 @@ from diagnostic_msgs.msg import DiagnosticArray
 from nav_msgs.msg import Odometry
 
 dur = float(sys.argv[1]); vx = float(sys.argv[2]); wz = float(sys.argv[3]) if len(sys.argv) > 3 else 0.0
+log_dt = float(sys.argv[4]) if len(sys.argv) > 4 else 0.5   # 기록 간격 (status 5Hz → 최소 0.2)
 rclpy.init(); n = Node('stalltest')
 pub = n.create_publisher(Twist, '/cmd_vel', 10)
 t0 = time.time(); last = None; odo = [None, None]; events = []; kv = {}
@@ -39,7 +40,7 @@ while time.time() - t0 < dur:
         else:
             B = 0.245  # 펌웨어 WHEEL_BASE — v_l/v_r 역산 (raw, 스케일 미보정)
             print(f"[{now-t0:6.2f}s] L={odo[0]-odo[1]*B/2:.4f} R={odo[0]+odo[1]*B/2:.4f} | L[{kv.get('L','-')}] R[{kv.get('R','-')}]", flush=True)
-        next_log += 0.5
+        next_log += log_dt
 for _ in range(10): pub.publish(Twist()); rclpy.spin_once(n, timeout_sec=0.05)
 print("=== 정지. 이벤트 요약 ==="); [print("  " + e) for e in events]
 print(f"최종 status: {last}")
