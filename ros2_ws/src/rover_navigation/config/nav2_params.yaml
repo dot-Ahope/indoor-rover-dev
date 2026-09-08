@@ -135,26 +135,23 @@ local_costmap:
       #   근접 후 회전 중 벽 접촉·트랙 헛돎 실발생 → 패딩을 키워 계획 단계에서 벽과 거리 유지.
       footprint_padding: 0.05
       plugins: ["obstacle_layer", "inflation_layer"]
-      # ── N1.5 예비: D455f depth → costmap (라이다 0.2m 사각·낮은 장애물 보완). 2026-09-07 준비만, 미활성.
-      #   활성 절차: ① sensors.launch 의 realsense 에 depth+pointcloud 스트림 켜기(현재 IMU 만) → CPU 여유 확인
-      #   ② plugins 에 "depth_layer" 추가 ③ 아래 블록 주석 해제 ④ 바닥 실주행으로 오탐(바닥 반사) 검증
-      # depth_layer:
-      #   plugin: "nav2_costmap_2d::ObstacleLayer"
-      #   enabled: true
-      #   observation_sources: depth
-      #   depth:
-      #     topic: /camera/camera/depth/color/points
-      #     data_type: "PointCloud2"
-      #     min_obstacle_height: 0.05      # 바닥 반사 제외
-      #     max_obstacle_height: 0.60
-      #     obstacle_max_range: 2.0
-      #     raytrace_max_range: 2.5
-      #     clearing: true
-      #     marking: true
       obstacle_layer:
         plugin: "nav2_costmap_2d::ObstacleLayer"
         enabled: true
-        observation_sources: scan
+        # 2026-09-08 N1.5: depth 가상 스캔 추가 (depthimage_to_laserscan, /camera/scan, 카메라 z 0.143m 띠).
+        #   S2L 평면 아래 낮은 장애물·사각 보완. range 1.5m 제한(바닥 오탐 방지 — camera.launch 주석의 기하).
+        #   clearing 도 켜서 카메라 FOV 안의 잘못된 마킹은 지워지게 함.
+        observation_sources: scan depth_scan
+        depth_scan:
+          topic: /camera/scan
+          data_type: "LaserScan"
+          marking: true
+          clearing: true
+          obstacle_max_range: 1.5
+          obstacle_min_range: 0.3
+          raytrace_max_range: 2.0
+          raytrace_min_range: 0.3
+          inf_is_valid: false
         scan:
           topic: /scan
           data_type: "LaserScan"
@@ -200,7 +197,20 @@ global_costmap:
       obstacle_layer:
         plugin: "nav2_costmap_2d::ObstacleLayer"
         enabled: true
-        observation_sources: scan
+        # 2026-09-08 N1.5: depth 가상 스캔 추가 (depthimage_to_laserscan, /camera/scan, 카메라 z 0.143m 띠).
+        #   S2L 평면 아래 낮은 장애물·사각 보완. range 1.5m 제한(바닥 오탐 방지 — camera.launch 주석의 기하).
+        #   clearing 도 켜서 카메라 FOV 안의 잘못된 마킹은 지워지게 함.
+        observation_sources: scan depth_scan
+        depth_scan:
+          topic: /camera/scan
+          data_type: "LaserScan"
+          marking: true
+          clearing: true
+          obstacle_max_range: 1.5
+          obstacle_min_range: 0.3
+          raytrace_max_range: 2.0
+          raytrace_min_range: 0.3
+          inf_is_valid: false
         scan:
           topic: /scan
           data_type: "LaserScan"
