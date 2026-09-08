@@ -180,17 +180,20 @@ local_costmap:
         #   로버 내접반경 0.165 보다는 크게 두되 통로를 남기는 값으로 축소.
         # 0.25 (2026-09-03): footprint_padding 0.05 로 내접반경이 0.215 가 되어 0.20 은 Nav2 오류
         #   ("inflation radius smaller than inscribed radius" → 충돌 위험). 내접반경 이상으로 재설정.
-        # 2026-09-08 저녁: 0.35 → 0.22 (사용자 요청: 좁은 길 통과 우선).
-        #   0.22 는 **가능한 최소** — inflation_radius < 내접반경(0.215 = 반폭 0.165 + 패딩 0.05) 이면
-        #   Nav2 가 거부(09-03 실패 이력). 사용자가 말한 0.20 은 이 하한 미만이라 불가.
-        #   근거: job61 회피 실패 분석 정정 — 상자 우측에 기하 슬롯 0.24m 가 실재했고(내접반경 기준),
-        #   막힌 게 아니라 슬롯 전체가 inflation 0.35 고비용 영역이라 RPP 의 cost-regulated 감속이 걸리고
-        #   좌/우 경로 비용이 비슷해 전역경로가 번갈아 뒤집힌 것. 0.22 면 슬롯 중앙(상자에서 0.34m) 비용 0.
-        #   ⚠ 트레이드오프: 경사 구간이 0.005m 로 사실상 사라져 '통로 중앙 선호'가 없어짐. 벽 근접 안전은
-        #   footprint_padding 0.05 + RPP use_collision_detection + stuck_monitor(활성) 로 대체.
-        #   0.35 의 동기였던 MPPI 벽 접촉은 MPPI 자체를 기각(09-07)했으므로 해당 없음.
-        inflation_radius: 0.22
-        cost_scaling_factor: 3.0   # 2026-09-08: 반경 축소로 경사 구간이 짧아져 완만화 의미 없음 → 기본값
+        # inflation_radius 는 '통과 가능/불가' 를 정하지 않는다 (2026-09-08 확인).
+        #   Nav2 인플레이션 레이어의 비용 구조:
+        #     - 장애물 셀            = LETHAL(254)
+        #     - **내접반경 이내**     = INSCRIBED_INFLATED(253) → 플래너·컨트롤러가 '충돌'로 취급 = 경성 차단
+        #     - 내접반경 ~ inflation_radius = 252→0 으로 감쇠하는 **소프트 비용**(통과 가능, 비용만 큼)
+        #   내접반경 = 반폭 0.165 + footprint_padding 0.05 = 0.215 (즉 차체 크기에서 나온다).
+        #   → 좁은 길 통과를 좌우하는 것은 **패딩(=내접반경)** 이지 inflation_radius 가 아니다.
+        #   09-08 저녁에 좁은 길 목적으로 0.22 까지 낮췄으나 통과 여부가 바뀌지 않아(막은 것은 상자 폭
+        #   0.30m + 통로 1.37m 의 기하) **0.35 로 원복**. 좁은 길에서는 RPP 의 cost-regulated 감속으로
+        #   느려질 뿐 통과는 가능하며, 그 대가로 통로 중앙 선호(벽 접촉 예방)를 얻는다.
+        #   0.25→0.35 상향의 원래 근거(09-07 MPPI 벽 접촉)는 MPPI 기각으로 무효지만, 중앙 선호 자체가
+        #   RPP 에도 유익하므로 유지한다. 좁은 길 통과가 정말 필요하면 padding 을 낮출 것(안전 트레이드오프).
+        inflation_radius: 0.35
+        cost_scaling_factor: 2.5   # 완만한 감쇠 — 통로 중앙 선호 강화 (local)
       always_send_full_costmap: true
 
 global_costmap:
@@ -252,7 +255,7 @@ global_costmap:
         plugin: "nav2_costmap_2d::InflationLayer"
         # 0.25 (2026-09-03): footprint_padding 0.05 로 내접반경이 0.215 가 되어 0.20 은 Nav2 오류
         #   ("inflation radius smaller than inscribed radius" → 충돌 위험). 내접반경 이상으로 재설정.
-        inflation_radius: 0.22   # 2026-09-08: local 과 동일 (좁은 길 통과). 하한 = 내접반경 0.215
+        inflation_radius: 0.25   # global 은 0.25 유지 (09-03: 0.35 에서 통로 폐색 ABORT 이력)
         cost_scaling_factor: 3.0
       always_send_full_costmap: true
 
