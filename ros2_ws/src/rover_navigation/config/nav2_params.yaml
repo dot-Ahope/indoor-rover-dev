@@ -64,7 +64,11 @@ controller_server:
       min_approach_linear_velocity: 0.02
       approach_velocity_scaling_dist: 0.30
       use_collision_detection: true
-      max_allowed_time_to_collision_up_to_carrot: 1.5
+      # 2026-09-08 야간: 1.5 → 5.0. 이 값 × 현재속도 = 충돌검사 거리이므로 0.08m/s 에서는 1.5s 가
+      #   **0.12m** 밖에 안 봤다. 그래서 상자를 코스트맵이 알고 있어도 컨트롤러가 그냥 밟고 지나감(job66/70).
+      #   5.0s → 0.40m 앞까지 검사 → job76 에서 실제로 abort + BackUp 복구가 걸려 **밀고 가는 일이 사라졌다.**
+      #   대가: 좁은 통로에서 경로가 내접영역을 스치면 자주 abort → 복구 루프. 통로 여유가 근본 해법.
+      max_allowed_time_to_collision_up_to_carrot: 5.0
       # 곡률·장애물 근접 시 감속
       use_regulated_linear_velocity_scaling: true
       use_cost_regulated_linear_velocity_scaling: true
