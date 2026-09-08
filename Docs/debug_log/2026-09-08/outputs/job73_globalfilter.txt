@@ -1,0 +1,24 @@
+=== 현재 상태 ===
+TF 실패
+
+=== 전역 depth min_obstacle_height 를 -1.0 으로 낮추고 재확인 ===
+상자 후보 부족 13
+
+=== 전역 depth obstacle_max_range 를 3.0 으로 올리고 재확인 ===
+상자 후보 부족 11
+=== 현재 상태 ===
+상자 후보 부족 12
+
+=== 전역 depth min_obstacle_height 를 -1.0 으로 낮추고 재확인 ===
+상자 후보 부족 9
+
+=== 전역 depth obstacle_max_range 를 3.0 으로 올리고 재확인 ===
+상자 후보 부족 15
+=== 현재 상태 ===
+상자 후보 부족 14
+
+=== 전역 depth min_obstacle_height 를 -1.0 으로 낮추고 재확인 ===
+상자 후보 부족 16
+
+=== 전역 depth obstacle_max_range 를 3.0 으로 올리고 재확인 ===
+상자 후보 부족 17
