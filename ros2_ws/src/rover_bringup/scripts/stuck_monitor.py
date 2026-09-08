@@ -45,22 +45,25 @@ def profile(msg):
 
 
 def rot_shift_deg(A, B):
-    """B 를 얼마나 돌리면 A 와 맞는가 (deg, 포물선 세밀화). 유효 겹침 부족 시 None."""
-    best = None
-    for d in range(-179, 180):
-        Br = np.roll(B, d); m = np.isfinite(A) & np.isfinite(Br)
-        if m.sum() < BINS * 0.3: continue
-        c = float(np.median(np.abs(A[m] - Br[m])))
-        if best is None or c < best[1]: best = (d, c)
-    if best is None: return None
-    d0 = best[0]
+    """B 를 얼마나 돌리면 A 와 맞는가 (deg). 유효 겹침 부족 시 None.
+    2026-09-08 최적화: 359회 np.roll 전수탐색(5Hz 에서 CPU 35%)을 FFT 순환 상관으로 대체(≈50배 절감).
+      c[d] = Σ_k A[k]·B[k−d] = irfft(rfft(a)·conj(rfft(b)))[d]  (nan 은 0, 평균 제거)
+    → argmax 로 후보 d0 를 얻고, 원래 비용(|A−roll(B,d)| 중앙값)으로 d0±2 만 세밀 탐색 + 포물선 보간."""
+    ma, mb = np.isfinite(A), np.isfinite(B)
+    if ma.sum() < BINS * 0.3 or mb.sum() < BINS * 0.3: return None
+    a = np.where(ma, A - np.nanmean(A), 0.0); b = np.where(mb, B - np.nanmean(B), 0.0)
+    c = np.fft.irfft(np.fft.rfft(a) * np.conj(np.fft.rfft(b)), n=BINS)
+    d0 = int(np.argmax(c)); d0 = d0 - BINS if d0 > BINS // 2 else d0
     def cost(dd):
-        Br = np.roll(B, dd); m = np.isfinite(A) & np.isfinite(Br)
+        Br = np.roll(B, dd); m = ma & np.isfinite(Br)
         return float(np.median(np.abs(A[m] - Br[m]))) if m.sum() > BINS * 0.3 else 1e9
-    cm, c0, cp = cost(d0 - 1), best[1], cost(d0 + 1)
+    cand = [(dd, cost(dd)) for dd in range(d0 - 2, d0 + 3)]
+    d1, c0 = min(cand, key=lambda x: x[1])
+    if c0 >= 1e9: return None
+    cm, cp = cost(d1 - 1), cost(d1 + 1)
     den = cm - 2 * c0 + cp
     sub = 0.5 * (cm - cp) / den if abs(den) > 1e-9 else 0.0
-    return d0 + max(-1.0, min(1.0, sub))
+    return d1 + max(-1.0, min(1.0, sub))
 
 
 def sector_delta(A, B, center_deg, half=20, max_r=3.0):
@@ -77,7 +80,8 @@ class StuckMonitor(Node):
         super().__init__('stuck_monitor')
         p = self.declare_parameters('', [
             ('window', 2.0), ('v_thr', 0.015), ('w_thr', 0.10), ('ratio', 0.25),
-            ('confirm', 2), ('cooldown', 5.0), ('shadow_mode', True), ('rate', 5.0)])
+            ('confirm', 2), ('cooldown', 5.0), ('shadow_mode', True), ('rate', 5.0),
+            ('use_gyro', False)])   # 2026-09-08: 200Hz IMU 구독이 rclpy 역직렬화만으로 CPU ~25% → 기본 off. 회전은 스캔 상관으로 충분(1° 분해능, 창 2s·0.1rad/s = 11°)
         g = lambda k: self.get_parameter(k).value
         self.W, self.v_thr, self.w_thr = g('window'), g('v_thr'), g('w_thr')
         self.ratio, self.confirm, self.cooldown = g('ratio'), int(g('confirm')), g('cooldown')
@@ -87,7 +91,8 @@ class StuckMonitor(Node):
         self.hits, self.last_action = 0, 0.0
         self.create_subscription(Twist, '/cmd_vel', self.cb_cmd, 10)
         self.create_subscription(LaserScan, '/scan', self.cb_scan, qos_profile_sensor_data)
-        self.create_subscription(Imu, '/imu/data', self.cb_imu, qos_profile_sensor_data)
+        if bool(g('use_gyro')):
+            self.create_subscription(Imu, '/imu/data', self.cb_imu, qos_profile_sensor_data)
         self.diag_pub = self.create_publisher(DiagnosticArray, '/rover/stuck', 5)
         self.cmd_pub = self.create_publisher(Twist, '/cmd_vel', 10)
         self.cancel = self.create_client(CancelGoal, '/navigate_to_pose/_action/cancel_goal')
