@@ -165,7 +165,16 @@ local_costmap:
           obstacle_max_range: 1.2
           obstacle_min_range: 0.30
           raytrace_max_range: 2.0
-          raytrace_min_range: 0.30
+          # 2026-09-08 야간 ★ 소프트웨어 기억: 0.30 → 0.90.
+          #   문제: 로버가 다가가면 상자가 카메라 최소측정거리(≈0.3m) 아래로 들어가 점이 사라지고,
+          #   그 순간 상자 '너머' 바닥·벽을 맞힌 광선이 상자 칸을 자유로 되돌려 지워 버린다.
+          #   (카메라 x+0.232 이므로 로버중심 0.52m = 앞범퍼 0.27m 부터 실명 — 회피 마지막 구간)
+          #   Nav2 의 raytraceLine 은 min_length 만큼 원점 쪽 셀을 건너뛰므로, 0.90 으로 두면
+          #   **카메라 0.9m 이내 셀은 깊이 광선이 절대 지우지 않는다** = 접근 중 마킹 유지.
+          #   0.9~1.2m 구간에서는 여전히 정상 관측·소거되므로 실제로 치운 물체는 그때 지워진다.
+          #   ⚠ 대가: 0.9m 이내에서 치운 물체는 깊이로는 안 지워짐. 로컬은 3×3m 롤링이라 지나가면
+          #     자동 소멸하지만 전역은 누적 → 필요시 clear_entirely_global_costmap 로 수동 초기화.
+          raytrace_min_range: 0.90
         scan:
           topic: /scan
           data_type: "LaserScan"
@@ -249,7 +258,16 @@ global_costmap:
           obstacle_max_range: 1.2
           obstacle_min_range: 0.30
           raytrace_max_range: 2.0
-          raytrace_min_range: 0.30
+          # 2026-09-08 야간 ★ 소프트웨어 기억: 0.30 → 0.90.
+          #   문제: 로버가 다가가면 상자가 카메라 최소측정거리(≈0.3m) 아래로 들어가 점이 사라지고,
+          #   그 순간 상자 '너머' 바닥·벽을 맞힌 광선이 상자 칸을 자유로 되돌려 지워 버린다.
+          #   (카메라 x+0.232 이므로 로버중심 0.52m = 앞범퍼 0.27m 부터 실명 — 회피 마지막 구간)
+          #   Nav2 의 raytraceLine 은 min_length 만큼 원점 쪽 셀을 건너뛰므로, 0.90 으로 두면
+          #   **카메라 0.9m 이내 셀은 깊이 광선이 절대 지우지 않는다** = 접근 중 마킹 유지.
+          #   0.9~1.2m 구간에서는 여전히 정상 관측·소거되므로 실제로 치운 물체는 그때 지워진다.
+          #   ⚠ 대가: 0.9m 이내에서 치운 물체는 깊이로는 안 지워짐. 로컬은 3×3m 롤링이라 지나가면
+          #     자동 소멸하지만 전역은 누적 → 필요시 clear_entirely_global_costmap 로 수동 초기화.
+          raytrace_min_range: 0.90
         scan:
           topic: /scan
           data_type: "LaserScan"
