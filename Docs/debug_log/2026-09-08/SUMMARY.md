@@ -63,3 +63,18 @@
 - **Nav2 재시작 시 stuck_monitor 잔존**: `job25e_nav2start.sh` 의 pkill 패턴에 stuck_monitor 추가(인스턴스 3개까지 누적됐었음).
 - **pkill 자기매칭**: ssh 인라인 명령에 프로세스 이름이 들어가면 `pkill -f` 가 그 셸을 죽임(09-08 `run_sensors_restart` 무출력 원인). 종료 로직은 반드시 Jetson 측 파일(`/tmp/job*.sh`)로 실행 — `jetson-access` 메모리에 추가.
 - `job59_sensors_restart.sh`: agent 유지한 채 센서+slam 재시작(보드 세션 보존) — 이후 카메라/런치 변경 시 표준 절차.
+
+## N1.5 재설계: 수평 띠(depthimage_to_laserscan) 철회 → 포인트클라우드 + VoxelLayer (`job60`)
+### 왜 철회했나 (상자 배치 후 실측 `job60a/b`)
+- 사용자가 상자를 놓았는데 `/camera/scan` 정면값이 배치 전과 동일(1.40m) → 상자가 띠에 안 잡힘.
+- 깊이 이미지 행별 최소거리(`job60b`): 상자 표면은 **행 277~316(피치 +7~+10°), 거리 0.30~0.38m, 높이 ≈0.09m** — 즉 카메라에서 0.3m(범퍼 앞 7cm)의 약 9cm 상자. 띠(행 212~262, 피치 ±3.7°)는 그 거리에서 높이 0.12~0.16m 만 보므로 **상자 위를 지나감**.
+- 구조적 한계: 10cm 물체는 0.66m 이상에서만 띠에 들어오고, 접근하면 띠 아래로 내려가 마킹이 끊김. 게다가 2D ObstacleLayer 는 라이다(z 0.185) 소거 광선이 상자 셀을 지움. 오전에 depth 를 라이다와 같은 레이어에 넣은 것도 이 점에서 오류.
+### 새 구성
+- realsense: `pointcloud` ON + `decimation_filter ×4`, depth 640×480×**15fps** → 13.1k pt/frame @15Hz (frame `camera_depth_optical_frame`).
+  - ⚠ 파라미터 이름: Jetson ARM 빌드(realsense-ros **4.58.3**)는 처리블록 이름이 "pointcloud (neon)" → **`pointcloud__neon_.enable`**. `pointcloud.enable` 은 "Parameter not set". 런치에 둘 다 기재(모르는 이름은 무시됨). `ros2 param list` 로 확인.
+- Nav2 local/global: `obstacle_layer` → **`voxel_layer`** (z 0~0.40m, 5cm×8층, 3D 광선 소거). 소스 `scan`(LaserScan) + `depth`(PointCloud2, min_obstacle_height 0.06 바닥 배제, max 0.40, range 0.3~1.8).
+- CPU: realsense 14.7→15.6%, planner 8→11%, load 2.6→4.9(과도기) — 허용.
+### 결과 (정적)
+- base_link 기준 포인트 집계(`job60f`): **x 0.5~0.7m 에 z 0.06~0.40 점 450개(중앙값 z 0.08, y 0.00)** = 상자. 0.7~1.5m 는 바닥점만(z<0.06). 1.5~1.8m 벽.
+- 로컬 코스트맵 광선(0°/−12°/+8°/−20°): **0.6m 부터 점유(#)** — 라이다(정면 1.51m)가 못 보는 9cm 상자가 마킹됨. ✅ 라이다 사각 보완 동작 확인.
+- 회피 주행은 상자 위치 조정 후(현재 범퍼 앞 7cm, 통로 중앙이라 우회 불가).

@@ -25,10 +25,19 @@ def generate_launch_description():
                 'enable_color': enable_color,
                 'enable_infra1': False,
                 'enable_infra2': False,
-                'depth_module.depth_profile': '640x480x30',
+                'depth_module.depth_profile': '640x480x15',   # 2026-09-08 30→15fps (포인트클라우드 CPU)
                 'rgb_camera.color_profile': '640x480x15',
                 'align_depth.enable': False,
-                'pointcloud.enable': False,
+                # 2026-09-08 N1.5: 포인트클라우드 ON + 데시메이션 ×4 (640×480 → 160×120 = 19.2k pt/frame @15fps)
+                #   → Nav2 VoxelLayer 가 실제 높이로 마킹/3D 소거. 바닥은 min_obstacle_height 로 배제.
+                # ⚠ 파라미터 이름이 빌드마다 다름: Jetson(ARM/NEON) 의 realsense-ros 4.58.3 은 처리블록 이름이
+                #   "pointcloud (neon)" 이라 'pointcloud__neon_.*' 로 노출됨(09-08 ros2 param list 로 확인). x86 은 'pointcloud.*'.
+                #   모르는 이름은 조용히 무시되므로 둘 다 적는다.
+                'pointcloud.enable': True,
+                'pointcloud__neon_.enable': True,
+                'pointcloud__neon_.allow_no_texture_points': True,
+                'decimation_filter.enable': True,
+                'decimation_filter.filter_magnitude': 4,
                 'enable_gyro': enable_imu,
                 'enable_accel': enable_imu,
                 'gyro_fps': 200,
@@ -38,21 +47,6 @@ def generate_launch_description():
                 'publish_tf': True,
             }],
         ),
-        # ── depth → 가상 LaserScan (N1.5, 2026-09-08) ──
-        # 목적: S2L 평면 아래의 낮은 장애물·라이다 사각 보완을 코스트맵에 공급.
-        # 포인트클라우드(640×480×18Hz ≈ 5.5M pt/s) 대신 깊이 이미지 수평 띠만 쓰는 이유: CPU.
-        # 기하(카메라 z=0.143m, 수평 장착, D455 fy≈385px @640×480):
-        #   scan_height 50 → 중심행 ±25px → 광선 피치 ±3.7° → 거리 d 에서 높이 0.143 ± d·tan3.7°
-        #   = 1.0m 에서 0.08~0.21m, 1.5m 에서 0.05~0.24m. 바닥은 최하 광선이 0.143/tan3.7° = 2.2m 밖에서만
-        #   맞으므로 range_max 1.5m 이면 바닥 오탐 없음(피치 오차 1°당 바닥 접점 ±0.5m 여유).
-        # 출력 프레임: camera_depth_frame (x 전방, realsense 가 TF 발행). 코스트맵은 TF 로 base_link 변환.
-        Node(
-            package='depthimage_to_laserscan', executable='depthimage_to_laserscan_node',
-            name='depth_scan', output='screen',
-            remappings=[('depth', '/camera/camera/depth/image_rect_raw'),
-                        ('depth_camera_info', '/camera/camera/depth/camera_info'),
-                        ('scan', '/camera/scan')],
-            parameters=[{'scan_height': 50, 'range_min': 0.30, 'range_max': 1.50,
-                         'scan_time': 0.054, 'output_frame': 'camera_depth_frame'}],
-        ),
+        # (2026-09-08 오전) depthimage_to_laserscan 수평 띠 방식은 철회: 10cm 상자가 0.66m 이내로 오면 띠(높이 0.12~0.16m@0.3m)
+        #   아래로 내려가 마킹이 끊기고, 2D 소거 광선이 상자 셀을 지움. → 포인트클라우드 + VoxelLayer(3D 소거)로 대체.
     ])
