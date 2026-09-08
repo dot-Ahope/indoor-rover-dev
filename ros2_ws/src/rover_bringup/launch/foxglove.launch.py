@@ -13,8 +13,14 @@ WHITELIST = [
     '/robot_description',
     '/odometry/filtered', '/wheel_odom',
     '/imu/data', '/imu/data_raw',
-    '/rover/status', '/battery',
+    '/rover/status', '/battery', '/rover/stuck',
     '/cmd_vel', '/joy',
+    # 2026-09-08 추가: 코스트맵·경로 시각화 (사용자가 회피 실패 원인을 직접 보기 위함).
+    #   OccupancyGrid 는 로컬 60×60=3.6k셀 @2Hz, 전역 167×98=16k셀 @1Hz 로 가볍다.
+    #   Foxglove 3D 패널에서 Map 으로 추가하면 색으로 비용이 보인다(치명/내접/경사/자유).
+    '/local_costmap/costmap', '/local_costmap/costmap_updates',
+    '/global_costmap/costmap', '/global_costmap/costmap_updates',
+    '/plan', '/local_plan',
 ]
 
 
