@@ -1,0 +1,30 @@
+allow_unknown: Boolean value is: True
+local inflation: Double value is: 0.25
+global inflation: Double value is: 0.25
+global costmap 167x98 @0.05 origin=(-1.54,-3.03) frame=map
+slam /map      167x98 @0.05 origin=(-1.54,-3.03)
+전역 셀 분포: 미지(-1) 9858  자유(0) 2434  치명(≥99) 3781  기타 293
+
+로버(0.00,0.00) → 목표(1.60,0.00) 직선상 전역 비용 (로버 헤딩 기준 전방):
+  전방 0.0m (+0.00,+0.00) 전역=0  map=0
+  전방 0.2m (+0.20,-0.01) 전역=0  map=0
+  전방 0.4m (+0.40,-0.01) 전역=0  map=0
+  전방 0.6m (+0.60,-0.02) 전역=0  map=0
+  전방 0.8m (+0.80,-0.03) 전역=99  map=0
+  전방 1.0m (+1.00,-0.04) 전역=99  map=0
+  전방 1.2m (+1.20,-0.04) 전역=100  map=0
+  전방 1.4m (+1.40,-0.05) 전역=100  map=0
+  전방 1.6m (+1.60,-0.06) 전역=99  map=0
+  전방 1.8m (+1.80,-0.06) 전역=99  map=0
+
+목표(1.60,0) 주변 ±0.3m 전역 비용:
+  y=+0.30: x=1.4→99  1.6→99  1.8→99
+  y=+0.15: x=1.4→99  1.6→99  1.8→99
+  y=+0.00: x=1.4→100  1.6→99  1.8→99
+  y=-0.15: x=1.4→100  1.6→99  1.8→0
+  y=-0.30: x=1.4→99  1.6→99  1.8→0
+== planner 로그 ==
+[planner_server-4] [WARN] [1788844552.845863049] [planner_server]: No planners specified in action call. Server will use only plugin GridBased  in server. This warning will appear once.
+[planner_server-4] [WARN] [1788844552.846420027] [planner_server]: GridBased: failed to create plan with tolerance 0.25.
+[planner_server-4] [WARN] [1788844552.846482781] [planner_server]: Planning algorithm  failed to generate a valid path to (1.60, 0.00)
+[planner_server-4] [WARN] [1788844552.846509406] [planner_server]: [compute_path_to_pose] [ActionServer] Aborting handle.

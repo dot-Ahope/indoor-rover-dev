@@ -1,0 +1,27 @@
+depth min_h: Double value is: 0.08
+depth max_range: Double value is: 1.2
+mark_threshold: Integer value is: 1
+로버 map=(0.00,0.00) hd=0°   (.=자유 +=비용 X=내접 #=치명 ?=미지 R=로버)
+
+--- global_costmap --- (위=전방 2.4m, 아래=후방 0.6m, 좌우 ±1.2m, 0.1m 격자)
+ +2.4 XXXXXXXXXXXXXXXXXXXX?....
+ +2.3 ?XXXXXXXXXXX++..+XX+?....
+ +2.2 ??+......................
+ +2.1 ???................?.....
+ +2.0 ???......................
+ +1.9 ????..............?......
+ +1.8 ????.............+?......
+ +1.7 ?????.+........+XXXX+...?
+ +1.6 ????XXXX+......XXXXXX..??
+ +1.5 X???XXXXX......XXXXXX..??
+ +1.4 XXXXXX#XX......+XXXX+.???
+ +1.3 XXXXXX#XX.......XXXXX????
+ +1.2 XX#X###XX.......XXXXXX???
+ +1.1 XXXXXXXXX.+XXX+.XXX#XX???
+ +1.0 X#XX#XXX+.XXXXX..XX#XX???
+ +0.9 XXXXXXX..+XX#XX+.XX#XX???
+ +0.8 XXX+XX+...XXXXX.+XX#XX???
+현재 (0.00,0.00) hd=0° → 목표 (1.60,0.00)
+✅ 경로 있음: 84점, 길이 2.19m (직선 1.60m, 비 1.37)
+   우회 방향: 최대 좌 +0.36m / 최대 우 -0.00m
+   경로점 최대 비용: 99  (고비용 구간 통과)
