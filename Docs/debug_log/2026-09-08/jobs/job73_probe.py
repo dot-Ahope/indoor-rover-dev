@@ -28,9 +28,18 @@ def cost(k,x,y):
     g=S[k]; i=g.info
     cx=int((x-i.origin.position.x)/i.resolution); cy=int((y-i.origin.position.y)/i.resolution)
     return g.data[cy*i.width+cx] if 0<=cx<i.width and 0<=cy<i.height else 'OOB'
+def tf_ready():
+    if 'pc' not in S: return False
+    try:
+        buf.lookup_transform('base_link', S['pc'].header.frame_id, rclpy.time.Time())
+        buf.lookup_transform('map', S['pc'].header.frame_id, rclpy.time.Time())
+        return True
+    except Exception: return False
+# ⚠ 메시지 수신만 기다리면 TF 버퍼가 비어 lookup 이 실패한다(09-08 실수) → TF 준비까지 대기
 t=time.time()
-while time.time()-t<12 and len(S)<3: rclpy.spin_once(n,timeout_sec=0.1)
+while time.time()-t<15 and not (len(S)>=3 and tf_ready()): rclpy.spin_once(n,timeout_sec=0.1)
 if 'pc' not in S: print("포인트클라우드 없음"); raise SystemExit(1)
+if not tf_ready(): print("TF 준비 실패(15s)"); raise SystemExit(1)
 B=cloud('base_link'); M=cloud('map')
 if B is None or M is None: print("TF 실패"); raise SystemExit(1)
 sel=(B[:,2]>=0.04)&(B[:,2]<0.35)&(B[:,0]>0.4)&(B[:,0]<1.3)&(np.abs(B[:,1])<0.4)
