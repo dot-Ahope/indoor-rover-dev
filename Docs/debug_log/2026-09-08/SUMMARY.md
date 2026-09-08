@@ -45,3 +45,21 @@
 
 ## stuck_monitor 활성 전환
 - 오늘 6회 주행(회전·근접 포함 ≈2분) shadow 오탐 0 + 정탐 3/3 → `navigation.launch.py` 기본 `stuck_shadow:=false`. 재기동 후 58g 에서 활성 상태 확인, 오판 취소 0.
+
+## N1.5 — D455f depth → 코스트맵 (`job59`)
+### 설계 선택
+- 포인트클라우드(640×480×18Hz ≈ 5.5M pt/s) 대신 **`depthimage_to_laserscan`**(설치 확인)으로 깊이 이미지 수평 띠 → 가상 `LaserScan` `/camera/scan`. CPU 절감이 이유.
+- 띠 기하(카메라 z 0.143m, 수평, fy≈385px): `scan_height 50` → 광선 피치 ±3.7° → 1.0m 에서 높이 0.08~0.21m, 1.5m 에서 0.05~0.24m. 최하 광선의 바닥 접점 2.2m → `range_max 1.5` 로 바닥 오탐 배제(피치 오차 1° 당 여유 0.5m).
+- 코스트맵: local·global `obstacle_layer.observation_sources: scan depth_scan`, depth 는 marking+clearing, max 1.5m.
+- 09-07 준비했던 pointcloud `depth_layer` 예비 블록은 제거(대체).
+
+### 결과 (정적, 주행 없음)
+- `/camera/scan` 31 Hz, frame `camera_depth_frame`, 640빔 ±39°, 유효 36%(1.5m 밖은 무효). depth_scan 노드 CPU 측정 한계 미만(top 미표시), 전체 load 감소(4.5→2.7, 다른 정리 포함).
+- 라이다 대비: 정면 ±16° 에서 깊이 range 가 (라이다 −0.08m) 보다 **5~10cm 짧음**(일관된 −8cm 편향). 원인 미확정 — 후보: 띠 최소값이 걸레받이/바닥 근처 돌출을 잡음, 카메라 깊이 편향. 보수적(가깝게) 쪽이라 안전상 문제 없음. 평평한 벽으로 재확인 예정.
+- **깊이 전용 감지 확인**: −20° 방위에서 깊이 1.46m vs 라이다 5.79m. 로컬 코스트맵 −20° 광선 0.75~1.05m 에 점유 셀(#) + 인플레이션 — 라이다 평면이 못 보는 낮은 물체가 마킹됨(정면 0°·+8° 광선은 자유). 실물 확인·회피 주행은 사용자 배치 후.
+
+### 부수 수정
+- **stuck_monitor CPU 35~38% → 4%**: ① 359회 roll 전수 상관 → FFT 순환 상관 + ±2 세밀 탐색(정확도 동일, 0.5ms) ② 200Hz `/imu/data` 구독이 rclpy 역직렬화만으로 ~25% → `use_gyro` 기본 off(회전 관측은 스캔 상관으로 충분). 자체시험 PASS.
+- **Nav2 재시작 시 stuck_monitor 잔존**: `job25e_nav2start.sh` 의 pkill 패턴에 stuck_monitor 추가(인스턴스 3개까지 누적됐었음).
+- **pkill 자기매칭**: ssh 인라인 명령에 프로세스 이름이 들어가면 `pkill -f` 가 그 셸을 죽임(09-08 `run_sensors_restart` 무출력 원인). 종료 로직은 반드시 Jetson 측 파일(`/tmp/job*.sh`)로 실행 — `jetson-access` 메모리에 추가.
+- `job59_sensors_restart.sh`: agent 유지한 채 센서+slam 재시작(보드 세션 보존) — 이후 카메라/런치 변경 시 표준 절차.
