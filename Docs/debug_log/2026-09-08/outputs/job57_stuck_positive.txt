@@ -1,0 +1,12 @@
+[lin] v=0.05 w=0.0 shadow=true → STUCK 판정 2회
+STUCK: 지령 4.8cm/0° 인데 관측 0.0cm/0.2° (비율 0.00) [shadow — 조치 없음]
+STUCK: 지령 9.5cm/0° 인데 관측 0.0cm/0.2° (비율 0.00) [shadow — 조치 없음]
+[rot] v=0.0 w=0.3 shadow=true → STUCK 판정 2회
+STUCK: 지령 0.0cm/17° 인데 관측 0.0cm/0.2° (비율 0.01) [shadow — 조치 없음]
+STUCK: 지령 0.0cm/33° 인데 관측 0.0cm/0.2° (비율 0.01) [shadow — 조치 없음]
+[act] v=0.05 w=0.0 shadow=false → STUCK 판정 2회
+STUCK: 지령 4.8cm/0° 인데 관측 0.0cm/0.2° (비율 0.01) → 목표 취소·정지
+STUCK: 지령 9.6cm/0° 인데 관측 0.0cm/0.2° (비율 0.00) → 목표 취소·정지
+실제 /cmd_vel 발행 여부(없어야 정상): 0
+0
+/rover/stuck 마지막: 

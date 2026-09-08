@@ -103,6 +103,7 @@
 5. (d) 확인 시: slam `minimum_travel_distance` 0.05→0.15, `minimum_travel_heading` 0.03→0.10 으로 보정 빈도 완화 — 단 09-02 회전 포인트 밀림 완화 목적으로 낮춘 값이라 트레이드오프 기록 필요.
 6. (e) 보조: velocity_smoother `deadband_velocity [0,0,0.02]`.
 **수용 기준**: 직진 1.6 m 에서 ω 부호반전 ≤ 2회/m, 횡오차 RMS < 3 cm, 회전 후 진동 ≤ 1주기, 최종 자세오차 < 8°, 소요시간 ±10 % 이내.
+**결과 (2026-09-08, `Docs/debug_log/2026-09-08/SUMMARY.md` job58)**: (a) 확인·채택(lookahead 0.40/0.35/0.60, time 2.0 → ω 평균 0.086→0.05, 스파이크 19→5~19), (c) 기각(0.25 는 모드 채터), #4 채택(yaw tol 0.15), (d) slam 점프 1.6~5.2° 가 잔여 wander 주원인 → 다음 후보: global_costmap `global_frame: odom` 또는 slam 노드 간격 완화. stuck_monitor 는 활성 전환.
 ## 6.x 스톨 감지 실측 결론 (2026-09-07) — 근본 원인은 PWM 50Hz
 - 받침대 실험(`Docs/debug_log/2026-09-07/`): 구속 휠의 FG 가 PWM 주기 펄스를 냈던 원인은 **모터 PWM 이 50Hz(구모터 값)로 남아 있던 것**(이관 계획 T1 미적용). **20kHz 전환 후** 구속 시 펄스 0 → 600ms 감지·자동복구·3회 래치 정상, 자유 휠은 10~100mm/s 전 구간 1s 내 정확 추종(duty ≈ 0.36+4.5v 선형).
 - 결정: 펌웨어 스톨 정책 유지(검증 완료). Jetson `stuck_monitor` 는 **보조**(트랙 슬립·벽 밀림 등 휠이 도는 갇힘)로 N1.5 에 배치.

@@ -46,16 +46,19 @@ controller_server:
       # 0.15 복원 (2026-09-03): 펌웨어 데드밴드 보상(MIN_WHEEL_SPEED_MPS 0.020) 플래시·검증 완료.
       #   (09-02 에는 목표 근접 미세명령 정체로 0.25 임시 완화했었음)
       xy_goal_tolerance: 0.15
-      yaw_goal_tolerance: 0.25
+      yaw_goal_tolerance: 0.15   # 2026-09-08: 0.25→0.15 (8.6°). RPP 목표 헤딩 회전을 끝까지 수행. 소요시간 영향 없음(job58f)
 
     # RPP(Regulated Pure Pursuit) — 차동/스키드스티어 저속에 적합, 튜닝 파라미터가 직관적
     FollowPath:
       plugin: "nav2_regulated_pure_pursuit_controller::RegulatedPurePursuitController"
       desired_linear_vel: 0.08          # 2026-09-07 스케일 정정 후 실속도 기준 (펌웨어 최대 0.085 대비 여유)
-      lookahead_dist: 0.30
-      min_lookahead_dist: 0.20
-      max_lookahead_dist: 0.45
-      lookahead_time: 1.5
+      # 2026-09-08 §5.y 실측 튜닝: 0.30/0.20/0.45/1.5 → 0.40/0.35/0.60/2.0.
+      #   속도스케일 lookahead 가 1.5s×0.08=0.12m 로 하한 0.20(5cm 격자 4칸)에 걸려 조향 이득 과대 →
+      #   직진 중 ω 스파이크 19회/주행 → 5~9회, 부호반전 2→0~1회/m, ω 평균 0.086→0.05 (job58 시리즈).
+      lookahead_dist: 0.40
+      min_lookahead_dist: 0.35
+      max_lookahead_dist: 0.60
+      lookahead_time: 2.0
       use_velocity_scaled_lookahead_dist: true
       transform_tolerance: 0.2
       min_approach_linear_velocity: 0.02
@@ -69,6 +72,7 @@ controller_server:
       regulated_linear_scaling_min_speed: 0.03
       # 스키드스티어는 제자리 회전 가능 → 경로 시작 시 헤딩 정렬
       use_rotate_to_heading: true
+      # 2026-09-08: 0.25 로 낮추면 회전↔추종 모드 채터 6회(스파이크 28회) → 0.5 유지 (job58e 기각)
       rotate_to_heading_min_angle: 0.5
       rotate_to_heading_angular_vel: 0.32   # 2026-09-07 B_eff 0.443: 실 최대 0.384 rad/s 대비 여유
       # ⚠ RPP 는 rotateToHeading 각속도를 '현재 측정속도 ± max_angular_accel×dt' 로 클램프한다.
