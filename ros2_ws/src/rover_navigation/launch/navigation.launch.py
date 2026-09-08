@@ -29,9 +29,10 @@ def generate_launch_description():
         DeclareLaunchArgument('autostart', default_value='true',
                               description='lifecycle 노드 자동 활성화'),
         # rover-level 정체/접촉 감시 (2026-09-07). 펌웨어 스톨은 '휠 정지'만 잡으므로 트랙이 헛도는
-        # 벽 밀림·긁힘은 여기서 잡는다(라이다 스캔·자이로로 실제 이동 관측). 기본 shadow(로그만) —
-        # 실주행 오탐 검증 후 stuck_shadow:=false 로 취소·정지 권한 부여.
-        DeclareLaunchArgument('stuck_shadow', default_value='true',
+        # 벽 밀림·긁힘은 여기서 잡는다(라이다 스캔·자이로로 실제 이동 관측).
+        # 2026-09-08 활성(기본 false): 실주행 오탐 0 (09-07 46s + 09-08 6회 주행) · 정탐 3/3 (job57) 검증 완료.
+        # 관찰만 하려면 stuck_shadow:=true.
+        DeclareLaunchArgument('stuck_shadow', default_value='false',
                               description='stuck_monitor 관찰 전용 모드'),
         Node(package='rover_bringup', executable='stuck_monitor.py', name='stuck_monitor',
              output='screen',
