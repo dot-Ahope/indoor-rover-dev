@@ -124,6 +124,7 @@ local_costmap:
       update_frequency: 5.0
       publish_frequency: 2.0
       global_frame: odom
+      always_send_full_costmap: true   # 2026-09-08: 증분 갱신만 오면 진단 스크립트가 latched 스냅샷을 읽어 오판 → 전체 발행
       robot_base_frame: base_link
       rolling_window: true
       width: 3
@@ -145,7 +146,7 @@ local_costmap:
         z_voxels: 8
         max_obstacle_height: 0.40
         unknown_threshold: 15
-        mark_threshold: 0
+        mark_threshold: 1   # 2026-09-08: 단일 복셀 잡음이 셀을 점유로 만들던 것 방지 (상자는 2복셀 이상)
         publish_voxel_map: false
         # 2026-09-08 N1.5: D455f 포인트클라우드 소스 (실제 높이로 마킹, 3D 광선 소거).
         #   min_obstacle_height 0.06: 바닥 배제(카메라 피치 오차 1.5°×1.8m ≈ 4.7cm 여유). 라이다 z 0.185, 카메라 z 0.143.
@@ -156,9 +157,12 @@ local_costmap:
           data_type: "PointCloud2"
           marking: true
           clearing: true
-          min_obstacle_height: 0.06
+          # 2026-09-08 야간: 전역 코스트맵이 SLAM 지도상 자유 구역까지 점유로 채워 planner 가 경로를 못 냄.
+          #   깊이 잡음은 거리² 로 커지므로 사거리를 줄이고 높이 하한을 올려 오마킹을 억제한다.
+          #   상자 높이 0.11m 이므로 하한 0.08 이어도 z 0.08~0.11 구간이 남아 감지 유지.
+          min_obstacle_height: 0.08
           max_obstacle_height: 0.40
-          obstacle_max_range: 1.8
+          obstacle_max_range: 1.2
           obstacle_min_range: 0.30
           raytrace_max_range: 2.0
           raytrace_min_range: 0.30
@@ -226,7 +230,7 @@ global_costmap:
         z_voxels: 8
         max_obstacle_height: 0.40
         unknown_threshold: 15
-        mark_threshold: 0
+        mark_threshold: 1   # 2026-09-08: 단일 복셀 잡음이 셀을 점유로 만들던 것 방지 (상자는 2복셀 이상)
         publish_voxel_map: false
         # 2026-09-08 N1.5: D455f 포인트클라우드 소스 (실제 높이로 마킹, 3D 광선 소거).
         #   min_obstacle_height 0.06: 바닥 배제(카메라 피치 오차 1.5°×1.8m ≈ 4.7cm 여유). 라이다 z 0.185, 카메라 z 0.143.
@@ -237,9 +241,12 @@ global_costmap:
           data_type: "PointCloud2"
           marking: true
           clearing: true
-          min_obstacle_height: 0.06
+          # 2026-09-08 야간: 전역 코스트맵이 SLAM 지도상 자유 구역까지 점유로 채워 planner 가 경로를 못 냄.
+          #   깊이 잡음은 거리² 로 커지므로 사거리를 줄이고 높이 하한을 올려 오마킹을 억제한다.
+          #   상자 높이 0.11m 이므로 하한 0.08 이어도 z 0.08~0.11 구간이 남아 감지 유지.
+          min_obstacle_height: 0.08
           max_obstacle_height: 0.40
-          obstacle_max_range: 1.8
+          obstacle_max_range: 1.2
           obstacle_min_range: 0.30
           raytrace_max_range: 2.0
           raytrace_min_range: 0.30
