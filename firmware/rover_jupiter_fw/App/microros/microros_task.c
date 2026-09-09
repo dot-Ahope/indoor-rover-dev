@@ -352,9 +352,29 @@ void microros_task_run(void *arg)
 
     printf("[uROS] ready — pub heartbeat/odom/imu/mag/battery/status, sub cmd_vel\r\n");
 
-    /* 9) Spin loop — vTaskDelayUntil 로 20ms cycle 시도. 실측 ~34ms 까지 늘어남
-     *    (XRCE-DDS framing 이 720byte odom msg 를 segment 로 쪼개 다중 transport_write).
-     *    그래도 polling 대비 ×2 개선 → /wheel_odom ~29 Hz.
+    /* 9) Spin loop — vTaskDelayUntil 로 20ms cycle.
+     *
+     *    대역 예산 (2026-09-09 실측으로 확정). 병목은 UART 가 아니라 **USB** 다:
+     *      /dev/rover = ttyCH341USB0 (CH340, 1a86:7523), USB Full Speed 12Mbps,
+     *      bulk 엔드포인트 wMaxPacketSize = 0x20 = 32 B → 실효 상한 약 32~40 kB/s.
+     *      UART 는 2,000,000 bps (=200 kB/s) 로 설정돼 있지만 그 여유는 쓸 수 없다.
+     *    실측: odom 단독으로 50.9 Hz × 720 B = 36.6 kB/s 가 최대치였고 그 위로는 못 올라갔다.
+     *
+     *    이전 구현은 odom/imu/mag 를 '매 cycle' 발행 했다 → 50 Hz 일 때 수요 60.5 kB/s
+     *    (상한의 1.5배). imu_read() 성공 여부가 간헐적이라(imu_processor.c s_si.valid)
+     *    보드 IMU 가 살아날 때마다 대역이 초과되고, 가장 큰 메시지인 odom 이 먼저 굶어
+     *    수십 초간 사라졌다. 그 결과 EKF 가 유일한 속도 관측을 잃고 8.5 m 발산했다
+     *    (2026-09-09 job92 → Nav2 ABORTED). → 아래처럼 전부 시간 게이트로 바꿈.
+     *
+     *      /wheel_odom    30 Hz  × 720 B = 21.6 kB/s   (EKF 필터 주기가 30 Hz — 그 이상은 낭비)
+     *      /imu/data_raw   5 Hz  × 330 B =  1.7 kB/s   (EKF 미사용 — CLAUDE.md §4, 카메라 IMU 가 소스)
+     *      /imu/mag        5 Hz  × 130 B =  0.7 kB/s   (미사용. 진단용으로만 유지)
+     *      /rover/status   5 Hz  × 280 B =  1.4 kB/s
+     *      /battery        1 Hz  × 100 B =  0.1 kB/s
+     *      합계 약 25.4 kB/s ≈ 상한의 65% — 여유 확보.
+     *    IMU/mag 를 완전히 지우지 않고 5 Hz 로 남기는 이유: '자이로 원인 규명 시 복귀
+     *    검토'(CLAUDE.md §4) 를 위해 관측 가능성을 남겨둔다.
+     *
      *    Heartbeat 는 cycle 가변에 안정적인 시간 기반 (HAL_GetTick) 으로 1Hz. */
     s_heartbeat_msg.data = 0;
     const uint32_t now0 = HAL_GetTick();
@@ -362,66 +382,79 @@ void microros_task_run(void *arg)
     uint32_t last_battery_ms = now0;
     uint32_t last_status_ms  = now0;
     uint32_t last_sync_ms    = now0;   /* F8.5 — 주기 time resync */
+    uint32_t last_odom_ms    = now0;   /* 2026-09-09 — 대역 예산 게이트 */
+    uint32_t last_imu_ms     = now0;
     rcl_ret_t pr;
     TickType_t next_wake = xTaskGetTickCount();
     const TickType_t period_ticks = pdMS_TO_TICKS(20);
     for (;;) {
         rclc_executor_spin_some(&s_executor, RCL_MS_TO_NS(1));
-
-        /* Odometry 스냅샷 → msg 변환 → 발행. */
-        OdomState o;
-        odometry_get(&o);
-        fill_stamp(&s_odom_msg.header.stamp, o.ts_ms);
-        s_odom_msg.pose.pose.position.x = (double)o.x;
-        s_odom_msg.pose.pose.position.y = (double)o.y;
-        s_odom_msg.pose.pose.position.z = 0.0;
-        /* Quaternion from yaw (Z axis only). */
-        const float half = o.yaw * 0.5f;
-        s_odom_msg.pose.pose.orientation.x = 0.0;
-        s_odom_msg.pose.pose.orientation.y = 0.0;
-        s_odom_msg.pose.pose.orientation.z = (double)sinf(half);
-        s_odom_msg.pose.pose.orientation.w = (double)cosf(half);
-        s_odom_msg.twist.twist.linear.x  = (double)o.v;
-        s_odom_msg.twist.twist.linear.y  = 0.0;
-        s_odom_msg.twist.twist.linear.z  = 0.0;
-        s_odom_msg.twist.twist.angular.x = 0.0;
-        s_odom_msg.twist.twist.angular.y = 0.0;
-        s_odom_msg.twist.twist.angular.z = (double)o.w;
-        /* 첫 실패만 한 번 로깅 — 디버그 노이즈 방지. */
-        static bool s_odom_err_logged = false;
-        pr = rcl_publish(&s_odom_pub, &s_odom_msg, NULL);
-        if (pr != RCL_RET_OK && !s_odom_err_logged) {
-            printf("[uROS] odom publish FAIL rc=%ld (MTU? stream full?)\r\n", (long)pr);
-            s_odom_err_logged = true;
-        }
-
-        /* IMU 발행 (F7) — 매 cycle. */
-        ImuSi imu;
-        imu_processor_get(&imu);
-        if (imu.valid) {
-            fill_stamp(&s_imu_msg.header.stamp, imu.ts_ms);
-            s_imu_msg.linear_acceleration.x = (double)imu.ax;
-            s_imu_msg.linear_acceleration.y = (double)imu.ay;
-            s_imu_msg.linear_acceleration.z = (double)imu.az;
-            s_imu_msg.angular_velocity.x    = (double)imu.gx;
-            s_imu_msg.angular_velocity.y    = (double)imu.gy;
-            s_imu_msg.angular_velocity.z    = (double)imu.gz;
-            pr = rcl_publish(&s_imu_pub, &s_imu_msg, NULL); (void)pr;
-        }
-
-        /* Mag 발행 (F7.5) — 매 cycle. AK09916 50Hz < spin 29Hz 라 일부 cycle
-         * 은 동일 샘플 반복이지만 stamp 는 갱신됨. 대역 절약 필요 시 격번 발행. */
-        MagSi mag;
-        imu_processor_get_mag(&mag);
-        if (mag.valid) {
-            fill_stamp(&s_mag_msg.header.stamp, mag.ts_ms);
-            s_mag_msg.magnetic_field.x = (double)mag.mx;
-            s_mag_msg.magnetic_field.y = (double)mag.my;
-            s_mag_msg.magnetic_field.z = (double)mag.mz;
-            pr = rcl_publish(&s_mag_pub, &s_mag_msg, NULL); (void)pr;
-        }
-
         const uint32_t now_ms = HAL_GetTick();
+
+        /* /wheel_odom 30Hz 게이트 (2026-09-09) — EKF 필터 주기와 일치. */
+        if (now_ms - last_odom_ms >= 33u) {
+            last_odom_ms = now_ms;
+            /* Odometry 스냅샷 → msg 변환 → 발행. */
+            OdomState o;
+            odometry_get(&o);
+            fill_stamp(&s_odom_msg.header.stamp, o.ts_ms);
+            s_odom_msg.pose.pose.position.x = (double)o.x;
+            s_odom_msg.pose.pose.position.y = (double)o.y;
+            s_odom_msg.pose.pose.position.z = 0.0;
+            /* Quaternion from yaw (Z axis only). */
+            const float half = o.yaw * 0.5f;
+            s_odom_msg.pose.pose.orientation.x = 0.0;
+            s_odom_msg.pose.pose.orientation.y = 0.0;
+            s_odom_msg.pose.pose.orientation.z = (double)sinf(half);
+            s_odom_msg.pose.pose.orientation.w = (double)cosf(half);
+            s_odom_msg.twist.twist.linear.x  = (double)o.v;
+            s_odom_msg.twist.twist.linear.y  = 0.0;
+            s_odom_msg.twist.twist.linear.z  = 0.0;
+            s_odom_msg.twist.twist.angular.x = 0.0;
+            s_odom_msg.twist.twist.angular.y = 0.0;
+            s_odom_msg.twist.twist.angular.z = (double)o.w;
+            /* 첫 실패만 한 번 로깅 — 디버그 노이즈 방지. */
+            static bool s_odom_err_logged = false;
+            pr = rcl_publish(&s_odom_pub, &s_odom_msg, NULL);
+            if (pr != RCL_RET_OK && !s_odom_err_logged) {
+                printf("[uROS] odom publish FAIL rc=%ld (MTU? stream full?)\r\n", (long)pr);
+                s_odom_err_logged = true;
+            }
+        }
+
+        /* IMU/mag 5Hz 게이트 (2026-09-09) — EKF 미사용이므로 대역을 odom 에 양보. */
+        if (now_ms - last_imu_ms >= 200u) {
+            last_imu_ms = now_ms;
+            /* IMU 발행 (F7). 2026-09-09: 매 cycle → 5Hz 게이트.
+             * imu_read() 성공 여부가 간헐적이라(s_si.valid) 매 cycle 발행 시
+             * 대역 수요가 튀어 odom 을 굶겼다. EKF 는 이 토픽을 쓰지 않는다. */
+            ImuSi imu;
+            imu_processor_get(&imu);
+            if (imu.valid) {
+                fill_stamp(&s_imu_msg.header.stamp, imu.ts_ms);
+                s_imu_msg.linear_acceleration.x = (double)imu.ax;
+                s_imu_msg.linear_acceleration.y = (double)imu.ay;
+                s_imu_msg.linear_acceleration.z = (double)imu.az;
+                s_imu_msg.angular_velocity.x    = (double)imu.gx;
+                s_imu_msg.angular_velocity.y    = (double)imu.gy;
+                s_imu_msg.angular_velocity.z    = (double)imu.gz;
+                pr = rcl_publish(&s_imu_pub, &s_imu_msg, NULL); (void)pr;
+            }
+
+            /* Mag 발행 (F7.5). 2026-09-09: 매 cycle → IMU 와 같은 5Hz 게이트.
+             * AK09916 측정 50Hz 이므로 5Hz 발행은 단순 다운샘플. 현재 미사용 토픽. */
+            MagSi mag;
+            imu_processor_get_mag(&mag);
+            if (mag.valid) {
+                fill_stamp(&s_mag_msg.header.stamp, mag.ts_ms);
+                s_mag_msg.magnetic_field.x = (double)mag.mx;
+                s_mag_msg.magnetic_field.y = (double)mag.my;
+                s_mag_msg.magnetic_field.z = (double)mag.mz;
+                pr = rcl_publish(&s_mag_pub, &s_mag_msg, NULL); (void)pr;
+            }
+        }
+
+        /* now_ms 는 루프 상단에서 이미 취득 */
         if (now_ms - last_hb_ms >= 1000u) {
             pr = rcl_publish(&s_heartbeat_pub, &s_heartbeat_msg, NULL); (void)pr;
             s_heartbeat_msg.data++;
