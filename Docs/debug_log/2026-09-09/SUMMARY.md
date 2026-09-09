@@ -535,6 +535,59 @@ FastDDS 는 같은 호스트에서 공유메모리 전송을 쓰고, 정상 종�
 > 비교해 '헛돌았다' 고 본 것도 오류다 — 보드 오도메트리는 **보드 리셋 이후 누적값**이고
 > map 좌표는 `job123_reinit` 이후의 상대값이라 기준이 다르다.
 
+## 8.10 다음 수단 진단 — STVL 외 대안과 foxglove 경량화
+
+### 확인된 가용 수단
+
+```
+Nav2 코스트맵 심볼: observation_persistence, expected_update_rate, combination_method  → 존재
+realsense2_camera : json_file_path                                                    → 존재(고급모드 프리셋)
+foxglove_bridge 3.2.4 파라미터: num_threads, max_qos_depth, send_buffer_limit,
+                                use_compression, capabilities, topic_whitelist        → 전부 존재
+STVL              : 미설치 (apt candidate 2.3.4-1jammy)
+```
+
+| # | 방법 | 가능? | 성격 |
+|---|---|---|---|
+| 1 | **`observation_persistence`** (depth 소스) | ✅ 스톡, 파라미터 1개 | 관측이 끊겨도 N초간 버퍼에서 재마킹 — 확인된 기전(§8.8)을 직접 겨냥 |
+| 2 | **계획 확정성** (BT `RateController` 1.0 → 0.33 Hz) | ✅ 1줄 | 상자가 보일 때 세운 경로를 유지 → 사라져도 완주 |
+| 3 | **RealSense 최소거리 축소** (advanced mode disparity shift) | ✅ | 근본 원인 완화. `obstacle_max_range` 1.2m 라 최대거리를 내줄 여유 있음 |
+| 4 | STVL | 설치 필요 | 시간 감쇠 + 절두체 인식. 1번의 상위 호환이나 무겁고 파라미터군 증가 |
+
+**효과 없는 것**: 라이다(z 0.185 라 높이 0.11m 상자를 원리적으로 못 봄), 카메라 하향 틸트
+(최소 측정거리 자체는 불변), inflation·padding 추가(이미 사라진 마킹을 되살리지 못함).
+
+### 순서를 하나 앞에 둬야 하는 이유 — 미해결 모순
+
+job152 에서 마킹이 끊긴 시점의 카메라~상자 거리는 **0.518 m** 인데, job71 실측 최소 측정거리는
+**0.22~0.25 m** 다. **거리상 충분히 보여야 하는데 마킹이 끊겼다.** 따라서 아직
+"카메라가 점을 못 만든다" 인지 "코스트맵이 점을 안 쓴다" 인지 모른다. 수단 3 은 전자일 때만 유효하다.
+
+→ `job125_avoid3.py` 에 지표 ⑤ 추가: 매 샘플마다 **상자 사각형 안의 깊이점 수**를 센다.
+  로컬이 상자를 잃은 샘플 중 깊이점이 있었던 비율을 출력한다.
+  - 점이 있는데 잃었다 → 코스트맵 쪽 (필터·문턱·복셀)
+  - 점이 없다          → 카메라 쪽 (최소거리·화각·필터)
+
+### foxglove 경량화
+
+bridge 가 상시 CPU 88~95%(≈1코어)로 최대 소비자였고, 같은 시기 ekf_node 가
+"Failed to meet update rate! Took 0.14s" 를 반복했다. 비용은 코어 수가 아니라
+**메시지 건수 × 직렬화**에서 나온다.
+
+| 항목 | 이전 | 이후 |
+|---|---|---|
+| 토픽 집합 | 고정 21개 | `viz:=lean`(기본) / `full` / `cam` 3단계 |
+| `/imu/data` **200Hz** | 포함 | lean 제외 — 단일 최대 비용원 |
+| `/scan_raw` 10Hz | 포함 | 제외 (`/scan` 의 디스큐 전 원본, 중복) |
+| `/wheel_odom` 25Hz | 포함 | 제외 (`/odometry/filtered` 의 입력, 중복) |
+| `*_updates` | 포함 | 제외 — `always_send_full_costmap: true` 라 **발행되지 않음** |
+| `num_threads` | 기본 0(=6) | 2 |
+| `max_qos_depth` | 기본 | 1 (밀리면 쌓지 말고 버림) |
+| `capabilities` | 기본 6종 | `clientPublish, parameters, services` — 폴링이 비싼 `connectionGraph`·`parametersSubscribe`·`assets` 제거 |
+
+lean 합산 약 60 msg/s. 기동 시험에서 파라미터 거부 없이 정상 동작(3.2.4, 포트 8765, 유휴 0.7%).
+효과는 다음 기동 때 부하 상태에서 측정한다.
+
 ## 8.5 미완 / 다음
 - 상자 제거 시 동적 장애물 망각 확인 (`raytrace_min_range` local 0.35 / global 0.30).
 - 그 뒤 N2 전체 맵 작성 주행 → N3 프런티어 탐사.

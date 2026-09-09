@@ -1,35 +1,77 @@
 # foxglove_bridge — PC Foxglove Studio에서 ws://<jetson-ip>:8765 접속 (RViz 대체)
 from launch import LaunchDescription
+from launch.actions import DeclareLaunchArgument, OpaqueFunction
+from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
 
-# topic_whitelist — bridge가 서빙할 토픽을 필수만으로 제한(정규식 full-match).
-#   근거(2026-09-01): 과부하된 bridge가 /tf를 클라이언트로 늦게 전달 → Foxglove에서 로봇이 4초마다 점프.
-#   무거운 /camera/* (color 15Hz·depth) 를 화이트리스트에서 제외해 bridge 부하를 구조적으로 상한.
-#   ⚠ 나중에 foxglove에서 카메라 영상을 보려면 여기에 '/camera/.*' 추가하거나 whitelist를 완화.
-WHITELIST = [
-    '/scan', '/scan_raw',
+# ── 화이트리스트 ────────────────────────────────────────────────────────────
+# bridge가 서빙할 토픽을 정규식 full-match로 제한한다.
+#   근거(2026-09-01): 과부하된 bridge가 /tf를 늦게 전달 → Foxglove에서 로봇이 4초마다 점프.
+#   근거(2026-09-09): bridge가 상시 CPU 88~95%(≈1코어)로 최대 소비자였고, 같은 시기
+#     ekf_node 가 "Failed to meet update rate! Took 0.14s"를 반복했다. 비용은 코어 수가 아니라
+#     **메시지 건수 × 직렬화**에서 나오므로, 고주파 토픽을 빼는 것이 가장 직접적인 절감이다.
+#
+# LEAN(기본) — 주행 진단에 실제로 보는 것만. 합산 약 60 msg/s.
+LEAN = [
+    # 좌표계 — 없으면 아무것도 못 본다
+    '/tf', '/tf_static', '/robot_description',
+    # 지도·스캔
     '/map', '/map_metadata',
-    '/tf', '/tf_static',
-    '/robot_description',
-    '/odometry/filtered', '/wheel_odom',
-    '/imu/data', '/imu/data_raw',
+    '/scan',                       # 10Hz. /scan_raw 는 디스큐 전 원본이라 중복 → 제외
+    # 상태
+    '/odometry/filtered',          # 30Hz. /wheel_odom(25Hz)은 이것의 입력이라 중복 → FULL 로
     '/rover/status', '/battery', '/rover/stuck',
-    '/cmd_vel', '/joy',
-    # 2026-09-08 추가: 코스트맵·경로 시각화 (사용자가 회피 실패 원인을 직접 보기 위함).
-    #   OccupancyGrid 는 로컬 60×60=3.6k셀 @2Hz, 전역 167×98=16k셀 @1Hz 로 가볍다.
-    #   Foxglove 3D 패널에서 Map 으로 추가하면 색으로 비용이 보인다(치명/내접/경사/자유).
-    '/local_costmap/costmap', '/local_costmap/costmap_updates',
-    '/global_costmap/costmap', '/global_costmap/costmap_updates',
+    '/cmd_vel',
+    # 코스트맵·경로 (회피 진단의 핵심)
+    #   always_send_full_costmap: true 이므로 *_updates 토픽은 **발행되지 않는다** → 제외
+    '/local_costmap/costmap', '/global_costmap/costmap',
     '/plan', '/local_plan',
 ]
+
+# FULL — 센서 원본까지 보고 싶을 때. `viz:=full`
+#   ⚠ /imu/data 는 **200Hz** 다(D455f 자이로). LEAN 에서 뺀 가장 큰 이유가 이것이다.
+FULL = LEAN + [
+    '/imu/data', '/imu/data_raw', '/imu/mag',
+    '/wheel_odom', '/scan_raw', '/joy',
+]
+
+# CAM — 카메라 영상까지. 대역·CPU 부담이 크므로 필요할 때만. `viz:=cam`
+CAM = FULL + [
+    '/camera/camera/color/image_raw', '/camera/camera/color/camera_info',
+    '/camera/camera/depth/image_rect_raw',
+    '/camera/camera/depth/color/points',
+]
+
+SETS = {'lean': LEAN, 'full': FULL, 'cam': CAM}
+
+
+def _make(context, *args, **kwargs):
+    level = LaunchConfiguration('viz').perform(context)
+    wl = SETS.get(level, LEAN)
+    return [Node(
+        package='foxglove_bridge', executable='foxglove_bridge', name='foxglove_bridge',
+        output='screen',
+        parameters=[{
+            'port': 8765,
+            'address': '0.0.0.0',
+            'topic_whitelist': wl,
+            # 2026-09-09 부하 억제 (foxglove_bridge 3.2.4 — 파라미터 존재 확인함)
+            'num_threads': 2,          # 기본 0 = 코어 수(6). 상한을 둬 다른 노드의 몫을 남긴다
+            'max_qos_depth': 1,        # 밀리면 큐에 쌓지 말고 버린다 (시각화는 최신 것만 의미 있음)
+            'send_buffer_limit': 2000000,
+            'use_compression': False,  # 압축은 CPU 를 더 쓴다. 유선/근거리 Wi-Fi 라 불필요
+            # 기본 capabilities 에는 connectionGraph·parametersSubscribe·assets 가 포함되어
+            # 그래프/파라미터를 주기적으로 폴링한다. 시각화에는 불필요하므로 뺀다.
+            # 되돌리려면 이 줄만 지우면 기본값으로 돌아간다.
+            'capabilities': ['clientPublish', 'parameters', 'services'],
+        }],
+    )]
 
 
 def generate_launch_description():
     return LaunchDescription([
-        Node(
-            package='foxglove_bridge', executable='foxglove_bridge', name='foxglove_bridge',
-            output='screen',
-            parameters=[{'port': 8765, 'address': '0.0.0.0',
-                         'topic_whitelist': WHITELIST}],
-        ),
+        DeclareLaunchArgument(
+            'viz', default_value='lean',
+            description="foxglove 로 내보낼 토픽 범위: lean(기본) | full(센서 원본) | cam(영상 포함)"),
+        OpaqueFunction(function=_make),
     ])
