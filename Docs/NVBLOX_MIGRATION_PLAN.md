@@ -54,6 +54,20 @@ nvblox 가 이 하드웨어에 더 맞는다는 판단. 다만 **이전 자체�
 - **종료 조건**: 접촉 0/3, 완주 3/3, 계획 좌우 전환 0, 직진 중 ω 부호반전 ≤ 1.0회/m,
   실제 최근접 ≥ 5cm.
 
+### S6. CPU 여유 확보 ★ 2026-09-09 추가 — 우선순위 높음
+
+`ekf_node` 의 주기 위반이 주행 정지의 뿌리로 확인됐다(§8.16).
+CPU 부족 → EKF 지연 → `odom→base` TF 지연 → slam 이 스캔을 전부 폐기 → `map→odom` 미발행
+→ `map→base_link` 조회가 tf2 버퍼(10초) 만료와 함께 실패 → 주행 중단.
+
+- 최대 소비원: `sensor_conditioner` 35~37% (200Hz IMU 를 파이썬으로 중계).
+  `gyro_fps` 인하는 **불가** — D455 자이로가 100Hz 프로파일을 지원하지 않는다(실측).
+  → 컨디셔너에서 다운샘플하거나 C++ 로 옮긴다.
+- `foxglove_bridge` 는 `viz:=lean` 으로 크게 줄었으나 클라이언트 접속 시 다시 오른다.
+  측정 주행 중에는 끄는 것을 검토.
+- **종료 조건**: 주행 30초 동안 `Failed to meet update rate` 0회,
+  `Message Filter dropping` 0회, load < 6.
+
 ### S5. 기준선 고정 (nvblox 비교용)
 
 아래를 같은 코스·같은 스크립트로 측정해 `Docs/debug_log/<날짜>/BASELINE_STVL.md` 에 남긴다.

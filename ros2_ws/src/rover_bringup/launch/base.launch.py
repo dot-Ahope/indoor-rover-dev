@@ -5,8 +5,15 @@ import os
 
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
-from launch.actions import ExecuteProcess, IncludeLaunchDescription
+from launch.actions import ExecuteProcess, IncludeLaunchDescription, SetEnvironmentVariable
 from launch.launch_description_sources import PythonLaunchDescriptionSource
+
+
+# 2026-09-09: FastDDS 공유메모리 전송 비활성화 (config/fastdds_udp_only.xml 주석 참조).
+#   SHM 고아 잠금 파일 때문에 프로세스는 살아있는데 퍼블리셔가 DDS 그래프에서 사라지는 사고가
+#   같은 날 2회(ekf_node / slam_toolbox) 발생해 주행 2건을 잃었다. 원인 자체를 제거한다.
+_FASTDDS_XML = os.path.join(
+    get_package_share_directory('rover_bringup'), 'config', 'fastdds_udp_only.xml')
 
 
 def generate_launch_description():
@@ -30,4 +37,5 @@ def generate_launch_description():
             get_package_share_directory('rover_description'),
             'launch', 'description.launch.py')))
 
-    return LaunchDescription([agent, description])
+    return LaunchDescription([
+        SetEnvironmentVariable('FASTRTPS_DEFAULT_PROFILES_FILE', _FASTDDS_XML),agent, description])
