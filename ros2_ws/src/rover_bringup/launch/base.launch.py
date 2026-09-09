@@ -18,7 +18,10 @@ def generate_launch_description():
              '--net', 'host',
              '--device', f'{rover_dev}:/dev/rover',
              'microros/micro-ros-agent:humble',
-             'serial', '--dev', '/dev/rover', '-b', '2000000'],
+             # 2026-09-09: 2000000 → 460800. 보드 usart.c 의 override 와 반드시 일치해야 한다.
+             # 사유: 흐름제어 없는 CH340 이 2 Mbps 유입을 USB 로 못 빼내 FIFO 오버런 →
+             #      큰 프레임(/wheel_odom 732 B) 유실. 실수요 22.4 kB/s 대비 460800 은 2배 여유.
+             'serial', '--dev', '/dev/rover', '-b', '460800'],
         output='screen',
     )
 
