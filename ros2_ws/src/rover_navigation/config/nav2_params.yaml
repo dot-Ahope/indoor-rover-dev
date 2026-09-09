@@ -173,7 +173,14 @@ local_costmap:
       stvl_layer:
         plugin: "spatio_temporal_voxel_layer/SpatioTemporalVoxelLayer"
         enabled: true
-        voxel_decay: 15.0             # 선형 감쇠 수명(초). 0.08m/s 로 상자를 지나가는 데 10~15s
+        # 2026-09-09 job167 실측으로 15.0 → 30.0.
+        #   깊이점이 끊긴 시점(t=4, 카메라~상자 0.45m)부터 로버가 상자를 완전히 지나갈 때(t≈26)
+        #   까지 약 22초가 필요한데 15초에 먼저 만료돼(t=19) 계획 여유가 음수로 떨어지고
+        #   최근접 0.4cm 까지 붙었다. 여유를 두어 30초.
+        #   대가: 절두체 **밖**(=못 보는 곳)의 마킹이 30초 유지된다. 0.08m/s 로 2.4m 이동분이며
+        #   로컬은 3×3m 롤링이라 지나가면 자동 소멸한다. 절두체 **안**의 동적 장애물은
+        #   decay_acceleration 이 별도로 빠르게 지우므로 영향받지 않는다.
+        voxel_decay: 30.0             # 선형 감쇠 수명(초)
         decay_model: 0                # 0=선형, 1=지수, -1=영속
         voxel_size: 0.05              # 코스트맵 해상도와 일치
         track_unknown_space: true
@@ -311,7 +318,14 @@ global_costmap:
       stvl_layer:
         plugin: "spatio_temporal_voxel_layer/SpatioTemporalVoxelLayer"
         enabled: true
-        voxel_decay: 15.0             # 선형 감쇠 수명(초). 0.08m/s 로 상자를 지나가는 데 10~15s
+        # 2026-09-09 job167 실측으로 15.0 → 30.0.
+        #   깊이점이 끊긴 시점(t=4, 카메라~상자 0.45m)부터 로버가 상자를 완전히 지나갈 때(t≈26)
+        #   까지 약 22초가 필요한데 15초에 먼저 만료돼(t=19) 계획 여유가 음수로 떨어지고
+        #   최근접 0.4cm 까지 붙었다. 여유를 두어 30초.
+        #   대가: 절두체 **밖**(=못 보는 곳)의 마킹이 30초 유지된다. 0.08m/s 로 2.4m 이동분이며
+        #   로컬은 3×3m 롤링이라 지나가면 자동 소멸한다. 절두체 **안**의 동적 장애물은
+        #   decay_acceleration 이 별도로 빠르게 지우므로 영향받지 않는다.
+        voxel_decay: 30.0             # 선형 감쇠 수명(초)
         decay_model: 0                # 0=선형, 1=지수, -1=영속
         voxel_size: 0.05              # 코스트맵 해상도와 일치
         track_unknown_space: true
