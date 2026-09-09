@@ -227,10 +227,66 @@ battery 1.000 / conditioned 25.018 / filtered 30.003). `dmesg` 에 ch341 오류 
 빌드: WSL Ubuntu-22.04 에 `mount -t drvfs F: /mnt/f` 후 `make -j8`.
 결과 `text 132,920 / data 5,032 / bss 108,744`, 경고 없음.
 
-## 8. 미완 / 다음
+## 8. 회피 주행 검증 — 완료 (job119 → job124)
 
-- **inflation 0.40 / padding 0.02 의 주행 검증** — 경로 질의(§2)는 통과했으나 실주행은 09-08, 09-09
-  이틀 연속 다른 원인으로 못 했다. 플래시 후 최우선.
+링크가 안정된 뒤 09-08 부터 미뤄졌던 검증을 수행했다.
+
+### job119 (lookahead 0.35) — 접촉 없이 중단
+
+```
+결과 CANCELED  주행 0.99m / 목표 1.80m
+  최소 여유 28.7cm (접촉 0) | 횡오차 RMS 2.5cm 최대 7.0cm | ω 부호반전 0회
+```
+
+중단 연쇄 (nav2 로그):
+```
+RegulatedPurePursuitController detected collision ahead!  → follow_path 중단 (2회)
+behavior_server: Running backup                            → 후진 복구
+stuck_monitor: 지령 6.5cm/1° 인데 관측 0.8cm/1.7° (비율 0.12) → 목표 취소
+```
+
+상자를 밀지 않고 스스로 멈췄다 — 09-08 과 달리 안전 로직이 의도대로 동작했다.
+원인: t=12~15s 의 ω 지령이 −0.099→−0.146→−0.116 (우회전, 목표 방향 복귀 구간)인데
+RPP 충돌검사가 그 순간 곡률로 0.40 m(=5.0 s × 0.08 m/s)를 투영하면 상자를 스친다.
+같은 x 에서 계획은 +0.315 인데 로버는 +0.230 — **8.5 cm 안쪽으로 코너 컷** 한 상태였다.
+
+### 조정 — 실제 손잡이는 lookahead_dist 가 아니었다
+
+`use_velocity_scaled_lookahead_dist: true` 이므로 실효 lookahead 는
+`clamp(v × lookahead_time, min, max) = clamp(0.08×2.0=0.16, 0.35, 0.60) = 0.35`,
+즉 **`min_lookahead_dist` 가 실제 값**이고 `lookahead_dist: 0.40` 은 이 속도에서 쓰이지 않았다.
+(처음에 `lookahead_dist` 를 지목했다가 정정.) → `min_lookahead_dist` 0.35 → **0.25**.
+
+함께 적용: `stuck_monitor` 가 Nav2 복구 행동(backup/spin/…) 실행 중에는 판정을 보류하도록
+`/<behavior>/_action/status` 를 구독해 EXECUTING 이면 관측 창(W)만큼 보류.
+근거: 후진 복구는 원래 느린데 정체로 오판하면 복구 기회 자체를 뺏는다.
+
+### job124 (lookahead 0.25) — 완주
+
+```
+결과 SUCCEEDED  소요 32.8s  주행 1.98m
+  최소 여유 28.0cm (접촉 0) | 횡오차 RMS 2.0cm 최대 4.6cm
+  최대 좌측 변위 +33.8cm | ω 부호반전 4회 = 2.0회/m | 최종 위치오차 14.3cm
+```
+
+무주행 경로 질의: 최대 횡변위 +0.456 m(좌), 비용 최대 80 → 최근접 0.253 m,
+**패딩 포함 차체 외곽에서 6.8 cm 여유**. 평균 비용 12 로 대부분 구간은 넓다.
+
+| 지표 | job119 (0.35) | job124 (0.25) |
+|---|---|---|
+| 결과 | CANCELED 0.99 m | **SUCCEEDED 1.98 m** |
+| 최소 여유 | 28.7 cm | 28.0 cm |
+| 횡오차 RMS / 최대 | 2.5 / 7.0 cm | **2.0 / 4.6 cm** |
+| 코너 컷 | 8.5 cm | 12 cm |
+| ω 부호반전 | 0 회 | **2.0 회/m** |
+
+**대가는 조향 진동이다.** 부호반전 0 → 2.0회/m 는 09-08 에 지적된 "까딱까딱" 증상의 재발이다.
+추종 정확도(횡오차)와 조향 부드러움은 lookahead 를 사이에 둔 트레이드오프이며,
+현재는 완주를 얻고 진동을 일부 내준 상태다. 중간값(0.30) 탐색은 미실행.
+
+`stuck_monitor` 의 복구 중 억제 로직은 이번 주행에서 복구 행동이 발생하지 않아 **미검증**.
+
+## 8.5 미완 / 다음
 - 상자 제거 시 동적 장애물 망각 확인 (`raytrace_min_range` local 0.35 / global 0.30).
 - 그 뒤 N2 전체 맵 작성 주행 → N3 프런티어 탐사.
 
