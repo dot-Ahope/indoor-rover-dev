@@ -27,6 +27,7 @@ from geometry_msgs.msg import Twist
 from sensor_msgs.msg import LaserScan, Imu
 from diagnostic_msgs.msg import DiagnosticArray, DiagnosticStatus, KeyValue
 from action_msgs.srv import CancelGoal
+from action_msgs.msg import GoalStatusArray
 
 LIDAR_YAW = math.pi          # S2L 장착 yaw (rover.urdf) — 스캔각 + π = 로버 기준각
 BINS = 360
@@ -89,16 +90,29 @@ class StuckMonitor(Node):
         self.cmds, self.scans = [], []      # (t,v,w) / (t,profile)
         self.gyro = []                      # (t, wz_robot)
         self.hits, self.last_action = 0, 0.0
+        # 2026-09-09: Nav2 복구 행동(backup/spin/...) 중에는 판정을 보류한다.
+        #   근거(job119): 후진 복구는 원래 느린데 모니터가 이를 정체로 보고 목표를 취소했다
+        #   ("지령 6.5cm/1° 인데 관측 0.8cm/1.7°"). 복구는 이미 '문제를 인지한 상태'의 동작이라
+        #   여기에 정체 판정을 겹치면 복구할 기회 자체를 뺏는다.
+        #   복구 종료 후에도 관측 창(W) 만큼은 그 움직임이 창에 남으므로 함께 보류한다.
+        self.recovery_until = 0.0
         self.create_subscription(Twist, '/cmd_vel', self.cb_cmd, 10)
         self.create_subscription(LaserScan, '/scan', self.cb_scan, qos_profile_sensor_data)
         if bool(g('use_gyro')):
             self.create_subscription(Imu, '/imu/data', self.cb_imu, qos_profile_sensor_data)
         self.diag_pub = self.create_publisher(DiagnosticArray, '/rover/stuck', 5)
         self.cmd_pub = self.create_publisher(Twist, '/cmd_vel', 10)
+        for act in ('backup', 'spin', 'drive_on_heading', 'wait', 'assisted_teleop'):
+            self.create_subscription(GoalStatusArray, '/%s/_action/status' % act, self.cb_behavior, 10)
         self.cancel = self.create_client(CancelGoal, '/navigate_to_pose/_action/cancel_goal')
         self.create_timer(1.0 / g('rate'), self.tick)
         self.get_logger().info(f"stuck_monitor 시작 (window {self.W}s, ratio {self.ratio}, "
                                f"{'SHADOW(로그만)' if self.shadow else 'ACTIVE(취소+정지)'})")
+
+    def cb_behavior(self, m):
+        """복구 행동이 실행 중(status 2 = EXECUTING)이면 보류 기한을 갱신."""
+        if any(st.status == 2 for st in m.status_list):
+            self.recovery_until = time.time() + self.W
 
     def cb_cmd(self, m): self.cmds.append((time.time(), m.linear.x, m.angular.z))
     def cb_scan(self, m): self.scans.append((time.time(), profile(m)))
@@ -118,6 +132,8 @@ class StuckMonitor(Node):
 
     def tick(self):
         now = time.time(); self._prune(now)
+        if now < self.recovery_until:      # 복구 행동 진행 중/직후 — 판정 보류
+            self.hits = 0; return
         dist_cmd = self._integrate(self.cmds, now, 1)
         ang_cmd = self._integrate(self.cmds, now, 2)
         want_move = dist_cmd >= self.v_thr * self.W or ang_cmd >= self.w_thr * self.W
