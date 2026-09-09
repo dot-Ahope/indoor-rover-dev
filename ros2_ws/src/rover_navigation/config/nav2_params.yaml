@@ -157,71 +157,60 @@ local_costmap:
                           #   inflation 이 아니라 내접반경(반폭 0.165 + 패딩)이 정하므로,
                           #   패딩을 올려 그런 경로를 계획 단계에서 배제한다(내접 0.215).
                           #   inflation local 0.40 / global 0.35 은 둘 다 0.215 이상이라 조건 충족.
-      plugins: ["voxel_layer", "obstacle_layer", "inflation_layer"]
-      # 2026-09-08: ObstacleLayer → VoxelLayer. 2D 레이어는 라이다(z 0.185) 소거 광선이 그 아래 상자 마킹을 지움.
-      #   VoxelLayer 는 z 0~0.40m 를 5cm 8층으로 나눠 3D 로 마킹/소거 → 라이다 평면 아래 물체가 유지됨.
-      voxel_layer:
-        plugin: "nav2_costmap_2d::VoxelLayer"
+      plugins: ["stvl_layer", "obstacle_layer", "inflation_layer"]
+      # 2026-09-09 ★ VoxelLayer → SpatioTemporalVoxelLayer (STVL 2.3.4).
+      #   문제(§8.8 확정): 스톡 VoxelLayer 는 매 주기 **현재 복셀 격자만 보고** 컬럼 비용을 다시
+      #     계산한다. '마지막으로 관측된 때' 라는 개념이 없어, 카메라가 상자를 놓치는 순간 마킹이
+      #     사라진다. clearing:false 로 소거를 완전히 껐는데도 사라진 것이 결정적 증거였다(job155).
+      #   STVL 은 복셀마다 관측 시각을 갖고 시간에 따라 감쇠시킨다 → 관측이 끊겨도 유지된다.
+      #   구성은 STVL 공식 실내 예제(constrained_indoor_environment_config.yaml)를 따른다:
+      #     같은 토픽을 **마킹용/소거용 두 소스로 분리**하고, 소거용에만 절두체(frustum)를 준다.
+      #   핵심: min_z 0.25 = 카메라 실측 최소 측정거리(job71: 0.25m 288점 / 0.21m 8점).
+      #     이보다 가까운 복셀은 절두체 **밖**이라 가속 감쇠를 받지 않는다 →
+      #     로버가 다가가 카메라가 실명하는 구간에서 상자가 그대로 남는다. 이것이 노린 효과다.
+      #   동적 장애물 망각은 decay_acceleration 이 담당한다 — 절두체 **안**인데 재관측되지 않으면
+      #     더 빨리 지운다. 즉 '볼 수 있는데 없다' 와 '못 본다' 를 구분한다.
+      stvl_layer:
+        plugin: "spatio_temporal_voxel_layer/SpatioTemporalVoxelLayer"
         enabled: true
+        voxel_decay: 15.0             # 선형 감쇠 수명(초). 0.08m/s 로 상자를 지나가는 데 10~15s
+        decay_model: 0                # 0=선형, 1=지수, -1=영속
+        voxel_size: 0.05              # 코스트맵 해상도와 일치
+        track_unknown_space: true
+        mark_threshold: 0             # 복셀 1칸이면 마킹 (09-08: 근접 시 윗면만 보여 1칸이 됨)
+        update_footprint_enabled: true
+        combination_method: 1         # Maximum — 라이다 obstacle_layer 가 이 마킹을 낮출 수 없다
         origin_z: 0.0
-        z_resolution: 0.05
-        z_voxels: 8
-        max_obstacle_height: 0.40
-        unknown_threshold: 15
-        # 2026-09-08 야간 정정: 1 → 0. '상자는 2복셀 이상' 이라는 전제가 **거리에 따라 깨진다**.
-        #   멀 때는 앞면(z 0.045~0.101)이 보여 2칸을 채우지만, 가까워지면 카메라(z 0.143)가 내려다보며
-        #   **윗면(z≈0.11)만** 보여 [0.10,0.15) 한 칸뿐 → 문턱 1(=2개 이상)에 걸려 마킹이 사라진다.
-        #   사용자가 Foxglove 로 "상자가 사라지자 경로가 즉시 상자 쪽으로 바뀐다"를 직접 관측(job81).
-        #   잡음 억제는 min_obstacle_height(바닥 배제)와 obstacle_max_range 1.2(원거리 잡음)로 충분.
-        mark_threshold: 0
-        publish_voxel_map: false
-        # 2026-09-08 N1.5: D455f 포인트클라우드 소스 (실제 높이로 마킹, 3D 광선 소거).
-        #   min_obstacle_height 0.06: 바닥 배제(카메라 피치 오차 1.5°×1.8m ≈ 4.7cm 여유). 라이다 z 0.185, 카메라 z 0.143.
-        #   obstacle_max_range 1.8: D455 원거리 노이즈·바닥 오탐 억제. 09-08 오전의 depthimage_to_laserscan 띠 방식은 철회.
-        # 2026-09-09: 소스에서 scan 제거 (obstacle_layer 로 분리). 이 레이어는 카메라 전용.
-        observation_sources: depth
-        depth:
+        publish_voxel_map: false      # 진단 시 true (CPU·대역 비용 있음)
+        transform_tolerance: 0.2
+        mapping_mode: false
+        map_save_duration: 60.0
+        observation_sources: depth_mark depth_clear
+        depth_mark:
+          data_type: PointCloud2
           topic: /camera/camera/depth/color/points
-          data_type: "PointCloud2"
           marking: true
-          # 2026-09-09 진단 결과 되돌림(false → true).
-          #   clearing: false 로도 상자가 사라졌다(job155: 100↔0 을 오가다 t=15 이후 0).
-          #   소거가 불가능한 상태에서 값이 떨어졌으므로 기전은 **마킹 중단**이며,
-          #   '소거' 계열 가설(라이다 소거·카메라 자기 소거·raytrace_min_range)은 전부 기각.
-          #   → 필요한 것은 '덜 지우기' 가 아니라 '관측이 끊겨도 유지되는 기억'.
-          #     스톡 VoxelLayer 에는 그 개념이 없다. STVL 의 voxel decay/persistence 검토 대상.
-          clearing: true
-          # 2026-09-08 야간: 전역 코스트맵이 SLAM 지도상 자유 구역까지 점유로 채워 planner 가 경로를 못 냄.
-          #   깊이 잡음은 거리² 로 커지므로 사거리를 줄이고 높이 하한을 올려 오마킹을 억제한다.
-          #   상자 높이 0.11m 이므로 하한 0.08 이어도 z 0.08~0.11 구간이 남아 감지 유지.
-          min_obstacle_height: 0.06   # 2026-09-08 야간: 0.08→0.06. 상자 앞면(0.045~0.101)을 더 많이 포함해 복셀 수 확보. 바닥 실측 z≈−0.02 대비 여유 8cm
+          clearing: false
+          obstacle_range: 1.2         # D455 원거리 잡음 억제 (기존 obstacle_max_range 와 동일)
+          min_obstacle_height: 0.06   # 바닥 배제. 라이다 z 0.185, 카메라 z 0.143, 바닥 실측 z≈−0.02
           max_obstacle_height: 0.40
-          obstacle_max_range: 1.2
-          obstacle_min_range: 0.30
-          raytrace_max_range: 2.0
-          # 2026-09-08 야간 ★ 소프트웨어 기억: 0.30 → 0.90.
-          #   문제: 로버가 다가가면 상자가 카메라 최소측정거리(≈0.3m) 아래로 들어가 점이 사라지고,
-          #   그 순간 상자 '너머' 바닥·벽을 맞힌 광선이 상자 칸을 자유로 되돌려 지워 버린다.
-          #   (카메라 x+0.232 이므로 로버중심 0.52m = 앞범퍼 0.27m 부터 실명 — 회피 마지막 구간)
-          #   Nav2 의 raytraceLine 은 min_length 만큼 원점 쪽 셀을 건너뛰므로, 0.90 으로 두면
-          #   **카메라 0.9m 이내 셀은 깊이 광선이 절대 지우지 않는다** = 접근 중 마킹 유지.
-          #   0.9~1.2m 구간에서는 여전히 정상 관측·소거되므로 실제로 치운 물체는 그때 지워진다.
-          #   ⚠ 2026-09-08 재검토(동적 장애물 문제): 0.90 은 **과잉**이었다.
-          #     이 값은 '지우지 않을 반경' 이므로, 물리적으로 못 보는 범위보다 크게 잡으면
-          #     **볼 수 있는데도 안 지우는** 영역이 생기고 → 치운 물체·지나간 사람이 유령으로 남는다.
-          #     실측(job71 접근 로그): 카메라~물체 0.25m 에서 깊이점 288개, 0.21m 에서 8개
-          #     → 실제 최소 측정거리 ≈ 0.22~0.25m. 여유 10cm 를 더해 **0.35** 로 확정.
-          #     0.35 이상은 정상 소거되므로 동적 장애물은 정상적으로 잊는다.
-          #     남는 유령은 반경 0.35m 이내뿐이고, 로컬은 3×3m 롤링이라 지나가면 자동 소멸.
-          # 2026-09-09 job134: 0.35(로컬)/0.30(전역) → 0.60. 레이어를 분리해 라이다를 배제했는데도
-          #   같은 시점에 상자가 지워졌다 → 지운 주체는 **카메라 자신**이었다(이 레이어의 유일한
-          #   소거 소스가 depth 이고, 마스터는 Maximum 합성이라 마스터 0 = 모든 레이어 0).
-          #   기전은 '못 봐서'가 아니다. 상자 옆·너머 바닥점으로 나가는 광선이 상자 셀을 스쳐
-          #   지나며 지운다 → 카메라 최소측정거리(0.22~0.25m)와 무관하다.
-          #   실측 소거 시점: 전역 카메라~상자 0.48m, 로컬 0.29m. 이를 덮되 유령 반경은
-          #   09-08 의 0.90 보다 작게 두어 0.60 으로 확정. 0.60 밖에서는 정상 소거되므로
-          #   치운 물체는 로버가 0.6m 이상 떨어져 볼 때 잊힌다.
-          raytrace_min_range: 0.60
+          expected_update_rate: 0.0
+          observation_persistence: 0.0  # STVL 자체 감쇠가 기억을 담당하므로 버퍼 유지는 불필요
+          inf_is_valid: false
+          filter: "passthrough"
+          voxel_min_points: 0
+          clear_after_reading: true
+        depth_clear:
+          data_type: PointCloud2
+          topic: /camera/camera/depth/color/points
+          marking: false
+          clearing: true
+          max_z: 1.5                  # 절두체 원평면. 마킹은 1.2m 까지지만 소거 판단은 조금 더 멀리
+          min_z: 0.25                 # 절두체 근평면 = 실측 최소 측정거리. 이 안쪽은 '못 보는 곳'
+          vertical_fov_angle: 1.012   # D455 depth 수직 58°
+          horizontal_fov_angle: 1.518 # D455 depth 수평 87°
+          decay_acceleration: 3.0     # 절두체 안에서 재관측 안 되면 가속 감쇠(동적 장애물 망각)
+          model_type: 0               # 0 = depth camera (절두체), 1 = 3D 라이다
       # 2026-09-09 ★ 레이어 분리 — 센서는 '자기가 감지할 수 있는 것' 만 지울 수 있어야 한다.
       #   문제(job128 실측): scan 과 depth 가 같은 voxel_layer 의 소스여서 **같은 격자를 공유**했다.
       #     라이다는 z 0.185 에 있어 높이 0.11m 상자를 원리적으로 못 보는데, 그 셀을 관통해
@@ -314,75 +303,52 @@ global_costmap:
                           #   inflation 이 아니라 내접반경(반폭 0.165 + 패딩)이 정하므로,
                           #   패딩을 올려 그런 경로를 계획 단계에서 배제한다(내접 0.215).
                           #   inflation local 0.40 / global 0.35 은 둘 다 0.215 이상이라 조건 충족.
-      plugins: ["static_layer", "voxel_layer", "obstacle_layer", "inflation_layer"]
+      plugins: ["static_layer", "stvl_layer", "obstacle_layer", "inflation_layer"]
       static_layer:
         plugin: "nav2_costmap_2d::StaticLayer"
         map_subscribe_transient_local: true   # slam_toolbox /map 수신
-      # 2026-09-08: ObstacleLayer → VoxelLayer. 2D 레이어는 라이다(z 0.185) 소거 광선이 그 아래 상자 마킹을 지움.
-      #   VoxelLayer 는 z 0~0.40m 를 5cm 8층으로 나눠 3D 로 마킹/소거 → 라이다 평면 아래 물체가 유지됨.
-      voxel_layer:
-        plugin: "nav2_costmap_2d::VoxelLayer"
+      # STVL — 설정 근거는 local_costmap 쪽 주석 참조. 전역도 같은 값을 쓴다.
+      stvl_layer:
+        plugin: "spatio_temporal_voxel_layer/SpatioTemporalVoxelLayer"
         enabled: true
+        voxel_decay: 15.0             # 선형 감쇠 수명(초). 0.08m/s 로 상자를 지나가는 데 10~15s
+        decay_model: 0                # 0=선형, 1=지수, -1=영속
+        voxel_size: 0.05              # 코스트맵 해상도와 일치
+        track_unknown_space: true
+        mark_threshold: 0             # 복셀 1칸이면 마킹 (09-08: 근접 시 윗면만 보여 1칸이 됨)
+        update_footprint_enabled: true
+        combination_method: 1         # Maximum — 라이다 obstacle_layer 가 이 마킹을 낮출 수 없다
         origin_z: 0.0
-        z_resolution: 0.05
-        z_voxels: 8
-        max_obstacle_height: 0.40
-        unknown_threshold: 15
-        # 2026-09-08 야간 정정: 1 → 0. '상자는 2복셀 이상' 이라는 전제가 **거리에 따라 깨진다**.
-        #   멀 때는 앞면(z 0.045~0.101)이 보여 2칸을 채우지만, 가까워지면 카메라(z 0.143)가 내려다보며
-        #   **윗면(z≈0.11)만** 보여 [0.10,0.15) 한 칸뿐 → 문턱 1(=2개 이상)에 걸려 마킹이 사라진다.
-        #   사용자가 Foxglove 로 "상자가 사라지자 경로가 즉시 상자 쪽으로 바뀐다"를 직접 관측(job81).
-        #   잡음 억제는 min_obstacle_height(바닥 배제)와 obstacle_max_range 1.2(원거리 잡음)로 충분.
-        mark_threshold: 0
-        publish_voxel_map: false
-        # 2026-09-08 N1.5: D455f 포인트클라우드 소스 (실제 높이로 마킹, 3D 광선 소거).
-        #   min_obstacle_height 0.06: 바닥 배제(카메라 피치 오차 1.5°×1.8m ≈ 4.7cm 여유). 라이다 z 0.185, 카메라 z 0.143.
-        #   obstacle_max_range 1.8: D455 원거리 노이즈·바닥 오탐 억제. 09-08 오전의 depthimage_to_laserscan 띠 방식은 철회.
-        # 2026-09-09: 소스에서 scan 제거 (obstacle_layer 로 분리). 이 레이어는 카메라 전용.
-        observation_sources: depth
-        depth:
+        publish_voxel_map: false      # 진단 시 true (CPU·대역 비용 있음)
+        transform_tolerance: 0.2
+        mapping_mode: false
+        map_save_duration: 60.0
+        observation_sources: depth_mark depth_clear
+        depth_mark:
+          data_type: PointCloud2
           topic: /camera/camera/depth/color/points
-          data_type: "PointCloud2"
           marking: true
-          # 2026-09-09 진단 결과 되돌림(false → true).
-          #   clearing: false 로도 상자가 사라졌다(job155: 100↔0 을 오가다 t=15 이후 0).
-          #   소거가 불가능한 상태에서 값이 떨어졌으므로 기전은 **마킹 중단**이며,
-          #   '소거' 계열 가설(라이다 소거·카메라 자기 소거·raytrace_min_range)은 전부 기각.
-          #   → 필요한 것은 '덜 지우기' 가 아니라 '관측이 끊겨도 유지되는 기억'.
-          #     스톡 VoxelLayer 에는 그 개념이 없다. STVL 의 voxel decay/persistence 검토 대상.
-          clearing: true
-          # 2026-09-08 야간: 전역 코스트맵이 SLAM 지도상 자유 구역까지 점유로 채워 planner 가 경로를 못 냄.
-          #   깊이 잡음은 거리² 로 커지므로 사거리를 줄이고 높이 하한을 올려 오마킹을 억제한다.
-          #   상자 높이 0.11m 이므로 하한 0.08 이어도 z 0.08~0.11 구간이 남아 감지 유지.
-          min_obstacle_height: 0.06   # 2026-09-08 야간: 0.08→0.06. 상자 앞면(0.045~0.101)을 더 많이 포함해 복셀 수 확보. 바닥 실측 z≈−0.02 대비 여유 8cm
+          clearing: false
+          obstacle_range: 1.2         # D455 원거리 잡음 억제 (기존 obstacle_max_range 와 동일)
+          min_obstacle_height: 0.06   # 바닥 배제. 라이다 z 0.185, 카메라 z 0.143, 바닥 실측 z≈−0.02
           max_obstacle_height: 0.40
-          obstacle_max_range: 1.2
-          obstacle_min_range: 0.30
-          raytrace_max_range: 2.0
-          # 2026-09-08 야간 ★ 소프트웨어 기억: 0.30 → 0.90.
-          #   문제: 로버가 다가가면 상자가 카메라 최소측정거리(≈0.3m) 아래로 들어가 점이 사라지고,
-          #   그 순간 상자 '너머' 바닥·벽을 맞힌 광선이 상자 칸을 자유로 되돌려 지워 버린다.
-          #   (카메라 x+0.232 이므로 로버중심 0.52m = 앞범퍼 0.27m 부터 실명 — 회피 마지막 구간)
-          #   Nav2 의 raytraceLine 은 min_length 만큼 원점 쪽 셀을 건너뛰므로, 0.90 으로 두면
-          #   **카메라 0.9m 이내 셀은 깊이 광선이 절대 지우지 않는다** = 접근 중 마킹 유지.
-          #   0.9~1.2m 구간에서는 여전히 정상 관측·소거되므로 실제로 치운 물체는 그때 지워진다.
-          #   전역은 기본값 유지. 0.30 은 실측 최소 측정거리(0.22~0.25m)보다 커서 사각 보호 효과도 있고,
-          #   그 이상은 정상 소거되므로 동적 장애물을 잊는다. (로컬 0.35 와 사실상 같은 정책)
-          #   ⚠ 2026-09-08 야간 실측: **전역에 0.90 같은 큰 값을 걸면 안 된다.** 전역은 롤링이 아니라 누적이므로
-          #     근접 소거를 막으면 로버가 지나간 자리마다 유령 장애물이 영구히 쌓인다. job79 에서 전역
-          #     코스트맵이 통로 전체를 X/# 로 채운 것을 확인했고, 그 결과 job77 은 직선 1.40m 목표에
-          #     **5.79m(비 4.14) 경로**를 내고 −1.11m 까지 우회하며 82초를 헤매다 ABORTED.
-          #     → 전역은 기본값 0.30 유지(정상 소거). 근접 실명 구간의 안전은 로컬 기억 + RPP 충돌검사
-          #       0.40m(max_allowed_time_to_collision 5.0s)가 담당한다.
-          # 2026-09-09 job134: 0.35(로컬)/0.30(전역) → 0.60. 레이어를 분리해 라이다를 배제했는데도
-          #   같은 시점에 상자가 지워졌다 → 지운 주체는 **카메라 자신**이었다(이 레이어의 유일한
-          #   소거 소스가 depth 이고, 마스터는 Maximum 합성이라 마스터 0 = 모든 레이어 0).
-          #   기전은 '못 봐서'가 아니다. 상자 옆·너머 바닥점으로 나가는 광선이 상자 셀을 스쳐
-          #   지나며 지운다 → 카메라 최소측정거리(0.22~0.25m)와 무관하다.
-          #   실측 소거 시점: 전역 카메라~상자 0.48m, 로컬 0.29m. 이를 덮되 유령 반경은
-          #   09-08 의 0.90 보다 작게 두어 0.60 으로 확정. 0.60 밖에서는 정상 소거되므로
-          #   치운 물체는 로버가 0.6m 이상 떨어져 볼 때 잊힌다.
-          raytrace_min_range: 0.60
+          expected_update_rate: 0.0
+          observation_persistence: 0.0  # STVL 자체 감쇠가 기억을 담당하므로 버퍼 유지는 불필요
+          inf_is_valid: false
+          filter: "passthrough"
+          voxel_min_points: 0
+          clear_after_reading: true
+        depth_clear:
+          data_type: PointCloud2
+          topic: /camera/camera/depth/color/points
+          marking: false
+          clearing: true
+          max_z: 1.5                  # 절두체 원평면. 마킹은 1.2m 까지지만 소거 판단은 조금 더 멀리
+          min_z: 0.25                 # 절두체 근평면 = 실측 최소 측정거리. 이 안쪽은 '못 보는 곳'
+          vertical_fov_angle: 1.012   # D455 depth 수직 58°
+          horizontal_fov_angle: 1.518 # D455 depth 수평 87°
+          decay_acceleration: 3.0     # 절두체 안에서 재관측 안 되면 가속 감쇠(동적 장애물 망각)
+          model_type: 0               # 0 = depth camera (절두체), 1 = 3D 라이다
       # 2026-09-09 레이어 분리 (근거는 local_costmap 쪽 주석 참조).
       obstacle_layer:
         plugin: "nav2_costmap_2d::ObstacleLayer"

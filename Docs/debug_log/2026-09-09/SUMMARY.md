@@ -588,6 +588,75 @@ bridge 가 상시 CPU 88~95%(≈1코어)로 최대 소비자였고, 같은 시�
 lean 합산 약 60 msg/s. 기동 시험에서 파라미터 거부 없이 정상 동작(3.2.4, 포트 8765, 유휴 0.7%).
 효과는 다음 기동 때 부하 상태에서 측정한다.
 
+## 8.11 STVL 도입 (job160~166)
+
+§8.8 에서 기전이 '마킹 중단' 으로 확정됐고, 스톡 `VoxelLayer` 에는 '마지막 관측 시각' 개념이
+없으므로 파라미터로는 해결되지 않는다. 사용자 판단으로 STVL 도입.
+
+### 설치
+
+```
+sudo apt-get install -y ros-humble-spatio-temporal-voxel-layer   (사용자에게 사전 고지)
+→ spatio_temporal_voxel_layer 2.3.4 + ros-humble-openvdb-vendor
+플러그인 클래스: spatio_temporal_voxel_layer/SpatioTemporalVoxelLayer
+```
+
+파라미터 이름은 **추측하지 않고** 설치본에서 확인했다 — 라이브러리 심볼 추출 + 함께 설치된
+공식 예제 `example/constrained_indoor_environment_config.yaml`.
+
+### 구성 — 공식 실내 예제의 '마킹/소거 소스 분리' 패턴
+
+```
+plugins: local  ['stvl_layer', 'obstacle_layer', 'inflation_layer']
+         global ['static_layer', 'stvl_layer', 'obstacle_layer', 'inflation_layer']
+
+stvl_layer (양쪽 동일)
+  voxel_decay 15.0 / decay_model 0(선형) / voxel_size 0.05 / mark_threshold 0
+  combination_method 1 (Maximum — 라이다 레이어가 이 마킹을 낮출 수 없다)
+  observation_sources: depth_mark depth_clear      ← 같은 토픽을 두 소스로 분리
+  depth_mark : marking true / clearing false / obstacle_range 1.2 / min_obstacle_height 0.06
+  depth_clear: marking false / clearing true
+               min_z 0.25  max_z 1.5
+               vertical_fov_angle 1.012(58°)  horizontal_fov_angle 1.518(87°)
+               decay_acceleration 3.0  model_type 0(depth camera)
+```
+
+**핵심은 `min_z: 0.25`** — 카메라 실측 최소 측정거리(job71: 0.25m 288점 / 0.21m 8점)를
+절두체 근평면으로 준다. 이보다 가까운 복셀은 절두체 **밖**이라 가속 감쇠를 받지 않으므로,
+로버가 다가가 카메라가 실명하는 구간에서 상자가 그대로 남는다. 이것이 노린 효과다.
+
+동적 장애물 망각은 `decay_acceleration` 이 담당한다 — 절두체 **안**인데 재관측되지 않으면
+더 빨리 지운다. 즉 **'볼 수 있는데 없다' 와 '못 본다' 를 구분**한다. 스톡 VoxelLayer 는
+이 구분이 불가능했고, 그것이 09-08 부터 반복된 문제의 뿌리였다.
+
+### 겪은 오류 1건 (기록)
+
+첫 배포에서 `planner_server` 가 exit 255 로 죽었다:
+`FATAL: Can not get 'plugin' param value for static_layer`.
+YAML 에서 `static_layer:` 와 `voxel_layer:` 가 인접해 있었는데, 교체 스크립트가
+`plugins:` 줄부터 다음 마커까지를 잘라내며 **static_layer 블록까지 지웠다.**
+복구 후 "plugins 에 나열된 모든 레이어에 plugin 키가 있는가" 를 YAML 파싱으로 검증하는
+절차를 추가했다.
+
+### 결과
+
+```
+local_costmap : stvl_layer being initialized as SpatioTemporalVoxelLayer! → Initialized
+global_costmap: 동일
+전 노드 active, 코스트맵 발행 1.667 / 0.667 Hz, 오류 없음
+```
+
+**주행 검증 미실행** (보드 RESET 필요 상태).
+
+## 8.12 foxglove 경량화 효과 확인
+
+`viz:=lean` 적용 후 CPU 상위 목록에서 **foxglove_bridge 가 사라졌다**(이전 1위 88~95%).
+
+```
+이전: foxglov+ 88.2% / ekf_node 41.2% / async_s+ 38.2% / bt_navi+ 31.4% …
+이후: python3 39.2% / rplidar+ 19.6% / control+ 15.7% / realsen+ 14.7% / planner+ 12.7%
+```
+
 ## 8.5 미완 / 다음
 - 상자 제거 시 동적 장애물 망각 확인 (`raytrace_min_range` local 0.35 / global 0.30).
 - 그 뒤 N2 전체 맵 작성 주행 → N3 프런티어 탐사.
