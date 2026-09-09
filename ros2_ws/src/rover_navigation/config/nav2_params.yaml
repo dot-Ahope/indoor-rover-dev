@@ -184,6 +184,12 @@ local_costmap:
           topic: /camera/camera/depth/color/points
           data_type: "PointCloud2"
           marking: true
+          # 2026-09-09 진단 결과 되돌림(false → true).
+          #   clearing: false 로도 상자가 사라졌다(job155: 100↔0 을 오가다 t=15 이후 0).
+          #   소거가 불가능한 상태에서 값이 떨어졌으므로 기전은 **마킹 중단**이며,
+          #   '소거' 계열 가설(라이다 소거·카메라 자기 소거·raytrace_min_range)은 전부 기각.
+          #   → 필요한 것은 '덜 지우기' 가 아니라 '관측이 끊겨도 유지되는 기억'.
+          #     스톡 VoxelLayer 에는 그 개념이 없다. STVL 의 voxel decay/persistence 검토 대상.
           clearing: true
           # 2026-09-08 야간: 전역 코스트맵이 SLAM 지도상 자유 구역까지 점유로 채워 planner 가 경로를 못 냄.
           #   깊이 잡음은 거리² 로 커지므로 사거리를 줄이고 높이 하한을 올려 오마킹을 억제한다.
@@ -338,6 +344,12 @@ global_costmap:
           topic: /camera/camera/depth/color/points
           data_type: "PointCloud2"
           marking: true
+          # 2026-09-09 진단 결과 되돌림(false → true).
+          #   clearing: false 로도 상자가 사라졌다(job155: 100↔0 을 오가다 t=15 이후 0).
+          #   소거가 불가능한 상태에서 값이 떨어졌으므로 기전은 **마킹 중단**이며,
+          #   '소거' 계열 가설(라이다 소거·카메라 자기 소거·raytrace_min_range)은 전부 기각.
+          #   → 필요한 것은 '덜 지우기' 가 아니라 '관측이 끊겨도 유지되는 기억'.
+          #     스톡 VoxelLayer 에는 그 개념이 없다. STVL 의 voxel decay/persistence 검토 대상.
           clearing: true
           # 2026-09-08 야간: 전역 코스트맵이 SLAM 지도상 자유 구역까지 점유로 채워 planner 가 경로를 못 냄.
           #   깊이 잡음은 거리² 로 커지므로 사거리를 줄이고 높이 하한을 올려 오마킹을 억제한다.
