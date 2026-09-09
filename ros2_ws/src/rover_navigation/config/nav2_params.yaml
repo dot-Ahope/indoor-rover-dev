@@ -152,8 +152,12 @@ local_costmap:
       #   내접반경도 0.215 → 0.185 로 줄어 inflation_radius 0.25 조건(≥내접)은 계속 충족.
       #   ⚠ 대가: 라이다 0.2m 사각에 대한 여유 감소. 다만 09-08 이후 깊이 카메라가 그 구간을 마킹하고
       #     RPP 충돌검사가 0.40m 를 보므로 09-02 에 패딩을 넣던 때보다 위험이 낮다.
-      footprint_padding: 0.02
-      plugins: ["voxel_layer", "inflation_layer"]
+      footprint_padding: 0.05   # 2026-09-09: 0.02 → 0.05. job126 에서 전역 경로가 좌우로 뒤집히며
+                          #   여유 0.001m 짜리 '스치는' 우회피 경로가 생성됐다. 통과 가능 여부는
+                          #   inflation 이 아니라 내접반경(반폭 0.165 + 패딩)이 정하므로,
+                          #   패딩을 올려 그런 경로를 계획 단계에서 배제한다(내접 0.215).
+                          #   inflation local 0.40 / global 0.35 은 둘 다 0.215 이상이라 조건 충족.
+      plugins: ["voxel_layer", "obstacle_layer", "inflation_layer"]
       # 2026-09-08: ObstacleLayer → VoxelLayer. 2D 레이어는 라이다(z 0.185) 소거 광선이 그 아래 상자 마킹을 지움.
       #   VoxelLayer 는 z 0~0.40m 를 5cm 8층으로 나눠 3D 로 마킹/소거 → 라이다 평면 아래 물체가 유지됨.
       voxel_layer:
@@ -174,7 +178,8 @@ local_costmap:
         # 2026-09-08 N1.5: D455f 포인트클라우드 소스 (실제 높이로 마킹, 3D 광선 소거).
         #   min_obstacle_height 0.06: 바닥 배제(카메라 피치 오차 1.5°×1.8m ≈ 4.7cm 여유). 라이다 z 0.185, 카메라 z 0.143.
         #   obstacle_max_range 1.8: D455 원거리 노이즈·바닥 오탐 억제. 09-08 오전의 depthimage_to_laserscan 띠 방식은 철회.
-        observation_sources: scan depth
+        # 2026-09-09: 소스에서 scan 제거 (obstacle_layer 로 분리). 이 레이어는 카메라 전용.
+        observation_sources: depth
         depth:
           topic: /camera/camera/depth/color/points
           data_type: "PointCloud2"
@@ -203,6 +208,27 @@ local_costmap:
           #     0.35 이상은 정상 소거되므로 동적 장애물은 정상적으로 잊는다.
           #     남는 유령은 반경 0.35m 이내뿐이고, 로컬은 3×3m 롤링이라 지나가면 자동 소멸.
           raytrace_min_range: 0.35
+      # 2026-09-09 ★ 레이어 분리 — 센서는 '자기가 감지할 수 있는 것' 만 지울 수 있어야 한다.
+      #   문제(job128 실측): scan 과 depth 가 같은 voxel_layer 의 소스여서 **같은 격자를 공유**했다.
+      #     라이다는 z 0.185 에 있어 높이 0.11m 상자를 원리적으로 못 보는데, 그 셀을 관통해
+      #     뒤쪽 벽까지 레이트레이스하며 카메라가 찍어 둔 마킹을 자유 공간으로 되돌렸다.
+      #     출발 시엔 카메라 마킹이 더 빨라 버티지만, 카메라가 최소측정거리 안으로 들어가
+      #     마킹이 멈추는 순간 소거만 남아 상자가 증발한다.
+      #     t=14.0s 에 lc_box/gc_box 가 99 → 0 으로 떨어지고, 그 즉시 계획 여유가 −10.2cm
+      #     (= 상자를 관통하는 경로)가 되어 접촉했다.
+      #   해법: 라이다를 **별도 ObstacleLayer** 로 분리. 레이어마다 자기 격자를 가지며 마스터는
+      #     combination_method: 1 (Maximum) 으로 합치므로 라이다 레이어는 카메라 레이어의
+      #     마킹을 **낮출 수 없다**. raytrace_min_range 인상 같은 파라미터 조정과 달리
+      #     '못 보는 것을 지운다' 는 상황 자체가 구조적으로 불가능해진다.
+      #   비용: 격자 1장 추가. 라이다는 2D 평면이므로 VoxelLayer 대신 ObstacleLayer 로 충분.
+      #   ⚠ 레이어를 나누면 그 레이어의 마킹은 **그 레이어의 센서만** 지울 수 있다.
+      #     따라서 각 레이어에는 자기가 찍은 것을 되돌릴 수 있는 센서가 반드시 있어야 한다
+      #     (여기서는 카메라 레이어=깊이 광선 소거, 라이다 레이어=스캔 광선 소거).
+      obstacle_layer:
+        plugin: "nav2_costmap_2d::ObstacleLayer"
+        enabled: true
+        combination_method: 1        # Maximum — 다른 레이어의 마킹을 덮어쓰지 않는다
+        observation_sources: scan
         scan:
           topic: /scan
           data_type: "LaserScan"
@@ -210,6 +236,7 @@ local_costmap:
           clearing: true
           marking: true
           raytrace_max_range: 12.0
+          # 라이다 자신이 마킹한 것만 지우므로 근접 소거를 막을 이유가 없다 → 원래 값 유지.
           raytrace_min_range: 0.2
           obstacle_max_range: 8.0
           obstacle_min_range: 0.2
@@ -268,8 +295,12 @@ global_costmap:
       #   내접반경도 0.215 → 0.185 로 줄어 inflation_radius 0.25 조건(≥내접)은 계속 충족.
       #   ⚠ 대가: 라이다 0.2m 사각에 대한 여유 감소. 다만 09-08 이후 깊이 카메라가 그 구간을 마킹하고
       #     RPP 충돌검사가 0.40m 를 보므로 09-02 에 패딩을 넣던 때보다 위험이 낮다.
-      footprint_padding: 0.02
-      plugins: ["static_layer", "voxel_layer", "inflation_layer"]
+      footprint_padding: 0.05   # 2026-09-09: 0.02 → 0.05. job126 에서 전역 경로가 좌우로 뒤집히며
+                          #   여유 0.001m 짜리 '스치는' 우회피 경로가 생성됐다. 통과 가능 여부는
+                          #   inflation 이 아니라 내접반경(반폭 0.165 + 패딩)이 정하므로,
+                          #   패딩을 올려 그런 경로를 계획 단계에서 배제한다(내접 0.215).
+                          #   inflation local 0.40 / global 0.35 은 둘 다 0.215 이상이라 조건 충족.
+      plugins: ["static_layer", "voxel_layer", "obstacle_layer", "inflation_layer"]
       static_layer:
         plugin: "nav2_costmap_2d::StaticLayer"
         map_subscribe_transient_local: true   # slam_toolbox /map 수신
@@ -293,7 +324,8 @@ global_costmap:
         # 2026-09-08 N1.5: D455f 포인트클라우드 소스 (실제 높이로 마킹, 3D 광선 소거).
         #   min_obstacle_height 0.06: 바닥 배제(카메라 피치 오차 1.5°×1.8m ≈ 4.7cm 여유). 라이다 z 0.185, 카메라 z 0.143.
         #   obstacle_max_range 1.8: D455 원거리 노이즈·바닥 오탐 억제. 09-08 오전의 depthimage_to_laserscan 띠 방식은 철회.
-        observation_sources: scan depth
+        # 2026-09-09: 소스에서 scan 제거 (obstacle_layer 로 분리). 이 레이어는 카메라 전용.
+        observation_sources: depth
         depth:
           topic: /camera/camera/depth/color/points
           data_type: "PointCloud2"
@@ -323,6 +355,12 @@ global_costmap:
           #     → 전역은 기본값 0.30 유지(정상 소거). 근접 실명 구간의 안전은 로컬 기억 + RPP 충돌검사
           #       0.40m(max_allowed_time_to_collision 5.0s)가 담당한다.
           raytrace_min_range: 0.30
+      # 2026-09-09 레이어 분리 (근거는 local_costmap 쪽 주석 참조).
+      obstacle_layer:
+        plugin: "nav2_costmap_2d::ObstacleLayer"
+        enabled: true
+        combination_method: 1        # Maximum — 다른 레이어의 마킹을 덮어쓰지 않는다
+        observation_sources: scan
         scan:
           topic: /scan
           data_type: "LaserScan"
@@ -330,6 +368,7 @@ global_costmap:
           clearing: true
           marking: true
           raytrace_max_range: 12.0
+          # 라이다 자신이 마킹한 것만 지우므로 근접 소거를 막을 이유가 없다 → 원래 값 유지.
           raytrace_min_range: 0.2
           obstacle_max_range: 8.0
           obstacle_min_range: 0.2
