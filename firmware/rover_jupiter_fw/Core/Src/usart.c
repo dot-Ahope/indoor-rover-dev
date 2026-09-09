@@ -82,11 +82,20 @@ void MX_USART1_UART_Init(void)
     Error_Handler();
   }
   /* USER CODE BEGIN USART1_Init 2 */
-  /* micro-ROS 발행률 개선용 baudrate override.
-   *   921600 → 2000000 (2 Mbps) — CH340N datasheet 최대치, 정격 내.
-   * CubeMX .ioc 도 921600 으로 돼 있으나 여기서 override (재생성 안전망).
-   * **Jetson 측 micro_ros_agent 도 -b 2000000 으로 맞춰야 함**. */
-  huart1.Init.BaudRate = 2000000;
+  /* micro-ROS baudrate override.
+   * 2026-09-09: 2000000 → 460800 으로 **낮춤**.
+   *   - 2 Mbps 는 CH340N datasheet 최대치였고, 흐름제어가 없어(HwFlowCtl NONE)
+   *     CH340 이 보드를 막을 수단이 없다. 2 Mbps 에서 큰 프레임
+   *     (/wheel_odom 732 B)이 수십 초 단위로 전멸했고 460800 에서는
+   *     70 s 연속 100% 전달·드롭 0 이었다 — 2026-09-09 실측.
+   *   - ⚠ 이건 우회다. 같은 2 Mbps 로 2026-08-27 에는 60 kB/s 가 안정적이었으므로
+   *     용량 한계가 아니라 그 이후의 회귀다. 원인 미확정(물리 배선 / 09-07 모터
+   *     PWM 20kHz EMI / CH340·드라이버 상태). Docs/debug_log/2026-09-09/SUMMARY.md
+   *   - 실제 수요는 약 22.4 kB/s (=224 kbps). 460800 은 46 kB/s 로 2배 여유.
+   *   - 참고: 발행 총수요 계산은 microros_task.c 스핀 루프 주석 참조.
+   * **Jetson 측 micro_ros_agent 도 -b 460800 으로 맞춰야 함**
+   *   (rover_bringup/launch/base.launch.py). */
+  huart1.Init.BaudRate = 460800;
   if (HAL_UART_Init(&huart1) != HAL_OK)
   {
     Error_Handler();

@@ -108,9 +108,17 @@ static char s_status_message[64];
 /* values[]: 휠별 텔레메트리 (2026-09-07). key "L"/"R", value 는 정수 필드 문자열
  *   tgt=목표 mm/s  v=측정 mm/s  d=duty %  pps=펄스/s  T=평균주기 us  cv=주기 변동계수 %  w=High폭 us  sc=스톨창 샘플
  * 목적: 구속(트랙 정지) 상태에서도 FG 가 펄스를 내는 현상의 서명(pps·cv vs duty) 수집. */
-static diagnostic_msgs__msg__KeyValue s_status_kv[2];
-static char s_status_kv_key[2][2] = { "L", "R" };
-static char s_status_kv_val[2][72];
+/* 2026-09-09 진단: values[2] = "TX" — 발행 시도/실패 카운터.
+ * UART5 콘솔이 배선돼 있지 않아 printf 로그를 읽을 수 없으므로,
+ * 도달이 확인된 /rover/status 에 실어 보낸다. rcl_publish 실패 여부를
+ * 직접 보는 것이 목적 (odom 이 왜 0 Hz 가 되는지 판별). */
+static diagnostic_msgs__msg__KeyValue s_status_kv[3];
+static char s_status_kv_key[3][3] = { "L", "R", "TX" };
+static char s_status_kv_val[3][72];
+static uint32_t s_cycles = 0, s_odom_try = 0, s_odom_fail = 0, s_imu_try = 0, s_imu_fail = 0;
+static int32_t  s_odom_rc = 0;
+/* microros_transport.c 계측 카운터 */
+extern volatile uint32_t g_tx_call, g_tx_busy, g_tx_hal, g_tx_max, g_tx_full, g_tx_hw;
 /* time sync 캐시 — boot 시 1회 계산 (rmw_uros_sync_session).
  * sync 실패 시 0 유지 → fill_stamp() 가 기존 boot-time stamp 그대로 출력. */
 static int64_t s_time_offset_ns = 0;
@@ -322,17 +330,17 @@ void microros_task_run(void *arg)
     s_status_array_storage[0].message.capacity = sizeof(s_status_message);
     /* values[]: 휠별 텔레메트리 KeyValue ×2 (정적 스토리지) */
     memset(s_status_kv, 0, sizeof(s_status_kv));
-    for (int i = 0; i < 2; i++) {
+    for (int i = 0; i < 3; i++) {
         s_status_kv[i].key.data       = s_status_kv_key[i];
-        s_status_kv[i].key.size       = 1;
+        s_status_kv[i].key.size       = strlen(s_status_kv_key[i]);
         s_status_kv[i].key.capacity   = sizeof(s_status_kv_key[i]);
         s_status_kv[i].value.data     = s_status_kv_val[i];
         s_status_kv[i].value.size     = 0;
         s_status_kv[i].value.capacity = sizeof(s_status_kv_val[i]);
     }
     s_status_array_storage[0].values.data     = s_status_kv;
-    s_status_array_storage[0].values.size     = 2;
-    s_status_array_storage[0].values.capacity = 2;
+    s_status_array_storage[0].values.size     = 3;
+    s_status_array_storage[0].values.capacity = 3;
 
     /* time sync — agent 와 boot offset 계산. 실패해도 진행. */
     if (rmw_uros_sync_session(1000) == RMW_RET_OK) {
@@ -354,24 +362,24 @@ void microros_task_run(void *arg)
 
     /* 9) Spin loop — vTaskDelayUntil 로 20ms cycle.
      *
-     *    대역 예산 (2026-09-09 실측으로 확정). 병목은 UART 가 아니라 **USB** 다:
-     *      /dev/rover = ttyCH341USB0 (CH340, 1a86:7523), USB Full Speed 12Mbps,
-     *      bulk 엔드포인트 wMaxPacketSize = 0x20 = 32 B → 실효 상한 약 32~40 kB/s.
-     *      UART 는 2,000,000 bps (=200 kB/s) 로 설정돼 있지만 그 여유는 쓸 수 없다.
-     *    실측: odom 단독으로 50.9 Hz × 720 B = 36.6 kB/s 가 최대치였고 그 위로는 못 올라갔다.
+     *    발행 대역 예산 (2026-09-09).
+     *    배경: /wheel_odom(732 B) 이 수십 초씩 통째로 사라져 EKF 가 8.5 m 발산했다
+     *          (job92 → Nav2 ABORTED). 진짜 원인은 링크 계층이었고 baudrate 를
+     *          2 Mbps → 460800 으로 낮춰 해소했다 (usart.c 주석 참조).
+     *    그래도 이 게이트는 유지한다 — 발행량을 필요한 만큼으로 줄이는 것은
+     *    원인과 무관하게 옳고, 여유가 클수록 링크 문제에 둔감해지기 때문이다.
      *
-     *    이전 구현은 odom/imu/mag 를 '매 cycle' 발행 했다 → 50 Hz 일 때 수요 60.5 kB/s
-     *    (상한의 1.5배). imu_read() 성공 여부가 간헐적이라(imu_processor.c s_si.valid)
-     *    보드 IMU 가 살아날 때마다 대역이 초과되고, 가장 큰 메시지인 odom 이 먼저 굶어
-     *    수십 초간 사라졌다. 그 결과 EKF 가 유일한 속도 관측을 잃고 8.5 m 발산했다
-     *    (2026-09-09 job92 → Nav2 ABORTED). → 아래처럼 전부 시간 게이트로 바꿈.
+     *    ⚠ '매 cycle 발행' 이 그 자체로 과했던 것은 사실이나, 그것이 원인은 아니었다.
+     *      2026-08-27 에는 같은 2 Mbps 로 odom 50 Hz + imu 50 Hz (≈60 kB/s) 가
+     *      안정적으로 나왔다. 즉 용량 문제가 아니라 그 이후 생긴 회귀였다.
      *
-     *      /wheel_odom    30 Hz  × 720 B = 21.6 kB/s   (EKF 필터 주기가 30 Hz — 그 이상은 낭비)
+     *      /wheel_odom    33 ms 게이트 → 20 ms 루프에서 실효 25 Hz × 732 B = 18.3 kB/s
+     *                     (EKF 필터가 30 Hz 라 그 이상은 낭비. 실측 25.005 Hz)
      *      /imu/data_raw   5 Hz  × 330 B =  1.7 kB/s   (EKF 미사용 — CLAUDE.md §4, 카메라 IMU 가 소스)
      *      /imu/mag        5 Hz  × 130 B =  0.7 kB/s   (미사용. 진단용으로만 유지)
      *      /rover/status   5 Hz  × 280 B =  1.4 kB/s
      *      /battery        1 Hz  × 100 B =  0.1 kB/s
-     *      합계 약 25.4 kB/s ≈ 상한의 65% — 여유 확보.
+     *      합계 약 22.4 kB/s (=224 kbps). 460800(46 kB/s) 대비 49%.
      *    IMU/mag 를 완전히 지우지 않고 5 Hz 로 남기는 이유: '자이로 원인 규명 시 복귀
      *    검토'(CLAUDE.md §4) 를 위해 관측 가능성을 남겨둔다.
      *
@@ -390,6 +398,7 @@ void microros_task_run(void *arg)
     for (;;) {
         rclc_executor_spin_some(&s_executor, RCL_MS_TO_NS(1));
         const uint32_t now_ms = HAL_GetTick();
+        s_cycles++;
 
         /* /wheel_odom 30Hz 게이트 (2026-09-09) — EKF 필터 주기와 일치. */
         if (now_ms - last_odom_ms >= 33u) {
@@ -415,7 +424,9 @@ void microros_task_run(void *arg)
             s_odom_msg.twist.twist.angular.z = (double)o.w;
             /* 첫 실패만 한 번 로깅 — 디버그 노이즈 방지. */
             static bool s_odom_err_logged = false;
+            s_odom_try++;
             pr = rcl_publish(&s_odom_pub, &s_odom_msg, NULL);
+            if (pr != RCL_RET_OK) { s_odom_fail++; s_odom_rc = (int32_t)pr; }
             if (pr != RCL_RET_OK && !s_odom_err_logged) {
                 printf("[uROS] odom publish FAIL rc=%ld (MTU? stream full?)\r\n", (long)pr);
                 s_odom_err_logged = true;
@@ -438,7 +449,9 @@ void microros_task_run(void *arg)
                 s_imu_msg.angular_velocity.x    = (double)imu.gx;
                 s_imu_msg.angular_velocity.y    = (double)imu.gy;
                 s_imu_msg.angular_velocity.z    = (double)imu.gz;
-                pr = rcl_publish(&s_imu_pub, &s_imu_msg, NULL); (void)pr;
+                s_imu_try++;
+                pr = rcl_publish(&s_imu_pub, &s_imu_msg, NULL);
+                if (pr != RCL_RET_OK) s_imu_fail++;
             }
 
             /* Mag 발행 (F7.5). 2026-09-09: 매 cycle → IMU 와 같은 5Hz 게이트.
@@ -510,6 +523,15 @@ void microros_task_run(void *arg)
                     (unsigned long)cv, (unsigned long)wid, (unsigned)safety_monitor_get_stall_counter(mc));
                 s_status_kv[w].value.size = (len > 0 && (size_t)len < sizeof(s_status_kv_val[w]))
                                           ? (size_t)len : sizeof(s_status_kv_val[w]) - 1;
+            }
+            {   /* TX 진단 — 누적 카운터. 차분으로 실제 시도/실패율을 본다. */
+                const int len = snprintf(s_status_kv_val[2], sizeof(s_status_kv_val[2]),
+                    "ot=%lu wc=%lu wb=%lu wh=%lu wf=%lu hw=%lu",
+                    (unsigned long)s_odom_try, (unsigned long)g_tx_call,
+                    (unsigned long)g_tx_busy, (unsigned long)g_tx_hal,
+                    (unsigned long)g_tx_full, (unsigned long)g_tx_hw);
+                s_status_kv[2].value.size = (len > 0 && (size_t)len < sizeof(s_status_kv_val[2]))
+                                          ? (size_t)len : sizeof(s_status_kv_val[2]) - 1;
             }
             fill_stamp(&s_status_msg.header.stamp, now_ms);
             pr = rcl_publish(&s_status_pub, &s_status_msg, NULL); (void)pr;
