@@ -721,6 +721,87 @@ TF/EKF 정상: /tf 29.9Hz, /odometry/filtered 29.7Hz 퍼블리셔 1, DDS 이상 
 데드존 0.34 / KV 5.8 은 12.2V 에서 캘리브된 값이라 전압 강하 시 토크가 부족할 수 있다.
 → 충전 후 같은 시험을 반복해 전압 의존성을 확인할 것.
 
+## 8.14 "왜 후진하고 멈췄나" — 위치 추정 정지 (job170, 175)
+
+사용자 질의로 CSV 를 전체 정밀도로 다시 봤다.
+
+```
+마지막으로 위치가 바뀐 t = 4.01
+이후 99샘플이 fwd=0.24011390390417972  lat=0.05075221739488888  ← 소수점 17자리까지 동일
+기록 종료 t = 13.91  →  정확히 9.90초 뒤 = tf2 버퍼 보관시간 10초
+```
+
+**로버가 안 움직인 게 아니라 `map→base_link` 갱신이 멈춘 것**이다. 조회는 캐시된 낡은 변환을
+계속 돌려주다가 버퍼에서 만료되며 실패했다. 후진 중 실제로 움직였을 수도 있으나 관측 불가.
+
+| 시각 | 일 |
+|---|---|
+| t≈4.0 | `map→odom` 발행 정지 |
+| t=4.5 | 자세 무변화 → 컨트롤러 v=0 |
+| t=5.5 | 낡은 자세로 재계획, 계획 횡좌표 +0.39 → +0.068 급변 |
+| t=6.0 | `behavior_server: Running backup` |
+| t~14 | TF 캐시 만료 → `Goal canceled` |
+
+**정정**: 앞서 "배터리 때문에 안 움직였다"(§8.13)는 근거가 없었다. 보드는 스톨 래치가 아니었고
+(sc=0) 전압 하락은 상관은 있어도 원인이 아니다. job141·169 도 같은 서명일 가능성이 높다.
+
+## 8.15 DDS 공유메모리 — 2회차 재발과 원인 제거
+
+1회차(§8.9)는 `ekf_node`, 2회차는 `slam_toolbox` 가 당했다. 같은 서명:
+
+```
+프로세스는 살아있음(CPU 정상) 인데 노드가 그래프에서 사라짐, /map 퍼블리셔 0, map 프레임 소멸
+/dev/shm 고아: fastrtps_port7425 (잠금 파일만 있고 본체 없음)
+```
+
+**1회차 뒤 SIGKILL → SIGTERM 으로 바꿨는데도 재발했다.** 종료 방식이 아니라 SHM 전송을 쓰는 것
+자체가 문제였다 — 하루에 Nav2 를 수십 번 재기동하는 개발 중에는 포트 churn 을 피할 수 없다.
+
+**조치**: `config/fastdds_udp_only.xml` 신규 + 4개 launch 에서
+`SetEnvironmentVariable('FASTRTPS_DEFAULT_PROFILES_FILE', …)`.
+
+```
+검증: /dev/shm fastrtps 재생성 0개, SHM 오류 sensors/slam/nav2 각 0건
+      프로세스 environ 확인 — slam/ekf/conditioner/rplidar/realsense/controller 전부 적용
+      /tf 45.5Hz(퍼블리셔 3), /map 0.5Hz, slam_toolbox 복귀
+```
+
+이 실패 유형은 제거됐다. (micro-ROS 에이전트는 원래 `MICROROS_DISABLE_SHM=1` 이라
+두 사고 모두에서 보드 토픽만 멀쩡했다 — 같은 원리다.)
+
+## 8.16 그래도 재발한 정지 — 진짜 원인은 CPU 부족
+
+UDP 전용 적용 **후에도** job175 에서 같은 정지가 났다(t=3 동결, 9.7초 뒤 조회 실패).
+이번엔 SHM 오류 0건이므로 다른 원인이다.
+
+```
+ekf_node : "Failed to meet update rate!" 91회, 평균 0.055s 최대 0.197s (목표 0.033s)
+slam     : 로그 전체가 INFO 30 + WARN 1. 마지막 정상 로그가 기동 시 "Registering sensor"
+           이후 "Message Filter dropping message: frame 'lidar_link'" 뿐 — 스캔을 한 번도 처리 못 함
+load 9.01 / 6코어,  sensor_conditioner 35~37%,  /imu/data 200Hz
+```
+
+**연쇄**: CPU 부족 → EKF 가 주기를 못 지킴 → `odom→base` TF 가 늦게 발행 →
+slam 의 메시지 필터가 스캔 타임스탬프에 맞는 TF 를 못 찾아 **전부 폐기** →
+`map→odom` 을 영영 발행 못 함 → 우리 조회가 10초 뒤 실패.
+
+### 시도와 결과
+
+`gyro_fps` 200 → 100 을 시도했으나 **D455 자이로가 지원하지 않아** 드라이버가 200 으로 되돌렸다
+("Open profile: Gyro FPS: 200"). 지원 프로파일을 확인하지 않고 값을 넣은 실수. **200 으로 복귀.**
+`accel_fps` 는 100 이 적용됐다("Accel FPS: 100"). `unite_imu_method 1(copy)` 이라
+`/camera/camera/imu` 는 gyro 속도를 따르므로 여전히 200Hz.
+
+→ **CPU 절감은 `sensor_conditioner` 쪽 다운샘플로 해야 한다** (Phase S 신규 항목 S6).
+
+### 내가 낸 오류 2건 (기록)
+
+- `pgrep -fc` 가 여러 줄을 반환해 `n=$((n+$(pgrep -fc …)))` 가 산술 오류를 냈고, "잔존 0" 이
+  거짓이 되어 오래된 프로세스가 살아남은 채로 측정했다. → 카운트 함수를 별도로 만들어 수정.
+- `ros2 topic info /tf --verbose` 의 노드 목록을 보고 "slam_toolbox 중복" 이라 판단했으나,
+  그 출력은 **발행자와 구독자를 함께** 나열한다. slam 은 `/tf` 를 발행하면서 구독도 한다.
+  중복이 아니었다. **판단 취소.**
+
 ## 8.5 미완 / 다음
 - 상자 제거 시 동적 장애물 망각 확인 (`raytrace_min_range` local 0.35 / global 0.30).
 - 그 뒤 N2 전체 맵 작성 주행 → N3 프런티어 탐사.

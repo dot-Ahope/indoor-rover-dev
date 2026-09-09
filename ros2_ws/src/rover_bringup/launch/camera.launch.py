@@ -40,8 +40,19 @@ def generate_launch_description():
                 'decimation_filter.filter_magnitude': 4,
                 'enable_gyro': enable_imu,
                 'enable_accel': enable_imu,
+                # 2026-09-09: 200 → 100Hz. CPU 부족이 EKF 주기 위반(91회, 평균 0.055s 최대 0.197s)을
+                #   낳고, 늦어진 odom→base TF 때문에 slam 의 메시지 필터가 스캔을 **전부 폐기**해
+                #   map→odom 이 아예 발행되지 않았다(주행 2건 실패). 200Hz 를 파이썬 컨디셔너가
+                #   중계하는 구조라 그 자체로 CPU 35% 를 먹는다.
+                #   0.08m/s 로 움직이는 로버에 200Hz 자이로는 과하다. EKF 는 30Hz 로 돈다.
+                #   ⚠ 되돌릴 때는 sensor_conditioner CPU 와 EKF 주기 위반 횟수를 함께 볼 것.
+                # ⚠ gyro 는 200 으로 되돌림. 100 을 요청했으나 D455 자이로가 지원하지 않아
+                #   드라이버가 200 으로 되돌렸다("Open profile: Gyro FPS: 200"). 지원 프로파일을
+                #   확인하지 않고 값을 넣은 것이 실수. accel 은 100 이 적용됐다("Accel FPS: 100").
+                #   unite_imu_method 1(copy) 이라 /camera/camera/imu 는 gyro 속도(200Hz)를 따른다.
+                #   → CPU 절감은 sensor_conditioner 쪽 다운샘플로 해야 한다(Phase S 항목).
                 'gyro_fps': 200,
-                'accel_fps': 200,
+                'accel_fps': 100,
                 'unite_imu_method': 1,
                 'initial_reset': True,
                 'publish_tf': True,
