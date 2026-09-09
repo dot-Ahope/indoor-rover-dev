@@ -55,8 +55,15 @@ controller_server:
       # 2026-09-08 §5.y 실측 튜닝: 0.30/0.20/0.45/1.5 → 0.40/0.35/0.60/2.0.
       #   속도스케일 lookahead 가 1.5s×0.08=0.12m 로 하한 0.20(5cm 격자 4칸)에 걸려 조향 이득 과대 →
       #   직진 중 ω 스파이크 19회/주행 → 5~9회, 부호반전 2→0~1회/m, ω 평균 0.086→0.05 (job58 시리즈).
-      lookahead_dist: 0.40
-      min_lookahead_dist: 0.35
+      # 2026-09-09: use_velocity_scaled_lookahead_dist=true 이므로 실효 lookahead 는
+      #   clamp(v * lookahead_time, min, max) = clamp(0.08*2.0=0.16, min, max) = **min_lookahead_dist**.
+      #   즉 lookahead_dist 는 이 속도에서 쓰이지 않는다. 실제 조절 손잡이는 min 이다.
+      # 0.35 → 0.25 인하 사유(job119): 계획은 상자 좌측으로 +0.399 를 요구했는데 로버는 같은 x 에서
+      #   +0.230 — 8.5cm 안쪽으로 잘라 들어갔고(코너 컷), 되돌리는 우회전 곡률로 0.40m 를 투영한
+      #   RPP 충돌검사가 "collision ahead" 로 중단시켰다. lookahead 를 줄이면 경로 추종이 더 충실해져
+      #   컷이 줄어든다. 대가는 조향 진동 — job119 의 '직진 중 ω 부호반전 0회' 를 기준선으로 비교한다.
+      lookahead_dist: 0.25
+      min_lookahead_dist: 0.25
       max_lookahead_dist: 0.60
       lookahead_time: 2.0
       use_velocity_scaled_lookahead_dist: true
