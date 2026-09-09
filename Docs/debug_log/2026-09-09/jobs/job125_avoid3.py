@@ -86,9 +86,22 @@ p0 = pose()
 if p0 is None:
     print("TF 실패"); raise SystemExit(1)
 
-# ── 2) 상자 map 좌표 확정 (재시도 포함) ─────────────────────────
+# ── 2) 상자 map 좌표 확정 ───────────────────────────────────────
+# 2026-09-09: 카메라 정적 TF 를 명시적으로 기다린다. pose() 는 map→base_link 만 요구하므로
+#   그것이 성립해도 camera_depth_optical_frame 은 아직 버퍼에 없을 수 있다(다른 발행자).
+#   foxglove_bridge 가 CPU 를 많이 쓰는 상태에서 /tf_static 전달이 늦어 검출이 실패했다(job136).
+tw = time.time()
+while time.time()-tw < 20:
+    try:
+        buf.lookup_transform('base_link', 'camera_depth_optical_frame', rclpy.time.Time())
+        break
+    except Exception:
+        rclpy.spin_once(n, timeout_sec=0.1)
+else:
+    print("카메라 TF 대기 실패 (base_link ← camera_depth_optical_frame)"); raise SystemExit(1)
+
 BOX = None
-for attempt in range(15):
+for attempt in range(60):
     P = cloud('base_link')
     if P is not None:
         sel = P[(P[:, 2] > 0.05) & (P[:, 2] < 0.30) & (P[:, 0] > 0.5) & (P[:, 0] < 1.5) & (np.abs(P[:, 1]) < 0.5)]
@@ -106,7 +119,11 @@ for attempt in range(15):
             break
     rclpy.spin_once(n, timeout_sec=0.2)
 if BOX is None:
-    print("상자 검출 실패 — 전방 0.5~1.5m 에 낮은 물체가 보여야 합니다"); raise SystemExit(1)
+    P = cloud('base_link')
+    nn = 0 if P is None else int(((P[:, 2] > 0.05) & (P[:, 2] < 0.30) &
+                                  (P[:, 0] > 0.5) & (P[:, 0] < 1.5) & (np.abs(P[:, 1]) < 0.5)).sum())
+    print("상자 검출 실패 — 조건 통과 점 %d개(40 필요). 전방 0.5~1.5m 에 낮은 물체가 보여야 합니다"
+          % nn); raise SystemExit(1)
 
 # 상자 둘레를 촘촘히 샘플링 (사각형 ↔ 사각형 거리를 점-사각형 거리의 최소로 근사)
 CS = BOX['corners']
@@ -230,6 +247,22 @@ if pcl:
           % (min(pcl)*100, rows[k][4]*100))
 print("  ③ 상자 자리 비용 — 로컬 최소/최근접시 %d/%d, 전역 최소/최근접시 %d/%d  ← 0 이면 기억 소실"
       % (min(r[6] for r in rows), rows[k][6], min(r[7] for r in rows), rows[k][7]))
+# ④ 경로 좌우 전환 — 양안정성 지표. 상자 x 위치에서의 계획 횡좌표 부호가 바뀐 횟수.
+#    |y| < 0.05 인 애매한 구간은 노이즈로 보고 직전 부호를 유지한다.
+side, flips_plan, first = 0, 0, None
+for r in rows:
+    v = r[5]
+    if math.isnan(v) or abs(v) < 0.05:
+        continue
+    sgn = 1 if v > 0 else -1
+    if first is None:
+        first = sgn
+    elif sgn != side:
+        flips_plan += 1
+    side = sgn
+neg = sum(1 for r in rows if not math.isnan(r[4]) and r[4] < 0)
+print("  ④ 경로 좌우 전환 %d회 (최초 선택 %s), 계획이 접촉 경로였던 샘플 %d/%d (%.0f%%)"
+      % (flips_plan, {1: '좌', -1: '우', None: '?'}[first], neg, len(rows), 100.0*neg/max(len(rows), 1)))
 print("  조향: 직진 중 |ω| 평균 %.3f 최대 %.3f rad/s, 부호반전 %d회 = %.1f회/m"
       % (sum(abs(r[9]) for r in straight)/max(len(straight), 1),
          max((abs(r[9]) for r in straight), default=0), flips, flips/max(dist, 0.01)))
