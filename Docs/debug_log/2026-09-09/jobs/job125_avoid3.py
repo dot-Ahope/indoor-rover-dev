@@ -168,6 +168,20 @@ def plan_clear():
     return d - HW, float(fy[k])
 
 
+def box_points():
+    """상자 사각형(수평 투영) 안에 들어오는 깊이점 수. 2026-09-09 추가.
+    '카메라가 점을 못 만든다' vs '코스트맵이 점을 안 쓴다' 를 가른다.
+    job152 에서 마킹이 끊긴 시점의 카메라~상자 거리는 0.518m 였는데 실측 최소측정거리는
+    0.22~0.25m 였다 — 거리상 보여야 하는데 마킹이 끊겼으므로 둘 중 어느 쪽인지 확인이 필요하다."""
+    P = cloud('map')
+    if P is None:
+        return -1
+    m = ((P[:, 0] >= bx_min) & (P[:, 0] <= bx_max) &
+         (P[:, 1] >= by_min) & (P[:, 1] <= by_max) &
+         (P[:, 2] > 0.03) & (P[:, 2] < 0.40))
+    return int(m.sum())
+
+
 def cost_at(key, frame, x, y):
     """map 좌표 (x,y) 의 코스트맵 비용. 로컬은 odom 프레임이라 변환한다."""
     if key not in S:
@@ -202,7 +216,7 @@ if gh is None or not gh.accepted:
     print("목표 거부"); raise SystemExit(1)
 
 rf = gh.get_result_async(); t1 = time.time(); rows = []; nxt = t1; log = t1
-print("  t   전진   횡변위 | 실여유 계획여유 계획횡 | lc_box gc_box | v_cmd  w_cmd", flush=True)
+print("  t   전진   횡변위 | 실여유 계획여유 계획횡 | lc_box gc_box 깊이점 | v_cmd  w_cmd", flush=True)
 while not rf.done() and time.time()-t1 < TMO:
     rclpy.spin_once(n, timeout_sec=0.01)
     now = time.time(); p = pose()
@@ -214,11 +228,12 @@ while not rf.done() and time.time()-t1 < TMO:
     cg = clear_geo(p[0], p[1], p[2])
     pc, pfy = plan_clear()
     lb = cost_at('lc', 'odom', *BOXC); gb = cost_at('gc', 'map', *BOXC)
-    rows.append((now-t1, fwd, lat, cg, pc, pfy, lb, gb, S['cmd'][0], S['cmd'][1]))
+    bp = box_points()
+    rows.append((now-t1, fwd, lat, cg, pc, pfy, lb, gb, S['cmd'][0], S['cmd'][1], bp))
     if now >= log:
         log += 1.0
-        print("%5.1f %+.3f %+.3f | %6.3f %8.3f %+6.3f | %5d %5d | %+.3f %+.3f"
-              % (now-t1, fwd, lat, cg, pc, pfy, lb, gb, S['cmd'][0], S['cmd'][1]), flush=True)
+        print("%5.1f %+.3f %+.3f | %6.3f %8.3f %+6.3f | %5d %5d %6d | %+.3f %+.3f"
+              % (now-t1, fwd, lat, cg, pc, pfy, lb, gb, bp, S['cmd'][0], S['cmd'][1]), flush=True)
 
 if not rf.done():
     gh.cancel_goal_async(); rclpy.spin_once(n, timeout_sec=2.0); res = 'TIMEOUT'
@@ -227,7 +242,7 @@ else:
 
 with open('/tmp/%s.csv' % NAME, 'w', newline='') as f:
     w = csv.writer(f)
-    w.writerow(['t', 'fwd', 'lat', 'clear_geo', 'plan_clear', 'plan_lat_at_box', 'lc_box', 'gc_box', 'v', 'w'])
+    w.writerow(['t', 'fwd', 'lat', 'clear_geo', 'plan_clear', 'plan_lat_at_box', 'lc_box', 'gc_box', 'v', 'w', 'box_pts'])
     w.writerows(rows)
 
 cg = [r[3] for r in rows]
@@ -263,6 +278,14 @@ for r in rows:
 neg = sum(1 for r in rows if not math.isnan(r[4]) and r[4] < 0)
 print("  ④ 경로 좌우 전환 %d회 (최초 선택 %s), 계획이 접촉 경로였던 샘플 %d/%d (%.0f%%)"
       % (flips_plan, {1: '좌', -1: '우', None: '?'}[first], neg, len(rows), 100.0*neg/max(len(rows), 1)))
+# ⑤ 마킹 중단이 카메라 탓인지 코스트맵 탓인지
+lost = [r for r in rows if r[6] == 0]          # 로컬 코스트맵이 상자를 잃은 샘플
+if lost:
+    withpts = sum(1 for r in lost if r[10] > 0)
+    print("  ⑤ 로컬이 상자를 잃은 %d샘플 중 깊이점이 있었던 것 %d (%.0f%%) — 평균 %.1f점"
+          % (len(lost), withpts, 100.0*withpts/len(lost), sum(r[10] for r in lost)/len(lost)))
+    print("     (점이 있는데 잃었다 → 코스트맵 쪽 / 점이 없다 → 카메라 쪽)")
+print("  깊이점: 최대 %d, 최소 %d" % (max(r[10] for r in rows), min(r[10] for r in rows)))
 print("  조향: 직진 중 |ω| 평균 %.3f 최대 %.3f rad/s, 부호반전 %d회 = %.1f회/m"
       % (sum(abs(r[9]) for r in straight)/max(len(straight), 1),
          max((abs(r[9]) for r in straight), default=0), flips, flips/max(dist, 0.01)))
