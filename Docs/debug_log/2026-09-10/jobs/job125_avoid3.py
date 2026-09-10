@@ -100,23 +100,38 @@ while time.time()-tw < 20:
 else:
     print("카메라 TF 대기 실패 (base_link ← camera_depth_optical_frame)"); raise SystemExit(1)
 
+def detect_box(pnow):
+    """현재 자세에서 상자를 검출해 map 좌표 네 꼭짓점을 낸다. 실패 시 None.
+
+    2026-09-10: 주행 중에도 **보일 때마다 재고정**한다.
+      이유: 상자를 출발 시 map 좌표에 한 번만 고정하면 SLAM 의 map→odom 보정이
+      쌓일수록 실물과 어긋난다. job196 에서 주행 내내 상자 사각형 안 깊이점이 0 이 되어
+      ①·⑤ 지표가 통째로 무의미해졌다(그 시점 보정량 11.6cm, 상자 폭 18cm).
+      보일 때 갱신하고 안 보이면 마지막 관측을 유지하면, 우리가 관심 있는
+      '안 보이는 구간' 만 외삽이 되고 나머지는 항상 최신이다.
+    """
+    P = cloud('base_link')
+    if P is None:
+        return None
+    sel = P[(P[:, 2] > 0.05) & (P[:, 2] < 0.30) & (P[:, 0] > 0.5) & (P[:, 0] < 1.5) & (np.abs(P[:, 1]) < 0.5)]
+    if len(sel) < 40:
+        return None
+    # 폭은 백분위수로 (min/max 는 이상점에 끌려간다 — 09-08 오진 사례)
+    cy = float(np.median(sel[:, 1]))
+    fx = float(np.percentile(sel[:, 0], 5))     # 전면 x
+    c, s = math.cos(pnow[2]), math.sin(pnow[2])
+    corners = []
+    for bx, by in ((fx, cy-BOX_W/2), (fx, cy+BOX_W/2),
+                   (fx+BOX_D, cy+BOX_W/2), (fx+BOX_D, cy-BOX_W/2)):
+        corners.append((pnow[0] + bx*c - by*s, pnow[1] + bx*s + by*c))
+    return dict(corners=corners, n=len(sel), base=(fx, cy))
+
+
 BOX = None
 for attempt in range(60):
-    P = cloud('base_link')
-    if P is not None:
-        sel = P[(P[:, 2] > 0.05) & (P[:, 2] < 0.30) & (P[:, 0] > 0.5) & (P[:, 0] < 1.5) & (np.abs(P[:, 1]) < 0.5)]
-        if len(sel) >= 40:
-            # 폭은 백분위수로 (min/max 는 이상점에 끌려간다 — 09-08 오진 사례)
-            cy = float(np.median(sel[:, 1]))
-            fx = float(np.percentile(sel[:, 0], 5))     # 전면 x
-            c, s = math.cos(p0[2]), math.sin(p0[2])
-            # base → map
-            corners = []
-            for bx, by in ((fx, cy-BOX_W/2), (fx, cy+BOX_W/2),
-                           (fx+BOX_D, cy+BOX_W/2), (fx+BOX_D, cy-BOX_W/2)):
-                corners.append((p0[0] + bx*c - by*s, p0[1] + bx*s + by*c))
-            BOX = dict(corners=corners, n=len(sel), base=(fx, cy))
-            break
+    BOX = detect_box(p0)
+    if BOX is not None:
+        break
     rclpy.spin_once(n, timeout_sec=0.2)
 if BOX is None:
     P = cloud('base_link')
@@ -125,18 +140,24 @@ if BOX is None:
     print("상자 검출 실패 — 조건 통과 점 %d개(40 필요). 전방 0.5~1.5m 에 낮은 물체가 보여야 합니다"
           % nn); raise SystemExit(1)
 
-# 상자 둘레를 촘촘히 샘플링 (사각형 ↔ 사각형 거리를 점-사각형 거리의 최소로 근사)
-CS = BOX['corners']
-peri = []
-for i in range(4):
-    ax, ay = CS[i]; bx, by = CS[(i+1) % 4]
-    for k in range(21):
-        u = k/20.0
-        peri.append((ax + u*(bx-ax), ay + u*(by-ay)))
-PERI = np.array(peri)
+def make_peri(box):
+    """상자 둘레를 촘촘히 샘플링 (사각형↔사각형 거리를 점-사각형 거리의 최소로 근사)."""
+    CS = box['corners']
+    peri = []
+    for i in range(4):
+        ax, ay = CS[i]; bx, by = CS[(i+1) % 4]
+        for k in range(21):
+            u = k/20.0
+            peri.append((ax + u*(bx-ax), ay + u*(by-ay)))
+    return np.array(peri)
+
+
+PERI = make_peri(BOX)
 bx_min, bx_max = PERI[:, 0].min(), PERI[:, 0].max()
 by_min, by_max = PERI[:, 1].min(), PERI[:, 1].max()
 BOXC = (float(PERI[:, 0].mean()), float(PERI[:, 1].mean()))
+REFIX_MAX = 0.30      # 재고정 허용 이동량(m). 이보다 멀면 다른 물체로 보고 무시한다
+last_fix_t = 0.0      # 마지막 재고정 시각(주행 시작 기준)
 print("상자 확정: map x %.3f~%.3f, y %+.3f~%+.3f (검출점 %d, base 전면 %.2f)"
       % (bx_min, bx_max, by_min, by_max, BOX['n'], BOX['base'][0]))
 
@@ -216,20 +237,34 @@ if gh is None or not gh.accepted:
     print("목표 거부"); raise SystemExit(1)
 
 rf = gh.get_result_async(); t1 = time.time(); rows = []; nxt = t1; log = t1
-print("  t   전진   횡변위 | 실여유 계획여유 계획횡 | lc_box gc_box 깊이점 | v_cmd  w_cmd", flush=True)
+last_fix_t = 0.0
+print("  t   전진   횡변위 | 실여유 계획여유 계획횡 | lc gc 깊이점 미관측s | v_cmd  w_cmd", flush=True)
 while not rf.done() and time.time()-t1 < TMO:
     rclpy.spin_once(n, timeout_sec=0.01)
     now = time.time(); p = pose()
     if p is None or now < nxt:
         continue
     nxt += 0.1
+    # ── 상자 재고정 (0.5초마다, 보일 때만) ──────────────────────────
+    if (now - t1) - last_fix_t >= 0.5:
+        nb = detect_box(p)
+        if nb is not None:
+            npi = make_peri(nb)
+            nc = (float(npi[:, 0].mean()), float(npi[:, 1].mean()))
+            if math.hypot(nc[0]-BOXC[0], nc[1]-BOXC[1]) <= REFIX_MAX:
+                PERI = npi
+                bx_min, bx_max = PERI[:, 0].min(), PERI[:, 0].max()
+                by_min, by_max = PERI[:, 1].min(), PERI[:, 1].max()
+                BOXC = nc
+                last_fix_t = now - t1
+    box_age = (now - t1) - last_fix_t     # 마지막 재고정 이후 경과(초)
     rel = (p[0]-p0[0], p[1]-p0[1])
     fwd = rel[0]*ch + rel[1]*sh; lat = -rel[0]*sh + rel[1]*ch
     cg = clear_geo(p[0], p[1], p[2])
     pc, pfy = plan_clear()
     lb = cost_at('lc', 'odom', *BOXC); gb = cost_at('gc', 'map', *BOXC)
     bp = box_points()
-    rows.append((now-t1, fwd, lat, cg, pc, pfy, lb, gb, S['cmd'][0], S['cmd'][1], bp))
+    rows.append((now-t1, fwd, lat, cg, pc, pfy, lb, gb, S['cmd'][0], S['cmd'][1], bp, box_age))
     if now >= log:
         log += 1.0
         print("%5.1f %+.3f %+.3f | %6.3f %8.3f %+6.3f | %5d %5d %6d | %+.3f %+.3f"
@@ -242,7 +277,7 @@ else:
 
 with open('/tmp/%s.csv' % NAME, 'w', newline='') as f:
     w = csv.writer(f)
-    w.writerow(['t', 'fwd', 'lat', 'clear_geo', 'plan_clear', 'plan_lat_at_box', 'lc_box', 'gc_box', 'v', 'w', 'box_pts'])
+    w.writerow(['t', 'fwd', 'lat', 'clear_geo', 'plan_clear', 'plan_lat_at_box', 'lc_box', 'gc_box', 'v', 'w', 'box_pts', 'box_age'])
     w.writerows(rows)
 
 cg = [r[3] for r in rows]
@@ -286,6 +321,8 @@ if lost:
           % (len(lost), withpts, 100.0*withpts/len(lost), sum(r[10] for r in lost)/len(lost)))
     print("     (점이 있는데 잃었다 → 코스트맵 쪽 / 점이 없다 → 카메라 쪽)")
 print("  깊이점: 최대 %d, 최소 %d" % (max(r[10] for r in rows), min(r[10] for r in rows)))
+print("  ⑥ 상자 미관측 최대 %.1f초 — 이 구간의 ①·⑤ 는 마지막 관측의 외삽이다"
+      % max(r[11] for r in rows))
 print("  조향: 직진 중 |ω| 평균 %.3f 최대 %.3f rad/s, 부호반전 %d회 = %.1f회/m"
       % (sum(abs(r[9]) for r in straight)/max(len(straight), 1),
          max((abs(r[9]) for r in straight), default=0), flips, flips/max(dist, 0.01)))
