@@ -100,6 +100,25 @@ while time.time()-tw < 20:
 else:
     print("카메라 TF 대기 실패 (base_link ← camera_depth_optical_frame)"); raise SystemExit(1)
 
+def _clusters_y(sel, gap=0.08, minpts=25):
+    """y 축 1D 클러스터링 — 인접 점의 y 간격이 gap 을 넘으면 다른 물체로 본다.
+       상자 폭 0.18m 이므로 0.08m 이면 벽과 상자를 확실히 가른다."""
+    if len(sel) == 0:
+        return []
+    o = sel[np.argsort(sel[:, 1])]
+    out, cur = [], [o[0]]
+    for p in o[1:]:
+        if p[1] - cur[-1][1] > gap:
+            if len(cur) >= minpts:
+                out.append(np.array(cur))
+            cur = [p]
+        else:
+            cur.append(p)
+    if len(cur) >= minpts:
+        out.append(np.array(cur))
+    return out
+
+
 def detect_box(pnow):
     """현재 자세에서 상자를 검출해 map 좌표 네 꼭짓점을 낸다. 실패 시 None.
 
@@ -116,7 +135,25 @@ def detect_box(pnow):
     sel = P[(P[:, 2] > 0.05) & (P[:, 2] < 0.30) & (P[:, 0] > 0.5) & (P[:, 0] < 1.5) & (np.abs(P[:, 1]) < 0.5)]
     if len(sel) < 40:
         return None
-    # 폭은 백분위수로 (min/max 는 이상점에 끌려간다 — 09-08 오진 사례)
+    # 2026-09-10 정정 ★ 이 범위에는 상자만 있는 게 아니다.
+    #   실측 씬: 우측 벽 487점(z중앙 0.26) vs 상자 119점(z중앙 0.09).
+    #   덩어리를 나누지 않고 median(y) 를 쓰면 중심이 **점이 많은 벽 쪽으로 끌려간다**.
+    #   게다가 fx 는 5퍼센타일 x(=더 가까운 상자 쪽)라, 벽의 y 와 상자의 x 를 조합한
+    #   **아무것도 없는 자리**에 사각형이 생긴다. 그 안의 깊이점이 0 이 되는 것은 당연하다.
+    #   → 이것이 job167 "카메라가 근접 시 상자를 못 본다", job196 "지표 전량 0",
+    #     job205 "미관측 37.6초" 의 정체다. 정지 60초 측정(job209)에서 상자 깊이점은
+    #     253~275 로 완벽히 안정적이었다 — 카메라는 처음부터 잘 보고 있었다.
+    #   고침: y 축 1D 클러스터링으로 덩어리를 나누고, 낮은 물체(z중앙<0.20) 중
+    #        **진행축(y=0)에 가장 가까운** 것을 상자로 택한다.
+    cl = _clusters_y(sel)
+    low = [(abs(float(np.median(c[:, 1]))), c) for c in cl
+           if float(np.median(c[:, 2])) < 0.20]
+    if not low:
+        return None
+    low.sort(key=lambda t: t[0])
+    sel = low[0][1]
+    if len(sel) < 40:
+        return None
     cy = float(np.median(sel[:, 1]))
     fx = float(np.percentile(sel[:, 0], 5))     # 전면 x
     c, s = math.cos(pnow[2]), math.sin(pnow[2])
