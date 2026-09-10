@@ -63,12 +63,44 @@ CALIB_SAMPLES = 2000      # 200Hz(D455f) × 10s — 바이어스 추정 오차 �
 # p-p 기준은 오판 → σ 기준 사용. 회전 중에는 σ가 훨씬 커지므로 여유 3배.
 CALIB_MAX_STD = 0.015     # rad/s
 
+# ── ZUPT (정지 구간 온라인 바이어스 재추정) — 2026-09-10 추가 ────────────────
+# 왜: 부팅 직후 10초 캘리브는 **차가운 카메라**의 바이어스를 잰다. D455f 가 켜져 발열하면
+#   MEMS 자이로 바이어스가 이동하고, 보정값은 그만큼 낡는다. 실측(job213, 정지 30초):
+#     원본 광학 wy      -0.001126 rad/s
+#     시작 캘리브 y     -0.00075
+#     잔차              -0.000376
+#     EKF 가 쓰는 yaw rate = -wy 잔차 = +0.000380 rad/s = 1.31 °/분
+#     EKF odom->base 실측 드리프트         = +0.000380 rad/s = 1.31 °/분  ← 설명 비율 100%
+#   대가: 주행 40초에 0.87°(1.6m 주행 시 횡오차 2.4cm), 정지 10분에 13°.
+#   주행 중에는 slam 스캔매칭이 map->odom 으로 흡수하지만, **정지 중에는 slam 이
+#   스캔을 처리하지 않아** 오차가 그대로 map 자세에 쌓인다(오늘 80분 정지 후 약 105° 관측).
+#   그 상태로 주행을 시작하면 Nav2 의 초기 계획이 엉뚱한 방향을 기준으로 선다.
+# 어떻게: 휠 오도메트리가 완전 정지를 보고하는 구간에서 자이로 평균을 다시 재어
+#   바이어스를 **천천히** 끌어당긴다. 표준적인 zero-velocity update 다.
+#   급변 방지를 위해 1회 갱신량을 제한하고 지수이동평균으로 섞는다.
+# 기각한 대안:
+#   - 웜업 후 캘리브: 매 기동마다 수 분 대기 → 개발 반복이 느려지고, 온도는 주행 중에도 변한다.
+#   - EKF 상태에 바이어스 추가(15→16 상태): robot_localization 이 지원하지 않는다.
+#   - 휠 vyaw 신뢰도 상향: 스키드 스티어 스크럽 산포가 7% 라 정지 판정 외에는 못 믿는다.
+ZUPT_STATIONARY_VX = 0.005     # m/s — 이보다 작으면 정지로 본다
+ZUPT_STATIONARY_VYAW = 0.005   # rad/s
+ZUPT_WIN = 400                 # 200Hz × 2s — 재추정 1회에 쓰는 표본 수
+ZUPT_MAX_STD = 0.010           # rad/s — 이보다 흔들리면 정지가 아니다 (정지 실측 σ≈0.0022)
+ZUPT_ALPHA = 0.10              # 지수이동평균 계수
+ZUPT_MAX_STEP = 0.0005         # rad/s — 1회 갱신 상한 (튐 방지)
+ZUPT_LOG_PERIOD = 20.0         # 초 — 로그 주기
+
 
 class SensorConditioner(Node):
     def __init__(self):
         super().__init__('sensor_conditioner')
         self.bias = None
         self.samples = []
+        # ZUPT 상태
+        self.stationary = False     # 휠이 완전 정지를 보고하는가
+        self.zbuf = []              # 정지 구간 원시 자이로 표본
+        self.zlast_log = 0.0
+        self.zcount = 0
         self.imu_pub = self.create_publisher(Imu, '/imu/data', qos_profile_sensor_data)
         self.odom_pub = self.create_publisher(
             Odometry, '/wheel_odom/conditioned', qos_profile_sensor_data)
@@ -95,6 +127,7 @@ class SensorConditioner(Node):
                     self.get_logger().warn(
                         'startup not stationary (max std=%.4f) — bias=0 유지' % max(stds))
             return  # 캘리브레이션 완료 전에는 발행 보류
+        self.zupt_update((g.x, g.y, g.z))
         g.x -= self.bias[0]
         g.y -= self.bias[1]
         g.z -= self.bias[2]
@@ -108,7 +141,45 @@ class SensorConditioner(Node):
         msg.orientation_covariance = oc
         self.imu_pub.publish(msg)
 
+    def zupt_update(self, raw):
+        """정지 구간에서 자이로 바이어스를 천천히 재추정한다 (원시값을 받는다)."""
+        if not self.stationary:
+            if self.zbuf:
+                self.zbuf = []      # 움직이면 표본 폐기 — 부분 표본은 섞지 않는다
+            return
+        self.zbuf.append(raw)
+        if len(self.zbuf) < ZUPT_WIN:
+            return
+        cols = list(zip(*self.zbuf))
+        self.zbuf = []
+        n = len(cols[0])
+        means = tuple(sum(c) / n for c in cols)
+        stds = tuple((sum((v - m) ** 2 for v in c) / n) ** 0.5 for c, m in zip(cols, means))
+        if max(stds) >= ZUPT_MAX_STD:
+            return                  # 휠은 0 인데 흔들린다 = 손으로 옮기는 중 등
+        new = []
+        for b, m in zip(self.bias, means):
+            step = (m - b) * ZUPT_ALPHA
+            if step > ZUPT_MAX_STEP:
+                step = ZUPT_MAX_STEP
+            elif step < -ZUPT_MAX_STEP:
+                step = -ZUPT_MAX_STEP
+            new.append(b + step)
+        old_y = self.bias[1]
+        self.bias = tuple(new)
+        self.zcount += 1
+        now = self.get_clock().now().nanoseconds * 1e-9
+        if now - self.zlast_log >= ZUPT_LOG_PERIOD:
+            self.zlast_log = now
+            # EKF 가 쓰는 로봇 yaw rate 는 광학 -y (ekf.yaml imu0_config 인덱스 10)
+            self.get_logger().info(
+                'ZUPT #%d: bias y %.6f → %.6f (관측 %.6f), 잔차 yaw rate %+.6f rad/s = %+.2f °/분'
+                % (self.zcount, old_y, self.bias[1], means[1],
+                   -(means[1] - self.bias[1]), -(means[1] - self.bias[1]) * 57.29578 * 60))
+
     def odom_cb(self, msg):
+        self.stationary = (abs(msg.twist.twist.linear.x) < ZUPT_STATIONARY_VX
+                           and abs(msg.twist.twist.angular.z) < ZUPT_STATIONARY_VYAW)
         # 직진 스케일 보정 — 휠 유효 구름둘레 과소 → vx 과소보고 (2026-08-31 줄자 캘리브)
         msg.twist.twist.linear.x *= VX_SCALE
         # 회전 슬립 보정 — 휠 기반 각속도는 실회전보다 과대 (트랙 스크럽, 속도 의존)
