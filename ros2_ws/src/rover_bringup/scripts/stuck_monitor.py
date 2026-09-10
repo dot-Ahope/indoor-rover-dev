@@ -96,6 +96,7 @@ class StuckMonitor(Node):
         #   여기에 정체 판정을 겹치면 복구할 기회 자체를 뺏는다.
         #   복구 종료 후에도 관측 창(W) 만큼은 그 움직임이 창에 남으므로 함께 보류한다.
         self.recovery_until = 0.0
+        self.recovery_active = False
         self.create_subscription(Twist, '/cmd_vel', self.cb_cmd, 10)
         self.create_subscription(LaserScan, '/scan', self.cb_scan, qos_profile_sensor_data)
         if bool(g('use_gyro')):
@@ -110,8 +111,21 @@ class StuckMonitor(Node):
                                f"{'SHADOW(로그만)' if self.shadow else 'ACTIVE(취소+정지)'})")
 
     def cb_behavior(self, m):
-        """복구 행동이 실행 중(status 2 = EXECUTING)이면 보류 기한을 갱신."""
-        if any(st.status == 2 for st in m.status_list):
+        """복구 행동 실행 구간 전체를 보류한다.
+
+        2026-09-10 정정: 처음에는 EXECUTING 을 받을 때마다 `recovery_until = now + W` 로
+        갱신했는데, **Nav2 액션 서버는 상태를 전이 시점에만 발행한다**(연속 발행이 아니다).
+        후진 복구가 4.5초 걸린 job184 에서 보류 창(2.0초)이 복구 도중 만료되어
+        복구 성공 1.4초 뒤에 stuck_monitor 가 목표를 취소했다.
+        → EXECUTING 이면 플래그를 세우고, 종료 상태(4 SUCCEEDED / 5 CANCELED / 6 ABORTED)를
+          받으면 내린 뒤 관측 창(W) 만큼 더 보류한다(복구 중 움직임이 창에 남아 있으므로).
+        """
+        st = m.status_list
+        if any(x.status == 2 for x in st):
+            self.recovery_active = True
+            self.recovery_until = time.time() + self.W
+        elif st and all(x.status in (4, 5, 6) for x in st):
+            self.recovery_active = False
             self.recovery_until = time.time() + self.W
 
     def cb_cmd(self, m): self.cmds.append((time.time(), m.linear.x, m.angular.z))
@@ -132,7 +146,7 @@ class StuckMonitor(Node):
 
     def tick(self):
         now = time.time(); self._prune(now)
-        if now < self.recovery_until:      # 복구 행동 진행 중/직후 — 판정 보류
+        if self.recovery_active or now < self.recovery_until:  # 복구 진행 중/직후 — 판정 보류
             self.hits = 0; return
         dist_cmd = self._integrate(self.cmds, now, 1)
         ang_cmd = self._integrate(self.cmds, now, 2)
