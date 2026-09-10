@@ -43,3 +43,8 @@ __pycache__/
 
 # === 연구 노트 ===
 research_notes/
+
+# rosbag 기록 — 사후 검토용. 용량이 커서(주행 1회당 10~15MB) 저장소에 넣지 않는다.
+# 로컬 경로: Docs/debug_log/<날짜>/bags/  — Foxglove Studio 의 'Open local file' 로 연다.
+# 특정 주행을 근거로 보존해야 하면 그때 의도적으로 강제 추가(git add -f)한다.
+Docs/debug_log/*/bags/
