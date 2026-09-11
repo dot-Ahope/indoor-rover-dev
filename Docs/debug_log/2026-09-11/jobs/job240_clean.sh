@@ -38,10 +38,37 @@ echo "  /dev/rover -> $(readlink -f /dev/rover 2>&1)"
 setsid nohup ros2 launch rover_bringup base.launch.py > /tmp/base.log 2>&1 &
 sleep 12
 echo "  컨테이너: $(docker ps --format '{{.Names}} {{.Status}}' 2>/dev/null | grep -a micro || echo '없음!')"
+# ⚠ 보드 연결 검증은 **게이트**로 건다. 빈 값으로 조용히 지나가면 뒤 단계가 전부 헛돈다.
+#   2026-09-11 실제 사고: 사용자가 보드 리셋 → 그 뒤 에이전트를 재시작 → 세션 0건.
+#   XRCE-DDS 세션은 **클라이언트(보드)가 CREATE_SESSION 을 보내야** 맺어지는데, 보드는
+#   리셋 직후 이미 맺었다고 믿고 데이터만 계속 보낸다(시리얼에 3초 69kB 가 흐르고 있었다).
+#   새로 뜬 에이전트는 그 세션을 몰라 전부 무시한다. → **에이전트를 띄운 뒤 보드를 리셋**해야 한다.
+BOARD_OK=1
 for t in /wheel_odom /rover/status; do
-  printf "  %-16s " "$t"
-  timeout 7 ros2 topic hz $t 2>&1 | grep -aoE "average rate: [0-9.]+" | tail -1 || echo "무발행 ← 보드 확인 필요"
+  R=$(timeout 8 ros2 topic hz $t 2>&1 | grep -aoE "average rate: [0-9.]+" | tail -1)
+  if [ -z "$R" ]; then
+    BOARD_OK=0; echo "  $t  무발행"
+  else
+    echo "  $t  $R"
+  fi
 done
+if [ "$BOARD_OK" = "0" ]; then
+  echo "  세션 수립: $(grep -ac 'session established' /tmp/base.log)건"
+  echo "  시리얼 수신 확인 중..."
+  timeout 3 cat /dev/rover > /tmp/ser.bin 2>/dev/null
+  SB=$(stat -c %s /tmp/ser.bin 2>/dev/null || echo 0)
+  echo "  시리얼 3초 수신: $SB 바이트"
+  echo ""
+  if [ "$SB" -gt 1000 ]; then
+    echo "  ★ 보드는 송신 중인데 세션이 없다 = 에이전트보다 보드 리셋이 먼저였다."
+    echo "    → **보드 리셋 버튼을 한 번 더 눌러 주십시오.** (에이전트는 이미 떠 있다)"
+  else
+    echo "  ★ 시리얼에 데이터가 없다 = 보드가 멈췄거나 배선/전원 문제."
+    echo "    → 보드 전원·USB 연결을 확인하고 리셋한다."
+  fi
+  echo "  보드 없이는 /cmd_vel 이 전달되지 않아 주행이 불가하므로 여기서 중단한다."
+  exit 1
+fi
 
 echo "########## 3. sensors (자이로 캘리브 ~10s, 로버 정지 필수) ##########"
 setsid nohup ros2 launch rover_bringup sensors.launch.py > /tmp/sensors.log 2>&1 &
