@@ -518,7 +518,13 @@ behavior_server:
     wait:
       plugin: "nav2_behaviors/Wait"
     local_frame: odom
-    global_frame: map
+    # ★ 2026-09-11: map → odom. behavior(BackUp/DriveOnHeading/Spin)는 이 프레임의 로봇 자세로 footprint 를
+    #   만들어 local_costmap/costmap_raw(odom 프레임) 위에서 충돌을 검사한다. map 이면 map->odom 보정만큼
+    #   어긋난 자리를 검사한다. 실측(job285): map->odom 29cm 일 때 같은 footprint 가 odom 자세로는 둘레 최대
+    #   253(충돌 아님), map 자세로는 모든 위치에서 254(충돌) → BackUp 이 0.0s 에 'Collision Ahead' 로 실패.
+    #   재기동 직후(map->odom≈0)엔 BackUp 이 성공했고(s4r2) 드리프트가 쌓이면 'backup failed'→Wait 5s 가 된
+    #   오늘의 패턴이 이것이다. Nav2 bringup 예제도 behavior_server 는 odom 이다.
+    global_frame: odom
     robot_base_frame: base_link
     transform_tolerance: 0.2
     # ⚠ spin 은 제자리 회전 → 중심기준 0.30m 스윕. 좁은 곳에서 실패할 수 있음.
