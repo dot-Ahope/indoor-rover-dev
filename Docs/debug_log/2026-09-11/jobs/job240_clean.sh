@@ -1,0 +1,88 @@
+#!/bin/bash
+# ── 깨끗한 기동 절차 (2026-09-11 제정) ───────────────────────────────────────
+# 왜: 매 주행 전 상태를 보장하지 못해 오늘 여러 번 혼선이 났다.
+#   · 재부팅 후 base(micro-ROS 에이전트)를 빠뜨려 보드 토픽이 전멸했는데
+#     "Nav2 활성화가 느리다" 로 오인했다 (09-10, 09-11 두 번).
+#   · 코스트맵 클리어 직후 6초 만에 측정해 **갱신 전 옛 데이터**를 읽고
+#     "상자를 옮겼는데 통과 폭이 그대로" 라는 잘못된 판단을 했다 (job234).
+#   · 주행을 반복하며 코스트맵이 오염돼(통과 폭 0.30 → 0.15 m) 원인 분석이 흐려졌다.
+# 그래서 **기동 → 검증 → 클리어 → 충분한 재마킹 대기 → 통과 폭 측정**을 한 절차로 묶는다.
+# 순서는 base → sensors → slam → nav2 (뒤 단계가 앞 단계 TF/토픽에 의존한다).
+#
+# 사용: bash job240_clean.sh [클리어후대기초=15]
+set +u      # ⚠ set -u 금지 — ROS setup.bash 가 미정의 변수를 참조해 즉시 죽는다
+WAIT=${1:-15}
+source /opt/ros/humble/setup.bash
+source ~/ros2_ws/install/setup.bash
+
+PATS="navigation.launch slam.launch sensors.launch base.launch navigation_launch \
+controller_server planner_server bt_navigator behavior_server velocity_smoother \
+smoother_server waypoint_follower lifecycle_manager stuck_monitor slam_toolbox \
+ekf_node sensor_conditioner scan_deskew rplidar realsense2_camera foxglove_bridge"
+
+cnt() { local n=0 c; for p in $PATS; do c=$(pgrep -fc "$p" 2>/dev/null | head -1); n=$((n+${c:-0})); done; echo $n; }
+
+echo "########## 1. 정리 ##########"
+echo "  정리 전 프로세스: $(cnt)"
+for p in $PATS; do pkill -TERM -f "$p" 2>/dev/null; done
+docker rm -f microros_agent >/dev/null 2>&1
+for i in $(seq 1 15); do [ "$(cnt)" = "0" ] && break; sleep 1; done
+if [ "$(cnt)" != "0" ]; then
+  for p in $PATS; do pkill -9 -f "$p" 2>/dev/null; done; sleep 3
+fi
+echo "  정리 후: $(cnt) | /dev/shm fastrtps 잔재: $(ls /dev/shm 2>/dev/null | grep -c fastrtps)"
+: > /tmp/base.log; : > /tmp/sensors.log; : > /tmp/slam.log; : > /tmp/nav2.log
+
+echo "########## 2. base (micro-ROS 에이전트) ##########"
+echo "  /dev/rover -> $(readlink -f /dev/rover 2>&1)"
+setsid nohup ros2 launch rover_bringup base.launch.py > /tmp/base.log 2>&1 &
+sleep 12
+echo "  컨테이너: $(docker ps --format '{{.Names}} {{.Status}}' 2>/dev/null | grep -a micro || echo '없음!')"
+for t in /wheel_odom /rover/status; do
+  printf "  %-16s " "$t"
+  timeout 7 ros2 topic hz $t 2>&1 | grep -aoE "average rate: [0-9.]+" | tail -1 || echo "무발행 ← 보드 확인 필요"
+done
+
+echo "########## 3. sensors (자이로 캘리브 ~10s, 로버 정지 필수) ##########"
+setsid nohup ros2 launch rover_bringup sensors.launch.py > /tmp/sensors.log 2>&1 &
+sleep 28
+grep -a "gyro bias" /tmp/sensors.log | tail -1 | sed 's/^/  /'
+printf "  %-16s " "/odometry/filtered"
+timeout 7 ros2 topic hz /odometry/filtered 2>&1 | grep -aoE "average rate: [0-9.]+" | tail -1 || echo "무발행"
+
+echo "########## 4. slam ##########"
+setsid nohup ros2 launch rover_bringup slam.launch.py > /tmp/slam.log 2>&1 &
+sleep 15
+echo -n "  map->odom: "; timeout 8 ros2 run tf2_ros tf2_echo map odom 2>&1 | grep -a Translation | head -1 || echo "없음"
+
+echo "########## 5. nav2 ##########"
+setsid nohup ros2 launch rover_navigation navigation.launch.py > /tmp/nav2.log 2>&1 &
+sleep 30
+for nd in /controller_server /planner_server /bt_navigator /behavior_server; do
+  printf "  %-20s " "$nd"; timeout 6 ros2 lifecycle get "$nd" 2>/dev/null || echo "?"
+done
+
+echo "########## 6. 설정 검증 ##########"
+for cm in local_costmap global_costmap; do
+  printf "  %-15s " $cm
+  for p in stvl_layer.voxel_decay stvl_layer.decay_model; do
+    V=$(timeout 6 ros2 param get /$cm/$cm $p 2>/dev/null | sed 's/^.*is: //')
+    printf "%s=%s " "${p##*.}" "${V:-?}"
+  done; echo
+done
+BT=~/ros2_ws/install/rover_navigation/share/rover_navigation/config/nav_to_pose_no_spin.xml
+echo "  BT ExceptRegion $(grep -c ClearCostmapExceptRegion $BT)곳 / EntireCostmap $(grep -c '<ClearEntireCostmap' $BT)곳"
+grep -ao 'reset_distance="[0-9.]*"' $BT | sort | uniq -c | sed 's/^/    /'
+echo "  ZUPT: $(grep -c ZUPT ~/ros2_ws/install/rover_bringup/lib/rover_bringup/sensor_conditioner.py)곳, 로그 $(grep -ac ZUPT /tmp/sensors.log)건"
+
+echo "########## 7. 코스트맵 클리어 + 재마킹 대기 ${WAIT}초 ##########"
+timeout 10 ros2 service call /local_costmap/clear_entirely_local_costmap nav2_msgs/srv/ClearEntireCostmap "{}" >/dev/null 2>&1 && echo "  local 클리어"
+timeout 10 ros2 service call /global_costmap/clear_entirely_global_costmap nav2_msgs/srv/ClearEntireCostmap "{}" >/dev/null 2>&1 && echo "  global 클리어"
+sleep $WAIT
+
+echo "########## 8. 상태 ##########"
+echo -n "  로버 자세: "; timeout 6 ros2 run tf2_ros tf2_echo map base_link 2>&1 | grep -aE "Translation|RPY" | head -2 | tr '\n' ' '; echo
+echo "  EKF 위반 $(grep -ac 'Failed to meet update rate' /tmp/sensors.log)회 | slam 폐기 $(grep -ac 'Message Filter dropping' /tmp/slam.log)회 | load $(cut -d' ' -f1-3 /proc/loadavg)"
+echo
+echo "########## 9. 통과 가능성 ##########"
+python3 /tmp/job233_pass.py 2>&1 | sed -n '4,26p'
