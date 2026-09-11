@@ -3,6 +3,38 @@
   복구동작 Spin 제거. 근거: WT-600 은 제자리 회전 스윕 φ60cm 인데 실내 좁은 통로에서 실패 시 벽에
   붙은 상태가 대부분 → Spin 이 모서리를 벽에 밀어넣어 접촉·헛바퀴 유발 (09-02, 09-03 실발생).
   라이다 최소감지 0.2m 사각이라 costmap 도 근접 벽을 못 봄. BackUp(0.15m, 0.05m/s) → Wait 순으로 유지.
+
+  ★ 2026-09-11: ClearEntireCostmap → ClearCostmapExceptRegion.
+  ─────────────────────────────────────────────────────────────────────────────
+  증상: 상자를 잘 피해 가다가 갑자기 상자 쪽으로 경로를 틀고 치고 지나갔다(09-10 job198/216).
+  우리는 이것을 STVL 감쇠 → 절두체 clearing → 화각 이탈 순으로 의심했고 **셋 다 틀렸다.**
+  통제 실험으로 하나씩 지웠다:
+    · 정면 접근 (trial0, cmd_vel 직접) : cam~box 0.15m 까지 가도 로컬 100 유지 → 거리 아님
+    · 제자리 회전 (rot1, cmd_vel 직접) : 상자 방위 -82°(화각 밖)에도 로컬 100 유지 → 방위 아님
+  남은 차이는 하나, **Nav2 가 운전했는가**. 재현 주행 로그(job222)가 17ms 간격으로 답했다:
+      [ERROR] RegulatedPurePursuitController detected collision ahead!
+      [INFO]  Received request to clear entirely the local_costmap
+  연쇄:
+    t=1~8  lc 100 / gc 99, 계획여유 +0.12~0.19 m (정상 우회)
+    t=8    RPP 충돌 감지 → 아래 ClearLocalCostmap-Context 발동 → lc 0
+    t=9    복구 서브트리까지 진행해 gc 0 → 계획횡 +0.682 → +0.294, 계획여유 -0.161 m
+    t=10   로버가 상자 쪽으로 진행
+  즉 **Nav2 는 멈춰야 할 이유를 지워버리고 다시 간다.**
+  RPP 의 충돌 감지 자체는 옳았다(계획여유가 12cm 뿐이라 5초 앞 검사에 걸린다).
+  틀린 것은 그 다음 대응이다.
+
+  고침: 전체 삭제 대신 **로봇 주변 reset_distance 안을 보존하고 그 바깥만** 지운다.
+    로컬  reset_distance 1.2 m — 로컬은 3×3m(반경 1.5m)이므로 바깥 링만 지운다.
+    전역  reset_distance 2.0 m — 멀리 있는 유령은 여전히 정리된다.
+  대가: 유령 장애물이 **로봇 가까이** 생겨 갇히면 클리어로는 못 푼다. 그 경우는
+    BackUp(0.15m) → Wait 이 담당한다. 우리 환경(실내 소형, 진짜 장애물이 문제)에서는
+    "가짜를 못 지우는 것" 보다 "진짜를 지우는 것" 이 훨씬 위험하다.
+  기각한 대안:
+    · Clear 노드 자체를 제거 → RecoveryNode 구조가 무너져 실패가 곧바로 상위로 전파된다.
+    · RPP 의 max_allowed_time_to_collision_up_to_carrot 축소 → 충돌 감지를 늦춰 증상만 가린다.
+      안전 여유를 줄이는 방향이므로 근본과 반대다.
+  ⚠ 이 수정은 '지우지 않게' 할 뿐이다. 계획여유가 12cm 뿐이라 RPP 가 충돌을 감지하는 것
+    자체는 남는다 — 계획을 상자에서 더 밀어내는 것(inflation·padding)은 별도 과제다.
 -->
 
 <!--
@@ -17,20 +49,20 @@
         <RateController hz="1.0">
           <RecoveryNode number_of_retries="1" name="ComputePathToPose">
             <ComputePathToPose goal="{goal}" path="{path}" planner_id="GridBased"/>
-            <ClearEntireCostmap name="ClearGlobalCostmap-Context" service_name="global_costmap/clear_entirely_global_costmap"/>
+            <ClearCostmapExceptRegion name="ClearGlobalCostmap-Context" reset_distance="2.0" service_name="global_costmap/clear_except_global_costmap"/>
           </RecoveryNode>
         </RateController>
         <RecoveryNode number_of_retries="1" name="FollowPath">
           <FollowPath path="{path}" controller_id="FollowPath"/>
-          <ClearEntireCostmap name="ClearLocalCostmap-Context" service_name="local_costmap/clear_entirely_local_costmap"/>
+          <ClearCostmapExceptRegion name="ClearLocalCostmap-Context" reset_distance="1.2" service_name="local_costmap/clear_except_local_costmap"/>
         </RecoveryNode>
       </PipelineSequence>
       <ReactiveFallback name="RecoveryFallback">
         <GoalUpdated/>
         <RoundRobin name="RecoveryActions">
           <Sequence name="ClearingActions">
-            <ClearEntireCostmap name="ClearLocalCostmap-Subtree" service_name="local_costmap/clear_entirely_local_costmap"/>
-            <ClearEntireCostmap name="ClearGlobalCostmap-Subtree" service_name="global_costmap/clear_entirely_global_costmap"/>
+            <ClearCostmapExceptRegion name="ClearLocalCostmap-Subtree" reset_distance="1.2" service_name="local_costmap/clear_except_local_costmap"/>
+            <ClearCostmapExceptRegion name="ClearGlobalCostmap-Subtree" reset_distance="2.0" service_name="global_costmap/clear_except_global_costmap"/>
           </Sequence>
           <BackUp backup_dist="0.15" backup_speed="0.05"/>
           <Wait wait_duration="5"/>
