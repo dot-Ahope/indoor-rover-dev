@@ -75,7 +75,18 @@ controller_server:
       #   **0.12m** 밖에 안 봤다. 그래서 상자를 코스트맵이 알고 있어도 컨트롤러가 그냥 밟고 지나감(job66/70).
       #   5.0s → 0.40m 앞까지 검사 → job76 에서 실제로 abort + BackUp 복구가 걸려 **밀고 가는 일이 사라졌다.**
       #   대가: 좁은 통로에서 경로가 내접영역을 스치면 자주 abort → 복구 루프. 통로 여유가 근본 해법.
-      max_allowed_time_to_collision_up_to_carrot: 5.0
+      # ★ 2026-09-11: 5.0 → 1.5 로 되돌림. 위 09-08 진단이 오진이었다.
+      #   "코스트맵이 알고 있어도 밟고 지나감(job66/70)" 의 진짜 원인은 BT 의 ClearEntireCostmap 이었다 —
+      #   RPP 가 충돌을 감지하면 BT 가 로컬 코스트맵을 통째로 지워 장애물이 사라졌고 그래서 밟았다
+      #   (09-11 job222 로그 17ms 인과, BT 를 ClearCostmapExceptRegion 으로 교체해 해결).
+      #   job76 에서 "밀고 가는 일이 사라진" 것은 5.0s 가 abort 를 더 자주 내서 BackUp 이 걸린 것이지
+      #   원인을 고친 게 아니다. 원인이 제거된 지금 5.0 은 대가만 남는다:
+      #     - 제자리 회전 중에는 이 값 × 각속도 = 훑는 각도 → 5.0 × 0.32 rad/s = **92°**.
+      #       그 사이 한 자세라도 걸리면 회전 자체를 거부한다. 물리 틈 0.73m(로버 0.33m)에서
+      #       패딩 포함 허용 자세각이 47° 이므로 반드시 걸린다 → job231/236/247 ABORTED.
+      #   1.5 s = 직진 0.12 m / 회전 27°. 0.08 m/s 로버의 제동거리는 수 cm 라 0.12 m 는 충분하다.
+      #   Nav2 기본값은 1.0.
+      max_allowed_time_to_collision_up_to_carrot: 1.5
       # 곡률·장애물 근접 시 감속
       use_regulated_linear_velocity_scaling: true
       use_cost_regulated_linear_velocity_scaling: true
