@@ -550,4 +550,10 @@ velocity_smoother:
     odom_topic: "/odometry/filtered"
     odom_duration: 0.1
     deadband_velocity: [0.0, 0.0, 0.0]
-    velocity_timeout: 1.0
+    # ★ 2026-09-11: 1.0 → 0.3. bag_s4r2 실측: BackUp 첫 1.0 s 동안 smoother 의 0(20Hz)과
+    #   behavior_server 의 -0.05(10Hz)가 맞물려 100ms 창당 3개가 나갔다(9.76~10.66s, 22.76~23.66s 두 번 모두).
+    #   컨트롤러 마지막 명령 뒤 smoother 가 velocity_timeout 동안 0 을 계속 내보내기 때문이다.
+    #   BT 전환(FollowPath 중단 → BackUp 시작)에 0.45 s 걸리므로 0.3 이면 그 전에 0 스트림이 끝난다.
+    #   Humble 에서는 behavior 가 smoother 를 거치지 않고 /cmd_vel 에 직접 쓰므로 근본 해결은 twist_mux 인데,
+    #   기계를 더 얹기 전에 한 줄로 되는지 먼저 본다. 검증 기준: 다음 bag 의 BackUp 첫 1 s 에 100ms 창당 1개.
+    velocity_timeout: 0.3
