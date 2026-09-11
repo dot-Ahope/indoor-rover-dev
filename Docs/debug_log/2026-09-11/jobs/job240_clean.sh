@@ -18,7 +18,7 @@ source ~/ros2_ws/install/setup.bash
 PATS="navigation.launch slam.launch sensors.launch base.launch navigation_launch \
 controller_server planner_server bt_navigator behavior_server velocity_smoother \
 smoother_server waypoint_follower lifecycle_manager stuck_monitor slam_toolbox \
-ekf_node sensor_conditioner scan_deskew rplidar realsense2_camera foxglove_bridge"
+ekf_node sensor_conditioner scan_deskew rplidar realsense2_camera foxglove_bridge robot_state_publisher"
 
 cnt() { local n=0 c; for p in $PATS; do c=$(pgrep -fc "$p" 2>/dev/null | head -1); n=$((n+${c:-0})); done; echo $n; }
 
@@ -33,6 +33,9 @@ fi
 echo "  정리 후: $(cnt) | /dev/shm fastrtps 잔재: $(ls /dev/shm 2>/dev/null | grep -c fastrtps)"
 : > /tmp/base.log; : > /tmp/sensors.log; : > /tmp/slam.log; : > /tmp/nav2.log
 
+# 2026-09-11: launch 를 죽여도 자식(robot_state_publisher)이 고아로 남아 그래프에 노드 이름이
+#   중복됐다(PID 3054/5769). 정리 목록에 이름으로 넣고, 기동 후 반드시 1개인지 센다.
+echo "  robot_state_publisher 잔존: $(pgrep -fc robot_state_publisher | head -1)개 (0 이어야)"
 echo "########## 2. base (micro-ROS 에이전트) ##########"
 echo "  /dev/rover -> $(readlink -f /dev/rover 2>&1)"
 setsid nohup ros2 launch rover_bringup base.launch.py > /tmp/base.log 2>&1 &
