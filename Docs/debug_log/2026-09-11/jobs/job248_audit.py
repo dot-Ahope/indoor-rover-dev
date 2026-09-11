@@ -129,9 +129,18 @@ if len(sel):
         else:
             cur.append(q)
     if len(cur) >= 25: cl.append(np.array(cur))
-    low = sorted([(abs(float(np.median(c[:, 1]))), c) for c in cl if float(np.median(c[:, 2])) < 0.20], key=lambda t: t[0])
-    if low:
-        c = low[0][1]
+    lows = [c for c in cl if float(np.median(c[:, 2])) < 0.20]
+    # 2026-09-11: 기준선 힌트(BOX_HINT="x y")가 있으면 그 점에 가장 가까운 클러스터를 상자로 본다.
+    #   |y| 최소 규칙은 우측 벽 밑동(447점, y -0.49)에 상자(y -0.10)가 밀리는 사고를 냈다(v5 게이트).
+    import os
+    hint = os.environ.get('BOX_HINT')
+    print('  낮은 클러스터 %d개: ' % len(lows) + ', '.join('(%d점 x%.2f y%+.2f z%.2f)' % (len(c), np.percentile(c[:,0],5), np.median(c[:,1]), np.median(c[:,2])) for c in lows))
+    if lows:
+        if hint:
+            hx, hy = [float(v) for v in hint.split()]
+            c = min(lows, key=lambda c: math.hypot(float(np.percentile(c[:, 0], 5)) - hx, float(np.median(c[:, 1])) - hy))
+        else:
+            c = min(lows, key=lambda c: abs(float(np.median(c[:, 1]))))
         box = (float(np.percentile(c[:, 0], 5)), float(np.median(c[:, 1])), len(c))
 if box:
     bx, by, bn = box

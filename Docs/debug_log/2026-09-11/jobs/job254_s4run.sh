@@ -21,7 +21,7 @@ timeout 10 ros2 service call /local_costmap/clear_entirely_local_costmap nav2_ms
 timeout 10 ros2 service call /global_costmap/clear_entirely_global_costmap nav2_msgs/srv/ClearEntireCostmap "{}" >/dev/null 2>&1
 sleep 15
 echo -n "  출발 자세: "; timeout 6 ros2 run tf2_ros tf2_echo map base_link 2>&1 | grep -aE "Translation|RPY" | head -2 | tr '\n' ' '; echo
-AUD=$(python3 /tmp/job248_audit.py 2>&1)
+AUD=$(BOX_HINT="$BX $BY" python3 /tmp/job248_audit.py 2>&1)
 echo "$AUD" | grep -aE "^상자:|^   \[|→ 전방 2.2m" | sed 's/^/  /'
 BOXLINE=$(echo "$AUD" | grep -a "^상자:" | head -1)
 python3 - "$BOXLINE" "$BX" "$BY" "$TOL" <<'PYG'
