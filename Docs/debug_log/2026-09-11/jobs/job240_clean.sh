@@ -15,31 +15,40 @@ WAIT=${1:-15}
 source /opt/ros/humble/setup.bash
 source ~/ros2_ws/install/setup.bash
 
-PATS="navigation.launch slam.launch sensors.launch base.launch navigation_launch \
-controller_server planner_server bt_navigator behavior_server velocity_smoother \
-smoother_server waypoint_follower lifecycle_manager stuck_monitor slam_toolbox \
-ekf_node sensor_conditioner scan_deskew rplidar realsense2_camera foxglove_bridge robot_state_publisher"
+# ★ 2026-09-11 (2차): base 계층(에이전트·robot_state_publisher)은 **정리하지 않는다.**
+#   에이전트를 죽였다 띄우면 보드는 옛 세션을 믿고 계속 송신하고 새 에이전트는 그것을 버린다
+#   (XRCE-DDS 세션은 클라이언트가 CREATE_SESSION 을 보내야 맺어진다). 보드 리셋 없이는 복구 불가.
+#   → 에이전트가 살아 있으면 그대로 두고 센서·SLAM·Nav2 만 재기동한다. 고아 프로세스도 생기지 않는다.
+#   에이전트가 없을 때만(재부팅 직후) 띄우고, 그 경우 보드 리셋을 요청한다.
+PATS="navigation.launch slam.launch sensors.launch navigation_launch controller_server planner_server bt_navigator behavior_server velocity_smoother smoother_server waypoint_follower lifecycle_manager stuck_monitor slam_toolbox ekf_node sensor_conditioner scan_deskew rplidar realsense2_camera foxglove_bridge"
 
 cnt() { local n=0 c; for p in $PATS; do c=$(pgrep -fc "$p" 2>/dev/null | head -1); n=$((n+${c:-0})); done; echo $n; }
 
 echo "########## 1. 정리 ##########"
 echo "  정리 전 프로세스: $(cnt)"
 for p in $PATS; do pkill -TERM -f "$p" 2>/dev/null; done
-docker rm -f microros_agent >/dev/null 2>&1
 for i in $(seq 1 15); do [ "$(cnt)" = "0" ] && break; sleep 1; done
 if [ "$(cnt)" != "0" ]; then
   for p in $PATS; do pkill -9 -f "$p" 2>/dev/null; done; sleep 3
 fi
 echo "  정리 후: $(cnt) | /dev/shm fastrtps 잔재: $(ls /dev/shm 2>/dev/null | grep -c fastrtps)"
-: > /tmp/base.log; : > /tmp/sensors.log; : > /tmp/slam.log; : > /tmp/nav2.log
+: > /tmp/sensors.log; : > /tmp/slam.log; : > /tmp/nav2.log
 
 # 2026-09-11: launch 를 죽여도 자식(robot_state_publisher)이 고아로 남아 그래프에 노드 이름이
 #   중복됐다(PID 3054/5769). 정리 목록에 이름으로 넣고, 기동 후 반드시 1개인지 센다.
-echo "  robot_state_publisher 잔존: $(pgrep -fc robot_state_publisher | head -1)개 (0 이어야)"
+echo "  base 계층 유지: 에이전트 $(docker ps --format '{{.Names}}' 2>/dev/null | grep -c microros_agent)개, robot_state_publisher $(pgrep -fc robot_state_publisher | head -1)개 (각 1 이어야)"
 echo "########## 2. base (micro-ROS 에이전트) ##########"
 echo "  /dev/rover -> $(readlink -f /dev/rover 2>&1)"
-setsid nohup ros2 launch rover_bringup base.launch.py > /tmp/base.log 2>&1 &
-sleep 12
+if [ "$(docker ps --format '{{.Names}}' 2>/dev/null | grep -c microros_agent)" = "1" ] && \
+   [ -n "$(timeout 6 ros2 topic hz /wheel_odom 2>&1 | grep -aoE 'average rate: [0-9.]+')" ]; then
+  echo "  에이전트 살아 있고 보드 송수신 정상 → base 재기동 생략 (세션 유지)"
+else
+  echo "  에이전트 없음/보드 무발행 → base 기동 (기동 후 보드 리셋이 필요할 수 있다)"
+  pkill -TERM -f "base.launch" 2>/dev/null; docker rm -f microros_agent >/dev/null 2>&1; sleep 2
+  : > /tmp/base.log
+  setsid nohup ros2 launch rover_bringup base.launch.py > /tmp/base.log 2>&1 &
+  sleep 12
+fi
 echo "  컨테이너: $(docker ps --format '{{.Names}} {{.Status}}' 2>/dev/null | grep -a micro || echo '없음!')"
 # ⚠ 보드 연결 검증은 **게이트**로 건다. 빈 값으로 조용히 지나가면 뒤 단계가 전부 헛돈다.
 #   2026-09-11 실제 사고: 사용자가 보드 리셋 → 그 뒤 에이전트를 재시작 → 세션 0건.
