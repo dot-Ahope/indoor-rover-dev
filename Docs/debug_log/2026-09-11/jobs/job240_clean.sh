@@ -111,5 +111,7 @@ echo "########## 8. 상태 ##########"
 echo -n "  로버 자세: "; timeout 6 ros2 run tf2_ros tf2_echo map base_link 2>&1 | grep -aE "Translation|RPY" | head -2 | tr '\n' ' '; echo
 echo "  EKF 위반 $(grep -ac 'Failed to meet update rate' /tmp/sensors.log)회 | slam 폐기 $(grep -ac 'Message Filter dropping' /tmp/slam.log)회 | load $(cut -d' ' -f1-3 /proc/loadavg)"
 echo
-echo "########## 9. 통과 가능성 ##########"
-python3 /tmp/job233_pass.py 2>&1 | sed -n '4,26p'
+echo "########## 9. 통과 가능성 (물리 틈 / 코스트맵 감사 / RPP 기준) ##########"
+# 2026-09-11: job233 은 footprint 투영에 99 를 써서 반경을 두 번 셌다(과장된 "통과 불가").
+#   job248 은 센서 원시 점 기준 물리 틈, LETHAL 셀의 센서 근거, RPP 실제 기준(둘레<100)을 병기한다.
+python3 /tmp/job248_audit.py 2>&1 | sed -n '5,40p'

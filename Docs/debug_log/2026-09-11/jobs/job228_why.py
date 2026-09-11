@@ -22,6 +22,10 @@ from rclpy.qos import qos_profile_sensor_data, QoSProfile, DurabilityPolicy, Rel
 HL, HW = 0.25, 0.165
 PAD = 0.05
 INSCRIBED_PUB = 99          # Costmap2DPublisher 에서 raw 253 -> 99
+# 2026-09-11 정정: RPP inCollision() 은 footprint 둘레 최대비용 >= LETHAL(254 = 발행 100) 일 때만
+#   충돌이다. inscribed(99)는 '중심이 여기면 충돌' 이라 이미 반경이 반영된 값 — footprint 를
+#   투영하면서 99 를 쓰면 반경을 두 번 센다. 이 오류로 "통과 불가" 를 잘못 판정했다(job247).
+LETHAL_PUB = 100
 
 rclpy.init()
 n = Node('why228')
@@ -92,7 +96,7 @@ def body_scan(dx, dy, dth):
 v0, bp0 = body_scan(0, 0, 0)
 print('=== 제자리 (현재 자세) ===')
 print('  footprint(+pad %.2f) 안 최대 비용 = %d  %s'
-      % (PAD, v0, '<-- 내접 이상, 충돌 판정' if v0 >= INSCRIBED_PUB else ''))
+      % (PAD, v0, '<-- LETHAL, RPP 충돌' if v0 >= LETHAL_PUB else ('(inscribed 99 — RPP 는 충돌로 안 봄)' if v0 >= INSCRIBED_PUB else '')))
 if bp0:
     print('    최대 지점: 차체좌표 (%.3f, %.3f)  map (%.3f, %.3f)' % bp0)
 print()
@@ -101,7 +105,7 @@ print('=== 전진 투영 (차체를 앞으로 옮겨 본다) ===')
 print('   전진(m)  footprint 최대비용   막히는가')
 for d in [0.05*k for k in range(0, 13)]:
     v, bp = body_scan(d, 0, 0)
-    flag = 'BLOCK' if v >= INSCRIBED_PUB else ''
+    flag = 'BLOCK' if v >= LETHAL_PUB else ('inscr' if v >= INSCRIBED_PUB else '')
     extra = ''
     if flag and bp:
         extra = '  차체좌표(%+.2f,%+.2f)' % (bp[0], bp[1])
@@ -112,7 +116,7 @@ print('=== 후진 투영 ===')
 print('   후진(m)  footprint 최대비용   막히는가')
 for d in [0.05*k for k in range(0, 7)]:
     v, bp = body_scan(-d, 0, 0)
-    flag = 'BLOCK' if v >= INSCRIBED_PUB else ''
+    flag = 'BLOCK' if v >= LETHAL_PUB else ('inscr' if v >= INSCRIBED_PUB else '')
     extra = ''
     if flag and bp:
         extra = '  차체좌표(%+.2f,%+.2f)' % (bp[0], bp[1])
@@ -123,7 +127,7 @@ print('=== 제자리 회전 투영 ===')
 print('   회전(deg)  footprint 최대비용   막히는가')
 for a in range(-60, 61, 15):
     v, bp = body_scan(0, 0, math.radians(a))
-    flag = 'BLOCK' if v >= INSCRIBED_PUB else ''
+    flag = 'BLOCK' if v >= LETHAL_PUB else ('inscr' if v >= INSCRIBED_PUB else '')
     print('   %+6d      %4d              %s' % (a, v, flag))
 
 print()
