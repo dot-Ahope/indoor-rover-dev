@@ -40,6 +40,14 @@ n.create_subscription(LaserScan, '/scan', lambda m: S.__setitem__('sc', m),
                       qos_profile_sensor_data)
 
 
+def pose_in(frame):
+    """코스트맵 셀을 차체 좌표로 옮길 때는 **그 코스트맵의 frame_id**(로컬=odom, 전역=map) 기준 자세를 써야 한다.
+    2026-09-11 정정: map 자세로 로컬(odom) 셀을 변환해 map->odom 보정(0.1~0.2 m)만큼 어긋난 '유령' 을 만들었다."""
+    t = buf.lookup_transform(frame, 'base_link', rclpy.time.Time()).transform
+    q = t.rotation
+    return (t.translation.x, t.translation.y, math.atan2(2*(q.w*q.z + q.x*q.y), 1 - 2*(q.y*q.y + q.z*q.z)))
+
+
 def pose():
     try:
         t = buf.lookup_transform('map', 'base_link', rclpy.time.Time()).transform
@@ -59,7 +67,8 @@ if p is None or 'lc' not in S:
     raise SystemExit(1)
 g = S['lc']
 res = g.info.resolution
-print('로버 map (%.3f, %.3f) hd=%.2f deg' % (p[0], p[1], math.degrees(p[2])))
+p = pose_in(g.header.frame_id)   # 로컬 코스트맵 frame(odom) 기준 자세
+print('로버 %s (%.3f, %.3f) hd=%.2f deg' % (g.header.frame_id, p[0], p[1], math.degrees(p[2])))
 print('로컬 코스트맵 %dx%d res %.3f origin (%.2f, %.2f)'
       % (g.info.width, g.info.height, res, g.info.origin.position.x, g.info.origin.position.y))
 print()

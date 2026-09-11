@@ -3,6 +3,7 @@
    클리어 직후에도 차체 좌측 뒤(차체좌표 -0.18, +0.215)에 100(LETHAL)이 다시 찍힌다.
    라이다는 그 방향에 아무것도 없다고 하므로, 어느 센서가 찍는지 가른다. 로버는 정지."""
 import math
+import sys
 import time
 import numpy as np
 import rclpy
@@ -19,12 +20,21 @@ tl = tf2_ros.TransformListener(buf, n)
 S = {}
 qos_tl = QoSProfile(depth=1, durability=DurabilityPolicy.TRANSIENT_LOCAL,
                     reliability=ReliabilityPolicy.RELIABLE)
-n.create_subscription(OccupancyGrid, '/local_costmap/costmap',
-                      lambda m: S.__setitem__('lc', m), qos_tl)
+TOPIC = sys.argv[1] if len(sys.argv) > 1 else '/local_costmap/costmap'
+n.create_subscription(OccupancyGrid, TOPIC, lambda m: S.__setitem__('lc', m), qos_tl)
+n.create_subscription(OccupancyGrid, '/map', lambda m: S.__setitem__('sm', m), qos_tl)
 n.create_subscription(LaserScan, '/scan', lambda m: S.__setitem__('sc', m),
                       qos_profile_sensor_data)
 n.create_subscription(PointCloud2, '/camera/camera/depth/color/points',
                       lambda m: S.__setitem__('pc', m), qos_profile_sensor_data)
+
+
+def pose_in(frame):
+    """코스트맵 셀을 차체 좌표로 옮길 때는 **그 코스트맵의 frame_id**(로컬=odom, 전역=map) 기준 자세를 써야 한다.
+    2026-09-11 정정: map 자세로 로컬(odom) 셀을 변환해 map->odom 보정(0.1~0.2 m)만큼 어긋난 '유령' 을 만들었다."""
+    t = buf.lookup_transform(frame, 'base_link', rclpy.time.Time()).transform
+    q = t.rotation
+    return (t.translation.x, t.translation.y, math.atan2(2*(q.w*q.z + q.x*q.y), 1 - 2*(q.y*q.y + q.z*q.z)))
 
 
 def pose():
@@ -54,6 +64,8 @@ if p is None or g is None:
     raise SystemExit(1)
 res = g.info.resolution
 ox, oy = g.info.origin.position.x, g.info.origin.position.y
+p = pose_in(g.header.frame_id)   # 그 코스트맵의 frame 기준 자세
+print('대상 토픽: %s (frame %s)' % (TOPIC, g.header.frame_id))
 print('로버 map (%.3f, %.3f) hd=%.2f deg' % (p[0], p[1], math.degrees(p[2])))
 
 # 로버 중심 +-0.8m 격자 (차체 좌표계로 출력)
@@ -142,3 +154,37 @@ if 'pc' in S:
                               for q in left[:6]])
     except Exception as e:
         print('  깊이 TF 실패:', e)
+
+
+# slam 정적 지도(/map)에서 같은 영역을 본다 — static_layer 가 옛 장애물을 들고 있는지
+sm = S.get('sm')
+print()
+if sm is None:
+    print('=== /map 수신 못함 ===')
+else:
+    print('=== slam 정적 지도(/map) 같은 영역 ===')
+    print('    .=free(0)  -=1~49  +=50~99  X=100(occupied)  ?=미지(-1)')
+    smres = sm.info.resolution
+    sox, soy = sm.info.origin.position.x, sm.info.origin.position.y
+
+    def ssym(v):
+        if v < 0:
+            return '?'
+        if v == 0:
+            return '.'
+        if v >= 100:
+            return 'X'
+        if v >= 50:
+            return '+'
+        return '-'
+
+    for lx in xs:
+        row = ''
+        for ly in ys[::-1]:
+            mx = p[0] + lx*co - ly*si
+            my = p[1] + lx*si + ly*co
+            i = int((mx - sox) / smres)
+            j = int((my - soy) / smres)
+            v = sm.data[j*sm.info.width + i] if (0 <= i < sm.info.width and 0 <= j < sm.info.height) else -1
+            row += ssym(v)
+        print('  x=%+.2f %s' % (lx, row))

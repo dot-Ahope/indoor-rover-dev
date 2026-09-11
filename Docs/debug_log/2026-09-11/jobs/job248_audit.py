@@ -55,6 +55,14 @@ def tfm(a, b):
     return Rq(t.rotation), np.array([t.translation.x, t.translation.y, t.translation.z])
 
 
+def pose_in(frame):
+    """코스트맵 셀을 차체 좌표로 옮길 때는 **그 코스트맵의 frame_id**(로컬=odom, 전역=map) 기준 자세를 써야 한다.
+    2026-09-11 정정: map 자세로 로컬(odom) 셀을 변환해 map->odom 보정(0.1~0.2 m)만큼 어긋난 '유령' 을 만들었다."""
+    t = buf.lookup_transform(frame, 'base_link', rclpy.time.Time()).transform
+    q = t.rotation
+    return (t.translation.x, t.translation.y, math.atan2(2*(q.w*q.z + q.x*q.y), 1 - 2*(q.y*q.y + q.z*q.z)))
+
+
 def pose():
     try:
         t = buf.lookup_transform('map', 'base_link', rclpy.time.Time()).transform
@@ -171,12 +179,13 @@ for key, name in (('lc', '로컬'), ('gc', '전역')):
     res = g.info.resolution
     ox, oy = g.info.origin.position.x, g.info.origin.position.y
     W, H = g.info.width, g.info.height
+    pg = pose_in(g.header.frame_id); cg_, sg_ = math.cos(pg[2]), math.sin(pg[2])
     data = np.array(g.data, dtype=np.int16).reshape(H, W)
     jj, ii = np.where(data >= LETHAL_PUB)
     mx = ox + (ii + 0.5) * res; my = oy + (jj + 0.5) * res
     # map → base_link
-    dx, dy = mx - p[0], my - p[1]
-    bx_ = dx*co + dy*si; by_ = -dx*si + dy*co
+    dx, dy = mx - pg[0], my - pg[1]
+    bx_ = dx*cg_ + dy*sg_; by_ = -dx*sg_ + dy*cg_
     near = (bx_ > -0.5) & (bx_ < 1.3) & (np.abs(by_) < 0.9)
     bx_, by_ = bx_[near], by_[near]
     if len(bx_) == 0:
@@ -184,8 +193,8 @@ for key, name in (('lc', '로컬'), ('gc', '전역')):
     cells = np.stack([bx_, by_], 1)
     d = np.sqrt(((cells[:, None, :] - allpts[None, :, :])**2).sum(2)).min(1)
     matched = (d < 0.08).sum()
-    print('  %s: 전방 -0.5~1.3m x 좌우 0.9m 안 LETHAL 셀 %d개 중 센서 점 8cm 안에 있는 것 %d (%.0f%%), 없는 것 %d'
-          % (name, len(cells), matched, 100.0*matched/len(cells), len(cells)-matched))
+    print('  %s[%s]: 전방 -0.5~1.3m x 좌우 0.9m 안 LETHAL 셀 %d개 중 센서 점 8cm 안에 있는 것 %d (%.0f%%), 없는 것 %d'
+          % (name, g.header.frame_id, len(cells), matched, 100.0*matched/len(cells), len(cells)-matched))
     orphan = cells[d >= 0.08]
     if len(orphan):
         # 고아 셀의 분포
@@ -196,6 +205,7 @@ print()
 # ── C) 컨트롤러 기준으로 다시 본 통과 폭 ───────────────────────
 print('########## C. 통과 폭 — 판정 기준 두 가지 비교 (전역 코스트맵) ##########')
 g = S['gc']; res = g.info.resolution; ox, oy = g.info.origin.position.x, g.info.origin.position.y
+p = pose_in(g.header.frame_id); co, si = math.cos(p[2]), math.sin(p[2])
 
 
 def cost(mx, my):
@@ -223,7 +233,7 @@ def fp_max(lx, ly, th_extra=0.0):
 
 print('   전방x   기준1: 중심셀<99 (NavFn식)      기준2: footprint둘레<100 (RPP 실제)   기준3(오늘 오류): footprint<99')
 w1min = w2min = w3min = (9.9, None)
-for k in range(4, 33, 2):
+for k in range(4, 45, 2):
     lx = 0.05*k
     runs = {1: [], 2: [], 3: []}
     cur = {1: None, 2: None, 3: None}
@@ -238,13 +248,13 @@ for k in range(4, 33, 2):
     for q in (1, 2, 3):
         if cur[q] is not None: runs[q].append((cur[q], 1.0))
     w = {q: max([b-a+0.05 for a, b in runs[q]], default=0.0) for q in (1, 2, 3)}
-    if lx <= 1.6:
+    if lx <= 2.2:
         if w[1] < w1min[0]: w1min = (w[1], lx)
         if w[2] < w2min[0]: w2min = (w[2], lx)
         if w[3] < w3min[0]: w3min = (w[3], lx)
     f = lambda q: (('[%+.2f~%+.2f]' % max(runs[q], key=lambda t: t[1]-t[0])) if runs[q] else '(없음)')
     print('   %.2f   %-22s %.2f    %-22s %.2f    %-22s %.2f' % (lx, f(1), w[1], f(2), w[2], f(3), w[3]))
-print('   → 전방 1.6m 최소폭:  기준1 %.2f m (@%.2f)   기준2(RPP) %.2f m (@%.2f)   기준3(오류) %.2f m (@%.2f)'
+print('   → 전방 2.2m 최소폭:  기준1 %.2f m (@%.2f)   기준2(RPP) %.2f m (@%.2f)   기준3(오류) %.2f m (@%.2f)'
       % (w1min[0], w1min[1], w2min[0], w2min[1], w3min[0], w3min[1]))
 print()
 print('   기준2 가 RPP 가 실제로 쓰는 것이다. 기준3 은 내접 반경을 두 번 세는 오류로,')
