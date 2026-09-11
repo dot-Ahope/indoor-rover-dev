@@ -21,7 +21,17 @@ from nav_msgs.msg import OccupancyGrid
 from rclpy.qos import QoSProfile, DurabilityPolicy, ReliabilityPolicy
 
 INSCRIBED_PUB = 99
-HW, PAD = 0.165, 0.05
+HL, HW, PAD = 0.25, 0.165, 0.05
+# 2026-09-11 정정 ★ 셀 하나의 비용만 보는 것은 **원형 근사**라 낙관적이다.
+#   inscribed_radius 0.215 는 차체 **반폭**(0.165+패딩)이지 반길이(0.25+패딩=0.30)가 아니다.
+#   우리 차체는 0.5x0.33 직사각형이므로 길이 방향으로 0.30 이 필요한데 inflation 은
+#   0.215 만 보장한다. 반면 **RPP 는 직사각형 footprint 를 실제로 투영해 검사**한다.
+#   job247 실제 사고: 이 도구가 "통과 폭 0.40m 확보" 라고 판정한 배치에서 RPP 가
+#   출발부터 충돌을 감지해 못 갔다. 로버가 우회하려 48도 회전하자 차체가 대각선이 되어
+#   더 넓은 공간이 필요했는데, 원형 근사는 그것을 전혀 반영하지 못했다.
+#   → footprint 네 모서리를 포함한 격자를 그 자세로 투영해 최대 비용을 본다.
+#   자세는 로버 현재 heading 으로 근사한다(경로를 따라 실제로는 바뀐다 — 여전히 근사다).
+FP_STEPS = 7   # footprint 내부 격자 해상도 (7x7=49점)
 
 rclpy.init()
 n = Node('pass233')
@@ -70,7 +80,24 @@ for key, name in (('gc', '전역'), ('lc', '로컬')):
         return -1
 
     co, si = math.cos(p[2]), math.sin(p[2])
-    print('=== %s 코스트맵: 전방 단면별 통과 가능 폭 ===' % name)
+
+    def body_blocked(lx, ly):
+        """차체 중심을 (lx,ly)[차체좌표]에 놓았을 때 footprint(+pad) 안 최대 비용."""
+        best = -1
+        L, W = HL + PAD, HW + PAD
+        for a in range(FP_STEPS):
+            for b in range(FP_STEPS):
+                fx = -L + 2*L*a/(FP_STEPS-1)
+                fy = -W + 2*W*b/(FP_STEPS-1)
+                # 차체 자세는 로버 heading 과 같다고 근사 → 차체좌표에서 그대로 더한다
+                mx = p[0] + (lx+fx)*co - (ly+fy)*si
+                my = p[1] + (lx+fx)*si + (ly+fy)*co
+                v = cost(mx, my)
+                if v > best:
+                    best = v
+        return best
+
+    print('=== %s 코스트맵: 전방 단면별 통과 가능 폭 (footprint 투영) ===' % name)
     print('  전방x   중심을 놓을 수 있는 y 구간들 (비용<99)          최대폭')
     worst = (99.0, None)
     for k in range(2, 41):
@@ -79,9 +106,7 @@ for key, name in (('gc', '전역'), ('lc', '로컬')):
         cur = None
         for m in range(-24, 25):
             ly = 0.05 * m
-            mx = p[0] + lx*co - ly*si
-            my = p[1] + lx*si + ly*co
-            v = cost(mx, my)
+            v = body_blocked(lx, ly)
             free = (0 <= v < INSCRIBED_PUB)
             if free and cur is None:
                 cur = ly
@@ -102,5 +127,7 @@ for key, name in (('gc', '전역'), ('lc', '로컬')):
     print()
 
 print('판정 기준: 최소 통과폭이 0 이면 물리적으로 못 지나간다.')
+print('           ※ 이 값은 footprint(0.5x0.33 + 패딩 0.05)를 로버 현재 자세로 투영해 낸 것이다.')
+print('             경로를 따라 자세가 바뀌면 실제 여유는 더 줄 수 있으므로 아직 낙관적이다.')
 print('           0 보다 크되 작으면(< 0.15m) 계획이 거의 정확히 중앙을 지나야 하므로')
 print('           NavFn 의 경로 길이 선호와 충돌한다.')
