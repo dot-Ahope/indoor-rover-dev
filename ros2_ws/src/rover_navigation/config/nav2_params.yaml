@@ -95,7 +95,14 @@ controller_server:
       # 스키드스티어는 제자리 회전 가능 → 경로 시작 시 헤딩 정렬
       use_rotate_to_heading: true
       # 2026-09-08: 0.25 로 낮추면 회전↔추종 모드 채터 6회(스파이크 28회) → 0.5 유지 (job58e 기각)
-      rotate_to_heading_min_angle: 0.5
+      # ★ 2026-09-11: 0.5 → 1.0 rad (28.6° → 57°). 경로 첫 구간이 이 각도 이상 꺾일 때만 제자리 회전.
+      #   근거: 통로 free 폭 0.82 m(job248 A)에 대해 패딩 포함 차체 대각선이 0.74 m — **제자리에서
+      #   50° 도는 것이 이 공간에서 가장 공간을 많이 먹는 동작**이다. job247·s4r1 이 정확히 그 자세
+      #   (48°/50°)에서 굳었고, job251 이 탈출한 순간은 v 0.08·ω 0.20 의 **곡선**이었다.
+      #   NavFn 경로는 8-연결 격자에서 나와 첫 0.25 m(lookahead)가 자주 꺾이므로 28.6° 조건은
+      #   그 격자 인공물에 쉽게 걸린다. 57° 미만은 곡선으로 흡수한다.
+      #   목표 지점의 자세 정렬은 shouldRotateToGoalHeading(goal_dist_tol 조건)이라 영향 없다.
+      rotate_to_heading_min_angle: 1.0
       rotate_to_heading_angular_vel: 0.32   # 2026-09-07 B_eff 0.443: 실 최대 0.384 rad/s 대비 여유
       # ⚠ RPP 는 rotateToHeading 각속도를 '현재 측정속도 ± max_angular_accel×dt' 로 클램프한다.
       #   1.0 이면 20Hz 제어주기에서 첫 명령이 1.0×0.05 = 0.05 rad/s 뿐 → 로버 기동 임계(정지마찰·
