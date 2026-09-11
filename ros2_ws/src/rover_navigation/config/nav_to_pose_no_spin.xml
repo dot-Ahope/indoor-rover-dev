@@ -24,8 +24,21 @@
   틀린 것은 그 다음 대응이다.
 
   고침: 전체 삭제 대신 **로봇 주변 reset_distance 안을 보존하고 그 바깥만** 지운다.
-    로컬  reset_distance 1.2 m — 로컬은 3×3m(반경 1.5m)이므로 바깥 링만 지운다.
-    전역  reset_distance 2.0 m — 멀리 있는 유령은 여전히 정리된다.
+
+  ★ 2026-09-11 2차 조정: 로컬 1.2 → 2.5 m, 전역 2.0 → 3.0 m.
+    1.2 m 로는 부족했다(job236). 상자가 로버 중심에서 1.37 m 에 있을 때 반경 **밖**이라
+    그대로 지워졌고, 계획이 곧바로 상자를 관통하는 직선으로 바뀌었다:
+       t=13  clear_geo 1.068 → 로버중심~상자 약 1.37m > 1.2m → lc 0 / gc 0
+             계획횡 +0.293 → +0.038,  ② 계획 여유 -10.7cm, 계획 접촉 샘플 24%
+       t=23  상자가 1.2m 안으로 들어오자 보존되어 lc 99~100 유지
+    지표 ⑤ 도 같은 말을 한다: "로컬이 상자를 잃은 18샘플 중 깊이점이 있었던 것 **18 (100%)**"
+    — 카메라는 보고 있는데 코스트맵이 버렸다.
+
+    로컬 2.5 m 는 로컬 코스트맵 반경(3×3m → 1.5m)을 넘으므로 **로컬 클리어를 사실상
+    비활성화**한다. 이것이 의도다 — 로컬은 롤링 창이라 유령이 스크롤로 자동 제거되며,
+    별도 클리어가 필요 없다. 전역 3.0 m 는 멀리 있는 유령만 정리한다.
+    유령 제거는 **시간 감쇠**(로컬 30초 / 전역 90초)가 담당한다.
+  대가: 진짜로 갇혔을 때 클리어로는 못 푼다 → BackUp(0.15m) → Wait 이 담당한다.
   대가: 유령 장애물이 **로봇 가까이** 생겨 갇히면 클리어로는 못 푼다. 그 경우는
     BackUp(0.15m) → Wait 이 담당한다. 우리 환경(실내 소형, 진짜 장애물이 문제)에서는
     "가짜를 못 지우는 것" 보다 "진짜를 지우는 것" 이 훨씬 위험하다.
@@ -49,20 +62,20 @@
         <RateController hz="1.0">
           <RecoveryNode number_of_retries="1" name="ComputePathToPose">
             <ComputePathToPose goal="{goal}" path="{path}" planner_id="GridBased"/>
-            <ClearCostmapExceptRegion name="ClearGlobalCostmap-Context" reset_distance="2.0" service_name="global_costmap/clear_except_global_costmap"/>
+            <ClearCostmapExceptRegion name="ClearGlobalCostmap-Context" reset_distance="3.0" service_name="global_costmap/clear_except_global_costmap"/>
           </RecoveryNode>
         </RateController>
         <RecoveryNode number_of_retries="1" name="FollowPath">
           <FollowPath path="{path}" controller_id="FollowPath"/>
-          <ClearCostmapExceptRegion name="ClearLocalCostmap-Context" reset_distance="1.2" service_name="local_costmap/clear_except_local_costmap"/>
+          <ClearCostmapExceptRegion name="ClearLocalCostmap-Context" reset_distance="2.5" service_name="local_costmap/clear_except_local_costmap"/>
         </RecoveryNode>
       </PipelineSequence>
       <ReactiveFallback name="RecoveryFallback">
         <GoalUpdated/>
         <RoundRobin name="RecoveryActions">
           <Sequence name="ClearingActions">
-            <ClearCostmapExceptRegion name="ClearLocalCostmap-Subtree" reset_distance="1.2" service_name="local_costmap/clear_except_local_costmap"/>
-            <ClearCostmapExceptRegion name="ClearGlobalCostmap-Subtree" reset_distance="2.0" service_name="global_costmap/clear_except_global_costmap"/>
+            <ClearCostmapExceptRegion name="ClearLocalCostmap-Subtree" reset_distance="2.5" service_name="local_costmap/clear_except_local_costmap"/>
+            <ClearCostmapExceptRegion name="ClearGlobalCostmap-Subtree" reset_distance="3.0" service_name="global_costmap/clear_except_global_costmap"/>
           </Sequence>
           <BackUp backup_dist="0.15" backup_speed="0.05"/>
           <Wait wait_duration="5"/>
