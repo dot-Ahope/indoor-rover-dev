@@ -20,7 +20,7 @@ source ~/ros2_ws/install/setup.bash
 #   (XRCE-DDS 세션은 클라이언트가 CREATE_SESSION 을 보내야 맺어진다). 보드 리셋 없이는 복구 불가.
 #   → 에이전트가 살아 있으면 그대로 두고 센서·SLAM·Nav2 만 재기동한다. 고아 프로세스도 생기지 않는다.
 #   에이전트가 없을 때만(재부팅 직후) 띄우고, 그 경우 보드 리셋을 요청한다.
-PATS="navigation.launch slam.launch sensors.launch navigation_launch controller_server planner_server bt_navigator behavior_server velocity_smoother smoother_server waypoint_follower lifecycle_manager stuck_monitor slam_toolbox ekf_node sensor_conditioner scan_deskew rplidar realsense2_camera foxglove_bridge"
+PATS="depth_relay.py navigation.launch slam.launch sensors.launch navigation_launch controller_server planner_server bt_navigator behavior_server velocity_smoother smoother_server waypoint_follower lifecycle_manager stuck_monitor slam_toolbox ekf_node sensor_conditioner scan_deskew rplidar realsense2_camera foxglove_bridge"
 
 cnt() { local n=0 c; for p in $PATS; do c=$(pgrep -fc "$p" 2>/dev/null | head -1); n=$((n+${c:-0})); done; echo $n; }
 
