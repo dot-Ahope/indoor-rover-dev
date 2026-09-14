@@ -7,7 +7,12 @@ J=jetson@192.168.0.101
 for f in job254_s4run.sh job231_drive.sh job125_avoid3.py job248_audit.py; do tr -d '\r' < $SPS/$f > /tmp/$f; sshpass -p <PW> scp $OPT -q /tmp/$f $J:/tmp/$f || exit 1; done
 echo "=== 사전 감사: 상자 위치와 RPP 창 (BOX_HINT $BX $BY) ==="
 A=$(timeout 150 sshpass -p <PW> ssh $OPT $J "source /opt/ros/humble/setup.bash; BOX_HINT='$BX $BY' python3 /tmp/job248_audit.py 2>&1")
-echo "$A" | grep -aE '^상자:|^   (0\.9|1\.[0-4])0 |최소폭'
+echo "$A" | grep -aE '^상자:|^   (0\.9|1\.[0-4])0 |최소폭|근거 없는'
+# 2026-09-14 §2.20: 센서 근거 없는 LETHAL 셀(관찰자 자취 등)이 남아 있으면 주행하지 않는다 (로컬 기준, ≤2 허용)
+# 코스 띠(x 0.3~1.6, |y|<0.5) 안의 근거 없는 셀만 센다 — 우측 벽 밑동(y −0.6~−0.8, 낮은 실물의 간헐 관측)은 제외
+NB=$(echo "$A" | grep -aE '^  로컬\[' -A1 | grep -aoE '\(\+?[-0-9.]+,[-+0-9.]+\)' | tr -d '()+' | awk -F, '$1>0.3 && $1<1.6 && $2>-0.5 && $2<0.5' | wc -l)
+echo "코스 띠 안 센서 근거 없는 로컬 LETHAL 셀: ${NB:-?}개 (≤1 필요; 예시 목록 기준)"
+[ -n "$NB" ] && [ "$NB" -le 1 ] || { echo "★ 코스 띠에 근거 없는 셀 ${NB}개 — 유령/자취. 60 s 뒤 재감사. 주행하지 않음"; exit 1; }
 W=$(echo "$A" | grep -aE '^   (0\.9|1\.[0-4])0 ' | awk '{print $3}' | sort -n | head -1)
 echo "통로 창(기준1, x 0.9~1.4) 최소폭: ${W:-없음} m"
 [ -n "$W" ] || { echo "★ 감사 출력 없음(ssh/감사 실패) — 주행하지 않음"; exit 1; }
