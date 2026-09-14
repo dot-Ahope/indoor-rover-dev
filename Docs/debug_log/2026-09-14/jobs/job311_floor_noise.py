@@ -11,7 +11,7 @@ import tf2_ros
 DUR = float(sys.argv[1]) if len(sys.argv) > 1 else 30.0
 rclpy.init(); n = Node('floor311'); buf = tf2_ros.Buffer(); tl = tf2_ros.TransformListener(buf, n)
 F = []
-n.create_subscription(PointCloud2, '/camera/camera/depth/color/points', lambda m: F.append(m), qos_profile_sensor_data)
+n.create_subscription(PointCloud2, __import__('os').environ.get('TOPIC', '/camera/camera/depth/color/points'), lambda m: F.append(m), qos_profile_sensor_data)
 t0 = time.time()
 while time.time() - t0 < DUR:
     rclpy.spin_once(n, timeout_sec=0.05)

@@ -60,4 +60,11 @@ def generate_launch_description():
         ),
         # (2026-09-08 오전) depthimage_to_laserscan 수평 띠 방식은 철회: 10cm 상자가 0.66m 이내로 오면 띠(높이 0.12~0.16m@0.3m)
         #   아래로 내려가 마킹이 끊기고, 2D 소거 광선이 상자 셀을 지움. → 포인트클라우드 + VoxelLayer(3D 소거)로 대체.
+        # (2026-09-14) 깊이 점군 릴레이: 카메라 0.45 m 안 점(근거리 아티팩트 0.36~0.38 m, 정지 30 s 에 17 % 프레임)과
+        #   5 cm 복셀당 3점 미만의 고립점(상자 실루엣 비산점, 프레임당 2~4점·고립 98~99 %)을 제거해 /camera/depth/points_filtered 로.
+        #   STVL 이 이 토픽을 본다. 근거: Docs/debug_log/2026-09-14/SUMMARY.md §2.5·§2.7. 드라이버엔 min_distance 필터가 없다.
+        Node(
+            package='rover_bringup', executable='depth_relay.py', name='depth_relay', output='screen',
+            parameters=[{'min_range': 0.45, 'voxel': 0.05, 'min_points_per_voxel': 3}],
+        ),
     ])
