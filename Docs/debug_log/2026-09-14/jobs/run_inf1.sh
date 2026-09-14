@@ -12,9 +12,9 @@ W=$(echo "$A" | grep -aE '^   (0\.9|1\.[0-4])0 ' | awk '{print $3}' | sort -n | 
 echo "통로 창(기준1, x 0.9~1.4) 최소폭: ${W:-없음} m"
 [ -n "$W" ] || { echo "★ 감사 출력 없음(ssh/감사 실패) — 주행하지 않음"; exit 1; }
 # 2026-09-14 §2.16: 기준1 폭은 상자 inscribed 띠를 못 거른다 → 창 = 기준1 좌측 경계(x 1.0~1.3 최소) − (상자 코스트맵 최대 y + 0.195)
-LB=$(echo "$A" | grep -aE '^   1\.[0-3]0 ' | grep -aoE '\[[-+0-9.]+~[-+0-9.]+\]' | head -4 | tr -d '[]' | cut -d'~' -f2 | sort -n | head -1)
-tr -d '' < $SPS/job315_boxcells.py > /tmp/job315.py; sshpass -p <PW> scp $OPT -q /tmp/job315.py $J:/tmp/job315_boxcells.py
-BM=$(timeout 60 sshpass -p <PW> ssh $OPT $J "source /opt/ros/humble/setup.bash; python3 /tmp/job315_boxcells.py $BX $BY 2>/dev/null | tail -1")
+LB=$(echo "$A" | grep -aE '^   1\.[0-3]0 ' | awk '{print $2}' | tr -d '[]' | cut -d'~' -f2 | sort -n | head -1)   # 행의 2번째 필드 = 기준1 창
+tr -d '' < $SPS/job315_boxcells.py > /tmp/job315.py; sshpass -p <PW> scp $OPT -q /tmp/job315.py $J:/tmp/job315_boxcells.py
+BM=""; for try in 1 2 3; do BM=$(timeout 60 sshpass -p <PW> ssh $OPT $J "source /opt/ros/humble/setup.bash; python3 /tmp/job315_boxcells.py $BX $BY 2>&1 | grep -av '^\[' | tail -1"); case "$BM" in nan|"") echo "  (상자 셀 조회 재시도 $try: '$BM')"; sleep 3;; *) break;; esac; done
 W2=$(awk -v lb="$LB" -v bm="$BM" 'BEGIN{ if (bm=="nan"||bm=="") print "nan"; else printf "%.3f", lb - (bm + 0.195) }')
 echo "창(기준1 좌측 경계 $LB − (상자 셀 최대 y $BM + 0.195)) = $W2 m  (≥0.20 필요)"
 awk -v w="$W2" 'BEGIN{exit !(w+0 >= 0.20)}' || { echo "★ 창 < 0.20 m — 이 배치는 로버 중심 창이 부족하다. 상자를 오른쪽으로 옮기거나 재감사. 주행하지 않음"; exit 1; }
