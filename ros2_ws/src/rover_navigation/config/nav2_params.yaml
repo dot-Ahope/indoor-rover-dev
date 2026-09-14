@@ -243,7 +243,7 @@ local_costmap:
         observation_sources: depth_mark depth_clear
         depth_mark:
           data_type: PointCloud2
-          topic: /camera/camera/depth/color/points
+          topic: /camera/depth/points_filtered   # 2026-09-14: depth_relay 출력(근거리 0.45 m·고립점 제거). 원본은 /camera/camera/depth/color/points
           marking: true
           clearing: false
           obstacle_range: 1.2         # D455 원거리 잡음 억제 (기존 obstacle_max_range 와 동일)
@@ -257,7 +257,7 @@ local_costmap:
           clear_after_reading: true
         depth_clear:
           data_type: PointCloud2
-          topic: /camera/camera/depth/color/points
+          topic: /camera/depth/points_filtered   # 2026-09-14: depth_relay 출력(근거리 0.45 m·고립점 제거). 원본은 /camera/camera/depth/color/points
           marking: false
           clearing: true
           max_z: 1.5                  # 절두체 원평면. 마킹은 1.2m 까지지만 소거 판단은 조금 더 멀리
@@ -422,7 +422,7 @@ global_costmap:
         observation_sources: depth_mark depth_clear
         depth_mark:
           data_type: PointCloud2
-          topic: /camera/camera/depth/color/points
+          topic: /camera/depth/points_filtered   # 2026-09-14: depth_relay 출력(근거리 0.45 m·고립점 제거). 원본은 /camera/camera/depth/color/points
           marking: true
           clearing: false
           obstacle_range: 1.2         # D455 원거리 잡음 억제 (기존 obstacle_max_range 와 동일)
@@ -436,7 +436,7 @@ global_costmap:
           clear_after_reading: true
         depth_clear:
           data_type: PointCloud2
-          topic: /camera/camera/depth/color/points
+          topic: /camera/depth/points_filtered   # 2026-09-14: depth_relay 출력(근거리 0.45 m·고립점 제거). 원본은 /camera/camera/depth/color/points
           marking: false
           clearing: true
           max_z: 1.5                  # 절두체 원평면. 마킹은 1.2m 까지지만 소거 판단은 조금 더 멀리
