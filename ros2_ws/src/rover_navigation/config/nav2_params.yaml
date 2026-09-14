@@ -548,11 +548,14 @@ planner_server:
       max_planning_time: 5.0
       motion_model_for_search: "DUBIN"       # 전진만. 스키드스티어라 제자리 회전은 되지만 경로에 후진 cusp 을 넣지 않는다(RPP/MPPI 전진 추종)
       angle_quantization_bins: 72            # 5°
-      minimum_turning_radius: 0.20           # 실제 최소는 0(제자리) — 일부러 크게 두어 차선 변경을 완만하게. 통로 창 0.22~0.28 과 견줘 조정
+      # 2026-09-14 정지 A/B(09-14 §2.19): R 0.20/cost 2.0 은 목표 heading 제약으로 4.3 m 루프, R 0.05 는 틈을 파고들어 4.96 m 반대편 우회.
+      #   R 0.10/cost 1.2 만 정상(길이 2.0~2.1). 목표가 통로선(+0.35)이면 모서리 heading 7.7°(NavFn 18.7°)·상자 셀 0.40 으로 우세,
+      #   목표가 상자 선상(0)이면 상자 쪽으로 잘라 들어가(0.16) NavFn 보다 못하다. 주행 A/B 는 목표를 통로선에 두고.
+      minimum_turning_radius: 0.10
       reverse_penalty: 2.0
       change_penalty: 0.0
-      non_straight_penalty: 1.2
-      cost_penalty: 2.0                      # 비용(inflation) 회피 가중 — 통로 중앙 선호
+      non_straight_penalty: 1.05
+      cost_penalty: 1.2                      # 비용(inflation) 회피 가중 — 2.0 이면 좌측 물체 옆(0.215)으로 붙어 루프
       retrospective_penalty: 0.015
       lookup_table_size: 20.0
       cache_obstacle_heuristic: true
