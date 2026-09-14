@@ -41,7 +41,9 @@ bands = {
     '좌측 연장': ((BX - 0.05, BX + 0.50), (BY + 0.12, BY + 0.35)),
     '뒤쪽 연장': ((BX + 0.15, BX + 0.50), (BY - 0.12, BY + 0.12)),
     '우측 연장': ((BX - 0.05, BX + 0.50), (BY - 0.35, BY - 0.12)),
+    '앞쪽 연장': ((BX - 0.20, BX - 0.05), (BY - 0.12, BY + 0.12)),   # inf4: 코스트맵 상자가 전면보다 0.13 앞까지 켜짐
 }
+ZTH = float(__import__('os').environ.get('ZTH', '0.08'))   # min_obstacle_height 후보 — 이 아래 점 비율을 띠별로 센다
 stats = {k: dict(frames=0, counts=[], z=[], x=[], y=[], iso=0, tot=0, onray=0) for k in bands}
 edge_az = math.atan2(BY + 0.09 - CAM[1], BX - CAM[0])   # 카메라에서 본 상자 좌측 앞 모서리 방위
 edge_r = math.hypot(BX - CAM[0], BY + 0.09 - CAM[1])
@@ -70,10 +72,14 @@ for k, s in stats.items():
     if s['frames'] == 0:
         print('  %-10s   0%%' % k); continue
     z = np.array(s['z']); x = np.array(s['x']); y = np.array(s['y']); c = np.array(s['counts'])
-    print('  %-10s %4.0f%%     %4d / %4d        %.3f %.3f %.3f   %.2f~%.2f   %+.2f~%+.2f   %3.0f%%    %3.0f%%'
+    print('  %-10s %4.0f%%     %4d / %4d        %.3f %.3f %.3f   %.2f~%.2f   %+.2f~%+.2f   %3.0f%%    %3.0f%%   z<%.2f: %3.0f%%'
           % (k, 100.0 * s['frames'] / nf, int(np.median(c[c > 0])), c.max(), np.percentile(z, 5), np.percentile(z, 50), np.percentile(z, 95),
              np.percentile(x, 5), np.percentile(x, 95), np.percentile(y, 5), np.percentile(y, 95),
-             100.0 * s['iso'] / max(s['tot'], 1), 100.0 * s['onray'] / max(s['tot'], 1)))
+             100.0 * s['iso'] / max(s['tot'], 1), 100.0 * s['onray'] / max(s['tot'], 1), ZTH, 100.0 * float((z < ZTH).mean())))
+    # ZTH 를 적용하면 이 띠에서 프레임당 남는 점 수 (min_obstacle_height 후보 평가)
+    keep = [float((np.array(s['z'][sum(c[:i]):sum(c[:i + 1])]) >= ZTH).sum()) for i in range(len(c)) if c[i] > 0] if False else None
+    z_hi = (z >= ZTH).sum()
+    print('             → z≥%.2f 인 점 %d / %d (프레임당 평균 %.1f)' % (ZTH, z_hi, len(z), z_hi / max(nf, 1)))
 # 코스트맵 상자 범위 (차체좌표)
 for key, name in (('lc', '로컬'), ('gc', '전역')):
     g = G.get(key)
