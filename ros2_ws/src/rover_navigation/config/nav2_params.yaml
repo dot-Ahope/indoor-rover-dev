@@ -527,12 +527,43 @@ global_costmap:
 planner_server:
   ros__parameters:
     expected_planner_frequency: 1.0
-    planner_plugins: ["GridBased"]
+    # 2026-09-14 (NVBLOX 계획서 §4·§5-3): "경로 추종으로 자유 이동" 의 첫 계층 실험 — Smac Hybrid-A* 를 두 번째 계획기로 등록.
+    #   BT 기본 planner_id 는 GridBased 라 이 등록만으로는 동작이 바뀌지 않는다. 정지 A/B(job317: 시작 pose 고정, use_start)로
+    #   중앙 상자 코스의 모서리 통과 heading·차선 변경 시작점을 NavFn 과 비교한 뒤, 이기면 BT 의 planner_id 를 바꿔 주행 A/B.
+    #   NavFn 8-연결 격자는 곡률을 모르고 대각선으로 붙어 모서리에서 heading +15~30° 가 됐다(09-14 §2.18).
+    planner_plugins: ["GridBased", "SmacHybrid"]
     GridBased:
       plugin: "nav2_navfn_planner/NavfnPlanner"
       tolerance: 0.25
       use_astar: false
       allow_unknown: true
+    SmacHybrid:
+      plugin: "nav2_smac_planner/SmacPlannerHybrid"
+      tolerance: 0.25
+      downsample_costmap: false
+      downsampling_factor: 1
+      allow_unknown: true
+      max_iterations: 1000000
+      max_on_approach_iterations: 1000
+      max_planning_time: 5.0
+      motion_model_for_search: "DUBIN"       # 전진만. 스키드스티어라 제자리 회전은 되지만 경로에 후진 cusp 을 넣지 않는다(RPP/MPPI 전진 추종)
+      angle_quantization_bins: 72            # 5°
+      minimum_turning_radius: 0.20           # 실제 최소는 0(제자리) — 일부러 크게 두어 차선 변경을 완만하게. 통로 창 0.22~0.28 과 견줘 조정
+      reverse_penalty: 2.0
+      change_penalty: 0.0
+      non_straight_penalty: 1.2
+      cost_penalty: 2.0                      # 비용(inflation) 회피 가중 — 통로 중앙 선호
+      retrospective_penalty: 0.015
+      lookup_table_size: 20.0
+      cache_obstacle_heuristic: true
+      smooth_path: true
+      smoother:
+        max_iterations: 1000
+        w_smooth: 0.3
+        w_data: 0.2
+        tolerance: 1.0e-10
+        do_refinement: true
+        refinement_num: 2
 
 smoother_server:
   ros__parameters:
