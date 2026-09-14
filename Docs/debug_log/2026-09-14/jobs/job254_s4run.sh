@@ -26,7 +26,7 @@ echo "$AUD" | grep -aE "^상자:|^   \[|→ 전방 2.2m" | sed 's/^/  /'
 BOXLINE=$(echo "$AUD" | grep -a "^상자:" | head -1)
 python3 - "$BOXLINE" "$BX" "$BY" "$TOL" <<'PYG'
 import sys,re
-m=re.search(r'x=([-0-9.]+)\s+중심 y=([-0-9.]+)', sys.argv[1])
+m=re.search(r'x=([-+0-9.]+)\s+중심 y=([-+0-9.]+)', sys.argv[1])   # 2026-09-14: y=+0.008 처럼 + 부호도 허용
 if not m: print("  ★ 상자 검출 실패 — 주행 불가"); sys.exit(1)
 x,y=float(m.group(1)),float(m.group(2)); bx,by,tol=[float(v) for v in sys.argv[2:5]]
 dx,dy=x-bx,y-by
