@@ -228,7 +228,10 @@ local_costmap:
         #   사라진다(절두체는 min_z 0.55 라 근거리를 못 지우고, 라이다 레이캐스팅은
         #   combination_method: 1(Maximum) 때문에 STVL 값을 못 이긴다).
         #   30.0 은 09-09 job167 에서 근거를 갖고 정한 값이므로 그대로 복원한다.
-        voxel_decay: 30.0             # 선형 감쇠 수명(초)
+        # 2026-09-14: 30 → 60 s. 중앙 상자 주행 3회(inf1~3) 모두 상자 옆을 지나는 동안 로컬 상자 기억이 30 s 만료로
+        #   사라졌다(마지막 관측은 상자 앞 ~0.5 m, 이후 사각지대·입구 정지로 20~30 s 소요). BT 가 ClearCostmapExceptRegion 이라
+        #   길게 둬도 09-10 의 "밀고 지나감" 은 재발하지 않는다. 근거: Docs/debug_log/2026-09-14/SUMMARY.md §2, §2.10
+        voxel_decay: 60.0             # 선형 감쇠 수명(초)
         decay_model: 0                # 0=선형, 1=지수, -1=영속
         voxel_size: 0.05              # 코스트맵 해상도와 일치
         track_unknown_space: true
