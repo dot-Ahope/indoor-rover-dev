@@ -253,6 +253,18 @@ S4 3/3 완료 후 사용자 질문("nvblox 이전이 지금 옳은가")에 대�
    경로 추종 중 국소 회피. 같은 중앙 상자 코스에서 "모서리 도달 시 heading" 과 "정지 횟수" 를 지표로 RPP+NavFn 과 A/B. nvblox 는 이들이 쓰는 거리장을 좋게 하는 두 번째 단계.
 4. 이전 뒤에도 남는 것: 근거리 사각 0.40 m(카메라 물리), 2D 라이다 층, RPP 를 쓰는 동안의 입구 정체(→ 컨트롤러 교체로만 해소).
 
+### 6. N1 환경 조사 결과 (2026-09-14, 읽기 전용 — job316 + 공식 문서)
+- Jetson: L4T **R36.5.0**(2026-01-16 빌드, JetPack 6.2 계열), Ubuntu 22.04.5, 커널 5.15.185-tegra, CUDA **12.6**(driver 540.5), docker 29.3 + nvidia-ctk 설치됨,
+  디스크 193 GB 여유, RAM 7 GB 중 5 GB 가용. Isaac ROS 저장소·패키지 흔적 없음. Nav2 apt 패키지에 smac/mppi/smoother 모두 있음.
+- 공식 릴리스 노트: **Isaac ROS 3.2**(2024-12, Humble, JetPack 6.1/CUDA 12.6) → **3.2 Update 1**(2025-01, **JetPack 6.2 지원**). 4.0(2025-10)부터는
+  Jetson Thor·JetPack 7·Ubuntu 24.04 로 넘어갔고 최신 4.6(2026-08) 문서는 Orin Nano 를 지원 목록에 올리지 않는다.
+  → 우리 조합(Humble + JetPack 6.2.x + CUDA 12.6)은 **Isaac ROS 3.2 Update 1** 이 맞는 버전이다. 문서상 "Orin Nano 4 GB 는 메모리 부족" 경고만 있고
+  8 GB 는 지원 목록(0.30 부터). nvblox 성능 수치는 AGX Orin 기준(0.05 m 복셀: TSDF 0.8 ms·ESDF 1.7 ms/프레임) — Orin Nano 는 측정해야 한다.
+- 설치 경로: 3.2 는 `isaac_ros_common` 개발 컨테이너(docker, JetPack 6 태그) 또는 apt(`isaac.download.nvidia.com/isaac-ros/release-3`, 저장소 등록 필요 — 루트 URL 은 404, 문서의 설정 스크립트로 등록).
+  **sudo 가 필요하므로 실행 전에 사용자에게 고지한다.** 컨테이너 방식이면 호스트 ROS 와 분리되어 현재 스택(네이티브 Humble)을 건드리지 않는다 — N0 에 적합.
+- nvblox 입력은 depth 이미지 + camera_info(+색), 3D 라이다 선택. RealSense 는 예제에 일반 명사로만 등장(D455 개별 명시는 없음) — 같은 realsense2_camera 드라이버 토픽이라 문제 없음.
+  Nav2 연결은 nvblox 의 코스트맵 플러그인(ESDF 2D 슬라이스) — 플러그인 클래스명은 N2 에서 소스로 확인.
+
 기각하지 않는 이유를 요약하면: 오늘 하루 지도 계층에서 한 세 가지 땜질(릴레이 두 규칙·감쇠 연장)이 모두 nvblox 가 구조로 가진 기능이고,
 청소기형 이동으로 목표를 옮기면 컨트롤러가 요구하는 지도(연속 거리장·광선 소거·3D)가 STVL 의 설계 범위를 벗어나기 때문이다.
 채택하지 않을 이유가 남는다면 그것은 **Orin Nano 의 부하**와 **설치 구조(N1)** 뿐이며, 둘 다 N0 에서 측정된다.
