@@ -61,7 +61,10 @@
       <PipelineSequence name="NavigateWithReplanning">
         <RateController hz="1.0">
           <RecoveryNode number_of_retries="1" name="ComputePathToPose">
-            <ComputePathToPose goal="{goal}" path="{path}" planner_id="GridBased"/>
+            <!-- 2026-09-14 (09-14 SUMMARY §2.22): GridBased(NavFn) → SmacHybrid. NavFn 8-연결 최단 경로가 상자 앞왼쪽 모서리를 대각선으로
+                 잘라(상자 앞 0.3 m 에서 횡 +0.27, 패딩면이 가장자리와 겹침) 0.08 m/s 에서 정체. Smac Hybrid-A*(R 0.10, cost 1.2)는 정지 A/B 에서
+                 통로선 목표 기준 모서리 heading 7.7°(NavFn 18.7°). 되돌리려면 planner_id="GridBased". -->
+            <ComputePathToPose goal="{goal}" path="{path}" planner_id="SmacHybrid"/>
             <ClearCostmapExceptRegion name="ClearGlobalCostmap-Context" reset_distance="3.0" service_name="global_costmap/clear_except_global_costmap"/>
           </RecoveryNode>
         </RateController>
