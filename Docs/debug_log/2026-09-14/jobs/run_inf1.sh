@@ -1,6 +1,6 @@
 #!/bin/bash
 # inflation 0.55/2.0 검증 주행: 재감사(상자 위치·창) 게이트 → job254 (중복·보드·클리어·상자 게이트 → bag 주행 → 로그 분석)
-NAME=${1:-inf1}; D=${2:-2.0}; BX=${3:-1.15}; BY=${4:--0.04}; TOL=${5:-0.06}
+NAME=${1:-inf1}; D=${2:-2.0}; BX=${3:-1.15}; BY=${4:--0.04}; TOL=${5:-0.06}; GL=${6:-0}
 SPS=/mnt/c/Users/magma/AppData/Local/Temp/claude/F--6-Indoor-Rover-Rover/82ce61d4-f5f7-4a25-b2e7-1279291348a9/scratchpad
 OPT="-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o LogLevel=ERROR -o ConnectTimeout=15"
 J=jetson@192.168.0.101
@@ -23,5 +23,5 @@ BM=""; for try in 1 2 3; do BM=$(timeout 60 sshpass -p <PW> ssh $OPT $J "source 
 W2=$(awk -v lb="$LB" -v bm="$BM" 'BEGIN{ if (bm=="nan"||bm=="") print "nan"; else printf "%.3f", lb - (bm + 0.195) }')
 echo "창(기준1 좌측 경계 $LB − (상자 셀 최대 y $BM + 0.195)) = $W2 m  (≥0.20 필요)"
 awk -v w="$W2" 'BEGIN{exit !(w+0 >= 0.20)}' || { echo "★ 창 < 0.20 m — 이 배치는 로버 중심 창이 부족하다. 상자를 오른쪽으로 옮기거나 재감사. 주행하지 않음"; exit 1; }
-echo "=== 주행 $NAME D=$D ==="
-timeout 560 sshpass -p <PW> ssh $OPT $J "source /opt/ros/humble/setup.bash; source ~/ros2_ws/install/setup.bash; bash /tmp/job254_s4run.sh $NAME $D $BX $BY $TOL 2>&1 | tail -70"
+echo "=== 주행 $NAME D=$D 횡 $GL ==="
+timeout 560 sshpass -p <PW> ssh $OPT $J "source /opt/ros/humble/setup.bash; source ~/ros2_ws/install/setup.bash; GOAL_LAT=$GL bash /tmp/job254_s4run.sh $NAME $D $BX $BY $TOL 2>&1 | tail -70"
