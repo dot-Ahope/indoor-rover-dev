@@ -86,7 +86,12 @@ controller_server:
       #       패딩 포함 허용 자세각이 47° 이므로 반드시 걸린다 → job231/236/247 ABORTED.
       #   1.5 s = 직진 0.12 m / 회전 27°. 0.08 m/s 로버의 제동거리는 수 cm 라 0.12 m 는 충분하다.
       #   Nav2 기본값은 1.0.
-      max_allowed_time_to_collision_up_to_carrot: 1.5
+      # ★ 2026-09-14 (09-14 SUMMARY §2.15): 1.5 → 0.75 s. 이 값은 **시간** 기준이라 검사 거리 = 값 × v 다.
+      #   비용 감속을 풀어(cost_scaling_dist 0.25) 통로 진입 속도가 0.03 → 0.08 이 되자 검사 거리가 4.5 → 12 cm 로 2.7배 늘었고,
+      #   차선 변경(heading +20~30°) 중 앞우 모서리 앞 1~2셀(상자 가장자리 격자 반올림·상자 앞 유령 셀)에 걸려 spd1/spd2 가 ABORTED.
+      #   inf1~4(0.03, 검사 4.5 cm)는 같은 셀을 지나쳐 4/4 완주했다. 0.75 s × 0.08 = 6 cm 로 그 검사 거리를 복원한다.
+      #   0.08 m/s 제동거리 < 1 cm 라 6 cm 는 여전히 충분. 회전 중 훑는 각도도 0.75 × 0.32 = 14°(1.5 는 27°).
+      max_allowed_time_to_collision_up_to_carrot: 0.75
       # 곡률·장애물 근접 시 감속
       use_regulated_linear_velocity_scaling: true
       use_cost_regulated_linear_velocity_scaling: true
