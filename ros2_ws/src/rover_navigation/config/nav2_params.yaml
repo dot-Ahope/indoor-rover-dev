@@ -139,7 +139,9 @@ controller_server:
       #   PathFollow(5) 하나뿐이라 상자 앞 0.23 m 의 코스트맵 기울기(ObstaclesCritic)가 로버를 왼쪽으로 제자리
       #   회전시켰고(t18~20, 경로 요구 0°), 통로 입구에서 heading 오차 47~62° 가 된 뒤 60 s 머뭇거림(진행 실패 2회).
       #   56 step(=Nav2 기본, 2.8 s ≈ 0.22 m) 으로 지평을 늘리고 아래 index 문턱을 우리 지평에 맞춘다. CPU 1.75×.
-      time_steps: 56
+      #   ★ mp3 결과(09-16 §1.9): 56 step 은 이 Jetson 에서 20 Hz 를 못 냈다(루프 미달 306 건/90 s, load 11.8, EKF 위반 91) 그리고
+      #   모서리 정체는 그대로였다 → 32 로 되돌림. MPPI 재도전 시 batch 500 이하 또는 10 Hz 에서 지평을 다시 설계할 것.
+      time_steps: 32
       model_dt: 0.05
       batch_size: 1000
       vx_std: 0.05
@@ -285,8 +287,14 @@ local_costmap:
           expected_update_rate: 0.0
           observation_persistence: 0.0  # STVL 자체 감쇠가 기억을 담당하므로 버퍼 유지는 불필요
           inf_is_valid: false
-          filter: "passthrough"
-          voxel_min_points: 0
+          # ★ 2026-09-16 §1.8: 상자 왼쪽 가장자리 셀 깜빡임(창 0.235 ↔ 0.187) 의 출처는 가장자리(y≈0.18)의 잡음 꼬리 —
+          #   180 s 에 9 프레임(0.3 %), 프레임당 1~2점이 y 0.20~0.21 에 떨어지고(월드 복셀당 최대 2점), 한 점이 decay 60 s 동안
+          #   셀 [0.20,0.25) 를 켠다. 릴레이의 "카메라 복셀당 ≥3점" 은 같은 복셀의 안정된 가장자리 점과 함께 통과시켜 못 거른다.
+          #   STVL 의 voxel 필터는 **odom 격자 정렬**(PCL VoxelGrid) 이라 셀 단위로 거른다: 3 이면 9/9 사건 차단,
+          #   진짜 가장자리 셀(1.18,0.17)은 91 % 프레임 유지, 앞-왼쪽 약한 모서리 셀(1.12,0.12~0.17: 1~3점·10 %)만 사라진다.
+          #   2 는 사건 3/9 를 통과시켜 부족. (job333, 정지 180 s, raw·filtered 동일)
+          filter: "voxel"
+          voxel_min_points: 3
           clear_after_reading: true
         depth_clear:
           data_type: PointCloud2
@@ -471,8 +479,14 @@ global_costmap:
           expected_update_rate: 0.0
           observation_persistence: 0.0  # STVL 자체 감쇠가 기억을 담당하므로 버퍼 유지는 불필요
           inf_is_valid: false
-          filter: "passthrough"
-          voxel_min_points: 0
+          # ★ 2026-09-16 §1.8: 상자 왼쪽 가장자리 셀 깜빡임(창 0.235 ↔ 0.187) 의 출처는 가장자리(y≈0.18)의 잡음 꼬리 —
+          #   180 s 에 9 프레임(0.3 %), 프레임당 1~2점이 y 0.20~0.21 에 떨어지고(월드 복셀당 최대 2점), 한 점이 decay 60 s 동안
+          #   셀 [0.20,0.25) 를 켠다. 릴레이의 "카메라 복셀당 ≥3점" 은 같은 복셀의 안정된 가장자리 점과 함께 통과시켜 못 거른다.
+          #   STVL 의 voxel 필터는 **odom 격자 정렬**(PCL VoxelGrid) 이라 셀 단위로 거른다: 3 이면 9/9 사건 차단,
+          #   진짜 가장자리 셀(1.18,0.17)은 91 % 프레임 유지, 앞-왼쪽 약한 모서리 셀(1.12,0.12~0.17: 1~3점·10 %)만 사라진다.
+          #   2 는 사건 3/9 를 통과시켜 부족. (job333, 정지 180 s, raw·filtered 동일)
+          filter: "voxel"
+          voxel_min_points: 3
           clear_after_reading: true
         depth_clear:
           data_type: PointCloud2
