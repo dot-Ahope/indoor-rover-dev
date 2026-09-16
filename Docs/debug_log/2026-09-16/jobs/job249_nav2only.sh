@@ -1,7 +1,7 @@
 #!/bin/bash
 # nav2 만 재기동 — 중복 프로세스 없이. base/sensors/slam 은 건드리지 않는다(보드 세션 유지).
 set +u
-source /opt/ros/humble/setup.bash; source ~/ros2_ws/install/setup.bash
+export FASTRTPS_DEFAULT_PROFILES_FILE=$HOME/ros2_ws/install/rover_bringup/share/rover_bringup/config/fastdds_udp_only.xml; source /opt/ros/humble/setup.bash; source ~/ros2_ws/install/setup.bash
 tr -d '\r' < /tmp/nav2_params.yaml > /tmp/np.u && mv /tmp/np.u /tmp/nav2_params.yaml
 python3 - <<'PY' || { echo "YAML 검증 실패 — 중단"; exit 1; }
 import yaml
@@ -47,7 +47,8 @@ done
 
 echo "=== nav2 기동 ==="
 : > /tmp/nav2.log
-setsid nohup ros2 launch rover_navigation navigation.launch.py > /tmp/nav2.log 2>&1 &
+# 09-16: MPPI 튜닝 주행 동안 stuck_monitor 는 관찰만(mp4 에서 떨림 명령을 STUCK 으로 오판해 18 s 에 취소). 진행 감시는 progress checker 25 s + 러너 90 s.
+setsid nohup ros2 launch rover_navigation navigation.launch.py stuck_shadow:=true > /tmp/nav2.log 2>&1 &
 sleep 30
 for nd in /controller_server /planner_server /bt_navigator /behavior_server; do
   printf "  %-20s " "$nd"; timeout 6 ros2 lifecycle get "$nd" 2>/dev/null || echo "?"
