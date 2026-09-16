@@ -38,9 +38,10 @@
              그 뒤에 뜬 노드(나 새 셸)와 데이터를 주고받지 못한다(09-16 mp4 직후: /scan·/wheel_odom 무수신,
              Nav2 activating 정지). 같은 호스트 안에서만 통신하므로 127.0.0.1 만 쓰면 IP 변화에 면역이다.
              (ROS_LOCALHOST_ONLY 는 rmw 가 SHM 을 다시 켜므로 쓰지 않는다 — 위 SHM 사고 참조) -->
-        <interfaceWhiteList>
-          <address>127.0.0.1</address>
-        </interfaceWhiteList>
+        <!-- 2026-09-16 저녁 결론: 호스트 노드만 루프백/docker0 화이트리스트로 묶으면 micro-ROS 에이전트(컨테이너, 자체 참가자 설정)와
+             통신이 끊긴다(job359/360: 프로파일 CLI 에서 /wheel_odom 0, 전체 인터페이스 CLI 25 Hz). 에이전트도 같은 화이트리스트를
+             쓰게 하려면 refs 프로파일(-r) 이 필요 → 후속 과제. 지금은 화이트리스트 없이 UDP 전용으로 되돌린다.
+             (IP 변경 면역은 미해결: Wi-Fi 전환 뒤에는 전체 재기동 + 보드 리셋이 필요하다) -->
       </transport_descriptor>
     </transport_descriptors>
 

@@ -27,6 +27,7 @@ P = dict(vx_std=0.05, wz_std=0.3, temperature=0.3, gamma=0.015, iters=1, batch=1
          vx_max=0.08, vx_min=-0.06, wz_max=0.38,
          align_w=14.0, align_off=3, align_step=3, follow_w=5.0, follow_off=5, angle_w=2.0, angle_off=4, angle_max=0.5,
          rep_w=1.5, crit_w=20.0, margin=0.05, coll_cost=10000.0, fwd_w=5.0, infl_r=0.40, scale=2.5, r_in=0.175,
+         goal_w=5.0, goal_thr=1.0, ga_w=3.0, ga_thr=0.4, follow_thr=0.6, align_thr=0.4, angle_thr=0.4, goal_yaw=0.0,
          cycles=40, seed=1, label='')
 for a in sys.argv[3:]:
     k, v = a.split('='); P[k] = v if k == 'label' else float(v)
@@ -113,8 +114,9 @@ def critics(X, Y, TH, V, Wz, rx, ry, rth):
     ex, ey, eth = X[:, -1], Y[:, -1], TH[:, -1]
     dend = np.hypot(ex[:, None] - path[None, :, 0], ey[:, None] - path[None, :, 1])
     near_idx = dend.argmin(axis=1); furthest = int(near_idx.max())
-    # PathAlign
-    if furthest >= P['align_off']:
+    gx, gy = path[-1]; dgoal = math.hypot(gx - rx, gy - ry)
+    # PathAlign (목표 근처에서는 꺼짐)
+    if furthest >= P['align_off'] and dgoal >= P['align_thr']:
         js = np.arange(0, T, P['align_step'])
         dd = np.hypot(X[:, js][:, :, None] - path[None, None, :, 0], Y[:, js][:, :, None] - path[None, None, :, 1]).min(axis=2)
         align = P['align_w'] * dd.mean(axis=1)
@@ -122,14 +124,16 @@ def critics(X, Y, TH, V, Wz, rx, ry, rth):
         align = np.zeros(B)
     # PathFollow
     tf_ = path[min(furthest + P['follow_off'], len(path) - 1)]
-    follow = P['follow_w'] * np.hypot(ex - tf_[0], ey - tf_[1])
+    follow = P['follow_w'] * np.hypot(ex - tf_[0], ey - tf_[1]) if dgoal >= P['follow_thr'] else np.zeros(B)
     # PathAngle
     ta = path[min(furthest + P['angle_off'], len(path) - 1)]
     cur = abs(wrap(math.atan2(ta[1] - ry, ta[0] - rx) - rth))
-    angle = P['angle_w'] * np.abs(wrap(np.arctan2(ta[1] - ey, ta[0] - ex) - eth)) if cur > P['angle_max'] else np.zeros(B)
+    angle = P['angle_w'] * np.abs(wrap(np.arctan2(ta[1] - ey, ta[0] - ex) - eth)) if (cur > P['angle_max'] and dgoal >= P['angle_thr']) else np.zeros(B)
+    goal = P['goal_w'] * np.hypot(ex - gx, ey - gy) if dgoal < P['goal_thr'] else np.zeros(B)
+    gang = P['ga_w'] * np.abs(wrap(eth - P['goal_yaw'])) if dgoal < P['ga_thr'] else np.zeros(B)
     fwd = P['fwd_w'] * np.clip(-V, 0, None).sum(axis=1) * P['dt']
-    total = obst + align + follow + angle + fwd
-    return total, dict(obst=obst, align=align, follow=follow, angle=angle, fwd=fwd, coll=traj_coll, furthest=furthest, cur=cur, dend=np.hypot(ex - rx, ey - ry))
+    total = obst + align + follow + angle + fwd + goal + gang
+    return total, dict(obst=obst, align=align, follow=follow, angle=angle + goal + gang, fwd=fwd, dgoal=dgoal, coll=traj_coll, furthest=furthest, cur=cur, dend=np.hypot(ex - rx, ey - ry))
 
 
 def rollout(V, Wz, rx, ry, rth):
@@ -145,7 +149,7 @@ rx, ry, rth = x0, y0, th0
 print('%s bag %s t=%.1f 자세 (%.3f,%.3f) yaw %+.1f° 초기 cmd v %+.3f w %+.3f | 경로 %d점(간격 %.3f) | 파라미터 %s' % (
     P['label'], BAG.split('/')[-1], AT, x0, y0, math.degrees(th0), mean_v[0], mean_w[0], len(path), np.hypot(*(path[1] - path[0])),
     ' '.join('%s=%g' % (k, P[k]) for k in ('vx_std', 'wz_std', 'temperature', 'iters', 'align_w', 'align_off', 'follow_w', 'follow_off', 'angle_w', 'angle_max', 'rep_w'))))
-print('  cyc |  cmd v    w  | 로버 x y yaw | furth | 충돌% | 끝단전방 중앙/최대 | 평균비용 obst align follow angle | 최저후보 v w | 평균열 최대비용/충돌스텝')
+print('  cyc |  cmd v    w  | 로버 x y yaw | furth | 충돌% | 끝단전방 중앙/최대 | 평균비용 obst align follow angle+goal | 최저후보 v w | 평균열 최대비용/충돌스텝')
 for cyc in range(P['cycles']):
     for it in range(P['iters']):
         nv = rng.normal(0, P['vx_std'], (B, T)); nw = rng.normal(0, P['wz_std'], (B, T))

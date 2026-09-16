@@ -40,7 +40,8 @@ echo "  base 계층 유지: 에이전트 $(docker ps --format '{{.Names}}' 2>/de
 echo "########## 2. base (micro-ROS 에이전트) ##########"
 echo "  /dev/rover -> $(readlink -f /dev/rover 2>&1)"
 if [ "$(docker ps --format '{{.Names}}' 2>/dev/null | grep -c microros_agent)" = "1" ] && \
-   [ -n "$(timeout 6 ros2 topic hz /wheel_odom 2>&1 | grep -aoE 'average rate: [0-9.]+')" ]; then
+   { [ -n "$(timeout 6 ros2 topic hz /wheel_odom 2>&1 | grep -aoE 'average rate: [0-9.]+')" ] || [ "$(docker logs microros_agent 2>&1 | grep -ac 'session established')" -ge 1 ]; }; then
+  # 09-16: 세션이 이미 맺어진 에이전트는 hz 검사가 실패해도 재기동하지 않는다(재기동 = 보드 리셋 재요구). 원인은 뒤 게이트가 보고.
   echo "  에이전트 살아 있고 보드 송수신 정상 → base 재기동 생략 (세션 유지)"
 else
   echo "  에이전트 없음/보드 무발행 → base 기동 (기동 후 보드 리셋이 필요할 수 있다)"
