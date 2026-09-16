@@ -83,3 +83,5 @@ syslog(/var/log/syslog, 영속): **09-15 14:03:13 `wpa_supplicant: CTRL-EVENT-DI
   `/dev/ttyUSB*`·`/dev/ttyACM*` 없음 → 제어보드(CH340) 미연결 상태(사용자가 확장보드 분리). base 기동 전 재연결 필요.
 - /tmp 의 어제 nav2.log·bag_mp2 는 없음 → **mp2 주행 시작 여부는 끝내 미확인**(사용자 현장 진술로 기록).
 - 교훈 추가: Wi-Fi 두 SSID 중 하나로 고정(우선순위/고정 IP), 주행 러너는 원격 nohup + 파일 로그(§3), 게이트 통과 후 목표 전송 직전에 링크 재확인.
+- (09-16 09:36, 사용자 지시·sudo 동의) `mavlink-router` disable+stop 완료. Wi-Fi autoconnect 우선순위 **WEB_DEV_5G 20 > ALOPS_ROBOTICS_5G 5 > PTR 0**, `nmcli con up WEB_DEV_5G`(nohup) →
+  **192.168.0.101 복귀 확인**(ssh OK). 러너 호스트 192.168.0.101 로 복원(157개). 이후 규칙: 접속 전 192.168.0.101·172.30.1.8 둘 다 핑.
