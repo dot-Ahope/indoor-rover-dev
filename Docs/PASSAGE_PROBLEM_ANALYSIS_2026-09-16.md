@@ -83,7 +83,7 @@
 | A1 ★ | **SmoothPath(nav2_smoother SimpleSmoother) 를 BT 에 연결** — 격자 모서리를 곡선화, 코스트맵 충돌 검사 포함 | 입구 헤딩 변경 ↓, 경로 숨쉬기 ↓ | XML 1 줄 + 파라미터 | 정지 A/B(job317): x 0.6~0.8 계획 접선각, 계획 최소 여유 |
 | A2 ★ | **전역 inflation 0.55 → 0.70(cost_scaling 유지)**: 상자 앞 비용 언덕이 커져 NavFn 사선이 더 일찍 시작 | 꺾임점을 앞으로 | 파라미터 1 개 | 정지 A/B: 사선 시작 x, 통로 계획횡(창 중앙 +0.48 유지 여부) |
 | A3 | Smac Hybrid 복귀 + **ClearCostmapAroundRobot** 를 ComputePathToPose 실패 복구에 추가(시작 footprint LETHAL 거부 대응), cost_penalty 2.0·turning radius 0.15 | 곡선 경로 + 상자 뒤 조기 복귀 완화 | XML·yaml | 09-14 §2.26 의 정지 A/B 항목 그대로 |
-| A4 | Theta*(any-angle) 계획기 | 격자 사선 제거 | Jetson 에 미설치 — apt 필요 | 정지 A/B |
+| A4 | Theta*(any-angle) 계획기 | 격자 사선 제거 | Jetson 에 설치됨(nav2_theta_star_planner 1.1.20, job337 확인) — 설정만 | 정지 A/B |
 | A5 | **재계획 1 Hz → 0.2 Hz(또는 경로 막힘 시만)**: 모서리 숨쉬기와 크리틱 리셋 제거 | 머뭇거림 ↓ | BT RateController hz | 주행 중 "Passing new path" 횟수 vs 정지 |
 
 ### B. 제어 — "곡선으로 빠져나가게 한다"
