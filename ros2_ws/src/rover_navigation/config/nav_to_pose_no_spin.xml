@@ -66,7 +66,14 @@
                  통로선 목표 기준 모서리 heading 7.7°(NavFn 18.7°). 되돌리려면 planner_id="GridBased". -->
             <!-- 2026-09-15 (09-15 §2): SmacHybrid → GridBased 로 되돌림. MPPI 가 좌측으로 치우쳐(+0.40) 패딩 footprint 가 좌측 가구 LETHAL 에 닿자
                  Smac 은 시작 footprint 충돌로 재계획을 15회 거부해 ABORT. NavFn 은 시작 셀만 보므로 inflation 띠 안에서도 재계획된다. 곡률 완화는 MPPI 몫. -->
-            <ComputePathToPose goal="{goal}" path="{path}" planner_id="GridBased"/>
+            <!-- 2026-09-16 A 계획: SmoothPath(simple_smoother) 연결. 정지 A/B(job340)에서 inflation 0.70 과 함께 0.1 m 창 최대 꺾임 78° → 16.6°.
+                 실패(충돌 검사 등) 시 ForceSuccess 로 원 경로를 그대로 쓴다 — RecoveryNode 의 클리어를 유발하지 않기 위해. -->
+            <Sequence name="PlanAndSmooth">
+              <ComputePathToPose goal="{goal}" path="{path}" planner_id="GridBased"/>
+              <ForceSuccess>
+                <SmoothPath unsmoothed_path="{path}" smoothed_path="{path}" smoother_id="simple_smoother" max_smoothing_duration="1.0" check_for_collisions="true"/>
+              </ForceSuccess>
+            </Sequence>
             <ClearCostmapExceptRegion name="ClearGlobalCostmap-Context" reset_distance="3.0" service_name="global_costmap/clear_except_global_costmap"/>
           </RecoveryNode>
         </RateController>

@@ -1,0 +1,19 @@
+전역 inflation_radius 현재 0.55, 상자 (1.08, -0.01), 목표 (1.80, 0.00), 스무더 simple_smoother
+navfn                점  89 길이 2.25 | 입구(x=0.64) 접선 +30.9° | 최대 진행방향 -118.6° | 0.1 m 창 최대 꺾임 78.0° | 차선변경 x 0.43→0.92 | 통로 계획횡 +0.412 | 상자셀 최소 0.269 좌측셀 0.376
+      헤딩 프로파일 s:heading  0.0:-12° 0.2:+3° 0.4:+64° 0.5:+46° 0.7:+35° 0.9:+25° 1.1:+14° 1.2:+7° 1.4:+4° 1.6:+3° 1.8:-54° 1.9:-65° 2.1:-60°
+navfn+smooth(완료)     점  89 길이 2.22 | 입구(x=0.64) 접선 +30.3° | 최대 진행방향 -87.5° | 0.1 m 창 최대 꺾임 76.7° | 차선변경 x 0.45→0.92 | 통로 계획횡 +0.412 | 상자셀 최소 0.269 좌측셀 0.376
+      헤딩 프로파일 s:heading  0.0:-4° 0.2:-2° 0.4:+64° 0.5:+50° 0.7:+35° 0.9:+25° 1.1:+14° 1.2:+7° 1.4:+4° 1.6:+3° 1.7:-44° 1.9:-75° 2.1:-54°
+navfn@infl0.70       점  82 길이 2.07 | 입구(x=0.64) 접선 +28.5° | 최대 진행방향 -56.2° | 0.1 m 창 최대 꺾임 50.8° | 차선변경 x 0.40→0.86 | 통로 계획횡 +0.390 | 상자셀 최소 0.265 좌측셀 0.383
+      헤딩 프로파일 s:heading  0.0:-14° 0.2:-0° 0.3:+28° 0.5:+37° 0.6:+32° 0.8:+28° 0.9:+19° 1.1:+11° 1.2:+3° 1.4:-7° 1.5:-28° 1.7:-32° 1.8:-47° 2.0:-51°
+navfn@infl0.70+smooth 점  82 길이 2.04 | 입구(x=0.64) 접선 +28.3° | 최대 진행방향 -46.4° | 0.1 m 창 최대 꺾임 16.6° | 차선변경 x 0.40→0.86 | 통로 계획횡 +0.385 | 상자셀 최소 0.260 좌측셀 0.388
+      헤딩 프로파일 s:heading  0.0:-3° 0.1:+5° 0.3:+25° 0.4:+35° 0.6:+33° 0.7:+27° 0.9:+19° 1.0:+11° 1.2:+3° 1.3:-9° 1.5:-24° 1.6:-34° 1.8:-44° 1.9:-44°
+inflation 원복 → 0.55
+
+=== CPU
+%CPU COMMAND
+40.0 python3 /home/jetson/ros2_ws/install/rover_bringup/lib/rover_bringup/sensor_condition
+19.1 python3 /home/jetson/ros2_ws/install/rover_bringup/lib/rover_bringup/depth_relay.py -
+17.9 /opt/ros/humble/lib/rplidar_ros/rplidar_node --ros-args -r __node:=rplidar_node --par
+15.3 /opt/ros/humble/lib/realsense2_camera/realsense2_camera_node --ros-args -r __node:=ca
+14.8 /opt/ros/humble/lib/nav2_planner/planner_server --ros-args --log-level info --ros-arg
+7.39 5.23 3.88
