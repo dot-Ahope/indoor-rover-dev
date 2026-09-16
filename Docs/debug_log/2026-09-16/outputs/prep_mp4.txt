@@ -1,0 +1,30 @@
+=== 1. 재기동 ===
+  [sensor_conditioner.py-6] [INFO] [1789540690.210618247] [sensor_conditioner]: gyro bias calibrated: (-0.00867, -0.00100, -0.00184) rad/s, std=(0.0026, 0.0022, 0.0017)
+  map->odom: - Translation: [0.000, 0.000, 0.000]
+  로버 자세: - Translation: [0.000, 0.000, 0.000] - Rotation: in RPY (radian) [0.000, -0.000, 0.003] 
+상자: 전면 x=1.083  중심 y=-0.007  (155점)  → x 구간 [1.08, 1.19], y 구간 [-0.10, +0.08]
+   → 전방 2.2m 최소폭:  기준1 0.30 m (@1.00)   기준2(RPP) 0.15 m (@1.30)   기준3(오류) 0.00 m (@0.60)
+=== 2. 릴레이 정리 ===
+남은 릴레이: 1
+발행자 Publisher count: 1
+=== 3. readback (MPPI 변경 3개 + 패딩) ===
+  local                                        footprint_padding                          Double value is: 0.01
+  루프 지연 경고(기동 후): 0
+=== 4. 상자 감사 + 게이트 ===
+상자: 전면 x=1.085  중심 y=-0.008  (148점)  → x 구간 [1.09, 1.20], y 구간 [-0.10, +0.08]
+   1.00   [+0.30~+0.55]          0.30    [+0.75~+0.90]          0.20    (없음)                   0.00
+   1.10   [+0.30~+0.55]          0.30    [+0.75~+0.90]          0.20    (없음)                   0.00
+   1.20   [+0.20~+0.65]          0.50    [+0.75~+0.90]          0.20    (없음)                   0.00
+   1.30   [-0.35~+1.00]          1.40    [-0.05~+0.05]          0.15    (없음)                   0.00
+   → 전방 2.2m 최소폭:  기준1 0.30 m (@1.00)   기준2(RPP) 0.15 m (@1.30)   기준3(오류) 0.00 m (@0.60)
+상자 x=1.085 y=-0.008 | 통로 띠 근거 없는 셀 0 (≤1) | 창 0.233 m (≥0.20; 좌측 0.55, 상자 셀 최대 y 0.122)
+=== readback(새 설정) ===
+  controller_frequency               Double value is: 10.0
+  FollowPathMPPI.model_dt            Double value is: 0.1
+  FollowPathMPPI.time_steps          Integer value is: 32
+  FollowPathMPPI.visualize           Boolean value is: True
+  local.voxel_decay                  Double value is: 120.0
+  global.voxel_decay                 Double value is: 180.0
+  relay.max_range                    Double value is: 4.0
+  relay CPU:  %   load: 10.74 5.49 3.91
+  BT: controller_id="FollowPathMPPI"
