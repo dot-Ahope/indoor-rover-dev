@@ -133,7 +133,13 @@ controller_server:
     # 전환 방법: BT 기본 controller_id 가 "FollowPath" 이므로, 벤치마크 시 두 블록의 이름을 맞바꿔 재기동.
     FollowPathMPPI:
       plugin: "nav2_mppi_controller::MPPIController"
-      time_steps: 32
+      # ★ 2026-09-16 mp2 분석(09-16 SUMMARY §1): 32 step × 0.05 s = 1.6 s 지평은 0.08 m/s 에서 **0.13 m** 뿐.
+      #   경로 크리틱은 "지평 끝이 도달한 경로 점 index" 로 켜지는데(offset_from_furthest), 점간격 0.026~0.047 m 라
+      #   index 가 3~5 에 그쳐 PathAlign(가중 14, 문턱 20)이 **한 번도 켜지지 않았다**. 경로를 잡아주는 힘이
+      #   PathFollow(5) 하나뿐이라 상자 앞 0.23 m 의 코스트맵 기울기(ObstaclesCritic)가 로버를 왼쪽으로 제자리
+      #   회전시켰고(t18~20, 경로 요구 0°), 통로 입구에서 heading 오차 47~62° 가 된 뒤 60 s 머뭇거림(진행 실패 2회).
+      #   56 step(=Nav2 기본, 2.8 s ≈ 0.22 m) 으로 지평을 늘리고 아래 index 문턱을 우리 지평에 맞춘다. CPU 1.75×.
+      time_steps: 56
       model_dt: 0.05
       batch_size: 1000
       vx_std: 0.05
@@ -157,9 +163,12 @@ controller_server:
       PreferForwardCritic: {enabled: true, cost_power: 1, cost_weight: 5.0, threshold_to_consider: 0.4}
       # consider_footprint: 직사각 풋프린트(0.5×0.33) 정확 반영 — CPU 비용 있으나 좁은 공간 정확성에 필수
       ObstaclesCritic: {enabled: true, cost_power: 1, repulsion_weight: 1.5, critical_weight: 20.0, consider_footprint: true, collision_cost: 10000.0, collision_margin_distance: 0.05, near_goal_distance: 0.5}
-      PathAlignCritic: {enabled: true, cost_power: 1, cost_weight: 14.0, max_path_occupancy_ratio: 0.05, trajectory_point_step: 3, threshold_to_consider: 0.40, offset_from_furthest: 20}
+      # offset_from_furthest 20 → 3 (09-16): 지평 0.22 m / 점간격 ~0.04 m = index 5~6 이므로 3 이면 0.1 m 만 나아가도 켜진다.
+      PathAlignCritic: {enabled: true, cost_power: 1, cost_weight: 14.0, max_path_occupancy_ratio: 0.05, trajectory_point_step: 3, threshold_to_consider: 0.40, offset_from_furthest: 3}
       PathFollowCritic: {enabled: true, cost_power: 1, cost_weight: 5.0, offset_from_furthest: 5, threshold_to_consider: 0.6}
-      PathAngleCritic: {enabled: true, cost_power: 1, cost_weight: 2.0, offset_from_furthest: 4, threshold_to_consider: 0.4, max_angle_to_furthest: 1.0}
+      # max_angle_to_furthest 1.0 → 0.5 rad (09-16): mp2 정체 중 경로 방위 오차 44~62° 에서 1.0 rad(57°) 문턱은 간헐적으로만 켜졌다.
+      #   29° 부터 켜서 모서리에서 제자리 우회전을 유도. (weight 2 유지 — 한 번에 바꾸는 손잡이를 지평·index·각도 3개로 한정)
+      PathAngleCritic: {enabled: true, cost_power: 1, cost_weight: 2.0, offset_from_furthest: 4, threshold_to_consider: 0.4, max_angle_to_furthest: 0.5}
 
 local_costmap:
   local_costmap:
