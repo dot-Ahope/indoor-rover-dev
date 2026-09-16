@@ -1,0 +1,5 @@
+#!/bin/bash
+H=${JETSON_HOST:-172.30.1.8}; SPS=/mnt/c/Users/magma/AppData/Local/Temp/claude/F--6-Indoor-Rover-Rover/82ce61d4-f5f7-4a25-b2e7-1279291348a9/scratchpad
+O="-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o LogLevel=ERROR -o ConnectTimeout=10"
+for f in job360_wl_test.sh fastdds_udp_only.xml; do tr -d '\r' < $SPS/$f > /tmp/$f; sshpass -p <PW> scp $O -q /tmp/$f jetson@$H:/tmp/$f || exit 1; done
+sshpass -p <PW> ssh $O jetson@$H 'echo "=== 화이트리스트 시험(되돌리기 전) ==="; bash /tmp/job360_wl_test.sh; cp /tmp/fastdds_udp_only.xml ~/ros2_ws/src/rover_bringup/config/; cp /tmp/fastdds_udp_only.xml ~/ros2_ws/install/rover_bringup/share/rover_bringup/config/; echo "되돌림: whitelist 항목 $(grep -c "<address>" ~/ros2_ws/install/rover_bringup/share/rover_bringup/config/fastdds_udp_only.xml)"; export FASTRTPS_DEFAULT_PROFILES_FILE=$HOME/ros2_ws/install/rover_bringup/share/rover_bringup/config/fastdds_udp_only.xml; source /opt/ros/humble/setup.bash; ros2 daemon stop >/dev/null 2>&1; printf "프로파일 CLI /wheel_odom hz: "; timeout 8 ros2 topic hz /wheel_odom 2>&1 | grep -aoE "average rate: [0-9.]+" | tail -1; echo'
