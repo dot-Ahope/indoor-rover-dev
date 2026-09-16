@@ -1,0 +1,27 @@
+=== BT XML 설치 ===
+  raw_path: 3
+=== robot_state_publisher 재기동(되돌린 프로파일) ===
+  rsp: 1
+  base_link->lidar_link: - Translation: [0.152, 0.000, 0.185]
+  tf_static 발행자: Node name: robot_state_publisher Node namespace: / Node name: camera Node namespace: /camera Node namespace: / Node namespace: / Node namespace: / Node namespace: / Node namespace: / Node namespace: / Node name: bt_navigator Node namespace: / 
+=== job240 (에이전트 유지) ===
+  정리 전 프로세스: 20
+  base 계층 유지: 에이전트 1개, robot_state_publisher 1개 (각 1 이어야)
+########## 2. base (micro-ROS 에이전트) ##########
+  에이전트 살아 있고 보드 송수신 정상 → base 재기동 생략 (세션 유지)
+  /wheel_odom  average rate: 24.996
+  [sensor_conditioner.py-6] [INFO] [1789547559.467212673] [sensor_conditioner]: gyro bias calibrated: (-0.00745, -0.00091, -0.00186) rad/s, std=(0.0025, 0.0023, 0.0017)
+  map->odom: - Translation: [0.000, 0.000, 0.000]
+  로버 자세: - Translation: [0.000, 0.000, 0.000] - Rotation: in RPY (radian) [0.000, 0.000, -0.001] 
+상자: 전면 x=1.173  중심 y=-0.004  (143점)  → x 구간 [1.17, 1.28], y 구간 [-0.09, +0.09]
+   틈 [y_lo, y_hi]         폭        차체0.33     패딩0.43     허용 자세각(패딩)
+   → 전방 2.2m 최소폭:  기준1 0.30 m (@1.20)   기준2(RPP) 0.15 m (@0.90)   기준3(오류) 0.00 m (@0.80)
+=== readback ===
+  FollowPathMPPI.temperature         Double value is: 0.15
+  BT raw_path: 3  SmoothPath: 1
+  nav2: controller 1 planner 1 bt 1 stuck_monitor 1
+  로버 자세: - Translation: [0.000, 0.000, 0.000] - Rotation: in RPY (radian) [0.000, -0.000, 0.001] 
+=== 게이트 ===
+상자: 전면 x=1.174  중심 y=-0.013  (132점)  → x 구간 [1.17, 1.28], y 구간 [-0.10, +0.08]
+   → 전방 2.2m 최소폭:  기준1 0.30 m (@1.20)   기준2(RPP) 0.15 m (@0.90)   기준3(오류) 0.00 m (@0.80)
+상자 x=1.174 y=-0.013 | 띠 근거 없는 셀 0 (≤1) | 상자 셀 3표본 0.124 0.123 0.124 → 0.124 | 창 0.231 m (≥0.20; 좌측 0.55)
