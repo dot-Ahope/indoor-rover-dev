@@ -9,6 +9,8 @@ J=jetson@$H
 for f in job254_s4run.sh job231_drive.sh job125_avoid3.py job248_audit.py job315_boxcells.py; do tr -d '\r' < $SPS/$f > /tmp/$f; sshpass -p <PW> scp $O -q /tmp/$f $J:/tmp/$f || { echo "전송 실패 $f"; exit 1; }; done
 # --- 사전 게이트 (run_inf1.sh 와 같은 판정, 한 번의 ssh) ---
 A=$(timeout 150 sshpass -p <PW> ssh $O $J "source /opt/ros/humble/setup.bash; BOX_HINT='$BX $BY' python3 /tmp/job248_audit.py 2>&1")
+# 09-16: 감사 출력이 간혹 표 없이 잘린다(run_gate 1회) → 최소폭 줄이 없으면 한 번 재시도
+echo "$A" | grep -aq '최소폭' || { echo "  (감사 출력 불완전 — 재시도)"; A=$(timeout 150 sshpass -p <PW> ssh $O $J "source /opt/ros/humble/setup.bash; BOX_HINT='$BX $BY' python3 /tmp/job248_audit.py 2>&1"); }
 echo "$A" | grep -aE '^상자:|최소폭'
 NB=$(echo "$A" | grep -aE '^  로컬\[' -A1 | grep -aoE '\(\+?[-0-9.]+,[-+0-9.]+\)' | tr -d '()+' | awk -F, '$1>0.3 && $1<1.6 && $2>-0.10 && $2<0.50' | wc -l)
 # 상자 셀 최대 y: 1 회 표본은 한 셀(5 cm) 튀는 순간을 잡는다(09-16 mp3 게이트: 0.219 한 번, 이후 6/6 이 0.169) → 3 회 표본의 중앙값
