@@ -11,8 +11,14 @@ for f in job254_s4run.sh job231_drive.sh job125_avoid3.py job248_audit.py job315
 A=$(timeout 150 sshpass -p <PW> ssh $O $J "source /opt/ros/humble/setup.bash; BOX_HINT='$BX $BY' python3 /tmp/job248_audit.py 2>&1")
 echo "$A" | grep -aE '^상자:|최소폭'
 NB=$(echo "$A" | grep -aE '^  로컬\[' -A1 | grep -aoE '\(\+?[-0-9.]+,[-+0-9.]+\)' | tr -d '()+' | awk -F, '$1>0.3 && $1<1.6 && $2>-0.10 && $2<0.50' | wc -l)
-LB=$(echo "$A" | grep -aE '^   1\.[0-3]0 ' | awk '{print $2}' | tr -d '[]' | cut -d'~' -f2 | sort -n | head -1)
-BM=$(timeout 60 sshpass -p <PW> ssh $O $J "source /opt/ros/humble/setup.bash; python3 /tmp/job315_boxcells.py $BX $BY 2>&1 | grep -av '^\[' | tail -1")
+# 상자 셀 최대 y: 1 회 표본은 한 셀(5 cm) 튀는 순간을 잡는다(09-16 mp3 게이트: 0.219 한 번, 이후 6/6 이 0.169) → 3 회 표본의 중앙값
+BMS=$(timeout 90 sshpass -p <PW> ssh $O $J "source /opt/ros/humble/setup.bash; for i in 1 2 3; do python3 /tmp/job315_boxcells.py $BX $BY 2>&1 | grep -av '^\[' | tail -1; sleep 3; done" | tr '
+' ' ')
+BM=$(echo $BMS | tr ' ' '
+' | grep -aE '^[0-9.]+$' | sort -n | sed -n 2p)
+echo "상자 셀 최대 y 표본 3회: $BMS → 중앙값 $BM"
+# 좌측 경계: x 1.10~1.30 행의 기준1 구간 중 **하한이 상자 셀 최대 y 보다 큰 것**(왼쪽 통로)만 — 09-16 mp3 게이트에서 1.00 행의 우측 구간 [-0.35~+0.00] 이 섞여 창이 -0.365 로 오판
+LB=$(echo "$A" | grep -aE '^   1\.[1-3]0 ' | awk '{print $2}' | tr -d '[]' | awk -F'~' -v bm="$BM" '$1+0 > bm+0 {print $2+0}' | sort -n | head -1)
 W2=$(awk -v lb="$LB" -v bm="$BM" 'BEGIN{ if (bm=="nan"||bm=="") print "nan"; else printf "%.3f", lb - (bm + 0.195) }')
 echo "통로 띠 근거 없는 셀 $NB (≤1) | 창 $W2 m (≥0.20; 좌측 $LB, 상자 셀 최대 y $BM)"
 [ -n "$NB" ] && [ "$NB" -le 1 ] || { echo "★ 근거 없는 셀 $NB — 주행하지 않음"; exit 1; }
