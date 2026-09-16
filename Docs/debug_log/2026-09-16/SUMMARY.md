@@ -153,6 +153,24 @@
 - 재기동 readback: 10 Hz·model_dt 0.1·32 step·visualize, decay 120/180, relay max_range 4.0, 릴레이 CPU 19 %, 릴레이 1개.
 - 게이트(상자 1.085/−0.008): 띠 근거 없는 셀 0, 상자 셀 0.122(3표본 일치), 좌측 0.55 → 창 0.233 m. (run_gate 1회는 감사 출력이 잘려 좌측 경계가 비었다 → 러너에 재시도 추가.)
 
+### 1.13 mp4 — NavFn + inflation 0.70 + SmoothPath + MPPI(10 Hz, 32 step, decay 120): **부드러운 진입 후 같은 입구에서 정지, 18 s 에 stuck_monitor 가 취소** (접촉 없음, 최근접 17 cm)
+게이트: 상자 1.086/−0.008, 창 0.232, 띠 셀 0. `outputs/drive_mp4.txt`, `outputs/mp4.csv`, `bags/bag_mp4.tgz`(/trajectories 포함), `outputs/job327_mp4.txt`, `outputs/j345_mp4.txt`
+
+| t (s) | 사건 |
+|---|---|
+| 0~12 | 0.05~0.08 m/s 로 (0.65, +0.29) 까지 **차선변경을 부드럽게**(ω 최대 0.15, 부호반전 0, 루프 미달 0). 경로 대비 횡편차 ≤ 3.8 cm |
+| 12~18 | (0.70~0.72, +0.30~0.36) yaw 29~38° 에서 v 0.038 → 0.006. 경로 접선 −21~−32°(우회전 요구), 우측 상자 LETHAL 0.17~0.21 m, 좌측 0.20~0.26 |
+| 18.0 | `stuck_monitor`: "지령 1.3 cm/14° 인데 관측 0.3 cm/1.4° (비율 0.10) → 목표 취소" → CANCELED. 데드밴드 아래의 떨림 명령을 갇힘으로 오판 |
+
+**새로 본 것 두 가지**
+1. `/trajectories`(job345): 입구에서 명령 평균이 0 으로 내려가자 **후보 궤적 끝단 분포가 붕괴** — 앞으로 5 cm 이상 가는 후보 78 % → 55 → 32 → 13 → 6 → 2 %, 끝단 거리 중앙값 0.105 → 0.011 m, 좌/우 0 %. 잡음이 시간축마다 독립이라 끝단 산포 ≈ std/√32 × 3.2 s ≈ 3 cm 뿐 → 내접 띠(≈15 cm) 너머의 출구를 표본이 보지 못하고, temperature 0.3 의 softmax 가 비슷한 비용의 표본을 평균 내 0 에 머문다. **정체의 기제 = 저속에서의 탐색 부족(표본 붕괴)**.
+2. BT 배선 결함: `{path}` 를 원경로·스무딩 결과로 두 번 쓰자 FollowPath 가 매초 목표를 두 번 보내 대기 목표가 `Aborting handle` 로 매초 폐기됐다(주행은 이어졌지만 로그 17건). → `{raw_path}` → SmoothPath → `{path}` 로 수정.
+
+**조치(배포)**: `vx_std` 0.05 → 0.08, `wz_std` 0.3 → 0.4, `iteration_count` 1 → 2(10 Hz·32 step 이라 20 Hz·1 회와 같은 연산량), `temperature` 0.3 → 0.15. 가설 하나("표본 붕괴")의 네 손잡이. stuck_monitor 는 MPPI 튜닝 주행 동안 `stuck_shadow:=true`(관찰만).
+
+**주행 중 Wi-Fi 사고 재발**: 15:57:34 WEB_DEV_5G AP 가 deauth(reason 2) → 16:00:58 ALOPS_ROBOTICS_5G(172.30.1.8) 로 전환. 주행 자체는 원격 nohup 이라 영향 없었으나(15:56 종료), 그 뒤 **IP 변경이 DDS 를 갈랐다**: 전환 전에 뜬 참가자(rplidar 15:37, ekf 15:37, agent 10:42)는 옛 IP 로케이터를 광고해 새 셸·새 노드가 데이터를 못 받는다(job350: /scan·/wheel_odom 0, nav2 재기동 후 controller_server activating 정지, TF 없음). 조치: `fastdds_udp_only.xml` 에 `interfaceWhiteList 127.0.0.1`(같은 호스트 통신만이므로 IP 변화에 면역), 에이전트 컨테이너에 같은 XML 마운트·env, 러너·잡 스크립트에 프로파일 export. ROS_LOCALHOST_ONLY 는 rmw 가 SHM 을 다시 켜므로 기각. 전체 재기동(에이전트 포함 → 보드 리셋 1회) 필요.
+- 정지 스크립트 `job156_stop.sh` 가 `ros2 topic pub -1 /cmd_vel` 에서 무한 대기(새 셸이 옛 참가자와 매칭 불가) → 8 분 정체. 죽이고 job240 으로 진행. 교훈: `ros2 topic pub -1` 은 구독자 매칭을 기다리므로 timeout 을 씌운다.
+
 ## 2. 다음
 1. 사용자: 로버를 출발점에 손으로 배치(장애물 옆 제자리 회전 금지). `job240_clean.sh` 가 base 를 띄운 뒤 보드 리셋 요청.
 2. 게이트(상자 ±0.06, 통로 띠 미지지 셀 ≤ 1, 창 ≥ 0.20) → 사용자 출발 지시 → **mp3** (`run_drive_nohup.sh mp3 1.8 <BX> <BY> 0.06 0`).

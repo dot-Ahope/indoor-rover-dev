@@ -1,0 +1,133 @@
+=== 로버 자세/명령 ===
+
+cmd_vel: 프로세스: controller 1 planner 1 bt 1 slam 1 relay 1
+=== nav2.log goal 이후 ===
+[controller_server-2] [INFO] [1789541752.843902343] [local_costmap.local_costmap]: Received request to clear entirely the local_costmap
+[planner_server-4] [INFO] [1789541755.279088860] [global_costmap.global_costmap]: Received request to clear entirely the global_costmap
+[bt_navigator-6] [INFO] [1789541789.196267143] [bt_navigator]: Begin navigating from current location (0.00, 0.00) to (1.80, 0.00)
+[controller_server-2] [INFO] [1789541789.255006088] [controller_server]: Received a goal, begin computing control effort.
+[controller_server-2] [INFO] [1789541789.257768804] [controller_server]: Optimizer reset
+[controller_server-2] [WARN] [1789541790.297969783] [controller_server]: [follow_path] [ActionServer] Aborting handle.
+[controller_server-2] [INFO] [1789541790.355373579] [controller_server]: Passing new path to controller.
+[controller_server-2] [WARN] [1789541791.348256889] [controller_server]: [follow_path] [ActionServer] Aborting handle.
+[controller_server-2] [INFO] [1789541791.355371685] [controller_server]: Passing new path to controller.
+[controller_server-2] [WARN] [1789541792.388003932] [controller_server]: [follow_path] [ActionServer] Aborting handle.
+[controller_server-2] [INFO] [1789541792.455521377] [controller_server]: Passing new path to controller.
+[controller_server-2] [WARN] [1789541793.438053271] [controller_server]: [follow_path] [ActionServer] Aborting handle.
+[controller_server-2] [INFO] [1789541793.455384759] [controller_server]: Passing new path to controller.
+[controller_server-2] [WARN] [1789541794.488077552] [controller_server]: [follow_path] [ActionServer] Aborting handle.
+=== syslog 15:56~15:59 wpa/NM ===
+Mar 11 15:56:10 alops-desktop NetworkManager[885]: <info>  [1773212170.5609] device (enP8p1s0): state change: unmanaged -> unavailable (reason 'managed', sys-iface-state:
+Mar 11 15:56:10 alops-desktop NetworkManager[885]: <info>  [1773212170.6260] device (wlP1p1s0): state change: unmanaged -> unavailable (reason 'managed', sys-iface-state:
+Mar 11 15:56:11 alops-desktop NetworkManager[885]: <info>  [1773212171.1025] device (wlP1p1s0): supplicant interface state: internal-starting -> disconnected
+Mar 11 15:56:11 alops-desktop NetworkManager[885]: <info>  [1773212171.1034] device (p2p-dev-wlP1p1s0): state change: unmanaged -> unavailable (reason 'managed', sys-ifac
+Mar 11 15:56:11 alops-desktop NetworkManager[885]: <info>  [1773212171.1039] device (wlP1p1s0): state change: unavailable -> disconnected (reason 'supplicant-available', 
+Mar 11 15:56:11 alops-desktop NetworkManager[885]: <info>  [1773212171.1046] device (p2p-dev-wlP1p1s0): state change: unavailable -> disconnected (reason 'none', sys-ifac
+Mar 11 15:56:12 alops-desktop NetworkManager[885]: <info>  [1773212172.1333] device (docker0): state change: unmanaged -> unavailable (reason 'connection-assumed', sys-if
+Mar 11 15:56:12 alops-desktop NetworkManager[885]: <info>  [1773212172.1340] device (docker0): state change: unavailable -> disconnected (reason 'connection-assumed', sys
+=== bag 토픽 ===
+Duration:          27.132780910s
+Topic information: Topic: /transformed_global_plan n=179
+                   Topic: /trajectories n=180
+=== job327 mp4 ===
+bag /tmp/bag_mp4: T0=1789541784.31  tf odom->base 754, map->odom 505, plan 18, local costmap 42, cmd_vel 375
+    t |     전진      횡   yaw° |      v      w |    접선° carrot°    횡편차 |   둘레 |    좌L    우L   nL   nR | 대안 dθ:회전/전진 (# ≥100, o 99)
+  1.0 | +0.000 +0.000   +0.1 | +0.000 +0.000 |    nan    nan    nan |   63 |  0.40  0.40   21   61 | -50:86o -40:8091 -30:7390 -20:7180 -10:6365 +0:6363 +10:7070 +20:7777 +30:8086 +40:9196 +50:91o
+  2.0 | +0.000 +0.000   +0.1 | +0.000 +0.000 |    nan    nan    nan |   63 |  0.40  0.40   22   62 | -50:86o -40:8091 -30:7390 -20:7180 -10:6365 +0:6363 +10:7070 +20:7777 +30:8086 +40:9196 +50:91o
+  3.0 | +0.000 +0.000   +0.1 | +0.000 +0.000 |    nan    nan    nan |   63 |  0.40  0.40   22   62 | -50:86o -40:8091 -30:7391 -20:7180 -10:6365 +0:6363 +10:7070 +20:7777 +30:8086 +40:9196 +50:91o
+  4.0 | +0.000 +0.000   +0.1 | +0.000 +0.000 |    nan    nan    nan |   55 |  0.44  0.40   20   61 | -50:77o -40:7791 -30:7190 -20:7180 -10:6365 +0:5561 +10:6363 +20:7169 +30:7177 +40:8086 +50:80o
+  5.0 | +0.000 +0.000   +0.1 | +0.000 +0.000 |   -2.4   +3.9 +0.004 |   63 |  0.40  0.40   21   61 | -50:86o -40:8091 -30:7390 -20:7180 -10:6365 +0:6363 +10:7070 +20:7777 +30:8086 +40:9196 +50:91o
+  6.0 | +0.031 +0.000   +1.7 | +0.062 +0.038 |   -4.6   +4.4 -0.001 |   55 |  0.45  0.39   22   65 | -50:80o -40:7191 -30:7180 -20:6373 -10:6369 +0:5561 +10:6363 +20:7165 +30:7177 +40:8089 +50:80o
+  7.0 | +0.090 +0.004   +3.5 | +0.078 +0.071 |   -4.8   +6.9 +0.003 |   58 |  0.47  0.39   26   74 | -50:80o -40:7191 -30:7186 -20:6380 -10:5870 +0:5861 +10:6362 +20:7069 +30:7073 +40:7780 +50:8096
+  8.0 | +0.168 +0.011   +7.2 | +0.079 +0.117 |   +2.5  +13.0 +0.011 |   55 |  0.47  0.38   21   80 | -50:8091 -40:7196 -30:7190 -20:6571 -10:6163 +0:5555 +10:6262 +20:7069 +30:7068 +40:7780 +50:8096
+  9.0 | +0.230 +0.021  +13.4 | +0.079 +0.131 |   +3.3  +12.8 +0.013 |   80 |  0.47  0.25   25   92 | -50:80o -40:80o -30:80o -20:80o -10:80o +0:80o +10:8096 +20:8080 +30:8074 +40:8080 +50:8089
+ 10.0 | +0.294 +0.050  +18.0 | +0.077 +0.073 |  +16.8   +9.8 +0.038 |   90 |  0.41  0.20   30   95 | -50:91o -40:91o -30:91o -20:91o -10:90o +0:90o +10:9696 +20:9680 +30:9680 +40:9680 +50:9690
+ 11.0 | +0.354 +0.072  +24.0 | +0.056 +0.113 |  +11.4   +7.3 +0.018 |   96 |  0.41  0.18   33   83 | -50:oo -40:oo -30:oo -20:oo -10:oo +0:96o +10:9690 +20:9680 +30:9680 +40:9691 +50:9691
+ 12.0 | +0.399 +0.096  +31.5 | +0.048 +0.150 |   -4.8   +0.4 +0.010 |   96 |  0.37  0.21   36   78 | -50:o# -40:o# -30:oo -20:oo -10:oo +0:9696 +10:9689 +20:9686 +30:9691 +40:9691 +50:9691
+ 13.0 | +0.440 +0.137  +38.4 | +0.071 +0.025 |   -3.4  -10.7 +0.029 |   89 |  0.33  0.27   48   72 | -50:o# -40:oo -30:oo -20:oo -10:9696 +0:8989 +10:8989 +20:89o +30:90o +40:91o +50:oo
+ 14.0 | +0.491 +0.184  +38.4 | +0.079 -0.050 |   -5.9  -13.9 +0.021 |   89 |  0.31  0.27   60   75 | -50:oo -40:oo -30:oo -20:oo -10:96o +0:8989 +10:8989 +20:9096 +30:96o +40:oo +50:oo
+ 15.0 | +0.547 +0.235  +33.7 | +0.071 -0.112 |   -8.4  -15.6 +0.036 |   89 |  0.34  0.22   89   66 | -50:oo -40:oo -30:oo -20:91o -10:90o +0:8996 +10:8989 +20:9696 +30:oo +40:oo +50:oo
+ 16.0 | +0.616 +0.270  +28.7 | +0.070 +0.038 |  -10.6   -6.9 +0.003 |   96 |  0.33  0.17   91   64 | -50:oo -40:oo -30:oo -20:oo -10:oo +0:96o +10:9696 +20:9696 +30:oo +40:oo +50:oo
+ 17.0 | +0.652 +0.296  +32.3 | +0.035 +0.064 |  -11.3  -16.1 +0.026 |   99 |  0.28  0.17   98   64 | -50:o# -40:o# -30:o# -20:oo -10:oo +0:oo +10:oo +20:oo +30:oo +40:oo +50:oo
+ 18.0 | +0.678 +0.314  +35.7 | +0.025 +0.052 |  -25.2  -23.7 +0.002 |   99 |  0.26  0.19   95   60 | -50:o# -40:o# -30:o# -20:oo -10:oo +0:oo +10:oo +20:oo +30:oo +40:oo +50:oo
+ 19.0 | +0.696 +0.328  +38.4 | +0.019 -0.115 |  -27.8  -28.7 +0.012 |   96 |  0.24  0.21   99   61 | -50:o# -40:o# -30:oo -20:oo -10:oo +0:96o +10:oo +20:oo +30:oo +40:oo +50:oo
+ 20.0 | +0.707 +0.336  +31.3 | +0.010 -0.009 |  -20.8  -23.5 +0.020 |   99 |  0.22  0.18  108   54 | -50:o# -40:o# -30:o# -20:oo -10:oo +0:oo +10:oo +20:oo +30:oo +40:oo +50:oo
+ 21.0 | +0.712 +0.338  +32.4 | +0.012 +0.081 |  -27.6  -21.7 -0.025 |   99 |  0.22  0.18  110   52 | -50:o# -40:o# -30:oo -20:oo -10:oo +0:oo +10:oo +20:oo +30:oo +40:oo +50:oo
+ 22.0 | +0.721 +0.355  +37.6 | -0.002 -0.005 |  -32.2  -31.3 -0.005 |   96 |  0.22  0.20  109   56 | -50:o# -40:o# -30:oo -20:oo -10:oo +0:96o +10:oo +20:oo +30:oo +40:oo +50:oo
+ 23.0 | +0.722 +0.355  +28.4 | +0.000 -0.031 |  -23.0  -22.2 -0.005 |   99 |  0.20  0.17  123   51 | -50:o# -40:o# -30:o# -20:oo -10:oo +0:oo +10:oo +20:oo +30:oo +40:oo +50:oo
+ 24.0 | +0.722 +0.355  +28.3 | +0.000 +0.000 |  -22.9  -22.1 -0.005 |   99 |  0.20  0.17  117   51 | -50:o# -40:o# -30:o# -20:oo -10:oo +0:oo +10:oo +20:oo +30:oo +40:oo +50:oo
+ 25.0 | +0.722 +0.355  +28.3 | +0.000 +0.000 |  -22.9  -22.1 -0.005 |   99 |  0.20  0.17  115   51 | -50:o# -40:o# -30:o# -20:oo -10:oo +0:oo +10:oo +20:oo +30:oo +40:oo +50:oo
+
+=== t=12.0 s 로컬 코스트맵(odom, 0.3 s 전 발행) 로버 map(0.399,0.096) yaw +31.5° — 위=+y(왼쪽), 오른쪽=+x ===
++0.85 |ooo#oooo+++ooooooooo++++++++ooo#ooo|
++0.80 |ooo##ooo++ooooooooooo++++++oooo#ooo|
++0.75 |oooooooo++ooo#oooooooo+++++ooo##ooo|
++0.70 |ooooooo+++ooo###o##ooo+++++ooo#oooo|
++0.65 |ooooooo+++ooooooo##ooo+++++ooo##ooo|
++0.60 |ooo#ooo++ooooooooooooo+++++oooooooo|
++0.55 |ooo#ooo+ooooooooooooo+++++++oooooo+|
++0.50 |ooooooo+ooo#ooo+oooo+++++++++oooo++|
++0.45 |+ooooo++ooo#ooo++++++++++++++++++++|
++0.40 |++ooo+++ooooooo++++++++++++++++++++|
++0.35 |+++++++++ooooo++++++++++ ++++++++++|
++0.30 |++++++++++ooo+++++++R+   +++ppppppp|
++0.25 |++++++++++++++++++RR R   pppp++++++|
++0.20 |+++++++++++++++++R   R ppp++++oooo+|
++0.15 |   +  +++++++++RR    p>++++++oooooo|
++0.10 |        +++++RR     ppRR++++ooooooo|
++0.05 |           +RR     p+++R++++ooo##oo|
++0.00 |           RR    pp++++RR+++ooo###o|
+-0.05 |            R     ++++RRooooooo#ooo|
+-0.10 |             R    ++RR+oooooooo#ooo|
+-0.15 |             RR   RR++ooooooooo#ooo|
+-0.20 |              R  RR+++ooo##oooo#ooo|
+-0.25 |++            RRR+++++ooooooooooooo|
+-0.30 |+++++++++++++++++++++++ooooooooooo+|
+-0.35 |++++++++++++++++++++++++oooo++ooo++|
+-0.40 |+++++++++++++++++++++++++++++++++++|
+-0.45 |+++++++++++++++++++oooo+++++++ooooo|
+-0.50 |ooo++++++++++++++ooooooooooo+oooooo|
+-0.55 |ooooooooooooooooooooooooooooooooooo|
+-0.60 |oooooooooooooooooooo##ooooooooo####|
+-0.65 |##oooooooooooooooo#########ooo#####|
+-0.70 |o####################o#o####o###ooo|
+-0.75 |o##ooooo###o#o####oooooo########ooo|
+-0.80 |oooooooo##ooooooooooooooooo#####ooo|
+-0.85 |ooooooooooooooooooooooooooooooooooo|
+
+=== t=16.0 s 로컬 코스트맵(odom, 0.1 s 전 발행) 로버 map(0.616,0.270) yaw +28.7° — 위=+y(왼쪽), 오른쪽=+x ===
++0.85 |o#ooo+++++oooooooooooo##o###ooo++++|
++0.80 |ooooo++++++ooooooooooo##oo#oooo++++|
++0.75 |oooo++++++++oooooo+ooo#ooo#ooo+++++|
++0.70 |ooo++++oooooooo++++ooo##oo#ooo+++++|
++0.65 |ooo+++oooooooooo+++ooo##oo#ooo+++++|
++0.60 |ooo++oooooooooooo++ooo#oo##ooo+++++|
++0.55 |oo+++ooo#o##o#ooo++oooooo#oooo++++ |
++0.50 |ooo++ooooo#o##ooo+++ooooo##ooo+++++|
++0.45 |ooo+ooooooooooooo++++ooooooooo++++ |
++0.40 |oooooooooooooooo+++++++oooooo+++++ |
++0.35 |oo+ooo#oooooooo+++++++++oooo++++++ |
++0.30 |o++ooo#ooo+++++++++RR++++++++++++  |
++0.25 |+++ooooooo+++++++RRRR++++++++++++  |
++0.20 |++++ooooo+++++++RR+ +R+++++++++++  |
++0.15 |+++++ooo++++++RR+   +R>ppppppppppp |
++0.10 |++++++++++++RR     pppR++++++++++pp|
++0.05 |+++++++++++R+     pp++RR+oooo+++++p|
++0.00 | ++++++++++R    pp+++++Roooooo+++++|
+-0.05 |   +++++++  R  ++++++RRoooooooo++++|
+-0.10 |      +     R +++++RR++ooo##oooo+++|
+-0.15 |            RR+++RR++++ooo###ooo+++|
+-0.20 |             R+RRR+ooooooo#ooooo+++|
+-0.25 |             +RR++oooooooo#oooo++++|
+-0.30 |             ++++ooooooooo#ooo+++++|
+-0.35 |            +++++ooo##oooo#ooo+++++|
+-0.40 |             ++++ooooooooooooo+++++|
+-0.45 |++++++++++++++++++ooooooooooo++++++|
+-0.50 |+++++++++++++++++++oooo++ooo+++++++|
+-0.55 |+++++++++++++++++++++++++++++++++++|
+-0.60 |++++++++++++++++++++++++++ooooooooo|
+-0.65 |+++++++++++++oooooooooo+ooooooooooo|
+-0.70 |ooooooooooooooooooooooooooooooooooo|
+-0.75 |ooooooooooooooooooooooooooo######oo|
+-0.80 |oooooooooooooo########ooo##########|
+-0.85 |###########################ooooooo#|

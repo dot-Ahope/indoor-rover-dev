@@ -69,9 +69,12 @@
             <!-- 2026-09-16 A 계획: SmoothPath(simple_smoother) 연결. 정지 A/B(job340)에서 inflation 0.70 과 함께 0.1 m 창 최대 꺾임 78° → 16.6°.
                  실패(충돌 검사 등) 시 ForceSuccess 로 원 경로를 그대로 쓴다 — RecoveryNode 의 클리어를 유발하지 않기 위해. -->
             <Sequence name="PlanAndSmooth">
-              <ComputePathToPose goal="{goal}" path="{path}" planner_id="GridBased"/>
+              <!-- mp4(09-16 §1.13): {path} 를 두 번(원경로→스무딩) 쓰면 FollowPath 가 1 s 마다 목표를 두 번 보내 대기 목표가
+                   "Aborting handle" 로 매초 폐기됐다. 원경로는 {raw_path}, 컨트롤러는 스무딩 결과 {path} 만 본다.
+                   스무딩 실패 시 {path} 는 직전 값(≤1 s) 유지. -->
+              <ComputePathToPose goal="{goal}" path="{raw_path}" planner_id="GridBased"/>
               <ForceSuccess>
-                <SmoothPath unsmoothed_path="{path}" smoothed_path="{path}" smoother_id="simple_smoother" max_smoothing_duration="1.0" check_for_collisions="true"/>
+                <SmoothPath unsmoothed_path="{raw_path}" smoothed_path="{path}" smoother_id="simple_smoother" max_smoothing_duration="1.0" check_for_collisions="true"/>
               </ForceSuccess>
             </Sequence>
             <ClearCostmapExceptRegion name="ClearGlobalCostmap-Context" reset_distance="3.0" service_name="global_costmap/clear_except_global_costmap"/>

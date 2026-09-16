@@ -147,17 +147,20 @@ controller_server:
       time_steps: 32
       model_dt: 0.1             # 2026-09-16: = 1/controller_frequency(10 Hz). 32 step → 지평 3.2 s
       batch_size: 1000
-      vx_std: 0.05
+      # ★ 2026-09-16 mp4(job345, /trajectories): 입구에서 명령 평균이 0 으로 내려가자 후보 궤적 끝단 분포가 ±1 cm 로 붕괴
+      #   (앞>5 cm 후보 78 % → 2 %). 잡음이 시간축마다 독립이라 끝단 산포 ≈ std/√32×3.2 s ≈ 3 cm 뿐이라 내접 띠(15 cm)
+      #   너머의 출구를 표본이 못 본다 → 탐색 폭(vx/wz_std)·선택 날카로움(temperature)·반복(iteration) 을 올린다.
+      vx_std: 0.08              # 0.05 → 0.08 (vx_max 와 같은 크기; 클리핑되더라도 분포 폭 확보)
       vy_std: 0.0
-      wz_std: 0.3
+      wz_std: 0.4               # 0.3 → 0.4
       vx_max: 0.08          # 2026-09-07 스케일 정정 후 실속도 기준 (펌웨어 한계 0.085)
       vx_min: -0.06             # 2026-09-07 스케일 정정 (실속도 기준)         # ★ 후진 허용 — 좁은 공간 이탈 기동
       vy_max: 0.0
       wz_max: 0.38          # 2026-09-07 B_eff 0.443 (실 최대 0.384)
-      iteration_count: 1
+      iteration_count: 2        # 1 → 2 (10 Hz·32 step 이라 20 Hz·1 회와 같은 연산량 = mp2 수준)
       prune_distance: 1.0
       transform_tolerance: 0.2
-      temperature: 0.3
+      temperature: 0.15         # 0.3 → 0.15: 저비용 표본에 가중을 집중(평균이 0 으로 뭉개지는 것을 막는다)
       gamma: 0.015
       motion_model: "DiffDrive"
       visualize: true           # 2026-09-16: 후보 궤적(/trajectories)·변환 경로를 bag 에 남겨 정체 원인을 본다 (진단 기간만)
