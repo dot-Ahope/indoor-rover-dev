@@ -127,3 +127,10 @@
 3. **다음**: B3 MPPI 정지 벤치(CPU 통과 시에만), C4 해상도, C5 nvblox N0, C3 라이다 높이 검토(도면).
 
 기각한 것(이유): 상자를 옮겨 창을 넓히는 것(문제를 피하는 것), MPPI 지평만 더 늘리기(CPU·구조 둘 다 확인됨), 제자리 회전 강제(스윕 φ0.74 m — 09-11 실증), min_obstacle_height 0.08(09-14 실패), mark_threshold 상향(상자 z 1~2 복셀).
+
+## 6. 사용자 결정과 조치 (2026-09-16 오후)
+- **MPPI 유지(Orin Nano)**: Humble MPPI 는 CPU 전용. 10 Hz·model_dt 0.1·32 step(지평 0.26 m)·visualize 로 설정, BT 복귀. 정체가 재현되면 `/trajectories` 로 크리틱 구조를 본다(B3 의 (ii)(iii) 는 그 결과로 결정).
+- **A 진행**: job340 정지 A/B(navfn / +smooth / @infl 0.70 / 둘 다) → 입구 접선각 최소·상자셀 거리 유지인 것 채택 → BT `SmoothPath` 연결 또는 inflation 변경.
+- **C 검토 결과**: mp2·mp3·bk1 bag 에서 왼쪽 통로를 막는 깊이 전용 셀 0, 120/180 상한 시뮬레이션에서도 0 → 로컬 120·전역 180 적용. 규칙: 관찰자 시야 밖, 95 s 초과 주행 후 재검토. 릴레이 max_range 4 m 로 원거리 잡음 차단.
+- **D 조치**: 릴레이 `data` setter 병목(bytes → array('B')) 수정으로 CPU 53~60 % → 13~20 %. 다음: sensor_conditioner.py 36 %.
+- 근거·수치: `Docs/debug_log/2026-09-16/SUMMARY.md §1.11`.

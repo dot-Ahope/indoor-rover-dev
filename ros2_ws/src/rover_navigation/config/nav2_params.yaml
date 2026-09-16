@@ -22,7 +22,10 @@ bt_navigator:
 
 controller_server:
   ros__parameters:
-    controller_frequency: 20.0
+    # ★ 2026-09-16: 20 → 10 Hz. MPPI 를 Orin Nano CPU 예산 안에서 쓰기 위해: 56 step@20 Hz 는 루프 미달 306 건/90 s(mp3).
+    #   10 Hz + model_dt 0.1 + 32 step 이면 지평 3.2 s(0.26 m, RPP lookahead 급)를 mp2(32 step@20 Hz)의 절반 연산으로 얻는다.
+    #   0.08 m/s 로봇은 한 주기 0.8 cm 이동이라 10 Hz 로 충분. MPPI 는 Humble 에서 CPU(xtensor) 전용 — GPU 를 쓰지 않는다.
+    controller_frequency: 10.0
     min_x_velocity_threshold: 0.001
     min_y_velocity_threshold: 0.5
     min_theta_velocity_threshold: 0.001
@@ -142,7 +145,7 @@ controller_server:
       #   ★ mp3 결과(09-16 §1.9): 56 step 은 이 Jetson 에서 20 Hz 를 못 냈다(루프 미달 306 건/90 s, load 11.8, EKF 위반 91) 그리고
       #   모서리 정체는 그대로였다 → 32 로 되돌림. MPPI 재도전 시 batch 500 이하 또는 10 Hz 에서 지평을 다시 설계할 것.
       time_steps: 32
-      model_dt: 0.05
+      model_dt: 0.1             # 2026-09-16: = 1/controller_frequency(10 Hz). 32 step → 지평 3.2 s
       batch_size: 1000
       vx_std: 0.05
       vy_std: 0.0
@@ -157,7 +160,7 @@ controller_server:
       temperature: 0.3
       gamma: 0.015
       motion_model: "DiffDrive"
-      visualize: false
+      visualize: true           # 2026-09-16: 후보 궤적(/trajectories)·변환 경로를 bag 에 남겨 정체 원인을 본다 (진단 기간만)
       critics: ["ConstraintCritic", "ObstaclesCritic", "GoalCritic", "GoalAngleCritic", "PathAlignCritic", "PathFollowCritic", "PathAngleCritic", "PreferForwardCritic"]
       ConstraintCritic: {enabled: true, cost_power: 1, cost_weight: 4.0}
       GoalCritic: {enabled: true, cost_power: 1, cost_weight: 5.0, threshold_to_consider: 1.0}
@@ -259,7 +262,11 @@ local_costmap:
         # 2026-09-14: 30 → 60 s. 중앙 상자 주행 3회(inf1~3) 모두 상자 옆을 지나는 동안 로컬 상자 기억이 30 s 만료로
         #   사라졌다(마지막 관측은 상자 앞 ~0.5 m, 이후 사각지대·입구 정지로 20~30 s 소요). BT 가 ClearCostmapExceptRegion 이라
         #   길게 둬도 09-10 의 "밀고 지나감" 은 재발하지 않는다. 근거: Docs/debug_log/2026-09-14/SUMMARY.md §2, §2.10
-        voxel_decay: 60.0             # 선형 감쇠 수명(초)
+        # ★ 2026-09-16 §C: 60 → 120. 입구 머뭇거림 중 기억 소실(mp3 접촉)을 막는다. 누적 잡음 검토(job338, mp2/mp3/bk1 bag):
+        #   깊이 전용 셀 중 로버 궤적 0.25 m 이내 0개, 통로 띠 안은 상자 앞 오른쪽 '바닥 점' 1~2개뿐(왼쪽 통로 밖), 나머지는
+        #   y>1.0 의 낮은 가구·6~7 m 원거리 군집. 120 s 상한 시뮬레이션에서도 통로 띠 최대 2개 → 통로를 막지 않는다.
+        #   남는 위험: 사람이 지나간 자취가 2 배 오래 남는다(관찰자 시야 밖 규칙 유지).
+        voxel_decay: 120.0            # 선형 감쇠 수명(초)
         decay_model: 0                # 0=선형, 1=지수, -1=영속
         voxel_size: 0.05              # 코스트맵 해상도와 일치
         track_unknown_space: true
@@ -451,7 +458,7 @@ global_costmap:
         #     계획 좌우 전환 0회, 계획이 접촉 경로였던 샘플 0/382, 결과 SUCCEEDED(38.1s).
         #     즉 **관측 없이 37초를 버틴 것**이 회피를 성립시켰다. 30초 감쇠였다면 t≈31 에
         #     99→69 로 녹아 job198 과 같은 파고들기가 났을 구간이다.
-        voxel_decay: 90.0             # 선형 감쇠 수명(초)
+        voxel_decay: 180.0            # 선형 감쇠 수명(초) — 2026-09-16 §C: 90 → 180 (로컬과 같은 근거, 전역 통로 띠 유령 0개)
         decay_model: 0                # 0=선형, 1=지수, -1=영속
         voxel_size: 0.05              # 코스트맵 해상도와 일치
         track_unknown_space: true

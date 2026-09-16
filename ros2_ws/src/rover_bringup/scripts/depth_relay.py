@@ -19,6 +19,7 @@
   복셀당 3점 이상이라 살아남는다 — 살아남는지는 job312/job248 로 측정한다.
 """
 import time
+import array
 import numpy as np
 import rclpy
 from rclpy.node import Node
@@ -31,6 +32,7 @@ class DepthRelay(Node):
         super().__init__('depth_relay')
         self.declare_parameter('in_topic', '/camera/camera/depth/color/points')
         self.declare_parameter('out_topic', '/camera/depth/points_filtered')
+        self.declare_parameter('max_range', 4.0)              # [m] D455 원거리 잡음(6~7 m 군집, 09-16 job338) 제거 + 점 수 절감
         self.declare_parameter('min_range', 0.45)             # [m] 카메라 원점 기준. 실측 사각지대 0.40, 아티팩트 0.36~0.38
         self.declare_parameter('voxel', 0.05)                 # [m] 이웃 셈 격자 (코스트맵 해상도와 같게)
         self.declare_parameter('min_points_per_voxel', 3)     # 비산점 2~4점/프레임이 여러 복셀에 흩어짐 → 복셀당 1~2점
@@ -42,6 +44,7 @@ class DepthRelay(Node):
         self.declare_parameter('process_every', 1)           # CPU 절약용(2 면 7.5 Hz): 0.08 m/s 로버엔 충분
         self.declare_parameter('log_period', 10.0)
         self.min_range = float(self.get_parameter('min_range').value)
+        self.max_range = float(self.get_parameter('max_range').value)
         self.voxel = float(self.get_parameter('voxel').value)
         self.min_pts = int(self.get_parameter('min_points_per_voxel').value)
         self.pf = int(self.get_parameter('persist_frames').value)
@@ -72,7 +75,7 @@ class DepthRelay(Node):
         z = np.ndarray((n,), np.float32, buf, offs['z'], (step,))
         finite = np.isfinite(x) & np.isfinite(y) & np.isfinite(z)
         r2 = x * x + y * y + z * z
-        keep = finite & (r2 >= self.min_range * self.min_range)
+        keep = finite & (r2 >= self.min_range * self.min_range) & (r2 <= self.max_range * self.max_range)
         drop_range = int(finite.sum() - keep.sum())
         idx = np.nonzero(keep)[0]
         drop_iso = 0
@@ -109,7 +112,9 @@ class DepthRelay(Node):
         out.point_step = step
         out.row_step = step * int(idx.size)
         out.is_dense = True
-        out.data = buf[idx].tobytes()
+        # ★ 2026-09-16 (job339 cProfile): bytes 를 넣으면 생성 메시지의 setter 가 바이트마다 isinstance 검사를 해
+        #   콜백 시간의 95 %(12 s 중 10.5 s)를 먹었다(프레임당 14k점×16B). array('B') 는 검사 없이 통과한다.
+        out.data = array.array('B', buf[idx].tobytes())
         self.pub.publish(out)
         s = self.stat
         s['frames'] += 1; s['n_in'] += n; s['n_out'] += int(idx.size); s['drop_range'] += drop_range; s['drop_iso'] += drop_iso
