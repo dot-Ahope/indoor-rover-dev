@@ -1,0 +1,11 @@
+11:03:36  상자 셀 최대 y: 0.169
+11:03:42  상자 셀 최대 y: 0.169
+11:03:51  상자 셀 최대 y: 0.169
+11:03:57  상자 셀 최대 y: 0.169
+11:04:04  상자 셀 최대 y: 0.169
+11:04:12  상자 셀 최대 y: 0.169
+--- 로컬 코스트맵 상자 주변 셀 (y 0.15~0.30, x 1.05~1.35) 값 ---
+  File "<stdin>", line 13
+    print('   y\x ' + ' '.join('%5.2f' % x for x in xs))
+                    ^
+SyntaxError: (unicode error) 'unicodeescape' codec can't decode bytes in position 4-5: truncated \xXX escape

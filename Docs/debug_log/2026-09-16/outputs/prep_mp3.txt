@@ -1,0 +1,22 @@
+=== 1. 재기동 ===
+  [sensor_conditioner.py-6] [INFO] [1789523912.482975772] [sensor_conditioner]: gyro bias calibrated: (-0.00591, -0.00073, -0.00168) rad/s, std=(0.0026, 0.0025, 0.0017)
+  map->odom: - Translation: [0.000, 0.000, 0.000]
+  로버 자세: - Translation: [0.000, 0.000, 0.000] - Rotation: in RPY (radian) [0.000, -0.000, 0.004] 
+상자: 전면 x=1.159  중심 y=+0.054  (157점)  → x 구간 [1.16, 1.27], y 구간 [-0.04, +0.14]
+=== 2. 릴레이 정리 ===
+남은 릴레이: 1
+발행자 Publisher count: 1
+=== 3. readback (MPPI 변경 3개 + 패딩) ===
+  FollowPathMPPI.time_steps                  Integer value is: 56
+  FollowPathMPPI.PathAlignCritic.offset_from_furthest Integer value is: 3
+  FollowPathMPPI.PathAngleCritic.max_angle_to_furthest Double value is: 0.5
+  local                                        footprint_padding                          Double value is: 0.01
+  루프 지연 경고(기동 후): 0
+=== 4. 상자 감사 + 게이트 ===
+상자: 전면 x=1.159  중심 y=+0.054  (162점)  → x 구간 [1.16, 1.27], y 구간 [-0.04, +0.14]
+   1.00   [-0.35~+0.00]          0.40    [+0.80~+1.00]          0.25    (없음)                   0.00
+   1.10   [+0.35~+0.60]          0.30    [+0.80~+1.00]          0.25    (없음)                   0.00
+   1.20   [+0.35~+0.70]          0.40    [+0.80~+1.00]          0.25    (없음)                   0.00
+   1.30   [+0.35~+1.00]          0.70    [+0.45~+0.55]          0.15    (없음)                   0.00
+   → 전방 2.2m 최소폭:  기준1 0.30 m (@1.10)   기준2(RPP) 0.15 m (@1.30)   기준3(오류) 0.00 m (@0.70)
+상자 x=1.159 y=0.054 | 통로 띠 근거 없는 셀 0 (≤1) | 창 -0.365 m (≥0.20; 좌측 +0.00, 상자 셀 최대 y 0.170)

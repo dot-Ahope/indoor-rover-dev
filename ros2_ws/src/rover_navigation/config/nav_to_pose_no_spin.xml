@@ -74,7 +74,8 @@
           <!-- 2026-09-15 (09-15 SUMMARY §1~2): RPP("FollowPath") → MPPI("FollowPathMPPI"). 상자 뒤 목표에서 RPP 는 둘레 LETHAL 검사로
                상자 옆에서 멈췄다 섰다 한다(bk1 정지 2회). Smac 파라미터 스윕으로는 복귀를 상자 뒤로 못 미룬다(09-15 §1). MPPI 는 지평 안 샘플 궤적을
                장애물 비용·경로 추종 비용으로 골라 비켜 지나간다. 되돌리려면 controller_id="FollowPath". -->
-          <FollowPath path="{path}" controller_id="FollowPathMPPI"/>
+          <!-- 2026-09-16 mp3: MPPI(56 step) 도 같은 자리 정체 42 s + CPU 과부하(루프 미달 306 건) + 기억 소실 후 상자 접촉 → RPP 복귀 (09-16 §1.9) -->
+          <FollowPath path="{path}" controller_id="FollowPath"/>
           <ClearCostmapExceptRegion name="ClearLocalCostmap-Context" reset_distance="2.5" service_name="local_costmap/clear_except_local_costmap"/>
         </RecoveryNode>
       </PipelineSequence>
