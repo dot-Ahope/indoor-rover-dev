@@ -66,6 +66,6 @@ def generate_launch_description():
         Node(
             package='rover_bringup', executable='depth_relay.py', name='depth_relay', output='screen',
             # (2026-09-14 §2.21) persist: 최근 5프레임 중 3프레임 이상 같은 복셀에 점이 있어야 통과 — 25 % 프레임에만 찍히는 바닥 점이 영구 LETHAL 되는 것을 막는다
-            parameters=[{'min_range': 0.45, 'voxel': 0.05, 'min_points_per_voxel': 3, 'persist_frames': 5, 'persist_min': 3, 'process_every': 1}],
+            parameters=[{'min_range': 0.45, 'max_range': 4.0, 'voxel': 0.05, 'min_points_per_voxel': 3, 'persist_frames': 5, 'persist_min': 3, 'process_every': 1}],
         ),
     ])
