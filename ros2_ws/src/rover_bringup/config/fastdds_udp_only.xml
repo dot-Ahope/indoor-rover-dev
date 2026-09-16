@@ -33,6 +33,14 @@
       <transport_descriptor>
         <transport_id>udp_only_transport</transport_id>
         <type>UDPv4</type>
+        <!-- 2026-09-16: 루프백에 고정. Wi-Fi AP 가 Jetson 을 끊어(reason 2) 다른 SSID 로 붙으면 IP 가
+             192.168.0.101 → 172.30.1.8 로 바뀌는데, 이미 떠 있던 참가자는 옛 IP 로케이터를 계속 광고해
+             그 뒤에 뜬 노드(나 새 셸)와 데이터를 주고받지 못한다(09-16 mp4 직후: /scan·/wheel_odom 무수신,
+             Nav2 activating 정지). 같은 호스트 안에서만 통신하므로 127.0.0.1 만 쓰면 IP 변화에 면역이다.
+             (ROS_LOCALHOST_ONLY 는 rmw 가 SHM 을 다시 켜므로 쓰지 않는다 — 위 SHM 사고 참조) -->
+        <interfaceWhiteList>
+          <address>127.0.0.1</address>
+        </interfaceWhiteList>
       </transport_descriptor>
     </transport_descriptors>
 

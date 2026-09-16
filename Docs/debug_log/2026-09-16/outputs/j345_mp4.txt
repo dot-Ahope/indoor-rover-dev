@@ -1,0 +1,26 @@
+=== syslog Sep 16 15:5x wifi ===
+Sep 16 15:57:34 jetson-desktop wpa_supplicant[902]: wlP1p1s0: CTRL-EVENT-DISCONNECTED bssid=b0:38:6c:37:1b:4c reason=2
+Sep 16 15:57:34 jetson-desktop NetworkManager[852]: <info>  [1789541854.2372] device (wlP1p1s0): supplicant interface state: completed -> disconnected
+Sep 16 15:57:34 jetson-desktop NetworkManager[852]: <info>  [1789541854.2373] device (p2p-dev-wlP1p1s0): supplicant management interface state: completed -> disconnected
+Sep 16 15:57:34 jetson-desktop NetworkManager[852]: <info>  [1789541854.3370] device (wlP1p1s0): supplicant interface state: disconnected -> scanning
+Sep 16 15:57:34 jetson-desktop NetworkManager[852]: <info>  [1789541854.3371] device (p2p-dev-wlP1p1s0): supplicant management interface state: disconnected -> scanning
+Sep 16 15:57:38 jetson-desktop wpa_supplicant[902]: wlP1p1s0: CTRL-EVENT-STARTED-CHANNEL-SWITCH freq=5180 ht_enabled=1 ch_offset=1 ch_width=80 MHz cf1=5210 cf2=0
+Sep 16 15:57:38 jetson-desktop wpa_supplicant[902]: wlP1p1s0: Associated with b0:38:6c:37:1b:4c
+Sep 16 15:57:38 jetson-desktop wpa_supplicant[902]: wlP1p1s0: CTRL-EVENT-SUBNET-STATUS-UPDATE status=0
+Sep 16 15:57:38 jetson-desktop NetworkManager[852]: <info>  [1789541858.5362] device (wlP1p1s0): supplicant interface state: associating -> associated
+Sep 16 15:57:38 jetson-desktop NetworkManager[852]: <info>  [1789541858.5364] device (p2p-dev-wlP1p1s0): supplicant management interface state: associating -> associated
+=== job345 ===
+bag /tmp/bag_mp4: T0 1789541784.31, trajectories 180 (점/메시지 중앙값 2232), transformed_global_plan 179, cmd 375
+trajectories frame: odom, scale 종류 2
+t=  6.0 (msg 0.02 s 전) 로버 (0.029,0.000) yaw +1.5° cmd v +0.062 w +0.038 | 후보 끝단 2232개: 앞>5cm  71%  뒤   0%  우   0%  좌   0%  | 끝단 거리 중앙 0.086 최대 0.204 | 전방 중앙 +0.086 횡 중앙 +0.000 | 변환경로(odom, 41점) 첫점 거리 0.009, 0.3 m 앞 방위 +11.5°
+t=  9.0 (msg 0.04 s 전) 로버 (0.227,0.021) yaw +13.3° cmd v +0.079 w +0.131 | 후보 끝단 2232개: 앞>5cm  77%  뒤   0%  우   0%  좌   4%  | 끝단 거리 중앙 0.106 최대 0.225 | 전방 중앙 +0.106 횡 중앙 +0.005 | 변환경로(odom, 41점) 첫점 거리 0.002, 0.3 m 앞 방위 +15.4°
+t= 12.0 (msg 0.03 s 전) 로버 (0.398,0.086) yaw +31.6° cmd v +0.048 w +0.150 | 후보 끝단 2232개: 앞>5cm  65%  뒤   0%  우   0%  좌   5%  | 끝단 거리 중앙 0.074 최대 0.193 | 전방 중앙 +0.073 횡 중앙 +0.005 | 변환경로(odom, 41점) 첫점 거리 0.015, 0.3 m 앞 방위 -0.7°
+t= 14.0 (msg 0.04 s 전) 로버 (0.498,0.164) yaw +38.6° cmd v +0.079 w -0.050 | 후보 끝단 2232개: 앞>5cm  78%  뒤   0%  우   0%  좌   0%  | 끝단 거리 중앙 0.105 최대 0.224 | 전방 중앙 +0.104 횡 중앙 -0.000 | 변환경로(odom, 41점) 첫점 거리 0.014, 0.3 m 앞 방위 -15.0°
+t= 16.0 (msg 0.04 s 전) 로버 (0.612,0.241) yaw +28.8° cmd v +0.070 w +0.038 | 후보 끝단 2232개: 앞>5cm  73%  뒤   0%  우   0%  좌   0%  | 끝단 거리 중앙 0.084 최대 0.199 | 전방 중앙 +0.084 횡 중앙 +0.001 | 변환경로(odom, 41점) 첫점 거리 0.015, 0.3 m 앞 방위 -8.6°
+t= 17.0 (msg 0.04 s 전) 로버 (0.660,0.268) yaw +32.2° cmd v +0.035 w +0.064 | 후보 끝단 2232개: 앞>5cm  55%  뒤   0%  우   0%  좌   0%  | 끝단 거리 중앙 0.054 최대 0.159 | 전방 중앙 +0.054 횡 중앙 +0.001 | 변환경로(odom, 41점) 첫점 거리 0.016, 0.3 m 앞 방위 -17.1°
+t= 18.0 (msg 0.04 s 전) 로버 (0.686,0.286) yaw +35.7° cmd v +0.025 w +0.052 | 후보 끝단 2232개: 앞>5cm  32%  뒤   0%  우   0%  좌   0%  | 끝단 거리 중앙 0.035 최대 0.133 | 전방 중앙 +0.035 횡 중앙 +0.001 | 변환경로(odom, 40점) 첫점 거리 0.002, 0.3 m 앞 방위 -24.1°
+t= 19.0 (msg 0.03 s 전) 로버 (0.704,0.299) yaw +38.8° cmd v +0.019 w -0.115 | 후보 끝단 2232개: 앞>5cm  13%  뒤   0%  우   0%  좌   0%  | 끝단 거리 중앙 0.021 최대 0.112 | 전방 중앙 +0.020 횡 중앙 -0.000 | 변환경로(odom, 40점) 첫점 거리 0.015, 0.3 m 앞 방위 -28.9°
+t= 20.0 (msg 0.04 s 전) 로버 (0.716,0.308) yaw +31.8° cmd v +0.010 w -0.009 | 후보 끝단 2232개: 앞>5cm   6%  뒤   0%  우   0%  좌   0%  | 끝단 거리 중앙 0.014 최대 0.101 | 전방 중앙 +0.011 횡 중앙 +0.000 | 변환경로(odom, 40점) 첫점 거리 0.022, 0.3 m 앞 방위 -23.4°
+t= 21.0 (msg 0.04 s 전) 로버 (0.720,0.310) yaw +32.7° cmd v +0.012 w +0.081 | 후보 끝단 2232개: 앞>5cm   7%  뒤   0%  우   0%  좌   0%  | 끝단 거리 중앙 0.015 최대 0.104 | 전방 중앙 +0.013 횡 중앙 +0.000 | 변환경로(odom, 40점) 첫점 거리 0.027, 0.3 m 앞 방위 -23.1°
+t= 22.0 (msg 0.04 s 전) 로버 (0.729,0.317) yaw +38.0° cmd v -0.002 w -0.005 | 후보 끝단 2232개: 앞>5cm   2%  뒤   3%  우   0%  좌   0%  | 끝단 거리 중앙 0.011 최대 0.086 | 전방 중앙 +0.001 횡 중앙 +0.000 | 변환경로(odom, 40점) 첫점 거리 0.019, 0.3 m 앞 방위 -31.7°
+t= 23.0 (msg 0.14 s 전) 로버 (0.730,0.317) yaw +30.0° cmd v +0.000 w -0.031 | 후보 끝단 2232개: 앞>5cm   3%  뒤   1%  우   0%  좌   0%  | 끝단 거리 중앙 0.011 최대 0.092 | 전방 중앙 +0.004 횡 중앙 +0.000 | 변환경로(odom, 40점) 첫점 거리 0.019, 0.3 m 앞 방위 -23.8°

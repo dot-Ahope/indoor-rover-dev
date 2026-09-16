@@ -23,6 +23,10 @@ def generate_launch_description():
     agent = ExecuteProcess(
         cmd=['docker', 'run', '--rm', '--name', 'microros_agent',
              '--net', 'host',
+             # 2026-09-16: 에이전트의 DDS 참가자도 루프백 고정 프로파일을 쓴다(호스트 노드와 같은 XML 을 마운트).
+             #   안 하면 에이전트는 Wi-Fi IP 를 광고하고 호스트 노드는 127.0.0.1 만 쓰므로 /cmd_vel 이 보드에 못 간다.
+             '-v', f'{_FASTDDS_XML}:/fastdds_udp_only.xml:ro',
+             '-e', 'FASTRTPS_DEFAULT_PROFILES_FILE=/fastdds_udp_only.xml',
              '--device', f'{rover_dev}:/dev/rover',
              'microros/micro-ros-agent:humble',
              # 2026-09-09: 2000000 → 460800. 보드 usart.c 의 override 와 반드시 일치해야 한다.
