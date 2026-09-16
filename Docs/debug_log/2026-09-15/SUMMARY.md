@@ -70,3 +70,16 @@ MPPI 가 보여 준 것: 정지 없이(둘레 검사 없음) 부드럽게(부호
 - **주행 시작 여부 미확인**: job254 는 원격 `| tail -70` 라 출력이 끝에만 나오므로, 게이트 15 s 대기 전에 끊겼으면 목표 미전송, 그 뒤였으면 Nav2 액션은 클라이언트가 죽어도 계속 실행된다
   (목표 1.8 m 에서 정지). 사용자에게 로버 상태·Jetson 전원 확인 요청. **교훈: 주행 명령은 원격 `nohup` + 로그 파일로 띄우고(ssh 가 끊겨도 기록·감시 가능), 결과는 파일로 회수한다.
   그리고 원격 정지 수단이 없을 때를 대비해 조이스틱/보드 리셋을 현장 정지 수단으로 명시한다.**
+
+### 3.1 (09-16 오전) 원인 규명 — Wi-Fi AP 가 Jetson 을 끊고 재인증을 거부했다
+syslog(/var/log/syslog, 영속): **09-15 14:03:13 `wpa_supplicant: CTRL-EVENT-DISCONNECTED bssid=b0:38:6c:37:1b:4c reason=2`** (AP 측 deauth) → 재연결 시도 → 14:03:21
+**`CTRL-EVENT-SSID-TEMP-DISABLED ssid="WEB_DEV_5G" auth_failures=1 reason=AUTH_FAILED`** → 그 뒤 재연결 실패 상태로 남음. 사용자가 14:41·16:55 에 재부팅했고 16:55 부터는
+다른 저장 SSID **ALOPS_ROBOTICS_5G(172.30.1.8)** 에 붙었다(저장 연결 3개 모두 autoconnect 우선순위 0 이라 어느 쪽에 붙을지 정해져 있지 않았다).
+- 172.30.1.x 는 **이 PC 와 같은 서브넷**(PC 172.30.1.89) → 이중 NAT(192.168.0.101) 경로보다 낫다. 러너 156개의 호스트를 172.30.1.8 로 교체(`run_lan.sh`, `JETSON_HOST`).
+- USB 장치모드 IP(192.168.55.1)로도 접속 가능. 사용자가 본 "로그인 직후 Connection reset" 은 sshd 로그상 `kex_exchange_identification: Connection reset by peer`(키 교환 단계 리셋, 클라이언트/링크 측)이며
+  .bashrc 는 정상(`source ~/px4_ws/install/setup.bash` 추가돼 있음). 내 쪽에서는 3/3 성공 — 재현 안 됨.
+- 메모리·OOM 아님: 부팅 직후 766 MB 사용/6.6 GB 가용, journal 은 비영속이라 어제 부팅의 OOM 여부는 알 수 없음(→ 영속 journal 권장, sudo).
+- 부수 발견: `mavlink-router.service`(PX4 잔재)가 enabled 상태로 **크래시 루프**(auto-restart, exit 1) 중. 직렬 포트 점유 가능성 → 비활성 권장(sudo, 사용자 결정).
+  `/dev/ttyUSB*`·`/dev/ttyACM*` 없음 → 제어보드(CH340) 미연결 상태(사용자가 확장보드 분리). base 기동 전 재연결 필요.
+- /tmp 의 어제 nav2.log·bag_mp2 는 없음 → **mp2 주행 시작 여부는 끝내 미확인**(사용자 현장 진술로 기록).
+- 교훈 추가: Wi-Fi 두 SSID 중 하나로 고정(우선순위/고정 IP), 주행 러너는 원격 nohup + 파일 로그(§3), 게이트 통과 후 목표 전송 직전에 링크 재확인.
