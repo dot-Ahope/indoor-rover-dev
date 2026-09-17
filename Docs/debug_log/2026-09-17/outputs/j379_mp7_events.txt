@@ -1,0 +1,145 @@
+  0.00 [bt_navigator-6] [INFO] [1789610470.807262876] [bt_navigator]: Begin navigating from current location (0.00, 0.00) to (2.00, 0.00)
+  0.04 [controller_server-2] [INFO] [1789610470.849137917] [controller_server]: Received a goal, begin computing control effort.
+  0.04 [controller_server-2] [WARN] [1789610470.850559284] [controller_server]: No goal checker was specified in parameter 'current_goal_checker'. Server will use only plugin lo
+  0.05 [controller_server-2] [INFO] [1789610470.852875887] [controller_server]: Optimizer reset
+  6.54 [bt_navigator-6] [WARN] [1789610477.348678447] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+ 11.36 [controller_server-2] [WARN] [1789610482.169328031] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+ 11.47 [controller_server-2] [WARN] [1789610482.273306463] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+ 11.55 [bt_navigator-6] [WARN] [1789610482.358213436] [bt_navigator_navigate_to_pose_rclcpp_node]: Timed out while waiting for action server to acknowledge goal request for comp
+ 11.55 [planner_server-4] [INFO] [1789610482.358894102] [global_costmap.global_costmap]: Received request to clear except a region the global_costmap
+ 11.56 [bt_navigator-6] [WARN] [1789610482.368670065] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+ 11.57 [controller_server-2] [WARN] [1789610482.379116518] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+ 11.57 [bt_navigator-6] [WARN] [1789610482.381759981] [bt_navigator_navigate_to_pose_rclcpp_node]: Timed out while waiting for action server to acknowledge goal request for comp
+ 11.61 [bt_navigator-6] [ERROR] [1789610482.412948902] [bt_navigator_navigate_to_pose_rclcpp_node]: Failed to get result for follow_path in node halt!
+ 11.61 [controller_server-2] [INFO] [1789610482.414516867] [local_costmap.local_costmap]: Received request to clear except a region the local_costmap
+ 11.61 [planner_server-4] [INFO] [1789610482.415559435] [global_costmap.global_costmap]: Received request to clear except a region the global_costmap
+ 11.61 [bt_navigator-6] [WARN] [1789610482.422137867] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+ 11.63 [bt_navigator-6] [WARN] [1789610482.437695590] [bt_navigator_navigate_to_pose_rclcpp_node]: Timed out while waiting for action server to acknowledge goal request for comp
+ 11.63 [planner_server-4] [INFO] [1789610482.438197433] [global_costmap.global_costmap]: Received request to clear except a region the global_costmap
+ 11.66 [bt_navigator-6] [WARN] [1789610482.462266847] [bt_navigator_navigate_to_pose_rclcpp_node]: Timed out while waiting for action server to acknowledge goal request for comp
+ 11.66 [behavior_server-5] [INFO] [1789610482.470808618] [behavior_server]: Running backup
+ 11.67 [behavior_server-5] [INFO] [1789610482.474064968] [behavior_server]: DriveOnHeading: no acceleration or deceleration limits set
+ 11.68 [controller_server-2] [WARN] [1789610482.482631252] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+ 11.68 [controller_server-2] [INFO] [1789610482.482784602] [controller_server]: Goal was canceled. Stopping the robot.
+ 11.68 [controller_server-2] [INFO] [1789610482.482807131] [controller_server]: [follow_path] [ActionServer] Client requested to cancel the goal. Cancelling.
+ 12.01 [planner_server-4] [WARN] [1789610482.821642126] [planner_server]: [compute_path_to_pose] [ActionServer] Aborting handle.
+ 12.01 [planner_server-4] [WARN] [1789610482.821951578] [planner_server]: [compute_path_to_pose] [ActionServer] Aborting handle.
+ 12.37 [bt_navigator-6] [WARN] [1789610483.173521176] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+ 15.27 [behavior_server-5] [INFO] [1789610486.073725973] [behavior_server]: backup completed successfully
+ 15.40 [controller_server-2] [INFO] [1789610486.212226821] [controller_server]: Received a goal, begin computing control effort.
+ 15.41 [controller_server-2] [INFO] [1789610486.213983433] [controller_server]: Optimizer reset
+ 16.34 [bt_navigator-6] [WARN] [1789610487.147872790] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+ 19.13 [controller_server-2] [WARN] [1789610489.934046885] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+ 19.41 [controller_server-2] [WARN] [1789610490.218704026] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+ 19.61 [controller_server-2] [WARN] [1789610490.415283332] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+ 19.63 [smoother_server-3] [ERROR] [1789610490.433959477] [smoother_server]: Smoothed path leads to a collision at x: 0.851010, y: 0.329154, theta: 0.192959
+ 19.63 [smoother_server-3] [WARN] [1789610490.434075962] [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+ 19.83 [controller_server-2] [WARN] [1789610490.638989061] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+ 20.22 [controller_server-2] [WARN] [1789610491.023564364] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+ 20.37 [controller_server-2] [WARN] [1789610491.180612924] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+ 20.56 [controller_server-2] [WARN] [1789610491.364790403] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+ 20.69 [smoother_server-3] [ERROR] [1789610491.495212974] [smoother_server]: Smoothed path leads to a collision at x: 0.974991, y: 0.328670, theta: 0.167587
+ 20.69 [smoother_server-3] [WARN] [1789610491.496464639] [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+ 21.01 [controller_server-2] [WARN] [1789610491.812753810] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+ 21.08 [controller_server-2] [WARN] [1789610491.883446364] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+ 21.40 [controller_server-2] [WARN] [1789610492.202938792] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+ 21.62 [controller_server-2] [WARN] [1789610492.422962707] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+ 22.43 [controller_server-2] [INFO] [1789610493.233322871] [controller_server]: Optimizer reset
+ 22.43 [controller_server-2] [INFO] [1789610493.240098556] [controller_server]: Optimizer reset
+ 22.43 [controller_server-2] [ERROR] [1789610493.240386952] [controller_server]: Optimizer fail to compute path
+ 22.43 [controller_server-2] [WARN] [1789610493.240603792] [controller_server]: [follow_path] [ActionServer] Aborting handle.
+ 22.46 [controller_server-2] [INFO] [1789610493.262583936] [local_costmap.local_costmap]: Received request to clear except a region the local_costmap
+ 22.46 [controller_server-2] [INFO] [1789610493.264080762] [controller_server]: Received a goal, begin computing control effort.
+ 22.56 [controller_server-2] [WARN] [1789610493.365053776] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+ 23.76 [controller_server-2] [WARN] [1789610494.571259717] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+ 24.27 [controller_server-2] [WARN] [1789610495.077284473] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+ 25.70 [controller_server-2] [WARN] [1789610496.510430315] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+ 25.79 [controller_server-2] [WARN] [1789610496.596535103] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+ 25.98 [bt_navigator-6] [WARN] [1789610496.784312384] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+ 26.54 [controller_server-2] [WARN] [1789610497.348662947] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+ 26.62 [controller_server-2] [WARN] [1789610497.432218260] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+ 26.70 [controller_server-2] [WARN] [1789610497.504731900] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+ 26.77 [controller_server-2] [WARN] [1789610497.577927358] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+ 26.96 [controller_server-2] [WARN] [1789610497.771097899] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+ 27.03 [controller_server-2] [WARN] [1789610497.837603851] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+ 27.08 [bt_navigator-6] [WARN] [1789610497.883791933] [bt_navigator_navigate_to_pose_rclcpp_node]: Timed out while waiting for action server to acknowledge goal request for smoo
+ 27.10 [bt_navigator-6] [WARN] [1789610497.904362645] [bt_navigator_navigate_to_pose_rclcpp_node]: Timed out while waiting for action server to acknowledge goal request for foll
+ 27.11 [behavior_server-5] [INFO] [1789610497.916779539] [behavior_server]: Running wait
+ 27.12 [bt_navigator-6] [WARN] [1789610497.924852842] [bt_navigator_navigate_to_pose_rclcpp_node]: Timed out while waiting for action server to acknowledge goal request for wait
+ 27.12 [controller_server-2] [INFO] [1789610497.925534660] [local_costmap.local_costmap]: Received request to clear except a region the local_costmap
+ 27.13 [controller_server-2] [WARN] [1789610497.938513912] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+ 27.14 [bt_navigator-6] [WARN] [1789610497.942513522] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+ 27.14 [bt_navigator-6] [WARN] [1789610497.945783728] [bt_navigator_navigate_to_pose_rclcpp_node]: Node timed out while executing service call to local_costmap/clear_except_loca
+ 27.15 [behavior_server-5] [INFO] [1789610497.959265815] [behavior_server]: Running backup
+ 27.16 [bt_navigator-6] [WARN] [1789610497.966548175] [bt_navigator_navigate_to_pose_rclcpp_node]: Timed out while waiting for action server to acknowledge goal request for back
+ 27.17 [bt_navigator-6] [WARN] [1789610497.973654401] [bt_navigator]: [navigate_to_pose] [ActionServer] Aborting handle.
+ 27.17 [bt_navigator-6] [ERROR] [1789610497.974198774] [bt_navigator]: Goal failed
+ 27.26 [controller_server-2] [WARN] [1789610498.062710821] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+ 27.60 [controller_server-2] [WARN] [1789610498.405420328] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+ 27.96 [controller_server-2] [WARN] [1789610498.762869795] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+ 28.05 [controller_server-2] [WARN] [1789610498.854825110] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+ 28.15 [controller_server-2] [WARN] [1789610498.953740564] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+ 28.24 [controller_server-2] [WARN] [1789610499.045937295] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+ 28.33 [controller_server-2] [WARN] [1789610499.140810064] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+ 28.45 [controller_server-2] [WARN] [1789610499.258807115] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+ 28.59 [controller_server-2] [WARN] [1789610499.395199401] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+ 28.67 [controller_server-2] [WARN] [1789610499.480869640] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+ 28.74 [controller_server-2] [WARN] [1789610499.548466160] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+ 28.82 [controller_server-2] [WARN] [1789610499.623562328] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+ 29.01 [controller_server-2] [WARN] [1789610499.821205962] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+ 29.11 [controller_server-2] [WARN] [1789610499.913921272] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+ 29.26 [controller_server-2] [WARN] [1789610500.064806339] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+ 29.42 [controller_server-2] [WARN] [1789610500.226518476] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+ 29.62 [controller_server-2] [WARN] [1789610500.427153069] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+ 29.78 [controller_server-2] [WARN] [1789610500.584530991] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+ 29.93 [controller_server-2] [WARN] [1789610500.736538883] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+ 30.14 [controller_server-2] [WARN] [1789610500.943855653] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+ 30.34 [controller_server-2] [WARN] [1789610501.145605391] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+ 30.67 [planner_server-4] [INFO] [1789610501.472578499] [global_costmap.global_costmap]: Message Filter dropping message: frame 'lidar_link' at time 1789610501.169 for reason 't
+ 30.67 [planner_server-4] [INFO] [1789610501.481058665] [global_costmap.global_costmap]: Message Filter dropping message: frame 'camera_depth_optical_frame' at time 1789610501.2
+ 30.72 [controller_server-2] [ERROR] [1789610501.526965901] [controller_server]: Exception in transformPose: Lookup would require extrapolation into the future.  Requested time 
+ 30.72 [controller_server-2] [ERROR] [1789610501.527302394] [controller_server]: Unable to transform robot pose into global plan's frame
+ 30.72 [controller_server-2] [WARN] [1789610501.527532643] [controller_server]: [follow_path] [ActionServer] Aborting handle.
+ 32.11 [behavior_server-5] [INFO] [1789610502.918608288] [behavior_server]: wait completed successfully
+ 33.22 [planner_server-4] [INFO] [1789610504.023024064] [global_costmap.global_costmap]: Message Filter dropping message: frame 'camera_depth_optical_frame' at time 1789610503.7
+ 33.26 [planner_server-4] [INFO] [1789610504.065906862] [global_costmap.global_costmap]: Message Filter dropping message: frame 'lidar_link' at time 1789610503.763 for reason 't
+ 35.75 [behavior_server-5] [INFO] [1789610506.560899138] [behavior_server]: backup completed successfully
+ 35.75 [planner_server-4] [INFO] [1789610506.561361876] [global_costmap.global_costmap]: Message Filter dropping message: frame 'camera_depth_optical_frame' at time 1789610506.2
+ 35.85 [planner_server-4] [INFO] [1789610506.655584592] [global_costmap.global_costmap]: Message Filter dropping message: frame 'lidar_link' at time 1789610506.353 for reason 't
+ 38.29 [planner_server-4] [INFO] [1789610509.096995407] [global_costmap.global_costmap]: Message Filter dropping message: frame 'camera_depth_optical_frame' at time 1789610508.8
+ 38.36 [planner_server-4] [INFO] [1789610509.167745828] [global_costmap.global_costmap]: Message Filter dropping message: frame 'lidar_link' at time 1789610508.865 for reason 't
+ 40.82 [planner_server-4] [INFO] [1789610511.629554367] [global_costmap.global_costmap]: Message Filter dropping message: frame 'camera_depth_optical_frame' at time 1789610511.3
+ 40.95 [planner_server-4] [INFO] [1789610511.760644917] [global_costmap.global_costmap]: Message Filter dropping message: frame 'lidar_link' at time 1789610511.457 for reason 't
+ 41.48 [planner_server-4] [ERROR] [1789610512.290283153] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the p
+ 42.48 [planner_server-4] [ERROR] [1789610513.290779060] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the p
+ 43.36 [planner_server-4] [INFO] [1789610514.167031259] [global_costmap.global_costmap]: Message Filter dropping message: frame 'camera_depth_optical_frame' at time 1789610513.8
+ 43.48 [planner_server-4] [ERROR] [1789610514.290166202] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the p
+ 43.54 [planner_server-4] [INFO] [1789610514.351617221] [global_costmap.global_costmap]: Message Filter dropping message: frame 'lidar_link' at time 1789610514.049 for reason 't
+ 44.48 [planner_server-4] [ERROR] [1789610515.290339213] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the p
+ 45.48 [planner_server-4] [ERROR] [1789610516.290901725] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the p
+ 45.89 [planner_server-4] [INFO] [1789610516.701230023] [global_costmap.global_costmap]: Message Filter dropping message: frame 'camera_depth_optical_frame' at time 1789610516.4
+ 46.15 [planner_server-4] [INFO] [1789610516.959563208] [global_costmap.global_costmap]: Message Filter dropping message: frame 'lidar_link' at time 1789610516.657 for reason 't
+ 46.48 [planner_server-4] [ERROR] [1789610517.290463094] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the p
+ 47.48 [planner_server-4] [ERROR] [1789610518.291118118] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the p
+ 48.43 [planner_server-4] [INFO] [1789610519.236883161] [global_costmap.global_costmap]: Message Filter dropping message: frame 'camera_depth_optical_frame' at time 1789610518.9
+ 48.48 [planner_server-4] [ERROR] [1789610519.290652634] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the p
+ 48.65 [planner_server-4] [INFO] [1789610519.461107449] [global_costmap.global_costmap]: Message Filter dropping message: frame 'lidar_link' at time 1789610519.154 for reason 't
+ 49.49 [planner_server-4] [ERROR] [1789610520.292532182] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the p
+ 50.48 [planner_server-4] [ERROR] [1789610521.289856627] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the p
+ 50.97 [planner_server-4] [INFO] [1789610521.775544685] [global_costmap.global_costmap]: Message Filter dropping message: frame 'camera_depth_optical_frame' at time 1789610521.4
+ 51.24 [planner_server-4] [INFO] [1789610522.047127440] [global_costmap.global_costmap]: Message Filter dropping message: frame 'lidar_link' at time 1789610521.745 for reason 't
+ 51.48 [planner_server-4] [ERROR] [1789610522.289748544] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the p
+ 52.48 [planner_server-4] [ERROR] [1789610523.290476316] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the p
+ 53.48 [planner_server-4] [ERROR] [1789610524.291487057] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the p
+ 53.50 [planner_server-4] [INFO] [1789610524.310179000] [global_costmap.global_costmap]: Message Filter dropping message: frame 'camera_depth_optical_frame' at time 1789610524.0
+ 53.83 [planner_server-4] [INFO] [1789610524.639566243] [global_costmap.global_costmap]: Message Filter dropping message: frame 'lidar_link' at time 1789610524.337 for reason 't
+ 54.49 [planner_server-4] [ERROR] [1789610525.293329461] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the p
+ 55.49 [planner_server-4] [ERROR] [1789610526.294415626] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the p
+=== 드라이브 표 (1 s) ===
+  0.0 +0.000 +0.000 |  0.958      nan   +nan |    99    99    140 | +0.000 +0.000
+ 10.0 +0.608 +0.222 |  0.316    0.085 +0.392 |    99    99      0 | +0.048 -0.031
+ 20.0 +0.781 +0.294 |  0.170    0.076 +0.383 |    99    99      0 | +0.079 -0.081
+bag tgz 9901885
+bag 회수 OK 9901885
+drive log OK
+csv OK

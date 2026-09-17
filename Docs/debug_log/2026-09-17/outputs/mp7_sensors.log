@@ -1,0 +1,224 @@
+[INFO] [launch]: All log files can be found below /home/jetson/.ros/log/2026-09-17-10-54-54-979255-jetson-desktop-11804
+[INFO] [launch]: Default logging verbosity is set to INFO
+[INFO] [realsense2_camera_node-1]: process started with pid [11806]
+[INFO] [depth_relay.py-2]: process started with pid [11808]
+[INFO] [rplidar_node-3]: process started with pid [11810]
+[INFO] [scan_deskew.py-4]: process started with pid [11812]
+[INFO] [foxglove_bridge-5]: process started with pid [11814]
+[rplidar_node-3] [INFO] [1789610095.148512650] [rplidar_node]: RPLidar running on ROS2 package rplidar_ros. RPLIDAR SDK Version:2.0.0
+[foxglove_bridge-5] [INFO] [1789610095.194120260] [foxglove_bridge]: Starting foxglove_bridge (humble, 3.2.4@)
+[foxglove_bridge-5] [INFO] [1789610095.198383064] [foxglove_bridge]: Server listening on port 8765
+[rplidar_node-3] [INFO] [1789610095.202952507] [rplidar_node]: RPLidar S/N: 65FEE18BC7E49CCDA3EB9AF4F1234C73
+[rplidar_node-3] [INFO] [1789610095.203076289] [rplidar_node]: Firmware Ver: 1.02
+[rplidar_node-3] [INFO] [1789610095.203107938] [rplidar_node]: Hardware Rev: 18
+[foxglove_bridge-5] [INFO] [1789610095.219741181] [foxglove_bridge]: Advertising new channel 1 for topic "/tf_static"
+[foxglove_bridge-5] [INFO] [1789610095.219865027] [foxglove_bridge]: Advertising new channel 2 for topic "/tf"
+[foxglove_bridge-5] [INFO] [1789610095.220077293] [foxglove_bridge]: Advertising new channel 3 for topic "/robot_description"
+[foxglove_bridge-5] [INFO] [1789610095.220343418] [foxglove_bridge]: Advertising new channel 4 for topic "/cmd_vel"
+[foxglove_bridge-5] [INFO] [1789610095.220762991] [foxglove_bridge]: Advertising new channel 5 for topic "/rover/status"
+[foxglove_bridge-5] [INFO] [1789610095.221127073] [foxglove_bridge]: Advertising new channel 6 for topic "/battery"
+[rplidar_node-3] [INFO] [1789610095.254505147] [rplidar_node]: RPLidar health status : 0
+[rplidar_node-3] [INFO] [1789610095.254619969] [rplidar_node]: RPLidar health status : OK.
+[rplidar_node-3] [INFO] [1789610095.254643938] [rplidar_node]: Start
+[realsense2_camera_node-1] [INFO] [1789610095.399941876] [camera.camera]: RealSense ROS v4.58.3
+[realsense2_camera_node-1] [INFO] [1789610095.400179647] [camera.camera]: Built with LibRealSense v2.58.3
+[realsense2_camera_node-1] [INFO] [1789610095.400210401] [camera.camera]: Running with LibRealSense v2.58.3
+[realsense2_camera_node-1]  17/09 10:54:55,403 WARNING [281472627894496] (context.cpp:41) No valid configuration file found at : /home/jetson/.realsense-config.json loading defaults
+[realsense2_camera_node-1] [INFO] [1789610095.454276319] [camera.camera]: Device with serial number 253822300207 was found.
+[realsense2_camera_node-1] 
+[realsense2_camera_node-1] [INFO] [1789610095.454419718] [camera.camera]: Device with physical ID /sys/devices/platform/bus@0/3610000.usb/usb2/2-1/2-1.3/2-1.3:1.0/video4linux/video0 was found.
+[realsense2_camera_node-1] [INFO] [1789610095.454442471] [camera.camera]: Device with name RealSense D455F was found.
+[realsense2_camera_node-1] [INFO] [1789610095.454842811] [camera.camera]: Device with port number 2-1.3 was found.
+[realsense2_camera_node-1] [INFO] [1789610095.454878588] [camera.camera]: Device USB type: 3.2
+[realsense2_camera_node-1] [INFO] [1789610095.454897789] [camera.camera]: Resetting device...
+[depth_relay.py-2] [INFO] [1789610095.866254831] [depth_relay]: depth_relay: min_range 0.45 m, voxel 0.05 m, min_points_per_voxel 3
+[scan_deskew.py-4] [INFO] [1789610095.916298276] [scan_deskew]: scan_deskew: /scan_raw → /scan (ref=end, EKF ω 기반 회전 디스큐)
+[rplidar_node-3] [INFO] [1789610096.708230034] [rplidar_node]: current scan mode: Standard, sample rate: 16 Khz, max_distance: 16.0 m, scan frequency:10.0 Hz, 
+[foxglove_bridge-5] [INFO] [1789610099.197702538] [foxglove_bridge]: Advertising new channel 7 for topic "/odometry/filtered"
+[foxglove_bridge-5] [INFO] [1789610099.198444814] [foxglove_bridge]: Advertising new channel 8 for topic "/scan"
+[realsense2_camera_node-1] [INFO] [1789610101.499657075] [camera.camera]: Device with serial number 253822300207 was found.
+[realsense2_camera_node-1] 
+[realsense2_camera_node-1] [INFO] [1789610101.499832411] [camera.camera]: Device with physical ID /sys/devices/platform/bus@0/3610000.usb/usb2/2-1/2-1.3/2-1.3:1.0/video4linux/video0 was found.
+[realsense2_camera_node-1] [INFO] [1789610101.499882622] [camera.camera]: Device with name RealSense D455F was found.
+[realsense2_camera_node-1] [INFO] [1789610101.500658436] [camera.camera]: Device with port number 2-1.3 was found.
+[realsense2_camera_node-1] [INFO] [1789610101.500726408] [camera.camera]: Device USB type: 3.2
+[realsense2_camera_node-1] [INFO] [1789610101.500981972] [camera.camera]: getParameters...
+[realsense2_camera_node-1] [WARN] [1789610101.503840738] [camera.camera]: For the 'unite_imu_method' param update to take effect, re-enable either gyro or accel stream.
+[realsense2_camera_node-1] [INFO] [1789610101.503981001] [camera.camera]: JSON file is not provided
+[realsense2_camera_node-1] [INFO] [1789610101.504036747] [camera.camera]: Device Name: RealSense D455F
+[realsense2_camera_node-1] [INFO] [1789610101.504077517] [camera.camera]: Device Serial No: 253822300207
+[realsense2_camera_node-1] [INFO] [1789610101.504105327] [camera.camera]: Device physical port: /sys/devices/platform/bus@0/3610000.usb/usb2/2-1/2-1.3/2-1.3:1.0/video4linux/video0
+[realsense2_camera_node-1] [INFO] [1789610101.504129968] [camera.camera]: Device FW version: 5.15.0.2
+[realsense2_camera_node-1] [INFO] [1789610101.504150609] [camera.camera]: Device Product ID: 0x0B5C
+[realsense2_camera_node-1] [INFO] [1789610101.504184339] [camera.camera]: Sync Mode: Off
+[realsense2_camera_node-1] [WARN] [1789610101.732447814] [camera.camera]: re-enable the stream for the change to take effect.
+[realsense2_camera_node-1] [WARN] [1789610101.753034048] [camera.camera]: Could not set param: rgb_camera.power_line_frequency with 3 Range: [0, 2]: parameter 'rgb_camera.power_line_frequency' could not be set: Parameter {rgb_camera.power_line_frequency} doesn't comply with integer range.
+[realsense2_camera_node-1] [WARN] [1789610101.766951632] [camera.camera]: re-enable the stream for the change to take effect.
+[realsense2_camera_node-1] [INFO] [1789610101.799080612] [camera.camera]: Stopping Sensor: Depth Module
+[realsense2_camera_node-1] [INFO] [1789610101.799458711] [camera.camera]: Stopping Sensor: RGB Camera
+[realsense2_camera_node-1] [INFO] [1789610101.799517306] [camera.camera]: Stopping Sensor: Motion Module
+[realsense2_camera_node-1] [INFO] [1789610101.832627007] [camera.camera]: Starting Sensor: Depth Module
+[realsense2_camera_node-1] [INFO] [1789610101.844656849] [camera.camera]: Open profile: stream_type: Depth(0), Format: Z16, Width: 640, Height: 480, FPS: 15
+[realsense2_camera_node-1] [INFO] [1789610101.961616775] [camera.camera]: Starting Sensor: RGB Camera
+[realsense2_camera_node-1] [INFO] [1789610101.973277959] [camera.camera]: Open profile: stream_type: Color(0), Format: RGB8, Width: 640, Height: 480, FPS: 15
+[realsense2_camera_node-1]  17/09 10:55:01,991 WARNING [281472627894496] (ds-calib-parsers.cpp:36) IMU Calibration is not available, default intrinsic and extrinsic will be used.
+[realsense2_camera_node-1] [INFO] [1789610102.004702521] [camera.camera]: Starting Sensor: Motion Module
+[realsense2_camera_node-1] [INFO] [1789610102.012895982] [camera.camera]: Open profile: stream_type: Accel(0)Format: MOTION_XYZ32F, FPS: 100
+[realsense2_camera_node-1] [INFO] [1789610102.012989042] [camera.camera]: Open profile: stream_type: Gyro(0)Format: MOTION_XYZ32F, FPS: 200
+[realsense2_camera_node-1]  17/09 10:55:02,013 WARNING [281472216787168] (backend-hid.cpp:740) HID set_power 1 failed for /sys/devices/platform/bus@0/3610000.usb/usb2/2-1/2-1.3/2-1.3:1.5/0003:8086:0B5C.0001/HID-SENSOR-200076.3.auto/iio:device1/buffer/enable
+[realsense2_camera_node-1]  17/09 10:55:02,013 WARNING [281472199878880] (backend-hid.cpp:740) HID set_power 1 failed for /sys/devices/platform/bus@0/3610000.usb/usb2/2-1/2-1.3/2-1.3:1.5/0003:8086:0B5C.0001/HID-SENSOR-200073.2.auto/iio:device0/buffer/enable
+[realsense2_camera_node-1] [INFO] [1789610102.033929309] [camera.camera]: RealSense Node Is Up!
+[INFO] [sensor_conditioner.py-6]: process started with pid [11988]
+[INFO] [ekf_node-7]: process started with pid [11990]
+[realsense2_camera_node-1] [WARN] [1789610103.482492936] [camera.camera]: No matching stream for texture 'Process - Any'. Set 'pointcloud.stream_profile' to 'depth(1)', 'color(2)', or 'infrared(3)' to enable textured pointclouds.
+[depth_relay.py-2] [INFO] [1789610105.839530952] [depth_relay]: 50 프레임: 입력 13533 → 출력 7708 점/프레임, 근거리 제거 1963.2, 고립 제거 1905.2, 비지속 제거 1956.6 점/프레임, 8.5 ms/프레임
+[sensor_conditioner.py-6] [INFO] [1789610114.029333185] [sensor_conditioner]: gyro bias calibrated: (-0.00808, -0.00103, -0.00185) rad/s, std=(0.0026, 0.0024, 0.0018)
+[depth_relay.py-2] [INFO] [1789610115.841571383] [depth_relay]: 150 프레임: 입력 13933 → 출력 8571 점/프레임, 근거리 제거 2045.8, 고립 제거 1857.5, 비지속 제거 1458.8 점/프레임, 10.0 ms/프레임
+[sensor_conditioner.py-6] [INFO] [1789610116.010734341] [sensor_conditioner]: ZUPT #1: bias y -0.001034 → -0.001025 (관측 -0.000938), 잔차 yaw rate -0.000086 rad/s = -0.30 °/분
+[depth_relay.py-2] [INFO] [1789610125.849413037] [depth_relay]: 150 프레임: 입력 13937 → 출력 8568 점/프레임, 근거리 제거 2042.0, 고립 제거 1859.7, 비지속 제거 1467.4 점/프레임, 9.3 ms/프레임
+[foxglove_bridge-5] [INFO] [1789610132.009912682] [foxglove_bridge]: Advertising new channel 9 for topic "/map_metadata"
+[foxglove_bridge-5] [INFO] [1789610132.010833078] [foxglove_bridge]: Advertising new channel 10 for topic "/map"
+[depth_relay.py-2] [INFO] [1789610135.839637000] [depth_relay]: 149 프레임: 입력 13930 → 출력 8545 점/프레임, 근거리 제거 2035.6, 고립 제거 1879.0, 비지속 제거 1470.3 점/프레임, 9.5 ms/프레임
+[sensor_conditioner.py-6] [INFO] [1789610136.061651811] [sensor_conditioner]: ZUPT #11: bias y -0.001070 → -0.001048 (관측 -0.000851), 잔차 yaw rate -0.000197 rad/s = -0.68 °/분
+[depth_relay.py-2] [INFO] [1789610145.839530169] [depth_relay]: 150 프레임: 입력 13928 → 출력 8554 점/프레임, 근거리 제거 2033.6, 고립 제거 1869.3, 비지속 제거 1470.4 점/프레임, 9.9 ms/프레임
+[ekf_node-7] Failed to meet update rate! Took 0.058514872000000002494seconds. Try decreasing the rate, limiting sensor output frequency, or limiting the number of sensors.
+[ekf_node-7] Failed to meet update rate! Took 0.035668411999999996564seconds. Try decreasing the rate, limiting sensor output frequency, or limiting the number of sensors.
+[depth_relay.py-2] [INFO] [1789610155.864991122] [depth_relay]: 147 프레임: 입력 13926 → 출력 8556 점/프레임, 근거리 제거 2032.6, 고립 제거 1873.8, 비지속 제거 1463.1 점/프레임, 16.0 ms/프레임
+[foxglove_bridge-5] [INFO] [1789610156.898247203] [foxglove_bridge]: Advertising new channel 11 for topic "/local_costmap/costmap"
+[sensor_conditioner.py-6] [INFO] [1789610158.539346396] [sensor_conditioner]: ZUPT #21: bias y -0.001042 → -0.001019 (관측 -0.000816), 잔차 yaw rate -0.000204 rad/s = -0.70 °/분
+[foxglove_bridge-5] [INFO] [1789610159.053546616] [foxglove_bridge]: Advertising new channel 12 for topic "/rover/stuck"
+[foxglove_bridge-5] [INFO] [1789610159.053717120] [foxglove_bridge]: Advertising new channel 13 for topic "/global_costmap/costmap"
+[foxglove_bridge-5] [INFO] [1789610162.263721775] [foxglove_bridge]: Advertising new channel 14 for topic "/plan"
+[depth_relay.py-2] [INFO] [1789610165.839754328] [depth_relay]: 152 프레임: 입력 13925 → 출력 8527 점/프레임, 근거리 제거 2032.9, 고립 제거 1882.5, 비지속 제거 1482.6 점/프레임, 13.1 ms/프레임
+[depth_relay.py-2] [INFO] [1789610175.839719360] [depth_relay]: 150 프레임: 입력 13927 → 출력 8554 점/프레임, 근거리 제거 2036.2, 고립 제거 1869.2, 비지속 제거 1467.1 점/프레임, 12.1 ms/프레임
+[sensor_conditioner.py-6] [INFO] [1789610178.631424479] [sensor_conditioner]: ZUPT #31: bias y -0.001032 → -0.001038 (관측 -0.001091), 잔차 yaw rate +0.000053 rad/s = +0.18 °/분
+[depth_relay.py-2] [INFO] [1789610185.839425493] [depth_relay]: 150 프레임: 입력 13932 → 출력 8557 점/프레임, 근거리 제거 2042.6, 고립 제거 1864.9, 비지속 제거 1466.8 점/프레임, 14.0 ms/프레임
+[ekf_node-7] Failed to meet update rate! Took 0.041258549999999998004seconds. Try decreasing the rate, limiting sensor output frequency, or limiting the number of sensors.
+[depth_relay.py-2] [INFO] [1789610195.843281574] [depth_relay]: 149 프레임: 입력 13929 → 출력 8567 점/프레임, 근거리 제거 2041.9, 고립 제거 1862.3, 비지속 제거 1457.8 점/프레임, 18.8 ms/프레임
+[sensor_conditioner.py-6] [INFO] [1789610200.340853321] [sensor_conditioner]: ZUPT #41: bias y -0.001011 → -0.001020 (관측 -0.001100), 잔차 yaw rate +0.000079 rad/s = +0.27 °/분
+[ekf_node-7] Failed to meet update rate! Took 0.16817973999999999424seconds. Try decreasing the rate, limiting sensor output frequency, or limiting the number of sensors.
+[ekf_node-7] Failed to meet update rate! Took 0.039015899999999999193seconds. Try decreasing the rate, limiting sensor output frequency, or limiting the number of sensors.
+[depth_relay.py-2] [INFO] [1789610205.840266008] [depth_relay]: 149 프레임: 입력 13930 → 출력 8565 점/프레임, 근거리 제거 2041.2, 고립 제거 1867.1, 비지속 제거 1456.3 점/프레임, 18.4 ms/프레임
+[ekf_node-7] Failed to meet update rate! Took 0.055611496000000003315seconds. Try decreasing the rate, limiting sensor output frequency, or limiting the number of sensors.
+[depth_relay.py-2] [INFO] [1789610215.839086460] [depth_relay]: 150 프레임: 입력 13924 → 출력 8544 점/프레임, 근거리 제거 2041.7, 고립 제거 1866.2, 비지속 제거 1472.5 점/프레임, 17.1 ms/프레임
+[sensor_conditioner.py-6] [INFO] [1789610220.661653496] [sensor_conditioner]: ZUPT #50: bias y -0.001018 → -0.000990 (관측 -0.000733), 잔차 yaw rate -0.000257 rad/s = -0.88 °/분
+[depth_relay.py-2] [INFO] [1789610225.840638040] [depth_relay]: 150 프레임: 입력 13930 → 출력 8558 점/프레임, 근거리 제거 2036.2, 고립 제거 1865.9, 비지속 제거 1470.5 점/프레임, 11.6 ms/프레임
+[depth_relay.py-2] [INFO] [1789610235.840131760] [depth_relay]: 150 프레임: 입력 13925 → 출력 8548 점/프레임, 근거리 제거 2035.5, 고립 제거 1871.7, 비지속 제거 1469.6 점/프레임, 12.3 ms/프레임
+[sensor_conditioner.py-6] [INFO] [1789610241.557597855] [sensor_conditioner]: ZUPT #60: bias y -0.000992 → -0.000995 (관측 -0.001025), 잔차 yaw rate +0.000030 rad/s = +0.10 °/분
+[depth_relay.py-2] [INFO] [1789610245.839715747] [depth_relay]: 150 프레임: 입력 13932 → 출력 8546 점/프레임, 근거리 제거 2039.5, 고립 제거 1874.1, 비지속 제거 1472.8 점/프레임, 13.7 ms/프레임
+[ekf_node-7] Failed to meet update rate! Took 0.067640693000000001733seconds. Try decreasing the rate, limiting sensor output frequency, or limiting the number of sensors.
+[depth_relay.py-2] [INFO] [1789610255.843641574] [depth_relay]: 150 프레임: 입력 13923 → 출력 8548 점/프레임, 근거리 제거 2045.3, 고립 제거 1864.7, 비지속 제거 1464.9 점/프레임, 11.9 ms/프레임
+[ekf_node-7] Failed to meet update rate! Took 0.038968081000000001635seconds. Try decreasing the rate, limiting sensor output frequency, or limiting the number of sensors.
+[sensor_conditioner.py-6] [INFO] [1789610262.649404050] [sensor_conditioner]: ZUPT #70: bias y -0.001047 → -0.001027 (관측 -0.000846), 잔차 yaw rate -0.000180 rad/s = -0.62 °/분
+[depth_relay.py-2] [INFO] [1789610265.839474638] [depth_relay]: 150 프레임: 입력 13921 → 출력 8546 점/프레임, 근거리 제거 2044.5, 고립 제거 1867.9, 비지속 제거 1462.0 점/프레임, 14.2 ms/프레임
+[ekf_node-7] Failed to meet update rate! Took 0.052472729000000002675seconds. Try decreasing the rate, limiting sensor output frequency, or limiting the number of sensors.
+[ekf_node-7] Failed to meet update rate! Took 0.047296242000000002226seconds. Try decreasing the rate, limiting sensor output frequency, or limiting the number of sensors.
+[ekf_node-7] Failed to meet update rate! Took 0.034622025000000000716seconds. Try decreasing the rate, limiting sensor output frequency, or limiting the number of sensors.
+[ekf_node-7] Failed to meet update rate! Took 0.033745887000000002187seconds. Try decreasing the rate, limiting sensor output frequency, or limiting the number of sensors.
+[depth_relay.py-2] [INFO] [1789610275.840103116] [depth_relay]: 149 프레임: 입력 13916 → 출력 8549 점/프레임, 근거리 제거 2040.7, 고립 제거 1874.8, 비지속 제거 1451.6 점/프레임, 19.3 ms/프레임
+[ekf_node-7] Failed to meet update rate! Took 0.034883400000000001906seconds. Try decreasing the rate, limiting sensor output frequency, or limiting the number of sensors.
+[sensor_conditioner.py-6] [INFO] [1789610284.522137645] [sensor_conditioner]: ZUPT #80: bias y -0.001036 → -0.001035 (관측 -0.001034), 잔차 yaw rate -0.000001 rad/s = -0.00 °/분
+[depth_relay.py-2] [INFO] [1789610285.843339031] [depth_relay]: 150 프레임: 입력 13924 → 출력 8568 점/프레임, 근거리 제거 2036.2, 고립 제거 1859.1, 비지속 제거 1460.4 점/프레임, 16.9 ms/프레임
+[ekf_node-7] Failed to meet update rate! Took 0.038485721000000000513seconds. Try decreasing the rate, limiting sensor output frequency, or limiting the number of sensors.
+[depth_relay.py-2] [INFO] [1789610295.839768652] [depth_relay]: 149 프레임: 입력 13914 → 출력 8535 점/프레임, 근거리 제거 2036.4, 고립 제거 1880.4, 비지속 제거 1462.1 점/프레임, 12.6 ms/프레임
+[ekf_node-7] Failed to meet update rate! Took 0.070288911999999995062seconds. Try decreasing the rate, limiting sensor output frequency, or limiting the number of sensors.
+[ekf_node-7] Failed to meet update rate! Took 0.064062366999999995065seconds. Try decreasing the rate, limiting sensor output frequency, or limiting the number of sensors.
+[ekf_node-7] Failed to meet update rate! Took 0.069766996999999997264seconds. Try decreasing the rate, limiting sensor output frequency, or limiting the number of sensors.
+[ekf_node-7] Failed to meet update rate! Took 0.034021781000000000938seconds. Try decreasing the rate, limiting sensor output frequency, or limiting the number of sensors.
+[sensor_conditioner.py-6] [INFO] [1789610305.420160749] [sensor_conditioner]: ZUPT #89: bias y -0.001034 → -0.001036 (관측 -0.001047), 잔차 yaw rate +0.000011 rad/s = +0.04 °/분
+[depth_relay.py-2] [INFO] [1789610305.839961803] [depth_relay]: 150 프레임: 입력 13919 → 출력 8579 점/프레임, 근거리 제거 2040.3, 고립 제거 1859.4, 비지속 제거 1440.0 점/프레임, 18.6 ms/프레임
+[depth_relay.py-2] [INFO] [1789610315.839268737] [depth_relay]: 150 프레임: 입력 13906 → 출력 8556 점/프레임, 근거리 제거 2029.0, 고립 제거 1866.0, 비지속 제거 1454.5 점/프레임, 14.2 ms/프레임
+[depth_relay.py-2] [INFO] [1789610325.850364055] [depth_relay]: 150 프레임: 입력 13897 → 출력 8545 점/프레임, 근거리 제거 2027.9, 고립 제거 1870.7, 비지속 제거 1452.8 점/프레임, 15.1 ms/프레임
+[sensor_conditioner.py-6] [INFO] [1789610327.054148825] [sensor_conditioner]: ZUPT #99: bias y -0.001045 → -0.001064 (관측 -0.001235), 잔차 yaw rate +0.000170 rad/s = +0.59 °/분
+[depth_relay.py-2] [INFO] [1789610335.839623381] [depth_relay]: 150 프레임: 입력 13901 → 출력 8554 점/프레임, 근거리 제거 2027.0, 고립 제거 1864.2, 비지속 제거 1455.4 점/프레임, 14.7 ms/프레임
+[ekf_node-7] Failed to meet update rate! Took 0.04507782500000000192seconds. Try decreasing the rate, limiting sensor output frequency, or limiting the number of sensors.
+[ekf_node-7] Failed to meet update rate! Took 0.072440890999999993372seconds. Try decreasing the rate, limiting sensor output frequency, or limiting the number of sensors.
+[depth_relay.py-2] [INFO] [1789610345.839587242] [depth_relay]: 150 프레임: 입력 13910 → 출력 8543 점/프레임, 근거리 제거 2031.9, 고립 제거 1871.3, 비지속 제거 1464.1 점/프레임, 12.1 ms/프레임
+[ekf_node-7] Failed to meet update rate! Took 0.062963486999999998539seconds. Try decreasing the rate, limiting sensor output frequency, or limiting the number of sensors.
+[sensor_conditioner.py-6] [INFO] [1789610349.348853973] [sensor_conditioner]: ZUPT #109: bias y -0.001027 → -0.001031 (관측 -0.001073), 잔차 yaw rate +0.000042 rad/s = +0.14 °/분
+[ekf_node-7] Failed to meet update rate! Took 0.077585883999999993854seconds. Try decreasing the rate, limiting sensor output frequency, or limiting the number of sensors.
+[depth_relay.py-2] [INFO] [1789610355.907959674] [depth_relay]: 150 프레임: 입력 13903 → 출력 8538 점/프레임, 근거리 제거 2030.6, 고립 제거 1869.8, 비지속 제거 1464.9 점/프레임, 20.0 ms/프레임
+[ekf_node-7] Failed to meet update rate! Took 0.043386280999999998764seconds. Try decreasing the rate, limiting sensor output frequency, or limiting the number of sensors.
+[ekf_node-7] Failed to meet update rate! Took 0.071709596000000000449seconds. Try decreasing the rate, limiting sensor output frequency, or limiting the number of sensors.
+[depth_relay.py-2] [INFO] [1789610365.850047235] [depth_relay]: 150 프레임: 입력 13904 → 출력 8546 점/프레임, 근거리 제거 2026.8, 고립 제거 1869.0, 비지속 제거 1461.6 점/프레임, 22.2 ms/프레임
+[sensor_conditioner.py-6] [INFO] [1789610371.027730907] [sensor_conditioner]: ZUPT #118: bias y -0.001036 → -0.001060 (관측 -0.001274), 잔차 yaw rate +0.000215 rad/s = +0.74 °/분
+[depth_relay.py-2] [INFO] [1789610375.839779948] [depth_relay]: 149 프레임: 입력 13913 → 출력 8550 점/프레임, 근거리 제거 2030.7, 고립 제거 1879.2, 비지속 제거 1452.6 점/프레임, 14.2 ms/프레임
+[depth_relay.py-2] [INFO] [1789610385.839747915] [depth_relay]: 150 프레임: 입력 13899 → 출력 8521 점/프레임, 근거리 제거 2027.5, 고립 제거 1880.2, 비지속 제거 1470.6 점/프레임, 11.8 ms/프레임
+[sensor_conditioner.py-6] [INFO] [1789610391.058921573] [sensor_conditioner]: ZUPT #128: bias y -0.001063 → -0.001068 (관측 -0.001113), 잔차 yaw rate +0.000044 rad/s = +0.15 °/분
+[ekf_node-7] Failed to meet update rate! Took 0.036920442999999997236seconds. Try decreasing the rate, limiting sensor output frequency, or limiting the number of sensors.
+[depth_relay.py-2] [INFO] [1789610395.839621795] [depth_relay]: 150 프레임: 입력 13911 → 출력 8545 점/프레임, 근거리 제거 2032.9, 고립 제거 1870.0, 비지속 제거 1463.2 점/프레임, 14.6 ms/프레임
+[ekf_node-7] Failed to meet update rate! Took 0.064415664999999996954seconds. Try decreasing the rate, limiting sensor output frequency, or limiting the number of sensors.
+[depth_relay.py-2] [INFO] [1789610405.841658427] [depth_relay]: 147 프레임: 입력 13900 → 출력 8547 점/프레임, 근거리 제거 2025.5, 고립 제거 1868.6, 비지속 제거 1458.7 점/프레임, 17.2 ms/프레임
+[sensor_conditioner.py-6] [INFO] [1789610411.444767638] [sensor_conditioner]: ZUPT #137: bias y -0.001043 → -0.001055 (관측 -0.001165), 잔차 yaw rate +0.000110 rad/s = +0.38 °/분
+[depth_relay.py-2] [INFO] [1789610415.839608450] [depth_relay]: 153 프레임: 입력 13907 → 출력 8529 점/프레임, 근거리 제거 2021.6, 고립 제거 1876.8, 비지속 제거 1479.0 점/프레임, 12.4 ms/프레임
+[ekf_node-7] Failed to meet update rate! Took 0.043682196999999998999seconds. Try decreasing the rate, limiting sensor output frequency, or limiting the number of sensors.
+[ekf_node-7] Failed to meet update rate! Took 0.034099987999999997745seconds. Try decreasing the rate, limiting sensor output frequency, or limiting the number of sensors.
+[depth_relay.py-2] [INFO] [1789610425.840918767] [depth_relay]: 150 프레임: 입력 13903 → 출력 8535 점/프레임, 근거리 제거 2016.6, 고립 제거 1883.7, 비지속 제거 1467.5 점/프레임, 12.2 ms/프레임
+[sensor_conditioner.py-6] [INFO] [1789610433.169265947] [sensor_conditioner]: ZUPT #147: bias y -0.001011 → -0.001027 (관측 -0.001169), 잔차 yaw rate +0.000142 rad/s = +0.49 °/분
+[depth_relay.py-2] [INFO] [1789610435.838970114] [depth_relay]: 150 프레임: 입력 13907 → 출력 8527 점/프레임, 근거리 제거 2018.5, 고립 제거 1882.4, 비지속 제거 1478.9 점/프레임, 13.0 ms/프레임
+[depth_relay.py-2] [INFO] [1789610445.846520573] [depth_relay]: 150 프레임: 입력 13898 → 출력 8527 점/프레임, 근거리 제거 2020.7, 고립 제거 1882.4, 비지속 제거 1467.3 점/프레임, 12.1 ms/프레임
+[sensor_conditioner.py-6] [INFO] [1789610453.962203979] [sensor_conditioner]: ZUPT #157: bias y -0.001024 → -0.001029 (관측 -0.001078), 잔차 yaw rate +0.000048 rad/s = +0.17 °/분
+[depth_relay.py-2] [INFO] [1789610455.849665730] [depth_relay]: 150 프레임: 입력 13899 → 출력 8543 점/프레임, 근거리 제거 2015.7, 고립 제거 1867.3, 비지속 제거 1472.5 점/프레임, 13.3 ms/프레임
+[depth_relay.py-2] [INFO] [1789610465.839569183] [depth_relay]: 149 프레임: 입력 13893 → 출력 8525 점/프레임, 근거리 제거 2013.7, 고립 제거 1882.9, 비지속 제거 1471.2 점/프레임, 15.3 ms/프레임
+[ekf_node-7] Failed to meet update rate! Took 0.048088116999999999668seconds. Try decreasing the rate, limiting sensor output frequency, or limiting the number of sensors.
+[depth_relay.py-2] [INFO] [1789610475.839138142] [depth_relay]: 150 프레임: 입력 14120 → 출력 8386 점/프레임, 근거리 제거 1924.6, 고립 제거 1923.2, 비지속 제거 1886.0 점/프레임, 11.8 ms/프레임
+[ekf_node-7] Failed to meet update rate! Took 0.042777625999999999151seconds. Try decreasing the rate, limiting sensor output frequency, or limiting the number of sensors.
+[ekf_node-7] Failed to meet update rate! Took 0.046403620999999999064seconds. Try decreasing the rate, limiting sensor output frequency, or limiting the number of sensors.
+[depth_relay.py-2] [INFO] [1789610485.838942387] [depth_relay]: 150 프레임: 입력 15108 → 출력 10219 점/프레임, 근거리 제거 1562.4, 고립 제거 1564.8, 비지속 제거 1761.9 점/프레임, 11.3 ms/프레임
+[ekf_node-7] Failed to meet update rate! Took 0.037903895999999999422seconds. Try decreasing the rate, limiting sensor output frequency, or limiting the number of sensors.
+[ekf_node-7] Failed to meet update rate! Took 0.035700355000000003058seconds. Try decreasing the rate, limiting sensor output frequency, or limiting the number of sensors.
+[ekf_node-7] Failed to meet update rate! Took 0.049330353000000000396seconds. Try decreasing the rate, limiting sensor output frequency, or limiting the number of sensors.
+[ekf_node-7] Failed to meet update rate! Took 0.034174853999999997567seconds. Try decreasing the rate, limiting sensor output frequency, or limiting the number of sensors.
+[ekf_node-7] Failed to meet update rate! Took 0.038043483000000002936seconds. Try decreasing the rate, limiting sensor output frequency, or limiting the number of sensors.
+[depth_relay.py-2] [INFO] [1789610495.838994466] [depth_relay]: 143 프레임: 입력 15742 → 출력 11210 점/프레임, 근거리 제거 1451.4, 고립 제거 873.6, 비지속 제거 2206.7 점/프레임, 10.4 ms/프레임
+[ekf_node-7] Failed to meet update rate! Took 0.0647911349999999997seconds. Try decreasing the rate, limiting sensor output frequency, or limiting the number of sensors.
+[ekf_node-7] Failed to meet update rate! Took 0.043234369000000001659seconds. Try decreasing the rate, limiting sensor output frequency, or limiting the number of sensors.
+[ekf_node-7] Failed to meet update rate! Took 0.037244921999999999751seconds. Try decreasing the rate, limiting sensor output frequency, or limiting the number of sensors.
+[depth_relay.py-2] [INFO] [1789610505.839327793] [depth_relay]: 150 프레임: 입력 15683 → 출력 12393 점/프레임, 근거리 제거 2109.5, 고립 제거 386.8, 비지속 제거 793.7 점/프레임, 10.7 ms/프레임
+[sensor_conditioner.py-6] [INFO] [1789610508.735908651] [sensor_conditioner]: ZUPT #165: bias y -0.001039 → -0.001034 (관측 -0.000986), 잔차 yaw rate -0.000048 rad/s = -0.16 °/분
+[depth_relay.py-2] [INFO] [1789610515.840064807] [depth_relay]: 150 프레임: 입력 15063 → 출력 11067 점/프레임, 근거리 제거 3193.6, 고립 제거 485.9, 비지속 제거 317.2 점/프레임, 12.0 ms/프레임
+[foxglove_bridge-5] [INFO] [1789610520.700546923] [foxglove_bridge]: Removing channel 9 for topic "/map_metadata" (nav_msgs/msg/MapMetaData)
+[depth_relay.py-2] [INFO] [1789610525.842514074] [depth_relay]: 150 프레임: 입력 15069 → 출력 11095 점/프레임, 근거리 제거 3204.5, 고립 제거 488.9, 비지속 제거 280.7 점/프레임, 11.4 ms/프레임
+[sensor_conditioner.py-6] [INFO] [1789610528.767558193] [sensor_conditioner]: ZUPT #175: bias y -0.001046 → -0.001043 (관측 -0.001017), 잔차 yaw rate -0.000027 rad/s = -0.09 °/분
+[depth_relay.py-2] [INFO] [1789610535.851416766] [depth_relay]: 148 프레임: 입력 15069 → 출력 11096 점/프레임, 근거리 제거 3207.6, 고립 제거 490.0, 비지속 제거 276.3 점/프레임, 10.6 ms/프레임
+[depth_relay.py-2] [INFO] [1789610545.839705046] [depth_relay]: 149 프레임: 입력 15061 → 출력 11083 점/프레임, 근거리 제거 3209.8, 고립 제거 489.2, 비지속 제거 278.8 점/프레임, 10.9 ms/프레임
+[sensor_conditioner.py-6] [INFO] [1789610548.798605065] [sensor_conditioner]: ZUPT #185: bias y -0.001068 → -0.001073 (관측 -0.001113), 잔차 yaw rate +0.000040 rad/s = +0.14 °/분
+[depth_relay.py-2] [INFO] [1789610555.839638822] [depth_relay]: 150 프레임: 입력 15070 → 출력 11089 점/프레임, 근거리 제거 3210.2, 고립 제거 489.2, 비지속 제거 281.9 점/프레임, 11.4 ms/프레임
+[depth_relay.py-2] [INFO] [1789610565.838880861] [depth_relay]: 150 프레임: 입력 15060 → 출력 11081 점/프레임, 근거리 제거 3208.4, 고립 제거 491.4, 비지속 제거 279.8 점/프레임, 10.8 ms/프레임
+[sensor_conditioner.py-6] [INFO] [1789610569.380360065] [sensor_conditioner]: ZUPT #195: bias y -0.001108 → -0.001086 (관측 -0.000886), 잔차 yaw rate -0.000200 rad/s = -0.69 °/분
+[depth_relay.py-2] [INFO] [1789610575.839660813] [depth_relay]: 150 프레임: 입력 15052 → 출력 11075 점/프레임, 근거리 제거 3198.3, 고립 제거 494.2, 비지속 제거 284.4 점/프레임, 12.2 ms/프레임
+[ekf_node-7] Failed to meet update rate! Took 0.057633146000000003151seconds. Try decreasing the rate, limiting sensor output frequency, or limiting the number of sensors.
+[depth_relay.py-2] [INFO] [1789610585.839148075] [depth_relay]: 150 프레임: 입력 15048 → 출력 11069 점/프레임, 근거리 제거 3201.0, 고립 제거 492.3, 비지속 제거 286.1 점/프레임, 14.8 ms/프레임
+[sensor_conditioner.py-6] [INFO] [1789610591.137493613] [sensor_conditioner]: ZUPT #205: bias y -0.001095 → -0.001120 (관측 -0.001348), 잔차 yaw rate +0.000228 rad/s = +0.78 °/분
+[depth_relay.py-2] [INFO] [1789610595.839497735] [depth_relay]: 150 프레임: 입력 15050 → 출력 11069 점/프레임, 근거리 제거 3203.5, 고립 제거 492.5, 비지속 제거 284.7 점/프레임, 13.6 ms/프레임
+[depth_relay.py-2] [INFO] [1789610605.839979650] [depth_relay]: 150 프레임: 입력 15036 → 출력 11055 점/프레임, 근거리 제거 3200.7, 고립 제거 492.0, 비지속 제거 288.3 점/프레임, 13.7 ms/프레임
+[ekf_node-7] Failed to meet update rate! Took 0.042823104000000000724seconds. Try decreasing the rate, limiting sensor output frequency, or limiting the number of sensors.
+[sensor_conditioner.py-6] [INFO] [1789610612.761753261] [sensor_conditioner]: ZUPT #215: bias y -0.001080 → -0.001103 (관측 -0.001313), 잔차 yaw rate +0.000210 rad/s = +0.72 °/분
+[depth_relay.py-2] [INFO] [1789610615.844136348] [depth_relay]: 150 프레임: 입력 15037 → 출력 11053 점/프레임, 근거리 제거 3205.7, 고립 제거 494.0, 비지속 제거 284.0 점/프레임, 14.5 ms/프레임
+[ekf_node-7] Failed to meet update rate! Took 0.0973400390000000032seconds. Try decreasing the rate, limiting sensor output frequency, or limiting the number of sensors.
+[ekf_node-7] Failed to meet update rate! Took 0.047913619999999997046seconds. Try decreasing the rate, limiting sensor output frequency, or limiting the number of sensors.
+[depth_relay.py-2] [INFO] [1789610625.839740753] [depth_relay]: 149 프레임: 입력 15041 → 출력 11059 점/프레임, 근거리 제거 3208.6, 고립 제거 490.9, 비지속 제거 283.0 점/프레임, 13.3 ms/프레임
+[sensor_conditioner.py-6] [INFO] [1789610633.670438691] [sensor_conditioner]: ZUPT #225: bias y -0.001022 → -0.001032 (관측 -0.001126), 잔차 yaw rate +0.000094 rad/s = +0.32 °/분
+[depth_relay.py-2] [INFO] [1789610635.839703639] [depth_relay]: 150 프레임: 입력 15043 → 출력 11061 점/프레임, 근거리 제거 3211.3, 고립 제거 490.5, 비지속 제거 280.4 점/프레임, 11.5 ms/프레임
+[depth_relay.py-2] [INFO] [1789610645.839649609] [depth_relay]: 150 프레임: 입력 15035 → 출력 11053 점/프레임, 근거리 제거 3207.9, 고립 제거 491.3, 비지속 제거 282.6 점/프레임, 11.4 ms/프레임
+[sensor_conditioner.py-6] [INFO] [1789610653.703208515] [sensor_conditioner]: ZUPT #235: bias y -0.001039 → -0.001048 (관측 -0.001130), 잔차 yaw rate +0.000082 rad/s = +0.28 °/분
+[depth_relay.py-2] [INFO] [1789610655.871791562] [depth_relay]: 150 프레임: 입력 15029 → 출력 11056 점/프레임, 근거리 제거 3202.8, 고립 제거 488.2, 비지속 제거 282.2 점/프레임, 10.1 ms/프레임
+[depth_relay.py-2] [INFO] [1789610665.839639073] [depth_relay]: 150 프레임: 입력 15029 → 출력 11047 점/프레임, 근거리 제거 3209.9, 고립 제거 489.7, 비지속 제거 281.9 점/프레임, 15.5 ms/프레임
+[sensor_conditioner.py-6] [INFO] [1789610674.703546351] [sensor_conditioner]: ZUPT #245: bias y -0.001041 → -0.001036 (관측 -0.000990), 잔차 yaw rate -0.000046 rad/s = -0.16 °/분
+[depth_relay.py-2] [INFO] [1789610675.839349264] [depth_relay]: 150 프레임: 입력 15026 → 출력 11049 점/프레임, 근거리 제거 3203.0, 고립 제거 490.2, 비지속 제거 284.1 점/프레임, 14.3 ms/프레임
+[depth_relay.py-2] [INFO] [1789610685.840691663] [depth_relay]: 150 프레임: 입력 15023 → 출력 11053 점/프레임, 근거리 제거 3197.9, 고립 제거 488.5, 비지속 제거 282.8 점/프레임, 12.3 ms/프레임
+[sensor_conditioner.py-6] [INFO] [1789610694.981158173] [sensor_conditioner]: ZUPT #255: bias y -0.001053 → -0.001062 (관측 -0.001148), 잔차 yaw rate +0.000085 rad/s = +0.29 °/분
+[depth_relay.py-2] [INFO] [1789610695.846820133] [depth_relay]: 150 프레임: 입력 15024 → 출력 11054 점/프레임, 근거리 제거 3201.2, 고립 제거 486.8, 비지속 제거 281.3 점/프레임, 11.4 ms/프레임
+[depth_relay.py-2] [INFO] [1789610705.838941265] [depth_relay]: 149 프레임: 입력 15030 → 출력 11054 점/프레임, 근거리 제거 3211.8, 고립 제거 485.0, 비지속 제거 279.3 점/프레임, 11.0 ms/프레임
+[ekf_node-7] Failed to meet update rate! Took 0.056650579999999998992seconds. Try decreasing the rate, limiting sensor output frequency, or limiting the number of sensors.
+[ekf_node-7] Failed to meet update rate! Took 0.091834702000000004163seconds. Try decreasing the rate, limiting sensor output frequency, or limiting the number of sensors.
+[ekf_node-7] Failed to meet update rate! Took 0.036644270999999999094seconds. Try decreasing the rate, limiting sensor output frequency, or limiting the number of sensors.
+[depth_relay.py-2] [INFO] [1789610715.839731536] [depth_relay]: 150 프레임: 입력 15032 → 출력 11050 점/프레임, 근거리 제거 3211.4, 고립 제거 484.5, 비지속 제거 286.6 점/프레임, 12.7 ms/프레임
+[sensor_conditioner.py-6] [INFO] [1789610716.119189707] [sensor_conditioner]: ZUPT #265: bias y -0.001030 → -0.001015 (관측 -0.000881), 잔차 yaw rate -0.000134 rad/s = -0.46 °/분
+[depth_relay.py-2] [INFO] [1789610725.839679976] [depth_relay]: 150 프레임: 입력 15032 → 출력 11060 점/프레임, 근거리 제거 3207.5, 고립 제거 486.2, 비지속 제거 278.0 점/프레임, 11.4 ms/프레임
+[depth_relay.py-2] [INFO] [1789610735.839403429] [depth_relay]: 150 프레임: 입력 15037 → 출력 11061 점/프레임, 근거리 제거 3209.4, 고립 제거 486.1, 비지속 제거 280.7 점/프레임, 11.1 ms/프레임
+[sensor_conditioner.py-6] [INFO] [1789610736.148927962] [sensor_conditioner]: ZUPT #275: bias y -0.000980 → -0.000986 (관측 -0.001043), 잔차 yaw rate +0.000056 rad/s = +0.19 °/분
+[depth_relay.py-2] [INFO] [1789610745.839959075] [depth_relay]: 150 프레임: 입력 15047 → 출력 11069 점/프레임, 근거리 제거 3213.1, 고립 제거 485.6, 비지속 제거 278.9 점/프레임, 11.0 ms/프레임
+[depth_relay.py-2] [INFO] [1789610755.839617053] [depth_relay]: 150 프레임: 입력 15043 → 출력 11066 점/프레임, 근거리 제거 3214.0, 고립 제거 485.7, 비지속 제거 277.0 점/프레임, 11.4 ms/프레임
+[sensor_conditioner.py-6] [INFO] [1789610756.179777399] [sensor_conditioner]: ZUPT #285: bias y -0.001057 → -0.001063 (관측 -0.001117), 잔차 yaw rate +0.000054 rad/s = +0.18 °/분
+[depth_relay.py-2] [INFO] [1789610765.839528912] [depth_relay]: 150 프레임: 입력 15040 → 출력 11062 점/프레임, 근거리 제거 3211.4, 고립 제거 487.9, 비지속 제거 278.6 점/프레임, 11.3 ms/프레임
