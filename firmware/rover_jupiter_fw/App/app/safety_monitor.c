@@ -10,6 +10,7 @@
 #include "stm32f4xx_hal.h"
 #include "i_encoder.h"
 #include "speed_controller.h"
+#include "rover_platform.h"   /* STALL_TARGET_THRESH_MPS (= 정지 문턱, 2026-09-17 한 곳으로) */
 
 #define CTRL_HZ            100u
 /* 1:90 모터 재튜닝(2026-08-26): 기동이 느려(정지→20mm/s 에 300ms+) 200ms 창에서
@@ -27,7 +28,7 @@
  *   보호 사양은 확인된 것이 없어(CHR-GM37-BLDC3650, 출처 불명 '3A' 삭제) 펌웨어가 반드시 잡아야 함.
  * STALL_DUTY_THRESH 0.60 근거: 승격값 0.020 의 초기 duty ≈ dz 0.13 + KV 12×0.02 = 0.37 이며 이 값으로
  *   바닥 기동이 실측 확인됨. 0.60 에서도 무이동이면 정상 부하 범위 밖. (튜닝 가능값) */
-#define V_TARGET_THRESH    0.010f /* 정지 지령(speed_controller TARGET_THRESH) 제외용 */
+/* 정지 지령 제외 문턱은 rover_platform.h STALL_TARGET_THRESH_MPS (= SPEED_CTRL_STOP_THRESH_MPS). 2026-09-17: 0.010 → 0.005 */
 #define STALL_DUTY_THRESH  0.60f  /* |duty| 이상 인가 중 무이동이면 stall 의심 */
 
 /* 스톨 정책 (2026-09-03): 무조건 래치 → 일시 정지 후 자동 복구, 재발 시 하드 래치.
@@ -126,7 +127,7 @@ void safety_monitor_update(void)
         const float duty = speed_controller_get_duty((MotorChannel)i);
         const float dist = encoder_read_distance_m((EncoderChannel)i);
 
-        if (fabsf(tgt) > V_TARGET_THRESH && fabsf(duty) >= STALL_DUTY_THRESH) {
+        if (fabsf(tgt) > STALL_TARGET_THRESH_MPS && fabsf(duty) >= STALL_DUTY_THRESH) {
             if (s_mon[i].stall_counter == 0u) {
                 s_mon[i].win_start_dist = dist;   /* 감지창 시작 */
             }
