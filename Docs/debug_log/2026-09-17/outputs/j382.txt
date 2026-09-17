@@ -1,0 +1,9 @@
+노드에 slam: 0
+/map 발행자: Publisher count: 0
+/scan 구독자 노드: Node name: scan_deskew;Node namespace: /;Node name: stuck_monitor;Node namespace: /;Node name: local_costmap;Node namespace: /local_costmap;Node name: global_costmap;Node namespace: /global_costmap;
+slam 스레드 상태:      22 S 
+slam wchan:      22 futex_wait_queue_me 
+slam 환경 FASTRTPS: FASTRTPS_DEFAULT_PROFILES_FILE=/home/jetson/ros2_ws/install/rover_bringup/share/rover_bringup/config/fastdds_udp_only.xml
+slam 소켓 수: 7
+CPU 3 s:  5.5  utime 1623
+5 s 뒤 utime 1628

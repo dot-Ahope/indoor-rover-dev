@@ -1,0 +1,400 @@
+[planner_server-4] [INFO] [1789610625.790882525] [global_costmap.global_costmap]: Message Filter dropping message: frame 'camera_depth_optical_frame' at time 1789610625.513 for reason 'the timestamp on the message is earlier than all the data in the transform cache'
+[planner_server-4] [ERROR] [1789610626.292068715] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the past.  Requested time 1789610501.160637 but the earliest data is at time 1789610616.284507, when looking up transform from frame [base_link] to frame [map]
+[planner_server-4] 
+[planner_server-4] [ERROR] [1789610627.290854104] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the past.  Requested time 1789610501.160637 but the earliest data is at time 1789610617.355442, when looking up transform from frame [base_link] to frame [map]
+[planner_server-4] 
+[planner_server-4] [INFO] [1789610628.035987914] [global_costmap.global_costmap]: Message Filter dropping message: frame 'lidar_link' at time 1789610627.733 for reason 'the timestamp on the message is earlier than all the data in the transform cache'
+[planner_server-4] [ERROR] [1789610628.291288884] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the past.  Requested time 1789610501.160637 but the earliest data is at time 1789610618.262522, when looking up transform from frame [base_link] to frame [map]
+[planner_server-4] 
+[planner_server-4] [INFO] [1789610628.326046116] [global_costmap.global_costmap]: Message Filter dropping message: frame 'camera_depth_optical_frame' at time 1789610628.048 for reason 'the timestamp on the message is earlier than all the data in the transform cache'
+[planner_server-4] [ERROR] [1789610629.289399693] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the past.  Requested time 1789610501.160637 but the earliest data is at time 1789610619.249010, when looking up transform from frame [base_link] to frame [map]
+[planner_server-4] 
+[planner_server-4] [ERROR] [1789610630.291103610] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the past.  Requested time 1789610501.160637 but the earliest data is at time 1789610620.285574, when looking up transform from frame [base_link] to frame [map]
+[planner_server-4] 
+[planner_server-4] [INFO] [1789610630.548197981] [global_costmap.global_costmap]: Message Filter dropping message: frame 'lidar_link' at time 1789610630.245 for reason 'the timestamp on the message is earlier than all the data in the transform cache'
+[planner_server-4] [INFO] [1789610630.859487219] [global_costmap.global_costmap]: Message Filter dropping message: frame 'camera_depth_optical_frame' at time 1789610630.584 for reason 'the timestamp on the message is earlier than all the data in the transform cache'
+[planner_server-4] [ERROR] [1789610631.289965138] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the past.  Requested time 1789610501.160637 but the earliest data is at time 1789610621.287097, when looking up transform from frame [base_link] to frame [map]
+[planner_server-4] 
+[planner_server-4] [ERROR] [1789610632.292754923] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the past.  Requested time 1789610501.160637 but the earliest data is at time 1789610622.283620, when looking up transform from frame [base_link] to frame [map]
+[planner_server-4] 
+[planner_server-4] [INFO] [1789610633.139858335] [global_costmap.global_costmap]: Message Filter dropping message: frame 'lidar_link' at time 1789610632.837 for reason 'the timestamp on the message is earlier than all the data in the transform cache'
+[planner_server-4] [ERROR] [1789610633.290754887] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the past.  Requested time 1789610501.160637 but the earliest data is at time 1789610623.285157, when looking up transform from frame [base_link] to frame [map]
+[planner_server-4] 
+[planner_server-4] [INFO] [1789610633.396107033] [global_costmap.global_costmap]: Message Filter dropping message: frame 'camera_depth_optical_frame' at time 1789610633.119 for reason 'the timestamp on the message is earlier than all the data in the transform cache'
+[planner_server-4] [ERROR] [1789610634.290208202] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the past.  Requested time 1789610501.160637 but the earliest data is at time 1789610624.286707, when looking up transform from frame [base_link] to frame [map]
+[planner_server-4] 
+[planner_server-4] [ERROR] [1789610635.290740999] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the past.  Requested time 1789610501.160637 but the earliest data is at time 1789610625.253204, when looking up transform from frame [base_link] to frame [map]
+[planner_server-4] 
+[planner_server-4] [INFO] [1789610635.732752334] [global_costmap.global_costmap]: Message Filter dropping message: frame 'lidar_link' at time 1789610635.429 for reason 'the timestamp on the message is earlier than all the data in the transform cache'
+[planner_server-4] [INFO] [1789610635.930807681] [global_costmap.global_costmap]: Message Filter dropping message: frame 'camera_depth_optical_frame' at time 1789610635.655 for reason 'the timestamp on the message is earlier than all the data in the transform cache'
+[planner_server-4] [ERROR] [1789610636.290621726] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the past.  Requested time 1789610501.160637 but the earliest data is at time 1789610626.284767, when looking up transform from frame [base_link] to frame [map]
+[planner_server-4] 
+[planner_server-4] [ERROR] [1789610637.290850419] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the past.  Requested time 1789610501.160637 but the earliest data is at time 1789610627.251285, when looking up transform from frame [base_link] to frame [map]
+[planner_server-4] 
+[planner_server-4] [ERROR] [1789610638.290297407] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the past.  Requested time 1789610501.160637 but the earliest data is at time 1789610628.283119, when looking up transform from frame [base_link] to frame [map]
+[planner_server-4] 
+[planner_server-4] [INFO] [1789610638.325166446] [global_costmap.global_costmap]: Message Filter dropping message: frame 'lidar_link' at time 1789610638.021 for reason 'the timestamp on the message is earlier than all the data in the transform cache'
+[planner_server-4] [INFO] [1789610638.466028320] [global_costmap.global_costmap]: Message Filter dropping message: frame 'camera_depth_optical_frame' at time 1789610638.190 for reason 'the timestamp on the message is earlier than all the data in the transform cache'
+[planner_server-4] [ERROR] [1789610639.290193836] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the past.  Requested time 1789610501.160637 but the earliest data is at time 1789610629.249765, when looking up transform from frame [base_link] to frame [map]
+[planner_server-4] 
+[planner_server-4] [ERROR] [1789610640.290061675] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the past.  Requested time 1789610501.160637 but the earliest data is at time 1789610630.251293, when looking up transform from frame [base_link] to frame [map]
+[planner_server-4] 
+[planner_server-4] [INFO] [1789610640.837497118] [global_costmap.global_costmap]: Message Filter dropping message: frame 'lidar_link' at time 1789610640.534 for reason 'the timestamp on the message is earlier than all the data in the transform cache'
+[planner_server-4] [INFO] [1789610641.004732391] [global_costmap.global_costmap]: Message Filter dropping message: frame 'camera_depth_optical_frame' at time 1789610640.725 for reason 'the timestamp on the message is earlier than all the data in the transform cache'
+[planner_server-4] [ERROR] [1789610641.291247212] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the past.  Requested time 1789610501.160637 but the earliest data is at time 1789610631.282863, when looking up transform from frame [base_link] to frame [map]
+[planner_server-4] 
+[planner_server-4] [ERROR] [1789610642.289990630] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the past.  Requested time 1789610501.160637 but the earliest data is at time 1789610632.249334, when looking up transform from frame [base_link] to frame [map]
+[planner_server-4] 
+[planner_server-4] [ERROR] [1789610643.290101380] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the past.  Requested time 1789610501.160637 but the earliest data is at time 1789610633.220805, when looking up transform from frame [base_link] to frame [map]
+[planner_server-4] 
+[planner_server-4] [INFO] [1789610643.427951199] [global_costmap.global_costmap]: Message Filter dropping message: frame 'lidar_link' at time 1789610643.125 for reason 'the timestamp on the message is earlier than all the data in the transform cache'
+[planner_server-4] [INFO] [1789610643.536473781] [global_costmap.global_costmap]: Message Filter dropping message: frame 'camera_depth_optical_frame' at time 1789610643.261 for reason 'the timestamp on the message is earlier than all the data in the transform cache'
+[planner_server-4] [ERROR] [1789610644.289787205] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the past.  Requested time 1789610501.160637 but the earliest data is at time 1789610634.252408, when looking up transform from frame [base_link] to frame [map]
+[planner_server-4] 
+[planner_server-4] [ERROR] [1789610645.290353689] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the past.  Requested time 1789610501.160637 but the earliest data is at time 1789610635.284010, when looking up transform from frame [base_link] to frame [map]
+[planner_server-4] 
+[planner_server-4] [INFO] [1789610646.020218248] [global_costmap.global_costmap]: Message Filter dropping message: frame 'lidar_link' at time 1789610645.717 for reason 'the timestamp on the message is earlier than all the data in the transform cache'
+[planner_server-4] [INFO] [1789610646.071279197] [global_costmap.global_costmap]: Message Filter dropping message: frame 'camera_depth_optical_frame' at time 1789610645.796 for reason 'the timestamp on the message is earlier than all the data in the transform cache'
+[planner_server-4] [ERROR] [1789610646.289927450] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the past.  Requested time 1789610501.160637 but the earliest data is at time 1789610636.220416, when looking up transform from frame [base_link] to frame [map]
+[planner_server-4] 
+[planner_server-4] [ERROR] [1789610647.289650484] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the past.  Requested time 1789610501.160637 but the earliest data is at time 1789610637.246956, when looking up transform from frame [base_link] to frame [map]
+[planner_server-4] 
+[planner_server-4] [ERROR] [1789610648.291247683] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the past.  Requested time 1789610501.160637 but the earliest data is at time 1789610638.253474, when looking up transform from frame [base_link] to frame [map]
+[planner_server-4] 
+[planner_server-4] [INFO] [1789610648.607226420] [global_costmap.global_costmap]: Message Filter dropping message: frame 'camera_depth_optical_frame' at time 1789610648.331 for reason 'the timestamp on the message is earlier than all the data in the transform cache'
+[planner_server-4] [INFO] [1789610648.627891774] [global_costmap.global_costmap]: Message Filter dropping message: frame 'lidar_link' at time 1789610648.325 for reason 'the timestamp on the message is earlier than all the data in the transform cache'
+[planner_server-4] [ERROR] [1789610649.289891098] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the past.  Requested time 1789610501.160637 but the earliest data is at time 1789610639.249988, when looking up transform from frame [base_link] to frame [map]
+[planner_server-4] 
+[planner_server-4] [ERROR] [1789610650.290647920] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the past.  Requested time 1789610501.160637 but the earliest data is at time 1789610640.286560, when looking up transform from frame [base_link] to frame [map]
+[planner_server-4] 
+[planner_server-4] [INFO] [1789610651.143077298] [global_costmap.global_costmap]: Message Filter dropping message: frame 'camera_depth_optical_frame' at time 1789610650.867 for reason 'the timestamp on the message is earlier than all the data in the transform cache'
+[planner_server-4] [INFO] [1789610651.220008617] [global_costmap.global_costmap]: Message Filter dropping message: frame 'lidar_link' at time 1789610650.917 for reason 'the timestamp on the message is earlier than all the data in the transform cache'
+[planner_server-4] [ERROR] [1789610651.291065196] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the past.  Requested time 1789610501.160637 but the earliest data is at time 1789610641.283062, when looking up transform from frame [base_link] to frame [map]
+[planner_server-4] 
+[planner_server-4] [ERROR] [1789610652.290369170] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the past.  Requested time 1789610501.160637 but the earliest data is at time 1789610642.284563, when looking up transform from frame [base_link] to frame [map]
+[planner_server-4] 
+[planner_server-4] [ERROR] [1789610653.291643634] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the past.  Requested time 1789610501.160637 but the earliest data is at time 1789610643.286074, when looking up transform from frame [base_link] to frame [map]
+[planner_server-4] 
+[planner_server-4] [INFO] [1789610653.676255127] [global_costmap.global_costmap]: Message Filter dropping message: frame 'camera_depth_optical_frame' at time 1789610653.402 for reason 'the timestamp on the message is earlier than all the data in the transform cache'
+[planner_server-4] [INFO] [1789610653.815800028] [global_costmap.global_costmap]: Message Filter dropping message: frame 'lidar_link' at time 1789610653.509 for reason 'the timestamp on the message is earlier than all the data in the transform cache'
+[planner_server-4] [ERROR] [1789610654.289067833] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the past.  Requested time 1789610501.160637 but the earliest data is at time 1789610644.252635, when looking up transform from frame [base_link] to frame [map]
+[planner_server-4] 
+[planner_server-4] [ERROR] [1789610655.289504992] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the past.  Requested time 1789610501.160637 but the earliest data is at time 1789610645.249269, when looking up transform from frame [base_link] to frame [map]
+[planner_server-4] 
+[planner_server-4] [INFO] [1789610656.242705621] [global_costmap.global_costmap]: Message Filter dropping message: frame 'camera_depth_optical_frame' at time 1789610655.871 for reason 'the timestamp on the message is earlier than all the data in the transform cache'
+[planner_server-4] [ERROR] [1789610656.292090950] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the past.  Requested time 1789610501.160637 but the earliest data is at time 1789610646.185716, when looking up transform from frame [base_link] to frame [map]
+[planner_server-4] 
+[planner_server-4] [INFO] [1789610656.332609433] [global_costmap.global_costmap]: Message Filter dropping message: frame 'lidar_link' at time 1789610656.030 for reason 'the timestamp on the message is earlier than all the data in the transform cache'
+[planner_server-4] [ERROR] [1789610657.289368608] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the past.  Requested time 1789610501.160637 but the earliest data is at time 1789610647.217302, when looking up transform from frame [base_link] to frame [map]
+[planner_server-4] 
+[planner_server-4] [ERROR] [1789610658.290775362] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the past.  Requested time 1789610501.160637 but the earliest data is at time 1789610648.283933, when looking up transform from frame [base_link] to frame [map]
+[planner_server-4] 
+[planner_server-4] [INFO] [1789610658.748205417] [global_costmap.global_costmap]: Message Filter dropping message: frame 'camera_depth_optical_frame' at time 1789610658.473 for reason 'the timestamp on the message is earlier than all the data in the transform cache'
+[planner_server-4] [INFO] [1789610658.912131954] [global_costmap.global_costmap]: Message Filter dropping message: frame 'lidar_link' at time 1789610658.609 for reason 'the timestamp on the message is earlier than all the data in the transform cache'
+[planner_server-4] [ERROR] [1789610659.292496801] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the past.  Requested time 1789610501.160637 but the earliest data is at time 1789610649.285479, when looking up transform from frame [base_link] to frame [map]
+[planner_server-4] 
+[planner_server-4] [ERROR] [1789610660.290280005] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the past.  Requested time 1789610501.160637 but the earliest data is at time 1789610650.216950, when looking up transform from frame [base_link] to frame [map]
+[planner_server-4] 
+[planner_server-4] [INFO] [1789610661.285772714] [global_costmap.global_costmap]: Message Filter dropping message: frame 'camera_depth_optical_frame' at time 1789610661.008 for reason 'the timestamp on the message is earlier than all the data in the transform cache'
+[planner_server-4] [ERROR] [1789610661.289947712] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the past.  Requested time 1789610501.160637 but the earliest data is at time 1789610651.253603, when looking up transform from frame [base_link] to frame [map]
+[planner_server-4] 
+[planner_server-4] [INFO] [1789610661.504152657] [global_costmap.global_costmap]: Message Filter dropping message: frame 'lidar_link' at time 1789610661.201 for reason 'the timestamp on the message is earlier than all the data in the transform cache'
+[planner_server-4] [ERROR] [1789610662.290378505] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the past.  Requested time 1789610501.160637 but the earliest data is at time 1789610652.285222, when looking up transform from frame [base_link] to frame [map]
+[planner_server-4] 
+[planner_server-4] [ERROR] [1789610663.290298226] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the past.  Requested time 1789610501.160637 but the earliest data is at time 1789610653.251713, when looking up transform from frame [base_link] to frame [map]
+[planner_server-4] 
+[planner_server-4] [INFO] [1789610663.820909375] [global_costmap.global_costmap]: Message Filter dropping message: frame 'camera_depth_optical_frame' at time 1789610663.544 for reason 'the timestamp on the message is earlier than all the data in the transform cache'
+[planner_server-4] [INFO] [1789610664.112145591] [global_costmap.global_costmap]: Message Filter dropping message: frame 'lidar_link' at time 1789610663.809 for reason 'the timestamp on the message is earlier than all the data in the transform cache'
+[planner_server-4] [ERROR] [1789610664.289917571] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the past.  Requested time 1789610501.160637 but the earliest data is at time 1789610654.253249, when looking up transform from frame [base_link] to frame [map]
+[planner_server-4] 
+[planner_server-4] [ERROR] [1789610665.292454000] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the past.  Requested time 1789610501.160637 but the earliest data is at time 1789610655.284826, when looking up transform from frame [base_link] to frame [map]
+[planner_server-4] 
+[planner_server-4] [ERROR] [1789610666.291067683] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the past.  Requested time 1789610501.160637 but the earliest data is at time 1789610656.311403, when looking up transform from frame [base_link] to frame [map]
+[planner_server-4] 
+[planner_server-4] [INFO] [1789610666.354568617] [global_costmap.global_costmap]: Message Filter dropping message: frame 'camera_depth_optical_frame' at time 1789610666.079 for reason 'the timestamp on the message is earlier than all the data in the transform cache'
+[planner_server-4] [INFO] [1789610666.704516272] [global_costmap.global_costmap]: Message Filter dropping message: frame 'lidar_link' at time 1789610666.401 for reason 'the timestamp on the message is earlier than all the data in the transform cache'
+[planner_server-4] [ERROR] [1789610667.289387422] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the past.  Requested time 1789610501.160637 but the earliest data is at time 1789610657.247843, when looking up transform from frame [base_link] to frame [map]
+[planner_server-4] 
+[planner_server-4] [ERROR] [1789610668.290202470] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the past.  Requested time 1789610501.160637 but the earliest data is at time 1789610658.184344, when looking up transform from frame [base_link] to frame [map]
+[planner_server-4] 
+[planner_server-4] [INFO] [1789610668.942495736] [global_costmap.global_costmap]: Message Filter dropping message: frame 'camera_depth_optical_frame' at time 1789610668.614 for reason 'the timestamp on the message is earlier than all the data in the transform cache'
+[planner_server-4] [ERROR] [1789610669.290287558] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the past.  Requested time 1789610501.160637 but the earliest data is at time 1789610659.185982, when looking up transform from frame [base_link] to frame [map]
+[planner_server-4] 
+[planner_server-4] [INFO] [1789610669.295820300] [global_costmap.global_costmap]: Message Filter dropping message: frame 'lidar_link' at time 1789610668.993 for reason 'the timestamp on the message is earlier than all the data in the transform cache'
+[planner_server-4] [ERROR] [1789610670.291341852] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the past.  Requested time 1789610501.160637 but the earliest data is at time 1789610660.282661, when looking up transform from frame [base_link] to frame [map]
+[planner_server-4] 
+[planner_server-4] [ERROR] [1789610671.290025840] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the past.  Requested time 1789610501.160637 but the earliest data is at time 1789610661.249143, when looking up transform from frame [base_link] to frame [map]
+[planner_server-4] 
+[planner_server-4] [INFO] [1789610671.495153664] [global_costmap.global_costmap]: Message Filter dropping message: frame 'camera_depth_optical_frame' at time 1789610671.217 for reason 'the timestamp on the message is earlier than all the data in the transform cache'
+[planner_server-4] [INFO] [1789610671.808810717] [global_costmap.global_costmap]: Message Filter dropping message: frame 'lidar_link' at time 1789610671.506 for reason 'the timestamp on the message is earlier than all the data in the transform cache'
+[planner_server-4] [ERROR] [1789610672.289746268] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the past.  Requested time 1789610501.160637 but the earliest data is at time 1789610662.250682, when looking up transform from frame [base_link] to frame [map]
+[planner_server-4] 
+[planner_server-4] [ERROR] [1789610673.290580483] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the past.  Requested time 1789610501.160637 but the earliest data is at time 1789610663.252234, when looking up transform from frame [base_link] to frame [map]
+[planner_server-4] 
+[planner_server-4] [INFO] [1789610674.028476609] [global_costmap.global_costmap]: Message Filter dropping message: frame 'camera_depth_optical_frame' at time 1789610673.752 for reason 'the timestamp on the message is earlier than all the data in the transform cache'
+[planner_server-4] [ERROR] [1789610674.290287636] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the past.  Requested time 1789610501.160637 but the earliest data is at time 1789610664.278813, when looking up transform from frame [base_link] to frame [map]
+[planner_server-4] 
+[planner_server-4] [INFO] [1789610674.401874859] [global_costmap.global_costmap]: Message Filter dropping message: frame 'lidar_link' at time 1789610674.099 for reason 'the timestamp on the message is earlier than all the data in the transform cache'
+[planner_server-4] [ERROR] [1789610675.289780209] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the past.  Requested time 1789610501.160637 but the earliest data is at time 1789610665.250299, when looking up transform from frame [base_link] to frame [map]
+[planner_server-4] 
+[planner_server-4] [ERROR] [1789610676.290442987] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the past.  Requested time 1789610501.160637 but the earliest data is at time 1789610666.251841, when looking up transform from frame [base_link] to frame [map]
+[planner_server-4] 
+[planner_server-4] [INFO] [1789610676.565759546] [global_costmap.global_costmap]: Message Filter dropping message: frame 'camera_depth_optical_frame' at time 1789610676.287 for reason 'the timestamp on the message is earlier than all the data in the transform cache'
+[planner_server-4] [INFO] [1789610677.088693689] [global_costmap.global_costmap]: Message Filter dropping message: frame 'lidar_link' at time 1789610676.785 for reason 'the timestamp on the message is earlier than all the data in the transform cache'
+[planner_server-4] [ERROR] [1789610677.290489826] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the past.  Requested time 1789610501.160637 but the earliest data is at time 1789610667.218331, when looking up transform from frame [base_link] to frame [map]
+[planner_server-4] 
+[planner_server-4] [ERROR] [1789610678.289998265] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the past.  Requested time 1789610501.160637 but the earliest data is at time 1789610668.249929, when looking up transform from frame [base_link] to frame [map]
+[planner_server-4] 
+[planner_server-4] [INFO] [1789610679.095234028] [global_costmap.global_costmap]: Message Filter dropping message: frame 'camera_depth_optical_frame' at time 1789610678.823 for reason 'the timestamp on the message is earlier than all the data in the transform cache'
+[planner_server-4] [ERROR] [1789610679.289377886] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the past.  Requested time 1789610501.160637 but the earliest data is at time 1789610669.276498, when looking up transform from frame [base_link] to frame [map]
+[planner_server-4] 
+[planner_server-4] [INFO] [1789610679.602180093] [global_costmap.global_costmap]: Message Filter dropping message: frame 'lidar_link' at time 1789610679.300 for reason 'the timestamp on the message is earlier than all the data in the transform cache'
+[planner_server-4] [ERROR] [1789610680.290007268] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the past.  Requested time 1789610501.160637 but the earliest data is at time 1789610670.217933, when looking up transform from frame [base_link] to frame [map]
+[planner_server-4] 
+[planner_server-4] [ERROR] [1789610681.290526552] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the past.  Requested time 1789610501.160637 but the earliest data is at time 1789610671.249524, when looking up transform from frame [base_link] to frame [map]
+[planner_server-4] 
+[planner_server-4] [INFO] [1789610681.634916918] [global_costmap.global_costmap]: Message Filter dropping message: frame 'camera_depth_optical_frame' at time 1789610681.358 for reason 'the timestamp on the message is earlier than all the data in the transform cache'
+[planner_server-4] [INFO] [1789610682.193980698] [global_costmap.global_costmap]: Message Filter dropping message: frame 'lidar_link' at time 1789610681.891 for reason 'the timestamp on the message is earlier than all the data in the transform cache'
+[planner_server-4] [ERROR] [1789610682.290237827] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the past.  Requested time 1789610501.160637 but the earliest data is at time 1789610672.251102, when looking up transform from frame [base_link] to frame [map]
+[planner_server-4] 
+[planner_server-4] [ERROR] [1789610683.290389137] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the past.  Requested time 1789610501.160637 but the earliest data is at time 1789610673.252663, when looking up transform from frame [base_link] to frame [map]
+[planner_server-4] 
+[planner_server-4] [INFO] [1789610684.170643874] [global_costmap.global_costmap]: Message Filter dropping message: frame 'camera_depth_optical_frame' at time 1789610683.893 for reason 'the timestamp on the message is earlier than all the data in the transform cache'
+[planner_server-4] [ERROR] [1789610684.289080350] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the past.  Requested time 1789610501.160637 but the earliest data is at time 1789610674.249218, when looking up transform from frame [base_link] to frame [map]
+[planner_server-4] 
+[planner_server-4] [INFO] [1789610684.784100806] [global_costmap.global_costmap]: Message Filter dropping message: frame 'lidar_link' at time 1789610684.481 for reason 'the timestamp on the message is earlier than all the data in the transform cache'
+[planner_server-4] [ERROR] [1789610685.290990865] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the past.  Requested time 1789610501.160637 but the earliest data is at time 1789610675.250804, when looking up transform from frame [base_link] to frame [map]
+[planner_server-4] 
+[planner_server-4] [ERROR] [1789610686.289829674] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the past.  Requested time 1789610501.160637 but the earliest data is at time 1789610676.252347, when looking up transform from frame [base_link] to frame [map]
+[planner_server-4] 
+[planner_server-4] [INFO] [1789610686.704180941] [global_costmap.global_costmap]: Message Filter dropping message: frame 'camera_depth_optical_frame' at time 1789610686.429 for reason 'the timestamp on the message is earlier than all the data in the transform cache'
+[planner_server-4] [ERROR] [1789610687.290919911] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the past.  Requested time 1789610501.160637 but the earliest data is at time 1789610677.283951, when looking up transform from frame [base_link] to frame [map]
+[planner_server-4] 
+[planner_server-4] [INFO] [1789610687.393331172] [global_costmap.global_costmap]: Message Filter dropping message: frame 'lidar_link' at time 1789610687.089 for reason 'the timestamp on the message is earlier than all the data in the transform cache'
+[planner_server-4] [ERROR] [1789610688.290581348] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the past.  Requested time 1789610501.160637 but the earliest data is at time 1789610678.275497, when looking up transform from frame [base_link] to frame [map]
+[planner_server-4] 
+[planner_server-4] [INFO] [1789610689.241045150] [global_costmap.global_costmap]: Message Filter dropping message: frame 'camera_depth_optical_frame' at time 1789610688.964 for reason 'the timestamp on the message is earlier than all the data in the transform cache'
+[planner_server-4] [ERROR] [1789610689.292137464] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the past.  Requested time 1789610501.160637 but the earliest data is at time 1789610679.282053, when looking up transform from frame [base_link] to frame [map]
+[planner_server-4] 
+[planner_server-4] [INFO] [1789610689.984079965] [global_costmap.global_costmap]: Message Filter dropping message: frame 'lidar_link' at time 1789610689.681 for reason 'the timestamp on the message is earlier than all the data in the transform cache'
+[planner_server-4] [ERROR] [1789610690.290705269] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the past.  Requested time 1789610501.160637 but the earliest data is at time 1789610680.258569, when looking up transform from frame [base_link] to frame [map]
+[planner_server-4] 
+[planner_server-4] [ERROR] [1789610691.289944445] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the past.  Requested time 1789610501.160637 but the earliest data is at time 1789610681.285154, when looking up transform from frame [base_link] to frame [map]
+[planner_server-4] 
+[planner_server-4] [INFO] [1789610691.774042453] [global_costmap.global_costmap]: Message Filter dropping message: frame 'camera_depth_optical_frame' at time 1789610691.499 for reason 'the timestamp on the message is earlier than all the data in the transform cache'
+[planner_server-4] [ERROR] [1789610692.290389252] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the past.  Requested time 1789610501.160637 but the earliest data is at time 1789610682.281683, when looking up transform from frame [base_link] to frame [map]
+[planner_server-4] 
+[planner_server-4] [INFO] [1789610692.575861860] [global_costmap.global_costmap]: Message Filter dropping message: frame 'lidar_link' at time 1789610692.273 for reason 'the timestamp on the message is earlier than all the data in the transform cache'
+[planner_server-4] [ERROR] [1789610693.290591125] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the past.  Requested time 1789610501.160637 but the earliest data is at time 1789610683.253179, when looking up transform from frame [base_link] to frame [map]
+[planner_server-4] 
+[planner_server-4] [ERROR] [1789610694.290294249] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the past.  Requested time 1789610501.160637 but the earliest data is at time 1789610684.284762, when looking up transform from frame [base_link] to frame [map]
+[planner_server-4] 
+[planner_server-4] [INFO] [1789610694.311396502] [global_costmap.global_costmap]: Message Filter dropping message: frame 'camera_depth_optical_frame' at time 1789610694.035 for reason 'the timestamp on the message is earlier than all the data in the transform cache'
+[planner_server-4] [INFO] [1789610695.184178212] [global_costmap.global_costmap]: Message Filter dropping message: frame 'lidar_link' at time 1789610694.881 for reason 'the timestamp on the message is earlier than all the data in the transform cache'
+[planner_server-4] [ERROR] [1789610695.290049842] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the past.  Requested time 1789610501.160637 but the earliest data is at time 1789610685.251239, when looking up transform from frame [base_link] to frame [map]
+[planner_server-4] 
+[planner_server-4] [ERROR] [1789610696.290994200] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the past.  Requested time 1789610501.160637 but the earliest data is at time 1789610686.282816, when looking up transform from frame [base_link] to frame [map]
+[planner_server-4] 
+[planner_server-4] [INFO] [1789610696.846244399] [global_costmap.global_costmap]: Message Filter dropping message: frame 'camera_depth_optical_frame' at time 1789610696.570 for reason 'the timestamp on the message is earlier than all the data in the transform cache'
+[planner_server-4] [ERROR] [1789610697.290385083] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the past.  Requested time 1789610501.160637 but the earliest data is at time 1789610687.284364, when looking up transform from frame [base_link] to frame [map]
+[planner_server-4] 
+[planner_server-4] [INFO] [1789610697.775708539] [global_costmap.global_costmap]: Message Filter dropping message: frame 'lidar_link' at time 1789610697.473 for reason 'the timestamp on the message is earlier than all the data in the transform cache'
+[planner_server-4] [ERROR] [1789610698.290504588] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the past.  Requested time 1789610501.160637 but the earliest data is at time 1789610688.285901, when looking up transform from frame [base_link] to frame [map]
+[planner_server-4] 
+[planner_server-4] [ERROR] [1789610699.290764245] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the past.  Requested time 1789610501.160637 but the earliest data is at time 1789610689.282414, when looking up transform from frame [base_link] to frame [map]
+[planner_server-4] 
+[planner_server-4] [INFO] [1789610699.385442193] [global_costmap.global_costmap]: Message Filter dropping message: frame 'camera_depth_optical_frame' at time 1789610699.106 for reason 'the timestamp on the message is earlier than all the data in the transform cache'
+[planner_server-4] [ERROR] [1789610700.289676674] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the past.  Requested time 1789610501.160637 but the earliest data is at time 1789610690.218871, when looking up transform from frame [base_link] to frame [map]
+[planner_server-4] 
+[planner_server-4] [INFO] [1789610700.367882869] [global_costmap.global_costmap]: Message Filter dropping message: frame 'lidar_link' at time 1789610700.065 for reason 'the timestamp on the message is earlier than all the data in the transform cache'
+[planner_server-4] [ERROR] [1789610701.289376831] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the past.  Requested time 1789610501.160637 but the earliest data is at time 1789610691.250485, when looking up transform from frame [base_link] to frame [map]
+[planner_server-4] 
+[planner_server-4] [INFO] [1789610701.917980089] [global_costmap.global_costmap]: Message Filter dropping message: frame 'camera_depth_optical_frame' at time 1789610701.641 for reason 'the timestamp on the message is earlier than all the data in the transform cache'
+[planner_server-4] [ERROR] [1789610702.291038677] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the past.  Requested time 1789610501.160637 but the earliest data is at time 1789610692.252052, when looking up transform from frame [base_link] to frame [map]
+[planner_server-4] 
+[planner_server-4] [INFO] [1789610702.880578208] [global_costmap.global_costmap]: Message Filter dropping message: frame 'lidar_link' at time 1789610702.577 for reason 'the timestamp on the message is earlier than all the data in the transform cache'
+[planner_server-4] [ERROR] [1789610703.291047044] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the past.  Requested time 1789610501.160637 but the earliest data is at time 1789610693.283670, when looking up transform from frame [base_link] to frame [map]
+[planner_server-4] 
+[planner_server-4] [ERROR] [1789610704.293928268] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the past.  Requested time 1789610501.160637 but the earliest data is at time 1789610694.285245, when looking up transform from frame [base_link] to frame [map]
+[planner_server-4] 
+[planner_server-4] [INFO] [1789610704.451616664] [global_costmap.global_costmap]: Message Filter dropping message: frame 'camera_depth_optical_frame' at time 1789610704.176 for reason 'the timestamp on the message is earlier than all the data in the transform cache'
+[planner_server-4] [ERROR] [1789610705.290934264] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the past.  Requested time 1789610501.160637 but the earliest data is at time 1789610695.281796, when looking up transform from frame [base_link] to frame [map]
+[planner_server-4] 
+[planner_server-4] [INFO] [1789610705.472996513] [global_costmap.global_costmap]: Message Filter dropping message: frame 'lidar_link' at time 1789610705.170 for reason 'the timestamp on the message is earlier than all the data in the transform cache'
+[planner_server-4] [ERROR] [1789610706.291459125] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the past.  Requested time 1789610501.160637 but the earliest data is at time 1789610696.153152, when looking up transform from frame [base_link] to frame [map]
+[planner_server-4] 
+[planner_server-4] [INFO] [1789610707.000012277] [global_costmap.global_costmap]: Message Filter dropping message: frame 'camera_depth_optical_frame' at time 1789610706.712 for reason 'the timestamp on the message is earlier than all the data in the transform cache'
+[planner_server-4] [ERROR] [1789610707.291987206] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the past.  Requested time 1789610501.160637 but the earliest data is at time 1789610697.284916, when looking up transform from frame [base_link] to frame [map]
+[planner_server-4] 
+[planner_server-4] [INFO] [1789610708.097235126] [global_costmap.global_costmap]: Message Filter dropping message: frame 'lidar_link' at time 1789610707.790 for reason 'the timestamp on the message is earlier than all the data in the transform cache'
+[planner_server-4] [ERROR] [1789610708.288091086] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the past.  Requested time 1789610501.160637 but the earliest data is at time 1789610698.251426, when looking up transform from frame [base_link] to frame [map]
+[planner_server-4] 
+[planner_server-4] [ERROR] [1789610709.292019006] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the past.  Requested time 1789610501.160637 but the earliest data is at time 1789610699.253003, when looking up transform from frame [base_link] to frame [map]
+[planner_server-4] 
+[planner_server-4] [INFO] [1789610709.526565692] [global_costmap.global_costmap]: Message Filter dropping message: frame 'camera_depth_optical_frame' at time 1789610709.247 for reason 'the timestamp on the message is earlier than all the data in the transform cache'
+[planner_server-4] [ERROR] [1789610710.291277054] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the past.  Requested time 1789610501.160637 but the earliest data is at time 1789610700.284639, when looking up transform from frame [base_link] to frame [map]
+[planner_server-4] 
+[planner_server-4] [INFO] [1789610710.671712056] [global_costmap.global_costmap]: Message Filter dropping message: frame 'lidar_link' at time 1789610710.369 for reason 'the timestamp on the message is earlier than all the data in the transform cache'
+[planner_server-4] [ERROR] [1789610711.290318410] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the past.  Requested time 1789610501.160637 but the earliest data is at time 1789610701.251157, when looking up transform from frame [base_link] to frame [map]
+[planner_server-4] 
+[planner_server-4] [INFO] [1789610712.058642524] [global_costmap.global_costmap]: Message Filter dropping message: frame 'camera_depth_optical_frame' at time 1789610711.783 for reason 'the timestamp on the message is earlier than all the data in the transform cache'
+[planner_server-4] [ERROR] [1789610712.290183270] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the past.  Requested time 1789610501.160637 but the earliest data is at time 1789610702.252707, when looking up transform from frame [base_link] to frame [map]
+[planner_server-4] 
+[planner_server-4] [INFO] [1789610713.263957471] [global_costmap.global_costmap]: Message Filter dropping message: frame 'lidar_link' at time 1789610712.961 for reason 'the timestamp on the message is earlier than all the data in the transform cache'
+[planner_server-4] [ERROR] [1789610713.290642060] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the past.  Requested time 1789610501.160637 but the earliest data is at time 1789610703.284309, when looking up transform from frame [base_link] to frame [map]
+[planner_server-4] 
+[planner_server-4] [ERROR] [1789610714.291178697] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the past.  Requested time 1789610501.160637 but the earliest data is at time 1789610704.285845, when looking up transform from frame [base_link] to frame [map]
+[planner_server-4] 
+[planner_server-4] [INFO] [1789610714.595304622] [global_costmap.global_costmap]: Message Filter dropping message: frame 'camera_depth_optical_frame' at time 1789610714.318 for reason 'the timestamp on the message is earlier than all the data in the transform cache'
+[planner_server-4] [ERROR] [1789610715.290309831] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the past.  Requested time 1789610501.160637 but the earliest data is at time 1789610705.252354, when looking up transform from frame [base_link] to frame [map]
+[planner_server-4] 
+[planner_server-4] [INFO] [1789610715.857730955] [global_costmap.global_costmap]: Message Filter dropping message: frame 'lidar_link' at time 1789610715.553 for reason 'the timestamp on the message is earlier than all the data in the transform cache'
+[planner_server-4] [ERROR] [1789610716.290753225] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the past.  Requested time 1789610501.160637 but the earliest data is at time 1789610706.284031, when looking up transform from frame [base_link] to frame [map]
+[planner_server-4] 
+[planner_server-4] [INFO] [1789610717.128221553] [global_costmap.global_costmap]: Message Filter dropping message: frame 'camera_depth_optical_frame' at time 1789610716.853 for reason 'the timestamp on the message is earlier than all the data in the transform cache'
+[planner_server-4] [ERROR] [1789610717.289893712] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the past.  Requested time 1789610501.160637 but the earliest data is at time 1789610707.220448, when looking up transform from frame [base_link] to frame [map]
+[planner_server-4] 
+[planner_server-4] [ERROR] [1789610718.289732772] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the past.  Requested time 1789610501.160637 but the earliest data is at time 1789610708.251990, when looking up transform from frame [base_link] to frame [map]
+[planner_server-4] 
+[planner_server-4] [INFO] [1789610718.463730036] [global_costmap.global_costmap]: Message Filter dropping message: frame 'lidar_link' at time 1789610718.161 for reason 'the timestamp on the message is earlier than all the data in the transform cache'
+[planner_server-4] [ERROR] [1789610719.290055902] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the past.  Requested time 1789610501.160637 but the earliest data is at time 1789610709.283574, when looking up transform from frame [base_link] to frame [map]
+[planner_server-4] 
+[planner_server-4] [INFO] [1789610719.673443703] [global_costmap.global_costmap]: Message Filter dropping message: frame 'camera_depth_optical_frame' at time 1789610719.389 for reason 'the timestamp on the message is earlier than all the data in the transform cache'
+[planner_server-4] [ERROR] [1789610720.291151910] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the past.  Requested time 1789610501.160637 but the earliest data is at time 1789610710.285116, when looking up transform from frame [base_link] to frame [map]
+[planner_server-4] 
+[planner_server-4] [INFO] [1789610721.056166897] [global_costmap.global_costmap]: Message Filter dropping message: frame 'lidar_link' at time 1789610720.753 for reason 'the timestamp on the message is earlier than all the data in the transform cache'
+[planner_server-4] [ERROR] [1789610721.290563656] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the past.  Requested time 1789610501.160637 but the earliest data is at time 1789610711.286655, when looking up transform from frame [base_link] to frame [map]
+[planner_server-4] 
+[planner_server-4] [INFO] [1789610722.201739550] [global_costmap.global_costmap]: Message Filter dropping message: frame 'camera_depth_optical_frame' at time 1789610721.924 for reason 'the timestamp on the message is earlier than all the data in the transform cache'
+[planner_server-4] [ERROR] [1789610722.290699607] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the past.  Requested time 1789610501.160637 but the earliest data is at time 1789610712.253178, when looking up transform from frame [base_link] to frame [map]
+[planner_server-4] 
+[planner_server-4] [ERROR] [1789610723.291197063] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the past.  Requested time 1789610501.160637 but the earliest data is at time 1789610713.284827, when looking up transform from frame [base_link] to frame [map]
+[planner_server-4] 
+[planner_server-4] [INFO] [1789610723.647839426] [global_costmap.global_costmap]: Message Filter dropping message: frame 'lidar_link' at time 1789610723.345 for reason 'the timestamp on the message is earlier than all the data in the transform cache'
+[planner_server-4] [ERROR] [1789610724.289514399] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the past.  Requested time 1789610501.160637 but the earliest data is at time 1789610714.251312, when looking up transform from frame [base_link] to frame [map]
+[planner_server-4] 
+[planner_server-4] [INFO] [1789610724.735676608] [global_costmap.global_costmap]: Message Filter dropping message: frame 'camera_depth_optical_frame' at time 1789610724.459 for reason 'the timestamp on the message is earlier than all the data in the transform cache'
+[planner_server-4] [ERROR] [1789610725.289729677] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the past.  Requested time 1789610501.160637 but the earliest data is at time 1789610715.247872, when looking up transform from frame [base_link] to frame [map]
+[planner_server-4] 
+[planner_server-4] [INFO] [1789610726.161245128] [global_costmap.global_costmap]: Message Filter dropping message: frame 'lidar_link' at time 1789610725.857 for reason 'the timestamp on the message is earlier than all the data in the transform cache'
+[planner_server-4] [ERROR] [1789610726.289838317] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the past.  Requested time 1789610501.160637 but the earliest data is at time 1789610716.249447, when looking up transform from frame [base_link] to frame [map]
+[planner_server-4] 
+[planner_server-4] [INFO] [1789610727.273136722] [global_costmap.global_costmap]: Message Filter dropping message: frame 'camera_depth_optical_frame' at time 1789610726.995 for reason 'the timestamp on the message is earlier than all the data in the transform cache'
+[planner_server-4] [ERROR] [1789610727.289991362] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the past.  Requested time 1789610501.160637 but the earliest data is at time 1789610717.250990, when looking up transform from frame [base_link] to frame [map]
+[planner_server-4] 
+[planner_server-4] [ERROR] [1789610728.291320500] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the past.  Requested time 1789610501.160637 but the earliest data is at time 1789610718.282588, when looking up transform from frame [base_link] to frame [map]
+[planner_server-4] 
+[planner_server-4] [INFO] [1789610728.752360875] [global_costmap.global_costmap]: Message Filter dropping message: frame 'lidar_link' at time 1789610728.449 for reason 'the timestamp on the message is earlier than all the data in the transform cache'
+[planner_server-4] [ERROR] [1789610729.290537393] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the past.  Requested time 1789610501.160637 but the earliest data is at time 1789610719.284120, when looking up transform from frame [base_link] to frame [map]
+[planner_server-4] 
+[planner_server-4] [INFO] [1789610729.806184190] [global_costmap.global_costmap]: Message Filter dropping message: frame 'camera_depth_optical_frame' at time 1789610729.530 for reason 'the timestamp on the message is earlier than all the data in the transform cache'
+[planner_server-4] [ERROR] [1789610730.290093615] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the past.  Requested time 1789610501.160637 but the earliest data is at time 1789610720.250552, when looking up transform from frame [base_link] to frame [map]
+[planner_server-4] 
+[planner_server-4] [ERROR] [1789610731.291778923] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the past.  Requested time 1789610501.160637 but the earliest data is at time 1789610721.287165, when looking up transform from frame [base_link] to frame [map]
+[planner_server-4] 
+[planner_server-4] [INFO] [1789610731.344119094] [global_costmap.global_costmap]: Message Filter dropping message: frame 'lidar_link' at time 1789610731.041 for reason 'the timestamp on the message is earlier than all the data in the transform cache'
+[planner_server-4] [ERROR] [1789610732.289313322] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the past.  Requested time 1789610501.160637 but the earliest data is at time 1789610722.248702, when looking up transform from frame [base_link] to frame [map]
+[planner_server-4] 
+[planner_server-4] [INFO] [1789610732.343100807] [global_costmap.global_costmap]: Message Filter dropping message: frame 'camera_depth_optical_frame' at time 1789610732.066 for reason 'the timestamp on the message is earlier than all the data in the transform cache'
+[planner_server-4] [ERROR] [1789610733.290437819] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the past.  Requested time 1789610501.160637 but the earliest data is at time 1789610723.285315, when looking up transform from frame [base_link] to frame [map]
+[planner_server-4] 
+[planner_server-4] [INFO] [1789610733.951661310] [global_costmap.global_costmap]: Message Filter dropping message: frame 'lidar_link' at time 1789610733.649 for reason 'the timestamp on the message is earlier than all the data in the transform cache'
+[planner_server-4] [ERROR] [1789610734.291415388] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the past.  Requested time 1789610501.160637 but the earliest data is at time 1789610724.286855, when looking up transform from frame [base_link] to frame [map]
+[planner_server-4] 
+[planner_server-4] [INFO] [1789610734.875467048] [global_costmap.global_costmap]: Message Filter dropping message: frame 'camera_depth_optical_frame' at time 1789610734.601 for reason 'the timestamp on the message is earlier than all the data in the transform cache'
+[planner_server-4] [ERROR] [1789610735.290361290] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the past.  Requested time 1789610501.160637 but the earliest data is at time 1789610725.248333, when looking up transform from frame [base_link] to frame [map]
+[planner_server-4] 
+[planner_server-4] [ERROR] [1789610736.292438618] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the past.  Requested time 1789610501.160637 but the earliest data is at time 1789610726.284912, when looking up transform from frame [base_link] to frame [map]
+[planner_server-4] 
+[planner_server-4] [INFO] [1789610736.544047842] [global_costmap.global_costmap]: Message Filter dropping message: frame 'lidar_link' at time 1789610736.241 for reason 'the timestamp on the message is earlier than all the data in the transform cache'
+[planner_server-4] [ERROR] [1789610737.290154118] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the past.  Requested time 1789610501.160637 but the earliest data is at time 1789610727.286432, when looking up transform from frame [base_link] to frame [map]
+[planner_server-4] 
+[planner_server-4] [INFO] [1789610737.413680521] [global_costmap.global_costmap]: Message Filter dropping message: frame 'camera_depth_optical_frame' at time 1789610737.136 for reason 'the timestamp on the message is earlier than all the data in the transform cache'
+[planner_server-4] [ERROR] [1789610738.290693738] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the past.  Requested time 1789610501.160637 but the earliest data is at time 1789610728.282978, when looking up transform from frame [base_link] to frame [map]
+[planner_server-4] 
+[planner_server-4] [INFO] [1789610739.135989132] [global_costmap.global_costmap]: Message Filter dropping message: frame 'lidar_link' at time 1789610738.833 for reason 'the timestamp on the message is earlier than all the data in the transform cache'
+[planner_server-4] [ERROR] [1789610739.289868242] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the past.  Requested time 1789610501.160637 but the earliest data is at time 1789610729.249499, when looking up transform from frame [base_link] to frame [map]
+[planner_server-4] 
+[planner_server-4] [INFO] [1789610739.947303427] [global_costmap.global_costmap]: Message Filter dropping message: frame 'camera_depth_optical_frame' at time 1789610739.672 for reason 'the timestamp on the message is earlier than all the data in the transform cache'
+[planner_server-4] [ERROR] [1789610740.289830091] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the past.  Requested time 1789610501.160637 but the earliest data is at time 1789610730.251044, when looking up transform from frame [base_link] to frame [map]
+[planner_server-4] 
+[planner_server-4] [ERROR] [1789610741.291352366] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the past.  Requested time 1789610501.160637 but the earliest data is at time 1789610731.282654, when looking up transform from frame [base_link] to frame [map]
+[planner_server-4] 
+[planner_server-4] [INFO] [1789610741.743864118] [global_costmap.global_costmap]: Message Filter dropping message: frame 'lidar_link' at time 1789610741.441 for reason 'the timestamp on the message is earlier than all the data in the transform cache'
+[planner_server-4] [ERROR] [1789610742.290525076] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the past.  Requested time 1789610501.160637 but the earliest data is at time 1789610732.284228, when looking up transform from frame [base_link] to frame [map]
+[planner_server-4] 
+[planner_server-4] [INFO] [1789610742.483763828] [global_costmap.global_costmap]: Message Filter dropping message: frame 'camera_depth_optical_frame' at time 1789610742.207 for reason 'the timestamp on the message is earlier than all the data in the transform cache'
+[planner_server-4] [ERROR] [1789610743.290817846] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the past.  Requested time 1789610501.160637 but the earliest data is at time 1789610733.285782, when looking up transform from frame [base_link] to frame [map]
+[planner_server-4] 
+[planner_server-4] [ERROR] [1789610744.290192749] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the past.  Requested time 1789610501.160637 but the earliest data is at time 1789610734.282335, when looking up transform from frame [base_link] to frame [map]
+[planner_server-4] 
+[planner_server-4] [INFO] [1789610744.336859146] [global_costmap.global_costmap]: Message Filter dropping message: frame 'lidar_link' at time 1789610744.033 for reason 'the timestamp on the message is earlier than all the data in the transform cache'
+[planner_server-4] [INFO] [1789610745.019191451] [global_costmap.global_costmap]: Message Filter dropping message: frame 'camera_depth_optical_frame' at time 1789610744.742 for reason 'the timestamp on the message is earlier than all the data in the transform cache'
+[planner_server-4] [ERROR] [1789610745.290057321] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the past.  Requested time 1789610501.160637 but the earliest data is at time 1789610735.253851, when looking up transform from frame [base_link] to frame [map]
+[planner_server-4] 
+[planner_server-4] [ERROR] [1789610746.290706390] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the past.  Requested time 1789610501.160637 but the earliest data is at time 1789610736.250370, when looking up transform from frame [base_link] to frame [map]
+[planner_server-4] 
+[planner_server-4] [INFO] [1789610746.927609958] [global_costmap.global_costmap]: Message Filter dropping message: frame 'lidar_link' at time 1789610746.625 for reason 'the timestamp on the message is earlier than all the data in the transform cache'
+[planner_server-4] [ERROR] [1789610747.290131628] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the past.  Requested time 1789610501.160637 but the earliest data is at time 1789610737.251889, when looking up transform from frame [base_link] to frame [map]
+[planner_server-4] 
+[planner_server-4] [INFO] [1789610747.552275876] [global_costmap.global_costmap]: Message Filter dropping message: frame 'camera_depth_optical_frame' at time 1789610747.278 for reason 'the timestamp on the message is earlier than all the data in the transform cache'
+[planner_server-4] [ERROR] [1789610748.292581313] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the past.  Requested time 1789610501.160637 but the earliest data is at time 1789610738.283497, when looking up transform from frame [base_link] to frame [map]
+[planner_server-4] 
+[planner_server-4] [ERROR] [1789610749.290795095] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the past.  Requested time 1789610501.160637 but the earliest data is at time 1789610739.285071, when looking up transform from frame [base_link] to frame [map]
+[planner_server-4] 
+[planner_server-4] [INFO] [1789610749.535892375] [global_costmap.global_costmap]: Message Filter dropping message: frame 'lidar_link' at time 1789610749.233 for reason 'the timestamp on the message is earlier than all the data in the transform cache'
+[planner_server-4] [INFO] [1789610750.091648132] [global_costmap.global_costmap]: Message Filter dropping message: frame 'camera_depth_optical_frame' at time 1789610749.813 for reason 'the timestamp on the message is earlier than all the data in the transform cache'
+[planner_server-4] [ERROR] [1789610750.290235020] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the past.  Requested time 1789610501.160637 but the earliest data is at time 1789610740.251592, when looking up transform from frame [base_link] to frame [map]
+[planner_server-4] 
+[planner_server-4] [ERROR] [1789610751.290509140] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the past.  Requested time 1789610501.160637 but the earliest data is at time 1789610741.253168, when looking up transform from frame [base_link] to frame [map]
+[planner_server-4] 
+[planner_server-4] [INFO] [1789610752.128554366] [global_costmap.global_costmap]: Message Filter dropping message: frame 'lidar_link' at time 1789610751.826 for reason 'the timestamp on the message is earlier than all the data in the transform cache'
+[planner_server-4] [ERROR] [1789610752.291954553] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the past.  Requested time 1789610501.160637 but the earliest data is at time 1789610742.249745, when looking up transform from frame [base_link] to frame [map]
+[planner_server-4] 
+[planner_server-4] [INFO] [1789610752.624609242] [global_costmap.global_costmap]: Message Filter dropping message: frame 'camera_depth_optical_frame' at time 1789610752.349 for reason 'the timestamp on the message is earlier than all the data in the transform cache'
+[planner_server-4] [ERROR] [1789610753.291083746] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the past.  Requested time 1789610501.160637 but the earliest data is at time 1789610743.286352, when looking up transform from frame [base_link] to frame [map]
+[planner_server-4] 
+[planner_server-4] [ERROR] [1789610754.293276459] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the past.  Requested time 1789610501.160637 but the earliest data is at time 1789610744.282898, when looking up transform from frame [base_link] to frame [map]
+[planner_server-4] 
+[planner_server-4] [INFO] [1789610754.721096213] [global_costmap.global_costmap]: Message Filter dropping message: frame 'lidar_link' at time 1789610754.418 for reason 'the timestamp on the message is earlier than all the data in the transform cache'
+[planner_server-4] [INFO] [1789610755.162804897] [global_costmap.global_costmap]: Message Filter dropping message: frame 'camera_depth_optical_frame' at time 1789610754.884 for reason 'the timestamp on the message is earlier than all the data in the transform cache'
+[planner_server-4] [ERROR] [1789610755.291014029] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the past.  Requested time 1789610501.160637 but the earliest data is at time 1789610745.219373, when looking up transform from frame [base_link] to frame [map]
+[planner_server-4] 
+[planner_server-4] [ERROR] [1789610756.291055861] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the past.  Requested time 1789610501.160637 but the earliest data is at time 1789610746.215918, when looking up transform from frame [base_link] to frame [map]
+[planner_server-4] 
+[planner_server-4] [INFO] [1789610757.231508506] [global_costmap.global_costmap]: Message Filter dropping message: frame 'lidar_link' at time 1789610756.929 for reason 'the timestamp on the message is earlier than all the data in the transform cache'
+[planner_server-4] [ERROR] [1789610757.290835017] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the past.  Requested time 1789610501.160637 but the earliest data is at time 1789610747.282571, when looking up transform from frame [base_link] to frame [map]
+[planner_server-4] 
+[planner_server-4] [INFO] [1789610757.695623300] [global_costmap.global_costmap]: Message Filter dropping message: frame 'camera_depth_optical_frame' at time 1789610757.419 for reason 'the timestamp on the message is earlier than all the data in the transform cache'
+[planner_server-4] [ERROR] [1789610758.291238471] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the past.  Requested time 1789610501.160637 but the earliest data is at time 1789610748.254077, when looking up transform from frame [base_link] to frame [map]
+[planner_server-4] 
+[planner_server-4] [ERROR] [1789610759.291049062] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the past.  Requested time 1789610501.160637 but the earliest data is at time 1789610749.285674, when looking up transform from frame [base_link] to frame [map]
+[planner_server-4] 
+[planner_server-4] [INFO] [1789610759.824216933] [global_costmap.global_costmap]: Message Filter dropping message: frame 'lidar_link' at time 1789610759.521 for reason 'the timestamp on the message is earlier than all the data in the transform cache'
+[planner_server-4] [INFO] [1789610760.230562571] [global_costmap.global_costmap]: Message Filter dropping message: frame 'camera_depth_optical_frame' at time 1789610759.955 for reason 'the timestamp on the message is earlier than all the data in the transform cache'
+[planner_server-4] [ERROR] [1789610760.290119712] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the past.  Requested time 1789610501.160637 but the earliest data is at time 1789610750.252161, when looking up transform from frame [base_link] to frame [map]
+[planner_server-4] 
+[planner_server-4] [ERROR] [1789610761.290361016] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the past.  Requested time 1789610501.160637 but the earliest data is at time 1789610751.218654, when looking up transform from frame [base_link] to frame [map]
+[planner_server-4] 
+[planner_server-4] [ERROR] [1789610762.289966575] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the past.  Requested time 1789610501.160637 but the earliest data is at time 1789610752.220203, when looking up transform from frame [base_link] to frame [map]
+[planner_server-4] 
+[planner_server-4] [INFO] [1789610762.415903363] [global_costmap.global_costmap]: Message Filter dropping message: frame 'lidar_link' at time 1789610762.113 for reason 'the timestamp on the message is earlier than all the data in the transform cache'
+[planner_server-4] [INFO] [1789610762.768449746] [global_costmap.global_costmap]: Message Filter dropping message: frame 'camera_depth_optical_frame' at time 1789610762.490 for reason 'the timestamp on the message is earlier than all the data in the transform cache'
+[planner_server-4] [ERROR] [1789610763.290709474] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the past.  Requested time 1789610501.160637 but the earliest data is at time 1789610753.286871, when looking up transform from frame [base_link] to frame [map]
+[planner_server-4] 
+[planner_server-4] [ERROR] [1789610764.290825077] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the past.  Requested time 1789610501.160637 but the earliest data is at time 1789610754.253460, when looking up transform from frame [base_link] to frame [map]
+[planner_server-4] 
+[planner_server-4] [INFO] [1789610765.024196377] [global_costmap.global_costmap]: Message Filter dropping message: frame 'lidar_link' at time 1789610764.721 for reason 'the timestamp on the message is earlier than all the data in the transform cache'
+[planner_server-4] [ERROR] [1789610765.293668827] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the past.  Requested time 1789610501.160637 but the earliest data is at time 1789610755.285044, when looking up transform from frame [base_link] to frame [map]
+[planner_server-4] 
+[planner_server-4] [INFO] [1789610765.300305538] [global_costmap.global_costmap]: Message Filter dropping message: frame 'camera_depth_optical_frame' at time 1789610765.025 for reason 'the timestamp on the message is earlier than all the data in the transform cache'
+[planner_server-4] [ERROR] [1789610766.289589223] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the past.  Requested time 1789610501.160637 but the earliest data is at time 1789610756.251533, when looking up transform from frame [base_link] to frame [map]
+[planner_server-4] 
+[planner_server-4] [ERROR] [1789610767.290608665] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the past.  Requested time 1789610501.160637 but the earliest data is at time 1789610757.283141, when looking up transform from frame [base_link] to frame [map]
+[planner_server-4] 
+[planner_server-4] [INFO] [1789610767.615783552] [global_costmap.global_costmap]: Message Filter dropping message: frame 'lidar_link' at time 1789610767.313 for reason 'the timestamp on the message is earlier than all the data in the transform cache'
+[planner_server-4] [INFO] [1789610767.836729963] [global_costmap.global_costmap]: Message Filter dropping message: frame 'camera_depth_optical_frame' at time 1789610767.561 for reason 'the timestamp on the message is earlier than all the data in the transform cache'
+[planner_server-4] [ERROR] [1789610768.293523713] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the past.  Requested time 1789610501.160637 but the earliest data is at time 1789610758.279713, when looking up transform from frame [base_link] to frame [map]
+[planner_server-4] 
+[planner_server-4] [ERROR] [1789610769.290175910] [transformPoseInTargetFrame]: Extrapolation Error looking up target frame: Lookup would require extrapolation into the past.  Requested time 1789610501.160637 but the earliest data is at time 1789610759.286279, when looking up transform from frame [base_link] to frame [map]
+[planner_server-4] 

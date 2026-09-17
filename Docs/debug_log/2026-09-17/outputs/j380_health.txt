@@ -1,0 +1,32 @@
+now 11:02:44.819  epoch 1789610564.822
+=== 프로세스 ===
+micro_ros_agent:2 robot_state_publisher:1 sensor_conditioner:1 ekf_node:1 slam_toolbox:1 depth_relay:1 realsense2_camera:1 rplidar:1 controller_server:1 planner_server:1 bt_navigator:1 ros2 bag:0 
+=== 토픽 hz ===
+  /wheel_odom                        average rate: 25.000
+
+  /imu/data                          average rate: 199.859
+
+  /odometry/filtered                 average rate: 29.657
+
+  /scan                              average rate: 9.921
+
+  /camera/depth/points_filtered      average rate: 14.952
+
+  /tf                                average rate: 29.262
+
+=== TF 지연 ===
+  odom base_link   At time 1789610606.318844160 - Translation: [1.099, 0.398, 0.000] 
+  map odom         
+  /odometry/filtered stamp: 1789610619.249010176.
+  /scan stamp: 1789610621.653430674.
+=== CPU top ===
+%CPU COMMAND | 35.3 python3 | 17.6 python3 | 17.6 ekf_node | 11.8 rplidar+ | 11.8 control+ | 11.8 lifecyc+ | 5.9 realsen+ | 5.9 python3 | 5.9 python3 | 
+load 3.58 4.71 4.50  temp 48781
+=== ekf/slam 로그 끝 ===
+[realsense2_camera_node-1]  17/09 10:55:02,013 WARNING [281472216787168] (backend-hid.cpp:740) HID set_power 1 failed for /sys/devices/platform/bus@0/3610000.usb/usb2/2-1
+[realsense2_camera_node-1]  17/09 10:55:02,013 WARNING [281472199878880] (backend-hid.cpp:740) HID set_power 1 failed for /sys/devices/platform/bus@0/3610000.usb/usb2/2-1
+[realsense2_camera_node-1] [WARN] [1789610103.482492936] [camera.camera]: No matching stream for texture 'Process - Any'. Set 'pointcloud.stream_profile' to 'depth(1)', '
+[async_slam_toolbox_node-1] [INFO] [1789610464.410515947] [slam_toolbox]: Message Filter dropping message: frame 'lidar_link' at time 1789610464.318 for reason 'discardin
+[async_slam_toolbox_node-1] [INFO] [1789610468.702388069] [slam_toolbox]: Message Filter dropping message: frame 'lidar_link' at time 1789610468.658 for reason 'discardin
+=== syslog Wi-Fi 11:0x ===
+ip 192.168.0.101/24
