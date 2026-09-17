@@ -1,0 +1,14 @@
+status 샘플 210, 휠 목표 1~9 mm/s 인 샘플 12
+  t=  0.2 L tgt -8 mm/s  측정 -1
+  t=  0.6 L tgt +9 mm/s  측정 +5
+  t=  0.8 L tgt +8 mm/s  측정 +8
+  t= 12.9 L tgt +8 mm/s  측정 +19
+  t= 23.5 L tgt +8 mm/s  측정 +25
+  t= 26.5 R tgt -8 mm/s  측정 +0
+  t= 31.3 L tgt +8 mm/s  측정 +18
+  t= 31.5 L tgt +8 mm/s  측정 +7
+  t= 33.1 L tgt -8 mm/s  측정 +0
+  t= 33.3 L tgt -8 mm/s  측정 -3
+  t= 33.5 L tgt -8 mm/s  측정 -4
+  t= 33.7 L tgt -8 mm/s  측정 -5
+비영 /cmd_vel 663 개, 가장 작은 명령 t=25.7 v +0.0050 w +0.0000 (안쪽 휠 5.0 mm/s)
