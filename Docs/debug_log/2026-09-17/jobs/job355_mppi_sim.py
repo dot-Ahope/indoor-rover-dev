@@ -161,6 +161,7 @@ def rollout(V, Wz, rx, ry, rth):
 B, T = P['batch'], P['steps']
 mean_v = np.full(T, cm[1] if cm else 0.0); mean_w = np.full(T, cm[2] if cm else 0.0)
 rx, ry, rth = x0, y0, th0
+W0LOG = []; PATHLEN = 0.0; MINCOST = []   # 09-17 흔들림 지표
 print('%s bag %s t=%.1f 자세 (%.3f,%.3f) yaw %+.1f° 초기 cmd v %+.3f w %+.3f | 경로 %d점(간격 %.3f) | 파라미터 %s' % (
     P['label'], BAG.split('/')[-1], AT, x0, y0, math.degrees(th0), mean_v[0], mean_w[0], len(path), np.hypot(*(path[1] - path[0])),
     ' '.join('%s=%g' % (k, P[k]) for k in ('vx_std', 'wz_std', 'temperature', 'iters', 'align_w', 'align_off', 'follow_w', 'follow_off', 'angle_w', 'angle_max', 'rep_w'))))
@@ -193,8 +194,14 @@ for cyc in range(P['cycles']):
             return 0.0 if abs(vw) < P['db'] else vw
         vl, vr = fw(v0 - w0 * P['track_b'] / 2), fw(v0 + w0 * P['track_b'] / 2)
         v0, w0 = (vl + vr) / 2, (vr - vl) / P['track_b']
+    W0LOG.append(w0); PATHLEN += abs(v0) * P['dt']
     rx += v0 * math.cos(rth) * P['dt']; ry += v0 * math.sin(rth) * P['dt']; rth = wrap(rth + w0 * P['dt'])
+    _c, _fp = pose_costs(np.array([[rx]]), np.array([[ry]]), np.array([[rth]])); MINCOST.append(float(_c[0, 0]))
     mean_v = np.concatenate([mean_v[1:], mean_v[-1:]]); mean_w = np.concatenate([mean_w[1:], mean_w[-1:]])
 dx = (rx - x0) * math.cos(th0) + (ry - y0) * math.sin(th0); dy = -(rx - x0) * math.sin(th0) + (ry - y0) * math.cos(th0)
 print('  → %d 주기(%.1f s) 후: 전진 %+.3f 횡 %+.3f 회전 %+.1f°, 최종 cmd v %+.3f w %+.3f' % (P['cycles'], P['cycles'] * P['dt'], dx, dy, math.degrees(wrap(rth - th0)), mean_v[0], mean_w[0]))
+_w = np.array(W0LOG); _s = np.where(np.abs(_w) > 0.05, np.sign(_w), 0); _nz = _s[_s != 0]
+_flips = int(np.sum(_nz[1:] != _nz[:-1])) if _nz.size > 1 else 0
+_hf = _w - np.convolve(_w, np.ones(10) / 10, mode='same')
+print('     흔들림: |ω|>0.05 반전 %d 회 = %.1f 회/m (이동 %.3f m), 고주파 RMS %.3f rad/s, 최대 둘레비용 %.0f' % (_flips, _flips / max(PATHLEN, 0.01), PATHLEN, float(np.sqrt(np.mean(_hf[5:-5] ** 2))) if _w.size > 12 else 0.0, max(MINCOST) if MINCOST else 0))
 print('     목표(경로 끝, prune 창 안이면) 까지 거리 %.3f m (xy tol 0.15), 로버 odom (%.3f, %.3f)' % (math.hypot(path[-1][0] - rx, path[-1][1] - ry), rx, ry))
