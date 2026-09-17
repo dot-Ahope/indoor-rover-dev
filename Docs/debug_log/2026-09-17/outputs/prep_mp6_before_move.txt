@@ -1,0 +1,22 @@
+=== 릴레이 ===
+남은 릴레이: 1
+발행자 Publisher count: 1
+=== readback ===
+  controller_frequency               Double value is: 10.0
+  FollowPathMPPI.model_dt            Double value is: 0.1
+  FollowPathMPPI.time_steps          Integer value is: 32
+  FollowPathMPPI.temperature         Double value is: 0.15
+  FollowPathMPPI.iteration_count     Integer value is: 2
+  FollowPathMPPI.vx_std              Double value is: 0.08
+  FollowPathMPPI.wz_std              Double value is: 0.4
+  FollowPathMPPI.visualize           Boolean value is: True
+  BT raw_path: 3  SmoothPath: 1
+  nav2: controller 1 planner 1 bt 1 stuck_monitor 1
+  로버 자세: - Translation: [0.000, 0.000, 0.000] - Rotation: in RPY (radian) [0.000, -0.000, 0.002] 
+=== 프로세스·부하 ===
+robot_state_publisher:2 slam_toolbox:2 ekf_node:2 depth_relay:2 controller_server:2 planner_server:2 bt_navigator:2 
+load 10.38 4.29 1.68  shadow_mode: SHADOW
+=== 게이트 ===
+상자: 전면 x=1.056  중심 y=+0.036  (187점)  → x 구간 [1.06, 1.17], y 구간 [-0.05, +0.13]
+   → 전방 2.2m 최소폭:  기준1 0.35 m (@1.10)   기준2(RPP) 0.15 m (@0.90)   기준3(오류) 0.00 m (@0.70)
+상자 x=1.056 y=0.036 | 띠 근거 없는 셀 0 (≤1) | 상자 셀 3표본 0.173 0.173 0.172 → 0.173 | 창 0.282 m (≥0.20; 좌측 0.65)
