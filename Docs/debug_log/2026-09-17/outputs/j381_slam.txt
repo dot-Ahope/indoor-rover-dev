@@ -1,0 +1,10 @@
+slam pid 12040: Sl    6.0       08:44 51800  threads 22
+slam.log 줄 수 36, 'queue is full' 28, 마지막 3 줄:
+[async_slam_toolbox_node-1] [INFO] [1789610459.782962655] [slam_toolbox]: Message Filter dropping message: frame 'lidar_link' at time 1789610459.711 for reason 'discarding message because the queue is
+[async_slam_toolbox_node-1] [INFO] [1789610464.410515947] [slam_toolbox]: Message Filter dropping message: frame 'lidar_link' at time 1789610464.318 for reason 'discarding message because the queue is
+[async_slam_toolbox_node-1] [INFO] [1789610468.702388069] [slam_toolbox]: Message Filter dropping message: frame 'lidar_link' at time 1789610468.658 for reason 'discarding message because the queue is
+/map hz(12 s): 
+map->odom (10 s): [INFO] [1789610667.701793216] [tf2_echo]: Waiting for transform map ->  odom: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist [INFO] [1789610669.573821492] [tf2_echo]: Waiting for transform map ->  odom: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist 
+/tf 안 map->odom 발행: 
+epoch now 1789610683
+slam 파라미터:  throttle_scans: 1; transform_publish_period: 0.05; map_update_interval: 2.0; resolution: 0.05; minimum_time_interval: 0.1; correlation_search_space_resolution: 0.01; loop_search_space_resolution: 0.05; coarse_angle_resolution: 0.0349;

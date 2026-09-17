@@ -1,0 +1,49 @@
+상자: 전면 x=1.204  중심 y=+0.003  (138점)  → x 구간 [1.20, 1.31], y 구간 [-0.09, +0.09]
+   → 전방 2.2m 최소폭:  기준1 0.25 m (@1.20)   기준2(RPP) 0.10 m (@0.90)   기준3(오류) 0.00 m (@0.80)
+상자 셀 최대 y 표본 3회: 0.124 0.125 0.124  → 중앙값 0.124
+통로 띠 근거 없는 셀 0 (≤1) | 창 0.231 m (≥0.20; 좌측 0.55, 상자 셀 최대 y 0.124)
+목표 map (2.00, 0.00) yaw 0° | 풋프린트↔LETHAL 최소 0.249 m (셀 map 1.71, -0.42) | 목표 셀 비용 51
+started_pid 13755
+주행 시작 11:00:24 — 로그 /tmp/drive_mp7.log (링크가 끊겨도 원격에서 계속됨; 정지는 job156_stop.sh)
+########## 게이트 ##########
+  프로세스 14/14 단일, 보드 average rate: 25.030
+  출발 자세: 
+  상자: 전면 x=1.215  중심 y=+0.003  (138점)  → x 구간 [1.21, 1.32], y 구간 [-0.09, +0.09]
+     [-0.53, -0.11]         0.42 m   통과         불가          0 deg (패딩無 11 deg)
+     [+0.12, +0.73]         0.60 m   통과         통과         18 deg (패딩無 90 deg)
+     → 전방 2.2m 최소폭:  기준1 0.30 m (@1.20)   기준2(RPP) 0.15 m (@0.90)   기준3(오류) 0.00 m (@0.80)
+  상자 기준선 대비 dx +0.01 dy +0.00 (허용 ±0.06) → OK
+  EKF 위반 28회 | slam 폐기 26회 | load 4.61 5.21 4.58
+
+########## 주행 D=2.0 ##########
+=== 주행 (bag 1개, nav2.log 213 줄부터) ===
+상자 확정: map x 1.208~1.318, y -0.086~+0.094 (검출점 138, base 전면 1.21)
+출발 (0.00,0.00) hd=0.0° → 목표 (2.00,0.00) [전진 2.00 횡 +0.00]
+  t   전진   횡변위 | 실여유 계획여유 계획횡 | lc gc 깊이점 미관측s | v_cmd  w_cmd
+
+결과 ABORTED  소요 27.1s  주행 1.72m  샘플 272
+  ① 실제 최근접(차체↔상자 기하): 8.0 cm @ t=26.9s 전진 1.22 횡 +0.395   ← 0 이면 접촉
+  ② 계획의 최소 여유: 5.9 cm (최근접 시점 9.5 cm)   ← 음수면 계획 자체가 접촉 경로
+  ③ 상자 자리 비용 — 로컬 최소/최근접시 99/99, 전역 최소/최근접시 99/100  ← 0 이면 기억 소실
+  ④ 경로 좌우 전환 0회 (최초 선택 좌), 계획이 접촉 경로였던 샘플 0/272 (0%)
+  깊이점: 최대 391, 최소 0
+  ⑥ 상자 미관측 최대 21.2초 — 이 구간의 ①·⑤ 는 마지막 관측의 외삽이다
+  조향(주행구간 1.72m, 목표부근 0샘플 제외): 직진 중 |ω| 평균 0.086 최대 0.380 rad/s, 부호반전 11회 = 6.40회/m
+
+=== nav2.log 신규분 ===
+  신규 154 줄
+  detected collision   0건
+  clear except         6건
+  clear entirely       0건
+  backup failed        0건
+  Goal succeeded       0건
+  aborted              0건
+  [planner_server-4] [INFO] [1789610482.358894102] [global_costmap.global_costmap]: Received request to clear except a region the global_costmap
+  [controller_server-2] [INFO] [1789610482.414516867] [local_costmap.local_costmap]: Received request to clear except a region the local_costmap
+  [planner_server-4] [INFO] [1789610482.415559435] [global_costmap.global_costmap]: Received request to clear except a region the global_costmap
+  [planner_server-4] [INFO] [1789610482.438197433] [global_costmap.global_costmap]: Received request to clear except a region the global_costmap
+  [controller_server-2] [INFO] [1789610493.262583936] [local_costmap.local_costmap]: Received request to clear except a region the local_costmap
+  [controller_server-2] [INFO] [1789610497.925534660] [local_costmap.local_costmap]: Received request to clear except a region the local_costmap
+  bag: 138M
+  EKF 위반 39회 | slam 폐기 28회 | load 5.72 5.38 4.66
+=== 끝 11:01:44 ===

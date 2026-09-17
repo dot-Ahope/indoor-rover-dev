@@ -1,0 +1,36 @@
+=== 1. 재기동 ===
+  [sensor_conditioner.py-6] [INFO] [1789610114.029333185] [sensor_conditioner]: gyro bias calibrated: (-0.00808, -0.00103, -0.00185) rad/s, std=(0.0026, 0.0024, 0.0018)
+  map->odom: - Translation: [0.000, 0.000, 0.000]
+  로버 자세: - Translation: [0.000, 0.000, 0.000] - Rotation: in RPY (radian) [0.000, 0.000, -0.001] 
+   틈 [y_lo, y_hi]         폭        차체0.33     패딩0.43     허용 자세각(패딩)
+=== 2. 릴레이·readback·게이트 ===
+=== 릴레이 ===
+남은 릴레이: 1
+발행자 Publisher count: 1
+=== readback ===
+  controller_frequency               Double value is: 10.0
+  FollowPathMPPI.temperature         Double value is: 0.15
+  FollowPathMPPI.iteration_count     
+  FollowPathMPPI.vx_std              Double value is: 0.08
+  FollowPathMPPI.wz_std              Double value is: 0.4
+  BT raw_path: 4  SmoothPath: 1
+  nav2: controller 1 planner 1 bt 1 stuck_monitor 1
+  로버 자세: - Translation: [0.000, 0.000, 0.000] - Rotation: in RPY (radian) [0.000, -0.000, 0.001] 
+=== 프로세스·부하 ===
+robot_state_publisher:2 slam_toolbox:2 ekf_node:2 depth_relay:2 controller_server:2 planner_server:2 bt_navigator:2 
+load 7.26 4.83 4.31  shadow_mode: SHADOW
+=== 게이트 ===
+상자: 전면 x=1.207  중심 y=+0.003  (142점)  → x 구간 [1.21, 1.32], y 구간 [-0.09, +0.09]
+   → 전방 2.2m 최소폭:  기준1 0.25 m (@1.20)   기준2(RPP) 0.10 m (@0.90)   기준3(오류) 0.00 m (@0.80)
+상자 x=1.207 y=0.003 | 띠 근거 없는 셀 0 (≤1) | 상자 셀 3표본 0.124 0.124 0.124 → 0.124 | 창 0.231 m (≥0.20; 좌측 0.55)
+=== 3. BT·목표 후보 ===
+=== BT 로드 확인 ===
+  TruncatePath 노드: 1  bt_navigator 오류: 0
+=== 목표 후보 풋프린트 여유 (≥0.20) ===
+  2.2 0.0   (2.20, 0.00) yaw 0° | 풋프린트↔LETHAL 최소 0.145 m (셀 map 2.61, 0.13) | 목표 셀 비용 59
+  2.0 0.0   (2.00, 0.00) yaw 0° | 풋프린트↔LETHAL 최소 0.249 m (셀 map 1.71, -0.42) | 목표 셀 비용 51
+  1.9 0.0   (1.90, 0.00) yaw 0° | 풋프린트↔LETHAL 최소 0.247 m (셀 map 1.71, -0.42) | 목표 셀 비용 57
+  2.0 0.2   (2.00, 0.20) yaw 0° | 풋프린트↔LETHAL 최소 0.345 m (셀 map 2.61, 0.13) | 목표 셀 비용 41
+  2.1 0.3   (2.10, 0.30) yaw 0° | 풋프린트↔LETHAL 최소 0.245 m (셀 map 2.61, 0.13) | 목표 셀 비용 51
+  2.2 0.3   (2.20, 0.30) yaw 0° | 풋프린트↔LETHAL 최소 0.145 m (셀 map 2.61, 0.13) | 목표 셀 비용 62
+  2.0 -0.2  (2.00, -0.20) yaw 0° | 풋프린트↔LETHAL 최소 0.059 m (셀 map 1.71, -0.42) | 목표 셀 비용 67

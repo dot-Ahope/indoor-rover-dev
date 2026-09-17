@@ -6,7 +6,7 @@ SPS=/mnt/c/Users/magma/AppData/Local/Temp/claude/F--6-Indoor-Rover-Rover/82ce61d
 H=${JETSON_HOST:-192.168.0.101}
 O="-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o LogLevel=ERROR -o ConnectTimeout=8 -o ServerAliveInterval=3 -o ServerAliveCountMax=3"
 J=jetson@$H
-for f in job254_s4run.sh job231_drive.sh job125_avoid3.py job248_audit.py job315_boxcells.py; do tr -d '\r' < $SPS/$f > /tmp/$f; sshpass -p <PW> scp $O -q /tmp/$f $J:/tmp/$f || { echo "전송 실패 $f"; exit 1; }; done
+for f in job254_s4run.sh job231_drive.sh job125_avoid3.py job248_audit.py job315_boxcells.py job386_slamalive.py; do tr -d '\r' < $SPS/$f > /tmp/$f; sshpass -p <PW> scp $O -q /tmp/$f $J:/tmp/$f || { echo "전송 실패 $f"; exit 1; }; done
 # --- 사전 게이트 (run_inf1.sh 와 같은 판정, 한 번의 ssh) ---
 A=$(timeout 150 sshpass -p <PW> ssh $O $J "export FASTRTPS_DEFAULT_PROFILES_FILE=/home/jetson/ros2_ws/install/rover_bringup/share/rover_bringup/config/fastdds_udp_only.xml; source /opt/ros/humble/setup.bash; BOX_HINT='$BX $BY' python3 /tmp/job248_audit.py 2>&1")
 # 09-16: 감사 출력이 간혹 표 없이 잘린다(run_gate 1회) → 최소폭 줄이 없으면 한 번 재시도
