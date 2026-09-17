@@ -1,0 +1,48 @@
+  0.00 [bt_navigator-6] [INFO] [1789613137.648900412] [bt_navigator]: Begin navigating from current location (0.00, 0.00) to (2.00, -0.00)
+  0.05 [controller_server-2] [INFO] [1789613137.697131827] [controller_server]: Received a goal, begin computing control effort.
+  0.05 [controller_server-2] [WARN] [1789613137.697343962] [controller_server]: No goal checker was specified in parameter 'current_goal_checker'. Server will use only plugin lo
+  0.06 [controller_server-2] [INFO] [1789613137.710150401] [controller_server]: Optimizer reset
+ 27.86 [bt_navigator-6] [WARN] [1789613165.512696830] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+ 30.44 [bt_navigator-6] [WARN] [1789613168.092401032] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+ 34.46 [bt_navigator-6] [WARN] [1789613172.111764404] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+ 51.47 [bt_navigator-6] [WARN] [1789613189.120016694] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+ 60.95 [controller_server-2] [ERROR] [1789613198.598190364] [controller_server]: Failed to make progress
+ 60.95 [controller_server-2] [WARN] [1789613198.598377474] [controller_server]: [follow_path] [ActionServer] Aborting handle.
+ 60.97 [controller_server-2] [INFO] [1789613198.620433175] [local_costmap.local_costmap]: Received request to clear except a region the local_costmap
+ 60.97 [controller_server-2] [INFO] [1789613198.623191922] [controller_server]: Received a goal, begin computing control effort.
+ 86.17 [controller_server-2] [ERROR] [1789613223.823595909] [controller_server]: Failed to make progress
+ 86.18 [controller_server-2] [WARN] [1789613223.823940592] [controller_server]: [follow_path] [ActionServer] Aborting handle.
+ 86.19 [controller_server-2] [INFO] [1789613223.840173125] [local_costmap.local_costmap]: Received request to clear except a region the local_costmap
+ 86.19 [planner_server-4] [INFO] [1789613223.841371661] [global_costmap.global_costmap]: Received request to clear except a region the global_costmap
+ 86.62 [controller_server-2] [INFO] [1789613224.271027720] [controller_server]: Received a goal, begin computing control effort.
+ 90.13 [controller_server-2] [INFO] [1789613227.781519073] [controller_server]: Goal was canceled. Stopping the robot.
+ 90.13 [controller_server-2] [INFO] [1789613227.781728391] [controller_server]: [follow_path] [ActionServer] Client requested to cancel the goal. Cancelling.
+ 90.13 [bt_navigator-6] [INFO] [1789613227.782231864] [bt_navigator]: [navigate_to_pose] [ActionServer] Client requested to cancel the goal. Cancelling.
+ 90.13 [bt_navigator-6] [INFO] [1789613227.783021330] [bt_navigator]: Goal canceled
+=== 드라이브 표 (1 s) ===
+ 60.0 +1.960 +0.241 |  0.386    0.452 +0.179 |    99   100      0 | +0.009 -0.001
+ 70.0 +1.960 +0.241 |  0.386    0.452 +0.179 |    99   100      0 | +0.009 -0.001
+ 80.0 +1.960 +0.241 |  0.386    0.452 +0.179 |    99   100      0 | +0.009 -0.001
+ 90.0 +1.960 +0.241 |  0.386    0.452 +0.179 |    99   100      0 | +0.009 -0.001
+bag tgz 6431683
+=== SLAM 생존(주행 후) ===
+map->odom 62 개/5 s, 최대 간격 0.05 s, 최대 stamp 지연 0.05 s
+OK
+로버 map 자세: - Translation: [1.960, 0.240, 0.000] - Rotation: in RPY (radian) [0.000, -0.000, 0.010] 
+=== top: 프로세스별 CPU 평균/최대 (주행 중) ===
+스냅샷 50 (2 s), load 평균 8.5 최대 9.6
+  python3                                  평균 121.0% 최대  65.3%
+  controller_serv                          평균  35.9% 최대  70.3%
+  ros2                                     평균  18.1% 최대  33.0%
+  bt_navigator                             평균  15.6% 최대  18.7%
+  rplidar_node                             평균  14.9% 최대  20.2%
+  realsense2_came                          평균  12.7% 최대  18.7%
+  ekf_node                                 평균  11.3% 최대  17.7%
+  lifecycle_manag                          평균  11.1% 최대  17.2%
+  planner_server                           평균  11.0% 최대  17.7%
+  micro_ros_agent                          평균   8.5% 최대  67.5%
+  behavior_server                          평균   7.8% 최대  15.3%
+  async_slam_tool                          평균   7.1% 최대  17.3%
+bag 회수 OK 6431683
+drive log OK
+csv OK
