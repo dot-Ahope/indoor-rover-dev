@@ -1,0 +1,236 @@
+  }
+
+  return fabs(angles::shortest_angular_distance(yaw, pose_yaw));
+}
+
+/**
+ * @brief Apply Savisky-Golay filter to optimal trajectory
+ * @param control_sequence Sequence to apply filter to
+ * @param control_history Recent set of controls for edge-case handling
+ * @param Settings Settings to use
+ */
+inline void savitskyGolayFilter(
+  models::ControlSequence & control_sequence,
+  std::array<mppi::models::Control, 4> & control_history,
+  const models::OptimizerSettings & settings)
+{
+  // Savitzky-Golay Quadratic, 9-point Coefficients
+  xt::xarray<float> filter = {-21.0, 14.0, 39.0, 54.0, 59.0, 54.0, 39.0, 14.0, -21.0};
+  filter /= 231.0;
+
+  const unsigned int num_sequences = control_sequence.vx.shape(0) - 1;
+
+  // Too short to smooth meaningfully
+  if (num_sequences < 20) {
+    return;
+  }
+
+  auto applyFilter = [&](const xt::xarray<float> & data) -> float {
+      return xt::sum(data * filter, {0}, immediate)();
+    };
+
+  auto applyFilterOverAxis =
+    [&](xt::xtensor<float, 1> & sequence,
+      const float hist_0, const float hist_1, const float hist_2, const float hist_3) -> void
+    {
+      unsigned int idx = 0;
+      sequence(idx) = applyFilter(
+      {
+        hist_0,
+        hist_1,
+        hist_2,
+        hist_3,
+        sequence(idx),
+        sequence(idx + 1),
+        sequence(idx + 2),
+        sequence(idx + 3),
+        sequence(idx + 4)});
+
+      idx++;
+      sequence(idx) = applyFilter(
+      {
+        hist_1,
+        hist_2,
+        hist_3,
+        sequence(idx - 1),
+        sequence(idx),
+        sequence(idx + 1),
+        sequence(idx + 2),
+        sequence(idx + 3),
+        sequence(idx + 4)});
+
+      idx++;
+      sequence(idx) = applyFilter(
+      {
+        hist_2,
+        hist_3,
+        sequence(idx - 2),
+        sequence(idx - 1),
+        sequence(idx),
+        sequence(idx + 1),
+        sequence(idx + 2),
+        sequence(idx + 3),
+        sequence(idx + 4)});
+
+      idx++;
+      sequence(idx) = applyFilter(
+      {
+        hist_3,
+        sequence(idx - 3),
+        sequence(idx - 2),
+        sequence(idx - 1),
+        sequence(idx),
+        sequence(idx + 1),
+        sequence(idx + 2),
+        sequence(idx + 3),
+        sequence(idx + 4)});
+
+      for (idx = 4; idx != num_sequences - 4; idx++) {
+        sequence(idx) = applyFilter(
+        {
+          sequence(idx - 4),
+          sequence(idx - 3),
+          sequence(idx - 2),
+          sequence(idx - 1),
+          sequence(idx),
+          sequence(idx + 1),
+          sequence(idx + 2),
+          sequence(idx + 3),
+          sequence(idx + 4)});
+      }
+
+      idx++;
+      sequence(idx) = applyFilter(
+      {
+        sequence(idx - 4),
+        sequence(idx - 3),
+        sequence(idx - 2),
+        sequence(idx - 1),
+        sequence(idx),
+        sequence(idx + 1),
+        sequence(idx + 2),
+        sequence(idx + 3),
+        sequence(idx + 3)});
+
+      idx++;
+      sequence(idx) = applyFilter(
+      {
+        sequence(idx - 4),
+        sequence(idx - 3),
+        sequence(idx - 2),
+        sequence(idx - 1),
+        sequence(idx),
+        sequence(idx + 1),
+        sequence(idx + 2),
+        sequence(idx + 2),
+        sequence(idx + 2)});
+
+      idx++;
+      sequence(idx) = applyFilter(
+      {
+        sequence(idx - 4),
+        sequence(idx - 3),
+        sequence(idx - 2),
+        sequence(idx - 1),
+        sequence(idx),
+        sequence(idx + 1),
+        sequence(idx + 1),
+        sequence(idx + 1),
+        sequence(idx + 1)});
+
+      idx++;
+      sequence(idx) = applyFilter(
+      {
+        sequence(idx - 4),
+        sequence(idx - 3),
+        sequence(idx - 2),
+        sequence(idx - 1),
+        sequence(idx),
+        sequence(idx),
+        sequence(idx),
+        sequence(idx),
+        sequence(idx)});
+    };
+
+  // Filter trajectories
+  applyFilterOverAxis(
+    control_sequence.vx, control_history[0].vx,
+    control_history[1].vx, control_history[2].vx, control_history[3].vx);
+  applyFilterOverAxis(
+    control_sequence.vy, control_history[0].vy,
+    control_history[1].vy, control_history[2].vy, control_history[3].vy);
+  applyFilterOverAxis(
+    control_sequence.wz, control_history[0].wz,
+    control_history[1].wz, control_history[2].wz, control_history[3].wz);
+
+  // Update control history
+  unsigned int offset = settings.shift_control_sequence ? 1 : 0;
+  control_history[0] = control_history[1];
+  control_history[1] = control_history[2];
+  control_history[2] = control_history[3];
+  control_history[3] = {
+    control_sequence.vx(offset),
+    control_sequence.vy(offset),
+    control_sequence.wz(offset)};
+}
+
+/**
+ * @brief Find the iterator of the first pose at which there is an inversion on the path,
+ * @param path to check for inversion
+ * @return the first point after the inversion found in the path
+ */
+=====
+// Copyright (c) 2022 Samsung Research America, @artofnothingness Alexey Budyakov
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+#ifndef NAV2_MPPI_CONTROLLER__TOOLS__NOISE_GENERATOR_HPP_
+#define NAV2_MPPI_CONTROLLER__TOOLS__NOISE_GENERATOR_HPP_
+#include <string>
+#include <memory>
+#include <thread>
+#include <mutex>
+#include <condition_variable>
+#include <xtensor/xtensor.hpp>
+#include <xtensor/xview.hpp>
+#include "nav2_mppi_controller/models/optimizer_settings.hpp"
+#include "nav2_mppi_controller/tools/parameters_handler.hpp"
+#include "nav2_mppi_controller/models/control_sequence.hpp"
+#include "nav2_mppi_controller/models/state.hpp"
+namespace mppi
+{
+class NoiseGenerator
+{
+public:
+  NoiseGenerator() = default;
+  void initialize(
+    mppi::models::OptimizerSettings & settings,
+    bool is_holonomic, const std::string & name, ParametersHandler * param_handler);
+  void shutdown();
+  void generateNextNoises();
+  void setNoisedControls(models::State & state, const models::ControlSequence & control_sequence);
+  void reset(mppi::models::OptimizerSettings & settings, bool is_holonomic);
+protected:
+  void noiseThread();
+  void generateNoisedControls();
+  xt::xtensor<float, 2> noises_vx_;
+  xt::xtensor<float, 2> noises_vy_;
+  xt::xtensor<float, 2> noises_wz_;
+  mppi::models::OptimizerSettings settings_;
+  bool is_holonomic_;
+  std::thread noise_thread_;
+  std::condition_variable noise_cond_;
+  std::mutex noise_lock_;
+  bool active_{false}, ready_{false}, regenerate_noises_{false};
+};
+}  // namespace mppi
+#endif  // NAV2_MPPI_CONTROLLER__TOOLS__NOISE_GENERATOR_HPP_
