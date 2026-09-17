@@ -1,0 +1,185 @@
+started 17:32:53
+경과 732 s, 완료 36 1 
+######## mp11 t=19
+G1_mp11_regen0_T0.15 bag bag_mp11 t=19.0 자세 (0.770,0.308) yaw +17.8° 초기 cmd v +0.057 w -0.061 | 경로 41점(간격 0.047) | 파라미터 vx_std=0.08 wz_std=0.4 temperature=0.15 iters=2 align_w=14 align_off=3 follow_w=10 follow_off=20 angle_w=2 angle_max=0.5 rep_w=1.5
+  → 60 주기(6.0 s) 후: 전진 +0.408 횡 -0.104 회전 -22.8°, 최종 cmd v +0.081 w -0.116
+     유효 표본 수 ESS 중앙 5.5 (10/90% 2.7/49.0) / 배치 1000 → 첫 제어 ω 표본 잡음 추정 wz_std/√ESS = 0.170 rad/s
+     흔들림: |ω|>0.05 반전 명령 4 회 = 9.4 회/m, 차체 4 회 = 9.4 회/m (이동 0.424 m) | 고주파 RMS 명령 0.054 차체 0.040 rad/s | 최대 둘레비용 253
+
+G1_mp11_regen1_T0.15 bag bag_mp11 t=19.0 자세 (0.770,0.308) yaw +17.8° 초기 cmd v +0.057 w -0.061 | 경로 41점(간격 0.047) | 파라미터 vx_std=0.08 wz_std=0.4 temperature=0.15 iters=2 align_w=14 align_off=3 follow_w=10 follow_off=20 angle_w=2 angle_max=0.5 rep_w=1.5
+  → 60 주기(6.0 s) 후: 전진 +0.431 횡 -0.107 회전 -21.3°, 최종 cmd v +0.078 w +0.013
+     유효 표본 수 ESS 중앙 4.2 (10/90% 1.6/21.9) / 배치 1000 → 첫 제어 ω 표본 잡음 추정 wz_std/√ESS = 0.196 rad/s
+     흔들림: |ω|>0.05 반전 명령 7 회 = 15.7 회/m, 차체 5 회 = 11.2 회/m (이동 0.447 m) | 고주파 RMS 명령 0.084 차체 0.059 rad/s | 최대 둘레비용 253
+
+G1_mp11_regen0_T0.3 bag bag_mp11 t=19.0 자세 (0.770,0.308) yaw +17.8° 초기 cmd v +0.057 w -0.061 | 경로 41점(간격 0.047) | 파라미터 vx_std=0.08 wz_std=0.4 temperature=0.3 iters=2 align_w=14 align_off=3 follow_w=10 follow_off=20 angle_w=2 angle_max=0.5 rep_w=1.5
+  → 60 주기(6.0 s) 후: 전진 +0.456 횡 -0.126 회전 -27.0°, 최종 cmd v +0.080 w -0.120
+     유효 표본 수 ESS 중앙 64.1 (10/90% 37.8/112.9) / 배치 1000 → 첫 제어 ω 표본 잡음 추정 wz_std/√ESS = 0.050 rad/s
+     흔들림: |ω|>0.05 반전 명령 0 회 = 0.0 회/m, 차체 0 회 = 0.0 회/m (이동 0.476 m) | 고주파 RMS 명령 0.024 차체 0.019 rad/s | 최대 둘레비용 253
+
+G1_mp11_regen1_T0.3 bag bag_mp11 t=19.0 자세 (0.770,0.308) yaw +17.8° 초기 cmd v +0.057 w -0.061 | 경로 41점(간격 0.047) | 파라미터 vx_std=0.08 wz_std=0.4 temperature=0.3 iters=2 align_w=14 align_off=3 follow_w=10 follow_off=20 angle_w=2 angle_max=0.5 rep_w=1.5
+  → 60 주기(6.0 s) 후: 전진 +0.457 횡 -0.118 회전 -23.1°, 최종 cmd v +0.080 w +0.007
+     유효 표본 수 ESS 중앙 23.2 (10/90% 9.5/85.1) / 배치 1000 → 첫 제어 ω 표본 잡음 추정 wz_std/√ESS = 0.083 rad/s
+     흔들림: |ω|>0.05 반전 명령 5 회 = 10.5 회/m, 차체 3 회 = 6.3 회/m (이동 0.475 m) | 고주파 RMS 명령 0.074 차체 0.052 rad/s | 최대 둘레비용 253
+
+G2_mp11_regen0_T0.15 bag bag_mp11 t=19.0 자세 (0.770,0.308) yaw +17.8° 초기 cmd v +0.057 w -0.061 | 경로 41점(간격 0.047) | 파라미터 vx_std=0.08 wz_std=0.4 temperature=0.15 iters=2 align_w=14 align_off=3 follow_w=10 follow_off=20 angle_w=2 angle_max=0.5 rep_w=1.5
+  → 60 주기(6.0 s) 후: 전진 +0.451 횡 -0.119 회전 -29.7°, 최종 cmd v +0.080 w -0.130
+     유효 표본 수 ESS 중앙 13.2 (10/90% 3.6/40.5) / 배치 1000 → 첫 제어 ω 표본 잡음 추정 wz_std/√ESS = 0.110 rad/s
+     흔들림: |ω|>0.05 반전 명령 0 회 = 0.0 회/m, 차체 0 회 = 0.0 회/m (이동 0.470 m) | 고주파 RMS 명령 0.043 차체 0.029 rad/s | 최대 둘레비용 253
+
+G2_mp11_regen1_T0.15 bag bag_mp11 t=19.0 자세 (0.770,0.308) yaw +17.8° 초기 cmd v +0.057 w -0.061 | 경로 41점(간격 0.047) | 파라미터 vx_std=0.08 wz_std=0.4 temperature=0.15 iters=2 align_w=14 align_off=3 follow_w=10 follow_off=20 angle_w=2 angle_max=0.5 rep_w=1.5
+  → 60 주기(6.0 s) 후: 전진 +0.417 횡 -0.105 회전 -25.7°, 최종 cmd v +0.083 w -0.111
+     유효 표본 수 ESS 중앙 3.4 (10/90% 1.4/34.8) / 배치 1000 → 첫 제어 ω 표본 잡음 추정 wz_std/√ESS = 0.218 rad/s
+     흔들림: |ω|>0.05 반전 명령 3 회 = 6.9 회/m, 차체 3 회 = 6.9 회/m (이동 0.435 m) | 고주파 RMS 명령 0.074 차체 0.052 rad/s | 최대 둘레비용 253
+
+G2_mp11_regen0_T0.3 bag bag_mp11 t=19.0 자세 (0.770,0.308) yaw +17.8° 초기 cmd v +0.057 w -0.061 | 경로 41점(간격 0.047) | 파라미터 vx_std=0.08 wz_std=0.4 temperature=0.3 iters=2 align_w=14 align_off=3 follow_w=10 follow_off=20 angle_w=2 angle_max=0.5 rep_w=1.5
+  → 60 주기(6.0 s) 후: 전진 +0.458 횡 -0.119 회전 -29.8°, 최종 cmd v +0.080 w -0.148
+     유효 표본 수 ESS 중앙 48.8 (10/90% 40.3/260.4) / 배치 1000 → 첫 제어 ω 표본 잡음 추정 wz_std/√ESS = 0.057 rad/s
+     흔들림: |ω|>0.05 반전 명령 0 회 = 0.0 회/m, 차체 0 회 = 0.0 회/m (이동 0.477 m) | 고주파 RMS 명령 0.029 차체 0.018 rad/s | 최대 둘레비용 253
+
+G2_mp11_regen1_T0.3 bag bag_mp11 t=19.0 자세 (0.770,0.308) yaw +17.8° 초기 cmd v +0.057 w -0.061 | 경로 41점(간격 0.047) | 파라미터 vx_std=0.08 wz_std=0.4 temperature=0.3 iters=2 align_w=14 align_off=3 follow_w=10 follow_off=20 angle_w=2 angle_max=0.5 rep_w=1.5
+  → 60 주기(6.0 s) 후: 전진 +0.455 횡 -0.117 회전 -26.6°, 최종 cmd v +0.080 w -0.079
+     유효 표본 수 ESS 중앙 27.3 (10/90% 9.1/196.7) / 배치 1000 → 첫 제어 ω 표본 잡음 추정 wz_std/√ESS = 0.077 rad/s
+     흔들림: |ω|>0.05 반전 명령 0 회 = 0.0 회/m, 차체 0 회 = 0.0 회/m (이동 0.474 m) | 고주파 RMS 명령 0.058 차체 0.043 rad/s | 최대 둘레비용 253
+
+G3_mp11_regen0_T0.15 bag bag_mp11 t=19.0 자세 (0.770,0.308) yaw +17.8° 초기 cmd v +0.057 w -0.061 | 경로 41점(간격 0.047) | 파라미터 vx_std=0.08 wz_std=0.4 temperature=0.15 iters=2 align_w=14 align_off=3 follow_w=10 follow_off=20 angle_w=2 angle_max=0.5 rep_w=1.5
+  → 60 주기(6.0 s) 후: 전진 +0.467 횡 -0.081 회전 -17.5°, 최종 cmd v +0.080 w -0.037
+     유효 표본 수 ESS 중앙 14.3 (10/90% 10.7/38.1) / 배치 1000 → 첫 제어 ω 표본 잡음 추정 wz_std/√ESS = 0.106 rad/s
+     흔들림: |ω|>0.05 반전 명령 0 회 = 0.0 회/m, 차체 0 회 = 0.0 회/m (이동 0.477 m) | 고주파 RMS 명령 0.052 차체 0.036 rad/s | 최대 둘레비용 253
+
+G3_mp11_regen1_T0.15 bag bag_mp11 t=19.0 자세 (0.770,0.308) yaw +17.8° 초기 cmd v +0.057 w -0.061 | 경로 41점(간격 0.047) | 파라미터 vx_std=0.08 wz_std=0.4 temperature=0.15 iters=2 align_w=14 align_off=3 follow_w=10 follow_off=20 angle_w=2 angle_max=0.5 rep_w=1.5
+  → 60 주기(6.0 s) 후: 전진 +0.430 횡 -0.107 회전 -23.5°, 최종 cmd v +0.080 w -0.082
+     유효 표본 수 ESS 중앙 4.2 (10/90% 1.3/13.8) / 배치 1000 → 첫 제어 ω 표본 잡음 추정 wz_std/√ESS = 0.195 rad/s
+     흔들림: |ω|>0.05 반전 명령 8 회 = 17.9 회/m, 차체 8 회 = 17.9 회/m (이동 0.446 m) | 고주파 RMS 명령 0.082 차체 0.058 rad/s | 최대 둘레비용 253
+
+G3_mp11_regen0_T0.3 bag bag_mp11 t=19.0 자세 (0.770,0.308) yaw +17.8° 초기 cmd v +0.057 w -0.061 | 경로 41점(간격 0.047) | 파라미터 vx_std=0.08 wz_std=0.4 temperature=0.3 iters=2 align_w=14 align_off=3 follow_w=10 follow_off=20 angle_w=2 angle_max=0.5 rep_w=1.5
+  → 60 주기(6.0 s) 후: 전진 +0.464 횡 -0.097 회전 -20.4°, 최종 cmd v +0.080 w -0.040
+     유효 표본 수 ESS 중앙 47.1 (10/90% 34.2/226.4) / 배치 1000 → 첫 제어 ω 표본 잡음 추정 wz_std/√ESS = 0.058 rad/s
+     흔들림: |ω|>0.05 반전 명령 0 회 = 0.0 회/m, 차체 0 회 = 0.0 회/m (이동 0.477 m) | 고주파 RMS 명령 0.019 차체 0.015 rad/s | 최대 둘레비용 253
+
+G3_mp11_regen1_T0.3 bag bag_mp11 t=19.0 자세 (0.770,0.308) yaw +17.8° 초기 cmd v +0.057 w -0.061 | 경로 41점(간격 0.047) | 파라미터 vx_std=0.08 wz_std=0.4 temperature=0.3 iters=2 align_w=14 align_off=3 follow_w=10 follow_off=20 angle_w=2 angle_max=0.5 rep_w=1.5
+  → 60 주기(6.0 s) 후: 전진 +0.457 횡 -0.115 회전 -24.9°, 최종 cmd v +0.080 w -0.113
+     유효 표본 수 ESS 중앙 30.0 (10/90% 8.5/189.9) / 배치 1000 → 첫 제어 ω 표본 잡음 추정 wz_std/√ESS = 0.073 rad/s
+     흔들림: |ω|>0.05 반전 명령 2 회 = 4.2 회/m, 차체 2 회 = 4.2 회/m (이동 0.475 m) | 고주파 RMS 명령 0.056 차체 0.040 rad/s | 최대 둘레비용 253
+
+G4_mp11_regen0_T0.15 bag bag_mp11 t=19.0 자세 (0.770,0.308) yaw +17.8° 초기 cmd v +0.057 w -0.061 | 경로 41점(간격 0.047) | 파라미터 vx_std=0.08 wz_std=0.4 temperature=0.15 iters=2 align_w=14 align_off=3 follow_w=10 follow_off=20 angle_w=2 angle_max=0.5 rep_w=1.5
+  → 60 주기(6.0 s) 후: 전진 +0.222 횡 -0.040 회전 -17.2°, 최종 cmd v +0.024 w -0.023
+     유효 표본 수 ESS 중앙 1.0 (10/90% 1.0/4.0) / 배치 1000 → 첫 제어 ω 표본 잡음 추정 wz_std/√ESS = 0.393 rad/s
+     흔들림: |ω|>0.05 반전 명령 0 회 = 0.0 회/m, 차체 0 회 = 0.0 회/m (이동 0.227 m) | 고주파 RMS 명령 0.032 차체 0.023 rad/s | 최대 둘레비용 253
+
+G4_mp11_regen1_T0.15 bag bag_mp11 t=19.0 자세 (0.770,0.308) yaw +17.8° 초기 cmd v +0.057 w -0.061 | 경로 41점(간격 0.047) | 파라미터 vx_std=0.08 wz_std=0.4 temperature=0.15 iters=2 align_w=14 align_off=3 follow_w=10 follow_off=20 angle_w=2 angle_max=0.5 rep_w=1.5
+  → 60 주기(6.0 s) 후: 전진 +0.420 횡 -0.100 회전 -24.4°, 최종 cmd v +0.077 w -0.082
+     유효 표본 수 ESS 중앙 3.8 (10/90% 1.7/16.7) / 배치 1000 → 첫 제어 ω 표본 잡음 추정 wz_std/√ESS = 0.206 rad/s
+     흔들림: |ω|>0.05 반전 명령 5 회 = 11.5 회/m, 차체 3 회 = 6.9 회/m (이동 0.435 m) | 고주파 RMS 명령 0.088 차체 0.062 rad/s | 최대 둘레비용 253
+
+G4_mp11_regen0_T0.3 bag bag_mp11 t=19.0 자세 (0.770,0.308) yaw +17.8° 초기 cmd v +0.057 w -0.061 | 경로 41점(간격 0.047) | 파라미터 vx_std=0.08 wz_std=0.4 temperature=0.3 iters=2 align_w=14 align_off=3 follow_w=10 follow_off=20 angle_w=2 angle_max=0.5 rep_w=1.5
+  → 60 주기(6.0 s) 후: 전진 +0.447 횡 -0.129 회전 -29.8°, 최종 cmd v +0.080 w -0.142
+     유효 표본 수 ESS 중앙 13.3 (10/90% 6.1/207.9) / 배치 1000 → 첫 제어 ω 표본 잡음 추정 wz_std/√ESS = 0.110 rad/s
+     흔들림: |ω|>0.05 반전 명령 0 회 = 0.0 회/m, 차체 0 회 = 0.0 회/m (이동 0.470 m) | 고주파 RMS 명령 0.026 차체 0.020 rad/s | 최대 둘레비용 253
+
+G4_mp11_regen1_T0.3 bag bag_mp11 t=19.0 자세 (0.770,0.308) yaw +17.8° 초기 cmd v +0.057 w -0.061 | 경로 41점(간격 0.047) | 파라미터 vx_std=0.08 wz_std=0.4 temperature=0.3 iters=2 align_w=14 align_off=3 follow_w=10 follow_off=20 angle_w=2 angle_max=0.5 rep_w=1.5
+  → 60 주기(6.0 s) 후: 전진 +0.457 횡 -0.119 회전 -26.3°, 최종 cmd v +0.080 w -0.015
+     유효 표본 수 ESS 중앙 27.6 (10/90% 11.2/222.1) / 배치 1000 → 첫 제어 ω 표본 잡음 추정 wz_std/√ESS = 0.076 rad/s
+     흔들림: |ω|>0.05 반전 명령 1 회 = 2.1 회/m, 차체 0 회 = 0.0 회/m (이동 0.476 m) | 고주파 RMS 명령 0.068 차체 0.048 rad/s | 최대 둘레비용 253
+
+G5_mp11_regen0_T0.15 bag bag_mp11 t=19.0 자세 (0.770,0.308) yaw +17.8° 초기 cmd v +0.057 w -0.061 | 경로 41점(간격 0.047) | 파라미터 vx_std=0.08 wz_std=0.4 temperature=0.15 iters=2 align_w=14 align_off=3 follow_w=10 follow_off=20 angle_w=2 angle_max=0.5 rep_w=1.5
+  → 60 주기(6.0 s) 후: 전진 +0.431 횡 -0.108 회전 -31.5°, 최종 cmd v +0.080 w -0.173
+     유효 표본 수 ESS 중앙 8.8 (10/90% 6.0/15.3) / 배치 1000 → 첫 제어 ω 표본 잡음 추정 wz_std/√ESS = 0.135 rad/s
+     흔들림: |ω|>0.05 반전 명령 0 회 = 0.0 회/m, 차체 0 회 = 0.0 회/m (이동 0.450 m) | 고주파 RMS 명령 0.028 차체 0.020 rad/s | 최대 둘레비용 253
+
+G5_mp11_regen1_T0.15 bag bag_mp11 t=19.0 자세 (0.770,0.308) yaw +17.8° 초기 cmd v +0.057 w -0.061 | 경로 41점(간격 0.047) | 파라미터 vx_std=0.08 wz_std=0.4 temperature=0.15 iters=2 align_w=14 align_off=3 follow_w=10 follow_off=20 angle_w=2 angle_max=0.5 rep_w=1.5
+  → 60 주기(6.0 s) 후: 전진 +0.427 횡 -0.106 회전 -24.7°, 최종 cmd v +0.079 w -0.058
+     유효 표본 수 ESS 중앙 3.2 (10/90% 1.4/16.1) / 배치 1000 → 첫 제어 ω 표본 잡음 추정 wz_std/√ESS = 0.223 rad/s
+     흔들림: |ω|>0.05 반전 명령 4 회 = 9.0 회/m, 차체 4 회 = 9.0 회/m (이동 0.442 m) | 고주파 RMS 명령 0.087 차체 0.057 rad/s | 최대 둘레비용 253
+
+G5_mp11_regen0_T0.3 bag bag_mp11 t=19.0 자세 (0.770,0.308) yaw +17.8° 초기 cmd v +0.057 w -0.061 | 경로 41점(간격 0.047) | 파라미터 vx_std=0.08 wz_std=0.4 temperature=0.3 iters=2 align_w=14 align_off=3 follow_w=10 follow_off=20 angle_w=2 angle_max=0.5 rep_w=1.5
+  → 60 주기(6.0 s) 후: 전진 +0.449 횡 -0.138 회전 -35.8°, 최종 cmd v +0.080 w -0.200
+     유효 표본 수 ESS 중앙 28.9 (10/90% 15.8/230.5) / 배치 1000 → 첫 제어 ω 표본 잡음 추정 wz_std/√ESS = 0.074 rad/s
+     흔들림: |ω|>0.05 반전 명령 0 회 = 0.0 회/m, 차체 0 회 = 0.0 회/m (이동 0.477 m) | 고주파 RMS 명령 0.042 차체 0.030 rad/s | 최대 둘레비용 253
+
+G5_mp11_regen1_T0.3 bag bag_mp11 t=19.0 자세 (0.770,0.308) yaw +17.8° 초기 cmd v +0.057 w -0.061 | 경로 41점(간격 0.047) | 파라미터 vx_std=0.08 wz_std=0.4 temperature=0.3 iters=2 align_w=14 align_off=3 follow_w=10 follow_off=20 angle_w=2 angle_max=0.5 rep_w=1.5
+  → 60 주기(6.0 s) 후: 전진 +0.457 횡 -0.119 회전 -26.7°, 최종 cmd v +0.080 w -0.047
+     유효 표본 수 ESS 중앙 28.2 (10/90% 10.7/199.8) / 배치 1000 → 첫 제어 ω 표본 잡음 추정 wz_std/√ESS = 0.075 rad/s
+     흔들림: |ω|>0.05 반전 명령 0 회 = 0.0 회/m, 차체 0 회 = 0.0 회/m (이동 0.476 m) | 고주파 RMS 명령 0.061 차체 0.041 rad/s | 최대 둘레비용 253
+
+G6_mp11_regen0_T0.15 bag bag_mp11 t=19.0 자세 (0.770,0.308) yaw +17.8° 초기 cmd v +0.057 w -0.061 | 경로 41점(간격 0.047) | 파라미터 vx_std=0.08 wz_std=0.4 temperature=0.15 iters=2 align_w=14 align_off=3 follow_w=10 follow_off=20 angle_w=2 angle_max=0.5 rep_w=1.5
+  → 60 주기(6.0 s) 후: 전진 +0.449 횡 -0.107 회전 -22.8°, 최종 cmd v +0.080 w -0.126
+     유효 표본 수 ESS 중앙 6.9 (10/90% 3.8/16.0) / 배치 1000 → 첫 제어 ω 표본 잡음 추정 wz_std/√ESS = 0.152 rad/s
+     흔들림: |ω|>0.05 반전 명령 2 회 = 4.3 회/m, 차체 2 회 = 4.3 회/m (이동 0.465 m) | 고주파 RMS 명령 0.035 차체 0.025 rad/s | 최대 둘레비용 253
+
+G6_mp11_regen1_T0.15 bag bag_mp11 t=19.0 자세 (0.770,0.308) yaw +17.8° 초기 cmd v +0.057 w -0.061 | 경로 41점(간격 0.047) | 파라미터 vx_std=0.08 wz_std=0.4 temperature=0.15 iters=2 align_w=14 align_off=3 follow_w=10 follow_off=20 angle_w=2 angle_max=0.5 rep_w=1.5
+  → 60 주기(6.0 s) 후: 전진 +0.438 횡 -0.112 회전 -25.6°, 최종 cmd v +0.071 w +0.088
+     유효 표본 수 ESS 중앙 4.7 (10/90% 2.2/14.8) / 배치 1000 → 첫 제어 ω 표본 잡음 추정 wz_std/√ESS = 0.184 rad/s
+     흔들림: |ω|>0.05 반전 명령 7 회 = 15.4 회/m, 차체 7 회 = 15.4 회/m (이동 0.456 m) | 고주파 RMS 명령 0.094 차체 0.067 rad/s | 최대 둘레비용 253
+
+G6_mp11_regen0_T0.3 bag bag_mp11 t=19.0 자세 (0.770,0.308) yaw +17.8° 초기 cmd v +0.057 w -0.061 | 경로 41점(간격 0.047) | 파라미터 vx_std=0.08 wz_std=0.4 temperature=0.3 iters=2 align_w=14 align_off=3 follow_w=10 follow_off=20 angle_w=2 angle_max=0.5 rep_w=1.5
+  → 60 주기(6.0 s) 후: 전진 +0.461 횡 -0.110 회전 -22.7°, 최종 cmd v +0.080 w -0.066
+     유효 표본 수 ESS 중앙 37.3 (10/90% 21.0/177.2) / 배치 1000 → 첫 제어 ω 표본 잡음 추정 wz_std/√ESS = 0.066 rad/s
+     흔들림: |ω|>0.05 반전 명령 0 회 = 0.0 회/m, 차체 0 회 = 0.0 회/m (이동 0.477 m) | 고주파 RMS 명령 0.028 차체 0.021 rad/s | 최대 둘레비용 253
+
+G6_mp11_regen1_T0.3 bag bag_mp11 t=19.0 자세 (0.770,0.308) yaw +17.8° 초기 cmd v +0.057 w -0.061 | 경로 41점(간격 0.047) | 파라미터 vx_std=0.08 wz_std=0.4 temperature=0.3 iters=2 align_w=14 align_off=3 follow_w=10 follow_off=20 angle_w=2 angle_max=0.5 rep_w=1.5
+  → 60 주기(6.0 s) 후: 전진 +0.458 횡 -0.118 회전 -25.1°, 최종 cmd v +0.080 w +0.005
+     유효 표본 수 ESS 중앙 27.6 (10/90% 11.9/183.3) / 배치 1000 → 첫 제어 ω 표본 잡음 추정 wz_std/√ESS = 0.076 rad/s
+     흔들림: |ω|>0.05 반전 명령 4 회 = 8.4 회/m, 차체 2 회 = 4.2 회/m (이동 0.477 m) | 고주파 RMS 명령 0.072 차체 0.051 rad/s | 최대 둘레비용 253
+
+######## mp12 t=19
+G1_mp12_regen0_T0.15 bag bag_mp12 t=19.0 자세 (0.740,0.175) yaw +30.2° 초기 cmd v +0.081 w +0.107 | 경로 41점(간격 0.030) | 파라미터 vx_std=0.08 wz_std=0.4 temperature=0.15 iters=2 align_w=14 align_off=3 follow_w=10 follow_off=20 angle_w=2 angle_max=0.5 rep_w=1.5
+  → 60 주기(6.0 s) 후: 전진 +0.405 횡 -0.114 회전 -22.3°, 최종 cmd v +0.073 w -0.147
+     유효 표본 수 ESS 중앙 5.8 (10/90% 3.2/17.2) / 배치 1000 → 첫 제어 ω 표본 잡음 추정 wz_std/√ESS = 0.167 rad/s
+     흔들림: |ω|>0.05 반전 명령 4 회 = 9.4 회/m, 차체 5 회 = 11.8 회/m (이동 0.423 m) | 고주파 RMS 명령 0.049 차체 0.038 rad/s | 최대 둘레비용 253
+
+G1_mp12_regen1_T0.15 bag bag_mp12 t=19.0 자세 (0.740,0.175) yaw +30.2° 초기 cmd v +0.081 w +0.107 | 경로 41점(간격 0.030) | 파라미터 vx_std=0.08 wz_std=0.4 temperature=0.15 iters=2 align_w=14 align_off=3 follow_w=10 follow_off=20 angle_w=2 angle_max=0.5 rep_w=1.5
+  → 60 주기(6.0 s) 후: 전진 +0.412 횡 -0.109 회전 -23.4°, 최종 cmd v +0.079 w +0.072
+     유효 표본 수 ESS 중앙 3.0 (10/90% 1.5/7.6) / 배치 1000 → 첫 제어 ω 표본 잡음 추정 wz_std/√ESS = 0.230 rad/s
+     흔들림: |ω|>0.05 반전 명령 9 회 = 21.0 회/m, 차체 3 회 = 7.0 회/m (이동 0.429 m) | 고주파 RMS 명령 0.090 차체 0.065 rad/s | 최대 둘레비용 253
+
+G1_mp12_regen0_T0.3 bag bag_mp12 t=19.0 자세 (0.740,0.175) yaw +30.2° 초기 cmd v +0.081 w +0.107 | 경로 41점(간격 0.030) | 파라미터 vx_std=0.08 wz_std=0.4 temperature=0.3 iters=2 align_w=14 align_off=3 follow_w=10 follow_off=20 angle_w=2 angle_max=0.5 rep_w=1.5
+  → 60 주기(6.0 s) 후: 전진 +0.451 횡 -0.135 회전 -26.8°, 최종 cmd v +0.080 w -0.172
+     유효 표본 수 ESS 중앙 51.3 (10/90% 24.2/79.6) / 배치 1000 → 첫 제어 ω 표본 잡음 추정 wz_std/√ESS = 0.056 rad/s
+     흔들림: |ω|>0.05 반전 명령 0 회 = 0.0 회/m, 차체 1 회 = 2.1 회/m (이동 0.474 m) | 고주파 RMS 명령 0.027 차체 0.024 rad/s | 최대 둘레비용 253
+
+G1_mp12_regen1_T0.3 bag bag_mp12 t=19.0 자세 (0.740,0.175) yaw +30.2° 초기 cmd v +0.081 w +0.107 | 경로 41점(간격 0.030) | 파라미터 vx_std=0.08 wz_std=0.4 temperature=0.3 iters=2 align_w=14 align_off=3 follow_w=10 follow_off=20 angle_w=2 angle_max=0.5 rep_w=1.5
+  → 60 주기(6.0 s) 후: 전진 +0.454 횡 -0.128 회전 -26.1°, 최종 cmd v +0.080 w -0.086
+     유효 표본 수 ESS 중앙 25.2 (10/90% 6.4/45.3) / 배치 1000 → 첫 제어 ω 표본 잡음 추정 wz_std/√ESS = 0.080 rad/s
+     흔들림: |ω|>0.05 반전 명령 4 회 = 8.4 회/m, 차체 5 회 = 10.5 회/m (이동 0.476 m) | 고주파 RMS 명령 0.076 차체 0.053 rad/s | 최대 둘레비용 253
+
+G2_mp12_regen0_T0.15 bag bag_mp12 t=19.0 자세 (0.740,0.175) yaw +30.2° 초기 cmd v +0.081 w +0.107 | 경로 41점(간격 0.030) | 파라미터 vx_std=0.08 wz_std=0.4 temperature=0.15 iters=2 align_w=14 align_off=3 follow_w=10 follow_off=20 angle_w=2 angle_max=0.5 rep_w=1.5
+  → 60 주기(6.0 s) 후: 전진 +0.449 횡 -0.127 회전 -28.3°, 최종 cmd v +0.080 w -0.072
+     유효 표본 수 ESS 중앙 11.6 (10/90% 3.5/18.4) / 배치 1000 → 첫 제어 ω 표본 잡음 추정 wz_std/√ESS = 0.118 rad/s
+     흔들림: |ω|>0.05 반전 명령 4 회 = 8.5 회/m, 차체 3 회 = 6.4 회/m (이동 0.471 m) | 고주파 RMS 명령 0.056 차체 0.040 rad/s | 최대 둘레비용 253
+
+G2_mp12_regen1_T0.15 bag bag_mp12 t=19.0 자세 (0.740,0.175) yaw +30.2° 초기 cmd v +0.081 w +0.107 | 경로 41점(간격 0.030) | 파라미터 vx_std=0.08 wz_std=0.4 temperature=0.15 iters=2 align_w=14 align_off=3 follow_w=10 follow_off=20 angle_w=2 angle_max=0.5 rep_w=1.5
+  → 60 주기(6.0 s) 후: 전진 +0.417 횡 -0.111 회전 -25.4°, 최종 cmd v +0.081 w -0.233
+     유효 표본 수 ESS 중앙 3.3 (10/90% 1.3/10.6) / 배치 1000 → 첫 제어 ω 표본 잡음 추정 wz_std/√ESS = 0.221 rad/s
+     흔들림: |ω|>0.05 반전 명령 4 회 = 9.2 회/m, 차체 3 회 = 6.9 회/m (이동 0.436 m) | 고주파 RMS 명령 0.076 차체 0.054 rad/s | 최대 둘레비용 253
+
+G2_mp12_regen0_T0.3 bag bag_mp12 t=19.0 자세 (0.740,0.175) yaw +30.2° 초기 cmd v +0.081 w +0.107 | 경로 41점(간격 0.030) | 파라미터 vx_std=0.08 wz_std=0.4 temperature=0.3 iters=2 align_w=14 align_off=3 follow_w=10 follow_off=20 angle_w=2 angle_max=0.5 rep_w=1.5
+  → 60 주기(6.0 s) 후: 전진 +0.458 횡 -0.129 회전 -28.6°, 최종 cmd v +0.080 w -0.145
+     유효 표본 수 ESS 중앙 49.8 (10/90% 36.0/66.3) / 배치 1000 → 첫 제어 ω 표본 잡음 추정 wz_std/√ESS = 0.057 rad/s
+     흔들림: |ω|>0.05 반전 명령 2 회 = 4.2 회/m, 차체 3 회 = 6.3 회/m (이동 0.480 m) | 고주파 RMS 명령 0.034 차체 0.028 rad/s | 최대 둘레비용 253
+
+G2_mp12_regen1_T0.3 bag bag_mp12 t=19.0 자세 (0.740,0.175) yaw +30.2° 초기 cmd v +0.081 w +0.107 | 경로 41점(간격 0.030) | 파라미터 vx_std=0.08 wz_std=0.4 temperature=0.3 iters=2 align_w=14 align_off=3 follow_w=10 follow_off=20 angle_w=2 angle_max=0.5 rep_w=1.5
+  → 60 주기(6.0 s) 후: 전진 +0.453 횡 -0.128 회전 -29.2°, 최종 cmd v +0.080 w -0.201
+     유효 표본 수 ESS 중앙 25.5 (10/90% 9.1/63.7) / 배치 1000 → 첫 제어 ω 표본 잡음 추정 wz_std/√ESS = 0.079 rad/s
+     흔들림: |ω|>0.05 반전 명령 2 회 = 4.2 회/m, 차체 3 회 = 6.3 회/m (이동 0.475 m) | 고주파 RMS 명령 0.054 차체 0.038 rad/s | 최대 둘레비용 253
+
+G3_mp12_regen0_T0.15 bag bag_mp12 t=19.0 자세 (0.740,0.175) yaw +30.2° 초기 cmd v +0.081 w +0.107 | 경로 41점(간격 0.030) | 파라미터 vx_std=0.08 wz_std=0.4 temperature=0.15 iters=2 align_w=14 align_off=3 follow_w=10 follow_off=20 angle_w=2 angle_max=0.5 rep_w=1.5
+  → 60 주기(6.0 s) 후: 전진 +0.465 횡 -0.100 회전 -25.7°, 최종 cmd v +0.080 w -0.099
+     유효 표본 수 ESS 중앙 14.0 (10/90% 10.0/19.4) / 배치 1000 → 첫 제어 ω 표본 잡음 추정 wz_std/√ESS = 0.107 rad/s
+     흔들림: |ω|>0.05 반전 명령 0 회 = 0.0 회/m, 차체 1 회 = 2.1 회/m (이동 0.480 m) | 고주파 RMS 명령 0.042 차체 0.036 rad/s | 최대 둘레비용 253
+
+G3_mp12_regen1_T0.15 bag bag_mp12 t=19.0 자세 (0.740,0.175) yaw +30.2° 초기 cmd v +0.081 w +0.107 | 경로 41점(간격 0.030) | 파라미터 vx_std=0.08 wz_std=0.4 temperature=0.15 iters=2 align_w=14 align_off=3 follow_w=10 follow_off=20 angle_w=2 angle_max=0.5 rep_w=1.5
+  → 60 주기(6.0 s) 후: 전진 +0.424 횡 -0.111 회전 -26.0°, 최종 cmd v +0.080 w -0.196
+     유효 표본 수 ESS 중앙 4.2 (10/90% 1.4/12.5) / 배치 1000 → 첫 제어 ω 표본 잡음 추정 wz_std/√ESS = 0.195 rad/s
+     흔들림: |ω|>0.05 반전 명령 6 회 = 13.6 회/m, 차체 7 회 = 15.8 회/m (이동 0.442 m) | 고주파 RMS 명령 0.084 차체 0.062 rad/s | 최대 둘레비용 253
+
+G3_mp12_regen0_T0.3 bag bag_mp12 t=19.0 자세 (0.740,0.175) yaw +30.2° 초기 cmd v +0.081 w +0.107 | 경로 41점(간격 0.030) | 파라미터 vx_std=0.08 wz_std=0.4 temperature=0.3 iters=2 align_w=14 align_off=3 follow_w=10 follow_off=20 angle_w=2 angle_max=0.5 rep_w=1.5
+  → 60 주기(6.0 s) 후: 전진 +0.462 횡 -0.115 회전 -27.4°, 최종 cmd v +0.080 w -0.108
+     유효 표본 수 ESS 중앙 43.5 (10/90% 34.5/55.4) / 배치 1000 → 첫 제어 ω 표본 잡음 추정 wz_std/√ESS = 0.061 rad/s
+     흔들림: |ω|>0.05 반전 명령 0 회 = 0.0 회/m, 차체 1 회 = 2.1 회/m (이동 0.480 m) | 고주파 RMS 명령 0.024 차체 0.026 rad/s | 최대 둘레비용 253
+
+G3_mp12_regen1_T0.3 bag bag_mp12 t=19.0 자세 (0.740,0.175) yaw +30.2° 초기 cmd v +0.081 w +0.107 | 경로 41점(간격 0.030) | 파라미터 vx_std=0.08 wz_std=0.4 temperature=0.3 iters=2 align_w=14 align_off=3 follow_w=10 follow_off=20 angle_w=2 angle_max=0.5 rep_w=1.5
+  → 60 주기(6.0 s) 후: 전진 +0.455 횡 -0.127 회전 -29.0°, 최종 cmd v +0.080 w -0.143
+     유효 표본 수 ESS 중앙 26.5 (10/90% 7.8/66.4) / 배치 1000 → 첫 제어 ω 표본 잡음 추정 wz_std/√ESS = 0.078 rad/s
+     흔들림: |ω|>0.05 반전 명령 2 회 = 4.2 회/m, 차체 3 회 = 6.3 회/m (이동 0.476 m) | 고주파 RMS 명령 0.066 차체 0.046 rad/s | 최대 둘레비용 253
+
+######## 끝 17:44:40
