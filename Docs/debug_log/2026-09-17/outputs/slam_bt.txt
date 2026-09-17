@@ -1,0 +1,323 @@
+[New LWP 12042]
+[New LWP 12043]
+[New LWP 12050]
+[New LWP 12051]
+[New LWP 12052]
+[New LWP 12053]
+[New LWP 12054]
+[New LWP 12055]
+[New LWP 12056]
+[New LWP 12057]
+[New LWP 12058]
+[New LWP 12059]
+[New LWP 12060]
+[New LWP 12061]
+[New LWP 12062]
+[New LWP 12063]
+[New LWP 14204]
+[New LWP 14205]
+[New LWP 14206]
+[New LWP 14207]
+[New LWP 14208]
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/lib/aarch64-linux-gnu/libthread_db.so.1".
+__futex_abstimed_wait_common64 (private=0, cancel=true, abstime=0x0, op=393, expected=0, futex_word=0xffff8c001028) at ./nptl/futex-internal.c:57
+57	./nptl/futex-internal.c: No such file or directory.
+  Id   Target Id                                           Frame 
+* 1    Thread 0xffffa7625020 (LWP 12040) "async_slam_tool" __futex_abstimed_wait_common64 (private=0, cancel=true, abstime=0x0, op=393, expected=0, futex_word=0xffff8c001028) at ./nptl/futex-internal.c:57
+  2    Thread 0xffffa547e8e0 (LWP 12042) "async_slam_tool" __futex_abstimed_wait_common64 (private=0, cancel=true, abstime=0xffffa547dfc8, op=137, expected=0, futex_word=0xaaaaddd9f048) at ./nptl/futex-internal.c:57
+  3    Thread 0xffffa4c6e8e0 (LWP 12043) "async_slam_tool" __futex_abstimed_wait_common64 (private=<optimized out>, cancel=true, abstime=0x0, op=393, expected=0, futex_word=0xaaaaddd8d9b0) at ./nptl/futex-internal.c:57
+  4    Thread 0xffffa237e8e0 (LWP 12050) "async_slam_tool" futex_wait (private=0, expected=2, futex_word=0xaaaade155530) at ../sysdeps/nptl/futex-internal.h:146
+  5    Thread 0xffffa445e8e0 (LWP 12051) "async_slam_tool" futex_wait (private=0, expected=2, futex_word=0xaaaadde6be80) at ../sysdeps/nptl/futex-internal.h:146
+  6    Thread 0xffffa2c2e8e0 (LWP 12052) "async_slam_tool" futex_wait (private=0, expected=2, futex_word=0xaaaaddfb4a78) at ../sysdeps/nptl/futex-internal.h:146
+  7    Thread 0xffffa343e8e0 (LWP 12053) "async_slam_tool" futex_wait (private=0, expected=2, futex_word=0xaaaadde6be80) at ../sysdeps/nptl/futex-internal.h:146
+  8    Thread 0xffffa3c4e8e0 (LWP 12054) "async_slam_tool" futex_wait (private=0, expected=2, futex_word=0xaaaade155a80) at ../sysdeps/nptl/futex-internal.h:146
+  9    Thread 0xffffa1b4e8e0 (LWP 12055) "async_slam_tool" __futex_abstimed_wait_common64 (private=0, cancel=true, abstime=0x0, op=393, expected=0, futex_word=0xffff90000be8) at ./nptl/futex-internal.c:57
+  10   Thread 0xffffa114e8e0 (LWP 12056) "async_slam_tool" __futex_abstimed_wait_common64 (private=0, cancel=true, abstime=0x0, op=393, expected=0, futex_word=0xaaaade146918) at ./nptl/futex-internal.c:57
+  11   Thread 0xffff8a52e8e0 (LWP 12057) "async_slam_tool" __futex_abstimed_wait_common64 (private=0, cancel=true, abstime=0x0, op=393, expected=0, futex_word=0xffff8ba93968) at ./nptl/futex-internal.c:57
+  12   Thread 0xffff89d1e8e0 (LWP 12058) "async_slam_tool" __futex_abstimed_wait_common64 (private=0, cancel=true, abstime=0x0, op=393, expected=0, futex_word=0xffff8ba939e8) at ./nptl/futex-internal.c:57
+  13   Thread 0xffff8950e8e0 (LWP 12059) "async_slam_tool" __futex_abstimed_wait_common64 (private=0, cancel=true, abstime=0x0, op=393, expected=0, futex_word=0xffff8ba93a68) at ./nptl/futex-internal.c:57
+  14   Thread 0xffff88cfe8e0 (LWP 12060) "async_slam_tool" __futex_abstimed_wait_common64 (private=0, cancel=true, abstime=0x0, op=393, expected=0, futex_word=0xffff8ba93ae8) at ./nptl/futex-internal.c:57
+  15   Thread 0xffff81ffe8e0 (LWP 12061) "async_slam_tool" __futex_abstimed_wait_common64 (private=0, cancel=true, abstime=0x0, op=393, expected=0, futex_word=0xffff8ba93b68) at ./nptl/futex-internal.c:57
+  16   Thread 0xffff7b7ee8e0 (LWP 12062) "async_slam_tool" futex_wait (private=0, expected=2, futex_word=0xaaaade155530) at ../sysdeps/nptl/futex-internal.h:146
+  17   Thread 0xffff7afde8e0 (LWP 12063) "async_slam_tool" __futex_abstimed_wait_common64 (private=0, cancel=true, abstime=0xffff7afdde08, op=137, expected=0, futex_word=0xaaaaddd8bcb8) at ./nptl/futex-internal.c:57
+  18   Thread 0xffff73efd8e0 (LWP 14204) "async_slam_tool" syscall () at ../sysdeps/unix/sysv/linux/aarch64/syscall.S:38
+  19   Thread 0xffff73aed8e0 (LWP 14205) "async_slam_tool" syscall () at ../sysdeps/unix/sysv/linux/aarch64/syscall.S:38
+  20   Thread 0xffff736dd8e0 (LWP 14206) "async_slam_tool" syscall () at ../sysdeps/unix/sysv/linux/aarch64/syscall.S:38
+  21   Thread 0xffff732cd8e0 (LWP 14207) "async_slam_tool" syscall () at ../sysdeps/unix/sysv/linux/aarch64/syscall.S:38
+  22   Thread 0xffff72ebd8e0 (LWP 14208) "async_slam_tool" syscall () at ../sysdeps/unix/sysv/linux/aarch64/syscall.S:38
+
+Thread 22 (Thread 0xffff72ebd8e0 (LWP 14208) "async_slam_tool"):
+#0  syscall () at ../sysdeps/unix/sysv/linux/aarch64/syscall.S:38
+#1  0x0000ffffa69894f8 in ?? () from /lib/aarch64-linux-gnu/libtbb.so.12
+#2  0x0000ffffa699b9cc in ?? () from /lib/aarch64-linux-gnu/libtbb.so.12
+#3  0x0000ffffa6e10398 in start_thread (arg=0x40e120) at ./nptl/pthread_create.c:442
+#4  0x0000ffffa6e79e9c in thread_start () at ../sysdeps/unix/sysv/linux/aarch64/clone.S:79
+
+Thread 21 (Thread 0xffff732cd8e0 (LWP 14207) "async_slam_tool"):
+#0  syscall () at ../sysdeps/unix/sysv/linux/aarch64/syscall.S:38
+#1  0x0000ffffa69894f8 in ?? () from /lib/aarch64-linux-gnu/libtbb.so.12
+#2  0x0000ffffa699b9cc in ?? () from /lib/aarch64-linux-gnu/libtbb.so.12
+#3  0x0000ffffa6e10398 in start_thread (arg=0x40e120) at ./nptl/pthread_create.c:442
+#4  0x0000ffffa6e79e9c in thread_start () at ../sysdeps/unix/sysv/linux/aarch64/clone.S:79
+
+Thread 20 (Thread 0xffff736dd8e0 (LWP 14206) "async_slam_tool"):
+#0  syscall () at ../sysdeps/unix/sysv/linux/aarch64/syscall.S:38
+#1  0x0000ffffa69894f8 in ?? () from /lib/aarch64-linux-gnu/libtbb.so.12
+#2  0x0000ffffa699b9cc in ?? () from /lib/aarch64-linux-gnu/libtbb.so.12
+#3  0x0000ffffa6e10398 in start_thread (arg=0x40e120) at ./nptl/pthread_create.c:442
+#4  0x0000ffffa6e79e9c in thread_start () at ../sysdeps/unix/sysv/linux/aarch64/clone.S:79
+
+Thread 19 (Thread 0xffff73aed8e0 (LWP 14205) "async_slam_tool"):
+#0  syscall () at ../sysdeps/unix/sysv/linux/aarch64/syscall.S:38
+#1  0x0000ffffa69894f8 in ?? () from /lib/aarch64-linux-gnu/libtbb.so.12
+#2  0x0000ffffa699b9cc in ?? () from /lib/aarch64-linux-gnu/libtbb.so.12
+#3  0x0000ffffa6e10398 in start_thread (arg=0x40e120) at ./nptl/pthread_create.c:442
+#4  0x0000ffffa6e79e9c in thread_start () at ../sysdeps/unix/sysv/linux/aarch64/clone.S:79
+
+Thread 18 (Thread 0xffff73efd8e0 (LWP 14204) "async_slam_tool"):
+#0  syscall () at ../sysdeps/unix/sysv/linux/aarch64/syscall.S:38
+#1  0x0000ffffa69894f8 in ?? () from /lib/aarch64-linux-gnu/libtbb.so.12
+#2  0x0000ffffa699b9cc in ?? () from /lib/aarch64-linux-gnu/libtbb.so.12
+#3  0x0000ffffa6e10398 in start_thread (arg=0x40e120) at ./nptl/pthread_create.c:442
+#4  0x0000ffffa6e79e9c in thread_start () at ../sysdeps/unix/sysv/linux/aarch64/clone.S:79
+
+Thread 17 (Thread 0xffff7afde8e0 (LWP 12063) "async_slam_tool"):
+#0  __futex_abstimed_wait_common64 (private=0, cancel=true, abstime=0xffff7afdde08, op=137, expected=0, futex_word=0xaaaaddd8bcb8) at ./nptl/futex-internal.c:57
+#1  __futex_abstimed_wait_common (cancel=true, private=0, abstime=0xffff7afdde08, clockid=0, expected=0, futex_word=0xaaaaddd8bcb8) at ./nptl/futex-internal.c:87
+#2  __GI___futex_abstimed_wait_cancelable64 (futex_word=futex_word@entry=0xaaaaddd8bcb8, expected=expected@entry=0, clockid=clockid@entry=1, abstime=abstime@entry=0xffff7afdde08, private=private@entry=0) at ./nptl/futex-internal.c:139
+#3  0x0000ffffa6e0fc9c in __pthread_cond_wait_common (abstime=0xffff7afdde08, clockid=1, mutex=0xaaaaddd8bcc0, cond=0xaaaaddd8bc90) at ./nptl/pthread_cond_wait.c:503
+#4  ___pthread_cond_clockwait64 (abstime=0xffff7afdde08, clockid=1, mutex=0xaaaaddd8bcc0, cond=0xaaaaddd8bc90) at ./nptl/pthread_cond_wait.c:691
+#5  ___pthread_cond_clockwait64 (cond=0xaaaaddd8bc90, mutex=0xaaaaddd8bcc0, clockid=1, abstime=0xffff7afdde08) at ./nptl/pthread_cond_wait.c:679
+#6  0x0000ffffa7349ff8 in rclcpp::Context::sleep_for(std::chrono::duration<long, std::ratio<1l, 1000000000l> > const&) () from /opt/ros/humble/lib/librclcpp.so
+#7  0x0000ffffa6c81fd4 in slam_toolbox::SlamToolbox::publishVisualizations() () from /opt/ros/humble/lib/libtoolbox_common.so
+#8  0x0000ffffa71b4978 in ?? () from /lib/aarch64-linux-gnu/libboost_thread.so.1.74.0
+#9  0x0000ffffa6e10398 in start_thread (arg=0x80e120) at ./nptl/pthread_create.c:442
+#10 0x0000ffffa6e79e9c in thread_start () at ../sysdeps/unix/sysv/linux/aarch64/clone.S:79
+
+Thread 16 (Thread 0xffff7b7ee8e0 (LWP 12062) "async_slam_tool"):
+#0  futex_wait (private=0, expected=2, futex_word=0xaaaade155530) at ../sysdeps/nptl/futex-internal.h:146
+#1  __GI___lll_lock_wait (futex=futex@entry=0xaaaade155530, private=private@entry=0) at ./nptl/lowlevellock.c:49
+#2  0x0000ffffa6e13568 in lll_mutex_lock_optimized (mutex=0xaaaade155530) at ./nptl/pthread_mutex_lock.c:48
+#3  ___pthread_mutex_lock (mutex=0xaaaade155530) at ./nptl/pthread_mutex_lock.c:128
+#4  0x0000ffffa5cd8334 in eprosima::fastdds::dds::DataWriterImpl::perform_create_new_change(eprosima::fastrtps::rtps::ChangeKind_t, void*, eprosima::fastrtps::rtps::WriteParams&, eprosima::fastrtps::rtps::InstanceHandle_t const&) () from /opt/ros/humble/lib/libfastrtps.so.2.6
+#5  0x0000ffffa5cd9194 in eprosima::fastdds::dds::DataWriterImpl::create_new_change_with_params(eprosima::fastrtps::rtps::ChangeKind_t, void*, eprosima::fastrtps::rtps::WriteParams&) () from /opt/ros/humble/lib/libfastrtps.so.2.6
+#6  0x0000ffffa5cd9284 in eprosima::fastdds::dds::DataWriterImpl::create_new_change(eprosima::fastrtps::rtps::ChangeKind_t, void*) () from /opt/ros/humble/lib/libfastrtps.so.2.6
+#7  0x0000ffffa5cd92cc in eprosima::fastdds::dds::DataWriterImpl::write(void*) () from /opt/ros/humble/lib/libfastrtps.so.2.6
+#8  0x0000ffffa6229064 in rmw_fastrtps_shared_cpp::__rmw_publish(char const*, rmw_publisher_s const*, void const*, rmw_publisher_allocation_s*) () from /opt/ros/humble/lib/librmw_fastrtps_shared_cpp.so
+#9  0x0000ffffa692fac0 in ?? () from /opt/ros/humble/lib/librcl.so
+#10 0x0000ffffa6663068 in ?? () from /opt/ros/humble/lib/libtf2_ros.so
+#11 0x0000ffffa66633c0 in tf2_ros::TransformBroadcaster::sendTransform(std::vector<geometry_msgs::msg::TransformStamped_<std::allocator<void> >, std::allocator<geometry_msgs::msg::TransformStamped_<std::allocator<void> > > > const&) () from /opt/ros/humble/lib/libtf2_ros.so
+#12 0x0000ffffa66634dc in tf2_ros::TransformBroadcaster::sendTransform(geometry_msgs::msg::TransformStamped_<std::allocator<void> > const&) () from /opt/ros/humble/lib/libtf2_ros.so
+#13 0x0000ffffa6c7b970 in slam_toolbox::SlamToolbox::publishTransformLoop(double const&) () from /opt/ros/humble/lib/libtoolbox_common.so
+#14 0x0000ffffa71b4978 in ?? () from /lib/aarch64-linux-gnu/libboost_thread.so.1.74.0
+#15 0x0000ffffa6e10398 in start_thread (arg=0x80e120) at ./nptl/pthread_create.c:442
+#16 0x0000ffffa6e79e9c in thread_start () at ../sysdeps/unix/sysv/linux/aarch64/clone.S:79
+
+Thread 15 (Thread 0xffff81ffe8e0 (LWP 12061) "async_slam_tool"):
+#0  __futex_abstimed_wait_common64 (private=0, cancel=true, abstime=0x0, op=393, expected=0, futex_word=0xffff8ba93b68) at ./nptl/futex-internal.c:57
+#1  __futex_abstimed_wait_common (cancel=true, private=0, abstime=0x0, clockid=0, expected=0, futex_word=0xffff8ba93b68) at ./nptl/futex-internal.c:87
+#2  __GI___futex_abstimed_wait_cancelable64 (futex_word=futex_word@entry=0xffff8ba93b68, expected=expected@entry=0, clockid=clockid@entry=0, abstime=abstime@entry=0x0, private=private@entry=0) at ./nptl/futex-internal.c:139
+#3  0x0000ffffa6e0f694 in __pthread_cond_wait_common (abstime=0x0, clockid=0, mutex=0xffff8ba93b10, cond=0xffff8ba93b40) at ./nptl/pthread_cond_wait.c:503
+#4  ___pthread_cond_wait (cond=0xffff8ba93b40, mutex=0xffff8ba93b10) at ./nptl/pthread_cond_wait.c:627
+#5  0x0000ffff8a912a2c in ?? () from /lib/aarch64-linux-gnu/libopenblas.so.0
+#6  0x0000ffffa6e10398 in start_thread (arg=0x80e120) at ./nptl/pthread_create.c:442
+#7  0x0000ffffa6e79e9c in thread_start () at ../sysdeps/unix/sysv/linux/aarch64/clone.S:79
+
+Thread 14 (Thread 0xffff88cfe8e0 (LWP 12060) "async_slam_tool"):
+#0  __futex_abstimed_wait_common64 (private=0, cancel=true, abstime=0x0, op=393, expected=0, futex_word=0xffff8ba93ae8) at ./nptl/futex-internal.c:57
+#1  __futex_abstimed_wait_common (cancel=true, private=0, abstime=0x0, clockid=0, expected=0, futex_word=0xffff8ba93ae8) at ./nptl/futex-internal.c:87
+#2  __GI___futex_abstimed_wait_cancelable64 (futex_word=futex_word@entry=0xffff8ba93ae8, expected=expected@entry=0, clockid=clockid@entry=0, abstime=abstime@entry=0x0, private=private@entry=0) at ./nptl/futex-internal.c:139
+#3  0x0000ffffa6e0f694 in __pthread_cond_wait_common (abstime=0x0, clockid=0, mutex=0xffff8ba93a90, cond=0xffff8ba93ac0) at ./nptl/pthread_cond_wait.c:503
+#4  ___pthread_cond_wait (cond=0xffff8ba93ac0, mutex=0xffff8ba93a90) at ./nptl/pthread_cond_wait.c:627
+#5  0x0000ffff8a912a2c in ?? () from /lib/aarch64-linux-gnu/libopenblas.so.0
+#6  0x0000ffffa6e10398 in start_thread (arg=0x80e120) at ./nptl/pthread_create.c:442
+#7  0x0000ffffa6e79e9c in thread_start () at ../sysdeps/unix/sysv/linux/aarch64/clone.S:79
+
+Thread 13 (Thread 0xffff8950e8e0 (LWP 12059) "async_slam_tool"):
+#0  __futex_abstimed_wait_common64 (private=0, cancel=true, abstime=0x0, op=393, expected=0, futex_word=0xffff8ba93a68) at ./nptl/futex-internal.c:57
+#1  __futex_abstimed_wait_common (cancel=true, private=0, abstime=0x0, clockid=0, expected=0, futex_word=0xffff8ba93a68) at ./nptl/futex-internal.c:87
+#2  __GI___futex_abstimed_wait_cancelable64 (futex_word=futex_word@entry=0xffff8ba93a68, expected=expected@entry=0, clockid=clockid@entry=0, abstime=abstime@entry=0x0, private=private@entry=0) at ./nptl/futex-internal.c:139
+#3  0x0000ffffa6e0f694 in __pthread_cond_wait_common (abstime=0x0, clockid=0, mutex=0xffff8ba93a10, cond=0xffff8ba93a40) at ./nptl/pthread_cond_wait.c:503
+#4  ___pthread_cond_wait (cond=0xffff8ba93a40, mutex=0xffff8ba93a10) at ./nptl/pthread_cond_wait.c:627
+#5  0x0000ffff8a912a2c in ?? () from /lib/aarch64-linux-gnu/libopenblas.so.0
+#6  0x0000ffffa6e10398 in start_thread (arg=0x80e120) at ./nptl/pthread_create.c:442
+#7  0x0000ffffa6e79e9c in thread_start () at ../sysdeps/unix/sysv/linux/aarch64/clone.S:79
+
+Thread 12 (Thread 0xffff89d1e8e0 (LWP 12058) "async_slam_tool"):
+#0  __futex_abstimed_wait_common64 (private=0, cancel=true, abstime=0x0, op=393, expected=0, futex_word=0xffff8ba939e8) at ./nptl/futex-internal.c:57
+#1  __futex_abstimed_wait_common (cancel=true, private=0, abstime=0x0, clockid=0, expected=0, futex_word=0xffff8ba939e8) at ./nptl/futex-internal.c:87
+#2  __GI___futex_abstimed_wait_cancelable64 (futex_word=futex_word@entry=0xffff8ba939e8, expected=expected@entry=0, clockid=clockid@entry=0, abstime=abstime@entry=0x0, private=private@entry=0) at ./nptl/futex-internal.c:139
+#3  0x0000ffffa6e0f694 in __pthread_cond_wait_common (abstime=0x0, clockid=0, mutex=0xffff8ba93990, cond=0xffff8ba939c0) at ./nptl/pthread_cond_wait.c:503
+#4  ___pthread_cond_wait (cond=0xffff8ba939c0, mutex=0xffff8ba93990) at ./nptl/pthread_cond_wait.c:627
+#5  0x0000ffff8a912a2c in ?? () from /lib/aarch64-linux-gnu/libopenblas.so.0
+#6  0x0000ffffa6e10398 in start_thread (arg=0x80e120) at ./nptl/pthread_create.c:442
+#7  0x0000ffffa6e79e9c in thread_start () at ../sysdeps/unix/sysv/linux/aarch64/clone.S:79
+
+Thread 11 (Thread 0xffff8a52e8e0 (LWP 12057) "async_slam_tool"):
+#0  __futex_abstimed_wait_common64 (private=0, cancel=true, abstime=0x0, op=393, expected=0, futex_word=0xffff8ba93968) at ./nptl/futex-internal.c:57
+#1  __futex_abstimed_wait_common (cancel=true, private=0, abstime=0x0, clockid=0, expected=0, futex_word=0xffff8ba93968) at ./nptl/futex-internal.c:87
+#2  __GI___futex_abstimed_wait_cancelable64 (futex_word=futex_word@entry=0xffff8ba93968, expected=expected@entry=0, clockid=clockid@entry=0, abstime=abstime@entry=0x0, private=private@entry=0) at ./nptl/futex-internal.c:139
+#3  0x0000ffffa6e0f694 in __pthread_cond_wait_common (abstime=0x0, clockid=0, mutex=0xffff8ba93910, cond=0xffff8ba93940) at ./nptl/pthread_cond_wait.c:503
+#4  ___pthread_cond_wait (cond=0xffff8ba93940, mutex=0xffff8ba93910) at ./nptl/pthread_cond_wait.c:627
+#5  0x0000ffff8a912a2c in ?? () from /lib/aarch64-linux-gnu/libopenblas.so.0
+#6  0x0000ffffa6e10398 in start_thread (arg=0x80e120) at ./nptl/pthread_create.c:442
+#7  0x0000ffffa6e79e9c in thread_start () at ../sysdeps/unix/sysv/linux/aarch64/clone.S:79
+
+Thread 10 (Thread 0xffffa114e8e0 (LWP 12056) "async_slam_tool"):
+#0  __futex_abstimed_wait_common64 (private=0, cancel=true, abstime=0x0, op=393, expected=0, futex_word=0xaaaade146918) at ./nptl/futex-internal.c:57
+#1  __futex_abstimed_wait_common (cancel=true, private=0, abstime=0x0, clockid=0, expected=0, futex_word=0xaaaade146918) at ./nptl/futex-internal.c:87
+#2  __GI___futex_abstimed_wait_cancelable64 (futex_word=futex_word@entry=0xaaaade146918, expected=expected@entry=0, clockid=clockid@entry=0, abstime=abstime@entry=0x0, private=private@entry=0) at ./nptl/futex-internal.c:139
+#3  0x0000ffffa6e0f694 in __pthread_cond_wait_common (abstime=0x0, clockid=0, mutex=0xaaaade1468c0, cond=0xaaaade1468f0) at ./nptl/pthread_cond_wait.c:503
+#4  ___pthread_cond_wait (cond=0xaaaade1468f0, mutex=0xaaaade1468c0) at ./nptl/pthread_cond_wait.c:627
+#5  0x0000ffffa5de9714 in eprosima::fastdds::dds::detail::WaitSetImpl::wait(std::vector<eprosima::fastdds::dds::Condition*, std::allocator<eprosima::fastdds::dds::Condition*> >&, eprosima::fastrtps::Time_t const&) () from /opt/ros/humble/lib/libfastrtps.so.2.6
+#6  0x0000ffffa5de97c8 in eprosima::fastdds::dds::WaitSet::wait(std::vector<eprosima::fastdds::dds::Condition*, std::allocator<eprosima::fastdds::dds::Condition*> >&, eprosima::fastrtps::Time_t) const () from /opt/ros/humble/lib/libfastrtps.so.2.6
+#7  0x0000ffffa6235bd4 in rmw_fastrtps_shared_cpp::__rmw_wait(char const*, rmw_subscriptions_s*, rmw_guard_conditions_s*, rmw_services_s*, rmw_clients_s*, rmw_events_s*, rmw_wait_set_s*, rmw_time_s const*) () from /opt/ros/humble/lib/librmw_fastrtps_shared_cpp.so
+#8  0x0000ffffa6938240 in rcl_wait () from /opt/ros/humble/lib/librcl.so
+#9  0x0000ffffa7356c38 in rclcpp::Executor::wait_for_work(std::chrono::duration<long, std::ratio<1l, 1000000000l> >) () from /opt/ros/humble/lib/librclcpp.so
+#10 0x0000ffffa7359cec in rclcpp::Executor::get_next_executable(rclcpp::AnyExecutable&, std::chrono::duration<long, std::ratio<1l, 1000000000l> >) () from /opt/ros/humble/lib/librclcpp.so
+#11 0x0000ffffa7361aa0 in rclcpp::executors::SingleThreadedExecutor::spin() () from /opt/ros/humble/lib/librclcpp.so
+#12 0x0000ffffa70429cc in ?? () from /lib/aarch64-linux-gnu/libstdc++.so.6
+#13 0x0000ffffa6e10398 in start_thread (arg=0x80e120) at ./nptl/pthread_create.c:442
+#14 0x0000ffffa6e79e9c in thread_start () at ../sysdeps/unix/sysv/linux/aarch64/clone.S:79
+
+Thread 9 (Thread 0xffffa1b4e8e0 (LWP 12055) "async_slam_tool"):
+#0  __futex_abstimed_wait_common64 (private=0, cancel=true, abstime=0x0, op=393, expected=0, futex_word=0xffff90000be8) at ./nptl/futex-internal.c:57
+#1  __futex_abstimed_wait_common (cancel=true, private=0, abstime=0x0, clockid=0, expected=0, futex_word=0xffff90000be8) at ./nptl/futex-internal.c:87
+#2  __GI___futex_abstimed_wait_cancelable64 (futex_word=futex_word@entry=0xffff90000be8, expected=expected@entry=0, clockid=clockid@entry=0, abstime=abstime@entry=0x0, private=private@entry=0) at ./nptl/futex-internal.c:139
+#3  0x0000ffffa6e0f694 in __pthread_cond_wait_common (abstime=0x0, clockid=0, mutex=0xffff90000b90, cond=0xffff90000bc0) at ./nptl/pthread_cond_wait.c:503
+#4  ___pthread_cond_wait (cond=0xffff90000bc0, mutex=0xffff90000b90) at ./nptl/pthread_cond_wait.c:627
+#5  0x0000ffffa5de9714 in eprosima::fastdds::dds::detail::WaitSetImpl::wait(std::vector<eprosima::fastdds::dds::Condition*, std::allocator<eprosima::fastdds::dds::Condition*> >&, eprosima::fastrtps::Time_t const&) () from /opt/ros/humble/lib/libfastrtps.so.2.6
+#6  0x0000ffffa5de97c8 in eprosima::fastdds::dds::WaitSet::wait(std::vector<eprosima::fastdds::dds::Condition*, std::allocator<eprosima::fastdds::dds::Condition*> >&, eprosima::fastrtps::Time_t) const () from /opt/ros/humble/lib/libfastrtps.so.2.6
+#7  0x0000ffffa6235bd4 in rmw_fastrtps_shared_cpp::__rmw_wait(char const*, rmw_subscriptions_s*, rmw_guard_conditions_s*, rmw_services_s*, rmw_clients_s*, rmw_events_s*, rmw_wait_set_s*, rmw_time_s const*) () from /opt/ros/humble/lib/librmw_fastrtps_shared_cpp.so
+#8  0x0000ffffa6222b74 in ?? () from /opt/ros/humble/lib/librmw_fastrtps_shared_cpp.so
+#9  0x0000ffffa70429cc in ?? () from /lib/aarch64-linux-gnu/libstdc++.so.6
+#10 0x0000ffffa6e10398 in start_thread (arg=0x80e120) at ./nptl/pthread_create.c:442
+#11 0x0000ffffa6e79e9c in thread_start () at ../sysdeps/unix/sysv/linux/aarch64/clone.S:79
+
+Thread 8 (Thread 0xffffa3c4e8e0 (LWP 12054) "async_slam_tool"):
+#0  futex_wait (private=0, expected=2, futex_word=0xaaaade155a80) at ../sysdeps/nptl/futex-internal.h:146
+#1  __GI___lll_lock_wait (futex=futex@entry=0xaaaade155a80, private=private@entry=0) at ./nptl/lowlevellock.c:49
+#2  0x0000ffffa6e13568 in lll_mutex_lock_optimized (mutex=0xaaaade155a80) at ./nptl/pthread_mutex_lock.c:48
+#3  ___pthread_mutex_lock (mutex=0xaaaade155a80) at ./nptl/pthread_mutex_lock.c:128
+#4  0x0000ffffa5c42ac0 in ?? () from /opt/ros/humble/lib/libfastrtps.so.2.6
+#5  0x0000ffffa5c958f0 in eprosima::fastrtps::rtps::RTPSMessageGroup::send() () from /opt/ros/humble/lib/libfastrtps.so.2.6
+#6  0x0000ffffa5c95c78 in eprosima::fastrtps::rtps::RTPSMessageGroup::flush() () from /opt/ros/humble/lib/libfastrtps.so.2.6
+#7  0x0000ffffa5c95ca4 in eprosima::fastrtps::rtps::RTPSMessageGroup::flush_and_reset() () from /opt/ros/humble/lib/libfastrtps.so.2.6
+#8  0x0000ffffa5e393f8 in eprosima::fastdds::rtps::FlowControllerImpl<eprosima::fastdds::rtps::FlowControllerSyncPublishMode, eprosima::fastdds::rtps::FlowControllerFifoSchedule>::run() () from /opt/ros/humble/lib/libfastrtps.so.2.6
+#9  0x0000ffffa70429cc in ?? () from /lib/aarch64-linux-gnu/libstdc++.so.6
+#10 0x0000ffffa6e10398 in start_thread (arg=0x80e120) at ./nptl/pthread_create.c:442
+#11 0x0000ffffa6e79e9c in thread_start () at ../sysdeps/unix/sysv/linux/aarch64/clone.S:79
+
+Thread 7 (Thread 0xffffa343e8e0 (LWP 12053) "async_slam_tool"):
+#0  futex_wait (private=0, expected=2, futex_word=0xaaaadde6be80) at ../sysdeps/nptl/futex-internal.h:146
+#1  __GI___lll_lock_wait (futex=futex@entry=0xaaaadde6be80, private=private@entry=0) at ./nptl/lowlevellock.c:49
+#2  0x0000ffffa6e13568 in lll_mutex_lock_optimized (mutex=0xaaaadde6be80) at ./nptl/pthread_mutex_lock.c:48
+#3  ___pthread_mutex_lock (mutex=0xaaaadde6be80) at ./nptl/pthread_mutex_lock.c:128
+#4  0x0000ffffa5df2024 in eprosima::fastrtps::rtps::PDP::assert_remote_participant_liveliness(eprosima::fastrtps::rtps::GuidPrefix_t const&) () from /opt/ros/humble/lib/libfastrtps.so.2.6
+#5  0x0000ffffa5c9ca48 in eprosima::fastrtps::rtps::MessageReceiver::processCDRMsg(eprosima::fastrtps::rtps::Locator_t const&, eprosima::fastrtps::rtps::Locator_t const&, eprosima::fastrtps::rtps::CDRMessage_t*) () from /opt/ros/humble/lib/libfastrtps.so.2.6
+#6  0x0000ffffa5ca3bac in eprosima::fastrtps::rtps::ReceiverResource::OnDataReceived(unsigned char const*, unsigned int, eprosima::fastrtps::rtps::Locator_t const&, eprosima::fastrtps::rtps::Locator_t const&) () from /opt/ros/humble/lib/libfastrtps.so.2.6
+#7  0x0000ffffa5d2550c in eprosima::fastdds::rtps::UDPChannelResource::perform_listen_operation(eprosima::fastrtps::rtps::Locator_t) () from /opt/ros/humble/lib/libfastrtps.so.2.6
+#8  0x0000ffffa5d20758 in ?? () from /opt/ros/humble/lib/libfastrtps.so.2.6
+#9  0x0000ffffa70429cc in ?? () from /lib/aarch64-linux-gnu/libstdc++.so.6
+#10 0x0000ffffa6e10398 in start_thread (arg=0x80e120) at ./nptl/pthread_create.c:442
+#11 0x0000ffffa6e79e9c in thread_start () at ../sysdeps/unix/sysv/linux/aarch64/clone.S:79
+
+Thread 6 (Thread 0xffffa2c2e8e0 (LWP 12052) "async_slam_tool"):
+#0  futex_wait (private=0, expected=2, futex_word=0xaaaaddfb4a78) at ../sysdeps/nptl/futex-internal.h:146
+#1  __GI___lll_lock_wait (futex=futex@entry=0xaaaaddfb4a78, private=private@entry=0) at ./nptl/lowlevellock.c:49
+#2  0x0000ffffa6e1350c in lll_mutex_lock_optimized (mutex=0xaaaaddfb4a78) at ./nptl/pthread_mutex_lock.c:48
+#3  ___pthread_mutex_lock (mutex=0xaaaaddfb4a78) at ./nptl/pthread_mutex_lock.c:93
+#4  0x0000ffffa5e32e5c in ?? () from /opt/ros/humble/lib/libfastrtps.so.2.6
+#5  0x0000ffffa5c5c188 in eprosima::fastrtps::rtps::StatefulWriter::change_removed_by_history(eprosima::fastrtps::rtps::CacheChange_t*) () from /opt/ros/humble/lib/libfastrtps.so.2.6
+#6  0x0000ffffa5c70d48 in eprosima::fastrtps::rtps::WriterHistory::remove_change_nts(__gnu_cxx::__normal_iterator<eprosima::fastrtps::rtps::CacheChange_t* const*, std::vector<eprosima::fastrtps::rtps::CacheChange_t*, std::allocator<eprosima::fastrtps::rtps::CacheChange_t*> > >, bool) () from /opt/ros/humble/lib/libfastrtps.so.2.6
+#7  0x0000ffffa5c6bf58 in eprosima::fastrtps::rtps::History::remove_change(eprosima::fastrtps::rtps::CacheChange_t*) () from /opt/ros/humble/lib/libfastrtps.so.2.6
+#8  0x0000ffffa5ce0e2c in eprosima::fastdds::dds::DataWriterHistory::remove_change_pub(eprosima::fastrtps::rtps::CacheChange_t*) () from /opt/ros/humble/lib/libfastrtps.so.2.6
+#9  0x0000ffffa5c6114c in eprosima::fastrtps::rtps::StatefulWriter::check_acked_status() () from /opt/ros/humble/lib/libfastrtps.so.2.6
+#10 0x0000ffffa5c64864 in eprosima::fastrtps::rtps::StatefulWriter::matched_reader_remove(eprosima::fastrtps::rtps::GUID_t const&) () from /opt/ros/humble/lib/libfastrtps.so.2.6
+#11 0x0000ffffa5df9e54 in eprosima::fastrtps::rtps::EDP::unpairReaderProxy(eprosima::fastrtps::rtps::GUID_t const&, eprosima::fastrtps::rtps::GUID_t const&) () from /opt/ros/humble/lib/libfastrtps.so.2.6
+#12 0x0000ffffa5df0ea8 in eprosima::fastrtps::rtps::PDP::removeReaderProxyData(eprosima::fastrtps::rtps::GUID_t const&) () from /opt/ros/humble/lib/libfastrtps.so.2.6
+#13 0x0000ffffa5e0e1c0 in eprosima::fastrtps::rtps::EDPSimpleSUBListener::onNewCacheChangeAdded(eprosima::fastrtps::rtps::RTPSReader*, eprosima::fastrtps::rtps::CacheChange_t const*) () from /opt/ros/humble/lib/libfastrtps.so.2.6
+#14 0x0000ffffa5c82b70 in eprosima::fastrtps::rtps::StatefulReader::NotifyChanges(eprosima::fastrtps::rtps::WriterProxy*) () from /opt/ros/humble/lib/libfastrtps.so.2.6
+#15 0x0000ffffa5c83474 in eprosima::fastrtps::rtps::StatefulReader::change_received(eprosima::fastrtps::rtps::CacheChange_t*, eprosima::fastrtps::rtps::WriterProxy*, unsigned long) () from /opt/ros/humble/lib/libfastrtps.so.2.6
+#16 0x0000ffffa5c83910 in eprosima::fastrtps::rtps::StatefulReader::processDataMsg(eprosima::fastrtps::rtps::CacheChange_t*) () from /opt/ros/humble/lib/libfastrtps.so.2.6
+#17 0x0000ffffa5c91d54 in eprosima::fastrtps::rtps::MessageReceiver::process_data_message_without_security(eprosima::fastrtps::rtps::EntityId_t const&, eprosima::fastrtps::rtps::CacheChange_t&, bool) () from /opt/ros/humble/lib/libfastrtps.so.2.6
+#18 0x0000ffffa5c9b2f8 in eprosima::fastrtps::rtps::MessageReceiver::proc_Submsg_Data(eprosima::fastrtps::rtps::CDRMessage_t*, eprosima::fastrtps::rtps::SubmessageHeader_t*, bool) const () from /opt/ros/humble/lib/libfastrtps.so.2.6
+#19 0x0000ffffa5c9cf08 in eprosima::fastrtps::rtps::MessageReceiver::processCDRMsg(eprosima::fastrtps::rtps::Locator_t const&, eprosima::fastrtps::rtps::Locator_t const&, eprosima::fastrtps::rtps::CDRMessage_t*) () from /opt/ros/humble/lib/libfastrtps.so.2.6
+#20 0x0000ffffa5ca3bac in eprosima::fastrtps::rtps::ReceiverResource::OnDataReceived(unsigned char const*, unsigned int, eprosima::fastrtps::rtps::Locator_t const&, eprosima::fastrtps::rtps::Locator_t const&) () from /opt/ros/humble/lib/libfastrtps.so.2.6
+#21 0x0000ffffa5d2550c in eprosima::fastdds::rtps::UDPChannelResource::perform_listen_operation(eprosima::fastrtps::rtps::Locator_t) () from /opt/ros/humble/lib/libfastrtps.so.2.6
+#22 0x0000ffffa5d20758 in ?? () from /opt/ros/humble/lib/libfastrtps.so.2.6
+#23 0x0000ffffa70429cc in ?? () from /lib/aarch64-linux-gnu/libstdc++.so.6
+#24 0x0000ffffa6e10398 in start_thread (arg=0x80e120) at ./nptl/pthread_create.c:442
+
+Thread 5 (Thread 0xffffa445e8e0 (LWP 12051) "async_slam_tool"):
+#0  futex_wait (private=0, expected=2, futex_word=0xaaaadde6be80) at ../sysdeps/nptl/futex-internal.h:146
+#1  __GI___lll_lock_wait (futex=futex@entry=0xaaaadde6be80, private=private@entry=0) at ./nptl/lowlevellock.c:49
+#2  0x0000ffffa6e13568 in lll_mutex_lock_optimized (mutex=0xaaaadde6be80) at ./nptl/pthread_mutex_lock.c:48
+#3  ___pthread_mutex_lock (mutex=0xaaaadde6be80) at ./nptl/pthread_mutex_lock.c:128
+#4  0x0000ffffa5df2024 in eprosima::fastrtps::rtps::PDP::assert_remote_participant_liveliness(eprosima::fastrtps::rtps::GuidPrefix_t const&) () from /opt/ros/humble/lib/libfastrtps.so.2.6
+#5  0x0000ffffa5c9ca48 in eprosima::fastrtps::rtps::MessageReceiver::processCDRMsg(eprosima::fastrtps::rtps::Locator_t const&, eprosima::fastrtps::rtps::Locator_t const&, eprosima::fastrtps::rtps::CDRMessage_t*) () from /opt/ros/humble/lib/libfastrtps.so.2.6
+#6  0x0000ffffa5ca3bac in eprosima::fastrtps::rtps::ReceiverResource::OnDataReceived(unsigned char const*, unsigned int, eprosima::fastrtps::rtps::Locator_t const&, eprosima::fastrtps::rtps::Locator_t const&) () from /opt/ros/humble/lib/libfastrtps.so.2.6
+#7  0x0000ffffa5d2550c in eprosima::fastdds::rtps::UDPChannelResource::perform_listen_operation(eprosima::fastrtps::rtps::Locator_t) () from /opt/ros/humble/lib/libfastrtps.so.2.6
+#8  0x0000ffffa5d20758 in ?? () from /opt/ros/humble/lib/libfastrtps.so.2.6
+#9  0x0000ffffa70429cc in ?? () from /lib/aarch64-linux-gnu/libstdc++.so.6
+#10 0x0000ffffa6e10398 in start_thread (arg=0x80e120) at ./nptl/pthread_create.c:442
+#11 0x0000ffffa6e79e9c in thread_start () at ../sysdeps/unix/sysv/linux/aarch64/clone.S:79
+
+Thread 4 (Thread 0xffffa237e8e0 (LWP 12050) "async_slam_tool"):
+#0  futex_wait (private=0, expected=2, futex_word=0xaaaade155530) at ../sysdeps/nptl/futex-internal.h:146
+#1  __GI___lll_lock_wait (futex=futex@entry=0xaaaade155530, private=private@entry=0) at ./nptl/lowlevellock.c:49
+#2  0x0000ffffa6e13568 in lll_mutex_lock_optimized (mutex=0xaaaade155530) at ./nptl/pthread_mutex_lock.c:48
+#3  ___pthread_mutex_lock (mutex=0xaaaade155530) at ./nptl/pthread_mutex_lock.c:128
+#4  0x0000ffffa5c5fc24 in eprosima::fastrtps::rtps::StatefulWriter::perform_nack_response() () from /opt/ros/humble/lib/libfastrtps.so.2.6
+#5  0x0000ffffa5c5fd00 in ?? () from /opt/ros/humble/lib/libfastrtps.so.2.6
+#6  0x0000ffffa5c4883c in eprosima::fastrtps::rtps::TimedEventImpl::trigger(std::chrono::time_point<std::chrono::_V2::steady_clock, std::chrono::duration<long, std::ratio<1l, 1000000000l> > >, std::chrono::time_point<std::chrono::_V2::steady_clock, std::chrono::duration<long, std::ratio<1l, 1000000000l> > >) () from /opt/ros/humble/lib/libfastrtps.so.2.6
+#7  0x0000ffffa5c48a20 in eprosima::fastrtps::rtps::ResourceEvent::do_timer_actions() () from /opt/ros/humble/lib/libfastrtps.so.2.6
+#8  0x0000ffffa5c48cb4 in eprosima::fastrtps::rtps::ResourceEvent::event_service() () from /opt/ros/humble/lib/libfastrtps.so.2.6
+#9  0x0000ffffa70429cc in ?? () from /lib/aarch64-linux-gnu/libstdc++.so.6
+#10 0x0000ffffa6e10398 in start_thread (arg=0x80e120) at ./nptl/pthread_create.c:442
+#11 0x0000ffffa6e79e9c in thread_start () at ../sysdeps/unix/sysv/linux/aarch64/clone.S:79
+
+Thread 3 (Thread 0xffffa4c6e8e0 (LWP 12043) "async_slam_tool"):
+#0  __futex_abstimed_wait_common64 (private=<optimized out>, cancel=true, abstime=0x0, op=393, expected=0, futex_word=0xaaaaddd8d9b0) at ./nptl/futex-internal.c:57
+#1  __futex_abstimed_wait_common (cancel=true, private=<optimized out>, abstime=0x0, clockid=0, expected=0, futex_word=0xaaaaddd8d9b0) at ./nptl/futex-internal.c:87
+#2  __GI___futex_abstimed_wait_cancelable64 (futex_word=futex_word@entry=0xaaaaddd8d9b0, expected=expected@entry=0, clockid=clockid@entry=0, abstime=abstime@entry=0x0, private=<optimized out>) at ./nptl/futex-internal.c:139
+#3  0x0000ffffa6e18804 in do_futex_wait (sem=sem@entry=0xaaaaddd8d9b0, abstime=0x0, clockid=0) at ./nptl/sem_waitcommon.c:111
+#4  0x0000ffffa6e188c4 in __new_sem_wait_slow64 (sem=0xaaaaddd8d9b0, abstime=0x0, clockid=0) at ./nptl/sem_waitcommon.c:183
+#5  0x0000ffffa73d6b0c in rclcpp::SignalHandler::wait_for_signal() () from /opt/ros/humble/lib/librclcpp.so
+#6  0x0000ffffa73d7c4c in rclcpp::SignalHandler::deferred_signal_handler() () from /opt/ros/humble/lib/librclcpp.so
+#7  0x0000ffffa70429cc in ?? () from /lib/aarch64-linux-gnu/libstdc++.so.6
+#8  0x0000ffffa6e10398 in start_thread (arg=0x80e120) at ./nptl/pthread_create.c:442
+#9  0x0000ffffa6e79e9c in thread_start () at ../sysdeps/unix/sysv/linux/aarch64/clone.S:79
+
+Thread 2 (Thread 0xffffa547e8e0 (LWP 12042) "async_slam_tool"):
+#0  __futex_abstimed_wait_common64 (private=0, cancel=true, abstime=0xffffa547dfc8, op=137, expected=0, futex_word=0xaaaaddd9f048) at ./nptl/futex-internal.c:57
+#1  __futex_abstimed_wait_common (cancel=true, private=0, abstime=0xffffa547dfc8, clockid=0, expected=0, futex_word=0xaaaaddd9f048) at ./nptl/futex-internal.c:87
+#2  __GI___futex_abstimed_wait_cancelable64 (futex_word=futex_word@entry=0xaaaaddd9f048, expected=expected@entry=0, clockid=clockid@entry=1, abstime=abstime@entry=0xffffa547dfc8, private=private@entry=0) at ./nptl/futex-internal.c:139
+#3  0x0000ffffa6e0fc9c in __pthread_cond_wait_common (abstime=0xffffa547dfc8, clockid=1, mutex=0xaaaaddd9eff0, cond=0xaaaaddd9f020) at ./nptl/pthread_cond_wait.c:503
+#4  ___pthread_cond_clockwait64 (abstime=0xffffa547dfc8, clockid=1, mutex=0xaaaaddd9eff0, cond=0xaaaaddd9f020) at ./nptl/pthread_cond_wait.c:691
+#5  ___pthread_cond_clockwait64 (cond=0xaaaaddd9f020, mutex=0xaaaaddd9eff0, clockid=1, abstime=0xffffa547dfc8) at ./nptl/pthread_cond_wait.c:679
+#6  0x0000ffffa63b5b28 in ?? () from /lib/aarch64-linux-gnu/libspdlog.so.1
+#7  0x0000ffffa70429cc in ?? () from /lib/aarch64-linux-gnu/libstdc++.so.6
+#8  0x0000ffffa6e10398 in start_thread (arg=0x80e120) at ./nptl/pthread_create.c:442
+#9  0x0000ffffa6e79e9c in thread_start () at ../sysdeps/unix/sysv/linux/aarch64/clone.S:79
+
+Thread 1 (Thread 0xffffa7625020 (LWP 12040) "async_slam_tool"):
+#0  __futex_abstimed_wait_common64 (private=0, cancel=true, abstime=0x0, op=393, expected=0, futex_word=0xffff8c001028) at ./nptl/futex-internal.c:57
+#1  __futex_abstimed_wait_common (cancel=true, private=0, abstime=0x0, clockid=0, expected=0, futex_word=0xffff8c001028) at ./nptl/futex-internal.c:87
+#2  __GI___futex_abstimed_wait_cancelable64 (futex_word=futex_word@entry=0xffff8c001028, expected=expected@entry=0, clockid=clockid@entry=0, abstime=abstime@entry=0x0, private=private@entry=0) at ./nptl/futex-internal.c:139
+#3  0x0000ffffa6e0f694 in __pthread_cond_wait_common (abstime=0x0, clockid=0, mutex=0xffff8c000fd0, cond=0xffff8c001000) at ./nptl/pthread_cond_wait.c:503
+#4  ___pthread_cond_wait (cond=0xffff8c001000, mutex=0xffff8c000fd0) at ./nptl/pthread_cond_wait.c:627
+#5  0x0000ffffa5de9714 in eprosima::fastdds::dds::detail::WaitSetImpl::wait(std::vector<eprosima::fastdds::dds::Condition*, std::allocator<eprosima::fastdds::dds::Condition*> >&, eprosima::fastrtps::Time_t const&) () from /opt/ros/humble/lib/libfastrtps.so.2.6
+#6  0x0000ffffa5de97c8 in eprosima::fastdds::dds::WaitSet::wait(std::vector<eprosima::fastdds::dds::Condition*, std::allocator<eprosima::fastdds::dds::Condition*> >&, eprosima::fastrtps::Time_t) const () from /opt/ros/humble/lib/libfastrtps.so.2.6
+#7  0x0000ffffa6235bd4 in rmw_fastrtps_shared_cpp::__rmw_wait(char const*, rmw_subscriptions_s*, rmw_guard_conditions_s*, rmw_services_s*, rmw_clients_s*, rmw_events_s*, rmw_wait_set_s*, rmw_time_s const*) () from /opt/ros/humble/lib/librmw_fastrtps_shared_cpp.so
+#8  0x0000ffffa6938240 in rcl_wait () from /opt/ros/humble/lib/librcl.so
+#9  0x0000ffffa7356c38 in rclcpp::Executor::wait_for_work(std::chrono::duration<long, std::ratio<1l, 1000000000l> >) () from /opt/ros/humble/lib/librclcpp.so
+#10 0x0000ffffa7359cec in rclcpp::Executor::get_next_executable(rclcpp::AnyExecutable&, std::chrono::duration<long, std::ratio<1l, 1000000000l> >) () from /opt/ros/humble/lib/librclcpp.so
+#11 0x0000ffffa7361aa0 in rclcpp::executors::SingleThreadedExecutor::spin() () from /opt/ros/humble/lib/librclcpp.so
+#12 0x0000ffffa7361d28 in rclcpp::spin(std::shared_ptr<rclcpp::node_interfaces::NodeBaseInterface>) () from /opt/ros/humble/lib/librclcpp.so
+#13 0x0000aaaabec9ab8c in ?? ()
+#14 0x0000ffffa6db7400 in __libc_start_call_main (main=main@entry=0xaaaabec9a814, argc=argc@entry=6, argv=argv@entry=0xffffd9c4c878) at ../sysdeps/nptl/libc_start_call_main.h:58
+#15 0x0000ffffa6db74d8 in __libc_start_main_impl (main=0xaaaabec9a814, argc=6, argv=0xffffd9c4c878, init=<optimized out>, fini=<optimized out>, rtld_fini=<optimized out>, stack_end=<optimized out>) at ../csu/libc-start.c:392
+#16 0x0000aaaabec9e670 in ?? ()
+[Inferior 1 (process 12040) detached]
