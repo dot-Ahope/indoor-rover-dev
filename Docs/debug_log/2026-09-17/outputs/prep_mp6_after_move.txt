@@ -1,0 +1,17 @@
+  [sensor_conditioner.py-6] [INFO] [1789607732.125166525] [sensor_conditioner]: gyro bias calibrated: (-0.00648, -0.00091, -0.00170) rad/s, std=(0.0026, 0.0023, 0.0017)
+  map->odom: - Translation: [0.000, 0.000, 0.000]
+  로버 자세: - Translation: [0.000, 0.000, 0.000] - Rotation: in RPY (radian) [0.000, -0.000, 0.001] 
+   틈 [y_lo, y_hi]         폭        차체0.33     패딩0.43     허용 자세각(패딩)
+=== 릴레이 ===
+남은 릴레이: 1
+발행자 Publisher count: 1
+=== readback ===
+  controller_frequency               Double value is: 10.0
+  로버 자세: - Translation: [0.000, 0.000, 0.000] - Rotation: in RPY (radian) [0.000, -0.000, 0.002] 
+=== 프로세스·부하 ===
+robot_state_publisher:2 slam_toolbox:2 ekf_node:2 depth_relay:2 controller_server:2 planner_server:2 bt_navigator:2 
+load 9.69 5.67 2.95  shadow_mode: SHADOW
+=== 게이트 ===
+상자: 전면 x=0.957  중심 y=-0.058  (116점)  → x 구간 [0.96, 1.07], y 구간 [-0.15, +0.03]
+   → 전방 2.2m 최소폭:  기준1 0.30 m (@1.30)   기준2(RPP) 0.15 m (@1.10)   기준3(오류) 0.00 m (@0.60)
+상자 x=0.957 y=-0.058 | 띠 근거 없는 셀 0 (≤1) | 상자 셀 3표본 0.072 0.072 0.072 → 0.072 | 창 0.283 m (≥0.20; 좌측 0.55)

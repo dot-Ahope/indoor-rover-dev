@@ -1,0 +1,11 @@
+#!/bin/bash
+echo "host $(hostname)  $(uptime -p)  $(date +%T)"
+echo "wifi: $(nmcli -t -f NAME,DEVICE con show --active 2>/dev/null | grep -a wlP1p1s0 | cut -d: -f1)  ip: $(ip -4 -o addr show wlP1p1s0 | awk '{print $4}')"
+echo "autoconnect 우선순위: $(nmcli -t -f NAME,AUTOCONNECT-PRIORITY con show 2>/dev/null | grep -aE 'WEB_DEV|ALOPS' | tr '\n' ' ')"
+echo "board: $(readlink -f /dev/rover 2>&1)"
+echo "docker: $(docker ps --format '{{.Names}}' | tr '\n' ' ')  ros launch: $(pgrep -fc 'ros2 launch')"
+echo "load: $(cut -d' ' -f1-3 /proc/loadavg)  mem free: $(free -m | awk '/Mem:/{print $7}') MB"
+echo "yaml PathFollow: $(grep -o 'PathFollowCritic: {[^}]*}' ~/ros2_ws/install/rover_navigation/share/rover_navigation/config/nav2_params.yaml)"
+echo "BT raw_path: $(grep -c raw_path ~/ros2_ws/install/rover_navigation/share/rover_navigation/config/nav_to_pose_no_spin.xml)  controller: $(grep -o 'controller_id="[A-Za-z]*"' ~/ros2_ws/install/rover_navigation/share/rover_navigation/config/nav_to_pose_no_spin.xml | tail -1)"
+echo "fastdds whitelist 항목: $(grep -c '<address>' ~/ros2_ws/install/rover_bringup/share/rover_bringup/config/fastdds_udp_only.xml)  base.launch 마운트: $(grep -c fastdds_udp_only.xml:/ ~/ros2_ws/install/rover_bringup/share/rover_bringup/launch/base.launch.py)"
+echo "relay array.array: $(grep -c array.array ~/ros2_ws/install/rover_bringup/lib/rover_bringup/depth_relay.py)"
