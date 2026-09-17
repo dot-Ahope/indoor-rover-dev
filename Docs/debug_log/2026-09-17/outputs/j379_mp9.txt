@@ -1,0 +1,56 @@
+  0.00 [bt_navigator-6] [INFO] [1789621954.077958239] [bt_navigator]: Begin navigating from current location (0.00, 0.00) to (2.00, -0.00)
+  0.04 [controller_server-2] [INFO] [1789621954.119834028] [controller_server]: Received a goal, begin computing control effort.
+  0.04 [controller_server-2] [WARN] [1789621954.119983632] [controller_server]: No goal checker was specified in parameter 'current_goal_checker'. Server will use only plugin lo
+  0.04 [controller_server-2] [INFO] [1789621954.122371157] [controller_server]: Optimizer reset
+  2.19 [bt_navigator-6] [WARN] [1789621956.268579193] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+ 23.13 [smoother_server-3] [ERROR] [1789621977.210658684] [smoother_server]: Smoothed path leads to a collision at x: 1.417401, y: 0.310269, theta: -0.025517
+ 23.13 [smoother_server-3] [WARN] [1789621977.210748959] [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+ 24.18 [smoother_server-3] [ERROR] [1789621978.261639180] [smoother_server]: Smoothed path leads to a collision at x: 1.467401, y: 0.319907, theta: -0.079199
+ 24.18 [smoother_server-3] [WARN] [1789621978.261883987] [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+ 25.23 [smoother_server-3] [ERROR] [1789621979.310232429] [smoother_server]: Smoothed path leads to a collision at x: 1.517401, y: 0.269907, theta: -0.106773
+ 25.23 [smoother_server-3] [WARN] [1789621979.310382161] [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+ 25.45 [controller_server-2] [ERROR] [1789621979.523924694] [controller_server]: Exception in transformPose: Lookup would require extrapolation into the future.  Requested time 
+ 25.45 [controller_server-2] [ERROR] [1789621979.524312737] [controller_server]: Unable to transform robot pose into global plan's frame
+ 25.45 [controller_server-2] [WARN] [1789621979.524519847] [controller_server]: [follow_path] [ActionServer] Aborting handle.
+ 25.45 [controller_server-2] [INFO] [1789621979.524795599] [controller_server]: Received a goal, begin computing control effort.
+ 25.65 [controller_server-2] [ERROR] [1789621979.729504633] [controller_server]: Exception in transformPose: Lookup would require extrapolation into the future.  Requested time 
+ 25.65 [controller_server-2] [ERROR] [1789621979.729788065] [controller_server]: Unable to transform robot pose into global plan's frame
+ 25.65 [controller_server-2] [WARN] [1789621979.730032392] [controller_server]: [follow_path] [ActionServer] Aborting handle.
+ 25.67 [controller_server-2] [INFO] [1789621979.749080964] [local_costmap.local_costmap]: Received request to clear except a region the local_costmap
+ 25.68 [controller_server-2] [INFO] [1789621979.756619098] [controller_server]: Received a goal, begin computing control effort.
+ 26.00 [controller_server-2] [ERROR] [1789621980.082661555] [controller_server]: Exception in transformPose: Lookup would require extrapolation into the future.  Requested time 
+ 26.00 [controller_server-2] [ERROR] [1789621980.082945467] [controller_server]: Unable to transform robot pose into global plan's frame
+ 26.01 [controller_server-2] [WARN] [1789621980.083169697] [controller_server]: [follow_path] [ActionServer] Aborting handle.
+ 26.02 [controller_server-2] [INFO] [1789621980.099027683] [local_costmap.local_costmap]: Received request to clear except a region the local_costmap
+ 26.02 [planner_server-4] [INFO] [1789621980.100574094] [global_costmap.global_costmap]: Received request to clear except a region the global_costmap
+ 26.29 [controller_server-2] [INFO] [1789621980.369207082] [controller_server]: Received a goal, begin computing control effort.
+ 27.45 [bt_navigator-6] [WARN] [1789621981.530793496] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+ 33.73 [controller_server-2] [INFO] [1789621987.805857781] [controller_server]: Reached the goal!
+ 33.76 [bt_navigator-6] [INFO] [1789621987.839055584] [bt_navigator]: Goal succeeded
+=== 드라이브 표 (1 s) ===
+  3.0 +0.149 +0.038 |  0.700    0.152 +0.406 |    99    99    291 | +0.081 +0.086
+ 13.0 +0.796 +0.292 |  0.170    0.094 +0.347 |    99   100      0 | +0.062 +0.107
+ 23.0 +1.413 +0.326 |  0.114    0.134 +0.361 |    99   100      0 | +0.079 +0.070
+ 33.0 +1.907 +0.100 |  0.341    0.441 +0.114 |    99   100      0 | +0.078 +0.380
+bag tgz 2830191
+=== SLAM 생존(주행 후) ===
+map->odom 92 개/5 s, 최대 간격 0.05 s, 최대 stamp 지연 -0.07 s
+OK
+로버 map 자세: - Translation: [1.944, 0.111, 0.000] - Rotation: in RPY (radian) [0.000, 0.000, -0.105] 
+=== top: 프로세스별 CPU 평균/최대 (주행 중) ===
+스냅샷 22 (2 s), load 평균 8.2 최대 9.0
+  python3                                  평균 112.9% 최대  57.2%
+  controller_serv                          평균  37.4% 최대  70.3%
+  ros2                                     평균  18.9% 최대  35.1%
+  micro_ros_agent                          평균  16.1% 최대  86.6%
+  bt_navigator                             평균  16.0% 최대  23.3%
+  rplidar_node                             평균  15.3% 최대  19.8%
+  realsense2_came                          평균  13.8% 최대  18.8%
+  planner_server                           평균  11.7% 최대  22.3%
+  ekf_node                                 평균  11.7% 최대  16.8%
+  lifecycle_manag                          평균  11.6% 최대  18.3%
+  async_slam_tool                          평균  11.5% 최대  15.8%
+  behavior_server                          평균   8.4% 최대  15.8%
+bag 회수 OK 2830191
+drive log OK
+csv OK
