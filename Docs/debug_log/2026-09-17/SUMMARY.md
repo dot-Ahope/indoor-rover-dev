@@ -164,3 +164,8 @@
 ### 8.4 플래시 후 실측 계획 (`jobs/job397_lowspeed.py`, 로버 이동 — 사용자 출발 지시 필요)
 - 절차: 현재 플래시 백업(`STM32_Programmer_CLI -r`) → 플래시 → `-rst` 추가(에이전트 세션) → 정지 상태에서 직진 0.003(→8)·0.005(→8)·0.008·0.010·0.015 m/s, 제자리 회전 0.020(±4.4→8 mm/s)·0.036(±8)·0.050(±11) rad/s 각 3 s. 휠별 tgt/v/duty/pps·EKF·스톨 이벤트. 예상 이동 직진 ≈15 cm·회전 ≈21°.
 - 판정: 8 mm/s 가 정지에서 양 휠 기동하면 MIN 0.008 확정, 아니면 MIN 을 기동 확인값으로 올린다(불변식 검사가 STOP 과의 순서를 지킨다).
+
+### 8.5 플래시 (사용자가 ST-Link 연결, 리셋은 사용자가 직접)
+- ST-LINK V3 (SN 0051…3739, FW V3J17M10B6S1), 대상 STM32F405 (Device ID 0x413).
+- 백업: 플래시 전체 1 MB 읽기 `-u 0x08000000 0x100000` → `bags/fw_backup_before_0917_stopthresh.bin`(git 제외, sha256 DD036AD18C158B57…). 되돌릴 때 `-w <bin> 0x08000000`.
+- 플래시: `STM32_Programmer_CLI -c port=SWD reset=HWrst -w build/rover_jupiter_fw.elf -v` (섹터 0~5 지움, 다운로드 3.6 s, **검증 성공**), `-rst` 없음 — 사용자 리셋 후 micro-ROS 세션·/wheel_odom 확인 예정.
