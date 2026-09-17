@@ -1,0 +1,8 @@
+mp9 정지(5.5 s, odom 150·tf 150): ω std 0.0012 rad/s, v std 0.0000 m/s | yaw std 0.007°, x std 0.0000, y std 0.0000 m
+mp9 통로(10 Hz 138 점): yaw 2차차분 RMS 0.300°, ω 0.1 s 차분 RMS 0.0765 rad/s, 차체 횡방향 이동/주기 RMS 0.0000 m
+mp10 정지(5.5 s, odom 158·tf 157): ω std 0.0012 rad/s, v std 0.0000 m/s | yaw std 0.013°, x std 0.0000, y std 0.0000 m
+mp10 통로(10 Hz 142 점): yaw 2차차분 RMS 0.304°, ω 0.1 s 차분 RMS 0.0652 rad/s, 차체 횡방향 이동/주기 RMS 0.0000 m
+mp11 정지(5.1 s, odom 144·tf 151): ω std 0.0011 rad/s, v std 0.0000 m/s | yaw std 0.008°, x std 0.0000, y std 0.0000 m
+mp11 통로(10 Hz 141 점): yaw 2차차분 RMS 0.292°, ω 0.1 s 차분 RMS 0.0678 rad/s, 차체 횡방향 이동/주기 RMS 0.0000 m
+mp12 정지(5.5 s, odom 154·tf 154): ω std 0.0010 rad/s, v std 0.0000 m/s | yaw std 0.013°, x std 0.0000, y std 0.0000 m
+mp12 통로(10 Hz 150 점): yaw 2차차분 RMS 0.281°, ω 0.1 s 차분 RMS 0.0605 rad/s, 차체 횡방향 이동/주기 RMS 0.0000 m

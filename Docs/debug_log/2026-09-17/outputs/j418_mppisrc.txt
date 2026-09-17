@@ -1,0 +1,33 @@
+헤더 경로: /opt/ros/humble/include/nav2_mppi_controller
+controller.hpp critic_data.hpp critic_function.hpp critic_manager.hpp critics/constraint_critic.hpp critics/cost_critic.hpp critics/goal_angle_critic.hpp critics/goal_critic.hpp critics/obstacles_critic.hpp critics/path_align_critic.hpp critics/path_align_legacy_critic.hpp critics/path_angle_critic.hpp critics/path_follow_critic.hpp critics/prefer_forward_critic.hpp critics/twirling_critic.hpp critics/velocity_deadband_critic.hpp models/constraints.hpp models/control_sequence.hpp models/optimizer_settings.hpp models/path.hpp models/state.hpp models/trajectories.hpp motion_models.hpp optimizer.hpp tools/noise_generator.hpp tools/parameters_handler.hpp tools/path_handler.hpp tools/trajectory_visualizer.hpp tools/utils.hpp 
+== regenerate / noise
+/opt/ros/humble/include/nav2_mppi_controller/tools/noise_generator.hpp:95:  void generateNoisedControls();
+/opt/ros/humble/include/nav2_mppi_controller/tools/noise_generator.hpp:104:  std::thread noise_thread_;
+/opt/ros/humble/include/nav2_mppi_controller/tools/noise_generator.hpp:107:  bool active_{false}, ready_{false}, regenerate_noises_{false};
+== savitsky / history / smoothing
+/opt/ros/humble/include/nav2_mppi_controller/optimizer.hpp:250:  std::array<mppi::models::Control, 4> control_history_;
+/opt/ros/humble/include/nav2_mppi_controller/tools/utils.hpp:448: * @param control_history Recent set of controls for edge-case handling
+/opt/ros/humble/include/nav2_mppi_controller/tools/utils.hpp:451:inline void savitskyGolayFilter(
+/opt/ros/humble/include/nav2_mppi_controller/tools/utils.hpp:453:  std::array<mppi::models::Control, 4> & control_history,
+/opt/ros/humble/include/nav2_mppi_controller/tools/utils.hpp:462:  // Too short to smooth meaningfully
+/opt/ros/humble/include/nav2_mppi_controller/tools/utils.hpp:596:    control_sequence.vx, control_history[0].vx,
+/opt/ros/humble/include/nav2_mppi_controller/tools/utils.hpp:597:    control_history[1].vx, control_history[2].vx, control_history[3].vx);
+/opt/ros/humble/include/nav2_mppi_controller/tools/utils.hpp:599:    control_sequence.vy, control_history[0].vy,
+/opt/ros/humble/include/nav2_mppi_controller/tools/utils.hpp:600:    control_history[1].vy, control_history[2].vy, control_history[3].vy);
+/opt/ros/humble/include/nav2_mppi_controller/tools/utils.hpp:602:    control_sequence.wz, control_history[0].wz,
+/opt/ros/humble/include/nav2_mppi_controller/tools/utils.hpp:603:    control_history[1].wz, control_history[2].wz, control_history[3].wz);
+/opt/ros/humble/include/nav2_mppi_controller/tools/utils.hpp:607:  control_history[0] = control_history[1];
+/opt/ros/humble/include/nav2_mppi_controller/tools/utils.hpp:608:  control_history[1] = control_history[2];
+/opt/ros/humble/include/nav2_mppi_controller/tools/utils.hpp:609:  control_history[2] = control_history[3];
+/opt/ros/humble/include/nav2_mppi_controller/tools/utils.hpp:610:  control_history[3] = {
+== softmax / temperature / gamma
+/opt/ros/humble/include/nav2_mppi_controller/models/optimizer_settings.hpp:34:  float temperature{0};
+/opt/ros/humble/include/nav2_mppi_controller/models/optimizer_settings.hpp:35:  float gamma{0};
+/opt/ros/humble/include/nav2_mppi_controller/optimizer.hpp:204:   * using softmax function
+== initial state velocities
+/opt/ros/humble/include/nav2_mppi_controller/optimizer.hpp:175:  void updateInitialStateVelocities(models::State & state) const;
+/opt/ros/humble/include/nav2_mppi_controller/optimizer.hpp:182:  void propagateStateVelocitiesFromInitials(models::State & state) const;
+== shift
+/opt/ros/humble/include/nav2_mppi_controller/models/optimizer_settings.hpp:39:  bool shift_control_sequence{false};
+/opt/ros/humble/include/nav2_mppi_controller/optimizer.hpp:152:  void shiftControlSequence();
+/opt/ros/humble/include/nav2_mppi_controller/tools/utils.hpp:606:  unsigned int offset = settings.shift_control_sequence ? 1 : 0;
