@@ -1,0 +1,43 @@
+  0.00 [bt_navigator-6] [INFO] [1789631920.218603149] [bt_navigator]: Begin navigating from current location (0.00, 0.00) to (2.00, 0.00)
+  0.04 [controller_server-2] [INFO] [1789631920.261885419] [controller_server]: Received a goal, begin computing control effort.
+  0.04 [controller_server-2] [WARN] [1789631920.262044497] [controller_server]: No goal checker was specified in parameter 'current_goal_checker'. Server will use only plugin lo
+  0.05 [controller_server-2] [INFO] [1789631920.264357093] [controller_server]: Optimizer reset
+ 19.15 [controller_server-2] [INFO] [1789631939.372795975] [controller_server]: Optimizer reset
+ 19.16 [controller_server-2] [INFO] [1789631939.379697152] [controller_server]: Optimizer reset
+ 19.16 [controller_server-2] [ERROR] [1789631939.380030988] [controller_server]: Optimizer fail to compute path
+ 19.16 [controller_server-2] [WARN] [1789631939.380710885] [controller_server]: [follow_path] [ActionServer] Aborting handle.
+ 19.18 [controller_server-2] [INFO] [1789631939.401216906] [local_costmap.local_costmap]: Received request to clear except a region the local_costmap
+ 19.18 [controller_server-2] [INFO] [1789631939.402955305] [controller_server]: Received a goal, begin computing control effort.
+ 19.45 [controller_server-2] [WARN] [1789631939.673321426] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+ 24.18 [smoother_server-3] [ERROR] [1789631944.395024775] [smoother_server]: Smoothed path leads to a collision at x: 1.468467, y: 0.239131, theta: -0.040675
+ 24.18 [smoother_server-3] [WARN] [1789631944.396602912] [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+ 30.88 [bt_navigator-6] [WARN] [1789631951.103150248] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+ 31.88 [controller_server-2] [INFO] [1789631952.100194755] [controller_server]: Reached the goal!
+ 31.91 [bt_navigator-6] [INFO] [1789631952.131313798] [bt_navigator]: Goal succeeded
+=== 드라이브 표 (1 s) ===
+  1.0 +0.041 +0.002 |  0.856    0.156 +0.325 |    99    99    141 | +0.080 +0.031
+ 11.0 +0.727 +0.200 |  0.208   -0.033 +0.307 |    99    99      0 | +0.081 +0.107
+ 21.0 +1.286 +0.334 |  0.000   -0.023 +0.317 |    99    99      0 | +0.080 -0.210
+ 31.0 +1.898 +0.103 |  0.225    0.325 +0.088 |    99    99      0 | +0.075 +0.365
+bag tgz 2745060
+=== SLAM 생존(주행 후) ===
+map->odom 100 개/5 s, 최대 간격 0.06 s, 최대 stamp 지연 0.60 s
+OK
+로버 map 자세: - Translation: [1.923, 0.100, 0.000] - Rotation: in RPY (radian) [0.000, 0.000, -0.101] 
+=== top: 프로세스별 CPU 평균/최대 (주행 중) ===
+스냅샷 22 (2 s), load 평균 11.6 최대 13.6
+  python3                                  평균 111.9% 최대  63.7%
+  controller_serv                          평균  36.6% 최대  65.5%
+  ros2                                     평균  19.3% 최대  38.9%
+  micro_ros_agent                          평균  16.1% 최대 108.4%
+  rplidar_node                             평균  15.6% 최대  19.7%
+  bt_navigator                             평균  15.4% 최대  18.9%
+  realsense2_came                          평균  14.0% 최대  19.9%
+  ekf_node                                 평균  11.7% 최대  15.8%
+  lifecycle_manag                          평균  11.6% 최대  18.2%
+  planner_server                           평균  11.2% 최대  17.7%
+  async_slam_tool                          평균  10.7% 최대  18.3%
+  behavior_server                          평균   8.2% 최대  14.3%
+bag 회수 OK 2745060
+drive log OK
+csv OK
