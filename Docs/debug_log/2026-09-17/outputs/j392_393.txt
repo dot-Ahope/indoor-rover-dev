@@ -1,0 +1,21 @@
+=== rsp ===
+잔존 프로세스: docker run --rm --name microros_agent --net host -v /home/jetson/ros2_ws/install;
+robot_state_publisher: 1  lib: /opt/ros/humble/lib/libfastrtps.so.2.6.12 
+=== job240 ===
+  base 계층 유지: 에이전트 1개, robot_state_publisher 1개 (각 1 이어야)
+########## 2. base (micro-ROS 에이전트) ##########
+  에이전트 살아 있고 보드 송수신 정상 → base 재기동 생략 (세션 유지)
+  /wheel_odom  average rate: 24.999
+  [sensor_conditioner.py-6] [INFO] [1789611790.664074496] [sensor_conditioner]: gyro bias calibrated: (-0.00768, -0.00095, -0.00183) rad/s, std=(0.0026, 0.0023, 0.0018)
+  map->odom: - Translation: [0.000, 0.000, 0.000]
+  로버 자세: - Translation: [0.000, 0.000, 0.000] - Rotation: in RPY (radian) [0.000, -0.000, 0.000] 
+   틈 [y_lo, y_hi]         폭        차체0.33     패딩0.43     허용 자세각(패딩)
+=== churn ===
+slam lib: /opt/ros/humble/lib/libfastrtps.so.2.6.12 
+기준:
+map->odom 98 개/5 s, 최대 간격 0.05 s, 최대 stamp 지연 0.55 s
+FAIL
+라운드 1 (bag 해체 + 구독자 16 회): map->odom 100 개/5 s, 최대 간격 0.06 s, 최대 stamp 지연 -0.08 s OK 
+라운드 2 (bag 해체 + 구독자 16 회): map->odom 57 개/5 s, 최대 간격 0.05 s, 최대 stamp 지연 0.16 s OK 
+라운드 3 (bag 해체 + 구독자 16 회): map->odom 98 개/5 s, 최대 간격 0.07 s, 최대 stamp 지연 0.16 s OK 
+slam 그래프: 1  스레드 lock 대기: 14
