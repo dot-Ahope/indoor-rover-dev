@@ -29,10 +29,11 @@ P = dict(vx_std=0.05, wz_std=0.3, temperature=0.3, gamma=0.015, iters=1, batch=1
          rep_w=1.5, crit_w=20.0, margin=0.05, coll_cost=10000.0, fwd_w=5.0, infl_r=0.40, scale=2.5, r_in=0.175,
          goal_w=5.0, goal_thr=1.0, ga_w=3.0, ga_thr=0.4, follow_thr=0.6, align_thr=0.4, angle_thr=0.4, goal_yaw=0.0,
          db=0.0, promote=0.0, eps=0.003, track_b=0.443, prune=1.0,
+         lag_steps=0, w_gain=1.0, v_gain=1.0, w_acc=0.0,   # w_acc: velocity_smoother max_accel wz (1.2 rad/s²), 0 = 제한 없음   # 09-17: 실측 명령ω→EKF ω 지연 0.10 s·이득 0.68~0.75 (job409)
          cycles=40, seed=1, label='')
 for a in sys.argv[3:]:
-    k, v = a.split('='); P[k] = v if k == 'label' else float(v)
-for k in ('iters', 'batch', 'steps', 'align_off', 'align_step', 'follow_off', 'angle_off', 'cycles', 'seed'):
+    k, v = a.split('='); P[k] = v if k in ('label', 'wobble_on') else float(v)
+for k in ('iters', 'batch', 'steps', 'align_off', 'align_step', 'follow_off', 'angle_off', 'cycles', 'seed', 'lag_steps'):
     P[k] = int(P[k])
 rng = np.random.default_rng(P['seed'])
 HL, HW, PAD = 0.25, 0.165, 0.01
@@ -162,6 +163,10 @@ B, T = P['batch'], P['steps']
 mean_v = np.full(T, cm[1] if cm else 0.0); mean_w = np.full(T, cm[2] if cm else 0.0)
 rx, ry, rth = x0, y0, th0
 W0LOG = []; PATHLEN = 0.0; MINCOST = []   # 09-17 흔들림 지표
+CMDQ = [(mean_v[0], mean_w[0])] * P['lag_steps']; WCLOG = []
+WPREV = [mean_w[0]]
+ESSLOG = []   # softmax 유효 표본 수 1/Σw² (마지막 반복) — 평균 제어열의 표본 잡음 ≈ std/√ESS
+REACH = [None]   # 목표 xy 허용오차(0.15) 안에 처음 들어온 주기 — goal checker 대용
 print('%s bag %s t=%.1f 자세 (%.3f,%.3f) yaw %+.1f° 초기 cmd v %+.3f w %+.3f | 경로 %d점(간격 %.3f) | 파라미터 %s' % (
     P['label'], BAG.split('/')[-1], AT, x0, y0, math.degrees(th0), mean_v[0], mean_w[0], len(path), np.hypot(*(path[1] - path[0])),
     ' '.join('%s=%g' % (k, P[k]) for k in ('vx_std', 'wz_std', 'temperature', 'iters', 'align_w', 'align_off', 'follow_w', 'follow_off', 'angle_w', 'angle_max', 'rep_w'))))
@@ -175,6 +180,7 @@ for cyc in range(P['cycles']):
         bnv = V - mean_v[None, :]; bnw = Wz - mean_w[None, :]
         cost = cost + P['gamma'] / P['vx_std'] ** 2 * (mean_v[None, :] * bnv).sum(axis=1) + P['gamma'] / P['wz_std'] ** 2 * (mean_w[None, :] * bnw).sum(axis=1)
         cn = cost - cost.min(); wgt = np.exp(-cn / P['temperature']); wgt /= wgt.sum()
+        if it == P['iters'] - 1: ESSLOG.append(1.0 / float((wgt ** 2).sum()))
         mean_v = (V * wgt[:, None]).sum(axis=0); mean_w = (Wz * wgt[:, None]).sum(axis=0)
     ib = int(np.argmin(cost))
     # 평균 제어열을 굴린 궤적의 위험: 둘레 최대비용(254=LETHAL) 과 첫 충돌 스텝
@@ -187,6 +193,12 @@ for cyc in range(P['cycles']):
             cost[~m['coll']].mean() if (~m['coll']).any() else 9999, m['obst'][~m['coll']].mean() if (~m['coll']).any() else 9999, m['align'].mean(), m['follow'].mean(), m['angle'].mean(), V[ib, 0], Wz[ib, 0]) + ' | %3.0f/%d' % (mean_max_cost, mean_coll))
     # 로버 이동(첫 제어) + shift
     v0, w0 = mean_v[0], mean_w[0]
+    # 09-17 구동계 모델: 명령은 lag_steps 주기 늦게, 이득 곱해 적용 (MPPI 내부 롤아웃은 이를 모른다 — 실제와 같음)
+    if P['w_acc'] > 0:   # velocity_smoother max_accel wz (상류 — 이 값이 bag 의 /cmd_vel 에 해당)
+        _dw = P['w_acc'] * P['dt']; w0 = WPREV[0] + max(-_dw, min(_dw, w0 - WPREV[0]))
+    WPREV[0] = w0; WCLOG.append(w0)
+    CMDQ.append((v0, w0)); v0, w0 = CMDQ.pop(0) if len(CMDQ) > P['lag_steps'] else (0.0, 0.0)
+    v0 *= P['v_gain']; w0 *= P['w_gain']
     if P['db'] > 0 or P['promote'] > 0:   # 09-17: 펌웨어 휠 속도 처리 모델 (microros_task 승격 → speed_controller 정지 문턱)
         def fw(vw):
             if abs(vw) < P['eps']: return 0.0
@@ -196,12 +208,18 @@ for cyc in range(P['cycles']):
         v0, w0 = (vl + vr) / 2, (vr - vl) / P['track_b']
     W0LOG.append(w0); PATHLEN += abs(v0) * P['dt']
     rx += v0 * math.cos(rth) * P['dt']; ry += v0 * math.sin(rth) * P['dt']; rth = wrap(rth + w0 * P['dt'])
+    if REACH[0] is None and math.hypot(path[-1][0] - rx, path[-1][1] - ry) < 0.15: REACH[0] = cyc + 1
     _c, _fp = pose_costs(np.array([[rx]]), np.array([[ry]]), np.array([[rth]])); MINCOST.append(float(_c[0, 0]))
     mean_v = np.concatenate([mean_v[1:], mean_v[-1:]]); mean_w = np.concatenate([mean_w[1:], mean_w[-1:]])
 dx = (rx - x0) * math.cos(th0) + (ry - y0) * math.sin(th0); dy = -(rx - x0) * math.sin(th0) + (ry - y0) * math.cos(th0)
 print('  → %d 주기(%.1f s) 후: 전진 %+.3f 횡 %+.3f 회전 %+.1f°, 최종 cmd v %+.3f w %+.3f' % (P['cycles'], P['cycles'] * P['dt'], dx, dy, math.degrees(wrap(rth - th0)), mean_v[0], mean_w[0]))
-_w = np.array(W0LOG); _s = np.where(np.abs(_w) > 0.05, np.sign(_w), 0); _nz = _s[_s != 0]
-_flips = int(np.sum(_nz[1:] != _nz[:-1])) if _nz.size > 1 else 0
-_hf = _w - np.convolve(_w, np.ones(10) / 10, mode='same')
-print('     흔들림: |ω|>0.05 반전 %d 회 = %.1f 회/m (이동 %.3f m), 고주파 RMS %.3f rad/s, 최대 둘레비용 %.0f' % (_flips, _flips / max(PATHLEN, 0.01), PATHLEN, float(np.sqrt(np.mean(_hf[5:-5] ** 2))) if _w.size > 12 else 0.0, max(MINCOST) if MINCOST else 0))
-print('     목표(경로 끝, prune 창 안이면) 까지 거리 %.3f m (xy tol 0.15), 로버 odom (%.3f, %.3f)' % (math.hypot(path[-1][0] - rx, path[-1][1] - ry), rx, ry))
+def _wob(_w):
+    _w = np.asarray(_w); _s = np.where(np.abs(_w) > 0.05, np.sign(_w), 0); _nz = _s[_s != 0]
+    _fl = int(np.sum(_nz[1:] != _nz[:-1])) if _nz.size > 1 else 0
+    _hf = _w - np.convolve(_w, np.ones(10) / 10, mode='same')
+    return _fl, (float(np.sqrt(np.mean(_hf[5:-5] ** 2))) if _w.size > 12 else 0.0)
+_fc, _rc = _wob(WCLOG); _fa, _ra = _wob(W0LOG)
+print('     유효 표본 수 ESS 중앙 %.1f (10/90%% %.1f/%.1f) / 배치 %d → 첫 제어 ω 표본 잡음 추정 wz_std/√ESS = %.3f rad/s' % (np.median(ESSLOG), np.percentile(ESSLOG, 10), np.percentile(ESSLOG, 90), P['batch'], P['wz_std'] / math.sqrt(np.median(ESSLOG))))
+print('     흔들림: |ω|>0.05 반전 명령 %d 회 = %.1f 회/m, 차체 %d 회 = %.1f 회/m (이동 %.3f m) | 고주파 RMS 명령 %.3f 차체 %.3f rad/s | 최대 둘레비용 %.0f' % (
+    _fc, _fc / max(PATHLEN, 0.01), _fa, _fa / max(PATHLEN, 0.01), PATHLEN, _rc, _ra, max(MINCOST) if MINCOST else 0))
+print('     목표(경로 끝, prune 창 안이면) 까지 거리 %.3f m (xy tol 0.15), 로버 odom (%.3f, %.3f), 허용오차 첫 진입 %s' % (math.hypot(path[-1][0] - rx, path[-1][1] - ry), rx, ry, ('%.1f s' % (REACH[0] * P['dt'])) if REACH[0] else '없음'))

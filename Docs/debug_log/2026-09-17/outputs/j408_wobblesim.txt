@@ -1,0 +1,90 @@
+경과 32 s, 완료 17 1 
+######## 통로 (mp11 t=10, 60 주기) — seed 1~3
+P1_현재_wz0.4_T0.15_it2 bag bag_mp11 t=10.0 자세 (0.227,0.070) yaw +24.0° 초기 cmd v +0.082 w +0.028 | 경로 41점(간격 0.025) | 파라미터 vx_std=0.08 wz_std=0.4 temperature=0.15 iters=2 align_w=14 align_off=3 follow_w=10 follow_off=20 angle_w=2 angle_max=0.5 rep_w=1.5
+  → 60 주기(6.0 s) 후: 전진 +0.372 횡 -0.056 회전 -10.4°, 최종 cmd v +0.060 w +0.114
+     흔들림: |ω|>0.05 반전 27 회 = 71.8 회/m (이동 0.376 m), 고주파 RMS 0.131 rad/s, 최대 둘레비용 146
+     목표(경로 끝, prune 창 안이면) 까지 거리 0.577 m (xy tol 0.15), 로버 odom (0.590, 0.170)
+
+P1_wz0.3 bag bag_mp11 t=10.0 자세 (0.227,0.070) yaw +24.0° 초기 cmd v +0.082 w +0.028 | 경로 41점(간격 0.025) | 파라미터 vx_std=0.08 wz_std=0.3 temperature=0.15 iters=2 align_w=14 align_off=3 follow_w=10 follow_off=20 angle_w=2 angle_max=0.5 rep_w=1.5
+  → 60 주기(6.0 s) 후: 전진 +0.372 횡 -0.057 회전 -10.0°, 최종 cmd v +0.060 w +0.128
+     흔들림: |ω|>0.05 반전 27 회 = 71.7 회/m (이동 0.377 m), 고주파 RMS 0.126 rad/s, 최대 둘레비용 146
+     목표(경로 끝, prune 창 안이면) 까지 거리 0.577 m (xy tol 0.15), 로버 odom (0.590, 0.169)
+
+P1_wz0.2 bag bag_mp11 t=10.0 자세 (0.227,0.070) yaw +24.0° 초기 cmd v +0.082 w +0.028 | 경로 41점(간격 0.025) | 파라미터 vx_std=0.08 wz_std=0.2 temperature=0.15 iters=2 align_w=14 align_off=3 follow_w=10 follow_off=20 angle_w=2 angle_max=0.5 rep_w=1.5
+  → 60 주기(6.0 s) 후: 전진 +0.373 횡 -0.057 회전 -9.4°, 최종 cmd v +0.055 w +0.126
+     흔들림: |ω|>0.05 반전 19 회 = 50.3 회/m (이동 0.378 m), 고주파 RMS 0.118 rad/s, 최대 둘레비용 146
+     목표(경로 끝, prune 창 안이면) 까지 거리 0.576 m (xy tol 0.15), 로버 odom (0.591, 0.169)
+
+P1_T0.3 bag bag_mp11 t=10.0 자세 (0.227,0.070) yaw +24.0° 초기 cmd v +0.082 w +0.028 | 경로 41점(간격 0.025) | 파라미터 vx_std=0.08 wz_std=0.4 temperature=0.3 iters=2 align_w=14 align_off=3 follow_w=10 follow_off=20 angle_w=2 angle_max=0.5 rep_w=1.5
+  → 60 주기(6.0 s) 후: 전진 +0.287 횡 -0.038 회전 -13.0°, 최종 cmd v +0.043 w -0.014
+     흔들림: |ω|>0.05 반전 4 회 = 13.8 회/m (이동 0.290 m), 고주파 RMS 0.047 rad/s, 최대 둘레비용 0
+     목표(경로 끝, prune 창 안이면) 까지 거리 0.663 m (xy tol 0.15), 로버 odom (0.505, 0.152)
+
+P2_현재_wz0.4_T0.15_it2 bag bag_mp11 t=10.0 자세 (0.227,0.070) yaw +24.0° 초기 cmd v +0.082 w +0.028 | 경로 41점(간격 0.025) | 파라미터 vx_std=0.08 wz_std=0.4 temperature=0.15 iters=2 align_w=14 align_off=3 follow_w=10 follow_off=20 angle_w=2 angle_max=0.5 rep_w=1.5
+  → 60 주기(6.0 s) 후: 전진 +0.329 횡 -0.068 회전 -10.6°, 최종 cmd v +0.054 w -0.059
+     흔들림: |ω|>0.05 반전 13 회 = 38.6 회/m (이동 0.337 m), 고주파 RMS 0.107 rad/s, 최대 둘레비용 159
+     목표(경로 끝, prune 창 안이면) 까지 거리 0.618 m (xy tol 0.15), 로버 odom (0.556, 0.142)
+
+P2_wz0.3 bag bag_mp11 t=10.0 자세 (0.227,0.070) yaw +24.0° 초기 cmd v +0.082 w +0.028 | 경로 41점(간격 0.025) | 파라미터 vx_std=0.08 wz_std=0.3 temperature=0.15 iters=2 align_w=14 align_off=3 follow_w=10 follow_off=20 angle_w=2 angle_max=0.5 rep_w=1.5
+  → 60 주기(6.0 s) 후: 전진 +0.329 횡 -0.071 회전 -10.0°, 최종 cmd v +0.055 w -0.059
+     흔들림: |ω|>0.05 반전 9 회 = 26.7 회/m (이동 0.337 m), 고주파 RMS 0.106 rad/s, 최대 둘레비용 159
+     목표(경로 끝, prune 창 안이면) 까지 거리 0.618 m (xy tol 0.15), 로버 odom (0.557, 0.139)
+
+P2_wz0.2 bag bag_mp11 t=10.0 자세 (0.227,0.070) yaw +24.0° 초기 cmd v +0.082 w +0.028 | 경로 41점(간격 0.025) | 파라미터 vx_std=0.08 wz_std=0.2 temperature=0.15 iters=2 align_w=14 align_off=3 follow_w=10 follow_off=20 angle_w=2 angle_max=0.5 rep_w=1.5
+  → 60 주기(6.0 s) 후: 전진 +0.331 횡 -0.070 회전 -10.5°, 최종 cmd v +0.057 w -0.096
+     흔들림: |ω|>0.05 반전 11 회 = 32.5 회/m (이동 0.339 m), 고주파 RMS 0.103 rad/s, 최대 둘레비용 159
+     목표(경로 끝, prune 창 안이면) 까지 거리 0.616 m (xy tol 0.15), 로버 odom (0.558, 0.141)
+
+P2_T0.3 bag bag_mp11 t=10.0 자세 (0.227,0.070) yaw +24.0° 초기 cmd v +0.082 w +0.028 | 경로 41점(간격 0.025) | 파라미터 vx_std=0.08 wz_std=0.4 temperature=0.3 iters=2 align_w=14 align_off=3 follow_w=10 follow_off=20 angle_w=2 angle_max=0.5 rep_w=1.5
+  → 60 주기(6.0 s) 후: 전진 +0.279 횡 -0.041 회전 -11.8°, 최종 cmd v +0.047 w -0.070
+     흔들림: |ω|>0.05 반전 3 회 = 10.6 회/m (이동 0.282 m), 고주파 RMS 0.039 rad/s, 최대 둘레비용 0
+     목표(경로 끝, prune 창 안이면) 까지 거리 0.671 m (xy tol 0.15), 로버 odom (0.499, 0.146)
+
+P3_현재_wz0.4_T0.15_it2 bag bag_mp11 t=10.0 자세 (0.227,0.070) yaw +24.0° 초기 cmd v +0.082 w +0.028 | 경로 41점(간격 0.025) | 파라미터 vx_std=0.08 wz_std=0.4 temperature=0.15 iters=2 align_w=14 align_off=3 follow_w=10 follow_off=20 angle_w=2 angle_max=0.5 rep_w=1.5
+  → 60 주기(6.0 s) 후: 전진 +0.341 횡 -0.052 회전 -12.0°, 최종 cmd v +0.056 w -0.037
+     흔들림: |ω|>0.05 반전 17 회 = 49.1 회/m (이동 0.346 m), 고주파 RMS 0.113 rad/s, 최대 둘레비용 146
+     목표(경로 끝, prune 창 안이면) 까지 거리 0.607 m (xy tol 0.15), 로버 odom (0.561, 0.161)
+
+P3_wz0.3 bag bag_mp11 t=10.0 자세 (0.227,0.070) yaw +24.0° 초기 cmd v +0.082 w +0.028 | 경로 41점(간격 0.025) | 파라미터 vx_std=0.08 wz_std=0.3 temperature=0.15 iters=2 align_w=14 align_off=3 follow_w=10 follow_off=20 angle_w=2 angle_max=0.5 rep_w=1.5
+  → 60 주기(6.0 s) 후: 전진 +0.343 횡 -0.051 회전 -10.8°, 최종 cmd v +0.057 w -0.033
+     흔들림: |ω|>0.05 반전 21 회 = 60.4 회/m (이동 0.348 m), 고주파 RMS 0.111 rad/s, 최대 둘레비용 146
+     목표(경로 끝, prune 창 안이면) 까지 거리 0.606 m (xy tol 0.15), 로버 odom (0.562, 0.162)
+
+P3_wz0.2 bag bag_mp11 t=10.0 자세 (0.227,0.070) yaw +24.0° 초기 cmd v +0.082 w +0.028 | 경로 41점(간격 0.025) | 파라미터 vx_std=0.08 wz_std=0.2 temperature=0.15 iters=2 align_w=14 align_off=3 follow_w=10 follow_off=20 angle_w=2 angle_max=0.5 rep_w=1.5
+  → 60 주기(6.0 s) 후: 전진 +0.345 횡 -0.050 회전 -9.6°, 최종 cmd v +0.058 w -0.034
+     흔들림: |ω|>0.05 반전 19 회 = 54.3 회/m (이동 0.350 m), 고주파 RMS 0.105 rad/s, 최대 둘레비용 146
+     목표(경로 끝, prune 창 안이면) 까지 거리 0.604 m (xy tol 0.15), 로버 odom (0.563, 0.164)
+
+P3_T0.3 bag bag_mp11 t=10.0 자세 (0.227,0.070) yaw +24.0° 초기 cmd v +0.082 w +0.028 | 경로 41점(간격 0.025) | 파라미터 vx_std=0.08 wz_std=0.4 temperature=0.3 iters=2 align_w=14 align_off=3 follow_w=10 follow_off=20 angle_w=2 angle_max=0.5 rep_w=1.5
+  → 60 주기(6.0 s) 후: 전진 +0.280 횡 -0.038 회전 -13.3°, 최종 cmd v +0.043 w -0.042
+     흔들림: |ω|>0.05 반전 2 회 = 7.1 회/m (이동 0.283 m), 고주파 RMS 0.046 rad/s, 최대 둘레비용 0
+     목표(경로 끝, prune 창 안이면) 까지 거리 0.670 m (xy tol 0.15), 로버 odom (0.499, 0.149)
+
+######## 입구 (mp4 t=17, 60 주기) — 과거 표본 붕괴 장면
+E_현재 bag bag_mp4 t=17.0 자세 (0.661,0.269) yaw +32.5° 초기 cmd v +0.035 w +0.064 | 경로 41점(간격 0.025) | 파라미터 vx_std=0.08 wz_std=0.4 temperature=0.15 iters=2 align_w=14 align_off=3 follow_w=10 follow_off=20 angle_w=2 angle_max=0.5 rep_w=1.5
+  → 60 주기(6.0 s) 후: 전진 +0.328 횡 -0.110 회전 -29.4°, 최종 cmd v +0.051 w +0.089
+     흔들림: |ω|>0.05 반전 10 회 = 28.7 회/m (이동 0.348 m), 고주파 RMS 0.103 rad/s, 최대 둘레비용 253
+     목표(경로 끝, prune 창 안이면) 까지 거리 0.608 m (xy tol 0.15), 로버 odom (0.996, 0.352)
+
+E_wz0.3 bag bag_mp4 t=17.0 자세 (0.661,0.269) yaw +32.5° 초기 cmd v +0.035 w +0.064 | 경로 41점(간격 0.025) | 파라미터 vx_std=0.08 wz_std=0.3 temperature=0.15 iters=2 align_w=14 align_off=3 follow_w=10 follow_off=20 angle_w=2 angle_max=0.5 rep_w=1.5
+  → 60 주기(6.0 s) 후: 전진 +0.330 횡 -0.112 회전 -29.6°, 최종 cmd v +0.051 w +0.069
+     흔들림: |ω|>0.05 반전 14 회 = 39.9 회/m (이동 0.351 m), 고주파 RMS 0.095 rad/s, 최대 둘레비용 253
+     목표(경로 끝, prune 창 안이면) 까지 거리 0.606 m (xy tol 0.15), 로버 odom (0.999, 0.352)
+
+E_wz0.2 bag bag_mp4 t=17.0 자세 (0.661,0.269) yaw +32.5° 초기 cmd v +0.035 w +0.064 | 경로 41점(간격 0.025) | 파라미터 vx_std=0.08 wz_std=0.2 temperature=0.15 iters=2 align_w=14 align_off=3 follow_w=10 follow_off=20 angle_w=2 angle_max=0.5 rep_w=1.5
+  → 60 주기(6.0 s) 후: 전진 +0.330 횡 -0.112 회전 -28.9°, 최종 cmd v +0.049 w +0.015
+     흔들림: |ω|>0.05 반전 9 회 = 25.6 회/m (이동 0.352 m), 고주파 RMS 0.093 rad/s, 최대 둘레비용 253
+     목표(경로 끝, prune 창 안이면) 까지 거리 0.605 m (xy tol 0.15), 로버 odom (0.999, 0.351)
+
+######## 목표 근처 (mp8 t=33, 120 주기)
+G_현재 bag bag_mp8 t=33.0 자세 (1.654,0.251) yaw -16.0° 초기 cmd v +0.077 w -0.120 | 경로 18점(간격 0.025) | 파라미터 vx_std=0.08 wz_std=0.4 temperature=0.15 iters=2 align_w=14 align_off=3 follow_w=10 follow_off=20 angle_w=2 angle_max=0.5 rep_w=1.5
+  → 120 주기(12.0 s) 후: 전진 +0.407 횡 -0.068 회전 +7.0°, 최종 cmd v +0.006 w -0.001
+     흔들림: |ω|>0.05 반전 13 회 = 31.4 회/m (이동 0.415 m), 고주파 RMS 0.059 rad/s, 최대 둘레비용 148
+     목표(경로 끝, prune 창 안이면) 까지 거리 0.116 m (xy tol 0.15), 로버 odom (2.026, 0.074)
+
+G_wz0.3 bag bag_mp8 t=33.0 자세 (1.654,0.251) yaw -16.0° 초기 cmd v +0.077 w -0.120 | 경로 18점(간격 0.025) | 파라미터 vx_std=0.08 wz_std=0.3 temperature=0.15 iters=2 align_w=14 align_off=3 follow_w=10 follow_off=20 angle_w=2 angle_max=0.5 rep_w=1.5
+  → 120 주기(12.0 s) 후: 전진 +0.408 횡 -0.073 회전 +7.4°, 최종 cmd v +0.006 w +0.006
+     흔들림: |ω|>0.05 반전 7 회 = 16.8 회/m (이동 0.417 m), 고주파 RMS 0.051 rad/s, 최대 둘레비용 148
+     목표(경로 끝, prune 창 안이면) 까지 거리 0.111 m (xy tol 0.15), 로버 odom (2.026, 0.068)
+
+######## 끝 15:19:43
