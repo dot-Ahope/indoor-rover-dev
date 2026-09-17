@@ -1,0 +1,36 @@
+[INFO] [launch]: All log files can be found below /home/jetson/.ros/log/2026-09-17-10-55-30-283060-jetson-desktop-12038
+[INFO] [launch]: Default logging verbosity is set to INFO
+[INFO] [async_slam_toolbox_node-1]: process started with pid [12040]
+[async_slam_toolbox_node-1] [INFO] [1789610130.552566340] [slam_toolbox]: Node using stack size 40000000
+[async_slam_toolbox_node-1] [INFO] [1789610130.701065194] [slam_toolbox]: Using solver plugin solver_plugins::CeresSolver
+[async_slam_toolbox_node-1] [INFO] [1789610130.702396299] [slam_toolbox]: CeresSolver: Using SCHUR_JACOBI preconditioner.
+[async_slam_toolbox_node-1] [WARN] [1789610130.835736213] [slam_toolbox]: minimum laser range setting (0.0 m) exceeds the capabilities of the used Lidar (0.2 m)
+[async_slam_toolbox_node-1] Registering sensor: [Custom Described Lidar]
+[async_slam_toolbox_node-1] [INFO] [1789610154.639226766] [slam_toolbox]: Message Filter dropping message: frame 'lidar_link' at time 1789610154.536 for reason 'discarding message because the queue is full'
+[async_slam_toolbox_node-1] [INFO] [1789610157.339520572] [slam_toolbox]: Message Filter dropping message: frame 'lidar_link' at time 1789610157.245 for reason 'discarding message because the queue is full'
+[async_slam_toolbox_node-1] [INFO] [1789610184.302232924] [slam_toolbox]: Message Filter dropping message: frame 'lidar_link' at time 1789610184.206 for reason 'discarding message because the queue is full'
+[async_slam_toolbox_node-1] [INFO] [1789610191.176161523] [slam_toolbox]: Message Filter dropping message: frame 'lidar_link' at time 1789610191.153 for reason 'discarding message because the queue is full'
+[async_slam_toolbox_node-1] [INFO] [1789610195.199905209] [slam_toolbox]: Message Filter dropping message: frame 'lidar_link' at time 1789610195.169 for reason 'discarding message because the queue is full'
+[async_slam_toolbox_node-1] [INFO] [1789610201.465160199] [slam_toolbox]: Message Filter dropping message: frame 'lidar_link' at time 1789610201.440 for reason 'discarding message because the queue is full'
+[async_slam_toolbox_node-1] [INFO] [1789610204.342237782] [slam_toolbox]: Message Filter dropping message: frame 'lidar_link' at time 1789610204.324 for reason 'discarding message because the queue is full'
+[async_slam_toolbox_node-1] [INFO] [1789610238.153552798] [slam_toolbox]: Message Filter dropping message: frame 'lidar_link' at time 1789610238.050 for reason 'discarding message because the queue is full'
+[async_slam_toolbox_node-1] [INFO] [1789610250.147989928] [slam_toolbox]: Message Filter dropping message: frame 'lidar_link' at time 1789610250.043 for reason 'discarding message because the queue is full'
+[async_slam_toolbox_node-1] [INFO] [1789610264.330396002] [slam_toolbox]: Message Filter dropping message: frame 'lidar_link' at time 1789610264.298 for reason 'discarding message because the queue is full'
+[async_slam_toolbox_node-1] [INFO] [1789610285.135440952] [slam_toolbox]: Message Filter dropping message: frame 'lidar_link' at time 1789610285.068 for reason 'discarding message because the queue is full'
+[async_slam_toolbox_node-1] [INFO] [1789610297.495803024] [slam_toolbox]: Message Filter dropping message: frame 'lidar_link' at time 1789610297.406 for reason 'discarding message because the queue is full'
+[async_slam_toolbox_node-1] [INFO] [1789610300.006057574] [slam_toolbox]: Message Filter dropping message: frame 'lidar_link' at time 1789610299.881 for reason 'discarding message because the queue is full'
+[async_slam_toolbox_node-1] [INFO] [1789610302.589067896] [slam_toolbox]: Message Filter dropping message: frame 'lidar_link' at time 1789610302.497 for reason 'discarding message because the queue is full'
+[async_slam_toolbox_node-1] [INFO] [1789610318.072382401] [slam_toolbox]: Message Filter dropping message: frame 'lidar_link' at time 1789610317.968 for reason 'discarding message because the queue is full'
+[async_slam_toolbox_node-1] [INFO] [1789610338.258722196] [slam_toolbox]: Message Filter dropping message: frame 'lidar_link' at time 1789610338.145 for reason 'discarding message because the queue is full'
+[async_slam_toolbox_node-1] [INFO] [1789610349.049724334] [slam_toolbox]: Message Filter dropping message: frame 'lidar_link' at time 1789610348.967 for reason 'discarding message because the queue is full'
+[async_slam_toolbox_node-1] [INFO] [1789610358.942337534] [slam_toolbox]: Message Filter dropping message: frame 'lidar_link' at time 1789610358.843 for reason 'discarding message because the queue is full'
+[async_slam_toolbox_node-1] [INFO] [1789610366.528374342] [slam_toolbox]: Message Filter dropping message: frame 'lidar_link' at time 1789610366.474 for reason 'discarding message because the queue is full'
+[async_slam_toolbox_node-1] [INFO] [1789610398.783855921] [slam_toolbox]: Message Filter dropping message: frame 'lidar_link' at time 1789610398.685 for reason 'discarding message because the queue is full'
+[async_slam_toolbox_node-1] [INFO] [1789610405.288502287] [slam_toolbox]: Message Filter dropping message: frame 'lidar_link' at time 1789610405.171 for reason 'discarding message because the queue is full'
+[async_slam_toolbox_node-1] [INFO] [1789610410.875297184] [slam_toolbox]: Message Filter dropping message: frame 'lidar_link' at time 1789610410.777 for reason 'discarding message because the queue is full'
+[async_slam_toolbox_node-1] [INFO] [1789610418.662562225] [slam_toolbox]: Message Filter dropping message: frame 'lidar_link' at time 1789610418.613 for reason 'discarding message because the queue is full'
+[async_slam_toolbox_node-1] [INFO] [1789610425.355562915] [slam_toolbox]: Message Filter dropping message: frame 'lidar_link' at time 1789610425.272 for reason 'discarding message because the queue is full'
+[async_slam_toolbox_node-1] [INFO] [1789610453.616670994] [slam_toolbox]: Message Filter dropping message: frame 'lidar_link' at time 1789610453.539 for reason 'discarding message because the queue is full'
+[async_slam_toolbox_node-1] [INFO] [1789610459.782962655] [slam_toolbox]: Message Filter dropping message: frame 'lidar_link' at time 1789610459.711 for reason 'discarding message because the queue is full'
+[async_slam_toolbox_node-1] [INFO] [1789610464.410515947] [slam_toolbox]: Message Filter dropping message: frame 'lidar_link' at time 1789610464.318 for reason 'discarding message because the queue is full'
+[async_slam_toolbox_node-1] [INFO] [1789610468.702388069] [slam_toolbox]: Message Filter dropping message: frame 'lidar_link' at time 1789610468.658 for reason 'discarding message because the queue is full'
