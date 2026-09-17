@@ -1,0 +1,38 @@
+=== 1. 재기동 (172.30.1.8) ===
+  [sensor_conditioner.py-6] [INFO] [1789622415.547041570] [sensor_conditioner]: gyro bias calibrated: (-0.00838, -0.00097, -0.00189) rad/s, std=(0.0026, 0.0022, 0.0018)
+  map->odom: - Translation: [0.000, 0.000, 0.000]
+  로버 자세: - Translation: [0.000, 0.000, 0.000] - Rotation: in RPY (radian) [0.000, -0.000, 0.002] 
+   틈 [y_lo, y_hi]         폭        차체0.33     패딩0.43     허용 자세각(패딩)
+=== 2. 릴레이·readback·상자 게이트 ===
+=== 릴레이 ===
+남은 릴레이: 1
+발행자 Publisher count: 1
+=== readback ===
+  controller_frequency               Double value is: 10.0
+  FollowPathMPPI.temperature         
+  FollowPathMPPI.iteration_count     Integer value is: 2
+  FollowPathMPPI.vx_std              Double value is: 0.08
+  FollowPathMPPI.wz_std              Double value is: 0.4
+  FollowPathMPPI.visualize           
+  BT raw_path: 4  SmoothPath: 1
+  nav2: controller 1 planner 1 bt 1 stuck_monitor 1
+  로버 자세: - Translation: [0.000, 0.000, 0.000] - Rotation: in RPY (radian) [0.000, -0.000, 0.001] 
+=== 프로세스·부하 ===
+load 5.81 4.59 4.33  shadow_mode: SHADOW
+=== 게이트 ===
+상자: 전면 x=1.153  중심 y=-0.031  (137점)  → x 구간 [1.15, 1.26], y 구간 [-0.12, +0.06]
+   → 전방 2.2m 최소폭:  기준1 0.35 m (@1.10)   기준2(RPP) 0.25 m (@0.90)   기준3(오류) 0.00 m (@0.80)
+상자 x=1.153 y=-0.031 | 띠 근거 없는 셀 0 (≤1) | 상자 셀 3표본 0.074 0.074 0.074 → 0.074 | 창 0.281 m (≥0.20; 좌측 0.55)
+=== 3. 목표 근처 크리틱·SLAM·목표 여유 ===
+  FollowPathMPPI.GoalCritic.cost_weight      Double value is: 10.0
+  FollowPathMPPI.PathFollowCritic.threshold_to_consider 
+  FollowPathMPPI.PathAlignCritic.threshold_to_consider Double value is: 0.2
+  FollowPathMPPI.PathAngleCritic.threshold_to_consider Double value is: 0.2
+  FollowPathMPPI.PathFollowCritic.cost_weight Double value is: 10.0
+  FollowPathMPPI.PathFollowCritic.offset_from_furthest Integer value is: 20
+  FollowPathMPPI.visualize                   Boolean value is: False
+  bt.default_server_timeout                  Integer value is: 100
+map->odom 101 개/5 s, 최대 간격 0.10 s, 최대 stamp 지연 1.12 s
+FAIL
+목표 map (2.00, 0.00) yaw 0° | 풋프린트↔LETHAL 최소 0.291 m (셀 map 2.55, 0.00) | 목표 셀 비용 46
+  battery: voltage: 12.072561264038086
