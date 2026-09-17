@@ -19,4 +19,5 @@ if len(rx) < 2:
 else:
     gap = max(rx[i][0] - rx[i - 1][0] for i in range(1, len(rx))); lag = max(r[1] for r in rx)
     print('map->odom %d 개/5 s, 최대 간격 %.2f s, 최대 stamp 지연 %.2f s' % (len(rx), gap, lag))
-    print('OK' if (gap < 0.5 and lag < 0.5) else 'FAIL')
+    # 09-17: 정상 SLAM 의 stamp 지연은 -0.08~+0.55 s 로 흔들린다(job393) → 지연 문턱 1.0 s. mp7 고장 때는 간격 5.1 s·지연 4.8 s
+    print('OK' if (gap < 0.5 and lag < 1.0) else 'FAIL')

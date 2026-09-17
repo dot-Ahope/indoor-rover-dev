@@ -1,0 +1,17 @@
+=== 1. 호스트 ROS 노드 정지 (micro-ROS 에이전트 컨테이너는 유지) ===
+  남은 호스트 ROS 프로세스: 1   에이전트: 1
+=== 2. 설치 전 ===
+  fastrtps 2.6.11-1jammy.20260214.054019
+=== 3. 시뮬레이션 ===
+  1 upgraded, 0 newly installed, 0 to remove and 769 not upgraded.
+  Inst ros-humble-fastrtps [2.6.11-1jammy.20260214.054019] (2.6.12-1jammy.20260725.060440 ROS jammy:jammy [arm64])
+=== 4. 설치 ===
+  1 upgraded, 0 newly installed, 0 to remove and 769 not upgraded.
+  Unpacking ros-humble-fastrtps (2.6.12-1jammy.20260725.060440) over (2.6.11-1jammy.20260214.054019) ...
+  Setting up ros-humble-fastrtps (2.6.12-1jammy.20260725.060440) ...
+=== 5. 설치 후 ===
+  fastrtps 2.6.12-1jammy.20260725.060440
+  libfastrtps.so.2.6 Jul 25 15:04
+  libfastrtps.so.2.6.12 Jul 25 15:04
+  /opt/ros/humble/lib/libfastrtps.so.2.6.12 Jul 25 15:04
+exit 0
