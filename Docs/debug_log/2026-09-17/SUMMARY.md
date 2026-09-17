@@ -115,3 +115,31 @@
 - 유발 조건 스트레스(`jobs/job393_churn.sh`, 로버 정지): bag 기록기(/tf·/tf_static·/map·/scan) 6 s 기록 후 해체 + `ros2 topic echo /tf`·`/map` 단발 구독자 16 개 생성·해체 × 3 라운드 → 매 라운드 map→odom 최대 간격 0.05~0.07 s, SLAM 그래프 유지, **정지 0 회**. (`outputs/j392_393.txt`)
 - 한계: 2.6.11 에서 같은 시험을 돌리지 않았고 데드락은 타이밍 의존이라, 이 결과는 **수정의 보조 증거일 뿐 증명이 아니다**. 실주행(bag 종료 포함)에서 재발 여부를 계속 본다(SLAM 생존 게이트·top 기록).
 - 게이트 문턱 조정: 정상 SLAM 의 map→odom stamp 지연이 −0.08~+0.55 s 로 흔들려 기준 측정이 FAIL(0.55) → 지연 문턱 0.5 → **1.0 s**(간격 문턱 0.5 s 유지). mp7 고장 값(간격 5.1 s, 지연 4.8 s)은 여전히 잡힌다.
+
+## 7. mp8 — 목표 (2.0, 0), 오늘 조치 전부 반영: **주행 품질은 최고, 목표 0.24 m 옆에서 정지** → TIMEOUT 90 s, 2.30 m
+게이트(`outputs/prep_mp8.txt`): 상자 1.206/+0.004, 창 0.230, 띠 셀 0, 목표 풋프린트 여유 0.270, SLAM map→odom 간격 0.05 s. 설정: visualize off, BT timeout 100 ms, SmoothPath fallback, Fast DDS 2.6.12, 15W.
+**주행 (goal 기준, `outputs/j379_mp8_events.txt`, `outputs/mp8.csv`)**
+| t (s) | 사건 |
+|---|---|
+| 0~33 | 0.07~0.08 m/s 로 입구·통로·상자 뒤 모서리 통과. 실여유 최소 3.9~4.6 cm(27 s), 기하 최근접 2.6 cm(26.5 s, 1.52/+0.31), 충돌감지 0 |
+| 33~38 | (1.86→1.96, +0.23~0.24) 로 감속 v 0.036 → 0.009 |
+| 38~90 | **(1.960, +0.241) 정지**, 목표까지 0.243 m (tol 0.15). 60.9·86.2 s 진행 실패 → 로컬 클리어 → 90 s 러너 취소 |
+- **처음으로 BT 타임아웃 0, 제어 루프 미달 0, SmoothPath 실패 0, SLAM 생존(주행 후 간격 0.05 s)**. bag 25 MB(mp7 138 MB). top(2 s, 50 샘플): load 평균 8.5, controller_server 평균 36 %(최대 70), python 노드 합 121 %, bt_navigator 16, rplidar 15, realsense 13, ekf 11, planner 11, slam 7 %.
+
+### 7.1 목표 앞 정지의 원인 1 — **펌웨어 속도 문턱 불일치 (결함)**
+- bag `/rover/status`(`outputs/j395_mp8.txt`): 37.3 s 명령 0.010 m/s 에 L tgt=10 mm/s·R tgt=**0**, 38.1 s 부터 /cmd_vel 은 **0.009 m/s(20 Hz)** 인데 **양 휠 tgt=0·duty 0·wheel_odom 0.0000** (51 s 동안). 보드 상태 "OK".
+- 코드: `microros_task.c apply_min_wheel_speed()` — |v| < EPS 0.003 → 0, |v| < **MIN_WHEEL_SPEED_MPS 0.008** → 0.008 로 승격. 그런데 `speed_controller.c` 는 |target| < **TARGET_THRESH 0.010** 을 정지 명령으로 처리(적분·출력 0), `safety_monitor.c V_TARGET_THRESH 0.010` 도 같은 문턱. → **휠 지령 3~10 mm/s 는 전부 조용히 버려진다.** 09-07 에 MIN 을 0.020 → 0.008 로 낮추며 두 문턱을 함께 바꾸지 않았다. (09-07 의 "7.8 mm/s 추종" 실측은 구 스케일 10 mm/s 지령이라 문턱 0.010 에 걸리지 않았다.)
+- 영향: MPPI 가 목표 앞에서 9 mm/s 로 기어가려 하면 로버는 움직이지 않고, MPPI 는 이동이 없으니 같은 명령을 반복 → 무한 정지. mp6 의 0.009 m/s 정지도 같은 기제.
+- 수정안(사용자 승인·플래시 필요): **MIN_WHEEL_SPEED_MPS 0.008 → 0.011**(TARGET_THRESH 0.010 위, 오늘 11~14 mm/s 에서 duty 42~45 % 로 추종 확인) — 대안: TARGET_THRESH·V_TARGET_THRESH 를 0.005 로 낮춤(분해능 보존, 단 8 mm/s 정지 출발 실측 필요).
+
+### 7.2 원인 2 — 목표 근처 크리틱 교대로 중심선 복귀가 끊김
+- 오프라인 MPPI 시뮬레이터(job355)에 펌웨어 휠 속도 처리(승격→정지 문턱)와 /plan 대체 경로를 넣고 bag_mp8 t=33 s 에서 12 s(`outputs/j396_goalsim8.txt`):
+| 변형 | 최종 목표 거리 | tol 0.15 |
+|---|---|---|
+| S1 현재 파라미터·현재 펌웨어 | 0.234 m (1.961, 0.191) | ✗ — 실측 0.243 (1.960, 0.241) 재현 |
+| S2 펌웨어만 수정(승격 0.012) | 0.232 m | ✗ |
+| S3 경로 크리틱 문턱 0.6/0.4/0.4 → 0.2 | 0.144 m | ✓(경계) |
+| S4 S3 + 펌웨어 수정 | 0.140 m | ✓(경계) |
+| S5 S4 + GoalCritic 5 → 10 | **0.116 m** | ✓ |
+- 판정: 목표 옆 정지의 주 원인은 **경로 크리틱이 목표 0.6/0.4 m 안에서 꺼져** 상자 모서리 뒤 늦은 중심선 복귀가 끊긴 것. 펌웨어 결함은 "기어가기" 가 영원히 멈추게 만든 보조 원인. 시뮬은 정적 장면·근사 크리틱이라 실주행으로 확인해야 한다.
+- 조치(배포, 다음 기동 반영): `PathFollowCritic/PathAlignCritic/PathAngleCritic threshold_to_consider` **→ 0.2**, `GoalCritic cost_weight` **5 → 10**.

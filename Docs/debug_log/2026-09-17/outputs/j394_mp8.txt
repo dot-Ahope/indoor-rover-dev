@@ -1,0 +1,19 @@
+/cmd_vel: 1804 메시지 (geometry_msgs/msg/Twist)
+/wheel_odom: 2427 메시지 (nav_msgs/msg/Odometry)
+/odometry/filtered: 2914 메시지 (nav_msgs/msg/Odometry)
+/rover/status: 485 메시지 (diagnostic_msgs/msg/DiagnosticArray)
+  cmd 25~35 s: 200 개, 간격 최대 0.05 s, 값 상위 [((0.0613, 0.0368), 2), ((0.0455, 0.3661), 2), ((0.0714, 0.2221), 2), ((0.0793, -0.0353), 2)]
+  wheel_odom 25~35 s: v 평균 +0.0467 최대 +0.0804, w 평균 +0.0362
+  status 25~35 s 마지막: diagnostic_msgs.msg.DiagnosticArray(header=std_msgs.msg.Header(stamp=builtin_interfaces.msg.Time(sec=1789613172, nanosec=506602226), frame_id=''), status=[diagnostic_msgs.msg.DiagnosticStatus(level=b'\x00', name='rover_jupiter_fw', message='OK', hardware_id='F
+  cmd 35~40 s: 100 개, 간격 최대 0.05 s, 값 상위 [((0.009, 0.0003), 14), ((0.009, 0.0001), 6), ((0.009, 0.0002), 6), ((0.009, 0.0004), 4)]
+  wheel_odom 35~40 s: v 평균 +0.0069 최대 +0.0192, w 평균 +0.0005
+  status 35~40 s 마지막: diagnostic_msgs.msg.DiagnosticArray(header=std_msgs.msg.Header(stamp=builtin_interfaces.msg.Time(sec=1789613177, nanosec=506602226), frame_id=''), status=[diagnostic_msgs.msg.DiagnosticStatus(level=b'\x00', name='rover_jupiter_fw', message='OK', hardware_id='F
+  cmd 40~50 s: 200 개, 간격 최대 0.06 s, 값 상위 [((0.009, 0.0), 34), ((0.009, 0.0002), 30), ((0.009, 0.0003), 22), ((0.009, -0.0001), 22)]
+  wheel_odom 40~50 s: v 평균 +0.0000 최대 +0.0000, w 평균 +0.0000
+  status 40~50 s 마지막: diagnostic_msgs.msg.DiagnosticArray(header=std_msgs.msg.Header(stamp=builtin_interfaces.msg.Time(sec=1789613187, nanosec=506602226), frame_id=''), status=[diagnostic_msgs.msg.DiagnosticStatus(level=b'\x00', name='rover_jupiter_fw', message='OK', hardware_id='F
+  cmd 60~62 s: 40 개, 간격 최대 0.05 s, 값 상위 [((0.009, -0.001), 8), ((0.009, -0.0009), 8), ((0.009, -0.0011), 6), ((0.009, -0.0012), 4)]
+  wheel_odom 60~62 s: v 평균 +0.0000 최대 +0.0000, w 평균 +0.0000
+  status 60~62 s 마지막: diagnostic_msgs.msg.DiagnosticArray(header=std_msgs.msg.Header(stamp=builtin_interfaces.msg.Time(sec=1789613199, nanosec=506602226), frame_id=''), status=[diagnostic_msgs.msg.DiagnosticStatus(level=b'\x00', name='rover_jupiter_fw', message='OK', hardware_id='F
+  cmd 80~90 s: 197 개, 간격 최대 0.20 s, 값 상위 [((0.0089, -0.0024), 20), ((0.0089, -0.0021), 20), ((0.0089, -0.0022), 20), ((0.009, -0.0017), 16)]
+  wheel_odom 80~90 s: v 평균 +0.0000 최대 +0.0000, w 평균 +0.0000
+  status 80~90 s 마지막: diagnostic_msgs.msg.DiagnosticArray(header=std_msgs.msg.Header(stamp=builtin_interfaces.msg.Time(sec=1789613227, nanosec=506602226), frame_id=''), status=[diagnostic_msgs.msg.DiagnosticStatus(level=b'\x00', name='rover_jupiter_fw', message='OK', hardware_id='F

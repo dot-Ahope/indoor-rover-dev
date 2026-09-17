@@ -1,0 +1,43 @@
+상자: 전면 x=1.209  중심 y=+0.004  (138점)  → x 구간 [1.21, 1.32], y 구간 [-0.09, +0.09]
+   → 전방 2.2m 최소폭:  기준1 0.30 m (@1.20)   기준2(RPP) 0.20 m (@0.90)   기준3(오류) 0.00 m (@0.80)
+상자 셀 최대 y 표본 3회: 0.122 0.123 0.123  → 중앙값 0.123
+통로 띠 근거 없는 셀 0 (≤1) | 창 0.232 m (≥0.20; 좌측 0.55, 상자 셀 최대 y 0.123)
+목표 map (2.00, 0.00) yaw 0° | 풋프린트↔LETHAL 최소 0.273 m (셀 map 1.69, -0.44) | 목표 셀 비용 47
+started_pid 22010
+주행 시작 11:44:45 — 로그 /tmp/drive_mp8.log (링크가 끊겨도 원격에서 계속됨; 정지는 job156_stop.sh)
+########## 게이트 ##########
+  프로세스 14/14 단일, 보드 average rate: 24.996
+  SLAM: map->odom 93 개/5 s, 최대 간격 0.05 s, 최대 stamp 지연 -0.05 s
+  출발 자세: 
+  상자: 전면 x=1.203  중심 y=+0.004  (142점)  → x 구간 [1.20, 1.31], y 구간 [-0.09, +0.09]
+     [+0.12, +0.73]         0.61 m   통과         통과         19 deg (패딩無 90 deg)
+     → 전방 2.2m 최소폭:  기준1 0.30 m (@1.20)   기준2(RPP) 0.20 m (@0.90)   기준3(오류) 0.00 m (@0.80)
+  상자 기준선 대비 dx -0.00 dy +0.00 (허용 ±0.06) → OK
+  EKF 위반 19회 | slam 폐기 22회 | load 7.23 5.63 5.11
+
+########## 주행 D=2.0 ##########
+=== 주행 (bag 1개, nav2.log 208 줄부터) ===
+
+결과 TIMEOUT  소요 90.0s  주행 2.30m  샘플 901
+  ① 실제 최근접(차체↔상자 기하): 2.6 cm @ t=26.5s 전진 1.52 횡 +0.310   ← 0 이면 접촉
+  ② 계획의 최소 여유: 4.7 cm (최근접 시점 9.7 cm)   ← 음수면 계획 자체가 접촉 경로
+  ③ 상자 자리 비용 — 로컬 최소/최근접시 99/99, 전역 최소/최근접시 99/99  ← 0 이면 기억 소실
+  ④ 경로 좌우 전환 0회 (최초 선택 좌), 계획이 접촉 경로였던 샘플 0/901 (0%)
+  깊이점: 최대 469, 최소 0
+  ⑥ 상자 미관측 최대 82.8초 — 이 구간의 ①·⑤ 는 마지막 관측의 외삽이다
+  조향(주행구간 2.15m, 목표부근 580샘플 제외): 직진 중 |ω| 평균 0.135 최대 0.380 rad/s, 부호반전 11회 = 5.13회/m
+
+=== nav2.log 신규분 ===
+  신규 204 줄
+  detected collision   0건
+  clear except         3건
+  clear entirely       0건
+  backup failed        0건
+  Goal succeeded       0건
+  aborted              0건
+  [controller_server-2] [INFO] [1789613198.620433175] [local_costmap.local_costmap]: Received request to clear except a region the local_costmap
+  [controller_server-2] [INFO] [1789613223.840173125] [local_costmap.local_costmap]: Received request to clear except a region the local_costmap
+  [planner_server-4] [INFO] [1789613223.841371661] [global_costmap.global_costmap]: Received request to clear except a region the global_costmap
+  bag: 25M
+  EKF 위반 21회 | slam 폐기 23회 | load 7.94 6.52 5.49
+=== 끝 11:47:13 ===

@@ -1,0 +1,8 @@
+#!/bin/bash
+H=${JETSON_HOST:-192.168.0.101}; SPS=/mnt/c/Users/magma/AppData/Local/Temp/claude/F--6-Indoor-Rover-Rover/82ce61d4-f5f7-4a25-b2e7-1279291348a9/scratchpad
+O="-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o LogLevel=ERROR -o ConnectTimeout=10"
+echo "=== 1. 재기동 ==="; bash $SPS/run_j.sh job240_clean.sh 15 2>&1 | grep -aE '에이전트|세션|무발행|wheel_odom|gyro|map->odom|자세|중단'
+echo "=== 2. 릴레이·readback·상자 게이트 ==="; bash $SPS/run_gate2.sh 1.21 0.0 2>&1 | grep -avE 'FollowPathMPPI\.(time_steps|model_dt)|stuck_monitor 파라미터|robot_state_publisher:2'
+for f in job377_goalclear.py job378_goalcands.sh job386_slamalive.py; do tr -d '\r' < $SPS/$f > /tmp/$f; sshpass -p <PW> scp $O -q /tmp/$f jetson@$H:/tmp/$f || exit 1; done
+echo "=== 3. BT·목표 후보 ==="; timeout 200 sshpass -p <PW> ssh $O jetson@$H "bash /tmp/job378_goalcands.sh 2>&1 | grep -aE 'TruncatePath|2.0 0.0|2.0 0.2|2.2 0.0'"
+echo "=== 4. SLAM 생존 · 설정 확인 ==="; timeout 90 sshpass -p <PW> ssh $O jetson@$H "export FASTRTPS_DEFAULT_PROFILES_FILE=/home/jetson/ros2_ws/install/rover_bringup/share/rover_bringup/config/fastdds_udp_only.xml; source /opt/ros/humble/setup.bash; python3 /tmp/job386_slamalive.py 2>&1 | grep -av '^\['; for p in FollowPathMPPI.visualize FollowPathMPPI.iteration_count; do printf '  %s: ' \$p; timeout 8 ros2 param get /controller_server \$p 2>&1 | tail -1; done; printf '  bt default_server_timeout: '; timeout 8 ros2 param get /bt_navigator default_server_timeout 2>&1 | tail -1; echo \"  fastrtps: \$(grep -a libfastrtps /proc/\$(pgrep -f async_slam_toolbox_node | head -1)/maps | awk '{print \$6}' | sort -u)\"; echo \"  nvpmodel: \$(nvpmodel -q 2>&1 | head -1)\""
