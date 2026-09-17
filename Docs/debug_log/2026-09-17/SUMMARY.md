@@ -81,4 +81,30 @@
 
 **사용자 결정 필요**
 - 정지한 slam_toolbox 역추적(`sudo gdb -p <pid> -batch -ex "thread apply all bt"`, 읽기 전용) — 재기동 전에만 가능.
-- 전력 모드 15W → 25W(`sudo nvpmodel -m 1`, CPU +15 %) — 로버 배터리·Jetson 전원 회로의 허용 전력 확인 필요.
+- 전력 모드 15W → 25W(`sudo nvpmodel -m 1`, CPU +15 %) — 로버 배터리·Jetson 전원 회로의 허용 전력 확인 필요. **→ §6.2: 추정 오류, 25W 는 CPU 1344 MHz 로 더 낮음**
+
+## 6. 사용자 승인 두 건 실행: SLAM 역추적 → **Fast DDS 내부 데드락**, 전력 모드 25W → **CPU 가 오히려 느려져 15W 로 원복** (내 판단 오류)
+### 6.1 정지한 slam_toolbox 역추적 (`sudo gdb -p 12040 -batch "thread apply all bt 25"`, 읽기 전용, `outputs/slam_bt.txt`)
+22 스레드 중 6 개가 뮤텍스 획득 대기(`__lll_lock_wait`), 나머지는 조건변수/TBB 유휴:
+| 스레드 | 위치 | 기다리는 것 |
+|---|---|---|
+| 6 (discovery) | `EDPSimpleSUBListener::onNewCacheChangeAdded → PDP::removeReaderProxyData → EDP::unpairReaderProxy → StatefulWriter::matched_reader_remove → check_acked_status → DataWriterHistory::remove_change_pub → StatefulWriter::change_removed_by_history → (lock)` | **떠난 원격 구독자 제거 중**, 쓰기 쪽 락을 쥔 채 다른 락 대기 |
+| 8 (flow controller) | `FlowControllerImpl<SyncPublishMode,Fifo> → RTPSMessageGroup::flush_and_reset → send → (lock)` | 송신 중 락 대기 |
+| 5, 7 (UDP 수신) | `MessageReceiver::processCDRMsg → PDP::assert_remote_participant_liveliness → (lock)` | PDP 락(스레드 6 이 보유) |
+| 4 (이벤트) | `StatefulWriter::perform_nack_response → (lock)` | 쓰기 락 |
+| **16** | `SlamToolbox::publishTransformLoop → TransformBroadcaster::sendTransform → rmw_publish → DataWriterImpl::write → perform_create_new_change → (lock)` | **map→odom /tf 발행이 여기서 멈춤** |
+- 해석: 원격 구독자(/tf·/map 을 구독하던 참가자)가 떠나는 순간의 **StatefulWriter 락 순서 역전 데드락**. 최종 정지는 bag 기록기(/tf·/map 구독자) 종료(+30 s) 직후였다 — 시간 일치.
+- 설치 버전 **ros-humble-fastrtps 2.6.11**, 후보 **2.6.12**. 2.6.12 릴리스 노트: "Fix lock order inversion in StatefulWriter" (#6463, "flowcontroler loi deadlock" — "LocatorSelectorSender 와 FlowController 사이 LOI, 참가자 해체 중 다른 참가자가 샘플을 계속 보낼 때"). 우리 역추적의 경로(원격 해체 중 matched_reader_remove ↔ flow controller send)와 **강하게 일치**. 스레드 8 의 #4 프레임이 심볼 없음(??) 이라 완전한 동일성은 미확인.
+- 주행 중 5.1 s 공백(+6.8 s)도 같은 락 경합일 가능성(짧은 구독자 — CLI·게이트 스크립트 — 가 떠날 때 /tf 쓰기가 막힘)이 있으나 **미검증**(그 시각 역추적 없음).
+- 조치 후보(사용자 결정): ① `sudo apt install --only-upgrade ros-humble-fastrtps`(2.6.12) — 호스트 노드 전부에 적용, micro-ROS 에이전트는 컨테이너 자체 Fast DDS 라 무관. ② RMW 를 CycloneDDS 로 교체 — 변경 범위 큼(설치·전 런치 환경변수·에이전트 상호운용 시험). ①을 먼저.
+- 재발 방지 운용: 주행 중에는 /tf 구독 CLI(tf2_echo 등)·짧은 노드를 띄우지 않는다. bag 은 SLAM 재기동 전에만 끈다(끈 뒤에는 SLAM 생존 게이트가 잡는다).
+
+### 6.2 전력 모드 — 25W 전환 후 즉시 15W 원복
+- 실행: `nvpmodel -m 1`(25W) → CPU `scaling_max_freq` **1344 MHz**(15W 는 1497). `/etc/nvpmodel.conf`:
+| 모드 | CPU 상한 | GPU 상한 | EMC 상한 |
+|---|---|---|---|
+| 15W (ID 0) | 1497.6 MHz | 612 MHz | 2133 MHz |
+| 25W (ID 1) | **1344 MHz** | 918 MHz | 3199 MHz |
+| MAXN_SUPER (ID 2) | 제한 없음(1728) | 제한 없음 | 제한 없음 |
+- **내 오류**: "25W 면 CPU +15 %" 는 확인 없이 한 추정이었다. 이 JetPack 의 25W 는 전력 예산을 GPU·메모리에 주고 CPU 를 낮춘다. 사용자 승인의 목적(CPU 여유)과 반대라 같은 승인 범위에서 **15W 로 원복**(1497 MHz 확인). 전환 중 배터리 12.12 V, 온도 47 °C.
+- CPU 를 늘리는 유일한 모드는 MAXN_SUPER(무제한, 전력 최대). 로버 전원 회로 허용 전력 확인 후 사용자 결정.
