@@ -143,3 +143,24 @@
 | S5 S4 + GoalCritic 5 → 10 | **0.116 m** | ✓ |
 - 판정: 목표 옆 정지의 주 원인은 **경로 크리틱이 목표 0.6/0.4 m 안에서 꺼져** 상자 모서리 뒤 늦은 중심선 복귀가 끊긴 것. 펌웨어 결함은 "기어가기" 가 영원히 멈추게 만든 보조 원인. 시뮬은 정적 장면·근사 크리틱이라 실주행으로 확인해야 한다.
 - 조치(배포, 다음 기동 반영): `PathFollowCritic/PathAlignCritic/PathAngleCritic threshold_to_consider` **→ 0.2**, `GoalCritic cost_weight` **5 → 10**.
+
+## 8. 정지 문턱 0.010 의 출처·충돌 정리와 펌웨어 수정 (사용자 결정: 정지 문턱을 낮추고 파라미터를 한 곳으로)
+### 8.1 0.010 은 어디서 왔나
+- 코드: `speed_controller.c` `TARGET_THRESH 0.01f`(05-21 `788a15a` F4 폐루프 PID 도입 — "정지 명령: 출력·적분 강제 0, windup·전류 누설 방지"; 05-27 `bfe2761` 능동 제동 ramp 진입점으로 재사용), `safety_monitor.c` `V_TARGET_THRESH`(05-21 0.05 → 09-03 `42ea957` 0.015 → 0.010 으로 정지 문턱에 맞춤). 문서는 `F4_VERIFICATION.md:31` 한 줄. 중앙 헤더(`rover_platform.h`)·계획서에는 없었다.
+- 당시 전제(추정): 구 모터 AM2861·PWM 50 Hz, 정지마찰 duty 30~55 %, F3 정지 속도 노이즈 ±10 mm/s → 10 mm/s 미만 제어 무의미.
+
+### 8.2 0.008 은 새 모터 실측값인가 — **부분적으로만**
+- 새 모터(CHR-GM37 1:90) 설치 08-26 `1cefd2c` → PWM 20 kHz 정정 09-07 10:12 `8fd7618`(MIN 0.020 → 0.010 임시) → 바닥 스윕 `job44a`(스텝마다 정지 후 출발, 3 s 유지): 구 스케일 지령 5/10/15/20/30 mm/s → FG 10/10/15/20/30, duty 41/41/43/45/50 %, L/R 대칭, 전부 기동. **지령 5 는 MIN 0.010 으로 승격돼 10 으로 돌았다 → 구 10 mm/s(=실 7.8) 미만은 미검증**(09-07 SUMMARY 도 "그 미만은 승격되어 미검증" 이라고 적음).
+- 09-07 11:52 `50444d5`(휠 둘레 0.16130→0.12533): MIN 0.010(구) → **0.008 은 단위 환산값**(×0.777). 직접 지령해 측정한 값이 아니다. `rover_platform.h` 주석의 "데드밴드 사실상 없음" 은 미검증 구간까지 일반화한 과장 → 주석 정정.
+- 충돌의 발생 시점도 여기: MIN 은 새 단위로 환산했지만 STOP 0.010 은 환산하지 않아 MIN(0.008) < STOP(0.010).
+
+### 8.3 수정 (소스·빌드 완료, **플래시 대기 — ST-Link 미연결**)
+- `rover_platform.h` 에 "저속·정지 문턱 체계" 블록: `WHEEL_SPEED_EPS 3000 µm/s`, `SPEED_CTRL_STOP_THRESH 5000`(**10 → 5 mm/s**), `MIN_WHEEL_SPEED 8000`, `STALL_TARGET_THRESH = STOP`. 정수 µm/s 로 정의하고 `#if/#error` 로 **EPS < STOP ≤ MIN** 을 컴파일 시 검사(MIN 을 4 mm/s 로 바꾼 사본에서 #error 발생 확인). 이력·출처(09-02~09-17) 주석 정리.
+- `speed_controller.c`·`safety_monitor.c` 의 지역 define 제거 → 헤더 매크로 사용. `microros_task.c` 는 원래 헤더 사용.
+- 빌드(WSL, `mount -t drvfs F:` + `make -j8`): 오류 0, text 132328 B. 객체 상수 확인: speed_controller.o 에 0.005f 2 곳(set_target·update), safety_monitor.o 1 곳, 남은 0.010f 는 `CTRL_DT_S`(1/100 s).
+- 안전 측면: 스톨 감시가 이제 5~10 mm/s 지령도 본다(09-03 에 우려한 "승격 저속 휠 부하 정지 → 래치" 가 다시 가능) — duty ≥ 0.60 기준이라 정상 기동(duty 41 %)에서는 걸리지 않을 것으로 예상, 실측 필요.
+- 모아야 할 다음 후보(이번엔 손대지 않음): `CTRL_HZ`(speed_controller·safety_monitor 중복 정의), `STOP_RAMP_MPS2`, `I_MAX`/`OUT_MAX`/`DEADZONE`/`KV`, `STALL_DUTY_THRESH`·`STALL_WIN_SAMPLES`·`STALL_DIST_M`, `safety_monitor` 주석의 "승격값 0.020" 등 낡은 수치.
+
+### 8.4 플래시 후 실측 계획 (`jobs/job397_lowspeed.py`, 로버 이동 — 사용자 출발 지시 필요)
+- 절차: 현재 플래시 백업(`STM32_Programmer_CLI -r`) → 플래시 → `-rst` 추가(에이전트 세션) → 정지 상태에서 직진 0.003(→8)·0.005(→8)·0.008·0.010·0.015 m/s, 제자리 회전 0.020(±4.4→8 mm/s)·0.036(±8)·0.050(±11) rad/s 각 3 s. 휠별 tgt/v/duty/pps·EKF·스톨 이벤트. 예상 이동 직진 ≈15 cm·회전 ≈21°.
+- 판정: 8 mm/s 가 정지에서 양 휠 기동하면 MIN 0.008 확정, 아니면 MIN 을 기동 확인값으로 올린다(불변식 검사가 STOP 과의 순서를 지킨다).
