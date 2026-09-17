@@ -1,0 +1,306 @@
+######## 1. 현재 상태 (2026-09-17 18:06:18, uptime up 4 hours, 21 minutes)
+인터페이스 wlP1p1s0
+  Connected to 38:f4:5e:27:87:46 (on wlP1p1s0)
+  	SSID: ALOPS_ROBOTICS_5G
+  	freq: 5765
+  	RX: 23559107 bytes (32266 packets)
+  	TX: 57131223 bytes (150389 packets)
+  	signal: -57 dBm
+  	rx bitrate: 702.0 MBit/s VHT-MCS 8 80MHz VHT-NSS 2
+  	tx bitrate: 175.5 MBit/s VHT-MCS 4 80MHz VHT-NSS 1
+  power_save: Power save: on
+  IPv4 172.30.1.8/24
+  route: default via 172.30.1.254 dev wlP1p1s0 proto dhcp metric 600 
+  route: 169.254.0.0/16 dev docker0 scope link metric 1000 linkdown 
+  route: 172.17.0.0/16 dev docker0 proto kernel scope link src 172.17.0.1 linkdown 
+  route: 172.30.1.0/24 dev wlP1p1s0 proto kernel scope link src 172.30.1.8 metric 600 
+  드라이버: rtl88x2ce, 펌웨어/모듈: rtl8822ce 
+  MAC: 58:02:05:bd:d5:35
+  reg: global
+  reg: country 00: DFS-UNSET
+  reg: 	(755 - 928 @ 2), (N/A, 20), (N/A), PASSIVE-SCAN
+######## 2. 저장 연결 (비밀 제외)
+  NAME                TYPE      AUTOCONNECT  AUTOCONNECT-PRIORITY  DEVICE    ACTIVE 
+  ALOPS_ROBOTICS_5G   wifi      yes          5                     wlP1p1s0  yes    
+  docker0             bridge    no           0                     docker0   yes    
+  PTR                 wifi      yes          0                     --        no     
+  WEB_DEV_5G          wifi      yes          20                    --        no     
+  Wired connection 1  ethernet  yes          -999                  --        no     
+  -- ALOPS_ROBOTICS_5G
+     connection.autoconnect:                 yes
+     connection.autoconnect-priority:        5
+     connection.autoconnect-retries:         -1 (default)
+     connection.auth-retries:                -1
+     connection.timestamp:                   1789635906
+     802-11-wireless.ssid:                   ALOPS_ROBOTICS_5G
+     802-11-wireless.mode:                   infrastructure
+     802-11-wireless.band:                   --
+     802-11-wireless.channel:                0
+     802-11-wireless.bssid:                  --
+     802-11-wireless.mac-address:            --
+     802-11-wireless.cloned-mac-address:     --
+     802-11-wireless.mac-address-randomization:default
+     802-11-wireless.seen-bssids:            38:F4:5E:27:87:46
+     802-11-wireless.powersave:              0 (default)
+     802-11-wireless-security.proto:         --
+     802-11-wireless-security.pairwise:      --
+     802-11-wireless-security.group:         --
+     802-11-wireless-security.pmf:           0 (default)
+     ipv4.method:                            auto
+     ipv4.addresses:                         --
+     ipv4.dhcp-client-id:                    --
+  -- PTR
+     connection.autoconnect:                 yes
+     connection.autoconnect-priority:        0
+     connection.autoconnect-retries:         -1 (default)
+     connection.auth-retries:                -1
+     connection.timestamp:                   1775097821
+     802-11-wireless.ssid:                   PTR
+     802-11-wireless.mode:                   infrastructure
+     802-11-wireless.band:                   --
+     802-11-wireless.channel:                0
+     802-11-wireless.bssid:                  --
+     802-11-wireless.mac-address:            --
+     802-11-wireless.cloned-mac-address:     --
+     802-11-wireless.mac-address-randomization:default
+     802-11-wireless.seen-bssids:            56:BC:1F:7F:7C:09
+     802-11-wireless.powersave:              0 (default)
+     802-11-wireless-security.proto:         --
+     802-11-wireless-security.pairwise:      --
+     802-11-wireless-security.group:         --
+     802-11-wireless-security.pmf:           0 (default)
+     ipv4.method:                            auto
+     ipv4.addresses:                         --
+     ipv4.dhcp-client-id:                    --
+  -- WEB_DEV_5G
+     connection.autoconnect:                 yes
+     connection.autoconnect-priority:        20
+     connection.autoconnect-retries:         -1 (default)
+     connection.auth-retries:                -1
+     connection.timestamp:                   1789619937
+     802-11-wireless.ssid:                   WEB_DEV_5G
+     802-11-wireless.mode:                   infrastructure
+     802-11-wireless.band:                   --
+     802-11-wireless.channel:                0
+     802-11-wireless.bssid:                  --
+     802-11-wireless.mac-address:            --
+     802-11-wireless.cloned-mac-address:     --
+     802-11-wireless.mac-address-randomization:default
+     802-11-wireless.seen-bssids:            B0:38:6C:37:1B:4C
+     802-11-wireless.powersave:              2 (disable)
+     802-11-wireless-security.proto:         --
+     802-11-wireless-security.pairwise:      --
+     802-11-wireless-security.group:         --
+     802-11-wireless-security.pmf:           0 (default)
+     ipv4.method:                            auto
+     ipv4.addresses:                         --
+     ipv4.dhcp-client-id:                    --
+  NM conf: [device]
+  NM conf: wifi.scan-rand-mac-address=no
+  NM conf: [connection]
+  NM conf: wifi.powersave = 3
+######## 3. 주변 AP 스캔 (캐시; SSID·BSSID·채널·신호·보안)
+  IN-USE  SSID               BSSID              CHAN  FREQ      SIGNAL  RATE        SECURITY  
+  *       ALOPS_ROBOTICS_5G  38:F4:5E:27:87:46  153   5765 MHz  72      270 Mbit/s  WPA1 WPA2 
+######## 4. Wi-Fi 송수신량 (스택 가동 중 10 s)
+  TX 2 KiB/s (6 pkt/s) | RX 0 KiB/s (0 pkt/s) | multicast rx +0 | tx_dropped +0 tx_errors +0
+  누적: tx_errors 0, tx_dropped 0, rx_errors 0, rx_dropped 282
+  wlan 소켓 상위(목적지별, UDP/TCP):
+          1 udp 172.30.1.254
+          1 tcp 172.30.1.89
+          1 tcp [
+  DDS 참가자 수신 주소(멀티캐스트 가입): 7 그룹 — 239.255.0.1 224.0.0.251 224.0.0.1 
+######## 5. 부팅 이력
+  reboot   system boot  5.15.185-tegra   Thu Sep 17 13:05   still running
+  reboot   system boot  5.15.185-tegra   Wed Sep 16 17:53   still running
+  reboot   system boot  5.15.185-tegra   Wed Sep 16 09:28   still running
+  reboot   system boot  5.15.185-tegra   Wed Sep 16 09:09   still running
+  reboot   system boot  5.15.185-tegra   Wed Sep 16 08:50   still running
+  reboot   system boot  5.15.185-tegra   Tue Sep 15 16:54   still running
+  reboot   system boot  5.15.185-tegra   Tue Sep 15 15:07   still running
+  reboot   system boot  5.15.185-tegra   Tue Sep 15 14:50   still running
+######## 6. syslog Wi-Fi 이벤트 타임라인 (전 기간, 회전 파일 포함)
+  == /var/log/syslog
+    Feb 20 16:39:31 NetworkManager[503]: <info>  [1771573171.6744] device (l4tbr0): state change: activated -> unmanaged (reason 'connection-assumed', sys-iface-state: 'external')
+    Feb 20 16:39:43 NetworkManager[503]: <info>  [1771573183.7768] device (l4tbr0): Activation: starting connection 'l4tbr0' (60bc9336-7ff9-417b-ae1f-137789acb7ab)
+    Feb 20 17:38:41 NetworkManager[503]: <info>  [1771576721.0914] device (wlP1p1s0): state change: activated -> deactivating (reason 'unmanaged', sys-iface-state: 'managed')
+    Feb 20 17:38:41 wpa_supplicant[671]: wlP1p1s0: CTRL-EVENT-DISCONNECTED bssid=38:f4:5e:27:87:46 reason=3 locally_generated=1
+    Feb 20 17:38:41 NetworkManager[19191]: <info>  [1771576721.4362] device (l4tbr0): Activation: starting connection 'l4tbr0' (60bc9336-7ff9-417b-ae1f-137789acb7ab)
+    Feb 20 17:38:45 NetworkManager[19191]: <info>  [1771576725.4603] device (wlP1p1s0): Activation: starting connection 'ALOPS_ROBOTICS_5G' (03131df3-82d3-4a56-a1c4-701724c4def8)
+    Feb 20 17:38:45 NetworkManager[19191]: <info>  [1771576725.4604] device (wlP1p1s0): state change: disconnected -> prepare (reason 'none', sys-iface-state: 'managed')
+    Feb 20 17:38:45 NetworkManager[19191]: <info>  [1771576725.4612] device (wlP1p1s0): state change: prepare -> config (reason 'none', sys-iface-state: 'managed')
+    Feb 20 17:38:45 NetworkManager[19191]: <info>  [1771576725.4644] device (wlP1p1s0): state change: prepare -> config (reason 'none', sys-iface-state: 'managed')
+    Feb 20 17:38:45 wpa_supplicant[671]: wlP1p1s0: CTRL-EVENT-CONNECTED - Connection to 38:f4:5e:27:87:46 completed [id=0 id_str=]
+    Feb 20 17:42:35 NetworkManager[725]: <info>  [1771576955.9757] device (l4tbr0): Activation: starting connection 'l4tbr0' (2df388c3-e3ce-4428-9076-e1a29c0824ad)
+    Feb 20 17:42:38 NetworkManager[725]: <info>  [1771576958.0299] device (wlP1p1s0): Activation: starting connection 'ALOPS_ROBOTICS_5G' (03131df3-82d3-4a56-a1c4-701724c4def8)
+    Feb 20 17:42:38 NetworkManager[725]: <info>  [1771576958.0302] device (wlP1p1s0): state change: disconnected -> prepare (reason 'none', sys-iface-state: 'managed')
+    Feb 20 17:42:38 NetworkManager[725]: <info>  [1771576958.0312] device (wlP1p1s0): state change: prepare -> config (reason 'none', sys-iface-state: 'managed')
+    Feb 20 17:42:38 NetworkManager[725]: <info>  [1771576958.0350] device (wlP1p1s0): state change: prepare -> config (reason 'none', sys-iface-state: 'managed')
+    Feb 20 17:42:38 wpa_supplicant[780]: wlP1p1s0: CTRL-EVENT-CONNECTED - Connection to 38:f4:5e:27:87:46 completed [id=0 id_str=]
+    Feb 20 17:54:17 NetworkManager[725]: <info>  [1771577657.1019] device (docker0): Activation: starting connection 'docker0' (a35af209-7a04-4745-8490-a35c542a02c2)
+    Feb 20 18:01:26 NetworkManager[706]: <info>  [1771578086.0928] device (docker0): Activation: starting connection 'docker0' (6d3a2afc-5718-4ba0-9fa1-e2673f6d0719)
+    Feb 20 18:01:27 NetworkManager[706]: <info>  [1771578087.3068] device (l4tbr0): Activation: starting connection 'l4tbr0' (01dc1218-c658-43f1-987f-170f26393831)
+    Feb 20 18:01:29 NetworkManager[706]: <info>  [1771578089.2612] device (wlP1p1s0): Activation: starting connection 'ALOPS_ROBOTICS_5G' (03131df3-82d3-4a56-a1c4-701724c4def8)
+    Feb 20 18:01:29 NetworkManager[706]: <info>  [1771578089.2614] device (wlP1p1s0): state change: disconnected -> prepare (reason 'none', sys-iface-state: 'managed')
+    Feb 20 18:01:29 NetworkManager[706]: <info>  [1771578089.2620] device (wlP1p1s0): state change: prepare -> config (reason 'none', sys-iface-state: 'managed')
+    Feb 20 18:01:29 NetworkManager[706]: <info>  [1771578089.2643] device (wlP1p1s0): state change: prepare -> config (reason 'none', sys-iface-state: 'managed')
+    Feb 20 18:01:29 wpa_supplicant[763]: wlP1p1s0: CTRL-EVENT-CONNECTED - Connection to 38:f4:5e:27:87:46 completed [id=0 id_str=]
+    Jan  1 09:00:31 NetworkManager[707]: <info>  [31.0304] device (docker0): Activation: starting connection 'docker0' (1c1edb16-edf5-4c35-91ee-959852706725)
+    Jan  1 09:00:32 NetworkManager[707]: <info>  [32.2832] device (l4tbr0): Activation: starting connection 'l4tbr0' (7b312e30-b550-49c5-8e60-c9e604f55596)
+    Jan  1 09:00:34 NetworkManager[707]: <info>  [34.2028] device (wlP1p1s0): Activation: starting connection 'ALOPS_ROBOTICS_5G' (03131df3-82d3-4a56-a1c4-701724c4def8)
+    Jan  1 09:00:34 NetworkManager[707]: <info>  [34.2030] device (wlP1p1s0): state change: disconnected -> prepare (reason 'none', sys-iface-state: 'managed')
+    Jan  1 09:00:34 NetworkManager[707]: <info>  [34.2043] device (wlP1p1s0): state change: prepare -> config (reason 'none', sys-iface-state: 'managed')
+    Jan  1 09:00:34 NetworkManager[707]: <info>  [34.2078] device (wlP1p1s0): state change: prepare -> config (reason 'none', sys-iface-state: 'managed')
+    Jan  1 09:00:35 wpa_supplicant[761]: wlP1p1s0: CTRL-EVENT-CONNECTED - Connection to 38:f4:5e:27:87:46 completed [id=0 id_str=]
+    Jan  1 09:02:07 NetworkManager[707]: <info>  [127.1046] device (l4tbr0): state change: activated -> unmanaged (reason 'connection-assumed', sys-iface-state: 'external')
+    Feb 25 13:56:04 NetworkManager[707]: <info>  [1771995364.2828] device (l4tbr0): Activation: starting connection 'l4tbr0' (c954d785-a854-44cf-8035-e6e058fc0684)
+    Feb 25 17:31:14 NetworkManager[710]: <info>  [1772008274.9899] device (docker0): Activation: starting connection 'docker0' (191cb498-a3ad-462b-a066-f0d52922a18a)
+    Feb 25 17:31:16 NetworkManager[710]: <info>  [1772008276.2263] device (l4tbr0): Activation: starting connection 'l4tbr0' (869b8f73-dc17-48eb-84cc-a677257cb4e8)
+    Feb 25 17:31:18 NetworkManager[710]: <info>  [1772008278.1154] device (wlP1p1s0): Activation: starting connection 'ALOPS_ROBOTICS_5G' (03131df3-82d3-4a56-a1c4-701724c4def8)
+    Feb 25 17:31:18 NetworkManager[710]: <info>  [1772008278.1155] device (wlP1p1s0): state change: disconnected -> prepare (reason 'none', sys-iface-state: 'managed')
+    Feb 25 17:31:18 NetworkManager[710]: <info>  [1772008278.1161] device (wlP1p1s0): state change: prepare -> config (reason 'none', sys-iface-state: 'managed')
+    Feb 25 17:31:18 NetworkManager[710]: <info>  [1772008278.1180] device (wlP1p1s0): state change: prepare -> config (reason 'none', sys-iface-state: 'managed')
+    Feb 25 17:31:18 wpa_supplicant[756]: wlP1p1s0: CTRL-EVENT-CONNECTED - Connection to 38:f4:5e:27:87:46 completed [id=0 id_str=]
+    Feb 26 15:54:21 NetworkManager[710]: <info>  [1772088861.9579] device (l4tbr0): state change: activated -> unmanaged (reason 'connection-assumed', sys-iface-state: 'external')
+    Feb 26 15:54:23 NetworkManager[710]: <info>  [1772088863.4172] device (l4tbr0): Activation: starting connection 'l4tbr0' (bb7ae40c-20d1-448f-8e58-e878d1ffdb00)
+    Feb 26 15:54:38 NetworkManager[710]: <info>  [1772088878.3419] device (l4tbr0): state change: activated -> unmanaged (reason 'connection-assumed', sys-iface-state: 'external')
+    Feb 26 15:54:39 NetworkManager[710]: <info>  [1772088879.8764] device (l4tbr0): Activation: starting connection 'l4tbr0' (41cd2190-5ad4-4dd1-a005-5fa2a8595910)
+    Feb 26 15:54:46 NetworkManager[710]: <info>  [1772088886.1620] device (l4tbr0): state change: activated -> unmanaged (reason 'connection-assumed', sys-iface-state: 'external')
+    Feb 26 17:08:45 NetworkManager[704]: <info>  [1772093325.2178] device (docker0): Activation: starting connection 'docker0' (99648af0-65b0-4cc9-9e5e-ada24b3ec9a0)
+    Feb 26 17:08:48 NetworkManager[704]: <info>  [1772093328.3738] device (wlP1p1s0): Activation: starting connection 'ALOPS_ROBOTICS_5G' (03131df3-82d3-4a56-a1c4-701724c4def8)
+    Feb 26 17:08:48 NetworkManager[704]: <info>  [1772093328.3739] device (wlP1p1s0): state change: disconnected -> prepare (reason 'none', sys-iface-state: 'managed')
+    Feb 26 17:08:48 NetworkManager[704]: <info>  [1772093328.3744] device (wlP1p1s0): state change: prepare -> config (reason 'none', sys-iface-state: 'managed')
+    Feb 26 17:08:48 NetworkManager[704]: <info>  [1772093328.3763] device (wlP1p1s0): state change: prepare -> config (reason 'none', sys-iface-state: 'managed')
+    Feb 26 17:08:48 wpa_supplicant[755]: wlP1p1s0: CTRL-EVENT-CONNECTED - Connection to 38:f4:5e:27:87:46 completed [id=0 id_str=]
+    Feb 27 11:25:48 NetworkManager[713]: <info>  [1772159148.1048] device (docker0): Activation: starting connection 'docker0' (74f91ac2-9ba0-4233-8e5e-244e49f6642b)
+    Feb 27 11:25:51 NetworkManager[713]: <info>  [1772159151.2625] device (wlP1p1s0): Activation: starting connection 'ALOPS_ROBOTICS_5G' (03131df3-82d3-4a56-a1c4-701724c4def8)
+    Feb 27 11:25:51 NetworkManager[713]: <info>  [1772159151.2626] device (wlP1p1s0): state change: disconnected -> prepare (reason 'none', sys-iface-state: 'managed')
+    Feb 27 11:25:51 NetworkManager[713]: <info>  [1772159151.2631] device (wlP1p1s0): state change: prepare -> config (reason 'none', sys-iface-state: 'managed')
+    Feb 27 11:25:51 NetworkManager[713]: <info>  [1772159151.2649] device (wlP1p1s0): state change: prepare -> config (reason 'none', sys-iface-state: 'managed')
+    Feb 27 11:25:51 wpa_supplicant[775]: wlP1p1s0: CTRL-EVENT-CONNECTED - Connection to 38:f4:5e:27:87:46 completed [id=0 id_str=]
+    Jan  1 09:01:01 NetworkManager[690]: <info>  [61.1019] device (docker0): Activation: starting connection 'docker0' (5f8d4b9e-55c4-4cb8-a017-ba85857a04a0)
+    Jan  1 09:01:04 NetworkManager[690]: <info>  [64.1882] device (wlP1p1s0): Activation: starting connection 'ALOPS_ROBOTICS_5G' (03131df3-82d3-4a56-a1c4-701724c4def8)
+    Jan  1 09:01:04 NetworkManager[690]: <info>  [64.1883] device (wlP1p1s0): state change: disconnected -> prepare (reason 'none', sys-iface-state: 'managed')
+    Jan  1 09:01:04 NetworkManager[690]: <info>  [64.1893] device (wlP1p1s0): state change: prepare -> config (reason 'none', sys-iface-state: 'managed')
+    Jan  1 09:01:04 NetworkManager[690]: <info>  [64.1921] device (wlP1p1s0): state change: prepare -> config (reason 'none', sys-iface-state: 'managed')
+    Jan  1 09:01:04 wpa_supplicant[743]: wlP1p1s0: CTRL-EVENT-CONNECTED - Connection to 38:f4:5e:27:87:46 completed [id=0 id_str=]
+    Mar  4 17:47:57 NetworkManager[719]: <info>  [1772614077.4618] device (docker0): Activation: starting connection 'docker0' (62e72734-e090-44d2-a1cd-05758dcd6fee)
+    Mar  4 17:48:00 NetworkManager[719]: <info>  [1772614080.5716] device (wlP1p1s0): Activation: starting connection 'ALOPS_ROBOTICS_5G' (03131df3-82d3-4a56-a1c4-701724c4def8)
+    Mar  4 17:48:00 NetworkManager[719]: <info>  [1772614080.5718] device (wlP1p1s0): state change: disconnected -> prepare (reason 'none', sys-iface-state: 'managed')
+    Mar  4 17:48:00 NetworkManager[719]: <info>  [1772614080.5731] device (wlP1p1s0): state change: prepare -> config (reason 'none', sys-iface-state: 'managed')
+    Mar  4 17:48:00 NetworkManager[719]: <info>  [1772614080.5764] device (wlP1p1s0): state change: prepare -> config (reason 'none', sys-iface-state: 'managed')
+    Mar  4 17:48:00 wpa_supplicant[760]: wlP1p1s0: CTRL-EVENT-CONNECTED - Connection to 38:f4:5e:27:87:46 completed [id=0 id_str=]
+    Mar  5 13:59:47 NetworkManager[706]: <info>  [1772686787.6077] device (docker0): Activation: starting connection 'docker0' (f1c04a86-1ab6-47ba-a5f8-1a05163fd4de)
+    Mar  5 13:59:50 NetworkManager[706]: <info>  [1772686790.7696] device (wlP1p1s0): Activation: starting connection 'ALOPS_ROBOTICS_5G' (03131df3-82d3-4a56-a1c4-701724c4def8)
+    Mar  5 13:59:50 NetworkManager[706]: <info>  [1772686790.7699] device (wlP1p1s0): state change: disconnected -> prepare (reason 'none', sys-iface-state: 'managed')
+    Mar  5 13:59:50 NetworkManager[706]: <info>  [1772686790.7709] device (wlP1p1s0): state change: prepare -> config (reason 'none', sys-iface-state: 'managed')
+    Mar  5 13:59:50 NetworkManager[706]: <info>  [1772686790.7742] device (wlP1p1s0): state change: prepare -> config (reason 'none', sys-iface-state: 'managed')
+    Mar  5 13:59:51 wpa_supplicant[755]: wlP1p1s0: CTRL-EVENT-ASSOC-REJECT status_code=8
+    Mar  5 13:59:55 wpa_supplicant[755]: wlP1p1s0: CTRL-EVENT-CONNECTED - Connection to 38:f4:5e:27:87:46 completed [id=0 id_str=]
+    Mar  5 14:54:26 NetworkManager[707]: <info>  [1772690066.7100] device (docker0): Activation: starting connection 'docker0' (44a83acb-2398-4ca4-a60d-2adda79ea2dc)
+    Mar  5 14:54:29 NetworkManager[707]: <info>  [1772690069.7854] device (wlP1p1s0): Activation: starting connection 'ALOPS_ROBOTICS_5G' (03131df3-82d3-4a56-a1c4-701724c4def8)
+    Mar  5 14:54:29 NetworkManager[707]: <info>  [1772690069.7855] device (wlP1p1s0): state change: disconnected -> prepare (reason 'none', sys-iface-state: 'managed')
+    Mar  5 14:54:29 NetworkManager[707]: <info>  [1772690069.7860] device (wlP1p1s0): state change: prepare -> config (reason 'none', sys-iface-state: 'managed')
+    Mar  5 14:54:29 NetworkManager[707]: <info>  [1772690069.7879] device (wlP1p1s0): state change: prepare -> config (reason 'none', sys-iface-state: 'managed')
+    Mar  5 14:54:30 wpa_supplicant[762]: wlP1p1s0: CTRL-EVENT-ASSOC-REJECT status_code=8
+    Mar  5 14:54:34 wpa_supplicant[762]: wlP1p1s0: CTRL-EVENT-CONNECTED - Connection to 38:f4:5e:27:87:46 completed [id=0 id_str=]
+    Mar  5 15:19:12 NetworkManager[705]: <info>  [1772691552.3629] device (docker0): Activation: starting connection 'docker0' (46df269b-f135-44ed-bf1e-4a0b4653c7f9)
+    Mar  5 15:19:15 NetworkManager[705]: <info>  [1772691555.4335] device (wlP1p1s0): Activation: starting connection 'ALOPS_ROBOTICS_5G' (03131df3-82d3-4a56-a1c4-701724c4def8)
+    Mar  5 15:19:15 NetworkManager[705]: <info>  [1772691555.4336] device (wlP1p1s0): state change: disconnected -> prepare (reason 'none', sys-iface-state: 'managed')
+    Mar  5 15:19:15 NetworkManager[705]: <info>  [1772691555.4340] device (wlP1p1s0): state change: prepare -> config (reason 'none', sys-iface-state: 'managed')
+    Mar  5 15:19:15 NetworkManager[705]: <info>  [1772691555.4359] device (wlP1p1s0): state change: prepare -> config (reason 'none', sys-iface-state: 'managed')
+    Mar  5 15:19:15 wpa_supplicant[758]: wlP1p1s0: CTRL-EVENT-CONNECTED - Connection to 38:f4:5e:27:87:46 completed [id=0 id_str=]
+    Mar  5 15:19:42 NetworkManager[717]: <info>  [1772691582.1148] device (docker0): Activation: starting connection 'docker0' (91ddc8f4-4106-474f-a167-b9a0499d6cbf)
+    Mar  5 15:19:45 NetworkManager[717]: <info>  [1772691585.1345] device (wlP1p1s0): Activation: starting connection 'ALOPS_ROBOTICS_5G' (03131df3-82d3-4a56-a1c4-701724c4def8)
+    Mar  5 15:19:45 NetworkManager[717]: <info>  [1772691585.1347] device (wlP1p1s0): state change: disconnected -> prepare (reason 'none', sys-iface-state: 'managed')
+    Mar  5 15:19:45 NetworkManager[717]: <info>  [1772691585.1355] device (wlP1p1s0): state change: prepare -> config (reason 'none', sys-iface-state: 'managed')
+    Mar  5 15:19:45 NetworkManager[717]: <info>  [1772691585.1392] device (wlP1p1s0): state change: prepare -> config (reason 'none', sys-iface-state: 'managed')
+    Mar  5 15:19:45 wpa_supplicant[775]: wlP1p1s0: CTRL-EVENT-ASSOC-REJECT status_code=8
+    Mar  5 15:19:49 wpa_supplicant[775]: wlP1p1s0: CTRL-EVENT-CONNECTED - Connection to 38:f4:5e:27:87:46 completed [id=0 id_str=]
+    Mar  5 15:25:55 NetworkManager[703]: <info>  [1772691955.0792] device (docker0): Activation: starting connection 'docker0' (f85d168d-8086-4d5a-b04f-52cf60c3297e)
+    Mar  5 15:25:57 NetworkManager[703]: <info>  [1772691957.9574] device (wlP1p1s0): Activation: starting connection 'ALOPS_ROBOTICS_5G' (03131df3-82d3-4a56-a1c4-701724c4def8)
+    Mar  5 15:25:57 NetworkManager[703]: <info>  [1772691957.9575] device (wlP1p1s0): state change: disconnected -> prepare (reason 'none', sys-iface-state: 'managed')
+    Mar  5 15:25:57 NetworkManager[703]: <info>  [1772691957.9581] device (wlP1p1s0): state change: prepare -> config (reason 'none', sys-iface-state: 'managed')
+    Mar  5 15:25:57 NetworkManager[703]: <info>  [1772691957.9600] device (wlP1p1s0): state change: prepare -> config (reason 'none', sys-iface-state: 'managed')
+    Mar  5 15:25:58 wpa_supplicant[761]: wlP1p1s0: CTRL-EVENT-ASSOC-REJECT status_code=8
+    Mar  5 15:26:02 wpa_supplicant[761]: wlP1p1s0: CTRL-EVENT-CONNECTED - Connection to 38:f4:5e:27:87:46 completed [id=0 id_str=]
+    Mar  5 17:52:18 NetworkManager[702]: <info>  [1772700738.6717] device (docker0): Activation: starting connection 'docker0' (0008d1f0-2e50-4c8a-80df-437fd92cb64f)
+    Mar  5 17:52:21 NetworkManager[702]: <info>  [1772700741.6752] device (wlP1p1s0): Activation: starting connection 'ALOPS_ROBOTICS_5G' (03131df3-82d3-4a56-a1c4-701724c4def8)
+    Mar  5 17:52:21 NetworkManager[702]: <info>  [1772700741.6753] device (wlP1p1s0): state change: disconnected -> prepare (reason 'none', sys-iface-state: 'managed')
+    Mar  5 17:52:21 NetworkManager[702]: <info>  [1772700741.6763] device (wlP1p1s0): state change: prepare -> config (reason 'none', sys-iface-state: 'managed')
+    Mar  5 17:52:21 NetworkManager[702]: <info>  [1772700741.6784] device (wlP1p1s0): state change: prepare -> config (reason 'none', sys-iface-state: 'managed')
+    Mar  5 17:52:22 wpa_supplicant[761]: wlP1p1s0: CTRL-EVENT-CONNECTED - Connection to 38:f4:5e:27:87:46 completed [id=0 id_str=]
+    Mar  6 15:07:27 NetworkManager[702]: <info>  [1772777247.9747] device (enP8p1s0): Activation: starting connection 'Wired connection 1' (847a9580-dbf9-3ea9-adb7-34614e1797e0)
+    Mar  6 15:08:12 NetworkManager[702]: <info>  [1772777292.9014] device (enP8p1s0): Activation: starting connection 'Wired connection 1' (847a9580-dbf9-3ea9-adb7-34614e1797e0)
+    Mar  6 15:08:57 NetworkManager[702]: <info>  [1772777337.8905] device (enP8p1s0): Activation: starting connection 'Wired connection 1' (847a9580-dbf9-3ea9-adb7-34614e1797e0)
+    Mar  6 15:09:42 NetworkManager[702]: <info>  [1772777382.9175] device (enP8p1s0): Activation: starting connection 'Wired connection 1' (847a9580-dbf9-3ea9-adb7-34614e1797e0)
+    Mar  6 15:12:41 NetworkManager[702]: <info>  [1772777561.9636] device (enP8p1s0): Activation: starting connection 'Wired connection 1' (847a9580-dbf9-3ea9-adb7-34614e1797e0)
+    Mar  6 15:13:15 NetworkManager[702]: <info>  [1772777595.8869] device (enP8p1s0): Activation: starting connection 'Wired connection 1' (847a9580-dbf9-3ea9-adb7-34614e1797e0)
+    Jan  1 09:00:33 NetworkManager[754]: <info>  [33.1173] device (docker0): Activation: starting connection 'docker0' (2a58287e-010b-40ad-97ab-46af82c657d2)
+    Jan  1 09:00:33 NetworkManager[754]: <info>  [33.8500] device (enP8p1s0): Activation: starting connection 'Wired connection 1' (847a9580-dbf9-3ea9-adb7-34614e1797e0)
+    Jan  1 09:00:36 NetworkManager[754]: <info>  [36.2160] device (wlP1p1s0): Activation: starting connection 'ALOPS_ROBOTICS_5G' (03131df3-82d3-4a56-a1c4-701724c4def8)
+    Jan  1 09:00:36 NetworkManager[754]: <info>  [36.2161] device (wlP1p1s0): state change: disconnected -> prepare (reason 'none', sys-iface-state: 'managed')
+    Jan  1 09:00:36 NetworkManager[754]: <info>  [36.2166] device (wlP1p1s0): state change: prepare -> config (reason 'none', sys-iface-state: 'managed')
+    Jan  1 09:00:36 NetworkManager[754]: <info>  [36.2185] device (wlP1p1s0): state change: prepare -> config (reason 'none', sys-iface-state: 'managed')
+    Jan  1 09:00:36 wpa_supplicant[805]: wlP1p1s0: CTRL-EVENT-ASSOC-REJECT status_code=8
+    Jan  1 09:00:40 wpa_supplicant[805]: wlP1p1s0: CTRL-EVENT-CONNECTED - Connection to 38:f4:5e:27:87:46 completed [id=0 id_str=]
+    Mar  6 15:31:13 NetworkManager[754]: <info>  [1772778673.9354] device (enP8p1s0): state change: activated -> unavailable (reason 'carrier-changed', sys-iface-state: 'managed')
+    Mar  6 15:31:17 NetworkManager[754]: <info>  [1772778677.1549] device (enP8p1s0): Activation: starting connection 'Wired connection 1' (847a9580-dbf9-3ea9-adb7-34614e1797e0)
+    Mar  6 15:37:08 NetworkManager[754]: <info>  [1772779028.2385] device (enP8p1s0): state change: activated -> unavailable (reason 'carrier-changed', sys-iface-state: 'managed')
+    Mar  6 15:53:22 NetworkManager[754]: <info>  [1772780002.2112] device (enP8p1s0): Activation: starting connection 'Wired connection 1' (847a9580-dbf9-3ea9-adb7-34614e1797e0)
+    Mar  6 16:02:37 NetworkManager[878]: <info>  [1772780557.9750] device (docker0): Activation: starting connection 'docker0' (9f6c5275-633b-49e5-b591-fcdfe4fb47cf)
+    Mar  6 16:02:38 NetworkManager[878]: <info>  [1772780558.7229] device (enP8p1s0): Activation: starting connection 'Wired connection 1' (847a9580-dbf9-3ea9-adb7-34614e1797e0)
+    Mar  6 16:02:41 NetworkManager[878]: <info>  [1772780561.0908] device (wlP1p1s0): Activation: starting connection 'ALOPS_ROBOTICS_5G' (03131df3-82d3-4a56-a1c4-701724c4def8)
+    Mar  6 16:02:41 NetworkManager[878]: <info>  [1772780561.0910] device (wlP1p1s0): state change: disconnected -> prepare (reason 'none', sys-iface-state: 'managed')
+    Mar  6 16:02:41 NetworkManager[878]: <info>  [1772780561.0920] device (wlP1p1s0): state change: prepare -> config (reason 'none', sys-iface-state: 'managed')
+    Mar  6 16:02:41 NetworkManager[878]: <info>  [1772780561.0947] device (wlP1p1s0): state change: prepare -> config (reason 'none', sys-iface-state: 'managed')
+    Mar  6 16:02:41 wpa_supplicant[921]: wlP1p1s0: CTRL-EVENT-ASSOC-REJECT status_code=8
+    Mar  6 16:02:45 wpa_supplicant[921]: wlP1p1s0: CTRL-EVENT-CONNECTED - Connection to 38:f4:5e:27:87:46 completed [id=0 id_str=]
+    Mar  6 16:27:37 NetworkManager[878]: <info>  [1772782057.4847] device (enP8p1s0): state change: activated -> unavailable (reason 'carrier-changed', sys-iface-state: 'managed')
+    Mar  6 16:29:39 NetworkManager[878]: <info>  [1772782179.4869] device (enP8p1s0): Activation: starting connection 'Wired connection 1' (847a9580-dbf9-3ea9-adb7-34614e1797e0)
+    Mar  6 16:31:54 NetworkManager[898]: <info>  [1772782314.5006] device (docker0): Activation: starting connection 'docker0' (d438211c-a942-4cfc-a3db-1c85b49cdfec)
+    Mar  6 16:31:55 NetworkManager[898]: <info>  [1772782315.1793] device (enP8p1s0): Activation: starting connection 'Wired connection 1' (847a9580-dbf9-3ea9-adb7-34614e1797e0)
+    Mar  6 16:31:57 NetworkManager[898]: <info>  [1772782317.5580] device (wlP1p1s0): Activation: starting connection 'ALOPS_ROBOTICS_5G' (03131df3-82d3-4a56-a1c4-701724c4def8)
+    Mar  6 16:31:57 NetworkManager[898]: <info>  [1772782317.5589] device (wlP1p1s0): state change: disconnected -> prepare (reason 'none', sys-iface-state: 'managed')
+    Mar  6 16:31:57 NetworkManager[898]: <info>  [1772782317.5629] device (wlP1p1s0): state change: prepare -> config (reason 'none', sys-iface-state: 'managed')
+    Mar  6 16:31:57 NetworkManager[898]: <info>  [1772782317.5666] device (wlP1p1s0): state change: prepare -> config (reason 'none', sys-iface-state: 'managed')
+    Mar  6 16:31:58 wpa_supplicant[954]: wlP1p1s0: CTRL-EVENT-ASSOC-REJECT status_code=8
+    Mar  6 16:32:02 wpa_supplicant[954]: wlP1p1s0: CTRL-EVENT-CONNECTED - Connection to 38:f4:5e:27:87:46 completed [id=0 id_str=]
+    Mar  6 17:25:44 NetworkManager[900]: <info>  [1772785544.0875] device (docker0): Activation: starting connection 'docker0' (3efb59bc-b5ca-465f-a87e-8a72781a626e)
+    Mar  6 17:25:47 NetworkManager[900]: <info>  [1772785547.2067] device (wlP1p1s0): Activation: starting connection 'ALOPS_ROBOTICS_5G' (03131df3-82d3-4a56-a1c4-701724c4def8)
+    Mar  6 17:25:47 NetworkManager[900]: <info>  [1772785547.2068] device (wlP1p1s0): state change: disconnected -> prepare (reason 'none', sys-iface-state: 'managed')
+    Mar  6 17:25:47 NetworkManager[900]: <info>  [1772785547.2073] device (wlP1p1s0): state change: prepare -> config (reason 'none', sys-iface-state: 'managed')
+    Mar  6 17:25:47 NetworkManager[900]: <info>  [1772785547.2095] device (wlP1p1s0): state change: prepare -> config (reason 'none', sys-iface-state: 'managed')
+  (읽기 권한: -rw-r----- syslog adm, 사용자 그룹: jetson adm dialout cdrom sudo audio dip video plugdev input render i2c lpadmin gdm sambashare ollama docker weston-launch gpio)
+######## 7. 커널 메시지 (dmesg, 권한 있을 때)
+  kern: Sep 15 14:50:12 jetson-desktop kernel: [    8.407317] pcieport 0007:00:00.0: AER: enabled with IRQ 195
+  kern: Sep 15 14:50:12 jetson-desktop kernel: [    8.722003] pcieport 0008:00:00.0: AER: enabled with IRQ 189
+  kern: Sep 15 15:07:50 jetson-desktop kernel: [    6.490273] pcieport 0001:00:00.0: AER: enabled with IRQ 191
+  kern: Sep 15 15:07:50 jetson-desktop kernel: [    6.617979] pcieport 0004:00:00.0: AER: enabled with IRQ 193
+  kern: Sep 15 15:07:50 jetson-desktop kernel: [    8.742846] pcieport 0007:00:00.0: AER: enabled with IRQ 195
+  kern: Sep 15 15:07:50 jetson-desktop kernel: [    9.026488] pcieport 0008:00:00.0: AER: enabled with IRQ 189
+  kern: Sep 15 16:54:57 jetson-desktop kernel: [    6.099835] pcieport 0001:00:00.0: AER: enabled with IRQ 191
+  kern: Sep 15 16:54:57 jetson-desktop kernel: [    6.228083] pcieport 0004:00:00.0: AER: enabled with IRQ 193
+  kern: Sep 15 16:54:57 jetson-desktop kernel: [    8.356923] pcieport 0007:00:00.0: AER: enabled with IRQ 195
+  kern: Sep 15 16:54:57 jetson-desktop kernel: [    8.667936] pcieport 0008:00:00.0: AER: enabled with IRQ 189
+  kern: Sep 16 08:50:35 jetson-desktop kernel: [    6.473450] pcieport 0001:00:00.0: AER: enabled with IRQ 191
+  kern: Sep 16 08:50:35 jetson-desktop kernel: [    6.601353] pcieport 0004:00:00.0: AER: enabled with IRQ 193
+  kern: Sep 16 08:50:35 jetson-desktop kernel: [    8.762939] pcieport 0007:00:00.0: AER: enabled with IRQ 195
+  kern: Sep 16 08:50:35 jetson-desktop kernel: [    9.049357] pcieport 0008:00:00.0: AER: enabled with IRQ 189
+  kern: Sep 16 09:09:28 jetson-desktop kernel: [    6.491989] pcieport 0001:00:00.0: AER: enabled with IRQ 191
+  kern: Sep 16 09:09:28 jetson-desktop kernel: [    6.623647] pcieport 0004:00:00.0: AER: enabled with IRQ 193
+  kern: Sep 16 09:09:28 jetson-desktop kernel: [    8.787741] pcieport 0007:00:00.0: AER: enabled with IRQ 195
+  kern: Sep 16 09:09:28 jetson-desktop kernel: [    9.251017] pcieport 0008:00:00.0: AER: enabled with IRQ 189
+  kern: Sep 16 09:28:27 jetson-desktop kernel: [    6.492811] pcieport 0001:00:00.0: AER: enabled with IRQ 191
+  kern: Sep 16 09:28:27 jetson-desktop kernel: [    6.620713] pcieport 0004:00:00.0: AER: enabled with IRQ 193
+  kern: Sep 16 09:28:27 jetson-desktop kernel: [    8.822692] pcieport 0007:00:00.0: AER: enabled with IRQ 195
+  kern: Sep 16 09:28:27 jetson-desktop kernel: [    9.171802] pcieport 0008:00:00.0: AER: enabled with IRQ 189
+  kern: Sep 16 17:53:53 jetson-desktop kernel: [    6.176573] pcieport 0001:00:00.0: AER: enabled with IRQ 191
+  kern: Sep 16 17:53:53 jetson-desktop kernel: [    6.304511] pcieport 0004:00:00.0: AER: enabled with IRQ 193
+  kern: Sep 16 17:53:53 jetson-desktop kernel: [    8.431239] pcieport 0007:00:00.0: AER: enabled with IRQ 195
+  kern: Sep 16 17:53:53 jetson-desktop kernel: [    8.833473] pcieport 0008:00:00.0: AER: enabled with IRQ 189
+  kern: Sep 17 13:05:08 jetson-desktop kernel: [    6.912940] pcieport 0001:00:00.0: AER: enabled with IRQ 191
+  kern: Sep 17 13:05:08 jetson-desktop kernel: [    7.040858] pcieport 0004:00:00.0: AER: enabled with IRQ 193
+  kern: Sep 17 13:05:08 jetson-desktop kernel: [    9.177398] pcieport 0007:00:00.0: AER: enabled with IRQ 195
+  kern: Sep 17 13:05:08 jetson-desktop kernel: [    9.599537] pcieport 0008:00:00.0: AER: enabled with IRQ 189
+######## 끝

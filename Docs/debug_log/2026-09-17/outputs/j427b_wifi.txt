@@ -1,0 +1,253 @@
+######## A. syslog 크기·기간
+  -rw-r----- 1 syslog adm 144052101 Sep 17 18:07 /var/log/syslog
+  첫 줄: Feb 20 16:39:31 alops-desktop systemd[1]: Listening on Syslo
+######## B. 9월 Wi-Fi 이벤트 (wpa_supplicant 전부 + NM 핵심)
+  이벤트 854 줄
+  Sep  1 10:23:11 NM: dhcp4 (wlP1p1s0): state changed new lease, address=192.168.0.101
+  Sep  1 11:23:11 NM: dhcp4 (wlP1p1s0): state changed new lease, address=192.168.0.101
+  Sep  1 12:23:11 NM: dhcp4 (wlP1p1s0): state changed new lease, address=192.168.0.101
+  Sep  1 13:23:11 NM: dhcp4 (wlP1p1s0): state changed new lease, address=192.168.0.101
+  Sep  1 14:23:11 NM: dhcp4 (wlP1p1s0): state changed new lease, address=192.168.0.101
+  Sep  1 15:23:11 NM: dhcp4 (wlP1p1s0): state changed new lease, address=192.168.0.101
+  Sep  1 16:23:11 NM: dhcp4 (wlP1p1s0): state changed new lease, address=192.168.0.101
+  Sep  1 17:23:11 NM: dhcp4 (wlP1p1s0): state changed new lease, address=192.168.0.101
+  Sep  1 17:21:51 NM: device (wlP1p1s0): Activation: starting connection 'WEB_DEV_5G' (63c99fd8-f853-4a29-8ff5-0af1b5be2842)
+  Sep  1 17:21:55 wpa: CTRL-EVENT-DISCONNECTED bssid=b0:38:6c:37:1b:4c reason=23
+  Sep  1 17:21:55 wpa: CTRL-EVENT-SSID-TEMP-DISABLED id=0 ssid="WEB_DEV_5G" auth_failures=1 duration=10 reason=AUTH_FAILED
+  Sep  1 17:22:14 wpa: CTRL-EVENT-DISCONNECTED bssid=b0:38:6c:37:1b:4c reason=23
+  Sep  1 17:22:14 wpa: CTRL-EVENT-SSID-TEMP-DISABLED id=0 ssid="WEB_DEV_5G" auth_failures=2 duration=20 reason=AUTH_FAILED
+  Sep  1 17:22:22 wpa: CTRL-EVENT-DISCONNECTED bssid=b0:38:6c:37:1b:4c reason=23
+  Sep  1 17:22:22 wpa: CTRL-EVENT-SSID-TEMP-DISABLED id=0 ssid="WEB_DEV_5G" auth_failures=1 duration=10 reason=AUTH_FAILED
+  Sep  1 17:22:47 NM: dhcp4 (wlP1p1s0): state changed new lease, address=192.168.0.101
+  Sep  2 10:25:34 NM: dhcp4 (wlP1p1s0): state changed new lease, address=192.168.0.101
+  Sep  2 11:25:34 NM: dhcp4 (wlP1p1s0): state changed new lease, address=192.168.0.101
+  Sep  2 12:25:34 NM: dhcp4 (wlP1p1s0): state changed new lease, address=192.168.0.101
+  Sep  2 13:25:34 NM: dhcp4 (wlP1p1s0): state changed new lease, address=192.168.0.101
+  Sep  2 14:25:34 NM: dhcp4 (wlP1p1s0): state changed new lease, address=192.168.0.101
+  Sep  2 15:25:34 NM: dhcp4 (wlP1p1s0): state changed new lease, address=192.168.0.101
+  Sep  2 16:25:34 NM: dhcp4 (wlP1p1s0): state changed new lease, address=192.168.0.101
+  Sep  2 17:25:34 NM: dhcp4 (wlP1p1s0): state changed new lease, address=192.168.0.101
+  Sep  2 18:25:34 NM: dhcp4 (wlP1p1s0): state changed new lease, address=192.168.0.101
+  Sep  3 10:27:49 NM: dhcp4 (wlP1p1s0): state changed new lease, address=192.168.0.101
+  Sep  3 10:37:00 NM: device (wlP1p1s0): Activation: starting connection 'WEB_DEV_5G' (63c99fd8-f853-4a29-8ff5-0af1b5be2842)
+  Sep  3 10:37:01 NM: dhcp4 (wlP1p1s0): state changed new lease, address=192.168.0.101
+  Sep  3 18:12:46 NM: dhcp4 (wlP1p1s0): state changed new lease, address=192.168.0.101
+  Sep  3 18:21:01 NM: device (wlP1p1s0): Activation: starting connection 'WEB_DEV_5G' (63c99fd8-f853-4a29-8ff5-0af1b5be2842)
+  Sep  3 18:21:02 NM: dhcp4 (wlP1p1s0): state changed new lease, address=192.168.0.101
+  Sep  7 09:47:56 NM: dhcp4 (wlP1p1s0): state changed new lease, address=192.168.0.101
+  Sep  7 10:47:56 NM: dhcp4 (wlP1p1s0): state changed new lease, address=192.168.0.101
+  Sep  7 11:47:56 NM: dhcp4 (wlP1p1s0): state changed new lease, address=192.168.0.101
+  Sep  7 12:47:56 NM: dhcp4 (wlP1p1s0): state changed new lease, address=192.168.0.101
+  Sep  7 13:47:56 NM: dhcp4 (wlP1p1s0): state changed new lease, address=192.168.0.101
+  Sep  7 14:47:56 NM: dhcp4 (wlP1p1s0): state changed new lease, address=192.168.0.101
+  Sep  7 15:47:56 NM: dhcp4 (wlP1p1s0): state changed new lease, address=192.168.0.101
+  Sep  8 10:52:50 NM: dhcp4 (wlP1p1s0): state changed new lease, address=192.168.0.101
+  Sep  8 11:52:50 NM: dhcp4 (wlP1p1s0): state changed new lease, address=192.168.0.101
+  Sep  8 12:52:50 NM: dhcp4 (wlP1p1s0): state changed new lease, address=192.168.0.101
+  Sep  8 13:52:50 NM: dhcp4 (wlP1p1s0): state changed new lease, address=192.168.0.101
+  Sep  8 14:52:50 NM: dhcp4 (wlP1p1s0): state changed new lease, address=192.168.0.101
+  Sep  8 15:52:50 NM: dhcp4 (wlP1p1s0): state changed new lease, address=192.168.0.101
+  Sep  8 16:52:50 NM: dhcp4 (wlP1p1s0): state changed new lease, address=192.168.0.101
+  Sep  8 17:16:36 NM: device (wlP1p1s0): Activation: starting connection 'WEB_DEV_5G' (63c99fd8-f853-4a29-8ff5-0af1b5be2842)
+  Sep  8 17:16:37 NM: dhcp4 (wlP1p1s0): state changed new lease, address=192.168.0.101
+  Sep  9 10:42:55 NM: dhcp4 (wlP1p1s0): state changed new lease, address=192.168.0.101
+  Sep  9 11:42:55 NM: dhcp4 (wlP1p1s0): state changed new lease, address=192.168.0.101
+  Sep  9 12:42:55 NM: dhcp4 (wlP1p1s0): state changed new lease, address=192.168.0.101
+  Sep  9 13:42:55 NM: dhcp4 (wlP1p1s0): state changed new lease, address=192.168.0.101
+  Sep  9 14:42:55 NM: dhcp4 (wlP1p1s0): state changed new lease, address=192.168.0.101
+  Sep  9 15:42:55 NM: dhcp4 (wlP1p1s0): state changed new lease, address=192.168.0.101
+  Sep  9 16:42:55 NM: dhcp4 (wlP1p1s0): state changed new lease, address=192.168.0.101
+  Sep  9 17:42:55 NM: dhcp4 (wlP1p1s0): state changed new lease, address=192.168.0.101
+  Sep 10 11:18:58 NM: dhcp4 (wlP1p1s0): state changed new lease, address=192.168.0.101
+  Sep 10 12:18:58 NM: dhcp4 (wlP1p1s0): state changed new lease, address=192.168.0.101
+  Sep 10 12:35:30 NM: device (wlP1p1s0): Activation: starting connection 'WEB_DEV_5G' (63c99fd8-f853-4a29-8ff5-0af1b5be2842)
+  Sep 10 12:35:30 NM: dhcp4 (wlP1p1s0): state changed new lease, address=192.168.0.101
+  Sep 10 14:17:29 NM: dhcp4 (wlP1p1s0): state changed new lease, address=192.168.0.101
+  Sep 10 15:17:29 NM: dhcp4 (wlP1p1s0): state changed new lease, address=192.168.0.101
+  Sep 10 16:17:29 NM: dhcp4 (wlP1p1s0): state changed new lease, address=192.168.0.101
+  Sep 10 17:17:29 NM: dhcp4 (wlP1p1s0): state changed new lease, address=192.168.0.101
+  Sep 10 17:50:34 NM: device (wlP1p1s0): Activation: starting connection 'WEB_DEV_5G' (63c99fd8-f853-4a29-8ff5-0af1b5be2842)
+  Sep 10 17:50:35 NM: dhcp4 (wlP1p1s0): state changed new lease, address=192.168.0.101
+  Sep 11 12:10:01 NM: dhcp4 (wlP1p1s0): state changed new lease, address=192.168.0.101
+  Sep 11 13:10:01 NM: dhcp4 (wlP1p1s0): state changed new lease, address=192.168.0.101
+  Sep 11 14:37:16 NM: dhcp4 (wlP1p1s0): state changed new lease, address=192.168.0.101
+  Sep 11 15:37:16 NM: dhcp4 (wlP1p1s0): state changed new lease, address=192.168.0.101
+  Sep 11 16:37:16 NM: dhcp4 (wlP1p1s0): state changed new lease, address=192.168.0.101
+  Sep 11 17:37:16 NM: dhcp4 (wlP1p1s0): state changed new lease, address=192.168.0.101
+  Sep 11 17:36:08 NM: device (wlP1p1s0): Activation: starting connection 'WEB_DEV_5G' (63c99fd8-f853-4a29-8ff5-0af1b5be2842)
+  Sep 11 17:36:09 NM: dhcp4 (wlP1p1s0): state changed new lease, address=192.168.0.101
+  Sep 14 09:45:06 NM: dhcp4 (wlP1p1s0): state changed new lease, address=192.168.0.101
+  Sep 14 10:45:06 NM: dhcp4 (wlP1p1s0): state changed new lease, address=192.168.0.101
+  Sep 14 11:45:06 NM: dhcp4 (wlP1p1s0): state changed new lease, address=192.168.0.101
+  Sep 14 12:47:07 NM: dhcp4 (wlP1p1s0): state changed new lease, address=192.168.0.101
+  Sep 14 13:47:07 NM: dhcp4 (wlP1p1s0): state changed new lease, address=192.168.0.101
+  Sep 14 14:47:07 NM: dhcp4 (wlP1p1s0): state changed new lease, address=192.168.0.101
+  Sep 14 15:47:07 NM: dhcp4 (wlP1p1s0): state changed new lease, address=192.168.0.101
+  Sep 14 16:47:07 NM: dhcp4 (wlP1p1s0): state changed new lease, address=192.168.0.101
+  Sep 14 17:47:07 NM: dhcp4 (wlP1p1s0): state changed new lease, address=192.168.0.101
+  Sep 15 10:55:20 NM: dhcp4 (wlP1p1s0): state changed new lease, address=192.168.0.101
+  Sep 15 11:55:20 NM: dhcp4 (wlP1p1s0): state changed new lease, address=192.168.0.101
+  Sep 15 12:55:20 NM: dhcp4 (wlP1p1s0): state changed new lease, address=192.168.0.101
+  Sep 15 14:03:13 wpa: CTRL-EVENT-DISCONNECTED bssid=b0:38:6c:37:1b:4c reason=2
+  Sep 15 14:03:21 wpa: CTRL-EVENT-DISCONNECTED bssid=b0:38:6c:37:1b:4c reason=23
+  Sep 15 14:03:21 wpa: CTRL-EVENT-SSID-TEMP-DISABLED id=0 ssid="WEB_DEV_5G" auth_failures=1 duration=10 reason=AUTH_FAILED
+  Sep 15 14:03:28 NM: device (wlP1p1s0): state change: activated -> failed (reason 'supplicant-timeout', sys-iface-state: 'managed')
+  Sep 15 14:03:28 NM: device (wlP1p1s0): Activation: failed for connection 'WEB_DEV_5G'
+  Sep 15 14:03:28 NM: device (wlP1p1s0): state change: failed -> disconnected (reason 'none', sys-iface-state: 'managed')
+  Sep 15 14:03:32 NM: device (wlP1p1s0): Activation: starting connection 'WEB_DEV_5G' (63c99fd8-f853-4a29-8ff5-0af1b5be2842)
+  Sep 15 14:03:36 wpa: CTRL-EVENT-DISCONNECTED bssid=b0:38:6c:37:1b:4c reason=23
+  Sep 15 14:03:36 wpa: CTRL-EVENT-SSID-TEMP-DISABLED id=0 ssid="WEB_DEV_5G" auth_failures=1 duration=10 reason=AUTH_FAILED
+  Sep 15 14:03:55 wpa: CTRL-EVENT-DISCONNECTED bssid=b0:38:6c:37:1b:4c reason=23
+  Sep 15 14:03:55 wpa: CTRL-EVENT-SSID-TEMP-DISABLED id=0 ssid="WEB_DEV_5G" auth_failures=2 duration=20 reason=AUTH_FAILED
+  Sep 15 14:03:55 wpa: CTRL-EVENT-SSID-TEMP-DISABLED id=0 ssid="WEB_DEV_5G" auth_failures=3 duration=30 reason=CONN_FAILED
+  Sep 15 14:04:03 wpa: CTRL-EVENT-DISCONNECTED bssid=b0:38:6c:37:1b:4c reason=23
+  Sep 15 14:04:03 wpa: CTRL-EVENT-SSID-TEMP-DISABLED id=0 ssid="WEB_DEV_5G" auth_failures=1 duration=10 reason=AUTH_FAILED
+  Sep 15 14:04:03 wpa: CTRL-EVENT-SSID-TEMP-DISABLED id=0 ssid="WEB_DEV_5G" auth_failures=2 duration=20 reason=CONN_FAILED
+  Sep 15 14:04:30 wpa: CTRL-EVENT-DISCONNECTED bssid=b0:38:6c:37:1b:4c reason=23
+  Sep 15 14:04:30 wpa: CTRL-EVENT-SSID-TEMP-DISABLED id=0 ssid="WEB_DEV_5G" auth_failures=1 duration=10 reason=AUTH_FAILED
+  Sep 15 14:04:30 wpa: CTRL-EVENT-SSID-TEMP-DISABLED id=0 ssid="WEB_DEV_5G" auth_failures=2 duration=20 reason=CONN_FAILED
+  Sep 15 14:04:47 NM: device (wlP1p1s0): state change: config -> failed (reason 'no-secrets', sys-iface-state: 'managed')
+  Sep 15 14:04:47 NM: device (wlP1p1s0): Activation: failed for connection 'WEB_DEV_5G'
+  Sep 15 14:04:47 NM: device (wlP1p1s0): state change: failed -> disconnected (reason 'none', sys-iface-state: 'managed')
+  Sep 15 14:04:51 NM: device (wlP1p1s0): Activation: starting connection 'ALOPS_ROBOTICS_5G' (03131df3-82d3-4a56-a1c4-701724c4def8)
+  Sep 15 14:04:51 NM: dhcp4 (wlP1p1s0): state changed new lease, address=172.30.1.8
+  Sep 15 14:34:51 NM: dhcp4 (wlP1p1s0): state changed new lease, address=172.30.1.8
+  Sep 15 14:41:46 NM: device (wlP1p1s0): Activation: starting connection 'ALOPS_ROBOTICS_5G' (03131df3-82d3-4a56-a1c4-701724c4def8)
+  Sep 15 14:41:47 wpa: CTRL-EVENT-ASSOC-REJECT status_code=8
+  Sep 15 14:41:51 NM: dhcp4 (wlP1p1s0): state changed new lease, address=172.30.1.8
+  Sep 15 14:50:17 NM: device (wlP1p1s0): Activation: starting connection 'ALOPS_ROBOTICS_5G' (03131df3-82d3-4a56-a1c4-701724c4def8)
+  Sep 15 14:50:18 NM: dhcp4 (wlP1p1s0): state changed new lease, address=172.30.1.8
+  Sep 15 15:07:55 NM: device (wlP1p1s0): Activation: starting connection 'ALOPS_ROBOTICS_5G' (03131df3-82d3-4a56-a1c4-701724c4def8)
+  Sep 15 15:07:55 wpa: CTRL-EVENT-ASSOC-REJECT status_code=8
+  Sep 15 15:08:00 NM: dhcp4 (wlP1p1s0): state changed new lease, address=172.30.1.8
+  Sep 15 15:42:43 NM: dhcp4 (wlP1p1s0): state changed new lease, address=172.30.1.8
+  Sep 15 16:12:43 NM: dhcp4 (wlP1p1s0): state changed new lease, address=172.30.1.8
+  Sep 15 16:42:43 NM: dhcp4 (wlP1p1s0): state changed new lease, address=172.30.1.8
+  Sep 15 17:12:43 NM: dhcp4 (wlP1p1s0): state changed new lease, address=172.30.1.8
+  Sep 15 16:55:02 NM: device (wlP1p1s0): Activation: starting connection 'ALOPS_ROBOTICS_5G' (03131df3-82d3-4a56-a1c4-701724c4def8)
+  Sep 15 16:55:02 NM: dhcp4 (wlP1p1s0): state changed new lease, address=172.30.1.8
+  Sep 16 09:03:37 NM: dhcp4 (wlP1p1s0): state changed new lease, address=172.30.1.8
+  Sep 16 08:50:40 NM: device (wlP1p1s0): Activation: starting connection 'ALOPS_ROBOTICS_5G' (03131df3-82d3-4a56-a1c4-701724c4def8)
+  Sep 16 08:50:40 wpa: CTRL-EVENT-ASSOC-REJECT status_code=8
+  Sep 16 08:50:44 NM: dhcp4 (wlP1p1s0): state changed new lease, address=172.30.1.8
+  Sep 16 09:09:33 NM: device (wlP1p1s0): Activation: starting connection 'ALOPS_ROBOTICS_5G' (03131df3-82d3-4a56-a1c4-701724c4def8)
+  Sep 16 09:09:34 wpa: CTRL-EVENT-ASSOC-REJECT status_code=8
+  Sep 16 09:09:38 NM: dhcp4 (wlP1p1s0): state changed new lease, address=172.30.1.8
+  Sep 16 09:36:09 NM: device (wlP1p1s0): state change: activated -> deactivating (reason 'new-activation', sys-iface-state: 'managed')
+  Sep 16 09:36:09 wpa: CTRL-EVENT-DISCONNECTED bssid=38:f4:5e:27:87:46 reason=3 locally_generated=1
+  Sep 16 09:36:09 NM: device (wlP1p1s0): Activation: starting connection 'WEB_DEV_5G' (63c99fd8-f853-4a29-8ff5-0af1b5be2842)
+  Sep 16 09:36:11 NM: dhcp4 (wlP1p1s0): state changed new lease, address=192.168.0.101
+  Sep 16 09:28:32 NM: device (wlP1p1s0): Activation: starting connection 'WEB_DEV_5G' (63c99fd8-f853-4a29-8ff5-0af1b5be2842)
+  Sep 16 09:28:33 NM: dhcp4 (wlP1p1s0): state changed new lease, address=192.168.0.101
+  Sep 16 10:56:04 NM: dhcp4 (wlP1p1s0): state changed new lease, address=192.168.0.101
+  Sep 16 11:56:04 NM: dhcp4 (wlP1p1s0): state changed new lease, address=192.168.0.101
+  Sep 16 12:56:04 NM: dhcp4 (wlP1p1s0): state changed new lease, address=192.168.0.101
+  Sep 16 13:56:04 NM: dhcp4 (wlP1p1s0): state changed new lease, address=192.168.0.101
+  Sep 16 14:56:04 NM: dhcp4 (wlP1p1s0): state changed new lease, address=192.168.0.101
+  Sep 16 15:56:04 NM: dhcp4 (wlP1p1s0): state changed new lease, address=192.168.0.101
+  Sep 16 15:57:34 wpa: CTRL-EVENT-DISCONNECTED bssid=b0:38:6c:37:1b:4c reason=2
+  Sep 16 15:57:42 wpa: CTRL-EVENT-DISCONNECTED bssid=b0:38:6c:37:1b:4c reason=23
+  Sep 16 15:57:42 wpa: CTRL-EVENT-SSID-TEMP-DISABLED id=0 ssid="WEB_DEV_5G" auth_failures=1 duration=10 reason=AUTH_FAILED
+  Sep 16 15:57:49 NM: device (wlP1p1s0): state change: activated -> failed (reason 'supplicant-timeout', sys-iface-state: 'managed')
+  Sep 16 15:57:49 NM: device (wlP1p1s0): Activation: failed for connection 'WEB_DEV_5G'
+  Sep 16 15:57:49 NM: device (wlP1p1s0): state change: failed -> disconnected (reason 'none', sys-iface-state: 'managed')
+  Sep 16 15:57:53 NM: device (wlP1p1s0): Activation: starting connection 'WEB_DEV_5G' (63c99fd8-f853-4a29-8ff5-0af1b5be2842)
+  Sep 16 15:57:58 wpa: CTRL-EVENT-DISCONNECTED bssid=b0:38:6c:37:1b:4c reason=23
+  Sep 16 15:57:58 wpa: CTRL-EVENT-SSID-TEMP-DISABLED id=0 ssid="WEB_DEV_5G" auth_failures=1 duration=10 reason=AUTH_FAILED
+  Sep 16 15:58:16 wpa: CTRL-EVENT-DISCONNECTED bssid=b0:38:6c:37:1b:4c reason=23
+  Sep 16 15:58:16 wpa: CTRL-EVENT-SSID-TEMP-DISABLED id=0 ssid="WEB_DEV_5G" auth_failures=2 duration=20 reason=AUTH_FAILED
+  Sep 16 15:58:16 wpa: CTRL-EVENT-SSID-TEMP-DISABLED id=0 ssid="WEB_DEV_5G" auth_failures=3 duration=30 reason=CONN_FAILED
+  Sep 16 15:58:24 wpa: CTRL-EVENT-DISCONNECTED bssid=b0:38:6c:37:1b:4c reason=23
+  Sep 16 15:58:24 wpa: CTRL-EVENT-SSID-TEMP-DISABLED id=0 ssid="WEB_DEV_5G" auth_failures=1 duration=10 reason=AUTH_FAILED
+  Sep 16 15:58:24 wpa: CTRL-EVENT-SSID-TEMP-DISABLED id=0 ssid="WEB_DEV_5G" auth_failures=2 duration=20 reason=CONN_FAILED
+  Sep 16 15:58:53 wpa: CTRL-EVENT-DISCONNECTED bssid=b0:38:6c:37:1b:4c reason=23
+  Sep 16 15:58:53 wpa: CTRL-EVENT-SSID-TEMP-DISABLED id=0 ssid="WEB_DEV_5G" auth_failures=1 duration=10 reason=AUTH_FAILED
+  Sep 16 15:58:53 wpa: WPA: 4-Way Handshake failed - pre-shared key may be incorrect
+  Sep 16 15:58:53 wpa: CTRL-EVENT-SSID-TEMP-DISABLED id=0 ssid="WEB_DEV_5G" auth_failures=2 duration=20 reason=WRONG_KEY
+  Sep 16 15:58:53 wpa: CTRL-EVENT-SSID-TEMP-DISABLED id=0 ssid="WEB_DEV_5G" auth_failures=3 duration=30 reason=CONN_FAILED
+  Sep 16 16:00:53 NM: device (wlP1p1s0): state change: need-auth -> failed (reason 'no-secrets', sys-iface-state: 'managed')
+  Sep 16 16:00:53 NM: device (wlP1p1s0): Activation: failed for connection 'WEB_DEV_5G'
+  Sep 16 16:00:53 NM: device (wlP1p1s0): state change: failed -> disconnected (reason 'none', sys-iface-state: 'managed')
+  Sep 16 16:00:57 NM: device (wlP1p1s0): Activation: starting connection 'ALOPS_ROBOTICS_5G' (03131df3-82d3-4a56-a1c4-701724c4def8)
+  Sep 16 16:00:58 NM: dhcp4 (wlP1p1s0): state changed new lease, address=172.30.1.8
+  Sep 16 16:30:58 NM: dhcp4 (wlP1p1s0): state changed new lease, address=172.30.1.8
+  Sep 16 17:00:58 NM: dhcp4 (wlP1p1s0): state changed new lease, address=172.30.1.8
+  Sep 16 17:30:58 NM: dhcp4 (wlP1p1s0): state changed new lease, address=172.30.1.8
+  Sep 16 18:00:58 NM: dhcp4 (wlP1p1s0): state changed new lease, address=172.30.1.8
+  Sep 16 17:53:58 NM: device (wlP1p1s0): Activation: starting connection 'WEB_DEV_5G' (63c99fd8-f853-4a29-8ff5-0af1b5be2842)
+  Sep 16 17:53:59 NM: dhcp4 (wlP1p1s0): state changed new lease, address=192.168.0.101
+  Sep 17 10:40:25 NM: dhcp4 (wlP1p1s0): state changed new lease, address=192.168.0.101
+  Sep 17 11:40:25 NM: dhcp4 (wlP1p1s0): state changed new lease, address=192.168.0.101
+  Sep 17 12:40:25 NM: dhcp4 (wlP1p1s0): state changed new lease, address=192.168.0.101
+  Sep 17 13:38:42 wpa: CTRL-EVENT-DISCONNECTED bssid=b0:38:6c:37:1b:4c reason=2
+  Sep 17 13:38:50 wpa: CTRL-EVENT-DISCONNECTED bssid=b0:38:6c:37:1b:4c reason=23
+  Sep 17 13:38:50 wpa: CTRL-EVENT-SSID-TEMP-DISABLED id=0 ssid="WEB_DEV_5G" auth_failures=1 duration=10 reason=AUTH_FAILED
+  Sep 17 13:38:57 NM: device (wlP1p1s0): state change: activated -> failed (reason 'supplicant-timeout', sys-iface-state: 'managed')
+  Sep 17 13:38:57 NM: device (wlP1p1s0): Activation: failed for connection 'WEB_DEV_5G'
+  Sep 17 13:38:57 NM: device (wlP1p1s0): state change: failed -> disconnected (reason 'none', sys-iface-state: 'managed')
+  Sep 17 13:39:01 NM: device (wlP1p1s0): Activation: starting connection 'WEB_DEV_5G' (63c99fd8-f853-4a29-8ff5-0af1b5be2842)
+  Sep 17 13:39:05 wpa: CTRL-EVENT-DISCONNECTED bssid=b0:38:6c:37:1b:4c reason=23
+  Sep 17 13:39:05 wpa: CTRL-EVENT-SSID-TEMP-DISABLED id=0 ssid="WEB_DEV_5G" auth_failures=1 duration=10 reason=AUTH_FAILED
+  Sep 17 13:39:23 wpa: CTRL-EVENT-DISCONNECTED bssid=b0:38:6c:37:1b:4c reason=23
+  Sep 17 13:39:23 wpa: CTRL-EVENT-SSID-TEMP-DISABLED id=0 ssid="WEB_DEV_5G" auth_failures=2 duration=20 reason=AUTH_FAILED
+  Sep 17 13:39:23 wpa: CTRL-EVENT-SSID-TEMP-DISABLED id=0 ssid="WEB_DEV_5G" auth_failures=3 duration=30 reason=CONN_FAILED
+  Sep 17 13:39:32 wpa: CTRL-EVENT-DISCONNECTED bssid=b0:38:6c:37:1b:4c reason=23
+  Sep 17 13:39:32 wpa: CTRL-EVENT-SSID-TEMP-DISABLED id=0 ssid="WEB_DEV_5G" auth_failures=1 duration=10 reason=AUTH_FAILED
+  Sep 17 13:39:32 wpa: CTRL-EVENT-SSID-TEMP-DISABLED id=0 ssid="WEB_DEV_5G" auth_failures=2 duration=20 reason=CONN_FAILED
+  Sep 17 13:39:59 wpa: CTRL-EVENT-DISCONNECTED bssid=b0:38:6c:37:1b:4c reason=23
+  Sep 17 13:39:59 wpa: CTRL-EVENT-SSID-TEMP-DISABLED id=0 ssid="WEB_DEV_5G" auth_failures=1 duration=10 reason=AUTH_FAILED
+  Sep 17 13:39:59 wpa: CTRL-EVENT-SSID-TEMP-DISABLED id=0 ssid="WEB_DEV_5G" auth_failures=2 duration=20 reason=CONN_FAILED
+  Sep 17 13:40:16 NM: device (wlP1p1s0): state change: config -> failed (reason 'no-secrets', sys-iface-state: 'managed')
+  Sep 17 13:40:16 NM: device (wlP1p1s0): Activation: failed for connection 'WEB_DEV_5G'
+  Sep 17 13:40:16 NM: device (wlP1p1s0): state change: failed -> disconnected (reason 'none', sys-iface-state: 'managed')
+  Sep 17 13:40:20 NM: device (wlP1p1s0): Activation: starting connection 'ALOPS_ROBOTICS_5G' (03131df3-82d3-4a56-a1c4-701724c4def8)
+  Sep 17 13:40:20 NM: dhcp4 (wlP1p1s0): state changed new lease, address=172.30.1.8
+  Sep 17 13:05:13 NM: device (wlP1p1s0): Activation: starting connection 'WEB_DEV_5G' (63c99fd8-f853-4a29-8ff5-0af1b5be2842)
+  Sep 17 13:05:18 wpa: CTRL-EVENT-DISCONNECTED bssid=b0:38:6c:37:1b:4c reason=23
+  Sep 17 13:05:18 wpa: CTRL-EVENT-SSID-TEMP-DISABLED id=0 ssid="WEB_DEV_5G" auth_failures=1 duration=10 reason=AUTH_FAILED
+  Sep 17 13:05:36 wpa: CTRL-EVENT-DISCONNECTED bssid=b0:38:6c:37:1b:4c reason=23
+  Sep 17 13:05:36 wpa: CTRL-EVENT-SSID-TEMP-DISABLED id=0 ssid="WEB_DEV_5G" auth_failures=2 duration=20 reason=AUTH_FAILED
+  Sep 17 13:05:44 wpa: CTRL-EVENT-DISCONNECTED bssid=b0:38:6c:37:1b:4c reason=23
+  Sep 17 13:05:44 wpa: CTRL-EVENT-SSID-TEMP-DISABLED id=0 ssid="WEB_DEV_5G" auth_failures=1 duration=10 reason=AUTH_FAILED
+  Sep 17 13:06:02 wpa: CTRL-EVENT-DISCONNECTED bssid=b0:38:6c:37:1b:4c reason=23
+  Sep 17 13:06:02 wpa: CTRL-EVENT-SSID-TEMP-DISABLED id=0 ssid="WEB_DEV_5G" auth_failures=2 duration=20 reason=AUTH_FAILED
+  Sep 17 13:06:02 wpa: CTRL-EVENT-SSID-TEMP-DISABLED id=0 ssid="WEB_DEV_5G" auth_failures=3 duration=30 reason=CONN_FAILED
+  Sep 17 13:06:10 wpa: CTRL-EVENT-DISCONNECTED bssid=b0:38:6c:37:1b:4c reason=23
+  Sep 17 13:06:10 wpa: CTRL-EVENT-SSID-TEMP-DISABLED id=0 ssid="WEB_DEV_5G" auth_failures=1 duration=10 reason=AUTH_FAILED
+  Sep 17 13:06:10 wpa: CTRL-EVENT-SSID-TEMP-DISABLED id=0 ssid="WEB_DEV_5G" auth_failures=2 duration=20 reason=CONN_FAILED
+  Sep 17 13:06:29 NM: device (wlP1p1s0): state change: config -> failed (reason 'no-secrets', sys-iface-state: 'managed')
+  Sep 17 13:06:29 NM: device (wlP1p1s0): Activation: failed for connection 'WEB_DEV_5G'
+  Sep 17 13:06:29 NM: device (wlP1p1s0): state change: failed -> disconnected (reason 'none', sys-iface-state: 'managed')
+  Sep 17 13:06:33 NM: device (wlP1p1s0): Activation: starting connection 'ALOPS_ROBOTICS_5G' (03131df3-82d3-4a56-a1c4-701724c4def8)
+  Sep 17 13:06:33 wpa: CTRL-EVENT-ASSOC-REJECT status_code=8
+  Sep 17 13:06:33 wpa: CTRL-EVENT-SSID-TEMP-DISABLED id=0 ssid="ALOPS_ROBOTICS_5G" auth_failures=1 duration=10 reason=CONN_FAILED
+  Sep 17 13:06:47 NM: dhcp4 (wlP1p1s0): state changed new lease, address=172.30.1.8
+  Sep 17 14:16:44 NM: dhcp4 (wlP1p1s0): state changed new lease, address=172.30.1.8
+######## C. 날짜별 요약 (DISCONNECTED reason / TEMP-DISABLED / ASSOC-REJECT)
+  Sep 1   DISCONNECTED  0 () | TEMP-DISABLED 0 | ASSOC-REJECT 0 | 연결 시작: 
+  Sep 10  DISCONNECTED  0 () | TEMP-DISABLED 0 | ASSOC-REJECT 0 | 연결 시작:  2 'WEB_DEV_5G' 
+  Sep 11  DISCONNECTED  0 () | TEMP-DISABLED 0 | ASSOC-REJECT 0 | 연결 시작:  1 'WEB_DEV_5G' 
+  Sep 14  DISCONNECTED  0 () | TEMP-DISABLED 0 | ASSOC-REJECT 0 | 연결 시작: 
+  Sep 15  DISCONNECTED  6 ( 1 b0:38:6c:37:1b:4c reason=2; 5 b0:38:6c:37:1b:4c reason=23;) | TEMP-DISABLED 8 | ASSOC-REJECT 2 | 연결 시작:  5 'ALOPS_ROBOTICS_5G'  1 'WEB_DEV_5G' 
+  Sep 16  DISCONNECTED  7 ( 1 38:f4:5e:27:87:46 reason=3 locally_generated=1; 1 b0:38:6c:37:1b:4c reason=2; 5 b0:38:6c:37:1b:4c reason=23;) | TEMP-DISABLED 9 | ASSOC-REJECT 2 | 연결 시작:  3 'ALOPS_ROBOTICS_5G'  4 'WEB_DEV_5G' 
+  Sep 17  DISCONNECTED 11 ( 1 b0:38:6c:37:1b:4c reason=2; 10 b0:38:6c:37:1b:4c reason=23;) | TEMP-DISABLED 16 | ASSOC-REJECT 1 | 연결 시작:  2 'ALOPS_ROBOTICS_5G'  2 'WEB_DEV_5G' 
+  Sep 2   DISCONNECTED  0 () | TEMP-DISABLED 0 | ASSOC-REJECT 0 | 연결 시작: 
+  Sep 3   DISCONNECTED  0 () | TEMP-DISABLED 0 | ASSOC-REJECT 0 | 연결 시작: 
+  Sep 7   DISCONNECTED  0 () | TEMP-DISABLED 0 | ASSOC-REJECT 0 | 연결 시작: 
+  Sep 8   DISCONNECTED  0 () | TEMP-DISABLED 0 | ASSOC-REJECT 0 | 연결 시작: 
+  Sep 9   DISCONNECTED  0 () | TEMP-DISABLED 0 | ASSOC-REJECT 0 | 연결 시작: 
+######## D. 새 스캔
+  IN-USE  SSID               BSSID              CHAN  FREQ      SIGNAL  SECURITY  
+  *       ALOPS_ROBOTICS_5G  38:F4:5E:27:87:46  153   5765 MHz  72      WPA1 WPA2 
+  -- iw scan dump (캐시, 5 GHz 포함)
+   38:f4:5e:27:87:46(on 5765 -57.00 dBm 	SSID: ALOPS_ROBOTICS_5G
+      auth: 		 * Authentication suites: PSK
+      auth: 		 * Authentication suites: PSK
+######## E. NM 동작 설정
+  STATE      CONNECTIVITY  WIFI-HW  WIFI     WWAN-HW  WWAN    
+  connected  full          enabled  enabled  enabled  enabled 
+  NM 1.36.6
+  wpa_supplicant v2.10
+
+
+######## 끝
