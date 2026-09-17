@@ -8,6 +8,7 @@
 #include <stdbool.h>
 #include "i_encoder.h"
 #include "motor_config.h"   /* MOTOR_TYPE — 게인/deadzone 모델별 분리 */
+#include "rover_platform.h"  /* SPEED_CTRL_STOP_THRESH_MPS — 저속·정지 문턱은 한 곳에서 관리 (2026-09-17) */
 
 #define CTRL_HZ        100u
 #define CTRL_DT_S      (1.0f / (float)CTRL_HZ)
@@ -32,7 +33,7 @@
 #else
 #define OUT_MAX        0.80f
 #endif
-#define TARGET_THRESH  0.01f      /* m/s — 이하면 정지 명령으로 간주 */
+/* 정지 명령 문턱은 rover_platform.h SPEED_CTRL_STOP_THRESH_MPS (2026-09-17: 여기 있던 TARGET_THRESH 0.01 이동·0.005 로 변경) */
 
 /* 정지 명령 시 target_mps 를 0 쪽으로 감속시키는 최대 가속도.
  * 예: 0.2 m/s 에서 SPACE → 100ms 만에 0 도달. PID 가 ramp 추종하며 능동 제동.
@@ -127,7 +128,7 @@ void speed_controller_set_target(MotorChannel ch, float target_mps)
     if (ch >= MOTOR_COUNT) return;
     /* 정지 명령: target_mps 즉시 0 으로 두지 않고 ramp 모드 진입.
      * PID 가 STOP_RAMP_MPS2 감속을 추종하며 능동 제동, ramp 종료 후 coast. */
-    if (fabsf(target_mps) < TARGET_THRESH) {
+    if (fabsf(target_mps) < SPEED_CTRL_STOP_THRESH_MPS) {
         s_pid[ch].stop_ramp = true;
         /* target_mps 는 현재값 유지 — update() 가 한 tick 단위로 감속 */
     } else {
@@ -169,7 +170,7 @@ void speed_controller_update(void)
         const float err    = p->target_mps - actual;
 
         /* 정지 명령: 출력·적분 모두 강제 0 — windup·전류 누설 방지. */
-        if (fabsf(p->target_mps) < TARGET_THRESH) {
+        if (fabsf(p->target_mps) < SPEED_CTRL_STOP_THRESH_MPS) {
             p->integral  = 0.0f;
             p->prev_err  = 0.0f;
             p->last_duty = 0.0f;

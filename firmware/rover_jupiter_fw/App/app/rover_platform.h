@@ -83,25 +83,51 @@ extern "C" {
                                                  * 20kHz 받침대 duty 98% → 구단위 0.117~0.120 = 실 0.091~0.093.
                                                  * 바닥 부하 여유 두어 0.085 (구 0.100 은 실 0.078 이었음) */
 
-/* 기동 데드밴드 보상 (2026-09-02, Nav2 실측 — Docs/debug_log/2026-09-02):
- *  |휠속도 명령| 이 최소 기동치 미만이면 모터가 반응하지 않음(정지마찰·저속 제어한계).
- *  실측: ω=0.05 rad/s(휠 ±6 mm/s) 명령 68초간 무반응 → 상위 제어기(Nav2 RPP/MPPI)가
- *  측정속도 0 을 보고 미세 명령을 반복하며 영구 정체(데드락).
- *  보상 규칙: |v| < EPS 는 의도된 정지로 보고 0 유지, EPS ≤ |v| < MIN 은 MIN 으로 승격(부호 보존).
- *  부작용(곡률 소폭 증가)은 상위 피드백 루프가 흡수.
- *  실측(2026-09-03, 배터리 12.1~12.3V, 실내 바닥, ω=0.05~0.30 rad/s 8초 지령 → 자이로 회전량):
- *    MIN 0.012 → 0.08 무반응·나머지 8초에 ~8° 미약·불규칙  = 기동 임계 경계에 걸침(재현성 없음)
- *    MIN 0.016 → 전 구간 반응(15~24°)                      = 임계 상회
- *    MIN 0.020 → 전 구간 반응(18~22°)                      = 임계 상회, 마진 有
- *  → 실제 기동 임계 ≈ 0.012~0.016 m/s. 임계는 전압·바닥 마찰·트랙 장력에 따라 변하므로
- *    마진을 둔 0.020 채택 (0.016 대비 분해능 이득은 미미 — 승격 구간에선 어차피 동일 속도).
- *  한계: 승격 구간(휠 <0.020)은 지령 크기와 무관하게 같은 속도 → 저속 분해능 상실.
- *  TODO(improve): 고정 하한 대신 '기동 보조'(정지 감지 시 순간 승격 후 실제 목표로 복귀)로
- *    분해능 보존 + 조건 변화 자동 적응. 전압 연동 하한(MIN×V_nom/V_batt)도 저비용 대안. */
-#define MIN_WHEEL_SPEED_MPS       0.008f /* 2026-09-07 바닥 실측: 구단위 10mm/s(=실 7.8mm/s)까지 L/R 대칭 정확
-                                          * 추종(duty 41%) → 데드밴드 사실상 없음. 승격은 안전여유용 하한만 유지.
-                                          * (09-03 의 0.020 은 PWM 50Hz 조건 산물 — 폐기) */       /* 최소 기동 휠속도 — 미만 비영 명령을 이 값으로 승격. 0.020(데드밴드 실측)→0.030 (2026-09-07: 구속 휠의 FG 기저 펄스 0.015 m/s 를 확실히 넘겨 적분이 쌓이게 → duty 94% 에서 펄스 소실 → 스톨 감지 체인 시작. 09-07 SUMMARY) */
-#define WHEEL_SPEED_EPS_MPS       0.003f       /* 이하는 사실상 0(정지 의도)으로 간주 */
+/* ---- 저속·정지 문턱 체계 (2026-09-17: 세 파일에 흩어져 있던 값을 이 헤더 한 곳으로 모음) ----
+ * 같은 휠 속도 축을 세 층이 나눠 쓴다. 한 값만 바꾸면 층 사이가 어긋나므로 반드시 여기서 함께 본다.
+ *   WHEEL_SPEED_EPS         microros_task  : |휠 지령| < EPS  → 0 (의도된 정지)
+ *   MIN_WHEEL_SPEED         microros_task  : EPS ≤ |휠 지령| < MIN → MIN 으로 승격(부호 보존)
+ *   SPEED_CTRL_STOP_THRESH  speed_controller: |목표| < STOP → 정지 명령(감속 ramp 후 출력·적분 0,
+ *                                             windup·전류 누설 방지 — F4 2026-05-21 도입, 05-27 능동 제동 진입점)
+ *   STALL_TARGET_THRESH     safety_monitor : |목표| > 이 값일 때만 스톨 판정 (= STOP, 따로 두지 않는다)
+ * 불변식: EPS < STOP ≤ MIN (아래 #error 로 컴파일 시 검사).
+ *
+ * 사고(2026-09-17 mp6·mp8, debug_log/2026-09-17 §7): 09-07 에 MIN 을 0.010(구 스케일)→0.008(실 스케일)로
+ *   환산하면서 STOP(당시 speed_controller.c 의 TARGET_THRESH 0.010)은 그대로 둬 MIN < STOP 이 됨 →
+ *   휠 지령 3~10 mm/s 가 승격돼도 정지로 처리, MPPI 가 목표 앞에서 9 mm/s 로 기어가려다 51 s 무한 정지.
+ *   STOP 0.010 의 원래 전제(구 모터 AM2861·PWM 50 Hz 에서 저속 제어 불가)는 새 모터·20 kHz 에서 유효하지 않다.
+ *   조치: STOP·STALL 0.010 → 0.005 (사용자 결정 09-17 — 승격값을 올리는 대신 저속 분해능 보존).
+ *   TODO(측정): 새 펌웨어로 정지 상태에서 8 mm/s 출발(직진·제자리 회전) 바닥 실측 — 아래 MIN 의 미검증 구간.
+ *
+ * 정수 µm/s 로 정의하는 이유: 전처리기 #if 비교(부동소수는 #if 에서 쓸 수 없음). */
+#define WHEEL_SPEED_EPS_UMPS          3000   /* 3 mm/s — 이하는 사실상 0(정지 의도) */
+#define SPEED_CTRL_STOP_THRESH_UMPS   5000   /* 5 mm/s — 2026-09-17: 10 → 5 */
+
+/* 기동 데드밴드 보상 이력 (2026-09-02 도입):
+ *  |휠속도 명령| 이 최소 기동치 미만이면 모터가 반응하지 않아 상위 제어기(Nav2)가 미세 명령을 반복하며 영구 정체
+ *  (09-02 실측: ω=0.05 rad/s, 휠 ±6 mm/s 68 초 무반응). 보상: EPS ≤ |v| < MIN 은 MIN 으로 승격.
+ *  09-03: 기동 임계 0.012~0.016 → 0.020 채택. ※ PWM 50 Hz 조건 측정 — 09-07 에 폐기.
+ *  09-07 (8fd7618, PWM 20 kHz): 데드밴드 재실측용으로 0.010 임시 하향.
+ *  09-07 바닥 스윕 job44a (새 모터 CHR-GM37 1:90, 20 kHz, 스텝마다 정지 후 출발·3 s 유지):
+ *    지령 5/10/15/20/30 mm/s(구 스케일) → FG 10/10/15/20/30, duty 41/41/43/45/50 %, L/R 대칭, 전 스텝 기동.
+ *    지령 5 는 당시 MIN 0.010 으로 승격돼 10 으로 돌았으므로 **구 10 mm/s(=실 7.8 mm/s) 미만은 미검증**
+ *    (debug_log/2026-09-07 SUMMARY §데드밴드 스윕).
+ *  09-07 (50444d5, 휠 둘레 0.16130→0.12533): 0.010(구) × 0.777 = 0.0078 → **0.008 은 환산값**(직접 지령한 값 아님).
+ *  한계: 승격 구간은 지령 크기와 무관하게 같은 속도 → 저속 분해능 상실.
+ *  TODO(improve): 고정 하한 대신 기동 보조(정지 감지 시 순간 승격 후 목표 복귀), 또는 전압 연동 하한. */
+#define MIN_WHEEL_SPEED_UMPS          8000   /* 8 mm/s */
+
+#define WHEEL_SPEED_EPS_MPS          ((float)WHEEL_SPEED_EPS_UMPS * 1.0e-6f)
+#define SPEED_CTRL_STOP_THRESH_MPS   ((float)SPEED_CTRL_STOP_THRESH_UMPS * 1.0e-6f)
+#define MIN_WHEEL_SPEED_MPS          ((float)MIN_WHEEL_SPEED_UMPS * 1.0e-6f)
+#define STALL_TARGET_THRESH_MPS      SPEED_CTRL_STOP_THRESH_MPS
+
+#if !(WHEEL_SPEED_EPS_UMPS < SPEED_CTRL_STOP_THRESH_UMPS)
+#error "rover_platform.h: WHEEL_SPEED_EPS 는 SPEED_CTRL_STOP_THRESH 보다 작아야 한다 (EPS 이상 지령이 정지로 먹힘)"
+#endif
+#if !(SPEED_CTRL_STOP_THRESH_UMPS <= MIN_WHEEL_SPEED_UMPS)
+#error "rover_platform.h: MIN_WHEEL_SPEED 가 SPEED_CTRL_STOP_THRESH 보다 작다 — 승격된 지령이 정지로 처리됨 (2026-09-17 mp8 사고)"
+#endif
 
 #ifdef __cplusplus
 }
