@@ -1,0 +1,9 @@
+2026-09-18 11:02:57 START pid 8720
+2026-09-18 11:02:57 LINK bssid=b0:38:6c:37:1b:4c ssid=WEB_DEV_5G freq=5180 sig=-53 rx=702.0_MBit/s_VHT-MCS_8_80MHz_VHT-NSS_2 tx=526.6_MBit/s_VHT-MCS_6_80MHz_VHT-NSS_2 ip=192.168.0.101/24 key_mgmt=WPA2
+2026-09-18 11:03:09 BEACON ap_freq=5180 ap_sig=-52.00 vht_w=1 seg1=42 seg2=50 ht2=above csa=0 quiet=0
+2026-09-18 11:03:25 LINK bssid=b0:38:6c:37:1b:4c ssid=WEB_DEV_5G freq=5180 sig=-52 rx=702.0_MBit/s_VHT-MCS_8_80MHz_VHT-NSS_2 tx=526.6_MBit/s_VHT-MCS_6_80MHz_VHT-NSS_2 ip=192.168.0.101/24 key_mgmt=WPA2
+2026-09-18 11:03:40 LINK bssid=b0:38:6c:37:1b:4c ssid=WEB_DEV_5G freq=5180 sig=-52 rx=585.0_MBit/s_VHT-MCS_7_80MHz_VHT-NSS_2 tx=585.0_MBit/s_VHT-MCS_7_80MHz_VHT-NSS_2 ip=192.168.0.101/24 key_mgmt=WPA2
+2026-09-18 11:03:55 LINK bssid=b0:38:6c:37:1b:4c ssid=WEB_DEV_5G freq=5180 sig=-52 rx=585.0_MBit/s_VHT-MCS_7_80MHz_VHT-NSS_2 tx=585.0_MBit/s_VHT-MCS_7_80MHz_VHT-NSS_2 ip=192.168.0.101/24 key_mgmt=WPA2
+2026-09-18 11:04:10 LINK bssid=b0:38:6c:37:1b:4c ssid=WEB_DEV_5G freq=5180 sig=-52 rx=585.0_MBit/s_VHT-MCS_7_80MHz_VHT-NSS_2 tx=585.0_MBit/s_VHT-MCS_7_80MHz_VHT-NSS_2 ip=192.168.0.101/24 key_mgmt=WPA2
+2026-09-18 11:04:10 BEACON ap_freq=5180 ap_sig=-52.00 vht_w=1 seg1=42 seg2=50 ht2=above csa=0 quiet=0
+wpa_debug.log 23232 B, 로그 수준 DEBUG, 서비스 active/enabled

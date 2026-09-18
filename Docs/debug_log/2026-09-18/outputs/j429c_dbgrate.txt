@@ -1,0 +1,24 @@
+원래 수준: INFO
+  set: Selected interface 'wlP1p1s0'
+  set: OK
+  restore: Selected interface 'wlP1p1s0'
+  restore: OK
+복귀 후 수준: INFO
+60 s 동안 syslog +79 줄, +8 KiB → 하루 추정 11 MiB
+  종류 scan 44
+  종류 other 29
+  Sep 18 10:56:36 wlP1p1s0: Control interface command 'SCAN'
+  Sep 18 10:56:36 wlP1p1s0: Setting scan request: 0.000000 sec
+  Sep 18 10:56:36 Scan SSID - hexdump(len=10): 57 45 42 5f 44 45 56 5f 35 47
+  Sep 18 10:56:36 wlP1p1s0: Starting AP scan for wildcard SSID
+  Sep 18 10:56:36 WPS: Building WPS IE for Probe Request
+  Sep 18 10:56:36 WPS:  * Version (hardcoded 0x10)
+  Sep 18 10:56:36 WPS:  * Request Type
+  Sep 18 10:56:36 WPS:  * Config Methods (3148)
+  Sep 18 10:56:36 WPS:  * UUID-E
+  Sep 18 10:56:36 WPS:  * Primary Device Type
+  Sep 18 10:56:36 WPS:  * RF Bands (3)
+  Sep 18 10:56:36 WPS:  * Association State
+  Sep 18 10:56:36 WPS:  * Configuration Error (0)
+  Sep 18 10:56:36 WPS:  * Device Password ID (0)
+  Sep 18 10:56:36 WPS:  * Manufacturer

@@ -1,0 +1,14 @@
+파일 test_event_20260918_110443.txt: 0 줄, 크기 41158 B
+### 2026-09-18 11:04:43.179 TEST (수동 시험, 사건 아님)
+--- iw link
+--- wpa_cli status
+--- ip
+--- nmcli dev
+--- 전체 스캔(AP 블록)
+--- wpa_debug.log 직전 400 줄
+--- syslog wpa_supplicant/NM 직전 80 줄
+비밀 문자열 검사(psk|passphrase|password 값): 1
+wpa debug 발췌:
+Sep 18 10:58:42 jetson-desktop wpa_supplicant[905]: EAPOL: EAP Session-Id not available
+Sep 18 10:58:42 jetson-desktop wpa_supplicant[905]: nl80211: Drv Event 33 (NL80211_CMD_TRIGGER_SCAN) received for wlP1p1s0
+Sep 18 10:58:42 jetson-desktop wpa_supplicant[905]: wlP1p1s0: nl80211: Scan trigger
