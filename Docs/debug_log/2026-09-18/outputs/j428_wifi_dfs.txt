@@ -1,0 +1,70 @@
+호스트 jetson-desktop, up 27 minutes, 부팅 2026-09-18 10:15:47
+IPv4 192.168.0.101/24
+  Connected to b0:38:6c:37:1b:4c (on wlP1p1s0)
+  	SSID: WEB_DEV_5G
+  	freq: 5180
+  	signal: -50 dBm
+  	rx bitrate: 702.0 MBit/s VHT-MCS 8 80MHz VHT-NSS 2
+  	tx bitrate: 526.6 MBit/s VHT-MCS 6 80MHz VHT-NSS 2
+  power_save: Power save: off
+-- 09-17 18:00 이후 Wi-Fi 이벤트
+################ job428
+######## A. 9월 채널 전환·규제 영역·비콘 관련 wpa_supplicant 이벤트 전부
+  줄 수 208
+  -- 종류별 개수
+        51 Associated with X
+        42 CTRL-EVENT-STARTED-CHANNEL-SWITCH freq=5180 ht_enabled=1 ch_offset=1 ch_width=80 MHz cf1=5210 cf2=0
+        28 CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+        28 CTRL-EVENT-CONNECTED - Connection to X completed 
+        15 CTRL-EVENT-STARTED-CHANNEL-SWITCH freq=5765 ht_enabled=1 ch_offset=-1 ch_width=80 MHz cf1=5775 cf2=0
+        12 alops-desktop Associated with X
+        11 alops-desktop CTRL-EVENT-STARTED-CHANNEL-SWITCH freq=5180 ht_enabled=1 ch_offset=1 ch_width=80 MHz cf1=5210 cf2=0
+        10 alops-desktop CTRL-EVENT-CONNECTED - Connection to X completed 
+         6 alops-desktop CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+         5 alops-desktop CTRL-EVENT-STARTED-CHANNEL-SWITCH freq=5765 ht_enabled=1 ch_offset=-1 ch_width=80 MHz cf1=5775 cf2=0
+######## B. AP 강제 끊김(reason=2) 직전 60 s ~ 직후 20 s 의 wpa_supplicant·NM·커널 무선 줄
+  == Sep 15 14:03:13
+  == Sep 16 15:57:34
+  == Sep 17 13:38:42
+######## C. 정상 접속 때의 채널 전환 이벤트(드라이버가 접속마다 내는 것인지) — Associated 전후 3 s
+  Sep 16 09:28:32 CTRL-EVENT-STARTED-CHANNEL-SWITCH freq=5180 ht_enabled=1 ch_offset=1 ch_width=80 MHz cf1=5210 cf2=0
+  Sep 16 09:28:32 Associated with b0:38:6c:37:1b:4c
+  Sep 16 15:57:38 CTRL-EVENT-STARTED-CHANNEL-SWITCH freq=5180 ht_enabled=1 ch_offset=1 ch_width=80 MHz cf1=5210 cf2=0
+  Sep 16 15:57:38 Associated with b0:38:6c:37:1b:4c
+  Sep 16 15:57:53 CTRL-EVENT-STARTED-CHANNEL-SWITCH freq=5180 ht_enabled=1 ch_offset=1 ch_width=80 MHz cf1=5210 cf2=0
+  Sep 16 15:57:54 Associated with b0:38:6c:37:1b:4c
+  Sep 16 15:58:12 CTRL-EVENT-STARTED-CHANNEL-SWITCH freq=5180 ht_enabled=1 ch_offset=1 ch_width=80 MHz cf1=5210 cf2=0
+  Sep 16 15:58:12 Associated with b0:38:6c:37:1b:4c
+  Sep 16 15:58:20 CTRL-EVENT-STARTED-CHANNEL-SWITCH freq=5180 ht_enabled=1 ch_offset=1 ch_width=80 MHz cf1=5210 cf2=0
+  Sep 16 15:58:20 Associated with b0:38:6c:37:1b:4c
+  Sep 16 15:58:47 CTRL-EVENT-STARTED-CHANNEL-SWITCH freq=5180 ht_enabled=1 ch_offset=1 ch_width=80 MHz cf1=5210 cf2=0
+  Sep 16 15:58:47 Associated with b0:38:6c:37:1b:4c
+  Sep 16 16:00:58 CTRL-EVENT-STARTED-CHANNEL-SWITCH freq=5765 ht_enabled=1 ch_offset=-1 ch_width=80 MHz cf1=5775 cf2=0
+  Sep 16 17:53:59 CTRL-EVENT-STARTED-CHANNEL-SWITCH freq=5180 ht_enabled=1 ch_offset=1 ch_width=80 MHz cf1=5210 cf2=0
+  Sep 16 17:53:59 Associated with b0:38:6c:37:1b:4c
+  Sep 17 13:38:46 CTRL-EVENT-STARTED-CHANNEL-SWITCH freq=5180 ht_enabled=1 ch_offset=1 ch_width=80 MHz cf1=5210 cf2=0
+  Sep 17 13:38:46 Associated with b0:38:6c:37:1b:4c
+  Sep 17 13:39:01 CTRL-EVENT-STARTED-CHANNEL-SWITCH freq=5180 ht_enabled=1 ch_offset=1 ch_width=80 MHz cf1=5210 cf2=0
+  Sep 17 13:39:01 Associated with b0:38:6c:37:1b:4c
+  Sep 17 13:39:19 CTRL-EVENT-STARTED-CHANNEL-SWITCH freq=5180 ht_enabled=1 ch_offset=1 ch_width=80 MHz cf1=5210 cf2=0
+  Sep 17 13:39:19 Associated with b0:38:6c:37:1b:4c
+  Sep 17 13:39:27 CTRL-EVENT-STARTED-CHANNEL-SWITCH freq=5180 ht_enabled=1 ch_offset=1 ch_width=80 MHz cf1=5210 cf2=0
+  Sep 17 13:39:27 Associated with b0:38:6c:37:1b:4c
+  Sep 17 13:39:55 CTRL-EVENT-STARTED-CHANNEL-SWITCH freq=5180 ht_enabled=1 ch_offset=1 ch_width=80 MHz cf1=5210 cf2=0
+  Sep 17 13:39:55 Associated with b0:38:6c:37:1b:4c
+  Sep 17 13:40:20 CTRL-EVENT-STARTED-CHANNEL-SWITCH freq=5765 ht_enabled=1 ch_offset=-1 ch_width=80 MHz cf1=5775 cf2=0
+  Sep 17 13:05:13 CTRL-EVENT-STARTED-CHANNEL-SWITCH freq=5180 ht_enabled=1 ch_offset=1 ch_width=80 MHz cf1=5210 cf2=0
+  Sep 17 13:05:14 Associated with b0:38:6c:37:1b:4c
+  Sep 17 13:05:32 CTRL-EVENT-STARTED-CHANNEL-SWITCH freq=5180 ht_enabled=1 ch_offset=1 ch_width=80 MHz cf1=5210 cf2=0
+  Sep 17 13:05:32 Associated with b0:38:6c:37:1b:4c
+  Sep 17 13:05:40 CTRL-EVENT-STARTED-CHANNEL-SWITCH freq=5180 ht_enabled=1 ch_offset=1 ch_width=80 MHz cf1=5210 cf2=0
+  Sep 17 13:05:40 Associated with b0:38:6c:37:1b:4c
+  Sep 17 13:05:58 CTRL-EVENT-STARTED-CHANNEL-SWITCH freq=5180 ht_enabled=1 ch_offset=1 ch_width=80 MHz cf1=5210 cf2=0
+  Sep 17 13:05:58 Associated with b0:38:6c:37:1b:4c
+  Sep 17 13:06:06 CTRL-EVENT-STARTED-CHANNEL-SWITCH freq=5180 ht_enabled=1 ch_offset=1 ch_width=80 MHz cf1=5210 cf2=0
+  Sep 17 13:06:06 Associated with b0:38:6c:37:1b:4c
+  Sep 17 13:06:33 CTRL-EVENT-STARTED-CHANNEL-SWITCH freq=5765 ht_enabled=1 ch_offset=-1 ch_width=80 MHz cf1=5775 cf2=0
+  Sep 17 13:06:47 CTRL-EVENT-STARTED-CHANNEL-SWITCH freq=5765 ht_enabled=1 ch_offset=-1 ch_width=80 MHz cf1=5775 cf2=0
+  Sep 17 16:37:22 CTRL-EVENT-STARTED-CHANNEL-SWITCH freq=5180 ht_enabled=1 ch_offset=1 ch_width=80 MHz cf1=5210 cf2=0
+  Sep 17 16:37:22 Associated with b0:38:6c:37:1b:4c
+######## 끝

@@ -1,0 +1,23 @@
+BSS b0:38:6c:37:1b:4c(on wlP1p1s0) -- associated
+	freq: 5180
+	signal: -55.00 dBm
+	last seen: 1684296 ms ago
+	SSID: WEB_DEV_5G
+	Country: KR	Environment: bogus
+	RSN:	 * Version: 1
+		 * Authentication suites: PSK
+		 * Capabilities: 16-PTKSA-RC 1-GTKSA-RC MFP-capable (0x008c)
+		Capabilities: 0x9ef
+	HT operation:
+		 * primary channel: 36
+		 * secondary channel offset: above
+		 * STA channel width: any
+		 * OBSS non-GF present: 0
+		 * Extended Channel Switching
+		 * SSID List
+	VHT operation:
+		 * channel width: 1 (80 MHz)
+		 * center freq segment 1: 42
+		 * center freq segment 2: 50
+	HE capabilities:
+		HE PHY Capabilities: (0x6c7016d86fc92fce91b900):
