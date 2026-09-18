@@ -1,0 +1,25 @@
+rc 0 소요 5.582736176 s, 598 줄
+/controller_server:  # 119 개
+/local_costmap/local_costmap:  # 111 개
+/global_costmap/global_costmap:  # 118 개
+/planner_server:  # 35 개
+/smoother_server:  # 13 개
+/bt_navigator:  # 23 개
+/behavior_server:  # 23 개
+/velocity_smoother:  # 13 개
+/slam_toolbox:  # 72 개
+/ekf_filter_node:  # 63 개
+/stuck_monitor:  # 10 개
+/depth_relay:  # 11 개
+  FollowPath.cost_scaling_dist: 0.25
+  FollowPath.cost_scaling_gain: 1.0
+  FollowPath.inflation_cost_scaling_factor: 2.5
+  FollowPathMPPI.ObstaclesCritic.cost_scaling_factor: 10.0
+  FollowPathMPPI.ObstaclesCritic.inflation_radius: 0.55
+  FollowPathMPPI.critics: ['ConstraintCritic', 'ObstaclesCritic', 'GoalCritic', 'GoalAngleCritic', 'PathAlignCritic', 'PathFollowCritic', 'PathAngleCritic', 'PreferForwardCritic']
+  FollowPathMPPI.temperature: 0.15
+  footprint_padding: 0.01
+  inflation_layer.cost_scaling_factor: 2.5
+  inflation_layer.inflation_radius: 0.4
+  footprint_padding: 0.01
+  inflation_layer.cost_scaling_factor: 2.0
