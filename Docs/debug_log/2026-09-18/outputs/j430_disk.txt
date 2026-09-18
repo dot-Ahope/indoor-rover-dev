@@ -1,0 +1,117 @@
+######## 1. 디스크
+  Filesystem      Size  Used Avail Use% Mounted on
+  /dev/nvme0n1p1  233G   28G  193G  13% /
+  /dev/nvme0n1p1  233G   28G  193G  13% /
+######## 2. 큰 디렉터리 (du, MB)
+       156 MB  /var/log
+         1 MB  /var/crash
+       193 MB  /var/cache/apt
+         1 MB  /var/lib/docker
+      3040 MB  /var/lib/snapd
+         1 MB  /tmp
+        49 MB  /home/jetson/.ros
+        47 MB  /home/jetson/.ros/log
+         6 MB  /home/jetson/ros2_ws
+         2 MB  /home/jetson/ros2_ws/build
+         1 MB  /home/jetson/ros2_ws/install
+         3 MB  /home/jetson/ros2_ws/log
+       223 MB  /home/jetson/.cache
+        78 MB  /home/jetson/Downloads
+       734 MB  /opt/ros
+######## 3. /var/log 상위 파일
+     165.1 MB  /var/log/lastlog
+     137.9 MB  /var/log/syslog
+      12.1 MB  /var/log/kern.log
+######## 4. logrotate 상태
+  timer enabled: Failed to get unit file state for logrotate.timer: No such file or directory
+  timer active: inactive
+  rsyslog conf: /var/log/syslog
+  rsyslog conf: /var/log/mail.info
+  rsyslog conf: /var/log/mail.warn
+  rsyslog conf: /var/log/mail.err
+  rsyslog conf: /var/log/mail.log
+  rsyslog conf: /var/log/daemon.log
+  rsyslog conf: /var/log/kern.log
+  rsyslog conf: /var/log/auth.log
+  rsyslog conf: /var/log/user.log
+  rsyslog conf: /var/log/lpr.log
+  rsyslog conf: /var/log/cron.log
+  rsyslog conf: /var/log/debug
+  rsyslog conf: /var/log/messages
+  rsyslog conf: {
+  rsyslog conf: 	rotate 4
+  rsyslog conf: 	weekly
+  rsyslog conf: 	missingok
+  rsyslog conf: 	notifempty
+  rsyslog conf: 	compress
+  rsyslog conf: 	delaycompress
+  journald: Archived and active journals take up 24.0M in the file system.
+######## 5. /tmp 내용 (크기순 상위, 종류별)
+  1	/tmp/wifi_mon.sh
+  1	/tmp/wifi-mon.service
+  1	/tmp/systemd-private-535d1a2522a5481caf5adb4d36c93bc9-upower.service-3lGWdq
+  1	/tmp/systemd-private-535d1a2522a5481caf5adb4d36c93bc9-systemd-timesyncd.service-3vrkL3
+  1	/tmp/systemd-private-535d1a2522a5481caf5adb4d36c93bc9-systemd-resolved.service-dvAcAt
+  1	/tmp/systemd-private-535d1a2522a5481caf5adb4d36c93bc9-systemd-logind.service-xdaWqA
+  1	/tmp/systemd-private-535d1a2522a5481caf5adb4d36c93bc9-switcheroo-control.service-P6RwKt
+  1	/tmp/systemd-private-535d1a2522a5481caf5adb4d36c93bc9-power-profiles-daemon.service-vsqCu3
+  1	/tmp/systemd-private-535d1a2522a5481caf5adb4d36c93bc9-iio-sensor-proxy.service-bMfJEr
+  1	/tmp/systemd-private-535d1a2522a5481caf5adb4d36c93bc9-haveged.service-7LC09r
+  1	/tmp/systemd-private-535d1a2522a5481caf5adb4d36c93bc9-colord.service-v6iGJK
+  1	/tmp/systemd-private-535d1a2522a5481caf5adb4d36c93bc9-bluetooth.service-DYk4jN
+  1	/tmp/snaptest.sh
+  1	/tmp/snaptest_mon.log
+  1	/tmp/snap-private-tmp
+  1	/tmp/scan_ap_test.sh
+  1	/tmp/scan_ap_fn.sh
+  1	/tmp/job430_disk.sh
+  1	/tmp/job429_probe.sh
+  1	/tmp/job429j_secret.sh
+  -- 종류별 개수·합계
+  job*       15 개        1 MB
+  *.log       1 개        1 MB
+  *.txt       1 개        1 MB
+  *.sh       19 개        1 MB
+######## 6. ~/.ros/log (ROS 실행 로그)
+  디렉터리 9746 개, 가장 오래된 1970-01-01-09-01-57-963045-jetson-desktop-3078, 최신 python3_26611_1789631558694.log
+   월별       1 1970-01
+   월별     201 2026-03
+   월별       5 2026-04
+   월별      47 2026-08
+   월별     406 2026-09
+######## 7. docker
+  TYPE            TOTAL     ACTIVE    SIZE      RECLAIMABLE
+  Images          2         0         735.5MB   8.297kB (0%)
+  Containers      0         0         0B        0B
+  Local Volumes   0         0         0B        0B
+  Build Cache     0         0         0B        0B
+ubuntu:22.04 108MB 7 months ago
+microros/micro-ros-agent:humble 627MB 12 months ago
+######## 8. 홈·/var 의 100 MB 넘는 파일
+    1608.3 MB 2026-02-17 /usr/local/lib/ollama/cuda_v12/libggml-cuda.so
+     686.5 MB 2015-07-08 /usr/local/lib/ollama/cuda_v12/libcublasLt.so.12.8.4.1
+     600.7 MB 2015-07-08 /usr/local/lib/ollama/cuda_v13/libcublasLt.so.13.1.0.3
+     552.9 MB 2026-02-20 /var/lib/snapd/snaps/gnome-46-2404_154.snap
+     552.9 MB 2026-02-20 /var/lib/snapd/cache/37b852c1861182e7a518b849062c85f15aec4b9eb59eabec341fd540c2b1cf5ac9d22072080a4ada4c9e6eff88ffe622
+     503.1 MB 2026-08-25 /var/lib/snapd/snaps/gnome-42-2204_264.snap
+     503.1 MB 2026-08-25 /var/lib/snapd/cache/6a2f306b81283b454185313d353ce8cfb2209b4a7ddc212fb6b58145032a74ee5762064394ca7dba62caee5cb2b5c4db
+     503.0 MB 2026-03-06 /var/lib/snapd/snaps/gnome-42-2204_245.snap
+     503.0 MB 2026-03-06 /var/lib/snapd/cache/8e8bfd06bfe55e14fa5df7f0563cfb11993633fb62a77998b186acc8957347c4b162a90e83cad16d398592b76a633fd4
+     358.8 MB 2026-02-17 /usr/local/lib/ollama/cuda_v13/libggml-cuda.so
+     321.5 MB 2024-08-15 /usr/local/lib/ollama/cuda_jetpack6/libcublasLt.so.12.6.1.4
+     226.2 MB 2026-03-07 /opt/ros/humble/opt/openvdb_vendor/lib/libopenvdb.a
+     196.5 MB 2026-09-03 /var/lib/snapd/snaps/chromium_3515.snap
+     196.5 MB 2026-09-03 /var/lib/snapd/cache/260a4594bcf0ca8d0057a26ee3969837425af644d7ad655624f884e55aa55f27ac41db8fba887d772fd3ec92ce10fc24
+     196.3 MB 2026-08-31 /var/lib/snapd/cache/39317ec9a99966a04c706b54e114f2ca5481bdae2f2c53f2f23a5879b56c2fa04917f35dbcbd136783d2de48c0678fb3
+     188.2 MB 2026-09-16 /var/lib/snapd/snaps/mesa-2404_1836.snap
+     188.2 MB 2026-09-16 /var/lib/snapd/cache/7c575b92a34da89049827382c6f88884fc980388b7302f719495575280684b96ed0d95f0e16fc23742c13ee01d7b5ec2
+     186.8 MB 2026-09-07 /var/lib/snapd/snaps/chromium_3524.snap
+     186.8 MB 2026-09-07 /var/lib/snapd/cache/12b43b0ea9838306fdc0750fd9315d2b21757df446d27060b58a676a4ef3a2d4abad732f940c367cc7975fa1765811e3
+     174.6 MB 2026-02-20 /var/lib/snapd/snaps/mesa-2404_1166.snap
+     174.6 MB 2026-02-20 /var/lib/snapd/cache/7317df1be60df232c2b3ea3a198391c1b99880a48aa6a3a6215794b8d3e4bf16d1b3bc537b6d93dca9b0d19da8639736
+     169.6 MB 2026-02-17 /usr/local/lib/ollama/cuda_jetpack6/libggml-cuda.so
+     168.6 MB 2026-03-29 /home/jetson/.antigravity-server/bin/1.21.9-cc6cd32816d350ee4a1ea2b4694b43f749418957/extensions/antigravity/bin/language_server_linux_arm
+     165.1 MB 2026-09-17 /var/log/lastlog
+     147.1 MB 2026-04-02 /home/jetson/.antigravity-server/extensions/meta.pyrefly-0.59.1-linux-arm64/bin/pyrefly
+######## 9. bag·db3 흩어진 것
+######## 끝

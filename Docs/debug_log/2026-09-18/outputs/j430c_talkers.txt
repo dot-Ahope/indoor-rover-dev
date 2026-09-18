@@ -1,0 +1,33 @@
+== 날짜별 줄·MB (최근 10 일)
+  Sep 7     72574 줄    7.2 MB
+  Sep 8     74704 줄    7.4 MB
+  Sep 9     87078 줄    8.7 MB
+  Sep 10    75379 줄    7.5 MB
+  Sep 11    74987 줄    7.6 MB
+  Sep 14    95482 줄    9.7 MB
+  Sep 15    79870 줄    8.0 MB
+  Sep 16    21033 줄    2.2 MB
+  Sep 17    10557 줄    1.2 MB
+  Sep 18     2149 줄    0.2 MB
+== 9/17 하루 프로그램별 상위
+      2900 줄   0.24 MB  systemd
+      2656 줄   0.29 MB  kernel
+      1698 줄   0.22 MB  iio-sensor-prox
+      1000 줄   0.12 MB  /usr/libexec/gdm-x-session
+       426 줄   0.06 MB  NetworkManager
+       318 줄   0.04 MB  bluetoothd
+       248 줄   0.02 MB  cups.cupsd
+       196 줄   0.03 MB  systemd-xdg-autostart-generator
+       162 줄   0.03 MB  containerd
+       109 줄   0.01 MB  wpa_supplicant
+        82 줄   0.01 MB  cups.cups-browsed
+        77 줄   0.01 MB  rtkit-daemon
+== 반복 메시지 상위(9/17)
+   1056 iio-sensor-prox: Failed to open 'iio:deviceN' at /dev/iio:deviceN: Device or resource busy
+    791 systemd: Started Session N of User jetson.
+    787 systemd: session-N.scope: Deactivated successfully.
+    640 iio-sensor-prox: message repeated N times: [ Failed to open 'iio:deviceN' at /dev/iio:deviceN: Device or resou
+    453 kernel: [ N.N] usb N-N.N: Failed to query (GET_CUR) UVC control N on unit N: -N (exp. N).
+    140 systemd: session-N.scope: Consumed N.Ns CPU time.
+    126 systemd-xdg-autostart-generator: /etc/xdg/autostart/nvbackground.sh:N: Assignment outside of section. Ignoring
+     98 kernel: [N.N] usb N-N.N: Failed to query (GET_CUR) UVC control N on unit N: -N (exp. N).
