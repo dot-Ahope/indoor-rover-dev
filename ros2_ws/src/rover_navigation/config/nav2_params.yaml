@@ -177,7 +177,12 @@ controller_server:
       # ★ 2026-09-17 mp7: 끔. 주기마다 후보 궤적 MarkerArray(≈2232 점)를 발행·bag 기록(≈5 MB/s)하는 비용이 15W 모드 CPU 를 압박.
       #   mp4~mp6 분석용 기록은 확보됨. 진단 주행에만 true 로 켠다.
       visualize: false
-      critics: ["ConstraintCritic", "ObstaclesCritic", "GoalCritic", "GoalAngleCritic", "PathAlignCritic", "PathFollowCritic", "PathAngleCritic", "PreferForwardCritic"]
+      # ★ 2026-09-18 §15~17: ObstaclesCritic → CostCritic. 1.1.20 소스 확인 — consider_footprint 일 때 ObstaclesCritic 은 차체 둘레 최대비용(내접 안이면 항상 253)
+      #   에서 거리를 역산해 옆 여유 1~14 cm 가 같은 비용(거리 0.175 고정)이 되고, 거리 역산용 cost_scaling_factor/inflation_radius 를 크리틱 파라미터로
+      #   읽는데(README 'Humble only') 이 YAML 에 없어 기본 10/0.55 로 돌고 있었다(로컬 코스트맵은 2.5/0.40; job451 실행 중 값으로 확인). CostCritic 은 충돌은 같은 둘레
+      #   검사, 점수는 중심 칸 비용(거리 기울기 있음). 오프라인 시뮬(job452, dy2·dy4·dy6 세 장면×seed 2): LETHAL 여유 최소 +0.5~2.4 cm, 정체 없음, 입구 진행 −0~7 %.
+      #   되돌리기 = 아래 목록에서 CostCritic ↔ ObstaclesCritic 한 줄. 판정 기준은 09-18 SUMMARY §16.
+      critics: ["ConstraintCritic", "CostCritic", "GoalCritic", "GoalAngleCritic", "PathAlignCritic", "PathFollowCritic", "PathAngleCritic", "PreferForwardCritic"]
       ConstraintCritic: {enabled: true, cost_power: 1, cost_weight: 4.0}
       # ★ 2026-09-17 mp8 (09-17 SUMMARY §7): 목표 0.24 m 옆에서 정지. 경로 크리틱이 목표 0.6/0.4 m 안에서 꺼져 GoalCritic(5) 만 남고,
       #   상자 모서리 때문에 늦게 시작한 중심선 복귀가 끊겼다. 오프라인 MPPI 시뮬(job355, 펌웨어 데드밴드 모델, bag_mp8 t=33 s 12 s):
@@ -186,7 +191,10 @@ controller_server:
       GoalAngleCritic: {enabled: true, cost_power: 1, cost_weight: 3.0, threshold_to_consider: 0.4}
       PreferForwardCritic: {enabled: true, cost_power: 1, cost_weight: 5.0, threshold_to_consider: 0.4}
       # consider_footprint: 직사각 풋프린트(0.5×0.33) 정확 반영 — CPU 비용 있으나 좁은 공간 정확성에 필수
-      ObstaclesCritic: {enabled: true, cost_power: 1, repulsion_weight: 1.5, critical_weight: 20.0, consider_footprint: true, collision_cost: 10000.0, collision_margin_distance: 0.05, near_goal_distance: 0.5}
+      ObstaclesCritic: {enabled: true, cost_power: 1, repulsion_weight: 1.5, critical_weight: 20.0, consider_footprint: true, collision_cost: 10000.0, collision_margin_distance: 0.05, near_goal_distance: 0.5}   # 09-18: 목록에서 빠짐(A/B 복귀용으로 둠)
+      # CostCritic (09-18): 기본값 그대로(README 예시와 같음). near_goal_distance 는 0.5 유지 — README 예시 1.0 이면 상자 뒤 모서리(x 1.25~1.35, 목표에서 0.65~0.75 m)
+      #   에서 선호 항이 꺼진다. critical_cost 300 = 중심이 내접(옆 여유 < 1 cm) 안에 들어가는 궤적 점 벌점. cost_weight 3.81/254 × 평균 중심 비용(0~252) → 최대 ≈3.8.
+      CostCritic: {enabled: true, cost_power: 1, cost_weight: 3.81, critical_cost: 300.0, consider_footprint: true, collision_cost: 1000000.0, near_goal_distance: 0.5}
       # offset_from_furthest 20 → 3 (09-16): 지평 0.22 m / 점간격 ~0.04 m = index 5~6 이므로 3 이면 0.1 m 만 나아가도 켜진다.
       PathAlignCritic: {enabled: true, cost_power: 1, cost_weight: 14.0, max_path_occupancy_ratio: 0.05, trajectory_point_step: 3, threshold_to_consider: 0.20, offset_from_furthest: 3}
       # ★ 2026-09-16 §1.14 (job354/355 재구성·시뮬레이션): 입구 기어감의 실체는 '당근이 짧은 추종'. offset 5 점 = 경로 점간격 0.025 m 에서

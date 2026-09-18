@@ -1,0 +1,11 @@
+== git in ~/ros2_ws/src: fatal: not a git repository (or any of the parent directories): .git
+== nav2_params.yaml 실체: /home/jetson/ros2_ws/install/rover_navigation/share/rover_navigation/config/nav2_params.yaml
+== nvpmodel: NV Power Mode: 15W 0 
+== 노드: /bt_navigator /bt_navigator_navigate_through_poses_rclcpp_node /bt_navigator_navigate_to_pose_rclcpp_node /ekf_filter_node /global_costmap/global_costmap /planner_server /rover_jupiter /transform_listener_impl_aaaacb0a8e00 /transform_listener_impl_aaaad94cb400 /velocity_smoother 
+== param dump controller_server: rc 0 147 줄, 7.820187162 s
+46:      ObstaclesCritic:
+89:      critics:
+91:      - ObstaclesCritic
+== 토픽 크기 후보:
+== 토픽 목록 수: 85
+/camera/camera/depth/color/points /camera/depth/points_filtered /global_costmap/costmap_raw /local_costmap/costmap_raw /plan_smoothed /smoother_server/transition_event /trajectories /unsmoothed_plan /velocity_smoother/transition_event 

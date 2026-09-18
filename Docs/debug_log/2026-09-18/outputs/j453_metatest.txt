@@ -1,0 +1,24 @@
+  메타: run_meta 25 줄, params 598 줄 (0 노드 응답 없음)
+소요 9.082421261 s
+name: metatest
+date: 2026-09-18 17:34:18 +0900
+drive_args: 2.0 90
+box_hint: 1.1 -0.1 tol 0.06
+stage: 시험
+note: 메타 시험(주행 없음)
+git_head_pc: 9418515
+bag_topics: /tf /scan
+bag_extra: 
+nvpmodel: NV Power Mode: 15W 0 
+load_uptime: 4.07 3.51 2.93 / up 26312.23 s
+pkg: nav2-mppi 1.1.20-1jammy.20260219.064241 costmap-2d 1.1.20-1jammy.20260219.061126 slam-toolbox 2.6.10-1jammy.20260219.113352
+  e51868b78f77 rover_navigation/share/rover_navigation/config/nav2_params.yaml
+  48944a730c8b rover_navigation/share/rover_navigation/config/nav_to_pose_no_spin.xml
+  1af329373d05 rover_bringup/lib/rover_bringup/depth_relay.py
+  0b4d858a8764 rover_bringup/lib/rover_bringup/stuck_monitor.py
+  0989a556eb72 rover_bringup/share/rover_bringup/config/fastdds_udp_only.xml
+  daf00b0f6457 rover_bringup/share/rover_bringup/launch/camera.launch.py
+  9bfb1628e561 rover_description/share/rover_description/urdf/rover.urdf
+  ed91d899e248 /tmp/job125_avoid3.py
+  e7d8ffc8b4bc /tmp/job254_s4run.sh
+  ae98514aad50 /tmp/job231_drive.sh

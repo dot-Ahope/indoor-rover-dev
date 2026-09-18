@@ -6,7 +6,8 @@ SPS=/mnt/c/Users/magma/AppData/Local/Temp/claude/F--6-Indoor-Rover-Rover/82ce61d
 H=${JETSON_HOST:-192.168.0.101}
 O="-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o LogLevel=ERROR -o ConnectTimeout=8 -o ServerAliveInterval=3 -o ServerAliveCountMax=3"
 J=jetson@$H
-for f in job254_s4run.sh job231_drive.sh job125_avoid3.py job248_audit.py job315_boxcells.py job386_slamalive.py; do tr -d '\r' < $SPS/$f > /tmp/$f; sshpass -p <PW> scp $O -q /tmp/$f $J:/tmp/$f || { echo "전송 실패 $f"; exit 1; }; done
+STAGE=${STAGE:-}; NOTE=${NOTE:-}; GIT_HEAD=${GIT_HEAD:-}; BAG_EXTRA=${BAG_EXTRA:-}   # 09-18 §17: 재현 메타(환경변수로 전달)
+for f in job254_s4run.sh job231_drive.sh job125_avoid3.py job248_audit.py job315_boxcells.py job386_slamalive.py job451_paramsnap.py job453_runmeta.sh; do tr -d '\r' < $SPS/$f > /tmp/$f; sshpass -p <PW> scp $O -q /tmp/$f $J:/tmp/$f || { echo "전송 실패 $f"; exit 1; }; done
 # --- 사전 게이트 (run_inf1.sh 와 같은 판정, 한 번의 ssh) ---
 A=$(timeout 150 sshpass -p <PW> ssh $O $J "export FASTRTPS_DEFAULT_PROFILES_FILE=/home/jetson/ros2_ws/install/rover_bringup/share/rover_bringup/config/fastdds_udp_only.xml; source /opt/ros/humble/setup.bash; BOX_HINT='$BX $BY' python3 /tmp/job248_audit.py 2>&1")
 # 09-16: 감사 출력이 간혹 표 없이 잘린다(run_gate 1회) → 최소폭 줄이 없으면 한 번 재시도
@@ -41,7 +42,7 @@ echo "$SC" | tail -1 | grep -qE '^[0-9.]+$' || { echo "★ 출발 자세 검사 
 awk -v c="$(echo "$SC" | tail -1)" 'BEGIN{exit !(c+0 >= 0.10)}' || { echo "★ 출발 자세 여유 < 0.10 m — 로버 주변(특히 뒤) 물체·사람을 치울 것, 주행하지 않음"; exit 1; }
 # --- 주행: 원격 nohup + 로그 ---
 LOG=/tmp/drive_$NAME.log
-timeout 20 sshpass -p <PW> ssh $O $J "export FASTRTPS_DEFAULT_PROFILES_FILE=/home/jetson/ros2_ws/install/rover_bringup/share/rover_bringup/config/fastdds_udp_only.xml; source /opt/ros/humble/setup.bash; source ~/ros2_ws/install/setup.bash; rm -f $LOG; GOAL_LAT=$GL nohup bash /tmp/job254_s4run.sh $NAME $D $BX $BY $TOL > $LOG 2>&1 & echo started_pid \$!"
+timeout 20 sshpass -p <PW> ssh $O $J "export FASTRTPS_DEFAULT_PROFILES_FILE=/home/jetson/ros2_ws/install/rover_bringup/share/rover_bringup/config/fastdds_udp_only.xml; source /opt/ros/humble/setup.bash; source ~/ros2_ws/install/setup.bash; rm -f $LOG; STAGE='$STAGE' NOTE='$NOTE' GIT_HEAD='$GIT_HEAD' BAG_EXTRA='$BAG_EXTRA' GOAL_LAT=$GL nohup bash /tmp/job254_s4run.sh $NAME $D $BX $BY $TOL > $LOG 2>&1 & echo started_pid \$!"
 echo "주행 시작 $(date +%T) — 로그 $LOG (링크가 끊겨도 원격에서 계속됨; 정지는 job156_stop.sh)"
 # --- 로그 폴링 (최대 8분; ssh 실패는 재시도) ---
 T0=$(date +%s); LAST=0

@@ -1,0 +1,298 @@
+######## dy4 goal+8 s
+S1_dy4_g8_obst0 bag bag_dy4 t=12.4 자세 (0.526,0.153) yaw +14.4° 초기 cmd v +0.080 w -0.023 | 경로 42점(간격 0.025) | obst=0 vx_std=0.08 wz_std=0.4 temperature=0.15 iters=2 align_w=14 follow_w=10 follow_off=20 cost_w=3.81 crit_cost=300 near_thr=0.5
+  cyc |  cmd v    w  | 로버 x y yaw | furth | 충돌% | 끝단전방 중앙/최대 | 평균비용 obst align follow angle+goal | 최저후보 v w | 평균열 최대비용/충돌스텝 | LETHAL 여유
+  → 60 주기(6.0 s) 후: 전진 +0.474 횡 -0.039 회전 -5.3°, 최종 cmd v +0.079 w -0.237
+     동적 입력: /plan 7 개, 코스트맵 11 개 사용 (dyn_path=2 dyn_cost=1)
+     유효 표본 수 ESS 중앙 10.9 (10/90% 7.3/20.0) / 배치 1000 → 첫 제어 ω 표본 잡음 추정 wz_std/√ESS = 0.121 rad/s
+     흔들림: |ω|>0.05 반전 명령 6 회 = 12.6 회/m, 차체 2 회 = 4.2 회/m (이동 0.476 m) | 고주파 RMS 명령 0.055 차체 0.039 rad/s | 최대 둘레비용 253
+     LETHAL 여유(차체 외곽↔1 m 안 LETHAL 셀, 반셀 뺌): 최소 0.036 @5.9 s, 평균 0.113, 끝 0.036 m
+
+S1_dy4_g8_obst1 bag bag_dy4 t=12.4 자세 (0.526,0.153) yaw +14.4° 초기 cmd v +0.080 w -0.023 | 경로 42점(간격 0.025) | obst=1 vx_std=0.08 wz_std=0.4 temperature=0.15 iters=2 align_w=14 follow_w=10 follow_off=20 cost_w=3.81 crit_cost=300 near_thr=0.5
+  cyc |  cmd v    w  | 로버 x y yaw | furth | 충돌% | 끝단전방 중앙/최대 | 평균비용 obst align follow angle+goal | 최저후보 v w | 평균열 최대비용/충돌스텝 | LETHAL 여유
+  → 60 주기(6.0 s) 후: 전진 +0.456 횡 -0.021 회전 -6.5°, 최종 cmd v +0.073 w -0.043
+     동적 입력: /plan 7 개, 코스트맵 11 개 사용 (dyn_path=2 dyn_cost=1)
+     유효 표본 수 ESS 중앙 18.6 (10/90% 6.7/147.5) / 배치 1000 → 첫 제어 ω 표본 잡음 추정 wz_std/√ESS = 0.093 rad/s
+     흔들림: |ω|>0.05 반전 명령 6 회 = 13.1 회/m, 차체 2 회 = 4.4 회/m (이동 0.457 m) | 고주파 RMS 명령 0.062 차체 0.044 rad/s | 최대 둘레비용 253
+     LETHAL 여유(차체 외곽↔1 m 안 LETHAL 셀, 반셀 뺌): 최소 0.051 @5.9 s, 평균 0.125, 끝 0.051 m
+
+S2_dy4_g8_obst0 bag bag_dy4 t=12.4 자세 (0.526,0.153) yaw +14.4° 초기 cmd v +0.080 w -0.023 | 경로 42점(간격 0.025) | obst=0 vx_std=0.08 wz_std=0.4 temperature=0.15 iters=2 align_w=14 follow_w=10 follow_off=20 cost_w=3.81 crit_cost=300 near_thr=0.5
+  cyc |  cmd v    w  | 로버 x y yaw | furth | 충돌% | 끝단전방 중앙/최대 | 평균비용 obst align follow angle+goal | 최저후보 v w | 평균열 최대비용/충돌스텝 | LETHAL 여유
+  → 60 주기(6.0 s) 후: 전진 +0.475 횡 -0.034 회전 -1.4°, 최종 cmd v +0.079 w -0.045
+     동적 입력: /plan 7 개, 코스트맵 11 개 사용 (dyn_path=2 dyn_cost=1)
+     유효 표본 수 ESS 중앙 11.9 (10/90% 4.5/99.6) / 배치 1000 → 첫 제어 ω 표본 잡음 추정 wz_std/√ESS = 0.116 rad/s
+     흔들림: |ω|>0.05 반전 명령 6 회 = 12.6 회/m, 차체 6 회 = 12.6 회/m (이동 0.477 m) | 고주파 RMS 명령 0.083 차체 0.059 rad/s | 최대 둘레비용 253
+     LETHAL 여유(차체 외곽↔1 m 안 LETHAL 셀, 반셀 뺌): 최소 0.039 @4.6 s, 평균 0.116, 끝 0.047 m
+
+S2_dy4_g8_obst1 bag bag_dy4 t=12.4 자세 (0.526,0.153) yaw +14.4° 초기 cmd v +0.080 w -0.023 | 경로 42점(간격 0.025) | obst=1 vx_std=0.08 wz_std=0.4 temperature=0.15 iters=2 align_w=14 follow_w=10 follow_off=20 cost_w=3.81 crit_cost=300 near_thr=0.5
+  cyc |  cmd v    w  | 로버 x y yaw | furth | 충돌% | 끝단전방 중앙/최대 | 평균비용 obst align follow angle+goal | 최저후보 v w | 평균열 최대비용/충돌스텝 | LETHAL 여유
+  → 60 주기(6.0 s) 후: 전진 +0.459 횡 -0.028 회전 -5.0°, 최종 cmd v +0.080 w +0.146
+     동적 입력: /plan 7 개, 코스트맵 11 개 사용 (dyn_path=2 dyn_cost=1)
+     유효 표본 수 ESS 중앙 18.7 (10/90% 7.2/156.9) / 배치 1000 → 첫 제어 ω 표본 잡음 추정 wz_std/√ESS = 0.093 rad/s
+     흔들림: |ω|>0.05 반전 명령 7 회 = 15.2 회/m, 차체 7 회 = 15.2 회/m (이동 0.460 m) | 고주파 RMS 명령 0.058 차체 0.041 rad/s | 최대 둘레비용 253
+     LETHAL 여유(차체 외곽↔1 m 안 LETHAL 셀, 반셀 뺌): 최소 0.041 @5.4 s, 평균 0.119, 끝 0.045 m
+
+######## dy4 goal+16.5 s
+S1_dy4_g16.5_obst0 bag bag_dy4 t=20.9 자세 (1.078,0.261) yaw +1.1° 초기 cmd v +0.077 w -0.143 | 경로 39점(간격 0.025) | obst=0 vx_std=0.08 wz_std=0.4 temperature=0.15 iters=2 align_w=14 follow_w=10 follow_off=20 cost_w=3.81 crit_cost=300 near_thr=0.5
+  cyc |  cmd v    w  | 로버 x y yaw | furth | 충돌% | 끝단전방 중앙/최대 | 평균비용 obst align follow angle+goal | 최저후보 v w | 평균열 최대비용/충돌스텝 | LETHAL 여유
+  → 60 주기(6.0 s) 후: 전진 +0.456 횡 -0.065 회전 -17.2°, 최종 cmd v +0.085 w -0.210
+     동적 입력: /plan 7 개, 코스트맵 11 개 사용 (dyn_path=2 dyn_cost=1)
+     유효 표본 수 ESS 중앙 9.1 (10/90% 4.3/18.5) / 배치 1000 → 첫 제어 ω 표본 잡음 추정 wz_std/√ESS = 0.133 rad/s
+     흔들림: |ω|>0.05 반전 명령 0 회 = 0.0 회/m, 차체 0 회 = 0.0 회/m (이동 0.462 m) | 고주파 RMS 명령 0.024 차체 0.017 rad/s | 최대 둘레비용 253
+     LETHAL 여유(차체 외곽↔1 m 안 LETHAL 셀, 반셀 뺌): 최소 0.027 @4.4 s, 평균 0.032, 끝 0.039 m
+
+S1_dy4_g16.5_obst1 bag bag_dy4 t=20.9 자세 (1.078,0.261) yaw +1.1° 초기 cmd v +0.077 w -0.143 | 경로 39점(간격 0.025) | obst=1 vx_std=0.08 wz_std=0.4 temperature=0.15 iters=2 align_w=14 follow_w=10 follow_off=20 cost_w=3.81 crit_cost=300 near_thr=0.5
+  cyc |  cmd v    w  | 로버 x y yaw | furth | 충돌% | 끝단전방 중앙/최대 | 평균비용 obst align follow angle+goal | 최저후보 v w | 평균열 최대비용/충돌스텝 | LETHAL 여유
+  → 60 주기(6.0 s) 후: 전진 +0.464 횡 -0.046 회전 -10.1°, 최종 cmd v +0.080 w -0.019
+     동적 입력: /plan 7 개, 코스트맵 11 개 사용 (dyn_path=2 dyn_cost=1)
+     유효 표본 수 ESS 중앙 7.5 (10/90% 4.3/21.8) / 배치 1000 → 첫 제어 ω 표본 잡음 추정 wz_std/√ESS = 0.146 rad/s
+     흔들림: |ω|>0.05 반전 명령 4 회 = 8.6 회/m, 차체 2 회 = 4.3 회/m (이동 0.466 m) | 고주파 RMS 명령 0.039 차체 0.028 rad/s | 최대 둘레비용 253
+     LETHAL 여유(차체 외곽↔1 m 안 LETHAL 셀, 반셀 뺌): 최소 0.034 @3.9 s, 평균 0.037, 끝 0.041 m
+
+S2_dy4_g16.5_obst0 bag bag_dy4 t=20.9 자세 (1.078,0.261) yaw +1.1° 초기 cmd v +0.077 w -0.143 | 경로 39점(간격 0.025) | obst=0 vx_std=0.08 wz_std=0.4 temperature=0.15 iters=2 align_w=14 follow_w=10 follow_off=20 cost_w=3.81 crit_cost=300 near_thr=0.5
+  cyc |  cmd v    w  | 로버 x y yaw | furth | 충돌% | 끝단전방 중앙/최대 | 평균비용 obst align follow angle+goal | 최저후보 v w | 평균열 최대비용/충돌스텝 | LETHAL 여유
+  → 60 주기(6.0 s) 후: 전진 +0.462 횡 -0.080 회전 -28.8°, 최종 cmd v +0.079 w -0.109
+     동적 입력: /plan 7 개, 코스트맵 11 개 사용 (dyn_path=2 dyn_cost=1)
+     유효 표본 수 ESS 중앙 9.4 (10/90% 4.3/18.7) / 배치 1000 → 첫 제어 ω 표본 잡음 추정 wz_std/√ESS = 0.131 rad/s
+     흔들림: |ω|>0.05 반전 명령 2 회 = 4.2 회/m, 차체 2 회 = 4.2 회/m (이동 0.474 m) | 고주파 RMS 명령 0.046 차체 0.035 rad/s | 최대 둘레비용 253
+     LETHAL 여유(차체 외곽↔1 m 안 LETHAL 셀, 반셀 뺌): 최소 0.037 @3.4 s, 평균 0.043, 끝 0.055 m
+
+S2_dy4_g16.5_obst1 bag bag_dy4 t=20.9 자세 (1.078,0.261) yaw +1.1° 초기 cmd v +0.077 w -0.143 | 경로 39점(간격 0.025) | obst=1 vx_std=0.08 wz_std=0.4 temperature=0.15 iters=2 align_w=14 follow_w=10 follow_off=20 cost_w=3.81 crit_cost=300 near_thr=0.5
+  cyc |  cmd v    w  | 로버 x y yaw | furth | 충돌% | 끝단전방 중앙/최대 | 평균비용 obst align follow angle+goal | 최저후보 v w | 평균열 최대비용/충돌스텝 | LETHAL 여유
+  → 60 주기(6.0 s) 후: 전진 +0.466 횡 -0.069 회전 -30.1°, 최종 cmd v +0.080 w -0.154
+     동적 입력: /plan 7 개, 코스트맵 11 개 사용 (dyn_path=2 dyn_cost=1)
+     유효 표본 수 ESS 중앙 8.0 (10/90% 4.0/15.6) / 배치 1000 → 첫 제어 ω 표본 잡음 추정 wz_std/√ESS = 0.142 rad/s
+     흔들림: |ω|>0.05 반전 명령 2 회 = 4.2 회/m, 차체 2 회 = 4.2 회/m (이동 0.477 m) | 고주파 RMS 명령 0.039 차체 0.028 rad/s | 최대 둘레비용 253
+     LETHAL 여유(차체 외곽↔1 m 안 LETHAL 셀, 반셀 뺌): 최소 0.041 @3.2 s, 평균 0.047, 끝 0.069 m
+
+######## dy4 goal+20 s
+S1_dy4_g20_obst0 bag bag_dy4 t=24.4 자세 (1.329,0.248) yaw -9.1° 초기 cmd v +0.081 w +0.011 | 경로 28점(간격 0.040) | obst=0 vx_std=0.08 wz_std=0.4 temperature=0.15 iters=2 align_w=14 follow_w=10 follow_off=20 cost_w=3.81 crit_cost=300 near_thr=0.5
+  cyc |  cmd v    w  | 로버 x y yaw | furth | 충돌% | 끝단전방 중앙/최대 | 평균비용 obst align follow angle+goal | 최저후보 v w | 평균열 최대비용/충돌스텝 | LETHAL 여유
+  → 60 주기(6.0 s) 후: 전진 +0.485 횡 -0.057 회전 -10.3°, 최종 cmd v +0.064 w +0.034
+     동적 입력: /plan 6 개, 코스트맵 11 개 사용 (dyn_path=2 dyn_cost=1)
+     유효 표본 수 ESS 중앙 16.4 (10/90% 7.3/49.1) / 배치 1000 → 첫 제어 ω 표본 잡음 추정 wz_std/√ESS = 0.099 rad/s
+     흔들림: |ω|>0.05 반전 명령 3 회 = 6.1 회/m, 차체 3 회 = 6.1 회/m (이동 0.490 m) | 고주파 RMS 명령 0.034 차체 0.024 rad/s | 최대 둘레비용 253
+     LETHAL 여유(차체 외곽↔1 m 안 LETHAL 셀, 반셀 뺌): 최소 0.031 @0.0 s, 평균 0.061, 끝 0.154 m
+
+S1_dy4_g20_obst1 bag bag_dy4 t=24.4 자세 (1.329,0.248) yaw -9.1° 초기 cmd v +0.081 w +0.011 | 경로 28점(간격 0.040) | obst=1 vx_std=0.08 wz_std=0.4 temperature=0.15 iters=2 align_w=14 follow_w=10 follow_off=20 cost_w=3.81 crit_cost=300 near_thr=0.5
+  cyc |  cmd v    w  | 로버 x y yaw | furth | 충돌% | 끝단전방 중앙/최대 | 평균비용 obst align follow angle+goal | 최저후보 v w | 평균열 최대비용/충돌스텝 | LETHAL 여유
+  → 60 주기(6.0 s) 후: 전진 +0.477 횡 -0.034 회전 -17.6°, 최종 cmd v +0.069 w -0.014
+     동적 입력: /plan 6 개, 코스트맵 11 개 사용 (dyn_path=2 dyn_cost=1)
+     유효 표본 수 ESS 중앙 17.6 (10/90% 3.0/30.5) / 배치 1000 → 첫 제어 ω 표본 잡음 추정 wz_std/√ESS = 0.095 rad/s
+     흔들림: |ω|>0.05 반전 명령 1 회 = 2.1 회/m, 차체 1 회 = 2.1 회/m (이동 0.481 m) | 고주파 RMS 명령 0.049 차체 0.032 rad/s | 최대 둘레비용 253
+     LETHAL 여유(차체 외곽↔1 m 안 LETHAL 셀, 반셀 뺌): 최소 0.029 @1.2 s, 평균 0.063, 끝 0.160 m
+
+S2_dy4_g20_obst0 bag bag_dy4 t=24.4 자세 (1.329,0.248) yaw -9.1° 초기 cmd v +0.081 w +0.011 | 경로 28점(간격 0.040) | obst=0 vx_std=0.08 wz_std=0.4 temperature=0.15 iters=2 align_w=14 follow_w=10 follow_off=20 cost_w=3.81 crit_cost=300 near_thr=0.5
+  cyc |  cmd v    w  | 로버 x y yaw | furth | 충돌% | 끝단전방 중앙/최대 | 평균비용 obst align follow angle+goal | 최저후보 v w | 평균열 최대비용/충돌스텝 | LETHAL 여유
+  → 60 주기(6.0 s) 후: 전진 +0.455 횡 -0.115 회전 -10.8°, 최종 cmd v +0.079 w +0.167
+     동적 입력: /plan 6 개, 코스트맵 11 개 사용 (dyn_path=2 dyn_cost=1)
+     유효 표본 수 ESS 중앙 10.1 (10/90% 6.0/30.0) / 배치 1000 → 첫 제어 ω 표본 잡음 추정 wz_std/√ESS = 0.126 rad/s
+     흔들림: |ω|>0.05 반전 명령 1 회 = 2.1 회/m, 차체 1 회 = 2.1 회/m (이동 0.474 m) | 고주파 RMS 명령 0.049 차체 0.034 rad/s | 최대 둘레비용 253
+     LETHAL 여유(차체 외곽↔1 m 안 LETHAL 셀, 반셀 뺌): 최소 0.031 @0.4 s, 평균 0.052, 끝 0.113 m
+
+S2_dy4_g20_obst1 bag bag_dy4 t=24.4 자세 (1.329,0.248) yaw -9.1° 초기 cmd v +0.081 w +0.011 | 경로 28점(간격 0.040) | obst=1 vx_std=0.08 wz_std=0.4 temperature=0.15 iters=2 align_w=14 follow_w=10 follow_off=20 cost_w=3.81 crit_cost=300 near_thr=0.5
+  cyc |  cmd v    w  | 로버 x y yaw | furth | 충돌% | 끝단전방 중앙/최대 | 평균비용 obst align follow angle+goal | 최저후보 v w | 평균열 최대비용/충돌스텝 | LETHAL 여유
+  → 60 주기(6.0 s) 후: 전진 +0.453 횡 -0.122 회전 -8.7°, 최종 cmd v +0.079 w +0.133
+     동적 입력: /plan 6 개, 코스트맵 11 개 사용 (dyn_path=2 dyn_cost=1)
+     유효 표본 수 ESS 중앙 7.7 (10/90% 4.0/18.7) / 배치 1000 → 첫 제어 ω 표본 잡음 추정 wz_std/√ESS = 0.144 rad/s
+     흔들림: |ω|>0.05 반전 명령 1 회 = 2.1 회/m, 차체 1 회 = 2.1 회/m (이동 0.474 m) | 고주파 RMS 명령 0.060 차체 0.042 rad/s | 최대 둘레비용 253
+     LETHAL 여유(차체 외곽↔1 m 안 LETHAL 셀, 반셀 뺌): 최소 0.031 @0.4 s, 평균 0.050, 끝 0.111 m
+
+######## dy6 goal+8 s
+S1_dy6_g8_obst0 bag bag_dy6 t=14.5 자세 (0.517,0.175) yaw +20.8° 초기 cmd v +0.080 w -0.106 | 경로 42점(간격 0.025) | obst=0 vx_std=0.08 wz_std=0.4 temperature=0.15 iters=2 align_w=14 follow_w=10 follow_off=20 cost_w=3.81 crit_cost=300 near_thr=0.5
+  cyc |  cmd v    w  | 로버 x y yaw | furth | 충돌% | 끝단전방 중앙/최대 | 평균비용 obst align follow angle+goal | 최저후보 v w | 평균열 최대비용/충돌스텝 | LETHAL 여유
+  → 60 주기(6.0 s) 후: 전진 +0.475 횡 -0.090 회전 -12.0°, 최종 cmd v +0.080 w -0.087
+     동적 입력: /plan 7 개, 코스트맵 11 개 사용 (dyn_path=2 dyn_cost=1)
+     유효 표본 수 ESS 중앙 16.1 (10/90% 7.3/140.2) / 배치 1000 → 첫 제어 ω 표본 잡음 추정 wz_std/√ESS = 0.100 rad/s
+     흔들림: |ω|>0.05 반전 명령 6 회 = 12.4 회/m, 차체 6 회 = 12.4 회/m (이동 0.484 m) | 고주파 RMS 명령 0.101 차체 0.071 rad/s | 최대 둘레비용 253
+     LETHAL 여유(차체 외곽↔1 m 안 LETHAL 셀, 반셀 뺌): 최소 0.060 @3.9 s, 평균 0.128, 끝 0.063 m
+
+S1_dy6_g8_obst1 bag bag_dy6 t=14.5 자세 (0.517,0.175) yaw +20.8° 초기 cmd v +0.080 w -0.106 | 경로 42점(간격 0.025) | obst=1 vx_std=0.08 wz_std=0.4 temperature=0.15 iters=2 align_w=14 follow_w=10 follow_off=20 cost_w=3.81 crit_cost=300 near_thr=0.5
+  cyc |  cmd v    w  | 로버 x y yaw | furth | 충돌% | 끝단전방 중앙/최대 | 평균비용 obst align follow angle+goal | 최저후보 v w | 평균열 최대비용/충돌스텝 | LETHAL 여유
+  → 60 주기(6.0 s) 후: 전진 +0.430 횡 -0.058 회전 -6.3°, 최종 cmd v +0.080 w -0.245
+     동적 입력: /plan 7 개, 코스트맵 11 개 사용 (dyn_path=2 dyn_cost=1)
+     유효 표본 수 ESS 중앙 23.6 (10/90% 8.7/230.7) / 배치 1000 → 첫 제어 ω 표본 잡음 추정 wz_std/√ESS = 0.082 rad/s
+     흔들림: |ω|>0.05 반전 명령 2 회 = 4.6 회/m, 차체 2 회 = 4.6 회/m (이동 0.435 m) | 고주파 RMS 명령 0.058 차체 0.042 rad/s | 최대 둘레비용 174
+     LETHAL 여유(차체 외곽↔1 m 안 LETHAL 셀, 반셀 뺌): 최소 0.090 @4.1 s, 평균 0.144, 끝 0.099 m
+
+S2_dy6_g8_obst0 bag bag_dy6 t=14.5 자세 (0.517,0.175) yaw +20.8° 초기 cmd v +0.080 w -0.106 | 경로 42점(간격 0.025) | obst=0 vx_std=0.08 wz_std=0.4 temperature=0.15 iters=2 align_w=14 follow_w=10 follow_off=20 cost_w=3.81 crit_cost=300 near_thr=0.5
+  cyc |  cmd v    w  | 로버 x y yaw | furth | 충돌% | 끝단전방 중앙/최대 | 평균비용 obst align follow angle+goal | 최저후보 v w | 평균열 최대비용/충돌스텝 | LETHAL 여유
+  → 60 주기(6.0 s) 후: 전진 +0.464 횡 -0.109 회전 -11.8°, 최종 cmd v +0.080 w -0.070
+     동적 입력: /plan 7 개, 코스트맵 11 개 사용 (dyn_path=2 dyn_cost=1)
+     유효 표본 수 ESS 중앙 10.9 (10/90% 5.5/115.3) / 배치 1000 → 첫 제어 ω 표본 잡음 추정 wz_std/√ESS = 0.121 rad/s
+     흔들림: |ω|>0.05 반전 명령 6 회 = 12.6 회/m, 차체 4 회 = 8.4 회/m (이동 0.478 m) | 고주파 RMS 명령 0.087 차체 0.061 rad/s | 최대 둘레비용 253
+     LETHAL 여유(차체 외곽↔1 m 안 LETHAL 셀, 반셀 뺌): 최소 0.031 @4.1 s, 평균 0.118, 끝 0.042 m
+
+S2_dy6_g8_obst1 bag bag_dy6 t=14.5 자세 (0.517,0.175) yaw +20.8° 초기 cmd v +0.080 w -0.106 | 경로 42점(간격 0.025) | obst=1 vx_std=0.08 wz_std=0.4 temperature=0.15 iters=2 align_w=14 follow_w=10 follow_off=20 cost_w=3.81 crit_cost=300 near_thr=0.5
+  cyc |  cmd v    w  | 로버 x y yaw | furth | 충돌% | 끝단전방 중앙/최대 | 평균비용 obst align follow angle+goal | 최저후보 v w | 평균열 최대비용/충돌스텝 | LETHAL 여유
+  → 60 주기(6.0 s) 후: 전진 +0.441 횡 -0.091 회전 -15.5°, 최종 cmd v +0.079 w -0.026
+     동적 입력: /plan 7 개, 코스트맵 11 개 사용 (dyn_path=2 dyn_cost=1)
+     유효 표본 수 ESS 중앙 21.7 (10/90% 8.1/246.4) / 배치 1000 → 첫 제어 ω 표본 잡음 추정 wz_std/√ESS = 0.086 rad/s
+     흔들림: |ω|>0.05 반전 명령 6 회 = 13.3 회/m, 차체 6 회 = 13.3 회/m (이동 0.451 m) | 고주파 RMS 명령 0.077 차체 0.053 rad/s | 최대 둘레비용 253
+     LETHAL 여유(차체 외곽↔1 m 안 LETHAL 셀, 반셀 뺌): 최소 0.047 @5.9 s, 평균 0.127, 끝 0.047 m
+
+######## dy6 goal+16.5 s
+S1_dy6_g16.5_obst0 bag bag_dy6 t=23.0 자세 (1.006,0.355) yaw -0.4° 초기 cmd v +0.080 w -0.331 | 경로 41점(간격 0.036) | obst=0 vx_std=0.08 wz_std=0.4 temperature=0.15 iters=2 align_w=14 follow_w=10 follow_off=20 cost_w=3.81 crit_cost=300 near_thr=0.5
+  cyc |  cmd v    w  | 로버 x y yaw | furth | 충돌% | 끝단전방 중앙/최대 | 평균비용 obst align follow angle+goal | 최저후보 v w | 평균열 최대비용/충돌스텝 | LETHAL 여유
+  → 60 주기(6.0 s) 후: 전진 +0.481 횡 -0.128 회전 -22.7°, 최종 cmd v +0.086 w -0.067
+     동적 입력: /plan 7 개, 코스트맵 11 개 사용 (dyn_path=2 dyn_cost=1)
+     유효 표본 수 ESS 중앙 18.5 (10/90% 17.5/20.6) / 배치 1000 → 첫 제어 ω 표본 잡음 추정 wz_std/√ESS = 0.093 rad/s
+     흔들림: |ω|>0.05 반전 명령 0 회 = 0.0 회/m, 차체 0 회 = 0.0 회/m (이동 0.501 m) | 고주파 RMS 명령 0.026 차체 0.018 rad/s | 최대 둘레비용 253
+     LETHAL 여유(차체 외곽↔1 m 안 LETHAL 셀, 반셀 뺌): 최소 0.073 @4.4 s, 평균 0.086, 끝 0.075 m
+
+S1_dy6_g16.5_obst1 bag bag_dy6 t=23.0 자세 (1.006,0.355) yaw -0.4° 초기 cmd v +0.080 w -0.331 | 경로 41점(간격 0.036) | obst=1 vx_std=0.08 wz_std=0.4 temperature=0.15 iters=2 align_w=14 follow_w=10 follow_off=20 cost_w=3.81 crit_cost=300 near_thr=0.5
+  cyc |  cmd v    w  | 로버 x y yaw | furth | 충돌% | 끝단전방 중앙/최대 | 평균비용 obst align follow angle+goal | 최저후보 v w | 평균열 최대비용/충돌스텝 | LETHAL 여유
+  → 60 주기(6.0 s) 후: 전진 +0.491 횡 -0.098 회전 -16.5°, 최종 cmd v +0.080 w +0.011
+     동적 입력: /plan 7 개, 코스트맵 11 개 사용 (dyn_path=2 dyn_cost=1)
+     유효 표본 수 ESS 중앙 18.0 (10/90% 4.8/20.4) / 배치 1000 → 첫 제어 ω 표본 잡음 추정 wz_std/√ESS = 0.094 rad/s
+     흔들림: |ω|>0.05 반전 명령 3 회 = 6.0 회/m, 차체 0 회 = 0.0 회/m (이동 0.502 m) | 고주파 RMS 명령 0.039 차체 0.028 rad/s | 최대 둘레비용 253
+     LETHAL 여유(차체 외곽↔1 m 안 LETHAL 셀, 반셀 뺌): 최소 0.089 @3.8 s, 평균 0.098, 끝 0.094 m
+
+S2_dy6_g16.5_obst0 bag bag_dy6 t=23.0 자세 (1.006,0.355) yaw -0.4° 초기 cmd v +0.080 w -0.331 | 경로 41점(간격 0.036) | obst=0 vx_std=0.08 wz_std=0.4 temperature=0.15 iters=2 align_w=14 follow_w=10 follow_off=20 cost_w=3.81 crit_cost=300 near_thr=0.5
+  cyc |  cmd v    w  | 로버 x y yaw | furth | 충돌% | 끝단전방 중앙/최대 | 평균비용 obst align follow angle+goal | 최저후보 v w | 평균열 최대비용/충돌스텝 | LETHAL 여유
+  → 60 주기(6.0 s) 후: 전진 +0.451 횡 -0.146 회전 -31.4°, 최종 cmd v +0.079 w -0.087
+     동적 입력: /plan 7 개, 코스트맵 11 개 사용 (dyn_path=2 dyn_cost=1)
+     유효 표본 수 ESS 중앙 11.6 (10/90% 9.3/19.5) / 배치 1000 → 첫 제어 ω 표본 잡음 추정 wz_std/√ESS = 0.117 rad/s
+     흔들림: |ω|>0.05 반전 명령 2 회 = 4.2 회/m, 차체 2 회 = 4.2 회/m (이동 0.478 m) | 고주파 RMS 명령 0.047 차체 0.033 rad/s | 최대 둘레비용 253
+     LETHAL 여유(차체 외곽↔1 m 안 LETHAL 셀, 반셀 뺌): 최소 0.049 @2.7 s, 평균 0.068, 끝 0.058 m
+
+S2_dy6_g16.5_obst1 bag bag_dy6 t=23.0 자세 (1.006,0.355) yaw -0.4° 초기 cmd v +0.080 w -0.331 | 경로 41점(간격 0.036) | obst=1 vx_std=0.08 wz_std=0.4 temperature=0.15 iters=2 align_w=14 follow_w=10 follow_off=20 cost_w=3.81 crit_cost=300 near_thr=0.5
+  cyc |  cmd v    w  | 로버 x y yaw | furth | 충돌% | 끝단전방 중앙/최대 | 평균비용 obst align follow angle+goal | 최저후보 v w | 평균열 최대비용/충돌스텝 | LETHAL 여유
+  → 60 주기(6.0 s) 후: 전진 +0.451 횡 -0.145 회전 -33.4°, 최종 cmd v +0.080 w -0.125
+     동적 입력: /plan 7 개, 코스트맵 11 개 사용 (dyn_path=2 dyn_cost=1)
+     유효 표본 수 ESS 중앙 9.9 (10/90% 5.4/13.9) / 배치 1000 → 첫 제어 ω 표본 잡음 추정 wz_std/√ESS = 0.127 rad/s
+     흔들림: |ω|>0.05 반전 명령 0 회 = 0.0 회/m, 차체 0 회 = 0.0 회/m (이동 0.479 m) | 고주파 RMS 명령 0.042 차체 0.030 rad/s | 최대 둘레비용 253
+     LETHAL 여유(차체 외곽↔1 m 안 LETHAL 셀, 반셀 뺌): 최소 0.058 @4.8 s, 평균 0.075, 끝 0.062 m
+
+######## dy6 goal+20 s
+S1_dy6_g20_obst0 bag bag_dy6 t=26.5 자세 (1.250,0.317) yaw -16.6° 초기 cmd v +0.080 w -0.133 | 경로 33점(간격 0.049) | obst=0 vx_std=0.08 wz_std=0.4 temperature=0.15 iters=2 align_w=14 follow_w=10 follow_off=20 cost_w=3.81 crit_cost=300 near_thr=0.5
+  cyc |  cmd v    w  | 로버 x y yaw | furth | 충돌% | 끝단전방 중앙/최대 | 평균비용 obst align follow angle+goal | 최저후보 v w | 평균열 최대비용/충돌스텝 | LETHAL 여유
+  → 60 주기(6.0 s) 후: 전진 +0.499 횡 -0.045 회전 -4.4°, 최종 cmd v +0.080 w -0.042
+     동적 입력: /plan 6 개, 코스트맵 11 개 사용 (dyn_path=2 dyn_cost=1)
+     유효 표본 수 ESS 중앙 18.6 (10/90% 16.6/19.7) / 배치 1000 → 첫 제어 ω 표본 잡음 추정 wz_std/√ESS = 0.093 rad/s
+     흔들림: |ω|>0.05 반전 명령 1 회 = 2.0 회/m, 차체 1 회 = 2.0 회/m (이동 0.501 m) | 고주파 RMS 명령 0.028 차체 0.018 rad/s | 최대 둘레비용 253
+     LETHAL 여유(차체 외곽↔1 m 안 LETHAL 셀, 반셀 뺌): 최소 0.080 @1.4 s, 평균 0.087, 끝 0.123 m
+
+S1_dy6_g20_obst1 bag bag_dy6 t=26.5 자세 (1.250,0.317) yaw -16.6° 초기 cmd v +0.080 w -0.133 | 경로 33점(간격 0.049) | obst=1 vx_std=0.08 wz_std=0.4 temperature=0.15 iters=2 align_w=14 follow_w=10 follow_off=20 cost_w=3.81 crit_cost=300 near_thr=0.5
+  cyc |  cmd v    w  | 로버 x y yaw | furth | 충돌% | 끝단전방 중앙/최대 | 평균비용 obst align follow angle+goal | 최저후보 v w | 평균열 최대비용/충돌스텝 | LETHAL 여유
+  → 60 주기(6.0 s) 후: 전진 +0.494 횡 -0.016 회전 -8.0°, 최종 cmd v +0.080 w -0.091
+     동적 입력: /plan 6 개, 코스트맵 11 개 사용 (dyn_path=2 dyn_cost=1)
+     유효 표본 수 ESS 중앙 17.8 (10/90% 7.4/22.7) / 배치 1000 → 첫 제어 ω 표본 잡음 추정 wz_std/√ESS = 0.095 rad/s
+     흔들림: |ω|>0.05 반전 명령 4 회 = 8.1 회/m, 차체 2 회 = 4.0 회/m (이동 0.495 m) | 고주파 RMS 명령 0.059 차체 0.040 rad/s | 최대 둘레비용 253
+     LETHAL 여유(차체 외곽↔1 m 안 LETHAL 셀, 반셀 뺌): 최소 0.066 @4.0 s, 평균 0.088, 끝 0.143 m
+
+S2_dy6_g20_obst0 bag bag_dy6 t=26.5 자세 (1.250,0.317) yaw -16.6° 초기 cmd v +0.080 w -0.133 | 경로 33점(간격 0.049) | obst=0 vx_std=0.08 wz_std=0.4 temperature=0.15 iters=2 align_w=14 follow_w=10 follow_off=20 cost_w=3.81 crit_cost=300 near_thr=0.5
+  cyc |  cmd v    w  | 로버 x y yaw | furth | 충돌% | 끝단전방 중앙/최대 | 평균비용 obst align follow angle+goal | 최저후보 v w | 평균열 최대비용/충돌스텝 | LETHAL 여유
+  → 60 주기(6.0 s) 후: 전진 +0.460 횡 -0.110 회전 -16.7°, 최종 cmd v +0.079 w +0.160
+     동적 입력: /plan 6 개, 코스트맵 11 개 사용 (dyn_path=2 dyn_cost=1)
+     유효 표본 수 ESS 중앙 11.8 (10/90% 5.5/12.9) / 배치 1000 → 첫 제어 ω 표본 잡음 추정 wz_std/√ESS = 0.117 rad/s
+     흔들림: |ω|>0.05 반전 명령 1 회 = 2.1 회/m, 차체 1 회 = 2.1 회/m (이동 0.475 m) | 고주파 RMS 명령 0.031 차체 0.022 rad/s | 최대 둘레비용 253
+     LETHAL 여유(차체 외곽↔1 m 안 LETHAL 셀, 반셀 뺌): 최소 0.070 @5.3 s, 평균 0.073, 끝 0.075 m
+
+S2_dy6_g20_obst1 bag bag_dy6 t=26.5 자세 (1.250,0.317) yaw -16.6° 초기 cmd v +0.080 w -0.133 | 경로 33점(간격 0.049) | obst=1 vx_std=0.08 wz_std=0.4 temperature=0.15 iters=2 align_w=14 follow_w=10 follow_off=20 cost_w=3.81 crit_cost=300 near_thr=0.5
+  cyc |  cmd v    w  | 로버 x y yaw | furth | 충돌% | 끝단전방 중앙/최대 | 평균비용 obst align follow angle+goal | 최저후보 v w | 평균열 최대비용/충돌스텝 | LETHAL 여유
+  → 60 주기(6.0 s) 후: 전진 +0.459 횡 -0.114 회전 -16.3°, 최종 cmd v +0.080 w +0.173
+     동적 입력: /plan 6 개, 코스트맵 11 개 사용 (dyn_path=2 dyn_cost=1)
+     유효 표본 수 ESS 중앙 9.0 (10/90% 5.3/12.3) / 배치 1000 → 첫 제어 ω 표본 잡음 추정 wz_std/√ESS = 0.133 rad/s
+     흔들림: |ω|>0.05 반전 명령 1 회 = 2.1 회/m, 차체 1 회 = 2.1 회/m (이동 0.476 m) | 고주파 RMS 명령 0.035 차체 0.024 rad/s | 최대 둘레비용 253
+     LETHAL 여유(차체 외곽↔1 m 안 LETHAL 셀, 반셀 뺌): 최소 0.066 @5.3 s, 평균 0.073, 끝 0.070 m
+
+######## dy2 goal+8 s
+S1_dy2_g8_obst0 bag bag_dy2 t=12.2 자세 (0.534,0.169) yaw +21.8° 초기 cmd v +0.080 w -0.051 | 경로 41점(간격 0.025) | obst=0 vx_std=0.08 wz_std=0.4 temperature=0.15 iters=2 align_w=14 follow_w=10 follow_off=20 cost_w=3.81 crit_cost=300 near_thr=0.5
+  cyc |  cmd v    w  | 로버 x y yaw | furth | 충돌% | 끝단전방 중앙/최대 | 평균비용 obst align follow angle+goal | 최저후보 v w | 평균열 최대비용/충돌스텝 | LETHAL 여유
+  → 60 주기(6.0 s) 후: 전진 +0.470 횡 -0.102 회전 -16.8°, 최종 cmd v +0.062 w -0.086
+     동적 입력: /plan 7 개, 코스트맵 11 개 사용 (dyn_path=2 dyn_cost=1)
+     유효 표본 수 ESS 중앙 13.0 (10/90% 7.6/27.9) / 배치 1000 → 첫 제어 ω 표본 잡음 추정 wz_std/√ESS = 0.111 rad/s
+     흔들림: |ω|>0.05 반전 명령 8 회 = 16.6 회/m, 차체 6 회 = 12.5 회/m (이동 0.482 m) | 고주파 RMS 명령 0.067 차체 0.048 rad/s | 최대 둘레비용 253
+     LETHAL 여유(차체 외곽↔1 m 안 LETHAL 셀, 반셀 뺌): 최소 0.048 @5.9 s, 평균 0.133, 끝 0.048 m
+
+S1_dy2_g8_obst1 bag bag_dy2 t=12.2 자세 (0.534,0.169) yaw +21.8° 초기 cmd v +0.080 w -0.051 | 경로 41점(간격 0.025) | obst=1 vx_std=0.08 wz_std=0.4 temperature=0.15 iters=2 align_w=14 follow_w=10 follow_off=20 cost_w=3.81 crit_cost=300 near_thr=0.5
+  cyc |  cmd v    w  | 로버 x y yaw | furth | 충돌% | 끝단전방 중앙/최대 | 평균비용 obst align follow angle+goal | 최저후보 v w | 평균열 최대비용/충돌스텝 | LETHAL 여유
+  → 60 주기(6.0 s) 후: 전진 +0.465 횡 -0.089 회전 -16.4°, 최종 cmd v +0.073 w -0.093
+     동적 입력: /plan 7 개, 코스트맵 11 개 사용 (dyn_path=2 dyn_cost=1)
+     유효 표본 수 ESS 중앙 18.8 (10/90% 8.7/49.5) / 배치 1000 → 첫 제어 ω 표본 잡음 추정 wz_std/√ESS = 0.092 rad/s
+     흔들림: |ω|>0.05 반전 명령 4 회 = 8.4 회/m, 차체 4 회 = 8.4 회/m (이동 0.474 m) | 고주파 RMS 명령 0.065 차체 0.046 rad/s | 최대 둘레비용 174
+     LETHAL 여유(차체 외곽↔1 m 안 LETHAL 셀, 반셀 뺌): 최소 0.060 @5.8 s, 평균 0.142, 끝 0.060 m
+
+S2_dy2_g8_obst0 bag bag_dy2 t=12.2 자세 (0.534,0.169) yaw +21.8° 초기 cmd v +0.080 w -0.051 | 경로 41점(간격 0.025) | obst=0 vx_std=0.08 wz_std=0.4 temperature=0.15 iters=2 align_w=14 follow_w=10 follow_off=20 cost_w=3.81 crit_cost=300 near_thr=0.5
+  cyc |  cmd v    w  | 로버 x y yaw | furth | 충돌% | 끝단전방 중앙/최대 | 평균비용 obst align follow angle+goal | 최저후보 v w | 평균열 최대비용/충돌스텝 | LETHAL 여유
+  → 60 주기(6.0 s) 후: 전진 +0.460 횡 -0.120 회전 -10.9°, 최종 cmd v +0.079 w -0.080
+     동적 입력: /plan 7 개, 코스트맵 11 개 사용 (dyn_path=2 dyn_cost=1)
+     유효 표본 수 ESS 중앙 12.1 (10/90% 6.0/20.1) / 배치 1000 → 첫 제어 ω 표본 잡음 추정 wz_std/√ESS = 0.115 rad/s
+     흔들림: |ω|>0.05 반전 명령 4 회 = 8.4 회/m, 차체 1 회 = 2.1 회/m (이동 0.478 m) | 고주파 RMS 명령 0.052 차체 0.037 rad/s | 최대 둘레비용 253
+     LETHAL 여유(차체 외곽↔1 m 안 LETHAL 셀, 반셀 뺌): 최소 0.030 @4.5 s, 평균 0.128, 끝 0.042 m
+
+S2_dy2_g8_obst1 bag bag_dy2 t=12.2 자세 (0.534,0.169) yaw +21.8° 초기 cmd v +0.080 w -0.051 | 경로 41점(간격 0.025) | obst=1 vx_std=0.08 wz_std=0.4 temperature=0.15 iters=2 align_w=14 follow_w=10 follow_off=20 cost_w=3.81 crit_cost=300 near_thr=0.5
+  cyc |  cmd v    w  | 로버 x y yaw | furth | 충돌% | 끝단전방 중앙/최대 | 평균비용 obst align follow angle+goal | 최저후보 v w | 평균열 최대비용/충돌스텝 | LETHAL 여유
+  → 60 주기(6.0 s) 후: 전진 +0.464 횡 -0.099 회전 -18.1°, 최종 cmd v +0.080 w -0.110
+     동적 입력: /plan 7 개, 코스트맵 11 개 사용 (dyn_path=2 dyn_cost=1)
+     유효 표본 수 ESS 중앙 20.1 (10/90% 5.7/41.8) / 배치 1000 → 첫 제어 ω 표본 잡음 추정 wz_std/√ESS = 0.089 rad/s
+     흔들림: |ω|>0.05 반전 명령 4 회 = 8.4 회/m, 차체 4 회 = 8.4 회/m (이동 0.475 m) | 고주파 RMS 명령 0.060 차체 0.042 rad/s | 최대 둘레비용 253
+     LETHAL 여유(차체 외곽↔1 m 안 LETHAL 셀, 반셀 뺌): 최소 0.044 @5.9 s, 평균 0.137, 끝 0.044 m
+
+######## dy2 goal+16.5 s
+S1_dy2_g16.5_obst0 bag bag_dy2 t=20.7 자세 (0.969,0.308) yaw -6.1° 초기 cmd v +0.081 w +0.023 | 경로 41점(간격 0.025) | obst=0 vx_std=0.08 wz_std=0.4 temperature=0.15 iters=2 align_w=14 follow_w=10 follow_off=20 cost_w=3.81 crit_cost=300 near_thr=0.5
+  cyc |  cmd v    w  | 로버 x y yaw | furth | 충돌% | 끝단전방 중앙/최대 | 평균비용 obst align follow angle+goal | 최저후보 v w | 평균열 최대비용/충돌스텝 | LETHAL 여유
+  → 60 주기(6.0 s) 후: 전진 +0.495 횡 -0.030 회전 -10.2°, 최종 cmd v +0.085 w +0.020
+     동적 입력: /plan 7 개, 코스트맵 11 개 사용 (dyn_path=2 dyn_cost=1)
+     유효 표본 수 ESS 중앙 17.9 (10/90% 13.4/21.3) / 배치 1000 → 첫 제어 ω 표본 잡음 추정 wz_std/√ESS = 0.095 rad/s
+     흔들림: |ω|>0.05 반전 명령 2 회 = 4.0 회/m, 차체 2 회 = 4.0 회/m (이동 0.497 m) | 고주파 RMS 명령 0.031 차체 0.021 rad/s | 최대 둘레비용 253
+     LETHAL 여유(차체 외곽↔1 m 안 LETHAL 셀, 반셀 뺌): 최소 0.049 @3.9 s, 평균 0.056, 끝 0.055 m
+
+S1_dy2_g16.5_obst1 bag bag_dy2 t=20.7 자세 (0.969,0.308) yaw -6.1° 초기 cmd v +0.081 w +0.023 | 경로 41점(간격 0.025) | obst=1 vx_std=0.08 wz_std=0.4 temperature=0.15 iters=2 align_w=14 follow_w=10 follow_off=20 cost_w=3.81 crit_cost=300 near_thr=0.5
+  cyc |  cmd v    w  | 로버 x y yaw | furth | 충돌% | 끝단전방 중앙/최대 | 평균비용 obst align follow angle+goal | 최저후보 v w | 평균열 최대비용/충돌스텝 | LETHAL 여유
+  → 60 주기(6.0 s) 후: 전진 +0.497 횡 -0.012 회전 -8.6°, 최종 cmd v +0.084 w +0.093
+     동적 입력: /plan 7 개, 코스트맵 11 개 사용 (dyn_path=2 dyn_cost=1)
+     유효 표본 수 ESS 중앙 17.4 (10/90% 7.9/22.2) / 배치 1000 → 첫 제어 ω 표본 잡음 추정 wz_std/√ESS = 0.096 rad/s
+     흔들림: |ω|>0.05 반전 명령 2 회 = 4.0 회/m, 차체 2 회 = 4.0 회/m (이동 0.499 m) | 고주파 RMS 명령 0.044 차체 0.031 rad/s | 최대 둘레비용 253
+     LETHAL 여유(차체 외곽↔1 m 안 LETHAL 셀, 반셀 뺌): 최소 0.067 @0.3 s, 평균 0.072, 끝 0.069 m
+
+S2_dy2_g16.5_obst0 bag bag_dy2 t=20.7 자세 (0.969,0.308) yaw -6.1° 초기 cmd v +0.081 w +0.023 | 경로 41점(간격 0.025) | obst=0 vx_std=0.08 wz_std=0.4 temperature=0.15 iters=2 align_w=14 follow_w=10 follow_off=20 cost_w=3.81 crit_cost=300 near_thr=0.5
+  cyc |  cmd v    w  | 로버 x y yaw | furth | 충돌% | 끝단전방 중앙/최대 | 평균비용 obst align follow angle+goal | 최저후보 v w | 평균열 최대비용/충돌스텝 | LETHAL 여유
+  → 60 주기(6.0 s) 후: 전진 +0.476 횡 -0.037 회전 -17.3°, 최종 cmd v +0.080 w -0.150
+     동적 입력: /plan 7 개, 코스트맵 11 개 사용 (dyn_path=2 dyn_cost=1)
+     유효 표본 수 ESS 중앙 10.4 (10/90% 6.2/19.7) / 배치 1000 → 첫 제어 ω 표본 잡음 추정 wz_std/√ESS = 0.124 rad/s
+     흔들림: |ω|>0.05 반전 명령 4 회 = 8.4 회/m, 차체 4 회 = 8.4 회/m (이동 0.479 m) | 고주파 RMS 명령 0.059 차체 0.044 rad/s | 최대 둘레비용 253
+     LETHAL 여유(차체 외곽↔1 m 안 LETHAL 셀, 반셀 뺌): 최소 0.043 @3.1 s, 평균 0.051, 끝 0.054 m
+
+S2_dy2_g16.5_obst1 bag bag_dy2 t=20.7 자세 (0.969,0.308) yaw -6.1° 초기 cmd v +0.081 w +0.023 | 경로 41점(간격 0.025) | obst=1 vx_std=0.08 wz_std=0.4 temperature=0.15 iters=2 align_w=14 follow_w=10 follow_off=20 cost_w=3.81 crit_cost=300 near_thr=0.5
+  cyc |  cmd v    w  | 로버 x y yaw | furth | 충돌% | 끝단전방 중앙/최대 | 평균비용 obst align follow angle+goal | 최저후보 v w | 평균열 최대비용/충돌스텝 | LETHAL 여유
+  → 60 주기(6.0 s) 후: 전진 +0.476 횡 -0.037 회전 -18.2°, 최종 cmd v +0.080 w -0.232
+     동적 입력: /plan 7 개, 코스트맵 11 개 사용 (dyn_path=2 dyn_cost=1)
+     유효 표본 수 ESS 중앙 9.3 (10/90% 2.2/17.3) / 배치 1000 → 첫 제어 ω 표본 잡음 추정 wz_std/√ESS = 0.131 rad/s
+     흔들림: |ω|>0.05 반전 명령 8 회 = 16.7 회/m, 차체 4 회 = 8.4 회/m (이동 0.479 m) | 고주파 RMS 명령 0.069 차체 0.051 rad/s | 최대 둘레비용 253
+     LETHAL 여유(차체 외곽↔1 m 안 LETHAL 셀, 반셀 뺌): 최소 0.044 @2.0 s, 평균 0.050, 끝 0.054 m
+
+######## dy2 goal+20 s
+S1_dy2_g20_obst0 bag bag_dy2 t=24.2 자세 (1.200,0.299) yaw -6.4° 초기 cmd v +0.080 w -0.058 | 경로 36점(간격 0.025) | obst=0 vx_std=0.08 wz_std=0.4 temperature=0.15 iters=2 align_w=14 follow_w=10 follow_off=20 cost_w=3.81 crit_cost=300 near_thr=0.5
+  cyc |  cmd v    w  | 로버 x y yaw | furth | 충돌% | 끝단전방 중앙/최대 | 평균비용 obst align follow angle+goal | 최저후보 v w | 평균열 최대비용/충돌스텝 | LETHAL 여유
+  → 60 주기(6.0 s) 후: 전진 +0.492 횡 -0.081 회전 -14.9°, 최종 cmd v +0.078 w +0.133
+     동적 입력: /plan 6 개, 코스트맵 11 개 사용 (dyn_path=2 dyn_cost=1)
+     유효 표본 수 ESS 중앙 19.2 (10/90% 17.6/21.6) / 배치 1000 → 첫 제어 ω 표본 잡음 추정 wz_std/√ESS = 0.091 rad/s
+     흔들림: |ω|>0.05 반전 명령 1 회 = 2.0 회/m, 차체 1 회 = 2.0 회/m (이동 0.501 m) | 고주파 RMS 명령 0.018 차체 0.014 rad/s | 최대 둘레비용 253
+     LETHAL 여유(차체 외곽↔1 m 안 LETHAL 셀, 반셀 뺌): 최소 0.067 @1.6 s, 평균 0.075, 끝 0.107 m
+
+S1_dy2_g20_obst1 bag bag_dy2 t=24.2 자세 (1.200,0.299) yaw -6.4° 초기 cmd v +0.080 w -0.058 | 경로 36점(간격 0.025) | obst=1 vx_std=0.08 wz_std=0.4 temperature=0.15 iters=2 align_w=14 follow_w=10 follow_off=20 cost_w=3.81 crit_cost=300 near_thr=0.5
+  cyc |  cmd v    w  | 로버 x y yaw | furth | 충돌% | 끝단전방 중앙/최대 | 평균비용 obst align follow angle+goal | 최저후보 v w | 평균열 최대비용/충돌스텝 | LETHAL 여유
+  → 60 주기(6.0 s) 후: 전진 +0.497 횡 -0.060 회전 -16.0°, 최종 cmd v +0.079 w +0.119
+     동적 입력: /plan 6 개, 코스트맵 11 개 사용 (dyn_path=2 dyn_cost=1)
+     유효 표본 수 ESS 중앙 13.9 (10/90% 6.1/19.3) / 배치 1000 → 첫 제어 ω 표본 잡음 추정 wz_std/√ESS = 0.107 rad/s
+     흔들림: |ω|>0.05 반전 명령 5 회 = 10.0 회/m, 차체 5 회 = 10.0 회/m (이동 0.502 m) | 고주파 RMS 명령 0.050 차체 0.035 rad/s | 최대 둘레비용 253
+     LETHAL 여유(차체 외곽↔1 m 안 LETHAL 셀, 반셀 뺌): 최소 0.069 @2.0 s, 평균 0.080, 끝 0.129 m
+
+S2_dy2_g20_obst0 bag bag_dy2 t=24.2 자세 (1.200,0.299) yaw -6.4° 초기 cmd v +0.080 w -0.058 | 경로 36점(간격 0.025) | obst=0 vx_std=0.08 wz_std=0.4 temperature=0.15 iters=2 align_w=14 follow_w=10 follow_off=20 cost_w=3.81 crit_cost=300 near_thr=0.5
+  cyc |  cmd v    w  | 로버 x y yaw | furth | 충돌% | 끝단전방 중앙/최대 | 평균비용 obst align follow angle+goal | 최저후보 v w | 평균열 최대비용/충돌스텝 | LETHAL 여유
+  → 60 주기(6.0 s) 후: 전진 +0.453 횡 -0.135 회전 -24.1°, 최종 cmd v +0.080 w -0.036
+     동적 입력: /plan 6 개, 코스트맵 11 개 사용 (dyn_path=2 dyn_cost=1)
+     유효 표본 수 ESS 중앙 11.4 (10/90% 8.9/13.4) / 배치 1000 → 첫 제어 ω 표본 잡음 추정 wz_std/√ESS = 0.118 rad/s
+     흔들림: |ω|>0.05 반전 명령 0 회 = 0.0 회/m, 차체 0 회 = 0.0 회/m (이동 0.477 m) | 고주파 RMS 명령 0.043 차체 0.030 rad/s | 최대 둘레비용 253
+     LETHAL 여유(차체 외곽↔1 m 안 LETHAL 셀, 반셀 뺌): 최소 0.060 @2.1 s, 평균 0.065, 끝 0.070 m
+
+S2_dy2_g20_obst1 bag bag_dy2 t=24.2 자세 (1.200,0.299) yaw -6.4° 초기 cmd v +0.080 w -0.058 | 경로 36점(간격 0.025) | obst=1 vx_std=0.08 wz_std=0.4 temperature=0.15 iters=2 align_w=14 follow_w=10 follow_off=20 cost_w=3.81 crit_cost=300 near_thr=0.5
+  cyc |  cmd v    w  | 로버 x y yaw | furth | 충돌% | 끝단전방 중앙/최대 | 평균비용 obst align follow angle+goal | 최저후보 v w | 평균열 최대비용/충돌스텝 | LETHAL 여유
+  → 60 주기(6.0 s) 후: 전진 +0.454 횡 -0.134 회전 -24.5°, 최종 cmd v +0.079 w -0.003
+     동적 입력: /plan 6 개, 코스트맵 11 개 사용 (dyn_path=2 dyn_cost=1)
+     유효 표본 수 ESS 중앙 9.6 (10/90% 5.7/11.5) / 배치 1000 → 첫 제어 ω 표본 잡음 추정 wz_std/√ESS = 0.129 rad/s
+     흔들림: |ω|>0.05 반전 명령 0 회 = 0.0 회/m, 차체 0 회 = 0.0 회/m (이동 0.478 m) | 고주파 RMS 명령 0.044 차체 0.031 rad/s | 최대 둘레비용 253
+     LETHAL 여유(차체 외곽↔1 m 안 LETHAL 셀, 반셀 뺌): 최소 0.060 @1.9 s, 평균 0.068, 끝 0.073 m
+
+######## 끝 17:40:30
