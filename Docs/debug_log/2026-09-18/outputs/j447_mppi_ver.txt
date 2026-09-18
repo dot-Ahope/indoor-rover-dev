@@ -1,0 +1,34 @@
+ros-humble-nav2-costmap-2d 1.1.20-1jammy.20260219.061126
+ros-humble-nav2-mppi-controller 1.1.20-1jammy.20260219.064241
+== critics.xml
+== headers
+constraint_critic.hpp
+cost_critic.hpp
+goal_angle_critic.hpp
+goal_critic.hpp
+obstacles_critic.hpp
+path_align_critic.hpp
+path_align_legacy_critic.hpp
+path_angle_critic.hpp
+path_follow_critic.hpp
+prefer_forward_critic.hpp
+twirling_critic.hpp
+velocity_deadband_critic.hpp
+== obstacles_critic.hpp
+20:#include "nav2_costmap_2d/inflation_layer.hpp"
+55:    * @return bool if in collision
+57:  inline bool inCollision(float cost) const;
+66:  inline CollisionCost costAtPose(float x, float y, float theta);
+71:    * @return float Distance to the obstacle represented by cost
+73:  inline float distanceToObstacle(const CollisionCost & cost);
+76:    * @brief Find the min cost of the inflation decay function for which the robot MAY be
+78:    * @param costmap Costmap2DROS to get minimum inscribed cost (e.g. 128 in inflation layer documentation)
+82:  float findCircumscribedCost(std::shared_ptr<nav2_costmap_2d::Costmap2DROS> costmap);
+88:  bool consider_footprint_{true};
+89:  float collision_cost_{0};
+90:  float inflation_scale_factor_{0}, inflation_radius_{0};
+92:  float possibly_inscribed_cost_;
+93:  float collision_margin_distance_;
+94:  float near_goal_distance_;
+95:  float circumscribed_cost_{0}, circumscribed_radius_{0};
+98:  float repulsion_weight_, critical_weight_{0};
