@@ -82,3 +82,32 @@
 | 재접속 시도의 debug 에 msg 1/4 수신·2/4 송신 후 AP deauth(reason 23), SA Query/"Association comeback" 또는 PMF 관련 줄 | **PMF 상태 불일치**가 재인증 거부의 원인 쪽 |
 | msg 1/4 자체가 오지 않음 | AP 가 인증 단계 진입 전에 거부 — 공유기 측 거부 목록/상태 |
 - 빈도가 하루 1 회 안팎이라 결과는 며칠 걸릴 수 있다. 끊김이 나면 NM 이 ALOPS(172.30.1.8)로 넘어가므로 그쪽 주소로 접속해 `/var/log/wifi_mon/` 을 회수한다.
+
+## 8. 로그·산출물 누적 조사 (사용자 요청, 읽기 전용 — 삭제 없음)
+도구: `jobs/job430_disk.sh`, `job430b_logs.sh`, `job430c_talkers.sh`(Jetson) → `outputs/j430*.txt`, PC 쪽은 Git Bash `du`/`git count-objects`.
+
+### 8.1 Jetson (디스크 233 GB 중 28 GB 사용, 193 GB 여유 — 공간 문제 없음)
+| 항목 | 크기 | 상태 |
+|---|---|---|
+| **`/var/log/syslog`** | 144.6 MB (2 월 20 일부터 한 파일) | **logrotate 패키지 미설치**(`dpkg: un`, 바이너리·cron·timer·status 모두 없음) → `/etc/logrotate.d/rsyslog`(주 1 회·4 개·압축) 설정이 있어도 한 번도 실행 안 됨. kern.log 12.7 MB·auth.log 3.5 MB 도 같음 |
+| syslog 증가율 | 09-07~09-15 **7~10 MB/일** → 09-16 2.2 · 09-17 1.2 MB/일 | 감소 = 09-16 mavlink-router(크래시 루프, 3 s 마다 재시작) 비활성화. 현재 주 발생원(09-17): iio-sensor-proxy "iio:device busy" 1,696 줄(카메라 IMU 를 데스크톱 화면회전 서비스가 열려다 실패), SSH 세션 시작/종료 ≈1,600 줄(러너 폴링), 카메라 UVC 조회 실패 ≈550 줄 |
+| `/var/log/lastlog` | 겉보기 165 MB, 실제 16 KB | 희소 파일 — 문제 아님 |
+| `~/.ros/log` | 47 MB, **파일 9,746 개**(python3_*.log 5,630·launch 디렉터리 660·nav2 노드별 224 …), 30 일 넘은 것 1,952 개 17 MB | 크기는 작고 개수가 많음 |
+| `/var/cache/apt` | 193 MB | `apt clean` 대상 |
+| `/var/lib/snapd` | 3.0 GB (gnome·mesa·chromium 옛 리비전 포함) | 데스크톱 패키지 — 프로젝트 무관 |
+| docker | 이미지 2 개 736 MB(micro-ros-agent 627 MB 사용 중, ubuntu:22.04 108 MB) | 컨테이너 0 |
+| `/tmp` | ≈0 | 오늘 재부팅으로 비워짐(→ bag 은 주행 직후 회수 규칙 유지) |
+| 기타 대형 | ollama(≈3.7 GB)·antigravity IDE 서버 | 사용자 개인 도구 — 대상 아님 |
+
+### 8.2 PC
+| 항목 | 크기 | 상태 |
+|---|---|---|
+| 저장소 `.git` | pack **7.8 MB** | 가볍다 — bag 제외 규칙(`Docs/debug_log/*/bags/`) 정상 |
+| 저장소 작업 트리 | 309 MB 중 **bag 186 MB**(09-10 22·09-14 46·09-15 3·09-16 52·09-17 60 MB, git 제외), 펌웨어 micro-ROS 라이브러리 18 MB(git 제외) | bag 은 이 PC 에만 있고 백업 없음 |
+| 작업 폴더 `%TEMP%\claude\…\82ce61d4…\scratchpad` | **283 MB, 810 파일** | bag 37 개 275 MB 중 **27 개 160 MB 는 저장소 bags 와 이름·크기 일치(중복)**, **10 개 114 MB(09-11 v1~v4·*_ret·cr1·ret2 원시 bag)는 저장소에 없음**. 스크립트 job 329·run 239 개 |
+| **평문 비밀번호** | 작업 폴더 러너 **241 개**, WSL `/tmp` **16 개** | 저장소 밖이지만 평문 사본이 흩어져 있음(커밋본은 `<PW>` 마스킹, 누출 검사 0) |
+| WSL `/tmp` | 12 MB, 1,913 파일(스크립트 사본·launch_params) | |
+| 빈 세션 폴더 | 5 개 | |
+
+### 8.3 판단
+- **공간은 급하지 않다**(Jetson 193 GB, 로그 증가 1~2 MB/일). 문제는 ① **Jetson 로그가 회전되지 않아 무한히 쌓이는 구조**(분석 때 144 MB 전체를 훑어야 함), ② **PC 작업 폴더에 중복 bag 160 MB 와 저장소에 없는 원본 bag 114 MB 가 섞여 있음**(지우면 원본 손실), ③ **평문 비밀번호 사본 257 개**, ④ 실제 운용 도구(러너·job)가 세션 임시 폴더에 있어 정리하면 도구가 사라지는 구조.
