@@ -1,0 +1,13 @@
+-- station dump (AP 항목)
+-- wpa_cli status (권한 있으면)
+Failed to connect to non-global ctrl_ifname: wlP1p1s0  error: Permission denied
+-- wpa_supplicant 설정 파일/소켓 권한
+ls: cannot open directory '/run/wpa_supplicant/': Permission denied
+-- NM 프로파일 WEB_DEV_5G 보안(비밀 제외)
+802-11-wireless-security.key-mgmt:      wpa-psk
+802-11-wireless-security.pmf:           0 (default)
+802-11-wireless.powersave:              2 (disable)
+connection.autoconnect-priority:        20
+-- 드라이버 모듈 파라미터 목록
+ls: cannot access '/sys/module/rtl88x2ce/parameters/': No such file or directory 
+
