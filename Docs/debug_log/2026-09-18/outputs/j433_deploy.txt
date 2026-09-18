@@ -1,0 +1,14 @@
+  rover.urdf: install 은 심볼릭 → /home/jetson/ros2_ws/src/rover_description/urdf/rover.urdf
+   배포 확인 OK
+  rover.urdf.xacro: install 은 심볼릭 → /home/jetson/ros2_ws/src/rover_description/urdf/rover.urdf.xacro
+   배포 확인 OK
+  stuck_monitor.py: install 은 심볼릭 → /home/jetson/ros2_ws/src/rover_bringup/scripts/stuck_monitor.py
+   배포 확인 OK
+  rover.urdf sensor_deck_joint  xyz=0.152 0.0 0.159 rpy=0 0 -0.04677
+  rover.urdf lidar_joint        xyz=0.152 0.0 0.185 rpy=0 0 3.09482
+  rover.urdf camera_joint       xyz=0.23413 0.04371 0.143 rpy=0 0 -0.04677
+  xacro      sensor_deck_joint  xyz=- rpy=-
+  xacro      lidar_joint        xyz=- rpy=-
+  xacro      camera_joint       xyz=- rpy=-
+32:LIDAR_YAW = math.pi - 0.04677   # S2L 장착 yaw (rover.urdf lidar_joint 와 한 쌍) — 2026-09-18 데크 yaw −2.68° 반영
+  stuck_monitor 문법 OK
