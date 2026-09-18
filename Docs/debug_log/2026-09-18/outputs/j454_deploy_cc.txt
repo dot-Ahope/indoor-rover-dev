@@ -1,0 +1,11 @@
+yaml ok, critics = ['ConstraintCritic', 'CostCritic', 'GoalCritic', 'GoalAngleCritic', 'PathAlignCritic', 'PathFollowCritic', 'PathAngleCritic', 'PreferForwardCritic']
+CostCritic = {'enabled': True, 'cost_power': 1, 'cost_weight': 3.81, 'critical_cost': 300.0, 'consider_footprint': True, 'collision_cost': 1000000.0, 'near_goal_distance': 0.5}
+== 설치본 대비 diff (주석 제외) ==
+80c80
+<       critics: ["ConstraintCritic", "ObstaclesCritic", "GoalCritic", "GoalAngleCritic", "PathAlignCritic", "PathFollowCritic", "PathAngleCritic", "PreferForwardCritic"]
+---
+>       critics: ["ConstraintCritic", "CostCritic", "GoalCritic", "GoalAngleCritic", "PathAlignCritic", "PathFollowCritic", "PathAngleCritic", "PreferForwardCritic"]
+85a86
+>       CostCritic: {enabled: true, cost_power: 1, cost_weight: 3.81, critical_cost: 300.0, consider_footprint: true, collision_cost: 1000000.0, near_goal_distance: 0.5}
+2a91eb8a3f47 2a91eb8a3f47 2a91eb8a3f47 
+(실행 중 controller_server 는 옛 목록 — 다음 prep 재기동 때 반영)
