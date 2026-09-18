@@ -1,0 +1,14 @@
+== mon.log
+2026-09-18 10:58:42 START pid 7716
+2026-09-18 10:58:42 LOGLEVEL DEBUG
+2026-09-18 10:58:42 LINK bssid=b0:38:6c:37:1b:4c ssid=WEB_DEV_5G freq=5180 sig=-52 rx=702.0_MBit/s_VHT-MCS_8_80MHz_VHT-NSS_2 tx=468.0_MBit/s_VHT-MCS_5_80MHz_VHT-NSS_2 ip=192.168.0.101/24 key_mgmt=WPA2-PSK pmf=1 wpa_state=COMPLETED
+== wifi_mon 프로세스 트리
+MainPID 7716
+    PID    PPID STAT     ELAPSED WCHAN                COMMAND
+   7753    7716 SN         01:38 -                    /bin/bash /usr/local/sbin/wifi_mon.sh
+    PID STAT     ELAPSED COMMAND
+   7716 SNs        01:38 /bin/bash /usr/local/sbin/wifi_mon.sh
+  자식 7753: /bin/bash /usr/local/sbin/wifi_mon.sh
+    손자 7754: SN         01:38 /bin/bash /usr/local/sbin/wifi_mon.sh
+== iw 단독 시간
+rc=0 127 ms

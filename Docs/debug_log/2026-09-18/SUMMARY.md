@@ -57,3 +57,28 @@
 | B. 공유기 5 GHz 폭 80 MHz(36~48, DFS 없음) | ipTIME 설정 변경 | 며칠간 끊김이 사라지면 DFS | 사무실 공유 공유기 — 다른 사용자 속도 저하, 관리자 동의 필요 |
 | C. Jetson WEB_DEV_5G 프로파일 PMF 끄기(`pmf 1`) | NM 설정(sudo) | 끊겨도 즉시 재접속되면 PMF 가 재인증 거부 원인 | 보안 약간 낮아짐(WPA2-PSK 그대로) |
 | D. 운영 대책(원인과 별개) | ALOPS 자동 연결 끄기 + WEB_DEV_5G 재시도 감시(root 타이머) | — | 끊김 동안 원격 접속 불가, 대신 **IP 가 바뀌지 않아 DDS 분리 없음**. NM 은 `no-secrets` 로 포기하면 스스로 재시도하지 않으므로 감시가 필요 |
+
+## 7. A안 설치 — 다음 끊김 계측 (사용자 승인, sudo 사용, 네트워크 설정 변경 없음)
+### 7.1 사전 점검 (`jobs/job429_probe.sh`, `job429b_montest.sh`, `job429c_dbgrate.sh` → `outputs/j429*.txt`)
+- **PMF 협상 확인**: root `wpa_cli status` → `key_mgmt=WPA2-PSK`, **`pmf=1`**, `mgmt_group_cipher=BIP`. 즉 Jetson–WEB_DEV_5G 는 802.11w 보호 관리 프레임 상태(§5 후보 2 의 전제가 성립).
+- 디스크 193 GB 여유. `/var/log/syslog` 는 `logrotate.timer` 가 inactive 라 회전되지 않는다(144 MB, 2 월부터) — 별도 과제.
+- `wpa_cli` 모니터(level 2)는 파이프 입력에서 메시지를 받지 못함(버퍼 끔도 동일) → 기각. 대신 wpa_supplicant 전역 `log_level DEBUG`: 유휴 60 s 에 79 줄·8 KiB(≈11 MiB/일). 시험 뒤 INFO 로 복귀 확인.
+- AP 채널만 스캔(`iw scan freq 5180`) 136 ms. 비콘 = VHT 폭 1, seg1 42, seg2 50(**160 MHz**), CSA 없음. 비콘의 WPS 장치명은 "ipTIME BE3600QCA"(관리 화면은 AX3000R — 내부 칩셋 이름으로 추정).
+
+### 7.2 설치물 (`jobs/wifi_mon.sh`, `jobs/job429d_install.sh`, `jobs/job429h_redeploy.sh`)
+| 파일 | 역할 |
+|---|---|
+| `/etc/rsyslog.d/25-wifi-mon.conf` | wpa_supplicant **severity 7(DEBUG) 줄만** `/var/log/wifi_mon/wpa_debug.log` 로, syslog 에는 넣지 않음. INFO 이상(CTRL-EVENT-*)은 기존대로 syslog. `rsyslogd -N1` 검사 통과 |
+| `/usr/local/sbin/wifi_mon.sh` + `wifi-mon.service`(enabled, Restart=always) | 15 s: 링크·신호·비트레이트·IP·`wpa_state/pmf/key_mgmt` → `mon.log` LINK. 60 s(WEB_DEV 연결 중): AP 채널 스캔 → BEACON(폭·seg1/2·CSA·Quiet). ALOPS 등 다른 AP 일 때 10 분마다 전체 스캔 BEACON_ALL(WEB_DEV_5G 보이는지·폭). **BSSID 가 바뀌거나 끊기면** EVENT + `event_*.txt` 스냅샷(iw link, wpa 상태, nmcli, 전체 스캔 AP 블록, 직전 debug 400 줄, syslog 80 줄). wpa_supplicant 재시작·재부팅 뒤 DEBUG 자동 재설정. mon 50 MB·debug 300 MB 넘으면 1 회 회전 |
+- 첫 기동 때 첫 비콘 스캔이 98 s 막힘(다른 스캔과 겹침 추정, 이후 매분 1 s 이내) → 스캔에 `timeout`(단일 10 s·전체 20 s) 추가 후 재배포.
+- 검증: 서비스 active/enabled, 로그 수준 DEBUG, LINK 15 s·BEACON 60 s 정상(`vht_w=1 seg1=42 seg2=50 csa=0`), syslog 로 DEBUG 줄 새지 않음, 스냅샷 함수 수동 시험(`test_event_20260918_110443.txt`, 41 KB, 전 항목 기록, 비밀 값 없음 — "password" 단어는 WPS `Device Password ID` 뿐).
+- **되돌리기**: `sudo systemctl disable --now wifi-mon; sudo rm /etc/rsyslog.d/25-wifi-mon.conf; sudo systemctl restart rsyslog; sudo wpa_cli log_level INFO` (+ `/usr/local/sbin/wifi_mon.sh`, `/etc/systemd/system/wifi-mon.service`, `/var/log/wifi_mon/` 삭제).
+
+### 7.3 다음 끊김 때 판정 기준 (미리 선언)
+| 관측 | 판정 |
+|---|---|
+| 끊김 직전 BEACON 에서 seg2 50 → 0/없음(160→80) 또는 CSA=1, 혹은 끊김 뒤 BEACON_ALL 에서 폭이 줄어 있음 | **DFS**(레이더로 52~64 비움)가 끊김의 원인 |
+| 끊김 직전 BEACON 폭 그대로·CSA 0 | DFS 아님 → 공유기 쪽 다른 원인 |
+| 재접속 시도의 debug 에 msg 1/4 수신·2/4 송신 후 AP deauth(reason 23), SA Query/"Association comeback" 또는 PMF 관련 줄 | **PMF 상태 불일치**가 재인증 거부의 원인 쪽 |
+| msg 1/4 자체가 오지 않음 | AP 가 인증 단계 진입 전에 거부 — 공유기 측 거부 목록/상태 |
+- 빈도가 하루 1 회 안팎이라 결과는 며칠 걸릴 수 있다. 끊김이 나면 NM 이 ALOPS(172.30.1.8)로 넘어가므로 그쪽 주소로 접속해 `/var/log/wifi_mon/` 을 회수한다.

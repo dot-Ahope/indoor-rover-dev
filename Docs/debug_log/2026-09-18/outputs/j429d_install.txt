@@ -1,0 +1,28 @@
+wifi_mon.sh 문법 OK
+== rsyslog 설정 검사
+rsyslogd: version 8.2112.0, config validation run (level 1), master config /etc/rsyslog.conf
+rsyslogd: End of config validation run. Bye.
+Created symlink /etc/systemd/system/multi-user.target.wants/wifi-mon.service → /etc/systemd/system/wifi-mon.service.
+== 상태
+active active enabled
+
+== wpa 로그 수준: DEBUG
+== mon.log
+2026-09-18 10:58:42 START pid 7716
+2026-09-18 10:58:42 LOGLEVEL DEBUG
+2026-09-18 10:58:42 LINK bssid=b0:38:6c:37:1b:4c ssid=WEB_DEV_5G freq=5180 sig=-52 rx=702.0_MBit/s_VHT-MCS_8_80MHz_VHT-NSS_2 tx=468.0_MBit/s_VHT-MCS_5_80MHz_VHT-NSS_2 ip=192.168.0.101/24 key_mgmt=WPA2-PSK pmf=1 wpa_state=COMPLETED
+== wpa_debug.log: 0 줄
+Sep 18 10:58:42 jetson-desktop wpa_supplicant[905]: wlP1p1s0: New scan results available (own=0 ext=1)
+Sep 18 10:58:42 jetson-desktop wpa_supplicant[905]: wlP1p1s0: Do not use results from externally requested scan operation for network selection
+Sep 18 10:59:57 jetson-desktop wpa_supplicant[905]: wlP1p1s0: Control interface command 'LOG_LEVEL'
+== syslog 에 DEBUG 줄이 새지 않는지(최근 2 분 wpa_supplicant 줄)
+Sep 18 10:56:45 jetson-desktop wpa_supplicant[905]: wlP1p1s0: Selecting BSS from priority group 0
+Sep 18 10:56:45 jetson-desktop wpa_supplicant[905]: wlP1p1s0: 0: b0:38:6c:37:1b:4c ssid='WEB_DEV_5G' wpa_ie_len=0 rsn_ie_len=26 caps=0x11 level=-52 fr
+Sep 18 10:56:45 jetson-desktop wpa_supplicant[905]: wlP1p1s0:    selected based on RSN IE
+Sep 18 10:56:45 jetson-desktop wpa_supplicant[905]: wlP1p1s0:    selected current BSS b0:38:6c:37:1b:4c ssid='WEB_DEV_5G'
+Sep 18 10:57:26 jetson-desktop wpa_supplicant[905]: wlP1p1s0: Control interface command 'LOG_LEVEL INFO'
+total 16
+drwxr-s--- 2 syslog adm    4096 Sep 18 10:58 .
+drwxrwxr-x 8 root   syslog 4096 Sep 18 10:58 ..
+-rw-r--r-- 1 root   adm     302 Sep 18 10:58 mon.log
+-rw-r--r-- 1 syslog adm    1884 Sep 18 10:59 wpa_debug.log

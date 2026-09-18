@@ -1,0 +1,34 @@
+== 7716: wchan=0 stat=S
+    .  
+    ..  
+    0 -> /dev/null
+    1 -> socket:[84544]
+    2 -> socket:[84544]
+    255 -> /usr/local/sbin/wifi_mon.sh
+== scan_ap 함수만 떼어 bash -x 로 20 s
+			5 streams: not supported
+			6 streams: not supported
+			7 streams: not supported
+			8 streams: not supported
+		PPE Threshold 0x79 0x1c 0xc7 0x71 0x1c 0xc7 0x71 
+	WMM:	 * Parameter version 1
+		 * u-APSD
+		 * BE: CW 15-1023, AIFSN 3
+		 * BK: CW 15-1023, AIFSN 7
+		 * VI: CW 7-15, AIFSN 2, TXOP 3008 usec
+		 * VO: CW 3-7, AIFSN 2, TXOP 1504 usec
+	WPS:	 * Version: 1.0
+		 * Wi-Fi Protected Setup State: 2 (Configured)
+		 * Response Type: 3 (AP)
+		 * UUID: 87654321-9abc-def0-1234-b0386c1f6e0c
+		 * Manufacturer: efm
+		 * Model: be3600qca
+		 * Model Number: 123
+		 * Serial Number: 12345
+		 * Primary Device Type: 6-0050f204-1
+		 * Device name: ipTIME BE3600QCA
+		 * Config methods:
+		 * RF Bands: 0x3
+		 * Version2: 2.0'
+ap_freq=5180 ap_sig=-54.00 vht_w=1 seg1=42 seg2=50 ht2=above csa=0 quiet=0
+rc=0
