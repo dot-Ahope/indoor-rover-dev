@@ -29,7 +29,7 @@ from diagnostic_msgs.msg import DiagnosticArray, DiagnosticStatus, KeyValue
 from action_msgs.srv import CancelGoal
 from action_msgs.msg import GoalStatusArray
 
-LIDAR_YAW = math.pi          # S2L 장착 yaw (rover.urdf) — 스캔각 + π = 로버 기준각
+LIDAR_YAW = math.pi - 0.04677   # S2L 장착 yaw (rover.urdf lidar_joint 와 한 쌍) — 2026-09-18 데크 yaw −2.68° 반영
 BINS = 360
 
 
