@@ -1,0 +1,108 @@
+  mp9   map->odom(SLAM)    674 개 | 수신 간격 최대 0.057 s, >0.2 s 0 회  | stamp−수신 +0.050~+0.195 s | stamp 증가 공백 >0.2 s 0 회 
+  mp9   odom->base(EKF)   1011 개 | 수신 간격 최대 0.046 s, >0.2 s 0 회  | stamp−수신 -0.027~-0.001 s | stamp 증가 공백 >0.2 s 0 회 
+  -- mp9 사건 t=25.45 전후: 수신 시각별 최신 stamp (map->odom / odom->base) 와 차
+     t  23.95 | map->odom 최신 stamp  24.009 | odom->base 최신 stamp  23.931 | 차(map−odom) +0.078
+     t  24.05 | map->odom 최신 stamp  24.201 | odom->base 최신 stamp  24.031 | 차(map−odom) +0.170
+     t  24.15 | map->odom 최신 stamp  24.297 | odom->base 최신 stamp  24.131 | 차(map−odom) +0.166
+     t  24.25 | map->odom 최신 stamp  24.409 | odom->base 최신 stamp  24.231 | 차(map−odom) +0.178
+     t  24.35 | map->odom 최신 stamp  24.505 | odom->base 최신 stamp  24.331 | 차(map−odom) +0.173
+     t  24.45 | map->odom 최신 stamp  24.601 | odom->base 최신 stamp  24.432 | 차(map−odom) +0.169
+     t  24.55 | map->odom 최신 stamp  24.697 | odom->base 최신 stamp  24.532 | 차(map−odom) +0.165
+     t  24.65 | map->odom 최신 stamp  24.812 | odom->base 최신 stamp  24.632 | 차(map−odom) +0.180
+     t  24.75 | map->odom 최신 stamp  24.812 | odom->base 최신 stamp  24.732 | 차(map−odom) +0.080
+     t  24.85 | map->odom 최신 stamp  25.001 | odom->base 최신 stamp  24.832 | 차(map−odom) +0.169
+     t  24.95 | map->odom 최신 stamp  25.097 | odom->base 최신 stamp  24.932 | 차(map−odom) +0.164
+     t  25.05 | map->odom 최신 stamp  25.209 | odom->base 최신 stamp  25.032 | 차(map−odom) +0.176
+     t  25.15 | map->odom 최신 stamp  25.305 | odom->base 최신 stamp  25.133 | 차(map−odom) +0.172
+     t  25.25 | map->odom 최신 stamp  25.401 | odom->base 최신 stamp  25.233 | 차(map−odom) +0.168
+     t  25.35 | map->odom 최신 stamp  25.497 | odom->base 최신 stamp  25.333 | 차(map−odom) +0.164
+     t  25.45 | map->odom 최신 stamp  25.610 | odom->base 최신 stamp  25.433 | 차(map−odom) +0.176
+     t  25.55 | map->odom 최신 stamp  25.705 | odom->base 최신 stamp  25.533 | 차(map−odom) +0.171
+     t  25.65 | map->odom 최신 stamp  25.705 | odom->base 최신 stamp  25.633 | 차(map−odom) +0.071
+     t  25.75 | map->odom 최신 stamp  25.897 | odom->base 최신 stamp  25.734 | 차(map−odom) +0.163
+     t  25.85 | map->odom 최신 stamp  26.009 | odom->base 최신 stamp  25.834 | 차(map−odom) +0.175
+     t  25.95 | map->odom 최신 stamp  26.105 | odom->base 최신 stamp  25.934 | 차(map−odom) +0.171
+     t  26.05 | map->odom 최신 stamp  26.201 | odom->base 최신 stamp  26.034 | 차(map−odom) +0.167
+     t  26.15 | map->odom 최신 stamp  26.297 | odom->base 최신 stamp  26.129 | 차(map−odom) +0.167
+     t  26.25 | map->odom 최신 stamp  26.393 | odom->base 최신 stamp  26.229 | 차(map−odom) +0.163
+     t  26.35 | map->odom 최신 stamp  26.505 | odom->base 최신 stamp  26.330 | 차(map−odom) +0.175
+     t  26.45 | map->odom 최신 stamp  26.601 | odom->base 최신 stamp  26.430 | 차(map−odom) +0.171
+     t  26.55 | map->odom 최신 stamp  26.697 | odom->base 최신 stamp  26.530 | 차(map−odom) +0.167
+     t  26.65 | map->odom 최신 stamp  26.809 | odom->base 최신 stamp  26.630 | 차(map−odom) +0.179
+     t  26.75 | map->odom 최신 stamp  26.905 | odom->base 최신 stamp  26.730 | 차(map−odom) +0.174
+     t  26.85 | map->odom 최신 stamp  27.001 | odom->base 최신 stamp  26.830 | 차(map−odom) +0.170
+     t  26.95 | map->odom 최신 stamp  27.097 | odom->base 최신 stamp  26.931 | 차(map−odom) +0.166
+  mp10  map->odom(SLAM)    662 개 | 수신 간격 최대 0.058 s, >0.2 s 0 회  | stamp−수신 +0.063~+0.188 s | stamp 증가 공백 >0.2 s 0 회 
+  mp10  odom->base(EKF)    993 개 | 수신 간격 최대 0.044 s, >0.2 s 0 회  | stamp−수신 -0.032~-0.001 s | stamp 증가 공백 >0.2 s 0 회 
+  -- mp10 사건 t=18.57 전후: 수신 시각별 최신 stamp (map->odom / odom->base) 와 차
+     t  17.07 | map->odom 최신 stamp  17.169 | odom->base 최신 stamp  17.051 | 차(map−odom) +0.118
+     t  17.17 | map->odom 최신 stamp  17.265 | odom->base 최신 stamp  17.151 | 차(map−odom) +0.114
+     t  17.27 | map->odom 최신 stamp  17.361 | odom->base 최신 stamp  17.246 | 차(map−odom) +0.115
+     t  17.37 | map->odom 최신 stamp  17.457 | odom->base 최신 stamp  17.351 | 차(map−odom) +0.106
+     t  17.47 | map->odom 최신 stamp  17.569 | odom->base 최신 stamp  17.451 | 차(map−odom) +0.118
+     t  17.57 | map->odom 최신 stamp  17.665 | odom->base 최신 stamp  17.551 | 차(map−odom) +0.114
+     t  17.67 | map->odom 최신 stamp  17.761 | odom->base 최신 stamp  17.647 | 차(map−odom) +0.114
+     t  17.77 | map->odom 최신 stamp  17.857 | odom->base 최신 stamp  17.747 | 차(map−odom) +0.111
+     t  17.87 | map->odom 최신 stamp  17.969 | odom->base 최신 stamp  17.852 | 차(map−odom) +0.117
+     t  17.97 | map->odom 최신 stamp  18.065 | odom->base 최신 stamp  17.947 | 차(map−odom) +0.118
+     t  18.07 | map->odom 최신 stamp  18.161 | odom->base 최신 stamp  18.047 | 차(map−odom) +0.114
+     t  18.17 | map->odom 최신 stamp  18.261 | odom->base 최신 stamp  18.153 | 차(map−odom) +0.108
+     t  18.27 | map->odom 최신 stamp  18.369 | odom->base 최신 stamp  18.248 | 차(map−odom) +0.121
+     t  18.37 | map->odom 최신 stamp  18.465 | odom->base 최신 stamp  18.348 | 차(map−odom) +0.117
+     t  18.47 | map->odom 최신 stamp  18.561 | odom->base 최신 stamp  18.448 | 차(map−odom) +0.113
+     t  18.57 | map->odom 최신 stamp  18.657 | odom->base 최신 stamp  18.549 | 차(map−odom) +0.109
+     t  18.67 | map->odom 최신 stamp  18.753 | odom->base 최신 stamp  18.649 | 차(map−odom) +0.105
+     t  18.77 | map->odom 최신 stamp  18.865 | odom->base 최신 stamp  18.749 | 차(map−odom) +0.116
+     t  18.87 | map->odom 최신 stamp  18.961 | odom->base 최신 stamp  18.849 | 차(map−odom) +0.112
+     t  18.97 | map->odom 최신 stamp  19.057 | odom->base 최신 stamp  18.950 | 차(map−odom) +0.108
+     t  19.07 | map->odom 최신 stamp  19.153 | odom->base 최신 stamp  19.050 | 차(map−odom) +0.104
+     t  19.17 | map->odom 최신 stamp  19.265 | odom->base 최신 stamp  19.150 | 차(map−odom) +0.115
+     t  19.27 | map->odom 최신 stamp  19.361 | odom->base 최신 stamp  19.250 | 차(map−odom) +0.111
+     t  19.37 | map->odom 최신 stamp  19.458 | odom->base 최신 stamp  19.350 | 차(map−odom) +0.108
+     t  19.47 | map->odom 최신 stamp  19.553 | odom->base 최신 stamp  19.450 | 차(map−odom) +0.103
+     t  19.57 | map->odom 최신 stamp  19.665 | odom->base 최신 stamp  19.550 | 차(map−odom) +0.115
+     t  19.67 | map->odom 최신 stamp  19.761 | odom->base 최신 stamp  19.651 | 차(map−odom) +0.111
+     t  19.77 | map->odom 최신 stamp  19.861 | odom->base 최신 stamp  19.751 | 차(map−odom) +0.110
+     t  19.87 | map->odom 최신 stamp  19.953 | odom->base 최신 stamp  19.851 | 차(map−odom) +0.102
+     t  19.97 | map->odom 최신 stamp  20.065 | odom->base 최신 stamp  19.951 | 차(map−odom) +0.114
+     t  20.07 | map->odom 최신 stamp  20.161 | odom->base 최신 stamp  20.051 | 차(map−odom) +0.110
+  mp11  map->odom(SLAM)    672 개 | 수신 간격 최대 0.057 s, >0.2 s 0 회  | stamp−수신 +0.046~+0.180 s | stamp 증가 공백 >0.2 s 0 회 
+  mp11  odom->base(EKF)   1009 개 | 수신 간격 최대 0.053 s, >0.2 s 0 회  | stamp−수신 -0.029~-0.001 s | stamp 증가 공백 >0.2 s 0 회 
+  mp12  map->odom(SLAM)    638 개 | 수신 간격 최대 0.055 s, >0.2 s 0 회  | stamp−수신 +0.078~+0.195 s | stamp 증가 공백 >0.2 s 0 회 
+  mp12  odom->base(EKF)    957 개 | 수신 간격 최대 0.046 s, >0.2 s 0 회  | stamp−수신 -0.027~-0.001 s | stamp 증가 공백 >0.2 s 0 회 
+  -- mp12 사건 t=19.16 전후: 수신 시각별 최신 stamp (map->odom / odom->base) 와 차
+     t  17.66 | map->odom 최신 stamp  17.740 | odom->base 최신 stamp  17.638 | 차(map−odom) +0.102
+     t  17.76 | map->odom 최신 stamp  17.932 | odom->base 최신 stamp  17.743 | 차(map−odom) +0.188
+     t  17.86 | map->odom 최신 stamp  17.932 | odom->base 최신 stamp  17.843 | 차(map−odom) +0.088
+     t  17.96 | map->odom 최신 stamp  18.140 | odom->base 최신 stamp  17.943 | 차(map−odom) +0.196
+     t  18.06 | map->odom 최신 stamp  18.237 | odom->base 최신 stamp  18.044 | 차(map−odom) +0.194
+     t  18.16 | map->odom 최신 stamp  18.332 | odom->base 최신 stamp  18.144 | 차(map−odom) +0.188
+     t  18.26 | map->odom 최신 stamp  18.444 | odom->base 최신 stamp  18.244 | 차(map−odom) +0.200
+     t  18.36 | map->odom 최신 stamp  18.540 | odom->base 최신 stamp  18.344 | 차(map−odom) +0.196
+     t  18.46 | map->odom 최신 stamp  18.636 | odom->base 최신 stamp  18.444 | 차(map−odom) +0.192
+     t  18.56 | map->odom 최신 stamp  18.732 | odom->base 최신 stamp  18.544 | 차(map−odom) +0.187
+     t  18.66 | map->odom 최신 stamp  18.828 | odom->base 최신 stamp  18.644 | 차(map−odom) +0.183
+     t  18.76 | map->odom 최신 stamp  18.940 | odom->base 최신 stamp  18.744 | 차(map−odom) +0.196
+     t  18.86 | map->odom 최신 stamp  19.036 | odom->base 최신 stamp  18.845 | 차(map−odom) +0.191
+     t  18.96 | map->odom 최신 stamp  19.132 | odom->base 최신 stamp  18.945 | 차(map−odom) +0.187
+     t  19.06 | map->odom 최신 stamp  19.244 | odom->base 최신 stamp  19.045 | 차(map−odom) +0.199
+     t  19.16 | map->odom 최신 stamp  19.340 | odom->base 최신 stamp  19.145 | 차(map−odom) +0.195
+     t  19.26 | map->odom 최신 stamp  19.436 | odom->base 최신 stamp  19.245 | 차(map−odom) +0.191
+     t  19.36 | map->odom 최신 stamp  19.532 | odom->base 최신 stamp  19.345 | 차(map−odom) +0.186
+     t  19.46 | map->odom 최신 stamp  19.628 | odom->base 최신 stamp  19.445 | 차(map−odom) +0.182
+     t  19.56 | map->odom 최신 stamp  19.740 | odom->base 최신 stamp  19.546 | 차(map−odom) +0.194
+     t  19.66 | map->odom 최신 stamp  19.836 | odom->base 최신 stamp  19.646 | 차(map−odom) +0.190
+     t  19.76 | map->odom 최신 stamp  19.932 | odom->base 최신 stamp  19.746 | 차(map−odom) +0.186
+     t  19.86 | map->odom 최신 stamp  20.028 | odom->base 최신 stamp  19.846 | 차(map−odom) +0.182
+     t  19.96 | map->odom 최신 stamp  20.140 | odom->base 최신 stamp  19.946 | 차(map−odom) +0.194
+     t  20.06 | map->odom 최신 stamp  20.236 | odom->base 최신 stamp  20.046 | 차(map−odom) +0.189
+     t  20.16 | map->odom 최신 stamp  20.332 | odom->base 최신 stamp  20.146 | 차(map−odom) +0.185
+     t  20.26 | map->odom 최신 stamp  20.428 | odom->base 최신 stamp  20.246 | 차(map−odom) +0.181
+     t  20.36 | map->odom 최신 stamp  20.540 | odom->base 최신 stamp  20.347 | 차(map−odom) +0.193
+     t  20.46 | map->odom 최신 stamp  20.636 | odom->base 최신 stamp  20.447 | 차(map−odom) +0.189
+     t  20.56 | map->odom 최신 stamp  20.732 | odom->base 최신 stamp  20.547 | 차(map−odom) +0.185
+     t  20.66 | map->odom 최신 stamp  20.828 | odom->base 최신 stamp  20.642 | 차(map−odom) +0.186
+  dy1   map->odom(SLAM)    648 개 | 수신 간격 최대 0.057 s, >0.2 s 0 회  | stamp−수신 +0.023~+0.185 s | stamp 증가 공백 >0.2 s 0 회 
+  dy1   odom->base(EKF)    972 개 | 수신 간격 최대 0.053 s, >0.2 s 0 회  | stamp−수신 -0.044~-0.001 s | stamp 증가 공백 >0.2 s 0 회 
+  dy2   map->odom(SLAM)    670 개 | 수신 간격 최대 0.061 s, >0.2 s 0 회  | stamp−수신 +0.049~+0.186 s | stamp 증가 공백 >0.2 s 0 회 
+  dy2   odom->base(EKF)   1005 개 | 수신 간격 최대 0.048 s, >0.2 s 0 회  | stamp−수신 -0.040~-0.002 s | stamp 증가 공백 >0.2 s 0 회 
