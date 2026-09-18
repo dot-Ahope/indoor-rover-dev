@@ -1,0 +1,39 @@
+  0.00 [bt_navigator-6] [INFO] [1789710658.602527496] [bt_navigator]: Begin navigating from current location (0.00, 0.00) to (2.00, -0.00)
+  0.04 [controller_server-2] [INFO] [1789710658.644397581] [controller_server]: Received a goal, begin computing control effort.
+  0.04 [controller_server-2] [WARN] [1789710658.646181577] [controller_server]: No goal checker was specified in parameter 'current_goal_checker'. Server will use only plugin loaded general_goal_checker . This warning will appear once.
+  0.05 [controller_server-2] [INFO] [1789710658.649549083] [controller_server]: Optimizer reset
+ 31.87 [controller_server-2] [INFO] [1789710690.470928253] [controller_server]: Reached the goal!
+ 31.90 [bt_navigator-6] [INFO] [1789710690.503545194] [bt_navigator]: Goal succeeded
+ 54.71 [controller_server-2] [INFO] [1789710713.308879244] [local_costmap.local_costmap]: Message Filter dropping message: frame 'camera_depth_optical_frame' at time 1789710713.
+ 54.74 [controller_server-2] [INFO] [1789710713.346430782] [local_costmap.local_costmap]: Message Filter dropping message: frame 'lidar_link' at time 1789710713.039 for reason '
+ 59.11 [planner_server-4] [INFO] [1789710717.712349763] [global_costmap.global_costmap]: Message Filter dropping message: frame 'camera_depth_optical_frame' at time 1789710717.4
+ 59.14 [planner_server-4] [INFO] [1789710717.742462234] [global_costmap.global_costmap]: Message Filter dropping message: frame 'lidar_link' at time 1789710717.439 for reason 't
+=== 드라이브 표 (1 s) ===
+  1.0 +0.036 +0.002 |  0.850    0.129 +0.290 |    99    99    189 | +0.081 +0.145
+ 11.0 +0.704 +0.180 |  0.212    0.107 +0.264 |    99    99      0 | +0.080 +0.187
+ 21.0 +1.315 +0.265 |  0.119    0.119 +0.277 |   100    99      0 | +0.080 -0.122
+ 31.0 +1.890 +0.069 |  0.359    0.489 +0.092 |    99    99      0 | +0.077 +0.372
+bag tgz 2635690
+=== SLAM 생존(주행 후) ===
+map->odom 97 개/5 s, 최대 간격 0.07 s, 최대 stamp 지연 0.16 s
+OK
+로버 map 자세: - Translation: [1.928, 0.067, 0.000] - Rotation: in RPY (radian) [0.000, 0.000, -0.105] 
+=== top: 프로세스별 CPU 평균/최대 (주행 중) ===
+스냅샷 21 (2 s), load 평균 5.9 최대 6.9
+  python3                                  평균 114.4% 최대  65.3%
+  controller_serv                          평균  37.6% 최대  71.1%
+  ros2                                     평균  19.3% 최대  38.6%
+  bt_navigator                             평균  15.7% 최대  18.3%
+  rplidar_node                             평균  15.1% 최대  18.8%
+  realsense2_came                          평균  13.7% 최대  18.3%
+  micro_ros_agent                          평균  12.4% 최대  42.4%
+  ekf_node                                 평균  11.9% 최대  16.8%
+  lifecycle_manag                          평균  11.8% 최대  17.3%
+  planner_server                           평균  11.2% 최대  16.8%
+  async_slam_tool                          평균  10.8% 최대  16.9%
+  behavior_server                          평균   8.1% 최대  13.4%
+bag 회수 OK 2635690
+drive log OK
+csv OK
+nav2 구간 로그 OK 82 줄
+top 로그 OK

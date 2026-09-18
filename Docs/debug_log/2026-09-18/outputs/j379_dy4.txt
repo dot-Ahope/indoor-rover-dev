@@ -1,0 +1,41 @@
+  0.00 [bt_navigator-6] [INFO] [1789709828.452665352] [bt_navigator]: Begin navigating from current location (0.00, 0.00) to (2.00, 0.01)
+  0.03 [bt_navigator-6] [WARN] [1789709828.484205255] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+  0.04 [controller_server-2] [INFO] [1789709828.487712988] [controller_server]: Received a goal, begin computing control effort.
+  0.04 [controller_server-2] [WARN] [1789709828.487850465] [controller_server]: No goal checker was specified in parameter 'current_goal_checker'. Server will use only plugin loaded general_goal_checker . This warning will appear once.
+  0.04 [controller_server-2] [INFO] [1789709828.491030251] [controller_server]: Optimizer reset
+  0.25 [controller_server-2] [WARN] [1789709828.701702989] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+  0.39 [bt_navigator-6] [WARN] [1789709828.844112614] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+  0.99 [stuck_monitor.py-1] [WARN] [1789709829.447523537] [stuck_monitor]: STUCK: 지령 5.4cm/11° 인데 관측 1.3cm/4.0° (비율 0.24) [shadow — 조치 없음]
+ 30.26 [controller_server-2] [INFO] [1789709858.716703954] [controller_server]: Reached the goal!
+ 30.30 [bt_navigator-6] [INFO] [1789709858.753548897] [bt_navigator]: Goal succeeded
+ 33.23 [planner_server-4] [INFO] [1789709861.677975874] [global_costmap.global_costmap]: Message Filter dropping message: frame 'camera_depth_optical_frame' at time 1789709861.3
+ 33.23 [planner_server-4] [INFO] [1789709861.681645501] [global_costmap.global_costmap]: Message Filter dropping message: frame 'lidar_link' at time 1789709861.379 for reason 't
+=== 드라이브 표 (1 s) ===
+  0.0 +0.000 +0.000 |  0.911      nan   +nan |    99    99    163 | +0.000 +0.000
+ 10.0 +0.645 +0.175 |  0.228    0.118 +0.279 |    99    99      0 | +0.079 +0.039
+ 20.0 +1.332 +0.224 |  0.078    0.090 +0.228 |    99    99      0 | +0.081 +0.011
+ 30.0 +1.875 +0.062 |  0.343    0.439 +0.082 |    99    99      0 | +0.081 +0.259
+bag tgz 2477172
+=== SLAM 생존(주행 후) ===
+map->odom 101 개/5 s, 최대 간격 0.06 s, 최대 stamp 지연 -0.07 s
+OK
+로버 map 자세: - Translation: [1.909, 0.072, 0.000] - Rotation: in RPY (radian) [0.000, 0.000, -0.120] 
+=== top: 프로세스별 CPU 평균/최대 (주행 중) ===
+스냅샷 20 (2 s), load 평균 8.3 최대 9.3
+  python3                                  평균 113.0% 최대  61.7%
+  controller_serv                          평균  36.6% 최대  64.9%
+  ros2                                     평균  18.9% 최대  26.6%
+  micro_ros_agent                          평균  17.5% 최대  91.1%
+  rplidar_node                             평균  15.4% 최대  20.4%
+  bt_navigator                             평균  14.7% 최대  17.6%
+  realsense2_came                          평균  13.5% 최대  18.9%
+  ekf_node                                 평균  11.8% 최대  15.4%
+  lifecycle_manag                          평균  11.4% 최대  16.9%
+  planner_server                           평균  11.1% 최대  15.9%
+  async_slam_tool                          평균  10.8% 최대  16.8%
+  behavior_server                          평균   7.9% 최대  14.4%
+bag 회수 OK 2477172
+drive log OK
+csv OK
+nav2 구간 로그 OK 80 줄
+top 로그 OK
