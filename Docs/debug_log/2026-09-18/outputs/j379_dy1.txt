@@ -1,0 +1,36 @@
+  0.00 [bt_navigator-6] [INFO] [1789705250.437374393] [bt_navigator]: Begin navigating from current location (0.00, 0.00) to (2.00, 0.02)
+  0.04 [controller_server-2] [INFO] [1789705250.479456368] [controller_server]: Received a goal, begin computing control effort.
+  0.04 [controller_server-2] [WARN] [1789705250.479655543] [controller_server]: No goal checker was specified in parameter 'current_goal_checker'. Server will use only plugin lo
+  0.04 [controller_server-2] [INFO] [1789705250.482185771] [controller_server]: Optimizer reset
+  5.87 [bt_navigator-6] [WARN] [1789705256.308039875] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+ 32.36 [controller_server-2] [INFO] [1789705282.796420675] [controller_server]: Reached the goal!
+ 32.39 [bt_navigator-6] [INFO] [1789705282.828383305] [bt_navigator]: Goal succeeded
+ 43.75 [planner_server-4] [INFO] [1789705294.187671121] [global_costmap.global_costmap]: Message Filter dropping message: frame 'camera_depth_optical_frame' at time 1789705293.9
+ 43.77 [planner_server-4] [INFO] [1789705294.208537062] [global_costmap.global_costmap]: Message Filter dropping message: frame 'lidar_link' at time 1789705293.901 for reason 't
+=== 드라이브 표 (1 s) ===
+  2.0 +0.093 +0.014 |  0.740    0.137 +0.318 |   100   100    227 | +0.082 +0.110
+ 12.0 +0.751 +0.234 |  0.218    0.113 +0.294 |   100   100      0 | +0.080 -0.049
+ 22.0 +1.350 +0.271 |  0.115    0.139 +0.311 |    99   100      0 | +0.083 +0.191
+ 32.0 +1.892 +0.076 |  0.381    0.506 +0.065 |    99   100      0 | +0.077 +0.278
+bag tgz 2731678
+=== SLAM 생존(주행 후) ===
+map->odom 97 개/5 s, 최대 간격 0.05 s, 최대 stamp 지연 0.02 s
+OK
+로버 map 자세: - Translation: [1.934, 0.086, 0.000] - Rotation: in RPY (radian) [0.000, 0.000, -0.079] 
+=== top: 프로세스별 CPU 평균/최대 (주행 중) ===
+스냅샷 22 (2 s), load 평균 6.1 최대 7.1
+  python3                                  평균 112.6% 최대  55.0%
+  controller_serv                          평균  36.1% 최대  70.0%
+  ros2                                     평균  18.9% 최대  36.8%
+  bt_navigator                             평균  15.8% 최대  26.2%
+  rplidar_node                             평균  15.2% 최대  20.3%
+  realsense2_came                          평균  13.8% 최대  22.3%
+  micro_ros_agent                          평균  12.6% 최대  62.9%
+  async_slam_tool                          평균  12.1% 최대  18.3%
+  lifecycle_manag                          평균  12.0% 최대  21.8%
+  ekf_node                                 평균  11.9% 최대  18.3%
+  planner_server                           평균  11.6% 최대  21.3%
+  behavior_server                          평균   8.4% 최대  19.3%
+bag 회수 OK 2731678
+drive log OK
+csv OK
