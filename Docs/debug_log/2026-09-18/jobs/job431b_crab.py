@@ -22,18 +22,22 @@ def wrap(a):
 
 def load(bag, G):
     r = rosbag2_py.SequentialReader(); r.open(rosbag2_py.StorageOptions(uri=bag, storage_id='sqlite3'), rosbag2_py.ConverterOptions('', ''))
-    mo, ob = [], []
+    mo, ob = [], []; k = 0
     while r.has_next():
-        topic, data, ts = r.read_next()
+        topic, data, ts = r.read_next(); k += 1
         if topic != '/tf':
             continue
         for tr in deserialize_message(data, TFMessage).transforms:
             st = tr.header.stamp.sec + tr.header.stamp.nanosec * 1e-9 - G
             if tr.header.frame_id == 'map' and tr.child_frame_id == 'odom':
-                mo.append((st, tr.transform.translation.x, tr.transform.translation.y, yaw_of(tr.transform.rotation)))
+                mo.append((st, k, tr.transform.translation.x, tr.transform.translation.y, yaw_of(tr.transform.rotation)))
             elif tr.header.frame_id == 'odom' and tr.child_frame_id == 'base_link':
                 ob.append((st, tr.transform.translation.x, tr.transform.translation.y, yaw_of(tr.transform.rotation)))
-    mo.sort(); ob.sort()
+    # 09-18 버그 수정: slam_toolbox 는 같은 stamp 로 map->odom 을 두 번 보내고, 보정 순간엔 두 값이 다르다(보정 전·후).
+    #   stamp 로만 정렬하면 두 값 순서가 뒤바뀌어 한 보정을 두 번 셌다(되돌림은 길이 0 구간이라 버려짐). → 같은 stamp 는 마지막 수신값만.
+    mo.sort(key=lambda m: (m[0], m[1])); ded = {}
+    for m in mo: ded[m[0]] = (m[0], m[2], m[3], m[4])
+    mo = sorted(ded.values()); ob.sort()
     return np.array(mo), np.array(ob)
 
 

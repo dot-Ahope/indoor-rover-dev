@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-"""odom 이 옆 이동을 덜 세는 원인 (2026-09-18). 로버는 움직이지 않는다. 인자: BAG GOAL_EPOCH [T_END] ... (T_END: 목표 도착 s — 주면 그 뒤 정지 구간 보정을 뺀다; 09-18 §11 에서 추가)
+"""[job431c] 큰 옆 보정(|δl|>1 cm)의 시각·당시 운동 목록 + 시간대별 누적. 원판 job431:
+odom 이 옆 이동을 덜 세는 원인 (2026-09-18). 로버는 움직이지 않는다. 인자: BAG GOAL_EPOCH [T_END] ... (T_END: 목표 도착 s — 주면 그 뒤 정지 구간 보정을 뺀다; 09-18 §11 에서 추가)
   SLAM 이 map->odom 을 고칠 때마다 그 보정이 로버 위치를 얼마나 옮겼는지를 **로버 몸체 기준 앞(δf)·옆(δl, +왼쪽)·방향(δψ)** 으로
   나누고, 직전 보정 이후 odom 이 센 이동(Δs 거리, Δψ 회전)과 대조한다.
     - δl 이 회전량 Δψ 에 비례 → 회전 중 **옆미끄럼**(EKF 가 휠 vy=0 을 σ 1 cm/s 로 믿어 못 셈)
@@ -23,22 +24,18 @@ def wrap(a):
 
 def load(bag, G):
     r = rosbag2_py.SequentialReader(); r.open(rosbag2_py.StorageOptions(uri=bag, storage_id='sqlite3'), rosbag2_py.ConverterOptions('', ''))
-    mo, ob = [], []; k = 0
+    mo, ob = [], []
     while r.has_next():
-        topic, data, ts = r.read_next(); k += 1
+        topic, data, ts = r.read_next()
         if topic != '/tf':
             continue
         for tr in deserialize_message(data, TFMessage).transforms:
             st = tr.header.stamp.sec + tr.header.stamp.nanosec * 1e-9 - G
             if tr.header.frame_id == 'map' and tr.child_frame_id == 'odom':
-                mo.append((st, k, tr.transform.translation.x, tr.transform.translation.y, yaw_of(tr.transform.rotation)))
+                mo.append((st, tr.transform.translation.x, tr.transform.translation.y, yaw_of(tr.transform.rotation)))
             elif tr.header.frame_id == 'odom' and tr.child_frame_id == 'base_link':
                 ob.append((st, tr.transform.translation.x, tr.transform.translation.y, yaw_of(tr.transform.rotation)))
-    # 09-18 버그 수정: slam_toolbox 는 같은 stamp 로 map->odom 을 두 번 보내고, 보정 순간엔 두 값이 다르다(보정 전·후).
-    #   stamp 로만 정렬하면 두 값 순서가 뒤바뀌어 한 보정을 두 번 셌다(되돌림은 길이 0 구간이라 버려짐). → 같은 stamp 는 마지막 수신값만.
-    mo.sort(key=lambda m: (m[0], m[1])); ded = {}
-    for m in mo: ded[m[0]] = (m[0], m[2], m[3], m[4])
-    mo = sorted(ded.values()); ob.sort()
+    mo.sort(); ob.sort()
     return np.array(mo), np.array(ob)
 
 
@@ -91,25 +88,10 @@ for bag, G, te in items:
         dps = wrap(seg[-1, 3] - seg[0, 3])
         rows.append((t1, df, dl, dpsi, ds, dps))
     R = np.array(rows)
-    rows_all.append(R)
-    A = np.stack([R[:, 5], R[:, 4]], 1); coef, *_ = np.linalg.lstsq(A, R[:, 2], rcond=None)
-    pred = A @ coef; r2 = 1 - np.sum((R[:, 2] - pred) ** 2) / max(np.sum((R[:, 2] - R[:, 2].mean()) ** 2), 1e-12)
-    c = float(np.sum(R[:, 5] * R[:, 3]) / max(np.sum(R[:, 5] ** 2), 1e-12))
-    st = np.abs(R[:, 5]) < math.radians(2); tu = ~st
-    lps = R[st, 2].sum() / max(R[st, 4].sum(), 1e-6); lpt = R[tu, 2].sum() / max(R[tu, 4].sum(), 1e-6)
-    print('%-5s | %3d | %+6.3f %+6.3f %+6.2f | %5.2f %6.1f | a %+.3f m/rad, b %+.3f m/m (%.2f) | c %+.3f | 직선 %+.3f (%.2f m) / 회전 %+.3f (%.2f m)' % (
-        name, len(R), R[:, 1].sum(), R[:, 2].sum(), math.degrees(R[:, 3].sum()), R[:, 4].sum(), math.degrees(np.abs(R[:, 5]).sum()),
-        coef[0], coef[1], r2, c, lps, R[st, 4].sum(), lpt, R[tu, 4].sum()))
-
-R = np.concatenate(rows_all)
-A = np.stack([R[:, 5], R[:, 4]], 1); coef, *_ = np.linalg.lstsq(A, R[:, 2], rcond=None)
-pred = A @ coef; r2 = 1 - np.sum((R[:, 2] - pred) ** 2) / np.sum((R[:, 2] - R[:, 2].mean()) ** 2)
-a1, *_ = np.linalg.lstsq(R[:, 5:6], R[:, 2], rcond=None); p1 = R[:, 5:6] @ a1; r2a = 1 - np.sum((R[:, 2] - p1) ** 2) / np.sum((R[:, 2] - R[:, 2].mean()) ** 2)
-b1, *_ = np.linalg.lstsq(R[:, 4:5], R[:, 2], rcond=None); p2 = R[:, 4:5] @ b1; r2b = 1 - np.sum((R[:, 2] - p2) ** 2) / np.sum((R[:, 2] - R[:, 2].mean()) ** 2)
-print('통합 %d 보정: δl = %+.4f·Δψ %+.4f·Δs (R² %.2f) | Δψ 만 R² %.2f (a %+.4f m/rad) | Δs 만 R² %.2f (b %+.4f m/m)' % (len(R), coef[0], coef[1], r2, r2a, a1[0], r2b, b1[0]))
-print('  해석: a<0 이면 왼쪽 회전(Δψ>0) 때 SLAM 이 로버를 오른쪽으로 옮김 = odom 이 오른쪽 이동을 덜 셈(또는 왼쪽을 더 셈)')
-# 회전 방향별 δl 평균 (회전량 1 rad 당)
-for lab, sel in (('왼쪽 회전 Δψ>+2°', R[:, 5] > math.radians(2)), ('오른쪽 회전 Δψ<-2°', R[:, 5] < -math.radians(2)), ('직선 |Δψ|<2°', np.abs(R[:, 5]) < math.radians(2))):
-    if sel.any():
-        print('  %-18s %3d 보정: Σδl %+.3f m, ΣΔψ %+.1f°, ΣΔs %.2f m → δl/rad %+.3f, δl/m %+.3f' % (lab, sel.sum(), R[sel, 2].sum(), math.degrees(R[sel, 5].sum()), R[sel, 4].sum(),
-              R[sel, 2].sum() / (R[sel, 5].sum() if abs(R[sel, 5].sum()) > 1e-3 else float('nan')), R[sel, 2].sum() / max(R[sel, 4].sum(), 1e-6)))
+    big = R[np.abs(R[:, 2]) > 0.01]
+    print('==== %s: 보정 %d 회, Σδl %+.3f m, |δl|>1 cm %d 회 Σ %+.3f m' % (name, len(R), R[:, 2].sum(), len(big), big[:, 2].sum()))
+    for r in big:
+        print('   t %5.1f  δl %+.3f  δf %+.3f  δψ %+.2f°  | 직전 이후 odom Δs %.3f m Δψ %+.1f°' % (r[0], r[2], r[1], math.degrees(r[3]), r[4], math.degrees(r[5])))
+    for a_, b_ in ((-1, 5), (5, 12), (12, 18), (18, 25), (25, 40)):
+        sel = (R[:, 0] >= a_) & (R[:, 0] < b_)
+        print('   구간 t %3d~%3d s: 보정 %2d 회, Σδl %+.3f m, Σδψ %+.2f°, odom Δs %.2f m' % (a_, b_, sel.sum(), R[sel, 2].sum(), math.degrees(R[sel, 3].sum()), R[sel, 4].sum()))
