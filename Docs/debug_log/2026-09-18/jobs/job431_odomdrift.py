@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""odom 이 옆 이동을 덜 세는 원인 (2026-09-18). 로버는 움직이지 않는다. 인자: BAG GOAL_EPOCH [BAG GOAL_EPOCH ...]
+"""odom 이 옆 이동을 덜 세는 원인 (2026-09-18). 로버는 움직이지 않는다. 인자: BAG GOAL_EPOCH [T_END] ... (T_END: 목표 도착 s — 주면 그 뒤 정지 구간 보정을 뺀다; 09-18 §11 에서 추가)
   SLAM 이 map->odom 을 고칠 때마다 그 보정이 로버 위치를 얼마나 옮겼는지를 **로버 몸체 기준 앞(δf)·옆(δl, +왼쪽)·방향(δψ)** 으로
   나누고, 직전 보정 이후 odom 이 센 이동(Δs 거리, Δψ 회전)과 대조한다.
     - δl 이 회전량 Δψ 에 비례 → 회전 중 **옆미끄럼**(EKF 가 휠 vy=0 을 σ 1 cm/s 로 믿어 못 셈)
@@ -23,18 +23,22 @@ def wrap(a):
 
 def load(bag, G):
     r = rosbag2_py.SequentialReader(); r.open(rosbag2_py.StorageOptions(uri=bag, storage_id='sqlite3'), rosbag2_py.ConverterOptions('', ''))
-    mo, ob = [], []
+    mo, ob = [], []; k = 0
     while r.has_next():
-        topic, data, ts = r.read_next()
+        topic, data, ts = r.read_next(); k += 1
         if topic != '/tf':
             continue
         for tr in deserialize_message(data, TFMessage).transforms:
             st = tr.header.stamp.sec + tr.header.stamp.nanosec * 1e-9 - G
             if tr.header.frame_id == 'map' and tr.child_frame_id == 'odom':
-                mo.append((st, tr.transform.translation.x, tr.transform.translation.y, yaw_of(tr.transform.rotation)))
+                mo.append((st, k, tr.transform.translation.x, tr.transform.translation.y, yaw_of(tr.transform.rotation)))
             elif tr.header.frame_id == 'odom' and tr.child_frame_id == 'base_link':
                 ob.append((st, tr.transform.translation.x, tr.transform.translation.y, yaw_of(tr.transform.rotation)))
-    mo.sort(); ob.sort()
+    # 09-18 버그 수정: slam_toolbox 는 같은 stamp 로 map->odom 을 두 번 보내고, 보정 순간엔 두 값이 다르다(보정 전·후).
+    #   stamp 로만 정렬하면 두 값 순서가 뒤바뀌어 한 보정을 두 번 셌다(되돌림은 길이 0 구간이라 버려짐). → 같은 stamp 는 마지막 수신값만.
+    mo.sort(key=lambda m: (m[0], m[1])); ded = {}
+    for m in mo: ded[m[0]] = (m[0], m[2], m[3], m[4])
+    mo = sorted(ded.values()); ob.sort()
     return np.array(mo), np.array(ob)
 
 
@@ -52,11 +56,18 @@ def apply(M, p):
 rows_all = []
 print('%-5s | 보정 %3s 회 | 합 δf %+6s δl %+6s δψ %+6s | odom 이동 Δs %5s 회전 Σ|Δψ| %5s | 회귀 δl = a·Δψ + b·Δs (R²) | δψ = c·Δψ | 직선/회전 구간 δl/m' % ('run', '', 'm', 'm', '°', 'm', '°'))
 args = sys.argv[1:]
-for k in range(0, len(args), 2):
-    bag, G = args[k], float(args[k + 1]); name = bag.split('_')[-1]
+items = []; i = 0
+while i < len(args):
+    bag, G = args[i], float(args[i + 1]); i += 2
+    te = None
+    if i < len(args) and not args[i].startswith('/'):
+        te = float(args[i]); i += 1
+    items.append((bag, G, te))
+for bag, G, te in items:
+    name = bag.split('_')[-1]
     mo, ob = load(bag, G)
     obd = ob[ob[:, 0] > -1]
-    tend = obd[-1, 0]
+    tend = obd[-1, 0] if te is None else te
     # 보정 시점: map->odom 이 바뀐 곳 (0.5 mm 또는 0.01° 넘게)
     idx = [0]
     for i in range(1, len(mo)):
