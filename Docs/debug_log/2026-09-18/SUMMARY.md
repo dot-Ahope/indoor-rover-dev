@@ -365,3 +365,9 @@
 ### 17.5 배포 (`jobs/run_deploy_cc.sh` → `outputs/j454_deploy_cc.txt`)
 - `nav2_params.yaml` src+install 에 복사(주석 제외 diff = critics 목록 1 줄 + CostCritic 1 줄, 이전본 `~/ros2_ws/.bak_20260918/install_nav2_params_before_cc.yaml`). 실행 중 controller_server 는 옛 목록 — **다음 prep 재기동 때 반영**, 주행 전 params.txt 로 확인.
 - 다음: 같은 코스 3 회(cc1~cc3), STAGE=cc, §16 기준으로 판정.
+
+## 18. 마무리 (사용자)
+- bag 재현성(§17.3)의 목적: **개선 전후를 시각적으로 보여주기 위함**. 따라서 이후 주행은 `STAGE`(구성 단계)·`NOTE`(무엇을 바꿨나)를 반드시 채우고, 같은 코스·같은 토픽으로 기록해 단계별 bag 을 나란히 그릴 수 있게 한다(코스트맵·경로·궤적·여유 곡선). 시각화 도구는 아직 없음 — 다음 과제.
+- 오늘 상태: Jetson 에 CostCritic YAML 배포됨(**아직 재기동 안 함** — 다음 prep 이 반영), 러너 1안·메타 기록은 다음 주행부터. 로버는 dy6 목표 지점에 있음. wifi-mon 계측 계속 동작 중.
+- 내일: (1) cc1~cc3 — prep 뒤 `params.txt` 로 critics 반영 확인 → §16 기준 판정, ① vs job416 일치 확인 (2) S2 디시메이션 결정(반나절 한정) (3) S5 기준선 3 회 → `BASELINE_STVL.md` → main 병합·태그(푸시는 지시 시) (4) 단계별 bag 시각화 도구 (5) Phase N0.
+- CLAUDE.md 점검 결과는 대화에 보고(사용자 미커밋 수정 있음 — 건드리지 않음).
