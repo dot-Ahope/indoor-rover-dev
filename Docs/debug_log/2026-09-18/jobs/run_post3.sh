@@ -10,3 +10,7 @@ sshpass -p <PW> scp $O -q jetson@$H:/tmp/$N.csv $SPS/$N.csv && echo "csv OK"
 # 09-18: 주행 구간 nav2 로그 원본·top 기록도 회수(재부팅 시 /tmp 소실)
 sshpass -p <PW> scp $O -q jetson@$H:/tmp/nav2_seg.log $SPS/nav2_${N}.log && echo "nav2 구간 로그 OK $(wc -l < $SPS/nav2_${N}.log) 줄"
 sshpass -p <PW> scp $O -q jetson@$H:/tmp/top_$N.log $SPS/top_${N}.log && echo "top 로그 OK"
+# 09-18 §17: 재현 메타(실행 파라미터·파일 해시·단계) 회수 — outputs 에 커밋할 것
+sshpass -p <PW> scp $O -q jetson@$H:/tmp/bag_$N/run_meta.txt $SPS/meta_${N}.txt && echo "meta OK"
+sshpass -p <PW> scp $O -q jetson@$H:/tmp/bag_$N/params.txt $SPS/params_${N}.txt && echo "params OK"
+sshpass -p <PW> scp $O -q jetson@$H:/tmp/${N}_refix.csv $SPS/${N}_refix.csv && echo "refix csv OK"   # 09-18 러너 1안: 상자 재고정 기록

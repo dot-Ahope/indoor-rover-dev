@@ -1,0 +1,5 @@
+-- /camera/depth/points_filtered: 2.06 MB/s from 20 messages 2.04 MB/s from 20 messages 
+-- /plan_smoothed: 
+-- /unsmoothed_plan: 
+-- /local_costmap/costmap_raw: 6.43 KB/s from 16 messages 6.53 KB/s from 18 messages 
+-- hz points_filtered: average rate: 14.984

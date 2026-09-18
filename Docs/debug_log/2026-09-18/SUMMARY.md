@@ -328,3 +328,40 @@
 - 설정: `critics` 목록에서 ObstaclesCritic → CostCritic, `{cost_weight 3.81, critical_cost 300, consider_footprint true, collision_cost 1e6, near_goal_distance 0.5}`. **near_goal_distance 는 0.5 유지**(README 예시 1.0 이면 상자 뒤 모서리 x 1.25~1.35 가 목표 0.65~0.75 m 안이라 기울기가 꺼짐). 되돌리기 = 목록 한 줄.
 - 판정 기준(미리 선언, 같은 코스 3 회): 중단 0·1 s 정지 0 / 상자 뒤 모서리 원경로 대비 Δ 가 −2.5 cm 보다 작아질 것(job446) / 복귀 회전 자리 여유 기록(목표 ≥ 5 cm, 단 이 교체만으로는 미달 가능) / 복귀 회전 자리(x 1.10) 도달 dy1~6 의 16.7~18.9 s 범위 +1 s 안 / 직진 부호반전 ≤ 9 /m(dy 정상 5~6 의 1.5 배) / 루프 미달 ≤ 1.
 - 바꾸지 않을 때 잃는 것: 기울기 없는 크리틱 + 틀린 파라미터를 안은 채 기준선을 고정 → 이후 nvblox A/B 에서 개선 원인을 나눌 수 없음.
+
+## 17. CostCritic 교체 실행 — 사용자 결정(§16 승인) + 세 가지 질의 처리
+### 17.1 "기준선 연속성 손실"은 실질적으로 없다 (사용자 지적이 맞음)
+- 상자·로버 배치는 회차마다 ≈2 cm 다르고(prep 상자 1.142~1.161 / −0.077~−0.116), 그래서 지표를 절대값이 아니라 **원경로 대비 Δ·코스트맵 기준 여유·중단 횟수**로 잡아 왔다. 배치가 바뀌면 다시 달리는 것은 맞다.
+- §16 에서 "잃음" 이라 쓴 것은 정확히는: (1) S5 기준선은 아직 측정한 적이 없으므로 어차피 3 회 새로 달려야 한다 → **추가 비용 0**. (2) 남는 손실은 통계 누적뿐 — "보정 후 중단 1/6" 같은 집계는 옛 구성에 묶이고 새 구성은 0 회부터 시작한다. 정정해서 기록.
+
+### 17.2 시뮬레이터 재작성 — CostCritic 추가 (`jobs/job452_mppi_sim_cc.py`, 실행 `jobs/job452_run.sh` → `outputs/j452_sim_cc.txt`, 표 `outputs/j452_sim_cc_table.txt`)
+- job419(09-17 §14, Humble 1.1.20 동작 모드) 에 `obst=0/1/2`(Obstacles/Cost/둘 다), 두 크리틱의 `near_goal_distance`(09-17 판엔 없던 것), 절대 시각 지정, **LETHAL 여유**(차체 외곽↔1 m 안 LETHAL 셀, job416 정의) 주기별 기록을 추가. CostCritic 은 1.1.20 `cost_critic.cpp` 그대로(충돌은 둘레, 점수는 중심 칸 비용, ≥253 이면 300, 가중 3.81/254).
+- bag dy2·dy4·dy6 × 장면 3(입구 차선변경 goal+8 s, 복귀 회전 시작 +16.5 s, 상자 뒤 모서리 +20 s) × seed 2, 6 s 창, 실측 구동계 모델(지연 0.1 s·ω 이득 0.7·smoother 1.2·펌웨어 데드밴드), 경로·코스트맵 시간 재생, temperature 0.15.
+
+| 장면(3 bag 평균) | 6 s 전진 | LETHAL 여유 최소 | 여유 평균 | 부호반전 /m | 고주파 RMS |
+|---|---|---|---|---|---|
+| 입구 g8 | 0.470 → 0.452 m (−4 %) | 4.1 → **5.6 cm (+1.5)** | 12.3 → 13.2 | 12.5 → 10.5 | 0.074 → 0.063 |
+| 복귀 회전 g16.5 | 0.470 → 0.474 | 4.6 → **5.5 (+0.9)** | 5.6 → 6.3 | 3.5 → 6.6 | 0.039 → 0.045 |
+| 상자 뒤 모서리 g20 | 0.474 → 0.472 | 5.7 → 5.3 (−0.3, 셀 양자화 안) | 6.9 → 7.0 | 2.4 → 4.1 | 0.034 → 0.050 |
+- 읽기: 정체 없음(모든 창에서 6 s 에 0.43 m 이상 = 0.072 m/s 이상). 여유는 입구·복귀 회전에서 +1~2 cm, 모서리에서는 차이 없음(§16 "추정" 과 일치). 입구 진행 −4 %(dy6 −7 %)는 §16 위험 (a) 의 크기. 모서리에서 부호반전·RMS 가 소폭 늘어 §16 위험 (b)(셀 계단)가 보인다 — 실주행 기준 ≤ 9 /m 안.
+- 한계: 6 s 창·seed 2·코스트맵 2 Hz 재생·재계획 없음(bag 의 /plan 재생). 교체를 막을 신호는 없고, 크기는 실주행으로 잰다.
+
+### 17.3 bag 기록의 재현성 — 판단과 적용
+- **판단(기존)**: 토픽 목록이 `job231_drive.sh` 에 고정, 어떤 파라미터·파일로 달렸는지 bag 에 남지 않음(`ros2 param` 은 실행 중 바뀔 수 있고 — 실제 09-17 temperature — Jetson 의 src 는 git 이 아님). 스무더 결과(`/plan_smoothed`·`/unsmoothed_plan`, 노드가 발행 중)도 안 담겨 §15 에서 스무더를 재현해야 했음. → **유동적이지 않고 재현 정보 부족**.
+- **적용**:
+  | 변경 | 내용 | 파일 |
+  |---|---|---|
+  | 토픽 목록 | 기본에 `/plan_smoothed /unsmoothed_plan` 추가 + `BAG_EXTRA` 환경변수로 단계별 추가(예: 러너 상자 모델 검증용 `/camera/depth/points_filtered`, 2.06 MB/s·15 Hz 라 기본엔 넣지 않음) | `jobs/job231_drive.sh` |
+  | 실행 파라미터 스냅샷 | 노드 하나로 12 노드의 list/get_parameters 호출(5.6 s, `ros2 param dump` 는 노드당 7.8 s) → `params.txt`. 실행 중 `ObstaclesCritic.cost_scaling_factor 10.0 / inflation_radius 0.55` 를 이걸로 직접 확인 | `jobs/job451_paramsnap.py` |
+  | 주행 메타 | 단계(STAGE)·메모(NOTE)·PC git HEAD·주행 인자·상자 힌트·기록 토픽·전원 모드·load·패키지 버전·배포 파일 sha256(YAML·BT·URDF·stuck_monitor·depth_relay·카메라 launch·러너 3 종)·펌웨어 status·라이브 토픽 목록 → `run_meta.txt`. 둘 다 **bag 폴더 안**에 넣어 회수 tgz 에 포함 | `jobs/job453_runmeta.sh`, `job231_drive.sh` |
+  | 러너 | STAGE/NOTE/GIT_HEAD/BAG_EXTRA 를 ssh nohup 줄로 전달, job451/453 전송 | `jobs/run_drive_nohup.sh`, `job254_s4run.sh` |
+  | 회수 | `meta_<이름>.txt`·`params_<이름>.txt`·`<이름>_refix.csv` 를 PC 로(outputs 에 커밋) | `jobs/run_post3.sh` |
+- 시험(`outputs/j453_metatest.txt`): 주행 없이 메타 생성 9.1 s, 12 노드 전부 응답, 파일 해시 10 개.
+- 도구 사고: heredoc 안 `\\n` 이 리터럴 `\n` 으로 들어가 토픽 줄이 한 줄로 합쳐질 뻔함(`bash -n` 통과) → Edit 로 고치고 **확장 결과**(토픽 18 개 전부 `/` 시작)로 검증. 메모리에 기록.
+
+### 17.4 러너 1안 적용 (`jobs/job125_avoid3.py`, 백업 `.bak_0918b`)
+- 재고정은 |yaw − 출발 yaw| ≤ 5° 일 때만(벗어나면 검출도 생략). 재고정 시각·yaw·전면 x·중심 y·채택/건너뜀/미검출/점프 → `/tmp/<이름>_refix.csv` + 요약 한 줄. 첫 실주행에서 ① 과 코스트맵 여유(job416)의 일치를 본다.
+
+### 17.5 배포 (`jobs/run_deploy_cc.sh` → `outputs/j454_deploy_cc.txt`)
+- `nav2_params.yaml` src+install 에 복사(주석 제외 diff = critics 목록 1 줄 + CostCritic 1 줄, 이전본 `~/ros2_ws/.bak_20260918/install_nav2_params_before_cc.yaml`). 실행 중 controller_server 는 옛 목록 — **다음 prep 재기동 때 반영**, 주행 전 params.txt 로 확인.
+- 다음: 같은 코스 3 회(cc1~cc3), STAGE=cc, §16 기준으로 판정.
