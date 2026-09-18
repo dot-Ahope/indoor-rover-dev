@@ -1,0 +1,28 @@
+== logrotate
+  dpkg: un  logrotate      <none>       <none>       (no description available)
+  ls: cannot access '/usr/sbin/logrotate': No such file or directory
+  ls: cannot access '/etc/cron.daily/logrotate': No such file or directory
+  ls: cannot access '/lib/systemd/system/logrotate.timer': No such file or directory
+  ls: cannot access '/lib/systemd/system/logrotate.service': No such file or directory
+  ls: cannot access '/var/lib/logrotate/': No such file or directory
+  status: head: cannot open '/var/lib/logrotate/status' for reading: No such file or directory
+  /var/log 파일 수 33, 회전본(.1/.gz) 4
+   3482255 Sep 18 11:38 /var/log/auth.log
+   12654237 Sep 18 10:17 /var/log/kern.log
+   144564126 Sep 18 11:38 /var/log/syslog
+  lastlog 실제 사용 16 KB (겉보기 173097544 B — 희소 파일)
+== ~/.ros/log
+  항목 9746, 파일 9746, 디렉터리 660, 합계 47M
+      5630 python3
+       660 (launch 디렉터리)
+       391 tf2_echo
+       224 waypoint_follower
+       224 velocity_smoother
+       224 smoother_server
+       224 planner_server
+       224 lifecycle_manager
+       224 controller_server
+       224 bt_navigator
+       224 behavior_server
+       202 async_slam_toolbox_node
+  최근 7 일 파일 3729, 30 일 넘은 파일 1952 (17.3 MB)
