@@ -12,6 +12,8 @@
   <xacro:arg name="deck_x"        default="0.000"/>
   <xacro:arg name="deck_y"        default="0.000"/>
   <xacro:arg name="lidar_yaw"     default="3.14159265"/>
+  <!-- 2026-09-18 데크 yaw 실측 −2.68° (rover.urdf 확정본과 같은 값): 라이다·카메라가 함께 회전, 카메라 위치는 데크 원점 기준 회전 -->
+  <xacro:arg name="deck_yaw"      default="-0.04677"/>
 
   <xacro:property name="base_z"      value="0.025"/>
   <xacro:property name="deck_t"      value="0.005"/>
@@ -25,6 +27,7 @@
   <xacro:property name="cam_dx"      value="0.0822"/>
   <xacro:property name="cam_dy"      value="0.0475"/>
   <xacro:property name="cam_dz"      value="-0.0165"/>
+  <xacro:property name="deck_yaw"    value="$(arg deck_yaw)"/>
 
   <material name="green"><color rgba="0.1 0.7 0.3 1.0"/></material>
   <material name="black"><color rgba="0.1 0.1 0.1 1.0"/></material>
@@ -58,7 +61,7 @@
     </inertial>
     <!-- 센서 데크 (FUSED_ROVER STL, mm → m), 데크 프레임 원점에 배치 -->
     <visual>
-      <origin xyz="${deck_x} ${deck_y} ${deck_bottom - base_z}" rpy="0 0 0"/>
+      <origin xyz="${deck_x} ${deck_y} ${deck_bottom - base_z}" rpy="0 0 ${deck_yaw}"/>
       <geometry><mesh filename="package://rover_description/meshes/sensor_deck.stl" scale="0.001 0.001 0.001"/></geometry>
       <material name="petg"/>
     </visual>
@@ -92,7 +95,7 @@
   </link>
   <joint name="lidar_joint" type="fixed">
     <parent link="base_link"/><child link="lidar_link"/>
-    <origin xyz="${deck_x} ${deck_y} ${deck_bottom - base_z + lidar_dz}" rpy="0 0 $(arg lidar_yaw)"/>
+    <origin xyz="${deck_x} ${deck_y} ${deck_bottom - base_z + lidar_dz}" rpy="0 0 ${$(arg lidar_yaw) + deck_yaw}"/>
   </joint>
 
   <!-- ===== RealSense D455f — camera_link = 좌이미저 (드라이버가 하위 optical/imu 프레임 발행) ===== -->
@@ -105,7 +108,7 @@
   </link>
   <joint name="camera_joint" type="fixed">
     <parent link="base_link"/><child link="camera_link"/>
-    <origin xyz="${deck_x + cam_dx} ${deck_y + cam_dy} ${deck_bottom - base_z + cam_dz}" rpy="0 0 0"/>
+    <origin xyz="${deck_x + cam_dx*cos(deck_yaw) - cam_dy*sin(deck_yaw)} ${deck_y + cam_dx*sin(deck_yaw) + cam_dy*cos(deck_yaw)} ${deck_bottom - base_z + cam_dz}" rpy="0 0 ${deck_yaw}"/>
   </joint>
 
   <!-- 보드 IMU 프레임 (펌웨어 /imu/data_raw frame_id) — 자이로 무반응 판정으로 미융합, TF 존재만 유지 -->
