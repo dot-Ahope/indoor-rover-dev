@@ -1,0 +1,62 @@
+  0.00 [bt_navigator-6] [INFO] [1789707370.973748315] [bt_navigator]: Begin navigating from current location (0.00, 0.00) to (2.00, 0.00)
+  0.04 [smoother_server-3] [ERROR] [1789707371.010696388] [smoother_server]: Smoothed path leads to a collision at x: -0.002311, y: 0.024230, theta: -0.046483
+  0.04 [smoother_server-3] [WARN] [1789707371.010883690] [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+  0.05 [bt_navigator-6] [WARN] [1789707371.028731435] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+  0.09 [bt_navigator-6] [WARN] [1789707371.060563791] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+  0.10 [controller_server-2] [INFO] [1789707371.069575154] [controller_server]: Received a goal, begin computing control effort.
+  0.10 [controller_server-2] [WARN] [1789707371.069740439] [controller_server]: No goal checker was specified in parameter 'current_goal_checker'. Server will use only plugin loaded general_goal_checker . This warning will appear once.
+  0.10 [controller_server-2] [INFO] [1789707371.072950591] [controller_server]: Optimizer reset
+  0.10 [bt_navigator-6] [WARN] [1789707371.074978432] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+  0.14 [bt_navigator-6] [WARN] [1789707371.118381242] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+  0.18 [bt_navigator-6] [WARN] [1789707371.149029303] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+  0.20 [bt_navigator-6] [WARN] [1789707371.175941692] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+  0.21 [bt_navigator-6] [WARN] [1789707371.183109540] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+  0.22 [bt_navigator-6] [WARN] [1789707371.189820765] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+  0.27 [bt_navigator-6] [WARN] [1789707371.244468961] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+  0.35 [bt_navigator-6] [WARN] [1789707371.320225872] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+  0.44 [bt_navigator-6] [WARN] [1789707371.412461650] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+  0.45 [bt_navigator-6] [WARN] [1789707371.428663069] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+  0.61 [controller_server-2] [WARN] [1789707371.587714509] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+  0.84 [controller_server-2] [WARN] [1789707371.810012344] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+  0.87 [controller_server-2] [INFO] [1789707371.845053028] [controller_server]: Optimizer reset
+  0.88 [controller_server-2] [INFO] [1789707371.857413715] [controller_server]: Optimizer reset
+  0.88 [controller_server-2] [ERROR] [1789707371.857799967] [controller_server]: Optimizer fail to compute path
+  0.88 [controller_server-2] [WARN] [1789707371.858048103] [controller_server]: [follow_path] [ActionServer] Aborting handle.
+  0.90 [controller_server-2] [INFO] [1789707371.876123727] [local_costmap.local_costmap]: Received request to clear except a region the local_costmap
+  0.91 [controller_server-2] [INFO] [1789707371.887369914] [controller_server]: Received a goal, begin computing control effort.
+  1.11 [controller_server-2] [WARN] [1789707372.083724351] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+  1.14 [controller_server-2] [WARN] [1789707372.109661284] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+  2.68 [bt_navigator-6] [WARN] [1789707373.651368128] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+ 11.29 [bt_navigator-6] [WARN] [1789707382.263958211] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+ 28.10 [bt_navigator-6] [WARN] [1789707399.072838499] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+ 31.65 [controller_server-2] [INFO] [1789707402.623642456] [controller_server]: Reached the goal!
+ 31.69 [bt_navigator-6] [INFO] [1789707402.661041297] [bt_navigator]: Goal succeeded
+=== 드라이브 표 (1 s) ===
+  1.0 +0.000 +0.000 |  0.850    0.256 +0.296 |   100   100    176 | +0.052 +0.062
+ 11.0 +0.654 +0.133 |  0.190    0.026 +0.272 |   100   100      0 | +0.080 -0.029
+ 21.0 +1.254 +0.271 |  0.026    0.017 +0.261 |   100   100      0 | +0.080 -0.305
+ 31.0 +1.878 +0.098 |  0.324    0.443 +0.112 |    99   100      0 | +0.078 +0.337
+bag tgz 2588691
+=== SLAM 생존(주행 후) ===
+map->odom 84 개/5 s, 최대 간격 0.05 s, 최대 stamp 지연 0.01 s
+OK
+로버 map 자세: - Translation: [1.901, 0.093, 0.000] - Rotation: in RPY (radian) [0.000, 0.000, -0.114] 
+=== top: 프로세스별 CPU 평균/최대 (주행 중) ===
+스냅샷 21 (2 s), load 평균 6.5 최대 7.0
+  python3                                  평균 113.5% 최대  55.9%
+  controller_serv                          평균  36.2% 최대  71.3%
+  ros2                                     평균  18.7% 최대  29.2%
+  bt_navigator                             평균  15.6% 최대  17.8%
+  rplidar_node                             평균  15.3% 최대  18.8%
+  micro_ros_agent                          평균  14.5% 최대  52.5%
+  realsense2_came                          평균  13.8% 최대  18.3%
+  ekf_node                                 평균  11.8% 최대  16.8%
+  lifecycle_manag                          평균  11.7% 최대  16.3%
+  planner_server                           평균  11.3% 최대  15.3%
+  async_slam_tool                          평균  10.9% 최대  17.8%
+  behavior_server                          평균   8.2% 최대  12.9%
+bag 회수 OK 2588691
+drive log OK
+csv OK
+nav2 구간 로그 OK 104 줄
+top 로그 OK
