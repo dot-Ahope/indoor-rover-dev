@@ -1,0 +1,11 @@
+== 이미지: isaac_ros_dev-aarch64:latest 40.3GB
+== 컨테이너: isaac_ros_dev-aarch64-container Up 5 seconds
+== 안: Ubuntu 22.04.4 LTS ROS_DISTRO=humble release 12.6   Candidate: 3.2.5-0jammy 
+== nvblox 설치(컨테이너 내부 apt, 수 분)
+W: Some index files failed to download. They have been ignored, or old ones used instead.
+Setting up ros-humble-isaac-ros-nvblox (3.2.5-0jammy) ...
+Processing triggers for libc-bin (2.35-0ubuntu3.8) ...
+== 확인: nvblox_examples_bringup nvblox_image_padding nvblox_msgs nvblox_nav2 nvblox_ros nvblox_ros_common nvblox_ros_python_utils nvblox_rviz_plugin /opt/ros/humble
+== 메시지 정의:  std_msgs/Header header 	builtin_interfaces/Time stamp 		int32 sec 		uint32 nanosec 	string frame_id  float32 resolution  uint32 width uint32 height  geometry_msgs/Point origin 	float64 x 	float64 y 	float64 z  float32 unknown_value  float32[] data 
+== DDS 프로파일 /tmp 복사(컨테이너와 공유): 3998 B
+== docker 디스크: Images 41.51GB;Containers 465.6MB;Local Volumes 0B;Build Cache 0B; | 여유 155G

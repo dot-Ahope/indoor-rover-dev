@@ -1,0 +1,81 @@
+######## v03_dec4 (yaml nvblox_n0_v03.yaml, dec 4)
+Set parameter successful
+  깊이 이미지: 160x120 @ average rate: 15.017
+  정지 후 nvblox pid: ''
+  30 s 뒤 깊이 콜백 rate: 15.1 (pid 142085 )
+  tegra GPU 6% CPU [36%@729,30%@1497,23%@1497,26%@1497,22%@729,22%@729]
+  tegra GPU 0% CPU [36%@729,25%@729,31%@729,25%@729,20%@729,17%@729]
+  tegra GPU 0% CPU [38%@729,29%@729,31%@729,31%@729,16%@729,21%@729]
+  nvblox CPU(top): 21.3% 
+==== v03_dec4: 슬라이스 209 프레임 (20.0 s, TF 실패 0) 토픽 /nvblox_node/static_map_slice
+  (iii) 수신 9.46 Hz, 간격 중앙 0.107 최대 0.114 s | stamp 지연 중앙 0.112 최대 0.119 s | 해상도 0.030 m, 80x120
+  (i) 상자 띠 장애물 셀 최소 x(base): 중앙 1.157 최소 1.157 최대 1.157 (프레임당 셀 58) | 물리 전면 1.153 → 차 +0.004 m = +0.1 셀
+  (ii) 카메라 0.45 m 안 장애물 셀: 프레임당 중앙 0 최대 0, 0 이 아닌 프레임 0/209 | 전체 장애물 셀 중앙 286
+  rate ros/depth               	100    	15.2
+  rate ros/depth_image_callback	100    	15.1
+  rate ros/update_esdf         	100    	9.6
+  delay ros/esdf_integration       	100    	0.102
+  delay ros/depth_image_callback   	100    	0.065
+  time ros/esdf/integrate mean 3.17 ms
+  time tsdf/integrate mean 0.61 ms
+######## v05_dec2 (yaml nvblox_n0.yaml, dec 2)
+Set parameter successful
+  깊이 이미지: 320x240 @ average rate: 14.977
+  정지 후 nvblox pid: ''
+  30 s 뒤 깊이 콜백 rate: 15.1 (pid 145230 )
+  tegra GPU 4% CPU [56%@960,31%@960,21%@960,27%@960,23%@729,25%@729]
+  tegra GPU 2% CPU [35%@1497,33%@1497,42%@1497,40%@1497,21%@729,20%@729]
+  tegra GPU 4% CPU [33%@1497,33%@1497,38%@1497,30%@1497,37%@806,33%@806]
+  nvblox CPU(top): 18.3% 
+==== v05_dec2: 슬라이스 207 프레임 (20.0 s, TF 실패 0) 토픽 /nvblox_node/static_map_slice
+  (iii) 수신 9.46 Hz, 간격 중앙 0.108 최대 0.114 s | stamp 지연 중앙 0.111 최대 0.117 s | 해상도 0.050 m, 48x72
+  (i) 상자 띠 장애물 셀 최소 x(base): 중앙 1.175 최소 1.175 최대 1.175 (프레임당 셀 23) | 물리 전면 1.153 → 차 +0.022 m = +0.4 셀
+  (ii) 카메라 0.45 m 안 장애물 셀: 프레임당 중앙 0 최대 0, 0 이 아닌 프레임 0/207 | 전체 장애물 셀 중앙 141
+  rate ros/update_esdf         	100    	9.6
+  rate ros/depth               	100    	15.1
+  rate ros/depth_image_callback	100    	15.1
+  delay ros/esdf_integration       	100    	0.104
+  delay ros/depth_image_callback   	100    	0.068
+  time ros/esdf/integrate mean 2.19 ms
+  time tsdf/integrate mean 0.39 ms
+######## v05_dec1 (yaml nvblox_n0.yaml, dec 1)
+Set parameter successful
+  깊이 이미지: A message was lost!!!x480 @ average rate: 14.106
+  정지 후 nvblox pid: ''
+  30 s 뒤 깊이 콜백 rate: 14.6 (pid 148378 )
+  tegra GPU 7% CPU [52%@1497,30%@1497,36%@1497,46%@1497,19%@729,55%@729]
+  tegra GPU 0% CPU [91%@1497,30%@1497,26%@1497,28%@1497,31%@729,16%@729]
+  tegra GPU 5% CPU [77%@1497,27%@1497,25%@1497,25%@1497,62%@1497,36%@1497]
+  nvblox CPU(top): 18.3% 
+==== v05_dec1: 슬라이스 191 프레임 (20.0 s, TF 실패 17) 토픽 /nvblox_node/static_map_slice
+  (iii) 수신 9.45 Hz, 간격 중앙 0.108 최대 0.113 s | stamp 지연 중앙 0.111 최대 0.117 s | 해상도 0.050 m, 48x72
+  (i) 상자 띠 장애물 셀 최소 x(base): 중앙 1.175 최소 1.175 최대 1.175 (프레임당 셀 22) | 물리 전면 1.153 → 차 +0.022 m = +0.4 셀
+  (ii) 카메라 0.45 m 안 장애물 셀: 프레임당 중앙 0 최대 0, 0 이 아닌 프레임 0/191 | 전체 장애물 셀 중앙 136
+  rate ros/depth               	100    	14.9
+  rate ros/depth_image_callback	100    	14.8
+  rate ros/update_esdf         	100    	9.5
+  delay ros/esdf_integration       	100    	0.112
+  delay ros/depth_image_callback   	100    	0.072
+  time ros/esdf/integrate mean 2.24 ms
+  time tsdf/integrate mean 0.36 ms
+######## 복귀: dec 4, 복셀 0.05
+######## v05_dec4 (yaml nvblox_n0.yaml, dec 4)
+Set parameter successful
+  깊이 이미지: 160x120 @ average rate: 14.959
+  정지 후 nvblox pid: ''
+  30 s 뒤 깊이 콜백 rate: 15.1 (pid 151525 )
+  tegra GPU 0% CPU [35%@1497,32%@1497,34%@1497,28%@1497,28%@729,25%@729]
+  tegra GPU 8% CPU [37%@806,34%@806,32%@806,29%@806,25%@729,24%@729]
+  tegra GPU 8% CPU [41%@806,30%@806,32%@806,31%@806,23%@729,27%@729]
+  nvblox CPU(top): 21.3% 
+==== v05_dec4: 슬라이스 218 프레임 (20.0 s, TF 실패 0) 토픽 /nvblox_node/static_map_slice
+  (iii) 수신 9.46 Hz, 간격 중앙 0.108 최대 0.114 s | stamp 지연 중앙 0.112 최대 0.118 s | 해상도 0.050 m, 48x72
+  (i) 상자 띠 장애물 셀 최소 x(base): 중앙 1.175 최소 1.175 최대 1.175 (프레임당 셀 24) | 물리 전면 1.153 → 차 +0.022 m = +0.4 셀
+  (ii) 카메라 0.45 m 안 장애물 셀: 프레임당 중앙 0 최대 0, 0 이 아닌 프레임 0/218 | 전체 장애물 셀 중앙 167
+  rate ros/depth               	100    	15.1
+  rate ros/depth_image_callback	100    	15.1
+  rate ros/update_esdf         	100    	9.5
+  delay ros/esdf_integration       	100    	0.102
+  delay ros/depth_image_callback   	100    	0.064
+  time ros/esdf/integrate mean 2.40 ms
+  time tsdf/integrate mean 0.36 ms

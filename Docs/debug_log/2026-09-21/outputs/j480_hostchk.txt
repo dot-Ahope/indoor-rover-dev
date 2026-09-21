@@ -1,0 +1,9 @@
+프로세스: realsense 1 rplidar 1 relay 1 ekf 1 slam 1 nvblox(컨테이너) 2
+  /scan                                      average rate: 9.962
+  /camera/camera/depth/color/points          average rate: 14.969
+  /camera/depth/points_filtered              average rate: 14.996
+  /camera/camera/depth/image_rect_raw        average rate: 14.998
+sensors.log 끝: [foxglove_bridge-5] [WARN] [1789977293.801766435] [foxglove_bridge]: Failed to add service "/nvblox_node/save_rates" (nv|[foxglove_bridge-5] [WARN] [1789977293.801890535] [foxglove_bridge]: Failed to add service "/nvblox_node/save_timings" (|
+== 물리 상자(job478)
+상자(카메라 점군, base_link): 전면 x 1.153 (범위 1.152~1.154) 중심 y -0.079 (범위 -0.080~-0.070) 점 150, 10 프레임
+1.153 -0.079 10
