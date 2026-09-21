@@ -1,0 +1,15 @@
+########## 1. 센서·SLAM·Nav2 내림 (base=에이전트·rsp 유지) ##########
+  남은 ros 프로세스: 4 | 에이전트: 1 | rsp: 1 | load 4.52 4.42 4.10
+########## 2. git-lfs (sudo) ##########
+Setting up git-lfs (3.0.2-1ubuntu0.3) ...
+Processing triggers for man-db (2.10.2-1) ...
+Git LFS initialized.
+  git-lfs: git-lfs/3.0.2 (GitHub; linux a
+########## 3. 워크스페이스 ##########
+  isaac_ros_common: fcf4d9e 2025-11-13 Pin TensorRT dependency to 10.3.0 | 이미지 키 기본 ros2_humble, config: 없음
+########## 4. 이미지 빌드 시작(백그라운드) ##########
+  pid 92764 → /tmp/isaac_build.log
+  --- 45 s 후 로그 꼬리 ---
+tput: No value for $TERM and no -T specified
+  docker images: 
+  디스크 여유 193G
