@@ -268,6 +268,13 @@ S4 3/3 완료 후 사용자 질문("nvblox 이전이 지금 옳은가")에 대�
 - nvblox 입력은 depth 이미지 + camera_info(+색), 3D 라이다 선택. RealSense 는 예제에 일반 명사로만 등장(D455 개별 명시는 없음) — 같은 realsense2_camera 드라이버 토픽이라 문제 없음.
   Nav2 연결은 nvblox 의 코스트맵 플러그인(ESDF 2D 슬라이스) — 플러그인 클래스명은 N2 에서 소스로 확인.
 
+## 2026-09-21 — Phase S 종료·N0 착수 시 결정
+- **Phase S 종료**: 기준선 `Docs/debug_log/2026-09-21/BASELINE_STVL.md`(cc2~cc5). S2 는 "센서 한계 ≤0.316 m, 디시메이션 4 유지, 코스트맵 한계는 릴레이 min_range 0.45" 로 종결(09-21 §5~6). S3(동적 망각)은 STVL 구조 한계로 문서화만. S6(CPU) 은 기준선 수치로 대체(합 ≈320 %, sensor_conditioner ≈43 %).
+- **git**: 사용자 결정으로 main 은 건드리지 않는다(회사 공용 리포). 태그 `stvl-baseline` 은 `feature/wt600-migration` 위(84a41e6, 로컬·personal 리포). Phase N 은 `feature/nvblox-migration`(origin·personal 양쪽 push). N4 통과 시 `feature/wt600-migration` 으로 병합, 기각 시 브랜치를 기록으로 남김.
+- **N0 설치 방식**: Isaac ROS 3.2 Dev 컨테이너(`isaac_ros_common` release-3.2, NGC 프리빌드 층). 호스트 ROS·카메라 드라이버(realsense-ros 4.58.3) 유지, nvblox 만 컨테이너에서 호스트 깊이 이미지·camera_info·TF 구독. 예제의 `realsense_splitter`(에미터 교대)는 **미사용**.
+- **cuVSLAM 은 이 Phase 에서 제외** → "N+1 오도메트리 실험" 으로 이월. 이유: odom→base_link 발행자 교체/융합이 필요(현재 EKF·slam_toolbox 검증 체계 재검증), 에미터 교대 시 nvblox 깊이 15 → 7.5 fps, D455f 의 IR 통과 필터 때문에 에미터 끈 적외선 영상이 실내 LED 아래서 어두울 가능성(미측정), 한 번에 하나만 바꾸는 원칙. N+1 절차: (1) 정지·손회전으로 에미터 끈 IR 영상 특징점 수 측정 (2) bag 에서 cuVSLAM 오도메트리 vs EKF(게걸음 각·b·δl 도구 재사용) (3) 유망하면 EKF 융합 → 같은 코스 3 회.
+- **절차 문서**: 주행 절차·게이트는 `Docs/04_navigation/TEST_COURSE_AND_GATES.md`(Phase S v1.0). N3~N4 주행 전에 절 단위로 검토해 v2.0 을 쓴다(코스트맵 셀 기준 게이트 E·F·G2 는 nvblox 층에서 재정의 필요).
+
 기각하지 않는 이유를 요약하면: 오늘 하루 지도 계층에서 한 세 가지 땜질(릴레이 두 규칙·감쇠 연장)이 모두 nvblox 가 구조로 가진 기능이고,
 청소기형 이동으로 목표를 옮기면 컨트롤러가 요구하는 지도(연속 거리장·광선 소거·3D)가 STVL 의 설계 범위를 벗어나기 때문이다.
 채택하지 않을 이유가 남는다면 그것은 **Orin Nano 의 부하**와 **설치 구조(N1)** 뿐이며, 둘 다 N0 에서 측정된다.
