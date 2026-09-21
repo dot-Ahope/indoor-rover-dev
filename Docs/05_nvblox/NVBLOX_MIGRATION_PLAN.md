@@ -274,6 +274,7 @@ S4 3/3 완료 후 사용자 질문("nvblox 이전이 지금 옳은가")에 대�
 - **N0 설치 방식**: Isaac ROS 3.2 Dev 컨테이너(`isaac_ros_common` release-3.2, NGC 프리빌드 층). 호스트 ROS·카메라 드라이버(realsense-ros 4.58.3) 유지, nvblox 만 컨테이너에서 호스트 깊이 이미지·camera_info·TF 구독. 예제의 `realsense_splitter`(에미터 교대)는 **미사용**.
 - **cuVSLAM 은 이 Phase 에서 제외** → "N+1 오도메트리 실험" 으로 이월. 이유: odom→base_link 발행자 교체/융합이 필요(현재 EKF·slam_toolbox 검증 체계 재검증), 에미터 교대 시 nvblox 깊이 15 → 7.5 fps, D455f 의 IR 통과 필터 때문에 에미터 끈 적외선 영상이 실내 LED 아래서 어두울 가능성(미측정), 한 번에 하나만 바꾸는 원칙. N+1 절차: (1) 정지·손회전으로 에미터 끈 IR 영상 특징점 수 측정 (2) bag 에서 cuVSLAM 오도메트리 vs EKF(게걸음 각·b·δl 도구 재사용) (3) 유망하면 EKF 융합 → 같은 코스 3 회.
 - **절차 문서**: 주행 절차·게이트는 `Docs/04_navigation/TEST_COURSE_AND_GATES.md`(Phase S v1.0). N3~N4 주행 전에 절 단위로 검토해 v2.0 을 쓴다(코스트맵 셀 기준 게이트 E·F·G2 는 nvblox 층에서 재정의 필요).
+- **N0~N3 결과(09-21 저녁, `Docs/debug_log/2026-09-21/SUMMARY.md §9~10`)**: N0 4 게이트 통과(컨테이너 nvblox 3.2.5, 깊이 15 Hz·ESDF 9.5 Hz·GPU ≤10 %·근거리 자취 0/311). N2~N3 호스트 `nvblox_nav2` 층 연결(`isaac_ros_common` 빈 스텁으로 CUDA 없이 빌드). 정지 A/B 셀 대조: 관측면 위치·통과 폭(0.40 m)은 STVL 과 같고, 차이는 (A) 층 `lookupInSlice` 의 round 인덱싱 → −1 셀 평행이동(호스트 포크 `floor` 로 수정, 재캡처 확정 대기) (B) 표면 뒤 TSDF 절단 띠 0.20 m 가 이진/기울기 모드 무관하게 LETHAL(`distance<=0` 분기가 앞) → 해법은 `projective_integrator_truncation_distance_vox` 4→2 뿐, A/B-2 기울기는 띠와 무관. 순서: 수정 층 재캡처 → 절단 A/B → 절차 v2.0(bag 프로파일 항목 포함) → N4 주행 A/B.
 
 기각하지 않는 이유를 요약하면: 오늘 하루 지도 계층에서 한 세 가지 땜질(릴레이 두 규칙·감쇠 연장)이 모두 nvblox 가 구조로 가진 기능이고,
 청소기형 이동으로 목표를 옮기면 컨트롤러가 요구하는 지도(연속 거리장·광선 소거·3D)가 STVL 의 설계 범위를 벗어나기 때문이다.
