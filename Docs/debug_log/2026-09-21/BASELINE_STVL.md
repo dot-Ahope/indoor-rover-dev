@@ -49,3 +49,5 @@
 
 ## 5. 재현 절차
 `run_mp9prep.sh`(재기동·게이트) → 상자 게이트/출발 자세 게이트 → `STAGE=… NOTE=… GIT_HEAD=… run_drive_nohup.sh <이름> 2.0 <BX> <BY> 0.06 0` → `run_post3.sh <이름>`(bag·csv·nav2·top·tegrastats·rss·메타 회수) → `run_j435*.sh`(job416/426/431/431b)·`job446_pathdecomp.py`·`job462_baghz.py`·`job463_tegra.py`. 스크립트는 `Docs/debug_log/2026-09-21/jobs/`, 출력은 `outputs/`, bag 은 로컬 `bags/`.
+
+> 절차·게이트의 단일 출처: `Docs/TEST_COURSE_AND_GATES.md`(Phase S v1.0). 이 문서의 §5 는 요약이다.
