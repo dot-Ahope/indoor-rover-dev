@@ -1,0 +1,5 @@
+18:20:00.5356271300 /home/jetson/ros2_ws/build/nvblox_nav2/libnvblox_nav2.so
+17:21:48.6068127350 /home/jetson/ros2_ws/install/nvblox_nav2/lib/libnvblox_nav2.so
+== planner 가 연 nvblox .so
+== 로컬 plugins: String values are: ['stvl_layer', 'obstacle_layer', 'inflation_layer']
+== nvblox 노드: 3
