@@ -1,0 +1,42 @@
+== 전경 시험 실행 (60 s 제한, TERM=xterm)
++ set -e
++++ dirname build_image_layers.sh
+++ cd .
+++ pwd
++ ROOT=/home/jetson/workspaces/isaac_ros-dev/src/isaac_ros_common/scripts
++ source /home/jetson/workspaces/isaac_ros-dev/src/isaac_ros_common/scripts/utils/print_color.sh
++ DOCKER_DIR=/home/jetson/workspaces/isaac_ros-dev/src/isaac_ros_common/scripts/../docker
++ DOCKER_BUILDKIT=1
++ IGNORE_COMPOSITE_KEYS=0
++ ADDITIONAL_BUILD_ARGS=()
++ ADDITIONAL_DOCKER_ARGS=()
++ DOCKER_SEARCH_DIRS=(${DOCKER_DIR})
++ SKIP_REGISTRY_CHECK=0
++ BASE_DOCKER_REGISTRY_NAMES=("nvcr.io/nvidia/isaac/ros")
++ [[ -f /home/jetson/workspaces/isaac_ros-dev/src/isaac_ros_common/scripts/.isaac_ros_common-config ]]
++ [[ -f /home/jetson/.isaac_ros_common-config ]]
++ '[' 0 -gt 0 ']'
+++ getopt -o hra:b:c:ki:n:d: --long help,skip_registry_check,build_arg:,base_image:,context_dir:,disable_buildkit,image_key:,image_name:,ignore_composite_keys,docker_arg: -- --image_key aarch64.ros2_h
++ VALID_ARGS=' --image_key '\''aarch64.ros2_humble'\'' --image_name '\''isaac_ros_dev-aarch64'\'' --'
++ eval set -- ' --image_key '\''aarch64.ros2_humble'\'' --image_name '\''isaac_ros_dev-aarch64'\'' --'
+++ set -- --image_key aarch64.ros2_humble --image_name isaac_ros_dev-aarch64 --
++ '[' : ']'
++ case "$1" in
++ TARGET_IMAGE_STR=aarch64.ros2_humble
++ shift 2
++ '[' : ']'
++ case "$1" in
++ TARGET_IMAGE_NAME=isaac_ros_dev-aarch64
++ shift 2
++ '[' : ']'
++ case "$1" in
++ shift
++ break
++ [[ -z aarch64.ros2_humble ]]
++ [[ -z isaac_ros_dev-aarch64 ]]
++ [[ ! -z '' ]]
++ tput setaf 2
+[32m+ echo 'Building layered image for key aarch64.ros2_humble as isaac_ros_dev-aarch64'
+Building layered image for key aarch64.ros2_humble as isaac_ros_dev-aarch64
++ tput sgr0
+== rc=0 | docker images: 0
