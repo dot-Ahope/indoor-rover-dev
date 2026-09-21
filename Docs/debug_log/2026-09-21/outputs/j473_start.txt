@@ -1,0 +1,43 @@
+nvblox_node: 3
+NVBlox Delays
+namespace/tag - NumSamples (Window Length) - Mean Delay (seconds) 
+-----------
+ros/esdf_integration       	94     	0.101
+ros/depth_image_integration	100    	0.071
+ros/depth_image_callback   	100    	0.064
+-----------
+
+nvblox_node: 3 | 토픽: 
+ros/depth_image_callback   	100    	0.065
+-----------
+
+esdf/integrate/mark_sites/pack_out            	    284	00.022645	(00.000080 +- 00.000016)	[00.000059,00.000202]
+esdf/integrate_slice                          	    285	00.675120	(00.002369 +- 00.000557)	[00.000001,00.005289]
+esdf/integrate_slice/compute                  	    284	00.266149	(00.000937 +- 00.000410)	[00.000294,00.002421]
+esdf/integrate_slice/mark_sites               	    284	00.334559	(00.001178 +- 00.000310)	[00.000282,00.003268]
+ros/depth/integrate                           	    451	00.376649	(00.000835 +- 00.000255)	[00.000515,00.002446]
+ros/esdf/integrate                            	    285	00.739108	(00.002593 +- 00.000571)	[00.000171,00.005512]
+tsdf/integrate                                	    451	00.165638	(00.000367 +- 00.000148)	[00.000260,00.001832]
+tsdf/integrate/allocate_blocks                	    451	00.040777	(00.000090 +- 00.000084)	[00.000030,00.000708]
+tsdf/integrate/get_blocks_in_view             	    451	00.009633	(00.000021 +- 00.000001)	[00.000014,00.000801]
+tsdf/integrate/transfer_blocks                	    451	00.058304	(00.000129 +- 00.000101)	[00.000080,00.001003]
+tsdf/integrate/update_blocks                  	    451	00.049860	(00.000111 +- 00.000016)	[00.000083,00.000752]
+NVBlox Rates (in Hz)
+esdf/integrate/clear                          	    379	00.095523	(00.000252 +- 00.000048)	[00.000175,00.000835]
+esdf/integrate/clear/get_blocks               	    379	00.019597	(00.000052 +- 00.000021)	[00.000024,00.000163]
+esdf/integrate/compute/neighbor_bands         	   1050	00.272285	(00.000259 +- 00.000048)	[00.000163,00.001831]
+esdf/integrate/compute/neighbor_bands/gpu_view	   1050	00.070958	(00.000068 +- 00.000012)	[00.000010,00.000361]
+esdf/integrate/compute/swap                   	   1050	00.001433	(00.000001 +- 00.000000)	[00.000000,00.000061]
+esdf/integrate/compute/sweep                  	   1050	00.037151	(00.000035 +- 00.000014)	[00.000012,00.000712]
+esdf/integrate/mark_sites/pack_out            	    379	00.030015	(00.000079 +- 00.000016)	[00.000059,00.000202]
+esdf/integrate_slice                          	    380	00.872511	(00.002296 +- 00.000483)	[00.000001,00.005289]
+esdf/integrate_slice/compute                  	    379	00.335278	(00.000885 +- 00.000295)	[00.000293,00.002421]
+esdf/integrate_slice/mark_sites               	    379	00.438304	(00.001156 +- 00.000344)	[00.000275,00.003268]
+ros/depth/integrate                           	    601	00.501387	(00.000834 +- 00.000284)	[00.000490,00.002493]
+ros/esdf/integrate                            	    380	00.957269	(00.002519 +- 00.000512)	[00.000171,00.005512]
+tsdf/integrate                                	    601	00.221199	(00.000368 +- 00.000245)	[00.000231,00.001832]
+tsdf/integrate/allocate_blocks                	    601	00.054916	(00.000091 +- 00.000067)	[00.000030,00.000708]
+tsdf/integrate/get_blocks_in_view             	    601	00.012766	(00.000021 +- 00.000047)	[00.000014,00.000801]
+tsdf/integrate/transfer_blocks                	    601	00.078164	(00.000130 +- 00.000208)	[00.000074,00.001340]
+tsdf/integrate/update_blocks                  	    601	00.066088	(00.000110 +- 00.000013)	[00.000083,00.000752]
+NVBlox Rates (in Hz)

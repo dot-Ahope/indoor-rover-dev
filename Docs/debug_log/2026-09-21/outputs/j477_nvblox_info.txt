@@ -1,0 +1,40 @@
+== 노드 발행 토픽:
+    /nvblox_node/back_projected_depth/camera_depth_optical_frame: sensor_msgs/msg/PointCloud2
+    /nvblox_node/color_layer: nvblox_msgs/msg/VoxelBlockLayer
+    /nvblox_node/color_layer_marker: visualization_msgs/msg/Marker
+    /nvblox_node/combined_occupancy_grid: nav_msgs/msg/OccupancyGrid
+    /nvblox_node/dynamic_occupancy_grid: nav_msgs/msg/OccupancyGrid
+    /nvblox_node/esdf_slice_bounds: visualization_msgs/msg/Marker
+    /nvblox_node/mesh: nvblox_msgs/msg/Mesh
+    /nvblox_node/pessimistic_static_esdf_pointcloud: sensor_msgs/msg/PointCloud2
+    /nvblox_node/pessimistic_static_map_slice: nvblox_msgs/msg/DistanceMapSlice
+    /nvblox_node/shapes_to_clear: visualization_msgs/msg/MarkerArray
+    /nvblox_node/static_esdf_pointcloud: sensor_msgs/msg/PointCloud2
+    /nvblox_node/static_map_slice: nvblox_msgs/msg/DistanceMapSlice
+== 슬라이스 토픽 hz/타입:
+topic=/nvblox_node/pessimistic_static_map_slice
+average rate: 9.504
+0.05000000074505806
+== NVBlox Rates(마지막 블록):
+
+NVBlox Rates (in Hz)
+namespace/tag - NumSamples (Window Length) - Mean 
+-----------
+ros/depth               	100    	15.1
+ros/depth_image_callback	100    	15.1
+ros/update_esdf         	100    	9.6
+ros/tick                	100    	101.0
+-----------
+
+[INFO] [1789976818.268949927] [nvblox_node]: Delay statistics: 
+
+NVBlox Delays
+namespace/tag - NumSamples (Window Length) - Mean Delay (seconds) 
+== tegrastats 8 s (nvblox 실행 중):
+9% CPU [31%@1344,23%@1344,26%@1344,28%@1344,6%@729,15%@729]
+4% CPU [27%@729,20%@729,19%@729,22%@729,18%@729,32%@729]
+10% CPU [26%@729,23%@729,15%@1497,18%@1497,24%@729,22%@729]
+3% CPU [19%@729,22%@729,18%@729,13%@729,24%@729,27%@729]
+4% CPU [29%@1497,16%@1497,27%@1497,23%@1497,11%@729,27%@729]
+0% CPU [31%@729,29%@729,28%@729,22%@729,21%@729,12%@729]
+== 컨테이너 nvblox CPU: 16.3%  | load 2.67 2.75 3.07
