@@ -7,7 +7,7 @@
 > 교체하면서 그 전제가 사라졌고, 통신 방식을 **micro-ROS**로 결정했습니다.
 >
 > **현행 통신 설계는 다음을 참조하세요:**
-> - `docs/FIRMWARE_DEV_PLAN.md §3~§5` — micro-ROS 통합, 토픽 계약, 대역폭
+> - `Docs/01_firmware/FIRMWARE_DEV_PLAN.md §3~§5` — micro-ROS 통합, 토픽 계약, 대역폭
 > - `PROJECT_OVERVIEW.md §6` — 통신 개요
 >
 > 아래 내용은 기록 보존용으로만 남겨둡니다. 단, 다음은 micro-ROS 설계에서도

@@ -4,7 +4,7 @@
 
 ## 패키지
 - **rover_bringup** — launch(base/sensors/full/camera/lidar/ekf/slam/foxglove) + param(ekf.yaml·slam.yaml) + `scripts/sensor_conditioner.py`
-- **rover_description** — `urdf/rover.urdf`(WT-600 확정본, = `Docs/rover.urdf` 사본) + `meshes/sensor_deck.stl` + description.launch.py
+- **rover_description** — `urdf/rover.urdf`(WT-600 확정본, = `Docs/02_hardware/rover.urdf` 사본) + `meshes/sensor_deck.stl` + description.launch.py
   - `urdf/rover.urdf.xacro` : 데크 실측 인자화 실험용(기본 미사용, `use_xacro:=true`)
 
 ## Jetson 동기화 (PC→Jetson)

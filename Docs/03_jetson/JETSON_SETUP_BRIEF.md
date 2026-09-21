@@ -32,8 +32,8 @@ wsl -d Ubuntu -u root -- bash -c "sshpass -p '<PW>' scp -o StrictHostKeyChecking
 - **목표 OS/스택**: Ubuntu 22.04 + JetPack 6.x + **ROS2 Humble** (설치 여부 먼저 확인, 없으면 설치).
 - **펌웨어 (이미 완료, 수정 금지)**: F405가 FreeRTOS + micro-ROS client로 동작. F0~F8 검증 완료.
 - **모터**: 1:90 BLDC (무부하 45rpm) — 실측(2026-08-26) duty 98%에서 ≈0.115 m/s, 펌웨어 상한 `MAX_LINEAR_SPEED_MPS = 0.100`. 상위단 속도 파라미터는 **0.100 m/s**를 넘으면 안 되고, 수동 지령은 §3 한계(0.08) 준수.
-- **상위 문서** (저장소 내): `PROJECT_OVERVIEW.md`, `Docs/FIRMWARE_DEV_PLAN.md`,
-  `Docs/MOTOR_1TO90_MIGRATION_PLAN.md` §5 (Phase 2 계획), `Docs/INDEX.md`.
+- **상위 문서** (저장소 내): `PROJECT_OVERVIEW.md`, `Docs/01_firmware/FIRMWARE_DEV_PLAN.md`,
+  `Docs/02_hardware/MOTOR_1TO90_MIGRATION_PLAN.md` §5 (Phase 2 계획), `Docs/INDEX.md`.
 
 ## 2. 통신 사양 (펌웨어 확정값 — 임의 변경 금지)
 
@@ -106,7 +106,7 @@ ros2 topic echo /battery --once            # 전압값 정상 (≈12V 계열)
 ### Step 2 — ros2_ws 골격 + teleop 주행 확인
 ```
 ~/ros2_ws/src/
-  rover_description/   # 저장소 Docs/rover.urdf 기반 (휠 유효반경 0.02567m=Ø51 — 펌웨어 rover_platform.h 실측과 일치 확인. 구 Ø40 스프로킷 기준값은 기각됨)
+  rover_description/   # 저장소 Docs/02_hardware/rover.urdf 기반 (휠 유효반경 0.02567m=Ø51 — 펌웨어 rover_platform.h 실측과 일치 확인. 구 Ø40 스프로킷 기준값은 기각됨)
   rover_bringup/       # launch: micro_ros_agent + (이후 추가 노드들)
 ```
 - colcon 빌드 환경 구성, `rover_bringup/launch/base.launch.py` 작성.
@@ -134,7 +134,7 @@ ros2 topic echo /battery --once            # 전압값 정상 (≈12V 계열)
 | `camera_link` (D455 좌이미저) | (+82.2 ±2, +47.5, −16.5) | 벽 58 + 몸체중심 13 + Intel xacro 11.2 / py 0.0475 / M4축 높이 |
 | IMU·광학 프레임 | 드라이버 자동 발행 (`camera_link` 하위, imu = (−16.0, −30.2, +7.4)) | realsense2_description |
 
-**실측 완료 (2026-08-27, `WT600_UPDATE_BRIEF.md`)**: 차체 = **WT-600**(500×330×115, 게이지 0.245). 데크 판 지면高 190mm, 최전방 = 로버 전방 −10mm, 폭 중앙 → base_link 기준 `lidar_link` (0.152, 0, 0.185), `camera_link` (0.232, +0.0475, 0.143). **확정본 = `Docs/rover.urdf`** (rover_description은 이를 그대로 로드; xacro는 `use_xacro:=true` 실험용). 미확정: camera_link y 부호, LiDAR yaw(정렬 테스트로 확정).
+**실측 완료 (2026-08-27, `WT600_UPDATE_BRIEF.md`)**: 차체 = **WT-600**(500×330×115, 게이지 0.245). 데크 판 지면高 190mm, 최전방 = 로버 전방 −10mm, 폭 중앙 → base_link 기준 `lidar_link` (0.152, 0, 0.185), `camera_link` (0.232, +0.0475, 0.143). **확정본 = `Docs/02_hardware/rover.urdf`** (rover_description은 이를 그대로 로드; xacro는 `use_xacro:=true` 실험용). 미확정: camera_link y 부호, LiDAR yaw(정렬 테스트로 확정).
 
 #### 4-1. LiDAR (S2L)
 - 패키지: `ros-humble-rplidar-ros` 2.1.4 (apt, S2 지원). udev: CP210x `10c4:ea60` → `/dev/rplidar`.

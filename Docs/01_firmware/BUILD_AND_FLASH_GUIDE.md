@@ -455,7 +455,7 @@ region `RAM' overflowed by NN bytes
 |---|---|---|
 | **F0** | [F0_CUBEMX_SETUP.md](F0_CUBEMX_SETUP.md) | CubeMX `.ioc` + LED/UART/부저/태스크 골격 |
 | **F1** | [F1_VERIFICATION.md](F1_VERIFICATION.md) | HAL/Driver 골격 + 페리페럴 sanity |
-| **F2 ~ F8** | [INDEX.md](INDEX.md) 참조 | 모터·엔코더·PID·micro-ROS·IMU·통합 |
+| **F2 ~ F8** | [INDEX.md](../INDEX.md) 참조 | 모터·엔코더·PID·micro-ROS·IMU·통합 |
 
 전체 개발 로드맵은 [`FIRMWARE_DEV_PLAN.md`](FIRMWARE_DEV_PLAN.md) §6.
 
