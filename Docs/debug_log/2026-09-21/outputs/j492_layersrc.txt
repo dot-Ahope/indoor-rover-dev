@@ -1,0 +1,246 @@
+wsl: ¯ªÏ∑¥ $±∏“Ã∆π– ®∫‹¥|π ¨¿©∆`’ Lµî≤ wsl2.localhostForwarding $¡»t« »©∆¥¿… J≈µ¬»≤‰≤.
+## /home/jetson/workspaces/isaac_ros-dev/src/isaac_ros_nvblox/nvblox_nav2/src/nvblox_costmap_layer.cpp
+79:void NvbloxCostmapLayer::updateBounds(
+80:  double /*robot_x*/, double /*robot_y*/, double /*robot_yaw*/,
+81:  double * min_x, double * min_y, double * max_x, double * max_y)
+82:{
+87:  if (slice_ != nullptr) {
+88:    double current_plugin_min_x = slice_->origin.x;
+89:    double current_plugin_min_y = slice_->origin.y;
+90:    double current_plugin_max_x = current_plugin_min_x + slice_->width * slice_->resolution;
+91:    double current_plugin_max_y = current_plugin_min_y + slice_->height * slice_->resolution;
+95:    if (!T_G_S_.matrix().isIdentity()) {
+97:      Eigen::Matrix<float, 2, 4> corners_S;
+98:      corners_S << current_plugin_min_x, current_plugin_min_x, current_plugin_max_x,
+99:        current_plugin_max_x, current_plugin_min_y, current_plugin_max_y, current_plugin_min_y,
+100:        current_plugin_max_y;
+103:      Eigen::Matrix<float, 2, 4> corners_G = (T_G_S_ * corners_S.colwise().homogeneous());
+106:      current_plugin_min_x = corners_G.row(0).minCoeff();
+107:      current_plugin_min_y = corners_G.row(1).minCoeff();
+108:      current_plugin_max_x = corners_G.row(0).maxCoeff();
+109:      current_plugin_max_y = corners_G.row(1).maxCoeff();
+110:    }
+112:    if (current_plugin_min_x < *min_x) {
+113:      *min_x = current_plugin_min_x;
+114:    }
+115:    if (current_plugin_max_x > *max_x) {
+116:      *max_x = current_plugin_max_x;
+117:    }
+118:    if (current_plugin_min_y < *min_y) {
+119:      *min_y = current_plugin_min_y;
+120:    }
+121:    if (current_plugin_max_y > *max_y) {
+122:      *max_y = current_plugin_max_y;
+123:    }
+124:  }
+126:  auto node = node_.lock();
+127:  if (!node) {
+128:    throw std::runtime_error{"Failed to lock node"};
+129:  }
+131:  RCLCPP_DEBUG(
+132:    node->get_logger(), "Update bounds: Min x: %f Min y: %f Max x: %f Max y: %f", *min_x,
+133:    *min_y, *max_x, *max_y);
+134:}
+141:void NvbloxCostmapLayer::updateCosts(
+142:  nav2_costmap_2d::Costmap2D & master_grid, int min_i, int min_j,
+143:  int max_i, int max_j)
+144:{
+145:  if (!enabled_) {
+146:    return;
+147:  }
+149:  auto node = node_.lock();
+150:  if (!node) {
+151:    throw std::runtime_error{"Failed to lock node"};
+152:  }
+154:  RCLCPP_DEBUG(
+155:    node->get_logger(), "Update costs: Min i: %d Min j: %d Max i: %d Max j: %d", min_i,
+156:    min_j, max_i, max_j);
+160:  setDefaultValue(nav2_costmap_2d::NO_INFORMATION);
+161:  matchSize();
+162:  uint8_t * costmap_array = getCharMap();
+163:  unsigned int size_x = getSizeInCellsX(), size_y = getSizeInCellsY();
+165:  RCLCPP_DEBUG(node->get_logger(), "Size in cells x: %d size in cells y: %d", size_x, size_y);
+167:  for (int j = min_j; j < max_j; j++) {
+168:    for (int i = min_i; i < max_i; i++) {
+169:      int index = getIndex(i, j);
+172:      double world_x, world_y;
+173:      mapToWorld(i, j, world_x, world_y);
+176:      Eigen::Vector2f pos_G(world_x, world_y);
+177:      Eigen::Vector2f pos_S = T_G_S_.inverse() * pos_G;
+180:      float distance = 0.0f;
+181:      bool valid = lookupInSlice(Eigen::Vector2f(pos_S.x(), pos_S.y()), &distance);
+184:      uint8_t cost = nav2_costmap_2d::NO_INFORMATION;
+185:      if (valid) {
+186:        if (distance <= 0.0f) {
+188:          cost = nav2_costmap_2d::LETHAL_OBSTACLE;
+189:        } else {
+190:          if (convert_to_binary_costmap_) {
+193:            cost = nav2_costmap_2d::FREE_SPACE;
+194:          } else {
+198:            if (distance < inflation_distance_) {
+199:              cost = nav2_costmap_2d::INSCRIBED_INFLATED_OBSTACLE;
+200:            } else if (distance > max_obstacle_distance_) {
+201:              cost = nav2_costmap_2d::FREE_SPACE;
+202:            } else {
+204:              cost = static_cast<uint8_t>(
+205:                max_cost_value_ *
+206:                (1.0f - std::min<float>(
+207:                  (distance - inflation_distance_) / max_obstacle_distance_,
+208:                  1.0f)));
+209:            }
+210:          }
+211:        }
+212:      }
+213:      costmap_array[index] = cost;
+214:    }
+215:  }
+219:  updateWithMax(master_grid, min_i, min_j, max_i, max_j);
+220:  RCLCPP_DEBUG(node->get_logger(), "Finished updating.");
+221:  current_ = true;
+222:}
+224:void NvbloxCostmapLayer::sliceCallback(
+225:  const nvblox_msgs::msg::DistanceMapSlice::ConstSharedPtr slice)
+226:{
+227:  if (!enabled_) {
+228:    return;
+229:  }
+231:  auto node = node_.lock();
+232:  if (!node) {
+233:    throw std::runtime_error{"Failed to lock node"};
+234:  }
+238:  std::string slice_frame = slice->header.frame_id;
+239:  if (nav2_costmap_global_frame_ != slice_frame) {
+240:    rclcpp::Time timestamp = slice->header.stamp;
+241:    geometry_msgs::msg::Transform T_G_S_msg;
+244:    auto & clk = *node->get_clock();
+245:    constexpr int kWarnMessagePeriodMs = 1000;
+248:    try {
+249:      T_G_S_msg =
+250:        tf_buffer_->lookupTransform(nav2_costmap_global_frame_, slice_frame, timestamp).transform;
+251:    } catch (tf2::TransformException & e) {
+252:      RCLCPP_WARN_STREAM_THROTTLE(
+253:        node->get_logger(), clk, kWarnMessagePeriodMs,
+## msg
+# A distance map slice is effectively a floating point image where the 
+# value of each pixel represents the distance in meters to the closest
+# surface, in 2 dimensions. Pixels covering space which have not been
+# observed in the mapping process are given a sentinal value which
+# indicates their unknown state.
+
+std_msgs/Header header
+
+# How big each "pixel" in the map is in meters.
+# In other words the side length of each cell.
+float32 resolution
+
+# Width is along the x axis and height is along the y axis.
+uint32 width
+uint32 height
+
+# The location of the origin of the distance map slice image.
+# This point coincides with the upper-left corner of the upper-left most pixel.
+# The distance map slice is effectively an axis-aligned image, attached to
+# this point in the world frame.
+geometry_msgs/Point origin
+
+# Which value is used for "unknown" cells.
+# These cells have not been observed by the camera during the mapping process.
+float32 unknown_value
+
+# The flattened 2D costmap data. Data is stored as floating point values in meters.
+# The data is stored row-major such that each row of the image/slice sits contiguous
+# in memory.
+float32[] data
+## converter origin
+## truncation params
+## lookupInSlice
+298:bool NvbloxCostmapLayer::lookupInSlice(const Eigen::Vector2f & pos, float * distance)
+299:{
+300:  // If we don't have any slice, we don't have any costs. :(
+301:  if (slice_ == nullptr) {
+302:    return false;
+303:  }
+305:  // Else look up in the actual slice.
+306:  Eigen::Vector2f scaled_position =
+307:    (pos - Eigen::Vector2f(slice_->origin.x, slice_->origin.y)) / slice_->resolution;
+308:  Eigen::Vector2i pos_index = scaled_position.array().round().cast<int>();
+310:  if (pos_index.x() < 0 || pos_index.x() >= static_cast<int>(slice_->width) || pos_index.y() < 0 ||
+311:    pos_index.y() >= static_cast<int>(slice_->height))
+312:  {
+313:    return false;
+314:  }
+316:  size_t linear_index = pos_index.y() * slice_->width + pos_index.x();
+318:  if (linear_index >= slice_->width * slice_->height) {
+319:    return false;
+320:  }
+322:  *distance = slice_->data[linear_index];
+323:  // The value can still be allocated but unknown. Handle this case too.
+324:  if (*distance != slice_->unknown_value) {
+325:    return true;
+326:  }
+327:  return false;
+328:}
+## converter files
+/home/jetson/workspaces/isaac_ros-dev/src/isaac_ros_nvblox/nvblox_ros/include/nvblox_ros/conversions/esdf_slice_conversions.hpp
+/home/jetson/workspaces/isaac_ros-dev/src/isaac_ros_nvblox/nvblox_ros/src/lib/conversions/esdf_slice_conversions.cu
+## truncation defaults
+/home/jetson/workspaces/isaac_ros-dev/src/isaac_ros_nvblox/nvblox_ros/src/lib/mapper_initialization.cpp
+/home/jetson/workspaces/isaac_ros-dev/src/isaac_ros_nvblox/nvblox_examples/nvblox_examples_bringup/config/nvblox/fuser.yaml
+/home/jetson/workspaces/isaac_ros-dev/src/isaac_ros_nvblox/nvblox_examples/nvblox_examples_bringup/config/nvblox/specializations/nvblox_detection.yaml
+/home/jetson/workspaces/isaac_ros-dev/src/isaac_ros_nvblox/nvblox_examples/nvblox_examples_bringup/config/nvblox/specializations/nvblox_segmentation.yaml
+/home/jetson/workspaces/isaac_ros-dev/src/isaac_ros_nvblox/nvblox_examples/nvblox_examples_bringup/config/nvblox/specializations/nvblox_dynamics.yaml
+/home/jetson/workspaces/isaac_ros-dev/src/isaac_ros_nvblox/nvblox_examples/nvblox_examples_bringup/config/nvblox/nvblox_base.yaml
+/home/jetson/workspaces/isaac_ros-dev/src/isaac_ros_nvblox/nvblox_examples/nvblox_examples_bringup/config/nvblox/fuser.yaml:29:      projective_integrator_truncation_distance_vox: 4.0
+/home/jetson/workspaces/isaac_ros-dev/src/isaac_ros_nvblox/nvblox_examples/nvblox_examples_bringup/config/nvblox/specializations/nvblox_detection.yaml:12:      projective_integrator_truncation_distance_vox: 4.0
+/home/jetson/workspaces/isaac_ros-dev/src/isaac_ros_nvblox/nvblox_examples/nvblox_examples_bringup/config/nvblox/specializations/nvblox_segmentation.yaml:12:      projective_integrator_truncation_distance_vox: 4.0
+/home/jetson/workspaces/isaac_ros-dev/src/isaac_ros_nvblox/nvblox_examples/nvblox_examples_bringup/config/nvblox/specializations/nvblox_dynamics.yaml:24:      projective_integrator_truncation_distance_vox: 4.0
+/home/jetson/workspaces/isaac_ros-dev/src/isaac_ros_nvblox/nvblox_examples/nvblox_examples_bringup/config/nvblox/nvblox_base.yaml:76:      projective_integrator_truncation_distance_vox: 4.0
+## Ïã§Ìñâ Ï§ë nvblox ÌååÎùºÎØ∏ÌÑ∞ ÌååÏùº
+/tmp/nvblox_n0.yaml:9:    voxel_size: 0.05
+/tmp/nvblox_n0.yaml:37:    esdf_slice_bounds_visualization_attachment_frame_id: "base_link"
+/tmp/nvblox_n0.yaml:42:      projective_integrator_truncation_distance_vox: 4.0
+/tmp/nvblox_n0.yaml:45:      esdf_integrator_min_weight: 0.1
+/tmp/nvblox_n0.yaml:46:      esdf_integrator_max_site_distance_vox: 2.0
+/tmp/nvblox_n0.yaml:48:      esdf_slice_height: 0.10
+/tmp/nvblox_n0.yaml:49:      esdf_slice_min_height: 0.03
+/tmp/nvblox_n0.yaml:50:      esdf_slice_max_height: 0.30
+wsl: ¯ªÏ∑¥ $±∏“Ã∆π– ®∫‹¥|π ¨¿©∆`’ Lµî≤ wsl2.localhostForwarding $¡»t« »©∆¥¿… J≈µ¬»≤‰≤.
+39:    const AxisAlignedBoundingBox aabb,  // NOLINT
+40:    const float slice_height,           // NOLINT
+64:  point.x = aabb.min().x() + voxel_size * col_idx;
+65:  point.y = aabb.min().y() + voxel_size * row_idx;
+66:  point.z = slice_height;
+127:    const EsdfLayer& layer, float slice_height, float unknown_value,
+128:    Image<float>* output_image, AxisAlignedBoundingBox* aabb) {
+129:  CHECK_NOTNULL(aabb);
+130:  *aabb = esdf_slicer_.getAabbOfLayerAtHeight(layer, slice_height);
+131:  esdf_slicer_.sliceLayerToDistanceImage(layer, slice_height, unknown_value,
+132:                                         *aabb, output_image);
+137:    float layer_1_slice_height, float layer_2_slice_height, float unknown_value,
+138:    Image<float>* output_image, AxisAlignedBoundingBox* aabb) {
+139:  CHECK_NOTNULL(aabb);
+140:  *aabb = esdf_slicer_.getCombinedAabbOfLayersAtHeight(
+141:      layer_1, layer_2, layer_1_slice_height, layer_2_slice_height);
+143:      layer_1, layer_2, layer_1_slice_height, layer_2_slice_height,
+144:      unknown_value, *aabb, output_image);
+148:    const Image<float>& slice_image, const AxisAlignedBoundingBox& aabb,
+149:    float slice_height, float voxel_size, float unknown_value,
+154:  const int width = slice_image.cols();
+155:  const int height = slice_image.rows();
+157:  map_slice->origin.x = aabb.min().x();
+158:  map_slice->origin.y = aabb.min().y();
+159:  map_slice->origin.z = slice_height;
+161:  map_slice->resolution = voxel_size;
+162:  map_slice->width = width;
+163:  map_slice->height = height;
+168:  map_slice->data.resize(width * height, unknown_value);
+178:    const Image<float>& slice_image, const AxisAlignedBoundingBox& aabb,
+179:    float slice_height, float voxel_size, float unknown_value,
+214:      aabb,                           // NOLINT
+215:      slice_height,                   // NOLINT
+246:  const int width = slice_image.cols();
+247:  const int height = slice_image.rows();
+250:  occupancy_grid_device_.reserveAsync(width * height, *cuda_stream_);
+276:      width * height * sizeof(int8_t), cudaMemcpyDefault, *cuda_stream_));
+## nvblox core slice image origin
+## slicer files: 
