@@ -12,6 +12,9 @@ rm -rf $BAG
 setsid nohup ros2 bag record -o $BAG $TOPICS > /tmp/bag_$NAME.log 2>&1 &
 # 09-17 mp7: 주행 중 CPU 굶주림(SLAM map->odom 5 s 끊김)의 범인을 가리기 위해 2 s 마다 프로세스별 CPU 기록
 setsid nohup top -b -d 2 -w 180 -o %CPU > /tmp/top_$NAME.log 2>&1 &
+# 09-21 S5 기준선: GPU·전력·온도(tegrastats, 1 s)와 노드별 RSS(ps, DDS 무관) — 코스트맵 주기는 bag 에서 사후 계산(주행 전 ros2 topic hz 금지 규칙)
+setsid nohup tegrastats --interval 1000 > /tmp/tegra_$NAME.log 2>&1 &
+ps -eo pid,rss,pcpu,comm,args --sort=-rss | grep -E "controller_server|planner_server|bt_navigator|smoother_server|behavior_server|velocity_smoother|slam_toolbox|ekf_node|realsense2|rplidar|depth_relay|sensor_conditioner|stuck_monitor|micro_ros|robot_state_pub|lifecycle" | grep -v grep | cut -c1-140 > /tmp/rss_$NAME.txt
 sleep 4
 MARK=$(wc -l < /tmp/nav2.log 2>/dev/null || echo 0)
 echo "=== 주행 (bag $(pgrep -fc 'ros2 bag record')개, nav2.log $MARK 줄부터) ==="
@@ -19,6 +22,7 @@ python3 /tmp/job125_avoid3.py $D $TMO $NAME 2>&1 | tail -40
 sleep 2
 pkill -INT -f "ros2 bag record" 2>/dev/null
 pkill -f "top -b -d 2 -w 180" 2>/dev/null
+pkill -f "tegrastats --interval 1000" 2>/dev/null; echo "--- after ---" >> /tmp/rss_$NAME.txt; ps -eo pid,rss,pcpu,comm,args --sort=-rss | grep -E "controller_server|planner_server|bt_navigator|slam_toolbox|ekf_node|realsense2|depth_relay|sensor_conditioner" | grep -v grep | cut -c1-140 >> /tmp/rss_$NAME.txt; free -m | head -2 >> /tmp/rss_$NAME.txt
 for i in $(seq 1 10); do [ "$(pgrep -fc 'ros2 bag record' 2>/dev/null | head -1)" = "0" ] && break; sleep 1; done
 sync
 bash /tmp/job453_runmeta.sh $NAME $D $TMO   # 09-21: 주행 뒤에 스냅샷(파라미터는 주행 중 안 바뀌므로 재현성 동일)
