@@ -1,0 +1,33 @@
+== 활성 plugins(로컬): 244:      plugins: ["stvl_layer", "obstacle_layer", "inflation_layer"]
+  nav2 프로세스: controller 1 planner 1 bt 1 | 오류: 0
+  로컬 plugins 실행값: String values are: ['stvl_layer', 'obstacle_layer', 'inflation_layer']
+   → 전방 2.2m 최소폭:  기준1 0.40 m (@1.20)   기준2(RPP) 0.25 m (@0.90)   기준3(오류) 0.00 m (@0.70)
+   → 전방 2.2m 최소폭:  기준1 0.40 m (@1.20)   기준2(RPP) 0.25 m (@0.90)   기준3(오류) 0.00 m (@0.70)
+   → 전방 2.2m 최소폭:  기준1 0.40 m (@1.20)   기준2(RPP) 0.25 m (@0.90)   기준3(오류) 0.00 m (@0.70)
+== CPU 20 s(top 2 회 평균): python3 43.5% | nvblox_+ 21.2% | python3 18.9% | planner+ 11.5% | python3 9.3% | python3 4.6% | python3 0.1% |  load 6.51 4.42 2.98
+== 로컬 코스트맵 발행: average rate: 1.667
+==== stvl_mode 로컬 코스트맵 60x60 @0.05: LETHAL 207, 내접 1233, 미지 0, 비용>0 1462
+  코스트맵 (# LETHAL, o 내접, . 비용, ? 미지)
+      x: 54321012345678901234567890  (−0.5 … 2.0, 0.1 m)
+  y+1.0 |ooo.....oooooooooo#o#     |
+  y+0.9 |oooo....o#oooo...o###     |
+  y+0.8 |##oo.oo.ooo##oo..oo#o     |
+  y+0.7 |#oo.ooooo#oo#oo..o#oo     |
+  y+0.6 |oo..o#ooo#oooo...oooo     |
+  y+0.5 |o...ooo.ooo.......oo.     |
+  y+0.4 |o....................     |
+  y+0.3 |o............ .......     |
+  y+0.2 |...  .   .    .......     |
+  y+0.1 |..           ...ooo..     |
+  y+0.0 |             ..oo#oo.     |
+  y-0.1 |            ...o##oo.     |
+  y-0.2 |...............o##oo.     |
+  y-0.3 |...............oooo..     |
+  y-0.4 |..ooo.oo...oooo......     |
+  y-0.5 |oooooooooooooooooooo.     |
+  y-0.6 |##############o##oooo     |
+  y-0.7 |#oooooo#######oo###oo     |
+  y-0.8 |oooooooooooooooo###oo     |
+  y-0.9 |o.......ooooo..ooooo.     |
+  y-1.0 |.....................     |
+  앞 0.3~1.6 m LETHAL 셀 62: y 분포 -0.9:15 -0.7:25 -0.5:0 -0.3:6 -0.1:4 +0.1:0 +0.3:0 +0.5:4 +0.7:8

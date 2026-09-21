@@ -1,0 +1,13 @@
+Starting >>> isaac_ros_common
+Finished <<< isaac_ros_common [1.87s]
+Starting >>> nvblox_msgs
+Finished <<< nvblox_msgs [29.3s]
+Starting >>> nvblox_nav2
+Finished <<< nvblox_nav2 [37.4s]
+Summary: 3 packages finished [1min 9s]
+빌드 소요 70 s
+pkg: isaac_ros_common nvblox_msgs nvblox_nav2 
+.so: libnvblox_nav2.so  | 플러그인 xml: nvblox_costmap_layer.xml package.xml 
+pluginlib 등록: (package.xml export 없음)
+msg: 9 개 | DistanceMapSlice 필드 14 줄
+install 목록: COLCON_IGNORE isaac_ros_common nvblox_msgs nvblox_nav2 rover_bringup rover_description rover_navigation 

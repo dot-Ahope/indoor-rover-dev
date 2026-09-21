@@ -1,0 +1,16 @@
+isaac_ros_nvblox: 7908a18 2025-10-08 | 패키지: CONTRIBUTING.md isaac_ros_nvblox LICENSE nvblox_examples nvblox_foxglove nvblox_msgs nvblox_nav2 nvblox_ros nvblox_ros_common nvblox_ros_python_utils nvblox_rviz_plugin nvblox_test nvblox_test_data README.md resources 
+의존 확인: tf2_eigen 1 nav2_costmap_2d 1 pluginlib 1
+  isaac_ros_common -> /home/jetson/workspaces/isaac_ros-dev/src/isaac_ros_common/isaac_ros_common
+  nvblox_msgs -> /home/jetson/workspaces/isaac_ros-dev/src/isaac_ros_nvblox/nvblox_msgs
+  nvblox_nav2 -> /home/jetson/workspaces/isaac_ros-dev/src/isaac_ros_nvblox/nvblox_nav2
+Starting >>> isaac_ros_common
+CMake Error at /usr/share/cmake-3.22/Modules/FindCUDA.cmake:859 (message):
+Failed   <<< isaac_ros_common [2.88s, exited with code 1]
+Summary: 0 packages finished [3.76s]
+빌드 소요 4 s
+pkg: 
+basename: missing operand
+Try 'basename --help' for more information.
+플러그인 등록: 0 | .so: 
+msg: 0 개 | DistanceMapSlice: 0 줄
+기존 패키지 무손상: COLCON_IGNORE isaac_ros_common local_setup.bash local_setup.ps1 local_setup.sh _local_setup_util_ps1.py _local_setup_util_sh.py local_setup.zsh rover_bringup rover_description rover_navigation setup.bash setup.ps1 setup.sh setup.zsh 

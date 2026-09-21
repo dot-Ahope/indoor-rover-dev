@@ -1,0 +1,10 @@
+== package.xml export:
+  <depend>nav2_costmap_2d</depend>
+  <depend>pluginlib</depend>
+    <costmap_2d plugin="${prefix}/nvblox_costmap_layer.xml" />
+== ament_index 플러그인 리소스:
+nav2_costmap_2d__pluginlib__plugin package_run_dependencies packages parent_prefix_path 
+share/nvblox_nav2/nvblox_costmap_layer.xml
+== pluginlib 로드 시험(파이썬 없음 → 클래스 목록 xml):
+name="nvblox::nav2::NvbloxCostmapLayer" type="nvblox::nav2::NvbloxCostmapLayer" base_class_type="nav2_costmap_2d::Layer" 
+== 호스트에서 슬라이스 타입 인식: # A distance map slice is effectively a floating point image where the
