@@ -1,0 +1,33 @@
+==== bag_cc2: 주행 구간 31.9 s
+  /local_costmap/costmap     53 개  1.67 Hz | 간격 중앙 0.600 최대 0.617 s
+  /global_costmap/costmap    18 개  0.57 Hz | 간격 중앙 1.997 최대 2.002 s
+  /plan                      30 개  0.95 Hz | 간격 중앙 1.050 최대 1.061 s
+  /plan_smoothed             30 개  0.95 Hz | 간격 중앙 1.051 최대 1.060 s
+  /cmd_vel                  639 개  20.00 Hz | 간격 중앙 0.050 최대 0.060 s
+  /odometry/filtered        957 개  30.00 Hz | 간격 중앙 0.033 최대 0.054 s
+  /wheel_odom               798 개  25.00 Hz | 간격 중앙 0.040 최대 0.046 s
+  /scan                     320 개  10.01 Hz | 간격 중앙 0.097 최대 0.119 s
+  /tf                      1595 개  50.02 Hz | 간격 중앙 0.023 최대 0.041 s
+  /map                       16 개  0.50 Hz | 간격 중앙 2.001 최대 2.018 s
+==== bag_cc3: 주행 구간 31.3 s
+  /local_costmap/costmap     52 개  1.67 Hz | 간격 중앙 0.600 최대 0.604 s
+  /global_costmap/costmap    21 개  0.67 Hz | 간격 중앙 1.500 최대 2.002 s
+  /plan                      29 개  0.95 Hz | 간격 중앙 1.050 최대 1.062 s
+  /plan_smoothed             29 개  0.95 Hz | 간격 중앙 1.050 최대 1.059 s
+  /cmd_vel                  627 개  20.00 Hz | 간격 중앙 0.050 최대 0.055 s
+  /odometry/filtered        938 개  29.97 Hz | 간격 중앙 0.033 최대 0.065 s
+  /wheel_odom               782 개  25.00 Hz | 간격 중앙 0.040 최대 0.048 s
+  /scan                     313 개  10.00 Hz | 간격 중앙 0.097 최대 0.122 s
+  /tf                      1564 개  49.99 Hz | 간격 중앙 0.024 최대 0.041 s
+  /map                       16 개  0.50 Hz | 간격 중앙 2.002 최대 2.012 s
+==== bag_cc4: 주행 구간 31.3 s
+  /local_costmap/costmap     53 개  1.67 Hz | 간격 중앙 0.600 최대 0.609 s
+  /global_costmap/costmap    18 개  0.57 Hz | 간격 중앙 1.999 최대 2.005 s
+  /plan                      29 개  0.95 Hz | 간격 중앙 1.050 최대 1.061 s
+  /plan_smoothed             29 개  0.95 Hz | 간격 중앙 1.049 최대 1.063 s
+  /cmd_vel                  627 개  20.00 Hz | 간격 중앙 0.050 최대 0.055 s
+  /odometry/filtered        939 개  30.00 Hz | 간격 중앙 0.033 최대 0.048 s
+  /wheel_odom               783 개  25.00 Hz | 간격 중앙 0.040 최대 0.053 s
+  /scan                     313 개  10.01 Hz | 간격 중앙 0.097 최대 0.118 s
+  /tf                      1565 개  50.01 Hz | 간격 중앙 0.020 최대 0.049 s
+  /map                       16 개  0.50 Hz | 간격 중앙 2.002 최대 2.045 s
