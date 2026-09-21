@@ -1,0 +1,12 @@
+  cpu python3         43.0%
+  cpu python3         39.7%
+  cpu python3         18.9%
+  cpu realsen+        17.5%
+  cpu python3         12.6%
+  cpu python3          8.6%
+/usr/lib/python3/dist-packages/numpy/lib/nanfunctions.py:1119: RuntimeWarning: All-NaN slice encountered
+  r, k = function_base._ureduce(a, func=_nanmedian, axis=axis, out=out,
+==== d30_dec4: 상자 전면 앞단 0.30 m = 카메라 0.316 m, dec 4, 10 s | 정면 18x14 cm 예상 픽셀 3152
+  raw   프레임 168 (16.8 Hz) | 전체 점 중앙  14578 | 상자 구역 점: 중앙  1738  최소  1725  최대  1761  0 인 프레임   0 ( 0%) | 밀도 6.90 점/cm² | 검출 전면 x 0.540(base) y -0.075 z 0.000~0.093
+  relay 프레임 168 (16.8 Hz) | 전체 점 중앙   7091 | 상자 구역 점: 중앙     0  최소     0  최대     0  0 인 프레임 168 (100%) | 밀도 0.00 점/cm² | 검출 전면 x nan(base) y +nan z nan~nan
+  EKF 위반 증분(측정 중): 0 | load 3.75 2.93 2.55 | dec 파라미터: Node not found
