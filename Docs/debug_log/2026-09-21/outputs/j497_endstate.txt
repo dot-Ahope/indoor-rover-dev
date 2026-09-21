@@ -1,0 +1,5 @@
+== 컨테이너 nvblox 프로세스: 0 개
+== 호스트 nvblox 관련 프로세스: 0
+== 로컬 plugins: String values are: ['stvl_layer', 'obstacle_layer', 'inflation_layer']
+== 스택 프로세스: controller 1 planner 1 slam 1 relay 1 agent 1
+== 로드: 2.53 2.87 2.74 | 온도: 47.4 °C

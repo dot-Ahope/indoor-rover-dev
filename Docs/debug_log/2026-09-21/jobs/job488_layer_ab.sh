@@ -19,6 +19,7 @@ sleep 35
 echo "  nav2 프로세스: controller $(pgrep -fc controller_server) planner $(pgrep -fc planner_server) bt $(pgrep -fc bt_navigator) | 오류: $(grep -aciE 'error|failed to load|exception' /tmp/nav2.log)"
 grep -aiE "nvblox|Failed to load|plugin|error" /tmp/nav2.log | grep -aiv "Using plugin\|debug" | head -6 | cut -c1-170
 echo "  로컬 plugins 실행값: $(timeout 12 ros2 param get /local_costmap/local_costmap plugins 2>&1 | tail -1 | cut -c1-100)"
+[ "$QUICK" = 1 ] && { echo "  (QUICK: 감사 생략)"; exit 0; }
 timeout 10 ros2 service call /local_costmap/clear_entirely_local_costmap nav2_msgs/srv/ClearEntireCostmap "{}" >/dev/null 2>&1; sleep 10
 echo "== 로컬 코스트맵 상자 셀·띠·창 (job248 감사, 3 표본)"; for i in 1 2 3; do BOX_HINT="$BX $BY" timeout 100 python3 /tmp/job248_audit.py 2>&1 | grep -aE "^상자|로컬\[|최소폭|상자 셀" | head -4 | cut -c1-170; sleep 2; done
 echo "== 로컬 LETHAL 셀 vs 라이다/카메라 근거 (job315)"; timeout 60 python3 /tmp/job315_boxcells.py 2>&1 | grep -av '^\[' | head -6 | cut -c1-170
