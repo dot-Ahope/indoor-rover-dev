@@ -1,0 +1,82 @@
+  0.00 [bt_navigator-6] [INFO] [1789951095.630659811] [bt_navigator]: Begin navigating from current location (0.00, 0.00) to (2.00, 0.06)
+  0.04 [bt_navigator-6] [WARN] [1789951095.669128901] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+  0.05 [controller_server-2] [INFO] [1789951095.684083026] [controller_server]: Received a goal, begin computing control effort.
+  0.05 [controller_server-2] [WARN] [1789951095.684832905] [controller_server]: No goal checker was specified in parameter 'current_goal_checker'. Server will use only plugin loaded general_goal_checker . This warning will appear once.
+  0.06 [controller_server-2] [INFO] [1789951095.688609117] [controller_server]: Optimizer reset
+  3.49 [bt_navigator-6] [WARN] [1789951099.121189280] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+ 12.47 [controller_server-2] [WARN] [1789951108.096013842] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+ 12.75 [controller_server-2] [WARN] [1789951108.385581851] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+ 12.84 [bt_navigator-6] [WARN] [1789951108.472664295] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+ 12.88 [controller_server-2] [WARN] [1789951108.506943682] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+ 13.06 [bt_navigator-6] [WARN] [1789951108.689446458] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+ 13.23 [controller_server-2] [WARN] [1789951108.859093192] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+ 13.34 [controller_server-2] [WARN] [1789951108.970149107] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+ 13.39 [controller_server-2] [WARN] [1789951109.017211861] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+ 14.86 [controller_server-2] [WARN] [1789951110.485937477] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+ 14.94 [bt_navigator-6] [WARN] [1789951110.569125656] [bt_navigator_navigate_to_pose_rclcpp_node]: Timed out while waiting for action server to acknowledge goal request for compute_path_to_pose
+ 14.94 [planner_server-4] [INFO] [1789951110.569625863] [global_costmap.global_costmap]: Received request to clear except a region the global_costmap
+ 15.79 [controller_server-2] [WARN] [1789951111.417408322] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+ 15.92 [controller_server-2] [WARN] [1789951111.554652266] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+ 16.02 [controller_server-2] [WARN] [1789951111.654295507] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+ 16.11 [controller_server-2] [WARN] [1789951111.744783652] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+ 16.18 [controller_server-2] [WARN] [1789951111.812576446] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+ 16.76 [controller_server-2] [WARN] [1789951112.390023678] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+ 16.98 [controller_server-2] [WARN] [1789951112.608528056] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+ 18.07 [bt_navigator-6] [WARN] [1789951113.699020503] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+ 18.87 [controller_server-2] [WARN] [1789951114.496291941] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+ 19.72 [bt_navigator-6] [WARN] [1789951115.352984225] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+ 20.21 [bt_navigator-6] [WARN] [1789951115.838759702] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+ 20.28 [bt_navigator-6] [WARN] [1789951115.909117499] [bt_navigator_navigate_to_pose_rclcpp_node]: Timed out while waiting for action server to acknowledge goal request for follow_path
+ 20.28 [controller_server-2] [INFO] [1789951115.909982709] [local_costmap.local_costmap]: Received request to clear except a region the local_costmap
+ 20.38 [bt_navigator-6] [WARN] [1789951116.012134373] [bt_navigator_navigate_to_pose_rclcpp_node]: Timed out while waiting for action server to acknowledge goal request for follow_path
+ 20.38 [controller_server-2] [INFO] [1789951116.012713207] [local_costmap.local_costmap]: Received request to clear except a region the local_costmap
+ 20.38 [planner_server-4] [INFO] [1789951116.014203652] [global_costmap.global_costmap]: Received request to clear except a region the global_costmap
+ 20.41 [bt_navigator-6] [WARN] [1789951116.038738641] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+ 20.47 [controller_server-2] [WARN] [1789951116.101915354] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+ 21.05 [bt_navigator-6] [WARN] [1789951116.679225874] [bt_navigator_navigate_to_pose_rclcpp_node]: Timed out while waiting for action server to acknowledge goal request for follow_path
+ 21.05 [controller_server-2] [INFO] [1789951116.681002057] [local_costmap.local_costmap]: Received request to clear except a region the local_costmap
+ 21.06 [controller_server-2] [WARN] [1789951116.694043575] [controller_server]: [follow_path] [ActionServer] Aborting handle.
+ 21.06 [controller_server-2] [WARN] [1789951116.694987892] [controller_server]: [follow_path] [ActionServer] Aborting handle.
+ 21.06 [controller_server-2] [WARN] [1789951116.695295933] [controller_server]: [follow_path] [ActionServer] Aborting handle.
+ 21.25 [controller_server-2] [WARN] [1789951116.877569593] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+ 21.27 [controller_server-2] [WARN] [1789951116.897312020] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+ 25.18 [bt_navigator-6] [WARN] [1789951120.812593817] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+ 27.38 [bt_navigator-6] [WARN] [1789951123.012795316] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+ 28.42 [bt_navigator-6] [WARN] [1789951124.046612567] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+ 31.09 [controller_server-2] [INFO] [1789951126.717179619] [controller_server]: Reached the goal!
+ 31.12 [bt_navigator-6] [INFO] [1789951126.753558965] [bt_navigator]: Goal succeeded
+ 52.27 [planner_server-4] [INFO] [1789951147.903589045] [global_costmap.global_costmap]: Message Filter dropping message: frame 'camera_depth_optical_frame' at time 1789951147.6
+ 52.30 [planner_server-4] [INFO] [1789951147.935503510] [global_costmap.global_costmap]: Message Filter dropping message: frame 'lidar_link' at time 1789951147.629 for reason 't
+ 59.81 [planner_server-4] [INFO] [1789951155.436034759] [global_costmap.global_costmap]: Message Filter dropping message: frame 'lidar_link' at time 1789951155.133 for reason 't
+ 59.81 [planner_server-4] [INFO] [1789951155.444018262] [global_costmap.global_costmap]: Message Filter dropping message: frame 'camera_depth_optical_frame' at time 1789951155.1
+=== 드라이브 표 (1 s) ===
+  2.0 +0.060 +0.005 |  0.814    0.136 +0.312 |    99    99      3 | +0.081 +0.074
+ 12.0 +0.766 +0.224 |  0.175    0.117 +0.294 |    99    99      0 | +0.078 -0.035
+ 22.0 +1.494 +0.280 |  0.148    0.201 +0.278 |    99    99      0 | +0.080 -0.068
+bag tgz 2547010
+=== SLAM 생존(주행 후) ===
+map->odom 101 개/5 s, 최대 간격 0.05 s, 최대 stamp 지연 -0.06 s
+OK
+로버 map 자세: - Translation: [1.935, 0.106, 0.000] - Rotation: in RPY (radian) [0.000, 0.000, -0.049] 
+=== top: 프로세스별 CPU 평균/최대 (주행 중) ===
+스냅샷 21 (2 s), load 평균 8.6 최대 9.3
+  python3                                  평균 104.7% 최대  56.7%
+  async_slam_tool                          평균  43.2% 최대  54.5%
+  controller_serv                          평균  43.1% 최대  82.4%
+  ekf_node                                 평균  42.0% 최대  51.5%
+  ros2                                     평균  32.5% 최대  37.1%
+  bt_navigator                             평균  28.5% 최대  32.8%
+  planner_server                           평균  23.6% 최대  27.6%
+  behavior_server                          평균  19.8% 최대  24.0%
+  smoother_server                          평균  18.3% 최대  21.6%
+  micro_ros_agent                          평균  16.1% 최대  74.4%
+  rplidar_node                             평균  14.9% 최대  19.7%
+  realsense2_came                          평균  11.5% 최대  18.7%
+bag 회수 OK 2547010
+drive log OK
+csv OK
+nav2 구간 로그 OK 119 줄
+top 로그 OK
+meta OK
+params OK
+refix csv OK

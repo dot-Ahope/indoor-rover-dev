@@ -1,0 +1,10 @@
+  FollowPathMPPI.CostCritic.collision_cost: 1000000.0
+  FollowPathMPPI.CostCritic.consider_footprint: True
+  FollowPathMPPI.CostCritic.cost_power: 1
+  FollowPathMPPI.CostCritic.cost_weight: 3.81
+  FollowPathMPPI.CostCritic.critical_cost: 300.0
+  FollowPathMPPI.CostCritic.enabled: True
+  FollowPathMPPI.CostCritic.inflation_layer_name: ''
+  FollowPathMPPI.CostCritic.near_goal_distance: 0.5
+  FollowPathMPPI.critics: ['ConstraintCritic', 'CostCritic', 'GoalCritic', 'GoalAngleCritic', 'PathAlignCritic', 'PathFollowCritic', 'PathAngleCritic', 'PreferForwardCritic']
+  FollowPathMPPI.temperature: 0.15
