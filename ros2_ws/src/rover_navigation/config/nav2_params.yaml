@@ -242,6 +242,19 @@ local_costmap:
                           #   패딩을 올려 그런 경로를 계획 단계에서 배제한다(내접 0.215).
                           #   inflation local 0.40 / global 0.35 은 둘 다 0.215 이상이라 조건 충족.
       plugins: ["stvl_layer", "obstacle_layer", "inflation_layer"]
+      # ★ 2026-09-21 Phase N3 A/B: 로컬 코스트맵의 카메라 층을 STVL ↔ nvblox 로 바꿔 끼운다(계획서 N3 "plugins 한 줄"). 위 줄과 아래 줄을 맞바꾸고 nav2 재기동.
+      #   nvblox 는 Isaac ROS 컨테이너에서 돌고(깊이 전용, odom 프레임, 복셀 0.05, 슬라이스 z 0.03~0.30), 호스트 Nav2 는 소스 빌드한 nvblox_nav2 층으로
+      #   /nvblox_node/static_map_slice(DistanceMapSlice, 9.5 Hz)를 읽는다. A/B-1 은 **이진(LETHAL/FREE) + 기존 inflation_layer** 로 두어 바뀌는 것이
+      #   "치명 셀의 출처"(STVL+릴레이 vs nvblox ESDF≤0) 하나뿐이게 한다. ESDF 기울기를 비용으로 직접 쓰는 A/B-2 는 그 뒤(09-18 §15 CostCritic 분석과 함께).
+      # plugins: ["nvblox_layer", "obstacle_layer", "inflation_layer"]
+      nvblox_layer:
+        plugin: "nvblox::nav2::NvbloxCostmapLayer"
+        enabled: true
+        nvblox_map_slice_topic: "/nvblox_node/static_map_slice"
+        convert_to_binary_costmap: true    # A/B-1: 거리 ≤0 → LETHAL, 그 밖 FREE (inflation 은 inflation_layer 가)
+        max_obstacle_distance: 0.40        # A/B-2 에서 쓰는 보간 상한(이진 모드에선 무시) = 로컬 inflation_radius
+        inflation_distance: 0.175          # A/B-2: 이 거리 안은 INSCRIBED(253) = 내접 반경(반폭 0.165 + 패딩 0.01)
+        max_cost_value: 252
       # 2026-09-09 ★ VoxelLayer → SpatioTemporalVoxelLayer (STVL 2.3.4).
       #   문제(§8.8 확정): 스톡 VoxelLayer 는 매 주기 **현재 복셀 격자만 보고** 컬럼 비용을 다시
       #     계산한다. '마지막으로 관측된 때' 라는 개념이 없어, 카메라가 상자를 놓치는 순간 마킹이

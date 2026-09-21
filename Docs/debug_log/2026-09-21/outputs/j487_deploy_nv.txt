@@ -1,0 +1,14 @@
+yaml ok, critics = ['ConstraintCritic', 'CostCritic', 'GoalCritic', 'GoalAngleCritic', 'PathAlignCritic', 'PathFollowCritic', 'PathAngleCritic', 'PreferForwardCritic']
+CostCritic = {'enabled': True, 'cost_power': 1, 'cost_weight': 3.81, 'critical_cost': 300.0, 'consider_footprint': True, 'collision_cost': 1000000.0, 'near_goal_distance': 0.5}
+== 설치본 대비 diff (주석 제외) ==
+105a106,113
+>       nvblox_layer:
+>         plugin: "nvblox::nav2::NvbloxCostmapLayer"
+>         enabled: true
+>         nvblox_map_slice_topic: "/nvblox_node/static_map_slice"
+>         convert_to_binary_costmap: true
+>         max_obstacle_distance: 0.40
+>         inflation_distance: 0.175
+>         max_cost_value: 252
+7632b6e393dc 7632b6e393dc 7632b6e393dc 
+(실행 중 controller_server 는 옛 목록 — 다음 prep 재기동 때 반영)
