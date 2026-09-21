@@ -1,0 +1,17 @@
+== L4T: # R36 (release), REVISION: 5.0, GCID: 43688277, BOARD: gener | JetPack:   Installed: (none)
+== CUDA:  | nvcc: 
+== docker: Docker version 29.3.0, build 5927d80 | 사용자 그룹: jetson,adm,dialout,cdrom,sudo,audio,dip,video,plugdev,input,render,i2c,lpadmin,gdm,sambashare,ollama,docker,weston-launch,gpio
+== nvidia runtime:  Runtimes: io.containerd.runc.v2 nvidia runc  Default Runtime: nvidia 
+== images:
+ubuntu:22.04 108MB
+microros/micro-ros-agent:humble 627MB
+== 디스크: 193G 여유 / 233G | docker root:  /var/lib/docker
+== 메모리: 7607 MB, 가용 5858 | swap 3803 MB | nvpmodel: NV Power Mode: 15W
+  net https://nvcr.io/v2/                                                    401 0.541223s
+  net https://github.com                                                     200 0.149584s
+  net https://isaac.download.nvidia.com/isaac-ros/release-3/ubuntu/jammy/dists/ 404 5.665963s
+  net https://nvidia-isaac-ros.github.io/                                    200 0.364291s
+== apt isaac 흔적: 0 파일 | 패키지: 0 개 검색됨
+== ~/workspaces:  | isaac_ros 디렉토리: 
+== realsense: ros-humble-librealsense2=2.58.3-1jammy.20260720.173911 ros-humble-realsense2-camera=4.58.3-1jammy.20260804.190440 
+== 커널/모듈: 5.15.185-tegra | nvidia-container-toolkit: 1.16.2-1
