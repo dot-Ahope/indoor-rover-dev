@@ -121,3 +121,4 @@
 ## 8. git — 사용자 결정(09-21): **main 은 건드리지 않는다**, 브랜치만 push
 - `feature/wt600-migration` 을 origin 에 push(84a41e6). 태그 `stvl-baseline` 은 이 커밋에 **로컬로만** 만들었다(공유 리포에 태그를 올릴지는 사용자 결정 대기). 계획서 git 전략의 "S5 후 main 병합·태그" 는 보류 — 리포가 회사 공용이라 main 은 손대지 않기로. Phase N 은 이 브랜치에서 갈라지는 `feature/nvblox-migration` 으로.
 - 개인 프로젝트 리포 병행 push 방법은 대화에 제시(원격 2 개 / 공용 히스토리 포함 여부는 회사 확인 필요).
+- (추가) 사용자 확인("그래도 된다") 후 개인 리포 **`dot-Ahope/indoor-rover`(private)** 를 Chrome(개인 계정 로그인 확인)으로 생성, 원격 `personal` 등록, `feature/wt600-migration` + 태그 `stvl-baseline` push. 이후 커밋은 `git push origin feature/wt600-migration && git push personal feature/wt600-migration`. 개인 리포의 기본 브랜치는 이 브랜치(main 없음).
