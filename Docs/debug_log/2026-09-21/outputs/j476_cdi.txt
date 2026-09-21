@@ -1,0 +1,14 @@
+== 전체 오류(CDI 지정 그대로):
+docker: Error response from daemon: failed to create task for container: failed to create shim task: OCI runtime create failed: could not apply required modification to OCI specification: error modifying OCI spec: failed to inject CDI devices: unresolvable CDI devices nvidia.com/gpu=all, nvidia.com/
+
+Run 'docker run --help' for more information
+== CDI 상태: /etc/cdi:  | /var/run/cdi:  | nvidia-ctk NVIDIA Container Toolkit CLI version 1.16.2
+time="2026-09-21T16:43:56+09:00" level=info msg="Found 0 CDI devices"
+== 레거시 모드 시험(NVIDIA_VISIBLE_DEVICES=all):
+
+==========
+== CUDA ==
+==========
+
+CUDA Version 12.6.11
+== 호스트 /dev nvhost: 22 | daemon.json runtimes: 2

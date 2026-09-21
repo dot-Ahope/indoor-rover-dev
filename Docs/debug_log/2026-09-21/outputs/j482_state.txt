@@ -1,0 +1,29 @@
+== 컨테이너 안 nvblox 프로세스:
+   7032    7004   28109  0.0 /usr/bin/python3 /opt/ros/humble/bin/ros2 run micro_ros_agent micro_ros_agent serial --dev /dev/rover -b 460800
+ 128537  128536       0  0.0 bash /tmp/job482_nvblox_state.sh
+== 로그 v05_dec4 끝:
+namespace/tag - NumSamples (Window Length) - Mean 
+-----------
+ros/update_esdf         	1      	0.0
+ros/depth_image_callback	1      	0.0
+ros/tick                	1      	0.0
+-----------
+[INFO] [1789977607.039870960] [nvblox_node]: Delay statistics: 
+NVBlox Delays
+namespace/tag - NumSamples (Window Length) - Mean Delay (seconds) 
+-----------
+ros/depth_image_callback	1      	0.067
+-----------
+== 로그 v03_dec4 오류/경고:
+[INFO] [1789977433.254234662] [nvblox_node]: Create nvblox cuda stream with type: kBlocking
+[WARN] [1789977433.515066916] [nvblox_node]: Requested workspace bounds type: "kUnbounded" not recognized. Defaulting to: kUnbounded
+[WARN] [1789977433.516425361] [nvblox_node]: Requested weighting function: "kInverseSquareWeight" not recognized. Defaulting to: kInverseSquareWeight
+[WARN] [1789977433.516768860] [nvblox_node]: Requested workspace bounds type: "kUnbounded" not recognized. Defaulting to: kUnbounded
+[33m2026-09-21 16:57:13.567 WARN  gxf/std/program.cpp@538: No GXF scheduler specified.[0m
+[INFO] [1789977433.597064322] [nvblox_node]: Started up nvblox node in frame odom and voxel size 0.03
+== 원래 n0 로그 끝(pid 살아있나):
+-----------
+
+== 슬라이스 hz(컨테이너):
+0
+== 호스트 깊이 이미지 크기 지금: 160 | dec 파라미터 timeout: failed to run command ‘ros2’: No such file or directory

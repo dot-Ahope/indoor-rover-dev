@@ -1,0 +1,4 @@
+센서: realsense 1 rplidar 1 ekf 1 relay 1 slam 1 | 에이전트 1
+깊이 이미지 hz: average rate: 15.004 | camera_info: camera_depth_optical_frame | 인코딩: 16UC1 160x120
+TF odom→base_link: - Translation: [0.000, 0.000, 0.000] | odom→camera_depth_optical_frame: - Translation: [0.234, 0.044, 0.143]
+load 1.91 2.62 3.15 | EKF 위반 0
