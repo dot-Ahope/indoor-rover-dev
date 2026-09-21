@@ -11,7 +11,7 @@
 
 ## 1. F5c 추가/변경 사항
 
-### 1.1 [`microros_task.c`](../firmware/rover_jupiter_fw/App/microros/microros_task.c)
+### 1.1 [`microros_task.c`](../../firmware/rover_jupiter_fw/App/microros/microros_task.c)
 - `geometry_msgs/Twist` subscriber (`/cmd_vel`) 추가
 - `rclc_executor` 1개 slot 으로 spin
 - 콜백 `cmdvel_callback`:
@@ -26,7 +26,7 @@
 - 그 다음 `speed_controller_set_target(MOTOR_LEFT/RIGHT, v_l/v_r)` 호출
 - Heartbeat publisher (`/rover/f5b_heartbeat`) 는 F5b 그대로 유지
 
-### 1.2 [`freertos.c`](../firmware/rover_jupiter_fw/Core/Src/freertos.c)
+### 1.2 [`freertos.c`](../../firmware/rover_jupiter_fw/Core/Src/freertos.c)
 - **F4 자동 시퀀스 task 비활성** — `/cmd_vel` 이 target 을 설정하므로 두 source 충돌 방지
 - 회귀 테스트 필요 시 주석 한 줄 해제
 

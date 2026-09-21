@@ -12,14 +12,14 @@
 ## 1. 추가/변경 사항
 
 ### 1.1 cmd_vel watchdog
-[`safety_monitor.{h,c}`](../firmware/rover_jupiter_fw/App/app/) 확장:
+[`safety_monitor.{h,c}`](../../firmware/rover_jupiter_fw/App/app) 확장:
 - `safety_monitor_cmdvel_received()` — cmd_vel 콜백에서 매번 호출, `HAL_GetTick()` 기록
 - `safety_monitor_update()` 가 매 cycle (100Hz) `now − last > 500ms` 체크 → 진입 시 motor stop + speed_controller reset
 - `safety_monitor_cmdvel_timeout()` — 외부 조회용
 - **Latching 안 함** — cmd_vel 다시 들어오면 자동 해제. Stall fault 는 latching 유지 (수동 reset 필요).
 
 ### 1.2 micro-ROS time sync
-[`microros_task.c`](../firmware/rover_jupiter_fw/App/microros/microros_task.c):
+[`microros_task.c`](../../firmware/rover_jupiter_fw/App/microros/microros_task.c):
 - 초기화 직후 `rmw_uros_sync_session(1000)` 호출 → agent 와 동기
 - `s_time_offset_ns` 캐시 (boot time → wall time 변환 가능 — F8 단계에선 header.stamp 는 boot time 그대로 유지, 차후 변환 사용 가능)
 - 콘솔 출력: `[uROS] time sync OK` 또는 FAIL
