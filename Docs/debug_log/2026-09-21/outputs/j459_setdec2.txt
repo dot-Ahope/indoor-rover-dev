@@ -1,0 +1,11 @@
+전: Integer value is: 4 | 원시 점군 크기: 14261x1
+Set parameter successful
+후: Integer value is: 2 | 원시 점군 크기: 52912x1
+원시 hz: average rate: 13.566 | 릴레이 hz: average rate: 12.225
+  cpu python3         43.7%
+  cpu python3         42.7%
+  cpu realsen+        18.2%
+  cpu python3          9.3%
+  cpu python3          4.0%
+  cpu python3          0.3%
+EKF 위반 누적: 30 | load 5.15 3.31 2.85
