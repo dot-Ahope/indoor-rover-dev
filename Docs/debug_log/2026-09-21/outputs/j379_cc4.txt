@@ -1,0 +1,44 @@
+  0.00 [bt_navigator-6] [INFO] [1789969373.332682481] [bt_navigator]: Begin navigating from current location (0.00, 0.00) to (2.00, -0.00)
+  0.02 [bt_navigator-6] [WARN] [1789969373.349732882] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+  0.03 [bt_navigator-6] [WARN] [1789969373.365467239] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+  0.05 [controller_server-2] [INFO] [1789969373.387169638] [controller_server]: Received a goal, begin computing control effort.
+  0.06 [controller_server-2] [WARN] [1789969373.390709214] [controller_server]: No goal checker was specified in parameter 'current_goal_checker'. Server will use only plugin loaded general_goal_checker . This warning will appear once.
+  0.06 [controller_server-2] [INFO] [1789969373.394782696] [controller_server]: Optimizer reset
+ 14.64 [bt_navigator-6] [WARN] [1789969387.975118876] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+ 31.28 [controller_server-2] [INFO] [1789969404.615191109] [controller_server]: Reached the goal!
+ 31.32 [bt_navigator-6] [INFO] [1789969404.655554299] [bt_navigator]: Goal succeeded
+ 43.45 [planner_server-4] [INFO] [1789969416.786928466] [global_costmap.global_costmap]: Message Filter dropping message: frame 'lidar_link' at time 1789969416.484 for reason 't
+ 43.49 [planner_server-4] [INFO] [1789969416.819651940] [global_costmap.global_costmap]: Message Filter dropping message: frame 'camera_depth_optical_frame' at time 1789969416.5
+=== 드라이브 표 (1 s) ===
+  2.0 +0.080 +0.013 |  0.776    0.153 +0.286 |   100   100    195 | +0.081 +0.100
+ 12.0 +0.756 +0.248 |  0.257    0.158 +0.291 |   100   100      0 | +0.083 +0.082
+ 22.0 +1.467 +0.310 |  0.214    0.202 +0.293 |   100   100      0 | +0.080 -0.271
+bag tgz 2517668
+=== SLAM 생존(주행 후) ===
+map->odom 99 개/5 s, 최대 간격 0.06 s, 최대 stamp 지연 -0.05 s
+OK
+로버 map 자세: - Translation: [1.931, 0.057, 0.000] - Rotation: in RPY (radian) [0.000, 0.000, -0.075] 
+=== top: 프로세스별 CPU 평균/최대 (주행 중) ===
+스냅샷 20 (2 s), load 평균 7.5 최대 8.6
+  python3                                  평균 111.3% 최대  68.3%
+  controller_serv                          평균  36.8% 최대  68.3%
+  ros2                                     평균  20.0% 최대  36.1%
+  micro_ros_agent                          평균  16.3% 최대  86.1%
+  bt_navigator                             평균  15.9% 최대  17.3%
+  rplidar_node                             평균  15.2% 최대  16.8%
+  realsense2_came                          평균  13.8% 최대  17.3%
+  async_slam_tool                          평균  12.8% 최대  20.3%
+  ekf_node                                 평균  11.9% 최대  15.3%
+  planner_server                           평균  11.4% 최대  19.3%
+  lifecycle_manag                          평균  11.4% 최대  16.8%
+  behavior_server                          평균   8.1% 최대  14.4%
+bag 회수 OK 2517668
+drive log OK
+csv OK
+nav2 구간 로그 OK 81 줄
+top 로그 OK
+meta OK
+params OK
+refix csv OK
+tegrastats OK 40 줄
+rss OK

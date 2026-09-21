@@ -1,0 +1,38 @@
+=== 1. 재기동 (192.168.0.101) ===
+  [sensor_conditioner.py-6] [INFO] [1789968853.335684564] [sensor_conditioner]: gyro bias calibrated: (-0.00823, -0.00101, -0.00185) rad/s, std=(0.0026, 0.0022, 0.0018)
+  map->odom: - Translation: [0.000, 0.000, 0.000]
+  로버 자세: - Translation: [0.000, 0.000, 0.000] - Rotation: in RPY (radian) [0.000, 0.000, -0.001] 
+   틈 [y_lo, y_hi]         폭        차체0.33     패딩0.43     허용 자세각(패딩)
+=== 2. 릴레이·readback·상자 게이트 ===
+=== 릴레이 ===
+남은 릴레이: 1
+발행자 Publisher count: 1
+=== readback ===
+  controller_frequency               Double value is: 10.0
+  FollowPathMPPI.temperature         Double value is: 0.15
+  FollowPathMPPI.iteration_count     Integer value is: 2
+  FollowPathMPPI.vx_std              Double value is: 0.08
+  FollowPathMPPI.wz_std              Double value is: 0.4
+  FollowPathMPPI.visualize           Boolean value is: False
+  BT raw_path: 4  SmoothPath: 1
+  nav2: controller 1 planner 1 bt 1 stuck_monitor 1
+  로버 자세: - Translation: [0.000, 0.000, 0.000] - Rotation: in RPY (radian) [0.000, 0.000, -0.001] 
+=== 프로세스·부하 ===
+load 6.75 5.26 4.75  shadow_mode: SHADOW
+=== 게이트 ===
+상자: 전면 x=1.147  중심 y=-0.098  (143점)  → x 구간 [1.15, 1.26], y 구간 [-0.19, -0.01]
+   → 전방 2.2m 최소폭:  기준1 0.45 m (@1.20)   기준2(RPP) 0.25 m (@0.90)   기준3(오류) 0.00 m (@0.70)
+상자 x=1.147 y=-0.098 | 띠 근거 없는 셀 0 (≤1) | 상자 셀 3표본 -0.024 -0.024 -0.023 → -0.024 | 창 0.379 m (≥0.20; 좌측 0.55)
+=== 3. 목표 근처 크리틱·SLAM·목표 여유 ===
+  FollowPathMPPI.GoalCritic.cost_weight      Double value is: 10.0
+  FollowPathMPPI.PathFollowCritic.threshold_to_consider Double value is: 0.2
+  FollowPathMPPI.PathAlignCritic.threshold_to_consider Double value is: 0.2
+  FollowPathMPPI.PathAngleCritic.threshold_to_consider Double value is: 0.2
+  FollowPathMPPI.PathFollowCritic.cost_weight Double value is: 10.0
+  FollowPathMPPI.PathFollowCritic.offset_from_furthest Integer value is: 20
+  FollowPathMPPI.visualize                   Boolean value is: False
+  bt.default_server_timeout                  Integer value is: 100
+map->odom 101 개/5 s, 최대 간격 0.05 s, 최대 stamp 지연 -0.10 s
+OK
+목표 map (2.00, -0.01) yaw -0° | 풋프린트↔LETHAL 최소 0.345 m (셀 map 1.82, -0.53) | 목표 셀 비용 47
+  battery: voltage: 12.216165542602539

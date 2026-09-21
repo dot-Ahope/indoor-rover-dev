@@ -1,0 +1,1 @@
+tegra_cc4.log: 40 s | RAM 1601/1618 MB(최대) | CPU 6코어 평균 59% 최대 88%, 클럭 평균 1187 MHz | GPU(GR3D) 평균 0.0% 최대 0% | 온도 cpu 48.0 gpu 48.4 tj 48.4(최대 48.8) °C | 전력 VDD_IN 평균 6602 최대 7827 mW, CPU+GPU+CV 평균 1744 mW
