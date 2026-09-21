@@ -1,0 +1,119 @@
+[bt_navigator-6] [INFO] [1789951095.630659811] [bt_navigator]: Begin navigating from current location (0.00, 0.00) to (2.00, 0.06)
+[smoother_server-3] [INFO] [1789951095.666484883] [smoother_server]: Received a path to smooth.
+[bt_navigator-6] [WARN] [1789951095.669128901] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[controller_server-2] [INFO] [1789951095.684083026] [controller_server]: Received a goal, begin computing control effort.
+[controller_server-2] [WARN] [1789951095.684832905] [controller_server]: No goal checker was specified in parameter 'current_goal_checker'. Server will use only plugin loaded general_goal_checker . This warning will appear once.
+[controller_server-2] [INFO] [1789951095.688609117] [controller_server]: Optimizer reset
+[smoother_server-3] [INFO] [1789951096.714444477] [smoother_server]: Received a path to smooth.
+[controller_server-2] [INFO] [1789951096.785215426] [controller_server]: Passing new path to controller.
+[planner_server-4] [INFO] [1789951097.516460864] [global_costmap.global_costmap]: StaticLayer: Resizing costmap to 162 X 135 at 0.050000 m/pix
+[smoother_server-3] [INFO] [1789951097.762035436] [smoother_server]: Received a path to smooth.
+[controller_server-2] [INFO] [1789951097.885213725] [controller_server]: Passing new path to controller.
+[smoother_server-3] [INFO] [1789951098.806472873] [smoother_server]: Received a path to smooth.
+[controller_server-2] [INFO] [1789951098.885211777] [controller_server]: Passing new path to controller.
+[bt_navigator-6] [WARN] [1789951099.121189280] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[planner_server-4] [INFO] [1789951099.516457507] [global_costmap.global_costmap]: StaticLayer: Resizing costmap to 162 X 138 at 0.050000 m/pix
+[smoother_server-3] [INFO] [1789951099.852537512] [smoother_server]: Received a path to smooth.
+[controller_server-2] [INFO] [1789951099.885401084] [controller_server]: Passing new path to controller.
+[smoother_server-3] [INFO] [1789951100.901949663] [smoother_server]: Received a path to smooth.
+[controller_server-2] [INFO] [1789951100.985214112] [controller_server]: Passing new path to controller.
+[smoother_server-3] [INFO] [1789951101.957358206] [smoother_server]: Received a path to smooth.
+[controller_server-2] [INFO] [1789951102.085210423] [controller_server]: Passing new path to controller.
+[smoother_server-3] [INFO] [1789951103.038928081] [smoother_server]: Received a path to smooth.
+[controller_server-2] [INFO] [1789951103.085316737] [controller_server]: Passing new path to controller.
+[planner_server-4] [INFO] [1789951103.516355224] [global_costmap.global_costmap]: StaticLayer: Resizing costmap to 162 X 143 at 0.050000 m/pix
+[smoother_server-3] [INFO] [1789951104.103045562] [smoother_server]: Received a path to smooth.
+[controller_server-2] [INFO] [1789951104.185221364] [controller_server]: Passing new path to controller.
+[smoother_server-3] [INFO] [1789951105.161776589] [smoother_server]: Received a path to smooth.
+[controller_server-2] [INFO] [1789951105.185256446] [controller_server]: Passing new path to controller.
+[planner_server-4] [INFO] [1789951105.518592082] [global_costmap.global_costmap]: StaticLayer: Resizing costmap to 163 X 146 at 0.050000 m/pix
+[smoother_server-3] [INFO] [1789951106.214394485] [smoother_server]: Received a path to smooth.
+[controller_server-2] [INFO] [1789951106.285215121] [controller_server]: Passing new path to controller.
+[smoother_server-3] [INFO] [1789951107.318063435] [smoother_server]: Received a path to smooth.
+[controller_server-2] [INFO] [1789951107.385210709] [controller_server]: Passing new path to controller.
+[planner_server-4] [INFO] [1789951107.516372650] [global_costmap.global_costmap]: StaticLayer: Resizing costmap to 164 X 150 at 0.050000 m/pix
+[controller_server-2] [WARN] [1789951108.096013842] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+[controller_server-2] [WARN] [1789951108.385581851] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+[smoother_server-3] [INFO] [1789951108.392597138] [smoother_server]: Received a path to smooth.
+[bt_navigator-6] [WARN] [1789951108.472664295] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[controller_server-2] [WARN] [1789951108.506943682] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+[controller_server-2] [INFO] [1789951108.509581234] [controller_server]: Passing new path to controller.
+[bt_navigator-6] [WARN] [1789951108.689446458] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[controller_server-2] [WARN] [1789951108.859093192] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+[controller_server-2] [WARN] [1789951108.970149107] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+[controller_server-2] [WARN] [1789951109.017211861] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+[smoother_server-3] [INFO] [1789951109.451469417] [smoother_server]: Received a path to smooth.
+[controller_server-2] [INFO] [1789951109.488250607] [controller_server]: Passing new path to controller.
+[planner_server-4] [INFO] [1789951109.516489072] [global_costmap.global_costmap]: StaticLayer: Resizing costmap to 188 X 172 at 0.050000 m/pix
+[controller_server-2] [WARN] [1789951110.485937477] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+[bt_navigator-6] [WARN] [1789951110.569125656] [bt_navigator_navigate_to_pose_rclcpp_node]: Timed out while waiting for action server to acknowledge goal request for compute_path_to_pose
+[planner_server-4] [INFO] [1789951110.569625863] [global_costmap.global_costmap]: Received request to clear except a region the global_costmap
+[controller_server-2] [WARN] [1789951111.417408322] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+[planner_server-4] [INFO] [1789951111.516349814] [global_costmap.global_costmap]: StaticLayer: Resizing costmap to 188 X 172 at 0.050000 m/pix
+[controller_server-2] [WARN] [1789951111.554652266] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+[smoother_server-3] [INFO] [1789951111.557523234] [smoother_server]: Received a path to smooth.
+[controller_server-2] [WARN] [1789951111.654295507] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+[controller_server-2] [INFO] [1789951111.654448631] [controller_server]: Passing new path to controller.
+[controller_server-2] [WARN] [1789951111.744783652] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+[controller_server-2] [WARN] [1789951111.812576446] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+[controller_server-2] [WARN] [1789951112.390023678] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+[controller_server-2] [WARN] [1789951112.608528056] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+[smoother_server-3] [INFO] [1789951112.612862557] [smoother_server]: Received a path to smooth.
+[controller_server-2] [INFO] [1789951112.685203298] [controller_server]: Passing new path to controller.
+[planner_server-4] [INFO] [1789951113.516426665] [global_costmap.global_costmap]: StaticLayer: Resizing costmap to 188 X 172 at 0.050000 m/pix
+[smoother_server-3] [INFO] [1789951113.668482257] [smoother_server]: Received a path to smooth.
+[bt_navigator-6] [WARN] [1789951113.699020503] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[controller_server-2] [INFO] [1789951113.787768144] [controller_server]: Passing new path to controller.
+[controller_server-2] [WARN] [1789951114.496291941] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+[smoother_server-3] [INFO] [1789951114.727444220] [smoother_server]: Received a path to smooth.
+[controller_server-2] [INFO] [1789951114.796384023] [controller_server]: Passing new path to controller.
+[bt_navigator-6] [WARN] [1789951115.352984225] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[planner_server-4] [INFO] [1789951115.516348031] [global_costmap.global_costmap]: StaticLayer: Resizing costmap to 188 X 197 at 0.050000 m/pix
+[smoother_server-3] [INFO] [1789951115.786869989] [smoother_server]: Received a path to smooth.
+[bt_navigator-6] [WARN] [1789951115.838759702] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-6] [WARN] [1789951115.909117499] [bt_navigator_navigate_to_pose_rclcpp_node]: Timed out while waiting for action server to acknowledge goal request for follow_path
+[controller_server-2] [INFO] [1789951115.909982709] [local_costmap.local_costmap]: Received request to clear except a region the local_costmap
+[bt_navigator-6] [WARN] [1789951116.012134373] [bt_navigator_navigate_to_pose_rclcpp_node]: Timed out while waiting for action server to acknowledge goal request for follow_path
+[controller_server-2] [INFO] [1789951116.012713207] [local_costmap.local_costmap]: Received request to clear except a region the local_costmap
+[planner_server-4] [INFO] [1789951116.014203652] [global_costmap.global_costmap]: Received request to clear except a region the global_costmap
+[bt_navigator-6] [WARN] [1789951116.038738641] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[controller_server-2] [WARN] [1789951116.101915354] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+[smoother_server-3] [INFO] [1789951116.543499075] [smoother_server]: Received a path to smooth.
+[bt_navigator-6] [WARN] [1789951116.679225874] [bt_navigator_navigate_to_pose_rclcpp_node]: Timed out while waiting for action server to acknowledge goal request for follow_path
+[controller_server-2] [INFO] [1789951116.681002057] [local_costmap.local_costmap]: Received request to clear except a region the local_costmap
+[controller_server-2] [WARN] [1789951116.694043575] [controller_server]: [follow_path] [ActionServer] Aborting handle.
+[controller_server-2] [WARN] [1789951116.694987892] [controller_server]: [follow_path] [ActionServer] Aborting handle.
+[controller_server-2] [WARN] [1789951116.695295933] [controller_server]: [follow_path] [ActionServer] Aborting handle.
+[controller_server-2] [INFO] [1789951116.856451061] [controller_server]: Passing new path to controller.
+[controller_server-2] [WARN] [1789951116.877569593] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+[controller_server-2] [WARN] [1789951116.897312020] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+[planner_server-4] [INFO] [1789951117.516364992] [global_costmap.global_costmap]: StaticLayer: Resizing costmap to 188 X 198 at 0.050000 m/pix
+[smoother_server-3] [INFO] [1789951117.620442247] [smoother_server]: Received a path to smooth.
+[controller_server-2] [INFO] [1789951117.696377460] [controller_server]: Passing new path to controller.
+[smoother_server-3] [INFO] [1789951118.699401241] [smoother_server]: Received a path to smooth.
+[controller_server-2] [INFO] [1789951118.798370180] [controller_server]: Passing new path to controller.
+[smoother_server-3] [INFO] [1789951119.764844383] [smoother_server]: Received a path to smooth.
+[controller_server-2] [INFO] [1789951119.796394976] [controller_server]: Passing new path to controller.
+[bt_navigator-6] [WARN] [1789951120.812593817] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[smoother_server-3] [INFO] [1789951120.828817928] [smoother_server]: Received a path to smooth.
+[controller_server-2] [INFO] [1789951120.896379282] [controller_server]: Passing new path to controller.
+[smoother_server-3] [INFO] [1789951121.898981533] [smoother_server]: Received a path to smooth.
+[controller_server-2] [INFO] [1789951121.996380756] [controller_server]: Passing new path to controller.
+[smoother_server-3] [INFO] [1789951122.952230048] [smoother_server]: Received a path to smooth.
+[controller_server-2] [INFO] [1789951122.998484352] [controller_server]: Passing new path to controller.
+[bt_navigator-6] [WARN] [1789951123.012795316] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[smoother_server-3] [INFO] [1789951124.003836706] [smoother_server]: Received a path to smooth.
+[bt_navigator-6] [WARN] [1789951124.046612567] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[controller_server-2] [INFO] [1789951124.096385089] [controller_server]: Passing new path to controller.
+[smoother_server-3] [INFO] [1789951125.078836891] [smoother_server]: Received a path to smooth.
+[controller_server-2] [INFO] [1789951125.196390321] [controller_server]: Passing new path to controller.
+[planner_server-4] [INFO] [1789951125.516401842] [global_costmap.global_costmap]: StaticLayer: Resizing costmap to 188 X 198 at 0.050000 m/pix
+[smoother_server-3] [INFO] [1789951126.135918531] [smoother_server]: Received a path to smooth.
+[controller_server-2] [INFO] [1789951126.196380272] [controller_server]: Passing new path to controller.
+[controller_server-2] [INFO] [1789951126.717179619] [controller_server]: Reached the goal!
+[bt_navigator-6] [INFO] [1789951126.753558965] [bt_navigator]: Goal succeeded
+[planner_server-4] [INFO] [1789951127.519614109] [global_costmap.global_costmap]: StaticLayer: Resizing costmap to 188 X 198 at 0.050000 m/pix
+[planner_server-4] [INFO] [1789951147.903589045] [global_costmap.global_costmap]: Message Filter dropping message: frame 'camera_depth_optical_frame' at time 1789951147.625 for reason 'the timestamp on the message is earlier than all the data in the transform cache'
+[planner_server-4] [INFO] [1789951147.935503510] [global_costmap.global_costmap]: Message Filter dropping message: frame 'lidar_link' at time 1789951147.629 for reason 'the timestamp on the message is earlier than all the data in the transform cache'
+[planner_server-4] [INFO] [1789951155.436034759] [global_costmap.global_costmap]: Message Filter dropping message: frame 'lidar_link' at time 1789951155.133 for reason 'the timestamp on the message is earlier than all the data in the transform cache'
+[planner_server-4] [INFO] [1789951155.444018262] [global_costmap.global_costmap]: Message Filter dropping message: frame 'camera_depth_optical_frame' at time 1789951155.164 for reason 'the timestamp on the message is earlier than all the data in the transform cache'

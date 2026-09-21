@@ -1,0 +1,21 @@
+nvpmodel: NV Power Mode: 15W 0  | jetson_clocks 상태: 0
+sudo 불가
+CPU governor/freq: schedutil 1497 1497 1497 1497 1497 1497 MHz (max 1497)
+online cpus: 0-5 | load 2.91 4.04 3.12 | 온도 49250
+idle top 8:
+  python3                      42.2%
+  rplidar+                     19.6%
+  python3                      18.6%
+  control+                     15.7%
+  realsen+                     13.7%
+  lifecyc+                     13.7%
+  planner+                     12.7%
+  ekf_node                     11.8%
+sensors.log EKF 위반 누적: 62 | slam 폐기 42
+ekf 주기 관련 마지막 3줄:
+[ekf_node-7] Failed to meet update rate! Took 0.056685594999999998345seconds. Try decreasing the rate, limiting sensor output frequency, or limiting t
+[ekf_node-7] Failed to meet update rate! Took 0.046768171999999996746seconds. Try decreasing the rate, limiting sensor output frequency, or limiting t
+[ekf_node-7] Failed to meet update rate! Took 0.041635090999999999073seconds. Try decreasing the rate, limiting sensor output frequency, or limiting t
+docker stats(에이전트):
+microros_agent 3.58%
+dmesg 최근(throttle/thermal/usb):
