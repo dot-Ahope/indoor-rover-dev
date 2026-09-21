@@ -1,0 +1,8 @@
+== 루트 디스크: /dev/nvme0n1p1 | nvme0n1 disk 238.5G    0 M.2 NVME 256GB;
+== git-lfs: 없음  | git: git version 2.34.1
+== ISAAC_ROS_WS in bashrc: 0 | ~/workspaces: 없음
+== /dev/shm: 3.8G 중 84K 사용 | daemon.json: {"runtimes":{"nvidia":{"args":[],"path":"nvidia-container-runtime"}},"default-runtime":"nvidia"}
+== docker 익명 풀 시험(작은 공개 이미지, nvcr.io): 
+nvcr.io/nvidia/cuda:12.6.0-base-ubuntu22.04
+== 카메라 토픽(깊이 이미지·camera_info 존재?): 
+== 온도/전원 지금: 47406 | nvpmodel NV Power Mode: 15W
