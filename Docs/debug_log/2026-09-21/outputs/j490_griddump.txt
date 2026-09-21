@@ -1,0 +1,19 @@
+## STVL 모드 코스트맵
+==== stvl 로컬 코스트맵 60x60 @0.05: LETHAL 201, 내접 1232, 미지 0, 비용>0 1463
+  앞 0.3~1.6 m LETHAL 셀 58: y 분포 -0.9:15 -0.7:24 -0.5:0 -0.3:5 -0.1:4 +0.1:0 +0.3:0 +0.5:3 +0.7:7
+## nvblox 모드
+  nav2 프로세스: controller 1 planner 1 bt 1 | 오류: 0
+  로컬 plugins 실행값: String values are: ['nvblox_layer', 'obstacle_layer', 'inflation_layer']
+   → 전방 2.2m 최소폭:  기준1 0.40 m (@1.20)   기준2(RPP) 0.25 m (@0.90)   기준3(오류) 0.00 m (@0.70)
+   → 전방 2.2m 최소폭:  기준1 0.40 m (@1.20)   기준2(RPP) 0.25 m (@0.90)   기준3(오류) 0.00 m (@0.70)
+==== nvblox 로컬 코스트맵 60x60 @0.05: LETHAL 278, 내접 1291, 미지 0, 비용>0 1397
+  앞 0.3~1.6 m LETHAL 셀 111: y 분포 -0.9:34 -0.7:32 -0.5:0 -0.3:14 -0.1:5 +0.1:0 +0.3:0 +0.5:13 +0.7:13
+==== nvblox nvblox 슬라이스 48x72 @0.05 (odom): 장애물(≤0) 176, 미지 2245, 자유 1035 | 거리 최소 -0.40 최대 1.00
+## STVL 복귀
+  로컬 plugins 실행값: String values are: ['stvl_layer', 'obstacle_layer', 'inflation_layer']
+61612 /tmp/grid_nvblox_costmap.json
+77732 /tmp/grid_nvblox_slice.json
+60209 /tmp/grid_stvl_costmap.json
+회수 grid_stvl_costmap.json 60209 B
+회수 grid_nvblox_costmap.json 61612 B
+회수 grid_nvblox_slice.json 77732 B
