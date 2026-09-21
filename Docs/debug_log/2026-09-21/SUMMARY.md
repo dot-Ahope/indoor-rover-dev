@@ -117,3 +117,7 @@
 - 새 계측: tegrastats(sudo 불필요) — **GPU 0 %**, CPU 6코어 58~59 %(최대 92), 전력 6.6 W 평균/7.9 W 최대, tj 48.8 °C, RAM 1.6 GB; 노드 RSS(realsense 103·planner 89·controller 67·slam 45 MB); bag 발행 주기(로컬 코스트맵 1.67 Hz = publish 설정, 전역 0.57~0.67, 경로 0.95, cmd_vel 20, odom 30, scan 10, tf 50).
 - 기준선 = cc2·cc3·cc4·cc5(4 회, cc1 제외 사유 §1~2). 표·알려진 한계·nvblox 채택 기준·재현 절차는 `BASELINE_STVL.md`.
 - 다음(계획서 git 전략): `feature/wt600-migration` → main 병합 + 태그 `stvl-baseline`(병합 전 push 필요 — 사용자 지시 대기) → `feature/nvblox-migration` 에서 Phase N0.
+
+## 8. git — 사용자 결정(09-21): **main 은 건드리지 않는다**, 브랜치만 push
+- `feature/wt600-migration` 을 origin 에 push(84a41e6). 태그 `stvl-baseline` 은 이 커밋에 **로컬로만** 만들었다(공유 리포에 태그를 올릴지는 사용자 결정 대기). 계획서 git 전략의 "S5 후 main 병합·태그" 는 보류 — 리포가 회사 공용이라 main 은 손대지 않기로. Phase N 은 이 브랜치에서 갈라지는 `feature/nvblox-migration` 으로.
+- 개인 프로젝트 리포 병행 push 방법은 대화에 제시(원격 2 개 / 공용 히스토리 포함 여부는 회사 확인 필요).
