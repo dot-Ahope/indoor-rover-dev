@@ -1,0 +1,39 @@
+## 수정·재빌드
+== 수정 전: 308:  Eigen::Vector2i pos_index = scaled_position.array().round().cast<int>();
+== 수정 후: 308:  Eigen::Vector2i pos_index = scaled_position.array().floor().cast<int>();  // 2026-09-21 수정: origin 은 픽셀 
+== git diff (/home/jetson/workspaces/isaac_ros-dev/src/isaac_ros_nvblox)
+ nvblox_nav2/src/nvblox_costmap_layer.cpp | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+-  Eigen::Vector2i pos_index = scaled_position.array().round().cast<int>();
++  Eigen::Vector2i pos_index = scaled_position.array().floor().cast<int>();  // 2026-09-21 수정: origin 은 픽셀 모서리(DistanceMapSlice.msg) �
+Starting >>> nvblox_nav2
+Finished <<< nvblox_nav2 [35.8s]
+Summary: 1 package finished [36.5s]
+빌드 소요 38 s
+.so 갱신: NO (09:00:00)
+== 실행 중 Nav2 는 아직 옛 .so — job488 재기동 때 반영
+## STVL 모드 코스트맵(stvl2)
+==== stvl2 로컬 코스트맵 60x60 @0.05: LETHAL 211, 내접 1238, 미지 0, 비용>0 1414
+  앞 0.3~1.6 m LETHAL 셀 57: y 분포 -0.9:15 -0.7:23 -0.5:0 -0.3:5 -0.1:4 +0.1:0 +0.3:0 +0.5:3 +0.7:7
+## nvblox 모드(수정 층, nvfix)
+  nav2 프로세스: controller 1 planner 1 bt 1 | 오류: 0
+  로컬 plugins 실행값: String values are: ['nvblox_layer', 'obstacle_layer', 'inflation_layer']
+== 로컬 코스트맵 상자 셀·띠·창 (job248 감사, 3 표본)
+   → 전방 2.2m 최소폭:  기준1 0.40 m (@1.20)   기준2(RPP) 0.25 m (@0.90)   기준3(오류) 0.00 m (@0.70)
+   → 전방 2.2m 최소폭:  기준1 0.40 m (@1.20)   기준2(RPP) 0.25 m (@0.90)   기준3(오류) 0.00 m (@0.70)
+   → 전방 2.2m 최소폭:  기준1 0.40 m (@1.20)   기준2(RPP) 0.25 m (@0.90)   기준3(오류) 0.00 m (@0.70)
+== 로컬 LETHAL 셀 vs 라이다/카메라 근거 (job315)
+== CPU 20 s(top 2 회 평균): python3 43.2% | nvblox_+ 21.8% | python3 18.7% | planner+ 11.7% | python3 9.3% | python3 4.8% | python3 0.2% |  load 5.58 3.40 2.79
+==== nvfix 로컬 코스트맵 60x60 @0.05: LETHAL 294, 내접 1291, 미지 0, 비용>0 1333
+  앞 0.3~1.6 m LETHAL 셀 121: y 분포 -0.9:38 -0.7:40 -0.5:0 -0.3:11 -0.1:9 +0.1:0 +0.3:0 +0.5:7 +0.7:16
+==== nvfix nvblox 슬라이스 48x72 @0.05 (odom): 장애물(≤0) 173, 미지 2247, 자유 1036 | 거리 최소 -0.81 최대 2.00
+## STVL 복귀
+  nav2 프로세스: controller 1 planner 1 bt 1 | 오류: 0
+  로컬 plugins 실행값: String values are: ['stvl_layer', 'obstacle_layer', 'inflation_layer']
+60758 /tmp/grid_nvfix_costmap.json
+77720 /tmp/grid_nvfix_slice.json
+59574 /tmp/grid_stvl2_costmap.json
+회수 grid_stvl2_costmap.json 59574 B
+회수 grid_nvfix_costmap.json 60758 B
+회수 grid_nvfix_slice.json 77720 B
+회수 j493_ab_nvfix.txt 2589 B

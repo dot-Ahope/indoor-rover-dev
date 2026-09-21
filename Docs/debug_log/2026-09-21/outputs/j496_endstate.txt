@@ -1,0 +1,4 @@
+== install .so: lrwxrwxrwx 1 jetson jetson 56  → /home/jetson/ros2_ws/build/nvblox_nav2/libnvblox_nav2.so (18:20:00)
+== 컨테이너 nvblox 프로세스(전):
+== job473 stop 실행
+stopped
