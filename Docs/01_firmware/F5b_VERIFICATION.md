@@ -12,9 +12,9 @@
 ## 1. F5b 추가/변경 사항
 
 ### 1.1 새 파일
-- [`App/microros/microros_task.{h,c}`](../firmware/rover_jupiter_fw/App/microros/) — 노드 + heartbeat publisher + 1Hz 발행 루프
-- [`App/microros/microros_transport.c`](../firmware/rover_jupiter_fw/App/microros/microros_transport.c) — USART1 + DMA custom transport (dma_transport.c 포크, const 시그니처 수정)
-- [`App/microros/microros_heap_freertos.c`](../firmware/rover_jupiter_fw/App/microros/microros_heap_freertos.c) — micro-ROS 가 FreeRTOS heap_4 공유 (별도 32KB 힙 미생성)
+- [`App/microros/microros_task.{h,c}`](../../firmware/rover_jupiter_fw/App/microros) — 노드 + heartbeat publisher + 1Hz 발행 루프
+- [`App/microros/microros_transport.c`](../../firmware/rover_jupiter_fw/App/microros/microros_transport.c) — USART1 + DMA custom transport (dma_transport.c 포크, const 시그니처 수정)
+- [`App/microros/microros_heap_freertos.c`](../../firmware/rover_jupiter_fw/App/microros/microros_heap_freertos.c) — micro-ROS 가 FreeRTOS heap_4 공유 (별도 32KB 힙 미생성)
 
 ### 1.2 Makefile
 - `App/microros/*.c` 3개 추가

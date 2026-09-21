@@ -15,7 +15,7 @@
 | 센서 데크 | FUSED_ROVER 데크: 최전방이 로버 전방 −10mm, 폭 중앙. 데크 판 지면高 190mm 실측 | 사용자 실측 |
 | LiDAR | RPLidar S2L — 스캔면 = 바닥+20.8mm. base_link 기준 (0.152, 0, 0.185), rpy 0 | `RIG_MOUNT_SPEC.md` + URDF 주석 |
 | 카메라 | D455f — camera_link=좌IR이미저, (0.232, +0.0475, 0.143), rpy 0. ⚠ y부호 미확정 | 동상 |
-| URDF | `Docs/rover.urdf` 전면 개정 완료 (본 저장소) — 위 값 모두 반영됨 | 2026-08-27 |
+| URDF | `Docs/02_hardware/rover.urdf` 전면 개정 완료 (본 저장소) — 위 값 모두 반영됨 | 2026-08-27 |
 
 ## 2. 핵심 문제 — WHEEL_BASE_M 불일치
 
@@ -37,7 +37,7 @@
 3. 검증: 보드 재부팅 후 micro-ROS 토픽 정상 (`/wheel_odom` 50Hz)
 
 ### W3 — URDF 동기화 (Jetson 측)
-1. 본 저장소 `Docs/rover.urdf` → Jetson `~/ros2_ws/src/rover_description/`에 반영, colcon 재빌드
+1. 본 저장소 `Docs/02_hardware/rover.urdf` → Jetson `~/ros2_ws/src/rover_description/`에 반영, colcon 재빌드
 2. 검증: RViz에서 TF 트리·센서 위치 확인. 스캔 vs 포인트클라우드 정합으로
    camera_link **y부호(±0.0475)** 판정 → URDF·본 문서에 결과 기입
 

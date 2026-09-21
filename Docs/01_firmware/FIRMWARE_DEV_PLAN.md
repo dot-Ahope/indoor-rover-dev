@@ -22,7 +22,7 @@
 | ROS2 / micro-ROS | Humble | Jetson과 버전 일치 |
 
 ### 1.1 micro-ROS 채택으로 달라진 점
-- 기존 커스텀 시리얼 프로토콜(`ROVER_SERIAL_PROTOCOL_v1.0.md`)은 **F103의 RAM 부족 때문에** 설계된 것 → F405 채택으로 전제 소멸, **micro-ROS로 대체**
+- 기존 커스텀 시리얼 프로토콜(`Docs/01_firmware/legacy/ROVER_SERIAL_PROTOCOL_v1.0.md`)은 **F103의 RAM 부족 때문에** 설계된 것 → F405 채택으로 전제 소멸, **micro-ROS로 대체**
 - Jetson 측 `rover_bridge` 변환 노드 **불필요** → `micro_ros_agent`만 실행
 - F405가 직접 `/cmd_vel` 구독, `/wheel_odom`·`/imu` 발행
 
@@ -316,7 +316,7 @@ F405가 직접 발행/구독하는 ROS2 토픽:
 ### 8.1 해결됨 (개발 착수 가능)
 - [x] 하드웨어 수정 상세 — 핸드 리워크, VCAP 캡 추가, 동작 확인 (§2)
 - [x] AM2861 제어 방식 — sign-magnitude (§2.1)
-- [x] 휠 반경·베이스 폭 — `Docs/rover.urdf` 확인 (§2.2)
+- [x] 휠 반경·베이스 폭 — `Docs/02_hardware/rover.urdf` 확인 (§2.2)
 - [x] **F405 핀 배정표** — 회로도 page 2 기준 확정 (§2.3)
 - [x] H3A = PA0 — 회로도 누락이었으나 실제 연결 확인
 - [x] RM3100 = I2C1 (PB6/PB7), 32kHz 크리스털 없음

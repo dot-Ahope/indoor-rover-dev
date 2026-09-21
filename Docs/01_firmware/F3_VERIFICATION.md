@@ -13,15 +13,15 @@
 ## 1. F3 단계 추가/변경 사항
 
 ### 1.1 파일
-- **신규** [`App/app/rover_platform.h`](../firmware/rover_jupiter_fw/App/app/rover_platform.h)
+- **신규** [`App/app/rover_platform.h`](../../firmware/rover_jupiter_fw/App/app/rover_platform.h)
   - 휠 반경·둘레·트랙 폭·엔코더 CPR·m/count 상수 격리
   - 양산기 이식 시 본 헤더만 교체
 - **추가** `encoder_update_velocity()`, `encoder_read_velocity_mps()` —
-  [`App/hal/i_encoder.h`](../firmware/rover_jupiter_fw/App/hal/i_encoder.h),
-  [`App/drivers/stm32_encoder_driver.c`](../firmware/rover_jupiter_fw/App/drivers/stm32_encoder_driver.c)
+  [`App/hal/i_encoder.h`](../../firmware/rover_jupiter_fw/App/hal/i_encoder.h),
+  [`App/drivers/stm32_encoder_driver.c`](../../firmware/rover_jupiter_fw/App/drivers/stm32_encoder_driver.c)
 - **추가** `tEncSample` FreeRTOS task (100Hz, AboveNormal 우선순위) —
-  [`Core/Src/freertos.c`](../firmware/rover_jupiter_fw/Core/Src/freertos.c)
-- **수정** [`App/app/f1_sanity_task.c`](../firmware/rover_jupiter_fw/App/app/f1_sanity_task.c) —
+  [`Core/Src/freertos.c`](../../firmware/rover_jupiter_fw/Core/Src/freertos.c)
+- **수정** [`App/app/f1_sanity_task.c`](../../firmware/rover_jupiter_fw/App/app/f1_sanity_task.c) —
   1Hz dump 에 `v L= R= mm/s` 추가
 
 ### 1.2 속도 산출 알고리즘
@@ -100,7 +100,7 @@ dev plan §2.2 의 1320 CPR (출력축, ×4 quadrature 포함 가정) 이 맞는
 - **저속 양자화**: 100Hz 샘플 + 0.131mm/cnt → 1cnt/sample = 13 mm/s. 매우 저속(<13 mm/s)에서 양자화 노이즈 큼. F4 PID 또는 odometry 적분(F6)에서 누적으로 완화.
 - **CPR 가정**: 1320 (출력축, ×4 quadrature 포함). 위 2.3에서 실측 검증 필요.
 - **단순 EMA**: 변속 시 lag 약 40ms. 필요 시 F4에서 가중치 조정 또는 더 복잡한 필터(Kalman 등) 검토.
-- **물리 단위 검증 없음**: 휠 둘레·반경은 `Docs/rover.urdf` 신뢰. 실제 휠 측정으로 보정은 차후.
+- **물리 단위 검증 없음**: 휠 둘레·반경은 `Docs/02_hardware/rover.urdf` 신뢰. 실제 휠 측정으로 보정은 차후.
 
 ---
 

@@ -13,7 +13,7 @@
 ## 1. F2 단계 추가/변경 사항
 
 ### 1.1 PWM 주파수 — 20 kHz 재튜닝
-[`App/drivers/am2861_driver.c`](../firmware/rover_jupiter_fw/App/drivers/am2861_driver.c):
+[`App/drivers/am2861_driver.c`](../../firmware/rover_jupiter_fw/App/drivers/am2861_driver.c):
 - `motor_driver_init()` 에서 `__HAL_TIM_SET_AUTORELOAD` 로 ARR 런타임 override.
   - TIM1 (168 MHz) ARR=8399 → 20 kHz, 8400 step 듀티 해상도
   - TIM3 ( 84 MHz) ARR=4199 → 20 kHz, 4200 step 듀티 해상도
@@ -24,7 +24,7 @@
 - `MOTOR_DUTY_MAX = 0.80` — 절댓값 초과 듀티는 0.80 으로 캡
 
 ### 1.3 자동 시퀀스 태스크
-[`App/app/f2_motor_test.c`](../firmware/rover_jupiter_fw/App/app/f2_motor_test.c):
+[`App/app/f2_motor_test.c`](../../firmware/rover_jupiter_fw/App/app/f2_motor_test.c):
 
 | 단계 | L 듀티 | R 듀티 | 시간 |
 |---|---|---|---|

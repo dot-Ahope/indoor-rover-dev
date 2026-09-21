@@ -12,7 +12,7 @@
 
 ## 1. 추가/변경 사항
 
-### 1.1 [`App/drivers/icm20948_driver.{h,c}`](../firmware/rover_jupiter_fw/App/drivers/) — 본 init
+### 1.1 [`App/drivers/icm20948_driver.{h,c}`](../../firmware/rover_jupiter_fw/App/drivers) — 본 init
 - `imu_init()`: WHO_AM_I 확인 + PWR_MGMT_1 wake + PWR_MGMT_2 enable + Bank2 gyro/accel config
 - `imu_read()`: ACCEL_XOUT_H 부터 14byte burst read (accel 6 + temp 2 + gyro 6)
 - Bank switching helper `select_bank(0..3)`
@@ -21,14 +21,14 @@
   - Gyro  **±250 dps** → 131 LSB/dps → 1 LSB ≈ 1.33e-4 rad/s
 - DLPF: ~196Hz BW (gyro), ~246Hz (accel)
 
-### 1.2 [`App/app/imu_processor.{h,c}`](../firmware/rover_jupiter_fw/App/app/) — raw → SI
+### 1.2 [`App/app/imu_processor.{h,c}`](../../firmware/rover_jupiter_fw/App/app) — raw → SI
 - `imu_processor_update()`: SPI burst → raw int16 → m/s², rad/s, °C
 - `imu_processor_get()`: 최신 스냅샷 copy out
 
-### 1.3 [`Core/Src/freertos.c`](../firmware/rover_jupiter_fw/Core/Src/freertos.c)
+### 1.3 [`Core/Src/freertos.c`](../../firmware/rover_jupiter_fw/Core/Src/freertos.c)
 - controlTask 에 `imu_processor_update()` 추가 (100Hz, encoder/PID/safety/odom 다음)
 
-### 1.4 [`App/microros/microros_task.c`](../firmware/rover_jupiter_fw/App/microros/microros_task.c)
+### 1.4 [`App/microros/microros_task.c`](../../firmware/rover_jupiter_fw/App/microros/microros_task.c)
 - `/imu/data_raw` (`sensor_msgs/Imu`) publisher 추가
 - frame_id="imu_link", orientation_covariance[0]=-1 (REP-145 "not provided")
 - spin loop 매 cycle 마다 publish (odom과 동일 ~29Hz)

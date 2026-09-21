@@ -36,10 +36,10 @@
 ### 0.2 관련 문서
 - `CLAUDE.md` — 사용자 지침
 - `PROJECT_OVERVIEW.md` — 본 문서, 프로젝트 전반
-- `docs/FIRMWARE_DEV_PLAN.md` — **F405 펌웨어 개발 계획 (현행, 펌웨어 작업 시 우선 참조)**
-- `ROVER_SERIAL_PROTOCOL_v1.0.md` — [대체됨] micro-ROS 채택으로 폐기, 기록 보존용
-- `docs/F103_to_G474_pin_migration.md` — [철회됨] 핀호환 분석 오류 정정 기록
-- `docs/rover_top_down_layout.svg` — dev 로버 조감도 (URDF 작성 참고)
+- `Docs/01_firmware/FIRMWARE_DEV_PLAN.md` — **F405 펌웨어 개발 계획 (현행, 펌웨어 작업 시 우선 참조)**
+- `Docs/01_firmware/legacy/ROVER_SERIAL_PROTOCOL_v1.0.md` — [대체됨] micro-ROS 채택으로 폐기, 기록 보존용
+- `Docs/01_firmware/F103_to_G474_pin_migration.md` — [철회됨] 핀호환 분석 오류 정정 기록
+- `Docs/02_hardware/rover_top_down_layout.svg` — dev 로버 조감도 (URDF 작성 참고)
 
 ### 0.3 작업 디렉토리 구조 (제안)
 ```
@@ -133,14 +133,14 @@ C:\Project\Rover\Rover\
 - **⚠ 데크 정적 기울기**: 실측 3.5° 전고후저(전방이 높음, 2026-08-27) — 상판 직접 장착물(제어보드 IMU)에 영향, URDF pitch −0.0611 반영. 센서 데크(FUSED_ROVER)는 다리 경사보상 절삭으로 수평 (리스팅 "등판각도 35°"는 등판 능력 스펙으로 별개 항목)
 - **트랙**: 좌/우 각 1 (아연합금)
 - **트랙 유효 구름 반경**: 0.02567 m — 실주행 캘리브레이션 2026-08-26 (`rover_platform.h`). 스프로킷 피치반경 0.0175 + 트랙 두께와 정합
-- **센서 마운트**: `lidar_deck_camera_FUSED_ROVER` 데크 — S2L(스캔면 지면高 ≈211mm) + D455f(좌이미저 지면高 ≈169mm). 위치·근거는 `Docs/rover.urdf` 주석 참조
+- **센서 마운트**: `lidar_deck_camera_FUSED_ROVER` 데크 — S2L(스캔면 지면高 ≈211mm) + D455f(좌이미저 지면高 ≈169mm). 위치·근거는 `Docs/02_hardware/rover.urdf` 주석 참조
 
 ### 3.2 메인 컨트롤 보드: ALOPS Jupiter R1.4 (하드웨어 수정본)
 - **회로도**: `ROVER_MECURY_R10.20260106.pdf` (Rev 1.0)
 - **MCU**: **STM32F405RGT6** (F103RCT6에서 교체)
   - Cortex-M4F @ 168MHz, FPU 내장
   - 1 MB Flash, 192 KB RAM (128 KB 메인 + 64 KB CCM)
-  - **HW 수정**: F103↔F405 핀 차이(Pin 31·47 = VCAP) 대응 — VCAP 안정화 캐패시터 추가 (상세는 `docs/FIRMWARE_DEV_PLAN.md §2`)
+  - **HW 수정**: F103↔F405 핀 차이(Pin 31·47 = VCAP) 대응 — VCAP 안정화 캐패시터 추가 (상세는 `Docs/01_firmware/FIRMWARE_DEV_PLAN.md §2`)
   - 이 사양 덕분에 micro-ROS · FreeRTOS 운용 가능
 - **모터 드라이버**: AM2861 × 2 (M1, M3 채널, 인코더 입력 포함)
 - **추가 PWM**: M2, M4, M5 (피드백 없음)
@@ -228,7 +228,7 @@ C:\Project\Rover\Rover\
 - F103RCT6 → **STM32F405RGT6** 교체 (LQFP-64, 62/64핀 동일, VCAP 2핀만 HW 수정)
 - F4 채택으로 FPU·168MHz·192KB RAM 확보 → micro-ROS·FreeRTOS 운용 가능
 - 양산기 MCU(G4/H7 등)는 신규 PCB 설계 시 별도 결정
-- 상세는 `docs/FIRMWARE_DEV_PLAN.md` 참조
+- 상세는 `Docs/01_firmware/FIRMWARE_DEV_PLAN.md` 참조
 
 ### 4.3 ✅ 그대로 사용
 - CAN/RS485 인프라
@@ -316,7 +316,7 @@ F405가 직접 ROS2 노드로 동작 → Jetson 측 변환 노드(rover_bridge) 
 ```
 
 **원칙**: 양산 시 Driver/Comm Layer만 교체, App Layer는 그대로.
-펌웨어 상세 구조·FreeRTOS 태스크 구성은 `docs/FIRMWARE_DEV_PLAN.md §3` 참조.
+펌웨어 상세 구조·FreeRTOS 태스크 구성은 `Docs/01_firmware/FIRMWARE_DEV_PLAN.md §3` 참조.
 
 ### 5.3 ROS2 토픽 구조
 
@@ -333,7 +333,7 @@ F405가 직접 ROS2 노드로 동작 → Jetson 측 변환 노드(rover_bridge) 
 | `/camera/*` | (RealSense topics) | realsense2_camera | 30Hz |
 | `/map` | `nav_msgs/OccupancyGrid` | slam_toolbox | 이벤트 |
 
-발행률은 micro-ROS 대역폭을 고려한 값 — 근거는 `docs/FIRMWARE_DEV_PLAN.md §5`.
+발행률은 micro-ROS 대역폭을 고려한 값 — 근거는 `Docs/01_firmware/FIRMWARE_DEV_PLAN.md §5`.
 
 ### 5.4 IMU 전략 — 3개 IMU의 역할 분담
 | IMU | 용도 | 비고 |
@@ -350,7 +350,7 @@ F405가 직접 ROS2 노드로 동작 → Jetson 측 변환 노드(rover_bridge) 
 
 F405 채택으로 통신 방식을 **micro-ROS**로 결정. F405가 직접 ROS2 노드로
 동작하며, 별도 변환 노드·커스텀 프로토콜이 불필요하다.
-(이전 커스텀 시리얼 프로토콜 `ROVER_SERIAL_PROTOCOL_v1.0.md`는 폐기.)
+(이전 커스텀 시리얼 프로토콜 `Docs/01_firmware/legacy/ROVER_SERIAL_PROTOCOL_v1.0.md`는 폐기.)
 
 ### 6.1 물리 계층
 - F405 USART1 → CH340N → USB-C → Jetson `/dev/ttyUSB0`
@@ -366,7 +366,7 @@ F405 채택으로 통신 방식을 **micro-ROS**로 결정. F405가 직접 ROS2 
 ### 6.3 대역폭 주의
 - 표준 ROS2 메시지는 직렬화 크기가 큼 (`sensor_msgs/Imu` ~320B 등)
 - 921600 bps 사용률 약 65~75% → 발행률 보수적 설정 필요
-- 상세는 `docs/FIRMWARE_DEV_PLAN.md §5`
+- 상세는 `Docs/01_firmware/FIRMWARE_DEV_PLAN.md §5`
 
 ### 6.4 안전 메커니즘
 - F405: `/cmd_vel` 500ms 미수신 시 모터 정지
@@ -411,7 +411,7 @@ F405 채택으로 통신 방식을 **micro-ROS**로 결정. F405가 직접 ROS2 
 - [ ] Jetson ↔ ALOPS UART echo 테스트 (115200 → 921600 단계)
 
 ### Phase 1 — F405 펌웨어 (8~10주)
-상세 단계(F0~F8)는 **`docs/FIRMWARE_DEV_PLAN.md`** 참조. 요약:
+상세 단계(F0~F8)는 **`Docs/01_firmware/FIRMWARE_DEV_PLAN.md`** 참조. 요약:
 - [ ] F0: CubeMX F405 프로젝트(168MHz, FreeRTOS), 툴체인, blink
 - [ ] F1: 핀 배정 확정, 페리페럴 init
 - [ ] F2~F4: 모터 개방루프 → 엔코더 → 폐루프 PID + 스톨 보호
@@ -495,7 +495,7 @@ F405 펌웨어를 짤 때부터 App Layer가 STM32F4 HAL·AM2861·micro-ROS API�
 ## 10. 미해결 사항 (TBD)
 
 ### 10.1 즉시 실측·확인 필요
-- [x] 트랙 휠 반경 0.025 m (Ø50 mm 실측 2026-05-21), 베이스 폭 0.190 m — `Docs/rover.urdf` 확인
+- [x] 트랙 휠 반경 0.025 m (Ø50 mm 실측 2026-05-21), 베이스 폭 0.190 m — `Docs/02_hardware/rover.urdf` 확인
 - [x] F405 핀 배정표 — 회로도 page 2 기준 확정 (`FIRMWARE_DEV_PLAN.md §2.3`)
 - [ ] VM 라인 실측 전압
 - [ ] 12V_ORIN 라인 실측 전압·전류 용량
@@ -572,7 +572,7 @@ F405 펌웨어를 짤 때부터 App Layer가 STM32F4 HAL·AM2861·micro-ROS API�
 | 1.0 | 2026-05-14 | 초기 작성 (Phase 0~5 정의, HW 분석, 프로토콜 요약) |
 | 1.1 | 2026-05-14 | §9 양산기 MCU를 STM32G474RET6으로 명시 (※v1.2에서 정정됨) |
 | 1.2 | 2026-05-14 | **정정**: F103↔G474 drop-in 핀호환 불가 확인. §9를 "dev 보드 유지 + 양산기 신규 PCB" 전략으로 재작성. §4.2 MCU 항목 정정. F103_to_G474 문서 철회. |
-| 1.3 | 2026-05-14 | **MCU를 STM32F405RGT6으로 교체** (F4는 F103과 62/64핀 동일, VCAP 2핀만 HW 수정). 통신을 micro-ROS로, RTOS를 FreeRTOS로 결정. §3·§5·§6·§7·§8 갱신. 커스텀 시리얼 프로토콜 폐기. `docs/FIRMWARE_DEV_PLAN.md` 신설. |
+| 1.3 | 2026-05-14 | **MCU를 STM32F405RGT6으로 교체** (F4는 F103과 62/64핀 동일, VCAP 2핀만 HW 수정). 통신을 micro-ROS로, RTOS를 FreeRTOS로 결정. §3·§5·§6·§7·§8 갱신. 커스텀 시리얼 프로토콜 폐기. `Docs/01_firmware/FIRMWARE_DEV_PLAN.md` 신설. |
 | 1.4 | 2026-09-01 | **프로젝트 범위 변경: 양산 목표 → 개인 프로젝트.** 문서 구분을 개인 프로젝트로 변경, 상단에 현재 범위 배너 추가. §0.1 최우선 가치를 "양산 이식 가능성"→"설명 가능성·재현성"으로, `TODO(production)`→`TODO(improve)`. **양산·사업 관련 절(§1.1~1.3, §2 Phase 2~4, §8 Phase 5, §9)은 장기 비전으로 보존하되 현재 범위 밖으로 명시** (삭제하지 않음). |
 
 ---

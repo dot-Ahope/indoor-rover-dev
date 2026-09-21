@@ -1,4 +1,4 @@
-# robot_state_publisher — 기본: 저장소 확정본 Docs/rover.urdf (WT-600, 2026-08-27) 그대로 로드.
+# robot_state_publisher — 기본: 저장소 확정본 Docs/02_hardware/rover.urdf (WT-600, 2026-08-27) 그대로 로드.
 # use_xacro:=true 이면 rover.urdf.xacro(데크 메시·실측 인자) 사용 — 실험용, 확정본은 rover.urdf.
 import os
 
