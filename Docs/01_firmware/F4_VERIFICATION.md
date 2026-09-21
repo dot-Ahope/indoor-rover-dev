@@ -13,9 +13,9 @@
 ## 1. F4 추가/변경 사항
 
 ### 1.1 새 파일
-- [`App/app/speed_controller.{h,c}`](../firmware/rover_jupiter_fw/App/app/) — per-wheel PID
-- [`App/app/safety_monitor.{h,c}`](../firmware/rover_jupiter_fw/App/app/) — 스톨 감지 + latching fault
-- [`App/app/f4_pid_test.{h,c}`](../firmware/rover_jupiter_fw/App/app/) — step response 시퀀스
+- [`App/app/speed_controller.{h,c}`](../../firmware/rover_jupiter_fw/App/app) — per-wheel PID
+- [`App/app/safety_monitor.{h,c}`](../../firmware/rover_jupiter_fw/App/app) — 스톨 감지 + latching fault
+- [`App/app/f4_pid_test.{h,c}`](../../firmware/rover_jupiter_fw/App/app) — step response 시퀀스
 
 ### 1.2 PID 설계
 ```

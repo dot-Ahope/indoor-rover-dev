@@ -12,13 +12,13 @@
 ## 1. 추가/변경 사항
 
 ### 1.1 새 파일
-- [`App/app/odometry.{h,c}`](../firmware/rover_jupiter_fw/App/app/) — 정기구학 + Euler pose 적분
+- [`App/app/odometry.{h,c}`](../../firmware/rover_jupiter_fw/App/app) — 정기구학 + Euler pose 적분
 
-### 1.2 [`Core/Src/freertos.c`](../firmware/rover_jupiter_fw/Core/Src/freertos.c)
+### 1.2 [`Core/Src/freertos.c`](../../firmware/rover_jupiter_fw/Core/Src/freertos.c)
 - `controlTask` 에 `odometry_init()` + `odometry_update()` 추가 (100Hz)
 - 호출 순서: encoder → speed_controller → safety → **odometry**
 
-### 1.3 [`App/microros/microros_task.c`](../firmware/rover_jupiter_fw/App/microros/microros_task.c)
+### 1.3 [`App/microros/microros_task.c`](../../firmware/rover_jupiter_fw/App/microros/microros_task.c)
 - `nav_msgs/msg/Odometry` publisher `/wheel_odom` 추가
 - 정적 msg 1회 초기화: `frame_id="odom"`, `child_frame_id="base_link"`, covariance=0
 - Spin loop 20ms 주기 (executor 10ms + osDelay 10ms)
