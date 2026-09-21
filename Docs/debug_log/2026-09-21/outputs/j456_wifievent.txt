@@ -1,0 +1,62 @@
+== /var/log/wifi_mon/event_20260918_174003.txt (598 줄)
+### 2026-09-18 17:40:03.772 bssid none -> b0:38:6c:37:1b:4c
+--- iw link
+Connected to b0:38:6c:37:1b:4c (on wlP1p1s0)
+	SSID: WEB_DEV_5G
+	freq: 5180
+	RX: 20428 bytes (50 packets)
+	TX: 12417 bytes (81 packets)
+	signal: -52 dBm
+	rx bitrate: 585.0 MBit/s VHT-MCS 7 80MHz VHT-NSS 2
+	tx bitrate: 526.6 MBit/s VHT-MCS 6 80MHz VHT-NSS 2
+--- wpa_cli status
+bssid=b0:38:6c:37:1b:4c
+freq=5180
+ssid=WEB_DEV_5G
+id=0
+mode=station
+wifi_generation=5
+pairwise_cipher=CCMP
+group_cipher=CCMP
+key_mgmt=WPA2-PSK
+pmf=1
+mgmt_group_cipher=BIP
+wpa_state=COMPLETED
+ip_address=192.168.0.101
+p2p_device_address=58:02:05:bd:d5:35
+address=58:02:05:bd:d5:35
+uuid=2b5e4d19-7d5d-5a55-821c-cb7f06218a42
+ieee80211ac=1
+--- ip
+3: wlP1p1s0    inet 192.168.0.101/24 brd 192.168.0.255 scope global dynamic noprefixroute wlP1p1s0\       valid_lft 7190sec preferred_lft 7190sec
+--- nmcli dev
+GENERAL.STATE:                          100 (connected)
+GENERAL.CONNECTION:                     WEB_DEV_5G
+IP4.ADDRESS[1]:                         192.168.0.101/24
+--- 전체 스캔(AP 블록)
+BSS b0:38:6c:37:1b:4c(on wlP1p1s0) -- associated
+	TSF: 39497816 usec (0d, 00:00:39)
+	freq: 5180
+	beacon interval: 100 TUs
+	capability: ESS Privacy (0x0011)
+== wifi_mon.log 09-18 17:3x~17:4x
+== wpa_debug 17:39~17:41 (DISCONNECT/ASSOC/reason/CSA/DFS)
+Sep 18 17:39:28 jetson-desktop wpa_supplicant[905]: nl80211: Scan results indicate BSS status with b0:38:6c:37:1b:4c as associated
+Sep 18 17:40:29 jetson-desktop wpa_supplicant[905]: nl80211: Scan results indicate BSS status with b0:38:6c:37:1b:4c as associated
+Sep 18 17:41:29 jetson-desktop wpa_supplicant[905]: nl80211: Scan results indicate BSS status with b0:38:6c:37:1b:4c as associated
+Sep 18 17:41:41 jetson-desktop wpa_supplicant[905]: nl80211: Scan results indicate BSS status with b0:38:6c:37:1b:4c as associated
+Sep 18 17:40:12 jetson-desktop wpa_supplicant[895]: nl80211: Scan results indicate BSS status with b0:38:6c:37:1b:4c as associated
+== syslog 09-18 17:39~17:41 NM/wpa
+Sep 18 17:39:46 jetson-desktop dbus-daemon[843]: [system] Activating via systemd: service name='org.freedesktop.hostname1' unit='dbus-org.freedesktop.hostname1.service' r
+Sep 18 17:39:46 jetson-desktop dbus-daemon[843]: [system] Activating via systemd: service name='org.freedesktop.nm_dispatcher' unit='dbus-org.freedesktop.nm-dispatcher.se
+Sep 18 17:39:46 jetson-desktop NetworkManager[844]: <info>  [1789720786.8490] device (lo): carrier: link connected
+Sep 18 17:39:46 jetson-desktop NetworkManager[844]: <info>  [1789720786.8570] device (enP8p1s0): state change: unmanaged -> unavailable (reason 'managed', sys-iface-state
+Sep 18 17:39:46 jetson-desktop NetworkManager[844]: <info>  [1789720786.9384] device (wlP1p1s0): state change: unmanaged -> unavailable (reason 'managed', sys-iface-state
+Sep 18 17:39:47 jetson-desktop NetworkManager[844]: <info>  [1789720787.3280] failed to open /run/network/ifstate
+Sep 18 17:39:47 jetson-desktop NetworkManager[844]: <info>  [1789720787.4336] device (wlP1p1s0): supplicant interface state: internal-starting -> disconnected
+Sep 18 17:39:47 jetson-desktop NetworkManager[844]: <info>  [1789720787.4348] device (p2p-dev-wlP1p1s0): state change: unmanaged -> unavailable (reason 'managed', sys-ifa
+Sep 18 17:39:47 jetson-desktop NetworkManager[844]: <info>  [1789720787.4366] device (wlP1p1s0): state change: unavailable -> disconnected (reason 'supplicant-available',
+Sep 18 17:39:47 jetson-desktop NetworkManager[844]: <info>  [1789720787.4385] device (p2p-dev-wlP1p1s0): state change: unavailable -> disconnected (reason 'none', sys-ifa
+Sep 18 17:39:48 jetson-desktop NetworkManager[844]: <info>  [1789720788.3886] device (docker0): state change: unmanaged -> unavailable (reason 'connection-assumed', sys-i
+Sep 18 17:39:48 jetson-desktop NetworkManager[844]: <info>  [1789720788.3892] device (docker0): state change: unavailable -> disconnected (reason 'connection-assumed', sy
+== 오늘 부팅 후 접속: 
