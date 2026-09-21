@@ -1,0 +1,723 @@
+# Nav2 파라미터 — WT-600 스키드스티어 로버 (dev 플랫폼)
+#
+# 로버 특성 (실측 근거):
+#   - 최대 선형속도 0.100 m/s (펌웨어 MAX_LINEAR_SPEED_MPS), 각속도 암묵상한 0.816 rad/s (=V_MAX/0.1225)
+#   - 풋프린트 0.5 × 0.33 m (WT-600), base_link = 기하 중심
+#   - 제자리 회전 스윕 반경 0.30 m (대각 절반) — 좁은 통로 계획 시 유의
+#   - 오도메트리: EKF(휠 vx×0.783 보정 + D455f 자이로), 회전 포함 루프 드리프트 ~1% (2026-09-02 검증)
+#   - map→odom 은 slam_toolbox(온라인 매핑)가 제공 → AMCL·map_server 미사용
+#
+# ⚠ 저속 로봇이라 Nav2 기본값(빠른 로봇 가정)을 그대로 쓰면 progress checker 오탐이 남.
+#   required_movement_radius·movement_time_allowance 를 완화함.
+
+bt_navigator:
+  ros__parameters:
+    global_frame: map
+    robot_base_frame: base_link
+    odom_topic: /odometry/filtered
+    bt_loop_duration: 10
+    # ★ 2026-09-17 mp7: 20 ms 안에 planner 가 목표 요청을 수락하지 못해("Timed out while waiting for action server to acknowledge")
+    #   BT 가 실패로 보고 복구(클리어·BackUp 0.15 m)를 돌렸다 — SLAM map->odom 이 5.1 s 끊겨 map 프레임 서버가 막힌 순간. 100 ms 로 여유.
+    default_server_timeout: 100
+    # 커스텀 BT: Spin 복구 제거판 (config/nav_to_pose_no_spin.xml 주석 참조). Jetson 설치 경로 절대지정.
+    default_nav_to_pose_bt_xml: /home/jetson/ros2_ws/install/rover_navigation/share/rover_navigation/config/nav_to_pose_no_spin.xml
+
+controller_server:
+  ros__parameters:
+    # ★ 2026-09-16: 20 → 10 Hz. MPPI 를 Orin Nano CPU 예산 안에서 쓰기 위해: 56 step@20 Hz 는 루프 미달 306 건/90 s(mp3).
+    #   10 Hz + model_dt 0.1 + 32 step 이면 지평 3.2 s(0.26 m, RPP lookahead 급)를 mp2(32 step@20 Hz)의 절반 연산으로 얻는다.
+    #   0.08 m/s 로봇은 한 주기 0.8 cm 이동이라 10 Hz 로 충분. MPPI 는 Humble 에서 CPU(xtensor) 전용 — GPU 를 쓰지 않는다.
+    controller_frequency: 10.0
+    min_x_velocity_threshold: 0.001
+    min_y_velocity_threshold: 0.5
+    min_theta_velocity_threshold: 0.001
+    odom_topic: /odometry/filtered
+    progress_checker_plugin: "progress_checker"
+    goal_checker_plugins: ["general_goal_checker"]
+    controller_plugins: ["FollowPath", "FollowPathMPPI"]   # ★현재 FollowPath=RPP (09-03 벤치마크 A/B). MPPI 대기
+
+    progress_checker:
+      # ⚠ SimpleProgressChecker 는 '병진'만 진행으로 인정 → 제자리 회전이 필요한 목표에서
+      #   20초마다 "Failed to make progress" 로 중단·재시도를 반복함 (2026-09-02 실측).
+      #   스키드스티어는 제자리 회전이 정상 동작이므로 PoseProgressChecker(회전도 인정)를 쓴다.
+      plugin: "nav2_controller::PoseProgressChecker"
+      required_movement_radius: 0.25
+      required_movement_angle: 0.5      # rad — 이만큼 회전해도 '진행'으로 인정
+      movement_time_allowance: 25.0
+
+    general_goal_checker:
+      stateful: True
+      plugin: "nav2_controller::SimpleGoalChecker"
+      # 0.15 복원 (2026-09-03): 펌웨어 데드밴드 보상(MIN_WHEEL_SPEED_MPS 0.020) 플래시·검증 완료.
+      #   (09-02 에는 목표 근접 미세명령 정체로 0.25 임시 완화했었음)
+      xy_goal_tolerance: 0.15
+      yaw_goal_tolerance: 0.15   # 2026-09-08: 0.25→0.15 (8.6°). RPP 목표 헤딩 회전을 끝까지 수행. 소요시간 영향 없음(job58f)
+
+    # RPP(Regulated Pure Pursuit) — 차동/스키드스티어 저속에 적합, 튜닝 파라미터가 직관적
+    FollowPath:
+      plugin: "nav2_regulated_pure_pursuit_controller::RegulatedPurePursuitController"
+      desired_linear_vel: 0.08          # 2026-09-07 스케일 정정 후 실속도 기준 (펌웨어 최대 0.085 대비 여유)
+      # 2026-09-08 §5.y 실측 튜닝: 0.30/0.20/0.45/1.5 → 0.40/0.35/0.60/2.0.
+      #   속도스케일 lookahead 가 1.5s×0.08=0.12m 로 하한 0.20(5cm 격자 4칸)에 걸려 조향 이득 과대 →
+      #   직진 중 ω 스파이크 19회/주행 → 5~9회, 부호반전 2→0~1회/m, ω 평균 0.086→0.05 (job58 시리즈).
+      # 2026-09-09: use_velocity_scaled_lookahead_dist=true 이므로 실효 lookahead 는
+      #   clamp(v * lookahead_time, min, max) = clamp(0.08*2.0=0.16, min, max) = **min_lookahead_dist**.
+      #   즉 lookahead_dist 는 이 속도에서 쓰이지 않는다. 실제 조절 손잡이는 min 이다.
+      # 0.35 → 0.25 인하 사유(job119): 계획은 상자 좌측으로 +0.399 를 요구했는데 로버는 같은 x 에서
+      #   +0.230 — 8.5cm 안쪽으로 잘라 들어갔고(코너 컷), 되돌리는 우회전 곡률로 0.40m 를 투영한
+      #   RPP 충돌검사가 "collision ahead" 로 중단시켰다. lookahead 를 줄이면 경로 추종이 더 충실해져
+      #   컷이 줄어든다. 대가는 조향 진동 — job119 의 '직진 중 ω 부호반전 0회' 를 기준선으로 비교한다.
+      lookahead_dist: 0.25
+      min_lookahead_dist: 0.25
+      max_lookahead_dist: 0.60
+      lookahead_time: 2.0
+      use_velocity_scaled_lookahead_dist: true
+      transform_tolerance: 0.2
+      min_approach_linear_velocity: 0.02
+      approach_velocity_scaling_dist: 0.30
+      use_collision_detection: true
+      # 2026-09-08 야간: 1.5 → 5.0. 이 값 × 현재속도 = 충돌검사 거리이므로 0.08m/s 에서는 1.5s 가
+      #   **0.12m** 밖에 안 봤다. 그래서 상자를 코스트맵이 알고 있어도 컨트롤러가 그냥 밟고 지나감(job66/70).
+      #   5.0s → 0.40m 앞까지 검사 → job76 에서 실제로 abort + BackUp 복구가 걸려 **밀고 가는 일이 사라졌다.**
+      #   대가: 좁은 통로에서 경로가 내접영역을 스치면 자주 abort → 복구 루프. 통로 여유가 근본 해법.
+      # ★ 2026-09-11: 5.0 → 1.5 로 되돌림. 위 09-08 진단이 오진이었다.
+      #   "코스트맵이 알고 있어도 밟고 지나감(job66/70)" 의 진짜 원인은 BT 의 ClearEntireCostmap 이었다 —
+      #   RPP 가 충돌을 감지하면 BT 가 로컬 코스트맵을 통째로 지워 장애물이 사라졌고 그래서 밟았다
+      #   (09-11 job222 로그 17ms 인과, BT 를 ClearCostmapExceptRegion 으로 교체해 해결).
+      #   job76 에서 "밀고 가는 일이 사라진" 것은 5.0s 가 abort 를 더 자주 내서 BackUp 이 걸린 것이지
+      #   원인을 고친 게 아니다. 원인이 제거된 지금 5.0 은 대가만 남는다:
+      #     - 제자리 회전 중에는 이 값 × 각속도 = 훑는 각도 → 5.0 × 0.32 rad/s = **92°**.
+      #       그 사이 한 자세라도 걸리면 회전 자체를 거부한다. 물리 틈 0.73m(로버 0.33m)에서
+      #       패딩 포함 허용 자세각이 47° 이므로 반드시 걸린다 → job231/236/247 ABORTED.
+      #   1.5 s = 직진 0.12 m / 회전 27°. 0.08 m/s 로버의 제동거리는 수 cm 라 0.12 m 는 충분하다.
+      #   Nav2 기본값은 1.0.
+      # ★ 2026-09-14 (09-14 SUMMARY §2.15): 1.5 → 0.75 s. 이 값은 **시간** 기준이라 검사 거리 = 값 × v 다.
+      #   비용 감속을 풀어(cost_scaling_dist 0.25) 통로 진입 속도가 0.03 → 0.08 이 되자 검사 거리가 4.5 → 12 cm 로 2.7배 늘었고,
+      #   차선 변경(heading +20~30°) 중 앞우 모서리 앞 1~2셀(상자 가장자리 격자 반올림·상자 앞 유령 셀)에 걸려 spd1/spd2 가 ABORTED.
+      #   inf1~4(0.03, 검사 4.5 cm)는 같은 셀을 지나쳐 4/4 완주했다. 0.75 s × 0.08 = 6 cm 로 그 검사 거리를 복원한다.
+      #   0.08 m/s 제동거리 < 1 cm 라 6 cm 는 여전히 충분. 회전 중 훑는 각도도 0.75 × 0.32 = 14°(1.5 는 27°).
+      max_allowed_time_to_collision_up_to_carrot: 0.75
+      # 곡률·장애물 근접 시 감속
+      use_regulated_linear_velocity_scaling: true
+      use_cost_regulated_linear_velocity_scaling: true
+      regulated_linear_scaling_min_radius: 0.35
+      # 2026-09-14 (09-14 SUMMARY §2.12): 통로 통과 속도가 0.08 → 0.033 으로 떨어지는 원인이 이 비용 감속이었다.
+      #   RPP 는 로버 중심 셀의 inflation 비용에서 장애물 거리 d 를 역산해 d < cost_scaling_dist(기본 0.6 m)이면
+      #   v = desired × d/0.6. 통로에서 d ≈ 0.25 → 0.033 (4회 주행 실측 0.032~0.039, 진입 전엔 0.080).
+      #   폭 0.33 로버에겐 폭 1.2 m 미만의 모든 통로에서 항상 켜진다. 0.25 = 패딩면에서 5.5 cm 안에 장애물일 때만 감속.
+      #   inflation_cost_scaling_factor 는 역산에 쓰이므로 로컬 inflation_layer.cost_scaling_factor(2.5)와 같아야 한다(기본 3.0 이면 거리를 작게 봄).
+      #   min_speed 0.03 → 0.05: 0.03 은 궤도 stick-slip 영역(덜컹거림). 충돌검사(0.12 m)는 그대로 — 0.08 m/s 제동거리 < 1 cm.
+      cost_scaling_dist: 0.25
+      cost_scaling_gain: 1.0
+      inflation_cost_scaling_factor: 2.5
+      regulated_linear_scaling_min_speed: 0.05
+      # 스키드스티어는 제자리 회전 가능 → 경로 시작 시 헤딩 정렬
+      use_rotate_to_heading: true
+      # 2026-09-08: 0.25 로 낮추면 회전↔추종 모드 채터 6회(스파이크 28회) → 0.5 유지 (job58e 기각)
+      # ★ 2026-09-11: 0.5 → 1.0 rad (28.6° → 57°). 경로 첫 구간이 이 각도 이상 꺾일 때만 제자리 회전.
+      #   근거: 통로 free 폭 0.82 m(job248 A)에 대해 패딩 포함 차체 대각선이 0.74 m — **제자리에서
+      #   50° 도는 것이 이 공간에서 가장 공간을 많이 먹는 동작**이다. job247·s4r1 이 정확히 그 자세
+      #   (48°/50°)에서 굳었고, job251 이 탈출한 순간은 v 0.08·ω 0.20 의 **곡선**이었다.
+      #   NavFn 경로는 8-연결 격자에서 나와 첫 0.25 m(lookahead)가 자주 꺾이므로 28.6° 조건은
+      #   그 격자 인공물에 쉽게 걸린다. 57° 미만은 곡선으로 흡수한다.
+      #   목표 지점의 자세 정렬은 shouldRotateToGoalHeading(goal_dist_tol 조건)이라 영향 없다.
+      rotate_to_heading_min_angle: 1.0
+      rotate_to_heading_angular_vel: 0.32   # 2026-09-07 B_eff 0.443: 실 최대 0.384 rad/s 대비 여유
+      # ⚠ RPP 는 rotateToHeading 각속도를 '현재 측정속도 ± max_angular_accel×dt' 로 클램프한다.
+      #   1.0 이면 20Hz 제어주기에서 첫 명령이 1.0×0.05 = 0.05 rad/s 뿐 → 로버 기동 임계(정지마찰·
+      #   PWM 데드밴드) 미달로 안 움직임 → 측정속도 0 유지 → 영원히 0.05 반복(데드락). 2026-09-02 실측.
+      #   4.0 으로 첫 명령 0.2 rad/s 확보 (실측상 0.3 rad/s 에서 정상 회전 확인됨).
+      max_angular_accel: 4.0
+      # NavFn 경로엔 후진 cusp 이 없어 RPP 에선 실효 제한적 — 실제 후진 기동은 MPPI(vx_min<0)가 담당.
+      # true 로 두는 건 무해하며, 추후 Smac(후진 경로 생성) 도입 시 바로 유효해짐.
+      allow_reversing: true
+      max_robot_pose_search_dist: 5.0
+
+    # MPPI — N1 벤치마크 후보. 샘플링 기반이라 좁은 공간·후진·장애물 근접 기동이 RPP보다 강함.
+    # ⚠ CPU 무거움(batch 1000×32step@20Hz) → 벤치마크에서 지연 시 batch_size·controller_frequency 하향.
+    # 전환 방법: BT 기본 controller_id 가 "FollowPath" 이므로, 벤치마크 시 두 블록의 이름을 맞바꿔 재기동.
+    FollowPathMPPI:
+      plugin: "nav2_mppi_controller::MPPIController"
+      # ★ 2026-09-16 mp2 분석(09-16 SUMMARY §1): 32 step × 0.05 s = 1.6 s 지평은 0.08 m/s 에서 **0.13 m** 뿐.
+      #   경로 크리틱은 "지평 끝이 도달한 경로 점 index" 로 켜지는데(offset_from_furthest), 점간격 0.026~0.047 m 라
+      #   index 가 3~5 에 그쳐 PathAlign(가중 14, 문턱 20)이 **한 번도 켜지지 않았다**. 경로를 잡아주는 힘이
+      #   PathFollow(5) 하나뿐이라 상자 앞 0.23 m 의 코스트맵 기울기(ObstaclesCritic)가 로버를 왼쪽으로 제자리
+      #   회전시켰고(t18~20, 경로 요구 0°), 통로 입구에서 heading 오차 47~62° 가 된 뒤 60 s 머뭇거림(진행 실패 2회).
+      #   56 step(=Nav2 기본, 2.8 s ≈ 0.22 m) 으로 지평을 늘리고 아래 index 문턱을 우리 지평에 맞춘다. CPU 1.75×.
+      #   ★ mp3 결과(09-16 §1.9): 56 step 은 이 Jetson 에서 20 Hz 를 못 냈다(루프 미달 306 건/90 s, load 11.8, EKF 위반 91) 그리고
+      #   모서리 정체는 그대로였다 → 32 로 되돌림. MPPI 재도전 시 batch 500 이하 또는 10 Hz 에서 지평을 다시 설계할 것.
+      time_steps: 32
+      model_dt: 0.1             # 2026-09-16: = 1/controller_frequency(10 Hz). 32 step → 지평 3.2 s
+      batch_size: 1000
+      # ★ 2026-09-16 mp4(job345, /trajectories): 입구에서 명령 평균이 0 으로 내려가자 후보 궤적 끝단 분포가 ±1 cm 로 붕괴
+      #   (앞>5 cm 후보 78 % → 2 %). 잡음이 시간축마다 독립이라 끝단 산포 ≈ std/√32×3.2 s ≈ 3 cm 뿐이라 내접 띠(15 cm)
+      #   너머의 출구를 표본이 못 본다 → 탐색 폭(vx/wz_std)·선택 날카로움(temperature)·반복(iteration) 을 올린다.
+      vx_std: 0.08              # 0.05 → 0.08 (vx_max 와 같은 크기; 클리핑되더라도 분포 폭 확보)
+      vy_std: 0.0
+      wz_std: 0.4               # 0.3 → 0.4
+      vx_max: 0.08          # 2026-09-07 스케일 정정 후 실속도 기준 (펌웨어 한계 0.085)
+      vx_min: -0.06             # 2026-09-07 스케일 정정 (실속도 기준)         # ★ 후진 허용 — 좁은 공간 이탈 기동
+      vy_max: 0.0
+      wz_max: 0.38          # 2026-09-07 B_eff 0.443 (실 최대 0.384)
+      iteration_count: 2        # 1 → 2 (10 Hz·32 step 이라 20 Hz·1 회와 같은 연산량 = mp2 수준)
+      prune_distance: 1.0
+      transform_tolerance: 0.2
+      # ★ 2026-09-17 §12: 0.15 → 0.3 (Nav2 기본값으로 복귀). 0.15 는 09-16 mp4 에서 네 손잡이 중 하나로 함께 바꿨을 뿐
+      #   단독 효과는 검증되지 않았다(당시 시뮬레이션에서 입구 정지를 푼 것은 PathFollow 10/20).
+      #   조향 흔들림(통로 명령 ω 부호반전 10~15 /m, 고주파 RMS 0.06~0.08 rad/s)의 기제 = softmax 유효 표본 수(ESS)
+      #   0.15 에서 ESS ≈ 10/1000 → 평균 제어의 표본 잡음 ≈ wz_std/√ESS = 0.12~0.14 rad/s 가 매 주기 독립으로 섞인다.
+      #   0.3 이면 ESS ≈ 81~89 → 0.04 rad/s. 시뮬레이션(실측 구동계: 지연 0.1 s·ω 이득 0.7·smoother 가속 1.2):
+      #   통로 반전 6~13 → 0 /m, 입구 정지 없음, 대가는 6 s 진행 −15~−23 %·목표 허용오차 진입 7.3 → 12.3 s.
+      #   실주행 반복으로 확인 전까지 잠정. 진행이 과하게 느리면 0.22(ESS ≈ 30, 반전 0~7 /m, 진행 −5~−11 %)가 대안.
+      # ★ 2026-09-17 §13 mp12(0.3): 통로 반전 8.8 /m·RMS 0.059 로 0.15(mp9~11) 와 차이 없음, 느려진다는 예측도 빗나감
+      #   → 위 ESS 기제는 실측으로 확인되지 않았다. 사용자 결정으로 기준 구성(0.15, 3/3 성공)으로 복귀하고 원인을 오프라인에서 가린다.
+      temperature: 0.15
+      gamma: 0.015
+      motion_model: "DiffDrive"
+      # ★ 2026-09-17 mp7: 끔. 주기마다 후보 궤적 MarkerArray(≈2232 점)를 발행·bag 기록(≈5 MB/s)하는 비용이 15W 모드 CPU 를 압박.
+      #   mp4~mp6 분석용 기록은 확보됨. 진단 주행에만 true 로 켠다.
+      visualize: false
+      # ★ 2026-09-18 §15~17: ObstaclesCritic → CostCritic. 1.1.20 소스 확인 — consider_footprint 일 때 ObstaclesCritic 은 차체 둘레 최대비용(내접 안이면 항상 253)
+      #   에서 거리를 역산해 옆 여유 1~14 cm 가 같은 비용(거리 0.175 고정)이 되고, 거리 역산용 cost_scaling_factor/inflation_radius 를 크리틱 파라미터로
+      #   읽는데(README 'Humble only') 이 YAML 에 없어 기본 10/0.55 로 돌고 있었다(로컬 코스트맵은 2.5/0.40; job451 실행 중 값으로 확인). CostCritic 은 충돌은 같은 둘레
+      #   검사, 점수는 중심 칸 비용(거리 기울기 있음). 오프라인 시뮬(job452, dy2·dy4·dy6 세 장면×seed 2): LETHAL 여유 최소 +0.5~2.4 cm, 정체 없음, 입구 진행 −0~7 %.
+      #   되돌리기 = 아래 목록에서 CostCritic ↔ ObstaclesCritic 한 줄. 판정 기준은 09-18 SUMMARY §16.
+      critics: ["ConstraintCritic", "CostCritic", "GoalCritic", "GoalAngleCritic", "PathAlignCritic", "PathFollowCritic", "PathAngleCritic", "PreferForwardCritic"]
+      ConstraintCritic: {enabled: true, cost_power: 1, cost_weight: 4.0}
+      # ★ 2026-09-17 mp8 (09-17 SUMMARY §7): 목표 0.24 m 옆에서 정지. 경로 크리틱이 목표 0.6/0.4 m 안에서 꺼져 GoalCritic(5) 만 남고,
+      #   상자 모서리 때문에 늦게 시작한 중심선 복귀가 끊겼다. 오프라인 MPPI 시뮬(job355, 펌웨어 데드밴드 모델, bag_mp8 t=33 s 12 s):
+      #   현재 0.234 m(실측 0.243 재현) / 문턱 0.2 → 0.144 / 문턱 0.2 + GoalCritic 10 → 0.116 m (xy tol 0.15) → 둘 다 적용.
+      GoalCritic: {enabled: true, cost_power: 1, cost_weight: 10.0, threshold_to_consider: 1.0}
+      GoalAngleCritic: {enabled: true, cost_power: 1, cost_weight: 3.0, threshold_to_consider: 0.4}
+      PreferForwardCritic: {enabled: true, cost_power: 1, cost_weight: 5.0, threshold_to_consider: 0.4}
+      # consider_footprint: 직사각 풋프린트(0.5×0.33) 정확 반영 — CPU 비용 있으나 좁은 공간 정확성에 필수
+      ObstaclesCritic: {enabled: true, cost_power: 1, repulsion_weight: 1.5, critical_weight: 20.0, consider_footprint: true, collision_cost: 10000.0, collision_margin_distance: 0.05, near_goal_distance: 0.5}   # 09-18: 목록에서 빠짐(A/B 복귀용으로 둠)
+      # CostCritic (09-18): 기본값 그대로(README 예시와 같음). near_goal_distance 는 0.5 유지 — README 예시 1.0 이면 상자 뒤 모서리(x 1.25~1.35, 목표에서 0.65~0.75 m)
+      #   에서 선호 항이 꺼진다. critical_cost 300 = 중심이 내접(옆 여유 < 1 cm) 안에 들어가는 궤적 점 벌점. cost_weight 3.81/254 × 평균 중심 비용(0~252) → 최대 ≈3.8.
+      CostCritic: {enabled: true, cost_power: 1, cost_weight: 3.81, critical_cost: 300.0, consider_footprint: true, collision_cost: 1000000.0, near_goal_distance: 0.5}
+      # offset_from_furthest 20 → 3 (09-16): 지평 0.22 m / 점간격 ~0.04 m = index 5~6 이므로 3 이면 0.1 m 만 나아가도 켜진다.
+      PathAlignCritic: {enabled: true, cost_power: 1, cost_weight: 14.0, max_path_occupancy_ratio: 0.05, trajectory_point_step: 3, threshold_to_consider: 0.20, offset_from_furthest: 3}
+      # ★ 2026-09-16 §1.14 (job354/355 재구성·시뮬레이션): 입구 기어감의 실체는 '당근이 짧은 추종'. offset 5 점 = 경로 점간격 0.025 m 에서
+      #   12.5 cm 뿐이라 진행해도 비용이 거의 안 줄고, 브레이크(PathAlign·Obstacles)만 이동에 비례해 커져 v≈0.02 에서 평형.
+      #   weight 5→10·offset 5→20(0.5 m) 이면 시뮬레이션에서 6 s 에 0.25 m 전진·경로 정렬(yaw 32→7°), 평균열 LETHAL 미접촉. 회피·정렬 가중은 유지.
+      PathFollowCritic: {enabled: true, cost_power: 1, cost_weight: 10.0, offset_from_furthest: 20, threshold_to_consider: 0.2}
+      # max_angle_to_furthest 1.0 → 0.5 rad (09-16): mp2 정체 중 경로 방위 오차 44~62° 에서 1.0 rad(57°) 문턱은 간헐적으로만 켜졌다.
+      #   29° 부터 켜서 모서리에서 제자리 우회전을 유도. (weight 2 유지 — 한 번에 바꾸는 손잡이를 지평·index·각도 3개로 한정)
+      PathAngleCritic: {enabled: true, cost_power: 1, cost_weight: 2.0, offset_from_furthest: 4, threshold_to_consider: 0.2, max_angle_to_furthest: 0.5}
+
+local_costmap:
+  local_costmap:
+    ros__parameters:
+      update_frequency: 5.0
+      publish_frequency: 2.0
+      global_frame: odom
+      always_send_full_costmap: true   # 2026-09-08: 증분 갱신만 오면 진단 스크립트가 latched 스냅샷을 읽어 오판 → 전체 발행
+      robot_base_frame: base_link
+      rolling_window: true
+      width: 3
+      height: 3
+      resolution: 0.05
+      # 실제 사각 풋프린트 사용 (원형 근사는 좁은 통로에서 과보수적)
+      footprint: "[[0.25, 0.165], [0.25, -0.165], [-0.25, -0.165], [-0.25, 0.165]]"
+      # ⚠ 0.02→0.05 (2026-09-02): S2L 최소감지 0.2m → 앞면 ~10cm 이내 물체는 라이다 사각.
+      #   근접 후 회전 중 벽 접촉·트랙 헛돎 실발생 → 패딩을 키워 계획 단계에서 벽과 거리 유지.
+      # 2026-09-08 야간: 0.05 → 0.02 (사용자 우선순위: 좁은 길 통과).
+      #   통과 가능 여부를 실제로 정하는 값. 코스트맵상 로버 폭 = 0.33 + 2×패딩.
+      #     0.05 → 0.43m : 이번 통로(좌 빈틈 0.42m)에서 여유 −0.01m → 좌측 불가, job84/87 이 실제로 막힘
+      #     0.02 → 0.37m : 좌 여유 +0.05m / 우 +0.20m → 양쪽 통과 가능
+      #   내접반경도 0.215 → 0.185 로 줄어 inflation_radius 0.25 조건(≥내접)은 계속 충족.
+      #   ⚠ 대가: 라이다 0.2m 사각에 대한 여유 감소. 다만 09-08 이후 깊이 카메라가 그 구간을 마킹하고
+      #     RPP 충돌검사가 0.40m 를 보므로 09-02 에 패딩을 넣던 때보다 위험이 낮다.
+      # * 2026-09-11: 0.05 -> 0.03. 09-09 에 0.02->0.05 로 올린 사유("계획 좌우 뒤집힘")는 BT ClearEntireCostmap
+      #   오진으로 밝혀졌다(09-11 SUMMARY 5.8). 원인이 제거된 지금 패딩 0.05 는 대가만 남는다: 물리 틈 0.73 m 에서
+      #   허용 자세각 47도 -> 0.03 이면 약 55도. 내접반경 0.215 -> 0.195 (inflation_radius 0.35/0.40 >= 내접 조건 유지).
+      #   오늘 "중앙 상자" 배치(상자 y -0.11, 통로 RPP 폭 0.35 m)에서 출발 직후 굳는 것(v2, v3=0.05 대조군)을
+      #   이 값 하나만 바꿔 같은 자리에서 본다.
+      # 2026-09-14 (09-14 SUMMARY §2.22~2.23): 0.03 → 0.01. 사용자 실측 앞우 모서리↔상자 모서리 16 cm 일 때 코스트맵은 4~6 cm — 패딩 3 cm·격자 반올림 2.5 cm·
+      #   상자 전면 셀 3.6 cm 가 겹친 ≈10 cm 보수성. 중앙 상자(창 0.23)에서는 코스트맵 여유가 0 이라 계획기(NavFn/Smac)·목표 위치로는 더 얻을 것이 없었다.
+      #   내접반경 0.195 → 0.175 (창 +4 cm). inflation_radius(0.40/0.55) ≥ 내접 조건 유지. 접촉 0 유지 조건으로 한 번에 하나.
+      footprint_padding: 0.01
+                          #   여유 0.001m 짜리 '스치는' 우회피 경로가 생성됐다. 통과 가능 여부는
+                          #   inflation 이 아니라 내접반경(반폭 0.165 + 패딩)이 정하므로,
+                          #   패딩을 올려 그런 경로를 계획 단계에서 배제한다(내접 0.215).
+                          #   inflation local 0.40 / global 0.35 은 둘 다 0.215 이상이라 조건 충족.
+      plugins: ["stvl_layer", "obstacle_layer", "inflation_layer"]
+      # ★ 2026-09-21 Phase N3 A/B: 로컬 코스트맵의 카메라 층을 STVL ↔ nvblox 로 바꿔 끼운다(계획서 N3 "plugins 한 줄"). 위 줄과 아래 줄을 맞바꾸고 nav2 재기동.
+      #   nvblox 는 Isaac ROS 컨테이너에서 돌고(깊이 전용, odom 프레임, 복셀 0.05, 슬라이스 z 0.03~0.30), 호스트 Nav2 는 소스 빌드한 nvblox_nav2 층으로
+      #   /nvblox_node/static_map_slice(DistanceMapSlice, 9.5 Hz)를 읽는다. A/B-1 은 **이진(LETHAL/FREE) + 기존 inflation_layer** 로 두어 바뀌는 것이
+      #   "치명 셀의 출처"(STVL+릴레이 vs nvblox ESDF≤0) 하나뿐이게 한다. ESDF 기울기를 비용으로 직접 쓰는 A/B-2 는 그 뒤(09-18 §15 CostCritic 분석과 함께).
+      # plugins: ["nvblox_layer", "obstacle_layer", "inflation_layer"]
+      nvblox_layer:
+        plugin: "nvblox::nav2::NvbloxCostmapLayer"
+        enabled: true
+        nvblox_map_slice_topic: "/nvblox_node/static_map_slice"
+        convert_to_binary_costmap: true    # A/B-1: 거리 ≤0 → LETHAL, 그 밖 FREE (inflation 은 inflation_layer 가)
+        max_obstacle_distance: 0.40        # A/B-2 에서 쓰는 보간 상한(이진 모드에선 무시) = 로컬 inflation_radius
+        inflation_distance: 0.175          # A/B-2: 이 거리 안은 INSCRIBED(253) = 내접 반경(반폭 0.165 + 패딩 0.01)
+        max_cost_value: 252
+      # 2026-09-09 ★ VoxelLayer → SpatioTemporalVoxelLayer (STVL 2.3.4).
+      #   문제(§8.8 확정): 스톡 VoxelLayer 는 매 주기 **현재 복셀 격자만 보고** 컬럼 비용을 다시
+      #     계산한다. '마지막으로 관측된 때' 라는 개념이 없어, 카메라가 상자를 놓치는 순간 마킹이
+      #     사라진다. clearing:false 로 소거를 완전히 껐는데도 사라진 것이 결정적 증거였다(job155).
+      #   STVL 은 복셀마다 관측 시각을 갖고 시간에 따라 감쇠시킨다 → 관측이 끊겨도 유지된다.
+      #   구성은 STVL 공식 실내 예제(constrained_indoor_environment_config.yaml)를 따른다:
+      #     같은 토픽을 **마킹용/소거용 두 소스로 분리**하고, 소거용에만 절두체(frustum)를 준다.
+      #   핵심: min_z 0.25 = 카메라 실측 최소 측정거리(job71: 0.25m 288점 / 0.21m 8점).
+      #     이보다 가까운 복셀은 절두체 **밖**이라 가속 감쇠를 받지 않는다 →
+      #     로버가 다가가 카메라가 실명하는 구간에서 상자가 그대로 남는다. 이것이 노린 효과다.
+      #   동적 장애물 망각은 decay_acceleration 이 담당한다 — 절두체 **안**인데 재관측되지 않으면
+      #     더 빨리 지운다. 즉 '볼 수 있는데 없다' 와 '못 본다' 를 구분한다.
+      stvl_layer:
+        plugin: "spatio_temporal_voxel_layer/SpatioTemporalVoxelLayer"
+        enabled: true
+        # 2026-09-10 job198 실측: 로컬은 영속(-1), 전역은 90초.
+        #   관측(사용자): "상자를 잘 피해 가다가 상자가 우측 측면에 오는 순간 제자리 회전으로
+        #   경로를 상자 쪽으로 틀고, 치고 지나가며 목적지 도착."
+        #   데이터: t=18 에 계획 횡좌표가 +0.411 → +0.202 로 꺾이고 동시에 RPP 가 제자리 회전
+        #   (v=0, ω=-0.320). 그때 lc_box 는 99 → 79 → 69 로 내려가 있었다.
+        #   나는 이 하강을 '감쇠가 잘 동작하는 증거' 로 좋게 읽었으나 **틀렸다** —
+        #   코스트맵에서 값이 내려간다는 건 **장애물이 물러진다**는 뜻이다. 내접 비용(99) 아래로
+        #   떨어지면 그 셀은 통과 불가가 아니라 '비싼 길' 이 되고 플래너가 파고든다.
+        #   상자를 지나가는 20~30초 동안 상자가 코스트맵에서 서서히 녹고 있었다.
+        #   로컬: 3×3m **롤링 창**이라 지나가면 자동으로 잊는다. 시간 감쇠는 중복이고
+        #     지나가는 동안 장애물을 물렁하게 만든다. 컨트롤러의 충돌 검사가 이 레이어를 보므로
+        #     여기가 단단해야 접촉이 막힌다. → 영속(-1).
+        #   대가: 치운 물체를 잊는 데 창을 벗어날 때까지 걸린다(0.08m/s 로 약 19초).
+        #   검증(job205, 같은 코스): 카메라는 t=0.90s 이후 상자를 한 번도 못 봤다(깊이점 관측
+        #     10/382 샘플, 미관측 37.6초). 그런데도 lc_box·gc_box 가 주행 내내 99 를 유지했고,
+        #     계획 좌우 전환 0회, 계획이 접촉 경로였던 샘플 0/382, 결과 SUCCEEDED(38.1s).
+        #     즉 **관측 없이 37초를 버틴 것**이 회피를 성립시켰다. 30초 감쇠였다면 t≈31 에
+        #     99→69 로 녹아 job198 과 같은 파고들기가 났을 구간이다.
+        # ★ 2026-09-11 되돌림: -1(영속) → 0(선형 30초).
+        #   영속으로 바꾼 근거("감쇠가 상자를 녹인다", 09-10)가 **무효화됐다.**
+        #   상자가 코스트맵에서 사라진 진짜 원인은 감쇠가 아니라 **Nav2 BT 의
+        #   ClearEntireCostmap** 이었다 — RPP 가 충돌을 감지하면 BT 가 로컬 코스트맵을
+        #   통째로 지워 버린다. 재현 로그(job222)가 17ms 간격으로 인과를 보여줬고,
+        #   통제 실험이 감쇠·절두체·화각 세 가설을 모두 기각했다:
+        #     · 정면 접근(trial0, cmd_vel 직접) cam~box 0.15m 까지 로컬 100 유지
+        #     · 제자리 회전(rot1) 상자 방위 -82°(화각 밖)에도 로컬 100 유지
+        #   BT 를 ClearCostmapExceptRegion 으로 고치자 로컬이 상자를 유지하고
+        #   계획이 접촉 경로였던 샘플이 33% → 0% 가 됐다(job224/227).
+        #   영속은 이제 **불필요하고 대가만 남는다** — 한 번 잘못 찍힌 복셀을 지울 수단이
+        #   사라진다(절두체는 min_z 0.55 라 근거리를 못 지우고, 라이다 레이캐스팅은
+        #   combination_method: 1(Maximum) 때문에 STVL 값을 못 이긴다).
+        #   30.0 은 09-09 job167 에서 근거를 갖고 정한 값이므로 그대로 복원한다.
+        # 2026-09-14: 30 → 60 s. 중앙 상자 주행 3회(inf1~3) 모두 상자 옆을 지나는 동안 로컬 상자 기억이 30 s 만료로
+        #   사라졌다(마지막 관측은 상자 앞 ~0.5 m, 이후 사각지대·입구 정지로 20~30 s 소요). BT 가 ClearCostmapExceptRegion 이라
+        #   길게 둬도 09-10 의 "밀고 지나감" 은 재발하지 않는다. 근거: Docs/debug_log/2026-09-14/SUMMARY.md §2, §2.10
+        # ★ 2026-09-16 §C: 60 → 120. 입구 머뭇거림 중 기억 소실(mp3 접촉)을 막는다. 누적 잡음 검토(job338, mp2/mp3/bk1 bag):
+        #   깊이 전용 셀 중 로버 궤적 0.25 m 이내 0개, 통로 띠 안은 상자 앞 오른쪽 '바닥 점' 1~2개뿐(왼쪽 통로 밖), 나머지는
+        #   y>1.0 의 낮은 가구·6~7 m 원거리 군집. 120 s 상한 시뮬레이션에서도 통로 띠 최대 2개 → 통로를 막지 않는다.
+        #   남는 위험: 사람이 지나간 자취가 2 배 오래 남는다(관찰자 시야 밖 규칙 유지).
+        voxel_decay: 120.0            # 선형 감쇠 수명(초)
+        decay_model: 0                # 0=선형, 1=지수, -1=영속
+        voxel_size: 0.05              # 코스트맵 해상도와 일치
+        track_unknown_space: true
+        mark_threshold: 0             # 복셀 1칸이면 마킹 (09-08: 근접 시 윗면만 보여 1칸이 됨)
+        update_footprint_enabled: true
+        combination_method: 1         # Maximum — 라이다 obstacle_layer 가 이 마킹을 낮출 수 없다
+        origin_z: 0.0
+        publish_voxel_map: false      # 진단 시 true (CPU·대역 비용 있음)
+        transform_tolerance: 0.2
+        mapping_mode: false
+        map_save_duration: 60.0
+        observation_sources: depth_mark depth_clear
+        depth_mark:
+          data_type: PointCloud2
+          topic: /camera/depth/points_filtered   # 2026-09-14: depth_relay 출력(근거리 0.45 m·고립점 제거). 원본은 /camera/camera/depth/color/points
+          marking: true
+          clearing: false
+          obstacle_range: 1.2         # D455 원거리 잡음 억제 (기존 obstacle_max_range 와 동일)
+          # 2026-09-14: 0.08 시도 → 기각, 0.06 유지 (09-14 SUMMARY §2.14). 상자 좌측 가장자리 띠(y +0.15~+0.16, z 0.063~0.085, 78 % 가 0.08 미만)가
+          #   코스트맵 상자를 넓힌다고 보고 0.08 로 올렸으나, 정지 검증에서 셀 +0.15~+0.17 은 그대로 남았고(z 0.085 점이 0.2점/프레임이면 mark_threshold 0 에
+          #   60 s 감쇠라 충분) 상자 본체 점은 51 % 가 사라졌다(147 → 72점/프레임). 그 띠는 실제 상자 가장자리(폭 ≈0.22 m)의 낮은 부분이다 —
+          #   "5~95 % 가장자리 +0.13" 이 상자를 좁게 본 것. 8 cm 미만 물체를 잃는 대가만 남아 되돌린다.
+          min_obstacle_height: 0.06   # 바닥 배제. 라이다 z 0.185, 카메라 z 0.143, 바닥 실측 z≈−0.02
+          max_obstacle_height: 0.40
+          expected_update_rate: 0.0
+          observation_persistence: 0.0  # STVL 자체 감쇠가 기억을 담당하므로 버퍼 유지는 불필요
+          inf_is_valid: false
+          # ★ 2026-09-16 §1.8: 상자 왼쪽 가장자리 셀 깜빡임(창 0.235 ↔ 0.187) 의 출처는 가장자리(y≈0.18)의 잡음 꼬리 —
+          #   180 s 에 9 프레임(0.3 %), 프레임당 1~2점이 y 0.20~0.21 에 떨어지고(월드 복셀당 최대 2점), 한 점이 decay 60 s 동안
+          #   셀 [0.20,0.25) 를 켠다. 릴레이의 "카메라 복셀당 ≥3점" 은 같은 복셀의 안정된 가장자리 점과 함께 통과시켜 못 거른다.
+          #   STVL 의 voxel 필터는 **odom 격자 정렬**(PCL VoxelGrid) 이라 셀 단위로 거른다: 3 이면 9/9 사건 차단,
+          #   진짜 가장자리 셀(1.18,0.17)은 91 % 프레임 유지, 앞-왼쪽 약한 모서리 셀(1.12,0.12~0.17: 1~3점·10 %)만 사라진다.
+          #   2 는 사건 3/9 를 통과시켜 부족. (job333, 정지 180 s, raw·filtered 동일)
+          filter: "voxel"
+          voxel_min_points: 3
+          clear_after_reading: true
+        depth_clear:
+          data_type: PointCloud2
+          topic: /camera/depth/points_filtered   # 2026-09-14: depth_relay 출력(근거리 0.45 m·고립점 제거). 원본은 /camera/camera/depth/color/points
+          marking: false
+          clearing: true
+          max_z: 1.5                  # 절두체 원평면. 마킹은 1.2m 까지지만 소거 판단은 조금 더 멀리
+          # 2026-09-09 job169 로 0.25 → 0.55 정정.
+          #   0.25 는 job71 의 옛 실측(0.22~0.25m)에서 가져왔는데, **오늘 실제로 깊이점이 끊기는
+          #   거리는 0.45~0.51m** 다(job167: 0.51m 142점 → 0.45m 0점 / job169 동일).
+          #   0.25 로 두면 카메라가 실제로는 못 보는 0.25~0.5m 구간이 절두체 '안' 으로 선언되어,
+          #   STVL 이 "볼 수 있는데 아무것도 없다" 고 판단하고 decay_acceleration 으로
+          #   **5초 만에 지웠다**(voxel_decay 30 을 줬는데도). 근평면은 반드시 **실측 끊김 거리**여야 한다.
+          #   ⚠ 이 값은 S2(디시메이션 재검토)로 사각지대를 줄이면 함께 낮춰야 한다 — 짝을 이룬다.
+          min_z: 0.55                 # 절두체 근평면 = 실측 깊이점 끊김 거리 + 여유
+          vertical_fov_angle: 1.012   # D455 depth 수직 58°
+          horizontal_fov_angle: 1.518 # D455 depth 수평 87°
+          # 2026-09-10 job183: 3.0 → 0.0.
+          #   깊이점이 끊기는 거리가 **장면마다 다르다** — 09-09 는 0.45~0.51m, 오늘은 0.65m.
+          #   min_z(절두체 근평면)를 한 값으로 맞추는 접근이 근본적으로 취약하다는 뜻이다.
+          #   job183 에서 t=6 에 점이 끊겼는데(카메라~상자 0.65m) t=8 에 소거됐다.
+          #   그 시점 카메라~상자 중심은 0.580m 로 min_z 0.55 를 **넘어** 절두체 '안' 이었고,
+          #   voxel_decay 30 을 줬는데도 가속 감쇠가 2~3초 만에 지웠다.
+          #   0 으로 두면 절두체 안팎을 가리지 않고 모두 voxel_decay 동안 균일 유지된다 →
+          #   '관측이 끊기면 30초 유지' 라는 규칙이 장면에 의존하지 않는다.
+          #   ⚠ 대가: 치운 물체도 카메라가 빈 공간을 보고 있어도 최대 30초 남는다.
+          #     0.08m/s 에서 30초 = 2.4m 이동분이고 로컬은 3×3m 롤링이라 지나가면 소멸.
+          #     동적 망각 튜닝은 S3 에서 따로 한다(그때 값을 되살릴지 재검토).
+          #   ※ STVL 문서상 라이다 소스는 이 값이 반드시 0 이어야 한다 — 깊이 카메라는 선택.
+          decay_acceleration: 0.0
+          model_type: 0               # 0 = depth camera (절두체), 1 = 3D 라이다
+      # 2026-09-09 ★ 레이어 분리 — 센서는 '자기가 감지할 수 있는 것' 만 지울 수 있어야 한다.
+      #   문제(job128 실측): scan 과 depth 가 같은 voxel_layer 의 소스여서 **같은 격자를 공유**했다.
+      #     라이다는 z 0.185 에 있어 높이 0.11m 상자를 원리적으로 못 보는데, 그 셀을 관통해
+      #     뒤쪽 벽까지 레이트레이스하며 카메라가 찍어 둔 마킹을 자유 공간으로 되돌렸다.
+      #     출발 시엔 카메라 마킹이 더 빨라 버티지만, 카메라가 최소측정거리 안으로 들어가
+      #     마킹이 멈추는 순간 소거만 남아 상자가 증발한다.
+      #     t=14.0s 에 lc_box/gc_box 가 99 → 0 으로 떨어지고, 그 즉시 계획 여유가 −10.2cm
+      #     (= 상자를 관통하는 경로)가 되어 접촉했다.
+      #   해법: 라이다를 **별도 ObstacleLayer** 로 분리. 레이어마다 자기 격자를 가지며 마스터는
+      #     combination_method: 1 (Maximum) 으로 합치므로 라이다 레이어는 카메라 레이어의
+      #     마킹을 **낮출 수 없다**. raytrace_min_range 인상 같은 파라미터 조정과 달리
+      #     '못 보는 것을 지운다' 는 상황 자체가 구조적으로 불가능해진다.
+      #   비용: 격자 1장 추가. 라이다는 2D 평면이므로 VoxelLayer 대신 ObstacleLayer 로 충분.
+      #   ⚠ 레이어를 나누면 그 레이어의 마킹은 **그 레이어의 센서만** 지울 수 있다.
+      #     따라서 각 레이어에는 자기가 찍은 것을 되돌릴 수 있는 센서가 반드시 있어야 한다
+      #     (여기서는 카메라 레이어=깊이 광선 소거, 라이다 레이어=스캔 광선 소거).
+      obstacle_layer:
+        plugin: "nav2_costmap_2d::ObstacleLayer"
+        enabled: true
+        combination_method: 1        # Maximum — 다른 레이어의 마킹을 덮어쓰지 않는다
+        observation_sources: scan
+        scan:
+          topic: /scan
+          data_type: "LaserScan"
+          max_obstacle_height: 2.0
+          clearing: true
+          marking: true
+          raytrace_max_range: 12.0
+          # 라이다 자신이 마킹한 것만 지우므로 근접 소거를 막을 이유가 없다 → 원래 값 유지.
+          raytrace_min_range: 0.2
+          obstacle_max_range: 8.0
+          obstacle_min_range: 0.2
+          inf_is_valid: false
+      inflation_layer:
+        plugin: "nav2_costmap_2d::InflationLayer"
+        # ⚠ 0.35 는 실내 좁은 공간에서 과대 — 장애물·벽 양쪽 팽창이 겹쳐 자유 통로가 소멸,
+        #   우회 경로를 못 찾고 복구동작만 반복하다 ABORTED (2026-09-02 실측).
+        #   로버 내접반경 0.165 보다는 크게 두되 통로를 남기는 값으로 축소.
+        # 0.25 (2026-09-03): footprint_padding 0.05 로 내접반경이 0.215 가 되어 0.20 은 Nav2 오류
+        #   ("inflation radius smaller than inscribed radius" → 충돌 위험). 내접반경 이상으로 재설정.
+        # inflation_radius 는 '통과 가능/불가' 를 정하지 않는다 (2026-09-08 확인).
+        #   비용 구조: 장애물 셀 = LETHAL(254) / **내접반경 이내 = INSCRIBED_INFLATED(253) → 경성 차단** /
+        #   내접반경 ~ inflation_radius = 252→0 감쇠하는 소프트 비용(통과 가능, 비용만 큼).
+        #   내접반경 = 반폭 0.165 + footprint_padding 0.05 = 0.215 → 즉 **차체 크기에서 나온다**.
+        #   따라서 '지날 수 있느냐' 는 패딩이, '얼마나 꺼리느냐' 는 inflation_radius 가 정한다.
+        #
+        # 0.35 → 0.25 (2026-09-08 야간, job61 진동 원인 확정 후).
+        #   실측: 상자 폭 0.18m(중심 y≈0), 좌 빈틈 0.69m / 우 0.50m — 로버 통과폭 0.43m 대비 **양쪽 다 통과 가능**.
+        #   그런데 좌측 슬롯에서 로버 중심이 놓일 수 있는 범위는 +0.30~+0.57 인데,
+        #     inflation 0.35 → 비용 0 인 위치가 **하나도 없음**(상자 0.09+0.35=0.44 > 벽 0.78−0.35=0.43)
+        #     → 슬롯 전체가 고비용 → RPP 의 use_cost_regulated_linear_velocity_scaling 이 계속 감속시키고
+        #       좌/우 경로 비용이 비슷해 전역경로가 번갈아 뒤집힘 → job61 의 좌우 진동·스래싱.
+        #     inflation 0.25 → 비용 0 폭 0.19m 확보(0.22 면 0.25m). 0.25 로 여유와 중앙선호를 절충.
+        #   ⚠ 이전 기록의 "통로가 막혔다"(상자 폭 0.30m 가정)는 오독이었음 — min/max 로 읽어 5% 가장자리
+        #     잡음까지 포함했고, 부채꼴 스캔도 'x 전 구간 동일 y 자유' 라는 과도한 조건을 썼다.
+        # 2026-09-08 야간 최종: 0.25 → 0.40.
+        #   사용자 관측(job89): "왼쪽에 더 공간이 있었는데도 그쪽으로 안 가고 상자에 더 가까이 움직였다."
+        #   원인: inflation 은 **통과를 막지 않고 비용 경사만 만든다**(막는 것은 내접반경=패딩).
+        #     0.25 이면 내접 0.185~0.25 의 0.065m 만 경사이고 그 밖은 전부 비용 0 → 어디로 가나 같은 비용
+        #     → NavFn 이 최단 경로를 골라 **여유가 있어도 장애물에 딱 붙는다**. 패딩을 0.02 로 낮춰
+        #       내접이 0.185 로 준 것이 이를 더 키웠다(더 가까이 붙을 수 있게 됨).
+        #   0.40 → 경사 구간 0.215m 확보 → 공간이 있으면 멀리 돌고, 좁으면 비싸게라도 통과(막히지 않음).
+        #   ⚠ 09-08 오전에 0.35→0.25 로 낮췄던 근거(job61 진동)는 오진이었다. 진동의 진짜 원인은
+        #     충돌검사 지평 0.12m 였고 5.0s 로 해소됨. 따라서 inflation 을 키워도 그 문제는 재발하지 않는다.
+        inflation_radius: 0.40
+        cost_scaling_factor: 2.5   # 완만한 감쇠 — 통로 중앙 선호 강화 (local)
+      always_send_full_costmap: true
+
+global_costmap:
+  global_costmap:
+    ros__parameters:
+      update_frequency: 1.0
+      publish_frequency: 1.0
+      global_frame: map
+      robot_base_frame: base_link
+      resolution: 0.05
+      track_unknown_space: true
+      footprint: "[[0.25, 0.165], [0.25, -0.165], [-0.25, -0.165], [-0.25, 0.165]]"
+      # ⚠ 0.02→0.05 (2026-09-02): S2L 최소감지 0.2m → 앞면 ~10cm 이내 물체는 라이다 사각.
+      #   근접 후 회전 중 벽 접촉·트랙 헛돎 실발생 → 패딩을 키워 계획 단계에서 벽과 거리 유지.
+      # 2026-09-08 야간: 0.05 → 0.02 (사용자 우선순위: 좁은 길 통과).
+      #   통과 가능 여부를 실제로 정하는 값. 코스트맵상 로버 폭 = 0.33 + 2×패딩.
+      #     0.05 → 0.43m : 이번 통로(좌 빈틈 0.42m)에서 여유 −0.01m → 좌측 불가, job84/87 이 실제로 막힘
+      #     0.02 → 0.37m : 좌 여유 +0.05m / 우 +0.20m → 양쪽 통과 가능
+      #   내접반경도 0.215 → 0.185 로 줄어 inflation_radius 0.25 조건(≥내접)은 계속 충족.
+      #   ⚠ 대가: 라이다 0.2m 사각에 대한 여유 감소. 다만 09-08 이후 깊이 카메라가 그 구간을 마킹하고
+      #     RPP 충돌검사가 0.40m 를 보므로 09-02 에 패딩을 넣던 때보다 위험이 낮다.
+      # * 2026-09-11: 0.05 -> 0.03. 09-09 에 0.02->0.05 로 올린 사유("계획 좌우 뒤집힘")는 BT ClearEntireCostmap
+      #   오진으로 밝혀졌다(09-11 SUMMARY 5.8). 원인이 제거된 지금 패딩 0.05 는 대가만 남는다: 물리 틈 0.73 m 에서
+      #   허용 자세각 47도 -> 0.03 이면 약 55도. 내접반경 0.215 -> 0.195 (inflation_radius 0.35/0.40 >= 내접 조건 유지).
+      #   오늘 "중앙 상자" 배치(상자 y -0.11, 통로 RPP 폭 0.35 m)에서 출발 직후 굳는 것(v2, v3=0.05 대조군)을
+      #   이 값 하나만 바꿔 같은 자리에서 본다.
+      # 2026-09-14 (09-14 SUMMARY §2.22~2.23): 0.03 → 0.01. 사용자 실측 앞우 모서리↔상자 모서리 16 cm 일 때 코스트맵은 4~6 cm — 패딩 3 cm·격자 반올림 2.5 cm·
+      #   상자 전면 셀 3.6 cm 가 겹친 ≈10 cm 보수성. 중앙 상자(창 0.23)에서는 코스트맵 여유가 0 이라 계획기(NavFn/Smac)·목표 위치로는 더 얻을 것이 없었다.
+      #   내접반경 0.195 → 0.175 (창 +4 cm). inflation_radius(0.40/0.55) ≥ 내접 조건 유지. 접촉 0 유지 조건으로 한 번에 하나.
+      footprint_padding: 0.01
+                          #   여유 0.001m 짜리 '스치는' 우회피 경로가 생성됐다. 통과 가능 여부는
+                          #   inflation 이 아니라 내접반경(반폭 0.165 + 패딩)이 정하므로,
+                          #   패딩을 올려 그런 경로를 계획 단계에서 배제한다(내접 0.215).
+                          #   inflation local 0.40 / global 0.35 은 둘 다 0.215 이상이라 조건 충족.
+      plugins: ["static_layer", "stvl_layer", "obstacle_layer", "inflation_layer"]
+      static_layer:
+        plugin: "nav2_costmap_2d::StaticLayer"
+        map_subscribe_transient_local: true   # slam_toolbox /map 수신
+      # STVL — 설정 근거는 local_costmap 쪽 주석 참조. 전역도 같은 값을 쓴다.
+      stvl_layer:
+        plugin: "spatio_temporal_voxel_layer/SpatioTemporalVoxelLayer"
+        enabled: true
+        # 2026-09-10 job198 실측: 로컬은 영속(-1), 전역은 90초.
+        #   관측(사용자): "상자를 잘 피해 가다가 상자가 우측 측면에 오는 순간 제자리 회전으로
+        #   경로를 상자 쪽으로 틀고, 치고 지나가며 목적지 도착."
+        #   데이터: t=18 에 계획 횡좌표가 +0.411 → +0.202 로 꺾이고 동시에 RPP 가 제자리 회전
+        #   (v=0, ω=-0.320). 그때 lc_box 는 99 → 79 → 69 로 내려가 있었다.
+        #   나는 이 하강을 '감쇠가 잘 동작하는 증거' 로 좋게 읽었으나 **틀렸다** —
+        #   코스트맵에서 값이 내려간다는 건 **장애물이 물러진다**는 뜻이다. 내접 비용(99) 아래로
+        #   떨어지면 그 셀은 통과 불가가 아니라 '비싼 길' 이 되고 플래너가 파고든다.
+        #   상자를 지나가는 20~30초 동안 상자가 코스트맵에서 서서히 녹고 있었다.
+        #   전역: 누적되므로 시간 감쇠가 필요하다. 다만 주행 1회(약 30초) 동안 침식이
+        #     무시할 수준이어야 플래너가 파고들지 않는다. → 90초.
+        #   대가: 치운 물체를 잊는 데 최대 90초.
+        #   검증(job205, 같은 코스): 카메라는 t=0.90s 이후 상자를 한 번도 못 봤다(깊이점 관측
+        #     10/382 샘플, 미관측 37.6초). 그런데도 lc_box·gc_box 가 주행 내내 99 를 유지했고,
+        #     계획 좌우 전환 0회, 계획이 접촉 경로였던 샘플 0/382, 결과 SUCCEEDED(38.1s).
+        #     즉 **관측 없이 37초를 버틴 것**이 회피를 성립시켰다. 30초 감쇠였다면 t≈31 에
+        #     99→69 로 녹아 job198 과 같은 파고들기가 났을 구간이다.
+        voxel_decay: 180.0            # 선형 감쇠 수명(초) — 2026-09-16 §C: 90 → 180 (로컬과 같은 근거, 전역 통로 띠 유령 0개)
+        decay_model: 0                # 0=선형, 1=지수, -1=영속
+        voxel_size: 0.05              # 코스트맵 해상도와 일치
+        track_unknown_space: true
+        mark_threshold: 0             # 복셀 1칸이면 마킹 (09-08: 근접 시 윗면만 보여 1칸이 됨)
+        update_footprint_enabled: true
+        combination_method: 1         # Maximum — 라이다 obstacle_layer 가 이 마킹을 낮출 수 없다
+        origin_z: 0.0
+        publish_voxel_map: false      # 진단 시 true (CPU·대역 비용 있음)
+        transform_tolerance: 0.2
+        mapping_mode: false
+        map_save_duration: 60.0
+        observation_sources: depth_mark depth_clear
+        depth_mark:
+          data_type: PointCloud2
+          topic: /camera/depth/points_filtered   # 2026-09-14: depth_relay 출력(근거리 0.45 m·고립점 제거). 원본은 /camera/camera/depth/color/points
+          marking: true
+          clearing: false
+          obstacle_range: 1.2         # D455 원거리 잡음 억제 (기존 obstacle_max_range 와 동일)
+          # 2026-09-14: 0.08 시도 → 기각, 0.06 유지 (09-14 SUMMARY §2.14). 상자 좌측 가장자리 띠(y +0.15~+0.16, z 0.063~0.085, 78 % 가 0.08 미만)가
+          #   코스트맵 상자를 넓힌다고 보고 0.08 로 올렸으나, 정지 검증에서 셀 +0.15~+0.17 은 그대로 남았고(z 0.085 점이 0.2점/프레임이면 mark_threshold 0 에
+          #   60 s 감쇠라 충분) 상자 본체 점은 51 % 가 사라졌다(147 → 72점/프레임). 그 띠는 실제 상자 가장자리(폭 ≈0.22 m)의 낮은 부분이다 —
+          #   "5~95 % 가장자리 +0.13" 이 상자를 좁게 본 것. 8 cm 미만 물체를 잃는 대가만 남아 되돌린다.
+          min_obstacle_height: 0.06   # 바닥 배제. 라이다 z 0.185, 카메라 z 0.143, 바닥 실측 z≈−0.02
+          max_obstacle_height: 0.40
+          expected_update_rate: 0.0
+          observation_persistence: 0.0  # STVL 자체 감쇠가 기억을 담당하므로 버퍼 유지는 불필요
+          inf_is_valid: false
+          # ★ 2026-09-16 §1.8: 상자 왼쪽 가장자리 셀 깜빡임(창 0.235 ↔ 0.187) 의 출처는 가장자리(y≈0.18)의 잡음 꼬리 —
+          #   180 s 에 9 프레임(0.3 %), 프레임당 1~2점이 y 0.20~0.21 에 떨어지고(월드 복셀당 최대 2점), 한 점이 decay 60 s 동안
+          #   셀 [0.20,0.25) 를 켠다. 릴레이의 "카메라 복셀당 ≥3점" 은 같은 복셀의 안정된 가장자리 점과 함께 통과시켜 못 거른다.
+          #   STVL 의 voxel 필터는 **odom 격자 정렬**(PCL VoxelGrid) 이라 셀 단위로 거른다: 3 이면 9/9 사건 차단,
+          #   진짜 가장자리 셀(1.18,0.17)은 91 % 프레임 유지, 앞-왼쪽 약한 모서리 셀(1.12,0.12~0.17: 1~3점·10 %)만 사라진다.
+          #   2 는 사건 3/9 를 통과시켜 부족. (job333, 정지 180 s, raw·filtered 동일)
+          filter: "voxel"
+          voxel_min_points: 3
+          clear_after_reading: true
+        depth_clear:
+          data_type: PointCloud2
+          topic: /camera/depth/points_filtered   # 2026-09-14: depth_relay 출력(근거리 0.45 m·고립점 제거). 원본은 /camera/camera/depth/color/points
+          marking: false
+          clearing: true
+          max_z: 1.5                  # 절두체 원평면. 마킹은 1.2m 까지지만 소거 판단은 조금 더 멀리
+          # 2026-09-09 job169 로 0.25 → 0.55 정정.
+          #   0.25 는 job71 의 옛 실측(0.22~0.25m)에서 가져왔는데, **오늘 실제로 깊이점이 끊기는
+          #   거리는 0.45~0.51m** 다(job167: 0.51m 142점 → 0.45m 0점 / job169 동일).
+          #   0.25 로 두면 카메라가 실제로는 못 보는 0.25~0.5m 구간이 절두체 '안' 으로 선언되어,
+          #   STVL 이 "볼 수 있는데 아무것도 없다" 고 판단하고 decay_acceleration 으로
+          #   **5초 만에 지웠다**(voxel_decay 30 을 줬는데도). 근평면은 반드시 **실측 끊김 거리**여야 한다.
+          #   ⚠ 이 값은 S2(디시메이션 재검토)로 사각지대를 줄이면 함께 낮춰야 한다 — 짝을 이룬다.
+          min_z: 0.55                 # 절두체 근평면 = 실측 깊이점 끊김 거리 + 여유
+          vertical_fov_angle: 1.012   # D455 depth 수직 58°
+          horizontal_fov_angle: 1.518 # D455 depth 수평 87°
+          # 2026-09-10 job183: 3.0 → 0.0.
+          #   깊이점이 끊기는 거리가 **장면마다 다르다** — 09-09 는 0.45~0.51m, 오늘은 0.65m.
+          #   min_z(절두체 근평면)를 한 값으로 맞추는 접근이 근본적으로 취약하다는 뜻이다.
+          #   job183 에서 t=6 에 점이 끊겼는데(카메라~상자 0.65m) t=8 에 소거됐다.
+          #   그 시점 카메라~상자 중심은 0.580m 로 min_z 0.55 를 **넘어** 절두체 '안' 이었고,
+          #   voxel_decay 30 을 줬는데도 가속 감쇠가 2~3초 만에 지웠다.
+          #   0 으로 두면 절두체 안팎을 가리지 않고 모두 voxel_decay 동안 균일 유지된다 →
+          #   '관측이 끊기면 30초 유지' 라는 규칙이 장면에 의존하지 않는다.
+          #   ⚠ 대가: 치운 물체도 카메라가 빈 공간을 보고 있어도 최대 30초 남는다.
+          #     0.08m/s 에서 30초 = 2.4m 이동분이고 로컬은 3×3m 롤링이라 지나가면 소멸.
+          #     동적 망각 튜닝은 S3 에서 따로 한다(그때 값을 되살릴지 재검토).
+          #   ※ STVL 문서상 라이다 소스는 이 값이 반드시 0 이어야 한다 — 깊이 카메라는 선택.
+          decay_acceleration: 0.0
+          model_type: 0               # 0 = depth camera (절두체), 1 = 3D 라이다
+      # 2026-09-09 레이어 분리 (근거는 local_costmap 쪽 주석 참조).
+      obstacle_layer:
+        plugin: "nav2_costmap_2d::ObstacleLayer"
+        enabled: true
+        combination_method: 1        # Maximum — 다른 레이어의 마킹을 덮어쓰지 않는다
+        observation_sources: scan
+        scan:
+          topic: /scan
+          data_type: "LaserScan"
+          max_obstacle_height: 2.0
+          clearing: true
+          marking: true
+          raytrace_max_range: 12.0
+          # 라이다 자신이 마킹한 것만 지우므로 근접 소거를 막을 이유가 없다 → 원래 값 유지.
+          raytrace_min_range: 0.2
+          obstacle_max_range: 8.0
+          obstacle_min_range: 0.2
+          inf_is_valid: false
+      inflation_layer:
+        plugin: "nav2_costmap_2d::InflationLayer"
+        # 0.25 (2026-09-03): footprint_padding 0.05 로 내접반경이 0.215 가 되어 0.20 은 Nav2 오류
+        #   ("inflation radius smaller than inscribed radius" → 충돌 위험). 내접반경 이상으로 재설정.
+        # 2026-09-14: 0.35/3.0 → 0.55/2.0 (09-11 SUMMARY §5.19). "중앙 상자" 배치(창 0.22 m)에서 NavFn 계획이
+        #   상자 inflation 이 끝나는 선(+0.08+0.35 = +0.43)에 붙었고, 좌측 물체 선단 셀이 생기면 그 inflation 을
+        #   피해 상자 쪽(+0.27)으로 꺾여(접선 −21°→−40°) RPP 가 상자 옆 1셀에 걸렸다(v5). 정지 A/B(job308):
+        #   0.55/2.0 이면 양쪽 경사가 겹쳐 최소가 가운데로 — 좌측 물체 최소 여유 0.37→0.42 m, 접선 급변 46°→19°.
+        #   inflation 은 통과 가능 여부(패딩)를 바꾸지 않는다 — 계획이 어디를 지나는지만 바꾼다. 로컬은 그대로
+        #   (RPP 충돌검사는 LETHAL 만 보므로 로컬 inflation 은 비용 감속에만 관여).
+        # (이전) 2026-09-08: 0.25 → 0.35. 전역도 여유 선호가 필요(장애물 붙기 방지).
+        #   09-03 의 '0.35 에서 ABORT' 는 당시 패딩 0.05(내접 0.215) 조건이었고,
+        #   지금은 패딩 0.02(내접 0.185)라 통과 여유가 3cm 더 있다. 로컬보다 낮춰 계획 실패 여지를 줄임.
+        # ★ 2026-09-16 A 계획 정지 A/B(job340, 상자 1.085/-0.008, 목표 1.8/0): 0.55 → 0.70. NavFn 사선의 최대 진행방향 +64° → +37°,
+        #   0.1 m 창 최대 꺾임 78° → 51°(+SmoothPath 16.6°), 차선변경 0.43→0.92 에서 0.40→0.86, 상자셀 최소거리 0.269 → 0.265 (유지),
+        #   통로 계획횡 +0.412 → +0.390. 입구 접선각(x=BX-0.45)은 31° → 28° 로 기하 한계(0.40 m 횡이동/0.64 m) 안에서 소폭.
+        inflation_radius: 0.70
+        cost_scaling_factor: 2.0
+      always_send_full_costmap: true
+
+planner_server:
+  ros__parameters:
+    expected_planner_frequency: 1.0
+    # 2026-09-14 (NVBLOX 계획서 §4·§5-3): "경로 추종으로 자유 이동" 의 첫 계층 실험 — Smac Hybrid-A* 를 두 번째 계획기로 등록.
+    #   BT 기본 planner_id 는 GridBased 라 이 등록만으로는 동작이 바뀌지 않는다. 정지 A/B(job317: 시작 pose 고정, use_start)로
+    #   중앙 상자 코스의 모서리 통과 heading·차선 변경 시작점을 NavFn 과 비교한 뒤, 이기면 BT 의 planner_id 를 바꿔 주행 A/B.
+    #   NavFn 8-연결 격자는 곡률을 모르고 대각선으로 붙어 모서리에서 heading +15~30° 가 됐다(09-14 §2.18).
+    planner_plugins: ["GridBased", "SmacHybrid"]
+    GridBased:
+      plugin: "nav2_navfn_planner/NavfnPlanner"
+      tolerance: 0.25
+      use_astar: false
+      allow_unknown: true
+    SmacHybrid:
+      plugin: "nav2_smac_planner/SmacPlannerHybrid"
+      tolerance: 0.25
+      downsample_costmap: false
+      downsampling_factor: 1
+      allow_unknown: true
+      max_iterations: 1000000
+      max_on_approach_iterations: 1000
+      max_planning_time: 5.0
+      motion_model_for_search: "DUBIN"       # 전진만. 스키드스티어라 제자리 회전은 되지만 경로에 후진 cusp 을 넣지 않는다(RPP/MPPI 전진 추종)
+      angle_quantization_bins: 72            # 5°
+      # 2026-09-14 정지 A/B(09-14 §2.19): R 0.20/cost 2.0 은 목표 heading 제약으로 4.3 m 루프, R 0.05 는 틈을 파고들어 4.96 m 반대편 우회.
+      #   R 0.10/cost 1.2 만 정상(길이 2.0~2.1). 목표가 통로선(+0.35)이면 모서리 heading 7.7°(NavFn 18.7°)·상자 셀 0.40 으로 우세,
+      #   목표가 상자 선상(0)이면 상자 쪽으로 잘라 들어가(0.16) NavFn 보다 못하다. 주행 A/B 는 목표를 통로선에 두고.
+      minimum_turning_radius: 0.10
+      reverse_penalty: 2.0
+      change_penalty: 0.0
+      non_straight_penalty: 1.05
+      cost_penalty: 1.2                      # 비용(inflation) 회피 가중 — 2.0 이면 좌측 물체 옆(0.215)으로 붙어 루프
+      retrospective_penalty: 0.015
+      lookup_table_size: 20.0
+      cache_obstacle_heuristic: true
+      smooth_path: true
+      smoother:
+        max_iterations: 1000
+        w_smooth: 0.3
+        w_data: 0.2
+        tolerance: 1.0e-10
+        do_refinement: true
+        refinement_num: 2
+
+smoother_server:
+  ros__parameters:
+    smoother_plugins: ["simple_smoother"]
+    simple_smoother:
+      plugin: "nav2_smoother::SimpleSmoother"
+      tolerance: 1.0e-10
+      max_its: 1000
+      do_refinement: True
+
+behavior_server:
+  ros__parameters:
+    local_costmap_topic: local_costmap/costmap_raw
+    global_costmap_topic: global_costmap/costmap_raw
+    local_footprint_topic: local_costmap/published_footprint
+    global_footprint_topic: global_costmap/published_footprint
+    cycle_frequency: 10.0
+    behavior_plugins: ["spin", "backup", "drive_on_heading", "wait"]
+    spin:
+      plugin: "nav2_behaviors/Spin"
+    backup:
+      plugin: "nav2_behaviors/BackUp"
+    drive_on_heading:
+      plugin: "nav2_behaviors/DriveOnHeading"
+    wait:
+      plugin: "nav2_behaviors/Wait"
+    local_frame: odom
+    # ★ 2026-09-11: map → odom. behavior(BackUp/DriveOnHeading/Spin)는 이 프레임의 로봇 자세로 footprint 를
+    #   만들어 local_costmap/costmap_raw(odom 프레임) 위에서 충돌을 검사한다. map 이면 map->odom 보정만큼
+    #   어긋난 자리를 검사한다. 실측(job285): map->odom 29cm 일 때 같은 footprint 가 odom 자세로는 둘레 최대
+    #   253(충돌 아님), map 자세로는 모든 위치에서 254(충돌) → BackUp 이 0.0s 에 'Collision Ahead' 로 실패.
+    #   재기동 직후(map->odom≈0)엔 BackUp 이 성공했고(s4r2) 드리프트가 쌓이면 'backup failed'→Wait 5s 가 된
+    #   오늘의 패턴이 이것이다. Nav2 bringup 예제도 behavior_server 는 odom 이다.
+    global_frame: odom
+    robot_base_frame: base_link
+    transform_tolerance: 0.2
+    # ⚠ spin 은 제자리 회전 → 중심기준 0.30m 스윕. 좁은 곳에서 실패할 수 있음.
+    simulate_ahead_time: 2.0
+    max_rotational_vel: 0.38   # 2026-09-07 B_eff 0.443
+    min_rotational_vel: 0.10   # 2026-09-07: 데드밴드 소멸로 하한 여유
+    rotational_acc_lim: 1.0
+
+waypoint_follower:
+  ros__parameters:
+    loop_rate: 20
+    stop_on_failure: false
+    waypoint_task_executor_plugin: "wait_at_waypoint"
+    wait_at_waypoint:
+      plugin: "nav2_waypoint_follower::WaitAtWaypoint"
+      enabled: True
+      waypoint_pause_duration: 200
+
+velocity_smoother:
+  ros__parameters:
+    smoothing_frequency: 20.0
+    scale_velocities: false
+    feedback: "OPEN_LOOP"
+    # 펌웨어 한계와 일치 (초과 지령은 펌웨어가 어차피 포화시킴)
+    max_velocity: [0.085, 0.0, 0.38]   # 2026-09-07: 실 최고속 0.085 m/s / 0.384 rad/s
+    min_velocity: [-0.085, 0.0, -0.38]
+    max_accel: [0.20, 0.0, 1.20]
+    max_decel: [-0.30, 0.0, -1.50]
+    odom_topic: "/odometry/filtered"
+    odom_duration: 0.1
+    deadband_velocity: [0.0, 0.0, 0.0]
+    # ★ 2026-09-11: 1.0 → 0.3. bag_s4r2 실측: BackUp 첫 1.0 s 동안 smoother 의 0(20Hz)과
+    #   behavior_server 의 -0.05(10Hz)가 맞물려 100ms 창당 3개가 나갔다(9.76~10.66s, 22.76~23.66s 두 번 모두).
+    #   컨트롤러 마지막 명령 뒤 smoother 가 velocity_timeout 동안 0 을 계속 내보내기 때문이다.
+    #   BT 전환(FollowPath 중단 → BackUp 시작)에 0.45 s 걸리므로 0.3 이면 그 전에 0 스트림이 끝난다.
+    #   Humble 에서는 behavior 가 smoother 를 거치지 않고 /cmd_vel 에 직접 쓰므로 근본 해결은 twist_mux 인데,
+    #   기계를 더 얹기 전에 한 줄로 되는지 먼저 본다. 검증 기준: 다음 bag 의 BackUp 첫 1 s 에 100ms 창당 1개.
+    velocity_timeout: 0.3

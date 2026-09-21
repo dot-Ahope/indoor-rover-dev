@@ -142,3 +142,20 @@
 - 비교(STVL 기준선): 코스트맵 상자 셀 앞 가장자리는 게이트 감사에서 x 1.125~1.15(물리보다 0~2.5 cm 앞), 릴레이 없이는 0.36~0.38 m 아티팩트가 17 %/4 % 프레임(09-14/09-21) → nvblox 는 릴레이 없이 0/311·상자 앞 가장자리 = 물리(0.05) / +0.4 cm(0.03), 프레임 간 변동 0.
 - **N0 판정: 4 게이트 모두 통과** — (i) ≤1 셀 ✓ (ii) 0/450 급 ✓(0/311) (iii) 15 Hz·CPU 한 코어 미만 ✓ (iv) 복셀 0.03 가능 ✓(GPU 6 %). 15 W 모드 그대로. 절차 사고 2 건: 1 차 변형(job481)은 `pkill -f nvblox_node` 가 자기 셸을 죽여 재시작이 꼬였고, 2 차 첫 판은 Rates 블록 뒤 Delays 블록의 같은 이름 줄(0.064 s)을 rate 로 읽어 "안 받음" 오판 → 정확한 실행 파일 PID·`grep -A7` 로 고침(`job483`).
 - 다음(N2~N3): 로컬 코스트맵의 STVL 층을 nvblox 층으로 A/B 하려면 호스트 Nav2 가 `nvblox_nav2` 코스트맵 플러그인을 로드해야 한다. 플러그인은 `DistanceMapSlice` 구독 + nav2_costmap_2d 만 쓰므로 **호스트 ros2_ws 에 `nvblox_msgs`·`nvblox_nav2` 만 소스 빌드**(CUDA 불필요)하는 안이 유력. 거리→비용 변환(`inflation_distance` 기본 0.5 → 0.175 내접 반경, `max_obstacle_distance`)은 CostCritic 이 읽는 비용 기울기를 정하므로 09-18 §15 분석과 맞춰 정한다. 컨테이너·nvblox 는 지금 상태로 두고(재부팅 시 컨테이너는 재시작 필요: `job472_container.sh`), 호스트 dec 4·nvblox 복셀 0.05 로 복귀해 둠.
+
+## 10. N2~N3 — 호스트 Nav2 에 nvblox 코스트맵 층 연결, 정지 A/B 첫 관찰
+### 10.1 호스트 빌드 (`jobs/job484_hostbuild.sh` 실패 → `job485_hostbuild2.sh` 성공, `outputs/j484_hostbuild.txt`·`j485_hostbuild2.txt`·`j486_pluginchk.txt`)
+- `nvblox_nav2` 층은 `DistanceMapSlice` 구독 + nav2_costmap_2d 만 쓰므로 CUDA 없이 호스트에서 빌드 가능. 단 package.xml 의 `isaac_ros_common` 의존이 cmake extras 에서 `find_package(CUDA REQUIRED)` 를 강제 → 호스트 빌드 실패. nvblox_nav2 는 `ament_auto_find_build_dependencies()` 로 존재만 확인하고 nvblox_msgs 는 CMake 에서 안 씀 → **빈 스텁 패키지 `isaac_ros_common`(ament_cmake, 호스트 전용)** 으로 대체. `~/ros2_ws/src/{isaac_ros_common_stub, nvblox_msgs→, nvblox_nav2→}`(심볼릭, `~/workspaces/isaac_ros-dev/src/isaac_ros_nvblox` release-3.2 7908a18), colcon 70 s. 플러그인 `nvblox::nav2::NvbloxCostmapLayer` 가 ament_index 에 등록됨. 호스트 기존 패키지 무손상.
+- YAML(`nav2_params.yaml`, 배포 `jobs/run_deploy_nv.sh` → `outputs/j487_deploy_nv.txt`, md5 7632b6e393dc): 로컬 코스트맵에 `nvblox_layer` 블록 추가(주석 처리된 대체 `plugins` 줄로 A/B). **A/B-1 = 이진(ESDF ≤ 0 → LETHAL) + 기존 inflation_layer** 로 바뀌는 것을 "치명 셀 출처" 하나로 한정. 전역 코스트맵은 그대로.
+- bag: `BAG_PROFILE=nvblox` 이면 `/nvblox_node/static_map_slice`·`combined_occupancy_grid`·깊이 이미지(160×120, ≈0.6 MB/s)·camera_info 추가(`jobs/job231_drive.sh`, `run_drive_nohup.sh`). 기본 목록은 유지(전후 비교 연속성).
+### 10.2 정지 A/B (같은 배치, 상자 물리 1.151~1.153/−0.085~−0.088; `jobs/job488_layer_ab.sh`·`job489_gridcmp.py` → `outputs/j488_layer_ab.txt`·`j489_nvblox_mode.txt`·`j489_stvl_mode.txt`)
+| | STVL 층 | nvblox 층(이진) |
+|---|---|---|
+| 로컬 코스트맵 LETHAL 셀(3×3 m) / 앞 0.3~1.6 m | 207 / 62 | **308 / 114** |
+| 상자 LETHAL 셀(ASCII 0.1 m) | x 1.1~1.2, y −0.2~0.0 (2 열) | x 1.1~1.3, y −0.3~−0.1 (3 열, 슬라이스 자체는 x 1.2~1.4·y −0.2~0.0 = 물리와 일치 → 층의 격자 재표본화로 ≤1 셀 번짐) |
+| 우측 벽(y −0.6~−0.9)·좌측 가구(y +0.5~+0.9) LETHAL | 40 / 12 | 69 / 26 |
+| 감사 기준1 최소폭 @x 1.20 / RPP 기준 | 0.40 / 0.25 m | **0.10 / 0.00 m**(3 표본 동일) — ASCII 로 보면 x 1.2 자유 띠 STVL +0.2~+0.5(0.4) vs nvblox +0.2~+0.4(0.3): 좌측 가구 가장자리(1.2~1.4, +0.65)를 nvblox 만 LETHAL 로 찍음 |
+| LETHAL 중 센서 점 8 cm 안 근거 있는 것 | (감사 출력 누락) | 93~95 % |
+| CPU: depth_relay / nvblox / planner | 19 / 21(컨테이너, 돌고 있음) / 11 | 19(구독자 없어도 실행 중) / 21 / 12 — 릴레이·STVL 을 내리지 않아 절감분 미측정 |
+- 읽기: 플러그인 연결은 성공(로드·구독·9.5 Hz 반영). nvblox 이진 층은 **관측된 모든 표면을 그대로 치명 셀로** 올려(벽·가구 가장자리 포함) STVL(릴레이 3점/5중3 지속·감쇠)보다 치명 셀이 2 배이고, 그 결과 통로 창이 좁아졌다(감사 0.40 → 0.10, ASCII 0.4 → 0.3). 이것이 "STVL 이 놓치던 실제 장애물"(안전 이득)인지 "TSDF 절단·경사 관측의 과다 마킹"(손실)인지는 **셀 단위로 센서 점과 대조**해야 판정된다 — 내일 첫 작업. 감사 기준1 0.10 과 ASCII 0.3 의 불일치는 job248 기준식을 다시 읽어 해소할 것.
+- 상태: 로컬 코스트맵은 STVL 로 복귀(설치 YAML `plugins` 줄), nvblox 노드 정지, 컨테이너 유지, 호스트 dec 4. 주행 A/B(N4)는 위 판정과 절차 문서 v2.0 검토 뒤.

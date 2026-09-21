@@ -6,6 +6,8 @@ NAME=${1:-job231}; D=${2:-1.60}; TMO=${3:-90}
 # 2026-09-18 §17: 기본 목록 + /plan_smoothed·/unsmoothed_plan(스무더 결과, 09-18 §15 에서 없어서 재현해야 했음) + BAG_EXTRA(단계별 추가 토픽, 러너 환경변수).
 #   기록한 목록·실행 중 파라미터·배포 파일 해시는 job453 이 bag 폴더에 남긴다(run_meta.txt, params.txt).
 TOPICS="/tf /tf_static /map /scan /plan /plan_smoothed /unsmoothed_plan /local_plan /transformed_global_plan /local_costmap/costmap /global_costmap/costmap /odometry/filtered /wheel_odom /cmd_vel /rover/status /battery /rover/stuck ${BAG_EXTRA:-}"
+# 2026-09-21 Phase N: BAG_PROFILE=nvblox 이면 nvblox 슬라이스·점유격자 + 깊이 이미지(160x120, ≈0.6 MB/s)·camera_info 를 더 담는다 — 오프라인 nvblox 재생·STVL 비교·전후 비교 시각화용. 기본 목록은 그대로(전후 비교 연속성).
+[ "${BAG_PROFILE:-}" = "nvblox" ] && TOPICS="$TOPICS /nvblox_node/static_map_slice /nvblox_node/combined_occupancy_grid /camera/camera/depth/image_rect_raw /camera/camera/depth/camera_info"
 export TOPICS   # 09-21 cc1: 메타(job453, 파라미터 조회 노드·topic list 등 DDS 참여자 생성/소멸)를 주행 직전에 돌렸더니 루프 미달 18·EKF 위반 61 — 디스커버리 부하 의심 → bag 종료 뒤로 옮김
 BAG=/tmp/bag_$NAME
 rm -rf $BAG
