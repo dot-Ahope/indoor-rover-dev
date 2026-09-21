@@ -1,0 +1,51 @@
+################ A: STVL
+== 활성 plugins(로컬): 244:      plugins: ["stvl_layer", "obstacle_layer", "inflation_layer"]
+== Nav2 재기동
+  nav2 프로세스: controller 1 planner 1 bt 1 | 오류: 0
+[controller_server-2] [INFO] [1789979040.045847664] [controller_server]: getting goal checker plugins..
+[controller_server-2] [INFO] [1789979040.323168956] [local_costmap.local_costmap]: Initialized plugin "stvl_layer"
+[controller_server-2] [INFO] [1789979040.363800963] [local_costmap.local_costmap]: Initialized plugin "obstacle_layer"
+[controller_server-2] [INFO] [1789979040.368914461] [local_costmap.local_costmap]: Initialized plugin "inflation_layer"
+[planner_server-4] [INFO] [1789979040.836283790] [global_costmap.global_costmap]: Initialized plugin "static_layer"
+[planner_server-4] [INFO] [1789979041.119499856] [global_costmap.global_costmap]: Initialized plugin "stvl_layer"
+  로컬 plugins 실행값: String values are: ['stvl_layer', 'obstacle_layer', 'inflation_layer']
+== 로컬 코스트맵 상자 셀·띠·창 (job248 감사, 3 표본)
+상자: 전면 x=1.151  중심 y=-0.087  (140점)  → x 구간 [1.15, 1.26], y 구간 [-0.18, +0.00]
+상자: 전면 x=1.151  중심 y=-0.087  (140점)  → x 구간 [1.15, 1.26], y 구간 [-0.18, +0.00]
+상자: 전면 x=1.151  중심 y=-0.088  (143점)  → x 구간 [1.15, 1.26], y 구간 [-0.18, +0.00]
+== 로컬 LETHAL 셀 vs 라이다/카메라 근거 (job315)
+Traceback (most recent call last):
+  File "/tmp/job315_boxcells.py", line 8, in <module>
+    BX, BY = float(sys.argv[1]), float(sys.argv[2])
+IndexError: list index out of range
+== CPU 20 s(top 2 회 평균): python3 43.3% | nvblox_+ 20.9% | python3 18.8% | planner+ 11.4% | python3 9.2% | python3 4.6% | python3 0.2% |  load 5.05 2.62 2.08
+== 로컬 코스트맵 발행: average rate: 1.666
+
+################ B: nvblox
+== 활성 plugins(로컬): 249:      plugins: ["nvblox_layer", "obstacle_layer", "inflation_layer"]
+== Nav2 재기동
+  nav2 프로세스: controller 1 planner 1 bt 1 | 오류: 0
+[controller_server-2] [INFO] [1789979138.029258942] [controller_server]: getting goal checker plugins..
+[controller_server-2] [INFO] [1789979138.269993323] [local_costmap.local_costmap]: Name: nvblox_layer Topic name: /nvblox_node/static_map_slice Convert to binary costmap:
+[controller_server-2] [INFO] [1789979138.546710474] [local_costmap.local_costmap]: Initialized plugin "nvblox_layer"
+[controller_server-2] [INFO] [1789979139.038839076] [local_costmap.local_costmap]: Initialized plugin "obstacle_layer"
+[controller_server-2] [INFO] [1789979139.093633885] [local_costmap.local_costmap]: Initialized plugin "inflation_layer"
+[planner_server-4] [INFO] [1789979141.314025018] [global_costmap.global_costmap]: Initialized plugin "static_layer"
+  로컬 plugins 실행값: String values are: ['nvblox_layer', 'obstacle_layer', 'inflation_layer']
+== 로컬 코스트맵 상자 셀·띠·창 (job248 감사, 3 표본)
+상자: 전면 x=1.152  중심 y=-0.087  (140점)  → x 구간 [1.15, 1.26], y 구간 [-0.18, +0.00]
+  로컬[odom]: 전방 -0.5~1.3m x 좌우 0.9m 안 LETHAL 셀 99개 중 센서 점 8cm 안에 있는 것 92 (93%), 없는 것 7
+   → 전방 2.2m 최소폭:  기준1 0.10 m (@1.20)   기준2(RPP) 0.00 m (@1.00)   기준3(오류) 0.00 m (@0.70)
+상자: 전면 x=1.151  중심 y=-0.085  (139점)  → x 구간 [1.15, 1.26], y 구간 [-0.17, +0.01]
+  로컬[odom]: 전방 -0.5~1.3m x 좌우 0.9m 안 LETHAL 셀 98개 중 센서 점 8cm 안에 있는 것 92 (94%), 없는 것 6
+   → 전방 2.2m 최소폭:  기준1 0.10 m (@1.20)   기준2(RPP) 0.00 m (@1.00)   기준3(오류) 0.00 m (@0.70)
+상자: 전면 x=1.153  중심 y=-0.088  (138점)  → x 구간 [1.15, 1.26], y 구간 [-0.18, +0.00]
+  로컬[odom]: 전방 -0.5~1.3m x 좌우 0.9m 안 LETHAL 셀 102개 중 센서 점 8cm 안에 있는 것 97 (95%), 없는 것 5
+   → 전방 2.2m 최소폭:  기준1 0.10 m (@1.20)   기준2(RPP) 0.00 m (@1.00)   기준3(오류) 0.00 m (@0.70)
+== 로컬 LETHAL 셀 vs 라이다/카메라 근거 (job315)
+Traceback (most recent call last):
+  File "/tmp/job315_boxcells.py", line 8, in <module>
+    BX, BY = float(sys.argv[1]), float(sys.argv[2])
+IndexError: list index out of range
+== CPU 20 s(top 2 회 평균): python3 43.6% | nvblox_+ 21.8% | python3 18.6% | planner+ 11.5% | python3 9.5% | python3 4.7% | python3 0.2% |  load 4.04 3.10 2.31
+== 로컬 코스트맵 발행: average rate: 1.665

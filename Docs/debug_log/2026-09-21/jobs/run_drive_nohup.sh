@@ -42,7 +42,7 @@ echo "$SC" | tail -1 | grep -qE '^[0-9.]+$' || { echo "★ 출발 자세 검사 
 awk -v c="$(echo "$SC" | tail -1)" 'BEGIN{exit !(c+0 >= 0.10)}' || { echo "★ 출발 자세 여유 < 0.10 m — 로버 주변(특히 뒤) 물체·사람을 치울 것, 주행하지 않음"; exit 1; }
 # --- 주행: 원격 nohup + 로그 ---
 LOG=/tmp/drive_$NAME.log
-timeout 20 sshpass -p <PW> ssh $O $J "export FASTRTPS_DEFAULT_PROFILES_FILE=/home/jetson/ros2_ws/install/rover_bringup/share/rover_bringup/config/fastdds_udp_only.xml; source /opt/ros/humble/setup.bash; source ~/ros2_ws/install/setup.bash; rm -f $LOG; STAGE='$STAGE' NOTE='$NOTE' GIT_HEAD='$GIT_HEAD' BAG_EXTRA='$BAG_EXTRA' GOAL_LAT=$GL nohup bash /tmp/job254_s4run.sh $NAME $D $BX $BY $TOL > $LOG 2>&1 & echo started_pid \$!"
+timeout 20 sshpass -p <PW> ssh $O $J "export FASTRTPS_DEFAULT_PROFILES_FILE=/home/jetson/ros2_ws/install/rover_bringup/share/rover_bringup/config/fastdds_udp_only.xml; source /opt/ros/humble/setup.bash; source ~/ros2_ws/install/setup.bash; rm -f $LOG; STAGE='$STAGE' NOTE='$NOTE' GIT_HEAD='$GIT_HEAD' BAG_EXTRA='$BAG_EXTRA' BAG_PROFILE='${BAG_PROFILE:-}' GOAL_LAT=$GL nohup bash /tmp/job254_s4run.sh $NAME $D $BX $BY $TOL > $LOG 2>&1 & echo started_pid \$!"
 echo "주행 시작 $(date +%T) — 로그 $LOG (링크가 끊겨도 원격에서 계속됨; 정지는 job156_stop.sh)"
 # --- 로그 폴링 (최대 8분; ssh 실패는 재시도) ---
 T0=$(date +%s); LAST=0
