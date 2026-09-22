@@ -37,10 +37,10 @@
 | 1 | (재부팅 직후만) `run_j434.sh` 또는 `run_mp9prep.sh` 가 base 를 띄움 → **사용자 보드 리셋** → `/wheel_odom` ≈25 Hz. **N: 컨테이너 복구 `run_j499.sh`(정지된 컨테이너는 `docker start`, 없으면 job472 재생성) + 09-21 세트 재전송** | agent 1, 컨테이너 Up, nvblox 패키지 8 | 09-18 §10, 09-22 §0 |
 | 2 | **손 배치 뒤엔 반드시** `JETSON_HOST=… run_mp9prep.sh` — 센서·SLAM·Nav2 재기동(SLAM 원점 = 현재 자세) + 게이트 A~D. Nav2 는 **설치 YAML 의 `plugins` 줄 상태대로** 뜬다(직전에 job488 로 바꿨으면 그 모드) | §3, 로컬 plugins 실행값 확인 | 09-11 job240, 09-14 |
 | 2N | **N: 모드 선택** `run_j488.sh stvl\|nvblox <BX> <BY>` — 설치 YAML plugins 줄 교체 + Nav2 만 재기동(35 s) + 감사 3 표본. 모드 N 이면 그 **직후** nvblox 노드 (재)시작 `job473_nvblox_run.sh start [yaml]` → 32 s 뒤 깊이 콜백 ≥10 Hz 확인. **prep(2 단계)을 다시 돌렸으면 nvblox 도 다시 시작**(§4-9) | 게이트 J·K·L | 09-21 §10.2, 09-22 §1 |
-| 3 | (관찰자 흔적이 남았을 때) `run_j442.sh job442_clearwait.sh` — 로컬·전역 클리어 후 8 s 재관측. **N: 모드 N 에서는 클리어 뒤 nvblox 슬라이스(9.5 Hz)가 바로 다시 채우므로 8 s 면 충분, 흔적은 TSDF 감쇠(`tsdf_decay_factor` 0.95, 5 Hz)로도 사라짐** | 띠 셀 0 | 09-18 §13.3, 09-21 §9 |
+| 3 | (관찰자 흔적이 남았을 때) `run_j442.sh job442_clearwait.sh` — 로컬·전역 클리어 후 8 s 재관측. **N: 모드 N 에서는 클리어 뒤 nvblox 슬라이스(9.5 Hz)가 바로 다시 채우므로 8 s 면 충분, 흔적은 TSDF 감쇠로도 사라짐(모드 N yaml `nvblox_n0_t2d99.yaml` 은 `tsdf_decay_factor` 0.99 @ 5 Hz → 관측 끊김 후 ≈81 s, 09-22 §2.1)** | 띠 셀 0 | 09-18 §13.3, 09-21 §9 |
 | 4 | 게이트만 시험: `run_drive_gateonly.sh …` / 출발 자세만: `run_j440.sh` | §3 E~G | 09-18 |
 | 5 | **주행 30 s 전부터 DDS 참여자를 만들거나 없애는 명령 금지**(`ros2 param/topic list·echo`, 임시 노드, 스냅샷). **N: 게이트 K(param get)·L(슬라이스 구독)도 30 s 전에 끝낸다** | — | 09-21 cc1(미달 18) |
-| 6 | 사용자 "시작" 후에만: `STAGE='<단계>' NOTE='<바꾼 것>' GIT_HEAD=$(git rev-parse --short HEAD) [BAG_PROFILE=nvblox] run_drive_nohup.sh <이름> 2.0 <BX> <BY> 0.06 0` — 게이트 A~G 재검사 → bag·top·tegrastats·RSS 기록 → 주행 → 메타 스냅샷(bag 종료 뒤). **N: 모드 N 주행은 `BAG_PROFILE=nvblox` 필수, STAGE 에 모드·절단값을 적는다(예 `N4-nvblox-t2`)** | 결과 SUCCEEDED, ①~⑥, 재고정 요약 | 09-15 러너 v2, 09-18 §17, 09-21 §6·§10.1 |
+| 6 | 사용자 "시작" 후에만: `STAGE='<단계>' NOTE='<바꾼 것>' GIT_HEAD=$(git rev-parse --short HEAD) [BAG_PROFILE=nvblox] run_drive_nohup.sh <이름> 2.0 <BX> <BY> 0.06 0` — 게이트 A~G 재검사 → bag·top·tegrastats·RSS 기록 → 주행 → 메타 스냅샷(bag 종료 뒤). **N: 모드 N 주행은 `BAG_PROFILE=nvblox` 필수, STAGE 에 모드·절단값을 적는다(예 `N4-N2` = nvblox 절단 2.0·감쇠 0.99)** | 결과 SUCCEEDED, ①~⑥, 재고정 요약 | 09-15 러너 v2, 09-18 §17, 09-21 §6·§10.1 |
 | 7 | 회수: `run_post3.sh <이름>` → bag.tgz(로컬 보관)·csv·refix.csv·nav2 구간 로그·top·tegra·rss·meta·params. **N: `/tmp/nvblox_<이름>.log`(통계) 도 회수** | "OK" 8 종 | 09-18 §12, 09-21 §6 |
 | 8 | 분석: `run_j435*.sh`(job416 코스트맵 여유·job426 로컬/전역 상자·job431/431b SLAM 보정·게걸음), `job446_pathdecomp.py`, `job462_baghz.py`, `job463_tegra.py`(GPU 열 포함), 정지·CPU 요약. **N: 모드 S 회차와 같은 표로 나란히** | SUMMARY 표 | 09-17~22 |
 | 9 | 기록·커밋: `Docs/debug_log/<날짜>/{SUMMARY.md, jobs/, outputs/}`, 비밀번호 `<PW>` 가림, 게이트 `git grep --cached -l "<비밀번호>" \| wc -l` = 0. 푸시는 지시 시(origin 브랜치 + personal) | — | CLAUDE.md §1 |
@@ -60,12 +60,12 @@
 | I | 배터리 | 전압 기록(문턱 없음, 12.1~12.2 V 에서 주행해 옴) | prep | — | — |
 | **J** | **N: nvblox 노드** | 컨테이너 안 `nvblox_node` 정확히 1 개, 시작 32 s 뒤 통계의 `ros/depth_image_callback` ≥ 10 Hz(실측 15.1), `ros/update_esdf` ≥ 9 Hz(9.5~9.6), `esdf_integration` 지연 ≤ 0.15 s(0.10~0.12) | `job473_nvblox_run.sh status`, `/tmp/nvblox_*.log` Rates/Delays 블록(Rates 헤더 뒤 7 줄만 — Delays 블록에 같은 이름 있음) | 노드 재시작(실행 파일 PID 로 정지 → 확인 → 시작), 깊이 토픽·TF 확인 | 09-21 §9, job483, 09-22 §1 |
 | **K** | **N: 층 실효값** | `ros2 param get /local_costmap/local_costmap plugins` = 의도한 모드(`nvblox_layer` 또는 `stvl_layer`). 주행 30 s 전에 끝낼 것 | job488 출력 "실행값" | job488 로 다시 전환 | 09-21 §10.2 |
-| **L** | **N: 슬라이스 커버** | 상자 구역(base x 0.9~1.5, y −0.35~+0.15)에 슬라이스 ≤0 셀 ≥ 10, 근거리(카메라 0.45 m 안) ≤0 셀 0 | `job474_n0_measure.py <이름> 20 <BX> <BY>`(컨테이너 안, 20 s) | 노드 재시작·상자 위치 확인 | 09-21 §9 N0 (ii), 09-22 §1 |
+| **L** | **N: 슬라이스 커버** | 상자 구역(base x 0.9~1.5, y −0.35~+0.15)에 슬라이스 ≤0 셀 **≥ 8**(절단 2.0 기하 = 폭 4 셀 × 띠 2~3 셀; 처음 10 으로 썼다가 09-22 n4n2 배치에서 9 로 근소 불합격 → 사용자 승인으로 정정), 근거리(카메라 0.45 m 안) ≤0 셀 0 | `job474_n0_measure.py <이름> 20 <BX> <BY>`(컨테이너 안, 20 s) | 노드 재시작·상자 위치 확인 | 09-21 §9 N0 (ii), 09-22 §1 |
 - 게이트 출력 파서 취약점(유지): 감사 출력이 불완전하면 창이 `nan`/음수로 계산돼 안전하게 거부된다. 재실행으로 해결.
 
 ## 4. 운영 규칙 (게이트가 못 잡는 것)
 1. **주행은 사용자의 "시작" 지시로만.** 게이트 통과 = 준비 완료이지 주행 허가가 아니다.
-2. 관찰자: 배치 후 카메라 시야 밖·로버 ≥0.30 m. 사람 흔적은 STVL 에 로컬 120 s/전역 180 s 남는다. **N: nvblox 에는 다른 각도에서 다시 보거나 감쇠(0.95, 5 Hz)될 때까지 남는다 — 3 단계 클리어로 확인.**
+2. 관찰자: 배치 후 카메라 시야 밖·로버 ≥0.30 m. 사람 흔적은 STVL 에 로컬 120 s/전역 180 s 남는다. **N: nvblox 에는 다른 각도에서 다시 보거나 감쇠(0.99 @ 5 Hz, ≈81 s)될 때까지 남는다 — 3 단계 클리어로 확인. 감쇠 0.95(벤더 기본)는 17 s 만에 상자를 잊어 이 코스에 못 쓴다(09-22 §2.1).**
 3. 손으로 로버를 옮기면 반드시 2 단계(prep 재실행). 상자만 옮겼으면 3 단계(클리어 8 s) 후 게이트 재검사면 된다.
 4. 주행 30 s 전 DDS 참여자 생성·소멸 금지.
 5. 같은 코스 판정은 상자 상대 위치(±6 cm)로 한다. map 원점은 SLAM 보정으로 회차마다 물리적으로 다른 자리가 된다.
