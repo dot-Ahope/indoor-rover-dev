@@ -1,0 +1,15 @@
+== nvblox 시작(nvblox_n0_t2d99.yaml) → 32 s 적분
+  깊이 콜백: 15.1 Hz | 감쇠 실효값: Double value is: 0.99 | 절단: Double value is: 2.0
+== 로컬 코스트맵 → nvblox 층 (Nav2 재기동)
+  nav2 프로세스: controller 1 planner 1 bt 1 | 오류: 0
+  로컬 plugins 실행값: String values are: ['nvblox_layer', 'obstacle_layer', 'inflation_layer']
+== 클리어·8 s 재관측
+8 s 재마킹 대기 끝
+== 게이트 J·K·L
+J nvblox 노드: 프로세스 1, 깊이 15.1 Hz, ESDF 9.6 Hz, esdf 지연 0.106 s → 통과
+K 층 실효값: String values are: ['nvblox_layer', 'obstacle_layer', 'inflation_layer → 통과
+L 슬라이스 커버: 상자 띠 셀/프레임 10, 근거리 자취 프레임 0/104 → 통과
+  (iii) 수신 9.51 Hz, 간격 중앙 0.106 최대 0.116 s | stamp 지연 중앙 0.111 최대 0.119 s | 해상도 0.050 m, 48x72
+  (i) 상자 띠 장애물 셀 최소 x(base): 중앙 1.175 최소 1.175 최대 1.175 (프레임당 셀 10) | 물리 전면 1.153 → 차 +0.022 m = +
+  (ii) 카메라 0.45 m 안 장애물 셀: 프레임당 중앙 0 최대 0, 0 이 아닌 프레임 0/104 | 전체 장애물 셀 중앙 83
+== 모드 N 게이트 J·K·L 통과
