@@ -36,7 +36,7 @@
 | 0 | 로버·상자를 §1 대로 손 배치, 관찰자는 카메라 시야(로버 앞 2 m 부채꼴) 밖·로버에서 ≥0.30 m | — | 09-14 §2.20, 09-18 dy3 |
 | 1 | (재부팅 직후만) `run_j434.sh` 또는 `run_mp9prep.sh` 가 base 를 띄움 → **사용자 보드 리셋** → `/wheel_odom` ≈25 Hz. **N: 컨테이너 복구 `run_j499.sh`(정지된 컨테이너는 `docker start`, 없으면 job472 재생성) + 09-21 세트 재전송** | agent 1, 컨테이너 Up, nvblox 패키지 8 | 09-18 §10, 09-22 §0 |
 | 2 | **손 배치 뒤엔 반드시** `JETSON_HOST=… run_mp9prep.sh` — 센서·SLAM·Nav2 재기동(SLAM 원점 = 현재 자세) + 게이트 A~D. Nav2 는 **설치 YAML 의 `plugins` 줄 상태대로** 뜬다(직전에 job488 로 바꿨으면 그 모드) | §3, 로컬 plugins 실행값 확인 | 09-11 job240, 09-14 |
-| 2N | **N: 모드 선택** `run_j488.sh stvl\|nvblox <BX> <BY>` — 설치 YAML plugins 줄 교체 + Nav2 만 재기동(35 s) + 감사 3 표본. 모드 N 이면 그 **직후** nvblox 노드 (재)시작 `job473_nvblox_run.sh start [yaml]` → 32 s 뒤 깊이 콜백 ≥10 Hz 확인. **prep(2 단계)을 다시 돌렸으면 nvblox 도 다시 시작**(§4-9) | 게이트 J·K·L | 09-21 §10.2, 09-22 §1 |
+| 2N | **N(v2.1): 모드는 launch 인자** — `navigation.launch.py camera_layer:=nvblox\|stvl`(기본 **nvblox**, N5 결정). prep(job240)이 그대로 기본값으로 띄우므로 모드 N 은 별도 단계가 없다. 모드 S(대조군) 또는 전환만 할 때 `job488_layer_ab.sh stvl\|nvblox <BX> <BY>`(Nav2 만 재기동, 설치 YAML 무변경). nvblox 노드는 `nvblox.launch.py` → `scripts/nvblox_up.sh` 가 컨테이너 안에 띄우고(정지 컨테이너는 `docker start`), launch 가 끝나면 2 s 안에 정리한다. 32 s 뒤 게이트 J(`/tmp/nvblox_node.log`) | 게이트 J·K·L(`job505_modeN_gate.sh node <BX> <BY>`) | 09-22 §4 N6-0 V1~V5 |
 | 3 | (관찰자 흔적이 남았을 때) `run_j442.sh job442_clearwait.sh` — 로컬·전역 클리어 후 8 s 재관측. **N: 모드 N 에서는 클리어 뒤 nvblox 슬라이스(9.5 Hz)가 바로 다시 채우므로 8 s 면 충분, 흔적은 TSDF 감쇠로도 사라짐(모드 N yaml `nvblox_n0_t2d99.yaml` 은 `tsdf_decay_factor` 0.99 @ 5 Hz → 관측 끊김 후 ≈81 s, 09-22 §2.1)** | 띠 셀 0 | 09-18 §13.3, 09-21 §9 |
 | 4 | 게이트만 시험: `run_drive_gateonly.sh …` / 출발 자세만: `run_j440.sh` | §3 E~G | 09-18 |
 | 5 | **주행 30 s 전부터 DDS 참여자를 만들거나 없애는 명령 금지**(`ros2 param/topic list·echo`, 임시 노드, 스냅샷). **N: 게이트 K(param get)·L(슬라이스 구독)도 30 s 전에 끝낸다** | — | 09-21 cc1(미달 18) |
@@ -72,7 +72,7 @@
 6. 판정 기준은 주행 **전에** SUMMARY 에 선언한다. 사후 변경은 "정정" 으로 남긴다.
 7. 러너 인자 `STAGE`(모드·절단값 포함)·`NOTE`·`GIT_HEAD` 필수 — 개선 전후 비교용.
 8. 배치·기록에 쓰는 거리 기준(앞단 / base_link / 카메라)을 문장마다 적는다.
-9. **N: nvblox 지도는 `odom` 프레임에 고정**(계획서 §3: map→odom 점프가 TSDF 를 번지게 하므로). prep 은 EKF 를 재기동해 odom 원점이 바뀌므로 **prep 뒤 nvblox 를 반드시 재시작**한다(옛 지도가 새 odom 에서 엉뚱한 자리에 놓임). 반경 3 m 밖은 자동 소거(`map_clearing_radius_m`).
+9. **N: nvblox 지도는 `odom` 프레임에 고정**(계획서 §3: map→odom 점프가 TSDF 를 번지게 하므로). prep 은 EKF 를 재기동해 odom 원점이 바뀌므로 prep 뒤 nvblox 도 새로 떠야 한다 — **v2.1 부터는 Nav2 launch 가 nvblox 를 함께 띄우고 끝내므로 자동**(09-22 N6-0 V5: prep 뒤 노드 PID 교체 확인). 반경 3 m 밖은 자동 소거(`map_clearing_radius_m`).
 10. **N: 모드 전환(job488)은 Nav2 만 재기동**하고 센서·SLAM·에이전트는 건드리지 않는다. 전환 직후 첫 10 s 의 감사값은 과도 상태(09-21 §10.2 의 0.10 m)일 수 있으니 3 표본 뒤 값을 쓴다.
 11. **N: 층 결함 수정본(round→floor)은 Jetson 포크의 미커밋 diff 다.** 재빌드·리셋 전에 `git -C ~/workspaces/isaac_ros-dev/src/isaac_ros_nvblox diff --stat` 로 살아 있는지 확인(사라지면 `job493_fixfloor.sh` 재적용).
 12. **N: A/B 는 같은 세션·같은 배치에서 S→N→S 순으로 짝지어** 돌린다. 모드 S 회차가 대조군이며, 판정은 `BASELINE_STVL.md` 지표(중단 0, 통과 측 여유, 중단·미달, CPU/GPU/전력)로 한다. 셀 수가 STVL 과 같아지는 것은 목표가 아니다.
@@ -92,4 +92,5 @@
 ## 6. 변경 이력
 - v1.0 2026-09-21: 09-11~09-21 규칙 통합. 기준선 `Docs/debug_log/2026-09-21/BASELINE_STVL.md`, 러너 원본 `Docs/debug_log/2026-09-21/jobs/`.
 - v2.0 2026-09-22: Phase N 판. §0 검토표, §2 컨테이너·nvblox·모드 전환 단계(1·2N·3·5·6·7), §3 게이트 J·K·L, §4 규칙 9~12, §5 bag 프로파일·nvblox 로그·전환 체크리스트. 근거 `Docs/debug_log/2026-09-21/SUMMARY.md §9~10`, `2026-09-22/SUMMARY.md §0~1`.
+- v2.1 2026-09-22 저녁(N6-0): 모드 선택을 launch 인자 `camera_layer`(기본 nvblox)로, nvblox 기동·정리를 `nvblox.launch.py`/`nvblox_up.sh` 로 자동화. §2-2N·§4-9 갱신, 게이트 A 뒤 J 자동(job254), 메타에 활성 YAML sha256. 근거 `2026-09-22/SUMMARY.md §4`.
 - v2.0.1 2026-09-22 저녁: N5 결정(로컬 층 nvblox 채택) 반영 — 모드 N 이 채택 구성, 모드 S 는 N6(전역 이전) A/B 의 대조군으로 유지. 게이트 L 문턱 ≥ 8 정정, 감쇠 0.99 표기. 결과 요약 `Docs/05_nvblox/PHASE_N_RESULTS.md`.
