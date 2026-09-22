@@ -1,0 +1,7 @@
+yaml 파싱 OK
+Finished <<< rover_navigation [0.23s]
+Finished <<< rover_bringup [0.25s]
+빌드 2 s
+4c9a9784e1c2  /home/jetson/ros2_ws/install/rover_navigation/share/rover_navigation/config/nav2_params.yaml
+49af7d4be47a  /home/jetson/ros2_ws/install/rover_bringup/lib/rover_bringup/depth_relay.py
+4
