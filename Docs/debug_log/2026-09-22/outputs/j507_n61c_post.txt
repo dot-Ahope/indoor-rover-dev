@@ -1,0 +1,12 @@
+OK
+bag 회수 OK 15644899
+drive log OK
+csv OK
+nav2 구간 로그 OK 78 줄
+top 로그 OK
+meta OK
+params OK
+refix csv OK
+tegrastats OK 43 줄
+rss OK
+nvblox log OK
