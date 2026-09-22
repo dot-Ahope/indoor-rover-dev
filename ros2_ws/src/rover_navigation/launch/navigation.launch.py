@@ -9,7 +9,7 @@
 # 실행: ros2 launch rover_navigation navigation.launch.py [camera_layer:=nvblox|stvl] [stuck_shadow:=true]
 #
 # 2026-09-22 N6-0: 로컬 코스트맵의 카메라 층을 launch 인자 camera_layer 로 고른다(기본 nvblox — N5 결정).
-#   - nav2_params.yaml 의 local_costmap plugins 줄을 인자대로 바꿔 /tmp/nav2_params_active.yaml 로 쓰고 Nav2 에 넘긴다
+#   - nav2_params.yaml 의 local_costmap·global_costmap(N6-1) plugins 줄을 인자대로 바꿔 /tmp/nav2_params_active.yaml 로 쓰고 Nav2 에 넘긴다
 #     (원본 파일은 건드리지 않는다. 설치 YAML 을 sed 로 바꾸던 job488 방식은 폐기).
 #   - nvblox 이면 nvblox.launch.py(컨테이너 안 nvblox_node, scripts/nvblox_up.sh)를 함께 띄운다. 이 launch 가 죽으면 노드도 정리된다.
 #   - prep(job240)이 Nav2 를 재기동하면 nvblox 도 같이 재시작되므로 "EKF 재기동 뒤 nvblox 재시작" 규칙(절차 v2.0 §4-9)이 자동으로 지켜진다.
@@ -33,6 +33,11 @@ _LOCAL_PLUGINS = {
     'stvl': ['stvl_layer', 'obstacle_layer', 'inflation_layer'],
     'nvblox': ['nvblox_layer', 'obstacle_layer', 'inflation_layer'],
 }
+# 2026-09-22 N6-1: 전역 코스트맵의 카메라 층도 같은 인자로 바꾼다(STVL·depth_relay 를 경로에서 빼 CPU 회수).
+_GLOBAL_PLUGINS = {
+    'stvl': ['static_layer', 'stvl_layer', 'obstacle_layer', 'inflation_layer'],
+    'nvblox': ['static_layer', 'nvblox_layer', 'obstacle_layer', 'inflation_layer'],
+}
 _ACTIVE_PARAMS = '/tmp/nav2_params_active.yaml'
 
 
@@ -45,6 +50,7 @@ def _make_active_params(context):
     with open(src, encoding='utf-8') as f:
         params = yaml.safe_load(f)
     params['local_costmap']['local_costmap']['ros__parameters']['plugins'] = _LOCAL_PLUGINS[layer]
+    params['global_costmap']['global_costmap']['ros__parameters']['plugins'] = _GLOBAL_PLUGINS[layer]
     with open(_ACTIVE_PARAMS, 'w', encoding='utf-8') as f:
         f.write('# 자동 생성(navigation.launch.py, camera_layer=%s) — 원본 %s\n' % (layer, src))
         yaml.safe_dump(params, f, allow_unicode=True, sort_keys=False)

@@ -59,6 +59,10 @@ class DepthRelay(Node):
         self.get_logger().info('depth_relay: min_range %.2f m, voxel %.2f m, min_points_per_voxel %d' % (self.min_range, self.voxel, self.min_pts))
 
     def cb(self, msg):
+        # 2026-09-22 N6-1: 구독자(STVL 층)가 없으면 계산·발행 생략 — nvblox 모드에서 릴레이 CPU(≈19 %)를 0 으로. 모드 S 는 그대로.
+        if self.pub.get_subscription_count() == 0:
+            self.n_skip = getattr(self, 'n_skip', 0) + 1
+            return
         self.frame_i += 1
         if self.frame_i % self.every:
             return
