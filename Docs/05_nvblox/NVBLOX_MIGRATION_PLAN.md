@@ -293,3 +293,7 @@ S4 3/3 완료 후 사용자 질문("nvblox 이전이 지금 옳은가")에 대�
 - **절차 v2.0**(`Docs/04_navigation/TEST_COURSE_AND_GATES.md`): 게이트 J·K·L, prep 뒤 nvblox 재시작(odom 고정 지도), `BAG_PROFILE=nvblox`, Phase 전환 bag 체크리스트. 게이트 L 문턱은 절단 2.0 기하로 ≥ 8(정정).
 - **N4**: S 2 / N2 3 회, 5/5 성공·중단 0·미달 0. N2 코스트맵 여유 12.3·13.4·14.6(S 9.3·11.7), 기억 유지 3/3, CPU +12~19 %p(구조적), GPU 3 %, 전력 +0.2 W. 러너 재고정 결함으로 n4n3 ① 무효(bag 기준 ≈17.5).
 - **N5 결정 (a)**: 로컬 층 채택, 채택본 `ros2_ws/src/rover_navigation/config/nvblox_local.yaml`. 구성 전환은 N6-0 뒤. 그림·요약 `Docs/05_nvblox/PHASE_N_RESULTS.md`, `figures/`.
+
+## 2026-09-22 저녁 — N7 후보: nvblox 동적 객체·사람 분리 (사용자 질의 "적용시킬 만한가", 조사 `2026-09-22/jobs/job528_dynchk.sh`)
+- nvblox 3.2 에는 `mapping_type` 이 다섯 가지: `static_tsdf`(현재), `static_occupancy`, **`dynamic`**(DNN 없이 이미 자유로 본 공간에 나타난 복셀을 동적으로 분류 → 별도 점유 층, 빠른 감쇠), **`human_with_static_tsdf`**(PeopleSemSegNet 세그멘테이션 마스크로 사람 화소를 정적 지도에서 빼고 사람 층에 넣음; `isaac_ros_unet`+TensorRT, 컨테이너에 패키지는 있음·모델은 미설치), `human_with_static_occupancy`. 동적 모드는 `~/dynamic_map_slice`·`~/combined_map_slice` 를 내고, 우리 층은 토픽 인자만 바꾸면 combined 를 읽는다.
+- 판단: **`dynamic` 모드는 N6 판정 뒤 N7 로 시험할 가치가 있다**(비용 작음, 계획서 S3 "동적 장애물 망각 검증" 과 같은 목표, 사람이 지나간 자취가 81 s 남는 현재 문제를 직접 겨냥). **세그멘테이션은 보류**(모델 다운로드·컬러-깊이 정렬(`align_depth`, CPU)·GPU 부하 미측정, Orin Nano 8 GB 지원 여부 미확인 — N1 식 환경 조사 먼저). 위험: 동적 검출은 "자유로 본 뒤 나타난 것" 을 동적으로 취급하므로 **지도 뒤에 놓인 정적 물체(예: 나중에 둔 상자)가 빠르게 잊힌다** — 코스 절차(상자 배치 → prep) 에서는 안전하지만 일반 운용의 근본 trade-off. 실험 설계: 같은 코스 + 주행 중 사람 1 명 통로 횡단(1.5 m 지점), 지표 = 정지/감속 여부·자취 셀 수명(정적 81 s vs 동적 층)·성공·CPU/GPU, 대조 = 현재 static 모드.
