@@ -1,0 +1,81 @@
+job43_mon.py: No such file or directory
+job59g_costchk.py: No such file or directory
+job62c_boxdim.py: No such file or directory
+job91_query.py: No such file or directory
+job209_static.py: No such file or directory
+job210_cluster.py: No such file or directory
+job213_axis.py: No such file or directory
+job218_approach.py: No such file or directory
+job218_back.py: No such file or directory
+job225_face.py: No such file or directory
+job230_map.py: No such file or directory
+job233_pass.py: No such file or directory
+job43_mon.py: No such file or directory
+job59g_costchk.py: No such file or directory
+job62c_boxdim.py: No such file or directory
+job91_query.py: No such file or directory
+job209_static.py: No such file or directory
+job210_cluster.py: No such file or directory
+job213_axis.py: No such file or directory
+job218_approach.py: No such file or directory
+job218_back.py: No such file or directory
+job225_face.py: No such file or directory
+job230_map.py: No such file or directory
+job233_pass.py: No such file or directory
+job43_mon.py: No such file or directory
+job59g_costchk.py: No such file or directory
+job62c_boxdim.py: No such file or directory
+job91_query.py: No such file or directory
+job209_static.py: No such file or directory
+job210_cluster.py: No such file or directory
+job213_axis.py: No such file or directory
+job218_approach.py: No such file or directory
+job218_back.py: No such file or directory
+job225_face.py: No such file or directory
+job230_map.py: No such file or directory
+job233_pass.py: No such file or directory
+전송 실패
+=== mp9prep ===
+=== 1. 재기동 (192.168.0.101) ===
+  base 계층 유지: 에이전트 0개, robot_state_publisher 0개 (각 1 이어야)
+########## 2. base (micro-ROS 에이전트) ##########
+  에이전트 없음/보드 무발행 → base 기동 (기동 후 보드 리셋이 필요할 수 있다)
+  /wheel_odom  average rate: 24.998
+  [sensor_conditioner.py-6] [INFO] [1790041067.162087830] [sensor_conditioner]: gyro bias calibrated: (-0.00592, -0.00078, -0.00172) rad/s, std=(0.0025, 0.0024, 0.0018)
+  map->odom: - Translation: [0.000, 0.000, 0.000]
+  로버 자세: - Translation: [0.000, 0.000, 0.000] - Rotation: in RPY (radian) [0.000, -0.000, 0.001] 
+   틈 [y_lo, y_hi]         폭        차체0.33     패딩0.43     허용 자세각(패딩)
+=== 2. 릴레이·readback·상자 게이트 ===
+/mnt/c/Users/magma/AppData/Local/Temp/claude/F--6-Indoor-Rover-Rover/82ce61d4-f5f7-4a25-b2e7-1279291348a9/scratchpad/run_gate2.sh: line 5: /mnt/c/Users/magma/AppData/Local/Temp/claude/F--6-Indoor-Rover-Rover/82ce61d4-f5f7-4a25-b2e7-1279291348a9/scratchpad/job315_boxcells.py: No such file or directory
+=== 릴레이 ===
+남은 릴레이: 1
+발행자 Publisher count: 1
+=== readback ===
+  controller_frequency               Double value is: 10.0
+  FollowPathMPPI.temperature         Double value is: 0.15
+  FollowPathMPPI.iteration_count     Integer value is: 2
+  FollowPathMPPI.vx_std              Double value is: 0.08
+  FollowPathMPPI.wz_std              Double value is: 0.4
+  FollowPathMPPI.visualize           Boolean value is: False
+  BT raw_path: 4  SmoothPath: 1
+  nav2: controller 1 planner 1 bt 1 stuck_monitor 1
+  로버 자세: - Translation: [0.000, 0.000, 0.000] - Rotation: in RPY (radian) [0.000, 0.000, -0.000] 
+=== 프로세스·부하 ===
+load 5.89 2.75 1.06  shadow_mode: SHADOW
+=== 게이트 ===
+상자: 전면 x=1.151  중심 y=-0.069  (144점)  → x 구간 [1.15, 1.26], y 구간 [-0.16, +0.02]
+   → 전방 2.2m 최소폭:  기준1 0.35 m (@1.30)   기준2(RPP) 0.15 m (@0.90)   기준3(오류) 0.00 m (@0.70)
+상자 x=1.151 y=-0.069 | 띠 근거 없는 셀 0 (≤1) | 상자 셀 3표본 0.073 0.073 0.120 → 0.073 | 창 0.232 m (≥0.20; 좌측 0.5)
+=== 3. 목표 근처 크리틱·SLAM·목표 여유 ===
+  FollowPathMPPI.GoalCritic.cost_weight      Double value is: 10.0
+  FollowPathMPPI.PathFollowCritic.threshold_to_consider Double value is: 0.2
+  FollowPathMPPI.PathAlignCritic.threshold_to_consider Double value is: 0.2
+  FollowPathMPPI.PathAngleCritic.threshold_to_consider Double value is: 0.2
+  FollowPathMPPI.PathFollowCritic.cost_weight Double value is: 10.0
+  FollowPathMPPI.PathFollowCritic.offset_from_furthest 
+  FollowPathMPPI.visualize                   Boolean value is: False
+  bt.default_server_timeout                  
+map->odom 101 개/5 s, 최대 간격 0.06 s, 최대 stamp 지연 0.12 s
+OK
+목표 map (2.00, 0.00) yaw 0° | 풋프린트↔LETHAL 최소 0.356 m (셀 map 1.77, -0.53) | 목표 셀 비용 43
+  battery: voltage: 12.154153823852539

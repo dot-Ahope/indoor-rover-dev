@@ -1,0 +1,5 @@
+전송 13 개
+== 컨테이너 상태(전): Exited (255) 56 years ago
+== 컨테이너: isaac_ros_dev-aarch64-container Up 5 seconds
+== 안 nvblox 패키지: 8 개 | GPU: GPU 0: Orin (nvgpu) (UUID: c9449c7c-43bb-5e97-854f-ef3069a9d
+== /tmp 파일: 15 개; nvblox yaml: nvblox_n0_t2.yaml nvblox_n0.yaml 
