@@ -44,7 +44,7 @@
     workspace_height_bounds_visualization_attachment_frame_id: "base_link"
     static_mapper:
       do_depth_preprocessing: false
-      projective_integrator_max_integration_distance_m: 2.0
+      projective_integrator_max_integration_distance_m: 1.4   # 09-22 N6-1: 2.0 → 1.6 → 1.4 — 1.5~2.2 m 의 바닥·테이프 깊이 잡음이 전역 코스트맵 유령 셀로(SUMMARY §5.2). 상자(≤1.3 m)·STVL 지평선(1.2)보다 여유. 원거리는 라이다·SLAM 지도가 맡음
       projective_integrator_truncation_distance_vox: 2.0   # 09-22 A/B: 띠 0.20 → 0.10 m
       projective_integrator_weighting_mode: "inverse_square_tsdf_distance_penalty"
       projective_integrator_max_weight: 5.0
@@ -52,7 +52,7 @@
       esdf_integrator_max_site_distance_vox: 2.0
       esdf_integrator_max_distance_m: 2.0
       esdf_slice_height: 0.10
-      esdf_slice_min_height: 0.03
+      esdf_slice_min_height: 0.06   # 09-22 N6-1: 0.03 → 0.06(STVL min_obstacle_height 와 동일; 복셀 행 [0.05,0.10)). 0.12 는 상자 윗면 z 0.088(높이 0.114 − 원점 0.026)을 잘라 게이트 L 0 셀 — 높이로는 테이프 유령(z 0.09~0.11)과 상자를 못 가르므로 거리(1.4 m)로 가른다
       esdf_slice_max_height: 0.30
       tsdf_decay_factor: 0.99   # 09-22: 감쇠 정지 측정 A/B(ESDF 이탈 ≈78 s 계산)
       tsdf_decayed_weight_threshold: 0.001
