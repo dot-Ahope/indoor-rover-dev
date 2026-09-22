@@ -246,7 +246,7 @@ local_costmap:
       #   nvblox 는 Isaac ROS 컨테이너에서 돌고(깊이 전용, odom 프레임, 복셀 0.05, 슬라이스 z 0.03~0.30), 호스트 Nav2 는 소스 빌드한 nvblox_nav2 층으로
       #   /nvblox_node/static_map_slice(DistanceMapSlice, 9.5 Hz)를 읽는다. A/B-1 은 **이진(LETHAL/FREE) + 기존 inflation_layer** 로 두어 바뀌는 것이
       #   "치명 셀의 출처"(STVL+릴레이 vs nvblox ESDF≤0) 하나뿐이게 한다. ESDF 기울기를 비용으로 직접 쓰는 A/B-2 는 그 뒤(09-18 §15 CostCritic 분석과 함께).
-      # plugins: ["nvblox_layer", "obstacle_layer", "inflation_layer"]   # ★ 2026-09-22 N5 결정: 로컬 층 nvblox 채택(nvblox_local.yaml). 기본값 전환은 N6-0(launch 에 nvblox 기동 통합) 뒤 — 그 전엔 job488/job508 로 전환(절차 v2.0)
+      # plugins: ["nvblox_layer", "obstacle_layer", "inflation_layer"]   # ★ 2026-09-22 N5/N6-0: 로컬 층 nvblox 채택. 실제 plugins 줄은 navigation.launch.py 의 camera_layer 인자(기본 nvblox)가 /tmp/nav2_params_active.yaml 에 써 넣는다 — 이 파일의 줄은 원본/대조군(stvl) 값이며 launch 가 덮어쓴다
       nvblox_layer:
         plugin: "nvblox::nav2::NvbloxCostmapLayer"
         enabled: true

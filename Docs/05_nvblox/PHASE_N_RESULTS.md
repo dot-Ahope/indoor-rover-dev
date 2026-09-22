@@ -32,10 +32,11 @@
 ## 4. 채택 구성 (재현 정보)
 - nvblox: 컨테이너 `isaac_ros_dev-aarch64-container`(NGC 프리빌드 이미지, `docker start` 로 복구), `ros2 run nvblox_ros nvblox_node --params-file /tmp/nvblox_n0_t2d99.yaml` — 채택본은 리포 `ros2_ws/src/rover_navigation/config/nvblox_local.yaml`. 깊이 입력 `/camera/camera/depth/image_rect_raw`(디시메이션 4, 160×120), global_frame odom, 슬라이스 z 0.03~0.30, 통합 2.0 m, 소거 반경 3 m.
 - 층: 호스트 `~/ros2_ws/src/nvblox_nav2`(isaac_ros_nvblox release-3.2 + `lookupInSlice` floor 수정, Jetson 포크 미커밋 diff — `debug_log/2026-09-21/jobs/job493_fixfloor.sh` 로 재적용), `nav2_params.yaml` 로컬 `nvblox_layer`(이진, `max_obstacle_distance 0.40`, `inflation_distance 0.175`) + 기존 inflation_layer 0.40/2.5.
-- 절차: `Docs/04_navigation/TEST_COURSE_AND_GATES.md` v2.0(게이트 J·K·L, prep 뒤 nvblox 재시작, `BAG_PROFILE=nvblox`).
+- 절차: `Docs/04_navigation/TEST_COURSE_AND_GATES.md` v2.1(게이트 J·K·L, `BAG_PROFILE=nvblox`).
+- **bringup(N6-0, 09-22)**: `navigation.launch.py camera_layer:=nvblox|stvl`(기본 nvblox) → `/tmp/nav2_params_active.yaml` 생성 + `nvblox.launch.py`(`scripts/nvblox_up.sh`: 컨테이너 `docker start` 복구, 노드 기동, launch 종료·부모 소멸 시 2 s 안에 정리, SIGPIPE 안전). prep 만으로 모드 N 이 뜬다.
 
 ## 5. 남은 항목 (N6 이전에 또는 N6 에서)
-1. **N6-0 bringup 통합**: launch 에서 컨테이너 nvblox 기동·게이트 J 자동화 → 그 뒤 `plugins` 기본값을 nvblox 로. 재부팅 복구(`docker start`) 포함.
+1. ~~N6-0 bringup 통합~~ **완료(09-22 §4)**: launch 인자 `camera_layer`(기본 nvblox), 래퍼 `nvblox_up.sh`, 게이트 J 자동, V1~V5 통과. 남은 것: 실제 재부팅 뒤 prep 한 번으로 모드 N 게이트 통과 확인(컨테이너 정지 모사 V4 는 통과).
 2. **N6 전역 코스트맵 이전**: 전역의 `stvl_layer` → `nvblox_layer`(map 프레임으로 TF 변환은 플러그인이 처리), `depth_relay`·STVL 제거 → CPU −40 %p 기대(릴레이 19 + STVL). 판정은 같은 코스 A/B + CPU 합.
 3. 슬라이스 최대 높이 0.30 → 0.40(STVL 과 맞춤, 차체 높이 기준) 정지 A/B.
 4. 러너 `job125_avoid3.py` 재고정에 위치 조건(|전면−hint|·|중심−hint| ≤ 0.06) 추가 — n4n3 ① 무효 원인.
