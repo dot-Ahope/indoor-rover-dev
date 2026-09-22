@@ -1,0 +1,42 @@
+## 2. t2 (nvblox_n0_t2.yaml, 절단 2.0) — 현재 plugins: String values are: ['nvblox_layer', 'obstacle_layer', 'inflation_layer']
+  정지 후 nvblox pid: ''
+  30 s 뒤 깊이 콜백 rate: 15.1 (pid 24521 )
+  절단 파라미터 실효값: Double value is: 2.0
+상자: 전면 x=1.149  중심 y=-0.091  (163점)  → x 구간 [1.15, 1.26], y 구간 [-0.18, -0.00]
+  로컬[odom]: 전방 -0.5~1.3m x 좌우 0.9m 안 LETHAL 셀 96개 중 센서 점 8cm 안에 있는 것 94 (98%), 없는 것 2
+   → 전방 2.2m 최소폭:  기준1 0.35 m (@1.20)   기준2(RPP) 0.15 m (@1.40)   기준3(오류) 0.00 m (@0.70)
+상자: 전면 x=1.150  중심 y=-0.097  (160점)  → x 구간 [1.15, 1.26], y 구간 [-0.19, -0.01]
+  로컬[odom]: 전방 -0.5~1.3m x 좌우 0.9m 안 LETHAL 셀 96개 중 센서 점 8cm 안에 있는 것 94 (98%), 없는 것 2
+   → 전방 2.2m 최소폭:  기준1 0.35 m (@1.20)   기준2(RPP) 0.15 m (@1.40)   기준3(오류) 0.00 m (@0.70)
+상자: 전면 x=1.148  중심 y=-0.097  (157점)  → x 구간 [1.15, 1.26], y 구간 [-0.19, -0.01]
+  로컬[odom]: 전방 -0.5~1.3m x 좌우 0.9m 안 LETHAL 셀 94개 중 센서 점 8cm 안에 있는 것 92 (98%), 없는 것 2
+   → 전방 2.2m 최소폭:  기준1 0.35 m (@1.20)   기준2(RPP) 0.15 m (@1.40)   기준3(오류) 0.00 m (@0.70)
+==== t2 로컬 코스트맵 60x60 @0.05: LETHAL 248, 내접 1288, 미지 0, 비용>0 1386
+  앞 0.3~1.6 m LETHAL 셀 92: y 분포 -0.9:23 -0.7:37 -0.5:0 -0.3:4 -0.1:8 +0.1:0 +0.3:0 +0.5:7 +0.7:13
+==== t2 nvblox 슬라이스 48x64 @0.05 (odom): 장애물(≤0) 110, 미지 1900, 자유 1062 | 거리 최소 -0.00 최대 2.00
+  tegra GPU 0% CPU [50%@729,41%@729,42%@729,41%@729,48%@729,50%@729]
+  tegra GPU 3% CPU [48%@1497,42%@1497,44%@1497,44%@1497,50%@729,48%@729]
+  tegra GPU 4% CPU [47%@729,45%@729,47%@729,43%@729,54%@729,48%@729]
+  CPU(top 2 회): nvblox_+ 17.8% | planner+ 11.4% | 
+==== t2: 슬라이스 212 프레임 (20.0 s, TF 실패 0) 토픽 /nvblox_node/static_map_slice
+  (iii) 수신 9.48 Hz, 간격 중앙 0.107 최대 0.115 s | stamp 지연 중앙 0.111 최대 0.118 s | 해상도 0.050 m, 48x64
+  (i) 상자 띠 장애물 셀 최소 x(base): 중앙 1.175 최소 1.175 최대 1.175 (프레임당 셀 12) | 물리 전면 1.151 → 차 +0.024 m = +0.5 셀
+  (ii) 카메라 0.45 m 안 장애물 셀: 프레임당 중앙 0 최대 0, 0 이 아닌 프레임 0/212 | 전체 장애물 셀 중앙 114
+  rate ros/update_esdf         	100    	9.6
+  rate ros/depth               	100    	15.2
+  rate ros/depth_image_callback	100    	15.1
+  delay ros/esdf_integration       	100    	0.102
+  delay ros/depth_image_callback   	100    	0.064
+## 3. 복귀: STVL·nvblox 정지
+  nav2 프로세스: controller 1 planner 1 bt 1 | 오류: 0
+  로컬 plugins 실행값: String values are: ['stvl_layer', 'obstacle_layer', 'inflation_layer']
+  정지 후 nvblox pid: ''
+61373 /tmp/grid_stvl3_costmap.json
+61349 /tmp/grid_t2_costmap.json
+69544 /tmp/grid_t2_slice.json
+61902 /tmp/grid_t4_costmap.json
+78009 /tmp/grid_t4_slice.json
+회수 grid_t2_costmap.json 61349 B
+회수 grid_t2_slice.json 69544 B
+회수 j501_ab_t2.txt 1041 B
+회수 nvblox_t2.log 119745 B
