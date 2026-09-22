@@ -1,0 +1,28 @@
+  98044 105436 15.6 realsense2_came /opt/ros/humble/lib/realsense2_camera/realsense2_camera_node --ros-args -r __node:=camera -r __ns:=/came
+ 102587 94148 11.3 planner_server  /opt/ros/humble/lib/nav2_planner/planner_server --ros-args --log-level info --ros-args -r __node:=planner
+  98046 65884 18.5 python3         python3 /home/jetson/ros2_ws/install/rover_bringup/lib/rover_bringup/depth_relay.py --ros-args -r __node:
+  98338 64620 42.9 python3         python3 /home/jetson/ros2_ws/install/rover_bringup/lib/rover_bringup/sensor_conditioner.py --ros-args -r 
+ 102581 61944  4.6 python3         python3 /home/jetson/ros2_ws/install/rover_bringup/lib/rover_bringup/stuck_monitor.py --ros-args -r __nod
+  98457 51504  3.4 async_slam_tool /opt/ros/humble/lib/slam_toolbox/async_slam_toolbox_node --ros-args -r __node:=slam_toolbox --params-file
+ 102592 48340 10.1 bt_navigator    /opt/ros/humble/lib/nav2_bt_navigator/bt_navigator --ros-args --log-level info --ros-args -r __node:=bt_n
+ 102583 44508 11.7 controller_serv /opt/ros/humble/lib/nav2_controller/controller_server --ros-args --log-level info --ros-args --params-fil
+  13320 43632  9.0 micro_ros_agent /uros_ws/install/micro_ros_agent/lib/micro_ros_agent/micro_ros_agent serial --dev /dev/rover -b 460800
+ 102589 37492  8.2 behavior_server /opt/ros/humble/lib/nav2_behaviors/behavior_server --ros-args --log-level info --ros-args -r __node:=beha
+ 102585 34052  6.9 smoother_server /opt/ros/humble/lib/nav2_smoother/smoother_server --ros-args --log-level info --ros-args -r __node:=smoot
+  98340 33968 12.8 ekf_node        /opt/ros/humble/lib/robot_localization/ekf_node --ros-args -r __node:=ekf_filter_node --params-file /home
+ 102641 31608 12.8 lifecycle_manag /opt/ros/humble/lib/nav2_lifecycle_manager/lifecycle_manager --ros-args --log-level info --ros-args -r __
+  13238 31060  0.7 robot_state_pub /opt/ros/humble/lib/robot_state_publisher/robot_state_publisher --ros-args -r __node:=robot_state_publish
+  13294 29204  0.0 ros2            /usr/bin/python3 /opt/ros/humble/bin/ros2 run micro_ros_agent micro_ros_agent serial --dev /dev/rover -b 
+ 102637 28816  5.5 velocity_smooth /opt/ros/humble/lib/nav2_velocity_smoother/velocity_smoother --ros-args --log-level info --ros-args -r __
+  98048 28196 19.1 rplidar_node    /opt/ros/humble/lib/rplidar_ros/rplidar_node --ros-args -r __node:=rplidar_node --params-file /tmp/launch
+--- after ---
+  98044 105696 15.6 realsense2_came /opt/ros/humble/lib/realsense2_camera/realsense2_camera_node --ros-args -r __node:=camera -r __ns:=/came
+ 102587 97424 11.3 planner_server  /opt/ros/humble/lib/nav2_planner/planner_server --ros-args --log-level info --ros-args -r __node:=planner
+  98046 66920 18.5 python3         python3 /home/jetson/ros2_ws/install/rover_bringup/lib/rover_bringup/depth_relay.py --ros-args -r __node:
+  98338 64620 42.9 python3         python3 /home/jetson/ros2_ws/install/rover_bringup/lib/rover_bringup/sensor_conditioner.py --ros-args -r 
+  98457 55560  3.5 async_slam_tool /opt/ros/humble/lib/slam_toolbox/async_slam_toolbox_node --ros-args -r __node:=slam_toolbox --params-file
+ 102592 48948 10.1 bt_navigator    /opt/ros/humble/lib/nav2_bt_navigator/bt_navigator --ros-args --log-level info --ros-args -r __node:=bt_n
+ 102583 46712 11.9 controller_serv /opt/ros/humble/lib/nav2_controller/controller_server --ros-args --log-level info --ros-args --params-fil
+  98340 33968 12.8 ekf_node        /opt/ros/humble/lib/robot_localization/ekf_node --ros-args -r __node:=ekf_filter_node --params-file /home
+               total        used        free      shared  buff/cache   available
+Mem:            7607        1984        2837          64        2785        5324
