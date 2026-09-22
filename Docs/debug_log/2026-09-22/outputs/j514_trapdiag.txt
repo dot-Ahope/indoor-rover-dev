@@ -1,0 +1,17 @@
+## 현재 래퍼 pid: '426925' | nvblox_node 1 개
+  cmdline: bash /home/jetson/ros2_ws/install/rover_navigation/share/rover_navigation/scripts/nvblox_up.sh /home/jetson/ros2_ws/inst
+PPid:	426883 SigBlk:	0000000000010000 SigIgn:	0000000000000007 SigCgt:	0000000000014000 
+  자식:  436192 S    sleep 2|
+  TERM → 4 s 뒤 nvblox_node 0 개, 래퍼 생존 yes
+  nav2.log 래퍼 줄: [nvblox_up-10] [nvblox_up] 컨테이너 정지 상태 → docker start|[nvblox_up-10] [nvblox_up] nvblox_node pid 427212 (yaml nvblox_local.yaml, 로그 /tmp/nvblox_node.l|[nvblox_up-10] [nvblox_up] 종료 신호 → 컨테이너 안 nvblox_node 정리|
+## 수동 실행 대조(launch 없이)
+  수동 래퍼 pid 436686, nvblox_node 1 개 | SigIgn:	0000000000000006 SigCgt:	0000000000014001 
+  TERM → 3 s 뒤 nvblox_node 0 개, 래퍼 생존 yes
+  wrap_diag.log: [nvblox_up] nvblox_node pid 436782 (yaml nvblox_local.yaml, 로그 /tmp/nvblox_diag.log)|[nvblox_up] 종료 신호 → 컨테이너 안 nvblox_node 정리|
+## launch 프로세스 신호 처리 확인: ros2 launch 의 자식 생성 방식
+  start_new_session  0
+  preexec_fn         0
+  send_signal        0
+  killpg             0
+  SIGINT             0
+  sigterm_timeout    2

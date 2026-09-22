@@ -1,0 +1,28 @@
+전송 OK
+## 0. 빌드
+Finished <<< rover_navigation [0.74s]
+  2 s | 설치: nvblox_up.sh  navigation.launch.py nvblox.launch.py __pycache__ 
+  pyyaml OK
+## V1. camera_layer 기본(nvblox) — Nav2 재기동
+  nav2 프로세스: controller 1 planner 1 bt 1 | 오류: 0
+  로컬 plugins 실행값: String values are: ['nvblox_layer', 'obstacle_layer', 'inflation_layer'] | nvblox_node: 1 개 | 활성 yaml: # 자동 생성(navigation.launch.py, camera_layer=nvblox) — 원본 
+  nav2.log 의 nvblox_up: [INFO] [nvblox_up-10]: process started with pid [438049]|[nvblox_up-10] [nvblox_up] nvblox_node pid 438176 (yaml nvblox_local.yaml, 로그 /tmp/nvblox_node.log, 부모 launch pi|
+J nvblox 노드: 프로세스 1, 깊이 15.1 Hz, ESDF 9.6 Hz, esdf 지연 0.104 s → 통과
+K 층 실효값: String values are: ['nvblox_layer', 'obstacle_layer', 'inflation_layer → 통과
+L 슬라이스 커버: 상자 띠 셀/프레임 11, 근거리 자취 프레임 0/103 → 통과
+== 모드 N 게이트 J·K·L 통과
+  활성 yaml 머리: # 자동 생성(navigation.launch.py, camera_layer=nvblox) — 원본 /home/jetson/ros2_ws | plugins 줄: ['nvblox_layer', 'obstacle_layer', 'inflation_layer']
+## V2. launch 종료 → 컨테이너 안 노드 정리
+  종료 전 node 438176/래퍼 438049 → 28 s 뒤 nvblox_node 1 개, 래퍼 생존 no | 래퍼 로그: nvblox_node pid 438176 (yaml nvblox_local.yaml, 로그 /tmp/|
+  (잔존 노드 직접 정리)
+## V3. camera_layer:=stvl
+  nav2 프로세스: controller 1 planner 1 bt 1 | 오류: 0
+  로컬 plugins 실행값: String values are: ['stvl_layer', 'obstacle_layer', 'inflation_layer'] | nvblox_node: 0 개 | 활성 yaml: # 자동 생성(navigation.launch.py, camera_layer=stvl) — 원본 /h
+  nvblox_node 0 개 (0 이어야) | 활성 yaml: # 자동 생성(navigation.launch.py, camera_layer=stvl) — 원본 /home/jetson
+## V4. 컨테이너 정지(재부팅 모사) → nvblox 모드 재기동 → 래퍼 복구
+  docker stop → 상태 Exited (143) Less th
+  nav2 프로세스: controller 1 planner 1 bt 1 | 오류: 0
+  로컬 plugins 실행값: String values are: ['nvblox_layer', 'obstacle_layer', 'inflation_layer'] | nvblox_node: 1 개 | 활성 yaml: # 자동 생성(navigation.launch.py, camera_layer=nvblox) — 원본 
+  컨테이너 Up 35 seconds | nvblox_node 1 개 | 래퍼 로그: [INFO] [nvblox_up-10]: process started with pid [444542]|[nvblox_up-10] [nvblox_up] 컨테이너 정지 상태 → docker start|[nvblox_up-10] [nvblox_up] nvblox_node pid 444850 (yaml nvblox_local.yaml, 로그 /tmp/nvb|
+  30 s 뒤 깊이 콜백: 15.1 Hz | plugins: String values are: ['nvblox_layer', 'obstacle_layer', 'inflation_layer
+## 끝(모드 N 유지 — V5 는 PC 에서 run_mp9prep 로)
