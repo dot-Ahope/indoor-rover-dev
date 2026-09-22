@@ -1,0 +1,37 @@
+## 0. STVL 캡처(stvl3) — plugins: String values are: ['stvl_layer', 'obstacle_layer', 'inflation_layer']
+==== stvl3 로컬 코스트맵 60x60 @0.05: LETHAL 201, 내접 1209, 미지 0, 비용>0 1515
+  앞 0.3~1.6 m LETHAL 셀 68: y 분포 -0.9:15 -0.7:30 -0.5:0 -0.3:5 -0.1:5 +0.1:0 +0.3:0 +0.5:3 +0.7:10
+## 1. t4 (nvblox_n0.yaml, 절단 4.0)
+  정지 후 nvblox pid: ''
+  30 s 뒤 깊이 콜백 rate: 15.1 (pid 16441 )
+  nav2 프로세스: controller 1 planner 1 bt 1 | 오류: 0
+  로컬 plugins 실행값: String values are: ['nvblox_layer', 'obstacle_layer', 'inflation_layer']
+상자: 전면 x=1.149  중심 y=-0.098  (156점)  → x 구간 [1.15, 1.26], y 구간 [-0.19, -0.01]
+  로컬[odom]: 전방 -0.5~1.3m x 좌우 0.9m 안 LETHAL 셀 99개 중 센서 점 8cm 안에 있는 것 98 (99%), 없는 것 1
+   → 전방 2.2m 최소폭:  기준1 0.35 m (@1.20)   기준2(RPP) 0.15 m (@1.40)   기준3(오류) 0.00 m (@0.70)
+상자: 전면 x=1.148  중심 y=-0.090  (157점)  → x 구간 [1.15, 1.26], y 구간 [-0.18, -0.00]
+상자: 전면 x=1.150  중심 y=-0.089  (161점)  → x 구간 [1.15, 1.26], y 구간 [-0.18, +0.00]
+  로컬[odom]: 전방 -0.5~1.3m x 좌우 0.9m 안 LETHAL 셀 99개 중 센서 점 8cm 안에 있는 것 97 (98%), 없는 것 2
+   → 전방 2.2m 최소폭:  기준1 0.35 m (@1.20)   기준2(RPP) 0.15 m (@1.40)   기준3(오류) 0.00 m (@0.70)
+==== t4 로컬 코스트맵 60x60 @0.05: LETHAL 275, 내접 1283, 미지 0, 비용>0 1389
+  앞 0.3~1.6 m LETHAL 셀 116: y 분포 -0.9:31 -0.7:39 -0.5:0 -0.3:10 -0.1:13 +0.1:0 +0.3:0 +0.5:6 +0.7:17
+==== t4 nvblox 슬라이스 48x72 @0.05 (odom): 장애물(≤0) 173, 미지 2275, 자유 1008 | 거리 최소 -0.27 최대 2.00
+  tegra GPU 4% CPU [58%@883,47%@883,47%@883,50%@883,48%@729,49%@729]
+  tegra GPU 0% CPU [51%@729,43%@729,48%@729,47%@729,43%@729,37%@729]
+  tegra GPU 0% CPU [49%@729,42%@729,43%@729,42%@729,44%@729,50%@729]
+  CPU(top 2 회): nvblox_+ 18.3% | planner+ 11.4% | 
+==== t4: 슬라이스 210 프레임 (20.0 s, TF 실패 2) 토픽 /nvblox_node/static_map_slice
+  (iii) 수신 9.49 Hz, 간격 중앙 0.106 최대 0.115 s | stamp 지연 중앙 0.111 최대 0.119 s | 해상도 0.050 m, 48x72
+  (i) 상자 띠 장애물 셀 최소 x(base): 중앙 1.175 최소 1.175 최대 1.175 (프레임당 셀 21) | 물리 전면 1.151 → 차 +0.024 m = +0.5 셀
+  (ii) 카메라 0.45 m 안 장애물 셀: 프레임당 중앙 0 최대 0, 0 이 아닌 프레임 0/210 | 전체 장애물 셀 중앙 178
+  rate ros/depth               	100    	15.2
+  rate ros/depth_image_callback	100    	15.1
+  rate ros/update_esdf         	100    	9.6
+  delay ros/esdf_integration       	100    	0.101
+  delay ros/depth_image_callback   	100    	0.064
+## (a 끝: nvblox t4 실행 중, 로컬 코스트맵 nvblox 모드 — b 단계로)
+회수 grid_stvl3_costmap.json 61373 B
+회수 grid_t4_costmap.json 61902 B
+회수 grid_t4_slice.json 78009 B
+회수 j501_ab_t4.txt 796 B
+회수 nvblox_t4.log 111847 B
