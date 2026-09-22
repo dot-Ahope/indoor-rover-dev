@@ -1,0 +1,6 @@
+== 현재 plugins: String values are: ['nvblox_layer', 'obstacle_layer', 'inflation_layer']
+  nav2 프로세스: controller 1 planner 1 bt 1 | 오류: 0
+  로컬 plugins 실행값: String values are: ['stvl_layer', 'obstacle_layer', 'inflation_layer']
+== nvblox 정지 (남은 pid '')
+8 s 재마킹 대기 끝
+== 상자·창(job248 1 표본): 상자: 전면 x=1.151  중심 y=-0.098  (147점)  → x 구간 [1.15, 1.26], y 구간 [-0.19, -0.01]    → 전방 2.2m 최소폭:  기준1 0.50 m (@1.20)   기준2(RPP) 0.25 m (@0.90)   기준3(오�

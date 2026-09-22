@@ -1,0 +1,40 @@
+  0.00 [bt_navigator-6] [INFO] [1790046273.971731400] [bt_navigator]: Begin navigating from current location (0.00, 0.00) to (2.00, 0.00)
+  0.03 [controller_server-2] [INFO] [1790046274.005842997] [controller_server]: Received a goal, begin computing control effort.
+  0.03 [controller_server-2] [WARN] [1790046274.005995385] [controller_server]: No goal checker was specified in parameter 'current_goal_checker'. Server will use only plugin loaded general_goal_checker . This warning will appear once.
+  0.04 [controller_server-2] [INFO] [1790046274.008153079] [controller_server]: Optimizer reset
+ 19.85 [bt_navigator-6] [WARN] [1790046293.816933801] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+ 30.95 [controller_server-2] [INFO] [1790046304.925366131] [controller_server]: Reached the goal!
+ 30.99 [bt_navigator-6] [INFO] [1790046304.963181297] [bt_navigator]: Goal succeeded
+=== 드라이브 표 (1 s) ===
+  1.0 +0.036 +0.003 |  0.846    0.135 +0.316 |   100   100    186 | +0.082 +0.171
+ 11.0 +0.748 +0.225 |  0.174    0.109 +0.291 |   100   100      0 | +0.082 -0.093
+ 21.0 +1.495 +0.311 |  0.162    0.149 +0.299 |   100   100      0 | +0.079 -0.172
+bag tgz 2728356
+=== SLAM 생존(주행 후) ===
+map->odom 79 개/5 s, 최대 간격 0.10 s, 최대 stamp 지연 0.02 s
+OK
+로버 map 자세: - Translation: [1.951, 0.057, 0.000] - Rotation: in RPY (radian) [0.000, 0.000, -0.086] 
+=== top: 프로세스별 CPU 평균/최대 (주행 중) ===
+스냅샷 22 (2 s), load 평균 10.0 최대 11.5
+  python3                                  평균 110.3% 최대  62.4%
+  controller_serv                          평균  33.9% 최대  63.9%
+  ros2                                     평균  19.9% 최대  32.5%
+  rplidar_node                             평균  15.7% 최대  19.1%
+  bt_navigator                             평균  15.3% 최대  18.1%
+  realsense2_came                          평균  14.1% 최대  18.2%
+  micro_ros_agent                          평균  13.4% 최대  53.5%
+  ekf_node                                 평균  12.1% 최대  15.3%
+  lifecycle_manag                          평균  11.8% 최대  15.2%
+  planner_server                           평균  11.4% 최대  15.7%
+  async_slam_tool                          평균  10.1% 최대  17.7%
+  behavior_server                          평균   7.9% 최대  11.8%
+bag 회수 OK 2728356
+drive log OK
+csv OK
+nav2 구간 로그 OK 77 줄
+top 로그 OK
+meta OK
+params OK
+refix csv OK
+tegrastats OK 43 줄
+rss OK
