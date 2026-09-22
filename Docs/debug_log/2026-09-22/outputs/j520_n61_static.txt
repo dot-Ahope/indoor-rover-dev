@@ -1,0 +1,79 @@
+=== 1. 재기동 (192.168.0.101) ===
+  [sensor_conditioner.py-6] [INFO] [1790058036.764761779] [sensor_conditioner]: gyro bias calibrated: (-0.00848, -0.00098, -0.00184) rad/s, std=(0.0025, 0.0023, 0.0018)
+  map->odom: - Translation: [0.000, 0.000, 0.000]
+  로버 자세: - Translation: [0.000, 0.000, 0.000] - Rotation: in RPY (radian) [0.000, -0.000, 0.000] 
+   틈 [y_lo, y_hi]         폭        차체0.33     패딩0.43     허용 자세각(패딩)
+=== 2. 릴레이·readback·상자 게이트 ===
+=== 릴레이 ===
+남은 릴레이: 1
+발행자 Publisher count: 1
+=== readback ===
+  controller_frequency               
+  FollowPathMPPI.temperature         Double value is: 0.15
+  FollowPathMPPI.iteration_count     Integer value is: 2
+  FollowPathMPPI.vx_std              Double value is: 0.08
+  FollowPathMPPI.wz_std              Double value is: 0.4
+  FollowPathMPPI.visualize           Boolean value is: False
+  BT raw_path: 4  SmoothPath: 1
+  nav2: controller 1 planner 1 bt 1 stuck_monitor 1
+  로버 자세: - Translation: [0.000, 0.000, 0.000] - Rotation: in RPY (radian) [0.000, -0.000, 0.002] 
+=== 프로세스·부하 ===
+load 8.76 6.00 5.26  shadow_mode: SHADOW
+=== 게이트 ===
+상자: 전면 x=1.145  중심 y=-0.068  (153점)  → x 구간 [1.14, 1.25], y 구간 [-0.16, +0.02]
+   → 전방 2.2m 최소폭:  기준1 0.30 m (@1.30)   기준2(RPP) 0.05 m (@1.60)   기준3(오류) 0.00 m (@0.70)
+상자 x=1.145 y=-0.068 | 띠 근거 없는 셀 0 (≤1) | 상자 셀 3표본 0.022 0.022 0.022 → 0.022 | 창 0.233 m (≥0.20; 좌측 0.45)
+=== 3. 목표 근처 크리틱·SLAM·목표 여유 ===
+  FollowPathMPPI.GoalCritic.cost_weight      Double value is: 10.0
+  FollowPathMPPI.PathFollowCritic.threshold_to_consider Double value is: 0.2
+  FollowPathMPPI.PathAlignCritic.threshold_to_consider Double value is: 0.2
+  FollowPathMPPI.PathAngleCritic.threshold_to_consider Double value is: 0.2
+  FollowPathMPPI.PathFollowCritic.cost_weight Double value is: 10.0
+  FollowPathMPPI.PathFollowCritic.offset_from_furthest Integer value is: 20
+  FollowPathMPPI.visualize                   Boolean value is: False
+  bt.default_server_timeout                  Integer value is: 100
+map->odom 84 개/5 s, 최대 간격 0.11 s, 최대 stamp 지연 0.05 s
+OK
+목표 map (2.00, 0.00) yaw 0° | 풋프린트↔LETHAL 최소 0.000 m (셀 map 1.90, 0.12) | 목표 셀 비용 99
+  battery: voltage: 12.124780654907227
+######## G1·G2
+## n61N: 활성 plugins 로컬 nvblox_layer | 전역 nvblox_layer
+  릴레이 구독자: 0 | 릴레이 발행 Hz: 14.709
+  전역 코스트맵:
+==== n61Ng 로컬 코스트맵 162x143 @0.05: LETHAL 522, 내접 2496, 미지 16972, 비용>0 2522
+  앞 0.3~1.6 m LETHAL 셀 111: y 분포 -0.9:21 -0.7:48 -0.5:2 -0.3:4 -0.1:8 +0.1:0 +0.3:0 +0.5:5 +0.7:23
+  로컬 코스트맵:
+==== n61Nl 로컬 코스트맵 60x60 @0.05: LETHAL 242, 내접 1349, 미지 0, 비용>0 1346
+  앞 0.3~1.6 m LETHAL 셀 92: y 분포 -0.9:20 -0.7:39 -0.5:1 -0.3:4 -0.1:8 +0.1:0 +0.3:0 +0.5:2 +0.7:18
+  감사(job248):
+상자: 전면 x=1.145  중심 y=-0.068  (150점)  → x 구간 [1.15, 1.26], y 구간 [-0.16, +0.02]
+  전역[map]: 전방 -0.5~1.3m x 좌우 0.9m 안 LETHAL 셀 131개 중 센서 점 8cm 안에 있는 것 128 (98%), 없는 것 3
+########## C. 통과 폭 — 판정 기준 두 가지 비교 (전역 코스트맵) ##########
+   → 전방 2.2m 최소폭:  기준1 0.35 m (@1.20)   기준2(RPP) 0.20 m (@0.90)   기준3(오류) 0.00 m (@0.70)
+  CPU 20 s(top 2 회 평균): python3 42.3% | nvblox_+ 17.7% | planner+ 9.9% | python3 9.3% | python3 4.5% | python3 3.8% | python3 0.1% | 
+  CPU 합(전 프로세스, top 1 회): 212 %
+######## 모드 S 전환
+  nav2 프로세스: controller 1 planner 1 bt 1 | 오류: 0
+  로컬 plugins 실행값: String values are: ['stvl_layer', 'obstacle_layer', 'inflation_layer'] | nvblox_node: 0 개 | 활성 yaml: # 자동 생성(navigation.launch.py, camera_layer=stvl) — 원본 /h
+## n61S: 활성 plugins 로컬 stvl_layer | 전역 stvl_layer
+  릴레이 구독자: 4 | 릴레이 발행 Hz: 14.994
+  전역 코스트맵:
+==== n61Sg 로컬 코스트맵 162x143 @0.05: LETHAL 455, 내접 2210, 미지 17157, 비용>0 2703
+  앞 0.3~1.6 m LETHAL 셀 75: y 분포 -0.9:9 -0.7:37 -0.5:0 -0.3:4 -0.1:5 +0.1:0 +0.3:0 +0.5:4 +0.7:16
+  로컬 코스트맵:
+==== n61Sl 로컬 코스트맵 60x60 @0.05: LETHAL 209, 내접 1310, 미지 0, 비용>0 1392
+  앞 0.3~1.6 m LETHAL 셀 59: y 분포 -0.9:13 -0.7:23 -0.5:0 -0.3:4 -0.1:6 +0.1:0 +0.3:0 +0.5:1 +0.7:12
+  감사(job248):
+상자: 전면 x=1.145  중심 y=-0.068  (153점)  → x 구간 [1.15, 1.26], y 구간 [-0.16, +0.02]
+  전역[map]: 전방 -0.5~1.3m x 좌우 0.9m 안 LETHAL 셀 112개 중 센서 점 8cm 안에 있는 것 112 (100%), 없는 것 0
+########## C. 통과 폭 — 판정 기준 두 가지 비교 (전역 코스트맵) ##########
+   → 전방 2.2m 최소폭:  기준1 0.40 m (@1.20)   기준2(RPP) 0.20 m (@0.90)   기준3(오류) 0.00 m (@0.70)
+  CPU 20 s(top 2 회 평균): python3 44.6% | python3 19.7% | planner+ 11.5% | python3 9.3% | python3 4.8% | python3 0.2% | 
+  CPU 합(전 프로세스, top 1 회): 212 %
+######## 모드 N 복귀
+  nav2 프로세스: controller 1 planner 1 bt 1 | 오류: 0
+  로컬 plugins 실행값: String values are: ['nvblox_layer', 'obstacle_layer', 'inflation_layer'] | nvblox_node: 1 개 | 활성 yaml: # 자동 생성(navigation.launch.py, camera_layer=nvblox) — 원본 
+회수 grid_n61Ng_costmap.json 458662 B
+회수 grid_n61Nl_costmap.json 60901 B
+회수 grid_n61Sg_costmap.json 461072 B
+회수 grid_n61Sl_costmap.json 61082 B

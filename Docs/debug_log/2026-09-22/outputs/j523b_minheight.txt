@@ -1,0 +1,21 @@
+Finished <<< rover_navigation [0.22s]
+1
+## Nav2(nvblox) 재기동
+  nav2 프로세스: controller 1 planner 1 bt 1 | 오류: 0
+  로컬 plugins 실행값: String values are: ['nvblox_layer', 'obstacle_layer', 'inflation_layer'] | nvblox_node: 1 개 | 활성 yaml: # 자동 생성(navigation.launch.py, camera_layer=nvblox) — 원본 
+  슬라이스 최소 높이 실효값: Double value is: 0.08
+## 목표 부근 재탐침
+수신: ['g', 'l', 'pc', 'scan', 'sl']
+Traceback (most recent call last):
+  File "/tmp/job522_goalprobe.py", line 36, in <module>
+    tr = buf.lookup_transform('base_link', m.header.frame_id, rclpy.time.Time()).transform; q = tr.rotation; yaw = math.atan2(2*(q.w*q.z+q.x*q.y), 1-2*(q.y*q.y+q.z*q.z))
+  File "/opt/ros/humble/lib/python3.10/site-packages/tf2_ros/buffer.py", line 136, in lookup_transform
+    return self.lookup_transform_core(target_frame, source_frame, time)
+tf2.LookupException: "base_link" passed to lookupTransform argument target_frame does not exist. 
+## 게이트 J·K·L
+J nvblox 노드: 프로세스 1, 깊이 15.1 Hz, ESDF 9.6 Hz, esdf 지연 0.101 s → 통과
+K 층 실효값: String values are: ['nvblox_layer', 'obstacle_layer', 'inflation_layer → 통과
+L 슬라이스 커버: 상자 띠 셀/프레임 11, 근거리 자취 프레임 0/96 → 통과
+== 모드 N 게이트 J·K·L 통과
+## 목표 여유(job377)
+bash: line 7: 11: Bad file descriptor
