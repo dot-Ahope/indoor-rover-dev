@@ -1,0 +1,5 @@
+prep 후 nvblox pid: 465625  | 래퍼: 465497 484152 
+래퍼 로그 꼬리: 부모 launch 소멸 감지 → 정리|종료 신호/부모 소멸 → 컨테이너 안 nvblox_node 정리 끝(남은 pid '')|종료 신호/부모 소멸 → 컨테이너 안 nvblox_node 정리 끝(남은 pid '')|
+nav2.log 의 nvblox_up 줄: nvblox_node pid 465625 (yaml nvblox_local.yaml, 로그 /tmp/nvblox_node.log, 부모 launch|
+활성 yaml: # 자동 생성(navigation.launch.py, camera_layer=nvblox) — 원본 /home/jets | 배터리·로드: 5.01 6.95 5.41
+job240 정리 로그(정리 전/후): 

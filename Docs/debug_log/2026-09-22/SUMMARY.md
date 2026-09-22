@@ -178,3 +178,8 @@
 - 2 차(래퍼에 부모 소멸 감시 추가, 검증에서 -9 제거): V2 여전히 불합격 — 래퍼가 정리 로그 없이 사라짐. 원인 ③: **launch 가 먼저 죽으면 래퍼 stdout 파이프가 끊겨 다음 `echo` 에서 SIGPIPE 로 래퍼가 죽음**(정리 함수 첫 줄이 echo). 
 - 3 차(기동 뒤 `exec >> /tmp/nvblox_node_up.log`, `trap '' PIPE`, 정리 함수는 kill 먼저·로그 나중): **V1~V4 전부 통과** — V1 nvblox_node 1·plugins nvblox·J(15.1/9.5 Hz·0.104 s)·K·L(11 셀) 통과, **V2 launch TERM 뒤 2 s 만에 노드 0**("부모 launch 소멸 감지 → 정리"), V3 stvl 전환 시 노드 0, V4 `docker stop` 뒤 재기동에서 래퍼가 `docker start` 로 복구·노드 기동·30 s 뒤 깊이 15.1 Hz. 빌드 0.7 s(symlink).
 - 부수: 활성 파라미터는 `/tmp/nav2_params_active.yaml`(머리줄에 camera_layer 와 원본 경로), 메타(job453)에 그 sha256 과 `/tmp/nvblox_active.yaml`·`nvblox_local.yaml` 추가. 게이트 A 뒤 J 는 활성 yaml 이 nvblox 층일 때만 검사(모드 S 는 생략 표시).
+### 4.2 V5·마무리 (`outputs/j515_v5_prep.txt`·`j516_v5chk.txt`·`j513_verify4.txt`)
+- **V5 통과**: `run_mp9prep.sh`(job240 PATS 에 래퍼 포함) → 게이트 A~D 통과(상자 1.145/−0.068, 창 0.330, 목표 여유 0.332, 배터리 12.20 V) → nvblox_node PID 457141 → **465625 로 교체**(prep 이 Nav2 를 재기동하며 래퍼가 새로 띄움), 게이트 J(15.1/9.6 Hz·0.106 s)·K·L(12 셀) 통과. 절차 v2.0 §4-9 "prep 뒤 nvblox 재시작" 이 자동화됨 → v2.1.
+- pgrep 에 래퍼가 둘로 보인 것은 래퍼가 매 루프 `$(nv_pids)` 로 포크하는 수명 0 s 서브셸(부모 = 래퍼)이었다 — 결함 아님(`j517`). 다만 래퍼가 "아무 nvblox_node" 가 아니라 **자기가 띄운 PID 만** 감시·정리하도록 강화(래퍼가 겹쳐도 남의 노드를 죽이지 않음) → 4 차 배포에서 V1~V4 재통과(V2 3 s). V5 는 3 차 판으로 통과했고 4 차 변경은 감시·정리부만이라 재실행하지 않음(정직 기록).
+- **N6-0 완료.** 기본 구성 = Nav2 launch 가 nvblox 층 + 컨테이너 nvblox 를 함께 띄움(`camera_layer` 기본 nvblox). 문서: 절차 v2.1, `PHASE_N_RESULTS.md §4·§5`, 계획서 N6-0, CLAUDE.md §6. 남은 것: 실제 재부팅 뒤 prep 한 번으로 모드 N 게이트 통과(다음 재부팅 때 확인), N6-1 전역 이전.
+- 상태: Jetson 모드 N(nvblox 층·노드 실행 중), 로버 출발 테이프(상자 1.145/−0.068).
