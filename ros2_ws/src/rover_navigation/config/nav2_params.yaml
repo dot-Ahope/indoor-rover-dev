@@ -477,6 +477,17 @@ global_costmap:
                           #   패딩을 올려 그런 경로를 계획 단계에서 배제한다(내접 0.215).
                           #   inflation local 0.40 / global 0.35 은 둘 다 0.215 이상이라 조건 충족.
       plugins: ["static_layer", "stvl_layer", "obstacle_layer", "inflation_layer"]
+      # 2026-09-22 N6-1: 전역 카메라 층도 nvblox — navigation.launch.py 의 camera_layer 인자가 plugins 줄을 바꾼다
+      #   (nvblox: ["static_layer", "nvblox_layer", "obstacle_layer", "inflation_layer"] / stvl: 위 원래 줄). 슬라이스는 odom 프레임, 전역은 map 프레임 → 플러그인이 TF 로 변환(09-21 §10.4 코드).
+      #   nvblox 는 base_link 반경 3 m 안만 채우고 감쇠 0.99(≈81 s) — 넓은 영역·긴 기억은 static(SLAM)+라이다가 맡는다.
+      nvblox_layer:
+        plugin: "nvblox::nav2::NvbloxCostmapLayer"
+        enabled: true
+        nvblox_map_slice_topic: "/nvblox_node/static_map_slice"
+        convert_to_binary_costmap: true
+        max_obstacle_distance: 0.40
+        inflation_distance: 0.175
+        max_cost_value: 252
       static_layer:
         plugin: "nav2_costmap_2d::StaticLayer"
         map_subscribe_transient_local: true   # slam_toolbox /map 수신
