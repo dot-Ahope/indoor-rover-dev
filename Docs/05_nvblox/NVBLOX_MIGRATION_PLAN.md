@@ -138,7 +138,7 @@ S5 기준선과 **같은 코스·같은 스크립트**로 측정.
 
 ### N6. 전역 코스트맵 이전 (2026-09-22 추가)
 
-- N6-0: bringup 통합 — launch 에서 컨테이너 nvblox 기동, 게이트 J 자동화, 재부팅 복구(`docker start`). 그 뒤 로컬 `plugins` 기본값 → nvblox.
+- N6-0: bringup 통합 — **완료 2026-09-22**(`2026-09-22/SUMMARY.md §4`): `navigation.launch.py camera_layer:=nvblox|stvl`(기본 nvblox, 활성 YAML 생성), `nvblox.launch.py`/`scripts/nvblox_up.sh`(컨테이너 `docker start` 복구·노드 기동·정리), 게이트 J 자동(job254). V1~V5 통과. 설치 YAML 을 sed 로 바꾸던 방식 폐기.
 - N6-1: 전역 `stvl_layer` → `nvblox_layer`(map 프레임 TF 변환은 플러그인 `T_G_S_`), `depth_relay`·STVL 제거. 정지 A/B(전역 상자 셀·통로 폭) → 주행 A/B(같은 코스, `BASELINE_STVL.md` 지표 + CPU 합 < 320 재판정).
 - N6-2: 슬라이스 높이 0.30 → 0.40, 러너 재고정 위치 조건, 주행 중 근거리 자취 지표.
 

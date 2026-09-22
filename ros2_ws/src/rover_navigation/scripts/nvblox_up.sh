@@ -20,7 +20,10 @@ cp -f "$YAML" /tmp/nvblox_active.yaml || { say "yaml 복사 실패: $YAML"; exit
 nv_pids() { docker exec "$CN" bash -c "pgrep -f '^$BIN' || true" 2>/dev/null; }
 nv_kill() { local p; for p in $(nv_pids); do docker exec "$CN" kill -INT "$p" 2>/dev/null; done; sleep 2; for p in $(nv_pids); do docker exec "$CN" kill -9 "$p" 2>/dev/null; done; }
 if [ -n "$(nv_pids)" ]; then say "이전 nvblox_node $(nv_pids | tr '\n' ' ')정리"; nv_kill; fi
-cleanup() { nv_kill; say "종료 신호/부모 소멸 → 컨테이너 안 nvblox_node 정리 끝(남은 pid '$(nv_pids | tr '\n' ' ')')"; exit 0; }   # 죽이는 것을 먼저, 로그는 나중에
+P=""   # 이 래퍼가 띄운 노드 PID — 정리·감시는 이것만 본다(래퍼가 둘 이상 겹쳐도 남의 노드를 죽이지 않도록)
+my_alive() { [ -n "$P" ] && docker exec "$CN" kill -0 "$P" 2>/dev/null; }
+my_kill() { [ -n "$P" ] || return 0; docker exec "$CN" kill -INT "$P" 2>/dev/null; for _ in 1 2 3; do my_alive || return 0; sleep 1; done; docker exec "$CN" kill -9 "$P" 2>/dev/null; }
+cleanup() { my_kill; say "종료 신호/부모 소멸 → 내 nvblox_node $P 정리 끝(남은 노드 '$(nv_pids | tr '\n' ' ')')"; exit 0; }   # 죽이는 것을 먼저, 로그는 나중에
 trap cleanup TERM INT HUP
 docker exec -d -u admin --workdir /workspaces/isaac_ros-dev "$CN" bash -lc "export FASTRTPS_DEFAULT_PROFILES_FILE=/tmp/fastdds_udp_only.xml; source /opt/ros/humble/setup.bash; exec ros2 run nvblox_ros nvblox_node --ros-args --params-file /tmp/nvblox_active.yaml -r camera_0/depth/image:=/camera/camera/depth/image_rect_raw -r camera_0/depth/camera_info:=/camera/camera/depth/camera_info > $LOG 2>&1"
 sleep 3; P=$(nv_pids | head -1)
@@ -30,8 +33,8 @@ say "nvblox_node pid $P (yaml $(basename "$YAML"), 로그 $LOG, 부모 launch pi
 exec >> "${LOG%.log}_up.log" 2>&1; trap '' PIPE
 # 감시 루프: (a) 노드가 스스로 죽으면 래퍼도 끝낸다(launch 로그에 남음) (b) 부모 launch 가 신호 없이 사라지면(PPID → 1) 스스로 정리한다.
 #   setsid nohup 아래서 뜬 launch 는 자식에게 SIGINT 무시를 물려주므로 launch 의 1차 INT 는 이 셸에 닿지 않고(무시된 신호는 trap 불가), 5 s 뒤 TERM 만 닿는다 — 그래서 (b) 가 필요하다(09-22 N6-0 V2 진단).
-while [ -n "$(nv_pids)" ]; do
+while my_alive; do
   sleep 2
   if [ "$(ps -o ppid= -p $$ 2>/dev/null | tr -d ' ')" = "1" ]; then say "부모 launch 소멸 감지 → 정리"; cleanup; fi
 done
-say "nvblox_node 종료됨 — $LOG 꼬리:"; tail -5 "$LOG" 2>/dev/null; exit 6
+say "내 nvblox_node $P 종료됨 — $LOG 꼬리:"; tail -5 "$LOG" 2>/dev/null; exit 6
