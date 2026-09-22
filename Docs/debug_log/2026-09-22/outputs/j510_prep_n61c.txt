@@ -1,0 +1,57 @@
+=== 1. 재기동 (192.168.0.101) ===
+  [sensor_conditioner.py-6] [INFO] [1790061350.805047518] [sensor_conditioner]: gyro bias calibrated: (-0.00860, -0.00102, -0.00190) rad/s, std=(0.0026, 0.0022, 0.0018)
+  map->odom: - Translation: [0.000, 0.000, 0.000]
+  로버 자세: - Translation: [0.000, 0.000, 0.000] - Rotation: in RPY (radian) [0.000, 0.000, -0.000] 
+   틈 [y_lo, y_hi]         폭        차체0.33     패딩0.43     허용 자세각(패딩)
+=== 2. 릴레이·readback·상자 게이트 ===
+=== 릴레이 ===
+남은 릴레이: 1
+발행자 Publisher count: 1
+=== readback ===
+  controller_frequency               Double value is: 10.0
+  FollowPathMPPI.temperature         
+  FollowPathMPPI.iteration_count     Integer value is: 2
+  FollowPathMPPI.vx_std              Double value is: 0.08
+  FollowPathMPPI.wz_std              Double value is: 0.4
+  FollowPathMPPI.visualize           Boolean value is: False
+  BT raw_path: 4  SmoothPath: 1
+  nav2: controller 1 planner 1 bt 1 stuck_monitor 1
+  로버 자세: - Translation: [0.000, 0.000, 0.000] - Rotation: in RPY (radian) [0.000, -0.000, 0.000] 
+=== 프로세스·부하 ===
+load 10.06 6.39 6.18  shadow_mode: SHADOW
+=== 게이트 ===
+상자: 전면 x=1.144  중심 y=-0.097  (141점)  → x 구간 [1.14, 1.25], y 구간 [-0.19, -0.01]
+   → 전방 2.2m 최소폭:  기준1 0.40 m (@1.30)   기준2(RPP) 0.20 m (@1.00)   기준3(오류) 0.00 m (@0.70)
+상자 x=1.144 y=-0.097 | 띠 근거 없는 셀 0 (≤1) | 상자 셀 3표본 -0.026 -0.026 -0.025 → -0.026 | 창 0.331 m (≥0.20; 좌측 0.5)
+=== 3. 목표 근처 크리틱·SLAM·목표 여유 ===
+  FollowPathMPPI.GoalCritic.cost_weight      Double value is: 10.0
+  FollowPathMPPI.PathFollowCritic.threshold_to_consider Double value is: 0.2
+  FollowPathMPPI.PathAlignCritic.threshold_to_consider Double value is: 0.2
+  FollowPathMPPI.PathAngleCritic.threshold_to_consider Double value is: 0.2
+  FollowPathMPPI.PathFollowCritic.cost_weight Double value is: 10.0
+  FollowPathMPPI.PathFollowCritic.offset_from_furthest Integer value is: 20
+  FollowPathMPPI.visualize                   Boolean value is: False
+  bt.default_server_timeout                  Integer value is: 100
+map->odom 73 개/5 s, 최대 간격 0.06 s, 최대 stamp 지연 -0.07 s
+OK
+목표 map (2.00, 0.00) yaw 0° | 풋프린트↔LETHAL 최소 0.350 m (셀 map 1.76, -0.52) | 목표 셀 비용 47
+  battery: voltage: 11.961593627929688
+######## 게이트 J·K·L + 목표 부근 탐침
+## 목표 부근 탐침
+수신: ['g', 'l', 'pc', 'scan', 'sl']
+라이다: 구역 안 점 0개 []
+카메라 점(z 0.03~0.6): 13개, x 1.51~1.97 y -0.45~-0.08 z 0.10~0.54
+nvblox 슬라이스(odom): 구역 셀 180, 미지 131, ≤0(장애물) 0, 최소 거리 0.29
+   ≤0 셀 위치(base): []
+전역 코스트맵(map): 구역 셀 288, LETHAL(100) 0, 99 10, 미지(-1) 0
+   LETHAL 위치(base): []
+로컬 코스트맵(odom): 구역 셀 18, LETHAL(100) 0, 99 0, 미지(-1) 0
+   LETHAL 위치(base): []
+## 게이트 J·K·L
+J nvblox 노드: 프로세스 1, 깊이 15.1 Hz, ESDF 9.6 Hz, esdf 지연 0.102 s → 통과
+K 층 실효값:  → 불합격
+L 슬라이스 커버: 상자 띠 셀/프레임 8, 근거리 자취 프레임 0/97 → 통과
+== 모드 N 게이트 불합격 — 주행하지 않음
+## 목표 여유(job377 2.0 0.0)
+목표 map (2.00, 0.00) yaw 0° | 풋프린트↔LETHAL 최소 0.349 m (셀 map 1.76, -0.52) | 목표 셀 비용 47
+0.349
