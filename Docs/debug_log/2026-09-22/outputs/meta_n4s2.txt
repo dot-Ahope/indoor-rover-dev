@@ -1,0 +1,25 @@
+name: n4s2
+date: 2026-09-22 12:05:08 +0900
+drive_args: 2.0 90
+box_hint: 1.152 -0.097 tol 0.06
+stage: N4-S
+note: N4 주행 A/B 팔 S(STVL 층) 2회차 — n4n1 뒤 STVL 복귀·nvblox 정지·클리어, 배치 1.152/-0.097
+git_head_pc: a9f2286
+bag_topics: /tf /tf_static /map /scan /plan /plan_smoothed /unsmoothed_plan /local_plan /transformed_global_plan /local_costmap/costmap /global_costmap/costmap /odometry/filtered /wheel_odom /cmd_vel /rover/status /battery /rover/stuck 
+bag_extra: 
+nvpmodel: NV Power Mode: 15W 0 
+load_uptime: 10.12 8.11 6.56 / up 8895.69 s
+pkg: nav2-mppi 1.1.20-1jammy.20260219.064241 costmap-2d 1.1.20-1jammy.20260219.061126 slam-toolbox 2.6.10-1jammy.20260219.113352
+files:  # sha256 앞 12 자리, 수정 시각
+  61763accc300  2026-09-22 12:01:17  /home/jetson/ros2_ws/install/rover_navigation/share/rover_navigation/config/nav2_params.yaml
+  48944a730c8b  2026-09-07 15:50:59  /home/jetson/ros2_ws/install/rover_navigation/share/rover_navigation/config/nav_to_pose_no_spin.xml
+  1af329373d05  2026-09-14 10:19:13  /home/jetson/ros2_ws/install/rover_bringup/lib/rover_bringup/depth_relay.py
+  0b4d858a8764  2026-09-14 10:19:13  /home/jetson/ros2_ws/install/rover_bringup/lib/rover_bringup/stuck_monitor.py
+  0989a556eb72  2026-09-14 10:19:13  /home/jetson/ros2_ws/install/rover_bringup/share/rover_bringup/config/fastdds_udp_only.xml
+  daf00b0f6457  2026-08-27 10:25:16  /home/jetson/ros2_ws/install/rover_bringup/share/rover_bringup/launch/camera.launch.py
+  9bfb1628e561  2026-08-26 15:53:31  /home/jetson/ros2_ws/install/rover_description/share/rover_description/urdf/rover.urdf
+  62e1206edba8  2026-09-22 12:02:55  /tmp/job125_avoid3.py
+  e9b465962cc5  2026-09-22 12:02:54  /tmp/job254_s4run.sh
+  e5dbce18d507  2026-09-22 12:02:55  /tmp/job231_drive.sh
+firmware_status: header: stamp: sec: 1790046311 nanosec: 48716042 frame_id: '' status: - level: "\x01" name: rover_jupiter_fw message: cmd_vel timeout — motors stopped hardware_id: F405 values: - key: L value: tgt=0 v=0 d=0 pps=0 T=0 cv=0 w=0 sc=0 - key: R value: tgt=0 v=0 d=0 pps=0 T=0 cv=0 w=0 sc=0 - key: TX value: ot=125796 wc=2775280 wb=0 wh=0 wf=0 hw=1626 --- 
+topics_live: /battery /behavior_server/transition_event /behavior_tree_log /bond /bt_navigator/transition_event /camera/camera/accel/imu_info /camera/camera/accel/metadata /camera/camera/accel/sample /camera/camera/color/camera_info /camera/camera/color/image_raw /camera/camera/color/image_raw/compressed /camera/camera/color/image_raw/compressedDepth /camera/camera/color/image_raw/theora /camera/camera/color/metadata /camera/camera/depth/camera_info /camera/camera/depth/color/points /camera/camera/depth/image_rect_raw /camera/camera/depth/image_rect_raw/compressed /camera/camera/depth/image_rect_raw/compressedDepth /camera/camera/depth/image_rect_raw/theora /camera/camera/depth/metadata /camera/camera/extrinsics/depth_to_accel /camera/camera/extrinsics/depth_to_color /camera/camera/extrinsics/depth_to_depth /camera/camera/extrinsics/depth_to_gyro /camera/camera/gyro/imu_info /camera/camera/gyro/metadata /camera/camera/gyro/sample /camera/camera/imu /camera/depth/points_filtered /cmd_vel /cmd_vel_nav /controller_server/transition_event /diagnostics /global_costmap/costmap /global_costmap/costmap_raw /global_costmap/costmap_updates /global_costmap/footprint /global_costmap/global_costmap/transition_event /global_costmap/published_footprint /goal_pose /imu/data /imu/data_raw /imu/mag /joint_states /local_costmap/costmap /local_costmap/costmap_raw /local_costmap/costmap_updates /local_costmap/footprint /local_costmap/local_costmap/transition_event /local_costmap/published_footprint /lookahead_collision_arc /lookahead_point /map /map_metadata /odometry/filtered /parameter_events /plan /plan_smoothed /planner_server/transition_event /pose /received_global_plan /robot_description /rosout /rover/f5b_heartbeat /rover/status /rover/stuck /scan /scan_raw /set_pose /slam_toolbox/feedback /slam_toolbox/graph_visualization /slam_toolbox/scan_visualization /slam_toolbox/update /smoother_server/transition_event /speed_limit /tf /tf_static /trajectories /transformed_global_plan /unsmoothed_plan /velocity_smoother/transition_event /waypoint_follower/transition_event /wheel_odom /wheel_odom/conditioned 
