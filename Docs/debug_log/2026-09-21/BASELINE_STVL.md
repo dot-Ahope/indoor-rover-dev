@@ -51,3 +51,7 @@
 `run_mp9prep.sh`(재기동·게이트) → 상자 게이트/출발 자세 게이트 → `STAGE=… NOTE=… GIT_HEAD=… run_drive_nohup.sh <이름> 2.0 <BX> <BY> 0.06 0` → `run_post3.sh <이름>`(bag·csv·nav2·top·tegrastats·rss·메타 회수) → `run_j435*.sh`(job416/426/431/431b)·`job446_pathdecomp.py`·`job462_baghz.py`·`job463_tegra.py`. 스크립트는 `Docs/debug_log/2026-09-21/jobs/`, 출력은 `outputs/`, bag 은 로컬 `bags/`.
 
 > 절차·게이트의 단일 출처: `Docs/TEST_COURSE_AND_GATES.md`(Phase S v1.0). 이 문서의 §5 는 요약이다.
+
+## 6. 판정 결과 (2026-09-22, `Docs/debug_log/2026-09-22/SUMMARY.md §3.1`)
+- 같은 코스에서 S 2 회(n4s1·n4s2: 여유 9.3·11.7, CPU 318·315)로 이 기준선이 재현됐고, nvblox 3 회(n4n1~3: 여유 12.3·13.4·14.6, 기억 유지, CPU 330~337, GPU 3 %)는 §4 의 기준 중 **CPU 합 < 320 만 불합격**(로컬만 교체해 릴레이·전역 STVL 이 남는 구조) → 사용자 결정 (a) **로컬 층 nvblox 채택**, CPU 는 N6 전역 이전에서 재판정. 이 문서와 태그 `stvl-baseline` 은 여전히 복귀 지점이다. 요약 `Docs/05_nvblox/PHASE_N_RESULTS.md`.
+

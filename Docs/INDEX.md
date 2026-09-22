@@ -46,6 +46,9 @@
 
 ## 05_nvblox
 - [NVBLOX_MIGRATION_PLAN.md](05_nvblox/NVBLOX_MIGRATION_PLAN.md) — Phase S/N 종료 조건·git 전략·N0~N5
+- [PHASE_N_RESULTS.md](05_nvblox/PHASE_N_RESULTS.md) — **N0~N5 결과 요약·결정(09-22: 로컬 층 nvblox 채택)·그림 색인·남은 항목**
+- [figures/](05_nvblox/figures/) — 자체 완결 HTML 그림 4 장(09-21 코스트맵 비교 v1/v2, 09-22 절단 A/B, N4 궤적 5 회). 원자료·스크립트는 `debug_log/2026-09-2{1,2}/`
+- 채택 설정: [`ros2_ws/src/rover_navigation/config/nvblox_local.yaml`](../ros2_ws/src/rover_navigation/config/nvblox_local.yaml)
 
 ## 옛 경로 → 새 경로 (2026-09-21 이전 문서·`debug_log/` 기록의 링크 해석용)
 | 옛 경로 | 새 경로 |
