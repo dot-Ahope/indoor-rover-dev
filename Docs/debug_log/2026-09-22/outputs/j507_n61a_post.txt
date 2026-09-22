@@ -1,0 +1,15 @@
+OK
+bag 회수 OK 14510398
+drive log OK
+csv OK
+nav2 구간 로그 OK 82 줄
+top 로그 OK
+meta OK
+params OK
+refix csv OK
+tegrastats OK 42 줄
+rss OK
+nvblox log OK
+설치 yaml:       esdf_slice_min_height: 0.06   # 09-22 N6-1: 0.03 → 0 | 활성 사본:       esdf_slice_min_height: 0.06   # 09-22 N6-1: 0.03 → 0
+실효값: Double value is: 0.06 Double value is: 0.1 
+노드 기동 시각:     388 /opt/ros/humble/lib/nvblox_ros/nvblox_node --ros-arg

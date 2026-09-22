@@ -1,0 +1,47 @@
+Finished <<< rover_navigation [0.24s]
+설치 yaml 확인: 1
+## Nav2(nvblox) 재기동
+  nav2 프로세스: controller 1 planner 1 bt 1 | 오류: 0
+  로컬 plugins 실행값: String values are: ['nvblox_layer', 'obstacle_layer', 'inflation_layer'] | nvblox_node: 1 개 | 활성 yaml: # 자동 생성(navigation.launch.py, camera_layer=nvblox) — 원본 
+sed: -e expression #1, char 1: unknown command: `"'
+sed: -e expression #1, char 1: unknown command: `"'
+sed: -e expression #1, char 1: unknown command: `"'
+sed: -e expression #1, char 1: unknown command: `"'
+  실효값: "esdf_slice_min_height=""esdf_slice_height=""projective_integrator_max_integration_distance_m=""tsdf_decay_factor="
+## 목표 부근 탐침
+수신: ['g', 'l', 'pc', 'scan', 'sl']
+라이다: 구역 안 점 0개 []
+카메라 점(z 0.03~0.6): 6개, x 1.50~2.17 y -0.43~-0.07 z 0.09~0.55
+nvblox 슬라이스(odom): 구역 셀 180, 미지 59, ≤0(장애물) 0, 최소 거리 0.15
+   ≤0 셀 위치(base): []
+전역 코스트맵(map): 구역 셀 288, LETHAL(100) 0, 99 15, 미지(-1) 0
+   LETHAL 위치(base): []
+로컬 코스트맵(odom): 구역 셀 18, LETHAL(100) 0, 99 3, 미지(-1) 0
+   LETHAL 위치(base): []
+## 게이트 J·K·L
+J nvblox 노드: 프로세스 1, 깊이 15.1 Hz, ESDF 9.5 Hz, esdf 지연 0.102 s → 통과
+K 층 실효값: String values are: ['nvblox_layer', 'obstacle_layer', 'inflation_layer → 통과
+L 슬라이스 커버: 상자 띠 셀/프레임 0, 근거리 자취 프레임 0/83 → 불합격
+== 모드 N 게이트 불합격 — 주행하지 않음
+## 목표 여유(job377 2.0 0.0)
+목표 map (2.00, 0.01) yaw 0° | 풋프린트↔LETHAL 최소 0.316 m (셀 map 1.80, -0.48) | 목표 셀 비용 47
+0.316
+######## 30 s 뒤 2 차 탐침
+## 목표 부근 탐침
+수신: ['g', 'l', 'pc', 'scan', 'sl']
+라이다: 구역 안 점 0개 []
+카메라 점(z 0.03~0.6): 7개, x 1.51~1.59 y -0.43~-0.14 z 0.11~0.51
+nvblox 슬라이스(odom): 구역 셀 180, 미지 59, ≤0(장애물) 0, 최소 거리 0.15
+   ≤0 셀 위치(base): []
+전역 코스트맵(map): 구역 셀 288, LETHAL(100) 0, 99 15, 미지(-1) 0
+   LETHAL 위치(base): []
+로컬 코스트맵(odom): 구역 셀 18, LETHAL(100) 0, 99 0, 미지(-1) 0
+   LETHAL 위치(base): []
+## 게이트 J·K·L
+J nvblox 노드: 프로세스 1, 깊이 15.1 Hz, ESDF 9.5 Hz, esdf 지연 0.105 s → 통과
+K 층 실효값: String values are: ['nvblox_layer', 'obstacle_layer', 'inflation_layer → 통과
+L 슬라이스 커버: 상자 띠 셀/프레임 0, 근거리 자취 프레임 0/96 → 불합격
+== 모드 N 게이트 불합격 — 주행하지 않음
+## 목표 여유(job377 2.0 0.0)
+목표 map (2.00, 0.01) yaw 0° | 풋프린트↔LETHAL 최소 0.316 m (셀 map 1.80, -0.48) | 목표 셀 비용 47
+0.316
