@@ -5,20 +5,16 @@ set +u
 MODE=$1; BX=${2:-1.15}; BY=${3:-0.10}
 export FASTRTPS_DEFAULT_PROFILES_FILE=$HOME/ros2_ws/install/rover_bringup/share/rover_bringup/config/fastdds_udp_only.xml; source /opt/ros/humble/setup.bash; source ~/ros2_ws/install/setup.bash
 Y=~/ros2_ws/install/rover_navigation/share/rover_navigation/config/nav2_params.yaml
-if [ "$MODE" = nvblox ]; then
-  sed -i -e 's/^      plugins: \["stvl_layer", "obstacle_layer", "inflation_layer"\]/      # plugins: ["stvl_layer", "obstacle_layer", "inflation_layer"]/' -e 's/^      # plugins: \["nvblox_layer", "obstacle_layer", "inflation_layer"\]/      plugins: ["nvblox_layer", "obstacle_layer", "inflation_layer"]/' $Y
-else
-  sed -i -e 's/^      # plugins: \["stvl_layer", "obstacle_layer", "inflation_layer"\]/      plugins: ["stvl_layer", "obstacle_layer", "inflation_layer"]/' -e 's/^      plugins: \["nvblox_layer", "obstacle_layer", "inflation_layer"\]/      # plugins: ["nvblox_layer", "obstacle_layer", "inflation_layer"]/' $Y
-fi
-echo "== 활성 plugins(로컬): $(grep -nE '^      plugins:' $Y | head -1 | cut -c1-90)"
+# 2026-09-22 N6-0: 설치 YAML 을 건드리지 않는다 — navigation.launch.py 의 camera_layer 인자가 /tmp/nav2_params_active.yaml 을 만든다
+[ "$MODE" = nvblox ] || [ "$MODE" = stvl ] || { echo "인자: stvl|nvblox [BX BY]"; exit 1; }
 echo "== Nav2 재기동"
-for p in navigation.launch navigation_launch controller_server planner_server bt_navigator behavior_server velocity_smoother smoother_server waypoint_follower lifecycle_manager stuck_monitor; do pkill -TERM -f "$p" 2>/dev/null; done; sleep 6
+for p in nvblox_up.sh navigation.launch navigation_launch controller_server planner_server bt_navigator behavior_server velocity_smoother smoother_server waypoint_follower lifecycle_manager stuck_monitor; do pkill -TERM -f "$p" 2>/dev/null; done; sleep 6
 for p in controller_server planner_server bt_navigator behavior_server velocity_smoother smoother_server lifecycle_manager; do pkill -9 -f "$p" 2>/dev/null; done; sleep 2
-: > /tmp/nav2.log; setsid nohup ros2 launch rover_navigation navigation.launch.py stuck_shadow:=true > /tmp/nav2.log 2>&1 &
+: > /tmp/nav2.log; setsid nohup ros2 launch rover_navigation navigation.launch.py stuck_shadow:=true camera_layer:=$MODE > /tmp/nav2.log 2>&1 &
 sleep 35
 echo "  nav2 프로세스: controller $(pgrep -fc controller_server) planner $(pgrep -fc planner_server) bt $(pgrep -fc bt_navigator) | 오류: $(grep -aciE 'error|failed to load|exception' /tmp/nav2.log)"
 grep -aiE "nvblox|Failed to load|plugin|error" /tmp/nav2.log | grep -aiv "Using plugin\|debug" | head -6 | cut -c1-170
-echo "  로컬 plugins 실행값: $(timeout 12 ros2 param get /local_costmap/local_costmap plugins 2>&1 | tail -1 | cut -c1-100)"
+echo "  로컬 plugins 실행값: $(timeout 12 ros2 param get /local_costmap/local_costmap plugins 2>&1 | tail -1 | cut -c1-100) | nvblox_node: $(docker exec isaac_ros_dev-aarch64-container bash -c "pgrep -fc '^/opt/ros/humble/lib/nvblox_ros/nvblox_node' || true" 2>/dev/null) 개 | 활성 yaml: $(head -1 /tmp/nav2_params_active.yaml | cut -c1-70)"
 [ "$QUICK" = 1 ] && { echo "  (QUICK: 감사 생략)"; exit 0; }
 timeout 10 ros2 service call /local_costmap/clear_entirely_local_costmap nav2_msgs/srv/ClearEntireCostmap "{}" >/dev/null 2>&1; sleep 10
 echo "== 로컬 코스트맵 상자 셀·띠·창 (job248 감사, 3 표본)"; for i in 1 2 3; do BOX_HINT="$BX $BY" timeout 100 python3 /tmp/job248_audit.py 2>&1 | grep -aE "^상자|로컬\[|최소폭|상자 셀" | head -4 | cut -c1-170; sleep 2; done
