@@ -1,0 +1,41 @@
+## 지금 12:06:17 | WEB_DEV_5G:wlP1p1s0 | IP 192.168.0.101/24
+## mon.log 11:5x (LINK 변화·EVENT·ARP_DUP)
+2026-09-23 11:45:02 BEACON ap_freq=5180 ap_sig=-55.00 vht_w=1 seg1=42 seg2=50 ht2=above csa=0 quiet=0
+2026-09-23 11:46:02 BEACON ap_freq=5180 ap_sig=-56.00 vht_w=1 seg1=42 seg2=50 ht2=above csa=0 quiet=0
+2026-09-23 11:47:02 BEACON ap_freq=5180 ap_sig=-56.00 vht_w=1 seg1=42 seg2=50 ht2=above csa=0 quiet=0
+2026-09-23 11:48:03 BEACON ap_freq=5180 ap_sig=-56.00 vht_w=1 seg1=42 seg2=50 ht2=above csa=0 quiet=0
+2026-09-23 11:49:03 BEACON ap_freq=5180 ap_sig=-56.00 vht_w=1 seg1=42 seg2=50 ht2=above csa=0 quiet=0
+2026-09-23 11:50:03 BEACON ap_freq=5180 ap_sig=-55.00 vht_w=1 seg1=42 seg2=50 ht2=above csa=0 quiet=0
+2026-09-23 11:51:04 BEACON ap_freq=5180 ap_sig=-56.00 vht_w=1 seg1=42 seg2=50 ht2=above csa=0 quiet=0
+2026-09-23 11:52:04 BEACON ap_freq=5180 ap_sig=-56.00 vht_w=1 seg1=42 seg2=50 ht2=above csa=0 quiet=0
+2026-09-23 11:53:04 BEACON ap_freq=5180 ap_sig=-56.00 vht_w=1 seg1=42 seg2=50 ht2=above csa=0 quiet=0
+2026-09-23 11:54:05 BEACON ap_freq=5180 ap_sig=-56.00 vht_w=1 seg1=42 seg2=50 ht2=above csa=0 quiet=0
+2026-09-23 11:55:05 BEACON ap_freq=5180 ap_sig=-56.00 vht_w=1 seg1=42 seg2=50 ht2=above csa=0 quiet=0
+2026-09-23 11:56:05 BEACON ap_freq=5180 ap_sig=-56.00 vht_w=1 seg1=42 seg2=50 ht2=above csa=0 quiet=0
+2026-09-23 11:57:05 BEACON ap_freq=5180 ap_sig=-56.00 vht_w=1 seg1=42 seg2=50 ht2=above csa=0 quiet=0
+2026-09-23 11:58:06 BEACON ap_freq=5180 ap_sig=-57.00 vht_w=1 seg1=42 seg2=50 ht2=above csa=0 quiet=0
+2026-09-23 11:59:06 BEACON ap_freq=5180 ap_sig=-56.00 vht_w=1 seg1=42 seg2=50 ht2=above csa=0 quiet=0
+## ARP_DUP 누적: 0
+## wpa 이벤트 11:4x~5x
+## NM 11:4x~5x
+Sep 23 12:06:09 jetson-desktop NetworkManager[830]: <info>  [1790132769.1239] device (p2p-dev-wlP1p1s0): supplicant management interface state: completed -> disconnected
+Sep 23 12:06:09 jetson-desktop NetworkManager[830]: <info>  [1790132769.5439] device (wlP1p1s0): state change: disconnected -> prepare (reason 'none', sys-iface-state: 'm
+Sep 23 12:06:09 jetson-desktop NetworkManager[830]: <info>  [1790132769.5462] device (wlP1p1s0): state change: prepare -> config (reason 'none', sys-iface-state: 'managed
+Sep 23 12:06:09 jetson-desktop NetworkManager[830]: <info>  [1790132769.5472] device (wlP1p1s0): state change: config -> need-auth (reason 'none', sys-iface-state: 'manag
+Sep 23 12:06:09 jetson-desktop NetworkManager[830]: <info>  [1790132769.5537] device (wlP1p1s0): state change: need-auth -> prepare (reason 'none', sys-iface-state: 'mana
+Sep 23 12:06:09 jetson-desktop NetworkManager[830]: <info>  [1790132769.5563] device (wlP1p1s0): state change: prepare -> config (reason 'none', sys-iface-state: 'managed
+Sep 23 12:06:09 jetson-desktop NetworkManager[830]: <info>  [1790132769.5676] device (wlP1p1s0): supplicant interface state: disconnected -> scanning
+Sep 23 12:06:09 jetson-desktop NetworkManager[830]: <info>  [1790132769.5677] device (p2p-dev-wlP1p1s0): supplicant management interface state: disconnected -> scanning
+Sep 23 12:06:12 jetson-desktop NetworkManager[830]: <info>  [1790132772.0580] device (wlP1p1s0): state change: config -> ip-config (reason 'none', sys-iface-state: 'manag
+Sep 23 12:06:12 jetson-desktop NetworkManager[830]: <info>  [1790132772.0591] dhcp4 (wlP1p1s0): activation: beginning transaction (timeout in 45 seconds)
+Sep 23 12:06:12 jetson-desktop NetworkManager[830]: <info>  [1790132772.1886] dhcp4 (wlP1p1s0): state changed new lease, address=192.168.0.101
+Sep 23 12:06:12 jetson-desktop NetworkManager[830]: <info>  [1790132772.1927] device (wlP1p1s0): state change: ip-config -> ip-check (reason 'none', sys-iface-state: 'man
+Sep 23 12:06:12 jetson-desktop NetworkManager[830]: <info>  [1790132772.1995] device (wlP1p1s0): state change: ip-check -> secondaries (reason 'none', sys-iface-state: 'm
+Sep 23 12:06:12 jetson-desktop NetworkManager[830]: <info>  [1790132772.2003] device (wlP1p1s0): state change: secondaries -> activated (reason 'none', sys-iface-state: '
+Sep 23 12:06:12 jetson-desktop NetworkManager[830]: <info>  [1790132772.2047] device (wlP1p1s0): Activation: successful, device activated.
+## 커널
+Sep 23 12:05:23 jetson-desktop kernel: IPv6: ADDRCONF(NETDEV_CHANGE): wlP1p1s0: link becomes ready
+## 스택: agent 1 camera 1 slam 1 controller 1 nvblox_up 1
+==== 트레이스(상태 변화만)
+12:06:17 ip=192.168.0.101/24 link=b0:38:6c:37:1b:4c -55  gw=ok neigh=b0:38:6c:37:1b:4c REACHABLE
+줄 수 74, gw=X 횟수 0
