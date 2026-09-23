@@ -1,0 +1,28 @@
+## 현재 점군 파라미터: Parameter not set / neon: Boolean value is: True
+## A. 점군 켬(현재)
+  점군 Hz: 14.958 | 깊이 Hz: 16.129 | 릴레이 출력 Hz: 14.946
+  CPU 20 s: sensor_conditioner 42.9% | nvblox_+ 17.3% | planner+ 9.8% | depth_relay 3.7% | 
+  top 상위(>3%): python3=42.9 rplidar+=18.8 nvblox_+=17.3 realsen+=15.3 ekf_node=12.8 lifecyc+=11.7 control+=11.6 bt_navi+=10.1 planner+=9.8 python3=8.9 behavio+=7.9 smoothe+=6.6 velocit+=5.4 waypoin+=5.3 python3=4.5 python3=3.7 micro_r+=3.6 async_s+=3.2 
+  nvblox 깊이 콜백: 15.1 Hz | 전체 합(top): 201 %
+## B. pointcloud__neon_.enable false
+Set parameter successful
+  점군 Hz:  | 깊이 Hz: 14.974 | 릴레이 출력 Hz: 
+  CPU 20 s: sensor_conditioner 42.8% | nvblox_+ 16.7% | planner+ 9.9% | 
+  top 상위(>3%): python3=42.8 rplidar+=18.6 nvblox_+=16.7 realsen+=13.9 ekf_node=12.6 control+=11.7 lifecyc+=11.7 bt_navi+=10.0 planner+=9.9 python3=8.8 behavio+=8.0 smoothe+=6.6 velocit+=5.4 waypoin+=5.3 python3=4.5 micro_r+=3.6 async_s+=3.2 
+  nvblox 깊이 콜백: 15.1 Hz | 전체 합(top): 195 %
+## C. 복구 true
+Set parameter successful
+  점군 Hz: 14.997 | 깊이 Hz: 15.183 | 릴레이 출력 Hz: 14.869
+  CPU 20 s: sensor_conditioner 42.8% | nvblox_+ 17.2% | planner+ 9.9% | depth_relay 3.7% | 
+  top 상위(>3%): python3=42.8 rplidar+=18.7 nvblox_+=17.2 realsen+=15.3 ekf_node=12.6 lifecyc+=12.0 control+=11.6 bt_navi+=10.3 planner+=9.9 python3=8.6 behavio+=8.1 smoothe+=6.6 velocit+=5.4 waypoin+=5.3 python3=4.6 micro_r+=3.7 python3=3.7 async_s+=3.1 
+  nvblox 깊이 콜백: 15.1 Hz | 전체 합(top): 202 %
+######## 게이트 N 재검사
+J nvblox 노드: 프로세스 1, 깊이 15.1 Hz, ESDF 9.6 Hz, esdf 지연 0.102 s → 통과
+K 층 실효값: String values are: ['nvblox_layer', 'obstacle_layer', 'inflation_layer → 통과
+L 슬라이스 커버: 상자 띠 셀/프레임 10, 근거리 자취 프레임 0/89 → 통과
+  (iii) 수신 9.40 Hz, 간격 중앙 0.109 최대 0.117 s | stamp 지연 중앙 0.112 최대 0.122 s | 해상도 0.050 m, 40x48
+  (i) 상자 띠 장애물 셀 최소 x(base): 중앙 1.174 최소 1.174 최대 1.175 (프레임당 셀 10) | 물리 전면 1.147 → 차 +0.027 m = +
+  (ii) 카메라 0.45 m 안 장애물 셀: 프레임당 중앙 0 최대 0, 0 이 아닌 프레임 0/89 | 전체 장애물 셀 중앙 47
+M 목표 부근(x 1.5~2.3,|y|<0.45) 전역 LETHAL 0 셀, 라이다 근거 점 0 → 통과
+N 코스트맵 상자 최대 y ? − 카메라 왼쪽 가장자리 +0.04 = -0.040 m (≥ −0.025) → 불합격
+== 모드 N 게이트 불합격 — 주행하지 않음
