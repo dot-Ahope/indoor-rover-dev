@@ -1,0 +1,15 @@
+  nav2: controller 1 planner 1 bt 1 stuck_monitor 1
+  로버 자세: - Translation: [0.000, 0.000, 0.000] - Rotation: in RPY (radian) [0.000, 0.000, -0.000] 
+=== 프로세스·부하 ===
+load 11.03 7.91 6.34  shadow_mode: SHADOW
+=== 게이트 ===
+상자: 전면 x=1.151  중심 y=-0.107  (153점)  → x 구간 [1.15, 1.26], y 구간 [-0.20, -0.02]
+   → 전방 2.2m 최소폭:  기준1 0.40 m (@1.30)   기준2(RPP) 0.25 m (@1.10)   기준3(오류) 0.00 m (@0.80)
+상자 x=1.151 y=-0.107 | 띠 근거 없는 셀 0 (≤1) | 상자 셀 3표본 -0.025 -0.025 -0.025 → -0.025 | 창 0.330 m (≥0.20; 좌측 0.5)
+    print('목표 map (%.2f, %.2f) yaw %.0f° | 풋프린트↔LETHAL 최소 %.3f m (셀 map %.2f, %.2f) | 목표 셀 비용 %d' % (gx, gy, math.degrees(gth), dist[k] if k >= 0 else 9, X[k] if k >= 0 else 0, Y[k] if k >= 0 else 0, d[int((gy - g.info.origin.position.y) / res), int((gx - g.info.origin.position.x) / res)]))
+    print('목표 map (%.2f, %.2f) yaw %.0f° | 풋프린트↔LETHAL 최소 %.3f m (셀 map %.2f, %.2f) | 목표 셀 비용 %d' % (gx, gy, math.degrees(gth), dist[k] if k >= 0 else 9, X[k] if k >= 0 else 0, Y[k] if k >= 0 else 0, d[int((gy - g.info.origin.position.y) / res), int((gx - g.info.origin.position.x) / res)]))
+목표 map (2.00, -0.00) yaw 180° | 풋프린트↔LETHAL 최소 0.368 m (셀 map 1.78, -0.55) | 목표 셀 비용 43
+목표 map (2.50, -0.00) yaw 180° | 풋프린트↔LETHAL 최소 0.000 m (셀 map 2.73, -0.05) | 목표 셀 비용 84
+목표 map (2.20, -0.00) yaw 180° | 풋프린트↔LETHAL 최소 0.271 m (셀 map 2.73, 0.00) | 목표 셀 비용 46
+목표 map (2.30, -0.00) yaw 180° | 풋프린트↔LETHAL 최소 0.171 m (셀 map 2.73, 0.00) | 목표 셀 비용 56
+목표 map (2.40, -0.00) yaw 180° | 풋프린트↔LETHAL 최소 0.071 m (셀 map 2.73, 0.00) | 목표 셀 비용 69
