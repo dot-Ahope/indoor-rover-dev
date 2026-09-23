@@ -1,0 +1,30 @@
+=== 1. 재기동 (192.168.0.101) ===
+=== 2. 릴레이·readback·상자 게이트 ===
+lost connection
+scp 실패 job248_audit.py
+=== 3. 목표 근처 크리틱·SLAM·목표 여유 ===
+  FollowPathMPPI.GoalCritic.cost_weight      
+  FollowPathMPPI.PathFollowCritic.threshold_to_consider Double value is: 0.2
+  FollowPathMPPI.PathAlignCritic.threshold_to_consider Double value is: 0.2
+  FollowPathMPPI.PathAngleCritic.threshold_to_consider Double value is: 0.2
+  FollowPathMPPI.PathFollowCritic.cost_weight 
+  FollowPathMPPI.PathFollowCritic.offset_from_furthest Integer value is: 20
+  FollowPathMPPI.visualize                   Boolean value is: False
+  bt.default_server_timeout                  Integer value is: 100
+map->odom 92 개/5 s, 최대 간격 0.05 s, 최대 stamp 지연 0.87 s
+OK
+목표 map (3.91, 0.07) yaw 0° | 풋프린트↔LETHAL 최소 0.374 m (셀 map 3.65, -0.48) | 목표 셀 비용 43
+  battery: voltage: 12.095407485961914
+######## 정지 CPU(재기동 뒤)
+python3=42.6 rplidar+=18.6 nvblox_+=17.0 realsen+=15.2 ekf_node=12.5 lifecyc+=12.5 control+=11.0 planner+=9.8 bt_navi+=9.2 python3=9.0 
+정지 CPU 합 206 %
+######## 게이트
+J nvblox 노드: 프로세스 1, 깊이 15.1 Hz, ESDF 9.5 Hz, esdf 지연 0.100 s → 통과
+K 층 실효값: String values are: ['nvblox_layer', 'obstacle_layer', 'inflation_layer → 통과
+L 슬라이스 커버: 상자 띠 셀/프레임 7, 근거리 자취 프레임 0/95 → 불합격
+  (iii) 수신 9.49 Hz, 간격 중앙 0.108 최대 0.113 s | stamp 지연 중앙 0.111 최대 0.117 s | 해상도 0.050 m, 40x57
+  (i) 상자 띠 장애물 셀 최소 x(base): 중앙 0.861 최소 0.861 최대 0.861 (프레임당 셀 7) | 물리 전면 1.149 → 차 -0.288 m = -5
+  (ii) 카메라 0.45 m 안 장애물 셀: 프레임당 중앙 0 최대 0, 0 이 아닌 프레임 0/95 | 전체 장애물 셀 중앙 28
+M 목표 부근(x 1.5~2.3,|y|<0.45) 전역 LETHAL 1 셀, 라이다 근거 점 0 → 불합격
+N 코스트맵 상자 최대 y -0.038 − 카메라 왼쪽 가장자리 -0.01 = -0.028 m (≥ −0.025) → 불합격
+== 모드 N 게이트 불합격 — 주행하지 않음
