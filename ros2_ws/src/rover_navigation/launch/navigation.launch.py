@@ -70,12 +70,15 @@ def _make_active_params(context):
     if layer == 'nvblox':
         actions.append(IncludeLaunchDescription(PythonLaunchDescriptionSource(os.path.join(
             get_package_share_directory('rover_navigation'), 'launch', 'nvblox.launch.py'))))
-    # 2026-09-23 N6-2 C1: 카메라 점군 생성은 STVL 만 쓰므로 모드 N 에서는 끈다(realsense-ros neon 필터 파라미터
-    #   `pointcloud__neon_.enable`, 런타임 전환 가능·파이프라인 재시작 없음 — 09-23 §3: 릴레이 3.7→0, realsense 15.3→13.9 %).
-    #   모드 S 로 되돌리면 true. 카메라 노드는 sensors.launch 소속이라 여기서 파라미터만 만진다(15 s 뒤: Nav2·카메라 준비 시간).
-    actions.append(TimerAction(period=15.0, actions=[ExecuteProcess(
-        cmd=['ros2', 'param', 'set', '/camera/camera', 'pointcloud__neon_.enable', 'false' if layer == 'nvblox' else 'true'],
-        name='camera_pointcloud_' + layer, output='screen')]))
+    # 2026-09-23 N6-2 C1: 카메라 점군 생성(realsense-ros neon 필터 `pointcloud__neon_.enable`)은 스택에서는 STVL 만 쓰지만,
+    #   **시험 코스의 게이트 D·E·F 와 주행 러너의 상자 모델이 점군을 입력으로 쓴다** — 끄면 상자 검출이 비어 주행이 거부된다(09-23 §7).
+    #   그래서 기본은 'keep'(건드리지 않음). camera_pointcloud:=off 는 계측 없는 운용에서만(정지 CPU −6 %p: 릴레이 3.7→0, realsense 15.3→13.9).
+    #   모드 S 로 되돌릴 때는 항상 true. 카메라 노드는 sensors.launch 소속이라 파라미터만 만진다(15 s 뒤).
+    pcl = LaunchConfiguration('camera_pointcloud').perform(context)
+    if layer == 'stvl' or pcl == 'off':
+        actions.append(TimerAction(period=15.0, actions=[ExecuteProcess(
+            cmd=['ros2', 'param', 'set', '/camera/camera', 'pointcloud__neon_.enable', 'false' if (layer == 'nvblox' and pcl == 'off') else 'true'],
+            name='camera_pointcloud_' + layer, output='screen')]))
     return actions
 
 
@@ -89,6 +92,8 @@ def generate_launch_description():
                               description='Nav2 파라미터 원본 파일(plugins 줄은 camera_layer 로 덮어씀)'),
         DeclareLaunchArgument('camera_layer', default_value='nvblox',
                               description='로컬 코스트맵 카메라 층: nvblox(기본, 2026-09-22 N5 채택) | stvl(Phase S 기준선 구성)'),
+        DeclareLaunchArgument('camera_pointcloud', default_value='keep',
+                              description="keep(기본: 점군 유지 — 게이트·러너가 씀) | off(모드 N 운용 전용, 계측 불가)"),
         DeclareLaunchArgument('use_sim_time', default_value='false'),
         DeclareLaunchArgument('autostart', default_value='true',
                               description='lifecycle 노드 자동 활성화'),
