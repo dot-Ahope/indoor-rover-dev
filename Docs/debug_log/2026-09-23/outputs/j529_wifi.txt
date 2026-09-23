@@ -1,0 +1,123 @@
+## 지금: 2026-09-23 09:45:47 | 부팅 2026-09-23 08:56:56 | ALOPS_ROBOTICS_5G:wlP1p1s0:activated docker0:docker0:activated 
+## nmcli 프로파일(autoconnect·우선순위·절전)
+  WEB_DEV_5G: connection.autoconnect:yes connection.autoconnect-priority:20 802-11-wireless.powersave:disable 
+  ALOPS_ROBOTICS_5G: connection.autoconnect:yes connection.autoconnect-priority:5 802-11-wireless.powersave:default 
+## 보이는 AP
+ALOPS_ROBOTICS_5G:38\:F4\:5E\:27\:87\:46:153:79:WPA1 WPA2
+## wifi_mon 디렉터리
+  
+01-01_09:04 4096 .
+01-01_09:00 4096 ..
+01-01_09:01 53942 event_19700101_090050.txt
+01-01_09:01 53240 event_19700101_090126.txt
+01-01_09:01 60806 event_19700101_090141.txt
+01-01_09:03 55187 event_19700101_090306.txt
+01-01_09:03 61050 event_19700101_090321.txt
+09-23_09:00 59533 event_19700101_090401.txt
+09-18_17:40 55976 event_20260918_174003.txt
+09-23_09:45 1507822 mon.log
+09-18_11:04 41158 test_event_20260918_110443.txt
+09-23_09:45 4490871 wpa_debug.log
+## wifi-mon 서비스: active
+## mon.log 마지막 40 줄
+2026-09-23 09:35:58 LINK bssid=38:f4:5e:27:87:46 ssid=ALOPS_ROBOTICS_5G freq=5765 sig=-54 rx=6.0_MBit/s tx=234.0_MBit/s_VHT-MCS_5_80MHz_VHT-NSS_1 ip=172.30.1.8/
+2026-09-23 09:36:13 LINK bssid=38:f4:5e:27:87:46 ssid=ALOPS_ROBOTICS_5G freq=5765 sig=-55 rx=6.0_MBit/s tx=234.0_MBit/s_VHT-MCS_5_80MHz_VHT-NSS_1 ip=172.30.1.8/
+2026-09-23 09:36:28 LINK bssid=38:f4:5e:27:87:46 ssid=ALOPS_ROBOTICS_5G freq=5765 sig=-54 rx=6.0_MBit/s tx=234.0_MBit/s_VHT-MCS_5_80MHz_VHT-NSS_1 ip=172.30.1.8/
+2026-09-23 09:36:43 LINK bssid=38:f4:5e:27:87:46 ssid=ALOPS_ROBOTICS_5G freq=5765 sig=-55 rx=6.0_MBit/s tx=234.0_MBit/s_VHT-MCS_5_80MHz_VHT-NSS_1 ip=172.30.1.8/
+2026-09-23 09:36:59 LINK bssid=38:f4:5e:27:87:46 ssid=ALOPS_ROBOTICS_5G freq=5765 sig=-54 rx=6.0_MBit/s tx=234.0_MBit/s_VHT-MCS_5_80MHz_VHT-NSS_1 ip=172.30.1.8/
+2026-09-23 09:37:14 LINK bssid=38:f4:5e:27:87:46 ssid=ALOPS_ROBOTICS_5G freq=5765 sig=-55 rx=6.0_MBit/s tx=234.0_MBit/s_VHT-MCS_5_80MHz_VHT-NSS_1 ip=172.30.1.8/
+2026-09-23 09:37:29 LINK bssid=38:f4:5e:27:87:46 ssid=ALOPS_ROBOTICS_5G freq=5765 sig=-55 rx=6.0_MBit/s tx=234.0_MBit/s_VHT-MCS_5_80MHz_VHT-NSS_1 ip=172.30.1.8/
+2026-09-23 09:37:44 LINK bssid=38:f4:5e:27:87:46 ssid=ALOPS_ROBOTICS_5G freq=5765 sig=-55 rx=6.0_MBit/s tx=234.0_MBit/s_VHT-MCS_5_80MHz_VHT-NSS_1 ip=172.30.1.8/
+2026-09-23 09:37:59 LINK bssid=38:f4:5e:27:87:46 ssid=ALOPS_ROBOTICS_5G freq=5765 sig=-54 rx=6.0_MBit/s tx=234.0_MBit/s_VHT-MCS_5_80MHz_VHT-NSS_1 ip=172.30.1.8/
+2026-09-23 09:38:14 LINK bssid=38:f4:5e:27:87:46 ssid=ALOPS_ROBOTICS_5G freq=5765 sig=-55 rx=6.0_MBit/s tx=234.0_MBit/s_VHT-MCS_5_80MHz_VHT-NSS_1 ip=172.30.1.8/
+2026-09-23 09:38:29 LINK bssid=38:f4:5e:27:87:46 ssid=ALOPS_ROBOTICS_5G freq=5765 sig=-55 rx=6.0_MBit/s tx=234.0_MBit/s_VHT-MCS_5_80MHz_VHT-NSS_1 ip=172.30.1.8/
+2026-09-23 09:38:44 LINK bssid=38:f4:5e:27:87:46 ssid=ALOPS_ROBOTICS_5G freq=5765 sig=-53 rx=6.0_MBit/s tx=234.0_MBit/s_VHT-MCS_5_80MHz_VHT-NSS_1 ip=172.30.1.8/
+2026-09-23 09:38:53 BEACON_ALL ap_freq=5180 ap_sig=-51.00 vht_w=1 seg1=42 seg2=50 ht2=above csa=0 quiet=0
+2026-09-23 09:39:08 LINK bssid=38:f4:5e:27:87:46 ssid=ALOPS_ROBOTICS_5G freq=5765 sig=-52 rx=468.0_MBit/s_VHT-MCS_5_80MHz_VHT-NSS_2 tx=234.0_MBit/s_VHT-MCS_5_80
+2026-09-23 09:39:23 LINK bssid=38:f4:5e:27:87:46 ssid=ALOPS_ROBOTICS_5G freq=5765 sig=-52 rx=6.0_MBit/s tx=234.0_MBit/s_VHT-MCS_5_80MHz_VHT-NSS_1 ip=172.30.1.8/
+2026-09-23 09:39:38 LINK bssid=38:f4:5e:27:87:46 ssid=ALOPS_ROBOTICS_5G freq=5765 sig=-51 rx=6.0_MBit/s tx=234.0_MBit/s_VHT-MCS_5_80MHz_VHT-NSS_1 ip=172.30.1.8/
+2026-09-23 09:39:53 LINK bssid=38:f4:5e:27:87:46 ssid=ALOPS_ROBOTICS_5G freq=5765 sig=-51 rx=6.0_MBit/s tx=234.0_MBit/s_VHT-MCS_5_80MHz_VHT-NSS_1 ip=172.30.1.8/
+2026-09-23 09:40:08 LINK bssid=38:f4:5e:27:87:46 ssid=ALOPS_ROBOTICS_5G freq=5765 sig=-52 rx=6.0_MBit/s tx=234.0_MBit/s_VHT-MCS_5_80MHz_VHT-NSS_1 ip=172.30.1.8/
+2026-09-23 09:40:23 LINK bssid=38:f4:5e:27:87:46 ssid=ALOPS_ROBOTICS_5G freq=5765 sig=-52 rx=6.0_MBit/s tx=234.0_MBit/s_VHT-MCS_5_80MHz_VHT-NSS_1 ip=172.30.1.8/
+2026-09-23 09:40:38 LINK bssid=38:f4:5e:27:87:46 ssid=ALOPS_ROBOTICS_5G freq=5765 sig=-53 rx=702.0_MBit/s_VHT-MCS_8_80MHz_VHT-NSS_2 tx=263.3_MBit/s_VHT-MCS_6_80
+2026-09-23 09:40:53 LINK bssid=38:f4:5e:27:87:46 ssid=ALOPS_ROBOTICS_5G freq=5765 sig=-52 rx=6.0_MBit/s tx=263.3_MBit/s_VHT-MCS_6_80MHz_VHT-NSS_1 ip=172.30.1.8/
+2026-09-23 09:41:08 LINK bssid=38:f4:5e:27:87:46 ssid=ALOPS_ROBOTICS_5G freq=5765 sig=-52 rx=6.0_MBit/s tx=263.3_MBit/s_VHT-MCS_6_80MHz_VHT-NSS_1 ip=172.30.1.8/
+2026-09-23 09:41:23 LINK bssid=38:f4:5e:27:87:46 ssid=ALOPS_ROBOTICS_5G freq=5765 sig=-52 rx=6.0_MBit/s tx=263.3_MBit/s_VHT-MCS_6_80MHz_VHT-NSS_1 ip=172.30.1.8/
+2026-09-23 09:41:38 LINK bssid=38:f4:5e:27:87:46 ssid=ALOPS_ROBOTICS_5G freq=5765 sig=-52 rx=6.0_MBit/s tx=263.3_MBit/s_VHT-MCS_6_80MHz_VHT-NSS_1 ip=172.30.1.8/
+2026-09-23 09:41:53 LINK bssid=38:f4:5e:27:87:46 ssid=ALOPS_ROBOTICS_5G freq=5765 sig=-53 rx=6.0_MBit/s tx=263.3_MBit/s_VHT-MCS_6_80MHz_VHT-NSS_1 ip=172.30.1.8/
+2026-09-23 09:42:08 LINK bssid=38:f4:5e:27:87:46 ssid=ALOPS_ROBOTICS_5G freq=5765 sig=-53 rx=6.0_MBit/s tx=263.3_MBit/s_VHT-MCS_6_80MHz_VHT-NSS_1 ip=172.30.1.8/
+2026-09-23 09:42:23 LINK bssid=38:f4:5e:27:87:46 ssid=ALOPS_ROBOTICS_5G freq=5765 sig=-53 rx=6.0_MBit/s tx=263.3_MBit/s_VHT-MCS_6_80MHz_VHT-NSS_1 ip=172.30.1.8/
+2026-09-23 09:42:38 LINK bssid=38:f4:5e:27:87:46 ssid=ALOPS_ROBOTICS_5G freq=5765 sig=-53 rx=702.0_MBit/s_VHT-MCS_8_80MHz_VHT-NSS_2 tx=234.0_MBit/s_VHT-MCS_5_80
+2026-09-23 09:42:53 LINK bssid=38:f4:5e:27:87:46 ssid=ALOPS_ROBOTICS_5G freq=5765 sig=-52 rx=6.0_MBit/s tx=234.0_MBit/s_VHT-MCS_5_80MHz_VHT-NSS_1 ip=172.30.1.8/
+2026-09-23 09:43:08 LINK bssid=38:f4:5e:27:87:46 ssid=ALOPS_ROBOTICS_5G freq=5765 sig=-53 rx=702.0_MBit/s_VHT-MCS_8_80MHz_VHT-NSS_2 tx=234.0_MBit/s_VHT-MCS_5_80
+2026-09-23 09:43:23 LINK bssid=38:f4:5e:27:87:46 ssid=ALOPS_ROBOTICS_5G freq=5765 sig=-53 rx=468.0_MBit/s_VHT-MCS_5_80MHz_VHT-NSS_2 tx=263.3_MBit/s_VHT-MCS_6_80
+2026-09-23 09:43:38 LINK bssid=38:f4:5e:27:87:46 ssid=ALOPS_ROBOTICS_5G freq=5765 sig=-53 rx=6.0_MBit/s tx=234.0_MBit/s_VHT-MCS_5_80MHz_VHT-NSS_1 ip=172.30.1.8/
+2026-09-23 09:43:53 LINK bssid=38:f4:5e:27:87:46 ssid=ALOPS_ROBOTICS_5G freq=5765 sig=-53 rx=6.0_MBit/s tx=263.3_MBit/s_VHT-MCS_6_80MHz_VHT-NSS_1 ip=172.30.1.8/
+2026-09-23 09:44:09 LINK bssid=38:f4:5e:27:87:46 ssid=ALOPS_ROBOTICS_5G freq=5765 sig=-54 rx=6.0_MBit/s tx=175.5_MBit/s_VHT-MCS_4_80MHz_VHT-NSS_1 ip=172.30.1.8/
+2026-09-23 09:44:24 LINK bssid=38:f4:5e:27:87:46 ssid=ALOPS_ROBOTICS_5G freq=5765 sig=-55 rx=702.0_MBit/s_VHT-MCS_8_80MHz_VHT-NSS_2 tx=175.5_MBit/s_VHT-MCS_4_80
+2026-09-23 09:44:39 LINK bssid=38:f4:5e:27:87:46 ssid=ALOPS_ROBOTICS_5G freq=5765 sig=-54 rx=702.0_MBit/s_VHT-MCS_8_80MHz_VHT-NSS_2 tx=234.0_MBit/s_VHT-MCS_5_80
+2026-09-23 09:44:54 LINK bssid=38:f4:5e:27:87:46 ssid=ALOPS_ROBOTICS_5G freq=5765 sig=-55 rx=468.0_MBit/s_VHT-MCS_5_80MHz_VHT-NSS_2 tx=234.0_MBit/s_VHT-MCS_5_80
+2026-09-23 09:45:09 LINK bssid=38:f4:5e:27:87:46 ssid=ALOPS_ROBOTICS_5G freq=5765 sig=-55 rx=468.0_MBit/s_VHT-MCS_5_80MHz_VHT-NSS_2 tx=234.0_MBit/s_VHT-MCS_5_80
+2026-09-23 09:45:24 LINK bssid=38:f4:5e:27:87:46 ssid=ALOPS_ROBOTICS_5G freq=5765 sig=-55 rx=468.0_MBit/s_VHT-MCS_5_80MHz_VHT-NSS_2 tx=234.0_MBit/s_VHT-MCS_5_80
+2026-09-23 09:45:39 LINK bssid=38:f4:5e:27:87:46 ssid=ALOPS_ROBOTICS_5G freq=5765 sig=-55 rx=6.0_MBit/s tx=175.5_MBit/s_VHT-MCS_4_80MHz_VHT-NSS_1 ip=172.30.1.8/
+## event 스냅샷(최근 2 개) 머리
+--- /var/log/wifi_mon/event_19700101_090401.txt
+### 1970-01-01 09:04:01.142 bssid b0:38:6c:37:1b:4c -> 38:f4:5e:27:87:46
+--- iw link
+Connected to 38:f4:5e:27:87:46 (on wlP1p1s0)
+	SSID: ALOPS_ROBOTICS_5G
+	freq: 5765
+	RX: 4704 bytes (22 packets)
+	TX: 5286 bytes (36 packets)
+	signal: -55 dBm
+	rx bitrate: 351.0 MBit/s VHT-MCS 4 80MHz VHT-NSS 2
+	tx bitrate: 263.3 MBit/s VHT-MCS 6 80MHz VHT-NSS 1
+--- wpa_cli status
+bssid=38:f4:5e:27:87:46
+freq=5765
+ssid=ALOPS_ROBOTICS_5G
+id=0
+mode=station
+wifi_generation=5
+pairwise_cipher=CCMP
+group_cipher=CCMP
+key_mgmt=WPA2-PSK
+wpa_state=COMPLETED
+ip_address=172.30.1.8
+p2p_device_address=58:02:05:bd:d5:35
+address=58:02:05:bd:d5:35
+uuid=2b5e4d19-7d5d-5a55-821c-cb7f06218a42
+--- /var/log/wifi_mon/event_20260918_174003.txt
+### 2026-09-18 17:40:03.772 bssid none -> b0:38:6c:37:1b:4c
+--- iw link
+Connected to b0:38:6c:37:1b:4c (on wlP1p1s0)
+	SSID: WEB_DEV_5G
+	freq: 5180
+	RX: 20428 bytes (50 packets)
+	TX: 12417 bytes (81 packets)
+	signal: -52 dBm
+	rx bitrate: 585.0 MBit/s VHT-MCS 7 80MHz VHT-NSS 2
+	tx bitrate: 526.6 MBit/s VHT-MCS 6 80MHz VHT-NSS 2
+--- wpa_cli status
+bssid=b0:38:6c:37:1b:4c
+freq=5180
+ssid=WEB_DEV_5G
+id=0
+mode=station
+wifi_generation=5
+pairwise_cipher=CCMP
+group_cipher=CCMP
+key_mgmt=WPA2-PSK
+pmf=1
+mgmt_group_cipher=BIP
+wpa_state=COMPLETED
+ip_address=192.168.0.101
+p2p_device_address=58:02:05:bd:d5:35
+## wpa_debug.log: deauth/disassoc/reason/auth 실패 (09-22 16:00 이후)
+## syslog NM/wpa/커널 무선 (09-22 16:00 이후)
+Sep 22 16:37:11 jetson-desktop NetworkManager[829]: <info>  [1790062631.6997] dhcp4 (wlP1p1s0): state changed new lease, address=192.168.0.101
+Sep 22 17:12:25 jetson-desktop systemd[1]: NetworkManager-dispatcher.service: Deactivated successfully.
+Sep 22 17:37:11 jetson-desktop NetworkManager[829]: <info>  [1790066231.6940] dhcp4 (wlP1p1s0): state changed new lease, address=192.168.0.101
+Sep 23 09:00:44 jetson-desktop systemd[1]: NetworkManager-dispatcher.service: Deactivated successfully.
+Sep 23 09:30:33 jetson-desktop NetworkManager[830]: <info>  [1790123433.6035] dhcp4 (wlP1p1s0): state changed new lease, address=172.30.1.8
+error: unexpected filename: .
