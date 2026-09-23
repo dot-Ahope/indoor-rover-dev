@@ -23,6 +23,7 @@ import tf2_ros
 NAME = sys.argv[1]
 GOALS = [tuple(float(v) for v in g.split(',')) for g in sys.argv[2].split(';') if g.strip()]
 SPEED = float(sys.argv[3]) if len(sys.argv) > 3 else 0.07
+PAUSE = float(sys.argv[4]) if len(sys.argv) > 4 else 0.0   # 목표 사이 정지 시간(s)
 
 
 def yaw_of(q): return math.atan2(2 * (q.w * q.z + q.x * q.y), 1 - 2 * (q.y * q.y + q.z * q.z))
@@ -96,6 +97,10 @@ def main():
         M = n.tf('map', 'base_link')
         if M: print('  목표 %d %s %.1f s | 도착 map (%.3f, %.3f, %.1f°) 목표 대비 %.3f m, %.1f°' % (i + 1, name, time.time() - tg, M[0], M[1], math.degrees(M[2]), math.hypot(M[0] - gx, M[1] - gy), math.degrees(uw(M[2] - gyaw))), flush=True)
         if name != 'SUCCEEDED': break
+        if i + 1 < len(mgoals) and PAUSE > 0:   # 09-23 사용자 제안: 도착 자세로 멈춘 뒤 복귀(SLAM·지도 안정 시간)
+            tp = time.time()
+            while time.time() - tp < PAUSE: rclpy.spin_once(n, timeout_sec=0.05)
+            print('  정지 %.1f s 뒤 다음 목표' % PAUSE, flush=True)
     with open('/tmp/%s.csv' % NAME, 'w', newline='') as f:
         w = csv.writer(f); w.writerow(['t', 'goal', 'map_x', 'map_y', 'map_yaw', 'odom_x', 'odom_y', 'odom_yaw', 'wheel_yaw', 'v', 'w', 'mo_x', 'mo_y', 'mo_yaw', 'stuck']); w.writerows(rows)
     M = n.tf('map', 'base_link'); MO = n.tf('map', 'odom')
