@@ -1,0 +1,31 @@
+라이다: 구역 안 점 0개 []
+카메라 점(z 0.03~0.6): 7개, x 1.73~2.23 y -0.25~+0.38 z 0.03~0.10
+   ≤0 셀 위치(base): []
+   LETHAL 위치(base): []
+   LETHAL 위치(base): []
+######## 게이트 J·K·L·M·N (재부팅 복구 B1)
+J nvblox 노드: 프로세스 1, 깊이 15.1 Hz, ESDF 9.5 Hz, esdf 지연 0.103 s → 통과
+K 층 실효값: String values are: ['nvblox_layer', 'obstacle_layer', 'inflation_layer → 통과
+L 슬라이스 커버: 상자 띠 셀/프레임 10, 근거리 자취 프레임 0/84 → 통과
+  (iii) 수신 9.45 Hz, 간격 중앙 0.108 최대 0.113 s | stamp 지연 중앙 0.111 최대 0.117 s | 해상도 0.050 m, 40x48
+  (i) 상자 띠 장애물 셀 최소 x(base): 중앙 1.174 최소 1.174 최대 1.174 (프레임당 셀 10) | 물리 전면 1.147 → 차 +0.027 m = +
+  (ii) 카메라 0.45 m 안 장애물 셀: 프레임당 중앙 0 최대 0, 0 이 아닌 프레임 0/84 | 전체 장애물 셀 중앙 48
+M 목표 부근(x 1.5~2.3,|y|<0.45) 전역 LETHAL 0 셀, 라이다 근거 점 0 → 통과
+N 코스트맵 상자 최대 y ? − 카메라 왼쪽 가장자리 +0.04 = -0.040 m (≥ −0.025) → 불합격
+== 모드 N 게이트 불합격 — 주행하지 않음
+######## C1 점군 끄기 A/B
+## 현재 점군 파라미터: Parameter not set / neon: Boolean value is: True
+## A. 점군 켬(현재)
+  점군 Hz: 15.025 | 깊이 Hz: 14.946 | 릴레이 출력 Hz: 13.085
+  CPU 20 s: sensor_conditioner 42.6% | nvblox_+ 16.9% | planner+ 9.7% | depth_relay 4.5% | 
+  nvblox 깊이 콜백: 15.1 Hz | 전체 합(top): 202 %
+## B. pointcloud.enable false
+Setting parameter failed: parameter 'pointcloud.enable' cannot be set because it was not declared
+  점군 Hz: 16.981 | 깊이 Hz: 14.956 | 릴레이 출력 Hz: 15.800
+  CPU 20 s: sensor_conditioner 42.8% | nvblox_+ 17.0% | planner+ 9.8% | depth_relay 3.8% | 
+  nvblox 깊이 콜백: 15.2 Hz | 전체 합(top): 200 %
+## C. 복구 true
+Setting parameter failed: parameter 'pointcloud.enable' cannot be set because it was not declared
+  점군 Hz: 14.972 | 깊이 Hz: 14.946 | 릴레이 출력 Hz: 15.093
+  CPU 20 s: sensor_conditioner 42.9% | nvblox_+ 17.0% | planner+ 9.9% | depth_relay 3.8% | 
+  nvblox 깊이 콜백: 15.1 Hz | 전체 합(top): 201 %

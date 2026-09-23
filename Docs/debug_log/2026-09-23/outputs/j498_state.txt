@@ -1,0 +1,9 @@
+ping 172.30.1.8 OK
+== uptime: up 46 minutes | 부팅: 2026-09-23 08:56:56
+== /tmp 스크립트: 1 개 (job473 없음, job489 없음, job248 없음, job478 없음, nvblox_n0.yaml 없음)
+== 스택: agent 0 sensors(camera) 0 relay 0 slam 0 ekf 0 controller 0 planner 0 rsp 0
+== 컨테이너: 없음 | nvblox 프로세스 0
+== 포크 diff:  1 file changed, 1 insertion(+), 1 deletion(-)
+== 로컬 plugins: Node not found
+== 토픽 Hz(5 s): scan  | depth  | wheel_odom 
+== 로드: 0.13 0.04 0.01 | 온도 45.6 °C | 디스크 155G 남음

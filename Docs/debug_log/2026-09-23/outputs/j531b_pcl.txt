@@ -1,0 +1,15 @@
+## 현재 점군 파라미터: Parameter not set / neon: Boolean value is: True
+## A. 점군 켬(현재)
+  점군 Hz: 15.010 | 깊이 Hz: 14.950 | 릴레이 출력 Hz: 14.974
+  CPU 20 s: sensor_conditioner 42.9% | nvblox_+ 17.0% | planner+ 9.8% | depth_relay 3.8% | 
+  nvblox 깊이 콜백: 15.1 Hz | 전체 합(top): 202 %
+## B. pointcloud__neon_.enable false
+Setting parameter failed: parameter 'pointcloud.enable' cannot be set because it was not declared
+  점군 Hz: 15.086 | 깊이 Hz: 15.652 | 릴레이 출력 Hz: 14.979
+  CPU 20 s: sensor_conditioner 42.7% | nvblox_+ 16.9% | planner+ 9.8% | depth_relay 4.5% | 
+  nvblox 깊이 콜백: 15.1 Hz | 전체 합(top): 201 %
+## C. 복구 true
+Set parameter successful
+  점군 Hz: 15.214 | 깊이 Hz: 15.065 | 릴레이 출력 Hz: 14.895
+  CPU 20 s: sensor_conditioner 42.9% | nvblox_+ 17.1% | planner+ 9.7% | depth_relay 3.7% | 
+  nvblox 깊이 콜백: 15.1 Hz | 전체 합(top): 199 %
