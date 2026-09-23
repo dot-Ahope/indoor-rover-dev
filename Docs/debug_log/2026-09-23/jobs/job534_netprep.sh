@@ -1,0 +1,6 @@
+#!/bin/bash
+# 읽기 전용: 고정 IP(DHCP 예약) 복귀·충돌 감지 설정 전 확인 — wifi_mon.sh 내용, arping/tcpdump 유무, NM 프로파일의 ipv4 설정, 현재 점군 파라미터
+echo "## 도구: arping=$(command -v arping || echo 없음) tcpdump=$(command -v tcpdump || echo 없음) | sudo NOPASSWD: $(sudo -n true 2>/dev/null && echo yes || echo no)"
+echo "## NM ipv4 설정"; for c in WEB_DEV_5G ALOPS_ROBOTICS_5G; do echo "  $c: $(nmcli -t -f ipv4.method,ipv4.dad-timeout,ipv4.dhcp-client-id,connection.autoconnect-retries,ipv4.addresses con show "$c" 2>/dev/null | tr '\n' ' ')"; done
+echo "## wifi_mon.sh ($(wc -l < /usr/local/sbin/wifi_mon.sh) 줄)"; grep -n "" /usr/local/sbin/wifi_mon.sh | grep -aE "LINK|sleep|while|IP=|ip=|iw |wpa_cli|BEACON|EVENT|snapshot|SNAPSHOT|LOG=|MON=" | head -30 | cut -c1-160
+echo "## 점군 파라미터·nav2.log 연동 줄"; export FASTRTPS_DEFAULT_PROFILES_FILE=/home/jetson/ros2_ws/install/rover_bringup/share/rover_bringup/config/fastdds_udp_only.xml; source /opt/ros/humble/setup.bash; echo "  pointcloud__neon_.enable = $(timeout 12 ros2 param get /camera/camera pointcloud__neon_.enable 2>&1 | tail -1) | 점군 Hz: $(timeout 6 ros2 topic hz /camera/camera/depth/color/points 2>&1 | grep -ao 'average rate: [0-9.]*' | head -1 || echo 0)"; grep -a "camera_pointcloud" /tmp/nav2.log | tail -3 | cut -c1-120
