@@ -138,3 +138,10 @@
 - 절차 v2.2(게이트 M·N, 규칙 13~15), CLAUDE.md §6 현재 구성으로 압축·정정, 메모리 정리(nvblox-n0 12 → 2.7 KB), PC 의 WEB_DEV_5G 직접 연결 시도 → Jetson ARP 불가(AP 격리 추정, PC 는 ALOPS 로 복귀), 45 커밋 origin·personal 푸시(d02ca9d).
 - 마감 보고: `Docs/05_nvblox/figures/2026-09-23_phase_n_close.html` = https://claude.ai/artifact/5XRPPEk98SmAtHxCNGCiYq (비공개).
 - Jetson 상태: 모드 N 실행 중, 로버는 목표 지점, 배터리 ≈12.1 V. 다음: 사용자 결정(AP 격리 해제), F0 코스 설계 — 새 세션에서.
+
+## 15. sensor_conditioner 역할 점검 — 빼도 되는가 (사용자 질의; `jobs/job549_cond.sh`)
+- 하는 일(코드 `rover_bringup/scripts/sensor_conditioner.py`): ① 카메라 IMU 200 Hz 를 받아 **부팅 10 s 자이로 바이어스 보정 + ZUPT(휠 정지 구간 온라인 재추정)** 후 `/imu/data` 로 재발행, **자이로 covariance 0.0004** 설정 ② 휠 오도 25 Hz 에 **twist covariance** 설정 후 `/wheel_odom/conditioned`(vx·yaw 보정 계수는 09-07 펌웨어 교정 뒤 1.0 = 무동작). EKF 두 입력이 모두 이 노드를 거친다. CPU 41.8 %(정지).
+- 실측(12:5x): 자이로 yaw 바이어스 부팅 −0.00073 → 지금 **−0.00106 rad/s**(발열로 이동) — 보정 없으면 3.6 °/분 드리프트, ZUPT 잔차 ≈ 0.00003 rad/s(0.1 °/분). 카메라 원본 자이로 covariance 0.01, 펌웨어 휠 오도 covariance 전부 0.
+- 판정: **그냥 빼면 안 된다.** (a) 바이어스·ZUPT 가 없으면 정지 중 분당 수 도씩 yaw 가 샌다(09-10 실측: 80 분 정지 뒤 105°), (b) 휠 covariance 0 이 EKF 로 들어간다, (c) 원본 자이로 covariance 0.01 은 휠 yaw(0.01)와 같은 신뢰도라 — 09-23 미끄러짐에서 EKF 가 맞았던 "자이로 25 배 신뢰" 가 사라진다. 불필요한 부분은 vx·slip 계수(1.0)와 orientation covariance(원본이 이미 −1)뿐.
+- 대체 가능성: 설치된 스택에 같은 기능 없음(robot_localization 은 바이어스 추정 미지원, imu_tools 미설치; imu_complementary_filter 의 정지 바이어스 추정은 후보지만 미검증·노드 추가). 휠 covariance 는 **펌웨어가 직접 채우면** 이 경로를 없앨 수 있다(F405, 저비용).
+- 제안: 같은 로직을 **C++ 노드로 이식**(파이썬 200 Hz 역직렬화가 비용의 대부분으로 추정, 기대 41 → 수 % — 미측정) + 발행 100 Hz 다운샘플(EKF 30 Hz) + 휠 covariance 는 펌웨어로 이전. 검증 = 정지 10 분 yaw 드리프트·ZUPT 잔차·미끄러짐 재현 시 EKF 추종이 파이썬판과 같을 것.
