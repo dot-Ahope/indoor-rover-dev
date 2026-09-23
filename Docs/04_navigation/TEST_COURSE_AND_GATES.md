@@ -1,4 +1,4 @@
-# 시험 코스·게이트·주행 절차 — v2.0 (Phase N: STVL ↔ nvblox 층 A/B), 2026-09-22
+# 시험 코스·게이트·주행 절차 — v2.2 (Phase N: STVL ↔ nvblox 층 A/B), 2026-09-23
 
 **적용 범위**: Phase N 의 "중앙 상자 회피 코스" 주행. 로컬 코스트맵의 카메라 층만 **모드 S(STVL 층, Phase S 기준선 구성)** 와 **모드 N(nvblox 층, 이진, 09-21 floor 수정 포크)** 로 바꿔 같은 코스에서 비교한다. 전역 코스트맵·계획기·MPPI CostCritic·러너는 두 모드에서 같다. v1.0(Phase S, 2026-09-21)을 절 단위로 검토해 고쳤고, **바뀐 곳은 굵게 "N:" 표시**. 근거 날짜의 `Docs/debug_log/<날짜>/SUMMARY.md` 가 원문이다. v1.0 원문은 git 이력(커밋 16fce63 이전)과 `Docs/debug_log/2026-09-21/BASELINE_STVL.md`.
 **Phase 전환 규칙**(유지): Phase 가 바뀌면 이 문서를 그대로 따르지 말고 절 단위로 검토해 새 판을 쓴다. 검토 항목에 **bag 프로파일(§5)** 을 반드시 포함한다(09-21 사용자 질의: 전환 시 bag 절차가 지시되어 있지 않았음).
@@ -61,6 +61,8 @@
 | **J** | **N: nvblox 노드** | 컨테이너 안 `nvblox_node` 정확히 1 개, 시작 32 s 뒤 통계의 `ros/depth_image_callback` ≥ 10 Hz(실측 15.1), `ros/update_esdf` ≥ 9 Hz(9.5~9.6), `esdf_integration` 지연 ≤ 0.15 s(0.10~0.12) | `job473_nvblox_run.sh status`, `/tmp/nvblox_*.log` Rates/Delays 블록(Rates 헤더 뒤 7 줄만 — Delays 블록에 같은 이름 있음) | 노드 재시작(실행 파일 PID 로 정지 → 확인 → 시작), 깊이 토픽·TF 확인 | 09-21 §9, job483, 09-22 §1 |
 | **K** | **N: 층 실효값** | `ros2 param get /local_costmap/local_costmap plugins` = 의도한 모드(`nvblox_layer` 또는 `stvl_layer`). 주행 30 s 전에 끝낼 것 | job488 출력 "실행값" | job488 로 다시 전환 | 09-21 §10.2 |
 | **L** | **N: 슬라이스 커버** | 상자 구역(base x 0.9~1.5, y −0.35~+0.15)에 슬라이스 ≤0 셀 **≥ 8**(절단 2.0 기하 = 폭 4 셀 × 띠 2~3 셀; 처음 10 으로 썼다가 09-22 n4n2 배치에서 9 로 근소 불합격 → 사용자 승인으로 정정), 근거리(카메라 0.45 m 안) ≤0 셀 0 | `job474_n0_measure.py <이름> 20 <BX> <BY>`(컨테이너 안, 20 s) | 노드 재시작·상자 위치 확인 | 09-21 §9 N0 (ii), 09-22 §1 |
+| **M** | **N: 목표 부근 근거 없는 치명 셀** | 전역 코스트맵 x 1.5~2.3·\|y\|<0.45 의 LETHAL 중 라이다 점 근거 없는 셀 = 0 (09-22 유령 셀 재발 방지; 09-23 반사성 바닥 테이프 위 유령 셀을 실제로 검출) | `job505_modeN_gate.sh`(내부 `job522_goalprobe.py`) | 클리어 8 s 후 재검사 → 지속이면 스냅샷(`job322_snap.py`)으로 원인 물체 확인 | 09-23 §9~10 |
+| **N** | **N: 상자 통과 측 과소 마킹** | 코스트맵 상자 셀 최대 y − 카메라 점군 상자 왼쪽 가장자리 ≥ −0.025 m | `job505`(내부 job315 3 표본 중앙값 + job248 y 구간) | 슬라이스 높이·층 설정 확인 | 09-23 §1 |
 - 게이트 출력 파서 취약점(유지): 감사 출력이 불완전하면 창이 `nan`/음수로 계산돼 안전하게 거부된다. 재실행으로 해결.
 
 ## 4. 운영 규칙 (게이트가 못 잡는 것)
@@ -76,6 +78,9 @@
 10. **N: 모드 전환(job488)은 Nav2 만 재기동**하고 센서·SLAM·에이전트는 건드리지 않는다. 전환 직후 첫 10 s 의 감사값은 과도 상태(09-21 §10.2 의 0.10 m)일 수 있으니 3 표본 뒤 값을 쓴다.
 11. **N: 층 결함 수정본(round→floor)은 Jetson 포크의 미커밋 diff 다.** 재빌드·리셋 전에 `git -C ~/workspaces/isaac_ros-dev/src/isaac_ros_nvblox diff --stat` 로 살아 있는지 확인(사라지면 `job493_fixfloor.sh` 재적용).
 12. **N: A/B 는 같은 세션·같은 배치에서 S→N→S 순으로 짝지어** 돌린다. 모드 S 회차가 대조군이며, 판정은 `BASELINE_STVL.md` 지표(중단 0, 통과 측 여유, 중단·미달, CPU/GPU/전력)로 한다. 셀 수가 STVL 과 같아지는 것은 목표가 아니다.
+13. **Wi-Fi 재연결(인터페이스 다운/업)이 있었으면 주행 전 스택 전체 재기동**(prep). 이미 떠 있던 DDS 노드가 재발견·재전송 부하로 CPU 를 2~3 배 쓴다(09-23 n62b: 합 422 %, EKF·SLAM 3 배 → 재기동 뒤 321 %). 끊김 기록: Jetson `/var/log/wifi_mon/mon.log`(15 s LINK·`ARP_DUP`), 필요 시 `job540_trace.sh`(2 s 게이트웨이 핑).
+14. **카메라 점군은 끄지 않는다**(`navigation.launch.py camera_pointcloud:=keep`, 기본). 게이트 D·E·F·N 과 러너 상자 모델이 `/camera/camera/depth/color/points` 를 입력으로 쓴다 — 끄면 상자 검출이 비어 주행이 거부된다(09-23 §7). `off` 는 계측 없는 운용 전용.
+15. **러너 재고정**: `job125_avoid3.py` 는 출발 뒤 상자 재검출이 게이트 hint 에서 0.06 m 넘게 튀면 버린다(`REFIX_MAX` 0.30→0.06, 09-23). 러너 ① 과 bag 횡변위 기반 여유가 2 cm 넘게 다르면 `<이름>_refix.csv` 를 확인한다.
 
 ## 5. 산출물 (회차당)
 | 파일 | 내용 | 생성 |
@@ -92,5 +97,6 @@
 ## 6. 변경 이력
 - v1.0 2026-09-21: 09-11~09-21 규칙 통합. 기준선 `Docs/debug_log/2026-09-21/BASELINE_STVL.md`, 러너 원본 `Docs/debug_log/2026-09-21/jobs/`.
 - v2.0 2026-09-22: Phase N 판. §0 검토표, §2 컨테이너·nvblox·모드 전환 단계(1·2N·3·5·6·7), §3 게이트 J·K·L, §4 규칙 9~12, §5 bag 프로파일·nvblox 로그·전환 체크리스트. 근거 `Docs/debug_log/2026-09-21/SUMMARY.md §9~10`, `2026-09-22/SUMMARY.md §0~1`.
+- v2.2 2026-09-23(N6-2): 게이트 M·N 추가, 운영 규칙 13(Wi-Fi 재연결 뒤 재기동)·14(점군 유지)·15(러너 재고정 0.06). 근거 `Docs/debug_log/2026-09-23/SUMMARY.md §1~13`.
 - v2.1 2026-09-22 저녁(N6-0): 모드 선택을 launch 인자 `camera_layer`(기본 nvblox)로, nvblox 기동·정리를 `nvblox.launch.py`/`nvblox_up.sh` 로 자동화. §2-2N·§4-9 갱신, 게이트 A 뒤 J 자동(job254), 메타에 활성 YAML sha256. 근거 `2026-09-22/SUMMARY.md §4`.
 - v2.0.1 2026-09-22 저녁: N5 결정(로컬 층 nvblox 채택) 반영 — 모드 N 이 채택 구성, 모드 S 는 N6(전역 이전) A/B 의 대조군으로 유지. 게이트 L 문턱 ≥ 8 정정, 감쇠 0.99 표기. 결과 요약 `Docs/05_nvblox/PHASE_N_RESULTS.md`.
