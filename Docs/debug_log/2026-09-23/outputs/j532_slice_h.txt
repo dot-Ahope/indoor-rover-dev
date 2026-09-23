@@ -1,0 +1,24 @@
+## job315 원출력
+Traceback (most recent call last):
+  File "/tmp/job315_boxcells.py", line 8, in <module>
+    BX, BY = float(sys.argv[1]), float(sys.argv[2])
+IndexError: list index out of range
+######## H1 슬라이스 0.03 vs 0.06
+######## 기준(현재 설치본 0.06)
+## h06: 슬라이스 min 0.06 실효 0.06
+  표본 1: 상자 셀/프레임 10 | 목표 부근 슬라이스 ≤0 0 · 전역 LETHAL 0 | 코스트맵 상자 최대 y ?
+  표본 2: 상자 셀/프레임 11 | 목표 부근 슬라이스 ≤0 0 · 전역 LETHAL 0 | 코스트맵 상자 최대 y ?
+  표본 3: 상자 셀/프레임 11 | 목표 부근 슬라이스 ≤0 0 · 전역 LETHAL 0 | 코스트맵 상자 최대 y ?
+  카메라 상자 y 구간: y 구간 [-0.14, +0.04]
+######## 변형 0.03
+  nav2 프로세스: controller 1 planner 1 bt 1 | 오류: 0
+  로컬 plugins 실행값: String values are: ['nvblox_layer', 'obstacle_layer', 'inflation_layer'] | nvblox_node: 1 개 | 활성 yaml: # 자동 생성(navigation.launch.py, camera_layer=nvblox) — 원본 
+## h03: 슬라이스 min 0.03 실효 0.03
+  표본 1: 상자 셀/프레임 11 | 목표 부근 슬라이스 ≤0 0 · 전역 LETHAL 2 | 코스트맵 상자 최대 y ?
+  표본 2: 상자 셀/프레임 10 | 목표 부근 슬라이스 ≤0 1 · 전역 LETHAL 3 | 코스트맵 상자 최대 y ?
+  표본 3: 상자 셀/프레임 10 | 목표 부근 슬라이스 ≤0 1 · 전역 LETHAL 3 | 코스트맵 상자 최대 y ?
+  카메라 상자 y 구간: y 구간 [-0.12, +0.06]
+######## 복구 0.06
+  nav2 프로세스: controller 1 planner 1 bt 1 | 오류: 0
+  로컬 plugins 실행값: String values are: ['nvblox_layer', 'obstacle_layer', 'inflation_layer'] | nvblox_node: 1 개 | 활성 yaml: # 자동 생성(navigation.launch.py, camera_layer=nvblox) — 원본 
+  복구 실효 min: Double value is: 0.06

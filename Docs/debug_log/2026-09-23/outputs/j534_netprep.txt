@@ -1,0 +1,30 @@
+## 도구: arping=없음 tcpdump=없음 | sudo NOPASSWD: no
+## NM ipv4 설정
+  WEB_DEV_5G: ipv4.method:auto ipv4.dad-timeout:-1 ipv4.dhcp-client-id: connection.autoconnect-retries:-1 ipv4.addresses: 
+  ALOPS_ROBOTICS_5G: ipv4.method:auto ipv4.dad-timeout:-1 ipv4.dhcp-client-id: connection.autoconnect-retries:-1 ipv4.addresses: 
+## wifi_mon.sh (89 줄)
+4:#   /var/log/wifi_mon/mon.log        15 s 링크 줄(LINK), 60 s AP 비콘 줄(BEACON), 사건 줄(EVENT)
+7:# 되돌리기: systemctl disable --now wifi-mon; rm /etc/rsyslog.d/25-wifi-mon.conf; systemctl restart rsyslog; wpa_cli log_level INFO
+26:  if [ "$1" = all ]; then out=$(timeout 20 iw dev $IF scan 2>&1); else out=$(timeout 10 iw dev $IF scan freq "$1" 2>&1); fi
+28:  if [ $rc -ne 0 ]; then sleep 2; if [ "$1" = all ]; then out=$(timeout 20 iw dev $IF scan 2>&1); else out=$(timeout 10 iw dev $IF scan freq "$1" 2>&1); fi; 
+43:snapshot() {   # 사건 스냅샷
+47:    echo "--- iw link"; iw dev $IF link
+48:    echo "--- wpa_cli status"; wpa_cli -i $IF status 2>&1 | grep -avE 'passphrase|psk|pmk'
+51:    echo "--- 전체 스캔(AP 블록)"; timeout 20 iw dev $IF scan 2>&1 | awk -v ap="$AP" '/^BSS /{p=(index($0,ap)>0)} p' | head -80
+55:  log "SNAPSHOT $f"
+60:while true; do
+62:  if ! wpa_cli log_level 2>/dev/null | grep -q 'Current level: DEBUG'; then
+63:    wpa_cli log_level DEBUG >/dev/null 2>&1 && log "LOGLEVEL DEBUG"
+65:  L=$(iw dev $IF link 2>/dev/null)
+73:  st=$(wpa_cli -i $IF status 2>/dev/null | awk -F= '/^(wpa_state|pmf|key_mgmt)=/{printf "%s=%s ", $1, $2}')
+74:  log "LINK bssid=${bssid:-none} ssid=${ssid:-} freq=${freq:-} sig=${sig:-} rx=${rx:-} tx=${tx:-} ip=${ip4:-} $st"
+77:    log "EVENT bssid ${last_bssid:-none} -> ${bssid:-none}"
+78:    snapshot "bssid ${last_bssid:-none} -> ${bssid:-none}"
+81:    log "BEACON $(scan_ap $APFREQ)"               # 60 s 마다, 연결 채널 1 개(≈140 ms)
+83:    log "BEACON_ALL $(scan_ap all)"               # WEB_DEV 가 아닐 때 10 분마다 전체 스캔
+88:  sleep 15
+## 점군 파라미터·nav2.log 연동 줄
+  pointcloud__neon_.enable = Boolean value is: False | 점군 Hz: 
+[INFO] [camera_pointcloud_nvblox-11]: process started with pid [84951]
+[camera_pointcloud_nvblox-11] Set parameter successful
+[INFO] [camera_pointcloud_nvblox-11]: process has finished cleanly [pid 84951]

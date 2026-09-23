@@ -27,3 +27,17 @@
 - realsense-ros(neon 필터판)의 실제 파라미터는 `pointcloud__neon_.enable`(`pointcloud.enable` 은 미선언). 런타임 false → 점군 토픽·릴레이 출력 0 Hz, 깊이 15 Hz·nvblox 깊이 콜백 15.1 Hz 유지(파이프라인 재시작 없음) → true 로 즉시 복구.
 - 정지 CPU(top 20 s): realsense **15.3 → 13.9 %**(−1.4), depth_relay **3.7 → 0**(구독자 없어도 수신·역직렬화하던 몫 소멸), 전체 합 201 → 195 %(−6 %p). 기대(−10 %p)보다 작다 — realsense 노드의 비용은 점군보다 USB 수신·복호가 대부분(추정). 주행 CPU 320~325 → **≈315~319 로 <320 경계에 걸릴 것**(측정 전).
 - 적용 방식: 모드 N 이면 launch 뒤 `pointcloud__neon_.enable false`, 모드 S 면 true — `navigation.launch.py` 의 camera_layer 에 연동(ExecuteProcess 로 param set). 주행 3 회로 C2 판정.
+
+## 4. H1 슬라이스 최소 높이 0.03 vs 0.06 정지 측정 (`jobs/job532_slice_h.sh` → `outputs/j532_slice_h.txt`, 통합 1.4 고정, 배치 1.147/−0.051)
+| | 0.06(현재) 3 표본 | 0.03 3 표본 |
+|---|---|---|
+| 게이트 L 상자 셀/프레임 | 10·11·11 | 11·10·10 |
+| 목표 부근 슬라이스 ≤0 / 전역 LETHAL | 0/0 · 0/0 · 0/0 | 0/2 · 1/3 · 1/3 |
+| 카메라 상자 y 구간 | −0.14~+0.04 | −0.12~+0.06 |
+- **판정: 0.06 유지**(H1 불합격 — 0.03 은 통합 1.4 m 안에서도 목표 부근 유령 셀이 돌아옴(2~3 셀), 상자 커버는 두 값이 같음). 09-22 의 "0.03 복귀 가능" 추정은 기각. 코스트맵 상자 최대 y 는 job315 호출 방식 문제로 이번에도 비어 있음 → §2.1 에서 게이트 N 과 함께 정리.
+
+## 5. 네트워크: 고정 IP(공유기 DHCP 예약) 방식으로 WEB_DEV_5G 복귀 + IP 충돌 감지 (사용자 지시 10:1x; `jobs/job535_net_fixed.sh`·`run_j535.sh` → `outputs/j535_net.txt`, 사전 확인 `j534_netprep.txt`)
+- 사용자 답변에 대한 판단(§0.1 보강): "다른 IP 의 대량 트래픽이 내 IP 를 끊는다" 는 기전은 오늘 로그(인증 성공·DHCP 무응답)와 이전 3 회(AP deauth·PSK 거부)에 맞지 않는다. "IP 가 끊긴다" 에 가장 가까운 실제 기전은 **IP 충돌**(같은 IP 가 다른 기기에 할당·사용)이며 09-03 의 "링크 유지·핑 100 % 손실" 과는 맞을 수 있다 — 가설, 미측정. 사용자 결정: 공유기에서 Jetson MAC 에 고정 할당(예약)하고 DHCP 를 그대로 쓴다.
+- 적용(sudo, 사용자 지시): ① `iputils-arping`·`tcpdump` 설치, ② NM 두 프로파일 `ipv4.dad-timeout 3000`(주소 설정 전 3 s ARP 중복 검사 — 충돌이면 활성화 실패 + "duplicate address" 로그), ③ `wifi_mon.sh` 15 s 루프에 `arping -D`(중복 주소 탐지) 추가 → 다른 MAC 이 응답하면 `mon.log` 에 `ARP_DUP ip=… <MAC>` + 5 분당 1 회 스냅샷(`outputs/../jobs/job535_net_fixed.sh` 의 패치 본문), ④ `nmcli con up WEB_DEV_5G`.
+- 결과: 10:14:33 연결 → **10:14:35 DHCP 임대 192.168.0.101(2 s)** → 활성. 아침(08:57~09:03)의 DHCP 무응답 3 회는 재현되지 않음(원인 미확정 — 부팅 직후 공유기/AP 측 일시 상태로 추정). PC 핑 4 s 만에 응답.
+- 후속: IP 변경으로 이미 뜬 DDS 참가자가 갈리므로 전체 정지(에이전트 포함) → prep → **보드 리셋** 필요(§6). 러너 `run_jx.sh` 는 두 IP 를 핑해 자동 선택.

@@ -24,7 +24,7 @@ if [ "${SKIP_MN:-0}" != 1 ]; then
   [ "${GL:-0}" != 0 ] && [ "${LI:-0}" = 0 ] && M=불합격
   echo "M 목표 부근(x 1.5~2.3,|y|<0.45) 전역 LETHAL ${GL:-?} 셀, 라이다 근거 점 ${LI:-?} → $M"
   CY=$(BOX_HINT="$BX $BY" timeout 100 python3 /tmp/job248_audit.py 2>&1 | grep -ao 'y 구간 \[[-+0-9.]*, [-+0-9.]*\]' | head -1 | grep -ao '[-+0-9.]*\]$' | tr -d ']')
-  BY3=$(for i in 1 2 3; do timeout 60 python3 /tmp/job315_boxcells.py 2>&1 | grep -aoE '^[-+]?[0-9.]+$' | tail -1; sleep 1; done | sort -g | sed -n 2p)   # job315 는 최대 y 숫자 한 줄만 출력 → 3 표본 중앙값
+  BY3=$(for i in 1 2 3; do timeout 60 python3 /tmp/job315_boxcells.py $BX $BY 2>&1 | grep -aoE '^[-+]?[0-9.]+$' | tail -1; sleep 1; done | sort -g | sed -n 2p)   # job315 는 인자 BX BY 필수, 최대 y 숫자 한 줄만 출력 → 3 표본 중앙값
   DIFF=$(awk -v a="$BY3" -v b="$CY" 'BEGIN{printf "%.3f", a-b}')
   awk -v d="$DIFF" 'BEGIN{exit !(d+0 >= -0.025)}' || N=불합격
   echo "N 코스트맵 상자 최대 y ${BY3:-?} − 카메라 왼쪽 가장자리 ${CY:-?} = ${DIFF} m (≥ −0.025) → $N"

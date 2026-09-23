@@ -1,0 +1,32 @@
+## 1. 도구 설치(apt, 60 s 한도)
+Setting up iputils-arping (3:20211215-1ubuntu0.1) ...
+Processing triggers for man-db (2.10.2-1) ...
+  arping=/usr/bin/arping tcpdump=/usr/bin/tcpdump
+## 2. NM DAD 3 s
+  WEB_DEV_5G dad-timeout=3000
+  ALOPS_ROBOTICS_5G dad-timeout=3000
+## 3. wifi_mon.sh 에 ARP 중복 검사 추가
+  패치 생성
+## 4. WEB_DEV_5G 로 전환(3 s 뒤, 백그라운드) — 이 세션은 끊김
+  요청됨 10:14:30
+## 전환 대기(핑)
+  4 s 뒤 응답: 192.168.0.101
+## 결과: WEB_DEV_5G:wlP1p1s0 | IP 192.168.0.101/24
+## net_switch.log: Connection successfully activated (D-Bus active path: /org/freedesktop/NetworkManager/ActiveConnection/7)|
+## NM 로그(최근 3 분): 
+Sep 23 10:14:32 jetson-desktop NetworkManager[830]: <info>  [1790126072.9745] dhcp4 (wlP1p1s0): activation: beginning transaction (timeout in 45 seconds)
+Sep 23 10:14:32 jetson-desktop NetworkManager[830]: <info>  [1790126072.9745] dhcp4 (wlP1p1s0): state changed no lease
+Sep 23 10:14:33 jetson-desktop NetworkManager[830]: <info>  [1790126073.0054] device (wlP1p1s0): Activation: starting connection 'WEB_DEV_5G' (63c99fd8-f853-4a2
+Sep 23 10:14:33 jetson-desktop NetworkManager[830]: <info>  [1790126073.0104] device (wlP1p1s0): Activation: (wifi) access point 'WEB_DEV_5G' has security, but 
+Sep 23 10:14:33 jetson-desktop NetworkManager[830]: <info>  [1790126073.0221] device (wlP1p1s0): Activation: (wifi) connection 'WEB_DEV_5G' has security, and se
+Sep 23 10:14:33 jetson-desktop NetworkManager[830]: <info>  [1790126073.0226] Config: added 'ssid' value 'WEB_DEV_5G'
+Sep 23 10:14:33 jetson-desktop NetworkManager[830]: <info>  [1790126073.2077] device (wlP1p1s0): Activation: (wifi) Stage 2 of 5 (Device Configure) successful. 
+Sep 23 10:14:33 jetson-desktop NetworkManager[830]: <info>  [1790126073.2089] dhcp4 (wlP1p1s0): activation: beginning transaction (timeout in 45 seconds)
+Sep 23 10:14:35 jetson-desktop NetworkManager[830]: <info>  [1790126075.3519] dhcp4 (wlP1p1s0): state changed new lease, address=192.168.0.101
+Sep 23 10:14:35 jetson-desktop NetworkManager[830]: <info>  [1790126075.3652] device (wlP1p1s0): state change: secondaries -> activated (reason 'none', sys-ifac
+Sep 23 10:14:35 jetson-desktop NetworkManager[830]: <info>  [1790126075.3671] policy: set 'WEB_DEV_5G' (wlP1p1s0) as default for IPv4 routing and DNS
+Sep 23 10:14:35 jetson-desktop NetworkManager[830]: <info>  [1790126075.3686] device (wlP1p1s0): Activation: successful, device activated.
+## mon.log 꼬리:
+2026-09-23 10:13:53 LINK bssid=38:f4:5e:27:87:46 ssid=ALOPS_ROBOTICS_5G freq=5765 sig=-54 rx=6.0_MBit/s tx=175.5_MBit/s_VHT-MCS_4_80MHz_VHT-NSS_1 ip=1
+2026-09-23 10:14:08 LINK bssid=38:f4:5e:27:87:46 ssid=ALOPS_ROBOTICS_5G freq=5765 sig=-54 rx=468.0_MBit/s_VHT-MCS_5_80MHz_VHT-NSS_2 tx=234.0_MBit/s_VH
+2026-09-23 10:14:23 LINK bssid=38:f4:5e:27:87:46 ssid=ALOPS_ROBOTICS_5G freq=5765 sig=-54 rx=468.0_MBit/s_VHT-MCS_5_80MHz_VHT-NSS_2 tx=234.0_MBit/s_VH
