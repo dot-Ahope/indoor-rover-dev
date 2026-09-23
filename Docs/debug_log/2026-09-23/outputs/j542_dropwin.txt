@@ -1,0 +1,64 @@
+## mon.log (BEACON 제외)
+2026-09-18 11:55:06 LINK bssid=b0:38:6c:37:1b:4c ssid=WEB_DEV_5G freq=5180 sig=-53 rx=702.0_MBit/s_VHT-MCS_8_80MHz_VHT-NSS_2 tx=468.0_MBit/s_VHT-MCS_5
+2026-09-18 11:55:36 LINK bssid=b0:38:6c:37:1b:4c ssid=WEB_DEV_5G freq=5180 sig=-54 rx=702.0_MBit/s_VHT-MCS_8_80MHz_VHT-NSS_2 tx=526.6_MBit/s_VHT-MCS_6
+2026-09-18 11:56:51 LINK bssid=b0:38:6c:37:1b:4c ssid=WEB_DEV_5G freq=5180 sig=-54 rx=585.0_MBit/s_VHT-MCS_7_80MHz_VHT-NSS_2 tx=585.0_MBit/s_VHT-MCS_7
+2026-09-18 11:57:06 LINK bssid=b0:38:6c:37:1b:4c ssid=WEB_DEV_5G freq=5180 sig=-54 rx=702.0_MBit/s_VHT-MCS_8_80MHz_VHT-NSS_2 tx=650.0_MBit/s_VHT-MCS_7
+2026-09-18 11:58:22 LINK bssid=b0:38:6c:37:1b:4c ssid=WEB_DEV_5G freq=5180 sig=-54 rx=702.0_MBit/s_VHT-MCS_8_80MHz_VHT-NSS_2 tx=702.0_MBit/s_VHT-MCS_8
+2026-09-18 11:58:37 LINK bssid=b0:38:6c:37:1b:4c ssid=WEB_DEV_5G freq=5180 sig=-54 rx=702.0_MBit/s_VHT-MCS_8_80MHz_VHT-NSS_2 tx=650.0_MBit/s_VHT-MCS_7
+2026-09-18 11:59:07 LINK bssid=b0:38:6c:37:1b:4c ssid=WEB_DEV_5G freq=5180 sig=-54 rx=702.0_MBit/s_VHT-MCS_8_80MHz_VHT-NSS_2 tx=780.0_MBit/s_VHT-MCS_8
+2026-09-18 11:59:22 LINK bssid=b0:38:6c:37:1b:4c ssid=WEB_DEV_5G freq=5180 sig=-54 rx=780.0_MBit/s_VHT-MCS_9_80MHz_VHT-NSS_2 tx=702.0_MBit/s_VHT-MCS_8
+2026-09-18 11:59:37 LINK bssid=b0:38:6c:37:1b:4c ssid=WEB_DEV_5G freq=5180 sig=-53 rx=780.0_MBit/s_VHT-MCS_9_80MHz_VHT-NSS_2 tx=650.0_MBit/s_VHT-MCS_7
+2026-09-18 12:00:07 LINK bssid=b0:38:6c:37:1b:4c ssid=WEB_DEV_5G freq=5180 sig=-55 rx=702.0_MBit/s_VHT-MCS_8_80MHz_VHT-NSS_2 tx=702.0_MBit/s_VHT-MCS_8
+2026-09-18 12:00:22 LINK bssid=b0:38:6c:37:1b:4c ssid=WEB_DEV_5G freq=5180 sig=-54 rx=702.0_MBit/s_VHT-MCS_8_80MHz_VHT-NSS_2 tx=650.0_MBit/s_VHT-MCS_7
+2026-09-18 12:00:52 LINK bssid=b0:38:6c:37:1b:4c ssid=WEB_DEV_5G freq=5180 sig=-53 rx=702.0_MBit/s_VHT-MCS_8_80MHz_VHT-NSS_2 tx=780.0_MBit/s_VHT-MCS_8
+2026-09-18 12:01:07 LINK bssid=b0:38:6c:37:1b:4c ssid=WEB_DEV_5G freq=5180 sig=-53 rx=780.0_MBit/s_VHT-MCS_9_80MHz_VHT-NSS_2 tx=526.6_MBit/s_VHT-MCS_6
+2026-09-18 12:01:38 LINK bssid=b0:38:6c:37:1b:4c ssid=WEB_DEV_5G freq=5180 sig=-53 rx=780.0_MBit/s_VHT-MCS_9_80MHz_VHT-NSS_2 tx=585.0_MBit/s_VHT-MCS_7
+2026-09-18 12:01:53 LINK bssid=b0:38:6c:37:1b:4c ssid=WEB_DEV_5G freq=5180 sig=-52 rx=780.0_MBit/s_VHT-MCS_9_80MHz_VHT-NSS_2 tx=526.6_MBit/s_VHT-MCS_6
+2026-09-18 12:02:23 LINK bssid=b0:38:6c:37:1b:4c ssid=WEB_DEV_5G freq=5180 sig=-54 rx=780.0_MBit/s_VHT-MCS_9_80MHz_VHT-NSS_2 tx=468.0_MBit/s_VHT-MCS_5
+2026-09-18 12:02:38 LINK bssid=b0:38:6c:37:1b:4c ssid=WEB_DEV_5G freq=5180 sig=-53 rx=780.0_MBit/s_VHT-MCS_9_80MHz_VHT-NSS_2 tx=390.0_MBit/s_VHT-MCS_9
+2026-09-18 12:03:08 LINK bssid=b0:38:6c:37:1b:4c ssid=WEB_DEV_5G freq=5180 sig=-53 rx=780.0_MBit/s_VHT-MCS_9_80MHz_VHT-NSS_2 tx=351.0_MBit/s_VHT-MCS_4
+2026-09-18 12:03:23 LINK bssid=b0:38:6c:37:1b:4c ssid=WEB_DEV_5G freq=5180 sig=-53 rx=702.0_MBit/s_VHT-MCS_8_80MHz_VHT-NSS_2 tx=292.5_MBit/s_VHT-MCS_7
+2026-09-18 12:03:53 LINK bssid=b0:38:6c:37:1b:4c ssid=WEB_DEV_5G freq=5180 sig=-52 rx=780.0_MBit/s_VHT-MCS_9_80MHz_VHT-NSS_2 tx=263.3_MBit/s_VHT-MCS_6
+2026-09-18 12:04:38 LINK bssid=b0:38:6c:37:1b:4c ssid=WEB_DEV_5G freq=5180 sig=-51 rx=780.0_MBit/s_VHT-MCS_9_80MHz_VHT-NSS_2 tx=351.0_MBit/s_VHT-MCS_4
+2026-09-18 12:05:09 LINK bssid=b0:38:6c:37:1b:4c ssid=WEB_DEV_5G freq=5180 sig=-51 rx=780.0_MBit/s_VHT-MCS_9_80MHz_VHT-NSS_2 tx=468.0_MBit/s_VHT-MCS_5
+2026-09-18 12:06:24 LINK bssid=b0:38:6c:37:1b:4c ssid=WEB_DEV_5G freq=5180 sig=-52 rx=780.0_MBit/s_VHT-MCS_9_80MHz_VHT-NSS_2 tx=526.6_MBit/s_VHT-MCS_6
+2026-09-18 12:06:39 LINK bssid=b0:38:6c:37:1b:4c ssid=WEB_DEV_5G freq=5180 sig=-52 rx=780.0_MBit/s_VHT-MCS_9_80MHz_VHT-NSS_2 tx=650.0_MBit/s_VHT-MCS_7
+2026-09-18 12:07:09 LINK bssid=b0:38:6c:37:1b:4c ssid=WEB_DEV_5G freq=5180 sig=-52 rx=780.0_MBit/s_VHT-MCS_9_80MHz_VHT-NSS_2 tx=702.0_MBit/s_VHT-MCS_8
+2026-09-18 12:07:24 LINK bssid=b0:38:6c:37:1b:4c ssid=WEB_DEV_5G freq=5180 sig=-52 rx=780.0_MBit/s_VHT-MCS_9_80MHz_VHT-NSS_2 tx=650.0_MBit/s_VHT-MCS_7
+2026-09-18 12:07:54 LINK bssid=b0:38:6c:37:1b:4c ssid=WEB_DEV_5G freq=5180 sig=-52 rx=780.0_MBit/s_VHT-MCS_9_80MHz_VHT-NSS_2 tx=780.0_MBit/s_VHT-MCS_8
+2026-09-21 11:55:03 LINK bssid=b0:38:6c:37:1b:4c ssid=WEB_DEV_5G freq=5180 sig=-51 rx=780.0_MBit/s_VHT-MCS_9_80MHz_VHT-NSS_2 tx=650.0_MBit/s_VHT-MCS_7
+2026-09-21 11:55:18 LINK bssid=b0:38:6c:37:1b:4c ssid=WEB_DEV_5G freq=5180 sig=-51 rx=780.0_MBit/s_VHT-MCS_9_80MHz_VHT-NSS_2 tx=526.6_MBit/s_VHT-MCS_6
+2026-09-21 11:55:33 LINK bssid=b0:38:6c:37:1b:4c ssid=WEB_DEV_5G freq=5180 sig=-51 rx=780.0_MBit/s_VHT-MCS_9_80MHz_VHT-NSS_2 tx=585.0_MBit/s_VHT-MCS_7
+## wpa (CTRL-EVENT·reason·SA Query)
+Sep 23 12:05:03 jetson-desktop wpa_supplicant[878]: wlP1p1s0:  * reason 2 (PREV_AUTH_NOT_VALID)
+Sep 23 12:05:03 jetson-desktop wpa_supplicant[878]: TDLS: Remove peers on disassociation
+Sep 23 12:05:11 jetson-desktop wpa_supplicant[878]: wlP1p1s0:  * reason 23 (IEEE_802_1X_AUTH_FAILED)
+Sep 23 12:05:11 jetson-desktop wpa_supplicant[878]: TDLS: Remove peers on disassociation
+Sep 23 12:06:09 jetson-desktop wpa_supplicant[878]: wlP1p1s0: Request to deauthenticate - bssid=b0:38:6c:37:1b:4c pending_bssid=00:00:00:00:00:00 reason=3 (DEAUTH_LEAVING
+Sep 23 12:06:09 jetson-desktop wpa_supplicant[878]: wpa_driver_nl80211_disconnect(reason_code=3)
+Sep 23 12:06:09 jetson-desktop wpa_supplicant[878]: wlP1p1s0:  * reason 3 (DEAUTH_LEAVING) locally_generated=1
+Sep 23 12:06:09 jetson-desktop wpa_supplicant[878]: TDLS: Remove peers on disassociation
+## NM (reason 포함 줄)
+Sep 23 12:05:07 jetson-desktop NetworkManager[830]: <info>  [1790132707.4794] device (wlP1p1s0): ip:dhcp4: restarting
+Sep 23 12:05:07 jetson-desktop NetworkManager[830]: <info>  [1790132707.4795] dhcp4 (wlP1p1s0): canceled DHCP transaction
+Sep 23 12:05:07 jetson-desktop NetworkManager[830]: <info>  [1790132707.4796] dhcp4 (wlP1p1s0): activation: beginning transaction (timeout in 45 seconds)
+Sep 23 12:05:07 jetson-desktop NetworkManager[830]: <info>  [1790132707.4796] dhcp4 (wlP1p1s0): state changed no lease
+Sep 23 12:05:07 jetson-desktop NetworkManager[830]: <info>  [1790132707.4797] dhcp4 (wlP1p1s0): activation: beginning transaction (timeout in 45 seconds)
+Sep 23 12:05:18 jetson-desktop NetworkManager[830]: <info>  [1790132718.0008] device (wlP1p1s0): state change: activated -> failed (reason 'supplicant-timeout', sys-iface
+Sep 23 12:05:18 jetson-desktop NetworkManager[830]: <info>  [1790132718.0524] dhcp4 (wlP1p1s0): canceled DHCP transaction
+Sep 23 12:05:23 jetson-desktop NetworkManager[830]: <info>  [1790132723.5421] dhcp4 (wlP1p1s0): activation: beginning transaction (timeout in 45 seconds)
+Sep 23 12:06:09 jetson-desktop NetworkManager[830]: <info>  [1790132769.0028] device (wlP1p1s0): state change: ip-config -> failed (reason 'ip-config-unavailable', sys-if
+Sep 23 12:06:09 jetson-desktop NetworkManager[830]: <info>  [1790132769.0363] dhcp4 (wlP1p1s0): canceled DHCP transaction
+Sep 23 12:06:12 jetson-desktop NetworkManager[830]: <info>  [1790132772.0591] dhcp4 (wlP1p1s0): activation: beginning transaction (timeout in 45 seconds)
+Sep 23 12:06:12 jetson-desktop NetworkManager[830]: <info>  [1790132772.1886] dhcp4 (wlP1p1s0): state changed new lease, address=192.168.0.101
+## 커널
+Sep 23 12:05:07 jetson-desktop kernel: ACK 04 d4
+Sep 23 12:05:07 jetson-desktop kernel: ACK 04 d4
+Sep 23 12:05:22 jetson-desktop kernel: ACK 04 d4
+Sep 23 12:05:22 jetson-desktop kernel: ACK 04 d4
+Sep 23 12:05:23 jetson-desktop kernel: IPv6: ADDRCONF(NETDEV_CHANGE): wlP1p1s0: link becomes ready
+Sep 23 12:05:36 jetson-desktop kernel: usb 2-1.3: Failed to query (GET_CUR) UVC control 1 on unit 3: -32 (exp. 1024).
+Sep 23 12:05:36 jetson-desktop kernel: usb 2-1.3: Failed to query (GET_CUR) UVC control 1 on unit 3: -32 (exp. 1024).
+Sep 23 12:05:36 jetson-desktop kernel: usb 2-1.3: Failed to query (GET_CUR) UVC control 1 on unit 3: -32 (exp. 1024).
+Sep 23 12:06:10 jetson-desktop kernel: ACK 04 d4
+Sep 23 12:06:10 jetson-desktop kernel: ACK 04 d4
