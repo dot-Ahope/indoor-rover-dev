@@ -1,0 +1,62 @@
+199:[bt_navigator-6] [INFO] [1790141867.391250451] [bt_navigator]: Begin navigating from current location (0.00, 0.00) to (2.00, 0.00)
+291:[bt_navigator-6] [INFO] [1790141904.235796255] [bt_navigator]: Begin navigating from current location (1.93, 0.04) to (0.00, 0.00)
+[bt_navigator-6] [INFO] [1790141904.235796255] [bt_navigator]: Begin navigating from current location (1.93, 0.04) to (0.00, 0.00)
+[smoother_server-3] [INFO] [1790141904.248707624] [smoother_server]: Received a path to smooth.
+[controller_server-2] [INFO] [1790141904.268686106] [controller_server]: Received a goal, begin computing control effort.
+[smoother_server-3] [INFO] [1790141905.298730316] [smoother_server]: Received a path to smooth.
+[bt_navigator-6] [WARN] [1790141907.977884426] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[smoother_server-3] [INFO] [1790141908.448549231] [smoother_server]: Received a path to smooth.
+[planner_server-4] [INFO] [1790141911.688831604] [global_costmap.global_costmap]: StaticLayer: Resizing costmap to 215 X 199 at 0.050000 m/pix
+[smoother_server-3] [INFO] [1790141912.648718946] [smoother_server]: Received a path to smooth.
+[planner_server-4] [INFO] [1790141913.688890562] [global_costmap.global_costmap]: StaticLayer: Resizing costmap to 230 X 199 at 0.050000 m/pix
+[smoother_server-3] [INFO] [1790141914.738522425] [smoother_server]: Received a path to smooth.
+[planner_server-4] [INFO] [1790141915.688903662] [global_costmap.global_costmap]: StaticLayer: Resizing costmap to 231 X 199 at 0.050000 m/pix
+[controller_server-2] [WARN] [1790141915.788851336] [controller_server]: [follow_path] [ActionServer] Aborting handle.
+[smoother_server-3] [INFO] [1790141915.788793670] [smoother_server]: Received a path to smooth.
+[controller_server-2] [INFO] [1790141915.808366762] [local_costmap.local_costmap]: Received request to clear except a region the local_costmap
+[controller_server-2] [INFO] [1790141915.810601524] [controller_server]: Received a goal, begin computing control effort.
+[controller_server-2] [WARN] [1790141916.013973914] [controller_server]: [follow_path] [ActionServer] Aborting handle.
+[controller_server-2] [INFO] [1790141916.028346611] [local_costmap.local_costmap]: Received request to clear except a region the local_costmap
+[planner_server-4] [INFO] [1790141916.029662175] [global_costmap.global_costmap]: Received request to clear except a region the global_costmap
+[smoother_server-3] [INFO] [1790141916.719822877] [smoother_server]: Received a path to smooth.
+[controller_server-2] [INFO] [1790141916.738714571] [controller_server]: Received a goal, begin computing control effort.
+[controller_server-2] [WARN] [1790141916.755117799] [controller_server]: [follow_path] [ActionServer] Aborting handle.
+[controller_server-2] [INFO] [1790141916.768044209] [local_costmap.local_costmap]: Received request to clear except a region the local_costmap
+[controller_server-2] [INFO] [1790141916.772558629] [controller_server]: Received a goal, begin computing control effort.
+[controller_server-2] [WARN] [1790141916.800334295] [controller_server]: [follow_path] [ActionServer] Aborting handle.
+[behavior_server-5] [INFO] [1790141916.819282727] [behavior_server]: Running backup
+[behavior_server-5] [INFO] [1790141916.820839642] [behavior_server]: DriveOnHeading: no acceleration or deceleration limits set
+[behavior_server-5] [WARN] [1790141916.821862972] [behavior_server]: Collision Ahead - Exiting DriveOnHeading
+[behavior_server-5] [WARN] [1790141916.821943391] [behavior_server]: backup failed
+[behavior_server-5] [WARN] [1790141916.821981504] [behavior_server]: [backup] [ActionServer] Aborting handle.
+[behavior_server-5] [INFO] [1790141916.849204352] [behavior_server]: Running wait
+[behavior_server-5] [INFO] [1790141921.850003209] [behavior_server]: wait completed successfully
+[smoother_server-3] [INFO] [1790141921.898729069] [smoother_server]: Received a path to smooth.
+[controller_server-2] [INFO] [1790141921.919303794] [controller_server]: Received a goal, begin computing control effort.
+[controller_server-2] [WARN] [1790141921.940469195] [controller_server]: [follow_path] [ActionServer] Aborting handle.
+[controller_server-2] [INFO] [1790141921.958301654] [local_costmap.local_costmap]: Received request to clear except a region the local_costmap
+[controller_server-2] [INFO] [1790141921.959728677] [controller_server]: Received a goal, begin computing control effort.
+[controller_server-2] [WARN] [1790141921.998795211] [controller_server]: [follow_path] [ActionServer] Aborting handle.
+[controller_server-2] [INFO] [1790141922.018764445] [local_costmap.local_costmap]: Received request to clear except a region the local_costmap
+[planner_server-4] [INFO] [1790141922.020422227] [global_costmap.global_costmap]: Received request to clear except a region the global_costmap
+[smoother_server-3] [INFO] [1790141922.721035722] [smoother_server]: Received a path to smooth.
+[controller_server-2] [INFO] [1790141922.739227457] [controller_server]: Received a goal, begin computing control effort.
+[controller_server-2] [WARN] [1790141922.756002313] [controller_server]: [follow_path] [ActionServer] Aborting handle.
+[controller_server-2] [INFO] [1790141922.768637609] [local_costmap.local_costmap]: Received request to clear except a region the local_costmap
+[controller_server-2] [INFO] [1790141922.770272863] [controller_server]: Received a goal, begin computing control effort.
+[controller_server-2] [WARN] [1790141922.800914512] [controller_server]: [follow_path] [ActionServer] Aborting handle.
+[behavior_server-5] [INFO] [1790141922.819709146] [behavior_server]: Running backup
+[behavior_server-5] [WARN] [1790141922.821489557] [behavior_server]: Collision Ahead - Exiting DriveOnHeading
+[behavior_server-5] [WARN] [1790141922.821768446] [behavior_server]: backup failed
+[behavior_server-5] [WARN] [1790141922.821805599] [behavior_server]: [backup] [ActionServer] Aborting handle.
+[behavior_server-5] [INFO] [1790141922.848941341] [behavior_server]: Running wait
+[behavior_server-5] [INFO] [1790141927.849373916] [behavior_server]: wait completed successfully
+[smoother_server-3] [INFO] [1790141927.898727797] [smoother_server]: Received a path to smooth.
+[controller_server-2] [INFO] [1790141927.918970703] [controller_server]: Received a goal, begin computing control effort.
+[controller_server-2] [WARN] [1790141927.944606555] [controller_server]: [follow_path] [ActionServer] Aborting handle.
+[controller_server-2] [INFO] [1790141927.958142265] [local_costmap.local_costmap]: Received request to clear except a region the local_costmap
+[controller_server-2] [INFO] [1790141927.959296159] [controller_server]: Received a goal, begin computing control effort.
+[controller_server-2] [WARN] [1790141928.001006268] [controller_server]: [follow_path] [ActionServer] Aborting handle.
+[controller_server-2] [INFO] [1790141928.018283860] [local_costmap.local_costmap]: Received request to clear except a region the local_costmap
+[planner_server-4] [INFO] [1790141928.019436986] [global_costmap.global_costmap]: Received request to clear except a region the global_costmap
+[smoother_server-3] [INFO] [1790141928.718695045] [smoother_server]: Received a path to smooth.
