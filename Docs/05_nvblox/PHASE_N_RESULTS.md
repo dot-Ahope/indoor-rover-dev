@@ -29,7 +29,8 @@
 | 2 | `2026-09-21_costmap_stvl_vs_nvblox_v2_floor_fix.html` | 같은 비교 v2 — round→floor 수정 후. 판 E(층 vs 슬라이스 정렬 검증), V1~V4 판정표, v1 대비 | `job494_vizgen2.py` · `grid_stvl2_costmap.json`, `grid_nvfix_*.json` |
 | 3 | `2026-09-22_truncation_4_vs_2.html` | 절단 4.0 vs 2.0 — STVL / t4 / t2 층, 차이 2 장, t2 슬라이스, T1~T6 판정과 정정표 | `debug_log/2026-09-22/jobs/job503_vizgen3.py` · `grid_stvl3_costmap.json`, `grid_t{4,2}_*.json` |
 | 4 | `2026-09-22_n4_trajectories_stvl_vs_nvblox.html` | N4 주행 5 회 평면 궤적(base_link·차체 오른쪽 변)과 여유·CPU 표 | `job512_trajviz.py` · `outputs/n4{s1,s2,n1,n2,n3}.csv`(러너 0.1 s 계측) |
-- 아티팩트 링크(비공개): v2 https://claude.ai/artifact/PRgdLzWzj1gWXvRhqwFchT · 절단 https://claude.ai/artifact/AGgeiror4K5zxVCv8RZxch · 궤적 https://claude.ai/artifact/Erz879XtFW9HVQDsgZgC9S
+| 5 | `2026-09-23_phase_n_close.html` | Phase N 마감 보고 — N6 최종 판정, N6-2 주행 3 회, 얻은 것·잃은 것, 09-23 확인 사실, 다음 단계 | `debug_log/2026-09-23/SUMMARY.md §0~13` |
+- 아티팩트 링크(비공개): 마감 보고 https://claude.ai/artifact/5XRPPEk98SmAtHxCNGCiYq · v2 https://claude.ai/artifact/PRgdLzWzj1gWXvRhqwFchT · 절단 https://claude.ai/artifact/AGgeiror4K5zxVCv8RZxch · 궤적 https://claude.ai/artifact/Erz879XtFW9HVQDsgZgC9S
 - bag(로컬만, git 제외): `debug_log/2026-09-22/bags/bag_n4*.tgz` — 모드 N 은 `BAG_PROFILE=nvblox`(슬라이스·점유 격자·깊이 160×120 포함, 14.5~15.2 MB), 모드 S 2.7 MB. 각 bag 폴더에 `run_meta.txt`·`params.txt`.
 
 ## 4. 채택 구성 (재현 정보)
