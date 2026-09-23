@@ -145,3 +145,12 @@
 - 판정: **그냥 빼면 안 된다.** (a) 바이어스·ZUPT 가 없으면 정지 중 분당 수 도씩 yaw 가 샌다(09-10 실측: 80 분 정지 뒤 105°), (b) 휠 covariance 0 이 EKF 로 들어간다, (c) 원본 자이로 covariance 0.01 은 휠 yaw(0.01)와 같은 신뢰도라 — 09-23 미끄러짐에서 EKF 가 맞았던 "자이로 25 배 신뢰" 가 사라진다. 불필요한 부분은 vx·slip 계수(1.0)와 orientation covariance(원본이 이미 −1)뿐.
 - 대체 가능성: 설치된 스택에 같은 기능 없음(robot_localization 은 바이어스 추정 미지원, imu_tools 미설치; imu_complementary_filter 의 정지 바이어스 추정은 후보지만 미검증·노드 추가). 휠 covariance 는 **펌웨어가 직접 채우면** 이 경로를 없앨 수 있다(F405, 저비용).
 - 제안: 같은 로직을 **C++ 노드로 이식**(파이썬 200 Hz 역직렬화가 비용의 대부분으로 추정, 기대 41 → 수 % — 미측정) + 발행 100 Hz 다운샘플(EKF 30 Hz) + 휠 covariance 는 펌웨어로 이전. 검증 = 정지 10 분 yaw 드리프트·ZUPT 잔차·미끄러짐 재현 시 EKF 추종이 파이썬판과 같을 것.
+
+## 16. 사용자 결정·F0 착수
+- **결정(사용자)**: IMU 발행 200 Hz 유지 — "카메라 기본 200 Hz 에 맞춘 균일한 환경이 더 중요". 컨디셔너 C++ 이식 시 다운샘플하지 않는다(§15 제안에서 삭제).
+- **F0 코스 확장 착수**(자유 이동 로드맵 1 단계, `Docs/04_navigation/NAV2_EXPLORATION_PLAN.md §7`). 상자 코스와 무관한 도구를 새로 씀:
+  - `jobs/job550_f0run.py`: 출발 자세 기준 목표 목록("x,y,yaw°;…")을 map 으로 바꿔 NavigateToPose 로 차례로 보냄, 목표별 한도 = 경로 길이/0.07 m/s × 2 + 30 s, 10 Hz csv(map·EKF·휠 yaw·지령·map→odom·stuck), 요약 = 목표별 결과, 출발 대비 최종 map 편차, map→odom 누적 보정(SLAM 이 본 오도메트리 드리프트), 휠 vs EKF 누적 회전 차.
+  - `jobs/job551_f0drive.sh`(Jetson): 일반 게이트 A·B·J·C·G2 → 30 s 대기(DDS 규칙) → bag(+`/imu/data`)·tegra·top·RSS → 러너 → 메타(job453).
+  - `jobs/run_f0.sh`(PC): 전송 재시도 3 회, Jetson 에서 setsid nohup 으로 기동하고 로그를 폴링 — **ssh 가 끊겨도 주행·기록은 계속**(09-23 끊김 대응), 끝나면 산출물 회수.
+- **판정 기준(주행 전 선언)**: F1 모든 목표 SUCCEEDED·중단 0·목표당 제어 미달 ≤ 1. F2 **물리 복귀 오차**(줄자, 출발 테이프 기준) ≤ 10 cm·yaw ≤ 5°. F3 기록 항목(기준 없음): map→odom 누적 보정 = 오도메트리 드리프트 cm/10 m, 휠 vs EKF 회전 차, stuck 진단 수 — F2 가 불합격이거나 드리프트 > 5 cm/10 m 면 cuVSLAM 투입 근거. F4 CPU 합(같은 구성 기준 320~325) 유지.
+- 대기: 코스 경로(사용자) — 직선 길이·회전 위치·장애물.
