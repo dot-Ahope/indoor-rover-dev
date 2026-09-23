@@ -1,0 +1,46 @@
+## 전체 정지(에이전트 포함 — IP 변경 뒤 DDS 참가자 분리 해소)
+  잔존: 0
+0
+  agent 종료
+  ROS 프로세스: 1   docker: 1
+## prep
+=== 1. 재기동 (192.168.0.101) ===
+  base 계층 유지: 에이전트 0개, robot_state_publisher 0개 (각 1 이어야)
+########## 2. base (micro-ROS 에이전트) ##########
+  에이전트 없음/보드 무발행 → base 기동 (기동 후 보드 리셋이 필요할 수 있다)
+  /wheel_odom  무발행
+  /rover/status  무발행
+  세션 수립: 0건
+  ★ 보드는 송신 중인데 세션이 없다 = 에이전트보다 보드 리셋이 먼저였다.
+    → **보드 리셋 버튼을 한 번 더 눌러 주십시오.** (에이전트는 이미 떠 있다)
+  보드 없이는 /cmd_vel 이 전달되지 않아 주행이 불가하므로 여기서 중단한다.
+=== 2. 릴레이·readback·상자 게이트 ===
+=== 릴레이 ===
+남은 릴레이: 0
+out hz 발행자 
+=== readback ===
+  controller_frequency               Node not found
+  FollowPathMPPI.temperature         Node not found
+  FollowPathMPPI.iteration_count     Node not found
+  FollowPathMPPI.vx_std              Node not found
+  FollowPathMPPI.wz_std              Node not found
+  FollowPathMPPI.visualize           Node not found
+  BT raw_path: 4  SmoothPath: 1
+  nav2: controller 0 planner 0 bt 0 stuck_monitor 0
+  로버 자세: 
+=== 프로세스·부하 ===
+load 0.61 3.12 4.30  shadow_mode: 
+=== 게이트 ===
+상자 x= y= | 띠 근거 없는 셀 0 (≤1) | 상자 셀 3표본 IndexError: list index out of range IndexError: list index out of range IndexError: list index out of range →  | 창 nan m (≥0.20; 좌측 )
+=== 3. 목표 근처 크리틱·SLAM·목표 여유 ===
+  FollowPathMPPI.GoalCritic.cost_weight      Node not found
+  FollowPathMPPI.PathFollowCritic.threshold_to_consider Node not found
+  FollowPathMPPI.PathAlignCritic.threshold_to_consider Node not found
+  FollowPathMPPI.PathAngleCritic.threshold_to_consider Node not found
+  FollowPathMPPI.PathFollowCritic.cost_weight Node not found
+  FollowPathMPPI.PathFollowCritic.offset_from_furthest Node not found
+  FollowPathMPPI.visualize                   Node not found
+  bt.default_server_timeout                  Node not found
+map->odom 수신 0 개 (5 s) — SLAM 무응답
+FAIL
+  battery: 

@@ -1,0 +1,20 @@
+grep: rate:: No such file or directory
+grep: [0-9.]*": No such file or directory
+Finished <<< rover_bringup [0.22s]
+Finished <<< rover_navigation [0.26s]
+빌드 1 s
+######## Nav2 재기동(점군 keep) + 점군 true
+  nav2 프로세스: controller 1 planner 1 bt 1 | 오류: 0
+  로컬 plugins 실행값: String values are: ['nvblox_layer', 'obstacle_layer', 'inflation_layer'] | nvblox_node: 1 개 | 활성 yaml: # 자동 생성(navigation.launch.py, camera_layer=nvblox) — 원본 
+Set parameter successful
+점군 Hz: 
+######## 게이트
+J nvblox 노드: 프로세스 1, 깊이 15.1 Hz, ESDF 9.6 Hz, esdf 지연 0.100 s → 통과
+K 층 실효값: String values are: ['nvblox_layer', 'obstacle_layer', 'inflation_layer → 통과
+L 슬라이스 커버: 상자 띠 셀/프레임 11, 근거리 자취 프레임 0/95 → 통과
+  (iii) 수신 9.52 Hz, 간격 중앙 0.107 최대 0.112 s | stamp 지연 중앙 0.110 최대 0.115 s | 해상도 0.050 m, 40x48
+  (i) 상자 띠 장애물 셀 최소 x(base): 중앙 1.175 최소 1.175 최대 1.175 (프레임당 셀 11) | 물리 전면 1.147 → 차 +0.028 m = +
+  (ii) 카메라 0.45 m 안 장애물 셀: 프레임당 중앙 0 최대 0, 0 이 아닌 프레임 0/95 | 전체 장애물 셀 중앙 45
+M 목표 부근(x 1.5~2.3,|y|<0.45) 전역 LETHAL 0 셀, 라이다 근거 점 0 → 통과
+N 코스트맵 상자 최대 y 0.025 − 카메라 왼쪽 가장자리 +0.00 = 0.025 m (≥ −0.025) → 통과
+== 모드 N 게이트 J·K·L·M·N 통과
