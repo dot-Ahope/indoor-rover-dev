@@ -1,0 +1,187 @@
+<title>제자리 회전 슬립</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{color-scheme:light;--bg:#f5f5f2;--surface:#fcfcfa;--ink:#17181a;--ink2:#55575b;--rule:#d9d9d3;--accent:#1f6f8b;--ok:#1d7a3a;--warn:#a15c00;--ng:#b3261e;--chip:#e9eef0;
+--cw38:#1f6f8b;--cw20:#6aa9c2;--ccw38:#c2410c;--ccw20:#e58a55;--body:#8a8d93;--grid:#e3e3dd}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){color-scheme:dark;--bg:#141516;--surface:#1b1c1e;--ink:#eeeeea;--ink2:#b9bab5;--rule:#34353a;--accent:#5fb3cf;--ok:#5cc472;--warn:#e0a24a;--ng:#f0705f;--chip:#23292c;
+--cw38:#5fb3cf;--cw20:#9fd0e2;--ccw38:#f08a4b;--ccw20:#f6b88f;--body:#8f9298;--grid:#26272b}}
+:root[data-theme="dark"]{color-scheme:dark;--bg:#141516;--surface:#1b1c1e;--ink:#eeeeea;--ink2:#b9bab5;--rule:#34353a;--accent:#5fb3cf;--ok:#5cc472;--warn:#e0a24a;--ng:#f0705f;--chip:#23292c;
+--cw38:#5fb3cf;--cw20:#9fd0e2;--ccw38:#f08a4b;--ccw20:#f6b88f;--body:#8f9298;--grid:#26272b}
+body{background:var(--bg);color:var(--ink);font-family:"IBM Plex Sans KR",system-ui,sans-serif;line-height:1.6;padding-block:32px 48px;padding-inline:16px}
+main{max-width:940px;margin:0 auto;display:grid;gap:34px}
+h1{font-size:1.55rem;margin:0;text-wrap:balance}h2{font-size:1.08rem;margin:0 0 10px;text-wrap:balance}
+.eyebrow{font:500 .78rem "IBM Plex Mono",monospace;letter-spacing:.06em;color:var(--accent);text-transform:uppercase}
+.lead{color:var(--ink2);max-width:70ch;margin:6px 0 0}
+p{max-width:72ch;margin:6px 0}
+.verdict{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
+.v{background:var(--surface);border:1px solid var(--rule);border-radius:6px;padding:14px 16px}
+.v b{display:block;font:500 1.15rem "IBM Plex Mono",monospace;font-variant-numeric:tabular-nums}
+.v span{color:var(--ink2);font-size:.86rem}
+.v.ok{border-left:4px solid var(--ok)}.v.ng{border-left:4px solid var(--ng)}.v.warn{border-left:4px solid var(--warn)}
+figure{margin:0;background:var(--surface);border:1px solid var(--rule);border-radius:6px;padding:12px}
+figcaption{color:var(--ink2);font-size:.86rem;margin-top:8px;max-width:80ch}
+.fig-scroll{overflow-x:auto}
+svg text{fill:var(--ink2);font:11px "IBM Plex Mono",monospace}
+.legend{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:.82rem;color:var(--ink2);margin:0 0 8px}
+.legend i{display:inline-block;width:12px;height:12px;margin-right:6px;vertical-align:middle;border-radius:50%}
+.tw{overflow-x:auto}table{border-collapse:collapse;width:100%;font-size:.9rem;font-variant-numeric:tabular-nums}
+th,td{text-align:left;padding:7px 10px;border-bottom:1px solid var(--rule);vertical-align:top}th{color:var(--ink2);font-weight:600;font-size:.82rem}
+td.n{font-family:"IBM Plex Mono",monospace;white-space:nowrap}
+.pill{display:inline-block;font:500 .75rem "IBM Plex Mono",monospace;padding:1px 8px;border-radius:10px;background:var(--chip)}
+.pill.ok{color:var(--ok)}.pill.warn{color:var(--warn)}.pill.ng{color:var(--ng)}
+ul{margin:0;padding-left:1.1em;max-width:74ch}li{margin:5px 0}
+.two{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:18px}
+code{font-family:"IBM Plex Mono",monospace;font-size:.86em}
+.tip{position:fixed;pointer-events:none;background:var(--surface);border:1px solid var(--rule);border-radius:4px;padding:4px 8px;font:12px "IBM Plex Mono",monospace;color:var(--ink);box-shadow:0 2px 8px rgba(0,0,0,.15)}
+footer{color:var(--ink2);font-size:.84rem;border-top:1px solid var(--rule);padding-top:14px}
+</style>
+<main>
+<header>
+<div class="eyebrow">Indoor Rover · 제자리 회전 시험 · 2026-09-28</div>
+<h1>궤도 차체는 180° 돌 때마다 10~27 cm 옆으로 밀린다</h1>
+<p class="lead">09-23 왕복 주행에서 로버가 목표에서 제자리로 돌다가 옆으로 20 cm 밀려 목표 옆에 멈췄다. 그것이 우연인지, 얼마나 되는지, 회전 속도·방향에 따라 달라지는지를 순수 제자리 회전 16 회로 쟀다. 판정 기준은 주행 전에 선언했다.</p>
+</header>
+
+<section>
+<div class="verdict">
+<div class="v ok"><b>M1′ 통과</b><span>스캔 직접 정합 ↔ 줄자 2 회, 1~2 cm 이내</span></div>
+<div class="v ng"><b>M2 재현 16/16</b><span>모든 회전이 5 cm 이상 밀림</span></div>
+<div class="v warn"><b>M3 불충족</b><span>0.20 rad/s 로 늦춰도 줄지 않음</span></div>
+<div class="v warn"><b>EKF·SLAM 모두 0</b><span>현 스택은 이 밀림을 보지 못한다</span></div>
+</div>
+</section>
+
+<section>
+<h2>회전마다 중심이 어디로 갔나</h2>
+<div class="legend">
+<span><i style="background:var(--cw38)"></i>시계 0.38 rad/s (7)</span>
+<span><i style="background:var(--cw20)"></i>시계 0.20 (4)</span>
+<span><i style="background:var(--ccw38)"></i>반시계 0.38 (1)</span>
+<span><i style="background:var(--ccw20)"></i>반시계 0.20 (4)</span>
+</div>
+<figure><div class="fig-scroll"><svg id="vec" role="img" aria-label="회전별 중심 이동 벡터"></svg></div>
+<figcaption>회전 시작 자세의 차체 좌표(위 = 앞, 왼쪽 = 로버 왼쪽). 회색 사각형 = 차체(0.50 × 0.33 m), 점 = 180° 회전 뒤 중심 위치. 시계 회전은 모두 <b>왼쪽 아래(왼쪽·뒤)</b>, 반시계는 <b>오른쪽</b>으로 모인다 — 옆 방향이 회전 방향에 따라 거울 대칭. 점에 마우스를 올리면 값이 보인다.</figcaption></figure>
+</section>
+
+<section>
+<h2>조건별 요약</h2>
+<div class="two">
+<figure><div class="fig-scroll"><svg id="mag" role="img" aria-label="조건별 이동 크기"></svg></div>
+<figcaption>회전당 중심 이동 크기. 점 = 개별 회전, 가로 막대 = 평균. 점선 = 판정 문턱 5 cm.</figcaption></figure>
+<div class="tw"><table>
+<thead><tr><th>조건</th><th>n</th><th>평균 (범위)</th><th>옆 평균</th></tr></thead>
+<tbody>
+<tr><td>시계 0.38</td><td class="n">7</td><td class="n">12.4 cm (6.1~17.0)</td><td class="n">왼 10.6</td></tr>
+<tr><td>시계 0.20</td><td class="n">4</td><td class="n">11.5 cm (10.4~13.5)</td><td class="n">왼 9.9</td></tr>
+<tr><td>반시계 0.38</td><td class="n">1</td><td class="n">16.0 cm</td><td class="n">오른 15.4</td></tr>
+<tr><td>반시계 0.20</td><td class="n">4</td><td class="n">21.9 cm (16.2~27.2)</td><td class="n">오른 19.9</td></tr>
+</tbody></table>
+<p style="font-size:.88rem;color:var(--ink2)">EKF 가 본 이동은 16 회 모두 0.2 cm 이하. 회전각은 스캔·EKF 가 0.5~1.4° 안에서 일치(자이로는 정확), 휠은 최대 +28° 과다.</p></div>
+</div>
+</section>
+
+<section>
+<h2>왜 SLAM 도 못 봤나</h2>
+<p>slam_toolbox 는 새 스캔을 받을지 <b>병진 거리만</b>으로 정한다(humble <code>shouldProcessScan</code>: 이동² &lt; 0.8 × 0.05² 이면 버림 = 4.5 cm 미만). 회전각은 이 관문에 쓰이지 않는다. 순수 회전에서는 EKF 가 병진 0 을 보고하므로 스캔이 하나도 추가되지 않고 map→odom 이 그대로다 — 16 회 내내 (0, 0, 0°). <code>slam.yaml</code> 의 <code>minimum_travel_heading 0.03</code>("회전 시 보정 잦게")은 순수 회전에 효과가 없다.</p>
+<p>09-23 f0a2 에서 SLAM 이 밀림을 잡은 건, 그때 MPPI 가 회전 중 후진을 섞어 병진이 4.5 cm 를 넘었기 때문이다. 그래서 이번 시험은 bag 의 <b>정지 스캔끼리 직접 정합(ICP)</b>으로 쟀고, 정지 중 잡음은 1 mm 이하, 줄자와는 1~2 cm 이내였다.</p>
+</section>
+
+<section>
+<h2>원인 — 무엇을 기각했고 무엇이 남았나 (추정)</h2>
+<div class="two">
+<figure><div class="fig-scroll"><svg id="pivot" role="img" aria-label="회전축 치우침 설명"></svg></div>
+<figcaption>한 점을 축으로 180° 돌면 중심은 축 오프셋의 두 배만큼 옮겨진다. 측정을 거꾸로 풀면 회전축이 <b>앞으로 구르는 트랙 쪽</b>으로 5~10 cm 치우친 것과 같다.</figcaption></figure>
+<div>
+<ul>
+<li><span class="pill ng">기각</span> <b>무게중심 치우침</b>: 축이 한 점에 고정돼 있으면 시계·반시계가 같은 쪽으로 밀려야 한다. 측정은 옆 방향이 반대.</li>
+<li><span class="pill warn">유력</span> <b>앞으로 구르는 트랙이 더 미끄러짐</b>: 시계 = 왼쪽 트랙 전진 → 왼쪽으로 밀림, 반시계 = 오른쪽 트랙 전진 → 오른쪽. 속도를 바꿔도 크기가 비슷(시계 12.4 → 11.5) — 시간보다 트랙 이동량에 비례하는 기구적 원인과 맞다. 후보: 스프로킷 위치에 따른 전·후진 트랙 장력 차, 트랙 돌기 방향성, 모터 정·역 출력 차(FG 에 방향 정보가 없어 펌웨어가 보정 못 함).</li>
+<li><span class="pill warn">겹침</span> 반시계가 더 크다 → 좌우 트랙(또는 모터) 차이도 섞여 있다.</li>
+<li>검증 후보: 직진 전·후진 1 m 의 휠 vs 스캔 거리 · 받침대 정·역 FG 속도 · 한쪽 트랙만 구동.</li>
+</ul>
+</div>
+</div>
+</section>
+
+<section>
+<h2>의미와 다음</h2>
+<ul>
+<li><b>대책이 아닌 것</b>: 최대 회전 속도 낮추기(M3 불충족).</li>
+<li><b>당장</b>: 목표에서 자세 맞춤 제자리 회전을 피한다(도착 자세로 멈춘 뒤 복귀).</li>
+<li><b>근본</b>: odom EKF 에 옆 속도를 재는 입력(rf2o → cuVSLAM)과 가변 공분산. 근거 수치 — 회전 중 옆 속도 ≈ 0.012~0.024 m/s(계산) → 회전 중 휠 vy σ 는 0.03 m/s 이상에서 출발(현재 0.01 고정).</li>
+<li><b>다음 순서</b>: 컨디셔너 C++ 이식(고정값 동일성·CPU) → 가변 σ + rf2o → cuVSLAM.</li>
+<li>시험 중 교훈: 시계·반시계 <b>교대는 바닥 기준 누적</b>(차체가 매번 뒤집힘), 같은 방향 반복이 짝수 회에서 상쇄된다.</li>
+</ul>
+</section>
+
+<footer>원문 <code>Docs/debug_log/2026-09-28/SUMMARY.md §0~6</code> · 러너 <code>jobs/job562_spin.py</code> · 측정 <code>jobs/job567_scanmatch.py</code> · bag <code>bag_s1·s2·r1·r1b·r2·r2b·r3</code>(로컬) · 브랜치 <code>feature/nvblox-migration</code> a358a14</footer>
+</main>
+<div class="tip" id="tip" hidden></div>
+<script>
+const D = [
+ ['cw38','S1-1',-0.109,0.130],['cw38','S1-2',-0.089,0.130],['cw38','S1-3',-0.043,0.096],['cw38','R1-1',-0.066,0.093],['cw38','R1b-1',-0.067,0.109],['cw38','R1b-2',-0.046,0.126],['cw38','R1b-3',-0.011,0.060],
+ ['cw20','R2b-1',-0.088,0.103],['cw20','R2b-2',-0.064,0.097],['cw20','R2b-3',-0.034,0.100],['cw20','R2b-4',-0.034,0.098],
+ ['ccw38','S2-1',0.045,-0.154],
+ ['ccw20','R3-1',-0.092,-0.133],['ccw20','R3-2',-0.099,-0.253],['ccw20','R3-3',-0.100,-0.184],['ccw20','R3-4',-0.055,-0.228]];
+const NAME = {cw38:'시계 0.38', cw20:'시계 0.20', ccw38:'반시계 0.38', ccw20:'반시계 0.20'};
+const NS = 'http://www.w3.org/2000/svg';
+const tip = document.getElementById('tip');
+function el(t, a, p){ const e = document.createElementNS(NS, t); for (const k in a) e.setAttribute(k, a[k]); if (p) p.appendChild(e); return e; }
+function tipOn(e, s){ tip.textContent = s; tip.hidden = false; tip.style.left = (e.clientX + 12) + 'px'; tip.style.top = (e.clientY + 12) + 'px'; }
+function tipOff(){ tip.hidden = true; }
+function size(svg, W, H){ svg.setAttribute('viewBox', `0 0 ${W} ${H}`); svg.setAttribute('width', W); svg.style.maxWidth = '100%'; svg.style.height = 'auto'; }
+// 그림 1: 벡터. 화면 위 = 앞(+x), 화면 왼쪽 = 로버 왼쪽(+y)
+(function(){
+  const svg = document.getElementById('vec'), sc = 1300, R = 0.32, pad = 30, W = 2 * R * sc + 2 * pad, H = W; size(svg, W, H);
+  const X = y => pad + (R - y) * sc, Y = x => pad + (R - x) * sc;
+  el('rect', {x: pad, y: pad, width: W - 2 * pad, height: H - 2 * pad, fill: 'var(--surface)', stroke: 'var(--rule)'}, svg);
+  for (let g = -0.3; g <= 0.301; g += 0.1){ const gg = +g.toFixed(1);
+    el('line', {x1: X(gg), x2: X(gg), y1: pad, y2: H - pad, stroke: 'var(--grid)'}, svg); el('line', {x1: pad, x2: W - pad, y1: Y(gg), y2: Y(gg), stroke: 'var(--grid)'}, svg);
+    el('text', {x: X(gg), y: H - pad + 14, 'text-anchor': 'middle'}, svg).textContent = (gg > 0 ? '왼 ' : gg < 0 ? '오른 ' : '') + Math.abs(gg * 100).toFixed(0);
+    el('text', {x: pad - 4, y: Y(gg) + 4, 'text-anchor': 'end'}, svg).textContent = (gg > 0 ? '앞 ' : gg < 0 ? '뒤 ' : '') + Math.abs(gg * 100).toFixed(0); }
+  el('rect', {x: X(0.165), y: Y(0.25), width: 0.33 * sc, height: 0.5 * sc, fill: 'none', stroke: 'var(--body)', 'stroke-width': 1.5, 'stroke-dasharray': '5 4'}, svg);
+  el('text', {x: X(0), y: Y(0.27), 'text-anchor': 'middle'}, svg).textContent = '▲ 앞';
+  el('text', {x: X(0), y: H - 8, 'text-anchor': 'middle'}, svg).textContent = 'cm, 회전 시작 차체 기준';
+  el('circle', {cx: X(0), cy: Y(0), r: 4, fill: 'var(--ink)'}, svg);
+  for (const [c, n, x, y] of D){
+    el('line', {x1: X(0), y1: Y(0), x2: X(y), y2: Y(x), stroke: `var(--${c})`, 'stroke-width': 1.5, opacity: .5}, svg);
+    const p = el('circle', {cx: X(y), cy: Y(x), r: 6, fill: `var(--${c})`, stroke: 'var(--surface)', 'stroke-width': 2}, svg);
+    p.addEventListener('mousemove', e => tipOn(e, `${n} ${NAME[c]} · ${x >= 0 ? '앞' : '뒤'} ${Math.abs(x * 100).toFixed(1)}, ${y >= 0 ? '왼' : '오른'} ${Math.abs(y * 100).toFixed(1)} cm = ${(Math.hypot(x, y) * 100).toFixed(1)} cm`)); p.addEventListener('mouseleave', tipOff);
+  }
+})();
+// 그림 2: 크기 점도표
+(function(){
+  const svg = document.getElementById('mag'), W = 420, H = 280, l = 92, r = 20, t = 14, b = 34; size(svg, W, H);
+  const keys = ['cw38', 'cw20', 'ccw38', 'ccw20'], X = v => l + v / 30 * (W - l - r), rowH = (H - t - b) / 4;
+  for (let v = 0; v <= 30; v += 5){ el('line', {x1: X(v), x2: X(v), y1: t, y2: H - b, stroke: 'var(--grid)'}, svg); el('text', {x: X(v), y: H - b + 16, 'text-anchor': 'middle'}, svg).textContent = v; }
+  el('text', {x: (l + W - r) / 2, y: H - 4, 'text-anchor': 'middle'}, svg).textContent = '회전당 이동 (cm)';
+  el('line', {x1: X(5), x2: X(5), y1: t, y2: H - b, stroke: 'var(--ng)', 'stroke-dasharray': '4 3'}, svg);
+  keys.forEach((k, i) => {
+    const cy = t + rowH * (i + 0.5), v = D.filter(d => d[0] === k).map(d => Math.hypot(d[2], d[3]) * 100), m = v.reduce((a, b) => a + b, 0) / v.length;
+    el('text', {x: l - 8, y: cy + 4, 'text-anchor': 'end', style: 'fill:var(--ink)'}, svg).textContent = NAME[k];
+    el('line', {x1: X(m), x2: X(m), y1: cy - 12, y2: cy + 12, stroke: 'var(--ink)', 'stroke-width': 2}, svg);
+    v.forEach((a, j) => { const p = el('circle', {cx: X(a), cy: cy + (j % 2 ? 5 : -5), r: 5.5, fill: `var(--${k})`, stroke: 'var(--surface)', 'stroke-width': 2}, svg);
+      p.addEventListener('mousemove', e => tipOn(e, `${NAME[k]} · ${a.toFixed(1)} cm`)); p.addEventListener('mouseleave', tipOff); });
+  });
+})();
+// 그림 3: 회전축 치우침 도식 (시계 회전, 축이 왼쪽 트랙 쪽)
+(function(){
+  const svg = document.getElementById('pivot'), W = 420, H = 300, sc = 420, cx = 170, cy = 150; size(svg, W, H);
+  const P = (x, y) => [cx - y * sc, cy - x * sc];
+  function body(ox, oy, th, col, dash){ const c = Math.cos(th), s = Math.sin(th);
+    const pts = [[0.25, 0.165], [0.25, -0.165], [-0.25, -0.165], [-0.25, 0.165]].map(([a, b]) => P(ox + c * a - s * b, oy + s * a + c * b));
+    el('polygon', {points: pts.map(p => p.join(',')).join(' '), fill: 'none', stroke: col, 'stroke-width': 2, 'stroke-dasharray': dash || ''}, svg);
+    const f = P(ox + c * 0.2, oy + s * 0.2), o = P(ox, oy); el('line', {x1: o[0], y1: o[1], x2: f[0], y2: f[1], stroke: col, 'stroke-width': 2}, svg);
+    el('circle', {cx: o[0], cy: o[1], r: 4, fill: col}, svg); }
+  body(0, 0, 0, 'var(--body)', '5 4');
+  const piv = [-0.03, 0.055]; body(2 * piv[0], 2 * piv[1], Math.PI, 'var(--cw38)');
+  const pp = P(piv[0], piv[1]); el('circle', {cx: pp[0], cy: pp[1], r: 6, fill: 'none', stroke: 'var(--ng)', 'stroke-width': 2}, svg);
+  el('text', {x: pp[0] + 10, y: pp[1] - 8, style: 'fill:var(--ng)'}, svg).textContent = '실제 회전축(추정)';
+  const a = P(0, 0), b2 = P(2 * piv[0], 2 * piv[1]);
+  el('line', {x1: a[0], y1: a[1], x2: b2[0], y2: b2[1], stroke: 'var(--ink)', 'stroke-width': 1.5}, svg);
+  const lt = P(0, 0.145), rt = P(0, -0.145);
+  el('text', {x: lt[0], y: 28, 'text-anchor': 'middle', style: 'fill:var(--ink)'}, svg).textContent = '왼쪽 트랙 ↑ 전진';
+  el('text', {x: rt[0] + 20, y: 28, 'text-anchor': 'middle', style: 'fill:var(--ink)'}, svg).textContent = '오른쪽 ↓ 후진';
+  el('text', {x: 12, y: H - 32}, svg).textContent = '점선 = 시작(앞이 위), 파랑 = 시계 180° 뒤';
+  el('text', {x: 12, y: H - 14}, svg).textContent = '중심 이동 = 축 오프셋 × 2 (왼쪽·뒤)';
+})();
+</script>
