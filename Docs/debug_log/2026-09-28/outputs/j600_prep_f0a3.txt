@@ -1,0 +1,82 @@
+########## 1. 정리 ##########
+  정리 전 프로세스: 22
+  정리 후: 0 | /dev/shm fastrtps 잔재: 0
+  base 계층 유지: 에이전트 1개, robot_state_publisher 1개 (각 1 이어야)
+########## 2. base (micro-ROS 에이전트) ##########
+  /dev/rover -> /dev/ttyCH341USB0
+  에이전트 살아 있고 보드 송수신 정상 → base 재기동 생략 (세션 유지)
+  컨테이너: microros_agent Up 6 hours
+  /wheel_odom  average rate: 25.002
+  /rover/status  average rate: 5.000
+########## 3. sensors (자이로 캘리브 ~10s, 로버 정지 필수) ##########
+  [sensor_conditioner_node-6] [INFO] [1790575284.052135915] [sensor_conditioner]: gyro bias calibrated: (-0.00872, -0.00104, -0.00189) rad/s, std=(0.0026, 0.0023, 0.0018)
+  /odometry/filtered average rate: 30.015
+########## 4. slam ##########
+  map->odom: - Translation: [0.000, 0.000, 0.000]
+########## 5. nav2 ##########
+  /controller_server   ?
+  /planner_server      ?
+  /bt_navigator        active [3]
+  /behavior_server     active [3]
+########## 6. 설정 검증 ##########
+  local_costmap   voxel_decay=? decay_model=? 
+  global_costmap  voxel_decay=? decay_model=? 
+  BT ExceptRegion 5곳 / EntireCostmap 0곳
+          2 reset_distance="2.5"
+          2 reset_distance="3.0"
+  ZUPT: 20곳, 로그 5건
+########## 7. 코스트맵 클리어 + 재마킹 대기 15초 ##########
+  local 클리어
+  global 클리어
+########## 8. 상태 ##########
+  로버 자세: - Translation: [0.000, 0.000, 0.000] - Rotation: in RPY (radian) [0.000, -0.000, 0.001] 
+  EKF 위반 9회 | slam 폐기 3회 | load 10.47 4.83 3.45
+
+########## 9. 통과 가능성 (물리 틈 / 코스트맵 감사 / RPP 기준) ##########
+########## A. 물리 통로 (센서 원시 점, 코스트맵 무관) ##########
+  낮은 클러스터 1개: (144점 x1.16 y-0.08 z0.08)
+상자: 전면 x=1.160  중심 y=-0.079  (144점)  → x 구간 [1.16, 1.27], y 구간 [-0.17, +0.01]
+  이 x 구간의 장애물 점 584개 (라이다+깊이). y 정렬 후 10cm 넘는 빈 틈:
+   틈 [y_lo, y_hi]         폭        차체0.33     패딩0.43     허용 자세각(패딩)
+   [-0.60, -0.19]         0.40 m   통과         불가          0 deg (패딩無  8 deg)
+   [+0.03, +0.66]         0.64 m   통과         통과         24 deg (패딩無 90 deg)
+
+########## B. 코스트맵 LETHAL(100) 셀 vs 센서 점 ##########
+  로컬[odom]: 전방 -0.5~1.3m x 좌우 0.9m 안 LETHAL 셀 74개 중 센서 점 8cm 안에 있는 것 73 (99%), 없는 것 1
+     근거 없는 셀 위치(차체좌표) 예: (+1.28,+0.02)
+     근거 없는 셀 x 범위 1.28~1.28, y 범위 +0.02~+0.02
+  전역[map]: 전방 -0.5~1.3m x 좌우 0.9m 안 LETHAL 셀 85개 중 센서 점 8cm 안에 있는 것 84 (99%), 없는 것 1
+     근거 없는 셀 위치(차체좌표) 예: (+1.26,+0.05)
+     근거 없는 셀 x 범위 1.26~1.26, y 범위 +0.05~+0.05
+
+########## C. 통과 폭 — 판정 기준 두 가지 비교 (전역 코스트맵) ##########
+   전방x   기준1: 중심셀<99 (NavFn식)      기준2: footprint둘레<100 (RPP 실제)   기준3(오늘 오류): footprint<99
+   0.20   [-0.35~+1.00]          1.40    [-0.30~+1.00]          1.35    [-0.15~+0.40]          0.60
+   0.30   [-0.40~+1.00]          1.45    [-0.30~+0.55]          0.90    [-0.15~+0.35]          0.55
+   0.40   [-0.40~+0.70]          1.15    [-0.30~+0.45]          0.80    [-0.15~+0.30]          0.50
+   0.50   [-0.40~+0.60]          1.05    [-0.30~+0.45]          0.80    [-0.15~+0.30]          0.50
+   0.60   [-0.35~+0.55]          0.95    [-0.30~+0.45]          0.80    [-0.15~+0.30]          0.50
+   0.70   [-0.35~+0.50]          0.90    [-0.30~+0.45]          0.80    [+0.30~+0.30]          0.05
+   0.80   [-0.35~+0.55]          0.95    [-0.30~+0.45]          0.80    (없음)                   0.00
+   0.90   [-0.35~+0.90]          1.30    [+0.30~+0.45]          0.20    (없음)                   0.00
+   1.00   [+0.10~+1.00]          0.95    [+0.30~+0.45]          0.20    (없음)                   0.00
+   1.10   [+0.20~+0.95]          0.80    [+0.30~+0.45]          0.20    (없음)                   0.00
+   1.20   [+0.25~+0.55]          0.35    [+0.30~+0.45]          0.20    (없음)                   0.00
+   1.30   [+0.25~+0.50]          0.30    [+0.30~+0.45]          0.20    (없음)                   0.00
+   1.40   [+0.15~+0.55]          0.45    [+0.30~+0.45]          0.20    (없음)                   0.00
+   1.50   [-0.05~+0.60]          0.70    [+0.30~+0.45]          0.20    (없음)                   0.00
+   1.60   [-0.45~+0.75]          1.25    [+0.05~+0.45]          0.45    (없음)                   0.00
+   1.70   [-0.35~+0.85]          1.25    [+0.05~+0.50]          0.50    [+0.35~+0.35]          0.05
+   1.80   [-0.30~+0.90]          1.25    [-0.25~+0.65]          0.95    [+0.15~+0.40]          0.30
+   1.90   [-0.35~+0.85]          1.25    [-0.25~+0.75]          1.05    [-0.10~+0.55]          0.70
+slam 실행 파일: /home/jetson/slam_ws/install/slam_toolbox/lib/slam_toolbox/async_slam_toolbox_node
+[INFO] [launch.user]: [slam.launch] slam_toolbox = 포크 /home/jetson/slam_ws/install/slam_toolbox/lib/slam_toolbox/async_slam_toolbox_node
+slam 공유 라이브러리: /home/jetson/slam_ws/install/slam_toolbox/lib/libtoolbox_common.so
+컨디셔너: /home/jetson/ros2_ws/install/rover_bringup/lib/rover_bringup/sensor_conditioner_node --ros (프로세스 1 개)
+/mnt/c/Users/magma/AppData/Local/Temp/claude/F--6-Indoor-Rover-Rover/21d4aa9f-8412-4905-b23d-17554af330ea/scratchpad/job377_goalclear.py: No such file or directory
+controller_server: active [3]
+planner_server: active [3]
+bt_navigator: active [3]
+behavior_server: active [3]
+12.118252754211426
+목표 map (2.30, 0.00) yaw 0° | 풋프린트↔LETHAL 최소 0.203 m (셀 map 2.76, -0.05) | 목표 셀 비용 56
