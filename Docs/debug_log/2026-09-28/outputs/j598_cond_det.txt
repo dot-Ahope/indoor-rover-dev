@@ -1,0 +1,8 @@
+수신: Python IMU 34463 / C++ IMU 34579, Python 휠 4557 / C++ 휠 4557
+IMU 짝 34458 개 — 필드별 최대 차: angular_velocity 4.24e-05, linear_acceleration 0, orientation 0, angular_velocity_covariance 0, linear_acceleration_covariance 0, orientation_covariance 0
+휠 짝 4557 개 — 필드별 최대 차: twist 0, pose 0, twist_covariance 0
+각속도 y 차 = 0 인 짝 394 / 34458 (1.1 %)
+Python(결정적) 출력 IMU 34585, 휠 4557 | C++(재생) IMU 34579, 휠 4557
+C++ 누락 입력 6 개(캘리브 이후), 첫 누락 index 4969 / 34585
+IMU 각속도 최대 차: C++ 누락 이전 4969 개 → 0 | 전체 34579 개 → 4.43e-05 | 완전히 같은 비율(이전 구간) 100.0 %
+휠 짝 4557 개, 완전히 같은 비율 100.0 %

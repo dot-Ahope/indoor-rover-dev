@@ -225,3 +225,30 @@
 
 **정정(09-23 §15)**: "대체 패키지 없음" → 정확히는 "**전체를 대신하는 조합은 없고**, IMU 공분산만 드라이버 파라미터로 대체 가능, 바이어스는 정적 보정만 가능, ZUPT 대체안(IMU 단독 정지 판정)은 이 로버에서 느린 회전을 흡수할 위험".
 **결정(사용자)**: 대체 패키지를 쓰지 않는다. 자체 노드를 C++ 로 이식하고 공분산 로직은 한 곳(§7.2)에 둔다. CPU 42 % 는 로직보다 rclpy 의 200 Hz 수신·재발행 비용으로 추정 — 이식 뒤 측정으로 확인.
+
+## §11 컨디셔너 C++ 이식 — V1 출력 동일성·V2 CPU (§7.3 순서 4)
+
+순서 확인: C++ 이식은 A1·A2·A3 과 독립(출력이 같으면 다른 단계에 영향 없음). B2 피팅 전에만 끝나면 된다(§7.2).
+
+구현(`ros2_ws/src/rover_bringup/`):
+- `include/rover_bringup/conditioner_core.hpp` — ROS 비의존 핵심(부팅 바이어스 캘리브·ZUPT·휠 정지 판정·슬립 계수·**휠 twist 공분산 정책 자리**). 상수 기본값 = Python 판.
+- `src/sensor_conditioner.cpp` — 노드. 토픽·QoS(SensorDataQoS)·로그 형식 Python 판과 같음. 상수는 ROS 파라미터로 노출(기본값 동일).
+- `test/test_conditioner_core.cpp` — gtest 5 개(캘리브·비정지·ZUPT 상한·흔들림 거부·휠 판정). Jetson `colcon test`: **6 tests, 0 failures**.
+- `launch/ekf.launch.py` — `conditioner:=cpp|py`. 배포는 바뀐 6 파일만(CRLF 제거 뒤 Jetson 소스가 저장소 HEAD 와 같음을 md5 로 확인).
+
+V1 출력 동일성(주행 없음): 정지 상태 원시 입력 183 s 녹화(`bag_condraw`: IMU 36,585, 휠 4,557) → 도메인 42 에서 두 판에 같은 입력.
+- 재생 대조(`outputs/j596*`, `j597*`): 공분산·가속도·자세·휠 전 필드 차 0, **각속도만 최대 4.2×10⁻⁵ rad/s**. Python 판이 IMU 입력 약 120~176 개(0.4~0.5 %)를 놓쳤고(C++ 는 2~6 개), 차이는 Python 누락 **직후부터** 생김.
+- 결정적 대조(`jobs/job598_conddet.py` → `outputs/j598_cond_det.txt`): Python 판을 DDS 없이 콜백 직접 호출(누락 0)로 돌려 C++ 재생 출력과 비교 — **C++ 첫 누락 이전 IMU 4,969 개 100 % 비트 동일(차 0)**, 휠 4,557 개 100 % 동일. 이후 차이는 누락으로 ZUPT 2 s 창이 어긋난 것(최대 4.4×10⁻⁵ rad/s = 0.15 °/분).
+- 판정: **논리 동일 — 통과**. (처음 비교 스크립트가 reliable 구독이라 best-effort 발행을 0 개 받은 실수 → best effort 로 수정.)
+
+V2 CPU(라이브, 정지, `outputs/j599_cond_v2_cpu.txt`): Python 판 → C++ 판을 그 자리에서 교체해 30 s 씩.
+| 항목 | Python | C++ |
+|---|---|---|
+| 컨디셔너 CPU | **42.2 %** | **7.1 %** (−35 %p) |
+| 전체 CPU 합(top 5 s, 정지·항법 대기) | 202 % | 166 % |
+| /imu/data 발행률 | 196.5 Hz(입력 200 — 누락) | 199.1 Hz |
+| /odometry/filtered | 30.2 Hz | 30.0 Hz |
+| EKF 주기 위반 로그 | 누적 32 | 32(증가 없음) |
+- 판정: **통과**. 예상("수 %")보다는 크지만 83 % 절감. SLAM 패치(b)의 회전 중 추가 CPU(40~50 %p, 회전하는 동안만)를 상시 절감 35 %p 가 상당 부분 상쇄.
+- 결정: `ekf.launch.py` 기본을 **cpp** 로 변경(되돌리기 `conditioner:=py`). 현재 라이브는 수동 `ros2 run` 으로 교체돼 있어 게이트 A 의 `sensor_conditioner` 프로세스 수가 2(래퍼 포함) — 다음 prep 부터 launch 로 정식 기동.
+- 남은 확인(V3, 주행 시 자연 확인): 주행 중 EKF 거동은 입력이 비트 동일이므로 같을 것으로 예상 — 다음 주행에서 게이트·EKF 위반 수로 확인.

@@ -1,0 +1,11 @@
+== Python 판 (pid 299641)
+  컨디셔너 CPU 30 s: 42.20 %
+  전체 CPU 합: 202 %
+  /imu/data average rate: 196.528 | /odometry/filtered average rate: 30.232
+== C++ 판 (pid 902780)
+[INFO] [1790570130.929852841] [sensor_conditioner]: gyro bias calibrated: (-0.00907, -0.00108, -0.00192) rad/s, std=(0.0026, 0.0022, 0.0018)
+  컨디셔너 CPU 30 s: 7.10 %
+  전체 CPU 합: 166 %
+  /imu/data average rate: 199.134 | /odometry/filtered average rate: 30.001
+  EKF 주기 위반 로그(sensors.log): 교체 전 누적 32 → 지금 32
+  컨디셔너 프로세스 수: 2
