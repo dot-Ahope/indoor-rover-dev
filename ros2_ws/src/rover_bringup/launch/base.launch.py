@@ -7,6 +7,7 @@ from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
 from launch.actions import ExecuteProcess, IncludeLaunchDescription, SetEnvironmentVariable
 from launch.launch_description_sources import PythonLaunchDescriptionSource
+from launch_ros.actions import Node
 
 
 # 2026-09-09: FastDDS 공유메모리 전송 비활성화 (config/fastdds_udp_only.xml 주석 참조).
@@ -41,5 +42,8 @@ def generate_launch_description():
             get_package_share_directory('rover_description'),
             'launch', 'description.launch.py')))
 
+    # 2026-09-28: 보드 OLED 에 Wi-Fi IP·SSID 표시 — Jetson 이 /rover/display_info 로 3 s 마다 보냄(scripts/display_info_pub.py)
+    display_info = Node(package='rover_bringup', executable='display_info_pub.py', name='display_info_pub', output='log')
+
     return LaunchDescription([
-        SetEnvironmentVariable('FASTRTPS_DEFAULT_PROFILES_FILE', _FASTDDS_XML),agent, description])
+        SetEnvironmentVariable('FASTRTPS_DEFAULT_PROFILES_FILE', _FASTDDS_XML), agent, description, display_info])
