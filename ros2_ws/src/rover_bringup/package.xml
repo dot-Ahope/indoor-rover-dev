@@ -8,6 +8,10 @@
 
   <buildtool_depend>ament_cmake</buildtool_depend>
 
+  <!-- 2026-09-28: sensor_conditioner C++ 이식 -->
+  <depend>rclcpp</depend>
+  <test_depend>ament_cmake_gtest</test_depend>
+
   <exec_depend>rover_description</exec_depend>
   <exec_depend>launch</exec_depend>
   <exec_depend>launch_ros</exec_depend>
