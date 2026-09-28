@@ -1,0 +1,21 @@
+입력: IMU 36585, 휠 4557, 길이 183.2 s
+수신: Python IMU 34414 / C++ IMU 34580, Python 휠 4557 / C++ 휠 4557
+  (IMU 기대 = 입력 36585 − 캘리브 2000 = 34585, 휠 기대 = 4557)
+IMU 짝 34412 개 — 필드별 최대 차: angular_velocity 4.03e-05, linear_acceleration 0, orientation 0, angular_velocity_covariance 0, linear_acceleration_covariance 0, orientation_covariance 0
+  한쪽에만 있는 IMU: Python 2, C++ 168
+휠 짝 4557 개 — 필드별 최대 차: twist 0, pose 0, twist_covariance 0
+  py_imu 바이어스 y: 처음 -0.001031 → 끝 -0.001034 (ZUPT 이동 -0.000002)
+  cpp_imu 바이어스 y: 처음 -0.001031 → 끝 -0.001033 (ZUPT 이동 -0.000002)
+각속도 y 차 = 0 인 짝 397 / 34412 (1.2 %)
+  첫 차이 시점까지 Python 쪽에만 빠진 IMU 2 개 (C++ 는 받음) — 0 이면 논리 차이 의심
+== 로그(캘리브·ZUPT) Python
+[INFO] [1790569454.292794596] [cond_ab_py]: ZUPT #51: bias y -0.001068 → -0.001066 (관측 -0.001047), 잔차 yaw rate -0.000019 rad/s = -0.06 °/분
+[INFO] [1790569474.528082249] [cond_ab_py]: ZUPT #61: bias y -0.001053 → -0.001065 (관측 -0.001169), 잔차 yaw rate +0.000104 rad/s = +0.36 °/분
+[INFO] [1790569494.560773831] [cond_ab_py]: ZUPT #71: bias y -0.001077 → -0.001037 (관측 -0.000681), 잔차 yaw rate -0.000356 rad/s = -1.23 °/분
+[INFO] [1790569514.593739029] [cond_ab_py]: ZUPT #81: bias y -0.000990 → -0.000990 (관측 -0.000986), 잔차 yaw rate -0.000004 rad/s = -0.01 °/분
+== 로그(캘리브·ZUPT) C++
+[INFO] [1790569453.972208243] [cond_ab_cpp]: ZUPT #51: bias y -0.001074 → -0.001066 (관측 -0.000986), 잔차 yaw rate -0.000079 rad/s = -0.27 °/분
+[INFO] [1790569474.010527103] [cond_ab_cpp]: ZUPT #61: bias y -0.001059 → -0.001064 (관측 -0.001104), 잔차 yaw rate +0.000040 rad/s = +0.14 °/분
+[INFO] [1790569494.042815374] [cond_ab_cpp]: ZUPT #71: bias y -0.001076 → -0.001053 (관측 -0.000851), 잔차 yaw rate -0.000202 rad/s = -0.70 °/분
+[INFO] [1790569514.073742454] [cond_ab_cpp]: ZUPT #81: bias y -0.000988 → -0.000990 (관측 -0.001004), 잔차 yaw rate +0.000014 rad/s = +0.05 °/분
+  남은 비교용 노드: 0

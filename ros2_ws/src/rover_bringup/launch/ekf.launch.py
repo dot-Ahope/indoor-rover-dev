@@ -4,6 +4,9 @@ import os
 
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
+from launch.actions import DeclareLaunchArgument
+from launch.conditions import IfCondition
+from launch.substitutions import LaunchConfiguration, PythonExpression
 from launch_ros.actions import Node
 
 
@@ -11,14 +14,26 @@ def generate_launch_description():
     config = os.path.join(
         get_package_share_directory('rover_bringup'), 'config', 'ekf.yaml')
 
+    # 2026-09-28: conditioner:=cpp|py — C++ 이식판이 V1(출력 비트 동일)·V2(CPU 42→7 %) 통과해 기본 cpp (SUMMARY 09-28 §11). 되돌리기 = conditioner:=py
+    cond = LaunchConfiguration('conditioner')
+    remap = [('/imu/data_raw', '/camera/camera/imu')]   # IMU 소스 = D455f 내장 IMU (보드 /imu/data_raw 는 자이로 무반응 → 미사용)
     return LaunchDescription([
+        DeclareLaunchArgument('conditioner', default_value='cpp', description='sensor_conditioner 구현: cpp | py'),
         Node(
             package='rover_bringup',
             executable='sensor_conditioner.py',
             name='sensor_conditioner',
             output='screen',
-            # IMU 소스 = D455f 내장 IMU (보드 /imu/data_raw 는 자이로 무반응 → 미사용)
-            remappings=[('/imu/data_raw', '/camera/camera/imu')],
+            remappings=remap,
+            condition=IfCondition(PythonExpression(["'", cond, "' == 'py'"])),
+        ),
+        Node(
+            package='rover_bringup',
+            executable='sensor_conditioner_node',
+            name='sensor_conditioner',
+            output='screen',
+            remappings=remap,
+            condition=IfCondition(PythonExpression(["'", cond, "' == 'cpp'"])),
         ),
         Node(
             package='robot_localization',
