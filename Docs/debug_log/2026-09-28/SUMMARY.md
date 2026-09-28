@@ -169,3 +169,20 @@
 7. **cuVSLAM**.
 
 운영 규칙(제안, 채택): 트랙·모터·펌웨어 상수·바닥 중 하나라도 바꾸면 회전 시험을 다시 하고 B2 파라미터를 갱신한다.
+
+## §8 B1 오프라인 검증 — slam_toolbox 가 순수 회전 밀림을 잡는가 (주행 없음)
+
+방법(`jobs/job580_slamreplay.py`, `jobs/job581_b1.sh`): 회전 시험 bag 을 **ROS_DOMAIN_ID 42**(라이브 스택과 분리)에서 sim time 1 배속으로 재생 — /scan, /tf(기록 당시 map→odom 은 제거, EKF odom→base 만), /tf_static, /clock. 새로 띄운 slam_toolbox(설치 `slam.yaml` + use_sim_time)가 내는 map→odom 으로 회전 직전(−0.8 s)·직후(+2.5 s) map→base 이동을 계산해 §3·§6 의 스캔 직접 정합(정답)과 비교.
+설정: **base** = 현재 그대로(minimum_travel_distance 0.05, minimum_time_interval 0.1) · **(a)** = minimum_travel_distance **0.0** + minimum_time_interval **0.5**(소스 무변경).
+
+무효 처리: 첫 묶음(`outputs/j582_*`, `j583_*`)은 인자 전달 실패(설정 이름 빈칸)와 **앞 실행의 slam 노드가 종료되지 않아 도메인 42 에 SLAM 이 둘**이던 실행이 섞임 → 결과 폐기. 래퍼에 시작·끝 정리(pkill)와 "남은 재생용 slam 0" 확인을 넣고 다시 돌림(`outputs/j584_b1_*.txt`).
+
+결과(`outputs/j585_b1_compare.txt`):
+- **base**: r2b 4 회전 모두 0.1~0.2 cm, map→odom 변화 0, 갱신 0 회 — 라이브와 같음(못 봄) 재현.
+- **(a)**: s1·r2b·r3 **11 회전 모두 포착**, 정답 대비 오차 **평균 1.2 cm, 최대 2.0 cm**(정답 이동 10~27 cm). 회전당 map→odom 갱신 16~33 회(≈0.5 s 마다). 회전각도 정답과 ±1.4° 안.
+- CPU(재생용 slam 프로세스 평균): base 3.4 % → **(a) 19.2~21.5 %**(+16~18 %p). 이 bag 들은 회전 사이 정지 구간이 절반 이상 — (a) 는 **정지 중에도 0.5 s 마다 스캔을 정합·노드 추가**하므로 이 증가분의 상당 부분이 정지 구간 몫(추정, 분리 측정 안 함).
+
+판정: B1 개념 **확인** — "거리 0 + 시간 간격" 만으로 SLAM 이 순수 회전 슬립을 1~2 cm 로 보정한다. 남은 문제(추정): 정지 중 노드가 2 개/s 쌓임(1 시간 정지면 7,200 개) → 포즈 그래프·루프 폐합 비용 증가, CPU +16~18 %p.
+다음 선택지:
+- (a) 즉시 적용 — 설정 두 줄. 부작용은 정지 중 노드 누적·CPU.
+- **(b) 소스 패치**(권장) — `shouldProcessScan` 의 거리 조건에 "또는 |Δyaw| ≥ minimum_travel_heading" 을 더함. 정지 중에는 base 와 같고 회전 중에만 (a) 처럼 동작할 것으로 예상(검증 필요). 같은 bag 재생으로 (a) 와 오차·CPU 비교 가능. 비용: slam_toolbox 소스 빌드(apt 바이너리 대체) 1 회와 포크 유지(nvblox_nav2 포크와 같은 운용).
