@@ -2,7 +2,7 @@
 # 회전 시험 PC 러너(09-28): 전송(재시도 3) → job565 를 setsid nohup 으로 기동 → 로그 폴링 → 산출물 회수
 # 인자: NAME W DIR REPS   환경: STAGE NOTE GIT_HEAD BAG_PROFILE JETSON_HOST
 NAME=$1; W=$2; DIR=$3; REPS=$4; H=${JETSON_HOST:-192.168.0.101}
-N=/mnt/c/Users/magma/AppData/Local/Temp/claude/F--6-Indoor-Rover-Rover/21d4aa9f-8412-4905-b23d-17554af330ea/scratchpad; OLD=/mnt/c/Users/magma/AppData/Local/Temp/claude/F--6-Indoor-Rover-Rover/82ce61d4-f5f7-4a25-b2e7-1279291348a9/scratchpad
+N=/mnt/c/Users/magma/AppData/Local/Temp/claude/F--6-Indoor-Rover-Rover/21d4aa9f-8412-4905-b23d-17554af330ea/scratchpad; OLD=$N/rescued_jetson_tmp   # 09-28: 옛 82ce61d4 폴더 소실 → Jetson 에서 회수한 사본
 O="-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o LogLevel=ERROR -o ConnectTimeout=8 -o ServerAliveInterval=3 -o ServerAliveCountMax=3"
 mkdir -p /tmp/xf0; for f in job562_spin.py job565_spindrive.sh; do tr -d '\r' < $N/$f > /tmp/xf0/$f; done
 for f in job386_slamalive.py job451_paramsnap.py job453_runmeta.sh; do tr -d '\r' < $OLD/$f > /tmp/xf0/$f; done
