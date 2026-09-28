@@ -60,32 +60,20 @@ class F0(Node):
 
 
 def path_end_yaw(n, gx, gy, fallback):
-    """planner 로 현재 위치 → (gx, gy) 경로를 받아 끝 0.3 m 의 진행 방향. 실패하면 fallback."""
-    if not n.pc.wait_for_server(timeout_sec=5):
-        print('  경로 자동 yaw: planner 서버 없음 → 직선 방향 사용', flush=True); return fallback
-    g = ComputePathToPose.Goal(); g.goal = PoseStamped(); g.goal.header.frame_id = 'map'
-    g.goal.header.stamp = n.get_clock().now().to_msg(); g.goal.pose.position.x, g.goal.pose.position.y = gx, gy
-    g.goal.pose.orientation.z, g.goal.pose.orientation.w = math.sin(fallback / 2), math.cos(fallback / 2)
-    g.use_start = False
-    g.planner_id = 'GridBased'   # 09-28 f0a4: 계획기가 둘(GridBased·SmacHybrid)이라 비우면 'not a valid planner' 로 거부됨 — BT 와 같은 NavFn
-    fut = n.pc.send_goal_async(g)
-    t0 = time.time()
-    while not fut.done() and time.time() - t0 < 5: rclpy.spin_once(n, timeout_sec=0.05)
-    gh = fut.result() if fut.done() else None
-    if gh is None or not gh.accepted:
-        print('  경로 자동 yaw: 경로 요청 거부 → 직선 방향 사용', flush=True); return fallback
-    rf = gh.get_result_async(); t0 = time.time()
-    while not rf.done() and time.time() - t0 < 5: rclpy.spin_once(n, timeout_sec=0.05)
-    poses = rf.result().result.path.poses if rf.done() else []
-    if len(poses) < 2:
-        print('  경로 자동 yaw: 경로 없음(상태 %s) → 직선 방향 사용' % (rf.result().status if rf.done() else '시간 초과'), flush=True); return fallback
-    ex, ey = poses[-1].pose.position.x, poses[-1].pose.position.y
-    k = len(poses) - 2
-    while k > 0 and math.hypot(poses[k].pose.position.x - ex, poses[k].pose.position.y - ey) < 0.30: k -= 1
-    bx, by = poses[k].pose.position.x, poses[k].pose.position.y
-    yaw = math.atan2(ey - by, ex - bx)
-    print('  경로 자동 yaw: 경로 %d 점, 끝 %.2f m 구간 방향 %.1f° (직선 방향 %.1f°, 차 %.1f°)' % (len(poses), math.hypot(ex - bx, ey - by), math.degrees(yaw), math.degrees(fallback), math.degrees(uw(yaw - fallback))), flush=True)
-    return yaw
+    """경로 끝 0.3 m 의 진행 방향. 09-28 §20: 같은 노드에서 compute_path_to_pose 를 부르면 뒤이은 navigate_to_pose 응답이
+    오지 않아 러너가 멈췄다(f0a5 1 차, 로버 정지 상태) → **별도 프로세스(job613)** 로 조회. 실패하면 fallback."""
+    import subprocess
+    try:
+        r = subprocess.run(['python3', '/tmp/job613_pathyaw.py', '%.4f' % gx, '%.4f' % gy, '%.6f' % fallback], capture_output=True, text=True, timeout=20)
+        last = [l for l in r.stdout.splitlines() if l.startswith(('YAW', 'FAIL'))][-1]
+    except Exception as e:
+        last = 'FAIL %s' % e
+    if last.startswith('YAW'):
+        _, yaw, npts, seg = last.split(); yaw = float(yaw)
+        print('  경로 자동 yaw: 경로 %s 점, 끝 %s m 구간 방향 %.1f° (직선 방향 %.1f°, 차 %.1f°)' % (npts, seg, math.degrees(yaw), math.degrees(fallback), math.degrees(uw(yaw - fallback))), flush=True)
+        return yaw
+    print('  경로 자동 yaw: %s → 직선 방향 사용' % last, flush=True)
+    return fallback
 
 
 def main():
@@ -114,9 +102,12 @@ def main():
         g = NavigateToPose.Goal(); g.pose = PoseStamped(); g.pose.header.frame_id = 'map'; g.pose.header.stamp = n.get_clock().now().to_msg()
         g.pose.pose.position.x, g.pose.pose.position.y = gx, gy
         g.pose.pose.orientation.z, g.pose.pose.orientation.w = math.sin(gyaw / 2), math.cos(gyaw / 2)
-        fut = n.ac.send_goal_async(g)
-        while not fut.done(): rclpy.spin_once(n, timeout_sec=0.05)
-        gh = fut.result()
+        gh = None
+        for attempt in range(2):   # 09-28 §20: 응답 대기에 시간 제한(무한 대기 사고) — 10 s 안에 응답 없으면 한 번 더 보낸다
+            fut = n.ac.send_goal_async(g); tw = time.time()
+            while not fut.done() and time.time() - tw < 10: rclpy.spin_once(n, timeout_sec=0.05)
+            if fut.done(): gh = fut.result(); break
+            print('  ★ 목표 %d 전송 응답 없음(10 s) — 재전송 %d' % (i + 1, attempt + 1), flush=True)
         if gh is None or not gh.accepted:
             print('목표 %d 거부 — 중단' % (i + 1)); res.append((i + 1, 'REJECTED', 0.0)); break
         rf = gh.get_result_async(); tg = time.time(); nxt = tg
