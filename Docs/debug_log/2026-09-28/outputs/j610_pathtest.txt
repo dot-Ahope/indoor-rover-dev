@@ -1,0 +1,15 @@
+서버: True
+stamp 0: 수락 True
+  상태 6, 경로 점 0, 계획 시간 0.000 s
+stamp now: 수락 True
+  상태 6, 경로 점 0, 계획 시간 0.000 s
+[planner_server-4] [WARN] [1790578064.753125667] [planner_server]: Planning algorithm  failed to generate a valid path to (1.00, 0.00)
+[planner_server-4] [WARN] [1790578064.753164068] [planner_server]: [compute_path_to_pose] [ActionServer] Aborting handle.
+[planner_server-4] [ERROR] [1790578064.780521005] [planner_server]: planner  is not a valid planner. Planner names are: GridBased SmacHybrid 
+[planner_server-4] [WARN] [1790578064.780698867] [planner_server]: Planning algorithm  failed to generate a valid path to (1.00, 0.00)
+[planner_server-4] [WARN] [1790578064.780734996] [planner_server]: [compute_path_to_pose] [ActionServer] Aborting handle.
+서버: True
+stamp 0: 수락 True
+  상태 4, 경로 점 36, 계획 시간 0.001 s
+stamp now: 수락 True
+  상태 4, 경로 점 36, 계획 시간 0.001 s

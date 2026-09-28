@@ -67,6 +67,7 @@ def path_end_yaw(n, gx, gy, fallback):
     g.goal.header.stamp = n.get_clock().now().to_msg(); g.goal.pose.position.x, g.goal.pose.position.y = gx, gy
     g.goal.pose.orientation.z, g.goal.pose.orientation.w = math.sin(fallback / 2), math.cos(fallback / 2)
     g.use_start = False
+    g.planner_id = 'GridBased'   # 09-28 f0a4: 계획기가 둘(GridBased·SmacHybrid)이라 비우면 'not a valid planner' 로 거부됨 — BT 와 같은 NavFn
     fut = n.pc.send_goal_async(g)
     t0 = time.time()
     while not fut.done() and time.time() - t0 < 5: rclpy.spin_once(n, timeout_sec=0.05)
@@ -77,7 +78,7 @@ def path_end_yaw(n, gx, gy, fallback):
     while not rf.done() and time.time() - t0 < 5: rclpy.spin_once(n, timeout_sec=0.05)
     poses = rf.result().result.path.poses if rf.done() else []
     if len(poses) < 2:
-        print('  경로 자동 yaw: 경로 없음 → 직선 방향 사용', flush=True); return fallback
+        print('  경로 자동 yaw: 경로 없음(상태 %s) → 직선 방향 사용' % (rf.result().status if rf.done() else '시간 초과'), flush=True); return fallback
     ex, ey = poses[-1].pose.position.x, poses[-1].pose.position.y
     k = len(poses) - 2
     while k > 0 and math.hypot(poses[k].pose.position.x - ex, poses[k].pose.position.y - ey) < 0.30: k -= 1
