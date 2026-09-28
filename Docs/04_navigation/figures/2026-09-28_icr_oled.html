@@ -1,0 +1,196 @@
+<title>회전축 식별과 OLED</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{color-scheme:light;--bg:#f5f5f2;--surface:#fcfcfa;--ink:#17181a;--ink2:#55575b;--rule:#d9d9d3;--accent:#1f6f8b;--ok:#1d7a3a;--warn:#a15c00;--ng:#b3261e;--chip:#e9eef0;
+--cw:#1f6f8b;--ccw:#c2410c;--base:#8a8d93;--grid:#e3e3dd;--body:#ecece6;--oled:#0b0d10;--oledink:#8fd3ff}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){color-scheme:dark;--bg:#141516;--surface:#1b1c1e;--ink:#eeeeea;--ink2:#b9bab5;--rule:#34353a;--accent:#5fb3cf;--ok:#5cc472;--warn:#e0a24a;--ng:#f0705f;--chip:#23292c;
+--cw:#5fb3cf;--ccw:#f08a4b;--base:#8f9298;--grid:#26272b;--body:#232427;--oled:#000;--oledink:#8fd3ff}}
+:root[data-theme="dark"]{color-scheme:dark;--bg:#141516;--surface:#1b1c1e;--ink:#eeeeea;--ink2:#b9bab5;--rule:#34353a;--accent:#5fb3cf;--ok:#5cc472;--warn:#e0a24a;--ng:#f0705f;--chip:#23292c;
+--cw:#5fb3cf;--ccw:#f08a4b;--base:#8f9298;--grid:#26272b;--body:#232427;--oled:#000;--oledink:#8fd3ff}
+body{background:var(--bg);color:var(--ink);font-family:"IBM Plex Sans KR",system-ui,sans-serif;line-height:1.6;padding-block:32px 48px;padding-inline:16px}
+main{max-width:960px;margin:0 auto;display:grid;gap:36px}
+h1{font-size:1.55rem;margin:0;text-wrap:balance}h2{font-size:1.08rem;margin:0 0 10px;text-wrap:balance}
+.eyebrow{font:500 .78rem "IBM Plex Mono",monospace;letter-spacing:.06em;color:var(--accent);text-transform:uppercase}
+.lead{color:var(--ink2);max-width:72ch;margin:6px 0 0}
+p{max-width:74ch;margin:6px 0}
+.verdict{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
+.v{background:var(--surface);border:1px solid var(--rule);border-radius:6px;padding:14px 16px}
+.v b{display:block;font:500 1.12rem "IBM Plex Mono",monospace;font-variant-numeric:tabular-nums}
+.v span{color:var(--ink2);font-size:.86rem}
+.v.ok{border-left:4px solid var(--ok)}.v.warn{border-left:4px solid var(--warn)}.v.ng{border-left:4px solid var(--ng)}
+figure{margin:0;background:var(--surface);border:1px solid var(--rule);border-radius:6px;padding:12px}
+figcaption{color:var(--ink2);font-size:.86rem;margin-top:8px;max-width:82ch}
+.fig-scroll{overflow-x:auto}
+svg text{fill:var(--ink2);font:11px "IBM Plex Mono",monospace}
+.legend{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:.82rem;color:var(--ink2);margin:0 0 8px}
+.sw{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:5px;vertical-align:-1px}
+.two{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px;align-items:start}
+table{border-collapse:collapse;width:100%;font-size:.88rem;font-variant-numeric:tabular-nums}
+th,td{text-align:left;padding:6px 8px;border-bottom:1px solid var(--rule);vertical-align:top}
+th{color:var(--ink2);font-weight:600}
+td.num{font-family:"IBM Plex Mono",monospace;white-space:nowrap}
+.pill{display:inline-block;font:500 .74rem "IBM Plex Mono",monospace;padding:1px 8px;border-radius:10px;background:var(--chip);white-space:nowrap}
+.pill.ok{color:var(--ok)}.pill.ng{color:var(--ng)}.pill.warn{color:var(--warn)}
+.steps{display:grid;gap:10px;margin:0;padding:0;list-style:none}
+.steps li{display:grid;grid-template-columns:auto 1fr;gap:4px 12px;background:var(--surface);border:1px solid var(--rule);border-radius:6px;padding:10px 14px}
+.steps .n{font:500 .8rem "IBM Plex Mono",monospace;color:var(--accent);padding-top:2px}
+.steps .r{grid-column:2;color:var(--ink2);font-size:.88rem}
+.oled{background:var(--oled);border-radius:6px;padding:14px 16px;font:500 13px/1.5 "IBM Plex Mono",monospace;color:var(--oledink);white-space:pre;overflow-x:auto;max-width:100%;border:6px solid #2a2d33}
+.tip{position:fixed;pointer-events:none;background:var(--surface);border:1px solid var(--rule);border-radius:4px;padding:4px 8px;font:12px "IBM Plex Mono",monospace;color:var(--ink);box-shadow:0 2px 8px rgba(0,0,0,.15)}
+.foot{color:var(--ink2);font-size:.82rem;border-top:1px solid var(--rule);padding-top:12px}
+code{font:.86em "IBM Plex Mono",monospace;background:var(--chip);padding:0 4px;border-radius:3px}
+</style>
+
+<main>
+<header>
+  <div class="eyebrow">2026-09-28 오후 · Docs/debug_log/2026-09-28 §23–§28</div>
+  <h1>제자리 회전 밀림의 회전축을 찾고, 보드 OLED 를 살리기까지</h1>
+  <p class="lead">직진 시험으로 모터·장력 원인을 지우고(A2·A3), 회전 16 회의 스캔 정합으로 회전축 치우침을 식별해(B2) 컨디셔너에 넣었다(B2·B3, 기본 꺼짐). 저녁에는 보드 J8 에 OLED 상태 표시를 붙였고, 화면이 안 나온 원인을 모듈 불량으로 확정했다.</p>
+</header>
+
+<section class="verdict" aria-label="요약">
+  <div class="v ok"><b>모터 원인 아님</b><span>같은 60 mm/s 에서 전·후진 듀티 차 ≤ 0.1 %p, 장력 좌우 동일</span></div>
+  <div class="v ok"><b>잔차 13.5 → 3.8 cm</b><span>회전축 모델(방향별 p)로 180° 이동 예측, 한 회 빼고 맞추기 중앙값</span></div>
+  <div class="v warn"><b>≤ 7 cm : 12/16</b><span>75 % — 목표에서 제자리 회전 허용 기준 90 % 에는 미달</span></div>
+  <div class="v ok"><b>OLED 표시 동작</b><span>첫 모듈 패널 불량(전체 점등 명령에도 무반응), 교체 후 정상</span></div>
+</section>
+
+<section>
+  <h2>1. 직진은 방향 따라 4 % 다르지만, 회전 밀림을 설명하기엔 작다</h2>
+  <div class="two">
+  <figure>
+    <div class="legend"><span><i class="sw" style="background:var(--cw)"></i>전진</span><span><i class="sw" style="background:var(--ccw)"></i>후진</span></div>
+    <div class="fig-scroll"><svg id="ratio" viewBox="0 0 420 230" width="100%" role="img" aria-label="휠 거리 / 실제 거리 비, 전진 0.981~0.995, 후진 0.945~0.950"></svg></div>
+    <figcaption>휠이 센 거리 ÷ 스캔 정합으로 잰 실제 거리(0.6 m 구간, 2 시험 × 2 회). 후진은 휠이 센 것보다 약 5 % 더 간다. 속도(0.06·0.07)와 무관하게 재현.</figcaption>
+  </figure>
+  <div>
+    <table>
+      <thead><tr><th>항목</th><th>측정</th><th>판정</th></tr></thead>
+      <tbody>
+        <tr><td>모터 정·역 (S3)</td><td class="num">L 71.1/71.0 · R 72.7/72.7 %</td><td><span class="pill ok">원인 아님</span></td></tr>
+        <tr><td>좌우 모터</td><td class="num">R 이 +1.7 %p, pps 259·259</td><td><span class="pill ok">작음</span></td></tr>
+        <tr><td>트랙 장력</td><td>좌우 동일·높음(육안)</td><td><span class="pill ok">좌우 차 아님</span></td></tr>
+        <tr><td>방향성 거리 차 (S1)</td><td class="num">4.0 ~ 4.3 %</td><td><span class="pill warn">기준 5 % 미달</span></td></tr>
+        <tr><td>직진 휨 (S2)</td><td class="num">−0.5 ~ −1.0° / 0.6 m</td><td><span class="pill ok">작음</span></td></tr>
+      </tbody>
+    </table>
+    <p style="font-size:.9rem;color:var(--ink2)">4 % 를 회전에 그대로 적용하면 180° 당 옆 이동 ≈ 0.9 cm(계산). 실측 10~27 cm 의 1/10 → 회전 밀림은 제자리 회전 특유의 트랙 측면 긁힘으로 보고, 회전 데이터로 직접 식별하기로 했다. 줄자 확인: 누적 예측 세로 5.9·가로 0.5 cm vs 사용자 실측 6.5·0.5 cm, −2.7°.</p>
+  </div>
+  </div>
+</section>
+
+<section>
+  <h2>2. 로버는 차체 중심이 아니라 한쪽으로 치우친 점을 축으로 돈다</h2>
+  <div class="two">
+  <figure>
+    <div class="legend"><span><i class="sw" style="background:var(--cw)"></i>시계 방향 회전</span><span><i class="sw" style="background:var(--ccw)"></i>반시계 방향 회전</span><span>작은 점 = 회별, ✕ = 공용 p</span></div>
+    <div class="fig-scroll"><svg id="pivot" viewBox="0 0 380 420" width="100%" role="img" aria-label="차체 위에서 본 회전축 위치. 시계 방향은 왼쪽 5.2 cm, 반시계는 오른쪽 9.5 cm, 둘 다 3 cm 뒤"></svg></div>
+    <figcaption>위에서 본 차체(Nav2 풋프린트 0.50 × 0.33 m, base_link 중심). 회전축 p = (I − R(θ))⁻¹·d 로 180° 회전 한 번마다 계산. 앞뒤는 방향과 무관하게 약 3 cm 뒤, 옆은 앞으로 구르는 트랙 쪽으로 치우친다.</figcaption>
+  </figure>
+  <figure>
+    <div class="legend"><span><i class="sw" style="background:var(--base)"></i>보정 없는 180° 이동</span><span><i class="sw" style="background:var(--cw)"></i>모델 예측 잔차 (시계)</span><span><i class="sw" style="background:var(--ccw)"></i>(반시계)</span></div>
+    <div class="fig-scroll"><svg id="resid" viewBox="0 0 420 420" width="100%" role="img" aria-label="회별 보정 전 이동과 모델 잔차 비교"></svg></div>
+    <figcaption>회별로 그 회를 뺀 나머지로 p 를 맞춘 뒤 예측한 잔차. 점선 = 7 cm 기준. 가장 큰 잔차 14.1 cm 는 반시계 0.38 rad/s 단 1 회(S2)를 0.20 표본으로 예측한 것 — 반시계 0.38 표본 보강이 과제.</figcaption>
+  </figure>
+  </div>
+  <table style="margin-top:14px">
+    <thead><tr><th>회전 방향</th><th>공용 회전축 p (앞+ / 왼+)</th><th>컨디셔너가 더할 속도</th></tr></thead>
+    <tbody>
+      <tr><td>시계 (ω &lt; 0)</td><td class="num">(−2.9, +5.2) cm</td><td class="num" rowspan="2">vx = ω·p<sub>y</sub>, vy = −ω·p<sub>x</sub><br>(|v| &lt; 0.02 m/s, |ω| &gt; 0.10 rad/s 일 때만)</td></tr>
+      <tr><td>반시계 (ω &gt; 0)</td><td class="num">(−2.9, −9.5) cm</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section>
+  <h2>3. 구현은 들어갔고, 켜는 건 검증 뒤</h2>
+  <ul class="steps">
+    <li><span class="n">B2</span><span>회전 구간에 회전축 모델 속도를 휠 twist 에 더함 — <code>icr_enable</code> (기본 false)</span><span class="r">ω 는 자이로 값(휠 ω 는 긁힘으로 최대 +16 % 과대). 180° 적분 검산 = 2p, gtest 통과.</span></li>
+    <li><span class="n">B3</span><span>같은 구간에서 vx·vy 표준편차를 0.03 m/s 로 — <code>rot_cov_enable</code> (기본 false)</span><span class="r">EKF 가 회전 중 휠 속도를 덜 믿게 해, SLAM·다른 입력이 들어올 여지를 만든다.</span></li>
+    <li><span class="n">남음</span><span>오프라인 A/B(회전 bag 4 개 × off/b2/b23) → 새 회전 시험으로 진짜 검증</span><span class="r">p 를 같은 데이터로 식별했으므로 오프라인 결과는 낙관적이다. Jetson 네트워크 끊김으로 미실행.</span></li>
+  </ul>
+</section>
+
+<section>
+  <h2>4. OLED — 화면이 안 나온 원인은 모듈이었다</h2>
+  <div class="two">
+  <ol class="steps">
+    <li><span class="n">1</span><span>SWD 로 실행 중 메모리 읽기</span><span class="r">초기화 성공 플래그 1, 초당 513 B 전송 계속 성공, 프레임 버퍼에 “IP 192.168…” 글자 정상 → 펌웨어는 끝까지 동작 <span class="pill ok">펌웨어 정상</span></span></li>
+    <li><span class="n">2</span><span>가설: 5 V 미공급으로 논리부만 기생 전원</span><span class="r">J8 3–4 번 5.21 V 실측 <span class="pill ng">기각</span></span></li>
+    <li><span class="n">3</span><span>진단 펌웨어: I2C2 스캔 + 전체 점등 명령 0xA5</span><span class="r">응답 주소는 0x3C 하나(OLED 맞음), 0xA5 도 ACK 인데 패널 무점등 <span class="pill warn">패널 의심</span></span></li>
+    <li><span class="n">4</span><span>전원 끄고 새 모듈로 교체</span><span class="r">화면 정상 → 첫 모듈 패널 불량 확정. 진단 코드는 지우고 원래 펌웨어로 재플래시 <span class="pill ok">확정</span></span></li>
+  </ol>
+  <div>
+    <div class="oled" aria-label="OLED 표시 예">IP 192.168.0.101
+WEB_DEV_5G
+BAT 12.21V ROS OK
+RUN    UP 00:03:12</div>
+    <p style="font-size:.88rem;color:var(--ink2)">0.91" SSD1306 128×32, J8 → I2C2 (PB10/PB11, 100 kHz), 1 Hz 갱신. IP·SSID 는 Jetson <code>display_info_pub.py</code> 가 3 s 마다 보내고 15 s 넘게 안 오면 끝에 ‘?’. 전압은 보드 ADC 직접, ROS 는 micro-ROS 상태.</p>
+    <p style="font-size:.88rem;color:var(--ink2)"><b>운용 주의</b> — 전원이 켜진 채 모듈을 바꾸면 새 모듈이 초기화되지 않는다(전송 실패 때만 재초기화). 모듈은 전원을 끄고 바꾼다. 보드 전원을 끄면 Jetson 도 재부팅된다.</p>
+  </div>
+  </div>
+</section>
+
+<p class="foot">출처: <code>outputs/j622~j626</code>, <code>jobs/job618~job626</code>, 펌웨어 커밋 0075277 · 기록 SUMMARY §23–§28.2. 회전축 수치는 측정(스캔 정합), 긁힘 동역학·접지압 중심 해석은 추정.</p>
+</main>
+<div class="tip" id="tip" hidden></div>
+
+<script>
+const NS='http://www.w3.org/2000/svg';
+const tip=document.getElementById('tip');
+function el(p,t,a,txt){const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);if(txt!=null)e.textContent=txt;p.appendChild(e);return e;}
+function hover(e,s){e.addEventListener('mousemove',ev=>{tip.hidden=false;tip.textContent=s;tip.style.left=(ev.clientX+12)+'px';tip.style.top=(ev.clientY+12)+'px';});e.addEventListener('mouseleave',()=>tip.hidden=true);}
+
+/* 1. 휠/실제 비 */
+(function(){
+  const s=document.getElementById('ratio');
+  const d=[['fb1 1',0.989,0.950],['fb1 2',0.995,0.947],['fb2 1',0.981,0.945],['fb2 2',0.989,0.946]];
+  const x0=52,x1=410,y0=20,y1=190,lo=0.93,hi=1.00,Y=v=>y1-(v-lo)/(hi-lo)*(y1-y0);
+  for(let v=0.93;v<=1.0001;v+=0.01){el(s,'line',{x1:x0,x2:x1,y1:Y(v),y2:Y(v),stroke:'var(--grid)'});el(s,'text',{x:x0-6,y:Y(v)+4,'text-anchor':'end'},v.toFixed(2));}
+  el(s,'line',{x1:x0,x2:x1,y1:Y(1),y2:Y(1),stroke:'var(--base)','stroke-dasharray':'3 3'});
+  const bw=26,gw=(x1-x0)/d.length;
+  d.forEach((r,i)=>{const cx=x0+gw*i+gw/2;
+    [[r[1],'var(--cw)','전진',-bw/2-1],[r[2],'var(--ccw)','후진',bw/2+1]].forEach(([v,c,n,o])=>{
+      const b=el(s,'rect',{x:cx+o-bw/2,y:Y(v),width:bw,height:y1-Y(v),fill:c,rx:3});hover(b,`${r[0]} ${n}: ${v.toFixed(3)}`);});
+    el(s,'text',{x:cx,y:y1+16,'text-anchor':'middle'},r[0]);});
+  el(s,'text',{x:x1,y:Y(1)-5,'text-anchor':'end'},'1.00 = 휠과 실제 같음');
+})();
+
+/* 2. 회전축 위치 */
+(function(){
+  const s=document.getElementById('pivot');
+  const cx=190,cy=215,k=6;  // 1 cm = 6 px, 앞 = 위, 왼 = 왼쪽
+  const X=py=>cx-py*k, Y=px=>cy-px*k;
+  el(s,'rect',{x:X(16.5),y:Y(25),width:33*k,height:50*k,fill:'var(--body)',stroke:'var(--rule)',rx:6});
+  el(s,'rect',{x:X(16.5),y:Y(25),width:5*k,height:50*k,fill:'var(--grid)'});
+  el(s,'rect',{x:X(-11.5),y:Y(25),width:5*k,height:50*k,fill:'var(--grid)'});
+  el(s,'text',{x:cx,y:Y(25)-8,'text-anchor':'middle'},'앞 (x+)');
+  el(s,'text',{x:X(16.5)+15,y:Y(-25)+16,'text-anchor':'middle'},'왼 트랙');
+  el(s,'text',{x:X(-16.5)-15,y:Y(-25)+16,'text-anchor':'middle'},'오른 트랙');
+  el(s,'line',{x1:cx-8,x2:cx+8,y1:cy,y2:cy,stroke:'var(--base)'});el(s,'line',{x1:cx,x2:cx,y1:cy-8,y2:cy+8,stroke:'var(--base)'});
+  el(s,'text',{x:cx+10,y:cy+16},'base_link');
+  const cw=[[-5.3,6.7,'S1-1'],[-4.3,6.6,'S1-2'],[-2.0,4.8,'S1-3'],[-3.2,4.7,'R1-1'],[-3.3,5.5,'R1b-1'],[-2.2,6.3,'R1b-2'],[-0.5,3.0,'R1b-3'],[-4.4,5.2,'R2b-1'],[-3.2,4.8,'R2b-2'],[-1.7,5.0,'R2b-3'],[-1.7,4.9,'R2b-4']];
+  const ccw=[[2.4,-7.6,'S2-1 (0.38)'],[-4.6,-6.7,'R3-1'],[-4.8,-12.7,'R3-2'],[-4.9,-9.2,'R3-3'],[-2.5,-11.5,'R3-4']];
+  [[cw,'var(--cw)'],[ccw,'var(--ccw)']].forEach(([a,c])=>a.forEach(([px,py,n])=>{
+    const e=el(s,'circle',{cx:X(py),cy:Y(px),r:4.5,fill:c,'fill-opacity':.55,stroke:'var(--surface)','stroke-width':1.5});hover(e,`${n}: (${px}, ${py}) cm`);}));
+  [[-2.9,5.2,'var(--cw)','시계 (−2.9, +5.2)'],[-2.9,-9.5,'var(--ccw)','반시계 (−2.9, −9.5)']].forEach(([px,py,c,t])=>{
+    const x=X(py),y=Y(px);
+    el(s,'path',{d:`M${x-7} ${y-7}L${x+7} ${y+7}M${x-7} ${y+7}L${x+7} ${y-7}`,stroke:c,'stroke-width':3,'stroke-linecap':'round'});
+    const tt=el(s,'text',{x:x,y:y+26,'text-anchor':'middle'},t);tt.style.fill=c;});
+  el(s,'text',{x:14,y:410},'눈금: 차체 50 × 33 cm, 점 위치 실척');
+})();
+
+/* 3. 회별 보정 전 이동 vs 잔차 */
+(function(){
+  const s=document.getElementById('resid');
+  const d=[['S1-1',17.0,6.1,0],['S1-2',15.8,4.3,0],['S1-3',10.5,2.0,0],['R1-1',11.4,1.3,0],['R1b-1',12.8,1.0,0],['R1b-2',13.4,2.9,0],['R1b-3',6.1,7.1,0],['R2b-1',13.5,3.2,0],['R2b-2',11.6,1.2,0],['R2b-3',10.6,2.7,0],['R2b-4',10.4,2.7,0],['S2-1',16.0,14.1,1],['R3-1',16.2,8.3,1],['R3-2',27.2,9.2,1],['R3-3',20.9,5.2,1],['R3-4',23.5,4.9,1]];
+  const x0=64,x1=405,y0=14,rh=23.5,X=v=>x0+v/30*(x1-x0);
+  for(let v=0;v<=30;v+=5){el(s,'line',{x1:X(v),x2:X(v),y1:y0-4,y2:y0+rh*d.length,stroke:'var(--grid)'});el(s,'text',{x:X(v),y:y0+rh*d.length+14,'text-anchor':'middle'},v+(v==30?' cm':''));}
+  el(s,'line',{x1:X(7),x2:X(7),y1:y0-4,y2:y0+rh*d.length,stroke:'var(--warn)','stroke-dasharray':'4 3'});
+  d.forEach(([n,raw,res,dir],i)=>{const y=y0+rh*i+rh/2;
+    el(s,'text',{x:x0-8,y:y+4,'text-anchor':'end'},n);
+    el(s,'line',{x1:X(res),x2:X(raw),y1:y,y2:y,stroke:'var(--rule)','stroke-width':2});
+    const a=el(s,'circle',{cx:X(raw),cy:y,r:5,fill:'var(--base)',stroke:'var(--surface)','stroke-width':1.5});hover(a,`${n} 보정 없음 ${raw} cm`);
+    const b=el(s,'circle',{cx:X(res),cy:y,r:5,fill:dir?'var(--ccw)':'var(--cw)',stroke:'var(--surface)','stroke-width':1.5});hover(b,`${n} 모델 잔차 ${res} cm`);});
+})();
+</script>
