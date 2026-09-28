@@ -1,0 +1,10 @@
+== /tmp/bag_s1 / 설정 b (slam pid 510846, 매개변수 확인: Double value is: 0.05 / Double value is: 0.1)
+  slam 실행 파일: /home/jetson/slam_ws/install/slam_toolbox/lib/slam_toolbox/async_slam_toolbox_node
+재생 메시지 2426 개, odom→base 1806, 지령 831
+새 SLAM map→odom 수신 1270 개
+  회전 1: SLAM 중심 이동(앞+/왼+) (-0.126, +0.119) = 0.174 m | 회전 -176.8° | map→odom 변화 (-0.129, +0.119, -0.60°), 갱신 2 회
+  회전 2: SLAM 중심 이동(앞+/왼+) (-0.140, +0.124) = 0.187 m | 회전 -177.4° | map→odom 변화 (+0.150, -0.115, -0.40°), 갱신 2 회
+  회전 3: SLAM 중심 이동(앞+/왼+) (-0.091, +0.066) = 0.112 m | 회전 -177.5° | map→odom 변화 (-0.099, +0.056, -0.80°), 갱신 2 회
+  slam CPU: 회전 구간 5.6 % (30 s) | 정지 구간 3.8 % (31 s) | 포즈 그래프 마커 10 개
+  slam CPU 평균 4.1 % (재생 73 s)
+  남은 재생용 slam: 0

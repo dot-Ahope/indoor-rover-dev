@@ -5,7 +5,7 @@
   기록: 재생 중 새 SLAM 이 내는 map→odom(수신 시 sim 시각). 끝나면 회전 구간(/cmd_vel |ω|>0.01)마다
         회전 직전(시작−0.8 s)·직후(끝+2.5 s) map→base = map→odom ∘ odom→base 로 시작 차체 기준 이동(앞+/왼+).
   인자: BAG   (slam_toolbox 는 래퍼가 같은 도메인·use_sim_time 으로 먼저 띄운다)"""
-import sys, math, time, bisect
+import sys, math, time, bisect, os
 import rclpy
 from rclpy.node import Node
 from rclpy.qos import QoSProfile, DurabilityPolicy, ReliabilityPolicy, HistoryPolicy
@@ -16,6 +16,7 @@ from rosgraph_msgs.msg import Clock
 from sensor_msgs.msg import LaserScan
 from tf2_msgs.msg import TFMessage
 from rclpy.parameter import Parameter
+from visualization_msgs.msg import MarkerArray
 
 
 def yaw(q): return math.atan2(2 * (q.w * q.z + q.x * q.y), 1 - 2 * (q.y * q.y + q.z * q.z))
@@ -57,6 +58,16 @@ def cb_tf(m):
 
 
 n.create_subscription(TFMessage, '/tf', cb_tf, 100)
+# 09-28 보강: 포즈 그래프 크기(마커 수)와 slam CPU 를 회전/정지 구간별로
+graph = [0]
+n.create_subscription(MarkerArray, '/slam_toolbox/graph_visualization', lambda m: graph.__setitem__(0, len(m.markers)), 10)
+SP = os.environ.get('SLAM_PID')
+def cpu_s():
+    try:
+        f = open('/proc/%s/stat' % SP).read().split(); return (int(f[13]) + int(f[14])) / os.sysconf('SC_CLK_TCK')
+    except Exception:
+        return float('nan')
+cpu_log = []   # (sim 시각, 누적 cpu 초, 벽시계)
 # 정적 TF 는 먼저 한 번
 statics = [m for ts, tp, m in msgs if tp == '/tf_static']
 t0b = msgs[0][0]; w0 = time.time()
@@ -72,6 +83,7 @@ for ts, tp, m in msgs:
     c = Clock(); c.clock.sec = ts // 1000000000; c.clock.nanosec = ts % 1000000000
     if ts - last_clock > 5e6: pc.publish(c); last_clock = ts
     simnow[0] = ts * 1e-9
+    if not cpu_log or time.time() - cpu_log[-1][2] > 0.25: cpu_log.append((simnow[0], cpu_s(), time.time()))
     if tp == '/scan': ps.publish(m)
     elif tp == '/tf': pt.publish(m)
     elif tp == '/tf_static': pst.publish(m)
@@ -115,4 +127,11 @@ for k, (a, b) in enumerate(segs):
             prev = v
     print('  회전 %d: SLAM 중심 이동(앞+/왼+) (%+.3f, %+.3f) = %.3f m | 회전 %+.1f° | map→odom 변화 (%+.3f, %+.3f, %+.2f°), 갱신 %d 회'
           % (k + 1, x, y, math.hypot(x, y), math.degrees(uw(p1[2] - p0[2])), m1[1] - m0[1], m1[2] - m0[2], math.degrees(uw(m1[3] - m0[3])), ch), flush=True)
+# 회전 구간(지령 있음) vs 나머지 CPU
+def in_rot(t): return any(a - 0.5 <= t <= b + 1.0 for a, b in segs)
+cr = cw = tr_ = tw = 0.0
+for (t0, c0, w0_), (t1, c1, w1) in zip(cpu_log, cpu_log[1:]):
+    if in_rot(t0): cr += c1 - c0; tr_ += w1 - w0_
+    else: cw += c1 - c0; tw += w1 - w0_
+print('  slam CPU: 회전 구간 %.1f %% (%.0f s) | 정지 구간 %.1f %% (%.0f s) | 포즈 그래프 마커 %d 개' % (cr / tr_ * 100 if tr_ else float('nan'), tr_, cw / tw * 100 if tw else float('nan'), tw, graph[0]), flush=True)
 rclpy.shutdown()

@@ -1,0 +1,19 @@
+diff --git a/src/slam_toolbox_common.cpp b/src/slam_toolbox_common.cpp
+index 77ac6b1..c33560a 100644
+--- a/src/slam_toolbox_common.cpp
++++ b/src/slam_toolbox_common.cpp
+@@ -537,7 +537,13 @@ bool SlamToolbox::shouldProcessScan(
+ 
+   // check moved enough, within 10% for correction error
+   const double dist2 = last_pose.SquaredDistance(pose);
+-  if (dist2 < 0.8 * min_dist2 || scan_ctr < 5) {
++  // [rover fork 2026-09-28] 스키드스티어 순수 회전 슬립 보정용: 병진 거리 "또는" 회전각이 문턱을 넘으면 처리.
++  //   원본은 거리만 봐서 제자리 회전 중 스캔을 모두 버렸다(Docs/debug_log/2026-09-28/SUMMARY.md §3.1, §8).
++  const double dheading = std::fabs(karto::math::NormalizeAngle(pose.GetHeading() - last_pose.GetHeading()));
++  // 주의: Karto 의 getParamMinimumTravelHeading() 은 **도(degree)** 로 돌려준다(내부는 라디안) → 라디안으로 변환.
++  //   09-28 첫 빌드는 변환 없이 비교해 문턱이 1.7189 rad(≈98°)가 되어 회전당 2 회만 처리됐다(§9).
++  const double min_heading = karto::math::DegreesToRadians(smapper_->getMapper()->getParamMinimumTravelHeading());
++  if ((dist2 < 0.8 * min_dist2 && dheading < 0.8 * min_heading) || scan_ctr < 5) {
+     return false;
+   }
+ 
