@@ -76,6 +76,8 @@ App/drivers/stm32_encoder_driver.c \
 App/drivers/fg_encoder_driver.c \
 App/drivers/icm20948_driver.c \
 App/drivers/ak09916_driver.c \
+App/drivers/ssd1306_driver.c \
+App/drivers/battery_adc.c \
 App/app/f1_sanity_task.c \
 App/app/f2_motor_test.c \
 App/app/bldc_ramp_test.c \
@@ -86,6 +88,8 @@ App/app/safety_monitor.c \
 App/app/f4_pid_test.c \
 App/app/odometry.c \
 App/app/imu_processor.c \
+App/app/display_info.c \
+App/app/display_task.c \
 App/microros/microros_task.c \
 App/microros/microros_transport.c \
 App/microros/microros_heap_freertos.c \
