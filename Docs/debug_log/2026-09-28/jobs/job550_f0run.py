@@ -4,6 +4,9 @@
     목표는 **출발 자세 기준**(출발 base_link: +x 앞, +y 왼쪽, yaw 도) — 러너가 시작 시 map 자세를 읽어 map 좌표로 바꾼다.
     예) 5 m 가서 돌아 출발점에 뒤돌아 서기: "5.0,0,180;0,0,180"
     yaw 자리에 a = 자동(09-28 §12, A1): 직전 지점 → 목표의 진행 방향을 목표 자세로 준다 = 도착 뒤 자세 맞춤 제자리 회전을 요구하지 않음.
+    yaw 자리에 p = 경로 자동(09-28 §16, A1 개선): 목표를 보내기 직전 planner(compute_path_to_pose)로 경로를 받아
+      **경로 끝 0.3 m 의 진행 방향**을 목표 자세로 준다 — a 는 상자 우회처럼 경로가 휘면 실제 접근 방향과 15~40° 어긋났다(f0a3 §14·§15).
+      경로를 못 받으면 a 방식으로 떨어진다.
       예) "2.3,0,a;0,0,a" — 목표 1 은 앞을 본 채 도착, 목표 2 는 복귀 방향을 본 채 도착(방향 전환은 목표 2 경로를 따라가며 MPPI 가 한다).
   동작: 목표를 하나씩 NavigateToPose 로 보냄(이전 목표 SUCCEEDED 뒤 다음), 목표별 한도 = 경로 길이/SPEED × 2 + 30 s(초과 시 취소·중단).
   기록(/tmp/<NAME>.csv, 10 Hz): t, 목표 번호, map x·y·yaw, odom x·y·yaw(EKF), 휠 yaw(/wheel_odom), 지령 v·ω, map→odom x·y·yaw, stuck 여부
@@ -16,14 +19,14 @@ import rclpy
 from rclpy.node import Node
 from rclpy.action import ActionClient
 from rclpy.qos import qos_profile_sensor_data
-from nav2_msgs.action import NavigateToPose
+from nav2_msgs.action import NavigateToPose, ComputePathToPose
 from geometry_msgs.msg import PoseStamped, Twist
 from nav_msgs.msg import Odometry
 from diagnostic_msgs.msg import DiagnosticArray
 import tf2_ros
 
 NAME = sys.argv[1]
-GOALS = [tuple(float(v) if (j < 2 or v.strip() != 'a') else None for j, v in enumerate(g.split(','))) for g in sys.argv[2].split(';') if g.strip()]   # yaw None = 자동
+GOALS = [tuple(float(v) if (j < 2 or v.strip() not in ('a', 'p')) else v.strip() for j, v in enumerate(g.split(','))) for g in sys.argv[2].split(';') if g.strip()]   # yaw 'a' = 직선 자동, 'p' = 경로 끝 자동
 SPEED = float(sys.argv[3]) if len(sys.argv) > 3 else 0.07
 PAUSE = float(sys.argv[4]) if len(sys.argv) > 4 else 0.0   # 목표 사이 정지 시간(s)
 
@@ -37,6 +40,7 @@ class F0(Node):
         super().__init__('f0run550')
         self.buf = tf2_ros.Buffer(); self.tl = tf2_ros.TransformListener(self.buf, self)
         self.ac = ActionClient(self, NavigateToPose, 'navigate_to_pose')
+        self.pc = ActionClient(self, ComputePathToPose, 'compute_path_to_pose')
         self.cmd = (0.0, 0.0); self.wyaw = None; self.stuck = 0; self.stuck_now = 0
         self.create_subscription(Twist, '/cmd_vel', lambda m: setattr(self, 'cmd', (m.linear.x, m.angular.z)), 10)
         self.create_subscription(Odometry, '/wheel_odom', lambda m: setattr(self, 'wyaw', yaw_of(m.pose.pose.orientation)), qos_profile_sensor_data)
@@ -55,6 +59,34 @@ class F0(Node):
             return None
 
 
+def path_end_yaw(n, gx, gy, fallback):
+    """planner 로 현재 위치 → (gx, gy) 경로를 받아 끝 0.3 m 의 진행 방향. 실패하면 fallback."""
+    if not n.pc.wait_for_server(timeout_sec=5):
+        print('  경로 자동 yaw: planner 서버 없음 → 직선 방향 사용', flush=True); return fallback
+    g = ComputePathToPose.Goal(); g.goal = PoseStamped(); g.goal.header.frame_id = 'map'
+    g.goal.header.stamp = n.get_clock().now().to_msg(); g.goal.pose.position.x, g.goal.pose.position.y = gx, gy
+    g.goal.pose.orientation.z, g.goal.pose.orientation.w = math.sin(fallback / 2), math.cos(fallback / 2)
+    g.use_start = False
+    fut = n.pc.send_goal_async(g)
+    t0 = time.time()
+    while not fut.done() and time.time() - t0 < 5: rclpy.spin_once(n, timeout_sec=0.05)
+    gh = fut.result() if fut.done() else None
+    if gh is None or not gh.accepted:
+        print('  경로 자동 yaw: 경로 요청 거부 → 직선 방향 사용', flush=True); return fallback
+    rf = gh.get_result_async(); t0 = time.time()
+    while not rf.done() and time.time() - t0 < 5: rclpy.spin_once(n, timeout_sec=0.05)
+    poses = rf.result().result.path.poses if rf.done() else []
+    if len(poses) < 2:
+        print('  경로 자동 yaw: 경로 없음 → 직선 방향 사용', flush=True); return fallback
+    ex, ey = poses[-1].pose.position.x, poses[-1].pose.position.y
+    k = len(poses) - 2
+    while k > 0 and math.hypot(poses[k].pose.position.x - ex, poses[k].pose.position.y - ey) < 0.30: k -= 1
+    bx, by = poses[k].pose.position.x, poses[k].pose.position.y
+    yaw = math.atan2(ey - by, ex - bx)
+    print('  경로 자동 yaw: 경로 %d 점, 끝 %.2f m 구간 방향 %.1f° (직선 방향 %.1f°, 차 %.1f°)' % (len(poses), math.hypot(ex - bx, ey - by), math.degrees(yaw), math.degrees(fallback), math.degrees(uw(yaw - fallback))), flush=True)
+    return yaw
+
+
 def main():
     rclpy.init(); n = F0()
     t0 = time.time()
@@ -69,13 +101,15 @@ def main():
     mgoals = []; px, py = S[0], S[1]
     for gx, gy, gyaw in GOALS:
         mx, my = S[0] + gx * c - gy * s, S[1] + gx * s + gy * c
-        th = math.atan2(my - py, mx - px) if gyaw is None else uw(S[2] + math.radians(gyaw))   # 자동 = 진행 방향
-        mgoals.append((mx, my, th)); px, py = mx, my
-    print('출발 map (%.3f, %.3f, %.1f°) | 목표 %d 개(출발 기준, yaw None = 자동 진행 방향): %s → map yaw %s' % (S[0], S[1], math.degrees(S[2]), len(GOALS), GOALS, ['%.0f°' % math.degrees(g[2]) for g in mgoals]), flush=True)
+        th = math.atan2(my - py, mx - px) if isinstance(gyaw, str) else uw(S[2] + math.radians(gyaw))   # 'a'·'p' 의 초기값 = 직선 진행 방향('p' 는 보내기 직전 경로로 교체)
+        mgoals.append((mx, my, th, gyaw == 'p')); px, py = mx, my
+    print('출발 map (%.3f, %.3f, %.1f°) | 목표 %d 개(출발 기준, a = 직선 자동, p = 경로 끝 자동): %s → map yaw(초기) %s' % (S[0], S[1], math.degrees(S[2]), len(GOALS), GOALS, ['%.0f°' % math.degrees(g[2]) for g in mgoals]), flush=True)
     rows = []; res = []; prev = (S[0], S[1]); wacc = 0.0; eacc = 0.0; lw = W0; le = O0[2]
     tstart = time.time()
-    for i, (gx, gy, gyaw) in enumerate(mgoals):
+    for i, (gx, gy, gyaw, from_path) in enumerate(mgoals):
         dist = math.hypot(gx - prev[0], gy - prev[1]); lim = dist / SPEED * 2 + 30
+        if from_path:
+            gyaw = path_end_yaw(n, gx, gy, gyaw)
         g = NavigateToPose.Goal(); g.pose = PoseStamped(); g.pose.header.frame_id = 'map'; g.pose.header.stamp = n.get_clock().now().to_msg()
         g.pose.pose.position.x, g.pose.pose.position.y = gx, gy
         g.pose.pose.orientation.z, g.pose.pose.orientation.w = math.sin(gyaw / 2), math.cos(gyaw / 2)
