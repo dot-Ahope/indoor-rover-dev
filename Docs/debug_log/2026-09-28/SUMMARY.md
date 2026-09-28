@@ -489,3 +489,9 @@ prep(`outputs/j615_prep_f0a6.txt`): 포크 SLAM·C++ 컨디셔너·Nav2 active, 
 - 빌드(PC, STM32CubeCLT GCC + GnuWin32 make): 경고 0, text 131,280 B, data 5,164 B, bss 118,624 B(RAM 128 KB 중 data+bss 123.8 KB).
 Jetson: `scripts/display_info_pub.py` — `ip -4 route get 1.1.1.1` 의 src(실제로 쓰는 IP, WEB_DEV↔ALOPS 전환에도 맞음) + nmcli 연결 이름을 "IP=…;SSID=…" 로 3 s 마다 `/rover/display_info` 발행. `base.launch.py` 에 추가(에이전트와 함께 뜸).
 미실행: **플래시·실물 확인**(OLED 연결·보드 리셋 필요 — 사용자). base 는 prep 이 유지하므로 Jetson 노드는 다음 base 재기동부터(또는 수동 실행).
+
+### §28.1 플래시·보드 쪽 확인
+- 플래시: 기존 펌웨어를 `fw_backup_20260928_before_oled.bin`(1 MB, 로컬 scratchpad, git 제외)으로 백업 → `STM32_Programmer_CLI ... -w build/rover_jupiter_fw.elf -v -rst` 검증 OK, `-rst` 한 번 더.
+- 그 사이 Jetson 이 재부팅돼 있었다(uptime 1 min, 스택·에이전트 없음, 플래시와 무관). base.launch.py 재기동(에이전트 + display_info_pub) → ST-Link 소프트웨어 리셋.
+- 확인(원문, 리셋 약 8 s 뒤): `/wheel_odom` 25.001 Hz(플래시 전과 같음), `/battery` 12.20 V, `/rover/status` OK, `/rover/display_info` **구독 수 1**(보드 구독 성립), 발행값 `IP=192.168.0.101;SSID=WEB_DEV_5G`.
+- 남은 것: OLED 화면 자체는 사용자 눈으로 확인(보드 쪽 수신만 측정으로 확인됨).
