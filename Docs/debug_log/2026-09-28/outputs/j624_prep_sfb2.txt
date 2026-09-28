@@ -1,0 +1,53 @@
+########## 1. 정리 ##########
+  정리 전 프로세스: 21
+  정리 후: 0 | /dev/shm fastrtps 잔재: 0
+  base 계층 유지: 에이전트 1개, robot_state_publisher 1개 (각 1 이어야)
+########## 2. base (micro-ROS 에이전트) ##########
+  /dev/rover -> /dev/ttyCH341USB0
+  에이전트 살아 있고 보드 송수신 정상 → base 재기동 생략 (세션 유지)
+  컨테이너: microros_agent Up 8 hours
+  /wheel_odom  average rate: 24.995
+  /rover/status  average rate: 4.999
+########## 3. sensors (자이로 캘리브 ~10s, 로버 정지 필수) ##########
+  [sensor_conditioner_node-6] [INFO] [1790582877.837262112] [sensor_conditioner]: gyro bias calibrated: (-0.00876, -0.00101, -0.00189) rad/s, std=(0.0025, 0.0022, 0.0018)
+  /odometry/filtered average rate: 29.999
+########## 4. slam ##########
+  map->odom: - Translation: [0.000, 0.000, 0.000]
+########## 5. nav2 ##########
+  /controller_server   active [3]
+  /planner_server      active [3]
+  /bt_navigator        active [3]
+  /behavior_server     active [3]
+########## 6. 설정 검증 ##########
+  local_costmap   voxel_decay=? decay_model=? 
+  global_costmap  voxel_decay=? decay_model=? 
+  BT ExceptRegion 5곳 / EntireCostmap 0곳
+          2 reset_distance="2.5"
+          2 reset_distance="3.0"
+  ZUPT: 20곳, 로그 5건
+########## 7. 코스트맵 클리어 + 재마킹 대기 15초 ##########
+  local 클리어
+  global 클리어
+########## 8. 상태 ##########
+  로버 자세: - Translation: [0.000, 0.000, 0.000] - Rotation: in RPY (radian) [0.000, 0.000, -0.001] 
+  EKF 위반 21회 | slam 폐기 7회 | load 5.45 3.83 3.38
+
+########## 9. 통과 가능성 (물리 틈 / 코스트맵 감사 / RPP 기준) ##########
+########## A. 물리 통로 (센서 원시 점, 코스트맵 무관) ##########
+  (x 분할: 군집 141점 중 2점 제거, 남은 조각 x 1.16~1.23)
+  낮은 클러스터 1개: (139점 x1.16 y-0.08 z0.08)
+상자: 전면 x=1.160  중심 y=-0.085  (139점)  → x 구간 [1.16, 1.27], y 구간 [-0.17, +0.01]
+  이 x 구간의 장애물 점 542개 (라이다+깊이). y 정렬 후 10cm 넘는 빈 틈:
+   틈 [y_lo, y_hi]         폭        차체0.33     패딩0.43     허용 자세각(패딩)
+   [-0.60, -0.18]         0.43 m   통과         불가          0 deg (패딩無 12 deg)
+   [+0.01, +0.66]         0.65 m   통과         통과         26 deg (패딩無 90 deg)
+
+########## B. 코스트맵 LETHAL(100) 셀 vs 센서 점 ##########
+Traceback (most recent call last):
+  File "/tmp/job248_audit.py", line 212, in <module>
+    pg = pose_in(g.header.frame_id); cg_, sg_ = math.cos(pg[2]), math.sin(pg[2])
+  File "/tmp/job248_audit.py", line 61, in pose_in
+    t = buf.lookup_transform(frame, 'base_link', rclpy.time.Time()).transform
+  File "/opt/ros/humble/lib/python3.10/site-packages/tf2_ros/buffer.py", line 136, in lookup_transform
+    return self.lookup_transform_core(target_frame, source_frame, time)
+tf2.ConnectivityException: Could not find a connection between 'odom' and 'base_link' because they are not part of the same tree.Tf has two or more unconnected trees.
