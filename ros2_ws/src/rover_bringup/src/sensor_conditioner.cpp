@@ -18,6 +18,10 @@ public:
   SensorConditioner()
   : rclcpp::Node("sensor_conditioner"), p_(loadParams()), gyro_(p_)
   {
+    // 자이로 → 로봇 yaw rate: 카메라 IMU 광학 프레임에서 로봇 yaw = 광학 −y (ekf.yaml imu0_config 인덱스 10 과 같은 근거).
+    //   생성자 본문에서 선언 — p_ 초기화(loadParams) 안에서 대입하면 뒤이은 멤버 기본값 초기화가 덮어쓴다.
+    gyro_yaw_axis_ = static_cast<int>(declare_parameter("gyro_yaw_axis", static_cast<int64_t>(1)));
+    gyro_yaw_sign_ = declare_parameter("gyro_yaw_sign", -1.0);
     const auto qos = rclcpp::SensorDataQoS();   // Python 판 qos_profile_sensor_data 와 같음(best effort, depth 5)
     imu_pub_ = create_publisher<sensor_msgs::msg::Imu>("/imu/data", qos);
     odom_pub_ = create_publisher<nav_msgs::msg::Odometry>("/wheel_odom/conditioned", qos);
@@ -46,6 +50,17 @@ private:
     p.zupt_max_std = declare_parameter("zupt_max_std", d.zupt_max_std);
     p.zupt_alpha = declare_parameter("zupt_alpha", d.zupt_alpha);
     p.zupt_max_step = declare_parameter("zupt_max_step", d.zupt_max_step);
+    // B2·B3 (09-28 §27) — 기본 꺼짐
+    p.icr_enable = declare_parameter("icr_enable", d.icr_enable);
+    p.icr_cw_px = declare_parameter("icr_cw_px", d.icr_cw_px);
+    p.icr_cw_py = declare_parameter("icr_cw_py", d.icr_cw_py);
+    p.icr_ccw_px = declare_parameter("icr_ccw_px", d.icr_ccw_px);
+    p.icr_ccw_py = declare_parameter("icr_ccw_py", d.icr_ccw_py);
+    p.icr_v_max = declare_parameter("icr_v_max", d.icr_v_max);
+    p.icr_w_min = declare_parameter("icr_w_min", d.icr_w_min);
+    p.rot_cov_enable = declare_parameter("rot_cov_enable", d.rot_cov_enable);
+    p.rot_vx_var = declare_parameter("rot_vx_var", d.rot_vx_var);
+    p.rot_vy_var = declare_parameter("rot_vy_var", d.rot_vy_var);
     return p;
   }
 
@@ -85,16 +100,26 @@ private:
       msg->linear_acceleration_covariance[i] = diag ? p_.accel_var : 0.0;
     }
     msg->orientation_covariance[0] = -1.0;   // orientation 미제공 표식(REP-145) — EKF 가 자세를 쓰지 않도록
+    // B2 판정용 로봇 yaw rate(바이어스 제거 뒤) 보관
+    const double g[3] = {msg->angular_velocity.x, msg->angular_velocity.y, msg->angular_velocity.z};
+    gyro_yaw_ = gyro_yaw_sign_ * g[(gyro_yaw_axis_ >= 0 && gyro_yaw_axis_ < 3) ? gyro_yaw_axis_ : 1];
+    gyro_t_ = now().seconds();
     imu_pub_->publish(std::move(msg));
   }
 
   void onOdom(nav_msgs::msg::Odometry::UniquePtr msg)
   {
     auto & tw = msg->twist.twist;
+    const double vx_raw = tw.linear.x;
     gyro_.setStationary(wheelStationary(p_, tw.linear.x, tw.angular.z));
     tw.linear.x *= p_.vx_scale;
     tw.angular.z *= yawSlipFactor(p_, tw.angular.z);
-    const auto c = wheelTwistCov(p_, tw.linear.x, tw.angular.z);
+    // 회전 판정 ω: 최근(0.1 s 안) 자이로가 있으면 자이로, 없으면 휠 ω
+    const double w = (gyro_t_ > 0.0 && now().seconds() - gyro_t_ < 0.1) ? gyro_yaw_ : tw.angular.z;
+    const auto add = icrTwistAdd(p_, vx_raw, w);   // B2 (꺼져 있으면 0)
+    tw.linear.x += add.vx;
+    tw.linear.y += add.vy;
+    const auto c = wheelTwistCov(p_, vx_raw, w);    // B3 (꺼져 있으면 고정값)
     msg->twist.covariance[0] = c.vx;
     msg->twist.covariance[7] = c.vy;
     msg->twist.covariance[35] = c.vyaw;
@@ -104,6 +129,8 @@ private:
   ConditionerParams p_;
   GyroBias gyro_;
   double zlast_log_ = 0.0;
+  double gyro_yaw_ = 0.0, gyro_t_ = 0.0, gyro_yaw_sign_ = -1.0;
+  int gyro_yaw_axis_ = 1;
   rclcpp::Publisher<sensor_msgs::msg::Imu>::SharedPtr imu_pub_;
   rclcpp::Publisher<nav_msgs::msg::Odometry>::SharedPtr odom_pub_;
   rclcpp::Subscription<sensor_msgs::msg::Imu>::SharedPtr imu_sub_;

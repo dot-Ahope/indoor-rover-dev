@@ -35,6 +35,17 @@ struct ConditionerParams
   double zupt_max_std = 0.010;          // rad/s
   double zupt_alpha = 0.10;
   double zupt_max_step = 0.0005;        // rad/s
+  // ── B2 제자리 회전 ICR 모델 (2026-09-28 §26~27) — 기본 꺼짐. 회전 시험 16 회 스캔 정합으로 식별:
+  //   제자리 회전 중 차체는 차체 좌표의 점 p 를 축으로 돈다(시계·반시계 따로). leave-one-out 잔차 중앙값 3.8 cm(보정 전 13.5).
+  bool icr_enable = false;
+  double icr_cw_px = -0.029, icr_cw_py = 0.052;     // m — 시계(ω<0) 회전축(차체 앞+/왼+)
+  double icr_ccw_px = -0.029, icr_ccw_py = -0.095;  // m — 반시계(ω>0)
+  double icr_v_max = 0.02;    // m/s — 휠 |vx| 가 이보다 작고
+  double icr_w_min = 0.10;    // rad/s — |ω| 가 이보다 크면 '순수 회전' 으로 본다 (호 회전은 미식별이라 적용 안 함, §7.2)
+  // ── B3 순수 회전 구간 가변 공분산 — 기본 꺼짐. 휠 vy = 0 ± 0.01 주장이 회전 중 옆 밀림을 부정하지 않도록(§20.5, §26)
+  bool rot_cov_enable = false;
+  double rot_vx_var = 0.03 * 0.03;   // (m/s)^2
+  double rot_vy_var = 0.03 * 0.03;   // (m/s)^2
 };
 
 using Vec3 = std::array<double, 3>;
@@ -142,14 +153,35 @@ inline double yawSlipFactor(const ConditionerParams & p, double vyaw)
   return p.slip_y0 + (p.slip_y1 - p.slip_y0) * (a - p.slip_x0) / (p.slip_x1 - p.slip_x0);
 }
 
-// 휠 twist 공분산 정책. 1 단계 = 고정값(Python 판과 같음).
-// 가변 공분산(§7 B3: 회전 중 vy σ ≥ 0.03 m/s)·ICR 모델(B2)은 동일성 검증 뒤 여기에 넣는다.
+// '순수 회전' 판정 — 휠 vx 는 작고 회전은 크다. ω 는 자이로(휠 ω 는 스크럽으로 최대 +16 % 과대, §6).
+inline bool pureRotation(const ConditionerParams & p, double vx, double w)
+{
+  return std::fabs(vx) < p.icr_v_max && std::fabs(w) > p.icr_w_min;
+}
+
+// B2: 회전축 p 로 도는 차체의 순간 속도 = ω ẑ × (−p) = (ω·py, −ω·px). 순수 회전이 아니거나 꺼져 있으면 0.
+//   검산(§27): 시계 0.38 rad/s, p (−0.029, +0.052) → 180° 적분 이동 (−0.058, +0.104) m = 2p(측정 평균).
+struct TwistAdd
+{
+  double vx, vy;
+  bool active;
+};
+inline TwistAdd icrTwistAdd(const ConditionerParams & p, double vx, double w)
+{
+  if (!p.icr_enable || !pureRotation(p, vx, w)) {return {0.0, 0.0, false};}
+  const double px = (w < 0.0) ? p.icr_cw_px : p.icr_ccw_px;
+  const double py = (w < 0.0) ? p.icr_cw_py : p.icr_ccw_py;
+  return {w * py, -w * px, true};
+}
+
+// 휠 twist 공분산 정책. 기본 = 고정값(Python 판과 같음). B3: 순수 회전 구간에서 vx·vy 분산을 키운다.
 struct WheelTwistCov
 {
   double vx, vy, vyaw;
 };
-inline WheelTwistCov wheelTwistCov(const ConditionerParams & p, double /*vx*/, double /*wz*/)
+inline WheelTwistCov wheelTwistCov(const ConditionerParams & p, double vx, double w)
 {
+  if (p.rot_cov_enable && pureRotation(p, vx, w)) {return {p.rot_vx_var, p.rot_vy_var, p.vyaw_var};}
   return {p.vx_var, p.vy_var, p.vyaw_var};
 }
 
