@@ -34,6 +34,7 @@
 #include <rmw_microros/rmw_microros.h>
 
 #include <std_msgs/msg/int32.h>
+#include <std_msgs/msg/string.h>
 #include <geometry_msgs/msg/twist.h>
 #include <nav_msgs/msg/odometry.h>
 #include <sensor_msgs/msg/imu.h>
@@ -47,6 +48,8 @@
 #include "task.h"
 
 #include "adc.h"
+#include "battery_adc.h"
+#include "display_info.h"
 #include "rover_platform.h"
 #include "speed_controller.h"
 #include "safety_monitor.h"
@@ -68,19 +71,18 @@ extern size_t cubemx_transport_read(struct uxrCustomTransport *transport, uint8_
 #define HALF_WHEEL_BASE  (WHEEL_BASE_M * 0.5f)   /* = 0.2215 m (유효 게이지 0.443 — 스크럽 반영, 2026-09-07) */
 #define V_MAX_MPS        MAX_LINEAR_SPEED_MPS    /* 0.100 (1:90 모터, duty 98%→115mm/s 실측) — 명령 saturation */
 
-/* F8.5 — 배터리 전압 변환. 실측 캘리브레이션 (2026-05-28):
- *   V_battery = 11.9 V, ADC raw = 3645 → divider ratio = 11.9 / (3645 × 3.3/4095) = 4.05
- *   회로도 의도값은 4:1 (R1≈30k, R2≈10k) — 저항 tol·VDDA 편차로 4.05 측정.
- *   양산기 PCB 교체 시 동일 절차로 재캘리브레이션 필요. */
-#define VIN_DIVIDER_RATIO   4.05f
-#define ADC_REF_VOLTS       3.3f
-#define ADC_LSB_TO_VOLTS    (ADC_REF_VOLTS * VIN_DIVIDER_RATIO / 4095.0f)
+/* F8.5 배터리 전압 변환(분압 4.05 실측)은 2026-09-28 App/drivers/battery_adc.c 로 옮김(OLED 태스크와 ADC 공유). */
 
 static rcl_publisher_t       s_heartbeat_pub;
 static std_msgs__msg__Int32  s_heartbeat_msg;
 
 static rcl_subscription_t          s_cmdvel_sub;
 static geometry_msgs__msg__Twist   s_cmdvel_msg;
+/* 2026-09-28: OLED 표시용 — Jetson display_info_pub.py 가 보내는 "IP=…;SSID=…" (std_msgs/String, 약 0.33 Hz).
+ *   수신 버퍼는 정적 할당(micro-ROS 는 String 수신 시 capacity 만큼만 채움). 구독 한도 RMW_UXRCE_MAX_SUBSCRIPTIONS=5 중 2 개째. */
+static rcl_subscription_t          s_disp_sub;
+static std_msgs__msg__String       s_disp_msg;
+static char                        s_disp_buf[96];
 
 static rcl_publisher_t           s_odom_pub;
 static nav_msgs__msg__Odometry   s_odom_msg;
@@ -149,6 +151,12 @@ static float apply_min_wheel_speed(float v)
 }
 
 /* /cmd_vel 콜백 — Twist (linear.x, angular.z) → 좌·우 휠 속도. */
+static void display_info_callback(const void *msg_in)
+{
+    const std_msgs__msg__String *m = (const std_msgs__msg__String *)msg_in;
+    display_info_set_text(m->data.data, (uint32_t)m->data.size, HAL_GetTick());
+}
+
 static void cmdvel_callback(const void *msg_in)
 {
     const geometry_msgs__msg__Twist *m = (const geometry_msgs__msg__Twist *)msg_in;
@@ -209,6 +217,7 @@ void microros_task_run(void *arg)
     }
 
     /* 3) Agent 대기. */
+    display_info_set_uros(UROS_WAITING);
     printf("[uROS] waiting for agent...\r\n");
     while (rmw_uros_ping_agent(1000, 1) != RMW_RET_OK) {
         printf("[uROS] no agent. retrying...\r\n");
@@ -246,6 +255,16 @@ void microros_task_run(void *arg)
         ROSIDL_GET_MSG_TYPE_SUPPORT(geometry_msgs, msg, Twist),
         "cmd_vel");
     if (rc != RCL_RET_OK) { printf("[uROS] cmdvel_sub rc=%ld\r\n", (long)rc); goto idle; }
+
+    /* 6b) rover/display_info subscriber (2026-09-28, OLED). best effort — 3 s 마다 새로 오므로 잃어도 무방. */
+    rc = rclc_subscription_init_best_effort(
+        &s_disp_sub, &s_node,
+        ROSIDL_GET_MSG_TYPE_SUPPORT(std_msgs, msg, String),
+        "rover/display_info");
+    if (rc != RCL_RET_OK) { printf("[uROS] disp_sub rc=%ld\r\n", (long)rc); goto idle; }
+    s_disp_msg.data.data = s_disp_buf;
+    s_disp_msg.data.size = 0;
+    s_disp_msg.data.capacity = sizeof(s_disp_buf);
 
     /* 7) wheel_odom publisher (F6).
      * **BEST_EFFORT** — libmicroros 재빌드로 MTU 512→1024 확장 (Phase C, colcon.meta).
@@ -350,15 +369,20 @@ void microros_task_run(void *arg)
         printf("[uROS] time sync FAIL — header.stamp 는 boot time 기준\r\n");
     }
 
-    /* 8) Executor (subscriber 1개). */
-    rc = rclc_executor_init(&s_executor, &s_support.context, 1, &s_allocator);
+    /* 8) Executor (subscriber 2개: cmd_vel, display_info). */
+    rc = rclc_executor_init(&s_executor, &s_support.context, 2, &s_allocator);
     if (rc != RCL_RET_OK) { printf("[uROS] executor_init rc=%ld\r\n", (long)rc); goto idle; }
     rc = rclc_executor_add_subscription(
         &s_executor, &s_cmdvel_sub, &s_cmdvel_msg,
         cmdvel_callback, ON_NEW_DATA);
     if (rc != RCL_RET_OK) { printf("[uROS] executor_add rc=%ld\r\n", (long)rc); goto idle; }
+    rc = rclc_executor_add_subscription(
+        &s_executor, &s_disp_sub, &s_disp_msg,
+        display_info_callback, ON_NEW_DATA);
+    if (rc != RCL_RET_OK) { printf("[uROS] executor_add disp rc=%ld\r\n", (long)rc); goto idle; }
+    display_info_set_uros(UROS_CONNECTED);
 
-    printf("[uROS] ready — pub heartbeat/odom/imu/mag/battery/status, sub cmd_vel\r\n");
+    printf("[uROS] ready — pub heartbeat/odom/imu/mag/battery/status, sub cmd_vel/display_info\r\n");
 
     /* 9) Spin loop — vTaskDelayUntil 로 20ms cycle.
      *
@@ -477,14 +501,10 @@ void microros_task_run(void *arg)
         /* F8: /battery 1Hz — ADC raw 만 우선 (voltage divider ratio 미정).
          * voltage 필드에 raw 값 그대로 (사용자가 실측 V 와 비교해 비율 산출 가능). */
         if (now_ms - last_battery_ms >= 1000u) {
-            uint16_t adc_raw = 0;
-            if (HAL_ADC_Start(&hadc1) == HAL_OK &&
-                HAL_ADC_PollForConversion(&hadc1, 5) == HAL_OK) {
-                adc_raw = (uint16_t)HAL_ADC_GetValue(&hadc1);
-            }
-            HAL_ADC_Stop(&hadc1);
-            /* F8.5 적용 — divider ratio 4.05 (실측). 단위: V (sensor_msgs/BatteryState). */
-            s_battery_msg.voltage = (float)adc_raw * ADC_LSB_TO_VOLTS;
+            /* 2026-09-28: ADC 는 OLED 태스크와 공유 → battery_adc(뮤텍스, 같은 4.05 분압 변환)로. 실패하면 직전 값 유지. */
+            float vb = s_battery_msg.voltage;
+            (void)battery_adc_read(&vb);
+            s_battery_msg.voltage = vb;
             fill_stamp(&s_battery_msg.header.stamp, now_ms);
             pr = rcl_publish(&s_battery_pub, &s_battery_msg, NULL); (void)pr;
             last_battery_ms = now_ms;
@@ -553,5 +573,6 @@ void microros_task_run(void *arg)
     }
 
 idle:
+    display_info_set_uros(UROS_ERROR);
     for (;;) osDelay(1000);
 }
