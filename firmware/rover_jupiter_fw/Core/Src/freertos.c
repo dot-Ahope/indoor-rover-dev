@@ -37,6 +37,8 @@
 #include "odometry.h"
 #include "imu_processor.h"
 #include "microros_task.h"
+#include "display_task.h"
+#include "battery_adc.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -108,6 +110,14 @@ const osThreadAttr_t microrosTask_attributes = {
   .name = "uros",
   .stack_size = 1536 * 4,   /* 6 KB */
   .priority = (osPriority_t) osPriorityNormal,
+};
+/* 2026-09-28: OLED 상태 표시 (J8 → I2C2, SSD1306 128×32). 1 Hz 갱신, 블로킹 I2C 50 ms → 가장 낮은 우선순위.
+ * snprintf·HAL I2C 호출 깊이 여유로 384 워드. */
+osThreadId_t displayTaskHandle;
+const osThreadAttr_t displayTask_attributes = {
+  .name = "oled",
+  .stack_size = 384 * 4,
+  .priority = (osPriority_t) osPriorityLow,
 };
 /* USER CODE END Variables */
 /* Definitions for defaultTask */
@@ -184,6 +194,8 @@ void MX_FREERTOS_Init(void) {
   /* FG PPR 측정 — 활성하려면 아래 한 줄 주석 해제. (control 과 공존 가능, 모터 정지) */
   /* fgCountTaskHandle = osThreadNew(fg_count_test_run, NULL, &fgCountTask_attributes); */
   microrosTaskHandle = osThreadNew(microros_task_run, NULL, &microrosTask_attributes);
+  battery_adc_init();   /* ADC 공유 뮤텍스 — 태스크들이 쓰기 전에(스케줄러 시작 전) 만든다 */
+  displayTaskHandle = osThreadNew(display_task_run, NULL, &displayTask_attributes);
   /* USER CODE END RTOS_THREADS */
 
   /* USER CODE BEGIN RTOS_EVENTS */

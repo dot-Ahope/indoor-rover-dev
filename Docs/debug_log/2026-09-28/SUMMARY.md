@@ -471,3 +471,21 @@ prep(`outputs/j615_prep_f0a6.txt`): 포크 SLAM·C++ 컨디셔너·Nav2 active, 
 해석(추정): 앞뒤 성분이 **두 방향 모두 ≈ −3 cm**(방향 무관) → 접지압 중심이 base_link 보다 약 3 cm 뒤. 옆 성분은 **회전 방향에 따라 부호가 바뀌고 앞으로 구르는 트랙 쪽**(시계 = 왼쪽 +5 cm, 반시계 = 오른쪽 −9.5 cm) → §6 가설의 정량 모델. 반시계 쪽이 1.8 배 — 좌우 차(원인 미상, 모터·장력은 아님 §25.1).
 판단: 모델은 회전 밀림의 ≈ 70 % 를 설명 → **컨디셔너 B2 로 채택**. 다만 잔차 ≤ 7 cm 가 75 % 라 "목표에서 제자리 회전 허용" 기준(§19 뒤 논의: 90 %)에는 못 미친다 — 원래 방향 복귀는 계속 제외.
 다음(구현, 기본 꺼짐): 컨디셔너 휠 twist 에 순수 회전 구간(|v| < 0.02 m/s, |ω| > 0.10 rad/s)에서 vx += ω·py, vy += −ω·px(p 는 ω 부호별), 같은 구간에서 **B3** vx·vy σ 를 0.03 m/s 로(잔차 반영). ω 는 자이로 값을 쓴다(휠 ω 는 스크럽으로 최대 +16 % 과대 — §6 표). 검증 = 회전 시험 재실시에서 EKF 이동 vs 스캔 정합.
+
+## §27 B2·B3 컨디셔너 구현 (기본 꺼짐)
+- `conditioner_core.hpp`: `icrTwistAdd`(순수 회전 = 휠 |vx| < 0.02 m/s·|ω| > 0.10 rad/s 에서 vx += ω·py, vy += −ω·px, p 는 ω 부호별 §26 값), `wheelTwistCov`(B3: 같은 구간 vx·vy 분산 0.03²). 파라미터 `icr_enable`·`rot_cov_enable`(기본 false), 회전축·문턱·분산, 자이로 축(`gyro_yaw_axis` 1, `gyro_yaw_sign` −1 = 광학 −y).
+- 노드: 회전 판정 ω 는 자이로(바이어스 제거 뒤) — 0.1 s 넘게 끊기면 휠 ω. 꺼져 있으면 출력은 §11 과 같음(더하는 값 0, 분산 고정).
+- 검산: 시계 0.38 rad/s 로 180° 적분 → (−0.058, +0.104) m = 2p(측정 평균)(gtest `HalfTurnIntegratesToTwiceOffset`). gtest 3 개 추가, Jetson `colcon test` 9 tests 0 failures.
+- 내 실수(빌드 전 발견·수정): 자이로 축 파라미터를 `p_` 초기화(loadParams) 안에서 대입 → 뒤이은 멤버 기본값 초기화가 덮어씀 → 생성자 본문으로 이동.
+- 남음: 오프라인 A/B(회전 bag 4 개 → 컨디셔너 off/b2/b23 → EKF, 도메인 42, `jobs/job627_ekfreplay.py`·`job628_b2ab.sh`·`job630_b2ab_all.sh`) — 네트워크 끊김으로 미실행. p 를 같은 데이터로 식별했으므로 결과는 낙관적(진짜 검증은 새 회전 시험).
+
+## §28 보드 OLED 상태 표시 (사용자 요청)
+하드웨어(회로도 `Docs/01_firmware/STM32BD/ROVER_MECURY_R10.20260106.pdf` 2 쪽): J8 "OLED Display" 4 핀 헤더 = 1 SDA, 2 SCL, 3 **5.0V**, 4 GND → I2C2(PB10 SCL/PB11 SDA, CubeMX 100 kHz 이미 초기화). 모듈: 0.91" 128×32 SSD1306(사용자 확인), 주소 0x3C 가정.
+펌웨어(계층 유지):
+- Driver `App/drivers/ssd1306_driver.[ch]` — 텍스트 전용(5×7 글꼴, 21 자 × 4 줄), 블로킹 I2C(프레임 512 B ≈ 50 ms). 초기화 실패·전송 실패 시 false → 태스크가 5 s 마다 재시도(모듈이 없어도 아무것도 막지 않음).
+- Driver `App/drivers/battery_adc.[ch]` — ADC1 배터리 전압(분압 4.05, microros_task 에서 옮김)을 **뮤텍스로 보호**(OLED 태스크와 micro-ROS 태스크가 같은 ADC 를 쓰게 됨).
+- App `App/app/display_info.[ch]` — 표시 정보 공유 상태(크리티컬 섹션 복사). `App/app/display_task.[ch]` — 1 Hz, 우선순위 Low, 스택 384 워드. 줄: `IP 192.168.0.101`(15 s 넘게 안 오면 끝에 '?') / SSID / `BAT 12.05V ROS OK`(WAIT/OK/ERR) / `RUN UP hh:mm:ss`(RUN/CMD-TO/STALL/LATCH).
+- `microros_task.c`: 구독 `rover/display_info`(std_msgs/String, best effort, 정적 버퍼 96 B) 추가 — 구독 한도 5 중 2 번째라 라이브러리 재빌드 불필요. executor 핸들 1 → 2. micro-ROS 상태를 display_info 로(WAIT → OK, 실패 시 ERR). /battery 는 battery_adc 사용(값·주기 같음).
+- 빌드(PC, STM32CubeCLT GCC + GnuWin32 make): 경고 0, text 131,280 B, data 5,164 B, bss 118,624 B(RAM 128 KB 중 data+bss 123.8 KB).
+Jetson: `scripts/display_info_pub.py` — `ip -4 route get 1.1.1.1` 의 src(실제로 쓰는 IP, WEB_DEV↔ALOPS 전환에도 맞음) + nmcli 연결 이름을 "IP=…;SSID=…" 로 3 s 마다 `/rover/display_info` 발행. `base.launch.py` 에 추가(에이전트와 함께 뜸).
+미실행: **플래시·실물 확인**(OLED 연결·보드 리셋 필요 — 사용자). base 는 prep 이 유지하므로 Jetson 노드는 다음 base 재기동부터(또는 수동 실행).
