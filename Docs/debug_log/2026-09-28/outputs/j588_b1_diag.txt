@@ -1,0 +1,37 @@
+== /tmp/bag_s1 / 설정 b (slam pid 551971, 매개변수: 거리 0.05 / 회전 0.03 / 간격 0.1 / 해상도 0.05 / 모드 mapping)
+  slam 실행 파일: /home/jetson/slam_ws/install/slam_toolbox/lib/slam_toolbox/async_slam_toolbox_node
+재생 메시지 2426 개, odom→base 1806, 지령 831
+새 SLAM map→odom 수신 1269 개
+  회전 1: SLAM 중심 이동(앞+/왼+) (-0.126, +0.119) = 0.174 m | 회전 -176.8° | map→odom 변화 (-0.129, +0.119, -0.60°), 갱신 2 회
+  회전 2: SLAM 중심 이동(앞+/왼+) (-0.140, +0.124) = 0.187 m | 회전 -177.4° | map→odom 변화 (+0.150, -0.115, -0.40°), 갱신 2 회
+  회전 3: SLAM 중심 이동(앞+/왼+) (-0.091, +0.066) = 0.112 m | 회전 -177.5° | map→odom 변화 (-0.099, +0.056, -0.80°), 갱신 2 회
+  slam CPU: 회전 구간 5.7 % (30 s) | 정지 구간 3.8 % (31 s) | 포즈 그래프 마커 10 개
+  slam CPU 평균 3.9 % (재생 78 s)
+  남은 재생용 slam: 0
+dist 0.0000 dhead 0.0001 minh 1.7189 pass 0
+ dist 0.0000 dhead 0.0003 minh 1.7189 pass 0
+ dist 0.0000 dhead 0.0002 minh 1.7189 pass 0
+ dist 0.0000 dhead 0.0002 minh 1.7189 pass 0
+ dist 0.0000 dhead 0.0001 minh 1.7189 pass 0
+ dist 0.0000 dhead 0.0001 minh 1.7189 pass 0
+5 dist 0.0000 dhead 0.3202 minh 1.7189 pass 0
+5 dist 0.0001 dhead 0.6699 minh 1.7189 pass 0
+5 dist 0.0001 dhead 1.0387 minh 1.7189 pass 0
+5 dist 0.0001 dhead 1.3996 minh 1.7189 pass 1
+6 dist 0.0001 dhead 0.2812 minh 1.7189 pass 0
+7 dist 0.0001 dhead 0.2813 minh 1.7189 pass 0
+8 dist 0.0001 dhead 0.2809 minh 1.7189 pass 0
+8 dist 0.0001 dhead 0.2811 minh 1.7189 pass 0
+9 dist 0.0001 dhead 0.2810 minh 1.7189 pass 0
+0 dist 0.0001 dhead 0.2811 minh 1.7189 pass 0
+1 dist 0.0001 dhead 0.2809 minh 1.7189 pass 0
+2 dist 0.0009 dhead 0.5684 minh 1.7189 pass 0
+3 dist 0.0015 dhead 0.9551 minh 1.7189 pass 0
+3 dist 0.0017 dhead 1.2607 minh 1.7189 pass 0
+3 dist 0.0001 dhead 0.2050 minh 1.7189 pass 0
+4 dist 0.0002 dhead 0.5324 minh 1.7189 pass 0
+4 dist 0.0003 dhead 0.8458 minh 1.7189 pass 0
+5 dist 0.0002 dhead 1.2349 minh 1.7189 pass 0
+5 dist 0.0002 dhead 0.2526 minh 1.7189 pass 0
+6 dist 0.0004 dhead 0.5969 minh 1.7189 pass 0
+6 dist 0.0004 dhead 0.5971 minh 1.7189 pass 0
