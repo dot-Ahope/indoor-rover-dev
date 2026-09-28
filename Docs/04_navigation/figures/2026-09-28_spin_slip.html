@@ -131,7 +131,7 @@ function tipOff(){ tip.hidden = true; }
 function size(svg, W, H){ svg.setAttribute('viewBox', `0 0 ${W} ${H}`); svg.setAttribute('width', W); svg.style.maxWidth = '100%'; svg.style.height = 'auto'; }
 // 그림 1: 벡터. 화면 위 = 앞(+x), 화면 왼쪽 = 로버 왼쪽(+y)
 (function(){
-  const svg = document.getElementById('vec'), sc = 1300, R = 0.32, pad = 30, W = 2 * R * sc + 2 * pad, H = W; size(svg, W, H);
+  const svg = document.getElementById('vec'), sc = 900, R = 0.32, pad = 48, W = 2 * R * sc + 2 * pad, H = W; size(svg, W, H);
   const X = y => pad + (R - y) * sc, Y = x => pad + (R - x) * sc;
   el('rect', {x: pad, y: pad, width: W - 2 * pad, height: H - 2 * pad, fill: 'var(--surface)', stroke: 'var(--rule)'}, svg);
   for (let g = -0.3; g <= 0.301; g += 0.1){ const gg = +g.toFixed(1);
