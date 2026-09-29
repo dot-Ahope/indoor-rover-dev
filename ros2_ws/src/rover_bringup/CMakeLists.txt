@@ -23,8 +23,8 @@ if(BUILD_TESTING)
   target_include_directories(test_conditioner_core PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
 endif()
 
-install(DIRECTORY launch config DESTINATION share/${PROJECT_NAME})
+install(DIRECTORY launch config systemd DESTINATION share/${PROJECT_NAME})
 
-install(PROGRAMS scripts/sensor_conditioner.py scripts/scan_restamp.py scripts/scan_deskew.py scripts/stuck_monitor.py scripts/depth_relay.py scripts/display_info_pub.py DESTINATION lib/${PROJECT_NAME})
+install(PROGRAMS scripts/sensor_conditioner.py scripts/scan_restamp.py scripts/scan_deskew.py scripts/stuck_monitor.py scripts/depth_relay.py scripts/display_info_pub.py scripts/install_rover_base_service.sh DESTINATION lib/${PROJECT_NAME})
 
 ament_package()
