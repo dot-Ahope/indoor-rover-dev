@@ -1,0 +1,65 @@
+===== 2026-09-29 12:23:05 시작 | job646_vslam_up.sh  
+  목적: §9 cuVSLAM 단독: 스택 내림·카메라 IR 설정·cuVSLAM 기동
+  원문: /tmp/live/scripts/job646_vslam_up.sh
+== 정리 뒤 남은 스택 프로세스: 0 | base: active
+== 카메라: Open profile: stream_type: Infra(1), Format: Y8, Width: 640, Height: 360, FPS: 30;Open profile: stream_type: Infra(2), Format: Y8, Width: 640, Height: 360, FPS: 30;Open profile: stream_type: Accel(0)Format: MOTION_XYZ32F, FPS: 200;Open profile: stream_type: Gyro(0)Format: MOTION_XYZ32F, FPS: 200;Rea
+  /camera/camera/infra1/image_rect_raw     average rate: 30.002
+  /camera/camera/infra2/image_rect_raw     average rate: 29.995
+  /camera/camera/imu                       average rate: 199.690
+  프로젝터(emitter_enabled): Integer value is: 0
+== cuVSLAM 로그(주요):
+[INFO] [component_container-1]: process started with pid [266880]
+[component_container-1] [33m2026-09-29 12:23:47.507 WARN  external/com_nvidia_gxf/gxf/std/program.cpp@538: No GXF scheduler specified.[0m
+[component_container-1] [INFO] [1790652227.550162091] [visual_slam_node]: cuVSLAM version: 12.6
+[component_container-1] [INFO] [1790652227.652624276] [visual_slam_node]: Time taken by CUVSLAM_WarmUpGPU(): 0.102361
+[component_container-1] [INFO] [1790652227.658719306] [visual_slam_node]: Initializing cuVSLAM.
+[component_container-1] [INFO] [1790652227.659151513] [visual_slam_node]: Enable IMU Fusion: true
+[component_container-1] [INFO] [1790652232.466417991] [visual_slam_node]: Time taken by CUVSLAM_CreateTracker(): 4.807188
+[component_container-1] [INFO] [1790652232.466587085] [visual_slam_node]: cuVSLAM tracker was successfully initialized.
+[component_container-1] [WARN] [1790652232.870300899] [visual_slam_node]: Delta between current and previous frame [400.102295 ms] is above threshold [35.000000 ms]
+[component_container-1] [WARN] [1790652236.155178387] [visual_slam_node]: Delta between current and previous frame [66.685547 ms] is above threshold [35.000000 ms]
+[component_container-1] [WARN] [1790652238.388412998] [visual_slam_node]: Delta between current and previous frame [100.026123 ms] is above threshold [35.000000 ms]
+[component_container-1] [WARN] [1790652238.821458370] [visual_slam_node]: Delta between current and previous frame [166.706543 ms] is above threshold [35.000000 ms]
+[component_container-1] [WARN] [1790652239.956281310] [visual_slam_node]: Delta between current and previous frame [66.683594 ms] is above threshold [35.000000 ms]
+  /visual_slam/tracking/odometry           average rate: 29.988
+===== 12:24:08 끝 rc=0
+
+===== 2026-09-29 12:24:22 시작 | job649_vslam_v1.sh 60 V1static 
+  목적: §9 V1 정지 60 s(동작·드리프트·부하)
+  원문: /tmp/live/scripts/job649_vslam_v1.sh
+== V1 V1static: 60 s
+  odometry 29.7 Hz (1786 개), 최대 간격 0.080 s
+  처음→끝 xy 변화 0.44 cm (z -0.98 cm), 최대 이탈 0.51 cm, yaw 변화 +0.150°
+  vo_state 분포: {1: 1784} (3.2 정의: 0 미상, 1 성공, 2 실패, 3 성공+IMU 없음 — 원문 정의는 메시지 주석 확인)
+== 부하(top 평균 %CPU, 코어 1 = 100)
+  component_conta        22.8
+  python3                14.1
+  realsense2_came        13.1
+  전체 CPU 사용(top idle 기준 평균): 15 % (6 코어 합 기준 90 %)
+  GPU GR3D 평균: 5 % (n=122)
+===== 12:25:26 끝 rc=0
+
+===== 2026-09-29 12:25:44 시작 | job650_vostate.sh  
+  목적: §9 vo_state 정의 확인
+  원문: /tmp/live/scripts/job650_vostate.sh
+# This is a status message which gives insights about tracker status and execution time which can help in diagnostics and profiling.
+# The frame id in the header is used as the reference frame of both the transforms below.
+std_msgs/Header header
+
+# Pure visual odometry return code:
+# 0 - Unknown state
+# 1 - Success
+# 2 - Failed
+uint8 vo_state
+
+# The total time it takes to process the input frames to output messages in seconds.
+float64 node_callback_execution_time
+
+# Time it takes to get current pose out of cuVSLAM using pure visual slam tracking in seconds.
+float64 track_execution_time
+
+# Mean time to get poses out of cuVSLAM using pure visual slam tracking in seconds.
+float64 track_execution_time_mean
+
+# Max time to get poses out of cuVSLAM using pure visual slam tracking in seconds.
+===== 12:25:44 끝 rc=0
