@@ -34,6 +34,7 @@ class NavGuard(Node):
                      ('time_limit_override', 0.0), ('no_progress_s', 45.0), ('no_progress_m', 0.25), ('rate', 5.0)):
             self.declare_parameter(k, v)
         self.goals = {}          # goal_id(bytes) → {'t0', 'd0', 'limit', 'hist': [(t, x, y)]}
+        self.tripped = set()     # 개입한 목표 — 취소 뒤 늦게 온 피드백으로 다시 등록되지 않게(09-29 G1 에서 관찰)
         self.create_subscription(NavigateToPose.Impl.FeedbackMessage, '/navigate_to_pose/_action/feedback', self.cb_fb, 10)
         self.create_subscription(GoalStatusArray, '/navigate_to_pose/_action/status', self.cb_status, 10)
         self.cancel = self.create_client(CancelGoal, '/navigate_to_pose/_action/cancel_goal')
@@ -49,6 +50,7 @@ class NavGuard(Node):
 
     def cb_fb(self, m):
         gid = bytes(m.goal_id.uuid); f = m.feedback; now = time.time()
+        if gid in self.tripped: return
         pos = f.current_pose.pose.position
         g = self.goals.get(gid)
         if g is None:
@@ -95,7 +97,7 @@ class NavGuard(Node):
         else:
             self.get_logger().error('cancel_goal 서비스 없음 — 정지 지령만 보냄')
         self.stop_until = time.time() + 1.0
-        self.goals.clear()
+        self.tripped.update(self.goals.keys()); self.goals.clear()
 
     def hold_stop(self):
         if time.time() < self.stop_until: self.cmd_pub.publish(Twist())
