@@ -1,0 +1,12 @@
+Set parameter successful
+목표 수락: True, 출발 map None
+nav_guard 진단: 15.12 s: 시간 한도 초과: 15 s > 15 s (남은 거리 시작 7.15 m)
+목표 종료 상태 5 (5 = CANCELED) at 15.18 s
+휠 정지 at 15.55 s (종료 뒤 0.38 s)
+G1 판정: 취소 ≤ 16 s 통과 · 정지 ≤ 1 s 통과
+Set parameter successful (원복)
+  nav2.log nav_guard:
+[nav_guard.py-2] [INFO] [1790671352.659778436] [nav_guard]: nav_guard 시작 (시간 = d0/0.07×2.0+30 s, 무진행 0.25 m/45 s)
+[nav_guard.py-2] [INFO] [1790671531.369585165] [nav_guard]: 목표 1a167f03: 남은 거리 7.15 m → 시간 한도 234 s
+[nav_guard.py-2] [ERROR] [1790671546.405304592] [nav_guard]: nav_guard 개입 — 시간 한도 초과: 15 s > 15 s (남은 거리 시작 7.15 m) → 모든 목표 취소·정지
+[nav_guard.py-2] [INFO] [1790671546.413066573] [nav_guard]: 목표 1a167f03: 남은 거리 6.09 m → 시간 한도 204 s
