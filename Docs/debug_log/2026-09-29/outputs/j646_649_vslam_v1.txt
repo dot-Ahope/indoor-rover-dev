@@ -63,3 +63,18 @@ float64 track_execution_time_mean
 
 # Max time to get poses out of cuVSLAM using pure visual slam tracking in seconds.
 ===== 12:25:44 끝 rc=0
+
+===== 2026-09-29 12:51:35 시작 | job649_vslam_v1.sh 35 V1d_person 
+  목적: §9 V1-d 사람 걷기 35 s(로버 정지)
+  원문: /tmp/live/scripts/job649_vslam_v1.sh
+== V1 V1d_person: 35 s
+  odometry 28.1 Hz (935 개), 최대 간격 0.340 s
+  처음→끝 xy 변화 1.10 cm (z 0.81 cm), 최대 이탈 1.22 cm, yaw 변화 +0.074°
+  vo_state 분포: {1: 934} (3.2 정의: 0 미상, 1 성공, 2 실패, 3 성공+IMU 없음 — 원문 정의는 메시지 주석 확인)
+== 부하(top 평균 %CPU, 코어 1 = 100)
+  component_conta        88.1
+  realsense2_came        13.0
+  python3                12.0
+  전체 CPU 사용(top idle 기준 평균): 26 % (6 코어 합 기준 157 %)
+  GPU GR3D 평균: 4 % (n=72)
+===== 12:52:15 끝 rc=0
