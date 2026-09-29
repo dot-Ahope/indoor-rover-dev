@@ -1,0 +1,146 @@
+===== 2026-09-29 13:04:16 시작 | job651_splitter_chk.sh  
+  목적: §10 프로젝터 번갈이 준비물(splitter·예제 설정·드라이버 파라미터) 확인
+  원문: /tmp/live/scripts/job651_splitter_chk.sh
+realsense_emitter_flashing.yaml
+realsense_emitter_on.yaml
+zed2.yaml
+zed_common.yaml
+zedx.yaml
+realsense.launch.py
+record_realsense.launch.py
+zed.launch.py
+EMITTER_FLASHING_CONFIG_FILE_PATH = lu.get_path('nvblox_examples_bringup', 'config/sensors/realsense_emitter_flashing.yaml')
+EMITTER_ON_CONFIG_FILE_PATH = lu.get_path('nvblox_examples_bringup', 'config/sensors/realsense_emitter_on.yaml')
+# - Run the splitter on camera0,
+# - Don't run the splitter on the remaining cameras.
+def get_default_run_splitter_list(num_cameras: int) -> List[bool]:
+    run_splitter_list = [False] * num_cameras
+    run_splitter_list[0] = True
+    return run_splitter_list
+        plugin='realsense2_camera::RealSenseNodeFactory',
+def get_splitter_node(camera_name: str) -> ComposableNode:
+    realsense_splitter_node = ComposableNode(
+        name='realsense_splitter_node',
+        package='realsense_splitter',
+        plugin='nvblox::RealsenseSplitterNode',
+            'input_qos': 'SENSOR_DATA',
+            'output_qos': 'SENSOR_DATA'
+        remappings=[
+            ('input/infra_1', f'/{camera_name}/infra1/image_rect_raw'),
+            ('input/infra_1_metadata', f'/{camera_name}/infra1/metadata'),
+            ('input/infra_2', f'/{camera_name}/infra2/image_rect_raw'),
+            ('input/infra_2_metadata', f'/{camera_name}/infra2/metadata'),
+            ('input/depth', f'/{camera_name}/depth/image_rect_raw'),
+            ('input/depth_metadata', f'/{camera_name}/depth/metadata'),
+            ('input/pointcloud', f'/{camera_name}/depth/color/points'),
+            ('input/pointcloud_metadata', f'/{camera_name}/depth/metadata'),
+    return realsense_splitter_node
+    """Adds a camera and (optional) realsense splitter for each camera up to num_cameras."""
+    # Run splitter list. I.e. a list of bools indicating per-camera if we should run a splitter.
+    run_splitter_list = get_default_run_splitter_list(len(camera_serial_numbers))
+    assert len(camera_serial_numbers) == len(run_splitter_list)
+        run_splitter = run_splitter_list[idx]
+        if run_splitter:
+        log_message = lu.log_info(f'Starting realsense with name: {camera_name}, running splitter: {run_splitter}')
+        if run_splitter:
+                get_splitter_node(
+        # Adding delay for cameras after the first camera bringup (including splitter) as temp fix
+== 호스트 드라이버의 emitter 관련 파라미터
+  depth_module.emitter_always_on
+  depth_module.emitter_enabled
+  depth_module.emitter_frequency
+  depth_module.emitter_on_off
+  depth_module.hdr_enabled
+  depth_module.infra_profile
+  depth_module.laser_power
+  hdr_merge.enable
+  hdr_merge.frames_queue_size
+===== 13:04:19 끝 rc=0
+
+===== 2026-09-29 13:04:33 시작 | job652_splitter_apt.sh  
+  목적: §10 splitter 설치 가능성·emitter_flashing 설정 원문
+  원문: /tmp/live/scripts/job652_splitter_apt.sh
+Package not found
+== realsense_emitter_flashing.yaml
+%YAML 1.2
+---
+device_type: ''
+serial_no: ''
+usb_port_id: ''
+rgb_camera:
+  profile: '640x480x15'
+color_info_qos: "SENSOR_DATA"
+color_qos: "SENSOR_DATA"
+depth_module:
+  profile: '640x480x60'
+  emitter_enabled: 1
+  emitter_on_off: true
+depth_qos: "SENSOR_DATA"
+depth_info_qos: "SENSOR_DATA"
+infra_qos: "SENSOR_DATA"
+enable_accel: true
+enable_color: true
+enable_depth: true
+enable_gyro: true
+enable_infra1: true
+enable_infra2: true
+pointcloud:
+  enable: false
+pointcloud_texture_index: 0
+pointcloud_texture_stream: RS2_STREAM_ANY
+enable_sync: false
+align_depth: false
+gyro_fps: 200
+accel_fps: 200
+unite_imu_method: 2
+== realsense_emitter_on.yaml (차이 확인용)
+11c11
+<   profile: '640x480x30'
+---
+>   profile: '640x480x60'
+13c13
+<   emitter_on_off: false
+---
+>   emitter_on_off: true
+17c17
+< enable_accel: false
+---
+> enable_accel: true
+20,22c20,22
+< enable_gyro: false
+< enable_infra1: false
+< enable_infra2: false
+---
+> enable_gyro: true
+> enable_infra1: true
+> enable_infra2: true
+===== 13:04:37 끝 rc=1
+
+===== 2026-09-29 13:06:05 시작 | job654_emit_m12.sh  
+  목적: §10 M1 프로젝터 켬/끔 깊이 비교 → M2 번갈이 60 fps 실현성
+  원문: /tmp/live/scripts/job654_emit_m12.sh
+남은: cuVSLAM 0, 카메라 0 | base active
+########## M1: 깊이 640x480x15, IR·컬러·점군·IMU 끔 ##########
+M1 프로젝터=1: 30 프레임 | 유효 화소 전체 61.6 % · 아래 절반 42.9 % | 상자 부피 안 점 평균 2810 (최소 2763, 최대 2873)
+M1 프로젝터=0: 30 프레임 | 유효 화소 전체 24.7 % · 아래 절반 19.2 % | 상자 부피 안 점 평균 3086 (최소 2635, 최대 3285)
+M1 프로젝터=1: 30 프레임 | 유효 화소 전체 61.1 % · 아래 절반 41.9 % | 상자 부피 안 점 평균 2820 (최소 2768, 최대 2868)
+M1 프로젝터=0: 30 프레임 | 유효 화소 전체 24.9 % · 아래 절반 19.1 % | 상자 부피 안 점 평균 3096 (최소 2827, 최대 3299)
+########## M2: 번갈이(emitter_on_off) 640x480x60, 깊이+IR ##########
+/tmp/job654_emit_m12.sh: line 5: 278725 Killed                  setsid nohup ros2 run realsense2_camera realsense2_camera_node --ros-args -r __node:=camera -r __ns:=/camera "$@" > /tmp/emit_cam.log 2>&1 < /dev/null
+Open profile: stream_type: Depth(0), Format: Z16, Width: 640, Height: 480, FPS: 60
+Open profile: stream_type: Infra(1), Format: Y8, Width: 640, Height: 480, FPS: 60
+Open profile: stream_type: Infra(2), Format: Y8, Width: 640, Height: 480, FPS: 60
+  emitter_on_off 적용값: Boolean value is: True
+  /camera/camera/depth/image_rect_raw      average rate: 59.528
+  /camera/camera/infra1/image_rect_raw     average rate: 59.876
+  /camera/camera/infra2/image_rect_raw     average rate: 59.694
+  메타데이터(연속 8 개, 프로젝터 관련 키):
+"frame_laser_power":0 "frame_laser_power_mode":0 "frame_emitter_mode":0 "frame_laser_power":150 "frame_laser_power_mode":1 "frame_emitter_mode":1 "frame_laser_power":0 "frame_laser_power_mode":0 "frame_emitter_mode":0 "frame_laser_power":150 "frame_laser_power_mode":1 "frame_emitter_mode":1 "frame_laser_power":0 "frame_laser_power_mode":0 "frame_emitter_mode":0 "frame_laser_power":150
+  카메라 노드 CPU(top 5 회 평균): 9.8 %
+===== 13:07:49 끝 rc=0
+
+===== 2026-09-29 13:08:26 시작 | job648_vslam_down.sh  
+  목적: §10 측정 끝 — 카메라 정리
+  원문: /tmp/live/scripts/job648_vslam_down.sh
+남은: cuVSLAM 0, 카메라 0 | base active
+===== 13:08:29 끝 rc=0
