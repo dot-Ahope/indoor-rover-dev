@@ -182,3 +182,13 @@ NITROS:
 판단:
 - NITROS 도입 자체는 권하지 않음(deprecated·이득 작음).
 - 대신 **cuVSLAM 을 붙일 때** realsense + cuVSLAM + nvblox 를 **컨테이너 안 한 component container 로 합성**(Isaac 예제 방식)하면 Isaac 노드 내부의 가속 경로를 노드 수준에서 그대로 얻고, 호스트↔컨테이너 DDS 복사도 줄어든다 — 이때 CPU 를 전후 측정. `depth_relay.py`(근거리·비산점 필터, 09-14)는 nvblox 경로에서도 필요한지 먼저 확인(nvblox 는 TSDF 누적이라 고립점 영향이 STVL 과 다를 수 있음 — 추정).
+
+## §9 cuVSLAM 3.2 단독 실행 확인 (사용자: "먼저 진행", 주행 없음 — 판정 전 선언)
+현 카메라 설정(측정·코드): `camera.launch.py` 는 IR 스테레오 끔(`enable_infra1/2: False`), 깊이 640×480×15 + 점군(nvblox·게이트용), 프로젝터 기본(켬), IMU gyro 200·accel 100, unite 1(copy). cuVSLAM 은 IR 좌우 + **프로젝터 끔**이 필요 → 단독 확인은 **주행 스택(센서·EKF·SLAM·Nav2·nvblox)을 내리고** 카메라를 cuVSLAM 전용 설정으로 따로 띄운다. base(에이전트·OLED)는 유지.
+구성: 호스트 realsense2_camera 4.58.3 — infra1/2 켬 640×360×30, 깊이·컬러 끔, `depth_module.emitter_enabled 0`, gyro 200·accel 200, unite_imu 2(선형 보간, Isaac 예제와 같음). 컨테이너 `isaac_ros_visual_slam` 3.2.6 (component container) — Isaac RealSense 예제 파라미터 그대로(IMU 융합 켬, 노이즈 값 예제값), 단 `image_jitter_threshold_ms` 35(30 fps 에 맞춤, 예제 22 는 90 fps 기준), **`publish_odom_to_base_tf`·`publish_map_to_odom_tf` false**(기존 TF 와 충돌 방지), base_frame camera_link.
+시험·판정:
+- **V1-a 동작**: `/visual_slam/tracking/odometry` ≥ 25 Hz, `/visual_slam/status` 의 vo_state 가 추적 성공 상태로 유지(끊김 0).
+- **V1-b 정지 드리프트**(로버 정지·사람 없음 60 s): 위치 변화 ≤ 1 cm, yaw 변화 ≤ 0.2°.
+- **V1-c 부하**(기록만): cuVSLAM 프로세스 CPU %, tegrastats GR3D(GPU) %, 카메라 노드 CPU.
+- **V1-d 사람**(선택, 사용자 참여 — §6.1 T1 의 cuVSLAM 판): 로버 정지, 사람이 카메라 앞 0.5~2 m 를 30 s 걸음 → 가짜 이동 ≤ 2 cm·추적 끊김 0 이면 마스크 없이도 1 차 방어 가능.
+끝나면 카메라·cuVSLAM 을 내리고 원래 스택은 다음 주행 전 prep 으로 복귀.
