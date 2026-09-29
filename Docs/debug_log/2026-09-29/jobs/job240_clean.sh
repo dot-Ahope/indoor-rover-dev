@@ -103,7 +103,8 @@ echo -n "  map->odom: "; timeout 8 ros2 run tf2_ros tf2_echo map odom 2>&1 | gre
 
 echo "########## 5. nav2 ##########"
 # 09-16: MPPI 튜닝 주행 동안 stuck_monitor 는 관찰만(mp4 에서 떨림 명령을 STUCK 으로 오판해 18 s 에 취소). 진행 감시는 progress checker 25 s + 러너 90 s.
-setsid nohup ros2 launch rover_navigation navigation.launch.py stuck_shadow:=true > /tmp/nav2.log 2>&1 &
+# 09-29 §13.2: 자이로 우선 수정 뒤 오판 0(20 bag 재생)·받침대 검출 0.8~0.9 s → 기본 작동(false). 관찰만 하려면 STUCK_SHADOW=true.
+setsid nohup ros2 launch rover_navigation navigation.launch.py stuck_shadow:=${STUCK_SHADOW:-false} > /tmp/nav2.log 2>&1 &
 sleep 30
 for nd in /controller_server /planner_server /bt_navigator /behavior_server; do
   printf "  %-20s " "$nd"; timeout 6 ros2 lifecycle get "$nd" 2>/dev/null || echo "?"
