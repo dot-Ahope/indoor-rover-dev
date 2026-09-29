@@ -151,3 +151,20 @@ prep(`job636`, 11:30): 보드 25.0 Hz, EKF 30 Hz, SLAM 원점, Nav2 4 노드 act
   4. rf2o 자체 공분산·유효 점 수 기반 가변 σ(§6).
 - 시험(주행 전 선언은 계획서에서): T1 로버 정지 + 사람이 0.5~2 m 에서 걷기(가짜 속도), T2 제자리 회전 + 사람 걷기, T3 F0-a 왕복 중 사람 가로지르기. 지표 = rf2o 가짜 속도, 게이트 거부율, rf2o 넣은 EKF vs 뺀 EKF 오차.
 - 운영 규칙과의 관계: 지금까지는 "관찰자는 카메라 밖" 으로 사람을 배제해 왔다 → 이 시험들은 **의도적으로 사람을 넣는 별도 블록**으로 하고, 기존 기준선 주행은 규칙 유지.
+
+## §7 cuVSLAM 사람 제외 기능 확인과 순서(rf2o ↔ cuVSLAM) 검토 (사용자: "cuVSLAM 은 사람 특정이 가능하지 않나? 순서를 바꿀 생각 진행")
+확인한 사실(웹, 09-29):
+- cuVSLAM 은 **세그멘테이션 마스크로 사람 등 동적 물체의 특징점을 추적에서 제외**할 수 있다(공식 튜토리얼 "Visual SLAM with Segmentation Masks", 사람 분할 = Segformer `peoplesemsegformer`, 예시 플랫폼 Jetson Thor + D435).
+- 그러나 **RealSense 마스크 경로는 Isaac ROS 4.6.0 에서 깨져 있었고(mono8 IR → rgb8 인코더 오류로 마스크 미전달) 5.0.0(2026-09-21)에서 고쳐졌다**. 5.0 에서 패키지 이름도 `isaac_ros_visual_slam` → `isaac_ros_cuvslam`.
+- Isaac ROS 4.x/5.x 는 **ROS 2 Jazzy**. Orin 지원은 4.6.0(2026-08-21)부터 **JetPack 7.2** 로. 그 전까지 Orin 의 공식 경로는 Isaac ROS 3.2 + JetPack 6.1/6.2 + Humble(NVIDIA 포럼 답변).
+- **Isaac ROS 3.2 문서의 Visual SLAM 튜토리얼에는 마스크 기능이 없다**(Isaac Sim·RealSense+IMU·HAWK·다중 HAWK 4 개뿐).
+- 우리 Jetson(측정): L4T R36.5(JetPack 6.2 계열), Ubuntu 22.04, 컨테이너 ROS humble(nvblox 3.2.5).
+→ **지금 플랫폼에서는 cuVSLAM 의 사람 마스크를 쓸 수 없다.** 쓰려면 JetPack 7.2 재플래시 + ROS 2 Jazzy 로 전체 스택 이전(우리 ws·slam_toolbox 포크·nvblox_nav2 포크·Nav2 파라미터·robot_localization·realsense·기준선 재측정)이 필요하다.
+추가 쟁점(추정, 검증 필요): cuVSLAM 스테레오는 D455f **IR 프로젝터 점 패턴을 끄거나 켜고 끄기를 번갈아야** 하는데(점 패턴이 카메라와 같이 움직이는 가짜 특징), 지금 nvblox 는 같은 카메라의 깊이(프로젝터 켬)를 쓴다 → 두 소비자의 충돌. 또 Orin Nano 에서 Segformer + cuVSLAM + nvblox + 현 스택(CPU 320 %)을 동시에 돌린 수치는 없다(튜토리얼은 Thor).
+순서 선택지:
+| 안 | 내용 | 사람 강건성 | 비용·위험 |
+|---|---|---|---|
+| A | cuVSLAM(3.2, 마스크 없음) 먼저 | 특징점 이상치 제거(내부 RANSAC 류)에 의존 — 미측정. 자이로 일치 게이트 동일 적용 | 중(컨테이너에 패키지 추가, 프로젝터 충돌 해결) |
+| B | JetPack 7.2·Jazzy·Isaac ROS 5.0 이전 후 cuVSLAM+마스크 | **사람 마스크 사용 가능** | 대(플랫폼 전면 이전, 기준선 재측정, 5.0 은 나온 지 8 일) |
+| C | 현 순서 유지: rf2o(게이트) → cuVSLAM(3.2) → 플랫폼 이전은 별도 Phase | 게이트(자이로 일치·정지 검사·Mahalanobis)로 방어 — 측정 T1~T3 | 소 → 중 |
+판단(제안): 사람 마스크는 **어느 순서든 플랫폼 이전 없이는 얻을 수 없으므로**, 순서를 바꿔도 지금 당장 강건성이 생기지 않는다. 프로젝트 원칙(소형 플랫폼 완성 우선·설명 가능한 단계)에 따라 **C 를 권함**: rf2o 는 가볍고 사람 게이트 설계·시험(T1~T3)을 먼저 확립해 두면 cuVSLAM 에도 그대로 쓴다. B(플랫폼 이전)는 Phase 로 따로 계획해 이득(마스크·최신 cuVSLAM)과 비용을 수치로 비교한 뒤 결정. 결정은 사용자.
