@@ -1,0 +1,31 @@
+# rover-base — 부팅 때 base 계층 자동 기동 (2026-09-29)
+# 왜: 보드 OLED 의 IP 는 micro-ROS(에이전트 + display_info_pub)로만 보드에 간다. 재부팅 뒤 사람이 base 를 띄우기 전엔
+#     IP 가 안 보여, IP 가 가장 필요한 순간(SSH 주소를 모를 때)에 표시가 없었다.
+# 무엇: base.launch.py = micro-ROS 에이전트(docker) + robot_state_publisher + display_info_pub. 센서·SLAM·Nav2 는 띄우지 않는다
+#       (카메라 IMU 캘리브에 로버 정지가 필요하고, 주행 준비는 prep 가 한다).
+# 왜 사용자 서비스: prep(job240)가 sudo 없이 `systemctl --user restart rover-base` 로 다시 띄울 수 있게. 부팅 기동은 linger 로.
+# 설치: scripts/install_rover_base_service.sh
+# 보드 세션: 보드와 Jetson 이 함께 켜지면 보드는 에이전트 대기(ping) 상태라 자동 연결된다. Jetson 만 재부팅되면
+#            보드는 옛 세션을 믿고 있어 보드 리셋이 필요하다(09-11 job240 주석과 같은 이유).
+[Unit]
+Description=Rover base (micro-ROS agent, robot_state_publisher, display_info_pub)
+
+[Service]
+Type=simple
+Environment=FASTRTPS_DEFAULT_PROFILES_FILE=/home/jetson/ros2_ws/install/rover_bringup/share/rover_bringup/config/fastdds_udp_only.xml
+# 사용자 서비스는 시스템 docker.service·udev 에 순서를 걸 수 없어 직접 기다린다(최대 90 s)
+ExecStartPre=/bin/bash -c 'for i in $(seq 1 90); do [ -e /dev/rover ] && docker info >/dev/null 2>&1 && exit 0; sleep 1; done; echo "rover-base: /dev/rover 또는 docker 없음"; exit 1'
+# 지난 기동의 에이전트 컨테이너가 남아 있으면 이름 충돌 → 지운다
+ExecStartPre=-/usr/bin/docker rm -f microros_agent
+ExecStart=/bin/bash -c 'source /opt/ros/humble/setup.bash && source /home/jetson/ros2_ws/install/setup.bash && exec ros2 launch rover_bringup base.launch.py'
+ExecStopPost=-/usr/bin/docker rm -f microros_agent
+KillSignal=SIGINT
+TimeoutStopSec=20
+Restart=on-failure
+RestartSec=5
+# prep(job240)가 이 파일에서 'session established' 를 센다 — 수동 기동 때와 같은 경로
+StandardOutput=append:/tmp/base.log
+StandardError=append:/tmp/base.log
+
+[Install]
+WantedBy=default.target
