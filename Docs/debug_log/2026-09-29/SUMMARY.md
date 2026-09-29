@@ -168,3 +168,17 @@ prep(`job636`, 11:30): 보드 25.0 Hz, EKF 30 Hz, SLAM 원점, Nav2 4 노드 act
 | B | JetPack 7.2·Jazzy·Isaac ROS 5.0 이전 후 cuVSLAM+마스크 | **사람 마스크 사용 가능** | 대(플랫폼 전면 이전, 기준선 재측정, 5.0 은 나온 지 8 일) |
 | C | 현 순서 유지: rf2o(게이트) → cuVSLAM(3.2) → 플랫폼 이전은 별도 Phase | 게이트(자이로 일치·정지 검사·Mahalanobis)로 방어 — 측정 T1~T3 | 소 → 중 |
 판단(제안): 사람 마스크는 **어느 순서든 플랫폼 이전 없이는 얻을 수 없으므로**, 순서를 바꿔도 지금 당장 강건성이 생기지 않는다. 프로젝트 원칙(소형 플랫폼 완성 우선·설명 가능한 단계)에 따라 **C 를 권함**: rf2o 는 가볍고 사람 게이트 설계·시험(T1~T3)을 먼저 확립해 두면 cuVSLAM 에도 그대로 쓴다. B(플랫폼 이전)는 Phase 로 따로 계획해 이득(마스크·최신 cuVSLAM)과 비용을 수치로 비교한 뒤 결정. 결정은 사용자.
+
+## §8 JetPack 6.2 적합성 확인과 NITROS 평가 (사용자 요청, `jobs/job644_platform.sh` → `outputs/j644_platform.txt`)
+측정(Jetson):
+- 호스트 L4T **36.5.0** = **JetPack 6.2.2**(NVIDIA 공지: JetPack 6.2.2 = Jetson Linux 36.5, 6.2.1 의 CUDA 메모리 할당 문제 수정판). Ubuntu 22.04.5, 컨테이너 CUDA 12.6.
+- 컨테이너(`isaac_ros_dev-aarch64`): isaac_ros_common·nitros·managed_nitros·nvblox **3.2.5**, **isaac_ros_visual_slam 3.2.6 이미 설치**(cuVSLAM, 아직 실행한 적 없음), nvblox_examples_bringup 3.2.13.
+- Isaac ROS 3.2 문서의 지원 JetPack: **"JetPack 6.1 and 6.2"** → 6.2.2 는 6.2 계열 패치판으로 범위 안. nvblox 3.2.5 는 이 조합에서 이미 라이브 동작(Phase N) — 측정으로 확인된 호환. cuVSLAM 3.2.6 은 설치만 됐고 **이 조합에서 동작은 미확인**(첫 실행으로 확인할 것).
+NITROS:
+- 사실: **NITROS 는 2026-09-21(Isaac ROS 5.0)부로 deprecated** — ROS 2 Lyrical 의 `rosidl::Buffer`·CUDA 버퍼 백엔드로 대체, 타입 적응·협상·Managed NITROS·PyNITROS API 는 이후 릴리스에서 제거 예정, 노드 수준 호환은 유지(isaac_ros_nitros README).
+- 우리 3.2(Humble) 컨테이너에는 NITROS 패키지가 있어 **쓸 수는 있다**. 다만 NITROS API 를 우리 코드에 넣는 것은 **막다른 투자**(Humble 을 벗어나는 순간 다시 이식해야 함) → 우리 코드에는 쓰지 않는다.
+- 이득 조건(일반 원리, 3.2 문서 원문은 이번에 못 가져옴 — 추정 표시): NITROS 무복사는 **NITROS 노드끼리 같은 프로세스(component container)** 일 때. 지금 영상 경로는 realsense2_camera(호스트, 일반 ROS 노드) → DDS → `depth_relay.py`(호스트 Python) → nvblox_node(컨테이너, 별도 프로세스) 라 **NITROS 가 끼어들 자리가 없다**.
+- 얼마나 걸려 있나(측정, 프로세스 누적 평균 %CPU, 코어 1 개 = 100): realsense 14.9 · nvblox 16.8 · depth_relay 4.2 → 영상 경로 합 ≈ 36 % (전체 ≈ 320 % 중). 무복사로 줄일 수 있는 것은 이 중 복사·직렬화 몫뿐 — 전체 대비 작다. 더 큰 항목은 rplidar 18.6 · EKF 12.0 · controller 11.9.
+판단:
+- NITROS 도입 자체는 권하지 않음(deprecated·이득 작음).
+- 대신 **cuVSLAM 을 붙일 때** realsense + cuVSLAM + nvblox 를 **컨테이너 안 한 component container 로 합성**(Isaac 예제 방식)하면 Isaac 노드 내부의 가속 경로를 노드 수준에서 그대로 얻고, 호스트↔컨테이너 DDS 복사도 줄어든다 — 이때 CPU 를 전후 측정. `depth_relay.py`(근거리·비산점 필터, 09-14)는 nvblox 경로에서도 필요한지 먼저 확인(nvblox 는 TSDF 누적이라 고립점 영향이 STVL 과 다를 수 있음 — 추정).
