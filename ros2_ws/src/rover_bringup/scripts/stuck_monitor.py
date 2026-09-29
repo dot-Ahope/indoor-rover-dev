@@ -157,13 +157,23 @@ class StuckMonitor(Node):
         if not old: return
         A, B = old[-1][1], self.scans[-1][1]
 
-        # 회전 관측: 스캔 상관 + 자이로 적분 중 큰 쪽(어느 하나라도 움직임을 보이면 움직인 것)
+        # 회전 관측·회전 보정 (2026-09-29 변경 — Docs/debug_log/2026-09-29/SUMMARY.md §13.1):
+        #   자이로(200 Hz, 주변 환경과 무관)가 창 안에 있으면 자이로만 쓴다. 스캔 상관은 자이로가 없을 때의 대체.
+        #   왜: 문틀·잡동사니가 많은 곳에서 스캔 상관이 회전을 과대(−17~−18° vs 자이로 −6~−10°)로 내고, 그 값으로 roll 한
+        #   프로파일끼리 섹터를 비교해 병진을 1~2 cm 로 과소 관측 → f0b1·f0b2 문 통과에서 정체 오판(오프라인 재생 20 bag:
+        #   기존 2 건 → 자이로 우선 0 건, job670). 기존의 max(스캔, 자이로)는 틀린 큰 값을 골라 진짜 정체도 가릴 수 있었다.
         rot_scan = rot_shift_deg(A, B)
-        rot_gyro = math.degrees(self._integrate(self.gyro, now, 1))
-        rot_obs = max(abs(rot_scan) if rot_scan is not None else 0.0, rot_gyro)
+        gw = [q for q in self.gyro if q[0] >= now - self.W]
+        if len(gw) > 10:
+            rot_signed = math.degrees(sum(gw[i][1] * (gw[i][0] - gw[i-1][0]) for i in range(1, len(gw))))
+            rot_obs = math.degrees(self._integrate(self.gyro, now, 1))
+            roll = rot_signed      # 로버가 +θ(반시계) 돌면 B 의 물체가 −θ 빈에 보임 → B 를 +θ 굴려 A 에 맞춤
+        else:
+            rot_obs = abs(rot_scan) if rot_scan is not None else 0.0
+            roll = rot_scan
 
         # 병진 관측: 회전 제거 후 정면/후면 섹터 range 변화
-        Br = np.roll(B, int(round(rot_scan))) if rot_scan is not None else B
+        Br = np.roll(B, int(round(roll))) if roll is not None else B
         f, b = sector_delta(A, Br, 0), sector_delta(A, Br, 180)
         trans_obs = max(abs(f) if f is not None else 0.0, abs(b) if b is not None else 0.0)
         trans_valid = f is not None or b is not None

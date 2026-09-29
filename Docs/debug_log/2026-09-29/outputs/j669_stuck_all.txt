@@ -1,0 +1,24 @@
+sent
+/tmp/bag_f0a1 /tmp/bag_f0a2 /tmp/bag_f0a3 /tmp/bag_f0a4 /tmp/bag_f0a5 /tmp/bag_f0a6 /tmp/bag_f0a7 /tmp/bag_f0b1 /tmp/bag_f0b2 /tmp/bag_l1 /tmp/bag_l2 /tmp/bag_r1 /tmp/bag_r1b /tmp/bag_r2 /tmp/bag_r2b /tmp/bag_r3 /tmp/bag_s1 /tmp/bag_s2 /tmp/bag_s_fb1 /tmp/bag_s_fb2 
+bag_f0a1       지령 구간   48 s | 판정 0 건
+bag_f0a2       지령 구간   96 s | 판정 0 건
+bag_f0a3       지령 구간   87 s | 판정 0 건
+bag_f0a4       지령 구간   77 s | 판정 0 건
+bag_f0a5       지령 구간  157 s | 판정 0 건
+bag_f0a6       지령 구간   80 s | 판정 0 건
+bag_f0a7       지령 구간   77 s | 판정 0 건
+bag_f0b1       지령 구간  204 s | 판정 1 건
+   t   36.9 s  level 1  map ( 2.16, -0.30,  -73.2°) | 직전 2 s 지령 |v| 0.080 |ω| 0.09 → 실제 15.0 cm·-12.5° | STUCK: 지령 15.6cm/10° 인데 관측 2.0cm/21.0° (비율 0.13)
+bag_f0b2       지령 구간  201 s | 판정 0 건
+bag_l1         지령 구간   39 s | 판정 0 건
+bag_l2         지령 구간   20 s | 판정 0 건
+bag_r1         지령 구간    9 s | 판정 0 건
+bag_r1b        지령 구간   39 s | 판정 0 건
+bag_r2         지령 구간   10 s | 판정 0 건
+bag_r2b        지령 구간   85 s | 판정 0 건
+bag_r3         지령 구간   96 s | 판정 0 건
+bag_s1         지령 구간   40 s | 판정 0 건
+bag_s2         지령 구간   10 s | 판정 0 건
+bag_s_fb1      지령 구간   50 s | 판정 0 건
+bag_s_fb2      지령 구간   53 s | 판정 0 건
+합계 판정 1 건
