@@ -89,7 +89,8 @@ if [ "$BOARD_OK" = "0" ]; then
 fi
 
 echo "########## 3. sensors (자이로 캘리브 ~10s, 로버 정지 필수) ##########"
-setsid nohup ros2 launch rover_bringup sensors.launch.py > /tmp/sensors.log 2>&1 &
+echo "  sensors 인자: ${SENSORS_ARGS:-(없음)}"   # 09-29: B2·B3 라이브 시험용(예: SENSORS_ARGS="icr:=true rot_cov:=true")
+setsid nohup ros2 launch rover_bringup sensors.launch.py $SENSORS_ARGS > /tmp/sensors.log 2>&1 &
 sleep 28
 grep -a "gyro bias" /tmp/sensors.log | tail -1 | sed 's/^/  /'
 printf "  %-16s " "/odometry/filtered"
