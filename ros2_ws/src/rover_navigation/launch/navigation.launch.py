@@ -19,6 +19,7 @@ from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument, ExecuteProcess, IncludeLaunchDescription, OpaqueFunction, SetEnvironmentVariable, TimerAction
 from launch.launch_description_sources import PythonLaunchDescriptionSource
+from launch.conditions import IfCondition
 from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
 
@@ -106,5 +107,10 @@ def generate_launch_description():
         Node(package='rover_bringup', executable='stuck_monitor.py', name='stuck_monitor',
              output='screen',
              parameters=[{'shadow_mode': LaunchConfiguration('stuck_shadow')}]),
+        # 온보드 목표 시간·무진행 한도 (2026-09-29, Docs/debug_log/2026-09-29/SUMMARY.md §13 L2): PC 러너·Wi-Fi 없이도
+        # 한도를 넘은 목표를 취소·정지. Nav2 진행 검사기(0.25 m/25 s)보다 느슨한 최후 방어선. 끄려면 nav_guard:=false.
+        DeclareLaunchArgument('nav_guard', default_value='true', description='온보드 목표 시간·무진행 한도'),
+        Node(package='rover_bringup', executable='nav_guard.py', name='nav_guard', output='screen',
+             condition=IfCondition(LaunchConfiguration('nav_guard'))),
         OpaqueFunction(function=_make_active_params),
     ])

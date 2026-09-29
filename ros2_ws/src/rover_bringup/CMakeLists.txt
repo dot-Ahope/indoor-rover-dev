@@ -25,6 +25,6 @@ endif()
 
 install(DIRECTORY launch config systemd DESTINATION share/${PROJECT_NAME})
 
-install(PROGRAMS scripts/sensor_conditioner.py scripts/scan_restamp.py scripts/scan_deskew.py scripts/stuck_monitor.py scripts/depth_relay.py scripts/display_info_pub.py scripts/install_rover_base_service.sh DESTINATION lib/${PROJECT_NAME})
+install(PROGRAMS scripts/sensor_conditioner.py scripts/scan_restamp.py scripts/scan_deskew.py scripts/stuck_monitor.py scripts/depth_relay.py scripts/display_info_pub.py scripts/install_rover_base_service.sh scripts/nav_guard.py DESTINATION lib/${PROJECT_NAME})
 
 ament_package()
