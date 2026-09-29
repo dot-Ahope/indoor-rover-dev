@@ -200,3 +200,9 @@ NITROS:
 - **V1-c 부하**(top 평균, 코어 1 = 100): cuVSLAM component_container **22.8 %**, 카메라 노드 13.1 %, (측정 스크립트 python 14.1 % — 측정 부하), GPU GR3D **5 %**. 비교: 현 스택 전체 ≈ 320 %.
 - 관찰: "프레임 간격이 문턱(35 ms) 초과" 경고가 기동 뒤 약 2.5 분에 25 회(66~166 ms = 1~4 프레임 누락). 추정 원인: 호스트 카메라 → 컨테이너 DDS(UDP) 로 IR 두 장(각 230 kB, 초당 약 14 MB) 전달 중 누락 — §8 의 "한 프로세스 합성" 이 이것도 줄일 수 있음(검증 필요). 추적 실패로 이어지진 않음(vo_state 전부 1).
 판단: cuVSLAM 3.2.6 은 **JetPack 6.2.2 에서 동작**하고, 정지 드리프트·부하 모두 작다. 남은 확인 = V1-d(사람) 와 움직임 정확도(회전 시험 스캔 정합 대비) — 후자는 프로젝터 충돌(nvblox 깊이) 해결 방식이 정해져야 스택과 같이 돌릴 수 있다.
+
+### §8.1 Orin Nano 의 JetPack 7 사용 가능 여부 (사용자 질문, 웹 확인)
+- **가능해짐**: JetPack 7.2 가 7.x 계열 처음으로 Orin 전체(AGX Orin·Orin NX·**Orin Nano**) 지원. NVIDIA 직원 답변(2026-01-20, "Will JetPack 7 support Jetson Orin Nano Super?"): "Yes, plan to support from JP7.2 release." Orin Nano 개발자 키트 사용자 가이드: 최신 = **JetPack 7.2.1**(2026-08). 7.2.1 변경에 "Orin Nano 플래시 시 Super Mode 기본" 포함.
+- 바뀌는 점(출처 기술): SD 카드 이미지 없음 → USB 로 통합 ISO 를 써서 microSD/NVMe 에 설치. Isaac ROS 4.6.0(2026-08-21)부터 Orin + JetPack 7.2 + ROS 2 Jazzy 조합 지원, 5.0.0(09-21)에서 RealSense 마스크 경로 수정·NITROS deprecated.
+- 우리에게 걸리는 것(추정·확인 필요): Ubuntu 24.04·커널 6.x 로 올라가면 ① **CH341 벤더 드라이버**(`/dev/ttyCH341USB0`, 현 커널 5.15 용 빌드) 재빌드, ② librealsense·D455f IMU(HID) 커널 지원, ③ ROS 2 Jazzy 로 ws·slam_toolbox 포크·nvblox_nav2 포크·Nav2 파라미터 이식, ④ 기준선(STVL·nvblox·F0) 재측정. Isaac ROS 5.0 의 ROS 배포판(Jazzy 와 Lyrical 중 무엇을 기본으로 하는지)은 문서 표현이 섞여 있어 이번에 확정 못 함.
+- 판단 변화 없음(§7): 사람 마스크 경로(B안)는 이제 **Orin Nano 에서도 공식 경로가 있다**. 비용은 플랫폼 전면 이전 — 별도 Phase 로 계획해 이득·비용을 수치로 비교한 뒤 결정.
