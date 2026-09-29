@@ -1,0 +1,27 @@
+===== 2026-09-29 15:06:20 시작 | job671_stuck_offline_run.sh  
+  목적: §13 G3 stuck_monitor 오프라인 재생(OLD 재현·NEW 자이로 우선)
+  원문: /tmp/live/scripts/job671_stuck_offline_run.sh
+bag_f0a1     자이로 13928 | OLD 0 건 | NEW 0 건
+bag_f0a2     자이로 19803 | OLD 0 건 | NEW 0 건
+bag_f0a3     자이로 18354 | OLD 0 건 | NEW 0 건
+bag_f0a4     자이로 15979 | OLD 0 건 | NEW 0 건
+bag_f0a5     자이로 33046 | OLD 0 건 | NEW 0 건
+bag_f0a6     자이로 17019 | OLD 0 건 | NEW 0 건
+bag_f0a7     자이로 16893 | OLD 0 건 | NEW 0 건
+bag_f0b1     자이로 41913 | OLD 1 건 | NEW 0 건
+   OLD t 37.4 s: 지령 15.6cm/8° 관측 1.5cm/18.4° 비율 0.10 (스캔회전 -18.4, 자이로 -9.7°)
+bag_f0b2     자이로 41586 | OLD 1 건 | NEW 0 건
+   OLD t 37.3 s: 지령 15.6cm/8° 관측 1.3cm/17.0° 비율 0.08 (스캔회전 -17.0, 자이로 -5.9°)
+bag_l1       자이로 11884 | OLD 0 건 | NEW 0 건
+bag_l2       자이로  7459 | OLD 0 건 | NEW 0 건
+bag_r1       자이로  6148 | OLD 0 건 | NEW 0 건
+bag_r1b      자이로 11388 | OLD 0 건 | NEW 0 건
+bag_r2       자이로  6029 | OLD 0 건 | NEW 0 건
+bag_r2b      자이로 20304 | OLD 0 건 | NEW 0 건
+bag_r3       자이로 22767 | OLD 0 건 | NEW 0 건
+bag_s1       자이로 11874 | OLD 0 건 | NEW 0 건
+bag_s2       자이로  6225 | OLD 0 건 | NEW 0 건
+bag_s_fb1    자이로 13814 | OLD 0 건 | NEW 0 건
+bag_s_fb2    자이로 14187 | OLD 0 건 | NEW 0 건
+합계 OLD 2 건, NEW 0 건
+===== 15:11:01 끝 rc=0
