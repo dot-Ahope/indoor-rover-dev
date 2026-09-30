@@ -1,0 +1,12 @@
+[A_fox_on] 30 s: EKF 주기 미달 +12 · SLAM 스캔 버림 +0 · load 1분 10.09(시작 10.77)
+  브리지 클라이언트 연결 수: 1
+  foxglove_bridge        62.4
+  async_slam_tool        53.4
+  ekf_node               48.6
+  nvblox_node            33.4
+  bt_navigator           28.9
+  controller_serv        23.3
+  planner_server         20.5
+  behavior_server        17.7
+  smoother_server        17.6
+  rplidar_node           13.1
