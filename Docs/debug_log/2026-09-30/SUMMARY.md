@@ -117,3 +117,9 @@ prep: `SLAM_ARGS="map_file:=/home/jetson/maps/office/office_v1"`, `SENSORS_ARGS=
 - 상태: ① F0·② 온보드 정지 완료(09-29), ③ F1 진행 중 — F1-1a·1b·2 통과, F1-5 필름 유리 1 곳. 남음: **F1-3 지도 정확도**(줄자 3 구간: 출발 방 가로 폭·문 폭·두 방 사이 벽 두께 제안), 금지 구역 마스크(W3 전선), F1-4 위치 추정 모드 비교, F1-2 재확인(로버를 테이프에 다시 놓고 불러오기).
 - 다음 세션 시작 절차: 충전으로 전원이 꺼지면 Jetson 재부팅 → rover-base 자동 기동 → PC 에서 `xfer_helpers.sh`(prep·F1 스크립트 재전송, 09-30 목록 갱신) → 로버를 출발 테이프에 → `SLAM_ARGS="map_file:=/home/jetson/maps/office/office_v1" SENSORS_ARGS="viz:=map"` 로 prep(= F1-2 재확인 겸) → Nav2 active 확인(첫 기동 실패 시 STARTUP 재전송, §4.1).
 - 지도 파일: Jetson `~/maps/office/office_v1.*`(재부팅에 안전), PC 사본 scratchpad `maps/`, 저장소 `Docs/04_navigation/maps/office_v1.{pgm,yaml}`.
+
+## §7 F0-b 주행 영상화 (사용자 요청: 실제 촬영 영상과 나란히 보이게)
+- 추출(Jetson, `jobs/job699_bag2frames.py`·`job700`): f0b1·f0b2 bag → 10 Hz 프레임(출발 3 s 전 ~ 끝 3 s 뒤, 각 2105·2073 프레임): map 자세, 라이다 점(map, 5 m 안), 전역 경로(/plan), 로컬 코스트맵(odom → map 변환), 속도 지령, 배경 = 마지막 /map. MPPI 로컬 궤적은 bag 에 기록 안 됨(토픽 없음).
+- 렌더(PC, `jobs/render_f0b.py`, matplotlib → ffmpeg, 1280×720, **10 fps = 실제 속도**): 왼쪽 위에서 본 지도(로버 외곽 실측 0.51×0.33, 궤적·경로·코스트맵·스캔·낮은 상자·문·목표), 오른쪽 출발 기준 경과 s·**실제 시각(KST 0.1 s)**·단계·속도 그래프. 첫 렌더에서 고정폭 글꼴 지정 때문에 한글이 깨져(글리프 없음) 글꼴 지정을 빼고, 문 색(초록)이 궤적과 겹쳐 주황으로 바꿈.
+- 결과(로컬 보관, git 제외 — `.gitignore` 에 `Docs/debug_log/*/videos/` 추가): `Docs/debug_log/2026-09-30/videos/f0b1_topdown.mp4`(13.4 MB)·`f0b2_topdown.mp4`(13.6 MB). 대표 프레임 `Docs/04_navigation/figures/2026-09-30_f0b2_topdown_45s.png`(문 통과 순간).
+- 남음: 사용자 촬영 영상(파일 경로·어느 주행인지·로버가 처음 움직이는 순간) 받아 좌우 결합(ffmpeg hstack), 동기 맞춤.

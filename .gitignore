@@ -48,3 +48,5 @@ research_notes/
 # 로컬 경로: Docs/debug_log/<날짜>/bags/  — Foxglove Studio 의 'Open local file' 로 연다.
 # 특정 주행을 근거로 보존해야 하면 그때 의도적으로 강제 추가(git add -f)한다.
 Docs/debug_log/*/bags/
+# 주행 영상(mp4, 수십 MB) — 로컬 보관, git 제외(2026-09-30). 만드는 스크립트는 jobs/ 에 있음.
+Docs/debug_log/*/videos/
