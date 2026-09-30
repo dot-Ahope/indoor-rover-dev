@@ -42,7 +42,17 @@ CAM = FULL + [
     '/camera/camera/depth/color/points',
 ]
 
-SETS = {'lean': LEAN, 'full': FULL, 'cam': CAM}
+# MAP — 매핑하며 지도·로버 위치만 볼 때. `viz:=map` (2026-09-30, Docs/debug_log/2026-09-30/SUMMARY.md §5)
+#   근거: 매핑 중 Foxglove 연결(LEAN) 시 EKF 주기 미달 12 회/30 s·EKF CPU 49 % → 끊으면 0 회·12 %, 부하 10.1 → 5.5.
+#   EKF 가 밀려 odom TF 가 늦으면 SLAM 이 스캔을 버려(106 회) 지도 위 로버가 멈췄다 점프했다.
+#   코스트맵 전체 격자(매 갱신 통째로)·odometry·경로를 빼고, 파라미터·서비스 기능도 끈다(아래 CAPS).
+MAP = ['/tf', '/tf_static', '/robot_description', '/map', '/map_metadata', '/scan']
+
+SETS = {'lean': LEAN, 'full': FULL, 'cam': CAM, 'map': MAP}
+# 브리지 기능: parameters 는 앱이 전 노드 파라미터를 가져오며 서비스 요청을 뿌린다(§5 로그의 조회 실패 연속).
+#   MAP 은 보기 전용이라 최소(clientPublish 만 — 빈 목록은 ROS 파라미터 타입 문제로 피함; 조종은 패드).
+CAPS = {'map': ['clientPublish']}
+_CAPS_DEFAULT = ['clientPublish', 'parameters', 'services']
 
 
 def _make(context, *args, **kwargs):
@@ -63,7 +73,7 @@ def _make(context, *args, **kwargs):
             # 기본 capabilities 에는 connectionGraph·parametersSubscribe·assets 가 포함되어
             # 그래프/파라미터를 주기적으로 폴링한다. 시각화에는 불필요하므로 뺀다.
             # 되돌리려면 이 줄만 지우면 기본값으로 돌아간다.
-            'capabilities': ['clientPublish', 'parameters', 'services'],
+            'capabilities': CAPS.get(level, _CAPS_DEFAULT),
         }],
     )]
 
@@ -72,6 +82,6 @@ def generate_launch_description():
     return LaunchDescription([
         DeclareLaunchArgument(
             'viz', default_value='lean',
-            description="foxglove 로 내보낼 토픽 범위: lean(기본) | full(센서 원본) | cam(영상 포함)"),
+            description="foxglove 로 내보낼 토픽 범위: lean(기본) | full(센서 원본) | cam(영상 포함) | map(매핑 보기 전용, 가벼움)"),
         OpaqueFunction(function=_make),
     ])
