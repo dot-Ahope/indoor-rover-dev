@@ -1,0 +1,12 @@
+[B_fox_off] 30 s: EKF 주기 미달 +0 · SLAM 스캔 버림 +0 · load 1분 5.55(시작 7.24)
+  브리지 클라이언트 연결 수: 0
+  async_slam_tool        44.3
+  rplidar_node           17.3
+  nvblox_node            14.1
+  realsense2_came        13.1
+  ekf_node               12.1
+  ros2                   10.2
+  waypoint_follow        10.1
+  lifecycle_manag        10.1
+  controller_serv        10.1
+  bt_navigator           10.0
