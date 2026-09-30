@@ -66,3 +66,8 @@ footprint: `nav2_params.yaml` 로컬·전역 두 곳을 `[[0.262, ±0.165], [−
 - **F1-5 유리**(기록): 사용자가 유리 위치를 알려 주면 그 구간의 라이다 점(투과·반사·빠짐)과 지도 표현을 비교.
 - 정정(사용자): 패드는 **무선**(동글이 Jetson 에). → 사용자가 로버를 따라다닐 필요 없음 — PC 앞 등 경로에서 1 m 이상 떨어져 조종, 다리 자취 위험 감소(위 "따라가기" 주의는 해당 없음).
 - 새 위험: 무선 끊김 때 `joy_linux` 의 autorepeat(20 Hz)가 마지막 스틱 값을 계속 내면 로버가 멈추지 않을 수 있다(펌웨어 워치독은 /cmd_vel 이 끊겨야 동작, stuck_monitor 는 실제로 움직이면 개입 안 함). joy_linux 의 장치 상실 동작은 미확인 → **F1-0 끊김 시험**(로버 안 움직임): 조종 출력을 `/cmd_vel_test` 로 돌려 띄우고, 스틱을 민 채 패드 전원 끔/동글 뽑기 → 3 s 동안 0 아닌 지령이 이어지면 불합격(입력 끊김 시 0 을 내도록 수정 뒤 진행), 멈추면 합격.
+
+### §4.1 F1 prep·F1-0 결과
+- prep(`job687`, `outputs/j687_f1_prep.txt`): 새 지도(SLAM 인자 없음), 보드 25.0 Hz, EKF 30 Hz, 배터리 12.17 V. 패드 `/dev/input/js0` "Controller"(무선 동글), `/joy` 19.5 Hz.
+- **Nav2 첫 기동 실패**: lifecycle_manager 가 "Failed to change state for node: behavior_server … get_state … async_send_request failed" 로 전체 기동 중단(controller·planner inactive, bt unconfigured). 컨트롤러는 새 footprint 로 정상 생성 → footprint 무관, 기동 순간 서비스 호출 실패(일시적, 추정). `manage_nodes STARTUP`(`job689`) 재전송으로 4 노드 active. → prep 에 "Nav2 active 아니면 STARTUP 재시도" 를 넣을 후보(미적용).
+- **F1-0 무선 끊김**: 기록(`job690`, `outputs/j691_joydrop.txt`)에는 "전진 유지 → 전원 끔" 이 뚜렷이 잡히지 않음(유지 구간 없음, /joy 공백 없음). **사용자가 /joy 를 직접 관찰: 1 유지 중 패드 전원을 끄면 0 으로 떨어짐** → 합격(사용자 관찰 기준; 동글이 꺼진 패드를 중립으로 보고, /joy 는 계속 나옴). 조종 출력을 실제 `/cmd_vel` 로 바꿔 mapping 프로필로 기동.
