@@ -7,4 +7,4 @@ setsid nohup ros2 launch rover_bringup foxglove.launch.py viz:=map > /tmp/foxglo
 sleep 6
 echo "  브리지 프로세스: $(pgrep -fc 'lib/foxglove_bridge/foxglove_bridge')"
 echo "  capabilities: $(timeout 8 ros2 param get /foxglove_bridge capabilities 2>&1 | tail -1)"
-echo "  topic_whitelist: $(timeout 8 ros2 param get /foxglove_bridge topic_whitelist 2>&1 | tail -1)"
+echo "  topic_whitelist: $(timeout 8 ros2 param get /foxglove_bridge max_qos_depth 2>&1 | tail -1)"; echo "  whitelist: $(timeout 8 ros2 param get /foxglove_bridge topic_whitelist 2>&1 | tail -1)"

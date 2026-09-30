@@ -67,7 +67,10 @@ def _make(context, *args, **kwargs):
             'topic_whitelist': wl,
             # 2026-09-09 부하 억제 (foxglove_bridge 3.2.4 — 파라미터 존재 확인함)
             'num_threads': 2,          # 기본 0 = 코어 수(6). 상한을 둬 다른 노드의 몫을 남긴다
-            'max_qos_depth': 1,        # 밀리면 큐에 쌓지 말고 버린다 (시각화는 최신 것만 의미 있음)
+            # 밀리면 큐에 쌓지 말고 버린다 (시각화는 최신 것만 의미 있음).
+            # 2026-09-30 §12: map 세트는 10 — /tf 한 토픽에 EKF(odom→base 30 Hz)·SLAM(map→odom)·기타가 섞여 들어와 깊이 1 이면
+            #   다른 발행자의 /tf 에 밀려 로버 변환이 버려짐 → Foxglove 에서 스캔만 돌고 로버는 멈췄다 점프(Jetson 쪽 TF 는 정상, j712).
+            'max_qos_depth': 10 if level == 'map' else 1,
             'send_buffer_limit': 2000000,
             'use_compression': False,  # 압축은 CPU 를 더 쓴다. 유선/근거리 Wi-Fi 라 불필요
             # 기본 capabilities 에는 connectionGraph·parametersSubscribe·assets 가 포함되어
