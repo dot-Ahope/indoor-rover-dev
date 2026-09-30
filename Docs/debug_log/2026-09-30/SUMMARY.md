@@ -212,3 +212,8 @@ prep(`jobs/job704_f1v2_prep.sh`, `outputs/j704_f1v2_prep.txt`): `map_file:=offic
   - CPU: slam 57 %, **ekf 50 %**(평소 12 %), nvblox 35 %, **목표 없이 대기하는 Nav2 노드 합 ≈ 130 %**(planner 26·bt 26·controller 25·behavior 23·smoother 20·lifecycle 6·waypoint 4), 브리지 18 %(viz:=map 인데도), python 25 %.
 - 해석(추정): 기전은 §5 와 같음(EKF 지연 → odom TF 늦음 → SLAM 스캔 버림 → 멈췄다 점프). 이번엔 브리지를 줄였어도 발생 — 대기 중 Nav2 노드들(각자 TF 리스너로 고빈도 /tf 처리 추정)과 큰 포즈 그래프(50 MB)를 불러온 SLAM 이 겹침.
 - 조치: prep `MAPPING=1` = **매핑 전용 모드**(Nav2·nvblox 생략, stuck_monitor 단독 기동·작동 모드, 펌웨어 워치독·스톨 그대로). 기대(검증 대상): 약 165 % 절감 → EKF 미달 0. 검증 `job707_mapmode_prep.sh`(복원 확인 + 조종 + 30 s 부하·EKF 미달).
+
+### §7.5 영상 v3 (사용자: 실제 영상은 **f0b1** 과 결합, Foxglove 풍, 출발·도착 표시 축소)
+- f0b1 로 재동기(문 통과: 짧은 영상 36.5 s ↔ bag 42.0 s, 긴 영상 103.5 s ↔ 166.0 s → 데이터 시작 8.5·65.5 s). 결과 `videos/sbs_part1_f0b1.mp4`(6.0 MB)·`sbs_part2_f0b1.mp4`(19.4 MB), f0b2 결합본 삭제(데이터 단독본 f0b1·f0b2 는 v3 로 갱신). 확인 프레임 `Docs/04_navigation/figures/2026-09-30_f0b1_sbs_door_return_v3.png` — 복귀 문 통과 순간 양쪽 일치.
+- `render_f0b.py` v3: 어두운 배경·패널(Foxglove 3D·Plot 풍 색), 벽 밝은 회색·빈 곳 어두운 회색, 코스트맵 분홍(장애물)·파랑(여유), 궤적 초록·경로 보라 점선, 목표 링 반지름 0.2 → **0.08 m**, 지도 밖 라벨 잘림 처리.
+- 새로 보인 것: f0b1 은 W3 에서 **후진(v ≈ −0.05, 경과 ≈ 100~125 s)** 으로 복귀를 시작(f0b2 와 다른 궤적) — 영상의 직진 속도 그래프에 음수 구간으로 드러남.
