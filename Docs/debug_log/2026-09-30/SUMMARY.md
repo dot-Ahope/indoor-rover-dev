@@ -223,3 +223,8 @@ prep(`jobs/job704_f1v2_prep.sh`, `outputs/j704_f1v2_prep.txt`): `map_file:=offic
 - prep 정리 목록이 패드 노드도 내리므로 조종 재기동(`job710`): /joy 19.7 Hz, mapping 프로필. 복원 원점 1.06 cm.
 - **30 s(Foxglove 1 클라이언트 연결)**: 부하 **2.7**(전체 스택 10.9), **EKF 주기 미달 0·SLAM 스캔 버림 0**. CPU slam 58 %·ekf 54 %(브리지 구독으로 여전히 높지만 여유 생김)·브리지 29 %.
 - 결론: 매핑 중 위치 점프의 원인은 대기 Nav2·nvblox 가 더한 과부하 → 패드 매핑은 `MAPPING=1` 로. 자율주행 시험 전엔 일반 prep.
+
+## §12 매핑 모드에서도 "회전하면 스캔만 돌고 로버는 안 움직임" (사용자) — Jetson TF 정상, 브리지 전달 문제로 판단
+- 측정(`jobs/job711_rotchk.py`, `outputs/j712_rotchk.txt`, 사용자가 회전 중 15 s): **odom→base_link yaw −92° → +97° 로 초당 ≈ 14° 매끄럽게**, map→base_link 도 같이 회전, map→odom 보정 −3~−5°. 입력 휠 25·컨디셔너 25·IMU 200·EKF 30 Hz 끊김 없음, 회전 속도 휠·자이로·EKF 일치(−0.19~−0.30 rad/s). → **로버 쪽 TF 는 정상**.
+- 원인 추정: 브리지 `max_qos_depth: 1`(09-09 부하 억제) — /tf 한 토픽에 EKF(30 Hz)·SLAM·기타 발행자가 섞여 들어와 깊이 1 이면 로버 변환(odom→base_link)이 다른 /tf 에 밀려 버려짐, /scan 은 별도로 계속 도착 → Foxglove 가 오래된 로버 자세에 새 스캔을 그림 → 스캔만 돌다 로버 변환 도착 때 점프. (§5·§11 의 과부하와 겹치면 더 심함.)
+- 조치: `foxglove.launch.py` — **map 세트만 max_qos_depth 10**(토픽 6 개라 감당 가능), 다른 세트는 1 유지. 브리지만 재기동(`job696`), 적용 확인(10). 사용자 Foxglove 재연결 후 회전으로 재확인 예정.
