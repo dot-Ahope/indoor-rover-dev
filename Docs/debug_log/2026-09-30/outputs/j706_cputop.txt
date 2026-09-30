@@ -1,0 +1,20 @@
+  async_slam_tool            56.6
+  ekf_node                   50.3
+  nvblox_node                35.3
+  planner_server             25.8
+  bt_navigator               25.8
+  python3                    25.0
+  controller_serv            24.7
+  behavior_server            22.6
+  smoother_server            20.3
+  foxglove_bridge            18.1
+  rplidar_node               10.9
+  top                        8.6
+  realsense2_came            7.7
+  lifecycle_manag            6.5
+  sensor_conditio            5.4
+  waypoint_follow            4.2
+  docker                     3.5
+  micro_ros_agent            3.4
+  합계(>3%%만): 347.7 % / 600 %
+  부하 10.90 10.00 7.01 | 브리지 whitelist: 
