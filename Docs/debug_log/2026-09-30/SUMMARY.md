@@ -112,3 +112,8 @@ prep: `SLAM_ARGS="map_file:=/home/jetson/maps/office/office_v1"`, `SENSORS_ARGS=
 | 시작 위치 | map (−0.0112, −0.0032, +0.26°) → **원점에서 1.16 cm** | ≤ 5 cm |
 | 안정 | 16 s 동안 변화 0.00 cm(1 s 부터 안정) | 5 s 안 |
 한계: 로버가 매핑을 끝낸 자리(테이프 대비 줄자 2/1.5 cm)에서 움직이지 않은 채 불러온 경우. **로버를 다시 테이프에 놓고 불러오는 실제 다음 세션 상황**은 정렬 오차만큼 시작이 어긋날 수 있다(첫 스캔 정합이 보정할 것으로 추정) → 다음 세션에 같은 확인을 한 번 더.
+
+## §6 중단(사용자: 충전) — 다음 세션 이어 하기
+- 상태: ① F0·② 온보드 정지 완료(09-29), ③ F1 진행 중 — F1-1a·1b·2 통과, F1-5 필름 유리 1 곳. 남음: **F1-3 지도 정확도**(줄자 3 구간: 출발 방 가로 폭·문 폭·두 방 사이 벽 두께 제안), 금지 구역 마스크(W3 전선), F1-4 위치 추정 모드 비교, F1-2 재확인(로버를 테이프에 다시 놓고 불러오기).
+- 다음 세션 시작 절차: 충전으로 전원이 꺼지면 Jetson 재부팅 → rover-base 자동 기동 → PC 에서 `xfer_helpers.sh`(prep·F1 스크립트 재전송, 09-30 목록 갱신) → 로버를 출발 테이프에 → `SLAM_ARGS="map_file:=/home/jetson/maps/office/office_v1" SENSORS_ARGS="viz:=map"` 로 prep(= F1-2 재확인 겸) → Nav2 active 확인(첫 기동 실패 시 STARTUP 재전송, §4.1).
+- 지도 파일: Jetson `~/maps/office/office_v1.*`(재부팅에 안전), PC 사본 scratchpad `maps/`, 저장소 `Docs/04_navigation/maps/office_v1.{pgm,yaml}`.
