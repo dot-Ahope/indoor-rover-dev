@@ -203,3 +203,12 @@ prep: `SLAM_ARGS="map_file:=/home/jetson/maps/office/office_v1"`, `SENSORS_ARGS=
 prep(`jobs/job704_f1v2_prep.sh`, `outputs/j704_f1v2_prep.txt`): `map_file:=office_v1`·`viz:=map`, 보드 25.0 Hz, EKF 30 Hz, Nav2 active, 배터리 12.27 V, "Load From File …office_v1.posegraph", /map 301×213 저장본과 같음.
 - **F1-2 재확인 — 통과**: 사용자가 로버를 출발 테이프에 **다시 맞춰 놓은 뒤** 불러옴 → TF 가 4 s 에 나온 뒤 map (−0.0014, −0.0030, +0.19°) = **원점에서 0.33 cm**, 12 s 동안 흔들림 0.00 cm(기준 ≤ 5 cm, 5 s 안 안정). 세션 간 같은 좌표계로 시작 가능 — F2.5 장소 좌표 유효성의 전제 확인.
 - 매핑 조종 기동: /joy 19.3 Hz, mapping 프로필(0.07·0.3).
+
+## §11 이어 그리기 중 지도 오류·위치 점프 → 원인 CPU 과부하(메모리 아님), 매핑 전용 모드
+- 사용자: 오류로 지도가 잘못된 위치에 그려짐 — **이번 매핑은 저장하지 않음**(저장은 `job684` 호출 때만 일어나며 호출 안 함; 다음 prep 이 office_v1 에서 새로 시작, 저장본 그대로). Foxglove 에서 로버를 움직이면 스캔은 움직이는데 로버는 안 움직이다가 위치 보정 때 점프, 메모리 문제로 의심.
+- 측정(`jobs/job705_jumpchk.sh`·`job706_cputop.sh`, `outputs/j705`·`j706`):
+  - **메모리 아님**: available 5.1 GB / 7.6 GB, 스왑 사용 0. RSS 상위 nvblox 395 MB·slam 147 MB.
+  - **부하 평균 10.6~10.9**(코어 6) — CPU 합은 ≈ 350 %/600 % 인데 실행 대기 스레드가 많음. 24 s 에 **EKF 주기 미달 +25**, SLAM "queue is full" 스캔 버림 +4(누계 164·45).
+  - CPU: slam 57 %, **ekf 50 %**(평소 12 %), nvblox 35 %, **목표 없이 대기하는 Nav2 노드 합 ≈ 130 %**(planner 26·bt 26·controller 25·behavior 23·smoother 20·lifecycle 6·waypoint 4), 브리지 18 %(viz:=map 인데도), python 25 %.
+- 해석(추정): 기전은 §5 와 같음(EKF 지연 → odom TF 늦음 → SLAM 스캔 버림 → 멈췄다 점프). 이번엔 브리지를 줄였어도 발생 — 대기 중 Nav2 노드들(각자 TF 리스너로 고빈도 /tf 처리 추정)과 큰 포즈 그래프(50 MB)를 불러온 SLAM 이 겹침.
+- 조치: prep `MAPPING=1` = **매핑 전용 모드**(Nav2·nvblox 생략, stuck_monitor 단독 기동·작동 모드, 펌웨어 워치독·스톨 그대로). 기대(검증 대상): 약 165 % 절감 → EKF 미달 0. 검증 `job707_mapmode_prep.sh`(복원 확인 + 조종 + 30 s 부하·EKF 미달).
