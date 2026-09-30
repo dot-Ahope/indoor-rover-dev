@@ -102,3 +102,13 @@ A/B(`jobs/job695_loadab.sh`, 로버 정지, 30 s):
 - 지금 스택의 브리지만 `viz:=map` 으로 교체(`jobs/job696_bridge_map.sh`) — capabilities·whitelist 적용 확인. 다른 노드는 그대로.
 - 운용: 매핑 세션은 prep 을 `SENSORS_ARGS="viz:=map"` 으로(또는 브리지만 교체). 주행 진단(코스트맵·경로 보기)이 필요할 때만 lean.
 - **C 측정(개선 효과)은 보류** — 매핑 중 위치 멈춤·점프가 다시 보이면 그때 A/B 와 같은 방식으로 잰다.
+
+### §4.4 F1-2 복원 시험 — 통과 (`jobs/job697`·`job698`, `outputs/j698_f1_restore.txt`)
+prep: `SLAM_ARGS="map_file:=/home/jetson/maps/office/office_v1"`, `SENSORS_ARGS="viz:=map"`. 보드 25.0 Hz, EKF 30 Hz, Nav2 active(이번엔 첫 기동 성공), 배터리 12.22 V.
+| 확인 | 결과 | 기준 |
+|---|---|---|
+| 불러오기 | slam.log "Load From File …/office_v1.posegraph" | 성공 |
+| /map | 301 × 213·0.05 m·원점 (−5.09, −6.96) = 저장본과 같음 | 같음 |
+| 시작 위치 | map (−0.0112, −0.0032, +0.26°) → **원점에서 1.16 cm** | ≤ 5 cm |
+| 안정 | 16 s 동안 변화 0.00 cm(1 s 부터 안정) | 5 s 안 |
+한계: 로버가 매핑을 끝낸 자리(테이프 대비 줄자 2/1.5 cm)에서 움직이지 않은 채 불러온 경우. **로버를 다시 테이프에 놓고 불러오는 실제 다음 세션 상황**은 정렬 오차만큼 시작이 어긋날 수 있다(첫 스캔 정합이 보정할 것으로 추정) → 다음 세션에 같은 확인을 한 번 더.
