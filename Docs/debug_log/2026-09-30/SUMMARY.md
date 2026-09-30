@@ -198,3 +198,8 @@ prep: `SLAM_ARGS="map_file:=/home/jetson/maps/office/office_v1"`, `SENSORS_ARGS=
 - 위험(추정·미측정): Orin Nano 8 GB 공유 메모리·현 CPU ≈ 320 %/600 %·nvblox GPU 사용 중 → 1.5B~3B 4 bit(≈ 1~2 GB, llama.cpp) 후보, 여유 메모리·응답 시간 실측 필요; 작은 모델의 한국어 이해 → 한국어 명령 문장 세트로 모델 비교.
 - 사용자에게 물음: 입력 방식(텍스트 / 음성 — 음성이면 ASR 추가), 로드맵 위치(F2 다음 "F2.5" / JetPack 7.2 이전 뒤).
 - **결정(사용자)**: 입력 = **텍스트**, 위치 = **F2 다음 단계(F2.5)**. 반영: `NAV2_EXPLORATION_PLAN.md §7.4` 표에 4.5 행, CLAUDE.md §6 "다음" 줄.
+
+## §10 사무실 전체 이어 그리기 — 준비 (office_v1 → v2)
+prep(`jobs/job704_f1v2_prep.sh`, `outputs/j704_f1v2_prep.txt`): `map_file:=office_v1`·`viz:=map`, 보드 25.0 Hz, EKF 30 Hz, Nav2 active, 배터리 12.27 V, "Load From File …office_v1.posegraph", /map 301×213 저장본과 같음.
+- **F1-2 재확인 — 통과**: 사용자가 로버를 출발 테이프에 **다시 맞춰 놓은 뒤** 불러옴 → TF 가 4 s 에 나온 뒤 map (−0.0014, −0.0030, +0.19°) = **원점에서 0.33 cm**, 12 s 동안 흔들림 0.00 cm(기준 ≤ 5 cm, 5 s 안 안정). 세션 간 같은 좌표계로 시작 가능 — F2.5 장소 좌표 유효성의 전제 확인.
+- 매핑 조종 기동: /joy 19.3 Hz, mapping 프로필(0.07·0.3).
