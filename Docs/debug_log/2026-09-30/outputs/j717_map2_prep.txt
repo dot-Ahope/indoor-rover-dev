@@ -1,0 +1,51 @@
+/dev/fd/63: not a regular file
+== 배포된 SLAM 루프 창: loop_search_space_dimension: 3.0
+########## 1. 정리 ##########
+  정리 전 프로세스: 14
+  정리 후: 0 | /dev/shm fastrtps 잔재: 0
+  base 계층 유지: 에이전트 1개, robot_state_publisher 1개 (각 1 이어야)
+########## 2. base (micro-ROS 에이전트) ##########
+  /dev/rover -> /dev/ttyCH341USB0
+  에이전트 살아 있고 보드 송수신 정상 → base 재기동 생략 (세션 유지)
+  컨테이너: microros_agent Up 24 hours
+  /wheel_odom  average rate: 25.000
+  /rover/status  average rate: 4.970
+########## 3. sensors (자이로 캘리브 ~10s, 로버 정지 필수) ##########
+  sensors 인자: viz:=map
+  [sensor_conditioner_node-6] [INFO] [1790756635.791100466] [sensor_conditioner]: gyro bias calibrated: (-0.00881, -0.00103, -0.00188) rad/s, std=(0.0026, 0.0023, 0.0018)
+  /odometry/filtered average rate: 30.033
+########## 4. slam ##########
+  slam 인자: map_file:=/home/jetson/maps/office/office_v1
+  map->odom: - Translation: [0.007, 0.009, 0.000]
+########## 5. nav2 ##########
+  매핑 전용 모드: Nav2·nvblox 생략, stuck_monitor 단독 기동
+  stuck_monitor: 2 (shadow true) | bag /tmp/bags/map_0930_1724: 1
+########## 6. 설정 검증 ##########
+  local_costmap   voxel_decay=? decay_model=? 
+  global_costmap  voxel_decay=? decay_model=? 
+  BT ExceptRegion 5곳 / EntireCostmap 0곳
+          2 reset_distance="2.5"
+          2 reset_distance="3.0"
+  ZUPT: 20곳, 로그 3건
+########## 7. 코스트맵 클리어 + 재마킹 대기 15초 ##########
+########## 8. 상태 ##########
+  로버 자세: - Translation: [0.007, 0.009, 0.000] - Rotation: in RPY (radian) [0.000, 0.000, -0.002] 
+  EKF 위반 0회 | slam 폐기 0회 | load 2.58 1.87 2.97
+
+########## 9. 통과 가능성 (물리 틈 / 코스트맵 감사 / RPP 기준) ##########
+== 조이스틱 재기동(prep 이 joy 노드를 정리하므로)
+crw-rw-r--+ 1 root input 13, 0 Sep 29 17:51 /dev/input/js0
+  /joy: average rate: 19.675
+  scale_linear.x = Double value is: 0.085
+  scale_angular.yaw = Double value is: 0.38
+  require_enable_button = Boolean value is: False
+== 프로세스
+  rplidar              1
+  realsense2_camera    1
+  ekf_node             1
+  async_slam_toolbox   1
+  stuck_monitor        2
+  foxglove_bridge      1
+  ros2 bag record      1
+  teleop_node          1
+== bag: /tmp/bags/map_0930_1724
