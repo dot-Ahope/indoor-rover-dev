@@ -42,7 +42,7 @@ while time.time() - t0 < 3: rclpy.spin_once(n, timeout_sec=0.05)
 M0 = avg('map', 5.0); O0 = avg('odom', 1.0)
 print('출발 map (%.4f, %.4f, %.2f°) [%d 표본] | odom (%.4f, %.4f)' % (M0[0], M0[1], math.degrees(M0[2]), M0[3], O0[0], O0[1]))
 ts = time.time(); d = 0.0
-while d < DIST - 0.005 and time.time() - ts < DIST / V * 2 + 5:
+while d < DIST - 0.005 and time.time() - ts < DIST / abs(V) * 2 + 5:   # 09-30: 후진(V<0) 때 한도가 음수가 되던 결함 수정
     m = Twist(); m.linear.x = V; pub.publish(m)
     te = time.time() + 0.05
     while time.time() < te: rclpy.spin_once(n, timeout_sec=0.01)
