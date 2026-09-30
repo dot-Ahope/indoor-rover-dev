@@ -197,3 +197,4 @@ prep: `SLAM_ARGS="map_file:=/home/jetson/maps/office/office_v1"`, `SENSORS_ARGS=
 - 선행: 사무실 전체 매핑 → **F1-4 위치 추정 모드(세션 간 같은 좌표계 — 등록 좌표 유효성의 전제)** → F2 웨이포인트 순회 → 장소 이동(서비스 호출, LLM 없이) → LLM 앞단.
 - 위험(추정·미측정): Orin Nano 8 GB 공유 메모리·현 CPU ≈ 320 %/600 %·nvblox GPU 사용 중 → 1.5B~3B 4 bit(≈ 1~2 GB, llama.cpp) 후보, 여유 메모리·응답 시간 실측 필요; 작은 모델의 한국어 이해 → 한국어 명령 문장 세트로 모델 비교.
 - 사용자에게 물음: 입력 방식(텍스트 / 음성 — 음성이면 ASR 추가), 로드맵 위치(F2 다음 "F2.5" / JetPack 7.2 이전 뒤).
+- **결정(사용자)**: 입력 = **텍스트**, 위치 = **F2 다음 단계(F2.5)**. 반영: `NAV2_EXPLORATION_PLAN.md §7.4` 표에 4.5 행, CLAUDE.md §6 "다음" 줄.
