@@ -16,7 +16,7 @@ teleop_twist_joy_node:
     axis_linear:
       x: 1
     scale_linear:
-      x: 0.10                 # 로버 최대 = 펌웨어 MAX_LINEAR_SPEED_MPS 0.100 (그 이상은 펌웨어가 saturate)
+      x: 0.10                 # 펌웨어 MAX_LINEAR_SPEED_MPS 는 09-07 부터 0.085 — 그 이상은 펌웨어가 saturate(실효 0.085)
     # 조향: angular.z = scale × axis[2] (양수 axis2 → +z 좌회전). 최대 기울기 = 최대회전.
     axis_angular:
       yaw: 2
