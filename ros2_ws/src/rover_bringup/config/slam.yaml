@@ -51,7 +51,10 @@ slam_toolbox:
     correlation_search_space_dimension: 0.5
     correlation_search_space_resolution: 0.01
     correlation_search_space_smear_deviation: 0.1
-    loop_search_space_dimension: 8.0
+    # 2026-09-30 §14: 8.0 → 3.0. 루프 매칭 탐색 창 폭(m, 현재 추정 중심). 8.0(=±4 m)에서 사무실 반복 구조(책상 줄)에
+    #   4.2 m 옆으로 오정합해 지도가 틀어졌다(§13, 사용자가 실제 위치로 SLAM 오류 확인). 추측항법 오차는 180° 회전당 옆 10~27 cm
+    #   (09-28)·직진 ≤1.5 cm 수준이라 ±1.5 m 면 정상 보정은 담고, 수 m 짜리 가짜 정합은 창 밖으로 뺀다.
+    loop_search_space_dimension: 3.0
     loop_search_space_resolution: 0.05
     loop_search_space_smear_deviation: 0.03
 

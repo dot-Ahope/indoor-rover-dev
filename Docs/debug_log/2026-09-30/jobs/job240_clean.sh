@@ -25,6 +25,8 @@ PATS="joy_linux_node teleop_node nvblox_up.sh depth_relay.py navigation.launch s
 cnt() { local n=0 c; for p in $PATS; do c=$(pgrep -fc "$p" 2>/dev/null | head -1); n=$((n+${c:-0})); done; echo $n; }
 
 echo "########## 1. 정리 ##########"
+# 09-30 §14: 매핑 bag 은 SIGINT 로 먼저 닫는다(메타데이터 기록) — PATS 의 SIGTERM 보다 앞에
+pkill -INT -f "ros2 bag record" 2>/dev/null && sleep 3
 echo "  정리 전 프로세스: $(cnt)"
 for p in $PATS; do pkill -TERM -f "$p" 2>/dev/null; done
 for i in $(seq 1 15); do [ "$(cnt)" = "0" ] && break; sleep 1; done
@@ -110,9 +112,13 @@ echo "########## 5. nav2 ##########"
 #   안전: stuck_monitor 는 단독으로 띄우고(작동 모드), 펌웨어 워치독·스톨 보호는 그대로.
 if [ "${MAPPING:-0}" = "1" ]; then
   echo "  매핑 전용 모드: Nav2·nvblox 생략, stuck_monitor 단독 기동"
-  setsid nohup ros2 run rover_bringup stuck_monitor.py --ros-args -p shadow_mode:=${STUCK_SHADOW:-false} > /tmp/nav2.log 2>&1 &
+  # 09-30 §14: 매핑(사람 조종)에서는 관찰만 — 패드 회전 중 3 회 발동해 조종에 0 지령이 끼어들었다(§13). 사람이 보고 있으므로.
+  setsid nohup ros2 run rover_bringup stuck_monitor.py --ros-args -p shadow_mode:=${STUCK_SHADOW:-true} > /tmp/nav2.log 2>&1 &
+  # 09-30 §14: 점프를 사후 분석할 수 있게 경량 bag(§13 은 기록이 없어 순간을 못 봄). 지도(/map)는 빼고 재생으로 SLAM 을 다시 돌릴 입력만.
+  MB=/tmp/bags/map_$(date +%m%d_%H%M); mkdir -p /tmp/bags
+  setsid nohup ros2 bag record -o $MB /scan /tf /tf_static /odometry/filtered /wheel_odom /imu/data /cmd_vel /joy > /tmp/mapbag.log 2>&1 &
   sleep 5
-  echo "  stuck_monitor: $(pgrep -fc 'stuck_monitor.py')"
+  echo "  stuck_monitor: $(pgrep -fc 'stuck_monitor.py') (shadow ${STUCK_SHADOW:-true}) | bag $MB: $(pgrep -fc 'ros2 bag record')"
 else
 setsid nohup ros2 launch rover_navigation navigation.launch.py stuck_shadow:=${STUCK_SHADOW:-false} > /tmp/nav2.log 2>&1 &
 sleep 30
