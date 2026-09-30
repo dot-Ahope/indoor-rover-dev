@@ -96,3 +96,9 @@ A/B(`jobs/job695_loadab.sh`, 로버 정지, 30 s):
 | 쉬는 Nav2 노드(bt·controller·planner·behavior·smoother) | 18~29 % | ≈ 10 % |
 판단: **Foxglove 연결이 브리지 자신(62 %)뿐 아니라 EKF(×4)·Nav2 노드 CPU 를 끌어올려** EKF 가 주기를 놓치고 → odom TF 지연 → SLAM 이 스캔을 버림 → 지도 위 위치가 멈췄다 따라잡음(점프) 으로 보인다(연결 인과는 추정, 수치는 측정). 추정 기전: ① 구독자가 하나 늘면 발행 쪽 UDP 전송·직렬화가 늘어남(UDP 전용 DDS) ② 브리지 parameters 기능이 전 노드에 서비스 요청.
 개선안(제안): `viz:=map`(tf·tf_static·robot_description·map·scan 만 — 코스트맵 전체 격자·odometry·경로 제외) + 브리지 capabilities 축소(parameters·services 제거, 패드 조종이면 clientPublish 도 불필요). 검증 C: 같은 30 s 에서 EKF 미달 0·부하 B 수준.
+
+### §5.1 적용 (사용자: "적용하고 C 측정은 현상 재발 시")
+- `foxglove.launch.py`: `viz:=map` 세트 추가(`/tf`·`/tf_static`·`/robot_description`·`/map`·`/map_metadata`·`/scan`), 세트별 capabilities — map 은 `['clientPublish']` 만(빈 목록은 ROS 파라미터 타입 문제로 피함), 나머지 세트는 기존(clientPublish·parameters·services) 유지.
+- 지금 스택의 브리지만 `viz:=map` 으로 교체(`jobs/job696_bridge_map.sh`) — capabilities·whitelist 적용 확인. 다른 노드는 그대로.
+- 운용: 매핑 세션은 prep 을 `SENSORS_ARGS="viz:=map"` 으로(또는 브리지만 교체). 주행 진단(코스트맵·경로 보기)이 필요할 때만 lean.
+- **C 측정(개선 효과)은 보류** — 매핑 중 위치 멈춤·점프가 다시 보이면 그때 A/B 와 같은 방식으로 잰다.
