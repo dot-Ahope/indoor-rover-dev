@@ -1,0 +1,22 @@
+########## 2. base (micro-ROS 에이전트) ##########
+  컨테이너: microros_agent Up 17 hours
+  /wheel_odom  average rate: 24.999
+  [sensor_conditioner_node-6] [INFO] [1790733100.285111097] [sensor_conditioner]: gyro bias calibrated: (-0.00568, -0.00074, -0.00173) rad/s, std=(0.0025, 0.0025, 0.0018)
+  /odometry/filtered average rate: 29.999
+  map->odom: - Translation: [0.000, 0.000, 0.000]
+  /controller_server   active [3]
+  /planner_server      active [3]
+  /behavior_server     active [3]
+상자: 전면 x=1.156  중심 y=-0.077  (142점)  → x 구간 [1.16, 1.27], y 구간 [-0.17, +0.01]
+########## 10. 컨디셔너 B2·B3 (끔이어야) · 배터리 ##########
+  icr_enable = Boolean value is: False
+  rot_cov_enable = Boolean value is: False
+  배터리 12.35650634765625 V
+  footprint(local): String value is: [[0.262, 0.165], [0.262, -0.165], [-0.248, -0.165], [-0.248, 0.165]]
+  stuck_monitor: ACTIVE
+출발 map (0.0000, 0.0000, 0.17°) [251 표본] | odom (0.0000, 0.0000)
+주행 11.1 s, EKF 이동 0.6987 m 에서 정지 지령
+도착 map (0.6977, -0.0056, -0.68°) [250 표본]
+SLAM 이동(출발 방향 기준): 세로 0.6977 m, 가로 -0.0077 m, 방향 -0.86°
+EKF 이동 0.7078 m (SLAM 대비 +0.0100)
+줄자 예측: 오른쪽 앞 모서리가 출발 표시에서 세로 0.6952 m 앞, 가로 -0.0116 m(+ 왼쪽)
