@@ -217,3 +217,9 @@ prep(`jobs/job704_f1v2_prep.sh`, `outputs/j704_f1v2_prep.txt`): `map_file:=offic
 - f0b1 로 재동기(문 통과: 짧은 영상 36.5 s ↔ bag 42.0 s, 긴 영상 103.5 s ↔ 166.0 s → 데이터 시작 8.5·65.5 s). 결과 `videos/sbs_part1_f0b1.mp4`(6.0 MB)·`sbs_part2_f0b1.mp4`(19.4 MB), f0b2 결합본 삭제(데이터 단독본 f0b1·f0b2 는 v3 로 갱신). 확인 프레임 `Docs/04_navigation/figures/2026-09-30_f0b1_sbs_door_return_v3.png` — 복귀 문 통과 순간 양쪽 일치.
 - `render_f0b.py` v3: 어두운 배경·패널(Foxglove 3D·Plot 풍 색), 벽 밝은 회색·빈 곳 어두운 회색, 코스트맵 분홍(장애물)·파랑(여유), 궤적 초록·경로 보라 점선, 목표 링 반지름 0.2 → **0.08 m**, 지도 밖 라벨 잘림 처리.
 - 새로 보인 것: f0b1 은 W3 에서 **후진(v ≈ −0.05, 경과 ≈ 100~125 s)** 으로 복귀를 시작(f0b2 와 다른 궤적) — 영상의 직진 속도 그래프에 음수 구간으로 드러남.
+
+### §11.1 매핑 전용 모드 검증 — 과부하 해소
+- 첫 시도(`job707` → job657 경로)는 prep 이 ≈ 80 s 만에 "Terminated" 로 끊겨 스택이 전부 내려감(로버 정지 상태, 원인 미확정 — prep 출력을 grep 으로 걸러 가림; 컨테이너 단계를 거치는 job657 경로에서만 발생). job240 직접 실행(`job709`, 전체 출력)은 정상: 센서·EKF 30 Hz·SLAM(office_v1, 원점 1 cm)·stuck_monitor·브리지, Nav2·nvblox 없음.
+- prep 정리 목록이 패드 노드도 내리므로 조종 재기동(`job710`): /joy 19.7 Hz, mapping 프로필. 복원 원점 1.06 cm.
+- **30 s(Foxglove 1 클라이언트 연결)**: 부하 **2.7**(전체 스택 10.9), **EKF 주기 미달 0·SLAM 스캔 버림 0**. CPU slam 58 %·ekf 54 %(브리지 구독으로 여전히 높지만 여유 생김)·브리지 29 %.
+- 결론: 매핑 중 위치 점프의 원인은 대기 Nav2·nvblox 가 더한 과부하 → 패드 매핑은 `MAPPING=1` 로. 자율주행 시험 전엔 일반 prep.
