@@ -71,3 +71,9 @@ footprint: `nav2_params.yaml` 로컬·전역 두 곳을 `[[0.262, ±0.165], [−
 - prep(`job687`, `outputs/j687_f1_prep.txt`): 새 지도(SLAM 인자 없음), 보드 25.0 Hz, EKF 30 Hz, 배터리 12.17 V. 패드 `/dev/input/js0` "Controller"(무선 동글), `/joy` 19.5 Hz.
 - **Nav2 첫 기동 실패**: lifecycle_manager 가 "Failed to change state for node: behavior_server … get_state … async_send_request failed" 로 전체 기동 중단(controller·planner inactive, bt unconfigured). 컨트롤러는 새 footprint 로 정상 생성 → footprint 무관, 기동 순간 서비스 호출 실패(일시적, 추정). `manage_nodes STARTUP`(`job689`) 재전송으로 4 노드 active. → prep 에 "Nav2 active 아니면 STARTUP 재시도" 를 넣을 후보(미적용).
 - **F1-0 무선 끊김**: 기록(`job690`, `outputs/j691_joydrop.txt`)에는 "전진 유지 → 전원 끔" 이 뚜렷이 잡히지 않음(유지 구간 없음, /joy 공백 없음). **사용자가 /joy 를 직접 관찰: 1 유지 중 패드 전원을 끄면 0 으로 떨어짐** → 합격(사용자 관찰 기준; 동글이 꺼진 패드를 중립으로 보고, /joy 는 계속 나옴). 조종 출력을 실제 `/cmd_vel` 로 바꿔 mapping 프로필로 기동.
+
+### §4.2 F1 1 차 매핑 `office_v1` 저장 (`jobs/job692`·`job693`, `outputs/j693_f1_save.txt`)
+- 사용자 조종(무선 패드, mapping 프로필)으로 "대충" 매핑 후 종료 지시. 저장: Jetson `~/maps/office/office_v1.{posegraph 50.3 MB, data 38.4 MB, pgm 64 kB, yaml}` → PC 사본(scratchpad `maps/`), **pgm·yaml 은 저장소 `Docs/04_navigation/maps/`**(포즈 그래프는 크기 때문에 git 제외·로컬 보관). 그림 `Docs/04_navigation/figures/2026-09-30_office_v1.png`.
+- 지도: 301 × 213 셀(5 cm) = **15.1 × 10.7 m**, 원점 (−5.09, −6.96), 점유 4,653·빈 27,103·미지 32,357 셀. 출발 방·문 밖 책상 구역 + **북동쪽 방(x 3~6, y −0.7~3.3)** 까지 포함.
+- 저장 직후 로버 map 자세 (0.0044, 0.0006, 1.07°) → 오른쪽 앞 모서리 예측이 출발 표시 대비 세로 +0.75 cm·가로 +0.55 cm(왼쪽). F1-1a 는 사용자 줄자 대조로 판정(대기).
+- 관찰(판정 전): 출발 방 동쪽 벽(x ≈ 2.8~2.95, y −0.7~3.3)이 **폭 약 15~20 cm 의 굵은 띠**로 찍힘(09-29 f0a7 지도에서는 얇은 선). 벽 양쪽 방을 모두 봐서 실제 벽 두께가 찍힌 것인지, 이중 벽(정합 어긋남)인지 이 그림만으로는 구분 불가 → 사용자에게 실제 벽 두께 확인 요청(F1-1b). slam.log 에 노드·루프 폐합 로그 줄은 0(로그 수준이 낮아 안 남음 — 루프 폐합 여부는 로그로 판단 불가).
