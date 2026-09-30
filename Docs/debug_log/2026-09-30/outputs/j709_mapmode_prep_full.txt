@@ -1,0 +1,40 @@
+########## 1. 정리 ##########
+  정리 전 프로세스: 2
+  정리 후: 0 | /dev/shm fastrtps 잔재: 0
+  base 계층 유지: 에이전트 1개, robot_state_publisher 1개 (각 1 이어야)
+########## 2. base (micro-ROS 에이전트) ##########
+  /dev/rover -> /dev/ttyCH341USB0
+  에이전트 살아 있고 보드 송수신 정상 → base 재기동 생략 (세션 유지)
+  컨테이너: microros_agent Up 23 hours
+  /wheel_odom  average rate: 24.996
+  /rover/status  average rate: 5.000
+########## 3. sensors (자이로 캘리브 ~10s, 로버 정지 필수) ##########
+  sensors 인자: viz:=map
+  [sensor_conditioner_node-6] [INFO] [1790755132.506438515] [sensor_conditioner]: gyro bias calibrated: (-0.00832, -0.00086, -0.00186) rad/s, std=(0.0026, 0.0022, 0.0018)
+  /odometry/filtered average rate: 29.998
+########## 4. slam ##########
+  slam 인자: map_file:=/home/jetson/maps/office/office_v1
+  map->odom: - Translation: [0.010, -0.004, 0.000]
+########## 5. nav2 ##########
+  매핑 전용 모드: Nav2·nvblox 생략, stuck_monitor 단독 기동
+  stuck_monitor: 2
+########## 6. 설정 검증 ##########
+  local_costmap   voxel_decay=? decay_model=? 
+  global_costmap  voxel_decay=? decay_model=? 
+  BT ExceptRegion 5곳 / EntireCostmap 0곳
+          2 reset_distance="2.5"
+          2 reset_distance="3.0"
+  ZUPT: 20곳, 로그 3건
+########## 7. 코스트맵 클리어 + 재마킹 대기 15초 ##########
+########## 8. 상태 ##########
+  로버 자세: - Translation: [0.010, -0.004, 0.000] - Rotation: in RPY (radian) [0.000, 0.000, -0.001] 
+  EKF 위반 0회 | slam 폐기 2회 | load 1.71 4.94 7.13
+
+########## 9. 통과 가능성 (물리 틈 / 코스트맵 감사 / RPP 기준) ##########
+== 끝난 뒤 프로세스
+  rplidar              1
+  realsense2_camera    1
+  ekf_node             1
+  async_slam_toolbox   1
+  stuck_monitor        2
+  foxglove_bridge      1
