@@ -15,10 +15,10 @@ def yaw(q): return math.atan2(2 * (q.w * q.z + q.x * q.y), 1 - 2 * (q.y * q.y + 
 
 r = rosbag2_py.SequentialReader(); r.open(rosbag2_py.StorageOptions(uri=sys.argv[1], storage_id='sqlite3'), rosbag2_py.ConverterOptions('cdr', 'cdr'))
 types = {t.name: t.type for t in r.get_all_topics_and_types()}
-mo, ob, scans, plans, lplans, lcm, cmd, lastmap, l2b, stuck = [], [], [], [], [], [], [], None, None, []
+mo, ob, scans, plans, lplans, lcm, cmd, lastmap, l2b, stuck, odo = [], [], [], [], [], [], [], None, None, [], []
 while r.has_next():
     tp, data, ts = r.read_next(); t = ts * 1e-9
-    if tp not in ('/tf', '/tf_static', '/scan', '/plan', '/local_plan', '/local_costmap/costmap', '/cmd_vel', '/map', '/rover/stuck'): continue
+    if tp not in ('/tf', '/tf_static', '/scan', '/plan', '/local_plan', '/local_costmap/costmap', '/cmd_vel', '/map', '/rover/stuck', '/odometry/filtered'): continue
     m = deserialize_message(data, get_message(types[tp]))
     if tp in ('/tf', '/tf_static'):
         for tr in m.transforms:
@@ -36,6 +36,7 @@ while r.has_next():
     elif tp == '/cmd_vel': cmd.append((t, m.linear.x, m.angular.z))
     elif tp == '/map': lastmap = m
     elif tp == '/rover/stuck': stuck.append(t)
+    elif tp == '/odometry/filtered': odo.append((t, m.twist.twist.linear.x, m.twist.twist.angular.z))   # 09-30: 실제(EKF) 속도
 mo.sort(); ob.sort()
 mt = [x[0] for x in mo]; otl = [x[0] for x in ob]
 
@@ -52,7 +53,8 @@ act = [c[0] for c in cmd if abs(c[1]) > 0.005 or abs(c[2]) > 0.01]
 t0, t1 = act[0] - 3.0, act[-1] + 3.0
 F = np.arange(t0, t1, 0.1)
 st = [s[0] for s in scans]; pt = [p[0] for p in plans]; lpt = [p[0] for p in lplans]; lct = [c[0] for c in lcm]; ct = [c[0] for c in cmd]
-pose, sx, sy, sidx, pl_i, lp_i, lc_i, v, w, moff = [], [], [], [0], [], [], [], [], [], []
+pose, sx, sy, sidx, pl_i, lp_i, lc_i, v, w, moff, ov, ow, hz = [], [], [], [0], [], [], [], [], [], [], [], [], []
+odt = [o[0] for o in odo]
 lcm_keep = {}
 for k, t in enumerate(F):
     A = at(mo, mt, t); B = at(ob, otl, t); o = (A[1], A[2], A[3]); P = comp(o, (B[1], B[2], B[3])); pose.append(P); moff.append((A[1], A[2], A[3]))
@@ -64,6 +66,8 @@ for k, t in enumerate(F):
     kc = bisect.bisect_right(ct, t) - 1
     if kc >= 0 and t - cmd[kc][0] < 0.5: v.append(cmd[kc][1]); w.append(cmd[kc][2])
     else: v.append(0.0); w.append(0.0)
+    ko = bisect.bisect_right(odt, t) - 1; ov.append(odo[ko][1] if ko >= 0 else 0.0); ow.append(odo[ko][2] if ko >= 0 else 0.0)
+    hz.append(bisect.bisect_right(ct, t) - bisect.bisect_right(ct, t - 1.0))   # 직전 1 s 동안 /cmd_vel 메시지 수 = 발행 주기(Hz)
 # 로컬 궤적은 odom 좌표일 수 있음 → 해당 시각 map→odom 으로 map 좌표화
 lp_map = []
 for (t, fr, pts) in lplans:
@@ -79,7 +83,7 @@ for k in keys:
         A = at(mo, mt, t); lc_meta.append((A[1], A[2], A[3], ox, oy, res))   # 격자는 odom 축 — map 변환 위해 map→odom 기록
     else: lc_meta.append((0.0, 0.0, 0.0, ox, oy, res))
 out = dict(t=F - F[0], t_act0=act[0] - F[0], pose=np.array(pose), moff=np.array(moff), sx=np.concatenate(sx), sy=np.concatenate(sy), sidx=np.array(sidx),
-           pl_i=np.array(pl_i), lp_i=np.array(lp_i), v=np.array(v), w=np.array(w), lc_frame=lc_frame, lc_meta=np.array(lc_meta),
+           pl_i=np.array(pl_i), lp_i=np.array(lp_i), v=np.array(v), w=np.array(w), ov=np.array(ov), ow=np.array(ow), hz=np.array(hz), lc_frame=lc_frame, lc_meta=np.array(lc_meta),
            stuck=np.array(stuck) - F[0], bag_t0=F[0])
 for i, (_, p) in enumerate(plans): out['plan_%d' % i] = p
 for i, p in enumerate(lp_map): out['lplan_%d' % i] = p
