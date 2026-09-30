@@ -249,3 +249,8 @@ prep(`jobs/job704_f1v2_prep.sh`, `outputs/j704_f1v2_prep.txt`): `map_file:=offic
 - 배포: src·install 양쪽(`jobs/job715_slamcfg_deploy.sh`), 지금 SLAM 은 그대로(다음 prep 부터).
 - 매핑 prep(`jobs/job240_clean.sh`, MAPPING=1) 변경: ① 경량 bag 자동 기록 `/tmp/bags/map_<월일_시분>`(/scan·/tf·/tf_static·/odometry/filtered·/wheel_odom·/imu/data·/cmd_vel·/joy, /map 제외 — 재생으로 SLAM 재현용), 다음 prep 시작 때 SIGINT 로 닫음 ② stuck_monitor 기본 관찰 모드(사람 조종 중 3 회 0 지령 끼어듦, §13).
 - 판정 기준(다음 매핑 전 선언): 같은 경로 재매핑에서 map→odom 이 1 회에 0.5 m 넘게 뛰면 실패로 보고 bag 으로 원인 분석. 끝에 출발 테이프 복귀 오차 ≤ 10 cm 이면 저장 후보(office_v2, 사용자 승인 후).
+
+## §15 조이스틱 매핑 프로필 = 펌웨어 상한 (사용자: "스틱 최대면 속도도 최대로, 지금 너무 느리다")
+- `joy_teleop.launch.py` profile:=mapping 0.07 m/s·0.3 rad/s → **0.085·0.38**. 직진 0.085 = 펌웨어 `MAX_LINEAR_SPEED_MPS`(받침대 duty 98% 실측 0.091~0.093 에서 바닥 여유), 회전 0.38 ≈ 2×0.085/0.443. 더 줘도 펌웨어가 트랙 속도를 비례 축소해 빨라지지 않음 → 체감 향상은 직진 +21 %·회전 +27 % 가 한계.
+- 이전 저속(09-30 §4)의 근거였던 "빠른 회전 = 슬립↑" 은 사용자 판단으로 감수. 더 빠르게 하려면 펌웨어 상한을 올려야 하고 여유는 ≈ 0.09 까지뿐(모터 무부하 이론 0.121 은 부하 시 미확인).
+- 배포·빌드(`jobs/job716_joymax_deploy.sh`), 실행 중 teleop 에도 `ros2 param set` 으로 즉시 반영 확인(0.085·0.38). yaml 의 옛 주석(0.100) 정정.

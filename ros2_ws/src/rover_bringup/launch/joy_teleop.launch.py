@@ -13,7 +13,10 @@ from launch_ros.actions import Node
 
 # 2026-09-30: profile:=mapping — F1 매핑용 저속(직진 0.07 m/s·회전 0.3 rad/s). 빠른 회전은 트랙 밀림을 키워
 #   지도 품질을 떨어뜨린다(09-28 회전 시험: 180° 당 10~27 cm). 기본(normal)은 yaml 값(0.10·0.8).
-_PROFILES = {'mapping': {'scale_linear.x': 0.07, 'scale_angular.yaw': 0.3}}
+# 2026-09-30 §15: 사용자 요청 "스틱 최대 = 속도 최대" → 펌웨어 상한으로 올림(0.07·0.3 → 0.085·0.38).
+#   직진 0.085 = MAX_LINEAR_SPEED_MPS(받침대 duty 98% 실 0.091~0.093 에서 여유), 회전 0.38 ≈ 2×0.085/0.443(유효 게이지).
+#   이보다 크게 줘도 펌웨어가 두 트랙을 비례 축소하므로 더 빨라지지 않는다. 회전 슬립 증가는 감수(사람이 보며 조종).
+_PROFILES = {'mapping': {'scale_linear.x': 0.085, 'scale_angular.yaw': 0.38}}
 
 
 def _make(context):
