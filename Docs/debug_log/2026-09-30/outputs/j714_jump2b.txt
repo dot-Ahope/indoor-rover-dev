@@ -1,0 +1,9 @@
+slam.log 첫 줄 시각: 
+Ceres 경고(최적화 실행 흔적) 2건:
+16:59:10.108861
+17:10:34.690649
+slam 버림 전체 73회
+-- /imu/data, /scan, /odometry/filtered 수신률(각 5 s)
+/imu/data average rate: 199.678
+/scan average rate: 10.041
+/odometry/filtered average rate: 30.002
