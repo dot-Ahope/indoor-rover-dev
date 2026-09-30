@@ -83,3 +83,16 @@ footprint: `nav2_params.yaml` 로컬·전역 두 곳을 `[[0.262, ±0.165], [−
 - **F1-1b 이중 벽 없음 — 통과**: 동쪽 굵은 띠는 두 방을 가르는 **실제 두께 ≈ 20 cm 벽**(사용자). 다른 이중 벽 흔적 없음(그림 확인).
 - **F1-5 유리(1 곳)**: 출발 위치 **오른쪽 벽(map y ≈ −0.65, x −1.2~1.8)이 유리, 필름이 붙어 있어 라이다가 벽으로 인식**(지도에 연속 벽선, 사용자 관찰과 일치). 출입문·창문 유리는 확인되면 사용자가 알려 주기로 — 필름 없는 유리는 투과·반사로 빠질 수 있어 따로 봐야 함(일반 원리, 미측정).
 남은 F1: **F1-2 복원**(다음 세션에 `SLAM_ARGS="map_file:=/home/jetson/maps/office/office_v1"` 로 불러와 출발 테이프에서 ≤ 5 cm), **F1-3 지도 정확도**(줄자 3 구간 ±5 cm), **F1-4 위치 추정 모드**(slam_toolbox localization vs AMCL), 금지 구역 마스크(W3 전선) 첫 적용.
+
+## §5 매핑 중 Foxglove 에서 로버 위치가 멈췄다 점프 — 원인 확인 (사용자 질문)
+로그(`jobs/job694_lagchk.sh`, `outputs/j694_lagchk.txt`, prep 뒤 ≈ 40 분 누적): 부하 평균 **11.3**(코어 6; 평소 prep 직후 3~7), EKF "Failed to meet update rate" **760 회**(40~46 ms > 33 ms), SLAM "Message Filter dropping"(스캔 시각의 odom TF 없음) **106 회**, 브리지 로그에 노드별 파라미터 조회 실패 연속(Foxglove 앱이 전 노드 파라미터를 가져오려 함).
+A/B(`jobs/job695_loadab.sh`, 로버 정지, 30 s):
+| | A Foxglove 연결(1 클라이언트) | B 연결 끊음 |
+|---|---|---|
+| EKF 주기 미달 | **+12** | **+0** |
+| 부하 1 분 | 10.1 | 5.5(하강 중) |
+| foxglove_bridge | 62 % | — |
+| ekf_node | **49 %** | **12 %** |
+| 쉬는 Nav2 노드(bt·controller·planner·behavior·smoother) | 18~29 % | ≈ 10 % |
+판단: **Foxglove 연결이 브리지 자신(62 %)뿐 아니라 EKF(×4)·Nav2 노드 CPU 를 끌어올려** EKF 가 주기를 놓치고 → odom TF 지연 → SLAM 이 스캔을 버림 → 지도 위 위치가 멈췄다 따라잡음(점프) 으로 보인다(연결 인과는 추정, 수치는 측정). 추정 기전: ① 구독자가 하나 늘면 발행 쪽 UDP 전송·직렬화가 늘어남(UDP 전용 DDS) ② 브리지 parameters 기능이 전 노드에 서비스 요청.
+개선안(제안): `viz:=map`(tf·tf_static·robot_description·map·scan 만 — 코스트맵 전체 격자·odometry·경로 제외) + 브리지 capabilities 축소(parameters·services 제거, 패드 조종이면 clientPublish 도 불필요). 검증 C: 같은 30 s 에서 EKF 미달 0·부하 B 수준.
