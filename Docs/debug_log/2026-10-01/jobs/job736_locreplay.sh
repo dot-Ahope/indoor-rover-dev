@@ -12,9 +12,9 @@ if [ "${STOP_LIVE:-1}" = 1 ]; then
 fi
 export ROS_DOMAIN_ID=42
 Y=$(ros2 pkg prefix rover_bringup)/share/rover_bringup/config/slam.yaml
-for V in ${VARS:-base t2}; do
+for V in ${@:-base t2}; do   # 인자 = 변형 목록
   pkill -9 -f "slam_toolbox_node.*use_sim_time:=true" 2>/dev/null; sleep 1
-  case $V in base) EX="" ;; t2) EX="-p minimum_travel_distance:=0.20 -p minimum_travel_heading:=0.10" ;; t1) EX="-p minimum_travel_distance:=0.10 -p minimum_travel_heading:=0.05" ;; esac
+  case $V in base) EX="" ;; t2) EX="-p minimum_travel_distance:=0.20 -p minimum_travel_heading:=0.10" ;; t1) EX="-p minimum_travel_distance:=0.10 -p minimum_travel_heading:=0.05" ;; t3) EX="-p minimum_travel_distance:=0.30 -p minimum_travel_heading:=0.15" ;; t2nolc) EX="-p minimum_travel_distance:=0.20 -p minimum_travel_heading:=0.10 -p do_loop_closing:=false" ;; t3m) EX="-p minimum_travel_distance:=0.30 -p minimum_travel_heading:=0.15 -p map_update_interval:=10.0" ;; t2m) EX="-p minimum_travel_distance:=0.20 -p minimum_travel_heading:=0.10 -p map_update_interval:=10.0" ;; esac
   setsid ros2 run slam_toolbox localization_slam_toolbox_node --ros-args --params-file $Y -p use_sim_time:=true -p mode:=localization \
     -p map_file_name:=/home/jetson/maps/office/office_v2 -p "map_start_pose:=[0.0, 0.0, 0.0]" -p map_start_at_dock:=false $EX > /tmp/locrep_$V.log 2>&1 &
   for i in $(seq 1 30); do ros2 param get /slam_toolbox use_sim_time >/dev/null 2>&1 && break; sleep 1; done; sleep 8
