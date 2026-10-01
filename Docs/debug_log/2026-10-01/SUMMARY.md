@@ -255,3 +255,11 @@
 
 ### §8.10 F2 순회 재시도(f2a4) prep
 - `outputs/j731d_f2a4_prep.txt`: **L-d 시작 0.86 cm**, 배터리 12.14 V, 위치 추정 localization·0.3·transform_timeout 0.5, **nav_guard 1·stuck_monitor 1**(정리 수정 확인), Nav2 active. load 7.4(기동 직후). 러너는 P 게이트(정지 10 s ≤ 60 %)·전체 프로세스 기록 포함. 코스·판정 §8.1·§8.6 그대로.
+
+### §8.11 f2a4 결과 — 목표 1(B) SUCCEEDED 55.6 s, 목표 2(C) 가는 중 12.9 s 에 **stuck_monitor 오판으로 취소**
+- 러너(`outputs/f0_f2a4_runner.log`): P 게이트 37 %, 14:01:29 출발, **B SUCCEEDED 55.6 s**(목표 대비 0.13 m), C 로 출발 12.9 s 뒤 CANCELED — map (1.82, −1.88, −165°).
+- 로그(`outputs/j746_cancel_why.txt`): 14:02:52 stuck_monitor "STUCK: 지령 15.6 cm/10° 인데 관측 0.1 cm/8.9° (비율 0.01) → 목표 취소·정지". 이번 회차엔 transformPose 오류·서버 시간 초과 없음.
+- **오판 확인**(`jobs/job747_stuckchk.py`, `outputs/j747_stuckchk.txt`): 취소 전 8 s 내내 휠 0.065~0.072 m/s·EKF 같음·SLAM(map) 이동 0.5 s 당 2.2~4.6 cm·최근접 라이다 1.13 m 이상 → 로버는 정상 주행 중이었다.
+- 재현 시도(`jobs/job748_sector.py`, `outputs/j748_sector.txt`): bag 스캔으로 stuck_monitor 와 같은 계산(앞·뒤 ±20° 섹터, 3 m 안) → 앞 섹터 28 점 median(A−B) **+7.9 cm**(스캔 상관 회전 −9.9°·자이로 −10.2° 어느 쪽으로 돌려도 같음) → 비율 0.5 로 정체 아님. **실시간의 "관측 0.1 cm" 는 오프라인으로 재현되지 않음** — 실시간 노드의 스캔 버퍼 시각(수신 시각 기준)·처리 지연 차이로 추정, 미확정.
+- 함께 찾은 것: 실행 중 stuck_monitor **use_gyro = False**(기본값) — navigation.launch 가 shadow_mode 만 넘김. 09-29 §13.2 의 "자이로 우선" 수정은 오프라인 재생으로 검증했지만 **실주행에서는 꺼져 있었다**(09-08 에 200 Hz IMU 구독 CPU ~25 % 로 기본 off 로 둔 값). 이번 오판의 직접 원인인지는 위 재현 결과로는 아님.
+- 판정: F2-a 불합격(1/5, 오판 취소). 위치 추정·부하 관련 오류는 이번엔 없었음(긍정 신호).
