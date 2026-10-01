@@ -230,3 +230,17 @@
 ### §8.6 F2 순회(f2a3) prep — transform_timeout 0.5 적용
 - `outputs/j731c_f2a3_prep.txt`: **L-d 시작 0.64 cm**(4 s 부터 변화 0), EKF 30 Hz, Nav2 active, 배터리 12.18 V. 실행 중 노드: localization·0.3·0.15·지도 갱신 10.0·**transform_timeout 0.5** 확인.
 - 코스·판정 §8.1 그대로(5 목표, D→W3 케이블 가드 통제 없음, 사람 허용). 추가 판정: **transformPose 오류 0 회**(§8.5 조치 확인), 결손 > 0 비율 기록.
+
+### §8.7 f2a3 결과 — 목표 1 ABORTED(24.4 s, map (1.59, 0.29) 문 앞), 원인 = 시스템 전체 CPU 포화(위치 추정 설정과 무관한 수준)
+- Nav2 로그(`outputs/j741_f2a3_anal.txt`): transformPose 오류 1 회(13:41:36) → follow_path 중단 → BT 가 compute_path_to_pose·clear_costmap·backup·wait 서버의 **응답 대기 시간 초과**(13:41:44~45) → Goal failed. 서버들이 응답 못 할 만큼 시스템이 밀림.
+- bag: odom→base 31 s 에 140 개(**4.5 Hz**, 정상 30), map→odom 6 Hz, 수신이 스탬프보다 **4.4 s 늦음** → 녹화기조차 밀림. 결손 지표는 이번 bag 으로는 의미 없음.
+- CPU(tegrastats·top, `jobs/job741`): 
+| 회차 | 코어 평균 / 최대 | top us / sy | ekf_node | 위치 추정 노드 | 결과 |
+|---|---|---|---|---|---|
+| f2a1 | 72 / 89 % | 49 / 19 % | 11 % | 62 % | 중단(지연) |
+| f2a2 | **60** / 82 % | 42 / **16** % | **9.7 %** | 24 % | **도달** |
+| f2a3 | **88** / 96 % | 48 / **31** % | **33 %** | 39 % | 중단(포화) |
+  - f2a3 에서 TF 를 다루는 거의 모든 노드(ekf·planner·behavior·smoother·bt)가 함께 올라갔고 커널 시간(sy)이 2 배 → **DDS 전송량 증가** 모양. 09-30 §5 에서 Foxglove 클라이언트 연결 시 ekf 12 → 49 %·브리지 62 % 였던 것과 같은 모양 → **Foxglove 연결 여부를 사용자에게 확인**(추정, 미확정).
+- 함께 찾은 결함: **prep 이 nav_guard 를 정리하지 않음**(정리 목록 누락) → f2a3 때 nav_guard 2 개(55 분 전 것 남음). 부하 원인으로 보기엔 작음(각 4~6 %, 액션 상태만 구독) — 고아는 종료, `job240` 정리 목록에 nav_guard 추가.
+- polkitd(주행 중 평균 ~20 %, 최대 69 %)는 OLED 노드의 nmcli 탓이 아님(`outputs/j743_polkit.txt`: 정지 상태 0.1 %, nmcli 20 회 추가해도 0.1 %) — 주행 시작과 함께만 오르는 것으로 보여 러너 쪽(tegrastats·docker exec 등) 의심, 미확인. 백그라운드에 Xorg·gnome-shell·ollama serve 도 상주.
+- 판정: F2-a 불합격. 위치 추정 설정 확인(오류 0)은 이 회차로 판단 불가.
