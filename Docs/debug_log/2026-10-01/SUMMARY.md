@@ -263,3 +263,7 @@
 - 재현 시도(`jobs/job748_sector.py`, `outputs/j748_sector.txt`): bag 스캔으로 stuck_monitor 와 같은 계산(앞·뒤 ±20° 섹터, 3 m 안) → 앞 섹터 28 점 median(A−B) **+7.9 cm**(스캔 상관 회전 −9.9°·자이로 −10.2° 어느 쪽으로 돌려도 같음) → 비율 0.5 로 정체 아님. **실시간의 "관측 0.1 cm" 는 오프라인으로 재현되지 않음** — 실시간 노드의 스캔 버퍼 시각(수신 시각 기준)·처리 지연 차이로 추정, 미확정.
 - 함께 찾은 것: 실행 중 stuck_monitor **use_gyro = False**(기본값) — navigation.launch 가 shadow_mode 만 넘김. 09-29 §13.2 의 "자이로 우선" 수정은 오프라인 재생으로 검증했지만 **실주행에서는 꺼져 있었다**(09-08 에 200 Hz IMU 구독 CPU ~25 % 로 기본 off 로 둔 값). 이번 오판의 직접 원인인지는 위 재현 결과로는 아님.
 - 판정: F2-a 불합격(1/5, 오판 취소). 위치 추정·부하 관련 오류는 이번엔 없었음(긍정 신호).
+
+### §8.12 사용자 결정: F2 순회 동안 stuck_monitor 는 관찰만(shadow)
+- 안전은 nav_guard(목표별 시간 한도·45 s 무진행 정지)·펌웨어 스톨 보호·워치독·사용자 전원 스위치. 오판 수정(예: SLAM 이동량 교차 확인)은 순회 통과 뒤 오늘 bag 들 재생으로 검증해 넣는다.
+- prep `jobs/job750_f2_prep_shadow.sh`(STUCK_SHADOW=true → navigation.launch stuck_shadow:=true).
