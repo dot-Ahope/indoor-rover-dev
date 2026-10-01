@@ -7,7 +7,7 @@ set +u; MAP=${MAP:-office_v2}; M=${MAPPING:-0}; L=${LOC:-map}; D=/home/jetson/ma
 [ -e $D/$MAP.posegraph ] || { echo "지도 없음: $MAP"; exit 1; }
 case "$L" in
   map)     export LOCALIZER=slam; SA="map_file:=$D/$MAP" ;;
-  slamloc) export LOCALIZER=slam; SA="map_file:=$D/$MAP slam_mode:=localization" ;;
+  slamloc) export LOCALIZER=slam; SA="map_file:=$D/$MAP slam_mode:=localization"; export NAV_ARGS="nav_map:=$D/$MAP.yaml" ;;   # 10-01 §8.33 전역 정적 층 = 저장 지도
   amcl)    export LOCALIZER=amcl AMCL_MAP=$D/$MAP.yaml; SA="" ;;
   *) echo "LOC 는 map|slamloc|amcl"; exit 1 ;;
 esac

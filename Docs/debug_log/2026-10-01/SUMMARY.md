@@ -431,3 +431,7 @@
 - bag 의 /map 14 개 vs office_v2.pgm(`jobs/job779_mapdiff.py`, `outputs/j779_mapdiff.txt`): 처음부터 점유 추가 ≈ 2,900·삭제 ≈ 1,800 셀(원점 0.01 m 차로 정렬이 1 셀 어긋난 몫 포함 — 정확한 수는 과대일 수 있음). **31.7 s 에 /map 크기·원점이 바뀌며(332×228 → 330×223) 서쪽 통로 띠(x −1.8~−1.4, y −4.5~−3.0)에 점유 31 셀이 새로 생김**(저장본은 0) → 끝까지 20 셀 남음.
 - 해석: 위치 추정 모드도 들어오는 스캔을 그래프에 (임시로) 넣고 /map 을 다시 그린다(지도 갱신 간격 10 s) → 그때 라이다가 본 것(병목의 18 cm 높이 물체·사람 다리 등)이 **"정적 지도" 에 들어가** 전역 계획이 서쪽 통로를 막힌 길로 봄. f2a8 분석의 "처음부터 있던 ~450 칸"(§8.23)도 같은 원인일 가능성 큼.
 - 대책 후보: 전역 정적 층은 **저장 지도(office_v2.yaml)를 map_server 로 따로 띄워** 쓰고(static_layer map_topic 을 그쪽으로), slam_toolbox 의 /map 은 위치 추정 내부용으로만. 실시간 물체는 라이다 obstacle 층(지워짐)이 맡음.
+
+### §8.33 사용자 승인: 전역 정적 층 = 저장 지도(map_server → /map_nav) 적용 + prep (사용자가 로버를 출발 테이프로 옮김)
+- `navigation.launch.py` `nav_map:=<yaml>` 인자: 있으면 nav_map_server(+ lifecycle_manager_navmap) 를 띄워 /map_nav 로 내고 전역 static_layer.map_topic = /map_nav. slam_toolbox /map 은 위치 추정 내부용. `job240` 에 NAV_ARGS, `job726 LOC=slamloc` 이 nav_map 을 넘김. 러너 게이트 A 의 lifecycle_manager 수 검사는 `lifecycle_manager_navigation` 으로(지도 서버 관리자 추가로 2 개가 되므로).
+- prep(`jobs/job780_prep_navmap.sh`, `outputs/j780_prep_navmap.txt`): 시작 1.44 cm, 배터리 12.18 V, /map_nav 발행자 1, 전역 plugins static·obstacle·inflation, stuck shadow, nav_guard 1. `static_layer.map_topic` 조회는 빈 값(시간 초과로 추정) → 구독 확인(`job781_chk.sh`) 하려는 중 **Jetson 무응답**(192.168.0.101·172.30.1.8 ping 실패 — Wi-Fi 끊김 이력). 확인 미완.
