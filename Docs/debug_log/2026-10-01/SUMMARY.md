@@ -279,3 +279,6 @@
   - stuck_monitor(관찰) 2 회 "STUCK" 판정(비율 0.15·0.22) — 작동 모드였으면 또 취소. 오판 계속 → 수정 필요(§8.12 계획대로).
   - transformPose 오류·서버 시간 초과 없음.
 - 판정: F2-a 불합격(1/5, nav_guard 결함).
+
+### §8.14 f2a6 prep (사용자: nav_guard 켜 두고 진행)
+- `outputs/j750b_f2a6_prep.txt`: **시작 0.84 cm**, 배터리 12.11 V, stuck shadow True, **nav_guard d0_window 10.0**(수정 적용), nav_guard 1, slam localization.
