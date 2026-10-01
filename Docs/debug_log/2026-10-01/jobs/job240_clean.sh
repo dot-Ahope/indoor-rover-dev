@@ -126,7 +126,7 @@ if [ "${MAPPING:-0}" = "1" ]; then
   sleep 5
   echo "  stuck_monitor: $(pgrep -fc 'stuck_monitor.py') (shadow ${STUCK_SHADOW:-true}) | bag $MB: $(pgrep -fc 'ros2 bag record')"
 else
-setsid nohup ros2 launch rover_navigation navigation.launch.py stuck_shadow:=${STUCK_SHADOW:-false} > /tmp/nav2.log 2>&1 &
+setsid nohup ros2 launch rover_navigation navigation.launch.py stuck_shadow:=${STUCK_SHADOW:-false} ${NAV_ARGS:-} > /tmp/nav2.log 2>&1 &
 sleep 30
 for nd in /controller_server /planner_server /bt_navigator /behavior_server; do
   printf "  %-20s " "$nd"; timeout 6 ros2 lifecycle get "$nd" 2>/dev/null || echo "?"

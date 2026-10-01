@@ -55,6 +55,12 @@ def _make_active_params(context):
         params = yaml.safe_load(f)
     params['local_costmap']['local_costmap']['ros__parameters']['plugins'] = _LOCAL_PLUGINS[layer]
     params['global_costmap']['global_costmap']['ros__parameters']['plugins'] = _GLOBAL_PLUGINS[layer]
+    # 2026-10-01 §8.33: nav_map:=<저장 지도 yaml> 이면 전역 정적 층을 그 지도(map_server → /map_nav)로.
+    #   왜: slam_toolbox 위치 추정 모드가 주행 중 스캔을 넣어 /map 을 다시 그려(10 s 마다), 그때 본 사람·물체가 '정적 지도' 로 들어가
+    #   서쪽 통로를 막았다(f2a10, 10-01 §8.32: 31.7 s 에 통로 띠 점유 31 셀 생김). 실시간 물체는 라이다 obstacle 층(지워짐)이 맡는다.
+    nav_map = LaunchConfiguration('nav_map').perform(context).strip()
+    if nav_map:
+        params['global_costmap']['global_costmap']['ros__parameters']['static_layer']['map_topic'] = '/map_nav'
     with open(_ACTIVE_PARAMS, 'w', encoding='utf-8') as f:
         f.write('# 자동 생성(navigation.launch.py, camera_layer=%s) — 원본 %s\n' % (layer, src))
         yaml.safe_dump(params, f, allow_unicode=True, sort_keys=False)
@@ -71,6 +77,13 @@ def _make_active_params(context):
                 'autostart': LaunchConfiguration('autostart'),
             }.items()),
     ]
+    if nav_map:
+        actions += [
+            Node(package='nav2_map_server', executable='map_server', name='nav_map_server', output='screen',
+                 parameters=[{'yaml_filename': nav_map, 'use_sim_time': False}], remappings=[('map', '/map_nav')]),
+            Node(package='nav2_lifecycle_manager', executable='lifecycle_manager', name='lifecycle_manager_navmap', output='screen',
+                 parameters=[{'use_sim_time': False, 'autostart': True, 'node_names': ['nav_map_server']}]),
+        ]
     if layer == 'nvblox':
         actions.append(IncludeLaunchDescription(PythonLaunchDescriptionSource(os.path.join(
             get_package_share_directory('rover_navigation'), 'launch', 'nvblox.launch.py'))))
@@ -99,6 +112,8 @@ def generate_launch_description():
         DeclareLaunchArgument('camera_pointcloud', default_value='keep',
                               description="keep(기본: 점군 유지 — 게이트·러너가 씀) | off(모드 N 운용 전용, 계측 불가)"),
         DeclareLaunchArgument('use_sim_time', default_value='false'),
+        DeclareLaunchArgument('nav_map', default_value='',
+                              description='전역 정적 층에 쓸 저장 지도 yaml(비우면 slam_toolbox /map). 10-01 §8.33'),
         DeclareLaunchArgument('autostart', default_value='true',
                               description='lifecycle 노드 자동 활성화'),
         # rover-level 정체/접촉 감시 (2026-09-07). 펌웨어 스톨은 '휠 정지'만 잡으므로 트랙이 헛도는
