@@ -60,7 +60,12 @@ def _make_slam(context):
         msg = '[slam.launch] 새 지도'
     exe = 'async_slam_toolbox_node'
     if mode == 'localization':
-        params.append({'mode': 'localization'})
+        # 2026-10-01 §9: 위치 추정 모드 전용 부하 설정. 매핑용 노드 간격(0.05 m·0.03 rad)을 그대로 쓰면 주행 중 스캔 처리가 밀려
+        #   map→odom 이 최대 1 s 멈추고(0.2 s 넘게 늦은 시간 14.5 %, CPU 134 %) 컨트롤러가 로봇 자세를 map 으로 못 바꿔 목표 중단(f2a1).
+        #   09-30 bag 재생 A/B: 0.30 m·0.15 rad + 지도 다시 그리기 10 s → 0.19 %·최대 0.40 s·CPU 22 %(t3m).
+        #   지도 다시 그리기는 위치 추정 모드에서 지도가 사실상 안 바뀌므로 간격을 늘려도 잃는 것이 적다.
+        params.append({'mode': 'localization', 'minimum_travel_distance': 0.30,
+                       'minimum_travel_heading': 0.15, 'map_update_interval': 10.0})
         exe = 'localization_slam_toolbox_node'
     return [LogInfo(msg=msg), Node(
         package='slam_toolbox', executable=exe,
