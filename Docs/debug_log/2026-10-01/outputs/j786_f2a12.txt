@@ -1,0 +1,22 @@
+[stuck_monitor.py-1] [WARN] [1790841885.706511349] [stuck_monitor]: STUCK: 지령 1.8cm/12° 인데 관측 0.4cm/1.4° (비율 0.12) [shadow — 조치 없음]
+[stuck_monitor.py-1] [WARN] [1790841890.724028806] [stuck_monitor]: STUCK: 지령 1.7cm/12° 인데 관측 0.1cm/2.3° (비율 0.20) [shadow — 조치 없음]
+[nav_guard.py-2] [ERROR] [1790841891.992739030] [nav_guard]: nav_guard 개입 — 무진행: 45 s 동안 최대 0.19 m 이동 < 0.25 m → 모든 목표 취소·정지
+   8.2 s  [controller_server-3] [INFO]  [controller_server]: Received a goal, begin computing control effort.
+  60.7 s  [bt_navigator-7] [INFO]  [bt_navigator]: Goal succeeded
+  67.3 s  [controller_server-3] [INFO]  [controller_server]: Received a goal, begin computing control effort.
+ 119.8 s  [bt_navigator-7] [INFO]  [bt_navigator]: Goal succeeded
+ 127.4 s  [controller_server-3] [INFO]  [controller_server]: Received a goal, begin computing control effort.
+ 155.6 s  [bt_navigator-7] [INFO]  [bt_navigator]: Goal succeeded
+ 163.1 s  [controller_server-3] [INFO]  [controller_server]: Received a goal, begin computing control effort.
+ 198.2 s  [bt_navigator-7] [INFO]  [bt_navigator]: Goal succeeded
+ 208.7 s  [controller_server-3] [INFO]  [controller_server]: Received a goal, begin computing control effort.
+ 256.2 s  [bt_navigator-7] [INFO]  [bt_navigator]: Goal succeeded
+ 260.9 s  [controller_server-3] [INFO]  [controller_server]: Received a goal, begin computing control effort.
+ 293.4 s  [bt_navigator-7] [INFO]  [bt_navigator]: Goal succeeded
+ 298.9 s  [controller_server-3] [INFO]  [controller_server]: Received a goal, begin computing control effort.
+ 328.6 s  [controller_server-3] [ERROR]  [controller_server]: Failed to make progress
+ 328.6 s  [controller_server-3] [WARN]  [controller_server]: [follow_path] [ActionServer] Aborting handle.
+ 328.7 s  [controller_server-3] [INFO]  [local_costmap.local_costmap]: Received request to clear except a region the local_costmap
+ 328.7 s  [controller_server-3] [INFO]  [controller_server]: Received a goal, begin computing control effort.
+ 344.1 s  [controller_server-3] [INFO]  [controller_server]: Goal was canceled. Stopping the robot.
+ 344.1 s  [bt_navigator-7] [INFO]  [bt_navigator]: Goal canceled
