@@ -1,0 +1,9 @@
+  12.0 s  map (-0.0062, -0.0057, -0.09°)  원점 거리 0.84 cm
+  13.0 s  map (-0.0062, -0.0057, -0.11°)  원점 거리 0.84 cm
+  14.0 s  map (-0.0062, -0.0057, -0.10°)  원점 거리 0.84 cm
+  15.0 s  map (-0.0062, -0.0057, -0.09°)  원점 거리 0.84 cm
+  16.0 s  map (-0.0062, -0.0057, -0.11°)  원점 거리 0.84 cm
+마지막 5 표본 흔들림 0.00 cm, 원점 거리 0.84 cm
+  배터리: voltage: 12.1084623336792
+  stuck_monitor shadow_mode:  · nav_guard 1
+  stuck shadow: Boolean value is: True · nav_guard d0_window: Double value is: 10.0 · nav_guard 1 · slam mode String value is: localization
