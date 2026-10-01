@@ -71,3 +71,10 @@
 | 출발 방 폭 | 1.92~2.02 | 1.95 | 1.95 | **1.95** |
 | 손 편집 | — | 없음 | 있음(그래프와 불일치) | **없음** |
 - 판정: **모두 통과** — 지도 16.7 × 11.4 m, 빈 셀 36,161(v1 27,103 의 +33 %). 새로 붙은 곳은 주로 서쪽 띠(x −5~−3)와 남서쪽. +590 s 이후에만 본 영역(동쪽 끝 L 자 등)은 빠짐. 사용자 승인 시 `office_v2` 로 저장.
+
+## §5 office_v2 저장 (사용자 승인)
+- Jetson `~/maps/office/office_v2.{posegraph 94.5 MB, data 87.2 MB, pgm, yaml}` = `cand_0930_cut590_nolc` 복사(sha256 앞 16 자 일치: posegraph ad2a7edbe06a6ccb·data 9ff8aa0d6b2478c6·pgm bab32fa3e216a69b), 원점 (−5.29, −6.96), 333 × 227 셀. office_v1 그대로 보존(`jobs/job725_save_v2.sh`, `outputs/j725_save_v2.txt`).
+- 저장소: `Docs/04_navigation/maps/office_v2.{pgm,yaml}`(포즈 그래프는 크기로 git 제외), 그림 `Docs/04_navigation/figures/2026-10-01_office_v2.png`.
+- prep: `jobs/job726_prep_map.sh` — 기본 `MAP=office_v2`, `MAPPING=1` 이면 매핑 전용+조종.
+- 남은 것: **F1-2 복원 재확인(office_v2)** — 로버를 출발 테이프에 놓고 불러와 원점 ≤ 5 cm·5 s 안 안정. 이후 F1-4 위치 추정 모드 비교.
+- 이어 그리기 교훈(정리): ① 루프 클로저는 옛 지도를 다시 최적화해 검증된 부분을 옮길 수 있다(동쪽 방 10 cm) ② 끄면 옛 부분은 지키나 새 구간 오차가 남는다(남쪽 벽 0.17 m) ③ 새 구간이 휘면 그 시간 구간을 빼고 재생으로 다시 만들 수 있다(bag 필수). 다음 확장 매핑은 bag 을 남기고, 짧게 나눠 하고, 결과를 재생으로 검증한 뒤 저장.
