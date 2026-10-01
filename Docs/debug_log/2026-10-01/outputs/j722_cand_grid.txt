@@ -1,0 +1,30 @@
+  (job719 slam 로그) [WARN] [1790812951.039847540] [map_saver]: Free threshold unspecified. Setting it to default value: 0.250000
+  (job719 slam 로그) [WARN] [1790812951.039885814] [map_saver]: Occupied threshold unspecified. Setting it to default value: 0.650000
+  (job719 slam 로그) [ERROR] [1790812953.042483449] [map_saver]: Failed to spin map subscription
+  (job719 slam 로그) [INFO] [1790812953.044361782] [map_saver]: Destroying
+  (job719 slam 로그) Save To File
+  /map_metadata: width: 332 height: 227 
+[INFO] [1790813006.149620029] [map_io]: Map saved
+[INFO] [1790813006.149731010] [map_saver]: Map saved successfully
+-rw-rw-r-- 1 jetson jetson 100103787 Oct  1 09:02 /home/jetson/maps/office/cand_0930_cut699.data
+-rw-rw-r-- 1 jetson jetson     75379 Oct  1 09:03 /home/jetson/maps/office/cand_0930_cut699.pgm
+-rw-rw-r-- 1 jetson jetson 108249983 Oct  1 09:02 /home/jetson/maps/office/cand_0930_cut699.posegraph
+-rw-rw-r-- 1 jetson jetson       133 Oct  1 09:03 /home/jetson/maps/office/cand_0930_cut699.yaml
+image: cand_0930_cut699.pgm
+mode: trinary
+resolution: 0.05
+origin: [-5.3, -6.96, 0]
+negate: 0
+occupied_thresh: 0.65
+free_thresh: 0.25  /tmp/cand_0930_cut699.png
+  /tmp/office_v1.png
+total 203624
+drwxrwxrwx 1 user user      4096 Oct  1 09:03 .
+drwxrwxrwx 1 user user      4096 Oct  1 09:03 ..
+-rwxrwxrwx 1 user user 100103787 Oct  1 09:02 cand_0930_cut699.data
+-rwxrwxrwx 1 user user     75379 Oct  1 09:03 cand_0930_cut699.pgm
+-rwxrwxrwx 1 user user 108249983 Oct  1 09:03 cand_0930_cut699.posegraph
+-rwxrwxrwx 1 user user       133 Oct  1 09:03 cand_0930_cut699.yaml
+-rwxrwxrwx 1 user user     64128 Oct  1 09:03 office_v1.pgm
+-rwxrwxrwx 1 user user      4183 Oct  1 09:03 office_v1.png
+-rwxrwxrwx 1 user user       127 Oct  1 09:03 office_v1.yaml
