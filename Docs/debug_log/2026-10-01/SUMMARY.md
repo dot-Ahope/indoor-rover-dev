@@ -268,3 +268,14 @@
 - 안전은 nav_guard(목표별 시간 한도·45 s 무진행 정지)·펌웨어 스톨 보호·워치독·사용자 전원 스위치. 오판 수정(예: SLAM 이동량 교차 확인)은 순회 통과 뒤 오늘 bag 들 재생으로 검증해 넣는다.
 - prep `jobs/job750_f2_prep_shadow.sh`(STUCK_SHADOW=true → navigation.launch stuck_shadow:=true).
 - f2a5 prep(`outputs/j750_f2a5_prep.txt`): **시작 0.91 cm**, 배터리 12.12 V, **stuck_monitor shadow_mode True**, nav_guard 1.
+
+### §8.13 f2a5 결과 — B SUCCEEDED 53.9 s, C 로 가다 34.3 s 에 **nav_guard 결함으로 취소**(로버는 정상 주행 중)
+- 러너(`outputs/f0_f2a5_runner.log`): P 37 %, 14:18:08 출발, B 도달(0.148 m), C 출발 34.3 s 뒤 CANCELED — map (0.46, −2.00), C 까지 2.09 m 남음(3.87 m 중 1.8 m 진행).
+- 로그(`outputs/j751_cancel2.txt`): nav_guard "목표 ed99afdb: 남은 거리 **0.15 m** → 시간 한도 **34 s**" → 34 s 에 "시간 한도 초과 → 모든 목표 취소". f2a4 에서도 "0.14 m → 34 s" 로 같은 계산(그땐 stuck 오판이 먼저 취소).
+- 원인: nav_guard 는 **첫 피드백의 남은 거리**로 한도를 고정한다. 새 목표를 받은 직후 bt_navigator 피드백은 새 경로가 나오기 전이라 **직전 목표(B 도착 직전)의 남은 거리**를 낸다(추정 — 0.14~0.15 m 는 B 목표 허용 0.15 m 근처의 값). 09-29 G1 시험은 단일 목표라 드러나지 않았다.
+- 수정(`scripts/nav_guard.py`): d0 = 목표 시작 뒤 **10 s 안의 남은 거리 최대값**(새 경로로 더 큰 값이 오면 한도를 올림, 로그로 남김). 배포·빌드(`jobs/job752_deploy_guard.sh`), 다음 prep 부터.
+- 그 밖에 이번 회차에서 본 것:
+  - C 목표 시작 직후(14:19:14~16) MPPI "Optimizer fail", smoother "Smoothed path leads to a collision at (2.26, −1.51)"(= B 도착 자세), backup "Collision Ahead" — B 에서 로버 근처를 코스트맵이 막힌 것으로 봄(사람·물체 근접 추정). 이후 회복해 정상 주행.
+  - stuck_monitor(관찰) 2 회 "STUCK" 판정(비율 0.15·0.22) — 작동 모드였으면 또 취소. 오판 계속 → 수정 필요(§8.12 계획대로).
+  - transformPose 오류·서버 시간 초과 없음.
+- 판정: F2-a 불합격(1/5, nav_guard 결함).
