@@ -1,0 +1,21 @@
+map→odom 1195 (20.1 Hz), odom→base 1781, 길이 60 s
+map→odom 고유 스탬프 562 개, 간격 중앙 0.096 · 95% 0.114 · 최대 0.512 s
+map→odom 스탬프 − 수신 시각: 중앙 +0.128 · 최소 -0.346 · 최대 +0.193 s (양수 = 미래 날짜)
+구간 0~60 s: (EKF 스탬프 − map→odom 최신 스탬프) 중앙 -0.101 · 95% -0.009 · 최대 +0.368 s, >0 인 비율 4.8 %, >0.2 s 인 비율 0.96 %
+>0.2 s 구간: 30.4~30.4 s(최대 0.21), 33.5~33.6 s(최대 0.23), 37.1~37.2 s(최대 0.23), 41.6~41.7 s(최대 0.33), 45.7~45.9 s(최대 0.37), 56.5~56.6 s(최대 0.24)
+-- transformPose 오류 수(12:58:48~13:00:00): 3
+-- /tmp/nav2.log
+12:58:55 [controller_server-3] [INFO]  [controller_server]: Received a goal, begin computing control effort.
+12:58:55 [controller_server-3] [WARN]  [controller_server]: No goal checker was specified in parameter 'current_goal_checker'. Server will use only plugin loaded general_goal_checker . This warning will appear once.
+12:58:55 [nav_guard.py-2] [INFO]  [nav_guard]: 목표 b80217cb: 남은 거리 3.81 m → 시간 한도 139 s
+12:58:58 [controller_server-3] [WARN]  [controller_server]: Control loop missed its desired rate of 10.0000Hz
+12:59:13 [bt_navigator-7] [WARN]  [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+12:59:21 [controller_server-3] [ERROR]  [controller_server]: Exception in transformPose: Lookup would require extrapolation into the future.  Requested time 1790827161.263159 but the latest data is at time 1790827161.263117, when
+12:59:21 [controller_server-3] [ERROR]  [controller_server]: Unable to transform robot pose into global plan's frame
+12:59:21 [controller_server-3] [WARN]  [controller_server]: [follow_path] [ActionServer] Aborting handle.
+12:59:29 [controller_server-3] [ERROR]  [controller_server]: Exception in transformPose: Lookup would require extrapolation into the future.  Requested time 1790827169.296708 but the latest data is at time 1790827169.263051, when
+12:59:33 [controller_server-3] [ERROR]  [controller_server]: Exception in transformPose: Lookup would require extrapolation into the future.  Requested time 1790827173.528893 but the latest data is at time 1790827173.456487, when
+12:59:46 [controller_server-3] [INFO]  [controller_server]: Reached the goal!
+12:59:47 [bt_navigator-7] [INFO]  [bt_navigator]: Goal succeeded
+-- /tmp/slam.log
+-- 위치 추정 노드 CPU(top 표본 16): 평균 41 % 최대 165 %

@@ -64,8 +64,13 @@ def _make_slam(context):
         #   map→odom 이 최대 1 s 멈추고(0.2 s 넘게 늦은 시간 14.5 %, CPU 134 %) 컨트롤러가 로봇 자세를 map 으로 못 바꿔 목표 중단(f2a1).
         #   09-30 bag 재생 A/B: 0.30 m·0.15 rad + 지도 다시 그리기 10 s → 0.19 %·최대 0.40 s·CPU 22 %(t3m).
         #   지도 다시 그리기는 위치 추정 모드에서 지도가 사실상 안 바뀌므로 간격을 늘려도 잃는 것이 적다.
+        # 2026-10-01 §8.5: transform_timeout 0.2 → 0.5. slam_toolbox 는 map→odom 스탬프를 '마지막 스캔 시각 + transform_timeout' 으로
+        #   미래에 찍는다(slam_toolbox_common.cpp publishTransformLoop). 처리가 밀려 이 미래 여유가 다 소진되면(f2a2 실주행 최대 0.57 s 밀림)
+        #   컨트롤러가 로봇 자세를 map 으로 바꾸지 못해 follow_path 가 중단된다(f2a2 3 회, 밀림이 0.04 ms 만 넘어도 실패 — 대기 없이 즉시 실패).
+        #   0.5 s 면 관측 최대 밀림을 거의 덮는다. 대가: 0.5 s 안의 보정 변화가 늦게 반영될 수 있으나 map→odom 은 느리게 변하는 보정값이라 영향 작음(추정).
         params.append({'mode': 'localization', 'minimum_travel_distance': 0.30,
-                       'minimum_travel_heading': 0.15, 'map_update_interval': 10.0})
+                       'minimum_travel_heading': 0.15, 'map_update_interval': 10.0,
+                       'transform_timeout': 0.5})
         exe = 'localization_slam_toolbox_node'
     return [LogInfo(msg=msg), Node(
         package='slam_toolbox', executable=exe,
