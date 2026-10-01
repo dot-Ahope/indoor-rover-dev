@@ -435,3 +435,9 @@
 ### §8.33 사용자 승인: 전역 정적 층 = 저장 지도(map_server → /map_nav) 적용 + prep (사용자가 로버를 출발 테이프로 옮김)
 - `navigation.launch.py` `nav_map:=<yaml>` 인자: 있으면 nav_map_server(+ lifecycle_manager_navmap) 를 띄워 /map_nav 로 내고 전역 static_layer.map_topic = /map_nav. slam_toolbox /map 은 위치 추정 내부용. `job240` 에 NAV_ARGS, `job726 LOC=slamloc` 이 nav_map 을 넘김. 러너 게이트 A 의 lifecycle_manager 수 검사는 `lifecycle_manager_navigation` 으로(지도 서버 관리자 추가로 2 개가 되므로).
 - prep(`jobs/job780_prep_navmap.sh`, `outputs/j780_prep_navmap.txt`): 시작 1.44 cm, 배터리 12.18 V, /map_nav 발행자 1, 전역 plugins static·obstacle·inflation, stuck shadow, nav_guard 1. `static_layer.map_topic` 조회는 빈 값(시간 초과로 추정) → 구독 확인(`job781_chk.sh`) 하려는 중 **Jetson 무응답**(192.168.0.101·172.30.1.8 ping 실패 — Wi-Fi 끊김 이력). 확인 미완.
+- 재연결 뒤 확인(`outputs/j782_prep_navmap2.txt`): planner "Subscribing to the map topic (/map_nav)", static_layer.map_topic = /map_nav, /map_nav 구독 1. 규칙(Wi-Fi 재연결 뒤 스택 재기동)대로 prep 재실행: 시작 1.21 cm, 배터리 12.18 V, 같은 구성 확인.
+
+### §8.34 F2 순회 다시(f2a11) — 선언(주행 전)
+- 목표(GOAL_FRAME=map): B (2.25, −1.6) → C (−1.6, −2.0) → 서쪽 통로 (−1.65, −3.7) → 남쪽 통로 서쪽 (−1.6, −5.5) → D (1.6, −5.55) → (−1.6, −5.5) → (−1.65, −3.7) → 위 복도 (−1.6, −2.1) → W3 (5.5, −2.2) → 출발 (0, 0). 케이블 가드(가운데 틈 남쪽)를 지나지 않도록 C↔D·D↔W3 를 서쪽 통로로 고정(사용자 지시 §8.27).
+- 구성: 위치 추정 모드(0.30·0.15·10 s·tt 0.5), 전역 = 저장 지도(/map_nav)+라이다, 로컬 = nvblox+라이다, 목표당 1 회 계획, MPPI 후진 허용, stuck 관찰, nav_guard.
+- 판정: 10 목표 SUCCEEDED·사람 도움 없음·접촉 0·복귀 줄자 vs 예측 ≤ 5 cm.
