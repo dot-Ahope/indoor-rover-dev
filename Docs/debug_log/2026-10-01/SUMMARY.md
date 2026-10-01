@@ -226,3 +226,7 @@
 - 원인 기전(소스 확인, 포크 `slam_toolbox_common.cpp` publishTransformLoop): map→odom 스탬프 = **마지막 스캔 시각 + transform_timeout(0.2 s)** — 미래 여유 0.2 s. 처리 밀림이 0.2 s 를 넘는 순간 결손 > 0.
 - 조치: 위치 추정 모드에서 **transform_timeout 0.2 → 0.5**(`slam.launch.py`). f2a2 관측 최대 밀림 0.57 s(=0.368+0.2) 대부분을 덮음. 다른 길 `restamp_tf`(현재 시각 + 여유로 찍기)도 있으나 스캔과 보정의 시각 대응이 흐려져 보류. 매핑 모드는 그대로.
 - 판정(§8.4 B 까지): 도달·정체 없음 통과, 접촉·튐은 bag 분석 미실시(다음 순회 때 함께).
+
+### §8.6 F2 순회(f2a3) prep — transform_timeout 0.5 적용
+- `outputs/j731c_f2a3_prep.txt`: **L-d 시작 0.64 cm**(4 s 부터 변화 0), EKF 30 Hz, Nav2 active, 배터리 12.18 V. 실행 중 노드: localization·0.3·0.15·지도 갱신 10.0·**transform_timeout 0.5** 확인.
+- 코스·판정 §8.1 그대로(5 목표, D→W3 케이블 가드 통제 없음, 사람 허용). 추가 판정: **transformPose 오류 0 회**(§8.5 조치 확인), 결손 > 0 비율 기록.
