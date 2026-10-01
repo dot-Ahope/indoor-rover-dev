@@ -206,3 +206,7 @@
 - 적용: `slam.launch.py` — `slam_mode:=localization` 일 때만 minimum_travel_distance 0.30·heading 0.15·map_update_interval 10.0(매핑 모드는 그대로 0.05·0.03·2.0 — 회전 밀림 대응 근거 유지).
 - 남은 위험: 최대 0.40 s 결손은 컨트롤러 대기 한도 0.2 s 를 넘는다(시간의 0.19 %) → F2 재주행에서 중단 여부로 확인, 나면 transform_tolerance 0.2 → 0.4 검토. 재생 시험은 라이브 Nav2·nvblox 없이 했으므로 실주행은 조금 나쁠 수 있음.
 - 노드 간격이 0.30 m 라 위치 갱신(스캔 정합 보정)은 0.3 m 또는 8.6° 마다 — 그 사이는 EKF(휠+자이로)가 메움. 회전 밀림(180° 당 10~27 cm)은 21 번 보정 기회가 있어 따라잡을 것으로 추정, F2 복귀 오차로 확인.
+
+### §8.4 F2 재주행(f2a2) — 위치 추정 모드 부하 설정(§9.3) 적용, 나머지는 §8.1 과 같음
+- 사용자가 로버를 출발 테이프로 옮김. 판정·코스·기록 항목은 §8.1 그대로. 추가 기록: map→odom 실질 갱신(고유 스탬프)·결손 >0.2 s 비율(실주행, 라이브 Nav2·nvblox 포함), 컨트롤러 transformPose 오류 수.
+- prep(`outputs/j731b_f2a2_prep.txt`): **L-d 시작 1.33 cm**(2 s 부터 변화 0), 보드 25.0·EKF 30 Hz, Nav2 active, 배터리 12.27 V. 실행 중 노드 매개변수(`outputs/j739_slamparams.txt`): mode localization·거리 0.3·회전 0.15·지도 갱신 10.0 — 새 설정 적용 확인.

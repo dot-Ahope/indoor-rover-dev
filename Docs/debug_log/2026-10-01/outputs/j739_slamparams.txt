@@ -1,0 +1,7 @@
+  mode                       
+  minimum_travel_distance    
+  minimum_travel_heading     Double value is: 0.15
+  map_update_interval        Double value is: 10.0
+  do_loop_closing            Boolean value is: True
+  minimum_travel_distance    Double value is: 0.3
+  mode                       String value is: localization
