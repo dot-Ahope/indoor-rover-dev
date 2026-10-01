@@ -244,3 +244,11 @@
 - 함께 찾은 결함: **prep 이 nav_guard 를 정리하지 않음**(정리 목록 누락) → f2a3 때 nav_guard 2 개(55 분 전 것 남음). 부하 원인으로 보기엔 작음(각 4~6 %, 액션 상태만 구독) — 고아는 종료, `job240` 정리 목록에 nav_guard 추가.
 - polkitd(주행 중 평균 ~20 %, 최대 69 %)는 OLED 노드의 nmcli 탓이 아님(`outputs/j743_polkit.txt`: 정지 상태 0.1 %, nmcli 20 회 추가해도 0.1 %) — 주행 시작과 함께만 오르는 것으로 보여 러너 쪽(tegrastats·docker exec 등) 의심, 미확인. 백그라운드에 Xorg·gnome-shell·ollama serve 도 상주.
 - 판정: F2-a 불합격. 위치 추정 설정 확인(오류 0)은 이 회차로 판단 불가.
+
+### §8.8 Foxglove 가설 기각
+- 사용자: 해당 PC 에서 Foxglove 를 실행하지 않았고, 앱을 켜 보니 Jetson 에서 데이터가 오고 있었다. 
+- 브리지 로그(`jobs/job744_fgclients.sh`, `outputs/j744_fgclients.txt`): 이번 prep 이후 클라이언트 구독 기록은 **13:47:29 한 번뿐**(f2a3 주행 13:41:09~55 이후 = 사용자가 앱을 켠 시각). 브리지는 클라이언트가 구독할 때만 보낸다 → 앱을 켜면 바로 데이터가 보이는 것은 정상, 그 전부터 보내고 있었다는 근거는 없음. **§8.7 의 Foxglove 추정은 틀림.**
+
+### §8.9 정지 부하 기준선 + 러너에 부하 게이트·전체 프로세스 기록 추가
+- 정지 30 s(Foxglove 닫음, `outputs/j745_idleload.txt`): **코어 평균 36 %**(us 23·sy 9·irq 4), 8765 연결 0, ollama 모델 미적재. 상위: rplidar 19·nvblox 17·realsense 16·lifecycle_manager 13·ekf 13·controller 12·planner 11·bt 10 %. 이상 없음 → f2a3 의 88 % 는 주행 중에만 생긴 것, 원인 미확정.
+- 대책(다음 회차 근거 확보용): `job551` 에 **P 게이트**(출발 직전 정지 10 s 코어 평균 > 60 % 면 주행 안 함)와 **전체 프로세스 CPU 틱 기록**(2 s 마다 `/proc` 전부 → `proc_<NAME>.log`, 분석 `jobs/proc_anal.py`) 추가. top 상위 30 줄로는 작은 프로세스·커널 몫을 못 가름.
