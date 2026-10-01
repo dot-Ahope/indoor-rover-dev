@@ -1,0 +1,55 @@
+# AMCL + map_server — F1-4 위치 추정 후보 ③ (2026-10-01, Docs/debug_log/2026-10-01/SUMMARY.md §7)
+# 지도(pgm)를 고정하고 파티클 필터로 map→odom 을 낸다. slam_toolbox 를 띄우지 않을 때만 쓴다(둘 다 map→odom 을 내므로).
+# 값은 Nav2 Humble 기본(nav2_bringup/params/nav2_params.yaml)에서 출발하고, 바꾼 것만 이유를 단다.
+amcl:
+  ros__parameters:
+    use_sim_time: false
+    base_frame_id: base_link
+    odom_frame_id: odom
+    global_frame_id: map
+    scan_topic: /scan
+    robot_model_type: nav2_amcl::DifferentialMotionModel   # 스키드스티어를 차동구동으로 근사(Nav2 MPPI 와 같은 가정)
+    # 움직임 잡음(기본 0.2). 기본 그대로 — 기본값만으로도 180° 회전에 옆 방향 1σ ≈ sqrt(0.2)·π ≈ 1.4 m 를 허용해
+    #   실측 회전 밀림(180° 당 10~27 cm, 09-28)을 충분히 덮는다. 줄이는 튜닝은 F1-4 결과를 보고.
+    alpha1: 0.2
+    alpha2: 0.2
+    alpha3: 0.2
+    alpha4: 0.2
+    alpha5: 0.2
+    laser_model_type: likelihood_field
+    laser_max_range: 12.0            # slam.yaml max_laser_range 와 같게(S2L 16 m → 보수적 12 m)
+    laser_min_range: 0.2             # S2L 최소 감지 0.2 m
+    max_beams: 60
+    min_particles: 500
+    max_particles: 2000
+    # 갱신 문턱(기본 0.25 m·0.2 rad). 저속(≤ 0.085 m/s) 로버라 기본이면 3 s 넘게 갱신이 없다 →
+    #   slam.yaml 의 노드 간격(0.05 m·0.03 rad)과 맞춰 비교 조건을 같게 한다.
+    update_min_d: 0.05
+    update_min_a: 0.03
+    resample_interval: 1
+    transform_tolerance: 1.0
+    recovery_alpha_fast: 0.0
+    recovery_alpha_slow: 0.0
+    # 시작 자세 = 출발 테이프(지도 원점). slam_toolbox map_start_pose 와 같은 약속.
+    set_initial_pose: true
+    initial_pose: {x: 0.0, y: 0.0, z: 0.0, yaw: 0.0}
+    tf_broadcast: true
+    save_pose_rate: 0.5
+    sigma_hit: 0.2
+    z_hit: 0.5
+    z_rand: 0.5
+    z_max: 0.05
+    z_short: 0.05
+    lambda_short: 0.1
+    likelihood_max_dist: 2.0
+    pf_err: 0.05
+    pf_z: 0.99
+    beam_skip_distance: 0.5
+    beam_skip_error_threshold: 0.9
+    beam_skip_threshold: 0.3
+    do_beamskip: false
+
+map_server:
+  ros__parameters:
+    use_sim_time: false
+    yaml_filename: ""                # localization.launch.py 의 map 인자로 채움

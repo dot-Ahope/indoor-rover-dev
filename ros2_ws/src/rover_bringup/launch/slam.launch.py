@@ -38,18 +38,32 @@ def _select_build(context):
 #   map_start_pose(출발 테이프 자세, 기본 0,0,0)에서 매핑을 이어 간다. 비우면(기본) 지금처럼 새 지도.
 #   저장은 /slam_toolbox/serialize_map(포즈 그래프) + /slam_toolbox/save_map(격자 pgm/yaml) — jobs/job684_map_save.sh.
 #   근거·절차: Docs/debug_log/2026-09-30/SUMMARY.md §4
+# 2026-10-01 F1-4: slam_mode:=mapping(기본) | localization. localization 은 지도(포즈 그래프)를 고정하고 위치만 추정한다
+#   (localization_slam_toolbox_node, mode: localization — 실행 중 스캔은 짧은 버퍼로만 두고 저장 지도는 바꾸지 않음).
+#   운용(주행) 중 지도를 이어 그리다 루프 클로저 오정합으로 깨지는 문제(09-30 §13~16)를 피하려는 후보. AMCL 대안은
+#   rover_navigation/launch/localization.launch.py. 비교 근거: Docs/debug_log/2026-10-01/SUMMARY.md §7
 def _make_slam(context):
     config = os.path.join(get_package_share_directory('rover_bringup'), 'config', 'slam.yaml')
     params = [config]
+    mode = LaunchConfiguration('slam_mode').perform(context).strip()
+    if mode not in ('mapping', 'localization'):
+        raise RuntimeError('slam_mode 는 mapping|localization: %s' % mode)
     mf = LaunchConfiguration('map_file').perform(context).strip()
+    if mode == 'localization' and not mf:
+        raise RuntimeError('slam_mode:=localization 은 map_file 이 필요합니다')
     if mf:
         x, y, th = (float(v) for v in LaunchConfiguration('map_start_pose').perform(context).split(','))
         params.append({'map_file_name': mf, 'map_start_pose': [x, y, th], 'map_start_at_dock': False})
-        msg = '[slam.launch] 이어 그리기: %s 에서 시작 자세 (%.3f, %.3f, %.3f)' % (mf, x, y, th)
+        msg = '[slam.launch] %s: %s 에서 시작 자세 (%.3f, %.3f, %.3f)' % (
+            '위치 추정(지도 고정)' if mode == 'localization' else '이어 그리기', mf, x, y, th)
     else:
         msg = '[slam.launch] 새 지도'
+    exe = 'async_slam_toolbox_node'
+    if mode == 'localization':
+        params.append({'mode': 'localization'})
+        exe = 'localization_slam_toolbox_node'
     return [LogInfo(msg=msg), Node(
-        package='slam_toolbox', executable='async_slam_toolbox_node',
+        package='slam_toolbox', executable=exe,
         name='slam_toolbox', output='screen',
         parameters=params,
     )]
@@ -60,6 +74,7 @@ def generate_launch_description():
         DeclareLaunchArgument('slam_build', default_value='fork', description='slam_toolbox 빌드: fork | apt'),
         DeclareLaunchArgument('map_file', default_value='', description='이어 그릴 포즈 그래프 경로(확장자 없이). 비우면 새 지도'),
         DeclareLaunchArgument('map_start_pose', default_value='0.0,0.0,0.0', description='이어 그리기 시작 자세 x,y,yaw (map 기준, 출발 테이프)'),
+        DeclareLaunchArgument('slam_mode', default_value='mapping', description='mapping(기본) | localization(지도 고정, map_file 필요)'),
         SetEnvironmentVariable('FASTRTPS_DEFAULT_PROFILES_FILE', _FASTDDS_XML),
         OpaqueFunction(function=_select_build),
         OpaqueFunction(function=_make_slam),
