@@ -306,3 +306,9 @@
 - 기전(측정 + 추정): 세 통로가 모두 "꽤 비싼" 길이라 NavFn 이 고르는 기준이 길이 차와 작은 비용 차뿐 → 로버가 움직이거나 라이다·nvblox 가 의자 등을 새로 찍을 때마다 최저 비용 통로가 바뀐다(추정) → 1 Hz 재계획이 그대로 따라가 로버가 통로 입구 사이를 오감. **09-08 기록(아래 inflation 주석)과 같은 기전**: "비용 0 인 위치가 하나도 없음 → 좌/우 경로 비용이 비슷해 전역경로가 번갈아 뒤집힘(스래싱)". 0.70 은 09-16 넓은 상자 코스에서 경로를 매끄럽게 하려고 고른 값으로, 폭 0.55~0.8 m 책상 통로에는 맞지 않는다.
 - 서쪽을 처음에 안 고른 이유: C 에서 D 까지 서쪽 둘레 ≈ 7.5 m vs 가운데 6.0 m — 비용이 비슷하면 짧은 가운데를 고름.
 - 대책 후보(미적용): ① BT 재계획을 "경로가 막혔을 때만"(Nav2 표준 패턴: IsPathValid 조건 + 주기 완화)으로 바꿔 한 번 고른 통로를 유지 ② 전역 inflation 축소(예: 0.40 → 0.8 m 통로에 비용 0 길 생김), 대신 넓은 곳의 매끄러움(09-16 근거) 재확인 필요 ③ C 와 D 사이 서쪽 경유점(시험만 통과시키는 우회).
+
+### §8.17 대책 ① 적용(사용자 선택): BT 재계획을 "경로가 무효이거나 목표가 바뀌었을 때만"으로
+- `config/nav_to_pose_no_spin.xml`: RateController(1 Hz) 안의 PlanAndSmooth 를 `Fallback(ReactiveSequence(Inverter(GlobalUpdatedGoal), IsPathValid{path}), PlanAndSmooth)` 로 감쌈 — Nav2 Humble 표준 `navigate_w_replanning_only_if_path_becomes_invalid.xml` 구조(Jetson 에 파일·플러그인 `libnav2_is_path_valid_condition_bt_node`·`libnav2_globally_updated_goal_condition_bt_node` 존재 확인, `jobs/job758_btcheck.sh`). 나머지(스무딩·복구·클리어)는 그대로.
+- IsPathValid: 경로 위에 LETHAL/INSCRIBED 셀이 생기면 무효 → 그때만 재계획. 대가: 더 좋은 길이 새로 열려도 막히기 전까지는 안 바꿈.
+- 위험(확인 대상): 세션 첫 목표에서 {path} 가 비어 있을 때 IsPathValid 가 실패해야 계획이 시작된다(Humble 구현상 빈 경로 = 무효로 알고 있음, 미확인) → f2a7 목표 1 출발로 확인.
+- 배포·빌드(`jobs/job759_deploy_bt.sh`), 다음 prep 부터. 판정(추가): D 로 가는 동안 경로 분류 전환 0~1 회, 목표 3 도달.

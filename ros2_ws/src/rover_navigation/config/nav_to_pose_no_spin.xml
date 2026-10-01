@@ -68,6 +68,19 @@
                  Smac 은 시작 footprint 충돌로 재계획을 15회 거부해 ABORT. NavFn 은 시작 셀만 보므로 inflation 띠 안에서도 재계획된다. 곡률 완화는 MPPI 몫. -->
             <!-- 2026-09-16 A 계획: SmoothPath(simple_smoother) 연결. 정지 A/B(job340)에서 inflation 0.70 과 함께 0.1 m 창 최대 꺾임 78° → 16.6°.
                  실패(충돌 검사 등) 시 ForceSuccess 로 원 경로를 그대로 쓴다 — RecoveryNode 의 클리어를 유발하지 않기 위해. -->
+            <!-- ★ 2026-10-01 (10-01 SUMMARY §8.16~8.17): 1 Hz 무조건 재계획 → "경로가 무효이거나 목표가 바뀌었을 때만" 재계획
+                 (Nav2 표준 navigate_w_replanning_only_if_path_becomes_invalid.xml 의 Fallback 구조).
+                 왜: 책상 통로 세 곳(폭 0.55~0.8 m)이 전역 inflation 0.70 으로 모두 비용 0 길이 없어 비용이 비슷 → 매초 재계획이
+                 통로를 가운데→동→서→동으로 약 50 s 마다 바꿔 166 s 동안 D 에 못 감(f2a6). 한 번 고른 경로를 유지한다.
+                 IsPathValid = 경로 위에 LETHAL/INSCRIBED 셀이 생기면 무효 → 그때만 다시 계획. 새 목표는 GlobalUpdatedGoal 로 감지.
+                 대가: 더 나은 경로가 새로 열려도 바꾸지 않음(막히기 전까지). 장애물 회피는 MPPI(로컬)가 맡는다. -->
+            <Fallback name="KeepOrReplan">
+              <ReactiveSequence name="KeepValidPath">
+                <Inverter>
+                  <GlobalUpdatedGoal/>
+                </Inverter>
+                <IsPathValid path="{path}"/>
+              </ReactiveSequence>
             <Sequence name="PlanAndSmooth">
               <!-- mp4(09-16 §1.13): {path} 를 두 번(원경로→스무딩) 쓰면 FollowPath 가 1 s 마다 목표를 두 번 보내 대기 목표가
                    "Aborting handle" 로 매초 폐기됐다. 원경로는 {raw_path}, 컨트롤러는 스무딩 결과 {path} 만 본다.
@@ -81,6 +94,7 @@
                 <TruncatePath input_path="{raw_path}" output_path="{path}" distance="0.0"/>
               </Fallback>
             </Sequence>
+            </Fallback>
             <ClearCostmapExceptRegion name="ClearGlobalCostmap-Context" reset_distance="3.0" service_name="global_costmap/clear_except_global_costmap"/>
           </RecoveryNode>
         </RateController>
