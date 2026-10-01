@@ -1,0 +1,54 @@
+load 7.14 5.47 3.74
+    PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND
+ 404945 jetson    20   0  432840  23604  14224 S  18.8   0.3   1:03.12 rplidar+
+ 405752 jetson    20   0 9352472 404368  84252 S  16.8   5.2   1:00.56 nvblox_+
+ 404941 jetson    20   0 1813260 103216  51260 S  13.9   1.3   0:54.39 realsen+
+ 405252 jetson    20   0  506200  29872  18388 S  11.9   0.4   0:52.88 ekf_node
+ 405587 jetson    20   0  577396  28152  16252 S  11.9   0.4   0:37.76 lifecyc+
+ 405551 jetson    20   0  971324  46664  23824 S  10.9   0.6   0:45.43 control+
+ 405567 jetson    20   0  530972  45476  26676 S   9.9   0.6   0:39.48 bt_navi+
+ 404947 jetson    20   0  707960  59836  27364 R   9.4   0.8   0:35.72 python3
+ 405555 jetson    20   0 1071232  71356  24708 S   9.4   0.9   0:40.92 planner+
+ 405557 jetson    20   0  663892  34552  21568 S   7.9   0.4   0:29.98 behavio+
+ 405250 jetson    20   0  425096  24312  14508 S   6.9   0.3   0:27.64 sensor_+
+ 405553 jetson    20   0  664980  32048  19416 S   6.4   0.4   0:26.13 smoothe+
+ 404943 jetson    20   0  707240  58616  26980 S   5.4   0.8   0:20.72 python3
+ 405583 jetson    20   0  428556  26264  15960 S   5.4   0.3   0:18.88 velocit+
+ 405575 jetson    20   0  431308  29764  17020 S   5.0   0.4   0:18.86 waypoin+
+ 405547 jetson    20   0  709520  60544  27372 S   4.5   0.8   0:18.31 python3
+   2551 root      20   0 1308216  40072  11380 S   4.0   0.5  11:04.57 micro_r+
+ 405549 jetson    20   0  713532  65196  28396 S   4.0   0.8   0:18.69 python3
+ 235461 jetson    20   0  713536  65784  28400 S   3.5   0.8   2:15.19 python3
+ 405412 jetson    20   0 1685912 235528  27620 S   3.0   3.0   0:44.44 localiz+
+ 407305 root       0 -20       0      0      0 I   1.0   0.0   0:00.55 kworker+
+ 425573 jetson    20   0   14340   3392   2772 R   1.0   0.0   0:00.05 top
+     40 root      20   0       0      0      0 S   0.5   0.0   0:00.79 ksoftir+
+    315 root      20   0   23556   7036   4932 S   0.5   0.1   1:10.76 systemd+
+    822 avahi     20   0    8080   3108   2752 S   0.5   0.0   0:02.04 avahi-d+
+-- python3 프로세스(명령줄·CPU):
+ 404947     371  9.6 python3 /home/jetson/ros2_ws/install/rover_bringup/lib/rover_bringup/scan_deskew.py --ros-args -r __node:=scan_deskew --params-file /tmp/launch_param
+ 405549     312  5.9 python3 /home/jetson/ros2_ws/install/rover_bringup/lib/rover_bringup/nav_guard.py --ros-args -r __node:=nav_guard
+ 405547     312  5.8 python3 /home/jetson/ros2_ws/install/rover_bringup/lib/rover_bringup/stuck_monitor.py --ros-args -r __node:=stuck_monitor --params-file /tmp/launch_p
+ 404943     371  5.5 python3 /home/jetson/ros2_ws/install/rover_bringup/lib/rover_bringup/depth_relay.py --ros-args -r __node:=depth_relay --params-file /tmp/launch_param
+ 235461    3326  4.0 python3 /home/jetson/ros2_ws/install/rover_bringup/lib/rover_bringup/nav_guard.py --ros-args -r __node:=nav_guard
+ 405540     313  0.4 /usr/bin/python3 /opt/ros/humble/bin/ros2 launch rover_navigation navigation.launch.py stuck_shadow:=false
+   2182   17847  0.3 python3 /home/jetson/ros2_ws/install/rover_bringup/lib/rover_bringup/display_info_pub.py --ros-args -r __node:=display_info_pub
+  32721   11911  0.2 /usr/bin/python3 -c from ros2cli.daemon.daemonize import main; main() --name ros2-daemon --ros-domain-id 0 --rmw-implementation rmw_fastrtps_cpp
+ 404939     372  0.2 /usr/bin/python3 /opt/ros/humble/bin/ros2 launch rover_bringup sensors.launch.py viz:=map
+ 405410     336  0.1 /usr/bin/python3 /opt/ros/humble/bin/ros2 launch rover_bringup slam.launch.py map_file:=/home/jetson/maps/office/office_v2 slam_mode:=localization
+ 405724     310  0.1 /usr/bin/python3 /opt/ros/humble/bin/ros2 run nvblox_ros nvblox_node --ros-args --params-file /tmp/nvblox_active.yaml -r camera_0/depth/image:=/camer
+    834   17852  0.0 /usr/bin/python3 /usr/bin/networkd-dispatcher --run-startup-triggers
+   2098   17849  0.0 /usr/bin/python3 /opt/ros/humble/bin/ros2 launch rover_bringup base.launch.py
+   2285   17846  0.0 /usr/bin/python3 /opt/ros/humble/bin/ros2 run micro_ros_agent micro_ros_agent serial --dev /dev/rover -b 460800
+   5615   17533  0.0 /usr/bin/python3 -c from ros2cli.daemon.daemonize import main; main() --name ros2-daemon --ros-domain-id 42 --rmw-implementation rmw_fastrtps_cpp
+-- tail -F·timeout 남은 것: 0 · ros2 cli: 0
+-- polkitd 최근 로그:
+-- No entries --
+Jan  1 09:00:32 jetson-desktop dbus-daemon[851]: [system] Activating via systemd: service name='org.freedesktop.PolicyKit1' unit='polkit.service' requested by ':1.6' (uid=0 pid=911 comm="/usr/libexec/
+Jan  1 09:00:32 jetson-desktop polkitd[1029]: started daemon version 0.105 using authority implementation `local' version `0.105'
+Sep 29 10:48:44 jetson-desktop dbus-daemon[853]: [system] Activating via systemd: service name='org.freedesktop.PolicyKit1' unit='polkit.service' requested by ':1.8' (uid=0 pid=874 comm="/usr/libexec/
+Sep 29 10:48:44 jetson-desktop polkitd[988]: started daemon version 0.105 using authority implementation `local' version `0.105'
+Sep 29 17:52:00 jetson-desktop dbus-daemon[841]: [system] Activating via systemd: service name='org.freedesktop.PolicyKit1' unit='polkit.service' requested by ':1.8' (uid=0 pid=861 comm="/usr/libexec/
+Sep 29 17:52:00 jetson-desktop polkitd[978]: started daemon version 0.105 using authority implementation `local' version `0.105'
+Jan  1 09:00:33 jetson-desktop dbus-daemon[824]: [system] Activating via systemd: service name='org.freedesktop.PolicyKit1' unit='polkit.service' requested by ':1.4' (uid=0 pid=845 comm="/usr/libexec/
+Jan  1 09:00:33 jetson-desktop polkitd[919]: started daemon version 0.105 using authority implementation `local' version `0.105'

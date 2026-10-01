@@ -1,0 +1,27 @@
+map→odom 183 (6.0 Hz), odom→base 140, 길이 31 s
+map→odom 고유 스탬프 113 개, 간격 중앙 0.110 · 95% 0.838 · 최대 2.477 s
+map→odom 스탬프 − 수신 시각: 중앙 -4.428 · 최소 -4.753 · 최대 -3.095 s (양수 = 미래 날짜)
+구간 0~31 s: (EKF 스탬프 − map→odom 최신 스탬프) 중앙 +1.420 · 95% +2.354 · 최대 +2.961 s, >0 인 비율 100.0 %, >0.2 s 인 비율 100.00 %
+>0.2 s 구간: 3.4~3.4 s(최대 2.96), 4.0~4.3 s(최대 1.25), 5.1~5.1 s(최대 0.72), 5.9~6.0 s(최대 2.36), 7.8~7.8 s(최대 1.31), 9.3~9.3 s(최대 1.14), 9.9~9.9 s(최대 1.68), 10.5~11.0 s(최대 1.23), 12.0~12.9 s(최대 1.65), 13.6~13.6 s(최대 1.43), 14.2~14.2 s(최대 1.42), 15.1~15.1 s(최대 2.36), 15.6~15.7 s(최대 2.90), 16.2~16.2 s(최대 1.86), 17.1~17.9 s(최대 1.63), 18.8~19.0 s(최대 2.35), 19.9~19.9 s(최대 1.36), 21.4~21.4 s(최대 0.71), 22.9~22.9 s(최대 0.81), 23.6~24.0 s(최대 1.10)
+-- transformPose 오류 수(13:41:09~13:42:00): 1
+-- /tmp/nav2.log
+13:41:20 [bt_navigator-7] [WARN]  [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+13:41:21 [controller_server-3] [INFO]  [controller_server]: Received a goal, begin computing control effort.
+13:41:21 [controller_server-3] [WARN]  [controller_server]: No goal checker was specified in parameter 'current_goal_checker'. Server will use only plugin loaded general_goal_checker . This warning will appear once.
+13:41:21 [nav_guard.py-2] [INFO]  [nav_guard]: 목표 fd930e2e: 남은 거리 3.80 m → 시간 한도 139 s
+13:41:28 [controller_server-3] [WARN]  [controller_server]: Control loop missed its desired rate of 10.0000Hz
+13:41:36 [controller_server-3] [ERROR]  [controller_server]: Exception in transformPose: Lookup would require extrapolation into the future.  Requested time 1790829696.733662 but the latest data is at time 1790829696.724115, when
+13:41:36 [controller_server-3] [ERROR]  [controller_server]: Unable to transform robot pose into global plan's frame
+13:41:36 [controller_server-3] [WARN]  [controller_server]: [follow_path] [ActionServer] Aborting handle.
+13:41:44 [bt_navigator-7] [WARN]  [bt_navigator_navigate_to_pose_rclcpp_node]: Timed out while waiting for action server to acknowledge goal request for compute_path_to_pose
+13:41:44 [bt_navigator-7] [WARN]  [bt_navigator_navigate_to_pose_rclcpp_node]: Node timed out while executing service call to global_costmap/clear_except_global_costmap.
+13:41:45 [controller_server-3] [INFO]  [controller_server]: Goal was canceled. Stopping the robot.
+13:41:45 [controller_server-3] [INFO]  [controller_server]: [follow_path] [ActionServer] Client requested to cancel the goal. Cancelling.
+13:41:45 [bt_navigator-7] [WARN]  [bt_navigator_navigate_to_pose_rclcpp_node]: Node timed out while executing service call to local_costmap/clear_except_local_costmap.
+13:41:45 [bt_navigator-7] [WARN]  [bt_navigator_navigate_to_pose_rclcpp_node]: Timed out while waiting for action server to acknowledge goal request for backup
+13:41:45 [bt_navigator-7] [WARN]  [bt_navigator_navigate_to_pose_rclcpp_node]: Timed out while waiting for action server to acknowledge goal request for wait
+13:41:45 [bt_navigator-7] [WARN]  [bt_navigator]: [navigate_to_pose] [ActionServer] Aborting handle.
+13:41:45 [bt_navigator-7] [ERROR]  [bt_navigator]: Goal failed
+13:41:45 [nav_guard.py-2] [INFO]  [nav_guard]: 목표 fd930e2e: 남은 거리 2.17 m → 시간 한도 92 s
+-- /tmp/slam.log
+-- 위치 추정 노드 CPU(top 표본 17): 평균 37 % 최대 94 %
