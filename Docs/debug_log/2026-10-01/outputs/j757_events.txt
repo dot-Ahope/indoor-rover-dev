@@ -1,0 +1,324 @@
+   0.0 s  [smoother_server-4] [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+   0.0 s  [controller_server-3] [INFO]  [controller_server]: Received a goal, begin computing control effort.
+   1.1 s  [smoother_server-4] [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+   1.1 s  [controller_server-3] [INFO]  [controller_server]: Passing new path to controller.
+   2.1 s  [smoother_server-4] [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+   2.1 s  [controller_server-3] [INFO]  [controller_server]: Passing new path to controller.
+   3.2 s  [smoother_server-4] [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+   3.2 s  [controller_server-3] [INFO]  [controller_server]: Passing new path to controller.
+   4.2 s  [smoother_server-4] [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+   4.2 s  [controller_server-3] [INFO]  [controller_server]: Passing new path to controller.
+   5.2 s  [smoother_server-4] [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+   5.3 s  [controller_server-3] [INFO]  [controller_server]: Passing new path to controller.
+   6.3 s  [smoother_server-4] [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+   6.3 s  [controller_server-3] [INFO]  [controller_server]: Passing new path to controller.
+   7.4 s  [smoother_server-4] [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+   7.4 s  [controller_server-3] [INFO]  [controller_server]: Passing new path to controller.
+   8.4 s  [smoother_server-4] [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+   8.4 s  [controller_server-3] [INFO]  [controller_server]: Passing new path to controller.
+   9.4 s  [smoother_server-4] [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+   9.5 s  [controller_server-3] [INFO]  [controller_server]: Passing new path to controller.
+  10.5 s  [smoother_server-4] [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+  10.5 s  [controller_server-3] [INFO]  [controller_server]: Passing new path to controller.
+  11.5 s  [smoother_server-4] [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+  11.6 s  [controller_server-3] [INFO]  [controller_server]: Passing new path to controller.
+  12.6 s  [smoother_server-4] [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+  12.6 s  [controller_server-3] [INFO]  [controller_server]: Passing new path to controller.
+  13.6 s  [smoother_server-4] [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+  13.7 s  [controller_server-3] [INFO]  [controller_server]: Passing new path to controller.
+  14.7 s  [smoother_server-4] [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+  14.7 s  [controller_server-3] [INFO]  [controller_server]: Passing new path to controller.
+  15.8 s  [smoother_server-4] [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+  15.8 s  [controller_server-3] [INFO]  [controller_server]: Passing new path to controller.
+  16.8 s  [smoother_server-4] [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+  16.9 s  [controller_server-3] [INFO]  [controller_server]: Passing new path to controller.
+  17.9 s  [smoother_server-4] [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+  17.9 s  [controller_server-3] [INFO]  [controller_server]: Passing new path to controller.
+  18.9 s  [smoother_server-4] [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+  19.0 s  [controller_server-3] [INFO]  [controller_server]: Passing new path to controller.
+  20.0 s  [smoother_server-4] [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+  20.0 s  [controller_server-3] [INFO]  [controller_server]: Passing new path to controller.
+  21.0 s  [smoother_server-4] [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+  21.1 s  [controller_server-3] [INFO]  [controller_server]: Passing new path to controller.
+  22.1 s  [smoother_server-4] [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+  22.1 s  [controller_server-3] [INFO]  [controller_server]: Passing new path to controller.
+  23.2 s  [smoother_server-4] [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+  23.2 s  [controller_server-3] [INFO]  [controller_server]: Passing new path to controller.
+  24.2 s  [smoother_server-4] [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+  24.2 s  [controller_server-3] [INFO]  [controller_server]: Passing new path to controller.
+  25.0 s  [controller_server-3] [ERROR]  [controller_server]: Exception in transformPose: Lookup would require extrapolation into the future.  Requested time 1790832767.833171 but 
+  25.0 s  [controller_server-3] [WARN]  [controller_server]: [follow_path] [ActionServer] Aborting handle.
+  25.1 s  [controller_server-3] [INFO]  [local_costmap.local_costmap]: Received request to clear except a region the local_costmap
+  25.1 s  [controller_server-3] [INFO]  [controller_server]: Received a goal, begin computing control effort.
+  25.3 s  [smoother_server-4] [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+  25.4 s  [controller_server-3] [INFO]  [controller_server]: Passing new path to controller.
+  26.3 s  [smoother_server-4] [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+  26.4 s  [controller_server-3] [INFO]  [controller_server]: Passing new path to controller.
+  27.4 s  [smoother_server-4] [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+  27.5 s  [controller_server-3] [INFO]  [controller_server]: Passing new path to controller.
+  28.4 s  [smoother_server-4] [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+  28.5 s  [controller_server-3] [INFO]  [controller_server]: Passing new path to controller.
+  29.5 s  [smoother_server-4] [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+  29.6 s  [controller_server-3] [INFO]  [controller_server]: Passing new path to controller.
+  30.5 s  [smoother_server-4] [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+  30.6 s  [controller_server-3] [INFO]  [controller_server]: Passing new path to controller.
+  31.6 s  [smoother_server-4] [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+  31.7 s  [controller_server-3] [INFO]  [controller_server]: Passing new path to controller.
+  32.6 s  [smoother_server-4] [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+  32.7 s  [controller_server-3] [INFO]  [controller_server]: Passing new path to controller.
+  33.8 s  [controller_server-3] [INFO]  [controller_server]: Passing new path to controller.
+  34.8 s  [controller_server-3] [INFO]  [controller_server]: Passing new path to controller.
+  35.9 s  [controller_server-3] [INFO]  [controller_server]: Passing new path to controller.
+  36.9 s  [controller_server-3] [INFO]  [controller_server]: Passing new path to controller.
+  37.9 s  [smoother_server-4] [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+  38.0 s  [controller_server-3] [INFO]  [controller_server]: Passing new path to controller.
+  38.9 s  [smoother_server-4] [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+  39.0 s  [controller_server-3] [INFO]  [controller_server]: Passing new path to controller.
+  40.1 s  [controller_server-3] [INFO]  [controller_server]: Passing new path to controller.
+  41.1 s  [controller_server-3] [INFO]  [controller_server]: Passing new path to controller.
+  42.2 s  [controller_server-3] [INFO]  [controller_server]: Passing new path to controller.
+  43.3 s  [controller_server-3] [INFO]  [controller_server]: Passing new path to controller.
+  44.3 s  [controller_server-3] [INFO]  [controller_server]: Passing new path to controller.
+  45.3 s  [smoother_server-4] [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+  45.4 s  [controller_server-3] [INFO]  [controller_server]: Passing new path to controller.
+  46.3 s  [smoother_server-4] [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+  46.4 s  [controller_server-3] [INFO]  [controller_server]: Passing new path to controller.
+  47.4 s  [smoother_server-4] [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+  47.5 s  [controller_server-3] [INFO]  [controller_server]: Passing new path to controller.
+  48.4 s  [smoother_server-4] [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+  48.5 s  [controller_server-3] [INFO]  [controller_server]: Passing new path to controller.
+  49.5 s  [smoother_server-4] [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+  49.6 s  [controller_server-3] [INFO]  [controller_server]: Passing new path to controller.
+  50.5 s  [smoother_server-4] [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+  50.6 s  [controller_server-3] [INFO]  [controller_server]: Passing new path to controller.
+  51.6 s  [smoother_server-4] [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+  51.7 s  [controller_server-3] [INFO]  [controller_server]: Passing new path to controller.
+  52.6 s  [smoother_server-4] [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+  52.7 s  [controller_server-3] [INFO]  [controller_server]: Passing new path to controller.
+  53.7 s  [smoother_server-4] [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+  53.8 s  [controller_server-3] [INFO]  [controller_server]: Passing new path to controller.
+  54.8 s  [smoother_server-4] [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+  54.9 s  [controller_server-3] [INFO]  [controller_server]: Passing new path to controller.
+  55.8 s  [smoother_server-4] [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+  56.0 s  [controller_server-3] [INFO]  [controller_server]: Passing new path to controller.
+  56.9 s  [smoother_server-4] [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+  57.0 s  [controller_server-3] [INFO]  [controller_server]: Passing new path to controller.
+  58.0 s  [smoother_server-4] [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+  58.1 s  [controller_server-3] [INFO]  [controller_server]: Passing new path to controller.
+  59.0 s  [smoother_server-4] [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+  59.1 s  [controller_server-3] [INFO]  [controller_server]: Passing new path to controller.
+  60.1 s  [smoother_server-4] [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+  60.2 s  [controller_server-3] [INFO]  [controller_server]: Passing new path to controller.
+  61.1 s  [smoother_server-4] [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+  61.2 s  [controller_server-3] [INFO]  [controller_server]: Passing new path to controller.
+  62.2 s  [smoother_server-4] [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+  62.3 s  [controller_server-3] [INFO]  [controller_server]: Passing new path to controller.
+  63.3 s  [smoother_server-4] [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+  63.4 s  [controller_server-3] [INFO]  [controller_server]: Passing new path to controller.
+  64.3 s  [smoother_server-4] [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+  64.4 s  [controller_server-3] [INFO]  [controller_server]: Passing new path to controller.
+  65.4 s  [smoother_server-4] [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+  65.5 s  [controller_server-3] [INFO]  [controller_server]: Passing new path to controller.
+  66.4 s  [smoother_server-4] [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+  66.5 s  [controller_server-3] [INFO]  [controller_server]: Passing new path to controller.
+  67.5 s  [smoother_server-4] [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+  67.6 s  [controller_server-3] [INFO]  [controller_server]: Passing new path to controller.
+  68.5 s  [smoother_server-4] [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+  68.6 s  [controller_server-3] [INFO]  [controller_server]: Passing new path to controller.
+  69.6 s  [smoother_server-4] [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+  69.7 s  [controller_server-3] [INFO]  [controller_server]: Passing new path to controller.
+  70.6 s  [smoother_server-4] [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+  70.7 s  [controller_server-3] [INFO]  [controller_server]: Passing new path to controller.
+  71.7 s  [smoother_server-4] [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+  71.8 s  [controller_server-3] [INFO]  [controller_server]: Passing new path to controller.
+  72.8 s  [smoother_server-4] [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+  72.9 s  [controller_server-3] [INFO]  [controller_server]: Passing new path to controller.
+  73.8 s  [smoother_server-4] [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+  73.9 s  [controller_server-3] [INFO]  [controller_server]: Passing new path to controller.
+  74.9 s  [controller_server-3] [ERROR]  [controller_server]: Exception in transformPose: Lookup would require extrapolation into the future.  Requested time 1790832817.634184 but 
+  74.9 s  [controller_server-3] [WARN]  [controller_server]: [follow_path] [ActionServer] Aborting handle.
+  74.9 s  [smoother_server-4] [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+  74.9 s  [controller_server-3] [INFO]  [local_costmap.local_costmap]: Received request to clear except a region the local_costmap
+  74.9 s  [planner_server-5] [INFO]  [global_costmap.global_costmap]: Received request to clear except a region the global_costmap
+  75.2 s  [smoother_server-4] [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+  75.2 s  [controller_server-3] [INFO]  [controller_server]: Received a goal, begin computing control effort.
+  76.3 s  [smoother_server-4] [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+  76.3 s  [controller_server-3] [INFO]  [controller_server]: Passing new path to controller.
+  77.3 s  [smoother_server-4] [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+  77.4 s  [controller_server-3] [INFO]  [controller_server]: Passing new path to controller.
+  78.4 s  [smoother_server-4] [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+  78.4 s  [controller_server-3] [INFO]  [controller_server]: Passing new path to controller.
+  79.4 s  [smoother_server-4] [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+  79.5 s  [controller_server-3] [INFO]  [controller_server]: Passing new path to controller.
+  80.5 s  [smoother_server-4] [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+  80.5 s  [controller_server-3] [INFO]  [controller_server]: Passing new path to controller.
+  81.5 s  [smoother_server-4] [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+  81.6 s  [controller_server-3] [INFO]  [controller_server]: Passing new path to controller.
+  82.6 s  [smoother_server-4] [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+  82.6 s  [controller_server-3] [INFO]  [controller_server]: Passing new path to controller.
+  83.6 s  [smoother_server-4] [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+  83.7 s  [controller_server-3] [INFO]  [controller_server]: Passing new path to controller.
+  84.7 s  [smoother_server-4] [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+  84.7 s  [controller_server-3] [INFO]  [controller_server]: Passing new path to controller.
+  85.7 s  [smoother_server-4] [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+  85.8 s  [controller_server-3] [INFO]  [controller_server]: Passing new path to controller.
+  86.8 s  [smoother_server-4] [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+  86.9 s  [controller_server-3] [INFO]  [controller_server]: Passing new path to controller.
+  87.8 s  [smoother_server-4] [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+  87.9 s  [controller_server-3] [INFO]  [controller_server]: Passing new path to controller.
+  88.9 s  [smoother_server-4] [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+  89.0 s  [controller_server-3] [INFO]  [controller_server]: Passing new path to controller.
+  89.9 s  [smoother_server-4] [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+  90.0 s  [controller_server-3] [INFO]  [controller_server]: Passing new path to controller.
+  91.0 s  [smoother_server-4] [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+  91.1 s  [controller_server-3] [INFO]  [controller_server]: Passing new path to controller.
+  92.1 s  [smoother_server-4] [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+  92.1 s  [controller_server-3] [INFO]  [controller_server]: Passing new path to controller.
+  93.1 s  [smoother_server-4] [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+  93.2 s  [controller_server-3] [INFO]  [controller_server]: Passing new path to controller.
+  94.2 s  [smoother_server-4] [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+  94.2 s  [controller_server-3] [INFO]  [controller_server]: Passing new path to controller.
+  95.2 s  [smoother_server-4] [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+  95.3 s  [controller_server-3] [INFO]  [controller_server]: Passing new path to controller.
+  96.3 s  [smoother_server-4] [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+  96.3 s  [controller_server-3] [INFO]  [controller_server]: Passing new path to controller.
+  97.3 s  [smoother_server-4] [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+  97.4 s  [controller_server-3] [INFO]  [controller_server]: Passing new path to controller.
+  98.4 s  [smoother_server-4] [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+  98.4 s  [controller_server-3] [INFO]  [controller_server]: Passing new path to controller.
+  99.4 s  [smoother_server-4] [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+  99.5 s  [controller_server-3] [INFO]  [controller_server]: Passing new path to controller.
+ 100.5 s  [smoother_server-4] [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+ 100.5 s  [controller_server-3] [INFO]  [controller_server]: Passing new path to controller.
+ 101.5 s  [smoother_server-4] [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+ 101.6 s  [controller_server-3] [INFO]  [controller_server]: Passing new path to controller.
+ 102.6 s  [smoother_server-4] [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+ 102.7 s  [controller_server-3] [INFO]  [controller_server]: Passing new path to controller.
+ 103.7 s  [smoother_server-4] [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+ 103.7 s  [controller_server-3] [INFO]  [controller_server]: Passing new path to controller.
+ 104.7 s  [smoother_server-4] [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+ 104.8 s  [controller_server-3] [INFO]  [controller_server]: Passing new path to controller.
+ 105.8 s  [smoother_server-4] [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+ 105.8 s  [controller_server-3] [INFO]  [controller_server]: Passing new path to controller.
+ 106.8 s  [smoother_server-4] [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+ 106.9 s  [controller_server-3] [INFO]  [controller_server]: Passing new path to controller.
+ 107.9 s  [smoother_server-4] [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+ 108.0 s  [controller_server-3] [INFO]  [controller_server]: Passing new path to controller.
+ 108.9 s  [smoother_server-4] [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+ 109.0 s  [controller_server-3] [INFO]  [controller_server]: Passing new path to controller.
+ 110.0 s  [smoother_server-4] [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+ 110.1 s  [controller_server-3] [INFO]  [controller_server]: Passing new path to controller.
+ 111.1 s  [smoother_server-4] [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+ 111.2 s  [controller_server-3] [INFO]  [controller_server]: Passing new path to controller.
+ 112.2 s  [smoother_server-4] [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+ 112.2 s  [controller_server-3] [INFO]  [controller_server]: Passing new path to controller.
+ 113.2 s  [smoother_server-4] [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+ 113.3 s  [controller_server-3] [INFO]  [controller_server]: Passing new path to controller.
+ 114.3 s  [smoother_server-4] [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+ 114.3 s  [controller_server-3] [INFO]  [controller_server]: Passing new path to controller.
+ 115.1 s  [controller_server-3] [ERROR]  [controller_server]: Exception in transformPose: Lookup would require extrapolation into the future.  Requested time 1790832857.864841 but 
+ 115.1 s  [controller_server-3] [WARN]  [controller_server]: [follow_path] [ActionServer] Aborting handle.
+ 115.1 s  [controller_server-3] [INFO]  [local_costmap.local_costmap]: Received request to clear except a region the local_costmap
+ 115.1 s  [controller_server-3] [INFO]  [controller_server]: Received a goal, begin computing control effort.
+ 115.4 s  [smoother_server-4] [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+ 115.4 s  [controller_server-3] [INFO]  [controller_server]: Passing new path to controller.
+ 116.4 s  [smoother_server-4] [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+ 116.5 s  [controller_server-3] [INFO]  [controller_server]: Passing new path to controller.
+ 117.5 s  [smoother_server-4] [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+ 117.5 s  [controller_server-3] [INFO]  [controller_server]: Passing new path to controller.
+ 118.5 s  [smoother_server-4] [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+ 118.7 s  [controller_server-3] [ERROR]  [controller_server]: Exception in transformPose: Lookup would require extrapolation into the future.  Requested time 1790832861.490728 but 
+ 118.7 s  [controller_server-3] [WARN]  [controller_server]: [follow_path] [ActionServer] Aborting handle.
+ 118.7 s  [controller_server-3] [INFO]  [controller_server]: Received a goal, begin computing control effort.
+ 119.6 s  [smoother_server-4] [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+ 119.6 s  [controller_server-3] [INFO]  [controller_server]: Passing new path to controller.
+ 120.7 s  [smoother_server-4] [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+ 120.8 s  [controller_server-3] [INFO]  [controller_server]: Passing new path to controller.
+ 121.7 s  [smoother_server-4] [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+ 121.7 s  [controller_server-3] [INFO]  [controller_server]: Passing new path to controller.
+ 122.8 s  [smoother_server-4] [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+ 122.8 s  [controller_server-3] [INFO]  [controller_server]: Passing new path to controller.
+ 123.9 s  [smoother_server-4] [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+ 123.9 s  [controller_server-3] [INFO]  [controller_server]: Passing new path to controller.
+ 124.9 s  [smoother_server-4] [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+ 124.9 s  [controller_server-3] [INFO]  [controller_server]: Passing new path to controller.
+ 126.0 s  [smoother_server-4] [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+ 126.0 s  [controller_server-3] [INFO]  [controller_server]: Passing new path to controller.
+ 127.0 s  [smoother_server-4] [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+ 127.1 s  [controller_server-3] [INFO]  [controller_server]: Passing new path to controller.
+ 128.1 s  [smoother_server-4] [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+ 128.1 s  [controller_server-3] [INFO]  [controller_server]: Passing new path to controller.
+ 129.1 s  [smoother_server-4] [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+ 129.2 s  [controller_server-3] [INFO]  [controller_server]: Passing new path to controller.
+ 130.2 s  [smoother_server-4] [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+ 130.2 s  [controller_server-3] [INFO]  [controller_server]: Passing new path to controller.
+ 131.3 s  [smoother_server-4] [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+ 131.3 s  [controller_server-3] [INFO]  [controller_server]: Passing new path to controller.
+ 132.3 s  [smoother_server-4] [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+ 132.4 s  [controller_server-3] [INFO]  [controller_server]: Passing new path to controller.
+ 133.4 s  [smoother_server-4] [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+ 133.4 s  [controller_server-3] [INFO]  [controller_server]: Passing new path to controller.
+ 134.5 s  [smoother_server-4] [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+ 134.5 s  [controller_server-3] [INFO]  [controller_server]: Passing new path to controller.
+ 135.5 s  [smoother_server-4] [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+ 135.5 s  [controller_server-3] [INFO]  [controller_server]: Passing new path to controller.
+ 136.6 s  [smoother_server-4] [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+ 136.6 s  [controller_server-3] [INFO]  [controller_server]: Passing new path to controller.
+ 137.6 s  [smoother_server-4] [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+ 137.7 s  [controller_server-3] [INFO]  [controller_server]: Passing new path to controller.
+ 138.7 s  [smoother_server-4] [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+ 138.7 s  [controller_server-3] [INFO]  [controller_server]: Passing new path to controller.
+ 139.8 s  [smoother_server-4] [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+ 139.8 s  [controller_server-3] [INFO]  [controller_server]: Passing new path to controller.
+ 140.8 s  [smoother_server-4] [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+ 140.9 s  [controller_server-3] [INFO]  [controller_server]: Passing new path to controller.
+ 141.9 s  [smoother_server-4] [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+ 141.9 s  [controller_server-3] [INFO]  [controller_server]: Passing new path to controller.
+ 142.9 s  [smoother_server-4] [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+ 143.0 s  [controller_server-3] [INFO]  [controller_server]: Passing new path to controller.
+ 144.0 s  [smoother_server-4] [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+ 144.0 s  [controller_server-3] [INFO]  [controller_server]: Passing new path to controller.
+ 145.1 s  [smoother_server-4] [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+ 145.1 s  [controller_server-3] [INFO]  [controller_server]: Passing new path to controller.
+ 146.1 s  [smoother_server-4] [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+ 146.2 s  [controller_server-3] [INFO]  [controller_server]: Passing new path to controller.
+ 147.2 s  [smoother_server-4] [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+ 147.2 s  [controller_server-3] [INFO]  [controller_server]: Passing new path to controller.
+ 148.3 s  [smoother_server-4] [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+ 148.3 s  [controller_server-3] [INFO]  [controller_server]: Passing new path to controller.
+ 149.3 s  [smoother_server-4] [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+ 149.3 s  [controller_server-3] [INFO]  [controller_server]: Passing new path to controller.
+ 150.4 s  [smoother_server-4] [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+ 150.4 s  [controller_server-3] [INFO]  [controller_server]: Passing new path to controller.
+ 151.4 s  [smoother_server-4] [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+ 151.4 s  [controller_server-3] [INFO]  [controller_server]: Passing new path to controller.
+ 152.5 s  [smoother_server-4] [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+ 152.5 s  [controller_server-3] [INFO]  [controller_server]: Passing new path to controller.
+ 153.5 s  [smoother_server-4] [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+ 153.6 s  [controller_server-3] [INFO]  [controller_server]: Passing new path to controller.
+ 154.6 s  [smoother_server-4] [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+ 154.6 s  [controller_server-3] [INFO]  [controller_server]: Passing new path to controller.
+ 155.7 s  [smoother_server-4] [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+ 155.7 s  [controller_server-3] [INFO]  [controller_server]: Passing new path to controller.
+ 156.7 s  [smoother_server-4] [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+ 156.8 s  [controller_server-3] [INFO]  [controller_server]: Passing new path to controller.
+ 157.8 s  [smoother_server-4] [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+ 157.8 s  [controller_server-3] [INFO]  [controller_server]: Passing new path to controller.
+ 158.8 s  [smoother_server-4] [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+ 158.9 s  [controller_server-3] [INFO]  [controller_server]: Passing new path to controller.
+ 159.9 s  [smoother_server-4] [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+ 159.9 s  [controller_server-3] [INFO]  [controller_server]: Passing new path to controller.
+ 161.0 s  [smoother_server-4] [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+ 161.0 s  [controller_server-3] [INFO]  [controller_server]: Passing new path to controller.
+ 162.0 s  [smoother_server-4] [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+ 162.0 s  [controller_server-3] [INFO]  [controller_server]: Passing new path to controller.
+ 163.1 s  [smoother_server-4] [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+ 163.1 s  [controller_server-3] [INFO]  [controller_server]: Passing new path to controller.
+ 164.1 s  [smoother_server-4] [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+ 164.1 s  [controller_server-3] [INFO]  [controller_server]: Passing new path to controller.
+ 165.2 s  [smoother_server-4] [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+ 165.2 s  [controller_server-3] [INFO]  [controller_server]: Passing new path to controller.
+ 166.2 s  [smoother_server-4] [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+ 166.2 s  [controller_server-3] [INFO]  [controller_server]: Passing new path to controller.
+ 166.6 s  [controller_server-3] [INFO]  [controller_server]: Goal was canceled. Stopping the robot.
+ 166.6 s  [bt_navigator-7] [INFO]  [bt_navigator]: Goal canceled
