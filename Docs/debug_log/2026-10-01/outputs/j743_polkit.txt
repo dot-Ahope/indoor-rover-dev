@@ -1,0 +1,6 @@
+고아 nav_guard: 235461
+nav_guard 남은 수: 1
+polkitd 20 s(평소, OLED 노드 동작 중): 1틱 = 0.1 %
+polkitd 20 s(nmcli 추가 20 회): 2틱 = 0.1 %
+polkitd 20 s(ip route 20 회 — 비교): 1틱 = 0.1 %
+%Cpu 요약(2 s): %Cpu(s): 24.6 us,  8.6 sy,  0.0 ni, 62.7 id,  0.1 wa,  2.2 hi,  1.7 si,  0.0 st
