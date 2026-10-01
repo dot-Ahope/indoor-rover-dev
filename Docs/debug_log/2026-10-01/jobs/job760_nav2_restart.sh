@@ -10,7 +10,7 @@ for p in $P; do pkill -f "$p" 2>/dev/null; done
 docker exec isaac_ros_dev-aarch64-container bash -c "pkill -f nvblox_node" 2>/dev/null
 for i in $(seq 1 15); do n=0; for p in $P; do n=$((n+$(pgrep -fc "$p"))); done; [ $n = 0 ] && break; sleep 1; done
 echo "  정리 후 남은 Nav2 프로세스: $n | slam $(pgrep -fc localization_slam) · ekf $(pgrep -fc ekf_node)"
-setsid nohup ros2 launch rover_navigation navigation.launch.py stuck_shadow:=true > /tmp/nav2.log 2>&1 &
+setsid nohup ros2 launch rover_navigation navigation.launch.py stuck_shadow:=true nav_map:=/home/jetson/maps/office/office_v2.yaml > /tmp/nav2.log 2>&1 &
 sleep 35
 for nd in /controller_server /planner_server /bt_navigator /behavior_server; do printf "  %-20s " "$nd"; timeout 8 ros2 lifecycle get "$nd" 2>/dev/null || echo "?"; done
 echo "  BT IsPathValid: $(grep -c IsPathValid ~/ros2_ws/install/rover_navigation/share/rover_navigation/config/nav_to_pose_no_spin.xml) · stuck shadow: $(timeout 10 ros2 param get /stuck_monitor shadow_mode 2>&1 | tail -1) · nav_guard $(pgrep -fc nav_guard.py)"

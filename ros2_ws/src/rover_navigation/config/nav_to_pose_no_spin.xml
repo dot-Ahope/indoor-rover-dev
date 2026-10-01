@@ -94,7 +94,18 @@
                장애물 비용·경로 추종 비용으로 골라 비켜 지나간다. 되돌리려면 controller_id="FollowPath". -->
           <!-- 2026-09-16 mp3: MPPI(56 step) 도 같은 자리 정체 42 s + CPU 과부하(루프 미달 306 건) + 기억 소실 후 상자 접촉 → RPP 복귀 (09-16 §1.9) -->
           <!-- 2026-09-16 사용자 결정: Orin Nano 에서 MPPI 유지. CPU 는 10 Hz·model_dt 0.1·32 step 으로 맞춘다 (분석 문서 §4 B3). -->
-          <FollowPath path="{path}" controller_id="FollowPathMPPI"/>
+          <!-- ★ 2026-10-01 §8.39 (사용자 승인 (a)): 앞 경로가 막히면 주행을 끊어 재계획으로 넘긴다.
+               f2a12 목표 7: 의자가 통로를 0.39 m 로 좁혀 경로 위가 99~100 이 됐는데 재계획이 없어 MPPI 가 45 s 동안 제자리에서 떨었다(§8.37).
+               PathBlockedAhead = 로버 앞 0.30~1.5 m 경로 점 중 전역 비용 ≥ 99(내접)가 2 s 이어지면 SUCCESS → Inverter 로 FAILURE →
+               ReactiveSequence 가 FollowPath 를 멈춤(로버 정지) → 이 RecoveryNode 재시도도 곧바로 실패 → 파이프라인 실패 →
+               NavigateRecovery 복구(클리어 except region: 3 m 안의 의자는 지우지 않음) → 파이프라인 재시작 = RateController 첫 틱 = 재계획.
+               새 경로가 없으면 계획 실패로 깔끔히 ABORTED(떨지 않음). 재계획되면 경로가 바뀌어 타이머가 다시 시작된다. -->
+          <ReactiveSequence name="FollowUnlessBlocked">
+            <Inverter>
+              <PathBlockedAhead path="{path}" lookahead="1.5" skip_near="0.30" hold_time="2.0" min_cost="99"/>
+            </Inverter>
+            <FollowPath path="{path}" controller_id="FollowPathMPPI"/>
+          </ReactiveSequence>
           <ClearCostmapExceptRegion name="ClearLocalCostmap-Context" reset_distance="2.5" service_name="local_costmap/clear_except_local_costmap"/>
         </RecoveryNode>
       </PipelineSequence>
