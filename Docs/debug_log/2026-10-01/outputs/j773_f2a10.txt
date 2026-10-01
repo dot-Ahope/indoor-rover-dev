@@ -1,0 +1,19 @@
+   6.9 s  시작 (1.50, -5.46) → 끝 (-1.60, -5.50), 129 점, 길이 3.25 m, y 범위 -5.80~-5.46
+  75.1 s  시작 (-1.60, -5.61) → 끝 (-1.60, -3.70), 66 점, 길이 2.75 m, y 범위 -5.61~-3.70
+ 116.2 s  시작 (-0.95, -5.26) → 끝 (-1.60, -3.70), 507 점, 길이 13.02 m, y 범위 -5.53~-2.01
+   7.2 s  [controller_server-3] [INFO]  [controller_server]: Received a goal, begin computing control effort.
+  69.1 s  [bt_navigator-7] [INFO]  [bt_navigator]: Goal succeeded
+  74.2 s  [planner_server-5] [WARN]  [planner_server]: [compute_path_to_pose] [ActionServer] Aborting handle.
+  74.5 s  [planner_server-5] [WARN]  [planner_server]: [compute_path_to_pose] [ActionServer] Aborting handle.
+  74.5 s  [planner_server-5] [INFO]  [global_costmap.global_costmap]: Received request to clear except a region the global_costmap
+  75.1 s  [controller_server-3] [INFO]  [controller_server]: Received a goal, begin computing control effort.
+  90.6 s  [controller_server-3] [WARN]  [controller_server]: [follow_path] [ActionServer] Aborting handle.
+  90.6 s  [controller_server-3] [INFO]  [local_costmap.local_costmap]: Received request to clear except a region the local_costmap
+  90.6 s  [controller_server-3] [INFO]  [controller_server]: Received a goal, begin computing control effort.
+ 115.8 s  [controller_server-3] [ERROR]  [controller_server]: Failed to make progress
+ 115.8 s  [controller_server-3] [WARN]  [controller_server]: [follow_path] [ActionServer] Aborting handle.
+ 115.9 s  [controller_server-3] [INFO]  [local_costmap.local_costmap]: Received request to clear except a region the local_costmap
+ 115.9 s  [planner_server-5] [INFO]  [global_costmap.global_costmap]: Received request to clear except a region the global_costmap
+ 116.1 s  [controller_server-3] [INFO]  [controller_server]: Received a goal, begin computing control effort.
+ 134.0 s  [controller_server-3] [INFO]  [controller_server]: Goal was canceled. Stopping the robot.
+ 134.0 s  [bt_navigator-7] [INFO]  [bt_navigator]: Goal canceled
