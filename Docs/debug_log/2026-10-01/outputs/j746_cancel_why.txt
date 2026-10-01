@@ -1,0 +1,22 @@
+[INFO] [nav_guard.py-2]: process started with pid [467175]
+[stuck_monitor.py-1] [INFO] [1790830512.121378725] [stuck_monitor]: stuck_monitor 시작 (window 2.0s, ratio 0.25, ACTIVE(취소+정지))
+[nav_guard.py-2] [INFO] [1790830515.333960456] [nav_guard]: nav_guard 시작 (시간 = d0/0.07×2.0+30 s, 무진행 0.25 m/45 s)
+[nav_guard.py-2] [INFO] [1790830896.911491196] [nav_guard]: 목표 afb996e2: 남은 거리 3.98 m → 시간 한도 144 s
+[nav_guard.py-2] [INFO] [1790830959.781315580] [nav_guard]: 목표 4bf1ea7d: 남은 거리 0.14 m → 시간 한도 34 s
+[stuck_monitor.py-1] [WARN] [1790830972.666806708] [stuck_monitor]: STUCK: 지령 15.6cm/10° 인데 관측 0.1cm/8.9° (비율 0.01) → 목표 취소·정지
+[controller_server-3] [INFO] [1790830972.731768878] [controller_server]: Goal was canceled. Stopping the robot.
+[controller_server-3] [INFO] [1790830972.731888498] [controller_server]: [follow_path] [ActionServer] Client requested to cancel the goal. Cancelling.
+[bt_navigator-7] [INFO] [1790830972.733077501] [bt_navigator]: [navigate_to_pose] [ActionServer] Client requested to cancel the goal. Cancelling.
+[bt_navigator-7] [INFO] [1790830972.736923334] [bt_navigator]: Goal canceled
+-- /tmp/nav2.log
+14:02:32 [controller_server-3] [INFO]  [controller_server]: Reached the goal!
+14:02:32 [bt_navigator-7] [INFO]  [bt_navigator]: Goal succeeded
+14:02:39 [nav_guard.py-2] [INFO]  [nav_guard]: 목표 4bf1ea7d: 남은 거리 0.14 m → 시간 한도 34 s
+14:02:39 [controller_server-3] [INFO]  [controller_server]: Received a goal, begin computing control effort.
+14:02:42 [bt_navigator-7] [WARN]  [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+14:02:52 [stuck_monitor.py-1] [WARN]  [stuck_monitor]: STUCK: 지령 15.6cm/10° 인데 관측 0.1cm/8.9° (비율 0.01) → 목표 취소·정지
+14:02:52 [controller_server-3] [INFO]  [controller_server]: Goal was canceled. Stopping the robot.
+14:02:52 [controller_server-3] [INFO]  [controller_server]: [follow_path] [ActionServer] Client requested to cancel the goal. Cancelling.
+14:02:52 [bt_navigator-7] [INFO]  [bt_navigator]: [navigate_to_pose] [ActionServer] Client requested to cancel the goal. Cancelling.
+14:02:52 [bt_navigator-7] [INFO]  [bt_navigator]: Goal canceled
+-- /tmp/slam.log
