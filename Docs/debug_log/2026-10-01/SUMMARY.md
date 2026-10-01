@@ -282,3 +282,11 @@
 
 ### §8.14 f2a6 prep (사용자: nav_guard 켜 두고 진행)
 - `outputs/j750b_f2a6_prep.txt`: **시작 0.84 cm**, 배터리 12.11 V, stuck shadow True, **nav_guard d0_window 10.0**(수정 적용), nav_guard 1, slam localization.
+
+### §8.15 f2a6 결과 — B·C 도달(목표 2 개 처음 연속 성공), D 로 가다 **러너 시간 한도(167 s)로 취소** — 경로가 세 갈래 사이를 오감
+- 러너(`outputs/f0_f2a6_runner.log`): P 41 %, 14:30:18 출발, **B SUCCEEDED 51.7 s(0.147 m)·C SUCCEEDED 54.3 s(0.143 m)**, D CANCELED 166.6 s("★ 목표 3 한도 초과" — **러너** 한도 = 직선 4.78 m/0.07×2+30 = 167 s), 끝 map (0.84, −2.33).
+- nav_guard 수정 확인(`outputs/j754_d_why.txt`): C 목표 "0.14 m → 34 s" 직후 "4.00 m → 144 s", D 목표 "0.12 m → 6.01 m(경로) → **202 s**" — 직전 목표 값 덮어쓰기 정상 동작, 이번엔 nav_guard 개입 없음.
+- 궤적·경로(`jobs/job755_traj.py`, 그림 `Docs/04_navigation/figures/2026-10-01_f2a6_traj.png`): D 로 가는 동안 NavFn 경로가 **서쪽 둘레(x ≈ −1.9)·가운데 책상 틈(x ≈ 0.9)·동쪽 둘레(x ≈ 3.2)** 세 갈래를 번갈아 냄 → 로버가 가운데 틈 입구 (0.9, −2.75) 까지 갔다 돌아 동쪽 (3.1, −2.85) 쪽으로 갔다가 다시 서쪽으로 — 166 s 동안 10.6 m 를 다녔지만 책상 줄(y ≈ −3) 아래로는 못 내려감. 세 경로 길이가 비슷해 코스트맵에 의자·사람이 찍힐 때마다 최단이 바뀌는 모양(추정).
+- 같은 구간 경고: smoother "Smoothed path leads to a collision" **150 회**(매번 원경로로 대체 — BT 설정대로), transformPose 오류 5 회(follow_path 중단 후 BT 재시도로 회복), stuck(관찰) 6 회 판정 — 작동 모드였으면 취소.
+- 판정: F2-a 불합격(2/5). 진전: B·C 연속 도달, 위치 추정·부하·nav_guard 문제 없음.
+- 남은 문제: ① D 경로 선택이 흔들림(가운데 틈이 실제 통로인지 확인 필요) ② 러너 한도가 직선거리 기준이라 nav_guard(경로 기준)보다 먼저 끊음 ③ stuck_monitor 오판 ④ transformPose 오류가 0 이 아님(5 회).
