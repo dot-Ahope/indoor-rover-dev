@@ -1,0 +1,14 @@
+Finished <<< rover_navigation [28.8s]
+lrwxrwxrwx 1 jetson jetson 82 Oct  1 17:28 /home/jetson/ros2_ws/install/rover_navigation/lib/librover_path_blocked_ahead_bt_node.so -> /home/jetson/ros2_ws/build/rover_navigation/librover_path_blocked_ahead_bt_node.so
+2
+== 재시작 전 위치: - Translation: [-1.293, -5.500, 0.000]
+  정리 후 남은 Nav2 프로세스: 0 | slam 1 · ekf 1
+  /controller_server   active [3]
+  /planner_server      active [3]
+  /bt_navigator        active [3]
+  /behavior_server     active [3]
+  BT IsPathValid: 1 · stuck shadow: Boolean value is: True · nav_guard 1
+== 재시작 뒤 위치: - Translation: [-1.293, -5.500, 0.000] | load 7.46 4.70 4.32
+== bt_navigator 상태: active [3]
+== 플러그인 목록 수: 49
+/tmp/nav2.log

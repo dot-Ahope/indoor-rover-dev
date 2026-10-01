@@ -8,6 +8,13 @@
 
   <buildtool_depend>ament_cmake</buildtool_depend>
 
+  <!-- 2026-10-01 §8.39: BT 조건 노드 PathBlockedAhead 빌드 -->
+  <depend>rclcpp</depend>
+  <depend>behaviortree_cpp_v3</depend>
+  <depend>nav2_util</depend>
+  <depend>nav_msgs</depend>
+  <depend>geometry_msgs</depend>
+  <depend>tf2_ros</depend>
   <exec_depend>nav2_bringup</exec_depend>
   <exec_depend>nav2_controller</exec_depend>
   <exec_depend>nav2_planner</exec_depend>
