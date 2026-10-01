@@ -1,0 +1,23 @@
+8765 연결: 0
+ollama:  | 프로세스 1
+30 s 전체: us 23 % · sy 9 % · idle 64 % · irq+softirq 4 % (코어 평균 사용 36 %)
+-- 프로세스별(30 s 평균, 2 % 이상):
+  19.3 %  404945  /opt/ros/humble/lib/rplidar_ros/rplidar_node --ros-args -r __node:=rplidar_node --params-file /tmp/launch_para
+  17.3 %  405752  /opt/ros/humble/lib/nvblox_ros/nvblox_node --ros-args --params-file /tmp/nvblox_active.yaml -r camera_0/depth/
+  15.5 %  404941  /opt/ros/humble/lib/realsense2_camera/realsense2_camera_node --ros-args -r __node:=camera -r __ns:=/camera --p
+  12.6 %  405587  /opt/ros/humble/lib/nav2_lifecycle_manager/lifecycle_manager --ros-args --log-level info --ros-args -r __node:
+  12.6 %  405252  /opt/ros/humble/lib/robot_localization/ekf_node --ros-args -r __node:=ekf_filter_node --params-file /home/jets
+  11.8 %  405551  /opt/ros/humble/lib/nav2_controller/controller_server --ros-args --log-level info --ros-args --params-file /tm
+  10.6 %  405555  /opt/ros/humble/lib/nav2_planner/planner_server --ros-args --log-level info --ros-args -r __node:=planner_serv
+  10.2 %  405567  /opt/ros/humble/lib/nav2_bt_navigator/bt_navigator --ros-args --log-level info --ros-args -r __node:=bt_naviga
+   9.6 %  404947  python3 /home/jetson/ros2_ws/install/rover_bringup/lib/rover_bringup/scan_deskew.py --ros-args -r __node:=scan
+   9.1 %  405412  /home/jetson/slam_ws/install/slam_toolbox/lib/slam_toolbox/localization_slam_toolbox_node --ros-args -r __node
+   8.1 %  405557  /opt/ros/humble/lib/nav2_behaviors/behavior_server --ros-args --log-level info --ros-args -r __node:=behavior_
+   7.4 %  405250  /home/jetson/ros2_ws/install/rover_bringup/lib/rover_bringup/sensor_conditioner_node --ros-args -r __node:=sen
+   6.8 %  405553  /opt/ros/humble/lib/nav2_smoother/smoother_server --ros-args --log-level info --ros-args -r __node:=smoother_s
+   5.5 %  405583  /opt/ros/humble/lib/nav2_velocity_smoother/velocity_smoother --ros-args --log-level info --ros-args -r __node:
+   5.4 %  405575  /opt/ros/humble/lib/nav2_waypoint_follower/waypoint_follower --ros-args --log-level info --ros-args -r __node:
+   5.2 %  404943  python3 /home/jetson/ros2_ws/install/rover_bringup/lib/rover_bringup/depth_relay.py --ros-args -r __node:=dept
+   4.6 %  405547  python3 /home/jetson/ros2_ws/install/rover_bringup/lib/rover_bringup/stuck_monitor.py --ros-args -r __node:=st
+   3.8 %  2551    /uros_ws/install/micro_ros_agent/lib/micro_ros_agent/micro_ros_agent serial --dev /dev/rover -b 460800 
+   3.6 %  405549  python3 /home/jetson/ros2_ws/install/rover_bringup/lib/rover_bringup/nav_guard.py --ros-args -r __node:=nav_gu
