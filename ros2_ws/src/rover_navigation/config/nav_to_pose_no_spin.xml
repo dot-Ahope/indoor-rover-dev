@@ -59,7 +59,11 @@
   <BehaviorTree ID="MainTree">
     <RecoveryNode number_of_retries="6" name="NavigateRecovery">
       <PipelineSequence name="NavigateWithReplanning">
-        <RateController hz="1.0">
+        <!-- ★ 2026-10-01 §8.24 (사용자 승인 A): 재계획 = 목표가 바뀌었을 때·주행이 실패했을 때만. hz 1.0 → 0.01(100 s 에 한 번 = 사실상 목표당 1 회).
+             RateController 는 처음 틱에 바로 계획하고, 목표 변경(GoalUpdated)·주행 실패(FollowPath 실패 → NavigateRecovery 복구 → 이 파이프라인 재시작)
+             때 다시 처음 틱이 되어 곧바로 재계획한다. 진짜로 막히면 진행 검사기(0.25 m/25 s)가 FollowPath 를 실패시켜 재계획으로 이어진다.
+             §8.17 의 IsPathValid 방식은 폐기 — 병목 여유 7~12 cm 에서 센서 표시가 흔들릴 때마다 '무효'가 되어 200 s 에 170 회 재계획(f2a8, §8.21). -->
+        <RateController hz="0.01">
           <RecoveryNode number_of_retries="1" name="ComputePathToPose">
             <!-- 2026-09-14 (09-14 SUMMARY §2.22): GridBased(NavFn) → SmacHybrid. NavFn 8-연결 최단 경로가 상자 앞왼쪽 모서리를 대각선으로
                  잘라(상자 앞 0.3 m 에서 횡 +0.27, 패딩면이 가장자리와 겹침) 0.08 m/s 에서 정체. Smac Hybrid-A*(R 0.10, cost 1.2)는 정지 A/B 에서
@@ -68,19 +72,6 @@
                  Smac 은 시작 footprint 충돌로 재계획을 15회 거부해 ABORT. NavFn 은 시작 셀만 보므로 inflation 띠 안에서도 재계획된다. 곡률 완화는 MPPI 몫. -->
             <!-- 2026-09-16 A 계획: SmoothPath(simple_smoother) 연결. 정지 A/B(job340)에서 inflation 0.70 과 함께 0.1 m 창 최대 꺾임 78° → 16.6°.
                  실패(충돌 검사 등) 시 ForceSuccess 로 원 경로를 그대로 쓴다 — RecoveryNode 의 클리어를 유발하지 않기 위해. -->
-            <!-- ★ 2026-10-01 (10-01 SUMMARY §8.16~8.17): 1 Hz 무조건 재계획 → "경로가 무효이거나 목표가 바뀌었을 때만" 재계획
-                 (Nav2 표준 navigate_w_replanning_only_if_path_becomes_invalid.xml 의 Fallback 구조).
-                 왜: 책상 통로 세 곳(폭 0.55~0.8 m)이 전역 inflation 0.70 으로 모두 비용 0 길이 없어 비용이 비슷 → 매초 재계획이
-                 통로를 가운데→동→서→동으로 약 50 s 마다 바꿔 166 s 동안 D 에 못 감(f2a6). 한 번 고른 경로를 유지한다.
-                 IsPathValid = 경로 위에 LETHAL/INSCRIBED 셀이 생기면 무효 → 그때만 다시 계획. 새 목표는 GlobalUpdatedGoal 로 감지.
-                 대가: 더 나은 경로가 새로 열려도 바꾸지 않음(막히기 전까지). 장애물 회피는 MPPI(로컬)가 맡는다. -->
-            <Fallback name="KeepOrReplan">
-              <ReactiveSequence name="KeepValidPath">
-                <Inverter>
-                  <GlobalUpdatedGoal/>
-                </Inverter>
-                <IsPathValid path="{path}"/>
-              </ReactiveSequence>
             <Sequence name="PlanAndSmooth">
               <!-- mp4(09-16 §1.13): {path} 를 두 번(원경로→스무딩) 쓰면 FollowPath 가 1 s 마다 목표를 두 번 보내 대기 목표가
                    "Aborting handle" 로 매초 폐기됐다. 원경로는 {raw_path}, 컨트롤러는 스무딩 결과 {path} 만 본다.
@@ -94,7 +85,6 @@
                 <TruncatePath input_path="{raw_path}" output_path="{path}" distance="0.0"/>
               </Fallback>
             </Sequence>
-            </Fallback>
             <ClearCostmapExceptRegion name="ClearGlobalCostmap-Context" reset_distance="3.0" service_name="global_costmap/clear_except_global_costmap"/>
           </RecoveryNode>
         </RateController>
