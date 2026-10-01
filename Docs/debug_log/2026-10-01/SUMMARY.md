@@ -252,3 +252,6 @@
 ### §8.9 정지 부하 기준선 + 러너에 부하 게이트·전체 프로세스 기록 추가
 - 정지 30 s(Foxglove 닫음, `outputs/j745_idleload.txt`): **코어 평균 36 %**(us 23·sy 9·irq 4), 8765 연결 0, ollama 모델 미적재. 상위: rplidar 19·nvblox 17·realsense 16·lifecycle_manager 13·ekf 13·controller 12·planner 11·bt 10 %. 이상 없음 → f2a3 의 88 % 는 주행 중에만 생긴 것, 원인 미확정.
 - 대책(다음 회차 근거 확보용): `job551` 에 **P 게이트**(출발 직전 정지 10 s 코어 평균 > 60 % 면 주행 안 함)와 **전체 프로세스 CPU 틱 기록**(2 s 마다 `/proc` 전부 → `proc_<NAME>.log`, 분석 `jobs/proc_anal.py`) 추가. top 상위 30 줄로는 작은 프로세스·커널 몫을 못 가름.
+
+### §8.10 F2 순회 재시도(f2a4) prep
+- `outputs/j731d_f2a4_prep.txt`: **L-d 시작 0.86 cm**, 배터리 12.14 V, 위치 추정 localization·0.3·transform_timeout 0.5, **nav_guard 1·stuck_monitor 1**(정리 수정 확인), Nav2 active. load 7.4(기동 직후). 러너는 P 게이트(정지 10 s ≤ 60 %)·전체 프로세스 기록 포함. 코스·판정 §8.1·§8.6 그대로.
