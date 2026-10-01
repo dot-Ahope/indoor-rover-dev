@@ -1,0 +1,33 @@
+Summary: 1 package finished [0.86s]
+8
+== 지도 office_v2 | 위치 추정 slamloc | 매핑 전용 0 | SLAM 루프 창: loop_search_space_dimension: 3.0
+  /odometry/filtered average rate: 29.999
+  /controller_server   active [3]
+  /planner_server      active [3]
+  /behavior_server     active [3]
+  EKF 위반 16회 | slam 폐기 8회 | load 6.75 4.04 3.36
+== 위치 추정 로그: [INFO] [launch.user]: [slam.launch] 위치 추정(지도 고정): /home/jetson/maps/office/office_v2 에서 시작 자세 (0.000, 0.000, 0.000)
+  map_server           1
+  controller_server    1
+   1.0 s  map (+0.0144, -0.0015, -0.14°)  원점 거리 1.44 cm
+   2.0 s  map (+0.0144, -0.0015, -0.15°)  원점 거리 1.44 cm
+   3.0 s  map (+0.0144, -0.0015, -0.16°)  원점 거리 1.44 cm
+   4.0 s  map (+0.0144, -0.0015, -0.17°)  원점 거리 1.44 cm
+   5.0 s  map (+0.0144, -0.0015, -0.17°)  원점 거리 1.44 cm
+   6.0 s  map (+0.0144, -0.0015, -0.17°)  원점 거리 1.44 cm
+   7.0 s  map (+0.0144, -0.0015, -0.19°)  원점 거리 1.44 cm
+   8.0 s  map (+0.0144, -0.0015, -0.19°)  원점 거리 1.44 cm
+   9.0 s  map (+0.0144, -0.0015, -0.20°)  원점 거리 1.44 cm
+  10.0 s  map (+0.0144, -0.0015, -0.21°)  원점 거리 1.44 cm
+  11.0 s  map (+0.0144, -0.0015, -0.22°)  원점 거리 1.44 cm
+  12.0 s  map (+0.0144, -0.0015, -0.21°)  원점 거리 1.44 cm
+  13.0 s  map (+0.0144, -0.0015, -0.23°)  원점 거리 1.44 cm
+  14.0 s  map (+0.0144, -0.0015, -0.22°)  원점 거리 1.44 cm
+  15.0 s  map (+0.0144, -0.0015, -0.23°)  원점 거리 1.44 cm
+  16.0 s  map (+0.0144, -0.0015, -0.24°)  원점 거리 1.44 cm
+마지막 5 표본 흔들림 0.00 cm, 원점 거리 1.44 cm
+  배터리: voltage: 12.177000045776367
+  static map_topic: 
+  /map_nav: Publisher count: 1
+  전역 plugins: String values are: ['static_layer', 'obstacle_layer', 'inflation_layer'] · stuck shadow Boolean value is: True · nav_guard 1
+ssh: connect to host 192.168.0.101 port 22: No route to host
