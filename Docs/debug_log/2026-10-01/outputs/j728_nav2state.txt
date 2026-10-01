@@ -1,0 +1,9 @@
+  /controller_server   active [3]
+  /planner_server      active [3]
+  /bt_navigator        active [3]
+  /behavior_server     active [3]
+  /velocity_smoother   active [3]
+  /smoother_server     active [3]
+  lifecycle_manager 로그: [lifecycle_manager-10] [INFO] [1790817817.247366619] [lifecycle_manager_navigation]: [34m[1mStarting managed nodes bringup...[0m[0m
+[lifecycle_manager-10] [INFO] [1790817825.192368116] [lifecycle_manager_navigation]: [34m[1mManaged nodes are active[0m[0m
+  load 4.37 2.67 1.12 | EKF 위반 23 | slam 폐기 8
