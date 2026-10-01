@@ -312,3 +312,7 @@
 - IsPathValid: 경로 위에 LETHAL/INSCRIBED 셀이 생기면 무효 → 그때만 재계획. 대가: 더 좋은 길이 새로 열려도 막히기 전까지는 안 바꿈.
 - 위험(확인 대상): 세션 첫 목표에서 {path} 가 비어 있을 때 IsPathValid 가 실패해야 계획이 시작된다(Humble 구현상 빈 경로 = 무효로 알고 있음, 미확인) → f2a7 목표 1 출발로 확인.
 - 배포·빌드(`jobs/job759_deploy_bt.sh`), 다음 prep 부터. 판정(추가): D 로 가는 동안 경로 분류 전환 0~1 회, 목표 3 도달.
+
+### §8.18 사용자 제안: 현재 위치(f2a6 끝)에서 D → W3 → 출발 복귀 (f2a7)
+- 로버를 손으로 옮기지 않아 위치 추정이 유효 → prep 전체(위치 추정을 원점에서 재시작) 대신 **Nav2 만 재시작**해 새 BT 를 읽힘(`jobs/job760_nav2_restart.sh`, `outputs/j760_nav2_restart.txt`): 재시작 전후 map 위치 (0.854, −2.337) 동일, Nav2 4 노드 active, BT IsPathValid 적용, stuck shadow True, nav_guard 1.
+- 목표 `"1.6,-5.55,p;5.5,-2.2,p;0,0,p"`. 판정: D·W3·복귀 SUCCEEDED, D 로 가는 동안 통로 분류 전환 0~1 회, 복귀 줄자 vs 예측 ≤ 5 cm, 케이블 가드 통과 기록. F2 전체 판정은 출발 테이프부터의 전체 순회로 따로.
