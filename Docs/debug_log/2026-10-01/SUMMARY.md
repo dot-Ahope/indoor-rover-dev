@@ -267,3 +267,4 @@
 ### §8.12 사용자 결정: F2 순회 동안 stuck_monitor 는 관찰만(shadow)
 - 안전은 nav_guard(목표별 시간 한도·45 s 무진행 정지)·펌웨어 스톨 보호·워치독·사용자 전원 스위치. 오판 수정(예: SLAM 이동량 교차 확인)은 순회 통과 뒤 오늘 bag 들 재생으로 검증해 넣는다.
 - prep `jobs/job750_f2_prep_shadow.sh`(STUCK_SHADOW=true → navigation.launch stuck_shadow:=true).
+- f2a5 prep(`outputs/j750_f2a5_prep.txt`): **시작 0.91 cm**, 배터리 12.12 V, **stuck_monitor shadow_mode True**, nav_guard 1.
