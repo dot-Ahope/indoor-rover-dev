@@ -1,0 +1,3 @@
+   7.8 s  시작 (0.10, -2.21) → 끝 (1.60, -5.55), 170 점, 길이 4.27 m, y 범위 -5.55~-2.21
+   7.6 s  [controller_server-3] [INFO]  [controller_server]: Received a goal, begin computing control effort.
+  74.0 s  [bt_navigator-7] [INFO]  [bt_navigator]: Goal succeeded
