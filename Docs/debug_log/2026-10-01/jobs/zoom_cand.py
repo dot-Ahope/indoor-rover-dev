@@ -11,4 +11,4 @@ fig, axs = plt.subplots(1, 4, figsize=(24, 6.5), dpi=110)
 for a, (t, xa, xb, ya, yb) in zip(axs, Z):
     a.imshow(rgb, extent=[x0, x0 + W * r, y0, y0 + H * r], interpolation='nearest'); a.set_xlim(xa, xb); a.set_ylim(ya, yb); a.set_title(t)
     a.set_xticks(np.arange(np.ceil(xa), xb, 0.5)); a.set_yticks(np.arange(np.ceil(ya), yb, 0.5)); a.grid(alpha=.35); a.tick_params(labelsize=7)
-plt.suptitle('검정 = 둘 다 · 파랑 = office_v1 만 · 주황 = 후보만 (격자 0.5 m)'); plt.tight_layout(); plt.savefig('../cand_zoom.png')
+plt.suptitle('검정 = 둘 다 · 파랑 = office_v1 만 · 주황 = 후보만 (격자 0.5 m)'); plt.tight_layout(); plt.savefig('../' + CN + '_zoom.png')
