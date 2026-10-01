@@ -7,7 +7,7 @@
   → Jetson 에서 Nav2 와 독립으로 돌며, 한도를 넘으면 모든 목표를 취소하고 정지 지령을 낸다.
 
 판정 (NavigateToPose 피드백 기준, 목표마다)
-  - 시간 한도: 처음 받은 남은 거리 d0 로 한도 = d0 / v_nominal × time_factor + time_margin
+  - 시간 한도: 시작 뒤 d0_window(10 s) 안의 남은 거리 최대값 d0 로 한도 = d0 / v_nominal × time_factor + time_margin
     (PC 러너와 같은 식: 0.07 m/s, ×2, +30 s). `time_limit_override` > 0 이면 그 값(시험용).
   - 무진행 한도: 로버 위치(피드백 current_pose)가 no_progress_s 동안 no_progress_m 넘게 움직이지 않음.
     Nav2 진행 검사기(0.25 m / 25 s)보다 느슨하게(0.25 m / 45 s) 두어 Nav2 가 건강하면 Nav2 가 먼저 처리한다.
@@ -31,7 +31,8 @@ class NavGuard(Node):
     def __init__(self):
         super().__init__('nav_guard')
         for k, v in (('enable', True), ('v_nominal', 0.07), ('time_factor', 2.0), ('time_margin', 30.0),
-                     ('time_limit_override', 0.0), ('no_progress_s', 45.0), ('no_progress_m', 0.25), ('rate', 5.0)):
+                     ('time_limit_override', 0.0), ('no_progress_s', 45.0), ('no_progress_m', 0.25), ('rate', 5.0),
+                     ('d0_window', 10.0)):
             self.declare_parameter(k, v)
         self.goals = {}          # goal_id(bytes) → {'t0', 'd0', 'limit', 'hist': [(t, x, y)]}
         self.tripped = set()     # 개입한 목표 — 취소 뒤 늦게 온 피드백으로 다시 등록되지 않게(09-29 G1 에서 관찰)
@@ -55,10 +56,13 @@ class NavGuard(Node):
         g = self.goals.get(gid)
         if g is None:
             g = self.goals[gid] = {'t0': now, 'd0': None, 'limit': None, 'hist': []}
-        if g['d0'] is None and f.distance_remaining > 0.0:
+        # 2026-10-01 §8.13: d0 = 목표 시작 뒤 d0_window(10 s) 안에 본 남은 거리의 **최대값**.
+        #   첫 피드백 하나로 잡으면 새 경로가 오기 전 bt_navigator 가 직전 목표의 경로로 계산한 값(B 도착 직후 0.14~0.15 m)이
+        #   들어와, C(3.87 m) 목표 한도가 34 s 로 잡혀 정상 주행 중에 취소했다(f2a4·f2a5).
+        if f.distance_remaining > 0.0 and now - g['t0'] <= self.p('d0_window') and (g['d0'] is None or f.distance_remaining > g['d0'] + 0.05):
             g['d0'] = f.distance_remaining
             g['limit'] = g['d0'] / self.p('v_nominal') * self.p('time_factor') + self.p('time_margin')
-            self.get_logger().info('목표 %s: 남은 거리 %.2f m → 시간 한도 %.0f s' % (gid.hex()[:8], g['d0'], g['limit']))
+            self.get_logger().info('목표 %s: 남은 거리 %.2f m → 시간 한도 %.0f s (시작 뒤 %.1f s)' % (gid.hex()[:8], g['d0'], g['limit'], now - g['t0']))
         g['hist'].append((now, pos.x, pos.y))
         keep = now - self.p('no_progress_s') - 2.0
         g['hist'] = [h for h in g['hist'] if h[0] >= keep]
