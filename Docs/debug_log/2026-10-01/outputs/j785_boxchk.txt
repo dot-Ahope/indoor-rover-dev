@@ -1,0 +1,10 @@
+  14.0 s  map (+0.0070, -0.0063, -0.18°)  원점 거리 0.95 cm
+  15.0 s  map (+0.0070, -0.0063, -0.19°)  원점 거리 0.95 cm
+  16.0 s  map (+0.0070, -0.0063, -0.19°)  원점 거리 0.95 cm
+마지막 5 표본 흔들림 0.00 cm, 원점 거리 0.95 cm
+  배터리: voltage: 12.0464506149292
+  static map_topic: String value is: /map_nav
+  /map_nav: Publisher count: 1
+  전역 plugins: String values are: ['static_layer', 'obstacle_layer', 'inflation_layer'] · stuck shadow Boolean value is: True · nav_guard 1
+  /local_costmap/costmap 상자 자리(1.15~1.25, 0~−0.17) 비용: [99, 99, 99, 100, 100, 100, 100, 100, 100]
+  /global_costmap/costmap 상자 자리(1.15~1.25, 0~−0.17) 비용: [99, 100, 100, 99, 100, 100, 99, 100, 100]
