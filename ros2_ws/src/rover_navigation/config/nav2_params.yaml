@@ -597,7 +597,7 @@ global_costmap:
         plugin: "nav2_costmap_2d::ObstacleLayer"
         enabled: true
         combination_method: 1        # Maximum — 다른 레이어의 마킹을 덮어쓰지 않는다
-        observation_sources: scan
+        observation_sources: scan camera
         scan:
           topic: /scan
           data_type: "LaserScan"
@@ -610,6 +610,21 @@ global_costmap:
           obstacle_max_range: 8.0
           obstacle_min_range: 0.2
           inf_is_valid: false
+        # ★ 2026-10-01 §8.35 (사용자 승인): 전역에 카메라 점군을 라이다와 같은 방식(보이면 표시·다시 보아 비면 지움)으로.
+        #   왜: 전역에서 nvblox 를 뺀 뒤(§8.24) 전역은 11 cm 상자를 모르고 로컬(nvblox)만 알아, 경로는 상자를 관통하고 MPPI 는 지평 0.26 m 라
+        #   우회를 못 해 제자리에서 맴돌다 nav_guard 무진행 취소(f2a11). nvblox(기억 ≈ 81 s·유령)와 달리 ObstacleLayer 는 빔이 지나가면 지운다.
+        #   1.2 m 안만 표시(깊이 잡음은 거리 제곱으로 커짐), 높이 0.06~0.40 m(로컬 STVL 소스와 같은 값, 바닥 배제).
+        camera:
+          topic: /camera/depth/points_filtered   # depth_relay 출력(근거리 0.45 m·고립점 제거)
+          data_type: "PointCloud2"
+          min_obstacle_height: 0.06
+          max_obstacle_height: 0.40
+          marking: true
+          clearing: true
+          obstacle_max_range: 1.2
+          obstacle_min_range: 0.0
+          raytrace_max_range: 1.5
+          raytrace_min_range: 0.0
       inflation_layer:
         plugin: "nav2_costmap_2d::InflationLayer"
         # 0.25 (2026-09-03): footprint_padding 0.05 로 내접반경이 0.215 가 되어 0.20 은 Nav2 오류

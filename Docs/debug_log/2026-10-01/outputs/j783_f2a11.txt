@@ -1,0 +1,14 @@
+[stuck_monitor.py-1] [WARN] [1790840459.895786451] [stuck_monitor]: STUCK: 지령 0.8cm/15° 인데 관측 1.4cm/2.4° (비율 0.17) [shadow — 조치 없음]
+[stuck_monitor.py-1] [WARN] [1790840466.295539309] [stuck_monitor]: STUCK: 지령 1.0cm/12° 인데 관측 0.7cm/1.4° (비율 0.12) [shadow — 조치 없음]
+[stuck_monitor.py-1] [WARN] [1790840471.495100794] [stuck_monitor]: STUCK: 지령 0.7cm/18° 인데 관측 0.9cm/2.4° (비율 0.13) [shadow — 조치 없음]
+[stuck_monitor.py-1] [WARN] [1790840479.694524579] [stuck_monitor]: STUCK: 지령 0.7cm/14° 인데 관측 0.7cm/0.8° (비율 0.06) [shadow — 조치 없음]
+[stuck_monitor.py-1] [WARN] [1790840485.294349243] [stuck_monitor]: STUCK: 지령 0.8cm/15° 인데 관측 1.0cm/1.4° (비율 0.09) [shadow — 조치 없음]
+[nav_guard.py-2] [ERROR] [1790840492.674083058] [nav_guard]: nav_guard 개입 — 무진행: 45 s 동안 최대 0.25 m 이동 < 0.25 m → 모든 목표 취소·정지
+   7.2 s  시작 (0.01, -0.01) → 끝 (2.25, -1.60), 147 점, 길이 3.70 m, y 범위 -1.61~0.07
+   7.3 s  [controller_server-3] [INFO]  [controller_server]: Received a goal, begin computing control effort.
+  44.6 s  [controller_server-3] [ERROR]  [controller_server]: Failed to make progress
+  44.6 s  [controller_server-3] [WARN]  [controller_server]: [follow_path] [ActionServer] Aborting handle.
+  44.6 s  [controller_server-3] [INFO]  [local_costmap.local_costmap]: Received request to clear except a region the local_costmap
+  44.6 s  [controller_server-3] [INFO]  [controller_server]: Received a goal, begin computing control effort.
+  60.7 s  [controller_server-3] [INFO]  [controller_server]: Goal was canceled. Stopping the robot.
+  60.7 s  [bt_navigator-7] [INFO]  [bt_navigator]: Goal canceled
