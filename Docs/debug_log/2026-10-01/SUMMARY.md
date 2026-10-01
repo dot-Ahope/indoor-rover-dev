@@ -88,3 +88,18 @@
 - prep 의 controller_server "?" 는 조회 시간 초과였음 — 곧바로 확인하니 Nav2 6 노드 모두 active, "Managed nodes are active"(`outputs/j728_nav2state.txt`).
 - 참고: 전체 스택 기동 직후 EKF 주기 미달 23·SLAM 버림 8, load 7.4 → 4.4(기동 부하, 09-30 §11 과 같은 성질 — 주행 시험 때 다시 볼 것).
 - 다음: F1-4 위치 추정 모드 비교.
+
+## §7 F1-4 위치 추정 방식 비교 — 준비 (사용자 승인)
+- 배경: F2.5 의 장소 좌표가 세션마다 같은 자리를 가리키려면 운용 중 지도가 바뀌면 안 된다. 지금(①)은 slam_toolbox mapping 으로 불러와 주행 중에도 이어 그려 루프 클로저 오정합 위험(09-30). 사용자 질의 답(업계 흔한 구조: 운용 = 고정 지도 위치 추정, 지도 갱신 = bag 오프라인)도 ②·③ 쪽.
+- 후보: ① map(지금) ② **slamloc** = `slam.launch.py slam_mode:=localization`(localization_slam_toolbox_node, 포즈 그래프 고정) ③ **amcl** = `rover_navigation/launch/localization.launch.py`(map_server + AMCL, `config/amcl.yaml` — Nav2 기본값에서 갱신 문턱만 0.05 m·0.03 rad 로, 시작 자세 = 출발 테이프).
+- prep: `job240` 에 `LOCALIZER=slam|amcl`, 정리 목록에 amcl·map_server·localization.launch; `job726_prep_map.sh LOC=map|slamloc|amcl`.
+- **F1-4a(정지 기동, 선언)**: 각 후보가 기동해 map→odom 을 내고 시작 자세가 원점에서 ≤ 5 cm·5 s 안 안정(로버는 출발 테이프 그대로, 움직이지 않음).
+- F1-4b(주행 비교, 다음에 선언): 같은 코스 2 회씩.
+
+### §7.1 F1-4a 결과 — 두 후보 모두 기동·시작 자세 통과 (`jobs/job730_f14_deploy.sh`, `outputs/j730_f14a.txt`)
+| 후보 | 기동 | 시작 자세(원점 거리) | 안정 | 비고 |
+|---|---|---|---|---|
+| ② slamloc | localization_slam_toolbox_node 1, /map 333×227 | **1.55 cm** (+0.0007, −0.0154, +0.30°) | 3 s 부터 변화 0 | 스캔 정합으로 잡은 값 |
+| ③ amcl | map_server·amcl, "initialPoseReceived" | **0.00 cm** | 2 s 부터 | ⚠ AMCL 은 움직이기 전(갱신 문턱 0.05 m·0.03 rad)엔 입력한 시작 자세를 그대로 냄 → 정지 시험으로는 정합 품질을 못 봄. 주행에서 판정 |
+- Nav2 는 두 경우 모두 active. CPU(정지): amcl 8.8 %·map_server 6.8 %(map_server 는 기동 직후 값). slamloc CPU 는 ps 이름 잘림(15 자)으로 못 잼 → F1-4b 에서 pid 로.
+- AMCL 기동 직후 load 12.5(전체 스택 기동 부하), EKF 주기 미달 16~19 — 기동 순간 값, 주행 전 다시 확인.
