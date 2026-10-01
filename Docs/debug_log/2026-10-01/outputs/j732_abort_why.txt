@@ -1,0 +1,28 @@
+-- /tmp/nav2.log
+11:05:45 [bt_navigator-7] [WARN]  [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+11:05:45 [controller_server-3] [INFO]  [controller_server]: Received a goal, begin computing control effort.
+11:05:45 [controller_server-3] [WARN]  [controller_server]: No goal checker was specified in parameter 'current_goal_checker'. Server will use only plugin loaded general_goal_checker . This warning will appear once.
+11:05:45 [nav_guard.py-2] [INFO]  [nav_guard]: 목표 2352ae5b: 남은 거리 3.83 m → 시간 한도 139 s
+11:05:46 [controller_server-3] [WARN]  [controller_server]: Control loop missed its desired rate of 10.0000Hz
+11:05:47 [controller_server-3] [ERROR]  [controller_server]: Exception in transformPose: Lookup would require extrapolation into the future.  Requested time 1790820347.126776 but the latest data is at time 1790820347.125688, when
+11:05:47 [controller_server-3] [ERROR]  [controller_server]: Unable to transform robot pose into global plan's frame
+11:05:47 [controller_server-3] [WARN]  [controller_server]: [follow_path] [ActionServer] Aborting handle.
+11:05:47 [controller_server-3] [ERROR]  [controller_server]: Exception in transformPose: Lookup would require extrapolation into the future.  Requested time 1790820347.492302 but the latest data is at time 1790820347.428187, when
+11:05:49 [controller_server-3] [ERROR]  [controller_server]: Exception in transformPose: Lookup would require extrapolation into the future.  Requested time 1790820349.225794 but the latest data is at time 1790820349.219629, when
+11:05:51 [controller_server-3] [ERROR]  [controller_server]: Exception in transformPose: Lookup would require extrapolation into the future.  Requested time 1790820351.324018 but the latest data is at time 1790820351.315730, when
+11:05:51 [controller_server-3] [ERROR]  [controller_server]: Exception in transformPose: Lookup would require extrapolation into the future.  Requested time 1790820351.559329 but the latest data is at time 1790820351.315730, when
+11:05:52 [controller_server-3] [ERROR]  [controller_server]: Exception in transformPose: Lookup would require extrapolation into the future.  Requested time 1790820351.889770 but the latest data is at time 1790820351.715621, when
+11:05:57 [controller_server-3] [ERROR]  [controller_server]: Exception in transformPose: Lookup would require extrapolation into the future.  Requested time 1790820357.492615 but the latest data is at time 1790820357.411732, when
+11:05:57 [controller_server-3] [ERROR]  [controller_server]: Exception in transformPose: Lookup would require extrapolation into the future.  Requested time 1790820357.722961 but the latest data is at time 1790820357.411732, when
+11:05:58 [controller_server-3] [ERROR]  [controller_server]: Exception in transformPose: Lookup would require extrapolation into the future.  Requested time 1790820358.088526 but the latest data is at time 1790820357.812120, when
+11:06:04 [controller_server-3] [ERROR]  [controller_server]: Exception in transformPose: Lookup would require extrapolation into the future.  Requested time 1790820364.187225 but the latest data is at time 1790820364.100693, when
+11:06:04 [controller_server-3] [ERROR]  [controller_server]: Exception in transformPose: Lookup would require extrapolation into the future.  Requested time 1790820364.657957 but the latest data is at time 1790820364.611855, when
+11:06:05 [controller_server-3] [ERROR]  [controller_server]: Exception in transformPose: Lookup would require extrapolation into the future.  Requested time 1790820365.424672 but the latest data is at time 1790820365.411902, when
+11:06:05 [controller_server-3] [ERROR]  [controller_server]: Exception in transformPose: Lookup would require extrapolation into the future.  Requested time 1790820365.690167 but the latest data is at time 1790820365.411902, when
+11:06:11 [controller_server-3] [ERROR]  [controller_server]: Exception in transformPose: Lookup would require extrapolation into the future.  Requested time 1790820371.589747 but the latest data is at time 1790820371.509345, when
+11:06:12 [controller_server-3] [ERROR]  [controller_server]: Exception in transformPose: Lookup would require extrapolation into the future.  Requested time 1790820371.890212 but the latest data is at time 1790820371.509345, when
+11:06:19 [controller_server-3] [ERROR]  [controller_server]: Exception in transformPose: Lookup would require extrapolation into the future.  Requested time 1790820379.522167 but the latest data is at time 1790820379.492616, when
+11:06:21 [controller_server-3] [ERROR]  [controller_server]: Exception in transformPose: Lookup would require extrapolation into the future.  Requested time 1790820381.189681 but the latest data is at time 1790820381.189281, when
+11:06:21 [bt_navigator-7] [WARN]  [bt_navigator]: [navigate_to_pose] [ActionServer] Aborting handle.
+11:06:21 [bt_navigator-7] [ERROR]  [bt_navigator]: Goal failed
+-- /tmp/slam.log

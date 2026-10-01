@@ -141,3 +141,18 @@
 - ⚠ 이번 조건은 "사람 있음 허용·턱 미통제" 라 **F2 기준선(태그) 조건으로 쓸지는 결과 보고 결정**(로드맵 F2 는 "사람 없음" 가정, F3 가 사람 환경).
 
 - prep(`jobs/job731_f2_prep.sh`, `outputs/j731_f2_prep.txt`): 위치 추정 모드 기동, 보드 25.0 Hz·EKF 30 Hz, Nav2 active, **L-d 시작 0.74 cm 통과**(4 s 부터 변화 0), 배터리 12.22 V. 기동 순간 EKF 미달 16·load 9.5(기동 부하).
+
+### §8.2 f2a1 결과 — 목표 1 에서 ABORTED(36 s), 원인 = 위치 추정 노드의 map→odom 이 늦어 컨트롤러가 로봇 자세를 map 으로 못 바꿈
+- 러너(`outputs/f0_f2a1_runner.log`): 게이트 A·B·J·C·G2(0.271 m) 통과, 11:05:38 출발, 목표 1 (2.25, −1.6) **ABORTED 36.0 s**, 그때 map (0.55, 0.12, 20°) — 출발 방 안, 낮은 상자 앞. 나머지 목표 실행 안 됨.
+- Nav2 로그(`jobs/job732_abort_why.sh`, `outputs/j732_abort_why.txt`): 출발 2 s 뒤부터 controller_server "Exception in transformPose: Lookup would require **extrapolation into the future** … Unable to transform robot pose into global plan's frame" 반복 → follow_path 중단 반복 → 11:06:21 bt_navigator "Goal failed".
+- 측정:
+  - 정지 10 s(`jobs/job733_tfstamp.py`, `outputs/j733`): map→odom 18 Hz 발행, 고유 스탬프는 스캔마다(중앙 0.096 s, 최대 0.19 s), 스탬프가 수신보다 ≈ 0.11 s **미래**(slam `transform_timeout` 0.2 만큼 앞당겨 찍음 — 추정).
+  - 주행 45 s bag(`jobs/job734_tflag_bag.py`, `outputs/j734_tflag_f2a1.txt`): map→odom 고유 스탬프 간격 중앙 0.097·**95 % 0.305·최대 0.898 s**. EKF 최신 스탬프가 map→odom 최신 스탬프보다 **0.2 s(=transform_tolerance) 넘게 앞선 시간 11.4 %**, 최대 0.71 s — 10~45 s 사이 11 구간.
+  - CPU(top, 상위 30 줄만이라 과소): 위치 추정 노드 평균 62 %·**최대 177 %**, 주행 중 load 5~7. micro-ROS 에이전트 순간 100 %, polkitd 순간 72 %(평소와 다름 — 원인 미확인).
+- 해석: 위치 추정 모드는 주행 중 스캔 처리(저장 그래프와 정합)가 밀리면 map→odom 갱신이 0.3~0.9 s 멈춘다 → 컨트롤러가 0.2 s 기다려도 변환이 없어 실패. 정지 시험(F1-4a)에서는 스캔 처리가 가벼워 안 보였다. 09-29 F0-b(매핑 모드)와 같은 지표 비교는 Jetson 연결이 끊겨 보류.
+- **이후 Jetson 무응답**(192.168.0.101·172.30.1.8 모두 ping 실패, 11:1x) — 원인 미확인(Wi-Fi 끊김 이력 있음, 또는 전원).
+- 판정: F2-a 불합격(1/5). F1-4 ② 는 현 설정으로 주행 불가 → 대책 필요(아래 후보, 미적용):
+  1. 컨트롤러·코스트맵 `transform_tolerance` 0.2 → 0.5~1.0 s(지연을 견디게 — 원인 해결 아님, 위치가 늦게 반영됨)
+  2. 위치 추정 노드 부하 줄이기(스캔 처리 간격 `minimum_travel_distance/heading`, `throttle_scans`, 정합 범위) — 부하 원인 측정 먼저
+  3. ③ AMCL(정지 CPU 9 %) 로 전환 비교
+  4. 매핑 모드 + 루프 클로저 끔(오늘 §2 에서 옛 지도를 안 옮김)으로 운용 — F0-b 에서 주행 검증된 경로
