@@ -38,7 +38,9 @@ _LOCAL_PLUGINS = {
 # 2026-09-22 N6-1: 전역 코스트맵의 카메라 층도 같은 인자로 바꾼다(STVL·depth_relay 를 경로에서 빼 CPU 회수).
 _GLOBAL_PLUGINS = {
     'stvl': ['static_layer', 'stvl_layer', 'obstacle_layer', 'inflation_layer'],
-    'nvblox': ['static_layer', 'nvblox_layer', 'obstacle_layer', 'inflation_layer'],
+    # 2026-10-01 §8.24: 전역에서 nvblox 층 제거(로컬은 유지). 카메라 유령(아무것도 없는 통로 입구에 93 칸, 기억 ≈ 81 s)이
+    #   전역 계획을 막아 책상 통로 세 곳을 차례로 닫았다(f2a8, 10-01 §8.22~8.23). 낮은 물체는 로컬 nvblox 층 → MPPI 가 피한다.
+    'nvblox': ['static_layer', 'obstacle_layer', 'inflation_layer'],
 }
 _ACTIVE_PARAMS = '/tmp/nav2_params_active.yaml'
 
