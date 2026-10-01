@@ -5,6 +5,7 @@
 #   2) sensors.launch.py — lidar(/scan) + EKF(odom→base_link TF, /odometry/filtered)
 #   3) slam.launch.py    — slam_toolbox (map→odom TF + /map)
 #      → AMCL·map_server 는 slam_toolbox 가 대신하므로 여기서 띄우지 않는다.
+#      (2026-10-01 F1-4: AMCL 로 위치 추정할 때는 3) 대신 rover_navigation/localization.launch.py)
 #
 # 실행: ros2 launch rover_navigation navigation.launch.py [camera_layer:=nvblox|stvl] [stuck_shadow:=true]
 #
