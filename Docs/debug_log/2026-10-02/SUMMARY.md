@@ -73,3 +73,8 @@
   - F2-c PathBlockedAhead: BT 가 노드를 불러옴(목표 수락·"PathBlockedAhead" 등록 오류 없음). 작동했다면 막힘 표시 뒤 ≤ 3 s 재계획 로그·그 사이 떨림 없음·목표당 재계획 ≤ 5.
   - 기록: 스캔-지도 잔차 시계열(분석 기본 지표), 목표별 시간·여유.
 - 보조 스크립트 재전송(재부팅으로 /tmp 소실, `run_x810.sh` 상당): 23 개, prep 계열 office_v3 확인.
+
+### §6.1 prep 결과 — 통과 (`outputs/j811_prep.txt`·`j812_navchk.txt`)
+- 지도 office_v3, 위치 추정 모드, /map 333 × 242·원점 (−5.29, −6.96). 시작 map (−0.0048, −0.0113, +0.55°) → **원점에서 1.23 cm**, 2 s 부터 흔들림 0.00 cm. 배터리 12.27 V. EKF 30 Hz, 보드 25 Hz.
+- Nav2 6 노드 active(prep 의 controller "?" 는 조회 시간 초과 — 재확인 active). bt_navigator plugin_lib_names **49 개·rover_path_blocked_ahead 1**, nav2.log 적재 오류 없음. static map_topic /map_nav(발행자 1), 전역 plugins static·obstacle·inflation, stuck 관찰, nav_guard 1.
+- 기동 직후 load 14.1 → 러너 정지 부하 게이트(P)가 주행 전에 다시 본다.
