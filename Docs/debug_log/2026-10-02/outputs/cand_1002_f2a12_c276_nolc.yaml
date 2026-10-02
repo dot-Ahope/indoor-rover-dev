@@ -1,0 +1,7 @@
+image: cand_1002_f2a12_c276_nolc.pgm
+mode: trinary
+resolution: 0.05
+origin: [-5.29, -6.96, 0]
+negate: 0
+occupied_thresh: 0.65
+free_thresh: 0.25
