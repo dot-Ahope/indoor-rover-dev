@@ -1,0 +1,37 @@
+13:25:05 [INFO] [1790915105.560613342] [controller_server]: Reached the goal!
+13:25:05 [INFO] [1790915105.598547791] [bt_navigator]: Goal succeeded
+13:25:08 [nav_guard.py-2] [INFO] [1790915108.235979276] [nav_guard]: 목표 5f34e020: 남은 거리 0.14 m → 시간 한도 34 s (시작 뒤 0.0 s)
+13:25:08 [INFO] [1790915108.241277916] [smoother_server]: Received a path to smooth.
+13:25:08 [ERROR] [1790915108.244087770] [smoother_server]: Smoothed path leads to a collision at x: -1.525584, y: -5.555302, theta: -0.621631
+13:25:08 [WARN] [1790915108.244236127] [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+13:25:08 [INFO] [1790915108.268111931] [controller_server]: Received a goal, begin computing control effort.
+13:25:08 [INFO] [1790915108.272792695] [controller_server]: Optimizer reset
+13:25:08 [nav_guard.py-2] [INFO] [1790915108.281362100] [nav_guard]: 목표 5f34e020: 남은 거리 3.16 m → 시간 한도 120 s (시작 뒤 0.0 s)
+13:25:10 [stuck_monitor.py-1] [WARN] [1790915110.442539888] [stuck_monitor]: STUCK: 지령 11.4cm/10° 인데 관측 2.8cm/13.0° (비율 0.24) [shadow — 조치 없음]
+13:25:36 [INFO] [1790915136.761673719] [bt_navigator_navigate_to_pose_rclcpp_node]: PathBlockedAhead: 앞 경로 (-0.45, -5.76) 비용 99 — 2.0 s 지속되면 재계획
+13:25:40 [INFO] [1790915140.760473594] [bt_navigator_navigate_to_pose_rclcpp_node]: PathBlockedAhead: 앞 경로 (-0.60, -5.76) 비용 99 — 2.0 s 지속되면 재계획
+13:26:11 [INFO] [1790915171.878375720] [controller_server]: Optimizer reset
+13:26:11 [INFO] [1790915171.886537624] [controller_server]: Optimizer reset
+13:26:11 [ERROR] [1790915171.886725118] [controller_server]: Optimizer fail to compute path
+13:26:11 [WARN] [1790915171.886949381] [controller_server]: [follow_path] [ActionServer] Aborting handle.
+13:26:11 [INFO] [1790915171.901756755] [local_costmap.local_costmap]: Received request to clear except a region the local_costmap
+13:26:11 [INFO] [1790915171.903324775] [controller_server]: Received a goal, begin computing control effort.
+13:26:11 [INFO] [1790915171.918288250] [controller_server]: Optimizer reset
+13:26:11 [INFO] [1790915171.925851318] [controller_server]: Optimizer reset
+13:26:11 [ERROR] [1790915171.927460619] [controller_server]: Optimizer fail to compute path
+13:26:11 [WARN] [1790915171.927735860] [controller_server]: [follow_path] [ActionServer] Aborting handle.
+13:26:11 [INFO] [1790915171.941768264] [local_costmap.local_costmap]: Received request to clear except a region the local_costmap
+13:26:11 [INFO] [1790915171.942764713] [global_costmap.global_costmap]: Received request to clear except a region the global_costmap
+13:26:12 [INFO] [1790915172.771767885] [smoother_server]: Received a path to smooth.
+13:26:12 [ERROR] [1790915172.774235871] [smoother_server]: Smoothed path leads to a collision at x: -1.555134, y: -5.606119, theta: -1.254033
+13:26:12 [WARN] [1790915172.774357284] [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+13:26:12 [INFO] [1790915172.795412641] [controller_server]: Received a goal, begin computing control effort.
+13:26:37 [ERROR] [1790915197.797268690] [controller_server]: Failed to make progress
+13:26:37 [WARN] [1790915197.798182416] [controller_server]: [follow_path] [ActionServer] Aborting handle.
+13:26:37 [INFO] [1790915197.819906180] [local_costmap.local_costmap]: Received request to clear except a region the local_costmap
+13:26:37 [INFO] [1790915197.839682007] [controller_server]: Received a goal, begin computing control effort.
+13:26:45 [nav_guard.py-2] [ERROR] [1790915205.509069944] [nav_guard]: nav_guard 개입 — 무진행: 45 s 동안 최대 0.25 m 이동 < 0.25 m → 모든 목표 취소·정지
+13:26:45 [INFO] [1790915205.542735801] [controller_server]: Goal was canceled. Stopping the robot.
+13:26:45 [INFO] [1790915205.542867645] [controller_server]: [follow_path] [ActionServer] Client requested to cancel the goal. Cancelling.
+13:26:45 [INFO] [1790915205.543974210] [bt_navigator]: [navigate_to_pose] [ActionServer] Client requested to cancel the goal. Cancelling.
+13:26:45 [INFO] [1790915205.544393904] [bt_navigator]: Goal canceled
