@@ -1,6 +1,6 @@
 # 10-02 §11: 통제 회전 시험 번짐 — 차체 기준 좌표로 라이다(진실)·로컬 치명·nvblox 장애의 외곽 최근접 거리, 옛 칸 수
 import sys, numpy as np, math
-L = np.load(sys.argv[1], allow_pickle=True)['recs']
+L = np.load(sys.argv[1], allow_pickle=True)['recs']; CMF = sys.argv[2] if len(sys.argv) > 2 else 'odom'   # 로컬 코스트맵·nvblox 층 좌표(10-02 §12: map 가능)
 def gap(bx, by):
     dx = np.where(bx > 0, np.maximum(bx - 0.262, 0), np.maximum(-bx - 0.248, 0)); dy = np.maximum(np.abs(by) - 0.165, 0); return np.hypot(dx, dy)
 def to_base(px, py, X, Y, T):
@@ -14,7 +14,7 @@ for r in L:
     ox_ = c * (X - tx) + s * (Y - ty); oy_ = -s * (X - tx) + c * (Y - ty); oth = T - tw
     if P0 is None: P0 = (X, Y, ox_, oy_)
     sx, sy = to_base(r['scan'][:, 0].astype(float), r['scan'][:, 1].astype(float), X, Y, T); gl = gap(sx, sy); near = gl < 0.6
-    g = r['gcm']; gx0, gy0, res = r['gcm_o']; ii, jj = np.where(g >= 100); lx, ly = to_base(gx0 + (jj + .5) * res, gy0 + (ii + .5) * res, ox_, oy_, oth); gc = gap(lx, ly)
+    g = r['gcm']; gx0, gy0, res = r['gcm_o']; ii, jj = np.where(g >= 100); lx, ly = to_base(gx0 + (jj + .5) * res, gy0 + (ii + .5) * res, *((X, Y, T) if CMF == 'map' else (ox_, oy_, oth))); gc = gap(lx, ly)
     nv = r['nv']; nox, noy, nres, unk = r['nv_o']; ii, jj = np.where((nv <= 0.05) & (nv < unk * .5)); vx, vy = to_base(nox + (jj + .5) * nres, noy + (ii + .5) * nres, ox_, oy_, oth); gn = gap(vx, vy)
     # 옛 칸: 외곽 0.6 m 안 로컬 치명 칸 중 0.10 m 안에 라이다 점·nvblox 장애 둘 다 없는 것
     m = gc < 0.6; stale = 0; nvsup = 0
