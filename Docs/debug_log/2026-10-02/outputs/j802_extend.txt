@@ -1,0 +1,48 @@
+== 기준 office_v2 | bag /home/jetson/bags/bag_f2a12 (+276 s 까지) | 출력 cand_1002_f2a12_c276_nolc | load 0.13 0.10 0.16
+  slam 실행 파일: /home/jetson/slam_ws/install/slam_toolbox/lib/slam_toolbox/async_slam_toolbox_node | 루프 창: loop_search_space_dimension: 3.0
+  do_loop_closing: Boolean value is: False
+재생: 앞 276 s, 메시지 10986 개 (스캔 2757)
+  재생  60 s / 276
+  재생 120 s / 276
+  재생 180 s / 276
+  재생 240 s / 276
+재생 SLAM map→odom 5607 개, 점프(>5 cm·>2°) 29 건
+  +182.5 s  0.05 m  0.5°
+  +183.9 s  0.08 m  0.8°
+  +190.0 s  0.05 m  0.4°
+  +191.7 s  0.06 m  0.4°
+  +195.2 s  0.09 m  0.8°
+  +195.4 s  0.06 m  0.6°
+  +197.1 s  0.05 m  0.4°
+  +197.2 s  0.05 m  0.4°
+  +198.0 s  0.09 m  0.8°
+  +209.1 s  0.11 m  1.0°
+  +212.5 s  0.05 m  0.6°
+  +223.2 s  0.06 m  0.6°
+  +225.7 s  0.07 m  0.6°
+  +227.7 s  0.05 m  0.4°
+  +230.1 s  0.07 m  0.6°
+  +231.2 s  0.05 m  0.4°
+  +231.9 s  0.05 m  0.4°
+  +250.3 s  0.05 m  0.4°
+  +253.6 s  0.07 m  0.6°
+  +254.3 s  0.06 m  0.6°
+CUT 시점 재생 map→odom (-0.008, +0.133, -5.8°)
+  /slam_toolbox/serialize_map → slam_toolbox.srv.SerializePoseGraph_Response(result=0)
+  /slam_toolbox/save_map → slam_toolbox.srv.SaveMap_Response(result=0)
+== Ceres(루프 클로저) 흔적: 1건
+-rw-rw-r-- 1 jetson jetson 117021201 Oct  2 09:23 /home/jetson/maps/office/cand_1002_f2a12_c276_nolc.data
+-rw-rw-r-- 1 jetson jetson     80601 Oct  2 09:23 /home/jetson/maps/office/cand_1002_f2a12_c276_nolc.pgm
+-rw-rw-r-- 1 jetson jetson 124588531 Oct  2 09:23 /home/jetson/maps/office/cand_1002_f2a12_c276_nolc.posegraph
+-rw-rw-r-- 1 jetson jetson       143 Oct  2 09:23 /home/jetson/maps/office/cand_1002_f2a12_c276_nolc.yaml
+-rw-rw-r-- 1 jetson jetson 117021201 Oct  2 09:23 /home/jetson/maps/office/cand_1002_f2a12_c276_nolc.data
+-rw-rw-r-- 1 jetson jetson     80601 Oct  2 09:23 /home/jetson/maps/office/cand_1002_f2a12_c276_nolc.pgm
+-rw-rw-r-- 1 jetson jetson 124588531 Oct  2 09:23 /home/jetson/maps/office/cand_1002_f2a12_c276_nolc.posegraph
+-rw-rw-r-- 1 jetson jetson       143 Oct  2 09:23 /home/jetson/maps/office/cand_1002_f2a12_c276_nolc.yaml
+image: cand_1002_f2a12_c276_nolc.pgm
+mode: trinary
+resolution: 0.05
+origin: [-5.29, -6.96, 0]
+negate: 0
+occupied_thresh: 0.65
+free_thresh: 0.25-rwxrwxrwx 1 user user 80601 Oct  2 09:23 /mnt/c/Users/magma/AppData/Local/Temp/claude/F--6-Indoor-Rover-Rover/21d4aa9f-8412-4905-b23d-17554af330ea/scratchpad/cand_1002_f2a12_c276_nolc.pgm
