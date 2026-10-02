@@ -58,6 +58,14 @@ def _make_active_params(context):
     # 2026-10-01 §8.33: nav_map:=<저장 지도 yaml> 이면 전역 정적 층을 그 지도(map_server → /map_nav)로.
     #   왜: slam_toolbox 위치 추정 모드가 주행 중 스캔을 넣어 /map 을 다시 그려(10 s 마다), 그때 본 사람·물체가 '정적 지도' 로 들어가
     #   서쪽 통로를 막았다(f2a10, 10-01 §8.32: 31.7 s 에 통로 띠 점유 31 셀 생김). 실시간 물체는 라이다 obstacle 층(지워짐)이 맡는다.
+    # 2026-10-02 §12: local_frame:=map 이면 로컬 코스트맵(과 nvblox 층의 변환 대상)을 map 좌표에 그린다(기본 odom).
+    #   왜: 제자리 회전 중 실제 미끄러짐(±90°×3 에 32 cm)을 EKF 는 0.3 cm 로 봐서, odom 좌표 로컬 코스트맵에 옛 표시가 어긋나 쌓였다
+    #   (10-02 §11.1: 근거 없는 치명 칸 4 → 95, f2b3 에선 벽이 12 cm 두꺼워져 MPPI 실패). SLAM 은 그 미끄러짐을 본다(0.322 m).
+    #   대가: 위치 추정 보정 때마다 로컬 표시가 계단식으로 이동, 큰 점프면 통째로 이동. A/B 시험용 인자로 먼저 둔다.
+    local_frame = LaunchConfiguration('local_frame').perform(context).strip() or 'odom'
+    lp = params['local_costmap']['local_costmap']['ros__parameters']
+    lp['global_frame'] = local_frame
+    lp.setdefault('nvblox_layer', {})['nav2_costmap_global_frame'] = local_frame
     nav_map = LaunchConfiguration('nav_map').perform(context).strip()
     if nav_map:
         params['global_costmap']['global_costmap']['ros__parameters']['static_layer']['map_topic'] = '/map_nav'
@@ -114,6 +122,8 @@ def generate_launch_description():
         DeclareLaunchArgument('use_sim_time', default_value='false'),
         DeclareLaunchArgument('nav_map', default_value='',
                               description='전역 정적 층에 쓸 저장 지도 yaml(비우면 slam_toolbox /map). 10-01 §8.33'),
+        DeclareLaunchArgument('local_frame', default_value='odom',
+                              description='로컬 코스트맵 좌표계: odom(기본) | map(10-02 §12 A/B)'),
         DeclareLaunchArgument('autostart', default_value='true',
                               description='lifecycle 노드 자동 활성화'),
         # rover-level 정체/접촉 감시 (2026-09-07). 펌웨어 스톨은 '휠 정지'만 잡으므로 트랙이 헛도는
