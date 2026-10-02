@@ -78,3 +78,8 @@
 - 지도 office_v3, 위치 추정 모드, /map 333 × 242·원점 (−5.29, −6.96). 시작 map (−0.0048, −0.0113, +0.55°) → **원점에서 1.23 cm**, 2 s 부터 흔들림 0.00 cm. 배터리 12.27 V. EKF 30 Hz, 보드 25 Hz.
 - Nav2 6 노드 active(prep 의 controller "?" 는 조회 시간 초과 — 재확인 active). bt_navigator plugin_lib_names **49 개·rover_path_blocked_ahead 1**, nav2.log 적재 오류 없음. static map_topic /map_nav(발행자 1), 전역 plugins static·obstacle·inflation, stuck 관찰, nav_guard 1.
 - 기동 직후 load 14.1 → 러너 정지 부하 게이트(P)가 주행 전에 다시 본다.
+
+### §6.2 f2b1 — **내 실수로 목표 1 만 실행**, B SUCCEEDED 52.5 s
+- 게이트 A·B·J(깊이 15.1 Hz)·C·G2(0.377 m)·P(정지 부하 42 %) 통과, 13:14:37 출발. 목표 1 B **SUCCEEDED 52.5 s**(도착 (2.281, −1.465, −94.6°), 목표 대비 0.139 m). map→odom 누적 보정 (0.003, 0.001) m, stuck 0 회. `outputs/f0_f2b1_runner.log`.
+- 실수: 러너를 `wsl … bash run_f0.sh NAME "목표들"` 로 바로 불렀더니 wsl 이 인자를 셸 한 줄로 이어 붙여 `;` 뒤 목표 9 개가 별도 명령으로 실행됨("-1.6,-2.0,p: command not found"). 10-01 에는 래퍼 파일(run_x7xx.sh)에 적어 불렀다. → 목표 문자열은 반드시 래퍼 파일 안에 적는다.
+- 로버는 B 에 정지. 다음은 사용자 결정(B 에서 나머지 9 목표 이어서 / 출발 테이프로 옮겨 처음부터).
