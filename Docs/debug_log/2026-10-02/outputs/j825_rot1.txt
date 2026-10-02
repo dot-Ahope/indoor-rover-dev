@@ -1,0 +1,6 @@
+시작 epoch 1790919913.3, yaw -0.1°, 외곽 최소 0.321 m
+  1회 +: 62° / 4.7 s, 외곽 최소 0.000 m
+  ★ 외곽 0.08 m 안 — 중단
+끝 epoch 1790919920.9
+-rw-r--r--  1 jetson jetson 3358720 Oct  2 14:45 bag_rot1_0.db3
+-rw-rw-r--  1 jetson jetson    5729 Oct  2 14:45 metadata.yaml
