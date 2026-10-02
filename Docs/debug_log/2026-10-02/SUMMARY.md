@@ -252,3 +252,8 @@
 - 시각화(`jobs/render_day1002.py`): `2026-10-02_rot3_paths.png`(줄자 대비 A·B·SLAM·rf2o 궤적), `_smear_rot23.png`(rot2 odom vs rot3 map: 번짐·옛 칸 시계열), `_f2b3_wall_AB.png`(구석 기동 벽 면, A 19.8·B 9.9·SLAM 8.4 cm), `_r2_runs.png`(R2 회차별). 하루 정리 페이지 `2026-10-02_report.html`(그림 9 장 내장, 아티팩트 7TWscjJme2ycMSjscYQN3F).
 - Jetson 상태: 스택 기동 중(prep 14:2x, Nav2 local_frame odom 으로 되돌림), rf2o 는 `~/rf2o_ws` 빌드만(라이브 스택에 안 들어감). 로버는 출발 방 rot3 끝 자리.
 - 다음: R3(게이트 노드 라이브, ekf.launch 인자 기본 끔 → 통제 회전 시험 + 줄자), 사람 시험 T1~T3, 피벗 회전 시험(사용자 제안), F2 순회 마무리(중간 목표 방향 무시·남서 경유점 이동 결정 대기), 경로 계획용 격자 손 수정(사용자).
+
+### §16 사용자 요청: rf2o 로 vx·vy 를 보정한 EKF 가 실제 미끄러짐을 잘 인식했는지 시각화 — `Docs/04_navigation/figures/2026-10-02_ekfB_slip.png`(`jobs/render_ekfB_slip.py`, R2 5 차 재생 결과)
+- rot3 끝점: EKF B (−0.295, −0.207) vs 줄자 (−0.275, −0.245) → **4.3 cm**(A 36.9 cm). 누적 이동은 회전 구간마다 계단식으로 늘어 끝 35.9 cm(줄자 36.8).
+- 독립 검사(줄자 없이): 정적 구조물을 각 EKF 자세로 odom 좌표에 놓아 첫 스캔과의 어긋남 중앙 — rot3 A 22.1 · **B 3.2 cm**, rot2 A 23.1 · **B 2.5 cm**. A 의 어긋남이 회전마다 커지는 것이 로컬 코스트맵 번짐과 같은 현상. B 는 회전 중 일시적으로 2~6 cm 까지 올랐다 내려옴(rf2o 10 Hz 지연·σ 로 추정).
+- rf2o 단독 자세는 라이다 위치라 회전 중 0.3 m 안팎으로 출렁(병진 속도는 정상) — 끝은 맞음.
