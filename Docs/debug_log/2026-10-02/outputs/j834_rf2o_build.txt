@@ -1,0 +1,35 @@
+커밋 b38c68e 2023-04-28
+src/CLaserOdometry2DNode.cpp:28:  this->declare_parameter<std::string>("laser_scan_topic", "/scan");
+src/CLaserOdometry2DNode.cpp:29:  this->get_parameter("laser_scan_topic", laser_scan_topic);
+src/CLaserOdometry2DNode.cpp:30:  this->declare_parameter<std::string>("odom_topic", "/odom_rf2o");
+src/CLaserOdometry2DNode.cpp:31:  this->get_parameter("odom_topic", odom_topic);
+src/CLaserOdometry2DNode.cpp:32:  this->declare_parameter<std::string>("base_frame_id", "base_link");
+src/CLaserOdometry2DNode.cpp:33:  this->get_parameter("base_frame_id", base_frame_id);
+src/CLaserOdometry2DNode.cpp:34:  this->declare_parameter<std::string>("odom_frame_id", "odom");
+src/CLaserOdometry2DNode.cpp:35:  this->get_parameter("odom_frame_id", odom_frame_id);
+src/CLaserOdometry2DNode.cpp:36:  this->declare_parameter<bool>("publish_tf", true);
+src/CLaserOdometry2DNode.cpp:37:  this->get_parameter("publish_tf", publish_tf);
+src/CLaserOdometry2DNode.cpp:38:  this->declare_parameter<std::string>("init_pose_from_topic", "/base_pose_ground_truth");
+src/CLaserOdometry2DNode.cpp:39:  this->get_parameter("init_pose_from_topic", init_pose_from_topic);
+src/CLaserOdometry2DNode.cpp:40:  this->declare_parameter<double>("freq", 10.0);
+src/CLaserOdometry2DNode.cpp:41:  this->get_parameter("freq", freq);
+src/CLaserOdometry2DNode.cpp:48:  odom_pub  = this->create_publisher<nav_msgs::msg::Odometry>(odom_topic, 5);
+src/CLaserOdometry2DNode.cpp:49:  laser_sub = this->create_subscription<sensor_msgs::msg::LaserScan>(laser_scan_topic,rclcpp::QoS(rclcpp::KeepLast(1)).best_effort().durability_volatile(),
+src/CLaserOdometry2DNode.cpp:53:  if (init_pose_from_topic != "")
+src/CLaserOdometry2DNode.cpp:55:    initPose_sub = this->create_subscription<nav_msgs::msg::Odometry>(init_pose_from_topic,rclcpp::QoS(rclcpp::KeepLast(1)).best_effort().durability_volatile(),
+src/CLaserOdometry2DNode.cpp:120:    tf_laser = buffer_->lookupTransform(base_frame_id, last_scan.header.frame_id, tf2::TimePointZero);
+src/CLaserOdometry2DNode.cpp:178:    // This is a warning. We depend on laser scans, so no meaning running faster than scan freq.
+src/CLaserOdometry2DNode.cpp:207:  RCLCPP_DEBUG(get_logger(), "Publishing odom over topic:[%s]", odom_topic.c_str());
+src/CLaserOdometry2DNode.cpp:215:  odom.header.frame_id = odom_frame_id;
+src/CLaserOdometry2DNode.cpp:222:  odom.child_frame_id = base_frame_id;
+src/CLaserOdometry2DNode.cpp:230:  if (publish_tf)
+src/CLaserOdometry2DNode.cpp:235:    odom_trans.header.frame_id = odom_frame_id;
+src/CLaserOdometry2DNode.cpp:236:    odom_trans.child_frame_id = base_frame_id;
+src/CLaserOdometry2DNode.cpp:258:  rclcpp::Rate rate(myLaserOdomNode->freq);
+launch/rf2o_laser_odometry.launch.py:25:                    'laser_scan_topic' : '/scan',
+launch/rf2o_laser_odometry.launch.py:26:                    'odom_topic' : '/odom_rf2o',
+launch/rf2o_laser_odometry.launch.py:27:                    'publish_tf' : True,
+Finished <<< rf2o_laser_odometry [1min 7s]
+
+Summary: 1 package finished [1min 8s]
+rf2o_laser_odometry_node
