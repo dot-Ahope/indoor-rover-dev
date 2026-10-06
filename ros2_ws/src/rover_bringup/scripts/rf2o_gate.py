@@ -14,7 +14,9 @@
   G2 정지 검사: 휠 |vx| < 0.005 이고 |ω| < 0.02 인데 rf2o |v| > 0.02 면 버림(정지 중 가짜 이동)
   σ: 회전 중(|ω| > 0.15) vx·vy 0.03 / 그 밖 vx 0.10(직진은 휠 우선 — rf2o 축척 0.93)·vy 0.03
 짝 설정: 컨디셔너 rot_cov(B3)를 켜고 순수 회전 중 휠 병진 σ 를 0.3 으로(0.03 이면 25 Hz 휠이 10 Hz rf2o 를 눌러 미끄러짐을 지움 — §14.1)
-TODO(improve): 200 Hz 자이로 구독을 Python 으로 받는다 — CPU 가 문제가 되면 컨디셔너(C++)에 합친다."""
+2026-10-06 §5: 회전 속도 기준을 /imu/data(200 Hz)에서 EKF 출력 /odometry/filtered 의 ω(30 Hz)로 바꿈(gyro_source, 기본 ekf).
+  왜: 라이브 정지 기동에서 게이트 CPU 39 %(코어 하나) — Python 200 Hz 콜백 부담. EKF 의 ω 는 자이로(σ 0.02)가 지배하고 rf2o 는
+  ω 를 넣지 않으므로(odom1 은 vx·vy 만) 순환 의존이 없다. 되돌리기 = gyro_source:=imu."""
 import collections
 import math
 
@@ -34,6 +36,8 @@ class Rf2oGate(Node):
         self.sd_rot = float(self.declare_parameter('sd_rot', 0.03).value)
         self.sd_vx = float(self.declare_parameter('sd_vx', 0.10).value)
         self.sd_vy = float(self.declare_parameter('sd_vy', 0.03).value)
+        self.src = str(self.declare_parameter('gyro_source', 'ekf').value)   # ekf(30 Hz, 기본) | imu(200 Hz)
+        self.win = 0.1 if self.src == 'imu' else 0.15   # ekf 는 30 Hz 라 0.1 s 에 표본 3 개 → 0.15 s
         # 비교용 그림자 EKF(A, 지금 구성)에 줄 휠 중계 — 컨디셔너 기본 공분산과 같게(rot_cov 끈 것과 같음). ekf.launch shadow:=true 일 때만
         self.relay = bool(self.declare_parameter('relay_plain', False).value)
         self.pplain = self.create_publisher(Odometry, '/wheel_odom/plain', 20) if self.relay else None
@@ -42,9 +46,12 @@ class Rf2oGate(Node):
         if self.csv: self.csv.write('t,w_rf2o,w_gyro,v_wheel,bx,by,res\n')
         self.pub = self.create_publisher(Odometry, '/odom_rf2o/gated', 20)
         self.create_subscription(Odometry, '/odom_rf2o', self.on_rf2o, qos_profile_sensor_data)
-        self.create_subscription(Imu, '/imu/data', self.on_imu, qos_profile_sensor_data)
+        if self.src == 'imu':
+            self.create_subscription(Imu, '/imu/data', self.on_imu, qos_profile_sensor_data)
+        else:
+            self.create_subscription(Odometry, '/odometry/filtered', self.on_ekf, qos_profile_sensor_data)
         self.create_subscription(Odometry, '/wheel_odom', self.on_wheel, qos_profile_sensor_data)   # micro-ROS 는 best-effort
-        self.gh = collections.deque(maxlen=400); self.wg = 0.0; self.wv = 0.0
+        self.gh = collections.deque(maxlen=100); self.wg = 0.0; self.wv = 0.0
         self.n = {'pass': 0, 'g1': 0, 'g2': 0}
         self.create_timer(30.0, lambda: self.get_logger().info('rf2o 게이트 통과 %(pass)d · G1 거부 %(g1)d · G2 거부 %(g2)d' % self.n))
 
@@ -53,6 +60,9 @@ class Rf2oGate(Node):
 
     def on_imu(self, m):
         self.wg = -m.angular_velocity.y; self.gh.append((self.stamp(m.header), self.wg))
+
+    def on_ekf(self, m):
+        self.wg = m.twist.twist.angular.z; self.gh.append((self.stamp(m.header), self.wg))
 
     def on_wheel(self, m):
         self.wv = m.twist.twist.linear.x
@@ -64,7 +74,7 @@ class Rf2oGate(Node):
         vx, vy, w = m.twist.twist.linear.x, m.twist.twist.linear.y, m.twist.twist.angular.z
         c, s = math.cos(self.lidar_yaw), math.sin(self.lidar_yaw); bx, by = c * vx - s * vy, s * vx + c * vy
         t = self.stamp(m.header)
-        win = [g for tt, g in self.gh if t - 0.1 <= tt <= t]; wgm = sum(win) / len(win) if win else self.wg
+        win = [g for tt, g in self.gh if t - self.win <= tt <= t]; wgm = sum(win) / len(win) if win else self.wg
         res = 'pass'
         if abs(w - wgm) > max(self.g1_floor, 0.3 * abs(wgm)): res = 'g1'
         elif abs(self.wv) < 0.005 and abs(wgm) < 0.02 and math.hypot(bx, by) > 0.02: res = 'g2'
