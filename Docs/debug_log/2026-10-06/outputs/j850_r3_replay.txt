@@ -1,0 +1,10 @@
+Finished <<< rover_bringup [1.50s]
+lrwxrwxrwx 1 jetson jetson 59 Oct  6 10:00 /home/jetson/ros2_ws/install/rover_bringup/lib/rover_bringup/rf2o_gate.py -> /home/jetson/ros2_ws/src/rover_bringup/scripts/rf2o_gate.py
+lrwxrwxrwx 1 jetson jetson 55 Oct  6 10:00 /home/jetson/ros2_ws/install/rover_bringup/share/rover_bringup/config/rf2o.yaml -> /home/jetson/ros2_ws/src/rover_bringup/config/rf2o.yaml
+/tmp/bag_f2b3
+/tmp/bag_f2b4
+A 4943 · B 4944
+  게이트 CPU 누적:       85 s
+[rf2o_gate.py-3] [INFO] [1791248606.646406953] [rf2o_gate]: rf2o 게이트 통과 1290 · G1 거부 1 · G2 거부 2
+-rwxrwxrwx 1 user user 570506 Oct  6 10:14 /mnt/c/Users/magma/AppData/Local/Temp/claude/F--6-Indoor-Rover-Rover/21d4aa9f-8412-4905-b23d-17554af330ea/scratchpad/f2a6/r3_f2b3.npz
+-rwxrwxrwx 1 user user 316874 Oct  6 10:04 /mnt/c/Users/magma/AppData/Local/Temp/claude/F--6-Indoor-Rover-Rover/21d4aa9f-8412-4905-b23d-17554af330ea/scratchpad/f2a6/r3_f2b4.npz
