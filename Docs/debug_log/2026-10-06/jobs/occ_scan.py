@@ -19,8 +19,16 @@ class Occ(Node):
         super().__init__('occ_scan')
         cov = float(self.declare_parameter('coverage', 0.5).value); cdeg = float(self.declare_parameter('center_deg', 20.0).value)
         self.rho = float(self.declare_parameter('rho', 0.6).value); self.br = float(self.declare_parameter('body_r', 0.08).value)
+        # 10-06 §11: 움직이는 몸 — 위치 = 기준 + amp·sin(2πt/period) 방향 move_deg(시작 자세 기준). legs 면 다리 두 개(반경 0.06, 간격 0.2 m)
+        self.amp = float(self.declare_parameter('amp', 0.0).value); self.per = float(self.declare_parameter('period', 10.0).value)
+        md = math.radians(float(self.declare_parameter('move_deg', 90.0).value)); self.legs = bool(self.declare_parameter('legs', False).value)
+        self.mv = (math.cos(md), math.sin(md)); self.t0 = None
         span = math.radians(360 * cov); n = max(1, int(span * self.rho / (1.6 * self.br))) if cov > 0 else 0
-        self.local = [(self.rho * math.cos(math.radians(cdeg) - span / 2 + span * (i + .5) / n), self.rho * math.sin(math.radians(cdeg) - span / 2 + span * (i + .5) / n)) for i in range(n)]
+        if self.legs:
+            cx, cy = self.rho * math.cos(math.radians(cdeg)), self.rho * math.sin(math.radians(cdeg)); self.br = 0.06
+            self.local = [(cx + 0.1 * self.mv[0], cy + 0.1 * self.mv[1]), (cx - 0.1 * self.mv[0], cy - 0.1 * self.mv[1])]
+        else:
+            self.local = [(self.rho * math.cos(math.radians(cdeg) - span / 2 + span * (i + .5) / n), self.rho * math.sin(math.radians(cdeg) - span / 2 + span * (i + .5) / n)) for i in range(n)]
         self.p0 = None; self.pose = None; self.cnt = []
         self.pub = self.create_publisher(LaserScan, '/scan', qos_profile_sensor_data)
         self.create_subscription(Odometry, '/truth_odom', self.on_odom, qos_profile_sensor_data)
@@ -32,6 +40,7 @@ class Occ(Node):
         if self.p0 is None:
             self.p0 = p; c, s = math.cos(p[2]), math.sin(p[2])
             self.world = [(p[0] + c * x - s * y, p[1] + s * x + c * y) for x, y in self.local]   # 시작 자세 기준 → odom 고정
+            self.wmv = (c * self.mv[0] - s * self.mv[1], s * self.mv[0] + c * self.mv[1])
         self.pose = p
 
     def on_scan(self, m):
@@ -40,7 +49,11 @@ class Occ(Node):
             X, Y, T = self.pose; ox, oy = X + LX * math.cos(T), Y + LX * math.sin(T)   # 라이다 위치
             ang = T + LY + m.angle_min + m.angle_increment * np.arange(len(r)); dx, dy = np.cos(ang), np.sin(ang)
             hit = np.full(len(r), np.inf)
-            for cx, cy in self.world:
+            ts = m.header.stamp.sec + m.header.stamp.nanosec * 1e-9
+            if self.t0 is None: self.t0 = ts
+            off = self.amp * math.sin(2 * math.pi * (ts - self.t0) / self.per)
+            for cx0, cy0 in self.world:
+                cx, cy = cx0 + off * self.wmv[0], cy0 + off * self.wmv[1]
                 fx, fy = cx - ox, cy - oy; b = dx * fx + dy * fy; d2 = fx * fx + fy * fy - b * b
                 ok = (b > 0) & (d2 < self.br ** 2); t = b - np.sqrt(np.maximum(self.br ** 2 - d2, 0)); hit = np.where(ok & (t < hit), t, hit)
             valid = np.isfinite(r) & (r > 0); occl = np.isfinite(hit) & (~valid | (hit < r))
