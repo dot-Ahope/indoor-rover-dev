@@ -49,7 +49,8 @@ def _nodes(context):
             Node(package='rf2o_laser_odometry', executable='rf2o_laser_odometry_node', name='rf2o_laser_odometry', output='screen',
                  parameters=[os.path.join(share, 'config', 'rf2o.yaml'), st]),
             Node(package='rover_bringup', executable='rf2o_gate.py', name='rf2o_gate', output='screen',
-                 parameters=[{'relay_plain': shadow, 'csv': LaunchConfiguration('gate_csv').perform(context)}, st]),
+                 parameters=[{'relay_plain': shadow, 'csv': LaunchConfiguration('gate_csv').perform(context),
+                              'gyro_source': LaunchConfiguration('gate_src').perform(context)}, st]),
         ]
     acts.append(Node(package='robot_localization', executable='ekf_node', name='ekf_filter_node', output='screen', parameters=ekf))
     if shadow:
@@ -71,6 +72,7 @@ def generate_launch_description():
                               description='2026-10-06 R3: rf2o 스캔 정합 속도를 게이트 거쳐 EKF 병진 입력으로(기본 끔, ~/rf2o_ws 필요)'),
         DeclareLaunchArgument('shadow', default_value='false', description='rf2o:=true 일 때 비교용 그림자 EKF A(/odometry/ekf_a) 같이 띄움'),
         DeclareLaunchArgument('gate_csv', default_value='', description='rf2o 게이트 판정 기록 csv 경로(비우면 안 씀)'),
+        DeclareLaunchArgument('gate_src', default_value='ekf', description='rf2o 게이트 회전 속도 기준: ekf(30 Hz, 기본) | imu(200 Hz)'),
         DeclareLaunchArgument('use_sim_time', default_value='false', description='bag 재생 검증용'),
         OpaqueFunction(function=_nodes),
     ])
