@@ -50,7 +50,9 @@ def _nodes(context):
                  parameters=[os.path.join(share, 'config', 'rf2o.yaml'), st]),
             Node(package='rover_bringup', executable='rf2o_gate.py', name='rf2o_gate', output='screen',
                  parameters=[{'relay_plain': shadow, 'csv': LaunchConfiguration('gate_csv').perform(context),
-                              'gyro_source': LaunchConfiguration('gate_src').perform(context)}, st]),
+                              'gyro_source': LaunchConfiguration('gate_src').perform(context),
+                              'q_mode': LaunchConfiguration('gate_q').perform(context),
+                              'v_mode': LaunchConfiguration('gate_v').perform(context)}, st]),
         ]
     acts.append(Node(package='robot_localization', executable='ekf_node', name='ekf_filter_node', output='screen', parameters=ekf))
     if shadow:
@@ -73,6 +75,8 @@ def generate_launch_description():
         DeclareLaunchArgument('shadow', default_value='false', description='rf2o:=true 일 때 비교용 그림자 EKF A(/odometry/ekf_a) 같이 띄움'),
         DeclareLaunchArgument('gate_csv', default_value='', description='rf2o 게이트 판정 기록 csv 경로(비우면 안 씀)'),
         DeclareLaunchArgument('gate_src', default_value='ekf', description='rf2o 게이트 회전 속도 기준: ekf(30 Hz, 기본) | imu(200 Hz)'),
+        DeclareLaunchArgument('gate_q', default_value='off', description='rf2o 게이트 G3 품질 검사: off | log | on (10-06 §12)'),
+        DeclareLaunchArgument('gate_v', default_value='off', description='rf2o 게이트 G4 회전 중 병진 타당성: off | on (10-06 §12.1)'),
         DeclareLaunchArgument('use_sim_time', default_value='false', description='bag 재생 검증용'),
         OpaqueFunction(function=_nodes),
     ])
