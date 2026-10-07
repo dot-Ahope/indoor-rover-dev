@@ -288,3 +288,7 @@
   - W3 저속 떨림: TF 지연 가설 기각, 원인 미확정. 11:12 중단은 slam map→odom stamp 1.49 s 멈춤 → MPPI transform_tolerance 0.5.
 - 다음(제안 순서): ① bag_box1 로 STVL 소거 실패 원인 오프라인(설정 A/B) ② 주기 재계획 재검토(1 Hz 때 170 회 재계획 문제와 함께) ③ 피벗 회전 ④ 전선 시험. 장기 주행은 mppi_viz·LONG_REC 로 MPPI 궤적 기록.
 - 하루 보고: `2026-10-07_report.html`(아티팩트 BYwarUPHXJaCKDceFGrHes).
+
+## §16 사용자 질의(마감 직전): "nvblox 를 쓰고 있으면 STVL 을 빼도 되지 않나" — 내일로
+- 사실: 기본 구성엔 STVL 이 이미 없음(로컬 = nvblox + 라이다, 전역 = 정적 + 라이다·카메라 점군 obstacle). STVL 은 Phase S 대조군(`camera_layer:=stvl`)과 오늘 시험(`global_camera:=stvl`, C2 불합격) 옵션에만 남음.
+- 실제 쟁점: 전역 카메라 기억을 STVL 대신 nvblox(3D 관측 갱신)로 풀 수 있나. bag_box1 에 nvblox 슬라이스가 있어 같은 장면의 C1·C2 를 바로 볼 수 있음 — `jobs/job933_nvslice.py` 실행 중 사용자 지시로 중단(결과 없음). 내일 이것부터. 고려할 점: nvblox 감쇠(≈ 81 s)·반경 3 m 밖 삭제, 10-01 §8.24 전역 nvblox 유령 칸 이력.
