@@ -87,6 +87,12 @@ def _make_active_params(context):
         sv['depth_clear']['min_z'] = 0.8; sv['depth_clear']['decay_acceleration'] = 100.0
     elif gcam != 'obstacle':
         raise RuntimeError('global_camera 는 obstacle|stvl 중 하나: %s' % gcam)
+    # 2026-10-07 §11 (사용자): 장기 주행에서만 MPPI 후보 궤적·최적 궤적(/trajectories MarkerArray)·변환 경로(/transformed_global_plan) 발행.
+    #   왜: 경로를 '계획하는 모습' 을 시각화하려면 매 주기 예측이 필요. 평소엔 끔 — 09-17 mp7: 기본 간격이면 ≈5 MB/s 기록·15 W CPU 압박.
+    #   간격을 넓혀 부담을 줄임: 후보 1000 개 중 20 개마다 1 개(50 개), 시간 2 스텝마다.
+    if LaunchConfiguration('mppi_viz').perform(context).strip().lower() in ('1', 'true', 'yes'):
+        mp = params['controller_server']['ros__parameters']['FollowPathMPPI']
+        mp['visualize'] = True; mp.setdefault('TrajectoryVisualizer', {}).update({'trajectory_step': 20, 'time_step': 2})
     with open(_ACTIVE_PARAMS, 'w', encoding='utf-8') as f:
         f.write('# 자동 생성(navigation.launch.py, camera_layer=%s, global_camera=%s) — 원본 %s\n' % (layer, gcam, src))
         yaml.safe_dump(params, f, allow_unicode=True, sort_keys=False)
@@ -138,6 +144,8 @@ def generate_launch_description():
         DeclareLaunchArgument('camera_pointcloud', default_value='keep',
                               description="keep(기본: 점군 유지 — 게이트·러너가 씀) | off(모드 N 운용 전용, 계측 불가)"),
         DeclareLaunchArgument('use_sim_time', default_value='false'),
+        DeclareLaunchArgument('mppi_viz', default_value='false',
+                              description='장기 주행 기록용 MPPI 후보·최적 궤적 발행(10-07 §11, 기본 끔)'),
         DeclareLaunchArgument('global_camera', default_value='obstacle',
                               description='전역 카메라 표시: obstacle(라이다와 한 격자, 10-01 §8.35) | stvl(별도 3D 층, 화각 밖 기억·절두체 안 갱신, 10-07 §8.2)'),
         DeclareLaunchArgument('nav_map', default_value='',
