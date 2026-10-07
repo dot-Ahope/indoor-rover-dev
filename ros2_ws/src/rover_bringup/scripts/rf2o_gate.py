@@ -16,7 +16,8 @@
 짝 설정: 컨디셔너 rot_cov(B3)를 켜고 순수 회전 중 휠 병진 σ 를 0.3 으로(0.03 이면 25 Hz 휠이 10 Hz rf2o 를 눌러 미끄러짐을 지움 — §14.1)
 2026-10-06 §5: 회전 속도 기준을 /imu/data(200 Hz)에서 EKF 출력 /odometry/filtered 의 ω(30 Hz)로 바꿈(gyro_source, 기본 ekf).
   왜: 라이브 정지 기동에서 게이트 CPU 39 %(코어 하나) — Python 200 Hz 콜백 부담. EKF 의 ω 는 자이로(σ 0.02)가 지배하고 rf2o 는
-  ω 를 넣지 않으므로(odom1 은 vx·vy 만) 순환 의존이 없다. 되돌리기 = gyro_source:=imu."""
+  ω 를 넣지 않으므로(odom1 은 vx·vy 만) 순환 의존이 없다. 되돌리기 = gyro_source:=imu.
+2026-10-07 §4: G4(회전 중 병진 타당성)를 휠과의 잔차 |(bx − v_휠, by)| 로(v_ref wheel 기본, abs = 이전 판정)."""
 import collections
 import math
 
@@ -52,6 +53,10 @@ class Rf2oGate(Node):
         #   회전 중 |v| > v_soft 면 σ 를 1~10 배로, > v_rej 면 버림. v_mode off | on
         self.v_mode = str(self.declare_parameter('v_mode', 'off').value)
         self.v_soft = float(self.declare_parameter('v_soft', 0.05).value); self.v_rej = float(self.declare_parameter('v_rej', 0.10).value)
+        # 2026-10-07 §4: G4 를 '휠과의 잔차' 로. 순회(f2c)의 회전은 대부분 0.04~0.08 m/s 로 전진하며 도는 곡선이라 |v| 절댓값 판정이
+        #   정상 전진을 오염으로 봄(곡선 회전 표본 σ 키움 43~58 %, §3.2). 잔차 = |(bx − v_휠, by)| — 제자리 회전에선 v_휠 ≈ 0 이라 10-06 보정값 그대로,
+        #   곡선에선 휠이 본 전진을 빼고 휠이 못 보는 몫(미끄러짐·오염)만 남음. v_ref wheel(기본) | abs(10-06~07 §1 판정, 되돌리기)
+        self.v_ref = str(self.declare_parameter('v_ref', 'wheel').value)
         if self.q_mode != 'off':
             self.create_subscription(LaserScan, '/scan', self.on_scan, qos_profile_sensor_data)
         self.relay = bool(self.declare_parameter('relay_plain', False).value)
@@ -120,7 +125,8 @@ class Rf2oGate(Node):
         if abs(w - wgm) > max(self.g1_floor, 0.3 * abs(wgm)): res = 'g1'
         elif abs(self.wv) < 0.005 and abs(wgm) < 0.02 and math.hypot(bx, by) > 0.02: res = 'g2'
         elif self.q_mode == 'on' and q is not None and q > self.q_rej: res = 'g3'
-        elif self.v_mode == 'on' and abs(wgm) > self.rot_w and math.hypot(bx, by) > self.v_rej: res = 'g4'
+        vb = math.hypot(bx - self.wv, by) if self.v_ref == 'wheel' else math.hypot(bx, by)   # G4 판정량(§4)
+        if res == 'pass' and self.v_mode == 'on' and abs(wgm) > self.rot_w and vb > self.v_rej: res = 'g4'
         self.n[res] += 1
         if self.csv: self.csv.write('%.3f,%.4f,%.4f,%.4f,%.4f,%.4f,%.3f,%s\n' % (t, w, wgm, self.wv, bx, by, -1 if q is None else q, res)); self.csv.flush()
         if res != 'pass': return
@@ -130,7 +136,6 @@ class Rf2oGate(Node):
         cv[0] = (self.sd_rot if rot else self.sd_vx) ** 2; cv[7] = (self.sd_rot if rot else self.sd_vy) ** 2; cv[35] = 1e3
         if self.q_mode == 'on' and q is not None and q > self.q_soft:   # q_soft~q_rej 사이는 σ 를 1~10 배로 키움
             f = 1 + 9 * min(1.0, (q - self.q_soft) / max(self.q_rej - self.q_soft, 1e-3)); cv[0] *= f * f; cv[7] *= f * f
-        vb = math.hypot(bx, by)
         if self.v_mode == 'on' and rot and vb > self.v_soft:
             f = 1 + 9 * min(1.0, (vb - self.v_soft) / max(self.v_rej - self.v_soft, 1e-3)); cv[0] *= f * f; cv[7] *= f * f
         o.twist.covariance = cv; self.pub.publish(o)
