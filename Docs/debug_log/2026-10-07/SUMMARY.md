@@ -164,3 +164,7 @@
   - ③-a 10 목표 SUCCEEDED·접촉 0·복귀 줄자 — f2c(9/10, 접촉 1) 대비.
   - §5 재발 관찰: 'Exception in transformPose' 로 인한 follow_path 중단 0 회. 긴 직선(W3 통로)에서 저속 떨림(6 s 창 cmd v 평균 < 0.05 이고 ω 부호 바뀜 ≥ 20) 재발 여부 — 재발하면 그 시각의 계획 나이(마지막 /plan 뒤 경과)를 기록.
   - G4: 곡선 회전 σ 키움·버림 ≤ 10 %(라이브).
+### §6.1 prep 통과(사용자: 출발 위치·상자 원위치) — `outputs/j918_prep.txt`
+- 시작 map 원점 1.62 cm·흔들림 0.00, 배터리 12.22 V, EKF 30 Hz, ekf_node 2(B + 그림자 A), Nav2 active, 전역 static·obstacle·inflation, nav_guard 1.
+- 새 설정 반영 확인(`jobs/job919_chk.sh`·`job920_chk.sh`): 게이트 v_mode on·**v_ref wheel**, BT 가 쓰는 `FollowPathMPPI.transform_tolerance` **0.5**(같이 적재된 RPP `FollowPath` 는 0.2 — 쓰이지 않음, 첫 확인에서 이 값을 잘못 읽음).
+- 참고(BT 주석 확인): 우리 BT 의 RateController 는 첫 틱·목표 변경·주행 실패 때만 재계획 — §5 후보 ①(오래된 계획 유지)와 맞는 구조.
