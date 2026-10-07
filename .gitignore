@@ -50,3 +50,6 @@ research_notes/
 Docs/debug_log/*/bags/
 # 주행 영상(mp4, 수십 MB) — 로컬 보관, git 제외(2026-09-30). 만드는 스크립트는 jobs/ 에 있음.
 Docs/debug_log/*/videos/
+
+# 2026-10-07: 작업 지침(개인 계획·네트워크 정보 포함) — PC 에만 두고 저장소엔 올리지 않음
+CLAUDE.md
