@@ -1,0 +1,27 @@
++304.0 [INFO] [1791346601.690226377] [controller_server]: Reached the goal!
++307.0 [INFO] [1791346604.466891422] [bt_navigator]: Begin navigating from current location (5.41, -2.17) to (0.00, 0.00)
++307.0 [INFO] [1791346604.471003564] [nav_guard]: 목표 e7aa37e3: 남은 거리 0.10 m → 시간 한도 33 s (시작 뒤 0.0 s)
++307.0 [INFO] [1791346604.511990092] [controller_server]: Optimizer reset
++307.0 [INFO] [1791346604.514262202] [nav_guard]: 목표 e7aa37e3: 남은 거리 6.66 m → 시간 한도 220 s (시작 뒤 0.0 s)
++363.0 [INFO] [1791346660.119021534] [bt_navigator_navigate_to_pose_rclcpp_node]: PathBlockedAhead: 앞 경로 (1.45, 0.02) 비용 99 — 2.0 s 지속되면 재계획
++374.0 [INFO] [1791346671.135768127] [bt_navigator_navigate_to_pose_rclcpp_node]: PathBlockedAhead: 앞 경로 (1.45, 0.02) 비용 99 — 2.0 s 지속되면 재계획
++376.0 [WARN] [1791346673.135774213] [bt_navigator_navigate_to_pose_rclcpp_node]: PathBlockedAhead: 앞 경로 (1.45, 0.02) 비용 99 가 2.0 s 지속 → 주행 중단·재계획
++376.0 [INFO] [1791346673.197882934] [controller_server]: Goal was canceled. Stopping the robot.
++376.0 [INFO] [1791346673.198008858] [controller_server]: [follow_path] [ActionServer] Client requested to cancel the goal. Cancelling.
++376.0 [INFO] [1791346673.199322407] [local_costmap.local_costmap]: Received request to clear except a region the local_costmap
++376.0 [WARN] [1791346673.200098434] [bt_navigator_navigate_to_pose_rclcpp_node]: PathBlockedAhead: 앞 경로 (1.45, 0.02) 비용 99 가 2.0 s 지속 → 주행 중단·재계획
++376.0 [INFO] [1791346673.201582485] [behavior_server]: Running wait
++381.0 [INFO] [1791346678.201951961] [behavior_server]: wait completed successfully
++381.0 [INFO] [1791346678.269060340] [controller_server]: Optimizer reset
++383.0 [INFO] [1791346680.125760025] [bt_navigator_navigate_to_pose_rclcpp_node]: PathBlockedAhead: 앞 경로 (1.36, -0.30) 비용 99 — 2.0 s 지속되면 재계획
++409.0 [WARN] [1791346706.156746211] [stuck_monitor]: STUCK: 지령 1.7cm/12° 인데 관측 1.2cm/2.6° (비율 0.22) [shadow — 조치 없음]
++410.0 [ERROR] [1791346707.904477203] [controller_server]: Failed to make progress
++410.0 [WARN] [1791346707.904800446] [controller_server]: [follow_path] [ActionServer] Aborting handle.
++410.0 [INFO] [1791346707.920447094] [local_costmap.local_costmap]: Received request to clear except a region the local_costmap
++417.0 [WARN] [1791346714.347200968] [stuck_monitor]: STUCK: 지령 3.3cm/8° 인데 관측 0.8cm/2.5° (비율 0.25) [shadow — 조치 없음]
++430.0 [ERROR] [1791346727.567656443] [nav_guard]: nav_guard 개입 — 무진행: 45 s 동안 최대 0.24 m 이동 < 0.25 m → 모든 목표 취소·정지
++430.0 [INFO] [1791346727.622134146] [controller_server]: Goal was canceled. Stopping the robot.
++430.0 [INFO] [1791346727.622272839] [controller_server]: [follow_path] [ActionServer] Client requested to cancel the goal. Cancelling.
++430.0 [INFO] [1791346727.622693557] [bt_navigator]: [navigate_to_pose] [ActionServer] Client requested to cancel the goal. Cancelling.
++430.0 [INFO] [1791346727.623317643] [bt_navigator]: Goal canceled
+궤적 1385 · A 1383 · plan 3 · 전역 48 · 로컬 116 · 스캔 132 · cmd 2631
