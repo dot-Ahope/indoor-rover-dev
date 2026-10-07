@@ -6,7 +6,8 @@ set +u
 NAME=$1; GOALS=$2; SPEED=${3:-0.07}; PAUSE=${4:-0}
 export FASTRTPS_DEFAULT_PROFILES_FILE=/home/jetson/ros2_ws/install/rover_bringup/share/rover_bringup/config/fastdds_udp_only.xml; source /opt/ros/humble/setup.bash; source ~/ros2_ws/install/setup.bash
 echo "########## F0 게이트 $(date +%T) ##########"
-DUP=0; for p in microros_agent robot_state_publisher realsense2_camera rplidar sensor_conditioner ekf_node slam_toolbox controller_server planner_server bt_navigator behavior_server lifecycle_manager_navigation stuck_monitor; do c=$(pgrep -fc "$p" 2>/dev/null | head -1); [ "${c:-0}" != 1 ] && { DUP=1; echo "  ★ $p = $c개"; }; done
+# 10-07: 그림자 EKF A(ekf_shadow_a, TF 안 냄)가 떠 있으면 ekf_node 2 개가 정상
+DUP=0; for p in microros_agent robot_state_publisher realsense2_camera rplidar sensor_conditioner ekf_node slam_toolbox controller_server planner_server bt_navigator behavior_server lifecycle_manager_navigation stuck_monitor; do c=$(pgrep -fc "$p" 2>/dev/null | head -1); e=1; [ $p = ekf_node ] && e=$((1 + $(pgrep -fc "__node:=ekf_shadow_a" 2>/dev/null | head -1))); [ "${c:-0}" != $e ] && { DUP=1; echo "  ★ $p = $c개"; }; done
 [ $DUP = 1 ] && { echo "  A 불합격 — 주행하지 않음"; exit 1; }
 BR=$(timeout 6 ros2 topic hz /wheel_odom 2>&1 | grep -aoE 'average rate: [0-9.]+' | tail -1); [ -z "$BR" ] && { echo "  B 불합격(보드 무발행) — 주행하지 않음"; exit 1; }
 echo "  A·B 통과 ($BR)"

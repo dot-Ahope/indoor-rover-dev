@@ -1,0 +1,21 @@
+11:00:52 [INFO] [1791338452.504552243] [controller_server]: Reached the goal!
+11:00:52 [INFO] [1791338452.541874258] [bt_navigator]: Goal succeeded
+11:00:57 [nav_guard.py-2] [INFO] [1791338457.162044444] [nav_guard]: 목표 63a1677d: 남은 거리 0.11 m → 시간 한도 33 s (시작 뒤 0.0 s)
+11:00:57 [INFO] [1791338457.188037660] [smoother_server]: Received a path to smooth.
+11:00:57 [ERROR] [1791338457.194610254] [smoother_server]: Smoothed path leads to a collision at x: -1.529915, y: -5.368849, theta: 1.176065
+11:00:57 [WARN] [1791338457.195879050] [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+11:00:57 [INFO] [1791338457.208452865] [controller_server]: Received a goal, begin computing control effort.
+11:00:57 [nav_guard.py-2] [INFO] [1791338457.211374146] [nav_guard]: 목표 63a1677d: 남은 거리 2.06 m → 시간 한도 89 s (시작 뒤 0.0 s)
+11:00:57 [INFO] [1791338457.223729747] [controller_server]: Optimizer reset
+11:01:57 [ERROR] [1791338517.209151506] [controller_server]: Failed to make progress
+11:01:57 [WARN] [1791338517.209572251] [controller_server]: [follow_path] [ActionServer] Aborting handle.
+11:01:57 [INFO] [1791338517.227841506] [local_costmap.local_costmap]: Received request to clear except a region the local_costmap
+11:01:57 [INFO] [1791338517.230024496] [controller_server]: Received a goal, begin computing control effort.
+11:02:08 [nav_guard.py-2] [ERROR] [1791338528.233969574] [nav_guard]: nav_guard 개입 — 무진행: 45 s 동안 최대 0.24 m 이동 < 0.25 m → 모든 목표 취소·정지
+11:02:08 [INFO] [1791338528.330209833] [controller_server]: Goal was canceled. Stopping the robot.
+11:02:08 [INFO] [1791338528.331742921] [controller_server]: [follow_path] [ActionServer] Client requested to cancel the goal. Cancelling.
+11:02:08 [INFO] [1791338528.332244244] [bt_navigator]: [navigate_to_pose] [ActionServer] Client requested to cancel the goal. Cancelling.
+11:02:08 [INFO] [1791338528.332789952] [bt_navigator]: Goal canceled
+11:02:17 [WARN] [1791338537.087141257] [bt_navigator.rclcpp]: failed to send response to /bt_navigator/list_parameters (timeout): client will not receive response, at ./src/rmw_response.cpp:154, at .
+  누적 회전: 휠 6.5° vs EKF 2.4° (차 4.1° = 미끄러짐·스크럽 흔적) | stuck 진단 1 회
+/tmp/sensors.log /tmp/top_f2c1.log /tmp/nvblox_node.log /tmp/f0_f2c1.log /tmp/nav2.log /tmp/slam.log /tmp/bag_f2c1.log /tmp/tegra_f2c1.log /tmp/proc_f2c1.log /tmp/nvblox_node_up.log /tmp/base.log 
