@@ -3,7 +3,7 @@
    지도: 미지 회색 · 빈 곳 흰색 · 벽 검정(RViz map). 로컬 코스트맵: RViz costmap 색(1~98 파랑→빨강, 99 내접 청록, 100 치명 자홍, 알파 0.7).
    라이다 점(빨강), 전역 경로(초록 선), 차체 외곽(초록 테두리 = Nav2 footprint), 라이다 원통(보라), 1 m 격자(옅은 파랑), TF 이름(base_link·odom·lidar_link·camera_link).
    인자: npz out.mp4 시작KST 길이s 라벨 [global]
-   §10 추가: 경로는 로버 앞 남은 부분만, 새 경로가 오면 3 s 강조('새 경로 계획 HH:MM:SS')·직전 경로 흐린 회색, 목표 깃발, 지나온 궤적(파랑).
+   §10 추가: 경로는 로버 앞 남은 부분만, 새 경로가 오면 3 s 강조('새 경로 계획 HH:MM:SS')·직전 경로 흐린 회색, 지나온 궤적(파랑).
      global 이면 전역 코스트맵(계획기가 보는 지도) 내접·치명 칸을 주황 테두리로 겹침 — 로컬(MPPI)과 전역(계획기) 지도 차이 디버깅용.
    시각: Jetson epoch 1791346297 = 13:11:37 KST. 좌표·치수: 차체 x −0.248~+0.262·y ±0.165, 라이다 x 0.152(yaw π−0.04677), 카메라 x 0.232(URDF)."""
 import sys, math, subprocess
@@ -60,8 +60,7 @@ for k in range(int(DUR * 10)):
             Q = pxy[off[i - 1]:off[i]]; jq = np.argmin(np.hypot(Q[:, 0] - x, Q[:, 1] - y)); d.line([scr(a_, b_) for a_, b_ in Q[jq:]], fill=(150, 150, 150), width=2)
         P = pxy[off[i]:off[i + 1]]; jp = np.argmin(np.hypot(P[:, 0] - x, P[:, 1] - y)); fresh = t - pt[i] < 3
         d.line([scr(a_, b_) for a_, b_ in P[jp:]], fill=(0, 230, 0) if fresh else (0, 150, 0), width=6 if fresh else 3)
-        gu, gv = scr(*P[-1])
-        if -20 < gu < W + 20 and -20 < gv < W + 20: d.line([gu, gv, gu, gv - 26], fill=(0, 0, 0), width=2); d.polygon([(gu, gv - 26), (gu + 16, gv - 21), (gu, gv - 16)], fill=(230, 40, 40))
+        # 목표 깃발은 그리지 않음(10-07 §11 사용자)
         if fresh: d.rectangle([W - 250, 32, W - 6, 56], fill=(0, 120, 0)); d.text((W - 244, 34), '새 경로 계획 %s' % e2kst(pt[i]), fill=(255, 255, 255), font=font)
     i = last(Z['scan_t'], t)
     if i is not None:

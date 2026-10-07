@@ -252,3 +252,9 @@
 - 경로는 로버 앞 남은 부분만, 새 경로 3 s 강조(굵은 밝은 초록 + '새 경로 계획 HH:MM:SS')·직전 경로 흐린 회색, 목표 깃발, 지나온 궤적(파랑), `global` 인자 시 전역 코스트맵 내접·치명 칸 주황 테두리(계획기 지도).
 - 사실: 고른 두 구간 안에는 경로 발행이 없음(131145 17~43 s = 13:12:02~28, 발행 13:11:57·13:12:35 / 130300 0~47 s = 13:03:00~47, 발행 13:02:56·13:03:56). '계획하는 모습' 은 목표 시작·막힘 때만 생김 → 130300 은 0~62 s(56 s 에 발행) 판도 만듦. MPPI 의 매 주기 예측 궤적(/local_plan·후보 궤적)은 bag 에 녹화되지 않아 그릴 수 없음 — 다음 주행부터 녹화하면 가능.
 - 산출(`videos/fused/`, git 제외): cand_A_131145_17-43s · cand_B_130300_0-47s · cand_B_130300_0-62s · debug_131646_global · debug_131823_global.
+
+## §11 사용자: "장기 주행에서만 /local_plan·MPPI 후보 궤적 기록, 클립에 목적지 깃발 빼기, 녹색 선과 파란 선은 무엇인가(녹색 선대로 안 움직이는 것 같다)"
+- 확인(`jobs/job932_topics.sh`): 이 구성엔 `/local_plan` 토픽이 없음. MPPI 는 `visualize` 를 켜면 `/trajectories`(후보·최적 궤적 MarkerArray)·`/transformed_global_plan` 을 냄(지금 false — 09-17 mp7: 기본 간격이면 ≈ 5 MB/s 기록·CPU 압박으로 끔).
+- 구현: `navigation.launch.py mppi_viz:=true`(기본 false) → FollowPathMPPI visualize true + TrajectoryVisualizer trajectory_step 20(후보 1000 중 50)·time_step 2. 순회 prep(`jobs/job918_prep.sh`)만 `EXTRA_NAV=mppi_viz:=true`, 순회 러너(`jobs/run_f2c.sh`)가 `LONG_REC=1` → `job551` 이 `/trajectories /transformed_global_plan` 기록. 다른 시험(상자·회전 등)은 그대로 안 켬.
+- 깃발 제거(`jobs/render_rviz.py`), 후보·디버그 클립 다시 렌더.
+- 선의 정체: **녹색 = 전역 계획 경로**(NavFn + 스무더, 목표 시작·막힘 때만 다시 계산 — RateController 0.01 Hz), **파랑 = 실제 지나온 궤적**(map 위 로버 자세 = SLAM map→odom ∘ EKF odom→base_link). 차이(측정, 0.5 s 간격): 131145 17~43 s 경로에서 떨어진 거리 중앙 3.3 · 90 % 5.7 · 최대 6.1 cm, 130300 0~62 s 중앙 4.2 · 90 % 9.7 · 최대 12.2 cm. 원인(추정 + 기존 측정): ① MPPI 는 경로를 정확히 따르는 컨트롤러가 아니라 경로 추종 비용 + 장애물 비용 등을 합쳐 최적 궤적을 고름(모서리 깎기 — 09-23 f0a1) ② 같은 구간 map→odom 보정이 계단식으로 들어옴(131145 구간 합 0.21 m, 한 번 최대 0.10 m) → 파랑 선에 작은 점프가 섞임(로버 실제 움직임이 아니라 위치 추정 보정).
