@@ -69,8 +69,23 @@ def _make_active_params(context):
     nav_map = LaunchConfiguration('nav_map').perform(context).strip()
     if nav_map:
         params['global_costmap']['global_costmap']['ros__parameters']['static_layer']['map_topic'] = '/map_nav'
+    # 2026-10-07 §8.2: global_camera:=stvl 이면 전역의 카메라를 라이다와 한 격자(obstacle_layer)에서 빼 STVL 3D 층으로.
+    #   왜: 한 격자에선 라이다(0.185 m) 2D 소거가 빔 아래 낮은 상자(카메라만 봄)를 매 스캔 지움 → 가까이 가면 상자를 잊고 밀거나(f2c2)
+    #   계획·MPPI 가 엇갈려 정체(f2d2). 사용자 조건: '화각 밖에선 기억, 카메라가 보고 있을 땐 갱신'(동적 물체를 계속 기억하면 못 감).
+    #   STVL: 표시 = 깊이점(0.06~0.40 m, 1.2 m 안), 기억 = voxel_decay(긴 수명), 갱신 = 깊이 절두체 안에서만 가속 감쇠로 소거.
+    #   절두체 근평면 min_z 는 실측 깊이 끊김(0.45~0.65 m, 장면마다 다름 — 09-09·09-10 에 근평면을 너무 가깝게 둬 보이지 않는 상자를 2~3 s 에 지움)
+    #   보다 넉넉히 0.8 m. 감쇠 가속: 선형 수명 T 에서 절두체 안 t 초 뒤 소거 ≈ √(T/a)(09-10: T 30·a 3 → 2~3 s 실측) → T 600·a 100 ≈ 2.4 s.
+    gcam = LaunchConfiguration('global_camera').perform(context).strip() or 'obstacle'
+    if gcam == 'stvl':
+        gp = params['global_costmap']['global_costmap']['ros__parameters']
+        gp['plugins'] = ['static_layer', 'stvl_layer', 'obstacle_layer', 'inflation_layer']
+        gp['obstacle_layer']['observation_sources'] = 'scan'                 # 라이다만 — 카메라 칸을 못 지움(별도 격자)
+        sv = gp['stvl_layer']; sv['voxel_decay'] = 600.0; sv['decay_model'] = 0
+        sv['depth_clear']['min_z'] = 0.8; sv['depth_clear']['decay_acceleration'] = 100.0
+    elif gcam != 'obstacle':
+        raise RuntimeError('global_camera 는 obstacle|stvl 중 하나: %s' % gcam)
     with open(_ACTIVE_PARAMS, 'w', encoding='utf-8') as f:
-        f.write('# 자동 생성(navigation.launch.py, camera_layer=%s) — 원본 %s\n' % (layer, src))
+        f.write('# 자동 생성(navigation.launch.py, camera_layer=%s, global_camera=%s) — 원본 %s\n' % (layer, gcam, src))
         yaml.safe_dump(params, f, allow_unicode=True, sort_keys=False)
     nav2_launch = os.path.join(
         get_package_share_directory('nav2_bringup'), 'launch', 'navigation_launch.py')
@@ -120,6 +135,8 @@ def generate_launch_description():
         DeclareLaunchArgument('camera_pointcloud', default_value='keep',
                               description="keep(기본: 점군 유지 — 게이트·러너가 씀) | off(모드 N 운용 전용, 계측 불가)"),
         DeclareLaunchArgument('use_sim_time', default_value='false'),
+        DeclareLaunchArgument('global_camera', default_value='obstacle',
+                              description='전역 카메라 표시: obstacle(라이다와 한 격자, 10-01 §8.35) | stvl(별도 3D 층, 화각 밖 기억·절두체 안 갱신, 10-07 §8.2)'),
         DeclareLaunchArgument('nav_map', default_value='',
                               description='전역 정적 층에 쓸 저장 지도 yaml(비우면 slam_toolbox /map). 10-01 §8.33'),
         DeclareLaunchArgument('local_frame', default_value='odom',
