@@ -226,7 +226,10 @@ controller_server:
       wz_max: 0.38          # 2026-09-07 B_eff 0.443 (실 최대 0.384)
       iteration_count: 2        # 1 → 2 (10 Hz·32 step 이라 20 Hz·1 회와 같은 연산량 = mp2 수준)
       prune_distance: 1.0
-      transform_tolerance: 0.2
+      # ★ 2026-10-07 §5·§6: 0.2 → 0.5. slam 의 map→odom stamp 가 1.49 s 멈춰 '미래 여유'(transform_timeout 0.5)를 다 쓰자
+      #   MPPI 경로 변환이 6.6 ms 차로 실패 → follow_path 중단·wait 5 s(f2c2 t 235, 같은 오류 7 회). 10-01 f2a1·f2a2 와 같은 기제.
+      #   대가: 최대 0.5 s 묵은 map→odom 으로 경로를 odom 에 옮길 수 있으나 map→odom 은 느리게 변하는 보정값이라 영향 작음(추정).
+      transform_tolerance: 0.5
       # ★ 2026-09-17 §12: 0.15 → 0.3 (Nav2 기본값으로 복귀). 0.15 는 09-16 mp4 에서 네 손잡이 중 하나로 함께 바꿨을 뿐
       #   단독 효과는 검증되지 않았다(당시 시뮬레이션에서 입구 정지를 푼 것은 PathFollow 10/20).
       #   조향 흔들림(통로 명령 ω 부호반전 10~15 /m, 고주파 RMS 0.06~0.08 rad/s)의 기제 = softmax 유효 표본 수(ESS)
