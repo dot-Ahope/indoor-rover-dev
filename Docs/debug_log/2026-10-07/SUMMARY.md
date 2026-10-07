@@ -276,3 +276,15 @@
 - 원본 줄 = 비공개 personal 의 `feature/nvblox-migration`(모든 것 — CLAUDE.md 다시 추적, 실명 이메일 이력 포함). 작업·커밋은 여기서.
 - 공개 줄 = `private/publish_public.sh` 가 원본에서 만들어 public(`indoor-rover-dev`)의 `dev` 로 push: CLAUDE.md·`private/`·옛 쇼케이스/mp4 제외, 개인 계획 문구 치환(`private/repl.txt`, 메시지 포함), 작성자 이메일 익명화(`private/mailmap.txt`: 본인 → GitHub noreply, 동료 → anonymous@example.invalid, 이름 유지). 같은 입력이면 같은 해시 → 일반 push. 공개 전 점검(문구·옛 이메일·비공개 경로 0)과 '공개 dev 가 조상인가' 를 확인하고, 아니면 중단. `main` 반영은 `--push-main`(사용자 결정 뒤).
 - 앞선 공개본(5754c26)은 이 규칙으로 만든 것과 같아야 함 → 첫 실행에서 확인.
+
+## §15 하루 마무리(사용자: 공개 main 반영, 오늘 마무리)
+- 공개 `main` 반영: `bash private/publish_public.sh --push-main` → public main = dev = eec6f67.
+- 상자 시험 녹화(카메라 점군 포함) Jetson /tmp → `bags/bag_box1.tgz`(820 MB, git 제외) — 재부팅 소실 방지, §8 오프라인 시험용.
+- Jetson 상태: 스택은 §8.4 재 prep 구성(전역 카메라 STVL·rf2o·G4 잔차) 그대로 떠 있음. **다음 주행 전 원래 구성(global_camera:=obstacle)으로 prep 다시**, Wi-Fi 는 ALOPS 172.30.1.8(WEB_DEV DHCP 무응답 미해결).
+- 오늘 결론
+  - G4 를 휠 잔차로: 곡선 회전 오판 35 → 2 %(재생), 제자리 판정 동일. 움직이는 큰 가림은 4.5~7.4 cm(목표 3 cm 미달).
+  - 순회: f2c 9/10, f2d 는 남서 '위치만(f)' 으로 통과 — 남서 방향 맞춤 정체 3/3 재현이 원인.
+  - **계획기·MPPI 지도 불일치**: 낮은 상자는 카메라만 보는데 전역은 라이다 2D 소거로 잊음 + 주기 재계획 없음 → 상자 밀기(f2c2)·정체(f2d2). 전역 카메라 STVL 분리 시험: 기억 C1 통과, 갱신 C2 불합격(치운 뒤 점 100 → 0 인데 칸 유지) → 채택 안 함.
+  - W3 저속 떨림: TF 지연 가설 기각, 원인 미확정. 11:12 중단은 slam map→odom stamp 1.49 s 멈춤 → MPPI transform_tolerance 0.5.
+- 다음(제안 순서): ① bag_box1 로 STVL 소거 실패 원인 오프라인(설정 A/B) ② 주기 재계획 재검토(1 Hz 때 170 회 재계획 문제와 함께) ③ 피벗 회전 ④ 전선 시험. 장기 주행은 mppi_viz·LONG_REC 로 MPPI 궤적 기록.
+- 하루 보고: `2026-10-07_report.html`(아티팩트 BYwarUPHXJaCKDceFGrHes).
