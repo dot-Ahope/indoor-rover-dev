@@ -1,0 +1,49 @@
+== 지도 office_v3 | 위치 추정 slamloc | 매핑 전용 0 | SLAM 루프 창: loop_search_space_dimension: 3.0
+  정리 전 프로세스: 0
+  /wheel_odom  average rate: 25.001
+  [sensor_conditioner_node-6] [INFO] [1791337741.992221701] [sensor_conditioner]: gyro bias calibrated: (-0.00655, -0.00065, -0.00171) rad/s, std=(0.0026, 0.0025, 0.0018)
+  /odometry/filtered average rate: 30.004
+  slam 인자: map_file:=/home/jetson/maps/office/office_v3 slam_mode:=localization
+  map->odom: - Translation: [0.005, -0.003, 0.000]
+  /controller_server   ?
+  /planner_server      active [3]
+  /behavior_server     ?
+  EKF 위반 41회 | slam 폐기 7회 | load 10.94 4.30 1.63
+== 위치 추정 로그: [INFO] [launch.user]: [slam.launch] 위치 추정(지도 고정): /home/jetson/maps/office/office_v3 에서 시작 자세 (0.000, 0.000, 0.000)
+== 프로세스
+  rplidar              1
+  realsense2_camera    1
+  ekf_node             2
+  async_slam_toolbox   0
+  localization_slam    1
+  amcl                 0
+  map_server           1
+  stuck_monitor        1
+  foxglove_bridge      1
+  controller_server    1
+  ros2 bag record      0
+  teleop_node          0
+/map 333×242, 해상도 0.050, 원점 (-5.29, -6.96) — 저장본 office_v1 301×213 (−5.09, −6.96) · office_v2 333×227 (−5.29, −6.96)
+   1.0 s  map (+nan, +nan, +nan°)  원점 거리 nan cm
+   2.0 s  map (+nan, +nan, +nan°)  원점 거리 nan cm
+   3.0 s  map (+0.0046, -0.0030, +0.78°)  원점 거리 0.55 cm
+   4.0 s  map (+0.0046, -0.0030, +0.80°)  원점 거리 0.55 cm
+   5.0 s  map (+0.0046, -0.0030, +0.83°)  원점 거리 0.55 cm
+   6.0 s  map (+0.0046, -0.0030, +0.84°)  원점 거리 0.55 cm
+   7.0 s  map (+0.0046, -0.0030, +0.87°)  원점 거리 0.55 cm
+   8.0 s  map (+0.0046, -0.0030, +0.86°)  원점 거리 0.55 cm
+   9.0 s  map (+0.0046, -0.0030, +0.84°)  원점 거리 0.55 cm
+  10.0 s  map (+0.0046, -0.0030, +0.84°)  원점 거리 0.55 cm
+  11.0 s  map (+0.0046, -0.0030, +0.85°)  원점 거리 0.55 cm
+  12.0 s  map (+0.0046, -0.0030, +0.85°)  원점 거리 0.55 cm
+  13.0 s  map (+0.0046, -0.0030, +0.86°)  원점 거리 0.55 cm
+  14.0 s  map (+0.0046, -0.0030, +0.85°)  원점 거리 0.55 cm
+  15.0 s  map (+0.0046, -0.0030, +0.84°)  원점 거리 0.55 cm
+  16.0 s  map (+0.0046, -0.0030, +0.85°)  원점 거리 0.55 cm
+마지막 5 표본 흔들림 0.00 cm, 원점 거리 0.55 cm
+  배터리: voltage: 12.170473098754883
+  static map_topic: String value is: /map_nav
+  /map_nav: Publisher count: 1
+  전역 plugins: String values are: ['static_layer', 'obstacle_layer', 'inflation_layer'] · stuck shadow Boolean value is: True · nav_guard 1
+  sensors 인자 확인: 
+  게이트 파라미터: String value is: on
