@@ -218,3 +218,6 @@
   4. watch 20(사용자가 상자 ② 를 치움, 로버는 보고 있음): **C2 갱신**: 치운 뒤 ≤ 5 s 안에 칸 0.
   5. watch 15(사용자가 상자 ② 를 제자리에 놓음): **C3 재표시** ≤ 3 s.
   - **C4 유령**: 녹화로 옛 구성(obstacle 한 격자) 과 STVL 을 오프라인 재계산 — 출발 방 영역 고비용 칸이 STVL 에서 늘지 않음.
+### §8.4 첫 시도 중단 — 내 설정 결함(로버 안 움직임)
+- prep(`outputs/j922_prep.txt`) 통과·새 설정 반영(전역 plugins static·stvl·obstacle(scan)·inflation, decay 600·min_z 0.8·a 100). 녹화 시작 후 단계 1 에서 상자 ② 칸 0.
+- 확인(`jobs/job925_chk.sh`·`job926_gc.py`): 점군 16 Hz 정상, 로컬 코스트맵은 앞을 봄. **전역 코스트맵 출발 방 대부분 −1(미지)** — 재사용한 STVL 블록의 `track_unknown_space: true` 가 카메라가 못 본 곳을 미지로 덮어 정적 지도의 빈 공간까지 가림(최대값 결합). → 전역 카메라 STVL 은 `track_unknown_space: false` 로 고침(`navigation.launch.py`). 재 prep 뒤 단계 1 부터 다시.

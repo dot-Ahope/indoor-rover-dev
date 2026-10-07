@@ -81,6 +81,9 @@ def _make_active_params(context):
         gp['plugins'] = ['static_layer', 'stvl_layer', 'obstacle_layer', 'inflation_layer']
         gp['obstacle_layer']['observation_sources'] = 'scan'                 # 라이다만 — 카메라 칸을 못 지움(별도 격자)
         sv = gp['stvl_layer']; sv['voxel_decay'] = 600.0; sv['decay_model'] = 0
+        # §8.3 정정: 원 STVL 블록의 track_unknown_space true 를 그대로 쓰니 카메라가 아직 못 본 곳을 '미지' 로 덮어(최대값 결합)
+        #   정적 지도의 빈 공간까지 가림(출발 방 대부분 −1). 전역 카메라 층은 본 것만 표시 → false.
+        sv['track_unknown_space'] = False
         sv['depth_clear']['min_z'] = 0.8; sv['depth_clear']['decay_acceleration'] = 100.0
     elif gcam != 'obstacle':
         raise RuntimeError('global_camera 는 obstacle|stvl 중 하나: %s' % gcam)
