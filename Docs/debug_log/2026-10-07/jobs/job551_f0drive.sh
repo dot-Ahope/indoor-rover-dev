@@ -31,7 +31,8 @@ awk -v u=$LU -v m=${LOAD_MAX:-60} 'BEGIN{exit !(u<=m)}' || { echo "  P 불합격
 BAG=/tmp/bag_$NAME; rm -rf $BAG
 TOPICS="/tf /tf_static /map /scan /plan /plan_smoothed /local_costmap/costmap /global_costmap/costmap /odometry/filtered /wheel_odom /cmd_vel /rover/status /battery /rover/stuck /imu/data"
 [ "${BAG_PROFILE:-}" = nvblox ] && TOPICS="$TOPICS /nvblox_node/static_map_slice"
-TOPICS="$TOPICS ${EXTRA_TOPICS:-}"   # 10-07 §2: rf2o 비교 주행 — /odometry/ekf_a /odom_rf2o /odom_rf2o/gated
+TOPICS="$TOPICS ${EXTRA_TOPICS:-}"
+[ "${LONG_REC:-0}" = 1 ] && TOPICS="$TOPICS /trajectories /transformed_global_plan"   # 10-07 §11: 장기 주행만 — MPPI 후보·최적 궤적(prep 에 mppi_viz:=true 필요)   # 10-07 §2: rf2o 비교 주행 — /odometry/ekf_a /odom_rf2o /odom_rf2o/gated
 setsid nohup ros2 bag record -o $BAG $TOPICS > /tmp/bag_$NAME.log 2>&1 &
 setsid nohup tegrastats --interval 1000 > /tmp/tegra_$NAME.log 2>&1 &
 (for i in $(seq 1 400); do top -b -n1 | head -30; sleep 2; done) > /tmp/top_$NAME.log 2>&1 &
