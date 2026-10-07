@@ -258,3 +258,8 @@
 - 구현: `navigation.launch.py mppi_viz:=true`(기본 false) → FollowPathMPPI visualize true + TrajectoryVisualizer trajectory_step 20(후보 1000 중 50)·time_step 2. 순회 prep(`jobs/job918_prep.sh`)만 `EXTRA_NAV=mppi_viz:=true`, 순회 러너(`jobs/run_f2c.sh`)가 `LONG_REC=1` → `job551` 이 `/trajectories /transformed_global_plan` 기록. 다른 시험(상자·회전 등)은 그대로 안 켬.
 - 깃발 제거(`jobs/render_rviz.py`), 후보·디버그 클립 다시 렌더.
 - 선의 정체: **녹색 = 전역 계획 경로**(NavFn + 스무더, 목표 시작·막힘 때만 다시 계산 — RateController 0.01 Hz), **파랑 = 실제 지나온 궤적**(map 위 로버 자세 = SLAM map→odom ∘ EKF odom→base_link). 차이(측정, 0.5 s 간격): 131145 17~43 s 경로에서 떨어진 거리 중앙 3.3 · 90 % 5.7 · 최대 6.1 cm, 130300 0~62 s 중앙 4.2 · 90 % 9.7 · 최대 12.2 cm. 원인(추정 + 기존 측정): ① MPPI 는 경로를 정확히 따르는 컨트롤러가 아니라 경로 추종 비용 + 장애물 비용 등을 합쳐 최적 궤적을 고름(모서리 깎기 — 09-23 f0a1) ② 같은 구간 map→odom 보정이 계단식으로 들어옴(131145 구간 합 0.21 m, 한 번 최대 0.10 m) → 파랑 선에 작은 점프가 섞임(로버 실제 움직임이 아니라 위치 추정 보정).
+
+## §12 첫 페이지(README) 영상 확정(사용자: cand_A_131145 17~43 s · cand_B_130300 0~47 s, 소리 제거, 포스터 → 클릭 재생)
+- 소리: 결합 영상 11 개 모두 오디오 트랙 0(처음부터 `-an`). 원본 휴대폰 영상만 aac 오디오 — `videos/` 는 git 제외. 메타데이터: 원본에 Android 버전·시간대 태그만(GPS 없음), 결합본은 인코더 태그만 + 최종본은 `-map_metadata -1`.
+- 정정: B 의 데이터 화면 제목이 62 s 판의 '출발 → W3' 로 남아 있었음(0~47 s 는 첫 목표 B 지점) → '출발 → B 지점' 으로 다시 렌더.
+- `Docs/media/2026-10-07_start_through_door.{mp4,jpg}`(47 s, 12 MB, 포스터 25 s) · `2026-10-07_corridor_to_D.{mp4,jpg}`(26 s, 7 MB, 포스터 13 s). 루트 `README.md`(한국어): 영상 2 개 + 녹색/파랑 선 설명(§11 수치), 결과 표에 구석 정체 해결 추가, '아직 풀지 못한 것' 에 계획기·MPPI 지도 불일치(§8·§10) 반영.
