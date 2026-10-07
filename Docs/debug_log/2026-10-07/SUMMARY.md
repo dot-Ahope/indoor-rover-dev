@@ -271,3 +271,8 @@
 - 수정: PROJECT_OVERVIEW(구분·범위 배너·변경 이력 1.4), debug_log 08-31·09-02·09-07·09-18·10-07, job231 주석, NAV2_EXPLORATION_PLAN·TEST_COURSE_AND_GATES 의 개인 계획 관련 표현 → '개인 프로젝트'·'개선 전후 비교' 등. 추적 파일 잔여 0 건(CLAUDE.md 제외).
 - `CLAUDE.md` 는 `.gitignore` 에 넣고 추적 해제(PC 파일은 그대로 — 작업 지침·개인 계획·내부 네트워크 정보 포함).
 - 과거 이력: 해당 문구가 든 커밋 6 개 + 이전에 올린 mp4·쇼케이스가 남아 있음 → 처리 방식은 사용자 결정 대기.
+
+## §14 저장소 운영 확정(사용자: "새 작업까지 이중 백업, public 에 안 올라가는 것(CLAUDE.md 등)도 올라가게")
+- 원본 줄 = 비공개 personal 의 `feature/nvblox-migration`(모든 것 — CLAUDE.md 다시 추적, 실명 이메일 이력 포함). 작업·커밋은 여기서.
+- 공개 줄 = `private/publish_public.sh` 가 원본에서 만들어 public(`indoor-rover-dev`)의 `dev` 로 push: CLAUDE.md·`private/`·옛 쇼케이스/mp4 제외, 개인 계획 문구 치환(`private/repl.txt`, 메시지 포함), 작성자 이메일 익명화(`private/mailmap.txt`: 본인 → GitHub noreply, 동료 → anonymous@example.invalid, 이름 유지). 같은 입력이면 같은 해시 → 일반 push. 공개 전 점검(문구·옛 이메일·비공개 경로 0)과 '공개 dev 가 조상인가' 를 확인하고, 아니면 중단. `main` 반영은 `--push-main`(사용자 결정 뒤).
+- 앞선 공개본(5754c26)은 이 규칙으로 만든 것과 같아야 함 → 첫 실행에서 확인.
