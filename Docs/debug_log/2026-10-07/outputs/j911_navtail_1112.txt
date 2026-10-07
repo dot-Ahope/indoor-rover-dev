@@ -1,0 +1,19 @@
+11:12:27
+  0.104
+  G2 통과 (0.104 m)
+  P 통과 (정지 부하 50 %)
+########## F0 주행 11:08:14 — 목표 1.6,-5.55,p;-1.6,-5.5,p;-1.65,-3.7,p;-1.6,-2.1,p;5.5,-2.2,p;0,0,p ##########
+[INFO] [1791339049.807843201] [nav_guard]: 목표 8df9abaa: 남은 거리 0.15 m → 시간 한도 34 s (시작 뒤 0.0 s)
+[INFO] [1791339049.858966920] [controller_server]: Received a goal, begin computing control effort.
+[INFO] [1791339049.863701079] [nav_guard]: 목표 8df9abaa: 남은 거리 1.75 m → 시간 한도 80 s (시작 뒤 0.1 s)
+[INFO] [1791339049.868926677] [controller_server]: Optimizer reset
+[INFO] [1791339076.578115866] [nav_guard]: 목표 ed69588c: 남은 거리 0.14 m → 시간 한도 34 s (시작 뒤 0.0 s)
+[INFO] [1791339076.622218547] [controller_server]: Received a goal, begin computing control effort.
+[INFO] [1791339076.625655896] [nav_guard]: 목표 ed69588c: 남은 거리 7.26 m → 시간 한도 237 s (시작 뒤 0.0 s)
+[INFO] [1791339076.627286249] [controller_server]: Optimizer reset
+[WARN] [1791339129.332281024] [controller_server]: [follow_path] [ActionServer] Aborting handle.
+[INFO] [1791339129.343584163] [local_costmap.local_costmap]: Received request to clear except a region the local_costmap
+[INFO] [1791339129.344890152] [controller_server]: Received a goal, begin computing control effort.
+[WARN] [1791339129.570125737] [controller_server]: [follow_path] [ActionServer] Aborting handle.
+[INFO] [1791339134.654826168] [controller_server]: Received a goal, begin computing control effort.
+[INFO] [1791339134.660351606] [controller_server]: Optimizer reset
