@@ -52,7 +52,8 @@ def _nodes(context):
                  parameters=[{'relay_plain': shadow, 'csv': LaunchConfiguration('gate_csv').perform(context),
                               'gyro_source': LaunchConfiguration('gate_src').perform(context),
                               'q_mode': LaunchConfiguration('gate_q').perform(context),
-                              'v_mode': LaunchConfiguration('gate_v').perform(context)}, st]),
+                              'v_mode': LaunchConfiguration('gate_v').perform(context),
+                              'v_ref': LaunchConfiguration('gate_vref').perform(context)}, st]),
         ]
     acts.append(Node(package='robot_localization', executable='ekf_node', name='ekf_filter_node', output='screen', parameters=ekf))
     if shadow:
@@ -77,6 +78,8 @@ def generate_launch_description():
         DeclareLaunchArgument('gate_src', default_value='ekf', description='rf2o 게이트 회전 속도 기준: ekf(30 Hz, 기본) | imu(200 Hz)'),
         DeclareLaunchArgument('gate_q', default_value='off', description='rf2o 게이트 G3 품질 검사: off | log | on (10-06 §12)'),
         DeclareLaunchArgument('gate_v', default_value='off', description='rf2o 게이트 G4 회전 중 병진 타당성: off | on (10-06 §12.1)'),
+        DeclareLaunchArgument('gate_vref', default_value='wheel',
+                              description='G4 판정량: wheel(휠과의 잔차, 10-07 §4 기본) | abs(rf2o |v| 절댓값, 10-06~07 §1)'),
         DeclareLaunchArgument('use_sim_time', default_value='false', description='bag 재생 검증용'),
         OpaqueFunction(function=_nodes),
     ])
