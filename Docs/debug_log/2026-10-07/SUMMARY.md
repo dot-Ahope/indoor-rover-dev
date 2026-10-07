@@ -266,3 +266,8 @@
 ### §12.1 사용자: "README 가 장황하다 — nvblox 저장소처럼 구현한 기능과 작업 절차만, mp4 대신 가벼운 gif"
 - README 를 소개 한 줄 · GIF 2 개 · 구현한 기능 5 줄 · 작업 절차 4 단계 · 문서 링크로 줄임.
 - GIF: 3 배속·6 fps·폭 560·64 색·디더 없음(1 차 2 배속·8 fps·720 폭은 15·25 MB 로 너무 큼) → `Docs/media/2026-10-07_start_through_door.gif` 6.4 MB(15.7 s) · `2026-10-07_corridor_to_D.gif` 3.7 MB(8.7 s). mp4·jpg 는 저장소에서 내림(`videos/fused/media_prev/` 보관, 이미 push 된 이력엔 남음).
+
+## §13 사용자: "PROJECT_OVERVIEW 의 개인 계획 이야기 — 공개 프로젝트엔 좋지 않다, 빼자" → 문구 수정 + CLAUDE.md 저장소에서 내림(사용자 선택), 이력 처리는 권장안 제시
+- 수정: PROJECT_OVERVIEW(구분·범위 배너·변경 이력 1.4), debug_log 08-31·09-02·09-07·09-18·10-07, job231 주석, NAV2_EXPLORATION_PLAN·TEST_COURSE_AND_GATES 의 개인 계획 관련 표현 → '개인 프로젝트'·'개선 전후 비교' 등. 추적 파일 잔여 0 건(CLAUDE.md 제외).
+- `CLAUDE.md` 는 `.gitignore` 에 넣고 추적 해제(PC 파일은 그대로 — 작업 지침·개인 계획·내부 네트워크 정보 포함).
+- 과거 이력: 해당 문구가 든 커밋 6 개 + 이전에 올린 mp4·쇼케이스가 남아 있음 → 처리 방식은 사용자 결정 대기.
