@@ -257,7 +257,9 @@ controller_server:
       #   현재 0.234 m(실측 0.243 재현) / 문턱 0.2 → 0.144 / 문턱 0.2 + GoalCritic 10 → 0.116 m (xy tol 0.15) → 둘 다 적용.
       GoalCritic: {enabled: true, cost_power: 1, cost_weight: 10.0, threshold_to_consider: 1.0}
       GoalAngleCritic: {enabled: true, cost_power: 1, cost_weight: 3.0, threshold_to_consider: 0.4}
-      PreferForwardCritic: {enabled: true, cost_power: 1, cost_weight: 5.0, threshold_to_consider: 0.4}
+      # 10-08 §6: 5.0 → 15.0 — 앞 회전 우선(사용자). 오프라인 시뮬(job944/946, seed 3): W3 출발 후진 0.36~1.19 → 0.22~0.45 m, 세 번 모두 돌아서 전진.
+      #   좁은 서쪽 통로 입구 LETHAL 최소 여유 0.029~0.057 → 0.023~0.045 m 로 동등. 30 은 좁은 곳에서 여유 −0.025(충돌)라 기각. 후진 한도(vx_min −0.06)는 그대로.
+      PreferForwardCritic: {enabled: true, cost_power: 1, cost_weight: 15.0, threshold_to_consider: 0.4}
       # consider_footprint: 직사각 풋프린트(0.5×0.33) 정확 반영 — CPU 비용 있으나 좁은 공간 정확성에 필수
       ObstaclesCritic: {enabled: true, cost_power: 1, repulsion_weight: 1.5, critical_weight: 20.0, consider_footprint: true, collision_cost: 10000.0, collision_margin_distance: 0.05, near_goal_distance: 0.5}   # 09-18: 목록에서 빠짐(A/B 복귀용으로 둠)
       # CostCritic (09-18): 기본값 그대로(README 예시와 같음). near_goal_distance 는 0.5 유지 — README 예시 1.0 이면 상자 뒤 모서리(x 1.25~1.35, 목표에서 0.65~0.75 m)
