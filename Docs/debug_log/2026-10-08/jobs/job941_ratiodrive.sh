@@ -7,7 +7,8 @@ export FASTRTPS_DEFAULT_PROFILES_FILE=/home/jetson/ros2_ws/install/rover_bringup
 echo "########## 비율 시험 게이트 $(date +%T) ##########"
 DUP=0; for p in microros_agent robot_state_publisher realsense2_camera rplidar sensor_conditioner ekf_node slam_toolbox stuck_monitor; do c=$(pgrep -fc "$p" 2>/dev/null | head -1); e=1; [ $p = ekf_node ] && e=$((1 + $(pgrep -fc "__node:=ekf_shadow_a" 2>/dev/null | head -1))); [ "${c:-0}" != $e ] && { DUP=1; echo "  ★ $p = $c개"; }; done
 [ $DUP = 1 ] && { echo "  A 불합격 — 주행하지 않음"; exit 1; }
-SH=$(timeout 10 ros2 param get /stuck_monitor shadow_mode 2>&1 | tail -1); echo "  stuck_monitor shadow: $SH (관찰 모드여야 반피벗 병진을 정체로 오판해 지령을 끊지 않음)"
+for i in 1 2 3; do SH=$(timeout 15 ros2 param get /stuck_monitor shadow_mode 2>&1 | tail -1); echo "$SH" | grep -q Boolean && break; done;   # 10-08 §5.6: 첫 조회가 빈 값으로 오는 일이 있어 3 회
+echo "  stuck_monitor shadow: $SH (관찰 모드여야 반피벗 병진을 정체로 오판해 지령을 끊지 않음)"
 echo "$SH" | grep -q True || { echo "  S 불합격(stuck_monitor 작동 모드) — 주행하지 않음"; exit 1; }
 BR=$(timeout 6 ros2 topic hz /wheel_odom 2>&1 | grep -aoE 'average rate: [0-9.]+' | tail -1); [ -z "$BR" ] && { echo "  B 불합격(보드 무발행) — 주행하지 않음"; exit 1; }
 SA=$(python3 /tmp/job386_slamalive.py 2>&1 | grep -av "^\["); [ "$(echo "$SA" | tail -1)" = OK ] || { echo "  C 불합격(SLAM) — 주행하지 않음"; echo "$SA" | tail -2; exit 1; }
