@@ -92,6 +92,9 @@ def _make_active_params(context):
         gp = params['global_costmap']['global_costmap']['ros__parameters']
         gp['plugins'] = ['static_layer', 'nvblox_layer', 'obstacle_layer', 'inflation_layer']
         gp['obstacle_layer']['observation_sources'] = 'scan'
+        # §3.3 정정: 전역 nvblox 층의 기준 프레임을 map 으로 — 지정 안 하면 기본 odom 이라 슬라이스를 odom 좌표로 바꿔 map 격자에 그려
+        #   map→odom 보정만큼 밀림(f2e1: 상자 ② 가 ≈ 0.3 m 북쪽에 찍혀 계획기가 실제 상자 위로 경로를 냄). 로컬은 위에서 local_frame 으로 지정.
+        gp.setdefault('nvblox_layer', {})['nav2_costmap_global_frame'] = gp.get('global_frame', 'map')
     elif gcam != 'obstacle':
         raise RuntimeError('global_camera 는 obstacle|stvl|nvblox 중 하나: %s' % gcam)
     # 2026-10-08 §3: replan_hz 를 주면 BT RateController 주기를 바꾼 사본을 써서 '보이는 순간 재계획'(기본 0.01 = 목표당 1 회, 10-01 §8.24).
