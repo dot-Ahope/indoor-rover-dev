@@ -85,8 +85,26 @@ def _make_active_params(context):
         #   정적 지도의 빈 공간까지 가림(출발 방 대부분 −1). 전역 카메라 층은 본 것만 표시 → false.
         sv['track_unknown_space'] = False
         sv['depth_clear']['min_z'] = 0.8; sv['depth_clear']['decay_acceleration'] = 100.0
+    elif gcam == 'nvblox':
+        # 2026-10-08 §3: 전역 카메라도 nvblox 슬라이스로 — 로컬(MPPI)과 같은 카메라 장애물을 계획기가 보게(10-07 §10 지도 불일치).
+        #   근거: 같은 상자 시험에서 nvblox 는 치운 뒤 2~3 s 에 대부분 지움(STVL 은 못 지움, 10-08 §1.1), 순회 중 카메라만 본 묶음은
+        #   사용자 확인 결과 대부분 실제 낮은 물체(에어캡 포함, §2.2). 카메라 점군 obstacle 소스는 빼고 라이다만(라이다가 카메라 칸을 지우던 문제 제거).
+        gp = params['global_costmap']['global_costmap']['ros__parameters']
+        gp['plugins'] = ['static_layer', 'nvblox_layer', 'obstacle_layer', 'inflation_layer']
+        gp['obstacle_layer']['observation_sources'] = 'scan'
     elif gcam != 'obstacle':
-        raise RuntimeError('global_camera 는 obstacle|stvl 중 하나: %s' % gcam)
+        raise RuntimeError('global_camera 는 obstacle|stvl|nvblox 중 하나: %s' % gcam)
+    # 2026-10-08 §3: replan_hz 를 주면 BT RateController 주기를 바꾼 사본을 써서 '보이는 순간 재계획'(기본 0.01 = 목표당 1 회, 10-01 §8.24).
+    rhz = LaunchConfiguration('replan_hz').perform(context).strip()
+    if rhz:
+        bt_src = params['bt_navigator']['ros__parameters']['default_nav_to_pose_bt_xml']
+        with open(bt_src, encoding='utf-8') as f:
+            bt = f.read()
+        assert bt.count('<RateController hz="0.01">') == 1, 'BT RateController 줄을 못 찾음'
+        bt_dst = '/tmp/nav_to_pose_active.xml'
+        with open(bt_dst, 'w', encoding='utf-8') as f:
+            f.write(bt.replace('<RateController hz="0.01">', '<RateController hz="%s">' % float(rhz)))
+        params['bt_navigator']['ros__parameters']['default_nav_to_pose_bt_xml'] = bt_dst
     # 2026-10-07 §11 (사용자): 장기 주행에서만 MPPI 후보 궤적·최적 궤적(/trajectories MarkerArray)·변환 경로(/transformed_global_plan) 발행.
     #   왜: 경로를 '계획하는 모습' 을 시각화하려면 매 주기 예측이 필요. 평소엔 끔 — 09-17 mp7: 기본 간격이면 ≈5 MB/s 기록·15 W CPU 압박.
     #   간격을 넓혀 부담을 줄임: 후보 1000 개 중 20 개마다 1 개(50 개), 시간 2 스텝마다.
@@ -144,10 +162,12 @@ def generate_launch_description():
         DeclareLaunchArgument('camera_pointcloud', default_value='keep',
                               description="keep(기본: 점군 유지 — 게이트·러너가 씀) | off(모드 N 운용 전용, 계측 불가)"),
         DeclareLaunchArgument('use_sim_time', default_value='false'),
+        DeclareLaunchArgument('replan_hz', default_value='',
+                              description='BT 주기 재계획 Hz(비우면 원본 0.01 = 목표당 1 회). 10-08 §3 A/B'),
         DeclareLaunchArgument('mppi_viz', default_value='false',
                               description='장기 주행 기록용 MPPI 후보·최적 궤적 발행(10-07 §11, 기본 끔)'),
         DeclareLaunchArgument('global_camera', default_value='obstacle',
-                              description='전역 카메라 표시: obstacle(라이다와 한 격자, 10-01 §8.35) | stvl(별도 3D 층, 화각 밖 기억·절두체 안 갱신, 10-07 §8.2)'),
+                              description='전역 카메라 표시: obstacle(라이다와 한 격자, 10-01 §8.35) | stvl(10-07 §8, 갱신 불합격) | nvblox(10-08 §3)'),
         DeclareLaunchArgument('nav_map', default_value='',
                               description='전역 정적 층에 쓸 저장 지도 yaml(비우면 slam_toolbox /map). 10-01 §8.33'),
         DeclareLaunchArgument('local_frame', default_value='odom',
