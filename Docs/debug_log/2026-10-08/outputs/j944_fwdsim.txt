@@ -1,0 +1,83 @@
+######## W3출발 (bag_f2e2 t_abs 1791437906.27)
+F5_W3출발 bag bag_f2e2 t=113.5 자세 (5.390,-2.014) yaw -3.3° 초기 cmd v +0.000 w +0.000 | 경로 5점(간격 0.025) | obst=1 vx_std=0.08 wz_std=0.4 temperature=0.15 iters=2 align_w=14 follow_w=10 follow_off=20 cost_w=3.81 crit_cost=300 near_thr=0.5
+  cyc |  cmd v    w  | 로버 x y yaw | furth | 충돌% | 끝단전방 중앙/최대 | 평균비용 obst align follow angle+goal | 최저후보 v w | 평균열 최대비용/충돌스텝 | LETHAL 여유
+     후진 거리 1.000 m · 제자리 회전 시간 1.1 s · 경로 끝 도달 None 주기
+  → 200 주기(20.0 s) 후: 전진 -0.918 횡 +0.301 회전 -108.5°, 최종 cmd v -0.003 w -0.380
+     유효 표본 수 ESS 중앙 17.1 (10/90% 9.2/173.8) / 배치 1000 → 첫 제어 ω 표본 잡음 추정 wz_std/√ESS = 0.097 rad/s
+     LETHAL 여유(차체 외곽↔1 m 안 LETHAL 셀, 반셀 뺌): 최소 0.273 @10.3 s, 평균 0.316, 끝 0.319 m
+     목표(경로 끝, prune 창 안이면) 까지 거리 1.065 m (xy tol 0.15), 로버 odom (4.490, -1.661), 허용오차 첫 진입 없음
+
+F15_W3출발 bag bag_f2e2 t=113.5 자세 (5.390,-2.014) yaw -3.3° 초기 cmd v +0.000 w +0.000 | 경로 5점(간격 0.025) | obst=1 vx_std=0.08 wz_std=0.4 temperature=0.15 iters=2 align_w=14 follow_w=10 follow_off=20 cost_w=3.81 crit_cost=300 near_thr=0.5
+  cyc |  cmd v    w  | 로버 x y yaw | furth | 충돌% | 끝단전방 중앙/최대 | 평균비용 obst align follow angle+goal | 최저후보 v w | 평균열 최대비용/충돌스텝 | LETHAL 여유
+     후진 거리 0.322 m · 제자리 회전 시간 0.9 s · 경로 끝 도달 None 주기
+  → 200 주기(20.0 s) 후: 전진 -0.886 횡 +0.172 회전 +147.6°, 최종 cmd v +0.080 w +0.093
+     유효 표본 수 ESS 중앙 40.6 (10/90% 7.4/85.2) / 배치 1000 → 첫 제어 ω 표본 잡음 추정 wz_std/√ESS = 0.063 rad/s
+     LETHAL 여유(차체 외곽↔1 m 안 LETHAL 셀, 반셀 뺌): 최소 0.110 @7.5 s, 평균 0.219, 끝 0.324 m
+     목표(경로 끝, prune 창 안이면) 까지 거리 1.098 m (xy tol 0.15), 로버 odom (4.515, -1.791), 허용오차 첫 진입 없음
+
+F30_W3출발 bag bag_f2e2 t=113.5 자세 (5.390,-2.014) yaw -3.3° 초기 cmd v +0.000 w +0.000 | 경로 5점(간격 0.025) | obst=1 vx_std=0.08 wz_std=0.4 temperature=0.15 iters=2 align_w=14 follow_w=10 follow_off=20 cost_w=3.81 crit_cost=300 near_thr=0.5
+  cyc |  cmd v    w  | 로버 x y yaw | furth | 충돌% | 끝단전방 중앙/최대 | 평균비용 obst align follow angle+goal | 최저후보 v w | 평균열 최대비용/충돌스텝 | LETHAL 여유
+     후진 거리 0.113 m · 제자리 회전 시간 1.1 s · 경로 끝 도달 None 주기
+  → 200 주기(20.0 s) 후: 전진 -0.836 횡 +0.182 회전 +150.8°, 최종 cmd v +0.080 w +0.084
+     유효 표본 수 ESS 중앙 19.2 (10/90% 4.5/39.8) / 배치 1000 → 첫 제어 ω 표본 잡음 추정 wz_std/√ESS = 0.091 rad/s
+     LETHAL 여유(차체 외곽↔1 m 안 LETHAL 셀, 반셀 뺌): 최소 0.157 @4.5 s, 평균 0.243, 끝 0.338 m
+     목표(경로 끝, prune 창 안이면) 까지 거리 1.147 m (xy tol 0.15), 로버 odom (4.565, -1.784), 허용오차 첫 진입 없음
+
+F60_W3출발 bag bag_f2e2 t=113.5 자세 (5.390,-2.014) yaw -3.3° 초기 cmd v +0.000 w +0.000 | 경로 5점(간격 0.025) | obst=1 vx_std=0.08 wz_std=0.4 temperature=0.15 iters=2 align_w=14 follow_w=10 follow_off=20 cost_w=3.81 crit_cost=300 near_thr=0.5
+  cyc |  cmd v    w  | 로버 x y yaw | furth | 충돌% | 끝단전방 중앙/최대 | 평균비용 obst align follow angle+goal | 최저후보 v w | 평균열 최대비용/충돌스텝 | LETHAL 여유
+     후진 거리 0.014 m · 제자리 회전 시간 0.9 s · 경로 끝 도달 None 주기
+  → 200 주기(20.0 s) 후: 전진 -0.510 횡 -0.067 회전 +152.3°, 최종 cmd v +0.080 w +0.160
+     유효 표본 수 ESS 중앙 6.6 (10/90% 2.8/41.8) / 배치 1000 → 첫 제어 ω 표본 잡음 추정 wz_std/√ESS = 0.156 rad/s
+     LETHAL 여유(차체 외곽↔1 m 안 LETHAL 셀, 반셀 뺌): 최소 0.171 @15.2 s, 평균 0.268, 끝 0.234 m
+     목표(경로 끝, prune 창 안이면) 까지 거리 1.504 m (xy tol 0.15), 로버 odom (4.877, -2.051), 허용오차 첫 진입 없음
+
+V03_W3출발 bag bag_f2e2 t=113.5 자세 (5.390,-2.014) yaw -3.3° 초기 cmd v +0.000 w +0.000 | 경로 5점(간격 0.025) | obst=1 vx_std=0.08 wz_std=0.4 temperature=0.15 iters=2 align_w=14 follow_w=10 follow_off=20 cost_w=3.81 crit_cost=300 near_thr=0.5
+  cyc |  cmd v    w  | 로버 x y yaw | furth | 충돌% | 끝단전방 중앙/최대 | 평균비용 obst align follow angle+goal | 최저후보 v w | 평균열 최대비용/충돌스텝 | LETHAL 여유
+     후진 거리 0.253 m · 제자리 회전 시간 0.8 s · 경로 끝 도달 None 주기
+  → 200 주기(20.0 s) 후: 전진 -0.792 횡 +0.124 회전 +144.3°, 최종 cmd v +0.080 w +0.011
+     유효 표본 수 ESS 중앙 24.2 (10/90% 11.8/57.0) / 배치 1000 → 첫 제어 ω 표본 잡음 추정 wz_std/√ESS = 0.081 rad/s
+     LETHAL 여유(차체 외곽↔1 m 안 LETHAL 셀, 반셀 뺌): 최소 0.131 @8.2 s, 평균 0.223, 끝 0.266 m
+     목표(경로 끝, prune 창 안이면) 까지 거리 1.196 m (xy tol 0.15), 로버 odom (4.607, -1.844), 허용오차 첫 진입 없음
+
+######## 서쪽통로입구 (bag_f2a10 t_abs 1790837321.212368)
+F5_서쪽통로입구 bag bag_f2a10 t=73.5 자세 (0.173,-6.761) yaw +166.0° 초기 cmd v -0.020 w -0.094 | 경로 27점(간격 0.050) | obst=1 vx_std=0.08 wz_std=0.4 temperature=0.15 iters=2 align_w=14 follow_w=10 follow_off=20 cost_w=3.81 crit_cost=300 near_thr=0.5
+  cyc |  cmd v    w  | 로버 x y yaw | furth | 충돌% | 끝단전방 중앙/최대 | 평균비용 obst align follow angle+goal | 최저후보 v w | 평균열 최대비용/충돌스텝 | LETHAL 여유
+     후진 거리 0.087 m · 제자리 회전 시간 2.5 s · 경로 끝 도달 None 주기
+  → 200 주기(20.0 s) 후: 전진 -0.344 횡 -0.581 회전 -98.1°, 최종 cmd v -0.014 w -0.081
+     유효 표본 수 ESS 중앙 14.1 (10/90% 5.3/31.1) / 배치 1000 → 첫 제어 ω 표본 잡음 추정 wz_std/√ESS = 0.106 rad/s
+     LETHAL 여유(차체 외곽↔1 m 안 LETHAL 셀, 반셀 뺌): 최소 0.029 @19.9 s, 평균 0.109, 끝 0.029 m
+     목표(경로 끝, prune 창 안이면) 까지 거리 0.949 m (xy tol 0.15), 로버 odom (0.648, -6.281), 허용오차 첫 진입 없음
+
+F15_서쪽통로입구 bag bag_f2a10 t=73.5 자세 (0.173,-6.761) yaw +166.0° 초기 cmd v -0.020 w -0.094 | 경로 27점(간격 0.050) | obst=1 vx_std=0.08 wz_std=0.4 temperature=0.15 iters=2 align_w=14 follow_w=10 follow_off=20 cost_w=3.81 crit_cost=300 near_thr=0.5
+  cyc |  cmd v    w  | 로버 x y yaw | furth | 충돌% | 끝단전방 중앙/최대 | 평균비용 obst align follow angle+goal | 최저후보 v w | 평균열 최대비용/충돌스텝 | LETHAL 여유
+     후진 거리 0.085 m · 제자리 회전 시간 2.1 s · 경로 끝 도달 None 주기
+  → 200 주기(20.0 s) 후: 전진 -0.358 횡 -0.555 회전 -109.2°, 최종 cmd v +0.010 w +0.071
+     유효 표본 수 ESS 중앙 11.3 (10/90% 3.4/27.1) / 배치 1000 → 첫 제어 ω 표본 잡음 추정 wz_std/√ESS = 0.119 rad/s
+     LETHAL 여유(차체 외곽↔1 m 안 LETHAL 셀, 반셀 뺌): 최소 0.045 @16.0 s, 평균 0.112, 끝 0.048 m
+     목표(경로 끝, prune 창 안이면) 까지 거리 0.978 m (xy tol 0.15), 로버 odom (0.655, -6.310), 허용오차 첫 진입 없음
+
+F30_서쪽통로입구 bag bag_f2a10 t=73.5 자세 (0.173,-6.761) yaw +166.0° 초기 cmd v -0.020 w -0.094 | 경로 27점(간격 0.050) | obst=1 vx_std=0.08 wz_std=0.4 temperature=0.15 iters=2 align_w=14 follow_w=10 follow_off=20 cost_w=3.81 crit_cost=300 near_thr=0.5
+  cyc |  cmd v    w  | 로버 x y yaw | furth | 충돌% | 끝단전방 중앙/최대 | 평균비용 obst align follow angle+goal | 최저후보 v w | 평균열 최대비용/충돌스텝 | LETHAL 여유
+     후진 거리 0.011 m · 제자리 회전 시간 3.9 s · 경로 끝 도달 None 주기
+  → 200 주기(20.0 s) 후: 전진 -0.248 횡 -0.917 회전 -72.2°, 최종 cmd v +0.080 w +0.133
+     유효 표본 수 ESS 중앙 14.7 (10/90% 3.8/18.7) / 배치 1000 → 첫 제어 ω 표본 잡음 추정 wz_std/√ESS = 0.104 rad/s
+     LETHAL 여유(차체 외곽↔1 m 안 LETHAL 셀, 반셀 뺌): 최소 -0.025 @12.4 s, 평균 0.072, 끝 -0.025 m
+     목표(경로 끝, prune 창 안이면) 까지 거리 0.861 m (xy tol 0.15), 로버 odom (0.636, -5.932), 허용오차 첫 진입 없음
+
+F60_서쪽통로입구 bag bag_f2a10 t=73.5 자세 (0.173,-6.761) yaw +166.0° 초기 cmd v -0.020 w -0.094 | 경로 27점(간격 0.050) | obst=1 vx_std=0.08 wz_std=0.4 temperature=0.15 iters=2 align_w=14 follow_w=10 follow_off=20 cost_w=3.81 crit_cost=300 near_thr=0.5
+  cyc |  cmd v    w  | 로버 x y yaw | furth | 충돌% | 끝단전방 중앙/최대 | 평균비용 obst align follow angle+goal | 최저후보 v w | 평균열 최대비용/충돌스텝 | LETHAL 여유
+     후진 거리 0.046 m · 제자리 회전 시간 2.3 s · 경로 끝 도달 None 주기
+  → 200 주기(20.0 s) 후: 전진 -0.374 횡 -0.554 회전 -115.5°, 최종 cmd v +0.029 w +0.028
+     유효 표본 수 ESS 중앙 3.0 (10/90% 1.2/10.7) / 배치 1000 → 첫 제어 ω 표본 잡음 추정 wz_std/√ESS = 0.233 rad/s
+     LETHAL 여유(차체 외곽↔1 m 안 LETHAL 셀, 반셀 뺌): 최소 0.038 @17.4 s, 평균 0.108, 끝 0.051 m
+     목표(경로 끝, prune 창 안이면) 까지 거리 0.986 m (xy tol 0.15), 로버 odom (0.670, -6.315), 허용오차 첫 진입 없음
+
+V03_서쪽통로입구 bag bag_f2a10 t=73.5 자세 (0.173,-6.761) yaw +166.0° 초기 cmd v -0.020 w -0.094 | 경로 27점(간격 0.050) | obst=1 vx_std=0.08 wz_std=0.4 temperature=0.15 iters=2 align_w=14 follow_w=10 follow_off=20 cost_w=3.81 crit_cost=300 near_thr=0.5
+  cyc |  cmd v    w  | 로버 x y yaw | furth | 충돌% | 끝단전방 중앙/최대 | 평균비용 obst align follow angle+goal | 최저후보 v w | 평균열 최대비용/충돌스텝 | LETHAL 여유
+     후진 거리 0.072 m · 제자리 회전 시간 2.3 s · 경로 끝 도달 None 주기
+  → 200 주기(20.0 s) 후: 전진 -0.351 횡 -0.575 회전 -97.1°, 최종 cmd v -0.015 w +0.010
+     유효 표본 수 ESS 중앙 13.7 (10/90% 6.5/28.0) / 배치 1000 → 첫 제어 ω 표본 잡음 추정 wz_std/√ESS = 0.108 rad/s
+     LETHAL 여유(차체 외곽↔1 m 안 LETHAL 셀, 반셀 뺌): 최소 0.035 @19.9 s, 평균 0.110, 끝 0.035 m
+     목표(경로 끝, prune 창 안이면) 까지 거리 0.957 m (xy tol 0.15), 로버 odom (0.653, -6.289), 허용오차 첫 진입 없음
+
+######## 끝 17:48:46
