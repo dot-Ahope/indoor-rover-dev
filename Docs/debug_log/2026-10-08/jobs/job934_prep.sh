@@ -7,3 +7,4 @@ echo "  전역 obstacle 소스 $(timeout 8 ros2 param get /global_costmap/global
 echo "  BT $(timeout 8 ros2 param get /bt_navigator default_nav_to_pose_bt_xml 2>&1 | tail -1) · RateController $(grep -o 'RateController hz="[0-9.]*"' /tmp/nav_to_pose_active.xml)"
 echo "  MPPI visualize $(timeout 8 ros2 param get /controller_server FollowPathMPPI.visualize 2>&1 | tail -1)"
 head -1 /tmp/nav2_params_active.yaml
+echo "  전역 nvblox 프레임 $(timeout 10 ros2 param get /global_costmap/global_costmap nvblox_layer.nav2_costmap_global_frame 2>&1 | tail -1)"
