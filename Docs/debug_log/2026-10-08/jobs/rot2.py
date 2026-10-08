@@ -56,6 +56,7 @@ def segments(C, wmin=0.15, dmin=2.0):
     return out
 
 rows = []
+if __name__ != "__main__": sys.argv = sys.argv[:1]
 for bag in sys.argv[1:]:
     S, C, ST = load(bag); st = np.array([s[0] for s in S]); name = Path(bag).name.replace('bag_', ''); T0 = S[0][0]
     for a, b in segments(C):
@@ -91,7 +92,7 @@ for bag in sys.argv[1:]:
         per = math.hypot(*E) * math.pi / max(abs(dth), 0.2)
         rows.append((name, a - T0, b - a, cv[:, 1].mean(), cv[:, 2].mean(), math.degrees(dth), Lm, Rm, ix, iy, E[0], E[1], per, max(rmss), kind))
         np.savez('rot2_%s_%d.npz' % (name, int(a - T0)), T=T, X=X, icr=icr, vl=vl, vr=vr)
-print('bag  시작s 길이s | 지령 v   w   | 회전°  | 트랙 측정 L    R    m/s | 회전축(차체) 앞 왼 cm | 미끄러짐(실제−휠) 앞 왼 cm | 180°당 cm | 정합rms최대 | 종류')
+if len(sys.argv) > 1: print('bag  시작s 길이s | 지령 v   w   | 회전°  | 트랙 측정 L    R    m/s | 회전축(차체) 앞 왼 cm | 미끄러짐(실제−휠) 앞 왼 cm | 180°당 cm | 정합rms최대 | 종류')
 for r in sorted(rows, key=lambda r: r[-1]):
     print('%-5s %5.0f %4.1f | %+.3f %+.2f | %+6.1f | %+.3f %+.3f | %+6.1f %+6.1f | %+6.1f %+6.1f | %5.1f | %.3f | %s' % (r[0], r[1], r[2], r[3], r[4], r[5], r[6], r[7], r[8] * 100, r[9] * 100, r[10] * 100, r[11] * 100, r[12] * 100, r[13], r[14]))
 np.save('rot2_rows.npy', np.array([r[1:14] for r in rows], float))
