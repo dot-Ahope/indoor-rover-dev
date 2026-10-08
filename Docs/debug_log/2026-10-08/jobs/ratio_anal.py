@@ -48,9 +48,11 @@ for bag in BAGS:
         vv = [o['slip90'] * 100 for o in out if (o['r'], o['dir'], o['fwd']) == key]
         print('  r %+.1f %s %s: %4.1f [%4.1f~%4.1f] n %d' % (key[0], '시계' if key[1] < 0 else '반시', {1: '앞', -1: '뒤', 0: '-'}[key[2]], np.median(vv), min(vv), max(vv), len(vv)))
     for rr in sorted({o['r'] for o in out}):
-        vv = [o['slip90'] * 100 for o in out if o['r'] == rr and o['fwd'] >= 0]
+        vv = [o['slip90'] * 100 for o in out if o['r'] == rr]   # §5.1: r 마다 전체(방향·앞뒤 2 회씩) n 8
         if not vv: continue
-        print('  r %+.1f (앞·제자리, 양방향): %4.1f [%4.1f~%4.1f] n %d' % (rr, np.median(vv), min(vv), max(vv), len(vv)))
+        fa = [o['slip90'] * 100 for o in out if o['r'] == rr and o['fwd'] > 0]; ba = [o['slip90'] * 100 for o in out if o['r'] == rr and o['fwd'] < 0]
+        print('  r %+.1f 전체: %4.1f [%4.1f~%4.1f] n %d | 앞 %s · 뒤 %s' % (rr, np.median(vv), min(vv), max(vv), len(vv),
+              '%.1f (n %d)' % (np.median(fa), len(fa)) if fa else '-', '%.1f (n %d)' % (np.median(ba), len(ba)) if ba else '-'))
     if out:
         print('  잡음 바닥 중앙 %.1f cm, 최대 %.1f · 정합 rms 최대 %.3f m' % (np.median([o['noise'] for o in out]) * 100, max(o['noise'] for o in out) * 100, max(o['rms'] for o in out)))
         with open('ratio_%s.csv' % name, 'w', newline='') as f:
