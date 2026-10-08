@@ -28,7 +28,7 @@ import tf2_ros
 NAME = sys.argv[1]; PLAN = [tuple(float(x) for x in p.split(':')) for p in sys.argv[2].split(',')]
 REPS = int(sys.argv[3]) if len(sys.argv) > 3 else 4; ANG = math.radians(float(sys.argv[4]) if len(sys.argv) > 4 else 90.0)
 F, B = 0.08, 0.2215
-SWEEP_MIN, RUN_MIN = 0.08, 0.04; HL, HW = 0.25, 0.165   # 차체 반길이·반폭(nav2 풋프린트 0.5 × 0.33)
+SWEEP_MIN, RUN_MIN, WAIT_MAX = 0.08, 0.04, 300; HL, HW = 0.25, 0.165   # 차체 반길이·반폭(nav2 풋프린트 0.5 × 0.33)
 
 
 def yaw_of(q): return math.atan2(2 * (q.w * q.z + q.x * q.y), 1 - 2 * (q.y * q.y + q.z * q.z))
@@ -115,7 +115,17 @@ def main():
             w = dk * F * (1 - r) / (2 * B); v = fk * F * (1 + r) / 2
             sw = sweep_clear(list(n.pts), v, w, ANG)
             if sw < SWEEP_MIN:
-                abort = '회전 %d-%d 전 쓸기 여유 %.3f m < %.2f' % (bi, k, sw, SWEEP_MIN); break
+                # 10-08 §5.3: 교대 쌍도 미끄러짐으로 옆으로 밀림(§5.2) → 중단 대신 정지 상태로 재배치 대기.
+                #   사용자가 통로 가운데로 다시 놓고 비켜서면, 쓸기 여유 ≥ SWEEP_MIN + 0.02 가 8 s 연속일 때 이어 감(최대 WAIT_MAX).
+                print('  ◆ 회전 %d-%d 전 쓸기 여유 %.3f m < %.2f — 정지, 재배치 대기(통로 가운데로 옮기고 비켜서 주세요, 최대 %d s)' % (bi, k, sw, SWEEP_MIN, WAIT_MAX), flush=True)
+                tw = time.time(); tok = None
+                while time.time() - tw < WAIT_MAX:
+                    n.hold(0.5); sw = sweep_clear(list(n.pts), v, w, ANG)
+                    tok = (tok or time.time()) if sw >= SWEEP_MIN + 0.02 else None
+                    if tok and time.time() - tok >= 8.0: break
+                if not (tok and time.time() - tok >= 8.0):
+                    abort = '회전 %d-%d 재배치 대기 %d s 초과(쓸기 여유 %.3f m)' % (bi, k, WAIT_MAX, sw); break
+                print('  ◆ 재배치 확인(쓸기 여유 %.2f m, 대기 %.0f s) — 이어 감' % (sw, time.time() - tw), flush=True); n.hold(2.0)
             O0 = n.tf('odom', 'base_link'); M0 = n.tf('map', 'base_link'); acc = 0.0; last = O0[2]
             tr = time.time(); lim = ANG / abs(w) * 2 + 5; coast = abs(w) * 0.25; stop = ''
             while True:
