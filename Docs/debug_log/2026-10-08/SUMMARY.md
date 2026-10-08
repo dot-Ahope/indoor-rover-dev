@@ -54,3 +54,5 @@
 ### §3.1 코스 변경(사용자: 목표 그림 `Docs/04_navigation/figures/2026-10-08_patrol_goals.png` 을 보고 "1·9·10 번만")
 - 목표 3 개: B (2.25, −1.6) → W3 동쪽 (5.5, −2.2) → 출발 (0, 0), 모두 경로 끝 방향(p). 러너 `run_f2c.sh … b910`.
 - 판정 조정: ③-a = 3 목표 성공·접촉 0·nav_guard 취소 0. ③-b(상자 ②)는 목표 3(출발 복귀)에서, ③-c·③-d 는 그대로. A(대조)는 f2c2·f2d2 의 같은 구간(W3 → 출발: f2c2 성공·상자 ② 밀기, f2d2 상자 ② 앞 정지).
+### §3.2 B prep 통과(사용자: 출발 위치·상자 제자리) — `outputs/j934_prep.txt`, `jobs/job936_chk.sh`
+- 시작 map 원점 1.03 cm·흔들림 0.00, 배터리 12.33 V, ekf_node 2. 전역 plugins static · **nvblox_layer** · obstacle(**scan**) · inflation, BT `/tmp/nav_to_pose_active.xml`(RateController **0.5 Hz**), MPPI visualize **True**·`/trajectories`·`/transformed_global_plan` 발행, Nav2 active. (prep 의 controller '?' 는 조회 시간 초과 — 재확인 active)
