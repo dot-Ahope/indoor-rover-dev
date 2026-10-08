@@ -56,3 +56,12 @@
 - 판정 조정: ③-a = 3 목표 성공·접촉 0·nav_guard 취소 0. ③-b(상자 ②)는 목표 3(출발 복귀)에서, ③-c·③-d 는 그대로. A(대조)는 f2c2·f2d2 의 같은 구간(W3 → 출발: f2c2 성공·상자 ② 밀기, f2d2 상자 ② 앞 정지).
 ### §3.2 B prep 통과(사용자: 출발 위치·상자 제자리) — `outputs/j934_prep.txt`, `jobs/job936_chk.sh`
 - 시작 map 원점 1.03 cm·흔들림 0.00, 배터리 12.33 V, ekf_node 2. 전역 plugins static · **nvblox_layer** · obstacle(**scan**) · inflation, BT `/tmp/nav_to_pose_active.xml`(RateController **0.5 Hz**), MPPI visualize **True**·`/trajectories`·`/transformed_global_plan` 발행, Nav2 active. (prep 의 controller '?' 는 조회 시간 초과 — 재확인 active)
+
+### §3.3 f2e1 결과 — 3/3 성공(53.8 · 48.3 · 122.7 s), **그러나 전역 nvblox 층 프레임 결함**으로 상자 ② 를 계획기가 엉뚱한 곳에 둠
+- `outputs/f0_f2e1_runner.log`, bag `bags/bag_f2e1.tgz`, 분석 `jobs/f2e_eval.py` → `outputs/f2e1_box_replan.txt`, `jobs/f2e_gcm.py` → `outputs/f2e1_costmaps.txt`.
+- 경로 발행: 0.5 Hz 로 목표 3(복귀) 동안 수십 회. 같은 목표 안 0.3 m 넘는 경로 변화 5 회(13:34~13:36, 0.31~0.39 m) — ③-c 기준(목표당 > 5) 이내.
+- 상자 ②: nvblox 슬라이스엔 x 1.04~1.38 · y −0.21~+0.13 로 찍힘(복귀 중). 13:35:53 경로는 북쪽(y +0.15~0.19)으로 0.09 m 비켜 가다가 **13:36:01 부터 경로가 상자 칸에서 0.01~0.02 m**(y −0.04~+0.10)로 돌아옴 → 로버가 y +0.03~0.08 로 통과(차체 반폭 0.165 와 겹침), 지나간 뒤 상자 칸 북쪽 절반이 사라짐 → **상자를 밀었을 가능성**(사용자 확인 필요).
+- 원인(측정): 같은 시각 로컬 코스트맵은 상자 자리 (1.1~1.3, −0.1~0.0) 치명(100), **전역은 73~84(통과 가능)** 이고 대신 y +0.3 줄에 99 — 상자가 ≈ 0.3 m 북쪽에 찍힘. 실행 중 값 `global_costmap nvblox_layer.nav2_costmap_global_frame = odom`(`jobs/job937_src.sh`) — 전역은 map 격자인데 층이 odom 기준으로 그림 → map→odom 보정(이번 주행 끝 Δy 0.31 m)만큼 밀림. `navigation.launch.py` 가 로컬 층에만 프레임을 지정하고 전역 층은 기본값(odom)으로 둔 **내 결함**.
+- 추정(미검증): 09-22 N6-1 의 전역 nvblox 도 같은 설정이었다면, 10-01 §8.24 의 '전역 유령 칸이 통로를 닫음' 일부가 이 밀림이었을 수 있음.
+- 고침: `global_camera:=nvblox` 일 때 전역 nvblox 층 `nav2_costmap_global_frame` = 전역 global_frame(map). 다음 = 재 prep → 같은 코스 f2e2.
+- 판정: ③-a 3/3 성공·nav_guard 0 — 접촉은 사용자 확인 대기. ③-b 불합격(결함 때문 — 판정 자체가 무효에 가까움).
