@@ -1,0 +1,63 @@
+/tf 연결(발행자별 기록) 수: 1 메시지 수 [2997]
+시각                    msg     odom→base_link           map→odom   (10 s 평균 Hz)
+15:24:20               43.1               23.0               20.1
+15:24:30               50.0               30.0               20.0
+15:24:40               50.0               30.0               20.0
+15:24:50               49.5               30.0               19.5
+15:25:00               50.0               30.0               20.0
+15:25:10               28.2               17.4               10.8
+15:25:20               10.1                7.0                3.1
+15:25:30               12.5                7.0                5.5
+15:25:40                5.7                2.1                3.6
+15:25:50                0.6                0.3                0.3
+포화 시작 15:25:20 기준 커널 UDP(초당): 수신 / 수신 버퍼 부족 손실 / 손실 비율
+  시작~T−30 s        5404 /       0 /   0.0 %
+  T−30~T           8334 /     107 /   1.3 %
+  T~T+30          63591 /    3406 /   5.1 %
+  T+30~끝            nan /     nan /   nan %
+  → 손실률 T 뒤 30 s / 앞 30 s = 31.8 배
+10 s 칸 초당 손실: 24:35 0 24:45 1 24:55 1 25:05 0 25:15 3926 25:25 2825 25:35 2532
+프로세스·포트 종류별 초당 손실(T 앞 60 s → 뒤 60 s), 뒤 기준 상위:
+  ros2               사용자 데이터            42.5 →   1412.6
+  ?                  메타(탐색·생존)           0.0 →    902.0
+  bt_navigator       사용자 데이터             0.0 →    605.1
+  planner_server     사용자 데이터             0.0 →    404.9
+  controller_serv    사용자 데이터             0.0 →    251.7
+  localization_sl    사용자 데이터             0.0 →    120.4
+  bt_navigator       메타(탐색·생존)           0.0 →    106.2
+  ekf_node           사용자 데이터             0.0 →     98.1
+  behavior_server    사용자 데이터             0.0 →     78.1
+  planner_server     메타(탐색·생존)           0.0 →     60.0
+  robot_state_pub    메타(탐색·생존)           0.0 →     22.2
+  python3            메타(탐색·생존)           0.0 →     20.6
+  rf2o_laser_odom    사용자 데이터             0.0 →     18.8
+  behavior_server    메타(탐색·생존)           0.0 →     18.2
+  smoother_server    사용자 데이터             0.0 →     17.2
+  rf2o_laser_odom    메타(탐색·생존)           0.0 →     10.0
+  소켓 합계 42 → 4182 /s (커널 값과 비교용)
+시각      수신/s  손실/s | ros2 bt_navigator controller_s planner_serv ekf_node ?(메타) bt_navigator
+15:25:01    5212      2 |            2            0            0            0            0            0            0
+15:25:03    5282      0 |            0            0            0            0            0            0            0
+15:25:05    5868      0 |            0            0            0            0            0            0            0
+15:25:07    5370      0 |            0            0            0            0            0            0            0
+15:25:09    5172      0 |            0            0            0            0            0            0            0
+15:25:11    5785      0 |            0            0            0            0            0            0            0
+15:25:13    5462      0 |            0            0            0            0            0            0            0
+15:25:15    5194      0 |            0            0            0            0            0            0            0
+15:25:17    5722      2 |            2            0            0            0            0            0            0
+15:25:19   45279   1492 |          922           55          298          127           90            0            0
+15:25:21   89783   4922 |          420          124            0          147          257         1312          946
+15:25:23   77385   6268 |          702          370          110          171           34          902         1540
+15:25:25   58409   6944 |         2828         1390          352         1137           51        -2214            0
+15:25:27   60347   5204 |         2213         1317          546          976            2            0            0
+15:25:30   44633   1197 |          552          236          104           37           93            0            0
+15:25:32   62075   2227 |          848          587          149          224            2            0            0
+15:25:34   72288   3488 |         1615          686          352          698           23            0            0
+15:25:36   59896   1619 |         1072          299           22           77          116            0            0
+15:25:19.75 [controller_server-3] [INFO] [controller_server]: Reached the goal!
+15:25:19.78 [bt_navigator-7] [INFO] [bt_navigator]: Goal succeeded
+15:25:24.50 [bt_navigator-7] [INFO] [bt_navigator]: Begin navigating from current location (2.29, -1.48) to (5.50, -2.20)
+15:25:26.73 [controller_server-3] [ERROR] [controller_server]: Exception in transformPose: Lookup would require extrapolation into t
+15:25:27.31 [controller_server-3] [ERROR] [controller_server]: Exception in transformPose: Lookup would require extrapolation into t
+15:25:27.69 [bt_navigator-7] [WARN] [bt_navigator_navigate_to_pose_rclcpp_node]: Timed out while waiting for action server to acknow
+15:25:30.82 [controller_server-3] [ERROR] [controller_server]: Exception in transformPose: Lookup would require extrapolation into t
