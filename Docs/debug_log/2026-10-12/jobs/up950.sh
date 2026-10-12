@@ -1,0 +1,6 @@
+#!/bin/bash
+# 10-12 §1: 재부팅 뒤 스크립트 재전송 + nav2_params(PreferForward 15) 배포·빌드. 실행은 안 함. 비밀번호는 run_jn.sh 에서 읽음.
+N=/mnt/c/Users/magma/AppData/Local/Temp/claude/F--6-Indoor-Rover-Rover/21d4aa9f-8412-4905-b23d-17554af330ea/scratchpad; J=jetson@${JETSON_HOST:-192.168.0.101}
+PW=$(grep -o "sshpass -p [^ ]*" $N/run_jn.sh | head -1 | awk '{print $3}'); O="-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o LogLevel=ERROR -o ConnectTimeout=8"
+sshpass -p $PW scp $O -q $N/up950/* $J:/tmp/ && sshpass -p $PW scp $O -q $N/up950_nav2_params.yaml $J:/home/jetson/ros2_ws/src/rover_navigation/config/nav2_params.yaml || { echo 전송 실패; exit 1; }
+sshpass -p $PW ssh $O $J "cd ~/ros2_ws && source /opt/ros/humble/setup.bash && colcon build --packages-select rover_navigation 2>&1 | tail -1; echo \"설치본 PreferForward: \$(grep -a 'PreferForwardCritic: {' install/rover_navigation/share/rover_navigation/config/nav2_params.yaml | grep -o 'cost_weight: [0-9.]*')\"; echo \"launch global_camera \$(grep -c global_camera install/rover_navigation/share/rover_navigation/launch/navigation.launch.py) · 프레임 수정 \$(grep -c nav2_costmap_global_frame install/rover_navigation/share/rover_navigation/launch/navigation.launch.py)\"; ls /tmp/job*.sh /tmp/job*.py | wc -l; ls /dev/ttyUSB0; docker ps --format '{{.Names}} {{.Status}}' | head -5"
