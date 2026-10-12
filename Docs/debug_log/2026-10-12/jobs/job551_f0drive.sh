@@ -40,10 +40,15 @@ TOPPID=$!   # 10-12 §3.4: 여기서 잡아야 함 — 아래 줄에서 잡으�
 # 10-01 §8.9: 전체 프로세스 CPU 틱 기록(top 상위 30 줄은 작은 것을 놓침) — 2 s 마다 "시각 pid 틱 명령" → 사후 분석
 (for i in $(seq 1 400); do T=$(date +%s); for p in /proc/[0-9]*; do read -r a < $p/stat 2>/dev/null || continue; set -- $a; echo "$T ${p#/proc/} $((${14}+${15})) $2"; done; echo "$T ALL $(head -1 /proc/stat)"; sleep 2; done) > /tmp/proc_$NAME.log 2>&1 &
 PROCPID=$!
+# 10-12 §8: UDP 수신 버퍼 손실을 시간순으로(DDS 를 건드리지 않는 파일 읽기만). 2 s 마다 커널 누적값(Udp InDatagrams·RcvbufErrors)과 소켓별 drops,
+#   15 s 뒤·끝에 소켓 inode → 프로세스 이름 표. 왜: rmem_max 208 kB 인데 /trajectories 메시지 1 개가 206 kB — 포화 시작 때 어느 소켓이 넘치는지 확인.
+netmap() { for p in $(pgrep -u jetson); do c=$(cat /proc/$p/comm 2>/dev/null); for i in $(ls -l /proc/$p/fd 2>/dev/null | grep -o 'socket:\[[0-9]*\]' | tr -d 'socket:[]'); do echo "MAP $i $p $c"; done; done; }
+(sleep 15; netmap; for i in $(seq 1 400); do T=$(date +%s); echo "$T SNMP $(awk '/^Udp:/{l=$0} END{print l}' /proc/net/snmp)"; awk -v t=$T 'NR>1 && $NF>0{print t, "SOCK", $2, $NF, $(NF-3)}' /proc/net/udp; sleep 2; done) > /tmp/net_$NAME.log 2>&1 &
+NETPID=$!
 ps -eo pid,rss,pcpu,comm,args --sort=-rss | head -25 > /tmp/rss_$NAME.txt; sleep 2
 echo "########## F0 주행 $(date +%T) — 목표 $GOALS ##########"
 python3 /tmp/job550_f0run.py $NAME "$GOALS" $SPEED $PAUSE 2>&1 | grep -av "^\["
-pkill -INT -f "ros2 bag record" 2>/dev/null; pkill -f "tegrastats --interval 1000" 2>/dev/null; kill $TOPPID $PROCPID 2>/dev/null
+pkill -INT -f "ros2 bag record" 2>/dev/null; pkill -f "tegrastats --interval 1000" 2>/dev/null; kill $TOPPID $PROCPID $NETPID 2>/dev/null; netmap >> /tmp/net_$NAME.log 2>/dev/null
 for i in $(seq 1 10); do [ "$(pgrep -fc 'ros2 bag record')" = 0 ] && break; sleep 1; done
 TOPICS="$TOPICS" bash /tmp/job453_runmeta.sh $NAME "$GOALS" $SPEED >/dev/null 2>&1; cp /tmp/meta_$NAME/run_meta.txt /tmp/meta_$NAME/params.txt $BAG/ 2>/dev/null
 tar czf /tmp/bag_$NAME.tgz -C /tmp bag_$NAME 2>/dev/null; echo "=== 끝 $(date +%T) bag $(stat -c %s /tmp/bag_$NAME.tgz 2>/dev/null) B ==="
