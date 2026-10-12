@@ -1,0 +1,36 @@
+종류별: {'BT 틱 초과': 81, '루프 미달': 50, '전역 nvblox TF': 28, 'TF 미래(컨트롤러)': 12, 'smoother 충돌': 10, 'follow_path 중단': 6, '기타': 2}
+10 s 칸(시작 시각: 루프 미달 / BT 틱 / 그 밖):
+  11:56:00    2 /   5 / {'전역 nvblox TF': 1}
+  11:56:10    2 /   2 / {'전역 nvblox TF': 2, 'TF 미래(컨트롤러)': 2, 'follow_path 중단': 1}
+  11:56:20    1 /   1 / {'전역 nvblox TF': 1}
+  11:56:30    0 /   0 / {'기타': 1}
+  11:56:40    5 /   7 / {'전역 nvblox TF': 3}
+  11:56:50    0 /   4 / {}
+  11:57:00    0 /   3 / {}
+  11:57:10    0 /   7 / {'smoother 충돌': 2}
+  11:57:20    0 /   3 / {}
+  11:57:30    0 /   4 / {}
+  11:57:40    1 /   3 / {'전역 nvblox TF': 1}
+  11:57:50    1 /   9 / {'전역 nvblox TF': 1}
+  11:58:00    1 /   2 / {'전역 nvblox TF': 1}
+  11:58:10    7 /   9 / {'전역 nvblox TF': 6, 'TF 미래(컨트롤러)': 4, 'follow_path 중단': 2}
+  11:58:20    9 /   8 / {'전역 nvblox TF': 7, 'TF 미래(컨트롤러)': 4, 'follow_path 중단': 2, 'smoother 충돌': 2}
+  11:58:30    0 /   5 / {'smoother 충돌': 4, '전역 nvblox TF': 2, 'TF 미래(컨트롤러)': 2, 'follow_path 중단': 1}
+  11:58:40    1 /   1 / {'전역 nvblox TF': 2}
+  11:58:50    4 /   2 / {'전역 nvblox TF': 1}
+  11:59:00   15 /   4 / {'smoother 충돌': 2}
+  11:59:10    1 /   2 / {}
+  11:59:30    0 /   0 / {'기타': 1}
+원문(반복 제외, 최대 12 줄):
+11:56:14 [controller_server-3] [ERROR] [controller_server]: Exception in transformPose: Lookup would require extrapolation into the future.  Requested time 1791773773.813568 but the latest data is at
+11:56:14 [controller_server-3] [ERROR] [controller_server]: Unable to transform robot pose into global plan's frame
+11:56:14 [controller_server-3] [WARN] [controller_server]: [follow_path] [ActionServer] Aborting handle.
+11:56:33 [planner_server-5] [WARN] [planner_server.rclcpp_action]: Failed to send goal response 9738f66e89924921895b61a1d53340bb (timeout): client will not receive response, at ./src/rmw_response.cpp
+11:57:17 [smoother_server-4] [ERROR] [smoother_server]: Smoothed path leads to a collision at x: 5.056372, y: -2.035112, theta: -0.448047
+11:57:17 [smoother_server-4] [WARN] [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+11:58:14 [controller_server-3] [ERROR] [controller_server]: Exception in transformPose: Lookup would require extrapolation into the future.  Requested time 1791773893.946749 but the latest data is at
+11:58:14 [controller_server-3] [ERROR] [controller_server]: Unable to transform robot pose into global plan's frame
+11:58:14 [controller_server-3] [WARN] [controller_server]: [follow_path] [ActionServer] Aborting handle.
+11:58:19 [controller_server-3] [ERROR] [controller_server]: Exception in transformPose: Lookup would require extrapolation into the future.  Requested time 1791773898.579378 but the latest data is at
+11:58:19 [controller_server-3] [ERROR] [controller_server]: Unable to transform robot pose into global plan's frame
+11:58:19 [controller_server-3] [WARN] [controller_server]: [follow_path] [ActionServer] Aborting handle.
