@@ -1,0 +1,18 @@
+  map_server 프로세스: 214804 /opt/ros/humble/lib/nav2_map_server/map_server --ros-args -r __node:=nav_map_server --params-file /tmp/launch_params_5t880dmq -r map:=/map_nav
+221936 bash -c export FASTRTPS_DEFAULT_PROFILES_FILE=/home/jetson/ros2_ws/install/rover_bringup/share/rover_bringup/config/fastdds_udp_only.xml; source /opt/ros/humble/setup.bash; source ~/ros2_ws/ins
+/global_costmap/global_costmap /lifecycle_manager_navigation /lifecycle_manager_navmap /local_costmap/local_costmap /nav_map_server 
+  /map_server: Node not found
+  /nav_map_server: unconfigured [1]
+  /map_server_nav: Node not found
+Publisher count: 0 Subscription count: 1 Node name: global_costmap Node namespace: /global_costmap   Reliability: RELIABLE   Durability: TRANSIENT_LOCAL 
+
+[INFO] [map_server-11]: process started with pid [214804]
+[lifecycle_manager-12] [INFO] [1791771529.229180347] [lifecycle_manager_navmap]: [34m[1mConfiguring nav_map_server[0m[0m
+[map_server-11] [INFO] [1791771530.107747415] [nav_map_server]: 
+[map_server-11] 	nav_map_server lifecycle node launched. 
+[map_server-11] 	Waiting on external lifecycle transitions to activate
+[map_server-11] 	See https://design.ros2.org/articles/node_lifecycle.html for more information.
+[map_server-11] [INFO] [1791771530.108177511] [nav_map_server]: Creating
+[nvblox_up-13] [nvblox_up] nvblox_node pid 214957 (yaml nvblox_local.yaml, 로그 /tmp/nvblox_node.log, 부모 launch pid 214729) — 이후 래퍼 출력은 /tmp/nvblox_node_up.log
+[planner_server-5] [INFO] [1791771533.307577984] [global_costmap.global_costmap]: Subscribing to the map topic (/map_nav) with transient local durability
+  지도 파일: 80601 /home/jetson/maps/office/office_v3.pgm 127 /home/jetson/maps/office/office_v3.yaml 
