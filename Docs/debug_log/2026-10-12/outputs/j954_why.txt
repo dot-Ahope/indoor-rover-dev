@@ -1,0 +1,13 @@
+== /tmp/nav2.log (10 줄)
+11:16:34 [planner_server-5] [WARN] [global_costmap.global_costmap]: Can't update static costmap layer, no map received
+11:16:40 [bt_navigator-7] [WARN] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+11:16:44 [planner_server-5] [WARN] [global_costmap.global_costmap]: Can't update static costmap layer, no map received
+11:17:05 [bt_navigator-7] [WARN] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+11:17:14 [planner_server-5] [WARN] [global_costmap.global_costmap]: Can't update static costmap layer, no map received
+11:17:22 [nav_guard.py-2] [ERROR] [nav_guard]: nav_guard 개입 — 무진행: 45 s 동안 최대 0.00 m 이동 < 0.25 m → 모든 목표 취소·정지
+11:17:22 [bt_navigator-7] [ERROR] [bt_navigator_navigate_to_pose_rclcpp_node]: Failed to get result for compute_path_to_pose in node halt!
+11:17:22 [bt_navigator-7] [INFO] [bt_navigator]: [navigate_to_pose] [ActionServer] Client requested to cancel the goal. Cancelling.
+11:17:22 [bt_navigator-7] [INFO] [bt_navigator]: Goal canceled
+11:17:24 [planner_server-5] [WARN] [global_costmap.global_costmap]: Can't update static costmap layer, no map received
+== /tmp/sensors.log (1 줄)
+11:16:30 [rf2o_laser_odometry_node-7] [WARN] [rf2o_laser_odometry]: Waiting for laser_scans....

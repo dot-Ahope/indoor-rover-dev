@@ -89,3 +89,37 @@
   - (a) 같은 구성으로 한 번 더 주행(f2f2)해 재현되는지 확인.
   - (b) 부하 줄이기: 비교용 그림자 EKF A 끄기(EKF 절반), MPPI 궤적 발행 끄기.
   - (c) `PathBlockedAhead` 가 정지 중에는 판정하지 않게 하거나 문턱을 치명(100)으로.
+
+## §3 f2f2 재현 주행 — 선언(주행 전, 사용자: "재현부터 수행하자")
+- 목적: §2 의 상자 주변 멈칫거림(부하 포화 → TF 끊김 → Nav2 중단 반복)이 같은 구성에서 다시 생기는지 확인한다. 생기면 구성 탓(부하 여유 부족·검사 고리), 안 생기면 f2f1 의 일시적 부하로 본다.
+- 구성·코스: f2f1 과 완전히 같음(B 구성 + PreferForward 15, b910, 상자 ①·② 제자리). 로버는 사용자가 출발 테이프에 다시 놓고 prep 을 재실행한다(손 배치 뒤 위치 추정 초기화).
+- 달라지는 조건(통제 불가, 기록): 재부팅 뒤 경과 시간(f2f1 54 분 → 더 김), 배터리.
+- 판정(복귀 상자 구간 = map x 2.6 → 0.4, `jobs/box_smooth.py`·`gap_eval.py`·`top_eval.py`·Nav2 로그):
+  - **재현됨**: 다음 중 2 개 이상 — ① odom→base_link TF 0.5 s 넘는 끊김 ≥ 5 군데 ② 컨트롤러 follow_path 중단 ≥ 1 회 ③ 전체 CPU 유휴 평균 < 15 % ④ 구간 시간 ≥ 55 s(f2e2 44 · f2f1 67).
+  - **재현 안 됨**: 위 4 개 중 0 개.
+  - 1 개면 '부분' 으로 기록하고 한 번 더 주행할지 사용자와 정한다.
+- 함께 기록: W3 출발 후진 거리(§1 판정 ① 의 반복 확인), 목표별 시간, 상자 접촉(사용자).
+- 주행 뒤 `/tmp/nav2.log` 를 통째로 회수한다(f2f1 은 구간 발췌만 남김).
+
+### §3.1 prep 통과(사용자: 출발 테이프에 다시 놓음, `outputs/j934d_prep.txt`) — 로버 안 움직임
+- 보드 25.0 Hz, map→base (0.003, 0.005), 배터리 12.14 V(f2f1 12.25 V). Nav2 controller·planner·bt_navigator active.
+- 구성은 f2f1 과 같음: 전역 plugins static · nvblox_layer · obstacle · inflation, 전역 nvblox 프레임 map, BT 0.5 Hz, MPPI visualize True, 정체 감시 관찰 모드, PreferForward 15.0, vx_min −0.06.
+
+### §3.2 f2f2 — **무효(주행 안 함)**: 목표 1 이 45 s 뒤 취소, 로버는 출발 자리에서 0.00 m (`outputs/f0_f2f2_runner.log`, `outputs/j954_why.txt`)
+- 게이트 A·B·J·C·G2(0.395 m)·P(46 %) 통과, 11:16:24 목표 1 을 보냄 → 러너 "경로 자동 yaw: FAIL 결과 시간 초과" → 11:17:22 `nav_guard` 개입(45 s 동안 0.00 m) → 목표 취소. 접촉·이동 없음.
+- 원인(측정, `jobs/job957_mapdiag.sh`·`job959_mapdiag2.sh` → `outputs/j957_mapdiag.txt`·`j959.txt`):
+  - 저장 지도를 내는 `nav_map_server` 가 **unconfigured** 로 남음 → `/map_nav` 발행자 0.
+  - → 전역 코스트맵 정적 층 "no map received", 전역 코스트맵이 기본 크기 100×100(정상 333×242) → 계획기가 경로를 못 냄.
+  - 관리 노드(`lifecycle_manager_navmap`) 로그는 "Configuring nav_map_server" 에서 멈춤. 지도 서버 쪽에는 configure 를 받은 기록이 없음 → **요청이 기동 중 사라진 것**.
+  - 수동 `ros2 lifecycle set … configure` 는 즉시 성공(지도 333×242 읽음).
+- 시도와 결과:
+  - ① Nav2 만 재시작 → 다시 unconfigured(재현 2/2).
+  - ② 관리 노드를 3 s 늦게 띄움 → 지도 서버 생성 1.3 s 뒤에 configure 를 보냈는데도 unconfigured → **효과 없음, 되돌림**(순서 문제가 아님).
+  - ③ launch 에 '20 s 뒤 상태 확인·직접 전이' 단계(`navmap_ensure`) 추가 → 재시작 뒤 `nav_map_server` **active**, `/map_nav` 발행자 1, "no map received" 0 회, 전역 코스트맵 **333×242**(`outputs/j955c_nav2re.txt`).
+  - 다만 이번 성공이 보강 단계 덕인지 관리 노드가 이번엔 성공한 것인지는 구분하지 못함(로그 미확인).
+- 원인 미확정 부분: 왜 요청이 사라지는가(기동 직후 부하·DDS 탐색 지연 추정). 오늘 재부팅 뒤 prep 3 번 중 2 번 발생(f2f1 prep 은 정상).
+- 고친 것:
+  - `navigation.launch.py` 에 `navmap_ensure` 추가.
+  - 확인 스크립트 `jobs/job956_gcmchk.py`: 전역 코스트맵 크기·치명 칸으로 '지도 없음'을 잡음. 다음부터 prep 뒤 반드시 실행.
+- 내 누락: prep 출력의 `/map_nav` 줄이 발행자 수만 보여 주고 지도 수신 여부는 확인하지 않았다(f2f2 prep 때 이미 0 이었을 것 — 조회 값 미기록).
+- 판정: f2f2 는 §3 재현 판정에 쓰지 않는다. 같은 선언으로 **f2f3** 를 주행한다(로버는 출발 자리 그대로, 위치 추정 유지).
