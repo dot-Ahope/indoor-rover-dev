@@ -1,0 +1,17 @@
+    COMMAND             %CPU %
+    rplidar+            18.8 %
+    python3             18.8 %
+    lifecyc+            18.8 %
+    nvblox_+            18.8 %
+    python3             12.5 %
+    ekf_node            12.5 %
+    ekf_node            12.5 %
+    control+            12.5 %
+    smoothe+            12.5 %
+    planner+            12.5 %
+    behavio+            12.5 %
+    sugov:4              6.2 %
+    realsen+             6.2 %
+  루프백 패킷/s: 수신 4010 송신 4010
+  /tf: average rate: 45.211 · 4.88 KB/s from 100 messages
+  Nav2 목표 상태:   status: 6
