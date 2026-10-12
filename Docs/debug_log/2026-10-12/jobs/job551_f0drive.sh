@@ -33,7 +33,16 @@ TOPICS="/tf /tf_static /map /scan /plan /plan_smoothed /local_costmap/costmap /g
 [ "${BAG_PROFILE:-}" = nvblox ] && TOPICS="$TOPICS /nvblox_node/static_map_slice"
 TOPICS="$TOPICS ${EXTRA_TOPICS:-}"
 [ "${LONG_REC:-0}" = 1 ] && TOPICS="$TOPICS /trajectories /transformed_global_plan"   # 10-07 §11: 장기 주행만 — MPPI 후보·최적 궤적(prep 에 mppi_viz:=true 필요)   # 10-07 §2: rf2o 비교 주행 — /odometry/ekf_a /odom_rf2o /odom_rf2o/gated
-setsid nohup ros2 bag record -o $BAG $TOPICS > /tmp/bag_$NAME.log 2>&1 &
+# 10-12 §11: 기록기가 /trajectories(206 kB × 10 Hz)만 '손실 허용(best effort)' 으로 구독 — 조각을 잃어도 재전송을 요구하지 않게.
+#   왜: §9.2 평상시 수신 버퍼 손실이 나는 소켓은 기록기뿐이었고, 신뢰성 재전송이 통신 폭주(10 배)의 씨앗으로 추정됨. BAG_BE_TRAJ=0 이면 예전처럼.
+QOSOPT=""; if [ "${BAG_BE_TRAJ:-1}" = 1 ]; then printf '/trajectories:
+  reliability: best_effort
+  history: keep_last
+  depth: 5
+  durability: volatile
+' > /tmp/bag_qos_$NAME.yaml; QOSOPT="--qos-profile-overrides-path /tmp/bag_qos_$NAME.yaml"; fi
+echo "  bag 기록 QoS 재정의: ${QOSOPT:-없음}"
+setsid nohup ros2 bag record -o $BAG $QOSOPT $TOPICS > /tmp/bag_$NAME.log 2>&1 &
 setsid nohup tegrastats --interval 1000 > /tmp/tegra_$NAME.log 2>&1 &
 (for i in $(seq 1 400); do top -b -n1 | head -30; sleep 2; done) > /tmp/top_$NAME.log 2>&1 &
 TOPPID=$!   # 10-12 §3.4: 여기서 잡아야 함 — 아래 줄에서 잡으면 proc 기록 루프의 pid 가 들어가 top 루프가 주행 뒤 ~15 분 남는다
