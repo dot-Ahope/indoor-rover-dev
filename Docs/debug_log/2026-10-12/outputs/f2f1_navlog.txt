@@ -1,0 +1,64 @@
+주행 전체(10:31:56~10:36:15) 종류별: {'기타': 5, 'smoother 충돌': 7, 'smooth 중단/시간초과': 8, 'BT 틱 초과': 250, '전역 nvblox TF 미래': 24, '루프 미달': 89, 'transformPose 실패': 3, '경로 프레임 변환 실패': 3, 'follow_path 중단': 3, '서버 응답 시간초과': 2}
+-- 10:35:00~10:35:45 원문(반복 경고 제외)
+10:35:07 [planner_server-5] [WARN] [global_costmap.global_costmap]: [NvbloxCostmapLayer] Can't transform: map to odom. Error: Lookup would require extrapolation into the future.  Requested time 1791768907.1176
+10:35:07 [bt_navigator-7] [WARN] [bt_navigator_navigate_to_pose_rclcpp_node]: Timed out while waiting for action server to acknowledge goal request for smooth_path
+10:35:07 [controller_server-3] [ERROR] [controller_server]: Exception in transformPose: Lookup would require extrapolation into the future.  Requested time 1791768907.146329 but the latest data is at time 1791
+10:35:07 [controller_server-3] [ERROR] [controller_server]: Unable to transform robot pose into global plan's frame
+10:35:07 [controller_server-3] [WARN] [controller_server]: [follow_path] [ActionServer] Aborting handle.
+10:35:08 [planner_server-5] [WARN] [global_costmap.global_costmap]: [NvbloxCostmapLayer] Can't transform: map to odom. Error: Lookup would require extrapolation into the future.  Requested time 1791768908.7071
+10:35:09 [bt_navigator-7] [WARN] [bt_navigator_navigate_to_pose_rclcpp_node]: PathBlockedAhead: 앞 경로 (1.18, 0.24) 비용 99 가 2.0 s 지속 → 주행 중단·재계획
+10:35:09 [bt_navigator-7] [ERROR] [bt_navigator_navigate_to_pose_rclcpp_node]: Failed to get result for follow_path in node halt!
+10:35:09 [bt_navigator-7] [WARN] [bt_navigator_navigate_to_pose_rclcpp_node]: PathBlockedAhead: 앞 경로 (1.18, 0.24) 비용 99 가 2.0 s 지속 → 주행 중단·재계획
+10:35:10 [smoother_server-4] [ERROR] [smoother_server]: Smoothed path leads to a collision at x: 1.381968, y: 0.231013, theta: -0.148526
+10:35:10 [smoother_server-4] [WARN] [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+10:35:12 [smoother_server-4] [ERROR] [smoother_server]: Smoothed path leads to a collision at x: 1.360000, y: 0.240000, theta: -0.063292
+10:35:12 [smoother_server-4] [WARN] [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+10:35:14 [bt_navigator-7] [WARN] [bt_navigator_navigate_to_pose_rclcpp_node]: Timed out while waiting for action server to acknowledge goal request for compute_path_to_pose
+10:35:14 [bt_navigator-7] [ERROR] [bt_navigator_navigate_to_pose_rclcpp_node]: Failed to get result for follow_path in node halt!
+10:35:18 [smoother_server-4] [ERROR] [smoother_server]: Smoothed path leads to a collision at x: 1.360000, y: 0.240000, theta: -0.063338
+10:35:18 [smoother_server-4] [WARN] [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+10:35:23 [planner_server-5] [WARN] [global_costmap.global_costmap]: [NvbloxCostmapLayer] Can't transform: map to odom. Error: Lookup would require extrapolation into the future.  Requested time 1791768923.7275
+10:35:25 [smoother_server-4] [ERROR] [smoother_server]: Smoothed path leads to a collision at x: 1.010000, y: 0.240000, theta: -0.013411
+10:35:25 [smoother_server-4] [WARN] [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+10:35:27 [planner_server-5] [WARN] [global_costmap.global_costmap]: [NvbloxCostmapLayer] Can't transform: map to odom. Error: Lookup would require extrapolation into the future.  Requested time 1791768927.7576
+10:35:28 [controller_server-3] [ERROR] [controller_server]: Exception in transformPose: Lookup would require extrapolation into the future.  Requested time 1791768927.815974 but the latest data is at time 1791
+10:35:28 [controller_server-3] [ERROR] [controller_server]: Unable to transform robot pose into global plan's frame
+10:35:28 [controller_server-3] [WARN] [controller_server]: [follow_path] [ActionServer] Aborting handle.
+10:35:28 [planner_server-5] [WARN] [global_costmap.global_costmap]: [NvbloxCostmapLayer] Can't transform: map to odom. Error: Lookup would require extrapolation into the future.  Requested time 1791768928.8308
+10:35:29 [controller_server-3] [ERROR] [controller_server]: Exception in transformPose: Lookup would require extrapolation into the future.  Requested time 1791768928.474138 but the latest data is at time 1791
+10:35:29 [controller_server-3] [ERROR] [controller_server]: Unable to transform robot pose into global plan's frame
+10:35:29 [controller_server-3] [WARN] [controller_server]: [follow_path] [ActionServer] Aborting handle.
+10:35:37 [planner_server-5] [WARN] [global_costmap.global_costmap]: [NvbloxCostmapLayer] Can't transform: map to odom. Error: Lookup would require extrapolation into the future.  Requested time 1791768937.8778
+10:35:41 [planner_server-5] [WARN] [global_costmap.global_costmap]: [NvbloxCostmapLayer] Can't transform: map to odom. Error: Lookup would require extrapolation into the future.  Requested time 1791768941.6779
+-- 초당 반복 경고(루프 미달 / BT 틱 초과)
+10:35:05 1 1
+10:35:06 7 4
+10:35:07 1 7
+10:35:08 3 7
+10:35:09 5 2
+10:35:10 3 5
+10:35:11 6 1
+10:35:12 4 10
+10:35:13 2 6
+10:35:14 3 3
+10:35:15 0 4
+10:35:18 0 2
+10:35:19 2 2
+10:35:20 4 1
+10:35:21 3 9
+10:35:22 3 5
+10:35:23 5 1
+10:35:24 4 7
+10:35:25 2 0
+10:35:26 0 6
+10:35:27 0 5
+10:35:28 0 2
+10:35:31 0 1
+10:35:33 0 6
+10:35:36 0 9
+10:35:37 2 3
+10:35:38 1 4
+10:35:39 2 18
+10:35:40 5 3
+10:35:41 1 4
+10:35:42 0 16
