@@ -1,0 +1,99 @@
+종류별: {'BT 틱 초과': 767, '루프 미달': 114, '전역 nvblox TF': 42, 'TF 미래(컨트롤러)': 42, 'follow_path 중단': 24, '기타': 17, '서버 응답 시간초과': 15}
+10 s 칸(시작 시각: 루프 미달 / BT 틱 / 그 밖):
+  11:30:03    0 /   2 / {'기타': 1}
+  11:30:13    0 /   1 / {}
+  11:30:23    0 /   5 / {}
+  11:30:33    0 /   1 / {}
+  11:30:43    1 /   4 / {'전역 nvblox TF': 1}
+  11:30:53    1 /  36 / {'전역 nvblox TF': 3, 'TF 미래(컨트롤러)': 4, 'follow_path 중단': 2, '서버 응답 시간초과': 1, '기타': 4}
+  11:31:03    2 /  29 / {'전역 nvblox TF': 1, 'TF 미래(컨트롤러)': 2, 'follow_path 중단': 1}
+  11:31:13    0 /   4 / {'전역 nvblox TF': 2, '서버 응답 시간초과': 2}
+  11:31:23    6 /  44 / {'전역 nvblox TF': 5, 'TF 미래(컨트롤러)': 6, 'follow_path 중단': 3}
+  11:31:33   16 /  53 / {'전역 nvblox TF': 4, 'TF 미래(컨트롤러)': 4, 'follow_path 중단': 2}
+  11:31:43    3 /  35 / {'전역 nvblox TF': 2, 'TF 미래(컨트롤러)': 2, 'follow_path 중단': 1}
+  11:31:53    4 /  35 / {'서버 응답 시간초과': 1, '기타': 2}
+  11:32:03    7 /  58 / {'전역 nvblox TF': 1, 'TF 미래(컨트롤러)': 2, 'follow_path 중단': 1, '기타': 1, '서버 응답 시간초과': 1}
+  11:32:13    6 /  47 / {'서버 응답 시간초과': 1, '전역 nvblox TF': 2, 'TF 미래(컨트롤러)': 2, 'follow_path 중단': 1}
+  11:32:23    9 /  26 / {'전역 nvblox TF': 1}
+  11:32:33   11 /  42 / {'전역 nvblox TF': 2, 'TF 미래(컨트롤러)': 2, 'follow_path 중단': 1}
+  11:32:43    9 /  54 / {'전역 nvblox TF': 5, 'TF 미래(컨트롤러)': 4, 'follow_path 중단': 2}
+  11:32:53    4 /  31 / {'전역 nvblox TF': 2}
+  11:33:03    3 /  51 / {'전역 nvblox TF': 1}
+  11:33:13    9 /  54 / {'전역 nvblox TF': 1, '서버 응답 시간초과': 1, '기타': 1}
+  11:33:23    1 /  16 / {'서버 응답 시간초과': 4, 'follow_path 중단': 2}
+  11:33:33    5 /  41 / {'기타': 3, '전역 nvblox TF': 1, 'TF 미래(컨트롤러)': 2, 'follow_path 중단': 1}
+  11:33:43    5 /  21 / {'전역 nvblox TF': 3, 'TF 미래(컨트롤러)': 6, 'follow_path 중단': 3}
+  11:33:53    6 /  41 / {'전역 nvblox TF': 1, '서버 응답 시간초과': 3, 'follow_path 중단': 1}
+  11:34:03    2 /  24 / {'전역 nvblox TF': 1, 'TF 미래(컨트롤러)': 2, 'follow_path 중단': 1, '기타': 3}
+  11:34:13    4 /  12 / {'전역 nvblox TF': 3, 'TF 미래(컨트롤러)': 4, 'follow_path 중단': 2, '서버 응답 시간초과': 1, '기타': 2}
+원문(반복 제외, 최대 70 줄):
+11:30:12 [controller_server-3] [WARN] [controller_server]: No goal checker was specified in parameter 'current_goal_checker'. Server will use only plugin loaded general_goal_checker . This warning wi
+11:31:01 [controller_server-3] [ERROR] [controller_server]: Exception in transformPose: Lookup would require extrapolation into the future.  Requested time 1791772260.715282 but the latest data is at
+11:31:01 [controller_server-3] [ERROR] [controller_server]: Unable to transform robot pose into global plan's frame
+11:31:01 [controller_server-3] [WARN] [controller_server]: [follow_path] [ActionServer] Aborting handle.
+11:31:02 [controller_server-3] [ERROR] [controller_server]: Exception in transformPose: Lookup would require extrapolation into the future.  Requested time 1791772261.486541 but the latest data is at
+11:31:02 [controller_server-3] [ERROR] [controller_server]: Unable to transform robot pose into global plan's frame
+11:31:02 [controller_server-3] [WARN] [controller_server]: [follow_path] [ActionServer] Aborting handle.
+11:31:02 [bt_navigator-7] [WARN] [bt_navigator_navigate_to_pose_rclcpp_node]: Timed out while waiting for action server to acknowledge goal request for compute_path_to_pose
+11:31:02 [bt_navigator-7] [WARN] [bt_navigator_navigate_to_pose_rclcpp_node]: Node timed out while executing service call to global_costmap/clear_except_global_costmap.
+11:31:02 [bt_navigator-7] [ERROR] [bt_navigator_navigate_to_pose_rclcpp_node]: Failed to cancel action server for follow_path
+11:31:02 [bt_navigator-7] [ERROR] [bt_navigator_navigate_to_pose_rclcpp_node]: Failed to get result for follow_path in node halt!
+11:31:02 [bt_navigator-7] [WARN] [bt_navigator_navigate_to_pose_rclcpp_node]: Node timed out while executing service call to global_costmap/clear_except_global_costmap.
+11:31:08 [controller_server-3] [ERROR] [controller_server]: Exception in transformPose: Lookup would require extrapolation into the future.  Requested time 1791772268.102413 but the latest data is at
+11:31:08 [controller_server-3] [ERROR] [controller_server]: Unable to transform robot pose into global plan's frame
+11:31:08 [controller_server-3] [WARN] [controller_server]: [follow_path] [ActionServer] Aborting handle.
+11:31:19 [bt_navigator-7] [WARN] [bt_navigator_navigate_to_pose_rclcpp_node]: Timed out while waiting for action server to acknowledge goal request for compute_path_to_pose
+11:31:27 [controller_server-3] [ERROR] [controller_server]: Exception in transformPose: Lookup would require extrapolation into the future.  Requested time 1791772286.603474 but the latest data is at
+11:31:27 [controller_server-3] [ERROR] [controller_server]: Unable to transform robot pose into global plan's frame
+11:31:27 [controller_server-3] [WARN] [controller_server]: [follow_path] [ActionServer] Aborting handle.
+11:31:31 [controller_server-3] [ERROR] [controller_server]: Exception in transformPose: Lookup would require extrapolation into the future.  Requested time 1791772290.939128 but the latest data is at
+11:31:31 [controller_server-3] [ERROR] [controller_server]: Unable to transform robot pose into global plan's frame
+11:31:31 [controller_server-3] [WARN] [controller_server]: [follow_path] [ActionServer] Aborting handle.
+11:31:32 [controller_server-3] [ERROR] [controller_server]: Exception in transformPose: Lookup would require extrapolation into the future.  Requested time 1791772291.469634 but the latest data is at
+11:31:32 [controller_server-3] [ERROR] [controller_server]: Unable to transform robot pose into global plan's frame
+11:31:32 [controller_server-3] [WARN] [controller_server]: [follow_path] [ActionServer] Aborting handle.
+11:31:33 [controller_server-3] [ERROR] [controller_server]: Exception in transformPose: Lookup would require extrapolation into the future.  Requested time 1791772293.266378 but the latest data is at
+11:31:33 [controller_server-3] [ERROR] [controller_server]: Unable to transform robot pose into global plan's frame
+11:31:33 [controller_server-3] [WARN] [controller_server]: [follow_path] [ActionServer] Aborting handle.
+11:31:41 [controller_server-3] [ERROR] [controller_server]: Exception in transformPose: Lookup would require extrapolation into the future.  Requested time 1791772300.665842 but the latest data is at
+11:31:41 [controller_server-3] [ERROR] [controller_server]: Unable to transform robot pose into global plan's frame
+11:31:41 [controller_server-3] [WARN] [controller_server]: [follow_path] [ActionServer] Aborting handle.
+11:31:45 [controller_server-3] [ERROR] [controller_server]: Exception in transformPose: Lookup would require extrapolation into the future.  Requested time 1791772305.137186 but the latest data is at
+11:31:45 [controller_server-3] [ERROR] [controller_server]: Unable to transform robot pose into global plan's frame
+11:31:45 [controller_server-3] [WARN] [controller_server]: [follow_path] [ActionServer] Aborting handle.
+11:31:54 [bt_navigator-7] [WARN] [bt_navigator_navigate_to_pose_rclcpp_node]: Timed out while waiting for action server to acknowledge goal request for compute_path_to_pose
+11:31:54 [bt_navigator-7] [WARN] [bt_navigator_navigate_to_pose_rclcpp_node]: Node timed out while executing service call to global_costmap/clear_except_global_costmap.
+11:31:54 [bt_navigator-7] [ERROR] [bt_navigator_navigate_to_pose_rclcpp_node]: Failed to cancel action server for follow_path
+11:32:06 [controller_server-3] [ERROR] [controller_server]: Exception in transformPose: Lookup would require extrapolation into the future.  Requested time 1791772325.607056 but the latest data is at
+11:32:06 [controller_server-3] [ERROR] [controller_server]: Unable to transform robot pose into global plan's frame
+11:32:06 [controller_server-3] [WARN] [controller_server]: [follow_path] [ActionServer] Aborting handle.
+11:32:06 [bt_navigator-7] [WARN] [bt_navigator_navigate_to_pose_rclcpp_node]: Node timed out while executing service call to local_costmap/clear_except_local_costmap.
+11:32:06 [bt_navigator-7] [WARN] [bt_navigator_navigate_to_pose_rclcpp_node]: Timed out while waiting for action server to acknowledge goal request for wait
+11:32:17 [bt_navigator-7] [WARN] [bt_navigator_navigate_to_pose_rclcpp_node]: Timed out while waiting for action server to acknowledge goal request for compute_path_to_pose
+11:32:21 [controller_server-3] [ERROR] [controller_server]: Exception in transformPose: Lookup would require extrapolation into the future.  Requested time 1791772341.222054 but the latest data is at
+11:32:21 [controller_server-3] [ERROR] [controller_server]: Unable to transform robot pose into global plan's frame
+11:32:21 [controller_server-3] [WARN] [controller_server]: [follow_path] [ActionServer] Aborting handle.
+11:32:41 [controller_server-3] [ERROR] [controller_server]: Exception in transformPose: Lookup would require extrapolation into the future.  Requested time 1791772360.738271 but the latest data is at
+11:32:41 [controller_server-3] [ERROR] [controller_server]: Unable to transform robot pose into global plan's frame
+11:32:41 [controller_server-3] [WARN] [controller_server]: [follow_path] [ActionServer] Aborting handle.
+11:32:49 [controller_server-3] [ERROR] [controller_server]: Exception in transformPose: Lookup would require extrapolation into the future.  Requested time 1791772368.862422 but the latest data is at
+11:32:49 [controller_server-3] [ERROR] [controller_server]: Unable to transform robot pose into global plan's frame
+11:32:49 [controller_server-3] [WARN] [controller_server]: [follow_path] [ActionServer] Aborting handle.
+11:32:51 [controller_server-3] [ERROR] [controller_server]: Exception in transformPose: Lookup would require extrapolation into the future.  Requested time 1791772370.705559 but the latest data is at
+11:32:51 [controller_server-3] [ERROR] [controller_server]: Unable to transform robot pose into global plan's frame
+11:32:51 [controller_server-3] [WARN] [controller_server]: [follow_path] [ActionServer] Aborting handle.
+11:33:18 [bt_navigator-7] [WARN] [bt_navigator_navigate_to_pose_rclcpp_node]: Timed out while waiting for action server to acknowledge goal request for compute_path_to_pose
+11:33:18 [bt_navigator-7] [WARN] [bt_navigator_navigate_to_pose_rclcpp_node]: Node timed out while executing service call to global_costmap/clear_except_global_costmap.
+11:33:23 [bt_navigator-7] [WARN] [bt_navigator_navigate_to_pose_rclcpp_node]: Timed out while waiting for action server to acknowledge goal request for follow_path
+11:33:26 [controller_server-3] [WARN] [controller_server]: [follow_path] [ActionServer] Aborting handle.
+11:33:34 [behavior_server-6] [WARN] [behavior_server]: Exceeded time allowance before reaching the DriveOnHeading goal - Exiting DriveOnHeading
+11:33:34 [behavior_server-6] [WARN] [behavior_server]: backup failed
+11:33:34 [behavior_server-6] [WARN] [behavior_server]: [backup] [ActionServer] Aborting handle.
+11:33:36 [controller_server-3] [ERROR] [controller_server]: Exception in transformPose: Lookup would require extrapolation into the future.  Requested time 1791772416.268707 but the latest data is at
+11:33:36 [controller_server-3] [ERROR] [controller_server]: Unable to transform robot pose into global plan's frame
+11:33:36 [controller_server-3] [WARN] [controller_server]: [follow_path] [ActionServer] Aborting handle.
+11:33:46 [controller_server-3] [ERROR] [controller_server]: Exception in transformPose: Lookup would require extrapolation into the future.  Requested time 1791772426.199786 but the latest data is at
+11:33:46 [controller_server-3] [ERROR] [controller_server]: Unable to transform robot pose into global plan's frame
+11:33:46 [controller_server-3] [WARN] [controller_server]: [follow_path] [ActionServer] Aborting handle.
+11:33:51 [controller_server-3] [ERROR] [controller_server]: Exception in transformPose: Lookup would require extrapolation into the future.  Requested time 1791772430.501841 but the latest data is at
+11:33:51 [controller_server-3] [ERROR] [controller_server]: Unable to transform robot pose into global plan's frame
