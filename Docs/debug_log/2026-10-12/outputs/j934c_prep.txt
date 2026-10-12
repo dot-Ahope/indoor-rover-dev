@@ -1,0 +1,34 @@
+== 지도 office_v3 | 위치 추정 slamloc | 매핑 전용 0 | SLAM 루프 창: loop_search_space_dimension: 3.0
+  정리 전 프로세스: 0
+  /wheel_odom  average rate: 25.000
+  [sensor_conditioner_node-6] [INFO] [1791768040.329788128] [sensor_conditioner]: gyro bias calibrated: (-0.00577, -0.00065, -0.00174) rad/s, std=(0.0026, 0.0024, 0.0017)
+  /odometry/filtered average rate: 30.001
+  slam 인자: map_file:=/home/jetson/maps/office/office_v3 slam_mode:=localization
+  map->odom: - Translation: [0.001, 0.001, 0.000]
+  /controller_server   ?
+  /planner_server      ?
+  /behavior_server     active [3]
+  EKF 위반 34회 | slam 폐기 9회 | load 11.15 4.08 1.52
+== 위치 추정 로그: [INFO] [launch.user]: [slam.launch] 위치 추정(지도 고정): /home/jetson/maps/office/office_v3 에서 시작 자세 (0.000, 0.000, 0.000)
+== 프로세스
+  rplidar              1
+  realsense2_camera    1
+  ekf_node             2
+  async_slam_toolbox   0
+  localization_slam    1
+  amcl                 0
+  map_server           1
+  stuck_monitor        1
+  foxglove_bridge      1
+  controller_server    1
+  ros2 bag record      0
+  teleop_node          0
+  배터리: voltage: 12.248802185058594
+  static map_topic: String value is: /map_nav
+  /map_nav: Publisher count: 1
+  전역 plugins: String values are: ['static_layer', 'nvblox_layer', 'obstacle_layer', 'inflation_layer'] · stuck shadow Boolean value is: True · nav_guard 1
+  전역 obstacle 소스 String value is: scan
+  BT String value is: /tmp/nav_to_pose_active.xml · RateController RateController hz="0.5"
+  MPPI visualize Boolean value is: True
+# 자동 생성(navigation.launch.py, camera_layer=nvblox, global_camera=nvblox) — 원본 /home/jetson/ros2_ws/install/rover_navigation/share/rover_navigation/config/nav2_params.yaml
+  전역 nvblox 프레임 String value is: map
