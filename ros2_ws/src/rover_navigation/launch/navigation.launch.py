@@ -136,6 +136,15 @@ def _make_active_params(context):
                  parameters=[{'yaml_filename': nav_map, 'use_sim_time': False}], remappings=[('map', '/map_nav')]),
             Node(package='nav2_lifecycle_manager', executable='lifecycle_manager', name='lifecycle_manager_navmap', output='screen',
                  parameters=[{'use_sim_time': False, 'autostart': True, 'node_names': ['nav_map_server']}]),
+            # 10-12 §3.2: 관리 노드의 configure 요청이 기동 중 사라져 nav_map_server 가 unconfigured 로 남는 일이 있다
+            #   (/map_nav 발행 0 → 전역 정적 층 "no map received" → 계획 불가, f2f2 목표 1 취소. 관리 노드 3 s 지연으로는 안 고쳐짐).
+            #   20 s 뒤 상태를 보고 active 가 아니면 직접 전이시킨다(수동 configure 는 성공함을 확인). 이미 active 면 아무것도 안 함.
+            TimerAction(period=20.0, actions=[ExecuteProcess(name='navmap_ensure', output='screen', cmd=['bash', '-c',
+                'for i in 1 2 3 4 5 6 7 8; do s=$(timeout 10 ros2 lifecycle get /nav_map_server 2>/dev/null | tail -1); '
+                'case "$s" in active*) echo "[navmap_ensure] active ($i)"; exit 0;; '
+                'unconfigured*) timeout 30 ros2 lifecycle set /nav_map_server configure;; '
+                'inactive*) timeout 30 ros2 lifecycle set /nav_map_server activate;; esac; sleep 2; done; '
+                'echo "[navmap_ensure] 실패: $s"'])]),
         ]
     if layer == 'nvblox':
         actions.append(IncludeLaunchDescription(PythonLaunchDescriptionSource(os.path.join(
