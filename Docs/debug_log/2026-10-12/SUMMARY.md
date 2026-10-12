@@ -700,3 +700,20 @@
   - ③ 정지 시험: 게이트·정지 부하·UDP 수신량 비교, Nav2 재시작 5 회에 고아 재발 여부.
   - ④ 주행 A/B: 벌점 15 + 궤적 발행 원래대로(206 kB) — 포화가 사라지는지, UDP 계측과 함께.
   - 미확인: 공유메모리로도 포화가 남으면 원인은 전송 버퍼가 아니다(그것도 결과).
+
+## §18 사용자 질문: "DDS 는 zero-copy 를 지원하고 카메라 이미지·포인트 클라우드도 된다던데, 왜 한 번은 복사해야 한다고 했나" — 문서 확인(웹 검색)
+- 확인한 것:
+  - Fast DDS 의 zero-copy = 데이터 공유 전달 + 발행자·구독자의 '빌려 쓰기(loan)'. **조건: 평범하고(plain) 크기가 고정된 타입**(가변 길이 문자열·배열이 없어야 함). 직렬화 없이 메모리 모양 그대로 넘기기 때문이다 — eProsima 문서 15.8 Zero-Copy communication.
+  - ROS 2: 빌려 쓰는 메시지는 rmw_fastrtps 가 지원한다. 그러나 `sensor_msgs/Image`·`PointCloud2` 는 `data` 가 가변 길이라 zero-copy 대상이 아니다(ROS Discourse, Galactic 기준 글). 이미지·점군을 zero-copy 로 보내려면 **크기 고정 타입**(예: ros2_shm_msgs)으로 바꿔야 한다. "크기 고정이 아니면 IPC 전에 직렬화가 필요해 복사를 피할 수 없다"(ros2_shm_msgs 안내).
+- 내 앞선 표현 정정: "복사가 한 번 남는다"는 뭉뚱그린 말이었다. 표준 타입을 공유메모리 전송으로 보내면 **보내는 쪽 직렬화 1 번 + 받는 쪽 역직렬화 1 번**이 남는다(커널 UDP 경로·조각내기는 없어짐).
+- '이미지·점군도 zero-copy 지원'이 사실인 경우:
+  - ① 크기 고정 타입으로 정의하고 발행·구독 코드가 빌려 쓰기 API 를 쓸 때.
+  - ② 같은 프로세스에 합쳤을 때(포인터 전달).
+  - ③ NITROS 처럼 GPU 버퍼를 넘길 때.
+- 우리 스택: realsense 드라이버·nvblox·Nav2 는 표준 타입으로 발행·구독하므로 그대로는 ① 이 안 된다(중간에 변환 노드를 두면 그 변환이 복사). 현실적인 길은 **공유메모리 전송(복사는 남지만 UDP 를 떠남)** → 필요하면 ②(카메라 + nvblox 를 한 프로세스) → ③(JetPack 7.2 Phase).
+- 한계: Humble 에서 직접 `borrow_loaned_message()` 를 시험해 보지는 않았다. 출처는 Fast DDS 최신 문서·ROS 문서(상위 배포판)·커뮤니티 글이다.
+- 출처:
+  - https://eprosima-Fast-RTPS.readthedocs.io/en/latest/fastdds/use_cases/zero_copy/zero_copy.html
+  - https://docs.ros.org/en/kilted/How-To-Guides/Configure-ZeroCopy-loaned-messages.html
+  - https://discourse.ros.org/t/using-zero-copy-transport-in-ros2-with-ros2-shm-msgs/26226
+  - https://discourse.openrobotics.org/t/eprosima-fast-dds-from-shared-memory-to-zero-copy/18877
