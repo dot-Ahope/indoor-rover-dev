@@ -1,0 +1,31 @@
+종류별: {'BT 틱 초과': 681, '루프 미달': 85, '전역 nvblox TF': 40, 'TF 미래(컨트롤러)': 40, 'follow_path 중단': 19, '서버 응답 시간초과': 14, '기타': 11}
+10 s 칸(시작 시각: 루프 미달 / BT 틱 / 그 밖):
+  13:52:44    0 /   2 / {'기타': 1}
+  13:52:54    1 /   5 / {'전역 nvblox TF': 1}
+  13:53:04    0 /   3 / {}
+  13:53:14    0 /   3 / {}
+  13:53:24    1 /  40 / {'전역 nvblox TF': 2, 'TF 미래(컨트롤러)': 4, 'follow_path 중단': 2}
+  13:53:34    9 /  33 / {'서버 응답 시간초과': 1, '전역 nvblox TF': 2, 'TF 미래(컨트롤러)': 2, 'follow_path 중단': 1}
+  13:53:44    2 /  26 / {'전역 nvblox TF': 2, 'TF 미래(컨트롤러)': 2, 'follow_path 중단': 1}
+  13:53:54    3 /  26 / {'전역 nvblox TF': 4, '서버 응답 시간초과': 1, '기타': 2}
+  13:54:04    3 /  26 / {'전역 nvblox TF': 3, '서버 응답 시간초과': 5, '기타': 2}
+  13:54:14    0 /  30 / {'전역 nvblox TF': 1, 'TF 미래(컨트롤러)': 2, 'follow_path 중단': 1}
+  13:54:24    7 /  35 / {'전역 nvblox TF': 1, 'TF 미래(컨트롤러)': 2, 'follow_path 중단': 1}
+  13:54:34    3 /  57 / {'전역 nvblox TF': 2, 'TF 미래(컨트롤러)': 2, 'follow_path 중단': 1}
+  13:54:44   14 /  42 / {'전역 nvblox TF': 1}
+  13:54:54    0 /  26 / {'전역 nvblox TF': 1, '서버 응답 시간초과': 1, '기타': 1}
+  13:55:04    1 /  30 / {}
+  13:55:14    2 /  30 / {'전역 nvblox TF': 1}
+  13:55:24    3 /  52 / {'전역 nvblox TF': 3, '서버 응답 시간초과': 2}
+  13:55:34    3 /  24 / {'전역 nvblox TF': 1}
+  13:55:44    3 /  37 / {'전역 nvblox TF': 2, 'TF 미래(컨트롤러)': 4, 'follow_path 중단': 1, '서버 응답 시간초과': 4, '기타': 3}
+  13:55:54    8 /  37 / {'전역 nvblox TF': 1}
+  13:56:04    8 /  36 / {'전역 nvblox TF': 1, 'TF 미래(컨트롤러)': 2, 'follow_path 중단': 1}
+  13:56:14    2 /  14 / {'전역 nvblox TF': 1, 'TF 미래(컨트롤러)': 4, 'follow_path 중단': 2}
+  13:56:24    8 /  31 / {'전역 nvblox TF': 3, 'TF 미래(컨트롤러)': 8, 'follow_path 중단': 4}
+  13:56:34    4 /  22 / {'전역 nvblox TF': 4, 'TF 미래(컨트롤러)': 4, 'follow_path 중단': 2}
+  13:56:44    0 /  14 / {'전역 nvblox TF': 3, 'TF 미래(컨트롤러)': 4, 'follow_path 중단': 2, '기타': 2}
+원문(반복 제외, 최대 3 줄):
+13:52:53 [controller_server-3] [WARN] [controller_server]: No goal checker was specified in parameter 'current_goal_checker'. Server will use only plugin loaded general_goal_checker . This warning wi
+13:53:29 [controller_server-3] [ERROR] [controller_server]: Exception in transformPose: Lookup would require extrapolation into the future.  Requested time 1791780808.803760 but the latest data is at
+13:53:29 [controller_server-3] [ERROR] [controller_server]: Unable to transform robot pose into global plan's frame

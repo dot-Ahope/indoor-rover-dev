@@ -111,9 +111,14 @@ def _make_active_params(context):
     # 2026-10-07 §11 (사용자): 장기 주행에서만 MPPI 후보 궤적·최적 궤적(/trajectories MarkerArray)·변환 경로(/transformed_global_plan) 발행.
     #   왜: 경로를 '계획하는 모습' 을 시각화하려면 매 주기 예측이 필요. 평소엔 끔 — 09-17 mp7: 기본 간격이면 ≈5 MB/s 기록·15 W CPU 압박.
     #   간격을 넓혀 부담을 줄임: 후보 1000 개 중 20 개마다 1 개(50 개), 시간 2 스텝마다.
-    if LaunchConfiguration('mppi_viz').perform(context).strip().lower() in ('1', 'true', 'yes'):
+    #   2026-10-12 §7.3: 'true'(후보 50 개 × 16 점 + 최적 32 점 = 마커 832 개)는 메시지 206 kB × 10 Hz ≈ 2 MB/s —
+    #   PreferForward 15 와 함께 쓰면 4/4 주행에서 부하 포화(/tf 지연 → 컨트롤러 중단 반복). 'lite' = 후보 10 개 × 8 점 + 최적 32 점
+    #   = 마커 112 개(계산상 ≈ 28 kB, 1/7). 영상에는 최적 궤적과 후보의 퍼짐 정도만 남는다.
+    viz = LaunchConfiguration('mppi_viz').perform(context).strip().lower()
+    if viz in ('1', 'true', 'yes', 'lite'):
         mp = params['controller_server']['ros__parameters']['FollowPathMPPI']
-        mp['visualize'] = True; mp.setdefault('TrajectoryVisualizer', {}).update({'trajectory_step': 20, 'time_step': 2})
+        mp['visualize'] = True
+        mp.setdefault('TrajectoryVisualizer', {}).update({'trajectory_step': 100, 'time_step': 4} if viz == 'lite' else {'trajectory_step': 20, 'time_step': 2})
     with open(_ACTIVE_PARAMS, 'w', encoding='utf-8') as f:
         f.write('# 자동 생성(navigation.launch.py, camera_layer=%s, global_camera=%s) — 원본 %s\n' % (layer, gcam, src))
         yaml.safe_dump(params, f, allow_unicode=True, sort_keys=False)
