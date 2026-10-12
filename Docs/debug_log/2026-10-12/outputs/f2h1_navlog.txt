@@ -1,0 +1,33 @@
+종류별: {'BT 틱 초과': 101, '루프 미달': 23, '전역 nvblox TF': 14, 'smoother 충돌': 8, 'PathBlockedAhead': 2, '기타': 1, '최적화 실패': 1, 'follow_path 중단': 1}
+10 s 칸(시작 시각: 루프 미달 / BT 틱 / 그 밖):
+  13:32:39    0 /   3 / {'기타': 1}
+  13:32:49    0 /   1 / {}
+  13:32:59    3 /   3 / {}
+  13:33:09    1 /   6 / {}
+  13:33:19    2 /   4 / {'전역 nvblox TF': 2}
+  13:33:29    0 /   3 / {}
+  13:33:39    1 /   2 / {'전역 nvblox TF': 1}
+  13:33:49    2 /   8 / {'전역 nvblox TF': 2}
+  13:33:59    0 /   2 / {}
+  13:34:09    0 /   5 / {}
+  13:34:19    0 /   4 / {}
+  13:34:29    0 /   9 / {}
+  13:34:39    0 /   2 / {}
+  13:34:49    0 /   7 / {}
+  13:34:59    2 /   6 / {'전역 nvblox TF': 1}
+  13:35:09    1 /   3 / {'전역 nvblox TF': 2}
+  13:35:19    2 /   6 / {'전역 nvblox TF': 2}
+  13:35:29    3 /   7 / {'전역 nvblox TF': 3}
+  13:35:39    2 /   9 / {'전역 nvblox TF': 1, 'smoother 충돌': 2}
+  13:35:49    4 /   4 / {'PathBlockedAhead': 2, 'smoother 충돌': 6, '최적화 실패': 1, 'follow_path 중단': 1}
+  13:35:59    0 /   6 / {}
+  13:36:09    0 /   1 / {}
+원문(반복 제외, 최대 8 줄):
+13:32:44 [controller_server-3] [WARN] [controller_server]: No goal checker was specified in parameter 'current_goal_checker'. Server will use only plugin loaded general_goal_checker . This warning wi
+13:35:47 [smoother_server-4] [ERROR] [smoother_server]: Smoothed path leads to a collision at x: 1.531791, y: 0.176932, theta: 0.094285
+13:35:47 [smoother_server-4] [WARN] [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+13:35:49 [bt_navigator-7] [WARN] [bt_navigator_navigate_to_pose_rclcpp_node]: PathBlockedAhead: �븵 寃쎈줈 (1.18, 0.15) 鍮꾩슜 99 媛� 2.0 s 吏��냽 �넂 二쇳뻾 以묐떒쨌�옱怨꾪쉷
+13:35:50 [smoother_server-4] [ERROR] [smoother_server]: Smoothed path leads to a collision at x: 1.406119, y: 0.258764, theta: -0.337928
+13:35:50 [smoother_server-4] [WARN] [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+13:35:52 [smoother_server-4] [ERROR] [smoother_server]: Smoothed path leads to a collision at x: 1.360000, y: 0.290000, theta: -0.051103
+13:35:52 [smoother_server-4] [WARN] [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
