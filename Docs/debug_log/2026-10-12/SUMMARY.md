@@ -594,3 +594,21 @@
 - 해석: 포화를 부르는 것은 **궤적 발행의 양**이다(측정된 대응). 양을 1/7 로 줄이면 기록을 유지하면서 15 를 쓸 수 있다. 왜 2 MB/s 가 15 일 때만 문턱을 넘는지(§8.1), 폭증의 최초 계기는 여전히 미확정.
 - 한계: lite 는 1 회뿐. 다음 주행들에서 계속 확인한다. 목표 전환 때의 탐색 폭주(2~4 s, 손실 수천 /s)는 남아 있다 → 러너가 목표마다 새 프로세스를 띄우지 않게 고치는 것이 다음 개선.
 - 운용 후보: **그림자 EKF 끔 + `mppi_viz:=lite` + PreferForward 15**.
+
+### §12.3 사용자 확인: f2l1 "상자에 안 닿았다" → 접촉 없음.
+
+## §13 빠른 prep(사용자 결정: 단축안 앞 2 가지) + f2l2 선언(주행 전, 사용자: "출발 위치로 옮겼다")
+- 만든 것:
+  - `jobs/job971_prepchk.py` — 확인 노드 1 개. Nav2 수명 주기·TF·보드/EKF 주기·전역 지도·실행 중 파라미터·배터리를 한 프로세스에서, '준비될 때까지' 폴링한다.
+  - `jobs/job972_prep_fast.sh` — 정리 → sensors(자이로 캘리브 로그를 기다림) → slam → nav2 → 확인 노드. 단계마다 경과 시각을 출력한다. 기동 순서·정리 방식은 job240 그대로.
+  - 뺀 것: 통과 폭 감사(job248)·지도 복원 확인(job697) — 순회에 안 씀. 에이전트가 없을 때의 base 기동은 넣지 않았다(그 경우 중단하고 기존 절차 안내).
+- 첫 실행(`jobs/job973_prep_lite_fast.sh` → `outputs/j973_prep_fast.txt`, 로버 안 움직임): **Jetson 에서 61 s, PC 기준 15:51:03~15:52:13 = 70 s**(기존 4 분 41 초~5 분 17 초).
+  - 구성: 정리 10 s · 자이로 캘리브까지 19 s · slam·nav2 기동 1 s · 준비 대기 13.8 s · 코스트맵 비우기 + 재마킹 대기 15 s · 나머지 약 2 s.
+  - 결과: PREP_OK.
+    - Nav2 5 개 active, /wheel_odom 25.0 · /odometry/filtered 30.0 · /tf 49.7 Hz, 배터리 12.07 V, map→base (−0.006, −0.007).
+    - 전역 코스트맵 333×242, plugins static · nvblox_layer · obstacle · inflation, nvblox 프레임 map, obstacle 소스 scan.
+    - PreferForward 15.0, visualize True, trajectory_step 100 · time_step 4, stuck shadow True.
+    - 프로세스 각 1 개, nvblox 1 개, 잔류 러너 0, "no map received" 0.
+  - 결함 1 건: SHM 오류 줄 수를 세는 한 줄이 계산 오류(여러 파일 grep 출력 형식) → 고침. 확인 항목 자체에는 영향 없음.
+- 남은 대기: 재마킹 대기 15 s(09-11 '클리어 직후 옛 데이터' 사고 대책이라 유지), 자이로 캘리브 약 19 s(센서 재기동 시 필수).
+- f2l2 선언: f2l1 의 반복. 구성 같음(그림자 EKF 끔 + `mppi_viz:=lite` + PreferForward 15). **prep 만 빠른 판**(절차 차이로 기록). 판정은 §12 와 같다(포화 없음 + UDP 평상 + 3/3 → lite 2/2 로 운용 후보 확정).
