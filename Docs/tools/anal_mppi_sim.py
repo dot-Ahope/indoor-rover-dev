@@ -35,13 +35,13 @@ P = dict(vx_std=0.05, wz_std=0.3, temperature=0.3, gamma=0.015, iters=1, batch=1
          humble=0, cons_w=4.0, dyn_path=0, dyn_cost=0, regen=0,
          lag_steps=0, w_gain=1.0, v_gain=1.0, w_acc=0.0,
          obst=0, cost_w=3.81, crit_cost=300.0, cc_coll=1e6, near_thr=0.5, t_abs=0.0,   # 09-18: CostCritic·near_goal·절대 시각
-         cycles=40, seed=1, label='', ack_r=0.0, fpchk=0)
+         cycles=40, seed=1, label='', ack_r=0.0, fpchk=0, pad=0.01)   # pad = footprint_padding(10-13 §11: 0 으로 줄였을 때 평가용. 기록된 코스트맵의 inflation 은 0.01 기준 그대로)
 for a in sys.argv[3:]:
     k, v = a.split('='); P[k] = v if k in ('label', 'wobble_on') else float(v)
 for k in ('iters', 'batch', 'steps', 'align_off', 'align_step', 'follow_off', 'angle_off', 'cycles', 'seed', 'lag_steps', 'humble', 'dyn_path', 'dyn_cost', 'regen', 'obst', 'fpchk'):
     P[k] = int(P[k])
 rng = np.random.default_rng(P['seed'])
-HL, HW, PAD = 0.25, 0.165, 0.01
+HL, HW, PAD = 0.25, 0.165, P['pad']
 
 
 def yaw_of(q):
