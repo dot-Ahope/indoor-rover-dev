@@ -1,0 +1,33 @@
+# Docs/tools — 계속 쓰는 도구 (2026-10-13~)
+
+도구 규약(2026-10-12 결정): 이름은 용도로 짓고 앞머리로 종류를 구분한다. 날짜 폴더 `Docs/debug_log/<날짜>/jobs/` 에는 그날만 쓴 것만 둔다.
+어떤 상황에 써서 어떤 값이 나왔는지는 날짜 폴더의 `TOOLS.md` 에 적는다.
+
+| 앞머리 | 뜻 | 실행 위치 |
+|---|---|---|
+| `prep_` | 스택 기동 | Jetson |
+| `chk_` | 상태 확인(로버 안 움직임) | Jetson |
+| `run_` | 주행 | PC → Jetson |
+| `anal_` | 주행 기록 분석 | PC (일부 Jetson) |
+| `fig_` | 그림 | PC |
+| `up_` | 파일 전송 | PC |
+
+## 목록
+
+| 도구 | 하는 일 | 옛 이름 |
+|---|---|---|
+| `prep_fast.sh` | 정리 → 센서 → SLAM(위치 추정) → Nav2 기동, 준비될 때까지 확인. 환경 변수로 구성을 받는다. 약 60~70 s | `job972_prep_fast.sh` |
+| `prep_patrol.sh` | 순회 구성(그림자 EKF 끔 · 전역 nvblox · 재계획 0.5 Hz)으로 `prep_fast.sh` 를 부른다. 인자: 궤적 발행 `lite`/`true`/`off`, 후진 벌점 | `job973_prep_lite_fast.sh` 등 |
+| `chk_prep.py` | prep 확인 노드 1 개: Nav2 상태 · 좌표 변환 · 보드/EKF 주기 · 전역 지도 · 실행 중 설정값 · 배터리. 마지막 줄 `PREP_OK`/`PREP_FAIL` | `job971_prepchk.py` |
+| `chk_jetson_state.sh` | 재부팅 여부 · IP · /tmp 스크립트 · 캡처 권한 · 수신 버퍼 | `job947_state.sh` |
+| `anal_tf_rate.py` | bag → 10 s 칸마다 /tf 수신 Hz(포화 판정 지표: 정상 50) | `tf_rate.py` |
+| `anal_navlog.py` | Nav2 로그 → 사건 종류별 횟수 · 10 s 분포 · 원문 | `navlog_pc.py` |
+| `anal_proc_cpu.py` | 전 프로세스 CPU 기록 → 구간별 비교 표 | `proc_cmp2.py` |
+| `anal_top.py` | top 기록 → 구간의 CPU 여유 · 상위 프로세스 | `top_eval.py` |
+| `anal_udp_drops.py` | `net_<이름>.log` → 포화 전후 초당 UDP 수신 · 손실, 프로세스별 소켓 손실 | `net_anal.py` |
+| `anal_rtps_pcap.py` | 루프백 캡처 → DDS 패킷을 종류 · 쓰는 쪽(토픽) · 받는 프로세스별로 집계(평상 창 vs 포화 창) | (10-13 신규) |
+| `anal_traj_size.py` | bag → MPPI 궤적 메시지 크기 · 기록 주기 | `traj_size.py` |
+| `anal_reverse.py` | 러너 csv → 목표별 후진 거리 · 시간 | `rev_eval.py` |
+| `up_tools.sh` | 위 Jetson 쪽 도구와 주행 보조 스크립트를 /tmp 로 전송 | `up950.sh` 등 |
+
+주행 러너(`run_f0.sh` · `run_f2c.sh` · `job551_f0drive.sh` · `job550_f0run.py`)와 범용 러너 `run_jn.sh` 는 접속 정보가 들어 있어 작업 폴더에 두고, 가린 사본을 날짜 폴더 `jobs/` 에 남긴다(이름은 다음 정리 때 `run_` 로 맞춘다).
