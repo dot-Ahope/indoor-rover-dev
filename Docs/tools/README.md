@@ -34,6 +34,7 @@
 | `fig_stop_costmap.py` | 지정 시각의 로컬 코스트맵 + 차체 + 라이다 점, 정지 전 풋프린트 비용 · 여유 시간열 | (10-13 신규) |
 | `anal_box_history.py` | 정지 때 차체 옆 치명 칸 덩어리가 로컬 · 전역 코스트맵에 언제부터 있었는지, 로버 · 전역 경로가 얼마나 가까이 갔는지 시간순 | (10-13 신규) |
 | `anal_box_layers.py` | 그 칸을 어느 층이 채웠나 — nvblox 슬라이스 값 · 라이다 점 수 · 로컬 치명 · map→odom 보정 차를 시간순 | (10-13 신규) |
+| `anal_box_pass.py` | 여러 주행이 같은 구역을 지날 때의 차체 ↔ 치명 칸 여유 · 정지 여부를 나란히 | (10-13 신규) |
 | `anal_mppi_sim.py` | MPPI 오프라인 시뮬(bag 의 경로 · 로컬 코스트맵 재생, CostCritic, `fpchk=1` = Nav2 방식 칸 단위 둘레 검사 · 후보 전부 충돌 집계). Jetson 에서 실행 | `job776_mppi_sim_ack.py`(10-01) |
 | `fig_box_approach_video.py` | 위 내용을 지도 좌표 영상으로(전역 코스트맵 · 로컬 치명 칸 · 경로 · 카메라 시야 · 차체) | (10-13 신규) |
 | `anal_traj_size.py` | bag → MPPI 궤적 메시지 크기 · 기록 주기 | `traj_size.py` |
