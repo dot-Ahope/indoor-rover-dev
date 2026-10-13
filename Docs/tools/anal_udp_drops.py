@@ -1,7 +1,8 @@
 # 10-12 §9.2: UDP 손실 시간순 분석. 인자: net_<이름>.log 포화시작(HH:MM:SS)
 #   SNMP 줄 = 커널 누적(Udp: InDatagrams NoPorts InErrors OutDatagrams RcvbufErrors ...), SOCK 줄 = 소켓별 누적 drops, MAP 줄 = inode → pid·프로세스
 import sys, time, collections, numpy as np
-def ep(s): return time.mktime(time.strptime('2026-10-12 ' + s, '%Y-%m-%d %H:%M:%S'))
+DAY = time.strftime('%Y-%m-%d ', time.localtime(next(int(l.split()[0]) for l in open(sys.argv[1], errors='replace') if l[:1].isdigit())))   # 날짜는 기록 첫 줄에서(10-13: 10-12 고정값 제거)
+def ep(s): return time.mktime(time.strptime(DAY + s, '%Y-%m-%d %H:%M:%S'))
 T = ep(sys.argv[2]); snmp = []; sock = collections.defaultdict(list); mp = {}
 for l in open(sys.argv[1], errors='replace'):
     f = l.split()
