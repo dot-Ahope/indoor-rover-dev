@@ -29,6 +29,7 @@
 | `anal_rtps_onset.py` | 포화 시작 몇 초를 0.2 s 칸으로 — 토픽(기본 `rt/tf`)의 DATA·HEARTBEAT·ACKNACK 보낸 곳 | (10-13 신규) |
 | `anal_rtps_acklag.py` | 쓰는 쪽 HEARTBEAT(보관 번호)와 읽는 쪽 ACKNACK(받은 번호)을 맞춰 뒤처진 읽는 쪽 찾기 | (10-13 신규) |
 | `anal_bag_rates.py` | bag 여러 개의 토픽별 수신 주기 · 크기 · kB/s 를 나란히 비교 | (10-13 신규) |
+| `anal_recorder_cpu.py` | proc 로그에서 bag 기록기 CPU 를 시간순으로(전체 사용률 · 주요 노드와 함께, 주행 간 비교) | (10-13 신규) |
 | `fig_bag_reception.py` | 토픽 × 시간 수신 부족률 그림 + `/tf` 최대 간격(주행 간 비교) | (10-13 신규) |
 | `anal_traj_size.py` | bag → MPPI 궤적 메시지 크기 · 기록 주기 | `traj_size.py` |
 | `anal_reverse.py` | 러너 csv → 목표별 후진 거리 · 시간 | `rev_eval.py` |
