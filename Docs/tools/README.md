@@ -31,6 +31,7 @@
 | `anal_bag_rates.py` | bag 여러 개의 토픽별 수신 주기 · 크기 · kB/s 를 나란히 비교 | (10-13 신규) |
 | `anal_recorder_cpu.py` | proc 로그에서 bag 기록기 CPU 를 시간순으로(전체 사용률 · 주요 노드와 함께, 주행 간 비교) | (10-13 신규) |
 | `fig_bag_reception.py` | 토픽 × 시간 수신 부족률 그림 + `/tf` 최대 간격(주행 간 비교) | (10-13 신규) |
+| `fig_stop_costmap.py` | 지정 시각의 로컬 코스트맵 + 차체 + 라이다 점, 정지 전 풋프린트 비용 · 여유 시간열 | (10-13 신규) |
 | `anal_traj_size.py` | bag → MPPI 궤적 메시지 크기 · 기록 주기 | `traj_size.py` |
 | `anal_reverse.py` | 러너 csv → 목표별 후진 거리 · 시간 | `rev_eval.py` |
 | `up_tools.sh` | 위 Jetson 쪽 도구와 주행 보조 스크립트를 /tmp 로 전송 | `up950.sh` 등 |
