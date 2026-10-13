@@ -40,7 +40,15 @@ QOSOPT=""; if [ "${BAG_BE_TRAJ:-1}" = 1 ]; then printf '/trajectories:
   history: keep_last
   depth: 5
   durability: volatile
-' > /tmp/bag_qos_$NAME.yaml; QOSOPT="--qos-profile-overrides-path /tmp/bag_qos_$NAME.yaml"; fi
+' > /tmp/bag_qos_$NAME.yaml
+# 10-13 §2: BAG_BE_TF=1 이면 기록기가 /tf 도 best effort 로 구독(/tf_static 은 그대로) — 느린 기록기가 /tf 쓰는 쪽을 붙잡는지 가리는 시험용. 기본 0.
+[ "${BAG_BE_TF:-0}" = 1 ] && printf '/tf:
+  reliability: best_effort
+  history: keep_last
+  depth: 100
+  durability: volatile
+' >> /tmp/bag_qos_$NAME.yaml
+QOSOPT="--qos-profile-overrides-path /tmp/bag_qos_$NAME.yaml"; fi
 echo "  bag 기록 QoS 재정의: ${QOSOPT:-없음}"
 setsid nohup ros2 bag record -o $BAG $QOSOPT $TOPICS > /tmp/bag_$NAME.log 2>&1 &
 setsid nohup tegrastats --interval 1000 > /tmp/tegra_$NAME.log 2>&1 &
