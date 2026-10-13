@@ -1,0 +1,83 @@
+      1 13:33:05 [INFO] [smoother_server]: Received a path to smooth.
+      1 13:33:05 [INFO] [controller_server]: Passing new path to controller.
+      1 13:33:06 [WARN] [global_costmap.global_costmap]: [NvbloxCostmapLayer] Can't transform: map to odom. Error: Lookup would require extrapolation into the future.  Requested time 1791865986.029997 but the latest data is at 
+      1 13:33:06 [WARN] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+      1 13:33:07 [INFO] [smoother_server]: Received a path to smooth.
+      1 13:33:07 [INFO] [controller_server]: Passing new path to controller.
+      1 13:33:09 [INFO] [smoother_server]: Received a path to smooth.
+      1 13:33:09 [INFO] [controller_server]: Passing new path to controller.
+      1 13:33:10 [WARN] [global_costmap.global_costmap]: [NvbloxCostmapLayer] Can't transform: map to odom. Error: Lookup would require extrapolation into the future.  Requested time 1791865990.171762 but the latest data is at 
+      1 13:33:10 [WARN] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+      1 13:33:12 [INFO] [smoother_server]: Received a path to smooth.
+      1 13:33:12 [INFO] [controller_server]: Passing new path to controller.
+      1 13:33:13 [WARN] [global_costmap.global_costmap]: [NvbloxCostmapLayer] Can't transform: map to odom. Error: Lookup would require extrapolation into the future.  Requested time 1791865992.920157 but the latest data is at 
+      1 13:33:13 [WARN] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+      1 13:33:14 [INFO] [smoother_server]: Received a path to smooth.
+      1 13:33:14 [INFO] [controller_server]: Passing new path to controller.
+      1 13:33:16 [INFO] [smoother_server]: Received a path to smooth.
+      1 13:33:16 [INFO] [controller_server]: Passing new path to controller.
+      1 13:33:18 [INFO] [smoother_server]: Received a path to smooth.
+      1 13:33:18 [INFO] [controller_server]: Passing new path to controller.
+      1 13:33:20 [INFO] [smoother_server]: Received a path to smooth.
+      1 13:33:20 [INFO] [controller_server]: Passing new path to controller.
+      1 13:33:22 [INFO] [smoother_server]: Received a path to smooth.
+      1 13:33:22 [INFO] [controller_server]: Passing new path to controller.
+      1 13:33:24 [WARN] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+      1 13:33:24 [INFO] [smoother_server]: Received a path to smooth.
+      1 13:33:24 [ERROR] [smoother_server]: Smoothed path leads to a collision at x: 1.510000, y: 0.190000, theta: -0.368859
+      1 13:33:24 [WARN] [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+      1 13:33:24 [WARN] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+      1 13:33:24 [INFO] [controller_server]: Passing new path to controller.
+      3 13:33:24 [WARN] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+      2 13:33:25 [INFO] [controller_server]: Optimizer reset
+      1 13:33:25 [ERROR] [controller_server]: Optimizer fail to compute path
+      1 13:33:25 [WARN] [controller_server]: [follow_path] [ActionServer] Aborting handle.
+      1 13:33:25 [INFO] [local_costmap.local_costmap]: Received request to clear except a region the local_costmap
+      1 13:33:25 [INFO] [controller_server]: Received a goal, begin computing control effort.
+      2 13:33:25 [INFO] [controller_server]: Optimizer reset
+      1 13:33:25 [ERROR] [controller_server]: Optimizer fail to compute path
+      1 13:33:25 [WARN] [controller_server]: [follow_path] [ActionServer] Aborting handle.
+      1 13:33:25 [INFO] [local_costmap.local_costmap]: Received request to clear except a region the local_costmap
+      1 13:33:25 [INFO] [global_costmap.global_costmap]: Received request to clear except a region the global_costmap
+      1 13:33:25 [INFO] [smoother_server]: Received a path to smooth.
+      1 13:33:25 [ERROR] [smoother_server]: Smoothed path leads to a collision at x: 1.431470, y: 0.244450, theta: -0.165131
+      1 13:33:25 [WARN] [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+      1 13:33:25 [INFO] [controller_server]: Received a goal, begin computing control effort.
+      2 13:33:25 [INFO] [controller_server]: Optimizer reset
+      1 13:33:25 [ERROR] [controller_server]: Optimizer fail to compute path
+      1 13:33:25 [WARN] [controller_server]: [follow_path] [ActionServer] Aborting handle.
+      1 13:33:25 [INFO] [local_costmap.local_costmap]: Received request to clear except a region the local_costmap
+      1 13:33:25 [INFO] [controller_server]: Received a goal, begin computing control effort.
+      2 13:33:25 [INFO] [controller_server]: Optimizer reset
+      1 13:33:25 [ERROR] [controller_server]: Optimizer fail to compute path
+      1 13:33:25 [WARN] [controller_server]: [follow_path] [ActionServer] Aborting handle.
+      1 13:33:25 [INFO] [behavior_server]: Running backup
+      1 13:33:25 [INFO] [behavior_server]: DriveOnHeading: no acceleration or deceleration limits set
+      1 13:33:25 [WARN] [behavior_server]: Collision Ahead - Exiting DriveOnHeading
+      1 13:33:25 [WARN] [behavior_server]: backup failed
+      1 13:33:25 [WARN] [behavior_server]: [backup] [ActionServer] Aborting handle.
+      1 13:33:25 [INFO] [behavior_server]: Running wait
+      1 13:33:30 [INFO] [behavior_server]: wait completed successfully
+      1 13:33:30 [INFO] [smoother_server]: Received a path to smooth.
+      1 13:33:30 [ERROR] [smoother_server]: Smoothed path leads to a collision at x: 1.431470, y: 0.244450, theta: -0.165131
+      1 13:33:30 [WARN] [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+      1 13:33:30 [INFO] [controller_server]: Received a goal, begin computing control effort.
+      3 13:33:30 [INFO] [controller_server]: Optimizer reset
+      1 13:33:30 [ERROR] [controller_server]: Optimizer fail to compute path
+      1 13:33:30 [WARN] [controller_server]: [follow_path] [ActionServer] Aborting handle.
+      1 13:33:30 [INFO] [local_costmap.local_costmap]: Received request to clear except a region the local_costmap
+      1 13:33:30 [INFO] [controller_server]: Received a goal, begin computing control effort.
+      2 13:33:30 [INFO] [controller_server]: Optimizer reset
+--- 로그 크기 740 줄 · 13:30:16 이후 ERROR/WARN 종류
+     23 [WARN]  [controller_server]: Control loop missed its desired rate of NHz
+     16 [WARN]  [global_costmap.global_costmap]: [NvbloxCostmapLayer] Can't transform: map to odom. Error: Lo
+     14 [WARN]  [controller_server]: [follow_path] [ActionServer] Aborting handle.
+     14 [ERROR]  [controller_server]: Optimizer fail to compute path
+      9 [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+      9 [ERROR]  [smoother_server]: Smoothed path leads to a collision at x: N, y: N
+      3 [WARN]  [behavior_server]: Collision Ahead - Exiting DriveOnHeading
+      3 [WARN]  [behavior_server]: backup failed
+      3 [WARN]  [behavior_server]: [backup] [ActionServer] Aborting handle.
+      1 [WARN]  [controller_server]: No goal checker was specified in parameter 'current_goal_che
+      1 [WARN]  [bt_navigator]: [navigate_to_pose] [ActionServer] Aborting handle.
+      1 [ERROR]  [bt_navigator]: Goal failed

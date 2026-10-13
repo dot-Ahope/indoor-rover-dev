@@ -164,3 +164,15 @@
   - 주행 시작 때의 급증은 판정에서 뺀다(러너·기록기·조회기가 그때 새로 뜨므로 남는 것이 정상).
   - **5 번 확인**: bag 의 `/tf` 100 ms 초과 간격 10 번 미만, 포화 없음.
 - 부수 확인: 3 목표 성공 여부, 접촉 여부(사용자).
+
+### §4.4 f2o1 결과 — 러너 수정 2 건은 통과, 주행은 목표 3 에서 중단(통신 아닌 주행 문제)
+- prep 59 s PREP_OK(`outputs/prep_f2o1.txt`): visualize True · 100/4(lite), PreferForward 15.0, 시작 (−0.004, −0.003).
+- 주행(13:30:16, `outputs/run_f2o1.txt`): 목표 1 SUCCEEDED 51.4 s · 목표 2 SUCCEEDED 49.8 s · **목표 3 ABORTED 98.7 s**(멈춘 곳 map (1.437, 0.218, 161.8°), 출발점까지 1.45 m). stuck 진단 0 회.
+- **6 번 판정 — 해결**: 러너 로그 "상주 경로 조회기: 준비됨(pid 723481)", 목표 3 개 모두 "경로 자동 yaw" 출력. 소켓 손실(`outputs/net_f2o1.log`)은 **주행 전 구간 0 /s** — 목표 전환 칸 포함(f2n1 은 517 · 1,004 /s). 기준(50 /s 미만) 충족. 다만 f2n1 은 viz true, 이번은 lite 라 두 가지가 함께 바뀌었다 — lite 인 10-12 f2l1·f2l2 의 전환 칸 손실과 견줘야 조회기 효과만 분리된다(아래 확인 필요 항목).
+- **5 번 판정 — 확인**: bag `/tf` 는 주행 내내 49~51 Hz(첫 칸 46.9 · 끝 칸은 반쪽), 포화 없음.
+- **목표 3 중단의 직접 원인**(`outputs/navlog_f2o1.txt`, Nav2 로그 원문):
+  - 로버는 목표 3 출발 80 s 뒤 (1.44, 0.22)에서 멈춰 끝까지 움직이지 않았다(`outputs/f2o1.csv`: 84 s 부터 v = 0).
+  - 13:33:24 `smoother_server` "Smoothed path leads to a collision at x 1.51, y 0.19" → 13:33:25 `controller_server` "Optimizer fail to compute path"(MPPI 후보 궤적이 모두 충돌) 14 회 → `behavior_server` 후진 시도 3 회 모두 "Collision Ahead" 로 실패 → 13:33:4x `bt_navigator` "Goal failed".
+  - 충돌 판정 좌표가 로버 자신의 위치(1.43~1.51, 0.19~0.24)다. 즉 **코스트맵이 로버가 서 있는 자리 바로 옆(또는 안)을 장애물로 보고 있었다.**
+  - 이것이 실제 물체(상자 ①·사람 등)인지, nvblox 의 남은 셀(유령 셀)인지, 위치 추정이 밀려 상자가 로버 쪽으로 겹쳐 보인 것인지는 **아직 구분하지 않았다.** 목표 3 구간의 누적 회전은 휠 231.7° 대 EKF 166.7°(차 64.9°)로 미끄러짐 흔적이 크다.
+  - 통신 쪽 징후는 없다: 소켓 손실 0, `/tf` 정상. "Can't transform map→odom … extrapolation into the future" 경고 16 회와 "Control loop missed 10 Hz" 23 회는 있었으나 포화 때의 수백 회와는 다른 수준이다(평상 주행에서의 횟수와 비교는 안 했다).
