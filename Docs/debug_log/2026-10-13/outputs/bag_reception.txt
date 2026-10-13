@@ -1,0 +1,3 @@
+저장 Docs/04_navigation/figures/2026-10-13_bag_reception_f2m1_f2n1.png 토픽 14
+f2m1 (기록기 /tf reliable) data 92% tf 23% filtered 84% wheel_odom 93% cmd_vel 73% odom_rf2o 93% gated 89% scan 93% trajectories 41% static_map_slice 93% transformed_global_plan 39% status 92% costmap 100% battery 91%
+f2n1 (기록기 /tf best effort) data 100% tf 100% filtered 100% wheel_odom 100% cmd_vel 92% odom_rf2o 96% gated 95% scan 99% trajectories 89% static_map_slice 100% transformed_global_plan 91% status 100% costmap 110% battery 100%
