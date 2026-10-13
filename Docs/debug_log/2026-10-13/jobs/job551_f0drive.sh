@@ -41,8 +41,9 @@ QOSOPT=""; if [ "${BAG_BE_TRAJ:-1}" = 1 ]; then printf '/trajectories:
   depth: 5
   durability: volatile
 ' > /tmp/bag_qos_$NAME.yaml
-# 10-13 §2: BAG_BE_TF=1 이면 기록기가 /tf 도 best effort 로 구독(/tf_static 은 그대로) — 느린 기록기가 /tf 쓰는 쪽을 붙잡는지 가리는 시험용. 기본 0.
-[ "${BAG_BE_TF:-0}" = 1 ] && printf '/tf:
+# 10-13 §2: 기록기가 /tf 도 best effort 로 구독(/tf_static 은 그대로). 기본 켬(10-13 §4, 사용자 결정) — reliable 이면 느린 기록기가 /tf 쓰는 쪽을
+#   붙잡아 HEARTBEAT 폭주(포화)를 일으킨다(§1.2·§2.1: f2n1 포화 없음·bag /tf 100 %). BAG_BE_TF=0 이면 예전처럼.
+[ "${BAG_BE_TF:-1}" = 1 ] && printf '/tf:
   reliability: best_effort
   history: keep_last
   depth: 100
