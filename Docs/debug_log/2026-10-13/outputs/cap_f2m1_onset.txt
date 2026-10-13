@@ -1,0 +1,22 @@
+rt/tf 의 쓰는 쪽 5 곳: robot_state_pub[a5084ef8], rf2o_laser_odom[6553b2aa], localization_sl[02548621], localization_sl[02548621], ekf_node[69536c1a]
+칸 시작   전체pkt | /tf DATA(발행자별) | /tf HEARTBEAT | ACKNACK 상위 3 (보낸 읽는 쪽) | HEARTBEAT 이 향한 곳 상위 3
+10:19:38.0   1025 | ekf_no 60 locali 41 | 20 | planner_server[3c540722] 4 controller_serv[385497c9] 4 ekf_node[69536c1a] 2 | (모두) 20
+10:19:38.2    949 | ekf_no 60 locali 40 | 0 | - | -
+10:19:38.4    881 | ekf_no 60 locali 40 | 0 | - | -
+10:19:38.5   1094 | ekf_no 60 locali 40 | 0 | - | -
+10:19:38.7    893 | ekf_no 60 locali 40 | 0 | - | -
+10:19:39.0   1076 | ekf_no 60 locali 40 | 0 | - | -
+10:19:39.2    967 | ekf_no 60 locali 40 | 0 | - | -
+10:19:39.4    869 | ekf_no 60 locali 40 | 0 | - | -
+10:19:39.5   1015 | ekf_no 60 locali 40 | 0 | - | -
+10:19:39.7    898 | ekf_no 60 locali 40 | 0 | - | -
+10:19:40.0    976 | ekf_no 60 locali 40 | 0 | - | -
+10:19:40.2    961 | ekf_no 60 locali 40 | 0 | - | -
+10:19:40.4    880 | ekf_no 60 locali 40 | 0 | - | -
+10:19:40.5   1001 | ekf_no 60 locali 40 | 0 | - | -
+10:19:40.7   5342 | ekf_no 451 locali 40 | 3920 | planner_server[3c540722] 24 controller_serv[385497c9] 22 localization_sl[02548621] 12 | (모두) 3920
+10:19:41.0  14056 | ekf_no 748 locali 487 | 11355 | controller_serv[385497c9] 106 planner_server[3c540722] 98 nvblox_node[c6558318] 55 | (모두) 11355
+10:19:41.2  15563 | ekf_no 805 locali 564 | 12806 | controller_serv[385497c9] 86 planner_server[3c540722] 70 nvblox_node[c6558318] 55 | (모두) 12806
+10:19:41.4  13348 | ekf_no 679 locali 531 | 11008 | controller_serv[385497c9] 58 planner_server[3c540722] 48 nvblox_node[c6558318] 43 | (모두) 11008
+10:19:41.5  10343 | ekf_no 494 locali 350 | 7472 | planner_server[3c540722] 66 controller_serv[385497c9] 58 nvblox_node[c6558318] 43 | (모두) 7472
+10:19:41.7  11435 | ekf_no 513 locali 466 | 8633 | planner_server[3c540722] 108 controller_serv[385497c9] 61 nvblox_node[c6558318] 59 | (모두) 8633
