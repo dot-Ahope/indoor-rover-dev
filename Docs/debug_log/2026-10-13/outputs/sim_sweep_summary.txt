@@ -1,0 +1,18 @@
+장면         cost_w   최소 여유(cm) 중앙 · 최악 · 씨앗별(오름차순)                         멈춘 씨앗(실패≥10)   전진 거리 중앙(m)
+box_f2o1      3.81      7.2 ·   2.8 · 2.8 5.1 5.1 5.7 7.0 7.3 8.2 9.1 9.2 9.7   1 / 10 (씨앗 3)   1.90
+box_f2o1      7.62      7.3 ·   3.3 · 3.3 5.1 5.7 7.0 7.2 7.4 8.2 8.8 9.2 9.2   0 / 10    1.71
+box_f2o1     11.43      8.9 ·   7.3 · 7.3 7.7 7.9 8.6 8.8 9.0 10.6 11.9 13.4 15.5   0 / 10    1.56
+box_f2p1      3.81      9.8 ·   2.7 · 2.7 6.6 8.3 9.6 9.7 9.8 9.9 10.0 10.8 11.1   1 / 10 (씨앗 3)   2.04
+box_f2p1      7.62      7.8 ·   4.3 · 4.3 5.7 5.9 6.1 7.7 8.0 9.5 10.5 10.7 13.6   0 / 10    1.97
+box_f2p1     11.43     11.5 ·   8.1 · 8.1 8.6 8.7 8.8 9.0 14.0 14.1 14.9 15.7 16.5   0 / 10    1.66
+door_f2a10    3.81      4.2 ·   2.7 · 2.7 3.5 3.6 3.8 4.0 4.4 5.1 5.3 5.4 5.7   0 / 10    -0.37
+door_f2a10    7.62      9.6 ·   7.2 · 7.2 8.1 8.7 9.0 9.5 9.6 13.1 14.6 14.9 15.0   0 / 10    -0.28
+door_f2a10   11.43     12.8 ·   8.6 · 8.6 9.9 11.3 11.7 12.4 13.1 14.1 14.3 14.9 14.9   0 / 10    -0.28
+out_f2o1      3.81      8.9 ·   3.2 · 3.2 3.6 5.9 6.1 8.5 9.3 9.4 11.9 12.7 13.9   0 / 10    1.96
+out_f2o1      7.62     12.5 ·   8.2 · 8.2 10.4 11.2 11.6 12.5 12.5 12.6 12.9 12.9 13.4   0 / 10    1.85
+out_f2o1     11.43      8.8 ·   5.3 · 5.3 5.6 7.6 8.0 8.6 9.0 9.3 9.8 10.0 12.8   0 / 10    1.09
+해석 실패 30 개
+   /tmp/sweep/out_f2p1_11.43_1.txt :: ent call last): |   File "/tmp/anal_mppi_sim.py", line 94, in <module> |     G_ = np.array([[q.pose.position.x, q.pose.position.y] for q in gp[1].poses]) | TypeError: 'NoneType' object is not subscriptable | 
+   /tmp/sweep/out_f2p1_11.43_10.txt :: ent call last): |   File "/tmp/anal_mppi_sim.py", line 94, in <module> |     G_ = np.array([[q.pose.position.x, q.pose.position.y] for q in gp[1].poses]) | TypeError: 'NoneType' object is not subscriptable | 
+   /tmp/sweep/out_f2p1_11.43_2.txt :: ent call last): |   File "/tmp/anal_mppi_sim.py", line 94, in <module> |     G_ = np.array([[q.pose.position.x, q.pose.position.y] for q in gp[1].poses]) | TypeError: 'NoneType' object is not subscriptable | 
+  장면별: {'out_f2p1': 30}
