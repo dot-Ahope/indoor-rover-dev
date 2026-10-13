@@ -578,3 +578,5 @@
 1. 통합 거리 2.0 으로 주행 1 회 — 상자 재관측 거리와 유령 칸 확인(오늘 못 함).
 2. "갇혔을 때만 패딩 0" 을 할지 결정 → 하면 정지 상태에서 `footprint_padding` 실행 중 변경이 먹는지부터 확인.
 3. 미뤄 둔 것: 10 개 목표 순회 기준선(F2), `stuck_monitor` 작동 모드 복귀 전 STUCK 기록 확인(f2p1 1 회 · f2q1 11 회 추가), 지도 서버 미설정 근본 원인.
+
+- 보고서: `2026-10-13_report.html`(`jobs/fig_report.py`, 그림 3 장 포함 615 kB) — 아티팩트 https://claude.ai/artifact/RSYPzrbigCciKmuNvmw8QC
