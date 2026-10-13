@@ -1,0 +1,63 @@
+캡처 10:19:24 ~ 10:22:08 (164 s), 패킷 9293313 개, 2 s 칸 중앙 58689 개/s
+포화 시작 10:19:40
+탐색 정보로 읽은 토픽 이름 1281 개
+
+== 평상(10:19:36 부터 4 s): RTPS 패킷 4794 개/s · 8870 kB/s (RTPS 아닌 UDP 0 개/s)
+  하위 메시지 종류(개/s · 비율): DATA 3745 (77 %) · ACKNACK 594 (12 %) · HEARTBEAT 450 (9 %) · DATA_FRAG 103 (2 %)
+  쓰는 쪽이 보낸 것 상위(개/s):
+        399  DATA           sensor_conditio[6353c5af00000000] rt/imu/data
+        300  DATA           bt_navigator[4054da2700000000] rt/navigate_to_pose/_action/feedback
+        300  DATA           ekf_node[69536c1a00000000] rt/tf
+        200  DATA           localization_sl[0254862100000100] rt/tf
+        200  DATA           realsense2_came[1c52c6a900000000] rt/camera/camera/imu
+        150  DATA           ekf_node[69536c1a00000000] rt/odometry/filtered
+        100  DATA           ?[0f006d3700000000] rt/wheel_odom
+         92  DATA           lifecycle_manag[5d549e4400000000] rt/bond
+         90  DATA           lifecycle_manag[5d549e4400000000] rt/bond
+         90  DATA           lifecycle_manag[5d549e4400000000] rt/bond
+         90  DATA           lifecycle_manag[5d549e4400000000] rt/bond
+         90  DATA           lifecycle_manag[5d549e4400000000] rt/bond
+         90  DATA           lifecycle_manag[685459be00000000] rt/bond
+         90  DATA           velocity_smooth[5b546a0f00000000] rt/bond
+  읽는 쪽이 보낸 것 상위(개/s) — 누가 → 어느 발행 끝점에:
+         20  ACKNACK    ros2[340166cc00000000] → velocity_smooth[5b546a0f00000000] rt/cmd_vel
+         20  ACKNACK    python3[e70181b000000000] → velocity_smooth[5b546a0f00000000] rt/cmd_vel
+         20  ACKNACK    python3[34540ed300000000] → velocity_smooth[5b546a0f00000000] rt/cmd_vel
+         20  ACKNACK    ?[0f006d3700000000] → velocity_smooth[5b546a0f00000000] rt/cmd_vel
+         14  ACKNACK    lifecycle_manag[5d549e4400000000] → planner_server[3c54072200000000] rt/bond
+         14  ACKNACK    lifecycle_manag[5d549e4400000000] → waypoint_follow[52548f8800000000] rt/bond
+         14  ACKNACK    lifecycle_manag[5d549e4400000000] → lifecycle_manag[685459be00000000] rt/bond
+         14  ACKNACK    lifecycle_manag[5d549e4400000000] → bt_navigator[4054da2700000000] rt/bond
+         14  ACKNACK    lifecycle_manag[5d549e4400000000] → velocity_smooth[5b546a0f00000000] rt/bond
+         14  ACKNACK    lifecycle_manag[5d549e4400000000] → map_server[6454ad7300000000] rt/bond
+  받는 프로세스 상위(패킷/s): ros2 437 · python3 354 · bt_navigator 352 · controller_serv 350 · port 7451 322 · port 7455 301 · planner_server 297 · behavior_server 280 · smoother_server 277 · ekf_node 272
+
+== 포화(시작 뒤 20 s): RTPS 패킷 56350 개/s · 14400 kB/s (RTPS 아닌 UDP 0 개/s)
+  하위 메시지 종류(개/s · 비율): HEARTBEAT 44739 (79 %) · DATA 8024 (14 %) · ACKNACK 3588 (6 %) · DATA_FRAG 101 (0 %) · NACK_FRAG 0 (0 %)
+  쓰는 쪽이 보낸 것 상위(개/s):
+      23283  HEARTBEAT      localization_sl[0254862100000100] rt/tf
+      20780  HEARTBEAT      ekf_node[69536c1a00000000] rt/tf
+       2514  DATA           localization_sl[0254862100000100] rt/tf
+       2307  DATA           ekf_node[69536c1a00000000] rt/tf
+        399  DATA           sensor_conditio[6353c5af00000000] rt/imu/data
+        289  DATA           bt_navigator[4054da2700000000] rt/navigate_to_pose/_action/feedback
+        200  DATA           realsense2_came[1c52c6a900000000] rt/camera/camera/imu
+        125  DATA           ekf_node[69536c1a00000000] rt/odometry/filtered
+        100  DATA           ?[0f006d3700000000] rt/wheel_odom
+         92  DATA           lifecycle_manag[5d549e4400000000] rt/bond
+         92  DATA           lifecycle_manag[5d549e4400000000] rt/bond
+         91  DATA           lifecycle_manag[5d549e4400000000] rt/bond
+         91  DATA           behavior_server[3e540ce000000000] rt/bond
+         91  DATA           map_server[6454ad7300000000] rt/bond
+  읽는 쪽이 보낸 것 상위(개/s) — 누가 → 어느 발행 끝점에:
+        239  ACKNACK    planner_server[3c54072200000000] → ekf_node[69536c1a00000000] rt/tf
+        236  ACKNACK    controller_serv[385497c900000000] → ekf_node[69536c1a00000000] rt/tf
+        236  ACKNACK    planner_server[3c54072200000000] → localization_sl[0254862100000100] rt/tf
+        230  ACKNACK    controller_serv[385497c900000000] → localization_sl[0254862100000100] rt/tf
+        139  ACKNACK    nvblox_node[c655831800000000] → ekf_node[69536c1a00000000] rt/tf
+        136  ACKNACK    nvblox_node[c655831800000000] → localization_sl[0254862100000100] rt/tf
+        132  ACKNACK    python3[e70181b000000000] → ekf_node[69536c1a00000000] rt/tf
+        131  ACKNACK    rf2o_laser_odom[6553b2aa00000000] → ekf_node[69536c1a00000000] rt/tf
+        130  ACKNACK    python3[e70181b000000000] → localization_sl[0254862100000100] rt/tf
+        130  ACKNACK    rf2o_laser_odom[6553b2aa00000000] → localization_sl[0254862100000100] rt/tf
+  받는 프로세스 상위(패킷/s): ros2 9209 · bt_navigator 4817 · controller_serv 4780 · python3 4751 · planner_server 4735 · behavior_server 4715 · smoother_server 4711 · port 7465 4509 · rf2o_laser_odom 4484 · ekf_node 4020

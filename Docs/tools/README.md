@@ -26,6 +26,8 @@
 | `anal_top.py` | top 기록 → 구간의 CPU 여유 · 상위 프로세스 | `top_eval.py` |
 | `anal_udp_drops.py` | `net_<이름>.log` → 포화 전후 초당 UDP 수신 · 손실, 프로세스별 소켓 손실 | `net_anal.py` |
 | `anal_rtps_pcap.py` | 루프백 캡처 → DDS 패킷을 종류 · 쓰는 쪽(토픽) · 받는 프로세스별로 집계(평상 창 vs 포화 창) | (10-13 신규) |
+| `anal_rtps_onset.py` | 포화 시작 몇 초를 0.2 s 칸으로 — 토픽(기본 `rt/tf`)의 DATA·HEARTBEAT·ACKNACK 보낸 곳 | (10-13 신규) |
+| `anal_rtps_acklag.py` | 쓰는 쪽 HEARTBEAT(보관 번호)와 읽는 쪽 ACKNACK(받은 번호)을 맞춰 뒤처진 읽는 쪽 찾기 | (10-13 신규) |
 | `anal_traj_size.py` | bag → MPPI 궤적 메시지 크기 · 기록 주기 | `traj_size.py` |
 | `anal_reverse.py` | 러너 csv → 목표별 후진 거리 · 시간 | `rev_eval.py` |
 | `up_tools.sh` | 위 Jetson 쪽 도구와 주행 보조 스크립트를 /tmp 로 전송 | `up950.sh` 등 |

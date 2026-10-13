@@ -79,7 +79,7 @@ def sedp_topic(body, fl):
 
 
 def main():
-    ap = argparse.ArgumentParser(); ap.add_argument('pcap'); ap.add_argument('--netlog'); ap.add_argument('--onset'); ap.add_argument('--win', type=float, default=20.0)
+    ap = argparse.ArgumentParser(); ap.add_argument('pcap'); ap.add_argument('--netlog'); ap.add_argument('--onset'); ap.add_argument('--win', type=float, default=20.0); ap.add_argument('--base', help='평상 창을 직접 지정: HH:MM:SS,길이(s) — 포화가 캡처 초반에 시작돼 앞 20 s 가 없을 때')
     a = ap.parse_args()
     # 1 차: 2 s 칸
     bins = collections.Counter(); byts = collections.Counter(); t0 = None; n = 0
@@ -100,6 +100,9 @@ def main():
         print('포화 시작을 못 찾음(4 배가 3 칸 이어지는 곳 없음) → 캡처 전체를 한 창으로 집계'); wins = [('전체', t0, t0 + 2 * (ks[-1] + 1))]
     else:
         print('포화 시작 %s' % time.strftime('%H:%M:%S', time.localtime(onset))); wins = [('평상(시작 전 %.0f s)' % a.win, onset - a.win - 4, onset - 4), ('포화(시작 뒤 %.0f s)' % a.win, onset + 2, onset + 2 + a.win)]
+        if a.base:
+            hb, ln = a.base.split(','); lt = time.localtime(t0); tb = time.mktime(time.strptime(time.strftime('%Y-%m-%d ', lt) + hb, '%Y-%m-%d %H:%M:%S'))
+            wins[0] = ('평상(%s 부터 %s s)' % (hb, ln), tb, tb + float(ln))
     # 프로세스 대응표
     port2proc = {}; pid2proc = {}
     if a.netlog:
