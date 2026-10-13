@@ -1,0 +1,66 @@
+rt/tf 의 쓰는 쪽 5 곳: localization_sl[40ab285b], robot_state_pub[a5084ef8], rf2o_laser_odom[cbaa028b], ekf_node[cfaa0852], localization_sl[40ab285b]
+칸 시작   전체pkt | /tf DATA(발행자별) | /tf HEARTBEAT | ACKNACK 상위 3 (보낸 읽는 쪽) | HEARTBEAT 이 향한 곳 상위 3
+10:52:00.0 297908 | ekf_no 2041 locali 1385 | 53 | controller_serv[94abab54] 10 planner_server[98abdfb3] 10 python3[61c5b639] 6 | (모두) 45 python3[61c5b639] 8
+10:52:10.0 206064 | ekf_no 2909 locali 2003 | 400 | planner_server[98abdfb3] 18 controller_serv[94abab54] 18 python3[61c5b639] 11 | (모두) 399 python3[61c5b639] 1
+10:52:20.0  48086 | ekf_no 3000 locali 2000 | 60 | controller_serv[94abab54] 12 planner_server[98abdfb3] 12 rf2o_laser_odom[cbaa028b] 6 | (모두) 60
+10:52:30.0  48125 | ekf_no 3000 locali 2000 | 70 | planner_server[98abdfb3] 14 controller_serv[94abab54] 14 behavior_server[9aab53e4] 7 | (모두) 70
+10:52:40.0  48107 | ekf_no 3000 locali 2000 | 70 | planner_server[98abdfb3] 14 controller_serv[94abab54] 14 rf2o_laser_odom[cbaa028b] 7 | (모두) 70
+10:52:50.0  48176 | ekf_no 3000 locali 2000 | 60 | controller_serv[94abab54] 12 planner_server[98abdfb3] 12 bt_navigator[acabd36b] 6 | (모두) 60
+10:53:00.0 111121 | ekf_no 2940 locali 2000 | 70 | controller_serv[94abab54] 14 planner_server[98abdfb3] 14 nvblox_node[85acbcdd] 7 | (모두) 70
+10:53:10.0  47901 | ekf_no 3000 locali 2000 | 70 | planner_server[98abdfb3] 14 controller_serv[94abab54] 14 nvblox_node[85acbcdd] 7 | (모두) 70
+10:53:20.0  48210 | ekf_no 3000 locali 2000 | 60 | planner_server[98abdfb3] 12 controller_serv[94abab54] 12 rf2o_laser_odom[cbaa028b] 6 | (모두) 60
+10:53:30.0  48263 | ekf_no 3000 locali 2000 | 70 | controller_serv[94abab54] 14 planner_server[98abdfb3] 14 nvblox_node[85acbcdd] 7 | (모두) 70
+10:53:40.0  48118 | ekf_no 2990 locali 2000 | 70 | controller_serv[94abab54] 14 planner_server[98abdfb3] 14 bt_navigator[acabd36b] 7 | (모두) 70
+10:53:50.0 162846 | ekf_no 2892 locali 1980 | 60 | controller_serv[94abab54] 12 planner_server[98abdfb3] 12 nvblox_node[85acbcdd] 6 | (모두) 60
+10:54:00.0  93250 | ekf_no 2944 locali 2000 | 70 | controller_serv[94abab54] 14 planner_server[98abdfb3] 14 rf2o_laser_odom[cbaa028b] 7 | (모두) 70
+10:54:10.0  48023 | ekf_no 3000 locali 2000 | 70 | planner_server[98abdfb3] 14 controller_serv[94abab54] 14 nvblox_node[85acbcdd] 7 | (모두) 70
+10:54:20.0  48201 | ekf_no 3000 locali 2000 | 60 | planner_server[98abdfb3] 12 controller_serv[94abab54] 12 bt_navigator[acabd36b] 6 | (모두) 60
+10:54:30.0  48172 | ekf_no 3000 locali 2000 | 70 | planner_server[98abdfb3] 14 controller_serv[94abab54] 14 rf2o_laser_odom[cbaa028b] 7 | (모두) 70
+10:54:40.0  48052 | ekf_no 3000 locali 2000 | 70 | planner_server[98abdfb3] 14 controller_serv[94abab54] 14 nvblox_node[85acbcdd] 7 | (모두) 70
+10:54:50.0  48113 | ekf_no 3000 locali 2000 | 60 | controller_serv[94abab54] 12 planner_server[98abdfb3] 12 rf2o_laser_odom[cbaa028b] 6 | (모두) 60
+10:55:00.0  48164 | ekf_no 3000 locali 2000 | 70 | planner_server[98abdfb3] 14 controller_serv[94abab54] 14 rf2o_laser_odom[cbaa028b] 7 | (모두) 70
+10:55:10.0  48062 | ekf_no 3000 locali 2000 | 70 | planner_server[98abdfb3] 14 controller_serv[94abab54] 14 bt_navigator[acabd36b] 7 | (모두) 70
+10:55:20.0  48324 | ekf_no 3000 locali 2000 | 60 | controller_serv[94abab54] 12 planner_server[98abdfb3] 12 nvblox_node[85acbcdd] 6 | (모두) 60
+10:55:30.0  48103 | ekf_no 3000 locali 2000 | 70 | controller_serv[94abab54] 14 planner_server[98abdfb3] 14 bt_navigator[acabd36b] 7 | (모두) 70
+10:55:40.0  15116 | ekf_no 754 locali 499 | 19 | planner_server[98abdfb3] 4 controller_serv[94abab54] 4 rf2o_laser_odom[cbaa028b] 2 | (모두) 19
+======
+캡처 10:52:02 ~ 10:55:44 (222 s), 패킷 1704505 개, 2 s 칸 중앙 4811 개/s
+2 s 칸(개/s · kB/s): 52:02 28622·8924 52:04 35901·9839 52:06 28904·9094 52:08 60419·12474 52:10 24067·8880 52:12 54929·11561 52:14 9919·7872 52:16 4793·9066 52:18 4768·8981 52:20 4876·9089 52:22 4790·8970 52:24 4769·9119 52:26 4839·9023 52:28 4794·8860 52:30 4784·9243 52:32 4851·9313 52:34 4803·9510 52:36 4789·9437 52:38 4860·9376 52:40 4808·9555 52:42 4788·9221 52:44 4865·9503 52:46 4792·9284 52:48 4758·8905 52:50 4858·9631 52:52 4790·9510 52:54 4777·9487 52:56 4852·9530 52:58 4794·9508 53:00 4782·9558 53:02 4871·9605 53:04 4793·9459 53:06 15045·8904 53:08 26068·10933 53:10 4760·9292 53:12 4778·9625 53:14 4826·9217 53:16 4810·9855 53:18 4781·9640 53:20 4856·9610 53:22 4813·9846 53:24 4794·9773 53:26 4867·9651 53:28 4779·9176 53:30 4798·9578 53:32 4897·9763 53:34 4794·9693 53:36 4786·9812 53:38 4851·9607 53:40 4824·10019 53:42 4785·9585 53:44 4867·9738 53:46 4801·9840 53:48 4783·9897 53:50 4875·9815 53:52 4793·9818 53:54 4789·9878 53:56 20787·9815 53:58 50582·12202 54:00 22972·10334 54:02 4844·9873 54:04 4777·9443 54:06 4781·9663 54:08 4843·9910 54:10 4816·9551 54:12 4768·9721 54:14 4850·9953 54:16 4813·9907 54:18 4788·9936 54:20 4826·9895 54:22 4813·10064 54:24 4785·9926 54:26 4847·9989 54:28 4825·9781 54:30 4782·9796 54:32 4847·9941 54:34 4809·9857 54:36 4788·9902 54:38 4835·9824 54:40 4808·9732 54:42 4777·9501 54:44 4845·9856 54:46 4816·9762 54:48 4777·9594 54:50 4834·9807 54:52 4803·9478 54:54 4785·9487 54:56 4838·9683 54:58 4802·10086 55:00 4783·9470 55:02 4827·9827 55:04 4805·9890 55:06 4779·9775 55:08 4852·9750 55:10 4811·9766 55:12 4787·9858 55:14 4861·9991 55:16 4804·9640 55:18 4771·9782 55:20 4882·9896 55:22 4814·9891 55:24 4808·9790 55:26 4856·10012 55:28 4812·9833 55:30 4784·9971 55:32 4867·9904 55:34 4813·9988 55:36 4777·9773 55:38 4845·9819 55:40 5434·9735 55:42 1766·1654
+포화 시작 10:53:30
+탐색 정보로 읽은 토픽 이름 1308 개
+
+== 평상(10:52:10 부터 10 s): RTPS 패킷 20606 개/s · 9347 kB/s (RTPS 아닌 UDP 0 개/s)
+  하위 메시지 종류(개/s · 비율): HEARTBEAT 11321 (55 %) · ACKNACK 5162 (25 %) · DATA 4093 (20 %) · DATA_FRAG 82 (0 %) · GAP 13 (0 %)
+  쓰는 쪽이 보낸 것 상위(개/s):
+       1192  HEARTBEAT      bt_navigator[acabd36b00000000] (탐색: 발행 끝점 목록)
+       1180  HEARTBEAT      bt_navigator[acabd36b00000000] (탐색: 구독 끝점 목록)
+        607  HEARTBEAT      planner_server[98abdfb300000000] (탐색: 구독 끝점 목록)
+        435  HEARTBEAT      nvblox_node[85acbcdd00000000] (탐색: 구독 끝점 목록)
+        383  DATA           sensor_conditio[c9aafa8f00000000] rt/imu/data
+        369  HEARTBEAT      planner_server[98abdfb300000000] (탐색: 발행 끝점 목록)
+        339  HEARTBEAT      nvblox_node[85acbcdd00000000] (탐색: 발행 끝점 목록)
+        338  HEARTBEAT      waypoint_follow[b5ab14d300000000] (탐색: 구독 끝점 목록)
+        324  HEARTBEAT      waypoint_follow[b5ab14d300000000] (탐색: 발행 끝점 목록)
+        315  HEARTBEAT      controller_serv[94abab5400000000] (탐색: 발행 끝점 목록)
+        291  DATA           ekf_node[cfaa085200000000] rt/tf
+        285  HEARTBEAT      python3[61c5b63900000000] (탐색: 구독 끝점 목록)
+        276  HEARTBEAT      realsense2_came[45a9476800000000] (탐색: 발행 끝점 목록)
+        271  HEARTBEAT      lifecycle_manag[beab0e8500000000] (탐색: 발행 끝점 목록)
+  읽는 쪽이 보낸 것 상위(개/s) — 누가 → 어느 발행 끝점에:
+         31  ACKNACK    ?[0f006d3701000000] → bt_navigator[acabd36b00000000] (탐색: 발행 끝점 목록)
+         29  ACKNACK    ?[0f006d3700000000] → bt_navigator[acabd36b00000000] (탐색: 구독 끝점 목록)
+         29  ACKNACK    ?[0f006d3700000000] → bt_navigator[acabd36b00000000] (탐색: 발행 끝점 목록)
+         29  ACKNACK    nvblox_node[85acbcdd00000000] → bt_navigator[acabd36b00000000] (탐색: 발행 끝점 목록)
+         28  ACKNACK    ?[0f006d3701000000] → bt_navigator[acabd36b00000000] (탐색: 구독 끝점 목록)
+         26  ACKNACK    nvblox_node[85acbcdd00000000] → bt_navigator[acabd36b00000000] (탐색: 구독 끝점 목록)
+         22  ACKNACK    waypoint_follow[b5ab14d300000000] → bt_navigator[acabd36b00000000] (탐색: 발행 끝점 목록)
+         20  ACKNACK    python3[92ab723c00000000] → bt_navigator[acabd36b00000000] (탐색: 발행 끝점 목록)
+         20  ACKNACK    python3[47a93ef600000000] → bt_navigator[acabd36b00000000] (탐색: 발행 끝점 목록)
+         20  ACKNACK    python3[4ba92f3700000000] → bt_navigator[acabd36b00000000] (탐색: 발행 끝점 목록)
+  받는 프로세스 상위(패킷/s): python3 3690 · ? 1576 · bt_navigator 1172 · lifecycle_manag 1038 · ros2 858 · planner_server 730 · waypoint_follow 656 · nvblox_node 594 · smoother_server 583 · realsense2_came 576
+
+== 포화(시작 뒤 20 s): RTPS 패킷 4826 개/s · 9787 kB/s (RTPS 아닌 UDP 0 개/s)
+  하위 메시지 종류(개/s · 비율): DATA 3720 (76 %) · ACKNACK 612 (12 %) · HEARTBEAT 487 (10 %) · DATA_FRAG 104 (2 %)
+  쓰는 쪽이 보낸 것 상위(개/s):
+        399  DATA           sensor_conditio[c9aafa8f00000000] rt/imu/data
+        300  DATA           ekf_node[cfaa085200000000] rt/tf
