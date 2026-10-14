@@ -40,6 +40,7 @@
 | `anal_plan_keepout.py` | 전역 지도에서 카메라(nvblox) 장애물 둘레를 통과 금지 띠로 두껍게 했을 때의 재계획 — 경로 없음 횟수 · 상자와의 거리 | (10-14 신규) |
 | `anal_mppi_sim.py` | MPPI 오프라인 시뮬(bag 의 경로 · 로컬 코스트맵 재생, CostCritic, `fpchk=1` = Nav2 방식 칸 단위 둘레 검사 · 후보 전부 충돌 집계). Jetson 에서 실행 | `job776_mppi_sim_ack.py`(10-01) |
 | `fig_box_approach_video.py` | 위 내용을 지도 좌표 영상으로(전역 코스트맵 · 로컬 치명 칸 · 경로 · 카메라 시야 · 차체) | (10-13 신규) |
+| `fig_run_video.py` | 주행 구간 영상(일반판): 전역 코스트맵 · 전역 경로(바뀌면 직전 경로를 점선으로) · 로컬 치명 칸 · 라이다 · 차체, 끝에 경로 급변 시각 표 | (10-14 신규) |
 | `anal_traj_size.py` | bag → MPPI 궤적 메시지 크기 · 기록 주기 | `traj_size.py` |
 | `anal_reverse.py` | 러너 csv → 목표별 후진 거리 · 시간 | `rev_eval.py` |
 | `up_tools.sh` | 위 Jetson 쪽 도구와 주행 보조 스크립트를 /tmp 로 전송 | `up950.sh` 등 |
