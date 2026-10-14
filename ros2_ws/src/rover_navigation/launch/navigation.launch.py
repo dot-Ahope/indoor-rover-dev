@@ -21,7 +21,7 @@ from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument, ExecuteProcess, IncludeLaunchDescription, OpaqueFunction, SetEnvironmentVariable, TimerAction
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.conditions import IfCondition
-from launch.substitutions import LaunchConfiguration
+from launch.substitutions import LaunchConfiguration, PythonExpression
 from launch_ros.actions import Node
 
 
@@ -205,5 +205,11 @@ def generate_launch_description():
         DeclareLaunchArgument('nav_guard', default_value='true', description='온보드 목표 시간·무진행 한도'),
         Node(package='rover_bringup', executable='nav_guard.py', name='nav_guard', output='screen',
              condition=IfCondition(LaunchConfiguration('nav_guard'))),
+        # 갇혔을 때만 로컬 패딩을 잠깐 0 으로 (2026-10-14, Docs/debug_log/2026-10-14/SUMMARY.md §8): 컨트롤러가 '후보 전부 충돌'을 반복하면
+        # footprint_padding 0.01 → 0, 0.15 m 이동 또는 15 s 뒤 복귀. 기본 off — 정지 시험·주행 검증 전이다. shadow = 판정·로그만.
+        DeclareLaunchArgument('pad_relief', default_value='off', description='갇힘 해제용 패딩 내리기: off | on | shadow'),
+        Node(package='rover_bringup', executable='pad_relief.py', name='pad_relief', output='screen',
+             parameters=[{'mode': LaunchConfiguration('pad_relief')}],
+             condition=IfCondition(PythonExpression(["'", LaunchConfiguration('pad_relief'), "' in ('on', 'shadow')"]))),
         OpaqueFunction(function=_make_active_params),
     ])

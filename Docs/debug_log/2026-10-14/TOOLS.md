@@ -10,3 +10,5 @@
 | 10:1x · §7.1 | 실행 중 패딩 변경이 먹는가 | `chk_padding_dynamic.py local` | 0.01 → 0.0: 즉시 받아들임, 풋프린트 0.530 · 0.350 → 0.510 · 0.330 m(−20.0 mm 씩), 복귀 뒤 원래대로 | 반영됨 ✔. 내접 칸 수는 센서 흔들림과 섞여 판별 못 함 ？. MPPI 가 바로 쓰는지는 주행에서 ？ |
 | 〃 · §7.1 | 통합 거리 1.4 가 실제로 적용됐나 | `chk_nvblox_integ.sh`(nvblox 로그) | `projective_integrator_max_integration_distance_m: 1.4` | §6 되돌림 적용 ✔ |
 | 10:27 · §8.3 | pad_relief 정지 시험을 시작하려 함 | `put_one.sh` → `chk_pad_relief.sh` | scp "lost connection". 이후 3 분간 Jetson 두 주소 모두 ping 무응답, PC 망은 정상 | 시험 미실시 ✘. Jetson Wi-Fi 또는 전원 문제 ？(사용자 확인 필요) |
+| 11:0x · §8.5 | 사용자: 네트워크는 넘어가자 → 접속 전 신원 확인 | 포트 8765 연결 · `ssh-keyscan`(자격 정보 없음) | 포트 4/4 성공, 호스트 키 2/4 응답(같은 키) | Jetson 으로 봄 ？(같은 시각 ping 전부 실패 — 착시 가능) |
+| 〃 · §8.5 | 정지 시험 재시도 | `put_one.sh` · `run_detached.sh`(재시도 8 회) | 전부 "lost connection", 자격 정보 없는 SSH 는 "No route to host" | 주소가 붙었다 떨어짐 ✔. 시험 미실시 ✘. 비밀번호 유출은 아닌 것으로 봄 ？ |

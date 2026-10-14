@@ -112,7 +112,8 @@ class PadRelief(Node):
 
 def main():
     rclpy.init(); n = PadRelief(); stop = {'f': False}
-    signal.signal(signal.SIGTERM, lambda *_: stop.update(f=True))
+    for sg in (signal.SIGTERM, signal.SIGHUP):   # SIGHUP: 원격 접속이 끊겨 죽을 때도 패딩을 되돌린다(10-14 Wi-Fi 불안정 중 추가)
+        signal.signal(sg, lambda *_: stop.update(f=True))
     try:
         while rclpy.ok() and not stop['f']: rclpy.spin_once(n, timeout_sec=0.1)
     except KeyboardInterrupt:
