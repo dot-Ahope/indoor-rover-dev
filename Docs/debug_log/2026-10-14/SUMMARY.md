@@ -357,3 +357,15 @@
 - 정리된 우선순위(내 판단):
   1. BT 결함(끝 방향 0°) 수정 — 실제 물체 옆에서 필요 없는 회전을 요구하지 않게. 가장 직접적.
   2. 멈춰 있는 동안 옆의 낮은 물체를 잊는 문제 — 지금은 기록만 한다. 후보는 "로버가 거의 안 움직일 때는 감쇠를 멈춤" 같은 것인데, nvblox 설정으로 되는지 확인하지 않았다.
+
+- 사용자 확인: f2s2 출발 때 그 밑동에 **닿지 않았다.** 다음: BT 결함 수정 + 전체 구성 재검토(사용자).
+
+## §14 BT 결함 수정 — `CopyPath` 노드(사용자: "BT 결함 수정 및 전체 구성 재검토하자")
+- 새 BT 동작 노드 `ros2_ws/src/rover_navigation/src/copy_path_action.cpp`(`CopyPath`): 입력 경로를 **점 위치·방향 그대로** 출력 키에 복사. 입력이 없거나 비면 FAILURE.
+- BT `config/nav_to_pose_no_spin.xml`: 스무딩 실패 시 쓰던 `TruncatePath(distance 0)` → `CopyPath`. 09-17 의 `TODO(improve)` 는 "해소됨" 으로 고치고 원문은 남겼다.
+- 등록: `CMakeLists.txt`(라이브러리 `rover_copy_path_bt_node`), `nav2_params.yaml` 의 bt_navigator `plugin_lib_names` 끝에 추가.
+- 기각한 대안(코드 주석에도 적음): BT.CPP `SetBlackboard`(v3 에서 값이 문자열이라 경로를 못 옮김) · 계획기가 `{path}` 에 바로 쓰고 스무더가 덮어쓰기(09-16 mp4 의 한 틱 두 번 갱신 문제 재발).
+- 배포(`jobs/up_bt_copypath.sh`, `outputs/up_bt_copypath.txt`): Jetson 소스의 세 파일을 먼저 받아 저장소와 비교 — **주석 7 줄만 달랐다**(`jobs/chk_jetson_navsrc.sh`) → 저장소 판으로 덮고 `colcon build --symlink-install --packages-select rover_navigation` 7.1 s 성공, `librover_copy_path_bt_node.so` 에 등록 함수 있음.
+- 적재 확인(`jobs/chk_bt_load.sh`, `outputs/chk_bt_load.txt`): 스택 재기동(prep 59 s PREP_OK) 뒤 bt_navigator Configuring → Activating, 오류 없음. 설치본 yaml 은 소스로의 링크, `<CopyPath` 1 개, 플러그인 줄 1 개.
+- **아직 확인 안 된 것**: BT XML 은 첫 목표를 받을 때 해석된다 — 포트 형이 틀리면 그 목표가 **움직이지 않은 채** 바로 실패한다(안전한 실패). 그리고 실제로 스무딩이 실패했을 때 컨트롤러가 받는 끝 방향이 목표 방향과 같은지는 주행에서만 보인다.
+- 검증 주행 선언(다음 주행): 서쪽 통로 목표를 다시 **방향까지(p)** 로 되돌린 8 목표 코스(`no5`). 판정 = ① 첫 목표가 정상 출발(BT 해석 성공) ② 스무딩 실패가 생긴 목표에서 `/transformed_global_plan` 끝 방향이 `/plan` 끝 방향과 5° 안 ③ 서쪽 통로에서 취소 없음. 스무딩 실패가 한 번도 없으면 ②는 판정 불가.

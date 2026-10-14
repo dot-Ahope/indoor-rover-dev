@@ -1,0 +1,7 @@
+설치본: lrwxrwxrwx 1 /home/jetson/ros2_ws/src/rover_navigation/config/nav2_params.yaml · copy 플러그인 줄 1 · BT CopyPath 1 · PreferForward 15.0
+  ⏱ +59 s prep 끝 — PREP_OK
+--- nav2.log: bt_navigator 관련 오류·플러그인
+[lifecycle_manager-10] [INFO] [1791956761.062706687] [lifecycle_manager_navigation]: [34m[1mConfiguring bt_navigator[0m[0m
+[bt_navigator-7] [INFO] [1791956761.063498352] [bt_navigator]: Configuring
+[lifecycle_manager-10] [INFO] [1791956762.567922036] [lifecycle_manager_navigation]: [34m[1mActivating bt_navigator[0m[0m
+[bt_navigator-7] [INFO] [1791956762.568724582] [bt_navigator]: Activating
