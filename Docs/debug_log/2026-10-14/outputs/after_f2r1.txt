@@ -1,0 +1,19 @@
+--- pad_relief.log
+11:22:16 시작 mode=on · 켜기 3 회/3 s · 끄기 0.15 m 또는 15 s · 분당 최대 4 회
+11:22:17 원래 패딩 0.010 확인
+--- Nav2 로그의 컨트롤러 실패(11:23:29 이후)
+11:23:39 [WARN]  [controller_server]: [follow_path] [ActionServer] Aborting handle.
+11:24:59 [ERROR]  [smoother_server]: Smoothed path leads to a collision at x: 4.776813, y: -1.935820, theta
+11:24:59 [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+11:26:12 [ERROR]  [smoother_server]: Smoothed path leads to a collision at x: 1.688036, y: 0.123586, theta:
+11:26:12 [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+11:26:38 [ERROR]  [smoother_server]: Smoothed path leads to a collision at x: 1.510000, y: 0.190000, theta:
+11:26:38 [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+11:26:39 [ERROR]  [controller_server]: Optimizer fail to compute path
+11:26:39 [WARN]  [controller_server]: [follow_path] [ActionServer] Aborting handle.
+11:26:39 [ERROR]  [controller_server]: Optimizer fail to compute path
+11:26:39 [WARN]  [controller_server]: [follow_path] [ActionServer] Aborting handle.
+11:26:40 [ERROR]  [smoother_server]: Smoothed path leads to a collision at x: 1.437800, y: 0.193495, theta:
+11:26:40 [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+--- 실패 문구 수: 2
+현재 로컬 패딩: Double value is: 0.01 · pad_relief 1 개
