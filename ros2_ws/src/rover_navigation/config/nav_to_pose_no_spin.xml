@@ -77,12 +77,12 @@
                    "Aborting handle" 로 매초 폐기됐다. 원경로는 {raw_path}, 컨트롤러는 스무딩 결과 {path} 만 본다.
                    ★ 09-17 mp6: 스무딩 실패 시 {path} 를 직전 값으로 두면, 상자 뒤 모서리에서 "Smoothed path leads to a collision"
                    이 3 회 연속(34.7~36.8 s) 나는 동안 컨트롤러가 3 s 묵은 경로를 따랐다 → 실패하면 **새 원경로**를 {path} 로 복사한다.
-                   복사는 TruncatePath(distance 0 = 점을 지우지 않음). TODO(improve): TruncatePath 는 마지막 점 방향을 atan2(0,0)=0 으로
+                   복사는 TruncatePath(distance 0 = 점을 지우지 않음). (해소됨 2026-10-14 §14: TruncatePath → 우리 노드 CopyPath. 아래는 그때의 TODO 원문) 옛 TODO: TruncatePath 는 마지막 점 방향을 atan2(0,0)=0 으로
                    덮어쓴다 — 목표 yaw 가 0 이 아닌 목표에서는 정렬 방향이 바뀌므로 전용 복사 노드로 교체할 것. -->
               <ComputePathToPose goal="{goal}" path="{raw_path}" planner_id="GridBased"/>
               <Fallback name="SmoothOrRaw">
                 <SmoothPath unsmoothed_path="{raw_path}" smoothed_path="{path}" smoother_id="simple_smoother" max_smoothing_duration="1.0" check_for_collisions="true"/>
-                <TruncatePath input_path="{raw_path}" output_path="{path}" distance="0.0"/>
+                <CopyPath input_path="{raw_path}" output_path="{path}"/>
               </Fallback>
             </Sequence>
             <ClearCostmapExceptRegion name="ClearGlobalCostmap-Context" reset_distance="3.0" service_name="global_costmap/clear_except_global_costmap"/>
