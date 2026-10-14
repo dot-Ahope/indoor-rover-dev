@@ -6,6 +6,8 @@
         빨간 네모 = 로컬 코스트맵 치명 칸(MPPI 가 보는 것), 파란 점 = 라이다, 초록 = 차체와 지나온 길, 노란 부채꼴 = 카메라 시야(±43°, 1.4 m).
         아래 글 = 속도, 경로 길이, 앞쪽 가장 가까운 라이다 점, 경로가 바뀐 횟수.
   끝에 경로 길이가 0.3 m 넘게 달라진 시각을 표로 낸다(사람이 지나간 순간 찾기용).
+  [10-14 추가] 오른쪽 확대 판에 목표 방향 두 개를 화살표로: 보라 = 계획기 경로(/plan) 끝 방향(원래 목표), 주황 = 컨트롤러가 받은 경로(/transformed_global_plan) 끝 방향.
+        둘이 다르면 컨트롤러는 주황 쪽으로 돌려고 한다(§13.1 BT TruncatePath 결함 확인용). 아래 글에 두 방향과 로버 방향을 숫자로.
   사용: fig_run_video.py bag 출력.mp4 시작HH:MM:SS 끝HH:MM:SS [배속=3]"""
 import sys, time, math
 from pathlib import Path
@@ -26,10 +28,10 @@ def T3(tr):
     M[:3, 3] = [tr.translation.x, tr.translation.y, tr.translation.z]; return M
 
 
-static = {}; ob = []; mo = []; loc = []; glo = []; plans = []; scans = []; cmds = []
+static = {}; ob = []; mo = []; loc = []; glo = []; plans = []; scans = []; cmds = []; tplans = []
 with AnyReader([Path(bag)], default_typestore=get_typestore(Stores.ROS2_HUMBLE)) as rd:
     t0 = None
-    for c, t, raw in rd.messages(connections=[c for c in rd.connections if c.topic in ('/tf', '/tf_static', '/local_costmap/costmap', '/global_costmap/costmap', '/plan', '/scan', '/cmd_vel')]):
+    for c, t, raw in rd.messages(connections=[c for c in rd.connections if c.topic in ('/tf', '/tf_static', '/local_costmap/costmap', '/global_costmap/costmap', '/plan', '/scan', '/cmd_vel', '/transformed_global_plan')]):
         ts = t / 1e9
         if t0 is None:
             t0 = ts; day = time.strftime('%Y-%m-%d ', time.localtime(t0)); ep = lambda s: time.mktime(time.strptime(day + s, '%Y-%m-%d %H:%M:%S')); tA, tB = ep(h0), ep(h1)
@@ -43,8 +45,10 @@ with AnyReader([Path(bag)], default_typestore=get_typestore(Stores.ROS2_HUMBLE))
                 if tr.child_frame_id == 'base_link' and tr.header.frame_id == 'odom': ob.append((ts, T3(tr.transform)))
                 elif tr.child_frame_id == 'odom' and tr.header.frame_id == 'map': mo.append((ts, T3(tr.transform)))
         elif c.topic == '/plan':
-            if len(m.poses) > 1: plans.append((ts, np.array([[q.pose.position.x, q.pose.position.y] for q in m.poses])))
+            if len(m.poses) > 1: plans.append((ts, np.array([[q.pose.position.x, q.pose.position.y] for q in m.poses]), math.atan2(2 * (m.poses[-1].pose.orientation.w * m.poses[-1].pose.orientation.z), 1 - 2 * m.poses[-1].pose.orientation.z ** 2)))
         elif c.topic == '/cmd_vel': cmds.append((ts, m.linear.x, m.angular.z))
+        elif c.topic == '/transformed_global_plan':
+            if len(m.poses): q = m.poses[-1].pose; tplans.append((ts, q.position.x, q.position.y, math.atan2(2 * (q.orientation.w * q.orientation.z), 1 - 2 * q.orientation.z ** 2)))
         elif c.topic == '/scan':
             r = np.array(m.ranges); a = m.angle_min + np.arange(len(r)) * m.angle_increment; ok = np.isfinite(r) & (r > m.range_min) & (r < 6); scans.append((ts, m.header.frame_id, np.c_[r[ok] * np.cos(a[ok]), r[ok] * np.sin(a[ok]), np.zeros(ok.sum()), np.ones(ok.sum())]))
         else:
@@ -60,7 +64,7 @@ def w2(M, P): return (M @ np.c_[P[:, 0], P[:, 1], np.zeros(len(P)), np.ones(len(
 plen = lambda p: float(np.hypot(*np.diff(p, axis=0).T).sum())
 # 경로가 크게 바뀐 시각(같은 목표인데 길이가 0.3 m 넘게 달라짐, 또는 목표가 바뀜)
 ev = []
-for (ta, pa), (tb, pb) in zip(plans, plans[1:]):
+for (ta, pa, *_), (tb, pb, *_) in zip(plans, plans[1:]):
     if tA <= tb <= tB:
         newgoal = np.hypot(*(pa[-1] - pb[-1])) > 0.3; d = plen(pb) - plen(pa)
         if newgoal or abs(d) > 0.3: ev.append((tb, '새 목표' if newgoal else '경로 %+.2f m' % d, plen(pa), plen(pb)))
@@ -80,6 +84,10 @@ with wr.saving(fig, out, dpi=100):
         cam = np.r_[[c], [c + CAMR * np.array([math.cos(yaw + a), math.sin(yaw + a)]) for a in np.linspace(-HFOV, HFOV, 15)]]
         sb = (np.linalg.inv(Mmb) @ np.c_[SP, np.zeros(len(SP)), np.ones(len(SP))].T).T; fr = sb[(sb[:, 0] > 0.262) & (np.abs(sb[:, 1]) < 0.30)]; ahead = fr[:, 0].min() - 0.262 if len(fr) else float('nan')
         cm = last(cmds, t) if cmds else (0, 0, 0)
+        gyaw = p[-1][2] if p else None; gend = pl[-1] if len(pl) else None; cyaw = None; cend = None
+        if tplans:
+            tp = last(tplans, t)
+            if t - tp[0] < 5: cend = w2(Mmo, np.array([[tp[1], tp[2]]]))[0]; cyaw = tp[3] + math.atan2(Mmo[1, 0], Mmo[0, 0])   # odom → map
         for a_, (vx0, vx1, vy0, vy1) in ((ax, (x0, x1, y0, y1)), (az, (c[0] - 1.5, c[0] + 1.5, c[1] - 1.5, c[1] + 1.5))):
             a_.clear(); a_.imshow(np.clip(GG, 0, 100), origin='lower', extent=(gx, gx + GG.shape[1] * gres, gy, gy + GG.shape[0] * gres), cmap=cmap, vmin=0, vmax=100, interpolation='nearest', zorder=0)
             big = a_ is az
@@ -90,12 +98,15 @@ with wr.saving(fig, out, dpi=100):
             if len(pl): a_.plot(pl[:, 0], pl[:, 1], color='#7b3294', lw=2.0, zorder=6)
             a_.plot(trail[:n + 1, 0], trail[:n + 1, 1], color='#1b7837', lw=1.2, alpha=0.7, zorder=6); a_.plot(*np.r_[body, body[:1]].T, color='#1b7837', lw=2.2, zorder=7)
             a_.annotate('', xy=w2(Mmb, np.array([[0.262, 0]]))[0], xytext=c, arrowprops=dict(arrowstyle='->', color='#1b7837', lw=1.6), zorder=8)
+            if big and gend is not None and gyaw is not None: a_.annotate('', xy=(gend[0] + 0.45 * math.cos(gyaw), gend[1] + 0.45 * math.sin(gyaw)), xytext=gend, arrowprops=dict(arrowstyle='-|>', color='#7b3294', lw=2.6), zorder=9)
+            if big and cend is not None: a_.annotate('', xy=(cend[0] + 0.45 * math.cos(cyaw), cend[1] + 0.45 * math.sin(cyaw)), xytext=cend, arrowprops=dict(arrowstyle='-|>', color='#dd6b20', lw=2.6), zorder=10)
             a_.set_xlim(vx0, vx1); a_.set_ylim(vy0, vy1); a_.set_aspect('equal'); a_.tick_params(labelsize=8)
         ax.set_xlabel('map x (m)'); ax.set_ylabel('map y (m)'); ax.set_title('보라 = 전역 경로(점선 = 직전) · 빨간 네모 = 로컬 치명 칸 · 파랑 = 라이다 · 노랑 = 카메라 시야', fontsize=9.5, loc='left')
-        az.set_title('로버 주변 3 × 3 m', fontsize=10, loc='left')
+        az.set_title('로버 주변 3 × 3 m · 화살표 보라 = 목표, 주황 = 컨트롤러', fontsize=9, loc='left')
         head.set_text('%s  (%.1f배속)\n구간 시작 뒤 %.0f s' % (time.strftime('%H:%M:%S', time.localtime(t)), SPEED, t - tA))
-        txt.set_text('명령 속도 %.3f m/s · %+.2f rad/s   |   전역 경로 길이 %.2f m   |   앞쪽(차체 폭 ±0.3 m) 가장 가까운 라이다 점 %s\n경로가 크게 바뀐 횟수 %d%s' % (
-            cm[1], cm[2], plen(pl) if len(pl) > 1 else 0.0, ('%.2f m' % ahead) if ahead == ahead else '없음', nchg, ('  ← 방금 바뀜(점선 = 직전 경로)' if t - lastchg < 4.0 else '')))
+        dirs = '목표 방향(보라) %s · 컨트롤러가 받은 끝 방향(주황) %s · 로버 %+.0f°' % ('%+.0f°' % math.degrees(gyaw) if gyaw is not None else '-', '%+.0f°' % math.degrees(cyaw) if cyaw is not None else '-', math.degrees(yaw))
+        txt.set_text('명령 속도 %.3f m/s · %+.2f rad/s   |   전역 경로 길이 %.2f m   |   경로 급변 %d 회%s\n%s' % (
+            cm[1], cm[2], plen(pl) if len(pl) > 1 else 0.0, nchg, (' ← 방금(점선 = 직전 경로)' if t - lastchg < 4.0 else ''), dirs))
         wr.grab_frame()
 print('저장', out, '프레임', len(times))
 print('경로가 크게 바뀐 시각(같은 목표에서 길이 0.3 m 넘게 변화 또는 새 목표):')
