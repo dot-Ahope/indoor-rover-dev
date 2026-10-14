@@ -14,3 +14,5 @@
 | 〃 · §8.5 | 정지 시험 재시도 | `put_one.sh` · `run_detached.sh`(재시도 8 회) | 전부 "lost connection", 자격 정보 없는 SSH 는 "No route to host" | 주소가 붙었다 떨어짐 ✔. 시험 미실시 ✘. 비밀번호 유출은 아닌 것으로 봄 ？ |
 | 11:15 · §8.6 | 사용자가 DHCP 항목 제거·Jetson 재부팅 → 172.30.1.8 | `up_tools.sh` → `prep_patrol.sh lite 15.0`(JETSON_HOST=172.30.1.8) | ping 3/3, PREP_OK 57 s | 연결 복구 ✔ |
 | 11:17 · §8.6 | pad_relief 정지 시험 | `run_detached.sh chk_pad_relief.sh pad_relief.py` | 2 회 → 안 켜짐, 4 회 → 0.330 m, 15.3 s 뒤 0.350 m, 종료 때 0.350 m 복귀 | 4/4 통과 ✔. 진짜 실패 로그·실제 탈출은 주행에서 ？ |
+| 11:21 · §9.1 | f2r1 전 기동 + pad_relief | `prep_patrol_pad.sh lite 15.0 on` | PREP_OK 59 s, 그러나 pad_relief 0 개 실행 — `mode:=on` 이 bool 로 읽혀 형 불일치로 죽음 | 주행 전 발견 ✘ → 노드 수정 뒤 `prep_pad_only.sh` 로 재기동, "원래 패딩 0.010 확인" ✔ |
+| 11:23 · §9.1 | f2r1 주행 | `run_f2c.sh` → `chk_after_f2r1.sh` · `anal_box_pass.py` | 3/3 성공 204.0 s. 상자 구역 최소 여유 2.4 cm. "Optimizer fail" 2 회(11:26:39) 뒤 스스로 풀림. pad_relief 는 안 켜짐 | 판정 불가 ？(작동할 상황이 안 옴). 실패 문구·이름은 예상대로 ✔. 문턱 3 회가 스스로 풀리는 경우엔 안 끼어듦 ✔ |

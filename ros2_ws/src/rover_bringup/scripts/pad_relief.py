@@ -23,7 +23,7 @@
 import math, time, signal
 import rclpy
 from rclpy.node import Node
-from rcl_interfaces.msg import Log, Parameter, ParameterValue, ParameterType
+from rcl_interfaces.msg import Log, Parameter, ParameterValue, ParameterType, ParameterDescriptor
 from rcl_interfaces.srv import SetParameters, GetParameters
 from nav_msgs.msg import Odometry
 from diagnostic_msgs.msg import DiagnosticArray, DiagnosticStatus, KeyValue
@@ -35,9 +35,10 @@ class PadRelief(Node):
         for k, v in (('mode', 'on'), ('costmap_node', '/local_costmap/local_costmap'), ('relief', 0.0), ('trig_n', 3), ('trig_win', 3.0),
                      ('restore_dist', 0.15), ('max_hold', 15.0), ('cooldown', 3.0), ('max_per_min', 4),
                      ('fail_text', 'fail to compute path'), ('fail_node', 'controller_server'), ('log_path', '/tmp/pad_relief.log')):
-            self.declare_parameter(k, v)
+            self.declare_parameter(k, v, ParameterDescriptor(dynamic_typing=True) if k == 'mode' else ParameterDescriptor())
         g = lambda k: self.get_parameter(k).value
-        self.mode = str(g('mode')); self.relief = float(g('relief')); self.trig_n = int(g('trig_n')); self.trig_win = float(g('trig_win'))
+        # 'on'/'off' 는 YAML 에서 참/거짓으로 읽힌다(명령줄·launch 인자 모두) → 문자열로 되돌린다(10-14 f2r1 prep 에서 형 불일치로 노드가 죽었음)
+        self.mode = {True: 'on', False: 'off'}.get(g('mode'), str(g('mode'))); self.relief = float(g('relief')); self.trig_n = int(g('trig_n')); self.trig_win = float(g('trig_win'))
         self.restore_dist = float(g('restore_dist')); self.max_hold = float(g('max_hold')); self.cooldown = float(g('cooldown')); self.max_per_min = int(g('max_per_min'))
         self.fail_text = str(g('fail_text')); self.fail_node = str(g('fail_node')); self.log_path = str(g('log_path'))
         cm = str(g('costmap_node'))
