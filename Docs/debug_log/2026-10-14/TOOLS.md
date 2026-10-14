@@ -9,3 +9,4 @@
 | 10:13 · §7.1 | 재부팅 뒤 도구 전송 + 기동 | `up_tools.sh` → `prep_patrol.sh lite 15.0` | 스크립트 16 개 전송, PREP_OK 57 s | 정지 확인 준비 ✔ |
 | 10:1x · §7.1 | 실행 중 패딩 변경이 먹는가 | `chk_padding_dynamic.py local` | 0.01 → 0.0: 즉시 받아들임, 풋프린트 0.530 · 0.350 → 0.510 · 0.330 m(−20.0 mm 씩), 복귀 뒤 원래대로 | 반영됨 ✔. 내접 칸 수는 센서 흔들림과 섞여 판별 못 함 ？. MPPI 가 바로 쓰는지는 주행에서 ？ |
 | 〃 · §7.1 | 통합 거리 1.4 가 실제로 적용됐나 | `chk_nvblox_integ.sh`(nvblox 로그) | `projective_integrator_max_integration_distance_m: 1.4` | §6 되돌림 적용 ✔ |
+| 10:27 · §8.3 | pad_relief 정지 시험을 시작하려 함 | `put_one.sh` → `chk_pad_relief.sh` | scp "lost connection". 이후 3 분간 Jetson 두 주소 모두 ping 무응답, PC 망은 정상 | 시험 미실시 ✘. Jetson Wi-Fi 또는 전원 문제 ？(사용자 확인 필요) |
