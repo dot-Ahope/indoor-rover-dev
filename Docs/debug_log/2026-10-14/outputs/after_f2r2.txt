@@ -1,0 +1,34 @@
+--- pad_relief.log
+11:41:28 시작 mode=on · 켜기 3 회/3 s · 끄기 0.15 m 또는 15 s · 분당 최대 4 회
+11:41:31 원래 패딩 0.010 확인
+--- Nav2 로그의 컨트롤러 실패(11:42:54 이후)
+11:43:56 [WARN]  [controller_server]: [follow_path] [ActionServer] Aborting handle.
+11:44:45 [ERROR]  [smoother_server]: Smoothed path leads to a collision at x: 0.205190, y: 0.002512, theta:
+11:44:45 [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+11:44:47 [ERROR]  [smoother_server]: Smoothed path leads to a collision at x: 0.205407, y: -0.000238, theta
+11:44:47 [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+11:44:49 [ERROR]  [smoother_server]: Smoothed path leads to a collision at x: 0.205186, y: 0.002514, theta:
+11:44:49 [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+11:44:51 [ERROR]  [smoother_server]: Smoothed path leads to a collision at x: 0.205188, y: 0.002498, theta:
+11:44:51 [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+11:44:53 [ERROR]  [smoother_server]: Smoothed path leads to a collision at x: 0.205191, y: 0.002506, theta:
+11:44:53 [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+11:44:55 [ERROR]  [smoother_server]: Smoothed path leads to a collision at x: 0.205192, y: 0.002498, theta:
+11:44:55 [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+11:44:57 [ERROR]  [smoother_server]: Smoothed path leads to a collision at x: 0.066079, y: -0.060856, theta
+11:44:57 [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+11:44:59 [ERROR]  [smoother_server]: Smoothed path leads to a collision at x: 2.124451, y: -0.191692, theta
+11:44:59 [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+11:45:01 [WARN]  [planner_server]: [compute_path_to_pose] [ActionServer] Aborting handle.
+11:45:04 [WARN]  [planner_server]: [compute_path_to_pose] [ActionServer] Aborting handle.
+11:45:06 [WARN]  [controller_server]: [follow_path] [ActionServer] Aborting handle.
+11:45:07 [ERROR]  [smoother_server]: Smoothed path leads to a collision at x: 2.899592, y: -1.250818, theta
+11:45:07 [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+11:45:36 [WARN]  [controller_server]: [follow_path] [ActionServer] Aborting handle.
+11:45:48 [ERROR]  [smoother_server]: Smoothed path leads to a collision at x: 1.649380, y: 0.109322, theta:
+11:45:48 [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+11:45:52 [WARN]  [controller_server]: [follow_path] [ActionServer] Aborting handle.
+11:45:56 [WARN]  [controller_server]: [follow_path] [ActionServer] Aborting handle.
+11:46:02 [WARN]  [controller_server]: [follow_path] [ActionServer] Aborting handle.
+--- 실패 문구 수: 0
+현재 로컬 패딩: Double value is: 0.01 · pad_relief 1 개
