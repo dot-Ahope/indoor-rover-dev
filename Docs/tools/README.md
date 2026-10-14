@@ -20,6 +20,7 @@
 | `prep_patrol.sh` | 순회 구성(그림자 EKF 끔 · 전역 nvblox · 재계획 0.5 Hz)으로 `prep_fast.sh` 를 부른다. 인자: 궤적 발행 `lite`/`true`/`off`, 후진 벌점 | `job973_prep_lite_fast.sh` 등 |
 | `chk_prep.py` | prep 확인 노드 1 개: Nav2 상태 · 좌표 변환 · 보드/EKF 주기 · 전역 지도 · 실행 중 설정값 · 배터리. 마지막 줄 `PREP_OK`/`PREP_FAIL` | `job971_prepchk.py` |
 | `chk_jetson_state.sh` | 재부팅 여부 · IP · /tmp 스크립트 · 캡처 권한 · 수신 버퍼 | `job947_state.sh` |
+| `chk_padding_dynamic.py` | 실행 중 코스트맵 footprint_padding 을 0 으로 내렸다 되돌리며 발행 풋프린트 · 코스트맵 칸 수 확인(로버 안 움직임) | (10-14 신규) |
 | `anal_tf_rate.py` | bag → 10 s 칸마다 /tf 수신 Hz(포화 판정 지표: 정상 50) | `tf_rate.py` |
 | `anal_navlog.py` | Nav2 로그 → 사건 종류별 횟수 · 10 s 분포 · 원문 | `navlog_pc.py` |
 | `anal_proc_cpu.py` | 전 프로세스 CPU 기록 → 구간별 비교 표 | `proc_cmp2.py` |
