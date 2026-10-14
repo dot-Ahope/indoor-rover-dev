@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """fig_no5_route — 8 목표 순회 코스(no5)를 저장 지도(office_v3) 위에: 목표 번호 + 실제로 달린 궤적(목표 구간마다 색). (2026-10-14 §27, 오늘만)
-  왜: 기준선 코스를 정하기 전에 사용자가 '2 번째 목표 W3 가 낭비 아닌가' 판단하려고 no5 가 실제로 어디로 도는지 보기.
+  왜: 기준선 코스를 정하기 전에 사용자가 '2 번째 목표(당시 'W3' 로 부른 C)가 낭비 아닌가' 판단하려고 no5 가 실제로 어디로 도는지 보기.
   궤적: bag 의 map→odom ∘ odom→base_link(지도 좌표, 차체 중심). 목표 구간 경계는 러너 csv 의 goal 열이 바뀐 시각(첫 /cmd_vel 기준, ab_windows 와 같은 방법).
-  목표 좌표는 PC 러너 run_f2c.sh 의 NO5 문자열과 같다(f = 위치만, p = 방향까지).
+  목표 좌표는 PC 러너 run_f2c.sh 의 NO5 문자열과 같다(f = 위치만, p = 방향까지). 이름은 10-01 §8 코스 정의(§27.2 에서 되돌림).
   인자: bag 러너csv 출력.png"""
 import sys, time, math, csv
 from pathlib import Path
@@ -13,8 +13,8 @@ from rosbags.highlevel import AnyReader
 from rosbags.typesys import Stores, get_typestore
 plt.rcParams['font.family'] = 'Malgun Gothic'; plt.rcParams['axes.unicode_minus'] = False
 bag, cs, out = sys.argv[1:4]
-G = [(2.25, -1.6, 'p', 'B'), (-1.6, -2.0, 'p', 'W3'), (-1.65, -3.7, 'p', '서쪽 통로'), (-1.6, -5.5, 'f', '남서'),
-     (-1.65, -3.7, 'p', '서쪽 통로'), (-1.6, -2.1, 'p', 'W3 남쪽'), (5.5, -2.2, 'p', 'W3 동쪽'), (0.0, 0.0, 'p', '출발점')]
+G = [(2.25, -1.6, 'p', 'B'), (-1.6, -2.0, 'p', 'C'), (-1.65, -3.7, 'p', '서쪽 통로'), (-1.6, -5.5, 'f', '남서'),
+     (-1.65, -3.7, 'p', '서쪽 통로'), (-1.6, -2.1, 'p', '위 복도'), (5.5, -2.2, 'p', 'W3'), (0.0, 0.0, 'p', '출발점')]
 yq = lambda q: math.atan2(2 * (q.w * q.z + q.x * q.y), 1 - 2 * (q.y * q.y + q.z * q.z))
 ob = []; mo = []; T0 = None
 with AnyReader([Path(bag)], default_typestore=get_typestore(Stores.ROS2_HUMBLE)) as rd:

@@ -12,9 +12,9 @@ plt.rcParams['font.family'] = 'Malgun Gothic'; plt.rcParams['axes.unicode_minus'
 out = sys.argv[1]
 Y = yaml.safe_load(open('Docs/04_navigation/maps/office_v3.yaml', encoding='utf-8')); img = np.array(Image.open('Docs/04_navigation/maps/office_v3.pgm')); res = Y['resolution']; ox, oy = Y['origin'][:2]
 H, W = img.shape; ext = (ox, ox + W * res, oy, oy + H * res)
-# 10-08 FULLF(run_f2c.sh) — 이름은 10-02 §6 코스 설명
-G = [(2.25, -1.6, 'p', 'B'), (-1.6, -2.0, 'p', 'W3'), (-1.65, -3.7, 'p', '서쪽 통로'), (-1.6, -5.5, 'f', '남서'), (1.6, -5.55, 'p', 'D'),
-     (-1.6, -5.5, 'f', '남서'), (-1.65, -3.7, 'p', '서쪽 통로'), (-1.6, -2.1, 'p', 'W3 남쪽'), (5.5, -2.2, 'p', 'W3 동쪽'), (0.0, 0.0, 'p', '출발점 복귀')]
+# 10-08 FULLF(run_f2c.sh) — 이름은 10-01 §8 코스 정의(C · 위 복도 · W3). 10-14 §27.2: 10-02 이후 C 를 'W3' 로 잘못 부른 것을 되돌림
+G = [(2.25, -1.6, 'p', 'B'), (-1.6, -2.0, 'p', 'C'), (-1.65, -3.7, 'p', '서쪽 통로'), (-1.6, -5.5, 'f', '남서'), (1.6, -5.55, 'p', 'D'),
+     (-1.6, -5.5, 'f', '남서'), (-1.65, -3.7, 'p', '서쪽 통로'), (-1.6, -2.1, 'p', '위 복도'), (5.5, -2.2, 'p', 'W3'), (0.0, 0.0, 'p', '출발점 복귀')]
 fig, ax = plt.subplots(figsize=(11, 9.5))
 ax.imshow(np.flipud(img), origin='lower', extent=ext, cmap='gray', vmin=0, vmax=255, interpolation='nearest')
 pts = np.array([[0.0, 0.0]] + [[g[0], g[1]] for g in G])
