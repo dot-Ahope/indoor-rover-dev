@@ -1,0 +1,69 @@
+      1 13:47:17.3 [INFO] [controller_server]: Reached the goal!
+      1 13:47:17.4 [INFO] [bt_navigator]: Goal succeeded
+      1 13:47:17.4 [INFO] [bt_navigator]: Begin navigating from current location (-1.46, -2.04) to (-1.65, -3.70)
+      1 13:47:17.4 [INFO] [nav_guard]: 목표 d1d6c9ab: 남은 거리 0.18 m → 시간 한도 35 s (시작 뒤 0.0 s)
+      1 13:47:17.4 [INFO] [controller_server]: Received a goal, begin computing control effort.
+      1 13:47:17.4 [INFO] [nav_guard]: 목표 d1d6c9ab: 남은 거리 1.83 m → 시간 한도 82 s (시작 뒤 0.0 s)
+      1 13:47:22.0 [WARN] [global_costmap.global_costmap]: [NvbloxCostmapLayer] Can't transform: map to odom. Error: Lookup would require extrapolation into the future.  Requested time 1791953241.890
+      1 13:47:25.6 [ERROR] [smoother_server]: Smoothed path leads to a collision at x: -1.650000, y: -3.700000, theta: -0.981032
+      1 13:47:25.6 [WARN] [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+      1 13:47:26.9 [WARN] [global_costmap.global_costmap]: [NvbloxCostmapLayer] Can't transform: map to odom. Error: Lookup would require extrapolation into the future.  Requested time 1791953246.860
+      1 13:47:27.7 [ERROR] [smoother_server]: Smoothed path leads to a collision at x: -1.650000, y: -3.700000, theta: -0.981032
+      1 13:47:27.7 [WARN] [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+      1 13:47:29.7 [ERROR] [smoother_server]: Smoothed path leads to a collision at x: -1.650000, y: -3.700000, theta: -0.981032
+      1 13:47:29.7 [WARN] [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+      1 13:47:31.8 [ERROR] [smoother_server]: Smoothed path leads to a collision at x: -1.650000, y: -3.700000, theta: -0.981032
+      1 13:47:31.8 [WARN] [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+      1 13:47:33.8 [ERROR] [smoother_server]: Smoothed path leads to a collision at x: -1.650000, y: -3.700000, theta: -0.981032
+      1 13:47:33.8 [WARN] [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+      1 13:47:35.8 [ERROR] [smoother_server]: Smoothed path leads to a collision at x: -1.667639, y: -3.673991, theta: 2.166725
+      1 13:47:35.8 [WARN] [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+      1 13:47:37.9 [ERROR] [smoother_server]: Smoothed path leads to a collision at x: -1.667078, y: -3.673769, theta: 2.147907
+      1 13:47:37.9 [WARN] [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+      1 13:47:39.9 [ERROR] [smoother_server]: Smoothed path leads to a collision at x: -1.670375, y: -3.675915, theta: 2.272947
+      1 13:47:39.9 [WARN] [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+      1 13:47:42.0 [ERROR] [smoother_server]: Smoothed path leads to a collision at x: -1.711090, y: -3.598316, theta: -1.103088
+      1 13:47:42.0 [WARN] [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+      1 13:47:44.0 [ERROR] [smoother_server]: Smoothed path leads to a collision at x: -1.704944, y: -3.639958, theta: 0.000000
+      1 13:47:44.0 [WARN] [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+      1 13:47:46.1 [ERROR] [smoother_server]: Smoothed path leads to a collision at x: -1.690000, y: -3.610000, theta: 0.000000
+      1 13:47:46.1 [WARN] [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+      1 13:47:48.1 [ERROR] [smoother_server]: Smoothed path leads to a collision at x: -1.690000, y: -3.660000, theta: 0.000000
+      1 13:47:48.1 [WARN] [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+      1 13:47:50.2 [ERROR] [smoother_server]: Smoothed path leads to a collision at x: -1.690000, y: -3.660000, theta: 0.000000
+      1 13:47:50.2 [WARN] [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+      1 13:47:52.2 [ERROR] [smoother_server]: Smoothed path leads to a collision at x: -1.690000, y: -3.660000, theta: 0.000000
+      1 13:47:52.2 [WARN] [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+      1 13:47:54.3 [ERROR] [smoother_server]: Smoothed path leads to a collision at x: -1.690000, y: -3.660000, theta: 0.000000
+      1 13:47:54.3 [WARN] [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+      1 13:47:56.3 [ERROR] [smoother_server]: Smoothed path leads to a collision at x: -1.690000, y: -3.660000, theta: 0.000000
+      1 13:47:56.3 [WARN] [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+      1 13:47:58.4 [ERROR] [smoother_server]: Smoothed path leads to a collision at x: -1.690000, y: -3.660000, theta: 0.000000
+      1 13:47:58.4 [WARN] [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+      1 13:48:00.4 [ERROR] [smoother_server]: Smoothed path leads to a collision at x: -1.690000, y: -3.660000, theta: 0.000000
+      1 13:48:00.4 [WARN] [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+      1 13:48:02.5 [ERROR] [smoother_server]: Smoothed path leads to a collision at x: -1.690000, y: -3.660000, theta: 0.000000
+      1 13:48:02.5 [WARN] [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+      1 13:48:04.5 [ERROR] [smoother_server]: Smoothed path leads to a collision at x: -1.690000, y: -3.660000, theta: 0.000000
+      1 13:48:04.5 [WARN] [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+      1 13:48:06.6 [ERROR] [smoother_server]: Smoothed path leads to a collision at x: -1.690000, y: -3.660000, theta: 0.000000
+      1 13:48:06.6 [WARN] [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+      1 13:48:08.6 [ERROR] [smoother_server]: Smoothed path leads to a collision at x: -1.690000, y: -3.660000, theta: 0.000000
+      1 13:48:08.6 [WARN] [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+      1 13:48:10.6 [ERROR] [controller_server]: Failed to make progress
+      1 13:48:10.6 [WARN] [controller_server]: [follow_path] [ActionServer] Aborting handle.
+      1 13:48:10.7 [INFO] [local_costmap.local_costmap]: Received request to clear except a region the local_costmap
+      1 13:48:10.7 [INFO] [controller_server]: Received a goal, begin computing control effort.
+      1 13:48:10.7 [ERROR] [smoother_server]: Smoothed path leads to a collision at x: -1.690000, y: -3.660000, theta: 0.000000
+      1 13:48:10.7 [WARN] [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+      1 13:48:12.7 [ERROR] [smoother_server]: Smoothed path leads to a collision at x: -1.690000, y: -3.660000, theta: 0.000000
+      1 13:48:12.7 [WARN] [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+--- nav_guard / 정체 감시
+[nav_guard.py-2] [INFO] [1791953132.063148577] [nav_guard]: 목표 52d79772: 남은 거리 3.75 m → 시간 한도 137 s (시작 뒤 0.0 s)
+[stuck_monitor.py-1] [WARN] [1791953168.349496215] [stuck_monitor]: STUCK: 지령 15.5cm/7° 인데 관측 1.6cm/14.0° (비율 0.11) [shadow — 조치 없음]
+[nav_guard.py-2] [INFO] [1791953183.455238908] [nav_guard]: 목표 33e85ad8: 남은 거리 0.18 m → 시간 한도 35 s (시작 뒤 0.0 s)
+[nav_guard.py-2] [INFO] [1791953183.495704956] [nav_guard]: 목표 33e85ad8: 남은 거리 4.02 m → 시간 한도 145 s (시작 뒤 0.0 s)
+[nav_guard.py-2] [INFO] [1791953237.435087873] [nav_guard]: 목표 d1d6c9ab: 남은 거리 0.18 m → 시간 한도 35 s (시작 뒤 0.0 s)
+[nav_guard.py-2] [INFO] [1791953237.480183184] [nav_guard]: 목표 d1d6c9ab: 남은 거리 1.83 m → 시간 한도 82 s (시작 뒤 0.0 s)
+[stuck_monitor.py-1] [WARN] [1791953296.546706595] [stuck_monitor]: STUCK: 지령 2.4cm/15° 인데 관측 14.8cm/2.0° (비율 0.13) [shadow — 조치 없음]
+[nav_guard.py-2] [ERROR] [1791953307.932453412] [nav_guard]: nav_guard 개입 — 무진행: 45 s 동안 최대 0.24 m 이동 < 0.25 m → 모든 목표 취소·정지
