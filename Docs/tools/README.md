@@ -16,7 +16,7 @@
 
 | 도구 | 하는 일 | 옛 이름 |
 |---|---|---|
-| `prep_fast.sh` | 정리 → 센서 → SLAM(위치 추정) → Nav2 기동, 준비될 때까지 확인. 환경 변수로 구성을 받는다. 약 60~70 s | `job972_prep_fast.sh` |
+| `prep_fast.sh` | 정리 → 센서 → SLAM(위치 추정) → Nav2 기동, 준비될 때까지 확인. 환경 변수로 구성을 받는다. 약 60~70 s. 10-14: 비우기 전 직전 nav2·slam·sensors 기록을 `/tmp/logkeep/<시각>_*.log` 로 보관(최근 8 벌) | `job972_prep_fast.sh` |
 | `prep_patrol.sh` | 순회 구성(그림자 EKF 끔 · 전역 nvblox · 재계획 0.5 Hz)으로 `prep_fast.sh` 를 부른다. 인자: 궤적 발행 `lite`/`true`/`off`, 후진 벌점 | `job973_prep_lite_fast.sh` 등 |
 | `chk_prep.py` | prep 확인 노드 1 개: Nav2 상태 · 좌표 변환 · 보드/EKF 주기 · 전역 지도 · 실행 중 설정값 · 배터리. 마지막 줄 `PREP_OK`/`PREP_FAIL` | `job971_prepchk.py` |
 | `chk_jetson_state.sh` | 재부팅 여부 · IP · /tmp 스크립트 · 캡처 권한 · 수신 버퍼 | `job947_state.sh` |
