@@ -40,3 +40,4 @@
 | 17:0x · §23 | 사용자: 코드·데이터로 상태 분석이 어려운가 | `anal_ctrl_timing.py` · proc tick · `anal_free_wobble.py` · humble 소스(읽은 범위) | 주기·지도 갱신·CPU 같음. 비용 0 인 빈 곳에서 B 84 /분 vs A 5 · A2 19 | 입력·계산 시간 아님 ✔. CostCritic 경쟁 조건 가설 ✘(빈 곳에서도 재현). 남은 것 = 경로·목표 크리틱·최적화기 상태 ？ |
 | 17:2x · §24 | 사용자: A2 는 상자 옆에서 반대쪽으로 꺾어 통과 · 더 중요한 것(상자 끝 정지)으로 | `fig_box_end_plans.py` · `anal_navfn_replay.py`(B · A2 · f2r1) · `anal_slice_blob.py` · `chk_nav2_window.sh` | 정상 경로 6 개 · 이상 경로 1 개(B 16:30:06.6, 내접 20 점, 재현 경로는 곧게). nvblox 조각 그대로. 전역 지도 발행 05.7 빠짐 | '상자' = 라이다에 안 보이는 낮은 물체 ✔. 실패 = 이상 경로형 + 좁은 여유형 ✔. 이상 경로 원인 ？ — nav2.log 가 prep 으로 덮여 확인 불가 ✘ |
 | 17:2x · §25 | 사용자: 1 진행(nav2.log 보관) | `chk_prep_md5.sh`(Jetson 판 = 저장소 판 확인) → `prep_fast.sh` 수정·전송 → `chk_logkeep.sh`(보관 부분만 시험) | md5 같음, 보관 3 개 ✔ | 다음 prep 부터 직전 기록 보관 ✔ |
+| 17:3x · §26 | 사용자: 오늘 마무리 + 아티팩트를 만들어 로컬에 저장 | 보고서 HTML(그림 base64 삽입) → `REPORT_2026-10-14.html` · 아티팩트 게시 | 298 kB, 비공개 게시 | ✔ |
