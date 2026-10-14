@@ -4,6 +4,8 @@
         실제 풋프린트(앞 0.262 · 뒤 0.248 · 반폭 0.165 + 패딩 0.01)를 쓴다. fpchk=0(기본)은 예전처럼 둘레 점 표본(대칭 0.25).
         왜: 예전 방식은 f2o1·f2p1 의 상자 옆 정지를 재현하지 못했다(§7.1: 실제만큼 붙고도 지나감). Nav2 의 칸 단위 검사가 여유를 더 먹는지 확인.
    [10-13 §8 추가] 후보가 전부 충돌인 주기는 Nav2 처럼 실패로 세고(그 주기 명령 0) 끝에 횟수·첫 시각을 낸다(실제의 "Optimizer fail to compute path").
+   [10-14 추가] unstuck=1: '갇혔을 때만 패딩 0' 흉내 — 후보 전부 충돌이 us_k 주기(기본 20 = 2 s) 이어지면 패딩을 0 으로, 그 뒤 us_d m(기본 0.30) 움직였거나 us_t s(기본 10) 지나면 원래 패딩으로.
+        끝에 전환 횟수·패딩 0 이던 시간·되돌린 뒤 다시 갇힌 횟수를 낸다. 왜: 10-13 §14.2 는 탈출만 봤고, 되돌린 순간 다시 갇히는지는 안 봤다.
    ---- 이하 job776 원문 ----
    [job776, 2026-10-01 §8.29] job452 + Ackermann 최소 회전 반경(ack_r>0 이면 |ω| ≤ |v|/ack_r — Nav2 1.1.x AckermannMotionModel::applyConstraints 와 같은 규칙, 표본·평균 제어 모두),
    후진 거리·제자리 회전 시간 집계 추가.
@@ -35,10 +37,10 @@ P = dict(vx_std=0.05, wz_std=0.3, temperature=0.3, gamma=0.015, iters=1, batch=1
          humble=0, cons_w=4.0, dyn_path=0, dyn_cost=0, regen=0,
          lag_steps=0, w_gain=1.0, v_gain=1.0, w_acc=0.0,
          obst=0, cost_w=3.81, crit_cost=300.0, cc_coll=1e6, near_thr=0.5, t_abs=0.0,   # 09-18: CostCritic·near_goal·절대 시각
-         cycles=40, seed=1, label='', ack_r=0.0, fpchk=0, pad=0.01)   # pad = footprint_padding(10-13 §11: 0 으로 줄였을 때 평가용. 기록된 코스트맵의 inflation 은 0.01 기준 그대로)
+         cycles=40, seed=1, label='', ack_r=0.0, fpchk=0, pad=0.01, unstuck=0, us_k=20, us_d=0.30, us_t=10.0)   # pad = footprint_padding(10-13 §11: 0 으로 줄였을 때 평가용. 기록된 코스트맵의 inflation 은 0.01 기준 그대로)
 for a in sys.argv[3:]:
     k, v = a.split('='); P[k] = v if k in ('label', 'wobble_on') else float(v)
-for k in ('iters', 'batch', 'steps', 'align_off', 'align_step', 'follow_off', 'angle_off', 'cycles', 'seed', 'lag_steps', 'humble', 'dyn_path', 'dyn_cost', 'regen', 'obst', 'fpchk'):
+for k in ('iters', 'batch', 'steps', 'align_off', 'align_step', 'follow_off', 'angle_off', 'cycles', 'seed', 'lag_steps', 'humble', 'dyn_path', 'dyn_cost', 'regen', 'obst', 'fpchk', 'unstuck', 'us_k'):
     P[k] = int(P[k])
 rng = np.random.default_rng(P['seed'])
 HL, HW, PAD = 0.25, 0.165, P['pad']
@@ -147,6 +149,15 @@ def pose_costs(X, Y, TH):
 
 FPV = np.array([[0.262 + PAD, 0.165 + PAD], [0.262 + PAD, -0.165 - PAD], [-0.248 - PAD, -0.165 - PAD], [-0.248 - PAD, 0.165 + PAD]])   # nav2_params.yaml footprint + footprint_padding(부호 방향으로 더함)
 NLINE = 16   # 한 변의 칸 수 상한(0.544 m / 0.05 = 11 칸)
+
+
+def set_pad(p_):
+    """실행 중 패딩 변경(unstuck 용): fpchk=1 의 꼭짓점만 바꾼다(코스트맵 inflation 은 기록된 것 그대로)."""
+    global FPV
+    FPV = np.array([[0.262 + p_, 0.165 + p_], [0.262 + p_, -0.165 - p_], [-0.248 - p_, -0.165 - p_], [-0.248 - p_, 0.165 + p_]])
+
+
+US = dict(on=False, t0=0, x0=0.0, y0=0.0, run=0, n=0, cyc0=0, restick=0, last_restore=-999, events=[])
 
 
 def nav2_footprint_cost(x, y, th):
@@ -308,7 +319,16 @@ for cyc in range(P['cycles']):
     else:
         v0, w0 = mean_v[0], mean_w[0]
     if m['coll'].all():   # 10-13: 후보 전부 충돌 = Nav2 의 'Optimizer fail to compute path' → 그 주기는 정지 명령
-        FAILS.append(cyc); v0, w0 = 0.0, 0.0
+        FAILS.append(cyc); v0, w0 = 0.0, 0.0; US['run'] += 1
+    else:
+        US['run'] = 0
+    if P['unstuck']:
+        if not US['on'] and US['run'] >= P['us_k']:
+            US.update(on=True, cyc0=cyc, x0=rx, y0=ry, run=0); US['n'] += 1; set_pad(0.0); US['events'].append('%.1f s 패딩 0' % (cyc * P['dt']))
+            if cyc - US['last_restore'] <= 50: US['restick'] += 1
+        elif US['on'] and (math.hypot(rx - US['x0'], ry - US['y0']) >= P['us_d'] or (cyc - US['cyc0']) * P['dt'] >= P['us_t']):
+            US['events'].append('%.1f s 되돌림(%.2f m 이동)' % (cyc * P['dt'], math.hypot(rx - US['x0'], ry - US['y0']))); US.update(on=False, last_restore=cyc, run=0); set_pad(P['pad'])
+        US['zero'] = US.get('zero', 0) + (1 if US['on'] else 0)
     if P['w_acc'] > 0:
         _dw = P['w_acc'] * P['dt']; w0 = WPREV[0] + max(-_dw, min(_dw, w0 - WPREV[0]))
     WPREV[0] = w0; WCLOG.append(w0)
@@ -330,6 +350,7 @@ for cyc in range(P['cycles']):
     mean_v = np.concatenate([mean_v[1:], mean_v[-1:]]); mean_w = np.concatenate([mean_w[1:], mean_w[-1:]])
 dx = (rx - x0) * math.cos(th0) + (ry - y0) * math.sin(th0); dy = -(rx - x0) * math.sin(th0) + (ry - y0) * math.cos(th0)
 print('     후진 거리 %.3f m · 제자리 회전 시간 %.1f s · 경로 끝 도달 %s 주기' % (REV[0], SPIN[0], REACH[0]))
+if P['unstuck']: print('     갇힘 해제: 패딩 0 전환 %d 회 · 패딩 0 이던 시간 %.1f s · 되돌린 뒤 5 s 안에 다시 갇힘 %d 회 · 끝날 때 패딩 %s | %s' % (US['n'], US.get('zero', 0) * P['dt'], US['restick'], '0' if US['on'] else '원래', ' → '.join(US['events'][:8])))
 print('     후보 전부 충돌(실패) 주기 %d 회%s · 끝 3 s 이동 %.3f m · fpchk=%d' % (len(FAILS), (' — 처음 %.1f s, 마지막 %.1f s' % (FAILS[0] * P['dt'], FAILS[-1] * P['dt'])) if FAILS else '', float(np.sum(np.abs(MOVE[-30:]))), P['fpchk']))
 print('  → %d 주기(%.1f s) 후: 전진 %+.3f 횡 %+.3f 회전 %+.1f°, 최종 cmd v %+.3f w %+.3f' % (P['cycles'], P['cycles'] * P['dt'], dx, dy, math.degrees(wrap(rth - th0)), mean_v[0], mean_w[0]))
 
