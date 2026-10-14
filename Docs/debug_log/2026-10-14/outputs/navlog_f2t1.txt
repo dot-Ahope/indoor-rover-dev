@@ -1,0 +1,93 @@
+      1 15:21:05.2 [bt_navigator]: Begin navigating from current location (-0.01, 0.00) to (2.25, -1.60)
+      1 15:21:58.0 [bt_navigator]: Goal succeeded
+      1 15:21:58.0 [bt_navigator]: Begin navigating from current location (2.30, -1.49) to (-1.60, -2.00)
+      1 15:22:53.5 [bt_navigator]: Goal succeeded
+      1 15:22:53.6 [bt_navigator]: Begin navigating from current location (-1.47, -2.04) to (-1.65, -3.70)
+      2 15:22:55.7 [smoother_server]: Smoothed path leads to a collision at x: -1.650000, y: -3.700000, theta: -0.785398
+      1 15:22:59.8 [smoother_server]: Smoothed path leads to a collision at x: -1.669211, y: -3.674709, theta: 2.220416
+      1 15:23:01.8 [smoother_server]: Smoothed path leads to a collision at x: -1.776723, y: -3.605711, theta: 2.223412
+      1 15:23:04.0 [smoother_server]: Smoothed path leads to a collision at x: -1.779337, y: -3.607879, theta: 2.254167
+      1 15:23:06.1 [smoother_server]: Smoothed path leads to a collision at x: -1.731186, y: -3.664031, theta: 2.319614
+      1 15:23:08.1 [smoother_server]: Smoothed path leads to a collision at x: -1.722981, y: -3.658030, theta: 2.225587
+      1 15:23:10.2 [smoother_server]: Smoothed path leads to a collision at x: -1.722098, y: -3.657728, theta: 2.215629
+      1 15:23:12.3 [smoother_server]: Smoothed path leads to a collision at x: -1.675073, y: -3.718226, theta: 2.238871
+      1 15:23:14.3 [smoother_server]: Smoothed path leads to a collision at x: -1.675100, y: -3.718347, theta: 2.241239
+      1 15:23:16.4 [smoother_server]: Smoothed path leads to a collision at x: -1.683940, y: -3.648803, theta: 2.146645
+      1 15:23:18.4 [smoother_server]: Smoothed path leads to a collision at x: -1.704954, y: -3.639965, theta: 0.000000
+      1 15:23:20.5 [smoother_server]: Smoothed path leads to a collision at x: -1.690000, y: -3.660000, theta: 0.000000
+      1 15:23:21.5 [bt_navigator]: Goal succeeded
+      1 15:23:21.5 [bt_navigator]: Begin navigating from current location (-1.67, -3.67) to (-1.60, -5.50)
+      1 15:23:21.5 [smoother_server]: Smoothed path leads to a collision at x: -1.792030, y: -4.261658, theta: 1.635904
+      1 15:23:23.6 [controller_server]: Optimizer fail to compute path
+      1 15:23:23.6 [smoother_server]: Smoothed path leads to a collision at x: -1.767406, y: -4.334869, theta: 1.861466
+      1 15:23:23.6 [local_costmap.local_costmap]: Received request to clear except a region the local_costmap
+      1 15:23:23.8 [controller_server]: Optimizer fail to compute path
+      1 15:23:23.8 [local_costmap.local_costmap]: Received request to clear except a region the local_costmap
+      1 15:23:23.8 [global_costmap.global_costmap]: Received request to clear except a region the global_costmap
+      1 15:23:24.1 [smoother_server]: Smoothed path leads to a collision at x: -1.697689, y: -3.744838, theta: 1.196733
+      1 15:23:24.1 [controller_server]: Optimizer fail to compute path
+      1 15:23:24.1 [local_costmap.local_costmap]: Received request to clear except a region the local_costmap
+      1 15:23:24.2 [controller_server]: Optimizer fail to compute path
+      1 15:23:24.2 [behavior_server]: Running backup
+      1 15:23:24.2 [behavior_server]: backup failed
+      1 15:23:24.2 [behavior_server]: Running wait
+      1 15:23:29.2 [behavior_server]: wait completed successfully
+      1 15:23:29.3 [smoother_server]: Smoothed path leads to a collision at x: -1.697689, y: -3.744838, theta: 1.196733
+      1 15:23:31.3 [controller_server]: Goal was canceled. Stopping the robot.
+      2 15:23:31.3 [local_costmap.local_costmap]: Received request to clear except a region the local_costmap
+      1 15:23:31.3 [global_costmap.global_costmap]: Received request to clear except a region the global_costmap
+      1 15:23:32.1 [smoother_server]: Smoothed path leads to a collision at x: -1.690000, y: -3.810000, theta: 1.326491
+      1 15:23:34.1 [smoother_server]: Smoothed path leads to a collision at x: -1.777583, y: -4.262276, theta: 1.566942
+      1 15:23:36.2 [smoother_server]: Smoothed path leads to a collision at x: -1.740000, y: -4.010000, theta: 0.000000
+      1 15:23:38.2 [smoother_server]: Smoothed path leads to a collision at x: -1.740000, y: -4.110000, theta: 0.000000
+      1 15:23:40.3 [smoother_server]: Smoothed path leads to a collision at x: -1.740000, y: -4.110000, theta: 1.352117
+      1 15:23:42.3 [smoother_server]: Smoothed path leads to a collision at x: -1.740000, y: -4.210000, theta: 0.000000
+      6 15:23:44.4 [smoother_server]: Smoothed path leads to a collision at x: -1.740000, y: -4.260000, theta: 0.000000
+      1 15:23:56.7 [smoother_server]: Smoothed path leads to a collision at x: -1.738749, y: -4.336240, theta: -1.505429
+      1 15:23:58.7 [smoother_server]: Smoothed path leads to a collision at x: -1.690000, y: -4.310000, theta: 1.559347
+      1 15:24:00.8 [smoother_server]: Smoothed path leads to a collision at x: -1.690000, y: -4.360000, theta: -1.561275
+      1 15:24:02.9 [smoother_server]: Smoothed path leads to a collision at x: -1.685814, y: -4.485100, theta: -1.389638
+      1 15:24:04.9 [smoother_server]: Smoothed path leads to a collision at x: -1.640000, y: -4.510000, theta: -1.496821
+      1 15:24:07.0 [smoother_server]: Smoothed path leads to a collision at x: -1.530212, y: -5.368875, theta: -1.963054
+      1 15:24:09.0 [smoother_server]: Smoothed path leads to a collision at x: -1.601195, y: -4.770873, theta: -1.277001
+      1 15:24:11.1 [smoother_server]: Smoothed path leads to a collision at x: -1.610891, y: -4.769916, theta: -1.270257
+      1 15:24:13.1 [smoother_server]: Smoothed path leads to a collision at x: -1.529641, y: -5.368829, theta: -1.967817
+      1 15:24:15.2 [smoother_server]: Smoothed path leads to a collision at x: -1.530712, y: -5.368927, theta: -1.958877
+      1 15:24:17.2 [smoother_server]: Smoothed path leads to a collision at x: -1.533118, y: -5.386871, theta: -1.965334
+      1 15:24:19.3 [smoother_server]: Smoothed path leads to a collision at x: -1.537901, y: -5.385694, theta: -1.924573
+      1 15:24:21.3 [smoother_server]: Smoothed path leads to a collision at x: -1.527300, y: -5.388690, theta: 1.125426
+      1 15:24:23.4 [smoother_server]: Smoothed path leads to a collision at x: -1.526479, y: -5.388922, theta: 1.121300
+      1 15:24:25.4 [smoother_server]: Smoothed path leads to a collision at x: -1.555042, y: -5.408272, theta: 1.221174
+      1 15:24:26.6 [bt_navigator]: Goal canceled
+      1 15:24:26.6 [bt_navigator]: Begin navigating from current location (-1.54, -5.38) to (-1.65, -3.70)
+      6 15:24:26.6 [smoother_server]: Smoothed path leads to a collision at x: -1.640000, y: -3.710000, theta: 0.000000
+      1 15:24:41.0 [smoother_server]: Smoothed path leads to a collision at x: -1.694936, y: -3.799768, theta: -2.107158
+      1 15:24:43.1 [smoother_server]: Smoothed path leads to a collision at x: -1.668475, y: -3.755252, theta: -2.132447
+      9 15:24:45.1 [smoother_server]: Smoothed path leads to a collision at x: -1.640000, y: -3.710000, theta: 0.000000
+      1 15:25:03.6 [smoother_server]: Smoothed path leads to a collision at x: -1.658581, y: -3.738760, theta: -2.144403
+      1 15:25:05.6 [smoother_server]: Smoothed path leads to a collision at x: -1.740000, y: -3.960000, theta: 0.000000
+      1 15:25:07.7 [smoother_server]: Smoothed path leads to a collision at x: -1.690000, y: -3.860000, theta: 0.000000
+      1 15:25:07.8 [bt_navigator]: Goal succeeded
+      1 15:25:07.9 [bt_navigator]: Begin navigating from current location (-1.68, -3.82) to (-1.60, -2.10)
+      1 15:25:07.9 [smoother_server]: Smoothed path leads to a collision at x: -1.690000, y: -3.810000, theta: -1.229734
+      1 15:25:10.0 [smoother_server]: Smoothed path leads to a collision at x: -1.690000, y: -3.710000, theta: -1.142469
+      1 15:25:41.1 [bt_navigator]: Goal succeeded
+      1 15:25:41.1 [bt_navigator]: Begin navigating from current location (-1.66, -2.23) to (5.50, -2.20)
+      1 15:26:16.1 [smoother_server]: Smoothed path leads to a collision at x: -0.438187, y: -1.883990, theta: -0.304760
+      1 15:28:42.1 [bt_navigator]: Goal succeeded
+      1 15:28:42.1 [bt_navigator]: Begin navigating from current location (5.43, -2.13) to (0.00, 0.00)
+      1 15:30:00.4 [smoother_server]: Smoothed path leads to a collision at x: 1.457632, y: 0.076548, theta: -0.571447
+      1 15:30:02.4 [smoother_server]: Smoothed path leads to a collision at x: 1.343952, y: 0.323305, theta: -0.261552
+      1 15:30:08.6 [smoother_server]: Smoothed path leads to a collision at x: 1.160780, y: 0.334854, theta: -0.077692
+      1 15:30:10.6 [smoother_server]: Smoothed path leads to a collision at x: 1.401795, y: 0.279275, theta: -0.302965
+      1 15:30:12.7 [smoother_server]: Smoothed path leads to a collision at x: 1.405582, y: 0.281974, theta: -0.288372
+      1 15:30:14.8 [smoother_server]: Smoothed path leads to a collision at x: 1.185678, y: 0.331422, theta: 3.034800
+      1 15:30:16.8 [smoother_server]: Smoothed path leads to a collision at x: 1.160941, y: 0.334164, theta: -0.079151
+      1 15:30:18.9 [smoother_server]: Smoothed path leads to a collision at x: 1.160932, y: 0.334200, theta: -0.079078
+      1 15:30:45.5 [smoother_server]: Smoothed path leads to a collision at x: 1.389536, y: 0.243102, theta: -0.163619
+      1 15:31:10.6 [bt_navigator]: Goal succeeded
+--- pad_relief
+15:19:36 시작 mode=on · 켜기 3 회/3 s · 끄기 0.15 m 또는 15 s · 분당 최대 4 회
+15:19:37 원래 패딩 0.010 확인
+15:23:24 패딩 → 0.000 (후보 전부 충돌 3 회/3 s, 1 번째) 적용
+15:23:33 패딩 → 0.010 (0.16 m 이동) 적용
