@@ -16,7 +16,11 @@ endif()
 add_library(rover_path_blocked_ahead_bt_node SHARED src/path_blocked_ahead_condition.cpp)
 target_compile_definitions(rover_path_blocked_ahead_bt_node PRIVATE BT_PLUGIN_EXPORT)
 ament_target_dependencies(rover_path_blocked_ahead_bt_node rclcpp behaviortree_cpp_v3 nav2_util nav_msgs geometry_msgs tf2_ros)
-install(TARGETS rover_path_blocked_ahead_bt_node
+# 2026-10-14 §14: BT 동작 노드 CopyPath(경로를 방향까지 그대로 복사 — TruncatePath 가 끝 방향을 0 으로 덮던 결함 대체)
+add_library(rover_copy_path_bt_node SHARED src/copy_path_action.cpp)
+target_compile_definitions(rover_copy_path_bt_node PRIVATE BT_PLUGIN_EXPORT)
+ament_target_dependencies(rover_copy_path_bt_node behaviortree_cpp_v3 nav_msgs)
+install(TARGETS rover_path_blocked_ahead_bt_node rover_copy_path_bt_node
   ARCHIVE DESTINATION lib LIBRARY DESTINATION lib RUNTIME DESTINATION bin)
 
 install(DIRECTORY config launch DESTINATION share/${PROJECT_NAME})
