@@ -28,6 +28,12 @@ if [ "$(cnt)" != "0" ]; then
   for p in $PATS; do pkill -9 -f "$p" 2>/dev/null; done; sleep 3
 fi
 echo "  정리 후: $(cnt) | /dev/shm fastrtps 잔재: $(ls /dev/shm 2>/dev/null | grep -c fastrtps)"
+# 10-14 §24: 비우기 전에 직전 기록을 보관 — 재기동이 앞 주행의 Nav2 기록(계획기·코스트맵 경고)을 지워 이상 경로 원인을 못 봤다.
+#   /tmp/logkeep/<보관시각>_{nav2,slam,sensors}.log, 최근 8 벌만 남김(nav2.log 가 주행당 수 MB 라 /tmp 를 채우지 않게). /tmp 라 재부팅하면 사라진다.
+K=/tmp/logkeep; mkdir -p $K; TS=$(date +%m%d_%H%M%S)
+for f in nav2 slam sensors; do [ -s /tmp/$f.log ] && cp /tmp/$f.log $K/${TS}_$f.log; done
+ls -1t $K/*_nav2.log 2>/dev/null | tail -n +9 | sed 's/_nav2\.log$//' | while read p; do rm -f ${p}_*.log; done
+echo "  직전 기록 보관: $K/${TS}_*.log ($(ls $K/${TS}_*.log 2>/dev/null | wc -l) 개) · 보관 벌 수 $(ls $K/*_nav2.log 2>/dev/null | wc -l)"
 : > /tmp/sensors.log; : > /tmp/slam.log; : > /tmp/nav2.log
 st "정리 끝"
 echo "########## 2. base ##########"
