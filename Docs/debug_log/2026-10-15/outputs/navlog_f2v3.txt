@@ -1,0 +1,69 @@
+      1 13:21:51.4 [bt_navigator]: Begin navigating from current location (-0.01, -0.01) to (2.25, -1.60)
+      1 13:22:43.1 [bt_navigator]: Goal succeeded
+      1 13:22:43.1 [bt_navigator]: Begin navigating from current location (2.29, -1.46) to (-1.60, -2.00)
+      1 13:23:36.1 [bt_navigator]: Goal succeeded
+      1 13:23:36.1 [bt_navigator]: Begin navigating from current location (-1.46, -2.03) to (-1.65, -3.70)
+      3 13:23:40.2 [smoother_server]: Smoothed path leads to a collision at x: -1.650000, y: -3.700000, theta: -0.785398
+      1 13:23:46.4 [smoother_server]: Smoothed path leads to a collision at x: -1.650000, y: -3.750000, theta: -0.785398
+      2 13:23:48.5 [smoother_server]: Smoothed path leads to a collision at x: -1.650000, y: -3.700000, theta: -0.785398
+      1 13:23:52.6 [smoother_server]: Smoothed path leads to a collision at x: -1.720609, y: -3.601243, theta: 2.162611
+      1 13:23:54.6 [smoother_server]: Smoothed path leads to a collision at x: -1.714285, y: -3.597929, theta: 2.091782
+      1 13:23:56.7 [smoother_server]: Smoothed path leads to a collision at x: -1.712508, y: -3.597658, theta: 2.068831
+      1 13:23:58.7 [smoother_server]: Smoothed path leads to a collision at x: -1.708032, y: -3.595364, theta: 2.022307
+      1 13:24:00.8 [smoother_server]: Smoothed path leads to a collision at x: -1.661058, y: -3.671917, theta: -1.195693
+      1 13:24:02.8 [smoother_server]: Smoothed path leads to a collision at x: -1.690000, y: -3.510000, theta: 0.000000
+      1 13:24:04.8 [smoother_server]: Smoothed path leads to a collision at x: -1.690000, y: -3.610000, theta: 0.000000
+      1 13:24:06.2 [bt_navigator]: Goal succeeded
+      1 13:24:06.2 [bt_navigator]: Begin navigating from current location (-1.67, -3.65) to (-1.60, -5.50)
+      1 13:24:06.3 [smoother_server]: Smoothed path leads to a collision at x: -1.776334, y: -4.232026, theta: 1.719655
+      1 13:24:07.2 [controller_server]: Optimizer fail to compute path
+      1 13:24:07.2 [local_costmap.local_costmap]: Received request to clear except a region the local_costmap
+      1 13:24:07.3 [controller_server]: Optimizer fail to compute path
+      1 13:24:07.4 [local_costmap.local_costmap]: Received request to clear except a region the local_costmap
+      1 13:24:07.4 [global_costmap.global_costmap]: Received request to clear except a region the global_costmap
+      1 13:24:07.8 [smoother_server]: Smoothed path leads to a collision at x: -1.640000, y: -3.660000, theta: 1.221279
+      1 13:24:07.9 [controller_server]: Optimizer fail to compute path
+      1 13:24:07.9 [local_costmap.local_costmap]: Received request to clear except a region the local_costmap
+      1 13:24:07.9 [controller_server]: Optimizer fail to compute path
+      1 13:24:08.0 [behavior_server]: Running backup
+      1 13:24:08.0 [behavior_server]: backup failed
+      1 13:24:08.0 [behavior_server]: Running wait
+      1 13:24:13.0 [behavior_server]: wait completed successfully
+      1 13:24:13.0 [smoother_server]: Smoothed path leads to a collision at x: -1.640000, y: -3.660000, theta: 1.147915
+      1 13:24:13.1 [controller_server]: Optimizer fail to compute path
+      1 13:24:13.1 [local_costmap.local_costmap]: Received request to clear except a region the local_costmap
+      1 13:24:13.1 [controller_server]: Optimizer fail to compute path
+      1 13:24:13.2 [local_costmap.local_costmap]: Received request to clear except a region the local_costmap
+      1 13:24:13.2 [global_costmap.global_costmap]: Received request to clear except a region the global_costmap
+      1 13:24:13.8 [smoother_server]: Smoothed path leads to a collision at x: -1.640000, y: -3.660000, theta: 1.147915
+      1 13:24:13.9 [controller_server]: Optimizer fail to compute path
+      1 13:24:13.9 [local_costmap.local_costmap]: Received request to clear except a region the local_costmap
+      1 13:24:14.0 [controller_server]: Optimizer fail to compute path
+      1 13:24:14.0 [behavior_server]: Running backup
+      1 13:24:14.0 [behavior_server]: backup failed
+      1 13:24:14.0 [behavior_server]: Running wait
+      1 13:24:19.0 [behavior_server]: wait completed successfully
+      1 13:24:19.0 [smoother_server]: Smoothed path leads to a collision at x: -1.640000, y: -3.660000, theta: 1.147915
+      1 13:24:19.1 [controller_server]: Optimizer fail to compute path
+      1 13:24:19.1 [local_costmap.local_costmap]: Received request to clear except a region the local_costmap
+      1 13:24:19.2 [controller_server]: Optimizer fail to compute path
+      1 13:24:19.2 [local_costmap.local_costmap]: Received request to clear except a region the local_costmap
+      1 13:24:19.2 [global_costmap.global_costmap]: Received request to clear except a region the global_costmap
+      1 13:24:19.8 [smoother_server]: Smoothed path leads to a collision at x: -1.640000, y: -3.660000, theta: 1.147915
+      1 13:24:19.9 [controller_server]: Optimizer fail to compute path
+      1 13:24:19.9 [local_costmap.local_costmap]: Received request to clear except a region the local_costmap
+      1 13:24:19.9 [controller_server]: Optimizer fail to compute path
+      1 13:24:20.0 [behavior_server]: Running backup
+      1 13:24:20.0 [behavior_server]: backup failed
+      1 13:24:20.0 [behavior_server]: Running wait
+      1 13:24:25.0 [behavior_server]: wait completed successfully
+      1 13:24:25.0 [smoother_server]: Smoothed path leads to a collision at x: -1.640000, y: -3.660000, theta: 1.147915
+      1 13:24:25.1 [controller_server]: Optimizer fail to compute path
+      1 13:24:25.1 [local_costmap.local_costmap]: Received request to clear except a region the local_costmap
+      1 13:24:25.1 [controller_server]: Optimizer fail to compute path
+      1 13:24:25.2 [bt_navigator]: Goal failed
+--- pad_relief
+13:19:45 시작 mode=shadow · 켜기 3 회/3 s · 끄기 0.15 m 또는 15 s · 분당 최대 4 회
+13:19:46 원래 패딩 0.010 확인
+13:24:08 [shadow] 패딩 0.000 로 바꿀 상황(후보 전부 충돌 3 회/3 s, 1 번째) — 값은 안 바꿈
+13:24:23 [shadow] 패딩 0.010 로 바꿀 상황(시간 한도 15 s(이동 0.00 m)) — 값은 안 바꿈
