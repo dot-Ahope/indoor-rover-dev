@@ -8,7 +8,10 @@
                             4 cm 안이면 즉시 정지(앞 절반 몸체 x > 0 점만, §27.1), 시간 한도 dist/0.05 + 5 s.
     clear                 — 로컬 코스트맵 치명 칸 ↔ 차체(패딩 포함) 최소 거리(몸체 좌표, 칸 중심)와 가장 가까운 칸 위치.
     escape                — /monotone_escape(BackUp 형식) 호출, 결과 · 걸린 시간.
-  출력은 사람이 읽는 한 줄들. 로버를 움직이는 단계: goto · creep · escape."""
+    backup                — 비교용 Nav2 기본 BackUp(/backup, 0.15 m · 0.03 m/s) 호출 — 실패 때와 같은 '0.0 s 실패'가 나는지.
+    turn stop_cm max_deg [dir] — 제자리 회전(dir −1 = 오른쪽(기본) · +1 = 왼쪽, 0.08 rad/s). 로컬 코스트맵이 올 때마다 차체(패딩 포함) ↔ 치명 칸
+                            정확 거리를 재서 stop_cm 이하면 정지, max_deg 회전하면 정지(§27.3). 라이다 앞 절반 점 4 cm 안이면 즉시 정지.
+  출력은 사람이 읽는 한 줄들. 로버를 움직이는 단계: goto · creep · turn · escape · backup."""
 import sys, time, math
 import numpy as np
 import rclpy
@@ -94,6 +97,45 @@ elif cmd == 'clear':
     ins = (bx >= -0.258) & (bx <= 0.272) & (np.abs(by) <= 0.175)
     d = np.where(ins, 0, np.hypot(np.maximum(np.maximum(-0.258 - bx, bx - 0.272), 0), np.maximum(np.abs(by) - 0.175, 0))); k = int(np.argmin(d))
     print('clear: 차체(패딩 포함) ↔ 로컬 치명 칸 중심 최소 %.1f cm · 그 칸 몸체 (%.3f, %.3f) · 5 cm 안 칸 %d' % (100 * d[k], bx[k], by[k], int((d < 0.05).sum())))
+elif cmd == 'turn':
+    stop_m = float(sys.argv[2]) / 100; maxr = math.radians(float(sys.argv[3])); dirn = float(sys.argv[4]) if len(sys.argv) > 4 else -1.0
+    pub = n.create_publisher(Twist, '/cmd_vel', 10); L = [None]; sc = [None]
+    n.create_subscription(OccupancyGrid, '/local_costmap/costmap', lambda m: L.__setitem__(0, m), QoSProfile(depth=2, reliability=ReliabilityPolicy.RELIABLE, durability=DurabilityPolicy.TRANSIENT_LOCAL))
+    n.create_subscription(LaserScan, '/scan', lambda m: sc.__setitem__(0, m), qos_profile_sensor_data); n.spin_for(1.0)
+    def yaw_now():
+        T, R = n.tf('odom', 'base_link'); return math.atan2(R[1, 0], R[0, 0])
+    def clear_now(m):
+        T, R = n.tf('base_link', m.header.frame_id); a = np.array(m.data, np.int16).reshape(m.info.height, m.info.width); iy, ix = np.nonzero(a >= 100)
+        lx = m.info.origin.position.x + (ix + 0.5) * m.info.resolution; ly = m.info.origin.position.y + (iy + 0.5) * m.info.resolution
+        bx = T[0] + R[0, 0] * lx + R[0, 1] * ly; by = T[1] + R[1, 0] * lx + R[1, 1] * ly
+        ins = (bx >= -0.258) & (bx <= 0.272) & (np.abs(by) <= 0.175)
+        d = np.where(ins, 0, np.hypot(np.maximum(np.maximum(-0.258 - bx, bx - 0.272), 0), np.maximum(np.abs(by) - 0.175, 0))); k = int(np.argmin(d)); return d[k], bx[k], by[k]
+    y0 = yaw_now(); t0 = time.time(); why = '최대 각도'; last = None; c0 = clear_now(L[0])[0]
+    while True:
+        rclpy.spin_once(n, timeout_sec=0.0); turned = abs(math.atan2(math.sin(yaw_now() - y0), math.cos(yaw_now() - y0)))
+        if turned >= maxr: break
+        if time.time() - t0 > maxr / 0.08 + 8: why = '시간 한도'; break
+        if L[0] is not None and L[0] is not last:
+            last = L[0]; c = clear_now(last)
+            if c[0] <= stop_m: why = '지도 여유 %.1f cm ≤ %.1f' % (100 * c[0], 100 * stop_m); break
+        m = sc[0]
+        if m is not None:
+            T, R = n.tf('base_link', m.header.frame_id); r = np.array(m.ranges); an = m.angle_min + np.arange(len(r)) * m.angle_increment; ok = np.isfinite(r) & (r > m.range_min) & (r < 1.5)
+            pts = np.stack([r[ok] * np.cos(an[ok]), r[ok] * np.sin(an[ok]), np.zeros(ok.sum())], 1) @ R.T + T; pts = pts[pts[:, 0] > 0.0]
+            d = np.hypot(np.maximum(np.maximum(-0.25 - pts[:, 0], pts[:, 0] - 0.25), 0), np.maximum(np.abs(pts[:, 1]) - 0.165, 0))
+            if len(d) and d.min() < 0.04: why = '라이다 4 cm 안 — 안전 정지'; break
+        t = Twist(); t.angular.z = 0.08 * dirn; pub.publish(t); time.sleep(0.05)
+    for _ in range(5): pub.publish(Twist()); time.sleep(0.05)
+    n.spin_for(1.5); c = clear_now(L[0])
+    print('turn: %s · 회전 %.1f° · %.1f s · 지도 여유 시작 %.1f → 정지 1.5 s 뒤 %.1f cm(칸 몸체 (%.3f, %.3f))' % (why, math.degrees(turned), time.time() - t0, 100 * c0, 100 * c[0], c[1], c[2]))
+elif cmd == 'backup':
+    ac = ActionClient(n, BackUp, 'backup'); ok = ac.wait_for_server(timeout_sec=10)
+    if not ok: print('backup: 서버 없음')
+    else:
+        g = BackUp.Goal(); g.target.x = -0.15; g.speed = -0.03; g.time_allowance.sec = 10
+        t0 = time.time(); f = ac.send_goal_async(g); rclpy.spin_until_future_complete(n, f); h = f.result(); r = h.get_result_async()
+        while not r.done() and time.time() - t0 < 20: rclpy.spin_once(n, timeout_sec=0.1)
+        print('backup: 상태 %s · %.1f s (4 = 성공, 6 = 실패)' % (r.result().status if r.done() else '시간초과', time.time() - t0))
 elif cmd == 'escape':
     ac = ActionClient(n, BackUp, 'monotone_escape'); ac.wait_for_server(timeout_sec=10)
     g = BackUp.Goal(); g.target.x = -0.30; g.speed = -0.03; g.time_allowance.sec = 20
