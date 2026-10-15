@@ -5,7 +5,7 @@
     gap                   — 카메라 깊이 점군(높이 0.06~0.30, 몸체 좌표 x 0.4~1.6 · y −0.6~0.05)에서 오른쪽 앞 상자의 왼쪽 옆면 y · 앞면 x 와
                             '곧게 가면 차체 오른쪽 옆면(−0.165) ↔ 상자 왼쪽 옆면' 예상 간격, 그리고 nvblox 거리 지도 ≤0 칸 수(구역 안).
     creep dist_m          — Nav2 없이 /cmd_vel 0.05 m/s 직진(10 Hz), odom 이동 dist_m 이면 정지. 안전: 라이다 점이 차체 직사각형(패딩 없는 0.25/−0.25/±0.165)에서
-                            4 cm 안이면 즉시 정지, 시간 한도 dist/0.05 + 5 s.
+                            4 cm 안이면 즉시 정지(앞 절반 몸체 x > 0 점만, §27.1), 시간 한도 dist/0.05 + 5 s.
     clear                 — 로컬 코스트맵 치명 칸 ↔ 차체(패딩 포함) 최소 거리(몸체 좌표, 칸 중심)와 가장 가까운 칸 위치.
     escape                — /monotone_escape(BackUp 형식) 호출, 결과 · 걸린 시간.
   출력은 사람이 읽는 한 줄들. 로버를 움직이는 단계: goto · creep · escape."""
@@ -78,6 +78,7 @@ elif cmd == 'creep':
         if m is not None:
             T, R = n.tf('base_link', m.header.frame_id); r = np.array(m.ranges); an = m.angle_min + np.arange(len(r)) * m.angle_increment; ok = np.isfinite(r) & (r > m.range_min) & (r < 1.5)
             pts = np.stack([r[ok] * np.cos(an[ok]), r[ok] * np.sin(an[ok]), np.zeros(ok.sum())], 1) @ R.T + T
+            pts = pts[pts[:, 0] > 0.0]  # 곧은 전진에서는 옆·뒤 점의 옆 간격이 줄지 않으므로 앞 절반(몸체 x > 0) 점만 안전 판정 — §27.1 왼쪽 뒤 옆 1~2 cm 물체
             bx, by = pts[:, 0], pts[:, 1]; d = np.hypot(np.maximum(np.maximum(-0.25 - bx, bx - 0.25), 0), np.maximum(np.abs(by) - 0.165, 0))
             if len(d): minc = min(minc, d.min())
             if len(d) and d.min() < 0.04: why = '라이다 4 cm 안 — 안전 정지'; break
