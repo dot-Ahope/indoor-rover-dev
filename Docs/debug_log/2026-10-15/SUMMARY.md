@@ -273,3 +273,15 @@
 - `jobs/anal_monotone_escape.py` → `outputs/anal_monotone_escape.txt`(시작 최근접 → 빠져나간 방향): f2v1 3.6 cm → 뒤 0.16 m 에 5.4 · f2v3 2.7 → 뒤 0.03 m 에 5.2 · f2v4 4.3 → 앞 0.30 m 에 5.3 · f2t1 3.2 → 뒤 0.02 m 에 5.1 · f2u2 4.6 → 앞 0.28 / 뒤 0.30 m 에 5.2. 앞으로는 f2v3 · f2t1 이 1 cm 만에 줄어 멈춤, f2v1 은 앞으로 3.6 cm 유지만.
 - 한계: 칸을 고정으로 둠(실제론 움직이며 새 칸이 찍힐 수 있어 매 걸음 다시 계산 필요) · 빠져나온 뒤 Nav2 가 같은 자리로 다시 들어갈 수 있음(반복 제한 필요) · 목표 5 cm 는 칸 검사 기준(4.4) 에 바짝 붙음(6 cm 안팎 검토).
 - 구현 제안(결정 대기): behavior_server 에 우리 플러그인(C++, BackUp 액션 형식 재사용 — 새 메시지 · 새 BT 노드 불필요)을 두고 BT 복구 순서의 BackUp 자리에. 앞 · 뒤 중 줄지 않으면서 여유가 느는 방향으로 1 cm 씩 ≈ 0.03 m/s, 매 걸음 정확한 거리 재계산, 최대 0.3 m, 줄면 즉시 정지. 검증 = 빌드 → 정지 시험(상자 옆에 붙여 복구만 호출) → 순회.
+
+## §26 MonotoneEscape 구현 · 배포 (사용자: "구현하자. 그리고 방향 바꾸는 명령 때문에 좁은 길에서 방향 바꾸다가 생기는 문제는 어떻게 해결할 것인가?")
+- 회전 문제에 대한 답(기록 근거): 회전 자체가 닿은 경우는 없었다. 문제는 회전을 마친 자세가 막다른 자세가 되는 것 — ① 필요 없는 회전 요구(f2v3: 중간 목표의 방향 맞추기 −45°) → **중간 목표는 위치만, 방향은 마지막 · 필요한 목표에서만**(코스 규칙, 러너 'f' 모드) ② 회전이 필요한데 여유가 없는 자세(f2v1 · f2v3 직후) → **탈출 동작에 작은 회전도 포함**(같은 '거리가 줄지 않음' 규칙, f2v3 자세는 우 15° 로 2.7 → 8.7 cm).
+- 구조 확인(`jobs/chk_nav2_behavior_src.sh`, Nav2 humble 1.1.20 헤더): behavior 는 `TimedBehavior<ActionT>` 상속(onRun · onCycleUpdate, cmd_vel 발행기 · tf · collision_checker 제공). BT `BackUp` 노드는 `server_name` 포트로 서버를 바꿀 수 있음 → 새 메시지 · 새 BT 노드 불필요.
+- 코드: `ros2_ws/src/rover_navigation/src/monotone_escape_behavior.cpp`(`rover_navigation::MonotoneEscape`, `nav2_msgs/action/BackUp` 형식) + `behavior_plugins.xml` + CMakeLists · package.xml 의존 추가.
+  - 시작 때 그 순간 `local_costmap/costmap_raw` 의 치명 칸(254) 중심으로 네 움직임(앞 · 뒤 1 cm 걸음 최대 0.30 m, 좌 · 우 1° 걸음 최대 30°)을 모의 → 거리가 한 걸음도 줄지 않은 채 목표 여유 0.05 m 에 닿는 것 중 가장 짧은(정규화) 것 선택. 실행은 0.03 m/s · 0.15 rad/s, 매 주기 코스트맵 다시 보고 거리가 3 mm 넘게 줄면 즉시 멈추고 실패. 목표 닿으면 성공 → BT 가 다시 계획. 아무 움직임도 못 닿으면 움직이지 않고 실패 → 기존처럼 Wait.
+  - 설정: `nav2_params.yaml` behavior_server 에 `monotone_escape` 추가(파라미터와 근거 주석). BT `nav_to_pose_no_spin.xml` 복구 순서의 `BackUp` → `server_name="monotone_escape"`(time_allowance 20 s, 근거 주석).
+- 배포(`jobs/chk_src_md5.sh` 로 Jetson src 가 직전 커밋 판과 같음 확인 — nvblox_local.yaml 만 주석 차, 값 같음 → `jobs/up_escape.sh` 백업 뒤 교체 · 빌드).
+  - 1 차 빌드 실패 ✘: package.xml 에 nav2_behaviors · nav2_costmap_2d 가 이미 exec_depend 로 있어 중복 → 지우고 재빌드 성공 37 s(`jobs/up_escape2.sh`).
+  - 1 차 기동 실패 ✘(PREP_FAIL): 플러그인 xml 에 `name="rover_navigation/MonotoneEscape"` 속성 누락 → behavior_server 가 클래스를 못 찾음 → 추가(`jobs/up_escape_xml.sh`) 뒤 PREP_OK.
+  - 적재 확인(`jobs/chk_escape_loaded.sh`): `Creating/Configuring/Activating monotone_escape`, 액션 서버 `/monotone_escape`, 파라미터 target_clearance 0.05, BT xml server_name 1 곳.
+- 다음: 정지 시험(로버를 상자 옆에 붙여 두고 복구만 직접 호출 — 로버가 움직임, 사용자 '시작' 필요) → 순회 주행.

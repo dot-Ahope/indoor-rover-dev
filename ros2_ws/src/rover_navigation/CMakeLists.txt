@@ -20,8 +20,20 @@ ament_target_dependencies(rover_path_blocked_ahead_bt_node rclcpp behaviortree_c
 add_library(rover_copy_path_bt_node SHARED src/copy_path_action.cpp)
 target_compile_definitions(rover_copy_path_bt_node PRIVATE BT_PLUGIN_EXPORT)
 ament_target_dependencies(rover_copy_path_bt_node behaviortree_cpp_v3 nav_msgs)
-install(TARGETS rover_path_blocked_ahead_bt_node rover_copy_path_bt_node
+# 2026-10-15 §26: behavior_server 플러그인 MonotoneEscape(여유가 줄지 않는 직진 · 회전으로 교착 탈출, BackUp 액션 형식 재사용)
+find_package(rclcpp_lifecycle REQUIRED)
+find_package(nav2_behaviors REQUIRED)
+find_package(nav2_core REQUIRED)
+find_package(nav2_msgs REQUIRED)
+find_package(nav2_costmap_2d REQUIRED)
+find_package(pluginlib REQUIRED)
+find_package(tf2 REQUIRED)
+add_library(rover_monotone_escape_behavior SHARED src/monotone_escape_behavior.cpp)
+ament_target_dependencies(rover_monotone_escape_behavior rclcpp rclcpp_lifecycle nav2_behaviors nav2_core nav2_msgs nav2_util nav2_costmap_2d pluginlib tf2 tf2_ros geometry_msgs)
+pluginlib_export_plugin_description_file(nav2_core behavior_plugins.xml)
+install(TARGETS rover_path_blocked_ahead_bt_node rover_copy_path_bt_node rover_monotone_escape_behavior
   ARCHIVE DESTINATION lib LIBRARY DESTINATION lib RUNTIME DESTINATION bin)
+install(FILES behavior_plugins.xml DESTINATION share/${PROJECT_NAME})
 
 install(DIRECTORY config launch DESTINATION share/${PROJECT_NAME})
 # 2026-09-22 N6-0: 컨테이너 nvblox 기동 래퍼(launch 의 ExecuteProcess 가 bash 로 부름)
