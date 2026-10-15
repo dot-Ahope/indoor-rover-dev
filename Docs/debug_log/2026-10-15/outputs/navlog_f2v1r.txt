@@ -1,0 +1,9 @@
+      1 10:25:19.1 [bt_navigator]: Begin navigating from current location (-1.70, -4.12) to (-1.65, -3.70)
+      1 10:25:30.9 [bt_navigator]: Goal succeeded
+      1 10:25:31.0 [bt_navigator]: Begin navigating from current location (-1.69, -3.86) to (0.00, 0.00)
+      1 10:27:43.1 [bt_navigator]: Goal succeeded
+--- pad_relief
+10:11:08 시작 mode=shadow · 켜기 3 회/3 s · 끄기 0.15 m 또는 15 s · 분당 최대 4 회
+10:11:09 원래 패딩 0.010 확인
+10:15:54 [shadow] 패딩 0.000 로 바꿀 상황(후보 전부 충돌 3 회/3 s, 1 번째) — 값은 안 바꿈
+10:16:09 [shadow] 패딩 0.010 로 바꿀 상황(시간 한도 15 s(이동 0.00 m)) — 값은 안 바꿈
