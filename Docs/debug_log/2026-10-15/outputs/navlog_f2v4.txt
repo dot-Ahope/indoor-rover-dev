@@ -1,0 +1,56 @@
+      1 13:58:58.6 [bt_navigator]: Begin navigating from current location (-0.01, 0.00) to (2.25, -1.60)
+      1 13:59:14.0 [local_costmap.local_costmap]: Received request to clear except a region the local_costmap
+      1 13:59:50.2 [bt_navigator]: Goal succeeded
+      1 13:59:50.2 [bt_navigator]: Begin navigating from current location (2.30, -1.46) to (5.50, -2.20)
+      1 14:00:39.0 [bt_navigator]: Goal succeeded
+      1 14:00:39.1 [bt_navigator]: Begin navigating from current location (5.44, -2.12) to (0.00, 0.00)
+      1 14:01:34.0 [local_costmap.local_costmap]: Received request to clear except a region the local_costmap
+      1 14:01:38.7 [smoother_server]: Smoothed path leads to a collision at x: 1.254768, y: 0.328823, theta: 3.038416
+      1 14:01:40.7 [smoother_server]: Smoothed path leads to a collision at x: 1.255769, y: 0.328148, theta: 3.035143
+      1 14:01:46.9 [smoother_server]: Smoothed path leads to a collision at x: 1.232816, y: 0.332507, theta: -0.110825
+      1 14:01:48.9 [smoother_server]: Smoothed path leads to a collision at x: 2.010000, y: -0.260000, theta: -1.427657
+      1 14:01:51.0 [smoother_server]: Smoothed path leads to a collision at x: 1.234369, y: 0.330399, theta: -0.104157
+      1 14:02:03.3 [smoother_server]: Smoothed path leads to a collision at x: 1.360000, y: 0.190000, theta: -0.085818
+      1 14:02:04.2 [controller_server]: Optimizer fail to compute path
+      1 14:02:04.2 [local_costmap.local_costmap]: Received request to clear except a region the local_costmap
+      1 14:02:04.2 [global_costmap.global_costmap]: Received request to clear except a region the global_costmap
+      1 14:02:04.4 [controller_server]: Optimizer fail to compute path
+      1 14:02:04.5 [local_costmap.local_costmap]: Received request to clear except a region the local_costmap
+      1 14:02:04.5 [controller_server]: Optimizer fail to compute path
+      1 14:02:04.5 [behavior_server]: Running backup
+      1 14:02:04.5 [behavior_server]: backup failed
+      1 14:02:04.5 [behavior_server]: Running wait
+      1 14:02:09.5 [behavior_server]: wait completed successfully
+      1 14:02:09.6 [controller_server]: Optimizer fail to compute path
+      1 14:02:09.7 [local_costmap.local_costmap]: Received request to clear except a region the local_costmap
+      1 14:02:09.7 [controller_server]: Optimizer fail to compute path
+      1 14:02:09.7 [local_costmap.local_costmap]: Received request to clear except a region the local_costmap
+      1 14:02:09.7 [global_costmap.global_costmap]: Received request to clear except a region the global_costmap
+      1 14:02:10.5 [controller_server]: Optimizer fail to compute path
+      1 14:02:10.5 [local_costmap.local_costmap]: Received request to clear except a region the local_costmap
+      1 14:02:10.5 [controller_server]: Optimizer fail to compute path
+      1 14:02:10.5 [behavior_server]: Running backup
+      1 14:02:10.5 [behavior_server]: backup failed
+      1 14:02:10.6 [behavior_server]: Running wait
+      1 14:02:15.6 [behavior_server]: wait completed successfully
+      1 14:02:15.7 [controller_server]: Optimizer fail to compute path
+      1 14:02:15.7 [local_costmap.local_costmap]: Received request to clear except a region the local_costmap
+      1 14:02:15.7 [controller_server]: Optimizer fail to compute path
+      1 14:02:15.7 [local_costmap.local_costmap]: Received request to clear except a region the local_costmap
+      1 14:02:15.7 [global_costmap.global_costmap]: Received request to clear except a region the global_costmap
+      1 14:02:16.4 [controller_server]: Optimizer fail to compute path
+      1 14:02:16.5 [local_costmap.local_costmap]: Received request to clear except a region the local_costmap
+      1 14:02:16.5 [controller_server]: Optimizer fail to compute path
+      1 14:02:16.5 [behavior_server]: Running backup
+      1 14:02:16.5 [behavior_server]: backup failed
+      1 14:02:16.6 [behavior_server]: Running wait
+      1 14:02:21.6 [behavior_server]: wait completed successfully
+      1 14:02:21.6 [controller_server]: Optimizer fail to compute path
+      1 14:02:21.7 [local_costmap.local_costmap]: Received request to clear except a region the local_costmap
+      1 14:02:21.7 [controller_server]: Optimizer fail to compute path
+      1 14:02:21.7 [bt_navigator]: Goal failed
+--- pad_relief
+13:56:56 시작 mode=shadow · 켜기 3 회/3 s · 끄기 0.15 m 또는 15 s · 분당 최대 4 회
+13:56:57 원래 패딩 0.010 확인
+14:02:04 [shadow] 패딩 0.000 로 바꿀 상황(후보 전부 충돌 3 회/3 s, 1 번째) — 값은 안 바꿈
+14:02:19 [shadow] 패딩 0.010 로 바꿀 상황(시간 한도 15 s(이동 0.00 m)) — 값은 안 바꿈
