@@ -1,0 +1,11 @@
+[B_site1.0] 31 프레임 · 로버 지도 (-0.011, 0.001, -0.1°) · 차체 앞끝 x ≈ 0.251(앞 0.262 m)
+  상자 서쪽 면 x(가장 서쪽 칸의 서쪽 가장자리): 중앙 1.138 · 최소 1.138 · 최대 1.138 · 칸 수 중앙 8
+  행 y -0.20: 그 행 서쪽 가장자리 최소 1.138 (프레임 칸 62)
+  행 y -0.15: 그 행 서쪽 가장자리 최소 1.138 (프레임 칸 62)
+  행 y -0.10: 그 행 서쪽 가장자리 최소 1.138 (프레임 칸 62)
+  행 y -0.05: 그 행 서쪽 가장자리 최소 1.138 (프레임 칸 62)
+/home/jetson/ros2_ws/src/rover_navigation/config/nvblox_local.yaml → /home/jetson/ros2_ws/src/rover_navigation/config/nvblox_local.yaml · md5 51b73276beaa · site esdf_integrator_max_site_distance_vox: 1.0
+/home/jetson/ros2_ws/install/rover_navigation/share/rover_navigation/config/nvblox_local.yaml → /home/jetson/ros2_ws/src/rover_navigation/config/nvblox_local.yaml · md5 51b73276beaa · site esdf_integrator_max_site_distance_vox: 1.0
+/tmp/nvblox_active.yaml → /tmp/nvblox_active.yaml · md5 51b73276beaa · site esdf_integrator_max_site_distance_vox: 1.0
+[INFO] [1792041041.835072413] [nvblox_node]: static_mapper.esdf_integrator_max_site_distance_vox: 1
+[INFO] [1792041041.839979495] [nvblox_node]: dynamic_mapper.esdf_integrator_max_site_distance_vox: 1
