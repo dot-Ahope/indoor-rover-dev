@@ -23,3 +23,4 @@
 | 13:33 · §18.3 | 사용자: 복귀 시작 | `run_f2c.sh f2v3r homew` · `anal_motion_probe.py`(복귀 출발) | 2/2 성공, 출발 때 최근접 17.5 cm(상자 칸 감쇠로 사라짐) | 복귀 성공 = 감쇠 ✔. 감쇠 뒤 실제 상자가 지도에 없음 ⚠ |
 | 13:4x · §19 | 사용자: 복귀 때 상자 쪽 경로 → 인식 뒤 수정? | `anal_replan_trace.py`(f2v3r) | 출발점행 경로 전부 북쪽, 시계 방향 190° 회전 중 상자 칸 2 → 12 | 경로 수정 아님 ✔, 회전 방향 때문에 상자 쪽을 향한 모습 ✔, 방향 선택 이유 ？ |
 | 14:0x · §20.1 · §21 | 기준선 f2v4 + 정리 | `run_f2c.sh f2v4 b910` → `chk_navlog_f2v4.sh` · `anal_motion_probe.py` · `anal_near_cells_src.py` · `fig_box_end_plans.py` | 목표 3 중단, 시험 상자 옆 4.3 cm(카메라만), 경로 정상. 기준선 3/6 | 세 실패 같은 기전 ✔(추정 포함). 다음 = nvblox site 1.0 · 목표 방향 고정 |
+| 14:3x · §22 | 사용자: 1 번(nvblox site 2.0→1.0) 진행 | `chk_nvyaml.sh` · `cat_nvyaml.sh`(Jetson · 저장소 비교: 주석만 다름) · `chk_box_face.py`(A · B) · `up_nvyaml.sh` | A 면 1.144 · B 1.138(차 0.6 cm), 칸 11→8 | ② ✘(과장 안 줄어듦). ① 실측 대기. 원인은 비스듬한 먼 첫 관측 쪽 ？ |
