@@ -1,0 +1,126 @@
+놓침 17:36:03 2
+놓침 17:36:09 3
+놓침 17:36:10 4
+놓침 17:36:11 4
+놓침 17:36:12 5
+놓침 17:36:13 4
+놓침 17:36:14 4
+놓침 17:36:15 4
+놓침 17:36:16 3
+놓침 17:36:17 3
+놓침 17:36:18 3
+놓침 17:36:19 4
+놓침 17:36:20 4
+놓침 17:36:21 3
+놓침 17:36:22 3
+놓침 17:36:23 3
+놓침 17:36:24 4
+놓침 17:36:25 4
+놓침 17:36:26 4
+놓침 17:36:27 4
+놓침 17:36:28 3
+놓침 17:36:29 3
+놓침 17:36:30 4
+놓침 17:36:31 3
+놓침 17:36:32 4
+놓침 17:36:33 6
+놓침 17:36:34 3
+놓침 17:36:35 1
+놓침 17:36:40 3
+놓침 17:36:41 1
+놓침 17:36:42 7
+놓침 17:36:43 7
+놓침 17:36:44 7
+놓침 17:36:45 5
+놓침 17:36:46 1
+놓침 17:36:47 7
+놓침 17:36:50 4
+놓침 17:36:52 1
+놓침 17:36:54 1
+놓침 17:36:55 6
+놓침 17:36:56 1
+놓침 17:36:57 1
+놓침 17:36:58 1
+놓침 17:37:00 4
+놓침 17:37:02 5
+놓침 17:37:03 6
+놓침 17:37:04 4
+놓침 17:37:05 4
+놓침 17:37:06 4
+놓침 17:37:07 5
+놓침 17:37:08 4
+놓침 17:37:09 5
+놓침 17:37:10 3
+놓침 17:37:11 4
+놓침 17:37:12 5
+놓침 17:37:13 2
+놓침 17:37:14 4
+놓침 17:37:15 5
+놓침 17:37:16 4
+놓침 17:37:17 3
+놓침 17:37:18 3
+놓침 17:37:19 6
+사건 17:36:00 ClearanceBandCritic 시간: 평균 9.36 ms · 최대 36.02 ms · 치명 칸 최대 15 · 평가 점 최대 4192 (100 주기)
+사건 17:36:01 Smoothed path leads to a collision at x: -1.677423, y: -3.719551, theta: 2.303953
+사건 17:36:03 Smoothed path leads to a collision at x: -1.676077, y: -3.718649, theta: 2.264617
+사건 17:36:05 ClearanceBandCritic 시간: 평균 21.37 ms · 최대 53.38 ms · 치명 칸 최대 23 · 평가 점 최대 13156 (100 주기)
+사건 17:36:05 Smoothed path leads to a collision at x: -1.722337, y: -3.607864, theta: 2.218260
+사건 17:36:07 Smoothed path leads to a collision at x: -1.720923, y: -3.607352, theta: 2.201977
+사건 17:36:09 Smoothed path leads to a collision at x: -1.731001, y: -3.609314, theta: 2.272048
+사건 17:36:10 ClearanceBandCritic 시간: 평균 18.00 ms · 최대 48.55 ms · 치명 칸 최대 53 · 평가 점 최대 11194 (100 주기)
+사건 17:36:11 Smoothed path leads to a collision at x: -1.732997, y: -3.611269, theta: -0.845241
+사건 17:36:14 Smoothed path leads to a collision at x: -1.728312, y: -3.607921, theta: -0.917734
+사건 17:36:16 Smoothed path leads to a collision at x: -1.706529, y: -3.641243, theta: 0.000000
+사건 17:36:16 Goal succeeded
+사건 17:36:16 Begin navigating from current location (-1.73, -3.58) to (-1.60, -5.50)
+사건 17:36:16 Smoothed path leads to a collision at x: -1.815045, y: -4.262174, theta: 1.686087
+사건 17:36:18 ClearanceBandCritic 시간: 평균 54.95 ms · 최대 113.73 ms · 치명 칸 최대 91 · 평가 점 최대 16000 (100 주기)
+사건 17:36:18 PathBlockedAhead: 앞 경로 (-1.70, -4.57) 비용 99 가 2.0 s 지속 → 주행 중단·재계획
+사건 17:36:18 PathBlockedAhead: 앞 경로 (-1.70, -4.57) 비용 99 가 2.0 s 지속 → 주행 중단·재계획
+사건 17:36:18 Goal was canceled. Stopping the robot.
+사건 17:36:19 Smoothed path leads to a collision at x: -1.690000, y: -3.660000, theta: 1.217131
+사건 17:36:21 PathBlockedAhead: 앞 경로 (-1.69, -4.56) 비용 99 가 2.0 s 지속 → 주행 중단·재계획
+사건 17:36:21 Goal was canceled. Stopping the robot.
+사건 17:36:21 PathBlockedAhead: 앞 경로 (-1.69, -4.56) 비용 99 가 2.0 s 지속 → 주행 중단·재계획
+사건 17:36:21 Running monotone_escape
+사건 17:36:21 Smoothed path leads to a collision at x: -1.786243, y: -4.261970, theta: 1.601314
+사건 17:36:23 Smoothed path leads to a collision at x: -1.777321, y: -4.262294, theta: 1.565391
+사건 17:36:25 Smoothed path leads to a collision at x: -1.740000, y: -4.060000, theta: 0.000000
+사건 17:36:27 Smoothed path leads to a collision at x: -1.692010, y: -4.374531, theta: 1.587834
+사건 17:36:29 ClearanceBandCritic 시간: 평균 66.91 ms · 최대 141.82 ms · 치명 칸 최대 89 · 평가 점 최대 16000 (100 주기)
+사건 17:36:29 Smoothed path leads to a collision at x: -1.690000, y: -4.360000, theta: -1.572328
+사건 17:36:31 Smoothed path leads to a collision at x: -1.640000, y: -4.510000, theta: -1.526958
+사건 17:36:33 Smoothed path leads to a collision at x: -1.590000, y: -4.610000, theta: -1.544780
+사건 17:36:35 Smoothed path leads to a collision at x: -1.540000, y: -4.710000, theta: -1.520760
+사건 17:36:36 ClearanceBandCritic 시간: 평균 42.54 ms · 최대 99.31 ms · 치명 칸 최대 83 · 평가 점 최대 16000 (100 주기)
+사건 17:36:37 Smoothed path leads to a collision at x: -1.535056, y: -5.386361, theta: -1.948657
+사건 17:36:39 Smoothed path leads to a collision at x: -1.527590, y: -5.388563, theta: 1.127351
+사건 17:36:41 ClearanceBandCritic 시간: 평균 21.39 ms · 최대 84.56 ms · 치명 칸 최대 56 · 평가 점 최대 10819 (100 주기)
+사건 17:36:41 Smoothed path leads to a collision at x: -1.526479, y: -5.388922, theta: 1.121300
+사건 17:36:43 Smoothed path leads to a collision at x: -1.524566, y: -5.388272, theta: 1.114181
+사건 17:36:45 Goal canceled
+사건 17:36:45 Begin navigating from current location (-1.54, -5.38) to (-1.65, -3.70)
+사건 17:36:45 Smoothed path leads to a collision at x: -1.676086, y: -3.767304, theta: 1.017233
+사건 17:36:47 ClearanceBandCritic 시간: 평균 37.84 ms · 최대 94.23 ms · 치명 칸 최대 48 · 평가 점 최대 16000 (100 주기)
+사건 17:36:47 Smoothed path leads to a collision at x: -1.704791, y: -3.822230, theta: 1.100512
+사건 17:36:49 Smoothed path leads to a collision at x: -1.523175, y: -4.712536, theta: -1.208463
+사건 17:36:51 Smoothed path leads to a collision at x: -1.681462, y: -3.764050, theta: -2.219089
+사건 17:36:52 ClearanceBandCritic 시간: 평균 25.03 ms · 최대 63.81 ms · 치명 칸 최대 61 · 평가 점 최대 14179 (100 주기)
+사건 17:36:53 Smoothed path leads to a collision at x: -1.716659, y: -3.815203, theta: -2.155611
+사건 17:36:55 Smoothed path leads to a collision at x: -1.640000, y: -3.710000, theta: 0.000000
+사건 17:36:57 ClearanceBandCritic 시간: 평균 26.78 ms · 최대 69.36 ms · 치명 칸 최대 69 · 평가 점 최대 11388 (100 주기)
+사건 17:36:57 Smoothed path leads to a collision at x: -1.640000, y: -3.710000, theta: 0.000000
+사건 17:36:59 Smoothed path leads to a collision at x: -1.640000, y: -3.710000, theta: 0.000000
+사건 17:37:01 Smoothed path leads to a collision at x: -1.640000, y: -3.710000, theta: 0.000000
+사건 17:37:02 ClearanceBandCritic 시간: 평균 27.68 ms · 최대 75.18 ms · 치명 칸 최대 91 · 평가 점 최대 13219 (100 주기)
+사건 17:37:03 Smoothed path leads to a collision at x: -1.640000, y: -3.710000, theta: 0.000000
+사건 17:37:06 Smoothed path leads to a collision at x: -1.640000, y: -3.710000, theta: 0.000000
+사건 17:37:08 Smoothed path leads to a collision at x: -1.640000, y: -3.710000, theta: 0.000000
+사건 17:37:10 Smoothed path leads to a collision at x: -1.640000, y: -3.710000, theta: 0.000000
+사건 17:37:12 Smoothed path leads to a collision at x: -1.640000, y: -3.710000, theta: 0.000000
+사건 17:37:12 ClearanceBandCritic 시간: 평균 66.62 ms · 최대 118.33 ms · 치명 칸 최대 107 · 평가 점 최대 16000 (100 주기)
+사건 17:37:14 Smoothed path leads to a collision at x: -1.640000, y: -3.710000, theta: 0.000000
+사건 17:37:16 Smoothed path leads to a collision at x: -1.704434, y: -3.780412, theta: 0.000000
+사건 17:37:18 Smoothed path leads to a collision at x: -1.690000, y: -3.810000, theta: 0.000000
+사건 17:37:18 Goal succeeded
+사건 17:37:18 Begin navigating from current location (-1.70, -3.82) to (-1.60, -2.10)
