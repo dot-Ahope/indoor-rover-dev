@@ -36,3 +36,4 @@
 | §29 | 99 벌점 설계 검토 → 정정, 정확 거리 크리틱 구현 · 배포 | MPPI 1.1.20 소스(`cost_critic.cpp`), `up_band_critic.sh`, `chk_band_loaded.sh` | 99 = 치명 17.5 cm 안이면 늘 나옴 · CostCritic 점수는 중심 비용만 · 빌드 19 s · 적재 OK · 놓침 0(정지) | 99 벌점 ✘ → 정확 거리 띠 6 cm · 가중 20 ？(주행 검증 대기) |
 | §29.2 | f2w1 b910 여유 · 놓침 | `anal_band_run.py` · `chk_run_nav2.sh` · `chk_missed_hist.sh` · `chk_logkeep_missed.sh` | 3/3 도착, 최소 4.8 cm(띠 밖), 놓침 167 회(크리틱 없을 때 16) · 장애물 근처에 몰림 | 띠 회피 ✔ · 5 cm 0.2 미달 ？ · 계산 부담 ✔(추정) |
 | §29.3 | 크리틱 계산 줄임 | `clearance_band_critic.cpp`(치명 칸 목록 + 통) · `up_band_critic.sh` | 빌드 18.7 s | 놓침 감소 ？(다음 주행) |
+| §29.4 | 기록 상자 vs 찍힌 상자 | `anal_box_true_vs_map.py` → `outputs/anal_box_true_vs_map.txt` · `figures/box_true_vs_map.png` | f2w1 실제 9.5 cm vs 지도 4.8 cm, 4 주행 모두 북쪽 면 5~10 cm 로버 쪽 | 사용자 관찰 '여유 많은데 더 회피' ✔ · 움직이며 찍을 때 과장 ✔(배치 오차 1~2 cm 못 가름) · 남동쪽 덩어리 ？ |
