@@ -31,9 +31,14 @@ find_package(tf2 REQUIRED)
 add_library(rover_monotone_escape_behavior SHARED src/monotone_escape_behavior.cpp)
 ament_target_dependencies(rover_monotone_escape_behavior rclcpp rclcpp_lifecycle nav2_behaviors nav2_core nav2_msgs nav2_util nav2_costmap_2d pluginlib tf2 tf2_ros geometry_msgs)
 pluginlib_export_plugin_description_file(nav2_core behavior_plugins.xml)
-install(TARGETS rover_path_blocked_ahead_bt_node rover_copy_path_bt_node rover_monotone_escape_behavior
+# 2026-10-15 §29: MPPI 크리틱 ClearanceBandCritic(차체 ↔ 치명 칸 정확 거리가 띠(6 cm) 안인 궤적 점에 벌점 — 칸 판정 경계로 붙지 않게)
+find_package(nav2_mppi_controller REQUIRED)
+add_library(rover_clearance_band_critic SHARED src/clearance_band_critic.cpp)
+ament_target_dependencies(rover_clearance_band_critic rclcpp rclcpp_lifecycle nav2_mppi_controller nav2_costmap_2d pluginlib)
+pluginlib_export_plugin_description_file(nav2_mppi_controller mppi_critic_plugins.xml)
+install(TARGETS rover_path_blocked_ahead_bt_node rover_copy_path_bt_node rover_monotone_escape_behavior rover_clearance_band_critic
   ARCHIVE DESTINATION lib LIBRARY DESTINATION lib RUNTIME DESTINATION bin)
-install(FILES behavior_plugins.xml DESTINATION share/${PROJECT_NAME})
+install(FILES behavior_plugins.xml mppi_critic_plugins.xml DESTINATION share/${PROJECT_NAME})
 
 install(DIRECTORY config launch DESTINATION share/${PROJECT_NAME})
 # 2026-09-22 N6-0: 컨테이너 nvblox 기동 래퍼(launch 의 ExecuteProcess 가 bash 로 부름)
