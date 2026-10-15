@@ -116,7 +116,11 @@
             <ClearCostmapExceptRegion name="ClearLocalCostmap-Subtree" reset_distance="2.5" service_name="local_costmap/clear_except_local_costmap"/>
             <ClearCostmapExceptRegion name="ClearGlobalCostmap-Subtree" reset_distance="3.0" service_name="global_costmap/clear_except_global_costmap"/>
           </Sequence>
-          <BackUp backup_dist="0.15" backup_speed="0.05"/>
+          <!-- ★ 2026-10-15 §26: Nav2 BackUp(0.15 m) → 우리 MonotoneEscape(behavior_server 플러그인, BackUp 액션 형식).
+               상자 옆 교착(서 있는 자세부터 '닿음')에선 Nav2 BackUp 이 첫 점부터 충돌로 0.0 s 에 실패했다(f2v1 · f2v3 · f2v4 등 5 건).
+               MonotoneEscape 는 앞 · 뒤 직진 · 좌 · 우 회전 중 '모든 치명 칸까지 정확한 거리가 줄지 않는' 움직임만 골라 여유 5 cm 까지 천천히 이동 →
+               성공하면 BT 가 경로를 다시 계획, 못 하면 움직이지 않고 실패 → 아래 Wait(기존과 같음). backup_dist/speed 는 쓰지 않음. 근거 SUMMARY §25 · §26 -->
+          <BackUp backup_dist="0.30" backup_speed="0.03" time_allowance="20.0" server_name="monotone_escape"/>
           <Wait wait_duration="5"/>
         </RoundRobin>
       </ReactiveFallback>

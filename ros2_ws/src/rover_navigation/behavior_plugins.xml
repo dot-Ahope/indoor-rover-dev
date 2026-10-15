@@ -1,0 +1,5 @@
+<library path="rover_monotone_escape_behavior">
+  <class name="rover_navigation/MonotoneEscape" type="rover_navigation::MonotoneEscape" base_class_type="nav2_core::Behavior">
+    <description>여유가 줄지 않는 직진 · 제자리 회전만으로 교착에서 빠져나오는 복구 동작(2026-10-15 §26, BackUp 액션 형식)</description>
+  </class>
+</library>
