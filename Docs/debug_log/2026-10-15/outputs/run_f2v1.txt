@@ -1,0 +1,44 @@
+/mnt/c/Users/magma/AppData/Local/Temp/claude/F--6-Indoor-Rover-Rover/21d4aa9f-8412-4905-b23d-17554af330ea/scratchpad/run_f0.sh: line 8: /mnt/c/Users/magma/AppData/Local/Temp/claude/F--6-Indoor-Rover-Rover/21d4aa9f-8412-4905-b23d-17554af330ea/scratchpad/rescued_jetson_tmp/job386_slamalive.py: No such file or directory
+/mnt/c/Users/magma/AppData/Local/Temp/claude/F--6-Indoor-Rover-Rover/21d4aa9f-8412-4905-b23d-17554af330ea/scratchpad/run_f0.sh: line 8: /mnt/c/Users/magma/AppData/Local/Temp/claude/F--6-Indoor-Rover-Rover/21d4aa9f-8412-4905-b23d-17554af330ea/scratchpad/rescued_jetson_tmp/job440_startclear.py: No such file or directory
+/mnt/c/Users/magma/AppData/Local/Temp/claude/F--6-Indoor-Rover-Rover/21d4aa9f-8412-4905-b23d-17554af330ea/scratchpad/run_f0.sh: line 8: /mnt/c/Users/magma/AppData/Local/Temp/claude/F--6-Indoor-Rover-Rover/21d4aa9f-8412-4905-b23d-17554af330ea/scratchpad/rescued_jetson_tmp/job451_paramsnap.py: No such file or directory
+/mnt/c/Users/magma/AppData/Local/Temp/claude/F--6-Indoor-Rover-Rover/21d4aa9f-8412-4905-b23d-17554af330ea/scratchpad/run_f0.sh: line 8: /mnt/c/Users/magma/AppData/Local/Temp/claude/F--6-Indoor-Rover-Rover/21d4aa9f-8412-4905-b23d-17554af330ea/scratchpad/rescued_jetson_tmp/job453_runmeta.sh: No such file or directory
+started
+########## F0 게이트 10:12:16 ##########
+  A·B 통과 (average rate: 25.006)
+  J 통과 (깊이 15.1 Hz)
+  C 통과
+  출발 자세: 라이다 점 ↔ 차체 외곽 최소 0.393 m @ 차체 (-0.19, -0.56)
+  0.393
+  G2 통과 (0.393 m)
+  P 통과 (정지 부하 49 %)
+  bag 기록 QoS 재정의: --qos-profile-overrides-path /tmp/bag_qos_f2v1.yaml
+########## F0 주행 10:13:17 — 목표 2.25,-1.6,p;-1.6,-2.0,p;-1.65,-3.7,p;-1.6,-5.5,f;-1.65,-3.7,p;-1.6,-2.1,p;5.5,-2.2,p;0,0,p ##########
+  상주 경로 조회기: 준비됨(pid 19464)
+출발 map (-0.009, -0.006, 1.1°) | 목표 8 개(지도 절대 기준, a = 직선 자동, p = 경로 끝 자동): [(2.25, -1.6, 'p'), (-1.6, -2.0, 'p'), (-1.65, -3.7, 'p'), (-1.6, -5.5, 'f'), (-1.65, -3.7, 'p'), (-1.6, -2.1, 'p'), (5.5, -2.2, 'p'), (0.0, 0.0, 'p')] → map yaw(초기) ['-35°', '-174°', '-92°', '-88°', '92°', '88°', '-1°', '158°']
+  경로 자동 yaw: 경로 150 점, 끝 0.315 m 구간 방향 -86.1° (직선 방향 -35.2°, 차 -50.9°)
+목표 1 출발: map (2.25, -1.60, -86°), 거리 2.76 m, 한도 109 s
+  목표 1 SUCCEEDED 52.8 s | 도착 map (2.280, -1.458, -89.0°) 목표 대비 0.145 m, -2.9°
+  경로 자동 yaw: 경로 158 점, 끝 0.310 m 구간 방향 178.1° (직선 방향 -174.1°, 차 -7.8°)
+목표 2 출발: map (-1.60, -2.00, 178°), 거리 3.87 m, 한도 141 s
+  목표 2 SUCCEEDED 53.5 s | 도착 map (-1.455, -2.026, 176.9°) 목표 대비 0.147 m, -1.3°
+  경로 자동 yaw: 경로 77 점, 끝 0.306 m 구간 방향 -54.5° (직선 방향 -91.7°, 차 37.2°)
+목표 3 출발: map (-1.65, -3.70, -55°), 거리 1.70 m, 한도 79 s
+  목표 3 SUCCEEDED 27.1 s | 도착 map (-1.711, -3.569, -71.9°) 목표 대비 0.144 m, -17.4°
+  경로 자동 yaw: 경로 75 점, 끝 0.315 m 구간 방향 -96.5° (직선 방향 -88.4°, 차 -8.1°)
+목표 4 출발: map (-1.60, -5.50, -96°), 거리 1.80 m, 한도 81 s
+  목표 4 ABORTED 25.8 s | 도착 map (-1.704, -4.118, -85.3°) 목표 대비 1.386 m, 11.2°
+
+결과: 1 SUCCEEDED 52.8s / 2 SUCCEEDED 53.5s / 3 SUCCEEDED 27.1s / 4 ABORTED 25.8s | 총 159.7 s
+  출발 대비 최종 map: Δ(-1.696, -4.111) m = 4.447 m, Δyaw -86.5° | 마지막 목표 대비 4.456 m
+  map→odom 누적 보정(SLAM 이 본 오도메트리 드리프트): Δ(-0.079, 0.077) m, Δyaw -3.00°
+  누적 회전: 휠 -80.8° vs EKF -83.5° (차 2.7° = 미끄러짐·스크럽 흔적) | stuck 진단 0 회
+  물리 복귀 오차는 줄자로: 출발 테이프 기준 앞·뒤·좌우 편차(마지막 목표 yaw 180° 면 **뒤끝**이 테이프 선에 와야 함)
+=== 끝 10:16:20 bag 25327282 B ===
+회수 f0_f2v1.log
+회수 f2v1.csv
+회수 tegra_f2v1.log
+회수 top_f2v1.log
+회수 rss_f2v1.txt
+회수 proc_f2v1.log
+회수 bag_f2v1.tgz
+회수 net_f2v1.log
