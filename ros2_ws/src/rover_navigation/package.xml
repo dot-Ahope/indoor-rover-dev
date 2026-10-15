@@ -23,6 +23,8 @@
   <depend>nav2_costmap_2d</depend>
   <depend>pluginlib</depend>
   <depend>tf2</depend>
+  <!-- 2026-10-15 §29: MPPI 크리틱 ClearanceBandCritic -->
+  <depend>nav2_mppi_controller</depend>
   <exec_depend>nav2_bringup</exec_depend>
   <exec_depend>nav2_controller</exec_depend>
   <exec_depend>nav2_planner</exec_depend>

@@ -251,7 +251,7 @@ controller_server:
       #   읽는데(README 'Humble only') 이 YAML 에 없어 기본 10/0.55 로 돌고 있었다(로컬 코스트맵은 2.5/0.40; job451 실행 중 값으로 확인). CostCritic 은 충돌은 같은 둘레
       #   검사, 점수는 중심 칸 비용(거리 기울기 있음). 오프라인 시뮬(job452, dy2·dy4·dy6 세 장면×seed 2): LETHAL 여유 최소 +0.5~2.4 cm, 정체 없음, 입구 진행 −0~7 %.
       #   되돌리기 = 아래 목록에서 CostCritic ↔ ObstaclesCritic 한 줄. 판정 기준은 09-18 SUMMARY §16.
-      critics: ["ConstraintCritic", "CostCritic", "GoalCritic", "GoalAngleCritic", "PathAlignCritic", "PathFollowCritic", "PathAngleCritic", "PreferForwardCritic"]
+      critics: ["ConstraintCritic", "CostCritic", "GoalCritic", "GoalAngleCritic", "PathAlignCritic", "PathFollowCritic", "PathAngleCritic", "PreferForwardCritic", "ClearanceBandCritic"]
       ConstraintCritic: {enabled: true, cost_power: 1, cost_weight: 4.0}
       # ★ 2026-09-17 mp8 (09-17 SUMMARY §7): 목표 0.24 m 옆에서 정지. 경로 크리틱이 목표 0.6/0.4 m 안에서 꺼져 GoalCritic(5) 만 남고,
       #   상자 모서리 때문에 늦게 시작한 중심선 복귀가 끊겼다. 오프라인 MPPI 시뮬(job355, 펌웨어 데드밴드 모델, bag_mp8 t=33 s 12 s):
@@ -266,6 +266,12 @@ controller_server:
       # CostCritic (09-18): 기본값 그대로(README 예시와 같음). near_goal_distance 는 0.5 유지 — README 예시 1.0 이면 상자 뒤 모서리(x 1.25~1.35, 목표에서 0.65~0.75 m)
       #   에서 선호 항이 꺼진다. critical_cost 300 = 중심이 내접(옆 여유 < 1 cm) 안에 들어가는 궤적 점 벌점. cost_weight 3.81/254 × 평균 중심 비용(0~252) → 최대 ≈3.8.
       CostCritic: {enabled: true, cost_power: 1, cost_weight: 3.81, critical_cost: 300.0, consider_footprint: true, collision_cost: 1000000.0, near_goal_distance: 0.5}
+      # ★ 2026-10-15 §29: 우리 크리틱 ClearanceBandCritic(rover_navigation 플러그인). 근거 SUMMARY §28 — 실패 3 건 모두 MPPI 가 정확 여유 2.7~4.4 cm 까지
+      #   서서히 붙은 뒤 칸 판정 위상이 바뀌어 서 있는 자세부터 충돌. CostCritic 은 풋프린트 253(치명 17.5 cm 안이면 늘 나옴)을 벌하지 않는다.
+      #   차체(패딩 포함) ↔ 치명 칸 중심 정확 거리 < band 인 점에 (band − d)/band, 점수 = weight × 합 / 점 수. band 0.06 = 뒤집힘 상한 4.4 cm + 1.6 cm.
+      #   weight 20: 띠 한가운데(3 cm)를 계속 지나는 궤적 ≈ 10 — 옆 5 cm 비키는 PathAlign 비용(14 × 0.05 ≈ 0.7)보다 훨씬 큼, 충돌(1e6)보다 훨씬 작음 → 좁은 곳은 지나감.
+      #   끄기(A/B) = enabled: false.
+      ClearanceBandCritic: {enabled: true, cost_power: 1, cost_weight: 20.0, band: 0.06, trajectory_point_step: 2}
       # offset_from_furthest 20 → 3 (09-16): 지평 0.22 m / 점간격 ~0.04 m = index 5~6 이므로 3 이면 0.1 m 만 나아가도 켜진다.
       PathAlignCritic: {enabled: true, cost_power: 1, cost_weight: 14.0, max_path_occupancy_ratio: 0.05, trajectory_point_step: 3, threshold_to_consider: 0.20, offset_from_furthest: 3}
       # ★ 2026-09-16 §1.14 (job354/355 재구성·시뮬레이션): 입구 기어감의 실체는 '당근이 짧은 추종'. offset 5 점 = 경로 점간격 0.025 m 에서

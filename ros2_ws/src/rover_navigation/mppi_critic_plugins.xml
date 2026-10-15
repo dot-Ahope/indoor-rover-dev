@@ -1,0 +1,6 @@
+<library path="rover_clearance_band_critic">
+  <!-- MPPI CriticManager 는 'mppi::critics::' + critics 목록 이름으로 찾으므로 name 을 그 형태로 둔다 -->
+  <class name="mppi::critics::ClearanceBandCritic" type="rover_navigation::ClearanceBandCritic" base_class_type="mppi::critics::CriticFunction">
+    <description>차체 ↔ 치명 칸 정확 거리가 띠(기본 6 cm) 안인 궤적 점에 벌점 — 칸 판정 경계(2.7~4.4 cm)로 붙지 않게(2026-10-15 §29)</description>
+  </class>
+</library>
