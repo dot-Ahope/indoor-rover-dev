@@ -770,11 +770,27 @@ behavior_server:
     local_footprint_topic: local_costmap/published_footprint
     global_footprint_topic: global_costmap/published_footprint
     cycle_frequency: 10.0
-    behavior_plugins: ["spin", "backup", "drive_on_heading", "wait"]
+    behavior_plugins: ["spin", "backup", "drive_on_heading", "wait", "monotone_escape"]
     spin:
       plugin: "nav2_behaviors/Spin"
     backup:
       plugin: "nav2_behaviors/BackUp"
+    # ★ 2026-10-15 §26: 교착 탈출 — 여유가 줄지 않는 직진 · 제자리 회전만(우리 플러그인, src/monotone_escape_behavior.cpp).
+    #   BT 복구 순서의 BackUp 노드가 server_name="monotone_escape" 로 이 서버를 부른다(BackUp 액션 형식, backup_dist/speed 는 안 씀).
+    #   근거: 상자 옆 '서 있는 자세부터 닿음' 교착 5 건 모두 0.02~0.30 m 직진으로 최근접 5 cm 도달(오프라인, Docs/debug_log/2026-10-15/SUMMARY.md §25.1).
+    monotone_escape:
+      plugin: "rover_navigation/MonotoneEscape"
+      max_travel: 0.30           # 직진 최대 m(오프라인 검증 범위)
+      max_rotation: 0.52         # 회전 최대 rad(약 30°)
+      target_clearance: 0.05     # 이만큼 여유가 생기면 성공 — 칸 검사 막힘 약 4.4 cm(09-23) 위
+      linear_speed: 0.03         # m/s
+      angular_speed: 0.15        # rad/s
+      decrease_tolerance: 0.003  # 실행 중 거리 감소 허용 m(코스트맵 갱신 · 자세 잡음)
+      footprint_front: 0.272     # 패딩 포함 차체(발행 풋프린트 0.53 × 0.35 와 같음)
+      footprint_rear: -0.258
+      footprint_half_width: 0.175
+      search_radius: 1.0
+      costmap_topic: "local_costmap/costmap_raw"
     drive_on_heading:
       plugin: "nav2_behaviors/DriveOnHeading"
     wait:
