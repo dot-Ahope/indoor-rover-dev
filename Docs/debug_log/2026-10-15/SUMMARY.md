@@ -1,0 +1,26 @@
+# 2026-10-15 SUMMARY
+
+## §0 시작 상태
+- 어제(10-14 §26~§27) 결정: 오늘 F2 순회 기준선 — `no5` 8 목표 2 회 + `b910`(B → W3 → 출발) 1 회, 매번 새 스택(prep), 10-14 f2u1 · f2u3(b910, 같은 구성)과 합쳐 `BASELINE_F2.md` · 태그. 판정 기준 초안은 10-14 대화에서 제시, 주행 전 이 문서에 선언.
+- 구성(고정 대상): git `75d667f7` 이후 문서 변경만. prep = `prep_patrol_pad.sh lite 15.0 shadow`(f2u1 · f2u3 과 같게 — pad_relief 는 관찰만), CopyPath, nvblox 통합 1.4 m, PreferForward 15, mppi_viz lite.
+- 사용자: "재부팅했다".
+
+## §1 재부팅 뒤 접속 확인 (주행 없음)
+- PC: Wi-Fi 172.30.1.89(ALOPS), 이더넷 192.168.1.3.
+- Jetson 172.30.1.8: ping 무응답 2 분(13 회). ALOPS ARP 표에도 .8 없음(.26 · .85 · .100 · .254 만). → Jetson 이 아직 부팅 중이거나 다른 망(WEB_DEV_5G)에 붙었을 가능성(추정). 192.168.0.101 은 10-14 에 다른 서버와 IP 충돌이 있던 주소라 신원 확인 없이 접속하지 않음.
+- 재부팅이면 Jetson `/tmp` 의 기동 스크립트(prep_fast · prep_patrol · prep_patrol_pad · pad_relief.py · chk_prep.py · job551_f0drive)가 지워졌을 수 있음 → 접속되면 확인 뒤 저장소 판으로 다시 올림.
+
+### §1.1 사용자: "Jetson 다시 켰다. 192.168.0.110 으로 접속되도록 DHCP 서버에 기록해뒀다."
+- 192.168.0.110 ping 응답(PC 는 ALOPS Wi-Fi 172.30.1.89 그대로). 접속 전 신원 확인(`jobs/chk_after_reboot.sh`): 호스트 jetson-desktop · L4T R36.5.0 · `~/ros2_ws/src/rover_navigation` 있음 · `office_v3.posegraph` 있음 · SSID WEB_DEV_5G · 부팅 09:48:52 → **이 로버의 Jetson 맞음** ✔.
+- `/tmp` 기동 스크립트 6 개 모두 없음(재부팅). 러너가 스스로 올리는 job551 외 5 개를 저장소 판으로 다시 올림: `Docs/tools/prep_fast.sh` · `prep_patrol.sh` · `chk_prep.py`, `2026-10-14/jobs/prep_patrol_pad.sh`, `ros2_ws/src/rover_bringup/scripts/pad_relief.py`(scratchpad 사본과 md5 같음).
+- 컨테이너: microros_agent 실행 중(재시작 정책), isaac_ros_dev(nvblox) 정지 — navigation.launch 가 띄움.
+- 반영: PC 러너 `run_f2c.sh` 기본 `JETSON_HOST=192.168.0.110`, CLAUDE.md 네트워크 줄, 메모리.
+- ⚠ 재부팅으로 에이전트가 새로 떴으니 보드가 옛 세션을 믿고 있을 수 있다(09-11 규칙: 에이전트 재시작 뒤엔 보드 리셋). prep 의 '세션 수립' · `/wheel_odom` 수신으로 확인하고, 없으면 사용자에게 보드 리셋 요청.
+
+## §2 F2 순회 기준선 — 선언(주행 전)
+- 코스: **`no5`** 8 목표 = B (2.25, −1.6) → C (−1.6, −2.0) → 서쪽 통로 (−1.65, −3.7) → 남서 (−1.6, −5.5, 위치만) → 서쪽 통로 → 위 복도 (−1.6, −2.1) → W3 (5.5, −2.2) → 출발 (0, 0). **`b910`** = B → W3 → 출발.
+- 횟수: `no5` 2 회(f2v1 · f2v2), `b910` 1 회(f2v3). 매 주행 전 새 스택(`prep_patrol_pad.sh lite 15.0 shadow`), 로버는 출발 테이프에 앞으로. 10-14 f2u1 · f2u3(b910, 같은 구성)은 params.txt 가 오늘 것과 같으면 합친다.
+- 구성 고정: CopyPath, pad_relief 관찰만, nvblox 통합 1.4 m, PreferForward 15, mppi_viz lite, 속도 0.07(러너), STAGE `F2-baseline`.
+- **판정(주행마다)**: ① 목표 전부 SUCCEEDED(남서는 위치만) ② 접촉 0(사용자 관찰) ③ 사람 개입 0 ④ Nav2 ABORT · nav_guard 취소 0 ⑤ 복구 동작(후진 · 대기)으로 인한 정지 ≤ 2 회 ⑥ 목표 구간마다 좌우 틀기(|ω| > 0.05 부호 바뀜) ≤ 45 /분.
+- 기록만(판정 없음): 목표별 · 전체 시간, 서쪽 통로 · 출발점 시험 상자 끝 최소 옆 여유, controller CPU · 전력, 마지막 위치 오차(줄자 값은 사용자가 주면).
+- 기준을 넘는 주행은 다시 달려 덮지 않고 그대로 기록, 기준선 포함 여부는 사용자 결정.
