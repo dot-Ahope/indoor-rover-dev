@@ -225,3 +225,11 @@
 - 배포 경로 확인(`jobs/chk_nvyaml.sh` 상당): Jetson 설치본 yaml = src 링크, 실행 중 /tmp/nvblox_active.yaml · nvblox 로그 `static_mapper.esdf_integrator_max_site_distance_vox: 2`. Jetson src 와 저장소 판 차이는 주석 4 줄뿐(값 같음).
 - 방법: 로버 출발 테이프(정면 약 1.0~1.3 m 에 시험 상자 — 라이다 아래, 카메라만). 새 스택마다 정지 20 s, `jobs/chk_box_face.py` 로 로컬 코스트맵의 상자 서쪽 면 x(가장 서쪽 치명 칸의 서쪽 가장자리)를 프레임마다. A = 2.0(지금), B = 1.0. 실제 면 = 사용자 줄자(차체 앞끝 → 상자 서쪽 면).
 - 판정(§13 에서 선언): ① B 의 면이 실제 면보다 0~5 cm 앞(실제 면 뒤로 가면 불합격) ② B 의 과장이 A 보다 3 cm 이상 줄어듦.
+
+### 22.1 A · B 측정(정지, 출발 테이프, 정면 약 0.9 m) — ② 불합격, ① 실측 대기
+- 배포(`jobs/up_nvyaml.sh`: Jetson src yaml 백업 뒤 교체, 설치본은 링크): 적용 확인 = /tmp/nvblox_active.yaml · nvblox 로그 `static_mapper.esdf_integrator_max_site_distance_vox: 1`.
+- A(2.0, `outputs/box_face_A.txt`): 상자 서쪽 면 x **1.144**(33 프레임 모두 같음), 칸 11, 행 y −0.20~0.00. 차체 앞끝 x 0.256 → 지도상 앞끝→면 0.888 m.
+- B(1.0, `outputs/box_face_B.txt`): 면 x **1.138**(31 프레임 같음), 칸 8(행 y 0.00 빠짐), 차체 앞끝 0.251 → 0.887 m.
+- 판정: 면 차 0.6 cm(칸 5 cm 보다 훨씬 작음, 두 스택의 map 자세 차 0.5 cm 수준) → **② 과장 3 cm 이상 감소 ✘**. ① 은 실제 면(사용자 줄자) 대기.
+- 읽기(추정): 정면 · 0.9 m · 계속 보이는 조건에선 site 거리가 면 위치를 바꾸지 않음. 실패 세 번의 과장 칸은 모두 멀리서 비스듬히 처음 찍힌 뒤 시야 밖(차체 옆)에 남은 칸 — 10-14 §5 '멀리서 비스듬히 처음 볼 때 한 줄 두껍게'가 원인일 가능성. 실측이 0.89 m 면 정면 관측은 정확 → 과장은 비스듬한 먼 관측 문제로 좁혀짐.
+- 상태: Jetson · 저장소 yaml 은 1.0(시험 중), Jetson 원본 백업 `nvblox_local.yaml.bak_<시각>`. 유지 · 되돌림은 실측 뒤 결정.
