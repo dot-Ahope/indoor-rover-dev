@@ -4,7 +4,8 @@
   층: ① 카메라 깊이 점군 /camera/camera/depth/color/points(원시, TSDF 전) ② nvblox 거리 지도 조각 /nvblox_node/static_map_slice(카메라 지도)
       ③ 로컬 코스트맵 /local_costmap/costmap(최종 장애물). 좌표 변환은 tf2(지도 ← 각 프레임).
   저장: /tmp/box_dump_<라벨>.npz — pts(x, y, z, 지도 · 구역 안 · 프레임 합침, 최대 20 만 점), slice(x, y, 거리), lc(x, y, 값), robot(x, y, yaw), 원점·해상도.
-  구역(지도): x 0.6~1.6, y −0.40~0.30.  인자: 라벨 [초=12]"""
+  구역(지도): x 0.6~1.6, y −0.40~0.30.  인자: 라벨 [초=12] [기준 프레임=map]
+  10-15 §24: 기준 프레임을 base_link 로 주면 모든 층을 로버 몸체 좌표(x 앞 · y 왼쪽)로 저장하고 구역은 x 0.0~2.0 · y −1.0~1.0 — 손으로 로버를 옮겨 지도 위치가 틀어져도 몸체 기준 기하는 맞음."""
 import sys, time, math, struct
 import numpy as np
 import rclpy
@@ -14,8 +15,8 @@ from nav_msgs.msg import OccupancyGrid
 from sensor_msgs.msg import PointCloud2
 from nvblox_msgs.msg import DistanceMapSlice
 import tf2_ros
-LAB = sys.argv[1]; DUR = float(sys.argv[2]) if len(sys.argv) > 2 else 12.0
-BX = (0.6, 1.6, -0.40, 0.30)
+LAB = sys.argv[1]; DUR = float(sys.argv[2]) if len(sys.argv) > 2 else 12.0; REF = sys.argv[3] if len(sys.argv) > 3 else 'map'
+BX = (0.6, 1.6, -0.40, 0.30) if REF == 'map' else (0.0, 2.0, -1.0, 1.0)
 def qmat(q):
     x, y, z, w = q.x, q.y, q.z, q.w
     return np.array([[1 - 2 * (y * y + z * z), 2 * (x * y - z * w), 2 * (x * z + y * w)], [2 * (x * y + z * w), 1 - 2 * (x * x + z * z), 2 * (y * z - x * w)], [2 * (x * z - y * w), 2 * (y * z + x * w), 1 - 2 * (x * x + y * y)]])
@@ -27,7 +28,7 @@ class N(Node):
         s.create_subscription(DistanceMapSlice, '/nvblox_node/static_map_slice', s.cb_sl, 5)
         s.create_subscription(OccupancyGrid, '/local_costmap/costmap', s.cb_lc, QoSProfile(depth=2, reliability=ReliabilityPolicy.RELIABLE, durability=DurabilityPolicy.TRANSIENT_LOCAL))
     def tf(s, frame):
-        t = s.buf.lookup_transform('map', frame, rclpy.time.Time()); tr = t.transform
+        t = s.buf.lookup_transform(REF, frame, rclpy.time.Time()); tr = t.transform
         return np.array([tr.translation.x, tr.translation.y, tr.translation.z]), qmat(tr.rotation)
     def cb_pc(s, m):
         if s.npts > 200000: return
@@ -59,7 +60,7 @@ rclpy.init(); n = N(); t0 = time.time()
 while time.time() - t0 < DUR: rclpy.spin_once(n, timeout_sec=0.2)
 T, R = n.tf('base_link'); yaw = math.atan2(R[1, 0], R[0, 0])
 P = np.concatenate(n.P) if n.P else np.zeros((0, 3))
-np.savez_compressed('/tmp/box_dump_%s.npz' % LAB, pts=P.astype(np.float32), slice=n.S, lc=n.L, robot=np.array([T[0], T[1], yaw]))
+np.savez_compressed('/tmp/box_dump_%s.npz' % LAB, pts=P.astype(np.float32), slice=n.S, lc=n.L, robot=np.array([T[0], T[1], yaw]), ref=REF)
 print('[%s] 점군 %d 점 · 조각 칸 %d(≤0: %d) · 코스트맵 칸 %d(치명 %d) · 로버 (%.3f, %.3f, %+.1f°) → /tmp/box_dump_%s.npz' % (
     LAB, len(P), 0 if n.S is None else len(n.S), 0 if n.S is None else int((n.S[:, 2] <= 0).sum()), 0 if n.L is None else len(n.L), 0 if n.L is None else int((n.L[:, 2] >= 100).sum()), T[0], T[1], math.degrees(yaw), LAB))
 n.destroy_node(); rclpy.shutdown()
