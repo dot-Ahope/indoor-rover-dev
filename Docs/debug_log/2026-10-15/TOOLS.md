@@ -37,3 +37,5 @@
 | §29.2 | f2w1 b910 여유 · 놓침 | `anal_band_run.py` · `chk_run_nav2.sh` · `chk_missed_hist.sh` · `chk_logkeep_missed.sh` | 3/3 도착, 최소 4.8 cm(띠 밖), 놓침 167 회(크리틱 없을 때 16) · 장애물 근처에 몰림 | 띠 회피 ✔ · 5 cm 0.2 미달 ？ · 계산 부담 ✔(추정) |
 | §29.3 | 크리틱 계산 줄임 | `clearance_band_critic.cpp`(치명 칸 목록 + 통) · `up_band_critic.sh` | 빌드 18.7 s | 놓침 감소 ？(다음 주행) |
 | §29.4 | 기록 상자 vs 찍힌 상자 | `anal_box_true_vs_map.py` → `outputs/anal_box_true_vs_map.txt` · `figures/box_true_vs_map.png` | f2w1 실제 9.5 cm vs 지도 4.8 cm, 4 주행 모두 북쪽 면 5~10 cm 로버 쪽 | 사용자 관찰 '여유 많은데 더 회피' ✔ · 움직이며 찍을 때 과장 ✔(배치 오차 1~2 cm 못 가름) · 남동쪽 덩어리 ？ |
+| §29.6 | f2w2 no5 · 크리틱 시간 | `run_f2c.sh` · `anal_band_run.py` · `chk_band_time.sh` · `chk_esc_context.sh` | 8/8, 서쪽 통로 최소 5.1 cm(기준선 3.2), 띠 0 프레임, 놓침 428, 크리틱 평균 최대 67 ms · 최대 162 ms(통로) | 기능 ✔ · 계산 부담 ✘ |
+| §29.7 | 사용자 자료(nvblox 번짐 대책) 검토 | §7 · §13 · §28 기록 | 처음 찍힘 1.27~1.30 m(한도 1.4) | 통합 거리 1.0 시험 추천 ？ · 팽창 하향은 해당 없음 |
