@@ -8,10 +8,13 @@
                             4 cm 안이면 즉시 정지(앞 절반 몸체 x > 0 점만, §27.1), 시간 한도 dist/0.05 + 5 s.
     clear                 — 로컬 코스트맵 치명 칸 ↔ 차체(패딩 포함) 최소 거리(몸체 좌표, 칸 중심)와 가장 가까운 칸 위치.
     escape                — /monotone_escape(BackUp 형식) 호출, 결과 · 걸린 시간.
+    navturn gx gy gyaw trig_cm stop_cm max_deg — (§27.4) Nav2 목표를 보내고, 로컬 치명 칸이 차체 옆(몸체 x −0.20~+0.25, |y| ≥ 0.17)에 오고
+                            지도 여유 ≤ trig_cm 이면(출발에서 0.5 m 이동 뒤부터) 목표 취소 · 정지 → 그 칸이 옆면 쪽으로 다가오는 방향(ω 부호 = sign(x·y))으로 0.08 rad/s 회전,
+                            지도 여유 ≤ stop_cm 또는 max_deg 에서 정지. 60 s 안에 조건이 안 오면 취소하고 끝냄.
     backup                — 비교용 Nav2 기본 BackUp(/backup, 0.15 m · 0.03 m/s) 호출 — 실패 때와 같은 '0.0 s 실패'가 나는지.
     turn stop_cm max_deg [dir] — 제자리 회전(dir −1 = 오른쪽(기본) · +1 = 왼쪽, 0.08 rad/s). 로컬 코스트맵이 올 때마다 차체(패딩 포함) ↔ 치명 칸
                             정확 거리를 재서 stop_cm 이하면 정지, max_deg 회전하면 정지(§27.3). 라이다 앞 절반 점 4 cm 안이면 즉시 정지.
-  출력은 사람이 읽는 한 줄들. 로버를 움직이는 단계: goto · creep · turn · escape · backup."""
+  출력은 사람이 읽는 한 줄들. 로버를 움직이는 단계: goto · creep · turn · navturn · escape · backup."""
 import sys, time, math
 import numpy as np
 import rclpy
@@ -128,6 +131,52 @@ elif cmd == 'turn':
     for _ in range(5): pub.publish(Twist()); time.sleep(0.05)
     n.spin_for(1.5); c = clear_now(L[0])
     print('turn: %s · 회전 %.1f° · %.1f s · 지도 여유 시작 %.1f → 정지 1.5 s 뒤 %.1f cm(칸 몸체 (%.3f, %.3f))' % (why, math.degrees(turned), time.time() - t0, 100 * c0, 100 * c[0], c[1], c[2]))
+elif cmd == 'navturn':
+    gx, gy, gyd = float(sys.argv[2]), float(sys.argv[3]), math.radians(float(sys.argv[4])); trig = float(sys.argv[5]) / 100; stop_m = float(sys.argv[6]) / 100; maxr = math.radians(float(sys.argv[7]))
+    pub = n.create_publisher(Twist, '/cmd_vel', 10); L = [None]
+    n.create_subscription(OccupancyGrid, '/local_costmap/costmap', lambda m: L.__setitem__(0, m), QoSProfile(depth=2, reliability=ReliabilityPolicy.RELIABLE, durability=DurabilityPolicy.TRANSIENT_LOCAL))
+    def nearest(m):
+        T, R = n.tf('base_link', m.header.frame_id); a = np.array(m.data, np.int16).reshape(m.info.height, m.info.width); iy, ix = np.nonzero(a >= 100)
+        lx = m.info.origin.position.x + (ix + 0.5) * m.info.resolution; ly = m.info.origin.position.y + (iy + 0.5) * m.info.resolution
+        bx = T[0] + R[0, 0] * lx + R[0, 1] * ly; by = T[1] + R[1, 0] * lx + R[1, 1] * ly
+        ins = (bx >= -0.258) & (bx <= 0.272) & (np.abs(by) <= 0.175)
+        d = np.where(ins, 0, np.hypot(np.maximum(np.maximum(-0.258 - bx, bx - 0.272), 0), np.maximum(np.abs(by) - 0.175, 0))); k = int(np.argmin(d)); return d[k], bx[k], by[k]
+    def yaw_now():
+        T, R = n.tf('odom', 'base_link'); return math.atan2(R[1, 0], R[0, 0])
+    def pose_map():
+        T, R = n.tf('map', 'base_link'); return T[0], T[1], math.degrees(math.atan2(R[1, 0], R[0, 0]))
+    ac = ActionClient(n, NavigateToPose, 'navigate_to_pose'); ac.wait_for_server(timeout_sec=10)
+    g = NavigateToPose.Goal(); g.pose.header.frame_id = 'map'; g.pose.pose.position.x = gx; g.pose.pose.position.y = gy
+    g.pose.pose.orientation.z = math.sin(gyd / 2); g.pose.pose.orientation.w = math.cos(gyd / 2)
+    P0 = n.tf('odom', 'base_link')[0]  # 출발 직후 다른 물체에 발동하지 않도록 0.5 m 이동 뒤부터 발동
+    f = ac.send_goal_async(g); rclpy.spin_until_future_complete(n, f); h = f.result(); r = h.get_result_async(); t0 = time.time(); last = None; hit = None
+    while time.time() - t0 < 60 and not r.done():
+        rclpy.spin_once(n, timeout_sec=0.02)
+        if L[0] is not None and L[0] is not last:
+            last = L[0]; c = nearest(last)
+            if np.hypot(*(n.tf('odom', 'base_link')[0][:2] - P0[:2])) >= 0.5 and c[0] <= trig and -0.20 <= c[1] <= 0.25 and abs(c[2]) >= 0.17: hit = c; break
+    if hit is None:
+        cf = h.cancel_goal_async(); rclpy.spin_until_future_complete(n, cf, timeout_sec=5)
+        px, py, pyaw = pose_map(); print('navturn: 조건 안 옴(%s) · %.1f s · 로버 지도 (%.3f, %.3f, %+.1f°) — 취소' % ('목표 끝남' if r.done() else '60 s', time.time() - t0, px, py, pyaw))
+    else:
+        cf = h.cancel_goal_async(); rclpy.spin_until_future_complete(n, cf, timeout_sec=5)
+        for _ in range(10): pub.publish(Twist()); time.sleep(0.05)
+        n.spin_for(1.5); c1 = nearest(L[0]); px, py, pyaw = pose_map()
+        print('navturn: 발동 %.1f s · 발동 때 여유 %.1f cm 칸 몸체 (%.3f, %.3f) · 정지 1.5 s 뒤 %.1f cm 칸 (%.3f, %.3f) · 로버 지도 (%.3f, %.3f, %+.1f°)'
+              % (time.time() - t0, 100 * hit[0], hit[1], hit[2], 100 * c1[0], c1[1], c1[2], px, py, pyaw))
+        sgn = 1.0 if c1[1] * c1[2] > 0 else -1.0; y0 = yaw_now(); t1 = time.time(); why = '최대 각도'; last = L[0]; turned = 0.0
+        while True:
+            rclpy.spin_once(n, timeout_sec=0.0); turned = abs(math.atan2(math.sin(yaw_now() - y0), math.cos(yaw_now() - y0)))
+            if turned >= maxr: break
+            if time.time() - t1 > maxr / 0.08 + 8: why = '시간 한도'; break
+            if L[0] is not last:
+                last = L[0]; c = nearest(last)
+                if c[0] <= stop_m: why = '지도 여유 %.1f cm ≤ %.1f' % (100 * c[0], 100 * stop_m); break
+            t = Twist(); t.angular.z = 0.08 * sgn; pub.publish(t); time.sleep(0.05)
+        for _ in range(5): pub.publish(Twist()); time.sleep(0.05)
+        n.spin_for(1.5); c2 = nearest(L[0]); px, py, pyaw = pose_map()
+        print('navturn: 회전 %s · 방향 %s · %.1f° · %.1f s · 정지 1.5 s 뒤 여유 %.1f cm 칸 (%.3f, %.3f) · 로버 지도 (%.3f, %.3f, %+.1f°)'
+              % (why, '왼쪽' if sgn > 0 else '오른쪽', math.degrees(turned), time.time() - t1, 100 * c2[0], c2[1], c2[2], px, py, pyaw))
 elif cmd == 'backup':
     ac = ActionClient(n, BackUp, 'backup'); ok = ac.wait_for_server(timeout_sec=10)
     if not ok: print('backup: 서버 없음')
