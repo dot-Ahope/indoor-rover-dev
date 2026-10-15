@@ -271,7 +271,8 @@ controller_server:
       #   차체(패딩 포함) ↔ 치명 칸 중심 정확 거리 < band 인 점에 (band − d)/band, 점수 = weight × 합 / 점 수. band 0.06 = 뒤집힘 상한 4.4 cm + 1.6 cm.
       #   weight 20: 띠 한가운데(3 cm)를 계속 지나는 궤적 ≈ 10 — 옆 5 cm 비키는 PathAlign 비용(14 × 0.05 ≈ 0.7)보다 훨씬 큼, 충돌(1e6)보다 훨씬 작음 → 좁은 곳은 지나감.
       #   끄기(A/B) = enabled: false.
-      ClearanceBandCritic: {enabled: true, cost_power: 1, cost_weight: 20.0, band: 0.06, trajectory_point_step: 2}
+      #   ★ 10-15 §30: 끔 — 통로에서 계산 최대 162 ms · 놓침 428(§29.6). 통합 거리 1.0 시험을 크리틱 없는 기준선과 같은 조건으로.
+      ClearanceBandCritic: {enabled: false, cost_power: 1, cost_weight: 20.0, band: 0.06, trajectory_point_step: 2}
       # offset_from_furthest 20 → 3 (09-16): 지평 0.22 m / 점간격 ~0.04 m = index 5~6 이므로 3 이면 0.1 m 만 나아가도 켜진다.
       PathAlignCritic: {enabled: true, cost_power: 1, cost_weight: 14.0, max_path_occupancy_ratio: 0.05, trajectory_point_step: 3, threshold_to_consider: 0.20, offset_from_furthest: 3}
       # ★ 2026-09-16 §1.14 (job354/355 재구성·시뮬레이션): 입구 기어감의 실체는 '당근이 짧은 추종'. offset 5 점 = 경로 점간격 0.025 m 에서
