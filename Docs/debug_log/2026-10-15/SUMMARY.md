@@ -285,3 +285,8 @@
   - 1 차 기동 실패 ✘(PREP_FAIL): 플러그인 xml 에 `name="rover_navigation/MonotoneEscape"` 속성 누락 → behavior_server 가 클래스를 못 찾음 → 추가(`jobs/up_escape_xml.sh`) 뒤 PREP_OK.
   - 적재 확인(`jobs/chk_escape_loaded.sh`): `Creating/Configuring/Activating monotone_escape`, 액션 서버 `/monotone_escape`, 파라미터 target_clearance 0.05, BT xml server_name 1 곳.
 - 다음: 정지 시험(로버를 상자 옆에 붙여 두고 복구만 직접 호출 — 로버가 움직임, 사용자 '시작' 필요) → 순회 주행.
+
+## §27 MonotoneEscape 실제 시험 — 선언(사용자: "평소 출발 위치로 배치시켰다. 시작하라")
+- 목적: 실제론 비어 있는데 지도상으로만 '닿음'인 교착(오늘 실패와 같은 조건)을 일부러 만들어 탈출 동작이 고르는 움직임 · 상자에 가까워지지 않는지 · 지도상 여유 5 cm 를 넘는 자리로 빠지는지 확인. 정지 상태로는 재현 불가(카메라 시야 ±43° · 깊이 최소 거리 약 0.4~0.5 m — 차체 옆 상자는 새 스택에서 한 번도 안 보임, §27 확인: 그 배치에서 거리 지도 ≤0 칸 0).
+- 순서(`jobs/run_escape_test.py`): ① goto (0.30, +0.235, 0°) — 곧게 가면 차체 오른쪽 옆면이 상자 왼쪽 옆면(y ≈ −0.01)을 실제 약 8 cm 로 지남(실제 8 cm → 지도 2~4 cm, f2v3 실측 8~9 cm 와 같은 조건) ② gap — 점군으로 예상 간격, **6~12 cm 밖이면 중단** · 거리 지도에 상자 칸 생겼는지 ③ creep — Nav2 없이 0.05 m/s 직진, 차체 중심이 상자 중심 옆에서 정지(라이다 4 cm 안이면 즉시 정지) ④ clear — 지도상 여유 ⑤ escape — 탈출 호출. 과정 bag 기록.
+- 판정: 탈출이 (a) 거리가 줄지 않는 움직임을 골라 (b) 지도상 최근접 ≥ 5 cm 에 닿고 (c) 사용자 관찰 접촉 없음 → 합격. 탈출이 '움직이지 않고 실패' 면 그 이유(모의 결과 로그)를 기록.
