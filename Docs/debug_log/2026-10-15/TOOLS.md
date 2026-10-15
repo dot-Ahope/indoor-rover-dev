@@ -6,3 +6,4 @@
 | 10:1x · §1.1 | 새 주소 192.168.0.110 접속 · 재부팅 뒤 준비 | ping · `chk_after_reboot.sh` · md5 비교 · `put_one.sh` | 신원 확인(jetson-desktop · R36.5 · ros2_ws · office_v3), /tmp 스크립트 6 개 없음 → 5 개 재전송 | 이 Jetson 맞음 ✔. 보드 세션은 prep 에서 확인 ？ |
 | 10:2x · §2 | 기준선 판정 기준 선언 | — | — | 주행 전 선언 ✔ |
 | 10:13~10:30 · §3 | 기준선 f2v1 목표 4 중단 | `run_f2c.sh f2v1 no5` → `chk_navlog_f2v1.sh` · `fig_stall_view.py`(f2v1 · f2t1) · `anal_passage_gap.py` · `anal_ahead_cells.py` | 목표 1~3 성공, 4 ABORTED(실패 → 후진 실패 → 대기 두 바퀴). 통로 여유 두 날 같음. 쓸고 갈 영역 치명 0 · 미지 0 | 불합격 ✔(선언대로). 충돌 판정 근거 ？. 어제는 pad_relief 뒤 탈출 — 기여 가능성 ？ |
+| 10:24 · §4 | 사용자: 빠져나와 출발선으로 올 수 있나 | 러너 코스 `homew` 추가 → `run_f2c.sh f2v1r homew`(G2 생략) · csv · `chk_navlog_f2v1r.sh` | 2/2 성공, 실패 0, 후진 10 cm + 통로 안 150° 회전으로 탈출 | 남쪽만 막힘 ✔(측정), 이유 ？ |
