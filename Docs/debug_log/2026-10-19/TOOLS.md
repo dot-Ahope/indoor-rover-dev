@@ -12,3 +12,8 @@
 | 11:3x · §6 | 설정 A/B 4 가지 | 같은 도구 · `chk_replay_params.sh` | 통합 1.0 · site 1.0 변화 0, 복셀 0.025 +6.7~+6.9 | 설정으로는 안 줄음 ✘ |
 | 11:4x · §7 | nvblox 깊이 전처리 | `chk_nvblox_preproc.sh` · `chk_replay_log.sh` | 켜면 abort(mask rows 0 vs 120) | 3.2.5 에선 못 씀 ✘ |
 | 11:5x · §8 | 가장자리 화소 거른 bag | `depth_edge_filter.py` | 22 % 제거, 과장 그대로 +5.3 | 깊이 잡음 가설 ✘ |
+| 13:0x · §10 | 원시 깊이 점으로 상자 면 | `anal_box_points.py` | 출발 정면 북 +1.7 · 서 +0.2 cm, 복귀 땐 남동쪽 회전 중에만 보임 · 옆 통과 땐 시야 밖 | 기록 위치 맞음 ✔ · (a) ✘ |
+| 13:1x · §11 | 기억 밀림 | `anal_box_memory.py` | 통과 순간 +2.1~+7.3 cm 로버 쪽 | (c) 유력 ✔ |
+| 13:2x · §12 | global_frame=map 재생 | `run_nvblox_replay.sh` | +7.0 cm(나빠짐) | 지도 좌표 기억 ✘ |
+| 13:3x · §13 | 회전 중 프레임 빼기 | `depth_turn_filter.py` | 27 % 제외, +5.3 · 범위 같음 | 5 cm 척도 한계 ✔ — §6 판정도 재해석 |
+| 13:4x · §14 | 연속값 분해 | `anal_box_points.py … 192.4` | 관측 남동 3~5 cm + 기억 북 +2.7~+6.1 → 순 약 +3 cm, + 칸 반올림 | (c) 주원인 ✔ · 복셀 0.025 결과 불일치 ？ |

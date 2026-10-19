@@ -35,6 +35,7 @@ for arg in sys.argv[2:]:
         for c, t, raw in rd.messages(connections=[c for c in rd.connections if c.topic == '/nvblox_node/static_map_slice']):
             m = rd.deserialize(raw, c.msgtype); st = m.header.stamp.sec + m.header.stamp.nanosec * 1e-9
             mo = at(MO, MOt, st); P = compose(mo, at(OB, OBt, st))
+            if m.header.frame_id == 'map': mo = (0.0, 0.0, 0.0)   # 10-19 §12: nvblox global_frame=map 재생 — 조각이 이미 지도 좌표
             if not (0.9 <= P[0] <= 1.7 and abs(P[1]) < 0.6): continue
             d = np.array(m.data, np.float32).reshape(m.height, m.width); iy, ix = np.nonzero((d <= 0) & (d != m.unknown_value)); r = m.resolution
             lx = m.origin.x + (ix + 0.5) * r; ly = m.origin.y + (iy + 0.5) * r
