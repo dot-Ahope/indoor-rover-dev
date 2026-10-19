@@ -20,3 +20,4 @@
 | 14:0x · §15 | 분리 노드 배포 · 빌드 | `jobs/up_splitter.sh` | 첫 빌드 설치 실패(src 에 pad_relief.py 없음) → 보충 뒤 성공 · 재생 nvblox 고아 4 개 정리 | 재생 스크립트 종료 결함 ✔ 정정 |
 | 14:1x · §15 | 분리 S1(정지, 60 fps 번갈이) | `jobs/run_split_s1.sh` · `anal_split_s1.py` | emitter_mode 1 = 실제 끔(깊이 0.32 vs 0.77, IR 점 0.6 vs 5.8) | 메타데이터 값 반대 ✔ → on_mode 0 |
 | 14:2x · §15 | S1 재시험(on_mode 0) | 같은 도구 | 오분류 0 · 깊이 29.5 Hz · IR 26.6~26.9 Hz · 분리 CPU 12 % · 카메라 38 % | 나누기 ✔ · 전달 손실 · 카메라 부하 ？ |
+| 14:3x · §16 | 번갈이 구성 정지 부하 S2 | `jobs/chk_flash_s2.sh` · `prep_flash.sh`(SENSORS_ADD) | ① CPU 45 % → ② 53 %(IR 21/30 Hz 도착) → ③ 기록 77 % · EKF 위반 +127 · IR 기록 8 Hz | 호스트 DDS 영상 전달 · 기록기가 병목 ✔ · 기록 주행 보류 |

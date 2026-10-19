@@ -176,7 +176,10 @@ public:
   EmitterSplitter()
   : rclcpp::Node("emitter_splitter")
   {
+    // 10-19 §16: 운용(camera.launch emitter_flash:=true)에선 드라이버 영상을 /camera/raw 로 옮기고 이 노드가 원래 이름(/camera/camera)으로
+    //   내보낸다 — nvblox · depth_relay · 러너 · 게이트를 바꾸지 않기 위해. 메타데이터는 드라이버 원래 이름 그대로라 meta_ns 를 따로 둔다.
     const std::string in_ns = declare_parameter("in_ns", std::string("/camera/camera"));
+    const std::string meta_ns = declare_parameter("meta_ns", in_ns);
     const std::string out_ns = declare_parameter("out_ns", std::string("/camera/split"));
     const double max_wait_s = declare_parameter("max_wait_s", 0.5);
     const bool split_points = declare_parameter("split_points", true);
@@ -186,18 +189,18 @@ public:
     const auto in_qos = rclcpp::SensorDataQoS();
     const auto out_qos = rclcpp::QoS(rclcpp::KeepLast(2)).reliable();
     depth_ = std::make_unique<SplitStream<sensor_msgs::msg::Image>>(
-      this, "깊이(켬)", in_ns + "/depth/image_rect_raw", in_ns + "/depth/metadata", out_ns + "/depth/image_rect_raw", true, on_mode,
+      this, "깊이(켬)", in_ns + "/depth/image_rect_raw", meta_ns + "/depth/metadata", out_ns + "/depth/image_rect_raw", true, on_mode,
       in_qos, out_qos, max_wait_s);
     ir1_ = std::make_unique<SplitStream<sensor_msgs::msg::Image>>(
-      this, "IR1(끔)", in_ns + "/infra1/image_rect_raw", in_ns + "/infra1/metadata", out_ns + "/infra1/image_rect_raw", false, on_mode,
+      this, "IR1(끔)", in_ns + "/infra1/image_rect_raw", meta_ns + "/infra1/metadata", out_ns + "/infra1/image_rect_raw", false, on_mode,
       in_qos, out_qos, max_wait_s);
     ir2_ = std::make_unique<SplitStream<sensor_msgs::msg::Image>>(
-      this, "IR2(끔)", in_ns + "/infra2/image_rect_raw", in_ns + "/infra2/metadata", out_ns + "/infra2/image_rect_raw", false, on_mode,
+      this, "IR2(끔)", in_ns + "/infra2/image_rect_raw", meta_ns + "/infra2/metadata", out_ns + "/infra2/image_rect_raw", false, on_mode,
       in_qos, out_qos, max_wait_s);
     if (split_points) {
       // 점군은 깊이 프레임에서 만들어지므로 깊이 메타데이터로 판정(Isaac 판과 같은 짝)
       pts_ = std::make_unique<SplitStream<sensor_msgs::msg::PointCloud2>>(
-        this, "점군(켬)", in_ns + "/depth/color/points", in_ns + "/depth/metadata", out_ns + "/depth/color/points", true, on_mode,
+        this, "점군(켬)", in_ns + "/depth/color/points", meta_ns + "/depth/metadata", out_ns + "/depth/color/points", true, on_mode,
         in_qos, out_qos, max_wait_s);
     }
     timer_ = create_wall_timer(std::chrono::seconds(10), [this]() {

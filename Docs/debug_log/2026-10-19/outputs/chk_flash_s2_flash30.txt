@@ -1,0 +1,87 @@
+  map→base: (-0.008, 0.000) yaw -1.1°
+  전역 코스트맵: 333×242 · 치명/내접 25032 칸
+  /controller_server: PreferForward=15.0 · vx_min=-0.06 · visualize=True · trajectory_step=100 · time_step=4
+  /global_costmap/global_costmap: plugins=['static_layer', 'nvblox_layer', 'obstacle_layer', 'inflation_layer'] · nav2_costmap_global_frame=map · observation_sources=scan
+  /stuck_monitor: shadow_mode=True
+PREP_OK
+  ⏱ +61 s 확인 끝
+########## 7. 로그·프로세스(DDS 조회 없음) ##########
+  설치본 PreferForward cost_weight: 15.0 · BT RateController hz="0.5" · # 자동 생성(navigation.launch.py, camera_layer=nvblox, global_camera=nvblox) — 원�
+  navmap_ensure: active (1) · no map 경고 0 · SHM 오류 0
+  EKF 위반 40회 · slam 폐기 1회 · load 6.94 5.96 4.72
+  프로세스: rplidar=1 realsense2_camera=1 sensor_conditioner=1 ekf=1 rf2o_laser_odometry=1 rf2o_gate.py=1 localization_slam=1 controller_server=1 planner_server=1 bt_navigator=1 nav_map_server=1 stuck_monitor.py=1 nav_guard.py=1 foxglove_bridge=1 job551_f0drive=0
+  nvblox(컨테이너): 1 개
+  ⏱ +62 s prep 끝 — PREP_OK
+== 카메라 · 분리
+Open profile: stream_type: Depth(0), Format: Z16, Width: 640, Height: 480, FPS: 30
+Open profile: stream_type: Infra(1), Format: Y8, Width: 640, Height: 480, FPS: 30
+Open profile: stream_type: Infra(2), Format: Y8, Width: 640, Height: 480, FPS: 30
+[INFO] [emitter_splitter_node-2]: process started with pid [816587]
+[emitter_splitter_node-2] [INFO] [1792388156.515089574] [emitter_splitter]: 10 s: 깊이(켬) 입력 89 · 켬 44 · 끔 45 · 내보냄 44 · 짝없음 0 · 교대깨짐 3 · 키없음 0 · 내보낸
+== S2 flash30 (기록 0) 14:38:00
+  전체 CPU 사용률 52.9 % (P 게이트 ≤ 60) · load 10.94 7.34 5.29 · EKF 위반 +18 · slam 폐기 +6 (약 80 s)
+  프로세스 CPU(평균, 코어 1 = 100):
+    python3              41.4
+    realsense2_came      27.5
+    lifecycle_manag      19.6
+    nvblox_node          18.7
+    rplidar_node         16.7
+    ekf_node             10.7
+    top                   9.9
+    controller_serv       9.8
+    bt_navigator          9.8
+    planner_server        8.8
+    behavior_server       8.8
+    emitter_splitte       6.9
+    sensor_conditio       6.8
+    waypoint_follow       5.9
+    velocity_smooth       5.9
+    smoother_server       4.9
+    (합 241 %)
+  흐름:
+  /odometry/filtered                     average rate: 30.091
+  /tf                                    average rate: 49.512
+  /scan                                  average rate: 10.041
+  /camera/camera/depth/image_rect_raw    average rate: 13.828
+  /camera/depth/points_filtered          average rate: 15.023
+  /nvblox_node/static_map_slice          average rate: 9.486
+  /camera/camera/infra1/image_rect_raw   average rate: 12.614
+  분리 노드: 깊이(켬) 입력 272 · 켬 131 · 끔 141 · 내보냄 131 · 짝없음 0 · 교대깨짐 16 · 키없음 0 · 내보낸 깊이 유효 0.78 | IR1(끔) 입력 210 · 켬 97 · 끔 113 · 내보냄 113 · 짝없음 1 · 교대깨짐 34 · 키없음 0 | IR2(끔) 입력 219 · 켬 93 · 끔 121 · 내보냄 121 · 짝없음 4 · 교대깨짐 37 · 키없음 0 | 점군(켬) 입력 2
+== S2 flash30rec (기록 1) 14:39:27
+  전체 CPU 사용률 77.2 % (P 게이트 ≤ 60) · load 15.81 9.49 6.22 · EKF 위반 +127 · slam 폐기 +12 (약 80 s)
+  프로세스 CPU(평균, 코어 1 = 100):
+    localization_sl      45.0
+    python3              41.4
+    ekf_node             38.2
+    ros2                 31.3
+    nvblox_node          31.1
+    realsense2_came      24.9
+    bt_navigator         21.2
+    planner_server       20.4
+    controller_serv      19.4
+    behavior_server      17.1
+    rf2o_laser_odom      14.9
+    lifecycle_manag      14.2
+    smoother_server      14.1
+    rplidar_node         11.6
+    top                   9.8
+    sensor_conditio       6.2
+    (합 391 %)
+  흐름:
+  /odometry/filtered                     average rate: 24.963
+  /tf                                    average rate: 42.147
+  /scan                                  average rate: 10.295
+  /camera/camera/depth/image_rect_raw    average rate: 12.624
+  /camera/depth/points_filtered          average rate: 13.253
+  /nvblox_node/static_map_slice          average rate: 9.393
+  /camera/camera/infra1/image_rect_raw   average rate: 7.923
+  분리 노드: 깊이(켬) 입력 274 · 켬 127 · 끔 147 · 내보냄 127 · 짝없음 0 · 교대깨짐 13 · 키없음 0 · 내보낸 깊이 유효 0.78 | IR1(끔) 입력 229 · 켬 101 · 끔 124 · 내보냄 124 · 짝없음 4 · 교대깨짐 32 · 키없음 0 | IR2(끔) 입력 233 · 켬 103 · 끔 125 · 내보냄 125 · 짝없음 5 · 교대깨짐 32 · 키없음 0 | 점군(켬) 입력
+  Bag size:          447.5 MiB
+  Duration:          84.301638775s
+  Topic information: Topic: /camera/raw/infra2/image_rect_raw | Type: sensor_msgs/msg/Image | Count: 729 | Serialization Format: cdr
+                     Topic: /camera/camera/infra2/metadata | Type: realsense2_camera_msgs/msg/Metadata | Count: 2094 | Serialization Format: cdr
+                     Topic: /camera/camera/imu | Type: sensor_msgs/msg/Imu | Count: 14138 | Serialization Format: cdr
+                     Topic: /camera/camera/depth/metadata | Type: realsense2_camera_msgs/msg/Metadata | Count: 2349 | Serialization Format: cdr
+                     Topic: /camera/camera/infra1/metadata | Type: realsense2_camera_msgs/msg/Metadata | Count: 2099 | Serialization Format: cdr
+                     Topic: /camera/camera/depth/image_rect_raw | Type: sensor_msgs/msg/Image | Count: 803 | Serialization Format: cdr
+                     Topic: /camera/raw/infra1/image_rect_raw | Type: sensor_msgs/msg/Image | Count: 650 | Serialization Format: cdr
