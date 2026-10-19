@@ -1,0 +1,2 @@
+결과: 1 SUCCEEDED 50.3s / 2 SUCCEEDED 50.5s / 3 SUCCEEDED 102.3s | 총 203.3 s
+  누적 회전: 휠 -157.1° vs EKF -175.3° (차 18.1° = 미끄러짐·스크럽 흔적) | stuck 진단 1 회

@@ -263,3 +263,12 @@
 - 주행 판정: 목표 3/3 · 중단 0 · IR 좌우 ≥ 13.5 Hz(15 의 90 %).
 - 오프라인 cuVSLAM 판정(§23 과 같은 방식, 입력 = 끈 IR 15 Hz, IMU 융합 켬 · 끔): **vo_state 가 아니라 SLAM 대비 위치로** — 위치 오차 95 % 값 ≤ 50 cm(EKF 수준)면 '따라감', 끝 오차와 95 % 값이 EKF 의 절반 이하면 'EKF 보다 낫다'. 따라가면 '끈 IR 밝기만 확보되면 쓸 수 있다' → 번갈이 + 무늬 없는 IR 조명 근거, 못 따라가면 카메라 경로 보류 · rf2o 쪽.
 - 정지 점검(prep 뒤, `jobs/chk_eoff.sh`): 프로젝터 0, 원시 IR 14.7 Hz, 깊이 15.0 Hz, 점군 15.0, 조각 9.5 Hz. 자동 노출이 **노출 64.9 ms(15 fps 최대) · 게인 169** 로 올림(번갈이 때 32 ms · 16) — 끈 IR 이 훨씬 밝게 찍힐 조건. 분리 노드 '교대깨짐 150/10 s' 는 교대가 없으니 당연(무시).
+
+### §25.1 f2z1 주행 결과 (원문 `outputs/run_f2z1.txt`)
+- 목표 3/3 SUCCEEDED(50.3 · 50.5 · 102.3 s, 총 203 s), stuck 진단 1, 누적 회전 휠 −157.1° vs EKF −175.3°(차 18°). IR bag `bag_f2z1_ir` 1.9 GB, 주행 bag 330 MB(PC 사본 scratchpad `f2z1_vis/`).
+- 오프라인 cuVSLAM 입력 bag `vslam/f2z1_split`(끈 IR 6474 장, camera_info 없음 2) 생성. cuVSLAM 실행은 배경에서 진행 중이었고, **분석 · 판정은 내일**(사용자: "그것 분석도 내일 하자.").
+
+## §26 마무리 (사용자: "우선 오늘 일 마무리하고, 아티팩트로 정리하자.")
+- 정리 페이지: https://claude.ai/artifact/6smTa3xdNEfGmomTiogZRM (사본 `figures/day_summary_1019.html`).
+- 상태: 오프라인 cuVSLAM 작업이 실시간 스택을 내렸으므로 **다음 주행 전 prep 필요**(지금 구성 = `prep_patrol.sh lite`, 번갈이 끔). 코드 기본값은 모두 지금 구성(emitter_flash · emitter_off 기본 false).
+- 내일: f2z1 cuVSLAM 판정(§25 기준) → IR 조명 또는 rf2o, 큰 bag 정리(§18.1 순서), push 는 지시 때.
