@@ -1,0 +1,12 @@
+== 스택 내림: 남은 0 · base active
+== 카메라: Open profile: stream_type: Depth(0), Format: Z16, Width: 640, Height: 480, FPS: 30;Open profile: stream_type: Infra(1), Format: Y8, Width: 640, Height: 480, FPS: 30;Open profile: stream_type: Infra(2), Format: Y8, Width: 640, Height: 480, FPS: 30;
+설정        실제 노출·게인       끈 IR 밝기 · FAST 중앙        (5~95 %)                       켠 깊이 유효
+auto      31979·16       밝기  17.7 · FAST     0       (   0~   4, 끈 20 장)        0.777 (20 장)  설정 결과 [True]
+e16 g16   33000·16       밝기  28.4 · FAST  2475       (2460~2484, 끈 15 장)        0.777 (15 장)  설정 결과 [True, False, False]
+e30 g16   33000·16       밝기  28.4 · FAST  2470       (2467~2480, 끈 14 장)        0.776 (14 장)  설정 결과 [True, False, False]
+e30 g64   33000·16       밝기  28.4 · FAST  2474       (2459~2483, 끈 15 장)        0.779 (14 장)  설정 결과 [True, False, False]
+e30 g128  33000·16       밝기  28.4 · FAST  2474       (2464~2489, 끈 14 장)        0.777 (14 장)  설정 결과 [True, False, False]
+e30 g248  33000·16       밝기  28.4 · FAST  2472       (2466~2483, 끈 15 장)        0.777 (14 장)  설정 결과 [True, False, False]
+e16 g248  33000·16       밝기  28.4 · FAST  2474       (2459~2478, 끈 14 장)        0.775 (14 장)  설정 결과 [True, False, False]
+== 끝(스택은 prep 으로 복귀)
+  ⏱ +56 s prep 끝 — PREP_OK
