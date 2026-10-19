@@ -28,3 +28,4 @@
 | 16:4x · §23 | 오프라인 cuVSLAM 켬/끔 × IMU | `mk_vslam_bag.py` · `run_vslam_offline.sh` · `anal_vslam_cmp.py` | 4 변형 모두 오차 1.4~11 m(EKF 0.4 m), vo_state 100 % 인데도 | 켬 = 0 에 붙잡힘 · 끔 = 못 봄 ✔ — 이 조명에선 못 씀 |
 | 17:3x · §24 | IR 노출 · 게인(번갈이) | `run_ir_exposure.sh` · `chk_ir_exposure.py` · `chk_ir_exposure_diag.sh` | 수동 설정 드라이버 거부(errno 84), 자동 노출 끄면 두 프레임 모두 점 무늬 | 번갈이 중 노출 고정 불가 ✔ |
 | 17:5x · §24.2 | IR 게인(프로젝터 상시 끔) | `chk_ir_gain_off.sh` | 게인 설정 됨, 밝기 44~45, 4 배 밝게 보면 장면 또렷 | FAST 절대 문턱이 과소 계산 — §20 '특징 없음' 과장 정정 |
+| 18:1x · §25 | 프로젝터 끔 주행 f2z1 · cuVSLAM 입력 | `run_vso.sh`(VNAME=f2z1 VMODE=all_off) · `get_f2z1.sh` | 3/3, 휠−EKF 18°, 입력 6474 장 | 판정 내일 ？ |
