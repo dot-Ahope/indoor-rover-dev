@@ -5,7 +5,9 @@
 #   실행: 컨테이너(isaac_ros_dev-aarch64-container) 안 nvblox_node, 호스트 층 nvblox_nav2(round→floor 포크 수정) — Docs/05_nvblox/PHASE_N_RESULTS.md
 #   ⚠ 아직 bringup(launch)에 통합되지 않음: nav2_params.yaml 의 로컬 plugins 기본값은 STVL 로 두고, 모드 N 은 job488/job508 로 전환한다(N6-0 에서 통합).
 # nvblox N0 정지 측정용 파라미터 (2026-09-21). 기준: isaac_ros_nvblox release-3.2 nvblox_base.yaml + nvblox_realsense.yaml 을 우리 로버에 맞게.
-#  - 입력: 호스트 realsense-ros 4.58.3 의 /camera/camera/depth/image_rect_raw + depth/camera_info (640x480x15, dec 4 는 점군에만 적용 — 깊이 이미지는 원해상도)
+#  - 입력: 호스트 realsense-ros 4.58.3 의 /camera/camera/depth/image_rect_raw + depth/camera_info
+#    ⚠ 2026-10-19 정정(실측): decimation ×4 가 깊이 이미지에도 적용돼 nvblox 입력은 **160×120** @15 Hz(camera_info 160×120, 0.58 MB/s).
+#      예전 주석 "dec 4 는 점군에만 적용 — 깊이 이미지는 원해상도(640x480)" 는 틀림. 근거 Docs/debug_log/2026-10-19/SUMMARY.md §1
 #  - 색·라이다 통합 없음(깊이만). 지도 프레임 odom(계획서 §3: slam_toolbox map->odom 점프가 TSDF 를 번지게 하므로 로컬 지도), base_link 반경 3 m 밖 소거
 #  - ESDF 2D 슬라이스 높이: odom z 는 base_link 원점(바닥 +0.026) 기준 → 바닥(z −0.026) 제외하려고 최소 0.03, 최대 0.30(상자 0.114·다리; STVL 의 관심 높이와 맞춤)
 #  - 통합 거리 2.0 m(obstacle_range 1.2 보다 여유), 통계 출력 켬(N0 (iii) 통합 주기·지연 측정)
