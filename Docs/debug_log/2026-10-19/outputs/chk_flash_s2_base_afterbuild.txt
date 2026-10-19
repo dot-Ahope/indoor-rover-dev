@@ -1,0 +1,28 @@
+== S2 base (기록 0) 14:33:52
+  전체 CPU 사용률 44.0 % (P 게이트 ≤ 60) · load 10.38 5.54 4.38 · EKF 위반 +18 · slam 폐기 +4 (약 80 s)
+  프로세스 CPU(평균, 코어 1 = 100):
+    python3              50.6
+    lifecycle_manag      18.8
+    rplidar_node         16.9
+    nvblox_node          16.8
+    realsense2_came      15.7
+    ekf_node             12.9
+    controller_serv      11.9
+    planner_server       10.9
+    bt_navigator          9.9
+    behavior_server       7.9
+    waypoint_follow       7.0
+    top                   6.9
+    velocity_smooth       5.0
+    map_server            5.0
+    sensor_conditio       4.0
+    micro_ros_agent       4.0
+    (합 227 %)
+  흐름:
+  /odometry/filtered                     average rate: 30.016
+  /tf                                    average rate: 48.935
+  /scan                                  average rate: 9.988
+  /camera/camera/depth/image_rect_raw    average rate: 15.238
+  /camera/depth/points_filtered          average rate: 14.998
+  /nvblox_node/static_map_slice          average rate: 9.529
+  /camera/camera/infra1/image_rect_raw   

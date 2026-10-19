@@ -3,29 +3,42 @@
 # - 4.55+ 파라미터명(depth_module.depth_profile 등) 사용. 구명칭은 조용히 무시됨 (이전 프로젝트 C16)
 # - unite_imu_method 1(copy): 자이로 원신호 유지. EKF는 자이로 z만 사용 (사용 근거: JETSON_SETUP_BRIEF §4-2)
 # - enable_imu:=false 로 IMU 없이 기동 가능 (커널 HID 모듈 미준비 시)
+# - (2026-10-19 §16) emitter_flash:=true — 프로젝터 프레임마다 켬/끔(cuVSLAM 용 점 무늬 없는 IR + nvblox 용 켬 깊이, 09-29 §10 O1).
+#   깊이 · IR 640×480×stereo_fps(기본 30 → 켬 15 · 끔 15 = 지금 깊이 주기와 같음), 드라이버 영상은 /camera/raw/... 로 옮기고
+#   emitter_splitter_node 가 켬 깊이 · 점군과 끔 IR 을 원래 이름(/camera/camera/...)으로 내보낸다 → nvblox · depth_relay · 러너는 그대로.
+#   기본 false = 지금까지와 같은 구성. 근거·시험 Docs/debug_log/2026-10-19/SUMMARY.md §15~
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument
+from launch.actions import DeclareLaunchArgument, OpaqueFunction
 from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
 
+RAW = '/camera/raw'
 
-def generate_launch_description():
+
+def _camera(context):
     enable_imu = LaunchConfiguration('enable_imu')
     enable_depth = LaunchConfiguration('enable_depth')
     enable_color = LaunchConfiguration('enable_color')
-    return LaunchDescription([
-        DeclareLaunchArgument('enable_imu', default_value='true'),
-        DeclareLaunchArgument('enable_depth', default_value='true'),
-        DeclareLaunchArgument('enable_color', default_value='true'),
+    flash = LaunchConfiguration('emitter_flash').perform(context).lower() in ('1', 'true', 'on')
+    fps = int(LaunchConfiguration('stereo_fps').perform(context))
+    stereo = {'enable_infra1': False, 'enable_infra2': False,
+              'depth_module.depth_profile': '640x480x15'}   # 2026-09-08 30→15fps (포인트클라우드 CPU)
+    remaps = []
+    if flash:
+        prof = '640x480x%d' % fps
+        stereo = {'enable_infra1': True, 'enable_infra2': True, 'depth_module.depth_profile': prof, 'depth_module.infra_profile': prof,
+                  'depth_module.emitter_enabled': 1, 'depth_module.emitter_on_off': True}
+        # 영상 · 점군만 옮긴다(camera_info · metadata 는 원래 이름 — 소비자는 stamp 로 짝을 맞추고, 분리 노드는 원래 metadata 를 본다)
+        remaps = [('/camera/camera/%s' % t, '%s/%s' % (RAW, t)) for t in
+                  ('depth/image_rect_raw', 'infra1/image_rect_raw', 'infra2/image_rect_raw', 'depth/color/points')]
+    nodes = [
         Node(
             package='realsense2_camera', executable='realsense2_camera_node',
-            name='camera', namespace='camera', output='screen',
+            name='camera', namespace='camera', output='screen', remappings=remaps,
             parameters=[{
                 'enable_depth': enable_depth,
                 'enable_color': enable_color,
-                'enable_infra1': False,
-                'enable_infra2': False,
-                'depth_module.depth_profile': '640x480x15',   # 2026-09-08 30→15fps (포인트클라우드 CPU)
+                **stereo,
                 'rgb_camera.color_profile': '640x480x15',
                 'align_depth.enable': False,
                 # 2026-09-08 N1.5: 포인트클라우드 ON + 데시메이션 ×4 (640×480 → 160×120 = 19.2k pt/frame @15fps)
@@ -58,6 +71,21 @@ def generate_launch_description():
                 'publish_tf': True,
             }],
         ),
+    ]
+    if flash:
+        nodes.append(Node(package='rover_bringup', executable='emitter_splitter_node', name='emitter_splitter', output='screen',
+                          parameters=[{'in_ns': RAW, 'meta_ns': '/camera/camera', 'out_ns': '/camera/camera'}]))
+    return nodes
+
+
+def generate_launch_description():
+    return LaunchDescription([
+        DeclareLaunchArgument('enable_imu', default_value='true'),
+        DeclareLaunchArgument('enable_depth', default_value='true'),
+        DeclareLaunchArgument('enable_color', default_value='true'),
+        DeclareLaunchArgument('emitter_flash', default_value='false'),
+        DeclareLaunchArgument('stereo_fps', default_value='30'),
+        OpaqueFunction(function=_camera),
         # (2026-09-08 오전) depthimage_to_laserscan 수평 띠 방식은 철회: 10cm 상자가 0.66m 이내로 오면 띠(높이 0.12~0.16m@0.3m)
         #   아래로 내려가 마킹이 끊기고, 2D 소거 광선이 상자 셀을 지움. → 포인트클라우드 + VoxelLayer(3D 소거)로 대체.
         # (2026-09-14) 깊이 점군 릴레이: 카메라 0.45 m 안 점(근거리 아티팩트 0.36~0.38 m, 정지 30 s 에 17 % 프레임)과
