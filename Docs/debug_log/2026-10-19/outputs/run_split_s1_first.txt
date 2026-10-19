@@ -1,0 +1,36 @@
+== 정리 뒤 남은 스택 프로세스: 0 | base: active
+== 카메라: Open profile: stream_type: Accel(0)Format: MOTION_XYZ32F, FPS: 100;Open profile: stream_type: Color(0), Format: RGB8, Width: 640, Height: 480, FPS: 15;Open profile: stream_type: Depth(0), Format: Z16, Width: 640, Height: 480, FPS: 60;Open profile: stream_type: Gyro(0)Format: MOTION_XYZ32F, FPS: 200;Open profile: stream_type: Infra(1), Format: Y8, Width: 640, Height: 480, FPS: 60;Open profile: stre
+  emitter_on_off: Boolean value is: True
+== CPU(top 5 회 평균, 코어 1 = 100) — 측정 스크립트 시작 전
+  emitter_splitte        11.0 %
+  realsense2_came        34.3 %
+측정 20.0 s
+  해상도 raw depth      (160, 120, '16UC1')
+  해상도 raw infra1     (640, 480, 'mono8')
+  해상도 split depth    (160, 120, '16UC1')
+  해상도 split points   (6335, 1, 'pc2')
+  해상도 split infra1   (640, 480, 'mono8')
+  해상도 split infra2   (640, 480, 'mono8')
+  주기 split depth    29.7 Hz (595)
+  주기 split infra1   26.5 Hz (531)
+  주기 split infra2   26.0 Hz (520)
+  주기 split points   29.6 Hz (593)
+  주기 raw depth      59.7 Hz
+  주기 raw infra1     55.5 Hz
+  도착 지연 raw depth      중앙  52.9 ms · 95 %  64.6 ms
+  도착 지연 raw infra1     중앙  54.3 ms · 95 %  67.5 ms
+  도착 지연 split depth    중앙  56.2 ms · 95 %  69.1 ms
+  도착 지연 split infra1   중앙  58.1 ms · 95 %  79.9 ms
+  도착 지연 split infra2   중앙  57.0 ms · 95 %  72.1 ms
+  도착 지연 split points   중앙  62.2 ms · 95 %  71.8 ms
+  원시 깊이 유효 비율: 켬 중앙 0.318 (n 596, 0.285~0.363) · 끔 중앙 0.768 (n 598, 0.758~0.780) · 메타 없음 0 · 비 2.41
+  분리 깊이 유효 비율: n 595, 중앙 0.318, 범위 0.285~0.363, 가운데(0.543) 아래 쪽 프레임 595
+  원시 IR1 |라플라시안|: 켬 중앙 0.616 (n 579, 0.601~0.654) · 끔 중앙 5.780 (n 529, 5.768~5.815) · 메타 없음 3 · 비 9.39
+  분리 IR1 |라플라시안|: n 531, 중앙 5.780, 범위 5.768~5.815, 가운데(3.198) 위 쪽 프레임 531
+== 분리 노드 통계(10 s 창)
+깊이(켬) 입력 592 · 켬 297 · 끔 295 · 내보냄 297 · 짝없음 0 · 교대깨짐 5 · 키없음 0 | IR1(끔) 입력 574 · 켬 290 · 끔 282 · 내보냄 282 · 짝없음 2 · 교대깨짐 17 · 키없음 0 | IR2(끔) 입력 587 · 켬 295 · 끔 286 · 내보냄 286 · 짝없음 6 · 교대깨짐 12 · 키없음 0 | 점군(켬) 입력 595 · 켬 297 · 끔 295 · 내보냄 297 · 짝없음 3 · 교대깨짐 5 · 키없음 0
+깊이(켬) 입력 591 · 켬 299 · 끔 292 · 내보냄 299 · 짝없음 0 · 교대깨짐 4 · 키없음 0 | IR1(끔) 입력 576 · 켬 291 · 끔 281 · 내보냄 281 · 짝없음 3 · 교대깨짐 10 · 키없음 0 | IR2(끔) 입력 574 · 켬 287 · 끔 287 · 내보냄 287 · 짝없음 0 · 교대깨짐 9 · 키없음 0 | 점군(켬) 입력 596 · 켬 299 · 끔 295 · 내보냄 299 · 짝없음 2 · 교대깨짐 4 · 키없음 0
+깊이(켬) 입력 599 · 켬 299 · 끔 300 · 내보냄 299 · 짝없음 0 · 교대깨짐 0 · 키없음 0 | IR1(끔) 입력 579 · 켬 291 · 끔 283 · 내보냄 283 · 짝없음 6 · 교대깨짐 13 · 키없음 0 | IR2(끔) 입력 581 · 켬 284 · 끔 295 · 내보냄 295 · 짝없음 2 · 교대깨짐 8 · 키없음 0 | 점군(켬) 입력 599 · 켬 299 · 끔 300 · 내보냄 299 · 짝없음 0 · 교대깨짐 0 · 키없음 0
+깊이(켬) 입력 597 · 켬 299 · 끔 298 · 내보냄 299 · 짝없음 0 · 교대깨짐 0 · 키없음 0 | IR1(끔) 입력 585 · 켬 296 · 끔 288 · 내보냄 288 · 짝없음 1 · 교대깨짐 8 · 키없음 0 | IR2(끔) 입력 585 · 켬 289 · 끔 295 · 내보냄 295 · 짝없음 1 · 교대깨짐 8 · 키없음 0 | 점군(켬) 입력 598 · 켬 299 · 끔 298 · 내보냄 299 · 짝없음 1 · 교대깨짐 0 · 키없음 0
+/tmp/run_split_s1.sh: line 31: 740918 Killed                  setsid nohup ros2 run realsense2_camera realsense2_camera_node --ros-args -r __node:=camera -r __ns:=/camera -p enable_depth:=true -p enable_color:=true -p enable_infra1:=true -p enable_infra2:=true -p depth_module.depth_profile:=640x480x60 -p depth_module.infra_profile:=640x480x60 -p rgb_camera.color_profile:=640x480x15 -p depth_module.emitter_enabled:=1 -p depth_module.emitter_on_off:=true -p align_depth.enable:=false -p pointcloud.enable:=true -p pointcloud__neon_.enable:=true -p pointcloud__neon_.allow_no_texture_points:=true -p decimation_filter.enable:=true -p decimation_filter.filter_magnitude:=4 -p enable_gyro:=true -p enable_accel:=true -p gyro_fps:=200 -p accel_fps:=100 -p unite_imu_method:=1 -p initial_reset:=true -p publish_tf:=true > /tmp/split_cam.log 2>&1 < /dev/null
+== 끝: 카메라 0 · 분리 0 (스택은 prep 으로 복귀 필요)

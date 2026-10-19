@@ -17,3 +17,6 @@
 | 13:2x · §12 | global_frame=map 재생 | `run_nvblox_replay.sh` | +7.0 cm(나빠짐) | 지도 좌표 기억 ✘ |
 | 13:3x · §13 | 회전 중 프레임 빼기 | `depth_turn_filter.py` | 27 % 제외, +5.3 · 범위 같음 | 5 cm 척도 한계 ✔ — §6 판정도 재해석 |
 | 13:4x · §14 | 연속값 분해 | `anal_box_points.py … 192.4` | 관측 남동 3~5 cm + 기억 북 +2.7~+6.1 → 순 약 +3 cm, + 칸 반올림 | (c) 주원인 ✔ · 복셀 0.025 결과 불일치 ？ |
+| 14:0x · §15 | 분리 노드 배포 · 빌드 | `jobs/up_splitter.sh` | 첫 빌드 설치 실패(src 에 pad_relief.py 없음) → 보충 뒤 성공 · 재생 nvblox 고아 4 개 정리 | 재생 스크립트 종료 결함 ✔ 정정 |
+| 14:1x · §15 | 분리 S1(정지, 60 fps 번갈이) | `jobs/run_split_s1.sh` · `anal_split_s1.py` | emitter_mode 1 = 실제 끔(깊이 0.32 vs 0.77, IR 점 0.6 vs 5.8) | 메타데이터 값 반대 ✔ → on_mode 0 |
+| 14:2x · §15 | S1 재시험(on_mode 0) | 같은 도구 | 오분류 0 · 깊이 29.5 Hz · IR 26.6~26.9 Hz · 분리 CPU 12 % · 카메라 38 % | 나누기 ✔ · 전달 손실 · 카메라 부하 ？ |
