@@ -6,6 +6,8 @@ find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(sensor_msgs REQUIRED)
 find_package(nav_msgs REQUIRED)
+# 2026-10-19 §15: 프로젝터 번갈이 분리 노드(메타데이터 메시지)
+find_package(realsense2_camera_msgs REQUIRED)
 
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   add_compile_options(-Wall -Wextra -Wpedantic)
@@ -16,6 +18,11 @@ target_include_directories(sensor_conditioner_node PUBLIC $<BUILD_INTERFACE:${CM
 target_compile_features(sensor_conditioner_node PUBLIC cxx_std_17)
 ament_target_dependencies(sensor_conditioner_node rclcpp sensor_msgs nav_msgs)
 install(TARGETS sensor_conditioner_node DESTINATION lib/${PROJECT_NAME})
+
+add_executable(emitter_splitter_node src/emitter_splitter.cpp)
+target_compile_features(emitter_splitter_node PUBLIC cxx_std_17)
+ament_target_dependencies(emitter_splitter_node rclcpp sensor_msgs realsense2_camera_msgs)
+install(TARGETS emitter_splitter_node DESTINATION lib/${PROJECT_NAME})
 
 if(BUILD_TESTING)
   find_package(ament_cmake_gtest REQUIRED)

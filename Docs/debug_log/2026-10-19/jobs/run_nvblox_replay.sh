@@ -24,7 +24,8 @@ RECP=$!; sleep 3
 T0=$(date +%s); # 10-19 §6: 입력 토픽만 재생 — 주행 bag 에 든 실시간 조각까지 내보내면 출력 기록에 섞인다(첫 R0 에서 조각 수 2 배)
 ros2 bag play "$IN" --clock 100 --topics /camera/camera/depth/image_rect_raw /camera/camera/depth/camera_info /tf /tf_static > /tmp/replay_play_$TAG.log 2>&1; echo "재생 끝 $(( $(date +%s) - T0 )) s"
 sleep 3; kill -INT $RECP; sleep 3
-docker exec "$CN" kill -INT "$RP" 2>/dev/null; sleep 2; docker exec "$CN" kill -9 "$RP" 2>/dev/null
+# 10-19 §15 정정: $RP 는 ros2 run 래퍼라 그것만 죽이면 nvblox_node 가 고아로 남았다(4 개 발견) → 패턴으로 모두
+docker exec "$CN" bash -c "pkill -INT -f nvblox_replay.yaml; sleep 2; pkill -9 -f nvblox_replay.yaml" 2>/dev/null
 echo "재생 nvblox 로그 꼬리:"; grep -a "integrat\|depth\|ERROR\|WARN" $LOG | tail -4 | cut -c1-200
 ros2 bag info "$OUT" 2>/dev/null | grep -E "Bag size|Duration|Count" | sed 's/Serialization Format: cdr//'
 echo "출력 $OUT"
