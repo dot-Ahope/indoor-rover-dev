@@ -21,10 +21,17 @@ def _camera(context):
     enable_depth = LaunchConfiguration('enable_depth')
     enable_color = LaunchConfiguration('enable_color')
     flash = LaunchConfiguration('emitter_flash').perform(context).lower() in ('1', 'true', 'on')
+    # (10-19 §25) emitter_off:=true — 프로젝터 상시 끔 + IR 좌우 켬(같은 15 fps). cuVSLAM 오프라인 확인용 기록 주행.
+    #   깊이는 수동 스테레오(무늬 없는 면에 구멍 — 09-29 M1) → 카메라만 보는 낮은 물체는 놓칠 수 있다. 원시 IR 만 /camera/raw 로 옮겨 분리 노드가 기록.
+    eoff = LaunchConfiguration('emitter_off').perform(context).lower() in ('1', 'true', 'on')
     fps = int(LaunchConfiguration('stereo_fps').perform(context))
     stereo = {'enable_infra1': False, 'enable_infra2': False,
               'depth_module.depth_profile': '640x480x15'}   # 2026-09-08 30→15fps (포인트클라우드 CPU)
     remaps = []
+    if eoff and not flash:
+        stereo = {'enable_infra1': True, 'enable_infra2': True, 'depth_module.depth_profile': '640x480x15', 'depth_module.infra_profile': '640x480x15',
+                  'depth_module.emitter_enabled': 0}
+        remaps = [('/camera/camera/%s' % t, '%s/%s' % (RAW, t)) for t in ('infra1/image_rect_raw', 'infra2/image_rect_raw')]
     if flash:
         prof = '640x480x%d' % fps
         stereo = {'enable_infra1': True, 'enable_infra2': True, 'depth_module.depth_profile': prof, 'depth_module.infra_profile': prof,
@@ -67,7 +74,7 @@ def _camera(context):
         'initial_reset': True,
         'publish_tf': True,
     }
-    if not flash:
+    if not flash and not eoff:
         return [Node(package='realsense2_camera', executable='realsense2_camera_node',
                      name='camera', namespace='camera', output='screen', parameters=[cam_params])]
     # 10-19 §17: 번갈이면 드라이버와 분리 노드를 한 component container 에 — 원시 영상이 프로세스 밖(UDP)으로 나가지 않게(§16 S2: 30 Hz 중
@@ -80,7 +87,9 @@ def _camera(context):
             ComposableNode(package='realsense2_camera', plugin='realsense2_camera::RealSenseNodeFactory',
                            name='camera', namespace='camera', parameters=[cam_params], remappings=remaps),
             ComposableNode(package='rover_bringup', plugin='rover_bringup::EmitterSplitter', name='emitter_splitter', namespace='',
-                           parameters=[{'in_ns': RAW, 'meta_ns': '/camera/camera', 'out_ns': '/camera/camera'}]),
+                           parameters=[{'in_ns': RAW, 'meta_ns': '/camera/camera', 'out_ns': '/camera/camera'} if flash else
+                                       # 상시 끔: 깊이 · 점군은 드라이버가 원래 이름으로 직접 — 분리 노드는 원시 IR 기록만(나눈 IR 출력은 쓰지 않는 이름으로)
+                                       {'in_ns': RAW, 'meta_ns': '/camera/camera', 'out_ns': '/camera/split_unused', 'split_points': False}]),
         ])]
 
 
@@ -91,6 +100,7 @@ def generate_launch_description():
         DeclareLaunchArgument('enable_color', default_value='true'),
         DeclareLaunchArgument('emitter_flash', default_value='false'),
         DeclareLaunchArgument('stereo_fps', default_value='30'),
+        DeclareLaunchArgument('emitter_off', default_value='false'),
         OpaqueFunction(function=_camera),
         # (2026-09-08 오전) depthimage_to_laserscan 수평 띠 방식은 철회: 10cm 상자가 0.66m 이내로 오면 띠(높이 0.12~0.16m@0.3m)
         #   아래로 내려가 마킹이 끊기고, 2D 소거 광선이 상자 셀을 지움. → 포인트클라우드 + VoxelLayer(3D 소거)로 대체.
