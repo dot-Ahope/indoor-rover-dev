@@ -1,0 +1,24 @@
+== S2 comp30rec_b (기록 2) 15:02:15
+  전체 CPU 사용률 55.5 % (P 게이트 ≤ 60) · load 7.31 8.76 7.53 · EKF 위반 +7 · slam 폐기 +4 (약 80 s)
+    component_conta      58.9
+  /odometry/filtered                     average rate: 30.098
+  /tf                                    average rate: 49.150
+  /camera/camera/depth/image_rect_raw    average rate: 15.071
+[component_container_mt-1] [INFO] [1792389733.793216755] [emitter_splitter]: 10 s: 깊이(켬) 입력 301 · 켬 151 · 끔 150 · 내보냄 151 · 짝없음 0 · 교대깨짐 0 · 키없음 0 · 내�
+[component_container_mt-1] [INFO] [1792389737.284437839] [emitter_splitter]: 기록 닫음 /home/jetson/bags/s2_comp30rec_b (메시지 32363)
+  Duration:          85.940397446s
+                     Topic: /camera/raw/infra2/image_rect_raw | Type: sensor_msgs/msg/Image | Count: 2574 | Serialization Format: cdr
+                     Topic: /camera/raw/infra1/image_rect_raw | Type: sensor_msgs/msg/Image | Count: 2574 | Serialization Format: cdr
+  ⏱ +60 s prep 끝 — PREP_OK
+== S2 base3 (기록 0) 15:05:44
+  전체 CPU 사용률 48.5 % (P 게이트 ≤ 60) · load 5.73 7.29 7.20 · EKF 위반 +13 · slam 폐기 +5 (약 80 s)
+    realsense2_came      14.1
+  /odometry/filtered                     average rate: 30.031
+  /tf                                    average rate: 46.808
+  /camera/camera/depth/image_rect_raw    average rate: 14.982
+== S2 base4 (기록 0) 15:07:06
+  전체 CPU 사용률 48.6 % (P 게이트 ≤ 60) · load 7.79 7.78 7.39 · EKF 위반 +10 · slam 폐기 +5 (약 80 s)
+    realsense2_came      12.8
+  /odometry/filtered                     average rate: 29.997
+  /tf                                    average rate: 40.090
+  /camera/camera/depth/image_rect_raw    average rate: 15.305
