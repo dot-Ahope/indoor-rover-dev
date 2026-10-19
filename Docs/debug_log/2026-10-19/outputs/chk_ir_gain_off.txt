@@ -1,0 +1,12 @@
+== 프로젝터 끔 · 자동 노출
+  auto       장 61 · 밝기 44.0 · FAST 중앙 12
+Set parameter successful
+  게인 64: Set parameter successful
+  gain64     장 44 · 밝기 23.4 · FAST 중앙 2
+  게인 128: Set parameter successful
+  gain128    장 45 · 밝기 31.1 · FAST 중앙 6
+  게인 248: Set parameter successful
+  gain248    장 44 · 밝기 45.5 · FAST 중앙 25
+  노출 33000: Set parameter successful
+"actual_exposure":33000 "gain_level":248 "frame_laser_power":0
+  ⏱ +58 s prep 끝 — PREP_OK
