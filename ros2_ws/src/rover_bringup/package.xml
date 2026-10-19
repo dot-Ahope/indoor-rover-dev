@@ -12,6 +12,9 @@
   <depend>rclcpp</depend>
   <!-- 2026-10-19 §15: emitter_splitter(프로젝터 번갈이 분리) -->
   <depend>realsense2_camera_msgs</depend>
+  <!-- 2026-10-19 §17: 컴포넌트 · 프로세스 안 기록 -->
+  <depend>rclcpp_components</depend>
+  <depend>rosbag2_cpp</depend>
   <test_depend>ament_cmake_gtest</test_depend>
 
   <exec_depend>rover_description</exec_depend>

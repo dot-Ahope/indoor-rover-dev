@@ -1,0 +1,79 @@
+Finished <<< rover_bringup [1min 30s]
+Summary: 1 package finished [1min 31s]
+  nvblox(컨테이너): 1 개
+  ⏱ +64 s prep 끝 — PREP_OK
+== 카메라 · 분리
+Open profile: stream_type: Depth(0), Format: Z16, Width: 640, Height: 480, FPS: 30
+Open profile: stream_type: Infra(1), Format: Y8, Width: 640, Height: 480, FPS: 30
+Open profile: stream_type: Infra(2), Format: Y8, Width: 640, Height: 480, FPS: 30
+[component_container_mt-1] [INFO] [1792389393.667963210] [camera.realsense2_camera_container]: Load Library: /home/jetson/ros2_ws/install/rover_bringup/lib/libemitter_splitter_component.so
+[INFO] [launch_ros.actions.load_composable_nodes]: Loaded node '/emitter_splitter' in container '/camera/realsense2_camera_container'
+== S2 comp30 (기록 0) 14:58:48
+  전체 CPU 사용률 53.3 % (P 게이트 ≤ 60) · load 15.86 10.11 7.54 · EKF 위반 +18 · slam 폐기 +6 (약 80 s)
+  프로세스 CPU(평균, 코어 1 = 100):
+    python3              47.8
+    component_conta      31.6
+    nvblox_node          21.4
+    lifecycle_manag      20.5
+    rplidar_node         15.2
+    controller_serv      12.3
+    bt_navigator         11.3
+    top                  10.2
+    planner_server       10.2
+    ekf_node             10.2
+    behavior_server       9.1
+    waypoint_follow       7.1
+    velocity_smooth       6.2
+    smoother_server       6.1
+    sensor_conditio       6.1
+    rf2o_laser_odom       6.1
+    (합 266 %)
+  흐름:
+  /odometry/filtered                     average rate: 29.506
+  /tf                                    average rate: 35.122
+  /scan                                  average rate: 9.992
+  /camera/camera/depth/image_rect_raw    average rate: 15.533
+  /camera/depth/points_filtered          average rate: 14.930
+  /nvblox_node/static_map_slice          average rate: 9.420
+  /camera/camera/infra1/image_rect_raw   average rate: 10.081
+  분리 노드: 깊이(켬) 입력 289 · 켬 143 · 끔 146 · 내보냄 143 · 짝없음 0 · 교대깨짐 3 · 키없음 0 · 내보낸 깊이 유효 0.77 | IR1(끔) 입력 298 · 켬 149 · 끔 149 · 내보냄 149 · 짝없음 0 · 교대깨짐 0 · 키없음 0 | IR2(끔) 입력 298 · 켬 149 · 끔 149 · 내보냄 149 · 짝없음 0 · 교대깨짐 0 · 키없음 0 | 점군(켬) 입력 28
+  프로세스 안 기록 시작: Set parameter successful
+== S2 comp30rec (기록 2) 15:00:15
+  전체 CPU 사용률 54.3 % (P 게이트 ≤ 60) · load 11.82 10.02 7.72 · EKF 위반 +28 · slam 폐기 +7 (약 80 s)
+  프로세스 CPU(평균, 코어 1 = 100):
+    component_conta      59.4
+    python3              41.6
+    nvblox_node          20.8
+    localization_sl      19.6
+    lifecycle_manag      18.8
+    rplidar_node         14.9
+    controller_serv      11.9
+    ekf_node             10.9
+    sensor_conditio      10.0
+    behavior_server      10.0
+    planner_server        9.0
+    bt_navigator          8.9
+    map_server            8.0
+    waypoint_follow       6.9
+    top                   5.0
+    smoother_server       5.0
+    (합 283 %)
+  흐름:
+  /odometry/filtered                     average rate: 30.427
+  /tf                                    average rate: 48.565
+  /scan                                  average rate: 9.812
+  /camera/camera/depth/image_rect_raw    average rate: 15.030
+  /camera/depth/points_filtered          average rate: 15.545
+  /nvblox_node/static_map_slice          average rate: 9.534
+  /camera/camera/infra1/image_rect_raw   average rate: 10.339
+  분리 노드: 깊이(켬) 입력 300 · 켬 151 · 끔 149 · 내보냄 151 · 짝없음 0 · 교대깨짐 1 · 키없음 0 · 내보낸 깊이 유효 0.77 | IR1(끔) 입력 300 · 켬 151 · 끔 149 · 내보냄 149 · 짝없음 0 · 교대깨짐 1 · 키없음 0 | IR2(끔) 입력 300 · 켬 150 · 끔 148 · 내보냄 148 · 짝없음 2 · 교대깨짐 1 · 키없음 0 | 점군(켬) 입력 29
+  프로세스 안 기록 끝: Set parameter successful
+[component_container_mt-1] [INFO] [1792389613.788818929] [emitter_splitter]: 10 s: 깊이(켬) 입력 300 · 켬 151 · 끔 149 · 내보냄 151 · 짝없음 0 · 교대깨짐 1 · 키없음 0 · 내�
+[component_container_mt-1] [INFO] [1792389618.297953867] [emitter_splitter]: 기록 닫음 /home/jetson/bags/s2_comp30rec (메시지 32183)
+  Bag size:          1.5 GiB
+  Duration:          86.177082737s
+  Topic information: Topic: /camera/camera/imu | Type: sensor_msgs/msg/Imu | Count: 16892 | Serialization Format: cdr
+                     Topic: /camera/camera/infra2/metadata | Type: realsense2_camera_msgs/msg/Metadata | Count: 2547 | Serialization Format: cdr
+                     Topic: /camera/raw/infra2/image_rect_raw | Type: sensor_msgs/msg/Image | Count: 2550 | Serialization Format: cdr
+                     Topic: /camera/camera/infra1/metadata | Type: realsense2_camera_msgs/msg/Metadata | Count: 2550 | Serialization Format: cdr
+                     Topic: /camera/raw/infra1/image_rect_raw | Type: sensor_msgs/msg/Image | Count: 2549 | Serialization Format: cdr

@@ -10,7 +10,8 @@
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument, OpaqueFunction
 from launch.substitutions import LaunchConfiguration
-from launch_ros.actions import Node
+from launch_ros.actions import ComposableNodeContainer, Node
+from launch_ros.descriptions import ComposableNode
 
 RAW = '/camera/raw'
 
@@ -31,51 +32,56 @@ def _camera(context):
         # 영상 · 점군만 옮긴다(camera_info · metadata 는 원래 이름 — 소비자는 stamp 로 짝을 맞추고, 분리 노드는 원래 metadata 를 본다)
         remaps = [('/camera/camera/%s' % t, '%s/%s' % (RAW, t)) for t in
                   ('depth/image_rect_raw', 'infra1/image_rect_raw', 'infra2/image_rect_raw', 'depth/color/points')]
-    nodes = [
-        Node(
-            package='realsense2_camera', executable='realsense2_camera_node',
-            name='camera', namespace='camera', output='screen', remappings=remaps,
-            parameters=[{
-                'enable_depth': enable_depth,
-                'enable_color': enable_color,
-                **stereo,
-                'rgb_camera.color_profile': '640x480x15',
-                'align_depth.enable': False,
-                # 2026-09-08 N1.5: 포인트클라우드 ON + 데시메이션 ×4 (640×480 → 160×120 = 19.2k pt/frame @15fps)
-                #   → Nav2 VoxelLayer 가 실제 높이로 마킹/3D 소거. 바닥은 min_obstacle_height 로 배제.
-                # ⚠ 파라미터 이름이 빌드마다 다름: Jetson(ARM/NEON) 의 realsense-ros 4.58.3 은 처리블록 이름이
-                #   "pointcloud (neon)" 이라 'pointcloud__neon_.*' 로 노출됨(09-08 ros2 param list 로 확인). x86 은 'pointcloud.*'.
-                #   모르는 이름은 조용히 무시되므로 둘 다 적는다.
-                'pointcloud.enable': True,
-                'pointcloud__neon_.enable': True,
-                'pointcloud__neon_.allow_no_texture_points': True,
-                'decimation_filter.enable': True,
-                'decimation_filter.filter_magnitude': 4,
-                'enable_gyro': enable_imu,
-                'enable_accel': enable_imu,
-                # 2026-09-09: 200 → 100Hz. CPU 부족이 EKF 주기 위반(91회, 평균 0.055s 최대 0.197s)을
-                #   낳고, 늦어진 odom→base TF 때문에 slam 의 메시지 필터가 스캔을 **전부 폐기**해
-                #   map→odom 이 아예 발행되지 않았다(주행 2건 실패). 200Hz 를 파이썬 컨디셔너가
-                #   중계하는 구조라 그 자체로 CPU 35% 를 먹는다.
-                #   0.08m/s 로 움직이는 로버에 200Hz 자이로는 과하다. EKF 는 30Hz 로 돈다.
-                #   ⚠ 되돌릴 때는 sensor_conditioner CPU 와 EKF 주기 위반 횟수를 함께 볼 것.
-                # ⚠ gyro 는 200 으로 되돌림. 100 을 요청했으나 D455 자이로가 지원하지 않아
-                #   드라이버가 200 으로 되돌렸다("Open profile: Gyro FPS: 200"). 지원 프로파일을
-                #   확인하지 않고 값을 넣은 것이 실수. accel 은 100 이 적용됐다("Accel FPS: 100").
-                #   unite_imu_method 1(copy) 이라 /camera/camera/imu 는 gyro 속도(200Hz)를 따른다.
-                #   → CPU 절감은 sensor_conditioner 쪽 다운샘플로 해야 한다(Phase S 항목).
-                'gyro_fps': 200,
-                'accel_fps': 100,
-                'unite_imu_method': 1,
-                'initial_reset': True,
-                'publish_tf': True,
-            }],
-        ),
-    ]
-    if flash:
-        nodes.append(Node(package='rover_bringup', executable='emitter_splitter_node', name='emitter_splitter', output='screen',
-                          parameters=[{'in_ns': RAW, 'meta_ns': '/camera/camera', 'out_ns': '/camera/camera'}]))
-    return nodes
+    cam_params = {
+        'enable_depth': enable_depth,
+        'enable_color': enable_color,
+        **stereo,
+        'rgb_camera.color_profile': '640x480x15',
+        'align_depth.enable': False,
+        # 2026-09-08 N1.5: 포인트클라우드 ON + 데시메이션 ×4 (640×480 → 160×120 = 19.2k pt/frame @15fps)
+        #   → Nav2 VoxelLayer 가 실제 높이로 마킹/3D 소거. 바닥은 min_obstacle_height 로 배제.
+        # ⚠ 파라미터 이름이 빌드마다 다름: Jetson(ARM/NEON) 의 realsense-ros 4.58.3 은 처리블록 이름이
+        #   "pointcloud (neon)" 이라 'pointcloud__neon_.*' 로 노출됨(09-08 ros2 param list 로 확인). x86 은 'pointcloud.*'.
+        #   모르는 이름은 조용히 무시되므로 둘 다 적는다.
+        'pointcloud.enable': True,
+        'pointcloud__neon_.enable': True,
+        'pointcloud__neon_.allow_no_texture_points': True,
+        'decimation_filter.enable': True,
+        'decimation_filter.filter_magnitude': 4,
+        'enable_gyro': enable_imu,
+        'enable_accel': enable_imu,
+        # 2026-09-09: 200 → 100Hz. CPU 부족이 EKF 주기 위반(91회, 평균 0.055s 최대 0.197s)을
+        #   낳고, 늦어진 odom→base TF 때문에 slam 의 메시지 필터가 스캔을 **전부 폐기**해
+        #   map→odom 이 아예 발행되지 않았다(주행 2건 실패). 200Hz 를 파이썬 컨디셔너가
+        #   중계하는 구조라 그 자체로 CPU 35% 를 먹는다.
+        #   0.08m/s 로 움직이는 로버에 200Hz 자이로는 과하다. EKF 는 30Hz 로 돈다.
+        #   ⚠ 되돌릴 때는 sensor_conditioner CPU 와 EKF 주기 위반 횟수를 함께 볼 것.
+        # ⚠ gyro 는 200 으로 되돌림. 100 을 요청했으나 D455 자이로가 지원하지 않아
+        #   드라이버가 200 으로 되돌렸다("Open profile: Gyro FPS: 200"). 지원 프로파일을
+        #   확인하지 않고 값을 넣은 것이 실수. accel 은 100 이 적용됐다("Accel FPS: 100").
+        #   unite_imu_method 1(copy) 이라 /camera/camera/imu 는 gyro 속도(200Hz)를 따른다.
+        #   → CPU 절감은 sensor_conditioner 쪽 다운샘플로 해야 한다(Phase S 항목).
+        'gyro_fps': 200,
+        'accel_fps': 100,
+        'unite_imu_method': 1,
+        'initial_reset': True,
+        'publish_tf': True,
+    }
+    if not flash:
+        return [Node(package='realsense2_camera', executable='realsense2_camera_node',
+                     name='camera', namespace='camera', output='screen', parameters=[cam_params])]
+    # 10-19 §17: 번갈이면 드라이버와 분리 노드를 한 component container 에 — 원시 영상이 프로세스 밖(UDP)으로 나가지 않게(§16 S2: 30 Hz 중
+    #   21 Hz 만 도착). 컨테이너 이름에 realsense2_camera 를 넣어 러너 · prep 의 프로세스 검사(pgrep realsense2_camera = 1)와 정리 패턴이 그대로 맞게.
+    #   멀티스레드 실행기: 드라이버 콜백과 분리 노드가 서로 기다리지 않게(분리 노드 콜백끼리는 기본 콜백 그룹이라 동시에 안 돎).
+    return [ComposableNodeContainer(
+        name='realsense2_camera_container', namespace='camera', package='rclcpp_components', executable='component_container_mt',
+        output='screen',
+        composable_node_descriptions=[
+            ComposableNode(package='realsense2_camera', plugin='realsense2_camera::RealSenseNodeFactory',
+                           name='camera', namespace='camera', parameters=[cam_params], remappings=remaps),
+            ComposableNode(package='rover_bringup', plugin='rover_bringup::EmitterSplitter', name='emitter_splitter', namespace='',
+                           parameters=[{'in_ns': RAW, 'meta_ns': '/camera/camera', 'out_ns': '/camera/camera'}]),
+        ])]
 
 
 def generate_launch_description():
