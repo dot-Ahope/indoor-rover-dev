@@ -1,0 +1,28 @@
+== describe depth_module.exposure
+  Type: integer     Min value: 1     Max value: 200000     Step: 1 
+== describe depth_module.gain
+  Type: integer     Min value: 16     Max value: 248     Step: 1 
+== describe depth_module.enable_auto_exposure
+  Type: boolean     Min value: 0     Max value: 1     Step: 1 
+== describe depth_module.emitter_on_off
+  Type: boolean     Min value: 0     Max value: 1     Step: 1 
+== describe depth_module.emitter_enabled
+  Type: integer     Min value: 0     Max value: 2     Step: 1 
+== 자동 노출 켬 — 메타데이터 연속
+"actual_exposure":31979 "gain_level":16 "frame_laser_power":150 "frame_emitter_mode":1 "actual_exposure":31979 "gain_level":16 "frame_laser_power":0 "frame_emitter_mode":0 "actual_exposure":31979 "gain_level":16 "frame_laser_power":150 "frame_emitter_mode":1 "actual_exposure":31979 "gain_level":16 "frame_laser_power":0 "frame_emitter_mode":0 "actual_exposure":31979 "gain_level":16 "frame_laser_power":150 "frame_emitter_mode":1 "actual_exposure":31979 "gain_level":16 "frame_laser_power":0 "frame_emitter_mode":0
+== CLI: 자동 노출 끔
+Set parameter successful
+== CLI: 노출 30000
+Setting parameter failed: set_xu(...). xioctl(UVCIOC_CTRL_QUERY) failed on control 3 Last Error: Invalid or incomplete multibyte or wide character
+== CLI: 게인 128
+Setting parameter failed: xioctl(VIDIOC_S_CTRL) failed on option Gain, value=128, errno=84 Last Error: Invalid or incomplete multibyte or wide character
+== 자동 노출 끔 뒤 — 메타데이터 연속
+"actual_exposure":33000 "gain_level":16 "frame_laser_power":0 "frame_emitter_mode":0 "actual_exposure":33000 "gain_level":16 "frame_laser_power":150 "frame_emitter_mode":1 "actual_exposure":33000 "gain_level":16 "frame_laser_power":0 "frame_emitter_mode":0 "actual_exposure":33000 "gain_level":16 "frame_laser_power":150 "frame_emitter_mode":1 "actual_exposure":33000 "gain_level":16 "frame_laser_power":0 "frame_emitter_mode":0 "actual_exposure":33000 "gain_level":16 "frame_laser_power":150 "frame_emitter_mode":1
+== 드라이버 로그 경고
+ 19/10 17:47:48,969 ERROR [281473803805792] (librealsense-exception.h:53) set_xu(...). xioctl(UVCIOC_CTRL_QUERY) failed on control 3 Last Error: Invalid or incomplete multibyte or wide character
+ 19/10 17:47:48,969 ERROR [281473803805792] (rs.cpp:284) [rs2_set_option( options:0xffff8c02e920, option:Exposure, value:30000 ) Backend] set_xu(...). xioctl(UVCIOC_CTRL_QUERY) failed on control 3 Las
+[WARN] [1792399668.970011805] [camera.camera]: Set parameter {depth_module.exposure} failed: set_xu(...). xioctl(UVCIOC_CTRL_QUERY) failed on control 3 Last Error: Invalid or incomplete multibyte or w
+ 19/10 17:47:50,478 ERROR [281473803805792] (librealsense-exception.h:53) xioctl(VIDIOC_S_CTRL) failed on option Gain, value=128, errno=84 Last Error: Invalid or incomplete multibyte or wide character
+ 19/10 17:47:50,478 ERROR [281473803805792] (rs.cpp:284) [rs2_set_option( options:0xffff8c02e920, option:Gain, value:128 ) Backend] xioctl(VIDIOC_S_CTRL) failed on option Gain, value=128, errno=84 Las
+[WARN] [1792399670.480727942] [camera.camera]: Set parameter {depth_module.gain} failed: xioctl(VIDIOC_S_CTRL) failed on option Gain, value=128, errno=84 Last Error: Invalid or incomplete multibyte or
+저장: emitter_mode [0, 1] · 밝기 {1: 28.5, 0: 28.4} · 영상 59 메타 60

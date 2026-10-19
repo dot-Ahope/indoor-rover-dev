@@ -26,3 +26,5 @@
 | 16:0x · §20 | IR 영상 | `fig_ir_extract.py`(Jetson) · `fig_ir_drive_video.py`(PC) | 끔 IR 밝기 20 · FAST 중앙 6, 창가만 수백 | 끈 IR 어둠 ✔ |
 | 16:2x · §21~22 | 상자 확대 · 상자 안 칸 | `fig_box_zoom_cmp.py` · `anal_box_cells_in.py` · `anal_box_points.py` | f2y1 상자 안 8 → 1, 회전 중 관측 15.7 cm 남쪽, map→odom +41.7 cm | 미끄러짐 큼 ✔ · 구성 탓 ？ |
 | 16:4x · §23 | 오프라인 cuVSLAM 켬/끔 × IMU | `mk_vslam_bag.py` · `run_vslam_offline.sh` · `anal_vslam_cmp.py` | 4 변형 모두 오차 1.4~11 m(EKF 0.4 m), vo_state 100 % 인데도 | 켬 = 0 에 붙잡힘 · 끔 = 못 봄 ✔ — 이 조명에선 못 씀 |
+| 17:3x · §24 | IR 노출 · 게인(번갈이) | `run_ir_exposure.sh` · `chk_ir_exposure.py` · `chk_ir_exposure_diag.sh` | 수동 설정 드라이버 거부(errno 84), 자동 노출 끄면 두 프레임 모두 점 무늬 | 번갈이 중 노출 고정 불가 ✔ |
+| 17:5x · §24.2 | IR 게인(프로젝터 상시 끔) | `chk_ir_gain_off.sh` | 게인 설정 됨, 밝기 44~45, 4 배 밝게 보면 장면 또렷 | FAST 절대 문턱이 과소 계산 — §20 '특징 없음' 과장 정정 |
