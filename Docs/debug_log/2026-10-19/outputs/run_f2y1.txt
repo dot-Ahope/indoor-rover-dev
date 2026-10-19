@@ -1,0 +1,34 @@
+  A·B 통과 (average rate: 24.997)
+  J 통과 (깊이 15.1 Hz)
+  C 통과
+  G2 통과 (0.378 m)
+  P 통과 (정지 부하 54 %)
+  IR 기록 시작: Set parameter successful
+  목표 1 SUCCEEDED 53.4 s | 도착 map (2.314, -1.466, -92.5°) 목표 대비 0.149 m, -13.3°
+  목표 2 SUCCEEDED 49.1 s | 도착 map (5.430, -2.133, -17.8°) 목표 대비 0.097 m, -19.6°
+  목표 3 SUCCEEDED 110.4 s | 도착 map (0.131, 0.056, -167.3°) 목표 대비 0.143 m, 4.7°
+결과: 1 SUCCEEDED 53.4s / 2 SUCCEEDED 49.1s / 3 SUCCEEDED 110.4s | 총 213.2 s
+  누적 회전: 휠 287.4° vs EKF 198.9° (차 88.5° = 미끄러짐·스크럽 흔적) | stuck 진단 0 회
+  IR 기록 끝: Set parameter successful
+  IR bag 크기 4.0G	/home/jetson/bags/bag_f2y1_ir
+  IR bag 크기 347M	/home/jetson/bags/bag_f2y1
+=== 끝 15:47:59 (IR bag, tgz 생략) ===
+== IR bag
+Bag size:          4.0 GiB
+Duration:          230.117778801s
+Topic information: Topic: /camera/camera/infra2/metadata | Type: realsense2_camera_msgs/msg/Metadata | Count: 6854 | 
+                   Topic: /camera/raw/infra2/image_rect_raw | Type: sensor_msgs/msg/Image | Count: 6855 | 
+                   Topic: /camera/camera/infra2/camera_info | Type: sensor_msgs/msg/CameraInfo | Count: 6853 | 
+                   Topic: /camera/camera/infra1/metadata | Type: realsense2_camera_msgs/msg/Metadata | Count: 6855 | 
+                   Topic: /camera/camera/infra1/camera_info | Type: sensor_msgs/msg/CameraInfo | Count: 6853 | 
+                   Topic: /camera/raw/infra1/image_rect_raw | Type: sensor_msgs/msg/Image | Count: 6855 | 
+                   Topic: /camera/camera/imu | Type: sensor_msgs/msg/Imu | Count: 45539 | 
+== 깊이 bag
+Bag size:          347.0 MiB
+Duration:          229.138323666s
+                   Topic: /camera/camera/depth/camera_info | Type: sensor_msgs/msg/CameraInfo | Count: 6831 | 
+                   Topic: /camera/camera/depth/image_rect_raw | Type: sensor_msgs/msg/Image | Count: 3416 | 
+                   Topic: /nvblox_node/static_map_slice | Type: nvblox_msgs/msg/DistanceMapSlice | Count: 2153 | 
+== 주행 중 EKF 위반 · slam 폐기 · 제어 놓침(로그 누계)
+  sensors EKF 위반 53 · slam 폐기 42 · controller 'Control loop missed' 52
+교대깨짐 1 IR1(끔) 입력 298 교대깨짐 2 교대깨짐 2 교대깨짐 2 기록 3749 교대깨짐 0 IR1(끔) 입력 299 교대깨짐 0 교대깨짐 0 교대깨짐 0 기록 3787 교대깨짐 0 IR1(끔) 입력 300 교대깨짐 0 교대깨짐 0 교대깨짐 0 기록 3785 교대깨짐 1 IR1(끔) 입력 299 교대깨짐 1 교대깨짐 1 교대깨짐 1 기록 3789 교대깨짐 0 IR1(끔) 입력 300 교대깨짐 0 교대깨짐 0 교대깨짐 0 기록 3792 교대깨짐 0 IR1(끔) 입력 300 교대깨짐 0 교대깨짐 0 교대깨짐 0 기록 3797 교대깨짐 0 IR1(끔) 입력 300 교대깨짐 
