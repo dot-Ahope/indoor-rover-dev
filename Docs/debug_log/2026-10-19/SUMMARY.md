@@ -171,3 +171,8 @@
 - 규칙: GB 급 bag 은 분석으로 작은 파생 자료(궤적 csv · cuVSLAM 오도메트리 등)와 그림을 outputs · figures 에 남기고, 여기에 지운 경로 · 크기를 적은 뒤 삭제.
 - 현재 대상(Jetson /home/jetson/bags): `s2_flash30rec` 0.45 GB(§16 ③, IR 8 Hz — 수치는 §16.1 에 기록, 더 쓸 데 없음) · `s2_comp30rec` 1.5 GB · `s2_comp30rec_b` 1.5 GB(§17 ③', 오프라인 cuVSLAM 실행 경로 점검용으로 남김 → 점검 뒤 삭제).
 - 삭제(사용자 승인, `jobs/rm_s2_flash.sh`): `/home/jetson/bags/s2_flash30rec` 448 MB(메시지 30373, IR2 729 장 — §16.1 표와 일치) 삭제. 디스크 남음 146 GB. 남은 큰 bag = `s2_comp30rec` · `_b`(각 1.5 GB, cuVSLAM 경로 점검 뒤 삭제).
+
+## §19 IR 기록 주행 f2y1 선언(주행 전, 사용자: "평소 출발 방향으로 놓았다. 시작하라")
+- 구성: `prep_patrol.sh lite` + `SENSORS_ADD="emitter_flash:=true"`(합성 · 번갈이 30), 그 밖은 f2x1 과 같음(통합 거리 1.4 · ClearanceBandCritic 끔 · MonotoneEscape 켬). 코스 b910 1 회, `BAG_IR=1`(BAG_DEPTH 포함), STAGE `F2c-irrec`.
+- 주행 판정(기록 주행으로 쓸 수 있나): 목표 3/3 · 중단 0. IR bag 좌우 각 ≥ 27 Hz · 메타데이터 ≥ IR 의 95 %. 부하 비교(f2x1 대비, 기록만 — 1 회라 판정 아님): 러너 P 게이트 정지 부하, EKF 위반, 제어 놓침.
+- 오프라인 비교 판정은 주행 뒤 분석 전에 따로 선언(켬 IR vs 끔 IR 의 cuVSLAM 추적 · 회전 중 옆 밀림 vs SLAM).
