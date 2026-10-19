@@ -48,3 +48,12 @@ for arg in sys.argv[2:]:
     N, W, C = R[ok, 0], R[ok, 1], R[ok, 2]
     print('%-14s 상자 옆 조각 %3d (칸 있음 %3d) · 북쪽 면 과장 중앙 %+5.1f cm (범위 %+.1f~%+.1f) · 서쪽 면 과장 중앙 %+5.1f cm · 칸 수 중앙 %d'
           % (nm, len(rows), ok.sum(), 100 * (np.median(N) - BOX[3]), 100 * (N.min() - BOX[3]), 100 * (N.max() - BOX[3]), 100 * (BOX[0] - np.median(W)), int(np.median(C))))
+    # 10-19 §21: 상자 옆에 있던 구간(5 s 넘게 끊기면 새 구간)별로 — 출발 길 · 복귀 길 구분
+    T = np.array([q[0] for q in rows]); cuts = [0] + [i for i in range(1, len(T)) if T[i] - T[i - 1] > 5] + [len(T)]
+    for a_, b_ in zip(cuts, cuts[1:]):
+        sel = np.zeros(len(T), bool); sel[a_:b_] = True; sel &= ok
+        if sel.sum() == 0: continue
+        n_, w_ = R[sel, 0], R[sel, 1]
+        print('    구간 %6.1f~%6.1f s(주행 bag 첫 tf 기준) 조각 %3d · 북 %+5.1f (%+.1f~%+.1f) · 서 %+5.1f (%+.1f~%+.1f) cm'
+              % (T[a_] - MOt[0], T[b_ - 1] - MOt[0], sel.sum(), 100 * (np.median(n_) - BOX[3]), 100 * (n_.min() - BOX[3]), 100 * (n_.max() - BOX[3]),
+                 100 * (BOX[0] - np.median(w_)), 100 * (BOX[0] - w_.max()), 100 * (BOX[0] - w_.min())))
