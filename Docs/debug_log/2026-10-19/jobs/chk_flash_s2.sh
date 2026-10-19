@@ -1,6 +1,6 @@
 #!/bin/bash
 # (10-19 §16 S2) 정지 상태에서 지금 스택의 부하 · 흐름 측정 30 s — 번갈이 구성 판정용. 로버 안 움직임
-#   인자: <꼬리표> [REC=0|1 — 1 이면 측정 동안 러너 BAG_IR 과 같은 IR 토픽 · QoS 로 기록(/home/jetson/bags/s2_<꼬리표>)]
+#   인자: <꼬리표> [REC=0|1|2 — 1 = ros2 bag record 로 IR 기록(§16), 2 = 분리 노드 프로세스 안 기록(§17, record_path) → /home/jetson/bags/s2_<꼬리표>]
 set +u
 TAG=${1:?tag}; REC=${2:-0}
 EK0=$(grep -ac 'Failed to meet update rate' /tmp/sensors.log); SL0=$(grep -ac 'Message Filter dropping' /tmp/slam.log)
@@ -12,6 +12,10 @@ if [ "$REC" = 1 ]; then
     /camera/camera/infra1/metadata /camera/camera/infra2/metadata /camera/camera/depth/metadata /camera/camera/infra1/camera_info /camera/camera/infra2/camera_info \
     /camera/camera/imu /camera/camera/depth/image_rect_raw /camera/camera/depth/camera_info > /tmp/s2_rec.log 2>&1 < /dev/null &
   sleep 4
+fi
+if [ "$REC" = 2 ]; then
+  B=/home/jetson/bags/s2_$TAG; rm -rf $B
+  echo "  프로세스 안 기록 시작: $(timeout 10 ros2 param set /emitter_splitter record_path $B 2>&1 | tail -1)"; sleep 3
 fi
 # 부하는 측정 도구(ros2 topic hz)를 띄우기 전 30 s 만으로 — 측정 도구 자체 CPU 가 섞이지 않게
 L0=$(head -1 /proc/stat)
@@ -31,7 +35,11 @@ awk '{s[$1]+=$2; n[$1]++} END {for (k in s) if (s[k]/6 >= 3) printf "    %-18s %
 awk '{s+=$2} END {printf "    (합 %.0f %%)\n", s/6}' /tmp/s2_top.txt
 echo "  흐름:"; cat /tmp/s2_hz.txt
 grep -a "10 s:" /tmp/sensors.log | tail -1 | sed 's/.*10 s: /  분리 노드: /' | cut -c1-400
-if [ "$REC" = 1 ]; then
-  pkill -INT -f "ros2 bag record -o $B"; sleep 4
+if [ "$REC" = 2 ]; then
+  echo "  프로세스 안 기록 끝: $(timeout 10 ros2 param set /emitter_splitter record_path '' 2>&1 | tail -1)"; sleep 3
+  grep -a "기록" /tmp/sensors.log | tail -2 | cut -c1-200
+fi
+if [ "$REC" != 0 ]; then
+  [ "$REC" = 1 ] && { pkill -INT -f "ros2 bag record -o $B"; sleep 4; }
   ros2 bag info $B 2>/dev/null | grep -aE "Duration|Bag size|infra[12]/image|metadata|imu|depth/image" | sed 's/^/  /' | cut -c1-160
 fi

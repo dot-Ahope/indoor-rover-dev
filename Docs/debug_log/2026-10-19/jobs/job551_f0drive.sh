@@ -35,9 +35,9 @@ TOPICS="$TOPICS ${EXTRA_TOPICS:-}"
 # 10-19 §3: BAG_DEPTH=1 이면 nvblox 입력(깊이 160×120 · camera_info, 약 0.6 MB/s)도 기록 — 오프라인 nvblox 재생 A/B 용(run_nvblox_replay.sh)
 [ "${BAG_IR:-0}" = 1 ] && BAG_DEPTH=1   # 10-19 §16: IR 기록은 깊이 기록을 포함
 [ "${BAG_DEPTH:-0}" = 1 ] && TOPICS="$TOPICS /camera/camera/depth/image_rect_raw /camera/camera/depth/camera_info"
-# 10-19 §16: BAG_IR=1(BAG_DEPTH 포함) — prep 에 emitter_flash:=true 필요. 드라이버 원시 IR 좌우(프로젝터 켬 · 끔 둘 다, /camera/raw) + 프레임별 메타데이터
-#   + IR camera_info + 카메라 IMU(200 Hz) — cuVSLAM 오프라인 비교(켬 프레임 vs 끔 프레임 · EKF · SLAM)용. 640×480×30 이면 약 18 MB/s.
-[ "${BAG_IR:-0}" = 1 ] && { TOPICS="$TOPICS /camera/raw/infra1/image_rect_raw /camera/raw/infra2/image_rect_raw /camera/camera/infra1/metadata /camera/camera/infra2/metadata /camera/camera/depth/metadata /camera/camera/infra1/camera_info /camera/camera/infra2/camera_info /camera/camera/imu"; }
+# 10-19 §16 · §17: BAG_IR=1(BAG_DEPTH 포함) — prep 에 SENSORS_ADD="emitter_flash:=true" 필요. 원시 IR 좌우(켬 · 끔 모두) · IR 메타데이터 · IR camera_info ·
+#   카메라 IMU 는 ros2 bag record 가 아니라 카메라와 같은 프로세스의 분리 노드가 직접 쓴다(/home/jetson/bags/bag_<NAME>_ir) — §16 S2: 별도 기록기는
+#   CPU 77 % · IR 8 Hz 로 불합격. 시작 · 끝 = 분리 노드 record_path 파라미터.
 [ "${LONG_REC:-0}" = 1 ] && TOPICS="$TOPICS /trajectories /transformed_global_plan"   # 10-07 §11: 장기 주행만 — MPPI 후보·최적 궤적(prep 에 mppi_viz:=true 필요)   # 10-07 §2: rf2o 비교 주행 — /odometry/ekf_a /odom_rf2o /odom_rf2o/gated
 # 10-12 §11: 기록기가 /trajectories(206 kB × 10 Hz)만 '손실 허용(best effort)' 으로 구독 — 조각을 잃어도 재전송을 요구하지 않게.
 #   왜: §9.2 평상시 수신 버퍼 손실이 나는 소켓은 기록기뿐이었고, 신뢰성 재전송이 통신 폭주(10 배)의 씨앗으로 추정됨. BAG_BE_TRAJ=0 이면 예전처럼.
@@ -62,15 +62,10 @@ QOSOPT=""; if [ "${BAG_BE_TRAJ:-1}" = 1 ]; then printf '/trajectories:
   depth: 10
   durability: volatile
 ' >> /tmp/bag_qos_$NAME.yaml
-# 10-19 §16: 원시 IR · IMU 도 best effort 로 구독(카메라 발행을 붙잡지 않게)
-[ "${BAG_IR:-0}" = 1 ] && for t in /camera/raw/infra1/image_rect_raw /camera/raw/infra2/image_rect_raw /camera/camera/imu; do printf "$t:
-  reliability: best_effort
-  history: keep_last
-  depth: 20
-  durability: volatile
-" >> /tmp/bag_qos_$NAME.yaml; done
 QOSOPT="--qos-profile-overrides-path /tmp/bag_qos_$NAME.yaml"; fi
 echo "  bag 기록 QoS 재정의: ${QOSOPT:-없음}"
+IRB=/home/jetson/bags/bag_${NAME}_ir
+[ "${BAG_IR:-0}" = 1 ] && { rm -rf $IRB; echo "  IR 기록 시작: $(timeout 10 ros2 param set /emitter_splitter record_path $IRB 2>&1 | tail -1)"; }
 setsid nohup ros2 bag record -o $BAG $QOSOPT $TOPICS > /tmp/bag_$NAME.log 2>&1 &
 setsid nohup tegrastats --interval 1000 > /tmp/tegra_$NAME.log 2>&1 &
 (for i in $(seq 1 400); do top -b -n1 | head -30; sleep 2; done) > /tmp/top_$NAME.log 2>&1 &
@@ -94,10 +89,11 @@ fi
 ps -eo pid,rss,pcpu,comm,args --sort=-rss | head -25 > /tmp/rss_$NAME.txt; sleep 2
 echo "########## F0 주행 $(date +%T) — 목표 $GOALS ##########"
 python3 /tmp/job550_f0run.py $NAME "$GOALS" $SPEED $PAUSE 2>&1 | grep -av "^\["
+[ "${BAG_IR:-0}" = 1 ] && echo "  IR 기록 끝: $(timeout 10 ros2 param set /emitter_splitter record_path '' 2>&1 | tail -1)"
 pkill -INT -f "ros2 bag record" 2>/dev/null; pkill -f "tegrastats --interval 1000" 2>/dev/null; kill $TOPPID $PROCPID $NETPID 2>/dev/null; [ -n "$CAPPID" ] && { kill -INT $CAPPID 2>/dev/null; sleep 1; ls -la /tmp/cap_$NAME.pcap 2>/dev/null | awk '{print "  캡처 파일", $5, "B"}'; }; netmap >> /tmp/net_$NAME.log 2>/dev/null
 for i in $(seq 1 10); do [ "$(pgrep -fc 'ros2 bag record')" = 0 ] && break; sleep 1; done
 TOPICS="$TOPICS" bash /tmp/job453_runmeta.sh $NAME "$GOALS" $SPEED >/dev/null 2>&1; cp /tmp/meta_$NAME/run_meta.txt /tmp/meta_$NAME/params.txt $BAG/ 2>/dev/null
 [ "${BAG_DEPTH:-0}" = 1 ] && { mkdir -p /home/jetson/bags; rm -rf /home/jetson/bags/bag_$NAME; cp -r /tmp/bag_$NAME /home/jetson/bags/ && echo "  깊이 bag 사본 /home/jetson/bags/bag_$NAME (재부팅에도 남음)"; }
 # 10-19 §16: IR bag 은 수 GB — PC 로 옮길 tgz 는 만들지 않는다(분석은 Jetson 또는 따로 가져옴)
-[ "${BAG_IR:-0}" = 1 ] && { du -sh /home/jetson/bags/bag_$NAME | sed 's/^/  IR bag 크기 /'; echo "=== 끝 $(date +%T) (IR bag, tgz 생략) ==="; exit 0; }
+[ "${BAG_IR:-0}" = 1 ] && { du -sh $IRB | sed 's/^/  IR bag 크기 /'; ros2 bag info $IRB 2>/dev/null | grep -aE "Duration|Count" | sed 's/^/  /' | cut -c1-150; du -sh /home/jetson/bags/bag_$NAME | sed 's/^/  IR bag 크기 /'; echo "=== 끝 $(date +%T) (IR bag, tgz 생략) ==="; exit 0; }
 tar czf /tmp/bag_$NAME.tgz -C /tmp bag_$NAME 2>/dev/null; echo "=== 끝 $(date +%T) bag $(stat -c %s /tmp/bag_$NAME.tgz 2>/dev/null) B ==="
