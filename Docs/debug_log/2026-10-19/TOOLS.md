@@ -22,3 +22,4 @@
 | 14:2x · §15 | S1 재시험(on_mode 0) | 같은 도구 | 오분류 0 · 깊이 29.5 Hz · IR 26.6~26.9 Hz · 분리 CPU 12 % · 카메라 38 % | 나누기 ✔ · 전달 손실 · 카메라 부하 ？ |
 | 14:3x · §16 | 번갈이 구성 정지 부하 S2 | `jobs/chk_flash_s2.sh` · `prep_flash.sh`(SENSORS_ADD) | ① CPU 45 % → ② 53 %(IR 21/30 Hz 도착) → ③ 기록 77 % · EKF 위반 +127 · IR 기록 8 Hz | 호스트 DDS 영상 전달 · 기록기가 병목 ✔ · 기록 주행 보류 |
 | 15:0x · §17 | 합성 + 프로세스 안 기록 S3 | `chk_flash_s2.sh … 2`(record_path) | IR 도착 21 → 30 Hz · 기록 IR 29.6~29.9 Hz · CPU 54~56 % · EKF 위반 +7/+28 | 합성 효과 ✔ · EKF 기준은 ① 편차(+0~+13)를 몰라 잘못 정함 ？ |
+| 15:2x · §18 | 큰 bag 정리 | `jobs/rm_s2_flash.sh` | s2_flash30rec 448 MB 삭제, 남음 146 GB | ✔ |
