@@ -69,7 +69,9 @@ def _nodes(context):
     if vslam != 'off':
         acts += [
             ExecuteProcess(cmd=[os.path.join(get_package_prefix('rover_bringup'), 'lib', 'rover_bringup', 'cuvslam_up.sh'),
-                                os.path.join(share, 'launch', 'cuvslam_container.launch.py'), '/tmp/cuvslam.log'], output='screen'),
+                                os.path.join(share, 'launch', 'cuvslam_container.launch.py'), '/tmp/cuvslam.log',
+                                os.path.join(share, 'config', 'fastdds_shm_udp.xml' if _truthy(context, 'dds_shm') else 'fastdds_udp_only.xml')],
+                         output='screen'),
             Node(package='rover_bringup', executable='vslam_twist.py', name='vslam_twist', output='screen', parameters=[st]),
         ]
     if vslam == 'shadow':
@@ -103,6 +105,7 @@ def generate_launch_description():
         DeclareLaunchArgument('gate_vref', default_value='wheel',
                               description='G4 판정량: wheel(휠과의 잔차, 10-07 §4 기본) | abs(rf2o |v| 절댓값, 10-06~07 §1)'),
         DeclareLaunchArgument('use_sim_time', default_value='false', description='bag 재생 검증용'),
+        DeclareLaunchArgument('dds_shm', default_value='false', description='10-20 §7.4 cuVSLAM 컨테이너를 SHM+UDP 로(camera.launch dds_shm 과 같이)'),
         DeclareLaunchArgument('vslam', default_value='off',
                               description='2026-10-20 §6 cuVSLAM 병진 속도: off | shadow(그림자 EKF /odometry/ekf_vslam) | on(주 EKF 가 rf2o 대신) — emitter_off:=true 필요'),
         OpaqueFunction(function=_nodes),

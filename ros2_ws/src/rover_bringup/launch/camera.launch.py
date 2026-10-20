@@ -12,6 +12,8 @@ from launch.actions import DeclareLaunchArgument, OpaqueFunction
 from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import ComposableNodeContainer, Node
 from launch_ros.descriptions import ComposableNode
+import os
+from ament_index_python.packages import get_package_share_directory
 
 RAW = '/camera/raw'
 
@@ -25,6 +27,9 @@ def _camera(context):
     #   깊이는 수동 스테레오(무늬 없는 면에 구멍 — 09-29 M1) → 카메라만 보는 낮은 물체는 놓칠 수 있다. 원시 IR 만 /camera/raw 로 옮겨 분리 노드가 기록.
     eoff = LaunchConfiguration('emitter_off').perform(context).lower() in ('1', 'true', 'on')
     fps = int(LaunchConfiguration('stereo_fps').perform(context))
+    # 10-20 §7.4 N-SHM: dds_shm:=true 면 이 카메라 프로세스만 SHM+UDP 프로파일(cuVSLAM 컨테이너로 IR 을 SHM 으로). 나머지는 UDP 전용 그대로
+    shm = LaunchConfiguration('dds_shm').perform(context).lower() in ('1', 'true', 'on')
+    env = {'FASTRTPS_DEFAULT_PROFILES_FILE': os.path.join(get_package_share_directory('rover_bringup'), 'config', 'fastdds_shm_udp.xml')} if shm else {}
     stereo = {'enable_infra1': False, 'enable_infra2': False,
               'depth_module.depth_profile': '640x480x15'}   # 2026-09-08 30→15fps (포인트클라우드 CPU)
     remaps = []
@@ -78,13 +83,13 @@ def _camera(context):
     }
     if not flash and not eoff:
         return [Node(package='realsense2_camera', executable='realsense2_camera_node',
-                     name='camera', namespace='camera', output='screen', parameters=[cam_params])]
+                     name='camera', namespace='camera', output='screen', parameters=[cam_params], additional_env=env)]
     # 10-19 §17: 번갈이면 드라이버와 분리 노드를 한 component container 에 — 원시 영상이 프로세스 밖(UDP)으로 나가지 않게(§16 S2: 30 Hz 중
     #   21 Hz 만 도착). 컨테이너 이름에 realsense2_camera 를 넣어 러너 · prep 의 프로세스 검사(pgrep realsense2_camera = 1)와 정리 패턴이 그대로 맞게.
     #   멀티스레드 실행기: 드라이버 콜백과 분리 노드가 서로 기다리지 않게(분리 노드 콜백끼리는 기본 콜백 그룹이라 동시에 안 돎).
     return [ComposableNodeContainer(
         name='realsense2_camera_container', namespace='camera', package='rclcpp_components', executable='component_container_mt',
-        output='screen',
+        output='screen', additional_env=env,
         composable_node_descriptions=[
             ComposableNode(package='realsense2_camera', plugin='realsense2_camera::RealSenseNodeFactory',
                            name='camera', namespace='camera', parameters=[cam_params], remappings=remaps),
@@ -103,6 +108,7 @@ def generate_launch_description():
         DeclareLaunchArgument('emitter_flash', default_value='false'),
         DeclareLaunchArgument('stereo_fps', default_value='30'),
         DeclareLaunchArgument('emitter_off', default_value='false'),
+        DeclareLaunchArgument('dds_shm', default_value='false', description='10-20 §7.4 카메라 프로세스만 SHM+UDP(cuVSLAM 경로) — ekf.launch 의 cuVSLAM 도 같은 인자로'),
         DeclareLaunchArgument('decimation', default_value='4', description='10-20 §8 깊이 데시메이션 배율(4 = 지금, 2, 1 = 끔) — 점군 크기도 같이 바뀜'),
         OpaqueFunction(function=_camera),
         # (2026-09-08 오전) depthimage_to_laserscan 수평 띠 방식은 철회: 10cm 상자가 0.66m 이내로 오면 띠(높이 0.12~0.16m@0.3m)
