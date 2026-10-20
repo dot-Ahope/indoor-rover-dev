@@ -36,6 +36,6 @@ endif()
 
 install(DIRECTORY launch config systemd DESTINATION share/${PROJECT_NAME})
 
-install(PROGRAMS scripts/sensor_conditioner.py scripts/scan_restamp.py scripts/scan_deskew.py scripts/stuck_monitor.py scripts/pad_relief.py scripts/depth_relay.py scripts/display_info_pub.py scripts/install_rover_base_service.sh scripts/nav_guard.py scripts/rf2o_gate.py DESTINATION lib/${PROJECT_NAME})
+install(PROGRAMS scripts/vslam_twist.py scripts/cuvslam_up.sh scripts/sensor_conditioner.py scripts/scan_restamp.py scripts/scan_deskew.py scripts/stuck_monitor.py scripts/pad_relief.py scripts/depth_relay.py scripts/display_info_pub.py scripts/install_rover_base_service.sh scripts/nav_guard.py scripts/rf2o_gate.py DESTINATION lib/${PROJECT_NAME})
 
 ament_package()
