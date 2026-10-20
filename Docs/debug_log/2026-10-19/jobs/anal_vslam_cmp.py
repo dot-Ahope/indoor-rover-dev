@@ -69,6 +69,11 @@ for nm, (ts, E, S) in runs.items():
         seg.append('t%d~%d +%.1f cm' % (a, b, err[i1] - err[i0]))
     print('  %-14s 추적 성공 %5.1f %% · 위치 오차 끝 %5.1f · 95 %% %5.1f · 최대 %5.1f cm · yaw 오차 끝 %+5.1f° · 구간 증가 %s · 출력 %d (%.1f Hz)'
           % (nm, ok, err[-1], np.percentile(err, 95), err.max(), yerr[-1], ' · '.join(seg), len(ts), len(ts) / (ts[-1] - ts[0])))
+    # 10-20 §27: 방향 오차는 기억된 장애물을 거리에 비례해 옮긴다 — 크기 95 % · 최대, 구간별 방향 오차 변화
+    ys = []
+    for a_, b_ in SEGS:
+        i0 = np.searchsorted(ts - t0, a_); i1 = min(np.searchsorted(ts - t0, b_), len(ts) - 1); ys.append('t%d~%d %+.1f°' % (a_, b_, yerr[i1] - yerr[i0]))
+    print('  %-14s yaw 오차 |95 %%| %.1f° · |최대| %.1f° · 구간 변화 %s' % ('', np.percentile(np.abs(yerr), 95), np.abs(yerr).max(), ' · '.join(ys)))
 fig, ax = plt.subplots(1, 2, figsize=(14, 6))
 col = {'EKF': '#7f7f7f'}; pal = ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728']
 for i, (nm, (ts, E, S)) in enumerate(runs.items()):
