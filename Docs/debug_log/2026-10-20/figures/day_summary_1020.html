@@ -54,6 +54,10 @@ ul{margin:0;padding-left:20px;max-width:72ch} li{margin:2px 0}
 .flow{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;font-size:14px}
 .flow .k{font-family:var(--f-mono);color:var(--muted);font-size:12.5px;padding-top:2px;white-space:nowrap}
 .note{font-size:13px;color:var(--muted)}
+.pm{background:var(--paper);border:1px solid var(--line);padding:12px 14px;display:flex;flex-direction:column;gap:8px}
+.pm h3{font-size:15.5px;margin:0;font-weight:700}
+.pm .flow{grid-template-columns:auto 1fr;gap:6px 14px}
+.pm .flow span:not(.k){max-width:none}
 </style>
 
 <div class="wrap">
@@ -136,14 +140,44 @@ ul{margin:0;padding-left:20px;max-width:72ch} li{margin:2px 0}
 </section>
 
 <section>
-  <h2>바로잡은 내 오류</h2>
-  <ul>
-    <li>재실행 기준 EKF 에서 rf2o · B3 누락으로 효과 과대 보고(§5.2)</li>
-    <li>깊이 메시지 614 kB 라고 함, 실제 38 kB(§7.5)</li>
-    <li>정지 북 면 번짐의 대부분이 깊이 점 몫이라는 주장, 재측정으로 근거 약함(§8.3)</li>
-    <li>공유메모리 전용 시험 설계 결함, 측정 노드가 버퍼 카운터를 오염시킨 측정 창(§7.3b · §9.3)</li>
-    <li>주행 이름 f2v1 이 10-15 와 겹침, 백그라운드 명령 안의 <span class="mono">&amp;</span> 로 감시 셸이 일찍 끝남(§6.4 · §9.7)</li>
-  </ul>
+  <h2>바로잡은 내 오류 — 본 것 → 추론 → 결론 → 알아보는 법<span class="sec">§11</span></h2>
+  <p class="note">같은 실수를 다시 했을 때 같은 순서로 따져 볼 수 있게, 무엇을 봤고 어떻게 추론했고 무엇으로 결론 냈는지를 적습니다. 기전을 모르는 자리는 미확인으로 둡니다.</p>
+
+  <div class="pm">
+    <h3>공유메모리 전용 시험 설계 결함 <span class="pill no">§7.3b</span></h3>
+    <div class="flow">
+      <span class="k">하려 한 것</span><span>§7.3a(SHM+UDP, 30/30 통과)에서 "영상이 정말 공유메모리로 갔다" 는 근거가 UDP 증가량(간접)뿐이라 직접 근거를 만들려 함. 컨테이너 구독자<b>에게만</b> 공유메모리 전용 설정(<span class="mono">fastdds_shm_only.xml</span>, UDP 블록만 지움)을 주고 30 주기.</span>
+      <span class="k">본 것</span><span><span class="mono">outputs/run_shm_test_shmonly.txt</span>: 컨테이너 구독 30 주기 모두 <b>0.0 / 0.0 Hz</b>, 호스트 구독 15.0 / 15.0, 공유메모리 오류 0, <span class="mono">/dev/shm</span> 파일은 양쪽에서 같은 것.</span>
+      <span class="k">처음 추론</span><span>"호스트 → 컨테이너 공유메모리가 안 통한다" 로 읽을 뻔함. 그러면 §7.3a 통과는 전부 UDP 였다는 뜻이 되어 계획이 무너짐.</span>
+      <span class="k">의심한 이유</span><span>수신 0 인데 <b>오류도 0</b>. 전송 경로 고장이면 세그먼트 · 포트 오류가 남는데 없음. '받을 게 있는데 못 받음' 이 아니라 '상대를 모름'(발견 실패)의 서명.</span>
+      <span class="k">판별</span><span><span class="mono">chk_shm_path.sh</span> 두 변형. V1 발행 · 구독 <b>모두</b> 공유메모리 전용 → 컨테이너 150 수신(UDP 가 없으니 공유메모리로 온 것). V2 발행만 SHM+UDP, 구독은 전용 → 같은 호스트의 구독자까지 0.</span>
+      <span class="k">결론</span><span>통신 설정 집합이 다른 참가자끼리는 서로를 못 찾는다. 0 Hz 는 시험 설계 탓이고 공유메모리 자체는 통한다. 왜 못 찾는지(발견 트래픽이 어느 경로로 가나)는 <b>미확인</b>.</span>
+      <span class="k">알아보는 법</span><span>① 수신 0 + 오류 0 이면 먼저 발견 문제를 의심(<span class="mono">ros2 topic info -v</span> 로 상대 엔드포인트가 보이나). ② 경로를 가르는 시험은 한쪽만 바꾸지 말고 <b>모든 참가자를 같은 단일 설정</b>으로. ③ 한쪽만 바꾼 시험은 1 주기 연기 확인에서 Hz 가 나오는지 보고 30 주기로.</span>
+    </div>
+  </div>
+
+  <div class="pm">
+    <h3>측정 노드가 버퍼 카운터를 오염시킨 측정 창 <span class="pill no">§9.3</span></h3>
+    <div class="flow">
+      <span class="k">하려 한 것</span><span>§9.2 기준 2 "UDP 소켓 수신 버퍼 넘침(RcvbufErrors/s)이 UDP 판의 절반 이하" — 영상이 공유메모리로 가면 넘침이 사라져야 하므로 직접 근거로 삼음.</span>
+      <span class="k">어떻게 쟀나</span><span><span class="mono">run_shm_static.sh</span>: 카운터 읽음 → 측정 노드 <span class="mono">chk_vslam_live.py</span> 60 s(직전에 <span class="mono">tf2_echo</span> 도) → 카운터 읽음, 차이/60. 카운터는 <span class="mono">/proc/net/snmp</span> 의 <b>시스템 전체</b> 누적.</span>
+      <span class="k">본 것</span><span><span class="mono">outputs/run_shm_static.txt</span>: UDP 386/s · <b>공유메모리 520/s</b> · UDP 519/s. 같은 창에서 공유메모리 쪽 cuVSLAM 은 15.0 Hz · 프레임 간격 경고 1(UDP 는 101 · 115).</span>
+      <span class="k">의심한 이유</span><span>두 독립 측정과 모순. ① 오전 §7.1 조용한 창은 39/s, cuVSLAM 을 멈춰 소켓을 아무도 안 읽어도 432/s 였는데 그보다 큰 520/s. ② 영상이 초당 520 개씩 버려지면 15.0 Hz · 경고 1 일 수 없음.</span>
+      <span class="k">추적</span><span><span class="mono">chk_udp_drops2.sh</span>: <span class="mono">/proc/net/udp</span> 소켓별 drops. 버림이 몰린 소켓은 포트 7410 · 7412 · 7422 · 7458 · 7468 — DDS <b>발견(metatraffic) 포트 대역</b>. 새 접속이 없는 조용한 10 s 는 증가 0.</span>
+      <span class="k">결론</span><span>측정 노드가 새 참가자로 붙는 순간 기존 26 개 프로세스가 한꺼번에 발견 데이터를 보내 그 소켓(같은 208 kB 버퍼)이 넘쳤고, 전체 카운터가 그것을 셌다. 측정하려고 만든 노드가 측정값을 만든 것. 기준 2 는 판정 불가, 15.0 Hz 결과만 근거로. §7.3a 의 기준선 튐(B16 · B24)도 같은 기전으로 <b>추정</b>(미확인).</span>
+      <span class="k">알아보는 법</span><span>① 시스템 전체 카운터는 <b>창 안에서 참가자를 만들지 않을 때만</b> — 측정 노드를 먼저 띄우고 10 s 뒤 창을 연다. ② 가능하면 소비자 <b>소켓 하나</b>의 drops 를 본다. ③ 결과가 독립 지표 둘과 모순되면 결과보다 측정을 먼저 의심. ④ 로그로만 건강을 본 §9.4 방식이 이 함정을 피한 예.</span>
+    </div>
+  </div>
+
+  <div class="pm">
+    <h3>그 밖의 정정(같은 순서로 짧게)</h3>
+    <div class="flow">
+      <span class="k">§5.2</span><span><b>본 것</b> 재실행 V0 가 기록 EKF 와 회전 때만 최대 8.7 cm 어긋남 → <b>추론</b> 처음엔 메시지 타이밍 차이로 추정 → <b>판별</b> 실시간 구성을 짜며 prep 을 읽다 <span class="mono">rf2o:=true</span> · B3 발견, 넣어 다시 돌리니 끝 58.9 / 58.9 cm 일치 → <b>결론</b> 구성 누락, 효과 30~35 % 는 과대(정정 12~29 %) → <b>알아보기</b> 재현성 검사가 어긋나면 타이밍보다 먼저 bag 의 <span class="mono">params.txt</span> 와 launch 인자를 대조.</span>
+      <span class="k">§7.5</span><span><b>본 것</b> "깊이 614 kB" 는 640×480×2 B 를 머리로 계산한 값 → <b>판별</b> f2z1 bag 의 메시지 직렬화 크기 실측 38 472 B(데시메이션 ×4 = 160×120) → <b>결론</b> nvblox 가 안 빠지는 이유는 크기 → <b>알아보기</b> 메시지 크기는 계산하지 말고 bag 에서 잰다.</span>
+      <span class="k">§8.1→8.3</span><span><b>본 것</b> 오전 정지 bag 북 면 깊이 점 +6.2 cm → <b>추론</b> 번짐 대부분이 센서 몫 → <b>판별</b> 같은 설정 오후 재측정 −5.3 cm, nvblox 북 면 +5.5 → +2.3 → <b>결론</b> 세션 간 ±3 cm 흔들림(배치 · 위치 추정 yaw)이 해상도 효과보다 큼, 주장 철회 → <b>알아보기</b> 한 세션 한 번 측정으로 '몫' 을 나누지 않는다, 같은 설정을 다른 세션에 반복해 흔들림부터 잰다.</span>
+      <span class="k">§6.4 · §9.7</span><span>주행 이름 f2v1 이 10-15 와 겹침(10-15 부속 파일이 덮임) → 이름은 날짜 안이 아니라 전체 기록에서 검색해 정한다. 백그라운드 명령 안에 <span class="mono">&amp;</span> 를 또 넣어 감시 셸이 2 s 만에 끝남 → Jetson 러너는 setsid 라 계속 돌았고 결과는 따로 회수.</span>
+    </div>
+  </div>
 </section>
 
 <section>
