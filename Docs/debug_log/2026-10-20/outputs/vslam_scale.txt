@@ -1,0 +1,6 @@
+  f2z1 가는 길   SLAM 6.43 m · EKF ×0.973 · cuVSLAM(IMU 끔) ×0.970 · cuVSLAM(IMU 켬) ×0.955
+  f2z1 돌아오는 길 SLAM 6.36 m · EKF ×0.984 · cuVSLAM(IMU 끔) ×0.975 · cuVSLAM(IMU 켬) ×0.971
+  f2z1 전체     SLAM 13.62 m · EKF ×0.966 · cuVSLAM(IMU 끔) ×0.964 · cuVSLAM(IMU 켬) ×0.955
+  f2z2 가는 길   SLAM 6.48 m · EKF ×0.971 · cuVSLAM(IMU 끔) ×0.963 · cuVSLAM(IMU 켬) ×0.958
+  f2z2 돌아오는 길 SLAM 6.54 m · EKF ×0.969 · cuVSLAM(IMU 끔) ×0.965 · cuVSLAM(IMU 켬) ×0.960
+  f2z2 전체     SLAM 13.76 m · EKF ×0.965 · cuVSLAM(IMU 끔) ×0.967 · cuVSLAM(IMU 켬) ×0.964
