@@ -1,0 +1,104 @@
+컨테이너 FastDDS: /opt/ros/humble/lib/libfastrtps.so.2.6 · 호스트: /opt/ros/humble/lib/libfastrtps.so.2.6
+시작 전 /dev/shm fastrtps 2 개
+########## 팔 A: 정리 없음 ##########
+A01 INT          정리[-] 기준 UDP 5094/s | 구독 컨테이너·호스트 Hz·UDP/s: 15.0 15.0 15.0 15.0 5154 | SHM오류 0 | 끝 /dev/shm 2
+A02 TERM         정리[-] 기준 UDP 5102/s | 구독 컨테이너·호스트 Hz·UDP/s: 15.0 15.0 15.0 15.0 5114 | SHM오류 0 | 끝 /dev/shm 2
+/tmp/run_shm_test.sh: line 22: 902056 Killed                  python3 /tmp/shm_talker.py shmt_talker > $D/talker.log 2>&1
+/tmp/run_shm_test.sh: line 22: 902057 Killed                  python3 /tmp/shm_listener.py shmt_host $D/host > $D/host.log 2>&1
+/tmp/run_shm_test.sh: line 22: 902058 Killed                  python3 /tmp/shm_idle.py shmt_idle1 > $D/idle1.log 2>&1
+/tmp/run_shm_test.sh: line 22: 902059 Killed                  python3 /tmp/shm_idle.py shmt_idle2 > $D/idle2.log 2>&1
+A03 KILL         정리[-] 기준 UDP 5100/s | 구독 컨테이너·호스트 Hz·UDP/s: 15.0 15.0 15.0 15.0 5107 | SHM오류 0 | 끝 /dev/shm 27
+/tmp/run_shm_test.sh: line 34: 903765 Killed                  python3 /tmp/shm_talker.py shmt_talker > $D/talker.log 2>&1
+A04 발행-9재기동 정리[-] 기준 UDP 5102/s | 구독 컨테이너·호스트 Hz·UDP/s: 15.0 15.0 15.0 15.0 5156 | 발행 재기동 뒤 15.0 15.0 | SHM오류 0 | 끝 /dev/shm 20
+A05 INT          정리[-] 기준 UDP 5108/s | 구독 컨테이너·호스트 Hz·UDP/s: 15.0 15.0 15.0 15.0 5162 | SHM오류 0 | 끝 /dev/shm 20
+A06 TERM         정리[-] 기준 UDP 5091/s | 구독 컨테이너·호스트 Hz·UDP/s: 15.0 15.0 15.0 15.0 5130 | SHM오류 0 | 끝 /dev/shm 20
+/tmp/run_shm_test.sh: line 22: 910168 Killed                  python3 /tmp/shm_talker.py shmt_talker > $D/talker.log 2>&1
+/tmp/run_shm_test.sh: line 22: 910169 Killed                  python3 /tmp/shm_listener.py shmt_host $D/host > $D/host.log 2>&1
+/tmp/run_shm_test.sh: line 22: 910170 Killed                  python3 /tmp/shm_idle.py shmt_idle1 > $D/idle1.log 2>&1
+/tmp/run_shm_test.sh: line 22: 910171 Killed                  python3 /tmp/shm_idle.py shmt_idle2 > $D/idle2.log 2>&1
+A07 KILL         정리[-] 기준 UDP 5106/s | 구독 컨테이너·호스트 Hz·UDP/s: 15.0 15.0 15.0 15.0 5122 | SHM오류 0 | 끝 /dev/shm 29
+/tmp/run_shm_test.sh: line 34: 911807 Killed                  python3 /tmp/shm_talker.py shmt_talker > $D/talker.log 2>&1
+A08 발행-9재기동 정리[-] 기준 UDP 5112/s | 구독 컨테이너·호스트 Hz·UDP/s: 15.0 15.0 15.0 15.0 5104 | 발행 재기동 뒤 15.0 15.0 | SHM오류 0 | 끝 /dev/shm 22
+A09 INT          정리[-] 기준 UDP 5103/s | 구독 컨테이너·호스트 Hz·UDP/s: 15.0 15.0 15.0 15.0 5123 | SHM오류 0 | 끝 /dev/shm 22
+A10 TERM         정리[-] 기준 UDP 5094/s | 구독 컨테이너·호스트 Hz·UDP/s: 15.0 15.0 15.0 15.0 5132 | SHM오류 0 | 끝 /dev/shm 22
+/tmp/run_shm_test.sh: line 22: 918260 Killed                  python3 /tmp/shm_talker.py shmt_talker > $D/talker.log 2>&1
+/tmp/run_shm_test.sh: line 22: 918261 Killed                  python3 /tmp/shm_listener.py shmt_host $D/host > $D/host.log 2>&1
+/tmp/run_shm_test.sh: line 22: 918262 Killed                  python3 /tmp/shm_idle.py shmt_idle1 > $D/idle1.log 2>&1
+/tmp/run_shm_test.sh: line 22: 918263 Killed                  python3 /tmp/shm_idle.py shmt_idle2 > $D/idle2.log 2>&1
+A11 KILL         정리[-] 기준 UDP 5095/s | 구독 컨테이너·호스트 Hz·UDP/s: 15.0 15.0 15.0 15.0 5136 | SHM오류 0 | 끝 /dev/shm 31
+/tmp/run_shm_test.sh: line 34: 919847 Killed                  python3 /tmp/shm_talker.py shmt_talker > $D/talker.log 2>&1
+A12 발행-9재기동 정리[-] 기준 UDP 5085/s | 구독 컨테이너·호스트 Hz·UDP/s: 15.0 15.0 15.0 15.0 5107 | 발행 재기동 뒤 15.0 15.0 | SHM오류 0 | 끝 /dev/shm 24
+A13 INT          정리[-] 기준 UDP 5097/s | 구독 컨테이너·호스트 Hz·UDP/s: 15.0 15.0 15.0 15.0 5150 | SHM오류 0 | 끝 /dev/shm 24
+A14 TERM         정리[-] 기준 UDP 5098/s | 구독 컨테이너·호스트 Hz·UDP/s: 15.0 15.0 15.0 15.0 5140 | SHM오류 0 | 끝 /dev/shm 24
+/tmp/run_shm_test.sh: line 22: 926243 Killed                  python3 /tmp/shm_talker.py shmt_talker > $D/talker.log 2>&1
+/tmp/run_shm_test.sh: line 22: 926244 Killed                  python3 /tmp/shm_listener.py shmt_host $D/host > $D/host.log 2>&1
+/tmp/run_shm_test.sh: line 22: 926245 Killed                  python3 /tmp/shm_idle.py shmt_idle1 > $D/idle1.log 2>&1
+/tmp/run_shm_test.sh: line 22: 926246 Killed                  python3 /tmp/shm_idle.py shmt_idle2 > $D/idle2.log 2>&1
+A15 KILL         정리[-] 기준 UDP 5132/s | 구독 컨테이너·호스트 Hz·UDP/s: 15.0 15.0 15.0 15.0 5121 | SHM오류 0 | 끝 /dev/shm 41
+########## 팔 B: 매 기동 전 fastdds shm clean ##########
+B01 INT          정리[12 zombie segments cleaned] 기준 UDP 5130/s | 구독 컨테이너·호스트 Hz·UDP/s: 15.0 15.0 15.0 15.0 5149 | SHM오류 0 | 끝 /dev/shm 2
+B02 TERM         정리[0 zombie segments cleaned] 기준 UDP 5128/s | 구독 컨테이너·호스트 Hz·UDP/s: 15.0 15.0 15.0 15.0 5114 | SHM오류 0 | 끝 /dev/shm 2
+/tmp/run_shm_test.sh: line 22: 931533 Killed                  python3 /tmp/shm_talker.py shmt_talker > $D/talker.log 2>&1
+/tmp/run_shm_test.sh: line 22: 931534 Killed                  python3 /tmp/shm_listener.py shmt_host $D/host > $D/host.log 2>&1
+/tmp/run_shm_test.sh: line 22: 931535 Killed                  python3 /tmp/shm_idle.py shmt_idle1 > $D/idle1.log 2>&1
+/tmp/run_shm_test.sh: line 22: 931536 Killed                  python3 /tmp/shm_idle.py shmt_idle2 > $D/idle2.log 2>&1
+B03 KILL         정리[0 zombie segments cleaned] 기준 UDP 5099/s | 구독 컨테이너·호스트 Hz·UDP/s: 15.0 15.0 15.0 15.0 5132 | SHM오류 0 | 끝 /dev/shm 27
+/tmp/run_shm_test.sh: line 34: 933180 Killed                  python3 /tmp/shm_talker.py shmt_talker > $D/talker.log 2>&1
+B04 발행-9재기동 정리[5 zombie segments cleaned] 기준 UDP 5092/s | 구독 컨테이너·호스트 Hz·UDP/s: 15.0 15.0 15.0 15.0 5164 | 발행 재기동 뒤 15.0 15.0 | SHM오류 0 | 끝 /dev/shm 10
+B05 INT          정리[0 zombie segments cleaned] 기준 UDP 5103/s | 구독 컨테이너·호스트 Hz·UDP/s: 15.0 15.0 15.0 15.0 5153 | SHM오류 0 | 끝 /dev/shm 10
+B06 TERM         정리[0 zombie segments cleaned] 기준 UDP 5098/s | 구독 컨테이너·호스트 Hz·UDP/s: 15.0 15.0 15.0 15.0 5150 | SHM오류 0 | 끝 /dev/shm 10
+/tmp/run_shm_test.sh: line 22: 939635 Killed                  python3 /tmp/shm_talker.py shmt_talker > $D/talker.log 2>&1
+/tmp/run_shm_test.sh: line 22: 939636 Killed                  python3 /tmp/shm_listener.py shmt_host $D/host > $D/host.log 2>&1
+/tmp/run_shm_test.sh: line 22: 939637 Killed                  python3 /tmp/shm_idle.py shmt_idle1 > $D/idle1.log 2>&1
+/tmp/run_shm_test.sh: line 22: 939638 Killed                  python3 /tmp/shm_idle.py shmt_idle2 > $D/idle2.log 2>&1
+B07 KILL         정리[0 zombie segments cleaned] 기준 UDP 5131/s | 구독 컨테이너·호스트 Hz·UDP/s: 15.0 15.0 15.0 15.0 5095 | SHM오류 0 | 끝 /dev/shm 27
+/tmp/run_shm_test.sh: line 34: 941298 Killed                  python3 /tmp/shm_talker.py shmt_talker > $D/talker.log 2>&1
+B08 발행-9재기동 정리[5 zombie segments cleaned] 기준 UDP 5080/s | 구독 컨테이너·호스트 Hz·UDP/s: 15.0 15.0 15.0 15.0 5130 | 발행 재기동 뒤 15.0 15.0 | SHM오류 0 | 끝 /dev/shm 8
+B09 INT          정리[0 zombie segments cleaned] 기준 UDP 5112/s | 구독 컨테이너·호스트 Hz·UDP/s: 15.0 15.0 15.0 15.0 5141 | SHM오류 0 | 끝 /dev/shm 8
+B10 TERM         정리[0 zombie segments cleaned] 기준 UDP 5086/s | 구독 컨테이너·호스트 Hz·UDP/s: 15.0 15.0 15.0 15.0 5166 | SHM오류 0 | 끝 /dev/shm 8
+/tmp/run_shm_test.sh: line 22: 947694 Killed                  python3 /tmp/shm_talker.py shmt_talker > $D/talker.log 2>&1
+/tmp/run_shm_test.sh: line 22: 947695 Killed                  python3 /tmp/shm_listener.py shmt_host $D/host > $D/host.log 2>&1
+/tmp/run_shm_test.sh: line 22: 947696 Killed                  python3 /tmp/shm_idle.py shmt_idle1 > $D/idle1.log 2>&1
+/tmp/run_shm_test.sh: line 22: 947697 Killed                  python3 /tmp/shm_idle.py shmt_idle2 > $D/idle2.log 2>&1
+B11 KILL         정리[0 zombie segments cleaned] 기준 UDP 5118/s | 구독 컨테이너·호스트 Hz·UDP/s: 15.0 15.0 15.0 15.0 5134 | SHM오류 0 | 끝 /dev/shm 27
+/tmp/run_shm_test.sh: line 34: 949351 Killed                  python3 /tmp/shm_talker.py shmt_talker > $D/talker.log 2>&1
+B12 발행-9재기동 정리[5 zombie segments cleaned] 기준 UDP 5114/s | 구독 컨테이너·호스트 Hz·UDP/s: 15.0 15.0 15.0 15.0 5156 | 발행 재기동 뒤 15.0 15.0 | SHM오류 0 | 끝 /dev/shm 10
+B13 INT          정리[0 zombie segments cleaned] 기준 UDP 5109/s | 구독 컨테이너·호스트 Hz·UDP/s: 15.0 15.0 15.0 15.0 5118 | SHM오류 0 | 끝 /dev/shm 10
+B14 TERM         정리[0 zombie segments cleaned] 기준 UDP 5109/s | 구독 컨테이너·호스트 Hz·UDP/s: 15.0 15.0 15.0 15.0 5146 | SHM오류 0 | 끝 /dev/shm 10
+/tmp/run_shm_test.sh: line 22: 955803 Killed                  python3 /tmp/shm_talker.py shmt_talker > $D/talker.log 2>&1
+/tmp/run_shm_test.sh: line 22: 955804 Killed                  python3 /tmp/shm_listener.py shmt_host $D/host > $D/host.log 2>&1
+/tmp/run_shm_test.sh: line 22: 955805 Killed                  python3 /tmp/shm_idle.py shmt_idle1 > $D/idle1.log 2>&1
+/tmp/run_shm_test.sh: line 22: 955806 Killed                  python3 /tmp/shm_idle.py shmt_idle2 > $D/idle2.log 2>&1
+B15 KILL         정리[0 zombie segments cleaned] 기준 UDP 5089/s | 구독 컨테이너·호스트 Hz·UDP/s: 15.0 15.0 15.0 15.0 5140 | SHM오류 0 | 끝 /dev/shm 27
+/tmp/run_shm_test.sh: line 34: 957467 Killed                  python3 /tmp/shm_talker.py shmt_talker > $D/talker.log 2>&1
+B16 발행-9재기동 정리[5 zombie segments cleaned] 기준 UDP 11178/s | 구독 컨테이너·호스트 Hz·UDP/s: 15.0 15.0 15.0 15.0 5129 | 발행 재기동 뒤 15.0 15.0 | SHM오류 0 | 끝 /dev/shm 10
+B17 INT          정리[0 zombie segments cleaned] 기준 UDP 5133/s | 구독 컨테이너·호스트 Hz·UDP/s: 15.0 15.0 15.0 15.0 5134 | SHM오류 0 | 끝 /dev/shm 10
+B18 TERM         정리[0 zombie segments cleaned] 기준 UDP 5124/s | 구독 컨테이너·호스트 Hz·UDP/s: 15.0 15.0 15.0 15.0 5147 | SHM오류 0 | 끝 /dev/shm 10
+/tmp/run_shm_test.sh: line 22: 963919 Killed                  python3 /tmp/shm_talker.py shmt_talker > $D/talker.log 2>&1
+/tmp/run_shm_test.sh: line 22: 963920 Killed                  python3 /tmp/shm_listener.py shmt_host $D/host > $D/host.log 2>&1
+/tmp/run_shm_test.sh: line 22: 963923 Killed                  python3 /tmp/shm_idle.py shmt_idle1 > $D/idle1.log 2>&1
+/tmp/run_shm_test.sh: line 22: 963926 Killed                  python3 /tmp/shm_idle.py shmt_idle2 > $D/idle2.log 2>&1
+B19 KILL         정리[0 zombie segments cleaned] 기준 UDP 5083/s | 구독 컨테이너·호스트 Hz·UDP/s: 15.0 15.0 15.0 15.0 5129 | SHM오류 0 | 끝 /dev/shm 27
+/tmp/run_shm_test.sh: line 34: 965572 Killed                  python3 /tmp/shm_talker.py shmt_talker > $D/talker.log 2>&1
+B20 발행-9재기동 정리[5 zombie segments cleaned] 기준 UDP 5094/s | 구독 컨테이너·호스트 Hz·UDP/s: 15.0 15.0 15.0 15.0 5140 | 발행 재기동 뒤 15.0 15.0 | SHM오류 0 | 끝 /dev/shm 10
+B21 INT          정리[0 zombie segments cleaned] 기준 UDP 5092/s | 구독 컨테이너·호스트 Hz·UDP/s: 15.0 15.0 15.0 15.0 5121 | SHM오류 0 | 끝 /dev/shm 10
+B22 TERM         정리[0 zombie segments cleaned] 기준 UDP 5107/s | 구독 컨테이너·호스트 Hz·UDP/s: 15.0 15.0 15.0 15.0 5118 | SHM오류 0 | 끝 /dev/shm 10
+/tmp/run_shm_test.sh: line 22: 972006 Killed                  python3 /tmp/shm_talker.py shmt_talker > $D/talker.log 2>&1
+/tmp/run_shm_test.sh: line 22: 972008 Killed                  python3 /tmp/shm_listener.py shmt_host $D/host > $D/host.log 2>&1
+/tmp/run_shm_test.sh: line 22: 972009 Killed                  python3 /tmp/shm_idle.py shmt_idle1 > $D/idle1.log 2>&1
+/tmp/run_shm_test.sh: line 22: 972010 Killed                  python3 /tmp/shm_idle.py shmt_idle2 > $D/idle2.log 2>&1
+B23 KILL         정리[0 zombie segments cleaned] 기준 UDP 5087/s | 구독 컨테이너·호스트 Hz·UDP/s: 15.0 15.0 15.0 15.0 5096 | SHM오류 0 | 끝 /dev/shm 19
+/tmp/run_shm_test.sh: line 34: 973627 Killed                  python3 /tmp/shm_talker.py shmt_talker > $D/talker.log 2>&1
+B24 발행-9재기동 정리[1 zombie segments cleaned] 기준 UDP 5104/s | 구독 컨테이너·호스트 Hz·UDP/s: 15.0 15.0 15.0 15.0 5683 | 발행 재기동 뒤 15.0 15.0 | SHM오류 0 | 끝 /dev/shm 10
+B25 INT          정리[0 zombie segments cleaned] 기준 UDP 5098/s | 구독 컨테이너·호스트 Hz·UDP/s: 15.0 15.0 15.0 15.0 5146 | SHM오류 0 | 끝 /dev/shm 10
+B26 TERM         정리[0 zombie segments cleaned] 기준 UDP 5091/s | 구독 컨테이너·호스트 Hz·UDP/s: 15.0 15.0 15.0 15.0 5126 | SHM오류 0 | 끝 /dev/shm 10
+/tmp/run_shm_test.sh: line 22: 980091 Killed                  python3 /tmp/shm_talker.py shmt_talker > $D/talker.log 2>&1
+/tmp/run_shm_test.sh: line 22: 980092 Killed                  python3 /tmp/shm_listener.py shmt_host $D/host > $D/host.log 2>&1
+/tmp/run_shm_test.sh: line 22: 980093 Killed                  python3 /tmp/shm_idle.py shmt_idle1 > $D/idle1.log 2>&1
+/tmp/run_shm_test.sh: line 22: 980094 Killed                  python3 /tmp/shm_idle.py shmt_idle2 > $D/idle2.log 2>&1
+B27 KILL         정리[0 zombie segments cleaned] 기준 UDP 5116/s | 구독 컨테이너·호스트 Hz·UDP/s: 15.0 15.0 15.0 15.0 5116 | SHM오류 0 | 끝 /dev/shm 27
+/tmp/run_shm_test.sh: line 34: 981743 Killed                  python3 /tmp/shm_talker.py shmt_talker > $D/talker.log 2>&1
+B28 발행-9재기동 정리[5 zombie segments cleaned] 기준 UDP 5099/s | 구독 컨테이너·호스트 Hz·UDP/s: 15.0 14.8 15.0 15.0 5130 | 발행 재기동 뒤 15.0 15.0 | SHM오류 0 | 끝 /dev/shm 10
+B29 INT          정리[0 zombie segments cleaned] 기준 UDP 5108/s | 구독 컨테이너·호스트 Hz·UDP/s: 15.0 15.0 15.0 15.0 5113 | SHM오류 0 | 끝 /dev/shm 10
+B30 TERM         정리[0 zombie segments cleaned] 기준 UDP 5104/s | 구독 컨테이너·호스트 Hz·UDP/s: 14.8 15.0 15.0 15.0 5132 | SHM오류 0 | 끝 /dev/shm 10
+마지막 정리: 0 zombie segments cleaned · /dev/shm fastrtps 10
