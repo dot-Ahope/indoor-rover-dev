@@ -1,0 +1,18 @@
+########## 구성 on ##########
+PREP_OK
+  ⏱ +57 s prep 끝 — PREP_OK
+  프로젝터 emitter_enabled: 
+Duration:          23.237835184s
+                   Topic: /camera/camera/depth/image_rect_raw | Type: sensor_msgs/msg/Image | Count: 349 | 
+                   Topic: /local_costmap/costmap | Type: nav_msgs/msg/OccupancyGrid | Count: 40 | 
+                   Topic: /nvblox_node/static_map_slice | Type: nvblox_msgs/msg/DistanceMapSlice | Count: 220 | 
+########## 구성 off ##########
+PREP_OK
+  ⏱ +63 s prep 끝 — PREP_OK
+  프로젝터 emitter_enabled: Integer value is: 0
+Duration:          23.552648252s
+Topic information: Topic: /local_costmap/costmap | Type: nav_msgs/msg/OccupancyGrid | Count: 38 | 
+                   Topic: /camera/camera/depth/image_rect_raw | Type: sensor_msgs/msg/Image | Count: 352 | 
+                   Topic: /nvblox_node/static_map_slice | Type: nvblox_msgs/msg/DistanceMapSlice | Count: 224 | 
+########## 지금 구성으로 복귀 ##########
+  ⏱ +60 s prep 끝 — PREP_OK
