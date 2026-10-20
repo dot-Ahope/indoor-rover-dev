@@ -2,8 +2,10 @@
 """anal_ekf_replay — EKF 오프라인 재실행 변형(V0~V3)을 주행 때 EKF · cuVSLAM 과 함께 SLAM 기준으로 비교. (2026-10-20 §5, PC)
   지표(§4 와 같음): 10 s 창 상대 오차(1 s 간격) — 전 구간 위치 95 % · 최대 · yaw 95 %, W3 회전 t105~125 위치 최대,
   상자 옆 출발 t18~36 · 복귀 t180~200 위치 95 %; t=20 s 정렬 절대 위치 95 % · yaw |95 %| · 끝 위치.
-  모두 camera_link 의 지도 평면 자세. 인자: 주행bag 재실행출력bag cuVSLAM_csv [그림.png]"""
-import sys, math, bisect, csv
+  모두 camera_link 의 지도 평면 자세. 인자: 주행bag 재실행출력bag cuVSLAM_csv [그림.png]
+  §6.4 실시간 그림자 주행: 재실행출력bag 자리에 주행bag 을 주고 환경 RTOPICS='/odometry/ekf_vslam' 로 그 토픽만, cuVSLAM_csv 를 '-' 로 주면
+  주행bag 의 /visual_slam/tracking/odometry(camera_link 자세)를 cuVSLAM 으로 쓴다."""
+import sys, math, bisect, csv, os
 from pathlib import Path
 import numpy as np
 from rosbags.highlevel import AnyReader
@@ -32,14 +34,25 @@ with AnyReader([Path(bag)], default_typestore=TS) as rd:
             if c.topic == '/tf_static': static[tr.child_frame_id] = (tr.header.frame_id, A)
             elif tr.header.frame_id == 'map' and tr.child_frame_id == 'odom': MO.append((st, A))
             elif tr.header.frame_id == 'odom' and tr.child_frame_id == 'base_link': OB.append((st, A))
+RT = [x for x in os.environ.get('RTOPICS', '').split(',') if x]
 with AnyReader([Path(rbag)], default_typestore=TS) as rd:
-    for c, t, raw in rd.messages():
+    CS = [c for c in rd.connections if not RT or c.topic in RT]
+    if RT and not CS: sys.exit('RTOPICS %s 가 bag 에 없음' % RT)   # 빈 목록이면 rosbags 는 전부 읽는다
+    for c, t, raw in rd.messages(connections=CS):
         m = rd.deserialize(raw, c.msgtype)
         src.setdefault('재실행 ' + c.topic.split('/')[-1].upper(), []).append((m.header.stamp.sec + m.header.stamp.nanosec * 1e-9, M4(m.pose.pose.position, m.pose.pose.orientation)))
 B2C = np.eye(4); f = 'camera_link'
 while f != 'base_link':
     p, A = static[f]; B2C = A @ B2C; f = p
-R = np.array([[float(v) for v in r] for r in list(csv.reader(open(vcsv)))[1:]])
+if vcsv == '-':
+    R = []
+    with AnyReader([Path(bag)], default_typestore=TS) as rd:
+        for c, t, raw in rd.messages(connections=[c for c in rd.connections if c.topic == '/visual_slam/tracking/odometry']):
+            m = rd.deserialize(raw, c.msgtype); p_, q_ = m.pose.pose.position, m.pose.pose.orientation
+            R.append([m.header.stamp.sec + m.header.stamp.nanosec * 1e-9, p_.x, p_.y, p_.z, q_.x, q_.y, q_.z, q_.w])
+    R = np.array(R)
+else:
+    R = np.array([[float(v) for v in r] for r in list(csv.reader(open(vcsv)))[1:]])
 src['cuVSLAM(IMU 끔)'] = []
 for r in R:
     V = np.eye(4); V[:3, :3] = qm(*r[4:8]); V[:3, 3] = r[1:4]; src['cuVSLAM(IMU 끔)'].append((r[0], V @ np.linalg.inv(B2C)))   # camera_link → base_link 로 맞춰 둠
