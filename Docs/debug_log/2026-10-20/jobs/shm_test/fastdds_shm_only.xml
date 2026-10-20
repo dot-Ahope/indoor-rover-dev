@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- 2026-10-20 §7.3b 확인용 — SHM 만(UDP 없음): 이 프로파일 참가자가 데이터를 받으면 SHM 경로가 확실히 쓰인 것. 원본 설명: 같은 호스트(호스트 ↔ ipc=host 컨테이너) 참가자끼리는 SHM, 그 밖(UDP 전용 프로파일 노드)과는 UDP 로 협상.
+     segment_size 4 MB: 참가자별 /dev/shm 세그먼트 — 640×480 영상(307 kB) 몇 장을 담기 위해(기본 512 kB). 09-09 UDP 전용 결정 배경은 fastdds_udp_only.xml · 10-20 §7.2 -->
+<dds xmlns="http://www.eprosima.com">
+  <profiles>
+    <transport_descriptors>
+      <transport_descriptor>
+        <transport_id>shm_transport</transport_id>
+        <type>SHM</type>
+        <segment_size>4194304</segment_size>
+      </transport_descriptor>
+    </transport_descriptors>
+    <participant profile_name="shm_udp_participant" is_default_profile="true">
+      <rtps>
+        <userTransports>
+          <transport_id>shm_transport</transport_id>
+        </userTransports>
+        <useBuiltinTransports>false</useBuiltinTransports>
+      </rtps>
+    </participant>
+  </profiles>
+</dds>
