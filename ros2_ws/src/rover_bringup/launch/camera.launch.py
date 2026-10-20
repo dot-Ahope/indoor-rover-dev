@@ -53,8 +53,10 @@ def _camera(context):
         'pointcloud.enable': True,
         'pointcloud__neon_.enable': True,
         'pointcloud__neon_.allow_no_texture_points': True,
-        'decimation_filter.enable': True,
-        'decimation_filter.filter_magnitude': 4,
+        'decimation_filter.enable': int(LaunchConfiguration('decimation').perform(context)) > 1,
+        # 10-20 §8: decimation:= 인자(기본 4 = 지금). 4 이상은 4×4 블록 '0 아닌 값 평균'(2~3 은 중앙값 — librealsense 설명, 기억 · 시험으로 확인 중)이라
+        #   상자 모서리에서 상자 · 배경 깊이가 섞인 점이 면 밖에 찍히는지(10-20 §8.1 북 면 +6 cm) 정지 A/B 로 본다. 1 = 데시메이션 끔(640×480).
+        'decimation_filter.filter_magnitude': int(LaunchConfiguration('decimation').perform(context)),
         'enable_gyro': enable_imu,
         'enable_accel': enable_imu,
         # 2026-09-09: 200 → 100Hz. CPU 부족이 EKF 주기 위반(91회, 평균 0.055s 최대 0.197s)을
@@ -101,6 +103,7 @@ def generate_launch_description():
         DeclareLaunchArgument('emitter_flash', default_value='false'),
         DeclareLaunchArgument('stereo_fps', default_value='30'),
         DeclareLaunchArgument('emitter_off', default_value='false'),
+        DeclareLaunchArgument('decimation', default_value='4', description='10-20 §8 깊이 데시메이션 배율(4 = 지금, 2, 1 = 끔) — 점군 크기도 같이 바뀜'),
         OpaqueFunction(function=_camera),
         # (2026-09-08 오전) depthimage_to_laserscan 수평 띠 방식은 철회: 10cm 상자가 0.66m 이내로 오면 띠(높이 0.12~0.16m@0.3m)
         #   아래로 내려가 마킹이 끊기고, 2D 소거 광선이 상자 셀을 지움. → 포인트클라우드 + VoxelLayer(3D 소거)로 대체.
