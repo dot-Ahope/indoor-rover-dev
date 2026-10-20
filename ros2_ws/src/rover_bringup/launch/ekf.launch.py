@@ -3,9 +3,9 @@
 import os
 
 import yaml
-from ament_index_python.packages import get_package_share_directory
+from ament_index_python.packages import get_package_prefix, get_package_share_directory
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument, OpaqueFunction
+from launch.actions import DeclareLaunchArgument, ExecuteProcess, OpaqueFunction
 from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
 
@@ -21,6 +21,14 @@ def _nodes(context):
     rf2o = _truthy(context, 'rf2o')
     st = {'use_sim_time': _truthy(context, 'use_sim_time')}   # bag 재생 검증용(기본 false)
     shadow = _truthy(context, 'shadow') and rf2o
+    # 2026-10-20 §6: cuVSLAM 병진 속도 융합 — off(기본) | shadow(그림자 EKF /odometry/ekf_vslam, TF 안 냄) | on(주 EKF 의 odom1 을 rf2o 대신 cuVSLAM)
+    #   근거: 오프라인 재실행(Docs/debug_log/2026-10-20/SUMMARY.md §5.3) V4(rf2o 대신 cuVSLAM vx · vy) = 회전 미끄러짐 창 −12~29 %, rf2o 와 같이 써도 같음.
+    #   필요: 프로젝터 상시 끔(camera.launch emitter_off:=true — 원시 IR 을 cuVSLAM 이 받음), Isaac ROS 컨테이너(isaac_ros_visual_slam 3.2.6).
+    vslam = LaunchConfiguration('vslam').perform(context).strip()
+    if vslam not in ('off', 'shadow', 'on'):
+        raise RuntimeError('vslam:= off | shadow | on')
+    VS_ODOM = {'odom1': '/vslam/odom', 'odom1_config': [False] * 6 + [True, True, False] + [False] * 6,
+               'odom1_queue_size': 10, 'odom1_nodelay': True, 'odom1_differential': False, 'odom1_relative': False}
     remap = [('/imu/data_raw', '/camera/camera/imu')]   # IMU 소스 = D455f 내장 IMU (보드 /imu/data_raw 는 자이로 무반응 → 미사용)
 
     # 2026-09-28: conditioner:=cpp|py — C++ 이식판이 V1(출력 비트 동일)·V2(CPU 42→7 %) 통과해 기본 cpp (SUMMARY 09-28 §11). 되돌리기 = conditioner:=py
@@ -28,7 +36,7 @@ def _nodes(context):
     cp = {'icr_enable': _truthy(context, 'icr'), 'rot_cov_enable': _truthy(context, 'rot_cov')}
     # 2026-10-06 R3: rf2o:=true 면 B3 를 켜고 순수 회전 중 휠 병진 σ 를 0.3 으로 — 휠의 '옆 이동 0'(25 Hz)이 rf2o(10 Hz)를 눌러
     #   회전 미끄러짐을 지우지 않게(10-02 §14.1: σ 0.03 이면 rot3 36.8 cm 중 7 cm 만 잡음, 0.3 이면 줄자 대비 4.3 cm).
-    if rf2o:
+    if rf2o or vslam != 'off':   # 10-20: cuVSLAM 도 회전 중 옆 이동을 보므로 같은 B3(재실행 V4 가 이 조건으로 검증됨)
         cp.update({'rot_cov_enable': True, 'rot_vx_var': 0.3 ** 2, 'rot_vy_var': 0.3 ** 2})
     acts = [
         Node(package='rover_bringup', executable='sensor_conditioner.py', name='sensor_conditioner', output='screen', remappings=remap, parameters=[st])
@@ -40,7 +48,9 @@ def _nodes(context):
         raise RuntimeError('rf2o:=true 는 conditioner:=cpp 만(B3 공분산이 C++ 판에만 있음)')
 
     ekf = [config, st]
-    if rf2o:
+    if vslam == 'on':
+        ekf.append(VS_ODOM)
+    if rf2o and vslam != 'on':
         # odom1 = rf2o 게이트 출력(차체 vx·vy 만). 회전은 자이로(imu0)가 담당 — rf2o 각도 누적은 540° 에 4~8° 로 자이로보다 나쁨(§13.1)
         ekf.append({'odom1': '/odom_rf2o/gated',
                     'odom1_config': [False] * 6 + [True, True, False] + [False] * 6,
@@ -56,6 +66,18 @@ def _nodes(context):
                               'v_ref': LaunchConfiguration('gate_vref').perform(context)}, st]),
         ]
     acts.append(Node(package='robot_localization', executable='ekf_node', name='ekf_filter_node', output='screen', parameters=ekf))
+    if vslam != 'off':
+        acts += [
+            ExecuteProcess(cmd=[os.path.join(get_package_prefix('rover_bringup'), 'lib', 'rover_bringup', 'cuvslam_up.sh'),
+                                os.path.join(share, 'launch', 'cuvslam_container.launch.py'), '/tmp/cuvslam.log'], output='screen'),
+            Node(package='rover_bringup', executable='vslam_twist.py', name='vslam_twist', output='screen', parameters=[st]),
+        ]
+    if vslam == 'shadow':
+        with open(config, encoding='utf-8') as f:
+            pv = yaml.safe_load(f)['ekf_filter_node']['ros__parameters']
+        pv.update({'publish_tf': False}); pv.update(VS_ODOM); pv.update(st)
+        acts.append(Node(package='robot_localization', executable='ekf_node', name='ekf_vslam', output='screen',
+                         parameters=[pv], remappings=[('odometry/filtered', '/odometry/ekf_vslam')]))
     if shadow:
         # 비교용 그림자 EKF A(rf2o 넣기 전 구성 그대로, TF 안 냄) — 단계별 회전 실증(§17)에서 A·B 를 같은 시각에 비교
         with open(config, encoding='utf-8') as f:
@@ -81,5 +103,7 @@ def generate_launch_description():
         DeclareLaunchArgument('gate_vref', default_value='wheel',
                               description='G4 판정량: wheel(휠과의 잔차, 10-07 §4 기본) | abs(rf2o |v| 절댓값, 10-06~07 §1)'),
         DeclareLaunchArgument('use_sim_time', default_value='false', description='bag 재생 검증용'),
+        DeclareLaunchArgument('vslam', default_value='off',
+                              description='2026-10-20 §6 cuVSLAM 병진 속도: off | shadow(그림자 EKF /odometry/ekf_vslam) | on(주 EKF 가 rf2o 대신) — emitter_off:=true 필요'),
         OpaqueFunction(function=_nodes),
     ])

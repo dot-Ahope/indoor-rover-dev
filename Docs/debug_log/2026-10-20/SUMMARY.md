@@ -156,3 +156,39 @@
   - **V4 ≈ V3** → cuVSLAM 이 있으면 rf2o 는 더하는 게 없다. 거꾸로 rf2o 의 몫은 §5.1 V0(rf2o 없음) 대비 f2z1 W3 28.7 → 26.5(−2 cm) 정도로 작음.
   - 상자 옆: −0.1 ~ +1.4 cm — 개선 없음(SLAM 기준 흔들림 안).
 - 판정: §5 의 '실시간 구축 조건(상자 옆 −1.5 cm)' 은 불충족. 다만 사용자가 고른 1 번의 목적은 **회전 미끄러짐**이고 그 효과(12~29 %)는 재현 기준을 통과한 재실행에서 확인됨 → 실시간 그림자 시험으로 진행(아래 §6). 운용 후보는 V4(rf2o 대신 cuVSLAM — 입력 하나 줄고 결과 같음).
+
+## §6 cuVSLAM 실시간 그림자 시험 (사용자: "1번으로 가자" — 회전 미끄러짐 목적)
+- 만든 것(코드, 기본값은 모두 지금 구성 그대로):
+  - `rover_bringup/launch/ekf.launch.py vslam:=off|shadow|on`(기본 off). shadow = cuVSLAM(컨테이너) + `vslam_twist.py` + 그림자 EKF `ekf_vslam`(V4: 주행 구성에서 odom1 만 rf2o → `/vslam/odom` vx · vy, TF 안 냄, 출력 `/odometry/ekf_vslam`) — 주 EKF · 제어는 그대로. on = 주 EKF 가 rf2o 대신 cuVSLAM(rf2o 노드 안 띄움).
+  - `launch/cuvslam_container.launch.py`(컨테이너 안 실행, 오프라인 검증판과 같은 설정 · IMU 융합 끔 · 입력 `/camera/raw/infra{1,2}/image_rect_raw`), `scripts/cuvslam_up.sh`(nvblox_up.sh 방식 래퍼), `scripts/vslam_twist.py`(재실행 입력과 같은 중앙 차분 + 이상값 거름 |v| > 0.5 m/s · |ω| > 1.5 rad/s), `Docs/tools/prep_fast.sh` 정리 대상 · 상태 줄 추가.
+  - 전제: 프로젝터 상시 끔(`emitter_off:=true`) — f2z1 · f2z2 와 같은 카메라 구성.
+### §6.1 L0 정지 시험 선언 (로버 안 움직임)
+- 절차(`jobs/run_vslam_static.sh`): A = `SENSORS_ADD="emitter_off:=true"` prep → 20 s 안정 → 60 s 측정, B = 같은 것 + `vslam:=shadow` → 같은 측정. B 상태로 둔다(다음 그림자 주행용).
+- 측정(`jobs/chk_vslam_live.py`, 노드 1 개 + /proc): 토픽 주기(`/visual_slam/tracking/odometry` · `/vslam/odom` · `/odometry/ekf_vslam` · `/odometry/filtered`), 전체 CPU(%, 6 코어 = 100) · 프로세스별(코어 1 = 100), sensors.log EKF 주기 위반 증가, 정지 중 `/odometry/ekf_vslam` 이동량.
+- 합격:
+  1. cuVSLAM 출력 ≥ 13 Hz(입력 15 fps), `/vslam/odom` ≥ 12 Hz.
+  2. 전체 CPU B − A ≤ +8 %p(6 코어 기준 ≈ 0.5 코어 — 09-29 단독 cuVSLAM 22.8 % + 영상 수신 몫 추정).
+  3. EKF 주기 위반 증가 B ≤ A + 20 /60 s(평소 흔들림 +0~+18 /80 s, 10-19 §17).
+  4. 정지 60 s 동안 `ekf_vslam` 이동 ≤ 1 cm, 주 EKF 와 같은 수준.
+  - 불합격이면 주행하지 않고 원인부터.
+### §6.2 L0 결과 (원문 `outputs/run_vslam_static.txt`)
+- 1 차(B): 전체 CPU 45.1 → **73.1 %**, cuVSLAM 12.1 Hz — 불합격. 범인은 cuVSLAM(코어 7.6 %)이 아니라 **`vslam_twist.py` 코어 193 %**.
+  - TF 구독을 빼도(2 차) 191 % 그대로 → top: 그 python 프로세스 스레드 14 개 · 213 %. **numpy(OpenBLAS) 일꾼 스레드의 바쁜 대기**(작은 4×4 연산마다 깨어남, ARM 에서 흔함 — 원인 추정이나 아래 수정으로 사라져 사실상 확인). `OPENBLAS_NUM_THREADS=1` 을 numpy 전에 → 스레드 9 · 5.5 %.
+  - TF 구독 제거(`/tf_static` 한 번 받고 끊기)는 그대로 둠(불필요한 /tf 수신 제거).
+  - ⚠ 다른 numpy 노드(rf2o_gate · stuck_monitor · scan_deskew · depth_relay)도 같은 위험 — 이번 top 에선 이상치 없음(다음 python 은 11.6 %), 따로 점검할 거리로 남김.
+- 3 차(B, 수정 뒤):
+  | 기준 | 결과 | 판정 |
+  |---|---|---|
+  | cuVSLAM ≥ 13 Hz · `/vslam/odom` ≥ 12 Hz | 13.0 · 12.9 Hz(입력 15 fps 중 약 13 % 빠짐 — 프레임 간격 133 ms 경고) | ✔(경계) |
+  | 전체 CPU B − A ≤ +8 %p | 54.1 vs A 47.0 · 45.1 → **+7.1 · +9.0** | **경계** |
+  | EKF 위반 증가 ≤ A + 20 | +3(A +1 · +2) | ✔ |
+  | 정지 60 s `ekf_vslam` 이동 ≤ 1 cm | 0.29 cm(cuVSLAM 원 자세 0.46 cm) | ✔ |
+  - 프로세스(코어 1 = 100): cuVSLAM 10.0 · vslam_twist 4.5 · ekf_vslam 11.5 → 합 26 % ≈ 전체 +4.3 %p; 나머지 증가분은 카메라(IR 두 줄 DDS 발행 21 → 23 %) 등으로 추정.
+- 판정: 2 번만 경계, 나머지 통과. 그림자 EKF 는 TF 를 안 내 제어에 끼어들지 않으므로 **그림자 주행으로 진행 가능**(주행 여부는 사용자).
+### §6.3 L1 그림자 주행 f2v1 선언 (사용자 "시작" 뒤에만)
+- 구성: B(프로젝터 상시 끔 + `vslam:=shadow`) — 주 EKF · 제어 · 코스는 f2z2 와 같음(상자 둠). 러너 `run_f2c.sh`(`EXTRA_TOPICS_ADD="/odometry/ekf_vslam /vslam/odom /visual_slam/tracking/odometry"`), IR bag 없음.
+- 판정:
+  1. 주행: 3/3 · 중단 0(f2z2 와 같게) — 그림자 프로세스가 주행을 해치지 않음.
+  2. 그림자 연속성: 주행 중 `/vslam/odom` ≥ 12 Hz · `/odometry/ekf_vslam` ≥ 28 Hz, 끊김(> 0.5 s) 0.
+  3. 효과(`anal_ekf_replay.py` 와 같은 10 s 창, SLAM 기준): `ekf_vslam` 이 주 EKF 대비 **W3 회전 최대 창 ≥ 10 % 작고** 전 구간 95 % 가 나빠지지 않음, 상자 옆 +2 cm 넘게 나빠지지 않음. 예상(재실행 §5.3): −12~29 %(미끄러짐 크기에 따라).
+  4. 부하: EKF 위반 · slam 폐기가 f2z2 대비 크게 늘지 않음(기록).

@@ -1,0 +1,98 @@
+===== 2026-10-20 13:41:16 시작 | run_vslam_static.sh | 10-20 §6.1 L0 정지 시험: 프로젝터 끔 vs +cuVSLAM 그림자 (로버 정지)
+########## 구성 A ##########
+PREP_OK
+  EKF 위반 23회 · slam 폐기 3회 · load 10.02 6.91 5.61
+  nvblox(컨테이너): 1 개 · cuVSLAM(컨테이너): 0 개 · vslam_twist 0 · ekf_vslam 0
+  ⏱ +62 s prep 끝 — PREP_OK
+측정 60 s · 전체 CPU 45.1 % (6 코어 = 100)
+  /visual_slam/tracking/odometry     0.0 Hz · 처음→끝 이동 nan cm
+  /vslam/odom                        0.0 Hz · 처음→끝 이동 nan cm
+  /odometry/ekf_vslam                0.0 Hz · 처음→끝 이동 nan cm
+  /odometry/filtered                30.1 Hz · 처음→끝 이동 0.00 cm
+  프로세스 CPU(코어 1 = 100): cuVSLAM(컨테이너) 0.0(없음) · vslam_twist 0.0(없음) · ekf_vslam 0.0(없음) · ekf 주 13.0 · 카메라 21.1 · nvblox 17.9 · rf2o 4.5 · 컨디셔너 7.5 · slam 9.0 · controller 12.1
+  EKF 주기 위반 측정 중 +1 (누적 24)
+########## 구성 B ##########
+PREP_OK
+  EKF 위반 34회 · slam 폐기 2회 · load 12.68 8.61 6.40
+  nvblox(컨테이너): 1 개 · cuVSLAM(컨테이너): 1 개 · vslam_twist 1 · ekf_vslam 1
+  ⏱ +67 s prep 끝 — PREP_OK
+측정 60 s · 전체 CPU 73.1 % (6 코어 = 100)
+  /visual_slam/tracking/odometry    12.1 Hz · 처음→끝 이동 0.82 cm
+  /vslam/odom                       11.8 Hz · 처음→끝 이동 0.00 cm
+  /odometry/ekf_vslam               30.1 Hz · 처음→끝 이동 0.42 cm
+  /odometry/filtered                30.1 Hz · 처음→끝 이동 0.00 cm
+  프로세스 CPU(코어 1 = 100): cuVSLAM(컨테이너) 7.6 · vslam_twist 192.7 · ekf_vslam 8.4 · ekf 주 9.3 · 카메라 17.3 · nvblox 13.9 · rf2o 3.2 · 컨디셔너 5.9 · slam 8.5 · controller 8.8
+  EKF 주기 위반 측정 중 +9 (누적 43)
+  cuvslam_up: [INFO] [cuvslam_up.sh-10]: process started with pid [527874] [cuvslam_up.sh-10] [cuvslam_up] cuVSLAM pid 527998 528046 (로그 /tmp/cuvslam.log, 부모 launch 527605) — 이후 래퍼 출력은 /tmp/
+  vslam_twist: [vslam_twist.py-11] [INFO] [1792471563.195049294] [vslam_twist]: 출력 120 · 버림 3 (최근 10 s) [vslam_twist.py-11] [INFO] [1792471573.195128018] [vslam_twist]: 출력 108 · 버림 5 (최근 10 s) 
+===== 13:46:17 끝 | run_vslam_static.sh
+===== 2026-10-20 13:47:00 시작 | run_vslam_static2.sh | 10-20 §6.1 L0 재시험: vslam_twist TF 구독 제거 뒤 (로버 정지)
+2
+########## 구성 A ##########
+PREP_OK
+  EKF 위반 17회 · slam 폐기 2회 · load 10.10 9.18 7.05
+  nvblox(컨테이너): 1 개 · cuVSLAM(컨테이너): 0 개 · vslam_twist 0 · ekf_vslam 0
+  ⏱ +66 s prep 끝 — PREP_OK
+측정 60 s · 전체 CPU 47.0 % (6 코어 = 100)
+  /visual_slam/tracking/odometry     0.0 Hz · 처음→끝 이동 nan cm
+  /vslam/odom                        0.0 Hz · 처음→끝 이동 nan cm
+  /odometry/ekf_vslam                0.0 Hz · 처음→끝 이동 nan cm
+  /odometry/filtered                30.1 Hz · 처음→끝 이동 0.00 cm
+  프로세스 CPU(코어 1 = 100): cuVSLAM(컨테이너) 0.0(없음) · vslam_twist 0.0(없음) · ekf_vslam 0.0(없음) · ekf 주 13.1 · 카메라 21.1 · nvblox 17.9 · rf2o 4.5 · 컨디셔너 7.5 · slam 9.0 · controller 12.4
+  EKF 주기 위반 측정 중 +2 (누적 19)
+########## 구성 B ##########
+PREP_OK
+  EKF 위반 37회 · slam 폐기 3회 · load 11.07 8.97 7.23
+  nvblox(컨테이너): 1 개 · cuVSLAM(컨테이너): 1 개 · vslam_twist 1 · ekf_vslam 1
+  ⏱ +68 s prep 끝 — PREP_OK
+측정 60 s · 전체 CPU 72.4 % (6 코어 = 100)
+  /visual_slam/tracking/odometry    12.2 Hz · 처음→끝 이동 0.64 cm
+  /vslam/odom                       12.0 Hz · 처음→끝 이동 0.00 cm
+  /odometry/ekf_vslam               30.1 Hz · 처음→끝 이동 0.39 cm
+  /odometry/filtered                30.1 Hz · 처음→끝 이동 0.00 cm
+  프로세스 CPU(코어 1 = 100): cuVSLAM(컨테이너) 7.5 · vslam_twist 191.5 · ekf_vslam 8.3 · ekf 주 9.2 · 카메라 17.1 · nvblox 13.8 · rf2o 3.2 · 컨디셔너 5.8 · slam 8.9 · controller 8.8
+  EKF 주기 위반 측정 중 +4 (누적 41)
+  cuvslam_up: [INFO] [cuvslam_up.sh-10]: process started with pid [550792] [cuvslam_up.sh-10] [cuvslam_up] cuVSLAM pid 550916 550976 (로그 /tmp/cuvslam.log, 부모 launch 550385) — 이후 래퍼 출력은 /tmp/
+  vslam_twist: [vslam_twist.py-11] [INFO] [1792471910.656959766] [vslam_twist]: 출력 121 · 버림 0 (최근 10 s) [vslam_twist.py-11] [INFO] [1792471920.653305656] [vslam_twist]: 출력 122 · 버림 1 (최근 10 s) 
+
+===== 2026-10-20 13:52:20 시작 | chk_vtwist.sh | vslam_twist CPU 확인(읽기만)
+2
+== pid 550794
+python3 /home/jetson/ros2_ws/install/rover_bringup/lib/rover_bringup/vslam_twist.py --ros-args -r __node:=vslam_twist --params-file /tmp/launch_params_u89j9odm 
+
+    PID NLWP %CPU     ELAPSED
+ 550794   14  166       02:30
+    PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND
+ 550794 jetson    20   0  741052  66580  25992 S 212.9   0.9   4:16.54 python3
+ 551279 jetson    20   0 1750408 298604  25588 S  22.2   3.8   0:16.54 localiz+
+ 550401 jetson    20   0 2200232 129880  45984 S  17.2   1.7   0:29.81 compone+
+ 551629 jetson    20   0 9350652 395860  76564 S  13.2   5.1   0:20.79 nvblox_+
+ 550788 jetson    20   0  707204  60436  25384 S  11.6   0.8   0:19.53 python3
+ 550405 jetson    20   0  432936  28496  14036 S  11.3   0.4   0:19.18 rplidar+
+ 551405 jetson    20   0  577392  31064  16064 S   9.9   0.4   0:14.02 lifecyc+
+ 550790 jetson    20   0  506216  30036  17716 S   8.9   0.4   0:14.65 ekf_node
+ 551378 jetson    20   0  890020  47396  22900 S   8.6   0.6   0:13.52 control+
+ 550976 jetson    20   0 9855.4m 562432 111704 S   7.9   7.2   0:14.02 compone+
+ 551388 jetson    20   0  989016  67352  23148 S   7.9   0.9   0:15.34 planner+
+ 551399 jetson    20   0  461684  50680  28460 S   7.9   0.7   0:12.37 bt_navi+
+===== 13:52:23 끝 | chk_vtwist.sh
+
+===== 2026-10-20 13:52:53 시작 | run_vslam_static2.sh | 10-20 §6.1 L0 재시험 B: OpenBLAS 1 스레드 (로버 정지)
+1
+########## 구성 B ##########
+PREP_OK
+  EKF 위반 33회 · slam 폐기 3회 · load 11.81 9.76 7.86
+  nvblox(컨테이너): 1 개 · cuVSLAM(컨테이너): 1 개 · vslam_twist 1 · ekf_vslam 1
+  ⏱ +69 s prep 끝 — PREP_OK
+측정 60 s · 전체 CPU 54.1 % (6 코어 = 100)
+  /visual_slam/tracking/odometry    13.0 Hz · 처음→끝 이동 0.46 cm
+  /vslam/odom                       12.9 Hz · 처음→끝 이동 0.00 cm
+  /odometry/ekf_vslam               30.1 Hz · 처음→끝 이동 0.29 cm
+  /odometry/filtered                30.1 Hz · 처음→끝 이동 0.00 cm
+  프로세스 CPU(코어 1 = 100): cuVSLAM(컨테이너) 10.0 · vslam_twist 4.5 · ekf_vslam 11.5 · ekf 주 12.9 · 카메라 23.4 · nvblox 17.5 · rf2o 4.3 · 컨디셔너 8.1 · slam 9.1 · controller 11.9
+  EKF 주기 위반 측정 중 +3 (누적 36)
+  cuvslam_up: [INFO] [cuvslam_up.sh-10]: process started with pid [565686] [cuvslam_up.sh-10] [cuvslam_up] cuVSLAM pid 565798 565854 (로그 /tmp/cuvslam.log, 부모 launch 565416) — 이후 래퍼 출력은 /tmp/
+  vslam_twist: [vslam_twist.py-11] [INFO] [1792472115.428481025] [vslam_twist]: 출력 126 · 버림 1 (최근 10 s) [vslam_twist.py-11] [INFO] [1792472125.428729422] [vslam_twist]: 출력 132 · 버림 0 (최근 10 s) 
+    PID NLWP %CPU     ELAPSED
+ 565688    9  5.5       02:14
+===== 13:55:27 끝 | run_vslam_static2.sh
