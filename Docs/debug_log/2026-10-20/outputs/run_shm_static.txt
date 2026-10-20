@@ -1,0 +1,47 @@
+########## u1 (emitter_off:=true vslam:=shadow) ##########
+PREP_OK
+  nvblox(컨테이너): 1 개 · cuVSLAM(컨테이너): 1 개 · vslam_twist 1 · ekf_vslam 1
+  ⏱ +65 s prep 끝 — PREP_OK
+  위치 추정: - Translation: [-0.019, -0.013, 0.000] - Rotation: in RPY (degree) [0.000, -0.000, 0.368] 
+  카메라 프로파일: fastdds_udp_only.xml · cuVSLAM 프로파일: /tmp/sensors.log:DDS fastdds_udp_only.xml
+측정 60 s · 전체 CPU 54.6 % (6 코어 = 100)
+  /visual_slam/tracking/odometry    13.2 Hz · 처음→끝 이동 0.35 cm
+  /vslam/odom                       13.1 Hz · 처음→끝 이동 0.00 cm
+  /odometry/ekf_vslam               30.1 Hz · 처음→끝 이동 0.22 cm
+  /odometry/filtered                30.1 Hz · 처음→끝 이동 0.00 cm
+  프로세스 CPU(코어 1 = 100): cuVSLAM(컨테이너) 10.5 · vslam_twist 4.6 · ekf_vslam 11.4 · ekf 주 13.2 · 카메라 23.5 · nvblox 17.8 · rf2o 4.5 · 컨디셔너 8.1 · slam 9.1 · controller 11.9
+  EKF 위반 +2 · cuVSLAM 프레임 간격 경고 +101 · 수신 버퍼 버림 386/s · SHM 오류 0
+  nvblox ros/depth_image_callback 100 15.1|ros/update_esdf 100 9.5|
+########## s (emitter_off:=true vslam:=shadow dds_shm:=true) ##########
+PREP_OK
+  nvblox(컨테이너): 1 개 · cuVSLAM(컨테이너): 1 개 · vslam_twist 1 · ekf_vslam 1
+  ⏱ +70 s prep 끝 — PREP_OK
+  위치 추정: - Translation: [-0.024, -0.010, 0.000] - Rotation: in RPY (degree) [0.000, -0.000, 0.169] 
+  카메라 프로파일: fastdds_shm_udp.xml · cuVSLAM 프로파일: /tmp/sensors.log:DDS fastdds_shm_udp.xml
+측정 60 s · 전체 CPU 54.0 % (6 코어 = 100)
+  /visual_slam/tracking/odometry    15.0 Hz · 처음→끝 이동 0.30 cm
+  /vslam/odom                       15.0 Hz · 처음→끝 이동 0.00 cm
+  /odometry/ekf_vslam               30.1 Hz · 처음→끝 이동 0.23 cm
+  /odometry/filtered                30.1 Hz · 처음→끝 이동 0.00 cm
+  프로세스 CPU(코어 1 = 100): cuVSLAM(컨테이너) 10.4 · vslam_twist 5.2 · ekf_vslam 11.4 · ekf 주 12.9 · 카메라 22.0 · nvblox 18.0 · rf2o 4.3 · 컨디셔너 7.9 · slam 9.1 · controller 12.2
+  EKF 위반 +2 · cuVSLAM 프레임 간격 경고 +1 · 수신 버퍼 버림 520/s · SHM 오류 0
+  nvblox ros/depth_image_callback 100 15.1|ros/update_esdf 100 9.5|
+########## u2 (emitter_off:=true vslam:=shadow) ##########
+PREP_OK
+  nvblox(컨테이너): 1 개 · cuVSLAM(컨테이너): 1 개 · vslam_twist 1 · ekf_vslam 1
+  ⏱ +70 s prep 끝 — PREP_OK
+  위치 추정: - Translation: [-0.025, -0.010, 0.000] - Rotation: in RPY (degree) [0.000, -0.000, 0.309] 
+  카메라 프로파일: fastdds_udp_only.xml · cuVSLAM 프로파일: /tmp/sensors.log:DDS fastdds_udp_only.xml
+측정 60 s · 전체 CPU 55.0 % (6 코어 = 100)
+  /visual_slam/tracking/odometry    13.0 Hz · 처음→끝 이동 0.57 cm
+  /vslam/odom                       12.8 Hz · 처음→끝 이동 0.00 cm
+  /odometry/ekf_vslam               30.1 Hz · 처음→끝 이동 0.39 cm
+  /odometry/filtered                30.1 Hz · 처음→끝 이동 0.00 cm
+  프로세스 CPU(코어 1 = 100): cuVSLAM(컨테이너) 10.3 · vslam_twist 4.5 · ekf_vslam 11.4 · ekf 주 12.9 · 카메라 23.4 · nvblox 17.5 · rf2o 4.5 · 컨디셔너 8.0 · slam 9.1 · controller 12.2
+  EKF 위반 +7 · cuVSLAM 프레임 간격 경고 +115 · 수신 버퍼 버림 519/s · SHM 오류 0
+  nvblox ros/depth_image_callback 100 15.1|ros/update_esdf 100 9.6|
+########## s_end (emitter_off:=true vslam:=shadow dds_shm:=true) ##########
+PREP_OK
+  nvblox(컨테이너): 1 개 · cuVSLAM(컨테이너): 1 개 · vslam_twist 1 · ekf_vslam 1
+  ⏱ +68 s prep 끝 — PREP_OK
+  /dev/shm fastrtps 지금 28

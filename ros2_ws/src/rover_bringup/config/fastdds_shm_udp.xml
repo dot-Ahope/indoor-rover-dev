@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+  FastDDS 공유메모리(SHM) + UDPv4 — 카메라 컨테이너 ↔ cuVSLAM(Isaac 컨테이너) 경로 전용 (2026-10-20 §7.4 N-SHM S1).
+
+  왜: cuVSLAM 이 받는 IR 640×480(307 kB) 두 줄이 UDP 루프백에서 소켓 수신 버퍼(rmem_max 208 kB)를 넘쳐
+      정지 13 Hz · 주행 ≈ 10 Hz 로 빠졌다(10-20 §7.1 · §7.5 — 38 kB 깊이는 안 빠짐, 크기 문제).
+      SHM 은 소켓 버퍼를 거치지 않는다. rmem_max 상향(sudo) 대신 이 길을 택함(§7.3 재기동 시험 30/30).
+
+  누가 쓰나: camera.launch.py dds_shm:=true 일 때 카메라 프로세스, ekf.launch 의 cuvslam_up.sh(같은 인자). 그 밖의 모든 노드는
+      fastdds_udp_only.xml(09-09 결정) 그대로 — 섞여도 UDP 로 만난다. ⚠ SHM 전용(UDP 없음)으로 만들면 UDP 참가자를 발견하지 못한다(§7.3c).
+
+  정리: prep_fast.sh 가 `fastdds shm clean`(공식 도구 — 아무도 안 잡은 고아만)으로. `rm -f /dev/shm/fastrtps_*` 는 쓰지 않는다
+      (살아 있는 참가자 파일 삭제 — 09-09 2 회차 유력 원인, §7.2).
+
+  segment_size 8 MB: 참가자마다 /dev/shm 에 이 크기 세그먼트 하나(쓰는 쪽 버퍼). IR 307 kB × 2 줄을 여러 장 담는 크기. 쓰는 참가자 둘 → 약 16 MB.
+-->
+<dds xmlns="http://www.eprosima.com">
+  <profiles>
+    <transport_descriptors>
+      <transport_descriptor>
+        <transport_id>shm_transport</transport_id>
+        <type>SHM</type>
+        <segment_size>8388608</segment_size>
+      </transport_descriptor>
+      <transport_descriptor>
+        <transport_id>udp_transport</transport_id>
+        <type>UDPv4</type>
+      </transport_descriptor>
+    </transport_descriptors>
+    <participant profile_name="shm_udp_participant" is_default_profile="true">
+      <rtps>
+        <userTransports>
+          <transport_id>shm_transport</transport_id>
+          <transport_id>udp_transport</transport_id>
+        </userTransports>
+        <useBuiltinTransports>false</useBuiltinTransports>
+      </rtps>
+    </participant>
+  </profiles>
+</dds>
