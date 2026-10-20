@@ -1,0 +1,5 @@
+C:/Users/magma/AppData/Local/Temp/claude/F--6-Indoor-Rover-Rover/21d4aa9f-8412-4905-b23d-17554af330ea/scratchpad/f2z2_launch.txt:결과: 1 SUCCEEDED 58.5s / 2 SUCCEEDED 43.3s / 3 SUCCEEDED 98.5s | 총 200.6 s
+C:/Users/magma/AppData/Local/Temp/claude/F--6-Indoor-Rover-Rover/21d4aa9f-8412-4905-b23d-17554af330ea/scratchpad/f2z2_launch.txt:  누적 회전: 휠 268.0° vs EKF 195.8° (차 72.2° = 미끄러짐·스크럽 흔적) | stuck 진단 0 회
+C:/Users/magma/AppData/Local/Temp/claude/F--6-Indoor-Rover-Rover/21d4aa9f-8412-4905-b23d-17554af330ea/scratchpad/f2z2_vis/../f2z2_run.txt:결과: 1 SUCCEEDED 58.5s / 2 SUCCEEDED 43.3s / 3 SUCCEEDED 98.5s | 총 200.6 s
+결과: 1 SUCCEEDED 58.5s / 2 SUCCEEDED 43.3s / 3 SUCCEEDED 98.5s | 총 200.6 s
+  누적 회전: 휠 268.0° vs EKF 195.8° (차 72.2° = 미끄러짐·스크럽 흔적) | stuck 진단 0 회
