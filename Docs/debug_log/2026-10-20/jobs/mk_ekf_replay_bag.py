@@ -4,7 +4,9 @@
   /imu/data(컨디셔너 출력이 기록돼 있음) · /tf_static 그대로,
   cuVSLAM(오프라인 csv, camera_link 자세) → base_link 몸 기준 속도 /vslam/odom (앞뒤 프레임 중앙 차분).
   기록 시각 = 원래 bag 기록 시각(vslam 은 header stamp) — ros2 bag play --clock 으로 재생.
-  인자: 주행bag cuVSLAM_csv 출력bag"""
+  §5.2 정정: 주행 때 EKF 는 prep_patrol 의 rf2o:=true 구성 — /odom_rf2o/gated(기록돼 있음)도 넣고, 컨디셔너 B3(순수 회전이면 휠 vx · vy 분산 0.3²,
+  판정 |휠 vx| < 0.02 m/s 이고 |ω| > 0.10 rad/s, ω = 0.1 s 안의 자이로(−/imu/data y) 아니면 휠 ω — conditioner_core.hpp · sensor_conditioner.cpp)를 적용.
+  인자: 주행bag cuVSLAM_csv 출력bag [b3=1]"""
 import sys, math, csv, bisect
 from pathlib import Path
 import numpy as np
@@ -30,7 +32,8 @@ def T(tr):
 
 
 bag, vcsv, out = sys.argv[1:4]
-TOP = ('/wheel_odom', '/imu/data', '/tf_static')
+TOP = ('/wheel_odom', '/imu/data', '/tf_static', '/odom_rf2o/gated')
+B3 = (sys.argv[4] if len(sys.argv) > 4 else '1') == '1'; ROT_VAR = 0.3 ** 2; gy = (-1.0, -1e9); nb3 = 0
 msgs = []; static = {}
 with AnyReader([Path(bag)], default_typestore=TS) as rd:
     conns = [c for c in rd.connections if c.topic in TOP]
@@ -42,8 +45,11 @@ with AnyReader([Path(bag)], default_typestore=TS) as rd:
             msgs.append((t, '/tf_static', m))
         elif c.topic == '/wheel_odom':
             cov = np.array(m.twist.covariance, float); cov[0], cov[7], cov[35] = VX_VAR, VY_VAR, VYAW_VAR
+            w = gy[0] if t * 1e-9 - gy[1] < 0.1 else m.twist.twist.angular.z
+            if B3 and abs(m.twist.twist.linear.x) < 0.02 and abs(w) > 0.10: cov[0] = cov[7] = ROT_VAR; nb3 += 1
             m.twist.covariance = cov; msgs.append((t, '/wheel_odom/conditioned', m))
         else:
+            if c.topic == '/imu/data': gy = (-m.angular_velocity.y, t * 1e-9)
             msgs.append((t, c.topic, m))
 B2C = np.eye(4); f = 'camera_link'
 while f != 'base_link':
@@ -74,4 +80,4 @@ with Writer(Path(out), version=8) as w:
     for t, tp, m in msgs: w.write(cw[tp], t, TS.serialize_cdr(m, ctype[tp]))
 cnt = {}
 for _, tp, _ in msgs: cnt[tp] = cnt.get(tp, 0) + 1
-print(out, cnt, 'vslam 속도 %d 개' % nv)
+print(out, cnt, 'vslam 속도 %d 개 · B3 순수 회전 휠 %d 개' % (nv, nb3))
