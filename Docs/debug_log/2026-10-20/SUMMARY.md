@@ -326,3 +326,32 @@
 ### §8.4 prep 이 오래 걸리는 이유 (사용자 질문, `outputs/chk_prep_timing.txt` — 지금 구성 한 번 측정)
 - 총 60 s: ① 정리 9 s(26 프로세스 TERM → 다 끝날 때까지 기다림, 최대 15 s 뒤 -9) ② 센서 19 s(카메라 초기화 → EKF 8 s 타이머 → 자이로 바이어스 캘리브 2000 샘플 = 200 Hz × 10 s, 로버 정지 필수) ③ SLAM · Nav2 기동 0~1 s(띄우기만) ④ 준비 확인 30 s(chk_prep: Nav2 수명 주기 active · map→base TF · 오도메트리 ≥ 20 Hz · 전역 코스트맵 지도 수신까지 ≈ 15 s 폴링 + 코스트맵 비운 뒤 **재마킹 고정 대기 15 s**).
 - (§8.4 덧붙임) 이 시간 측정은 **prep 을 한 번 더 돌려** 잰 것(로버 정지) — §8.3 의 '현재 위치 추정 정상(0.37°)' 은 그 전 값이었음(사용자 지적). 시간 측정 prep 뒤 다시 확인: map→odom (−0.023, −0.013 m, 0.48°) — 정상.
+
+## §9 N-SHM 실행 (사용자: "2번 진행하자" — 카메라 ↔ cuVSLAM 공유메모리)
+### §9.1 S1 코드(기본값 모두 끔 — 지금 구성 그대로)
+- `rover_bringup/config/fastdds_shm_udp.xml`(SHM 세그먼트 8 MB + UDPv4, 머리 주석에 근거 · 금지 사항).
+- `camera.launch.py dds_shm:=false|true` — true 면 **카메라 프로세스만** `additional_env` 로 이 프로파일(일반 Node · 합성 컨테이너 둘 다).
+- `ekf.launch.py dds_shm:=` → `cuvslam_up.sh` 세 번째 인자(프로파일). 컨테이너 쪽 사본 이름을 `/tmp/fastdds_cuvslam.xml` 로 분리(nvblox 가 쓰는 `/tmp/fastdds_udp_only.xml` 과 안 섞이게). nvblox 는 UDP 그대로(§7.5).
+- `Docs/tools/prep_fast.sh` — 프로세스 정리 뒤 `fastdds shm clean`(고아만) · 남은 수 기록.
+### §9.2 S2 정지 A/B 선언 (로버 정지, 출발 자세)
+- 조건: U = 지금 그림자 구성(`emitter_off:=true vslam:=shadow`, UDP) → S = 같은 것 + `dds_shm:=true` → U(반복, 흔들림 확인). 각 prep → 20 s → 60 s 측정(`chk_vslam_live.py`) + 같은 창 RcvbufErrors/s · cuVSLAM 프레임 간격 경고 수, prep 마다 map→odom(위치 추정 확인 — §8.3 −41° 사건), 카메라 · cuVSLAM 프로세스 환경변수로 프로파일 확인, 25 s 기록 → `anal_box_static.py`(nvblox 상자 칸 변화 없음 확인).
+- 합격(S 가 두 U 대비):
+  1. cuVSLAM ≥ 14.5 Hz · `/vslam/odom` ≥ 14 Hz, 프레임 간격 경고 ≤ U 의 1/5.
+  2. RcvbufErrors/s ≤ U 의 절반(영상이 SHM 으로 간 직접 근거).
+  3. 전체 CPU 증가 없음(S − U ≤ +1 %p), EKF 위반 증가 ≤ U + 20.
+  4. nvblox 깊이 ≥ 15 Hz · 상자 칸 ±1 · 면 ±1 cm(같은 세션 U 대비), SHM 오류 0, 모든 prep 위치 추정 yaw |Δ| < 2°(아니면 그 조건 다시).
+### §9.3 S2 결과 (원문 `outputs/run_shm_static.txt` · `anal_shm_static_box.txt` · `chk_udp_drops.txt`, 도구 `jobs/run_shm_static.sh` · `get_sh.sh` · `chk_udp_drops2.sh`)
+- 프로파일 확인(프로세스 환경변수 · 래퍼 로그): U = 카메라 · cuVSLAM 모두 `fastdds_udp_only.xml`, S = 둘 다 `fastdds_shm_udp.xml`. 위치 추정 yaw 0.37 · 0.17 · 0.31° — 세 조건 모두 정상.
+  | | U1 | **S** | U2 | 판정 |
+  |---|---|---|---|---|
+  | cuVSLAM · `/vslam/odom` Hz | 13.2 · 13.1 | **15.0 · 15.0** | 13.0 · 12.8 | ✔ 1 |
+  | cuVSLAM 프레임 간격 경고 / 60 s | 101 | **1** | 115 | ✔ 1 |
+  | 전체 CPU | 54.6 % | 54.0 % | 55.0 % | ✔ 3(−0.6 ~ −1.0 %p) |
+  | 카메라 프로세스 CPU(코어 1 = 100) | 23.5 | 22.0 | 23.4 | 기록 |
+  | EKF 위반 / 60 s | +2 | +2 | +7 | ✔ 3 |
+  | nvblox 깊이 Hz · 상자 칸 · 북 · 서 면 | 15.1 · 13 · +6.6 · +1.9 | 15.1 · 14 · +6.4 · +2.4 | 15.1 · 13 · +6.8 · +2.5 | ✔ 4 |
+  | SHM 오류 | 0 | 0 | 0 | ✔ 4 |
+  | 정지 60 s `ekf_vslam` 이동 | 0.22 cm | 0.23 cm | 0.39 cm | 기록 |
+- 2 번(RcvbufErrors 절반 이하): 측정 창 값이 U1 386 · S 520 · U2 519 /s 로 **판정 불가** — 원인 추적: 소켓별 drops 를 보니 버림은 발견용 소켓(포트 7410 · 7412 등)에 몰려 있고, 새 참가자(측정 직전의 `tf2_echo` · 측정 노드)가 붙을 때의 발견 폭주와 겹친 것(주행 전 30 s 참가자 생성 금지 규칙의 그 효과). 새 참가자 없는 조용한 창: **S 구성 10 s 동안 +0**(U 구성은 §7.1 조용한 창 39/s). 다른 시각 비교라 보조 근거.
+  - ⚠ 내 측정 설계 결함: 측정 노드를 띄운 직후 같은 창에서 시스템 전체 카운터를 쟀다 — 다음부터 카운터는 참가자 생성 뒤 안정 시간을 두거나 소켓별(cuVSLAM 소켓)로.
+- 판정: 1 · 3 · 4 통과, 2 는 측정 결함으로 보조 근거(조용한 창 39 → 0/s). **IR 이 SHM 으로 가며 cuVSLAM 15 Hz 회복, CPU · nvblox 영향 없음.** 스택은 S 구성(그림자 + SHM)으로 떠 있음, 로버 정지, `/dev/shm` fastrtps 28 개(쓰는 중).

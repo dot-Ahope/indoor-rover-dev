@@ -31,6 +31,9 @@ fi
 CV=$(docker exec isaac_ros_dev-aarch64-container bash -c "pgrep -f 'cuvslam_[a]ctive.launch.py|__node:=cuvslam_[c]ontainer' || true" 2>/dev/null)
 [ -n "$CV" ] && { docker exec isaac_ros_dev-aarch64-container bash -c "pkill -INT -f 'cuvslam_[a]ctive.launch.py|__node:=cuvslam_[c]ontainer'; sleep 3; pkill -9 -f 'cuvslam_[a]ctive.launch.py|__node:=cuvslam_[c]ontainer'" 2>/dev/null; echo "  컨테이너 cuVSLAM 고아 정리: $(echo $CV | wc -w) 개"; }
 echo "  정리 후: $(cnt) | /dev/shm fastrtps 잔재: $(ls /dev/shm 2>/dev/null | grep -c fastrtps)"
+# 10-20 §7.4 N-SHM: 카메라 ↔ cuVSLAM SHM(dds_shm:=true)을 쓸 때 비정상 종료가 남긴 세그먼트를 공식 도구로 정리 — 아무도 안 잡은 고아만 지운다.
+#   ⚠ rm -f /dev/shm/fastrtps_* 는 쓰지 않는다(살아 있는 참가자 파일까지 지움 — 09-09 2 회차 유력 원인, 10-20 §7.2). SHM 을 안 쓰면 할 일 없음(0 개).
+echo "  SHM 고아 정리: $(fastdds shm clean 2>&1 | tail -1) · 남은 fastrtps $(ls /dev/shm 2>/dev/null | grep -c fastrtps)"
 # 10-14 §24: 비우기 전에 직전 기록을 보관 — 재기동이 앞 주행의 Nav2 기록(계획기·코스트맵 경고)을 지워 이상 경로 원인을 못 봤다.
 #   /tmp/logkeep/<보관시각>_{nav2,slam,sensors}.log, 최근 8 벌만 남김(nav2.log 가 주행당 수 MB 라 /tmp 를 채우지 않게). /tmp 라 재부팅하면 사라진다.
 K=/tmp/logkeep; mkdir -p $K; TS=$(date +%m%d_%H%M%S)
