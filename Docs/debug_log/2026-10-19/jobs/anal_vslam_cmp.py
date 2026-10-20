@@ -11,6 +11,7 @@ from rosbags.highlevel import AnyReader
 from rosbags.typesys import Stores, get_typestore
 plt.rcParams['font.family'] = 'Malgun Gothic'; plt.rcParams['axes.unicode_minus'] = False
 bag, cdir, out = sys.argv[1:4]
+T_ALIGN = float(sys.argv[4]) if len(sys.argv) > 4 else None   # 10-20 §3: 정렬 시각(주행 bag s) — f2z2 는 시작 때 SLAM 위치가 21° 틀렸다가 t≈12 s 에 고쳐짐
 SEGS = ((60, 80), (160, 210))
 
 
@@ -46,7 +47,8 @@ for fn in sorted(glob.glob(os.path.join(cdir, 'vslam_*_vs_*.csv'))):
     R = np.array([[float(v) for v in r] for r in list(csv.reader(open(fn)))[1:]])
     S = np.array([[float(v) for v in r] for r in list(csv.reader(open(fn.replace('.csv', '_state.csv'))))[1:]]) if os.path.exists(fn.replace('.csv', '_state.csv')) else np.zeros((0, 2))
     if len(R) == 0: print('%s: 오도메트리 없음' % nm); continue
-    ts = R[:, 0]; A0 = slam(ts[0])
+    k0 = 0 if T_ALIGN is None else int(np.searchsorted(R[:, 0], t0 + T_ALIGN))
+    R = R[k0:]; ts = R[:, 0]; A0 = slam(ts[0])
     V0 = np.eye(4); V0[:3, :3] = qm(*R[0, 4:8]); V0[:3, 3] = R[0, 1:4]; Ainv = A0 @ np.linalg.inv(V0)
     est = []
     for r in R:
