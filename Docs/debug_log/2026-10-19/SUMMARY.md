@@ -272,3 +272,5 @@
 - 정리 페이지: https://claude.ai/artifact/6smTa3xdNEfGmomTiogZRM (사본 `figures/day_summary_1019.html`).
 - 상태: 오프라인 cuVSLAM 작업이 실시간 스택을 내렸으므로 **다음 주행 전 prep 필요**(지금 구성 = `prep_patrol.sh lite`, 번갈이 끔). 코드 기본값은 모두 지금 구성(emitter_flash · emitter_off 기본 false).
 - 내일: f2z1 cuVSLAM 판정(§25 기준) → IR 조명 또는 rf2o, 큰 bag 정리(§18.1 순서), push 는 지시 때.
+
+> 정정(2026-10-20 §3.2, 사용자): §25 f2z1 은 상자를 **치우지 않고** 주행했다. 위 '상자를 치우고 주행' 은 계획이었을 뿐 실제와 다름.
