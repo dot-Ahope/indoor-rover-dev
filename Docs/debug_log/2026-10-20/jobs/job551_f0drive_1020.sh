@@ -9,7 +9,7 @@ echo "########## F0 게이트 $(date +%T) ##########"
 # 10-07: 그림자 EKF A(ekf_shadow_a, TF 안 냄)가 떠 있으면 ekf_node 2 개가 정상. 10-20 §6.3: cuVSLAM 그림자 EKF(ekf_vslam)도 같은 취급
 DUP=0; for p in microros_agent robot_state_publisher realsense2_camera rplidar sensor_conditioner ekf_node slam_toolbox controller_server planner_server bt_navigator behavior_server lifecycle_manager_navigation stuck_monitor; do c=$(pgrep -fc "$p" 2>/dev/null | head -1); e=1; [ $p = ekf_node ] && e=$((1 + $(pgrep -fc "__node:=ekf_shadow_a" 2>/dev/null | head -1) + $(pgrep -fc "__node:=ekf_[v]slam" 2>/dev/null | head -1))); [ "${c:-0}" != $e ] && { DUP=1; echo "  ★ $p = $c개"; }; done
 [ $DUP = 1 ] && { echo "  A 불합격 — 주행하지 않음"; exit 1; }
-BR=$(timeout 6 ros2 topic hz /wheel_odom 2>&1 | grep -aoE 'average rate: [0-9.]+' | tail -1); [ -z "$BR" ] && { echo "  B 불합격(보드 무발행) — 주행하지 않음"; exit 1; }
+BR=$(timeout 12 ros2 topic hz /wheel_odom 2>&1 | grep -aoE 'average rate: [0-9.]+' | tail -1); [ -z "$BR" ] && { echo "  B 불합격(보드 무발행) — 주행하지 않음"; exit 1; }   # 10-20 §9.7: 6 → 12 s — 그림자 구성(참가자 증가)에서 첫 출력까지 4.5~5.6 s 라 6 s 가 경계(보드 정상인데 B 불합격 2 회)
 echo "  A·B 통과 ($BR)"
 if grep -q nvblox_layer /tmp/nav2_params_active.yaml 2>/dev/null; then
   NP=$(docker exec isaac_ros_dev-aarch64-container bash -c "pgrep -fc '^/opt/ros/humble/lib/nvblox_ros/nvblox_node' || true" 2>/dev/null)
