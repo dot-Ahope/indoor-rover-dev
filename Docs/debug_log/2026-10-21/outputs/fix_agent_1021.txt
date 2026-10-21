@@ -1,0 +1,14 @@
+재시작 전 세션 수립 기록 1 건
+docker restart microros_agent 완료 11:15:14
+재시작 뒤 1 s: 세션 수립 기록 0 건
+/wheel_odom: 없음
+/battery: 없음
+11:15:41 재시작 뒤 로그:
+[35m[1792548915.359372][m info     | [34mTermiosAgentLinux.cpp[m | [37minit                    [m | [32mrunning...[m             | fd: 3
+[35m[1792548915.360216][m info     | [34mRoot.cpp          [m | [37mset_verbose_level       [m | [32mlogger setup[m           | verbose_level: 4
+/wheel_odom: 없음
+/battery: 없음
+Binary file (standard input) matches
+11:30:29 세션 수립(재시작 뒤): 1 건
+/wheel_odom: average rate: 24.994
+/battery: average rate: 1.005
