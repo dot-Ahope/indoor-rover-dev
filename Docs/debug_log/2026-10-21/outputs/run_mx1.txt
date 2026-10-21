@@ -1,0 +1,93 @@
+===== 2026-10-21 17:17:49 시작 | run_mx1.sh | (나) mx1: 번갈이 중 수동 노출·게인 정지 시험, 주행 스택 내림(로버 안 움직임)
+== 스택 내림: 호스트 카메라 0 · base active
+======== P60 기동
+Device FW version: 5.15.0.2
+Failed to set value to sensor: depth_module.emitter_on_off = 0
+Open profile: stream_type: Depth(0), Format: Z16, Width: 640, Height: 480, FPS: 60
+Open profile: stream_type: Infra(1), Format: Y8, Width: 640, Height: 480, FPS: 60
+Open profile: stream_type: Infra(2), Format: Y8, Width: 640, Height: 480, FPS: 60
+RealSense ROS v4.51.1
+프로필 P60 · 최대 노출 16000 µs
+설정 ①자동 → enable_auto_exposure=True:ok
+[①자동]
+  모드 0(켬): 깊이 n 179 유효 0.681 아래 0.562 · IR n 180 밝기 22.1 FAST20 1824 FAST5 2624 |lap| 5.38 · 노출 15365 게인 16
+  모드 1(끔): 깊이 n 178 유효 0.178 아래 0.123 · IR n 180 밝기 16.8 FAST20 0 FAST5 14 |lap| 0.41 · 노출 15365 게인 16
+설정 ②자동끔 → enable_auto_exposure=False:ok
+[②자동끔]
+  모드 1(켬): 깊이 n 90 유효 0.666 아래 0.529 · IR n 90 밝기 28.2 FAST20 2422 FAST5 3168 |lap| 9.19 · 노출 33000 게인 16
+설정 ③16000×16 → exposure=16000:ok gain=16:ok
+[③16000×16]
+  모드 1(켬): 깊이 n 177 유효 0.681 아래 0.560 · IR n 180 밝기 22.3 FAST20 1854 FAST5 2652 |lap| 5.50 · 노출 16000 게인 16
+  모드 None(메타없음): 깊이 n 1 유효 0.681 아래 0.565 · IR n 0 밝기 -1.0 FAST20 -1 FAST5 -1 |lap| -1.00 · 노출 - 게인 -
+설정 ④16000×64 → gain=64:ok
+[④16000×64]
+  모드 1(켬): 깊이 n 178 유효 0.620 아래 0.446 · IR n 180 밝기 36.7 FAST20 2688 FAST5 3961 |lap| 13.06 · 노출 16000 게인 64
+  모드 None(메타없음): 깊이 n 1 유효 0.617 아래 0.447 · IR n 0 밝기 -1.0 FAST20 -1 FAST5 -1 |lap| -1.00 · 노출 - 게인 -
+설정 ⑤16000×128 → gain=128:ok
+[⑤16000×128]
+  모드 1(켬): 깊이 n 178 유효 0.576 아래 0.370 · IR n 180 밝기 51.8 FAST20 3372 FAST5 5480 |lap| 18.16 · 노출 16000 게인 128
+  모드 None(메타없음): 깊이 n 1 유효 0.574 아래 0.359 · IR n 0 밝기 -1.0 FAST20 -1 FAST5 -1 |lap| -1.00 · 노출 - 게인 -
+설정 ⑥16000×248 → gain=248:ok
+[⑥16000×248]
+  모드 1(켬): 깊이 n 180 유효 0.542 아래 0.327 · IR n 180 밝기 75.3 FAST20 4543 FAST5 7716 |lap| 22.21 · 노출 16000 게인 248
+  모드 None(메타없음): 깊이 n 1 유효 0.537 아래 0.326 · IR n 0 밝기 -1.0 FAST20 -1 FAST5 -1 |lap| -1.00 · 노출 - 게인 -
+설정 ⑦대조 끔+자동 → emitter_on_off=False:ok emitter_enabled=0:ok enable_auto_exposure=True:ok
+[⑦대조 끔+자동]
+  모드 0(켬): 깊이 n 353 유효 0.183 아래 0.129 · IR n 360 밝기 31.3 FAST20 19 FAST5 186 |lap| 2.85 · 노출 15366 게인 246
+  모드 None(메타없음): 깊이 n 1 유효 0.170 아래 0.121 · IR n 0 밝기 -1.0 FAST20 -1 FAST5 -1 |lap| -1.00 · 노출 - 게인 -
+  드라이버 오류(시험 중):
+      1 [component_container_mt-1] [WARN] [1792570687.148469309] [camera.camera]: Failed to set value to sensor: depth_module.emitter_on_off = 0[0, 1]
+      1 [component_container_mt-1] hwmon command 0x7b( 17 0 0 0 ) failed (response -9= No expected user action)
+      1 [component_container_mt-1]  21/10 17:18:39,735 ERROR [281470971300064] (uvc-streamer.cpp:105) uvc streamer watchdog triggered on endpoint: 131
+      1 [component_container_mt-1]  21/10 17:18:39,720 ERROR [281471000373472] (uvc-streamer.cpp:105) uvc streamer watchdog triggered on endpoint: 130
+      1 [component_container_mt-1]  21/10 17:18:31,763 ERROR [281470971300064] (uvc-streamer.cpp:105) uvc streamer watchdog triggered on endpoint: 131
+      1 [component_container_mt-1]  21/10 17:18:31,748 ERROR [281471000373472] (uvc-streamer.cpp:105) uvc streamer watchdog triggered on endpoint: 130
+      1 [component_container_mt-1]  21/10 17:18:07,148 ERROR [281471762295008] (rs.cpp:237) [rs2_set_option( options:0xffff5c6bfdc0, option:Emitter On Off, value:1 ) Invalid Value] hwmon command 0x7b( 17 0 0 
+======== P30 기동
+Device FW version: 5.15.0.2
+Failed to set value to sensor: depth_module.emitter_on_off = 0
+Open profile: stream_type: Depth(0), Format: Z16, Width: 640, Height: 480, FPS: 30
+Open profile: stream_type: Infra(1), Format: Y8, Width: 640, Height: 480, FPS: 30
+Open profile: stream_type: Infra(2), Format: Y8, Width: 640, Height: 480, FPS: 30
+RealSense ROS v4.51.1
+프로필 P30 · 최대 노출 32000 µs
+설정 ①자동 → enable_auto_exposure=True:ok
+[①자동]
+  모드 0(켬): 깊이 n 89 유효 0.678 아래 0.559 · IR n 90 밝기 23.2 FAST20 1790 FAST5 2622 |lap| 5.35 · 노출 31979 게인 16
+  모드 1(끔): 깊이 n 90 유효 0.238 아래 0.155 · IR n 90 밝기 17.9 FAST20 0 FAST5 14 |lap| 0.56 · 노출 31979 게인 16
+  모드 None(메타없음): 깊이 n 1 유효 0.682 아래 0.559 · IR n 0 밝기 -1.0 FAST20 -1 FAST5 -1 |lap| -1.00 · 노출 - 게인 -
+설정 ②자동끔 → enable_auto_exposure=False:ok
+[②자동끔]
+  모드 0(켬): 깊이 n 90 유효 0.545 아래 0.329 · IR n 90 밝기 73.9 FAST20 4465 FAST5 7589 |lap| 21.98 · 노출 16000 게인 248
+  모드 1(끔): 깊이 n 90 유효 0.184 아래 0.129 · IR n 90 밝기 32.0 FAST20 20 FAST5 206 |lap| 2.94 · 노출 16000 게인 248
+설정 ③32000×16 → exposure=32000:ok gain=16:ok
+[③32000×16]
+  모드 0(켬): 깊이 n 90 유효 0.544 아래 0.328 · IR n 90 밝기 73.8 FAST20 4472 FAST5 7598 |lap| 21.98 · 노출 16000 게인 248
+  모드 1(끔): 깊이 n 90 유효 0.184 아래 0.130 · IR n 90 밝기 31.9 FAST20 20 FAST5 205 |lap| 2.94 · 노출 16000 게인 248
+설정 ④32000×64 → gain=64:ok
+[④32000×64]
+  모드 0(켬): 깊이 n 88 유효 0.544 아래 0.328 · IR n 90 밝기 73.8 FAST20 4458 FAST5 7574 |lap| 21.98 · 노출 16000 게인 248
+  모드 1(끔): 깊이 n 90 유효 0.184 아래 0.129 · IR n 90 밝기 31.8 FAST20 20 FAST5 206 |lap| 2.93 · 노출 16000 게인 248
+설정 ⑤32000×128 → gain=128:ok
+[⑤32000×128]
+  모드 0(켬): 깊이 n 87 유효 0.544 아래 0.329 · IR n 90 밝기 73.9 FAST20 4468 FAST5 7612 |lap| 21.97 · 노출 16000 게인 248
+  모드 1(끔): 깊이 n 89 유효 0.184 아래 0.130 · IR n 90 밝기 32.0 FAST20 19 FAST5 208 |lap| 2.94 · 노출 16000 게인 248
+설정 ⑥32000×248 → gain=248:ok
+[⑥32000×248]
+  모드 0(켬): 깊이 n 88 유효 0.544 아래 0.328 · IR n 90 밝기 73.9 FAST20 4472 FAST5 7610 |lap| 21.98 · 노출 16000 게인 248
+  모드 1(끔): 깊이 n 90 유효 0.185 아래 0.131 · IR n 90 밝기 31.9 FAST20 19 FAST5 200 |lap| 2.93 · 노출 16000 게인 248
+설정 ⑦대조 끔+자동 → emitter_on_off=False:ok emitter_enabled=0:ok enable_auto_exposure=True:ok
+[⑦대조 끔+자동]
+  모드 0(켬): 깊이 n 178 유효 0.194 아래 0.142 · IR n 180 밝기 46.9 FAST20 52 FAST5 612 |lap| 3.75 · 노출 31979 게인 246
+  모드 None(메타없음): 깊이 n 1 유효 0.191 아래 0.118 · IR n 0 밝기 -1.0 FAST20 -1 FAST5 -1 |lap| -1.00 · 노출 - 게인 -
+  드라이버 오류(시험 중):
+      4 [component_container_mt-1] Failed to set value: set_data_usb failed, error: RS2_USB_STATUS_PIPE
+      1 [component_container_mt-1] [WARN] [1792570773.229552776] [camera.camera]: Failed to set value to sensor: depth_module.emitter_on_off = 0[0, 1]
+      1 [component_container_mt-1] hwmon command 0x7b( 17 0 0 0 ) failed (response -9= No expected user action)
+      1 [component_container_mt-1] Failed to set value: set_xu(id=3) failed! Last Error: Success
+      1 [component_container_mt-1]  21/10 17:20:31,222 ERROR [281472601716960] (rs.cpp:237) [rs2_set_option( options:0xaaaac0da96d0, option:Gain, value:248 ) UNKNOWN] set_data_usb failed, error: RS2_USB_STATU
+      1 [component_container_mt-1]  21/10 17:20:23,187 ERROR [281472618625248] (rs.cpp:237) [rs2_set_option( options:0xaaaac0da96d0, option:Gain, value:128 ) UNKNOWN] set_data_usb failed, error: RS2_USB_STATU
+      1 [component_container_mt-1]  21/10 17:20:15,150 ERROR [281472610171104] (rs.cpp:237) [rs2_set_option( options:0xaaaac0da96d0, option:Gain, value:64 ) UNKNOWN] set_data_usb failed, error: RS2_USB_STATUS
+      1 [component_container_mt-1]  21/10 17:20:07,131 ERROR [281472601716960] (rs.cpp:237) [rs2_set_option( options:0xaaaac0da96d0, option:Gain, value:16 ) UNKNOWN] set_data_usb failed, error: RS2_USB_STATUS
+== 끝: mx_container 남은 0 (스택은 prep 으로 복귀 필요)
+===== 17:20:53 끝 | run_mx1.sh
