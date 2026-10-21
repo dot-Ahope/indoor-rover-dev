@@ -1,0 +1,15 @@
+전진 명령 구간 112.9 s · 0 근처로 떨어진 묶음 13 번
+  12:30:27 t=1.6 길이 0.45 s · 명령 10 개 · 직전 명령 간격 0.05 s | [follow_path] [ActionServer] Aborting handle. / Received request to clear except a region the local_costmap / Received a goal, begin computing control effort.
+  12:30:28 t=2.8 길이 0.39 s · 명령 9 개 · 직전 명령 간격 0.06 s | [follow_path] [ActionServer] Aborting handle. / Received request to clear except a region the local_costmap / Received a goal, begin computing control effort.
+  12:31:08 t=43.6 길이 0.20 s · 명령 5 개 · 직전 명령 간격 0.04 s | [follow_path] [ActionServer] Aborting handle. / Received a goal, begin computing control effort. / PathBlockedAhead: 앞 경로 (2.20, -0.84) 비용 99 — 2.0 s 지속되면 재계획
+  12:31:11 t=46.0 길이 0.30 s · 명령 7 개 · 직전 명령 간격 0.05 s | Smoothed path leads to a collision at x: 2.212972, y: -1.050 / PathBlockedAhead: 앞 경로 (2.20, -0.85) 비용 99 — 2.0 s 지속되면 재계획 / Passing new path to controller.
+  12:31:21 t=56.2 길이 0.00 s · 명령 1 개 · 직전 명령 간격 0.05 s | Control loop missed its desired rate of 10.0000Hz / Passing new path to controller.
+  12:31:27 t=62.6 길이 0.15 s · 명령 4 개 · 직전 명령 간격 0.05 s | [follow_path] [ActionServer] Aborting handle. / Received request to clear except a region the local_costmap / Received a goal, begin computing control effort.
+  12:31:28 t=63.6 길이 0.20 s · 명령 5 개 · 직전 명령 간격 0.05 s | Control loop missed its desired rate of 10.0000Hz / [follow_path] [ActionServer] Aborting handle. / Received a goal, begin computing control effort.
+  12:31:34 t=69.2 길이 0.00 s · 명령 1 개 · 직전 명령 간격 0.05 s | Control loop missed its desired rate of 10.0000Hz / Passing new path to controller.
+  12:31:36 t=71.5 길이 0.05 s · 명령 2 개 · 직전 명령 간격 0.04 s | Control loop missed its desired rate of 10.0000Hz / Passing new path to controller. / Control loop missed its desired rate of 10.0000Hz
+  12:31:37 t=72.2 길이 0.00 s · 명령 1 개 · 직전 명령 간격 0.05 s | Passing new path to controller. / Control loop missed its desired rate of 10.0000Hz / Control loop missed its desired rate of 10.0000Hz
+  12:31:54 t=89.1 길이 0.05 s · 명령 2 개 · 직전 명령 간격 0.05 s | Smoothed path leads to a collision at x: 1.260000, y: 0.2900 / Passing new path to controller. / Optimizer fail to compute path
+  12:31:55 t=89.8 길이 0.30 s · 명령 7 개 · 직전 명령 간격 0.70 s | Optimizer fail to compute path / [follow_path] [ActionServer] Aborting handle. / Received request to clear except a region the local_costmap
+  12:32:04 t=99.6 길이 0.00 s · 명령 1 개 · 직전 명령 간격 0.10 s | Received a goal, begin computing control effort.
+분류: {'컨트롤러 중단/실패': 8, '새 경로 전달': 4, 'Received a goal, begin computi': 1}
