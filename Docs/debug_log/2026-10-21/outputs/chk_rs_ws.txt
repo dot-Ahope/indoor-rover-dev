@@ -1,0 +1,24 @@
+# 원문 출력 파일 저장을 빠뜨려 PC 대화 기록(세션 21d4aa9f, 10-21 16:5x)의 도구 출력에서 그대로 옮김 — §23
+# jobs/chk_rs_ws.sh — 왜 colcon 이 realsense_splitter 를 못 찾나
+/home/jetson/workspaces/isaac_ros-dev/src/isaac_ros_nvblox/nvblox_examples/realsense_splitter/COLCON_IGNORE
+--- splitter package.xml
+CMakeLists.txt
+COLCON_IGNORE
+config
+include
+launch
+package.xml
+src
+--- ws 최상위
+build_rs
+install_rs
+log
+src
+vslam
+컨테이너에서도 보임
+nvblox_ros	src/isaac_ros_nvblox/nvblox_ros	(ros.ament_cmake)
+nvblox_ros_common	src/isaac_ros_nvblox/nvblox_ros_common	(ros.ament_cmake)
+nvblox_ros_python_utils	src/isaac_ros_nvblox/nvblox_ros_python_utils	(ros.ament_python)
+nvblox_examples_bringup	src/isaac_ros_nvblox/nvblox_examples/nvblox_examples_bringup	(ros.ament_cmake)
+nvblox_image_padding	src/isaac_ros_nvblox/nvblox_examples/nvblox_image_padding	(ros.ament_cmake)
+semantic_label_conversion	src/isaac_ros_nvblox/nvblox_examples/semantic_label_conversion	(ros.ament_cmake)
