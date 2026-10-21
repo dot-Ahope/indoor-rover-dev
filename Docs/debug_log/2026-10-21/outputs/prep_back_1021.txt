@@ -1,0 +1,10 @@
+/tmp/prep_back_1021.sh: line 3: 2049054 Killed                  docker exec isaac_rs_test bash -c "pkill -9 -f nv_static" 2> /dev/null
+nv_static 남은 0
+  [  8.6 s] 기다리는 것: controller_server planner_server bt_navigator behavior_server map→base TF /wheel_odom /odometry/filtered 전역 지도
+  [  8.8 s] 기다리는 것: controller_server planner_server bt_navigator behavior_server /wheel_odom /odometry/filtered 전역 지도
+  [ 12.0 s] 기다리는 것: controller_server planner_server bt_navigator behavior_server /wheel_odom 전역 지도
+  위치 추정 검사(기대 0,0,0): 위치 차 0.000 m · yaw 차 +0.1° → 통과
+  /wheel_odom 25.0 Hz · /odometry/filtered 30.0 Hz · /tf 50.0 Hz · 배터리 12.24 V
+PREP_OK
+  nvblox(컨테이너): 1 개 · cuVSLAM(컨테이너): 1 개 · vslam_twist 1 · ekf_vslam 1
+  ⏱ +66 s prep 끝 — PREP_OK
