@@ -1,0 +1,8 @@
+#12 620.8 [100%] Built target realsense2_camera_node
+#13 unpacking to docker.io/library/isaac_ros_dev-aarch64-rs:latest 30.2s done
+#13 DONE 162.3s
+BUILD_EXIT=0
+Mem:            7607        2940         177          64        4489        4370
+ 16:51:44 up  7:34,  0 users,  load average: 4.48, 5.92, 6.02
+
+[exited with code 0]

@@ -1,0 +1,4 @@
+#!/bin/bash
+# 시험 컨테이너 안 apt 모의 설치(-s, 실제 설치 안 함): 옛 컨테이너와 같은 판의 nvblox·cuVSLAM 을 넣으면 realsense 4.51.1 이 바뀌는가
+docker exec -u root isaac_rs_test bash -c 'apt-get update -qq 2>&1 | tail -2; apt-cache policy ros-humble-isaac-ros-nvblox ros-humble-isaac-ros-visual-slam ros-humble-nvblox-examples-bringup | grep -E "^ros|Candidate|3\.2\.(5|6|13)-0jammy" | head -20
+apt-get install -s --no-install-recommends ros-humble-isaac-ros-nvblox=3.2.5-0jammy ros-humble-isaac-ros-visual-slam=3.2.6-0jammy ros-humble-nvblox-examples-bringup=3.2.13-0jammy 2>&1 | grep -E "^(Inst|Remv|E:)" > /tmp/rs_apt_sim.txt; echo "Inst $(grep -c ^Inst /tmp/rs_apt_sim.txt) · Remv $(grep -c ^Remv /tmp/rs_apt_sim.txt)"; grep -iE "realsense|^E:|^Remv" /tmp/rs_apt_sim.txt; grep -E "nvblox|visual-slam|nitros " /tmp/rs_apt_sim.txt | cut -c1-110 | head -20'
