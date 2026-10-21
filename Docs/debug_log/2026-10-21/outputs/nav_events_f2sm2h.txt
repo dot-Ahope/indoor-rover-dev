@@ -1,0 +1,127 @@
+12:30:25 목표 80304960: 남은 거리 0.47 m → 시간 한도 43 s (시작 뒤 0.0 s)
+12:30:25 Received a goal, begin computing control effort.
+12:30:25 목표 80304960: 남은 거리 7.00 m → 시간 한도 230 s (시작 뒤 0.0 s)
+12:30:27 [follow_path] [ActionServer] Aborting handle.
+12:30:27 Received request to clear except a region the local_costmap
+12:30:27 Received a goal, begin computing control effort.
+12:30:27 Passing new path to controller.
+12:30:27 Control loop missed its desired rate of 10.0000Hz
+12:30:27 Control loop missed its desired rate of 10.0000Hz
+12:30:27 Control loop missed its desired rate of 10.0000Hz
+12:30:29 Passing new path to controller.
+12:30:29 Control loop missed its desired rate of 10.0000Hz
+12:30:30 Control loop missed its desired rate of 10.0000Hz
+12:30:30 Control loop missed its desired rate of 10.0000Hz
+12:30:31 Control loop missed its desired rate of 10.0000Hz
+12:30:31 Passing new path to controller.
+12:30:32 Control loop missed its desired rate of 10.0000Hz
+12:30:33 Passing new path to controller.
+12:30:35 Control loop missed its desired rate of 10.0000Hz
+12:30:35 Passing new path to controller.
+12:30:37 Passing new path to controller.
+12:30:39 Passing new path to controller.
+12:30:41 Passing new path to controller.
+12:30:43 Passing new path to controller.
+12:30:45 Passing new path to controller.
+12:30:48 Passing new path to controller.
+12:30:50 Passing new path to controller.
+12:30:50 Control loop missed its desired rate of 10.0000Hz
+12:30:52 Passing new path to controller.
+12:30:53 STUCK: 지령 15.6cm/17° 인데 관측 0.0cm/0.7° (비율 0.04) [shadow — 조치 없음]
+12:30:54 Passing new path to controller.
+12:30:56 Passing new path to controller.
+12:30:58 Control loop missed its desired rate of 10.0000Hz
+12:30:58 Passing new path to controller.
+12:31:00 Passing new path to controller.
+12:31:02 Passing new path to controller.
+12:31:04 Passing new path to controller.
+12:31:05 Control loop missed its desired rate of 10.0000Hz
+12:31:06 Passing new path to controller.
+12:31:08 [follow_path] [ActionServer] Aborting handle.
+12:31:08 Received a goal, begin computing control effort.
+12:31:09 PathBlockedAhead: 앞 경로 (2.20, -0.84) 비용 99 — 2.0 s 지속되면 재계획
+12:31:09 Control loop missed its desired rate of 10.0000Hz
+12:31:09 Control loop missed its desired rate of 10.0000Hz
+12:31:10 Smoothed path leads to a collision at x: 2.212972, y: -1.050326, theta: -1.527601
+12:31:10 PathBlockedAhead: 앞 경로 (2.20, -0.85) 비용 99 — 2.0 s 지속되면 재계획
+12:31:10 Passing new path to controller.
+12:31:11 [follow_path] [ActionServer] Aborting handle.
+12:31:16 Received a goal, begin computing control effort.
+12:31:18 Passing new path to controller.
+12:31:20 Passing new path to controller.
+12:31:21 Control loop missed its desired rate of 10.0000Hz
+12:31:22 Passing new path to controller.
+12:31:24 Passing new path to controller.
+12:31:25 Control loop missed its desired rate of 10.0000Hz
+12:31:26 Passing new path to controller.
+12:31:27 [follow_path] [ActionServer] Aborting handle.
+12:31:27 Received request to clear except a region the local_costmap
+12:31:27 Received a goal, begin computing control effort.
+12:31:28 Control loop missed its desired rate of 10.0000Hz
+12:31:28 [follow_path] [ActionServer] Aborting handle.
+12:31:28 Received a goal, begin computing control effort.
+12:31:29 Control loop missed its desired rate of 10.0000Hz
+12:31:30 PathBlockedAhead: 앞 경로 (1.34, 0.15) 비용 99 — 2.0 s 지속되면 재계획
+12:31:30 Passing new path to controller.
+12:31:32 Passing new path to controller.
+12:31:34 Control loop missed its desired rate of 10.0000Hz
+12:31:35 Passing new path to controller.
+12:31:36 Control loop missed its desired rate of 10.0000Hz
+12:31:37 Passing new path to controller.
+12:31:37 Control loop missed its desired rate of 10.0000Hz
+12:31:38 Control loop missed its desired rate of 10.0000Hz
+12:31:39 Passing new path to controller.
+12:31:41 Passing new path to controller.
+12:31:43 Passing new path to controller.
+12:31:43 Control loop missed its desired rate of 10.0000Hz
+12:31:45 Smoothed path leads to a collision at x: 1.130294, y: 0.326664, theta: -0.077938
+12:31:45 Passing new path to controller.
+12:31:47 Smoothed path leads to a collision at x: 1.129674, y: 0.325680, theta: -0.108910
+12:31:47 Control loop missed its desired rate of 10.0000Hz
+12:31:47 Passing new path to controller.
+12:31:49 Control loop missed its desired rate of 10.0000Hz
+12:31:49 Control loop missed its desired rate of 10.0000Hz
+12:31:49 Control loop missed its desired rate of 10.0000Hz
+12:31:49 Smoothed path leads to a collision at x: 1.459911, y: 0.193815, theta: 0.012940
+12:31:49 Control loop missed its desired rate of 10.0000Hz
+12:31:49 Passing new path to controller.
+12:31:49 Control loop missed its desired rate of 10.0000Hz
+12:31:49 Control loop missed its desired rate of 10.0000Hz
+12:31:49 Control loop missed its desired rate of 10.0000Hz
+12:31:49 Control loop missed its desired rate of 10.0000Hz
+12:31:49 Control loop missed its desired rate of 10.0000Hz
+12:31:50 Control loop missed its desired rate of 10.0000Hz
+12:31:51 Smoothed path leads to a collision at x: 1.360000, y: 0.240000, theta: -0.135324
+12:31:51 Passing new path to controller.
+12:31:52 Control loop missed its desired rate of 10.0000Hz
+12:31:52 Control loop missed its desired rate of 10.0000Hz
+12:31:52 Control loop missed its desired rate of 10.0000Hz
+12:31:52 Control loop missed its desired rate of 10.0000Hz
+12:31:52 Control loop missed its desired rate of 10.0000Hz
+12:31:53 Smoothed path leads to a collision at x: 1.260000, y: 0.290000, theta: -0.041169
+12:31:53 Passing new path to controller.
+12:31:54 Optimizer fail to compute path
+12:31:54 [follow_path] [ActionServer] Aborting handle.
+12:31:54 Received request to clear except a region the local_costmap
+12:31:54 Received request to clear except a region the global_costmap
+12:31:55 Smoothed path leads to a collision at x: 1.160000, y: 0.290000, theta: 1.030394
+12:31:55 PathBlockedAhead: 앞 경로 (0.93, 0.09) 비용 99 — 2.0 s 지속되면 재계획
+12:31:55 Received a goal, begin computing control effort.
+12:31:55 Optimizer fail to compute path
+12:31:55 [follow_path] [ActionServer] Aborting handle.
+12:31:55 Received request to clear except a region the local_costmap
+12:31:55 Received a goal, begin computing control effort.
+12:31:55 Optimizer fail to compute path
+12:31:55 [follow_path] [ActionServer] Aborting handle.
+12:32:05 Received a goal, begin computing control effort.
+12:32:07 Passing new path to controller.
+12:32:07 Control loop missed its desired rate of 10.0000Hz
+12:32:09 Passing new path to controller.
+12:32:09 Control loop missed its desired rate of 10.0000Hz
+12:32:09 Control loop missed its desired rate of 10.0000Hz
+12:32:10 Control loop missed its desired rate of 10.0000Hz
+12:32:11 Passing new path to controller.
+12:32:13 Passing new path to controller.
+12:32:15 Passing new path to controller.
+12:32:17 Passing new path to controller.
+12:32:18 Goal succeeded

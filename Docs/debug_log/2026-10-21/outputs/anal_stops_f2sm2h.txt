@@ -1,0 +1,27 @@
+주행 12:30:25 ~ 12:32:18 (113.0 s) · 멈춤(0.3 s 넘게 정지) 3 번 · 합 6.5 s
+
+12:30:27~12:30:27 (t 12.3~12.6, 0.3 s) @ (5.28, -1.81) | cmd_vel 6 개 중 0 명령 4 · 최대 |v| 0.020 · 최대 |ω| 0.12 | 앞 ±30° 라이다 최소 1.19 m
+    12:30:25 목표 80304960: 남은 거리 0.47 m → 시간 한도 43 s (시작 뒤 0.0 s)
+    12:30:25 Received a goal, begin computing control effort.
+    12:30:25 목표 80304960: 남은 거리 7.00 m → 시간 한도 230 s (시작 뒤 0.0 s)
+    12:30:27 [follow_path] [ActionServer] Aborting handle.
+    12:30:27 Received request to clear except a region the local_costmap
+    12:30:27 Received a goal, begin computing control effort.
+
+12:31:11~12:31:16 (t 56.5~61.6, 5.1 s) @ (2.88, -1.45) | cmd_vel 5 개 중 0 명령 3 · 최대 |v| 0.020 · 최대 |ω| 0.12 | 앞 ±30° 라이다 최소 0.93 m
+    12:31:09 PathBlockedAhead: 앞 경로 (2.20, -0.84) 비용 99 — 2.0 s 지속되면 재계획
+    12:31:10 Smoothed path leads to a collision at x: 2.212972, y: -1.050326, theta: -1.527601
+    12:31:10 PathBlockedAhead: 앞 경로 (2.20, -0.85) 비용 99 — 2.0 s 지속되면 재계획
+    12:31:11 [follow_path] [ActionServer] Aborting handle.
+    12:31:16 Received a goal, begin computing control effort.
+
+12:31:54~12:31:55 (t 99.6~100.7, 1.0 s) @ (1.35, 0.05) | cmd_vel 11 개 중 0 명령 7 · 최대 |v| 0.030 · 최대 |ω| 0.00 | 앞 ±30° 라이다 최소 1.26 m
+    12:31:53 Smoothed path leads to a collision at x: 1.260000, y: 0.290000, theta: -0.041169
+    12:31:54 Optimizer fail to compute path
+    12:31:54 [follow_path] [ActionServer] Aborting handle.
+    12:31:54 Received request to clear except a region the local_costmap
+    12:31:54 Received request to clear except a region the global_costmap
+    12:31:55 Smoothed path leads to a collision at x: 1.160000, y: 0.290000, theta: 1.030394
+    12:31:55 PathBlockedAhead: 앞 경로 (0.93, 0.09) 비용 99 — 2.0 s 지속되면 재계획
+    12:31:55 Received a goal, begin computing control effort.
+그림 figures/stops_f2sm2h.png

@@ -94,3 +94,17 @@
   - 남은 칸을 누가 들고 있었나: 전역 코스트맵 = nvblox 층(감쇠 0.99 · 기억) + 라이다 ObstacleLayer. 라이다 층은 로버가 0.4~0.7 m 앞에서 빈 곳을 보면 광선으로 지우므로 **nvblox 층이 사람을 기억한 것으로 추정(미확인 — 층별 코스트맵이 bag 에 없음)**. 앞 구간(t 16~45)에도 `PathBlockedAhead`(1.5~2.6, −0.1~−1.5) · `Optimizer fail` 5 회 — 같은 방해로 봄(목표 1 은 53.4 s 로 f2sm1 과 비슷하게 도착).
 - 동적 물체 대응으로 본 것(이번 1 회): ① 사람이 길에 있을 때 정지 · 재계획은 했다(충돌 없음, 사용자 확인 필요). ② **사람이 떠난 뒤에도 기억이 목표 칸을 막아 목표 자체를 포기**했다 — 09-29 사용자 요구 "사람 다니는 실내에 강건"([[dynamic-people-robustness]]) 에 어긋나는 행동. ③ 회전 미끄러짐이 컸다(휠−EKF 44°) — 막힌 곳에서 제자리 돌기가 반복된 탓으로 추정.
 - ⚠ 분석 도구 첫 판 오류: 코스트맵 메시지 값은 0~100 으로 바뀌어 있는데(100 = LETHAL, 99 = INSCRIBED) ≥ 253 으로 LETHAL 을 세어 늘 0 이 나왔다. 서명 = 'LETHAL 0' 인데 nav2 는 '비용 99' 를 말함. 고친 판으로 위 표를 냄.
+
+## §11 사용자 요청: 출발점 복귀(f2sm2h) · f2sm2 영상 · 복귀 중 멈춤 분석
+### §11.1 f2sm2 영상 (`Docs/tools/fig_run_video.py`, 2 배속, 로컬 `figures/f2sm2_people_block.mp4` — mp4 는 git 제외)
+- 장면 `figures/f2sm2_frame_60.png`(12:17:46): 목표 (5.5, −2.2) 바로 옆 (5.3, −2.2) 에 라이다 점 호(사람 다리로 봄) · 둘레 전역 LETHAL.
+- 장면 `figures/f2sm2_frame_67.png`(12:18:01): 그 자리 라이다 점 없음, (5.0~5.3, −2.2~−2.5) 빨간 칸은 그대로 → 6 s 뒤 Goal failed. §10 표와 같은 이야기.
+### §11.2 복귀 주행 f2sm2h (`run_f2c.sh` 에 `home` = `0,0,p` 추가; 원문 `outputs/run_f2sm2h.txt`)
+- 사용자 요청("출발 테이프로 되돌아오게") 으로 주행. 게이트 통과 → 목표 (0, 0) **SUCCEEDED 112.9 s**, 경로 5.47 m, 도착 목표 대비 0.147 m · −166°(뒤 보고 도착 — 평소 끝 자세). 휠−EKF 회전 차 37°, stuck 진단 1(그림자, 조치 없음). 비교용 아님.
+### §11.3 복귀 중 '중간중간 멈춤' (사용자 관찰) — 원문 `outputs/anal_stops_f2sm2h.txt` · `anal_cmd_dips_f2sm2h.txt` · `nav_events_f2sm2h.txt` · `chk_bt_f2sm2h.txt`, 그림 `figures/stops_f2sm2h.png`
+- 도구: `jobs/anal_stops.py`(EKF 속도 |v| < 0.01 · |ω| < 0.05 가 MIN_STOP 넘게 → 멈춤, 그때 /cmd_vel · 앞 라이다 · nav2 사건), `jobs/anal_cmd_dips.py`(/cmd_vel 전진 명령이 0 근처로 떨어진 묶음을 nav2 사건과 맞춤).
+- 본 것: 0.3 s 넘게 선 것 3 번(합 6.5 s) + 명령이 잠깐 0 으로 떨어진 '멈칫' 13 번(0~0.45 s).
+  1. **12:31:11~16 5.1 s 정지 @ (2.88, −1.45)**: 12:31:09~10 `PathBlockedAhead: 앞 경로 (2.20, −0.85) 비용 99` + `Smoothed path leads to a collision` → 12:31:11 FollowPath 중단 → behavior_server `Running wait`(12:31:11) · `wait completed`(12:31:16). 즉 **BT 복구 RoundRobin 의 Wait 5 s 차례**가 걸린 것(`nav_to_pose_no_spin.xml` 124 행). 그동안 /cmd_vel 5 개뿐(평소 20 Hz). 앞 라이다 최소 0.93 m — 바로 앞이 막힌 건 아님.
+  2. **12:31:54~55 1.0 s @ (1.35, 0.05)**: `Optimizer fail to compute path` 3 회 · `PathBlockedAhead (0.93, 0.09) 비용 99` · 클리어 요청 → 곧 재개. 출발점 앞 0.9 m — 출발점 근처 낮은 상자([[start-low-box-test]]) 둘레로 추정(미확인).
+  3. **짧은 멈칫 13 번**: 8 번은 FollowPath 중단 → 새 목표 수신(컨트롤러 재시작) 직후, 4 번은 `Passing new path to controller`(재계획 0.5 Hz) + `Control loop missed its desired rate`(43 회) 무렵, 1 번 기타. 컨트롤러가 다시 시작하거나 경로가 바뀌는 순간 명령이 0 으로 한두 주기 떨어지는 모양(기전 미확인).
+- 읽기: 멈춤의 공통 뿌리는 **경로 앞(0.3~1.5 m)의 전역 비용 99(내접) 칸** → PathBlockedAhead 가 주행을 끊고 → 재계획 · 복구로 넘어가는 흐름. 그 칸이 무엇인지(상자 · 사람 기억 · 벽 번짐)는 이 bag 만으로는 미확인 — f2sm2 에서 사람이 남긴 nvblox 기억이 복귀 경로 쪽에도 남아 있었을 가능성 있음(f2sm2 때 (1.5~2.6, −0.1~−1.5) 에도 PathBlockedAhead · §10). Wait 5 s 는 복구 순서상 필연이 아니라 RoundRobin 차례 — 같은 막힘에서도 클리어 · MonotoneEscape 차례면 짧게 끝난다.
