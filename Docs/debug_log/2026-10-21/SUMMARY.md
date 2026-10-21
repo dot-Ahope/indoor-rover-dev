@@ -353,3 +353,12 @@
   3. **낮은 상자 감지**: 출발 직후 상자(1.15~1.35, −0.20~0.05) 에 로컬 LETHAL ≥ 8 칸(게이트 L 문턱)이 로버가 1.4 m 안에 들어온 뒤 2 s 안에 생김(f2sm1 은 16 칸).
   4. 기록: 출발점 둘레 끝 상태 유령(§13.1 방식, f2sm1 278), 카메라 CPU.
 - 통과하면 운용 기본에 넣을지 사용자 결정 → 2번(nvblox 최소 가중치)은 이 bag 재생으로 A/B.
+
+## §22 마무리 (사용자: "남은건 내일 하도록 하자. 오늘일 마무리하고 아티팩트로도 저장해달라.")
+- 상태: 운용 구성(프로젝터 상시 끔 · vslam:=shadow · dds_shm:=true, 프리셋 지정 안 함)으로 떠 있음 — 마지막 prep PREP_OK(위치 차 0.006 m). 로버는 출발점 정지(역방향 ≈ −166°). Jetson 172.30.1.8(ALOPS).
+- Jetson 에 남긴 것: `camera.launch.py` depth_preset 판(기본 −1, 사본 `/tmp/camera.launch.py.pre_pr1`), 시험 컨테이너 `isaac_rs_test`(정지 안 함 · 카메라 안 잡음), 이미지 `isaac_ros_dev-aarch64-rs:latest` · `:apt`(지울지 사용자 결정 — 디스크 여유 확인 필요).
+- 내일:
+  1. f2pr1 주행(§21.2 선언 그대로, 사용자 "시작" 뒤) — 프리셋 3 의 유령 감소 · 낮은 상자 감지.
+  2. 2번 nvblox `esdf_integrator_min_weight` — f2pr1(또는 f2sm1) bag 재생 A/B.
+  3. 미뤄 둔 것: f2sm3 · f2sm4 그림자 반복, 사람 기억이 목표 칸을 막는 문제(§10 · §12.1), 복귀 중 멈칫(§12.2 TF 외삽 · 제어 주기), prep 위치 추정 첫 불합격(§21.1) 원인.
+- 정리 페이지: https://claude.ai/artifact/HgrT1HcmfuDrqFE6hRvREM (사본 `figures/day_summary_1021.html`, 생성기 `jobs/fig_day_summary_1021.py`). mx2 상세 페이지 https://claude.ai/artifact/U5NBfhdtgsDwt5E5LoohPt.
