@@ -13,6 +13,8 @@ TS.register(get_types_from_msg('std_msgs/Header header\nfloat32 resolution\nuint
 bag, tq, fig = sys.argv[1], float(sys.argv[2]), sys.argv[3]
 W = [float(v) for v in sys.argv[4].split(',')] if len(sys.argv) > 4 else [-1.5, 3.5, -2.5, 1.5]
 NEAR = 0.10
+import os
+CTOP = os.environ.get('CTOP', '/global_costmap/costmap')   # 10-21 §14: 로컬 코스트맵(odom 좌표)도 — map 으로 옮겨 본다
 
 
 def yaw(q): return math.atan2(2 * (q.w * q.z + q.x * q.y), 1 - 2 * (q.y * q.y + q.z * q.z))
@@ -25,9 +27,9 @@ def comp(a, b):
 GC, MP, SC, MO, OB, ST, SL = [], None, [], [], [], {}, []
 with AnyReader([Path(bag)], default_typestore=TS) as rd:
     t0 = rd.start_time * 1e-9; tend = rd.end_time * 1e-9 - t0; T = tq if tq >= 0 else tend + tq
-    for c, t, raw in rd.messages(connections=[c for c in rd.connections if c.topic in ('/global_costmap/costmap', '/map', '/scan', '/tf', '/tf_static', '/nvblox_node/static_map_slice')]):
+    for c, t, raw in rd.messages(connections=[c for c in rd.connections if c.topic in (CTOP, '/map', '/scan', '/tf', '/tf_static', '/nvblox_node/static_map_slice')]):
         tt = t * 1e-9 - t0
-        if c.topic in ('/global_costmap/costmap', '/scan', '/nvblox_node/static_map_slice') and not (T - 3 <= tt <= T + 1.5): continue
+        if c.topic in (CTOP, '/scan', '/nvblox_node/static_map_slice') and not (T - 3 <= tt <= T + 1.5): continue
         m = rd.deserialize(raw, c.msgtype)
         if c.topic == '/nvblox_node/static_map_slice':
             d = np.array(m.data, np.float32).reshape(m.height, m.width); iy, ix = np.nonzero((d <= m.resolution) & (d != m.unknown_value))
@@ -42,14 +44,16 @@ with AnyReader([Path(bag)], default_typestore=TS) as rd:
         else:
             g = m.info; A = np.array(m.data, dtype=np.int16).reshape(g.height, g.width)
             if c.topic == '/map': MP = (g.origin.position.x, g.origin.position.y, g.resolution, A)
-            else: GC.append((tt, g.origin.position.x, g.origin.position.y, g.resolution, A))
+            else: GC.append((tt, g.origin.position.x, g.origin.position.y, g.resolution, A, m.header.frame_id))
 at = lambda L, t: L[max(bisect.bisect_right([x[0] for x in L], t) - 1, 0)][1]
 B2L = (0.0, 0.0, 0.0); f = 'lidar_link'; ch = []
 while f in ST and f != 'base_link':
     p, a = ST[f]; ch.append(a); f = p
 for a in reversed(ch): B2L = comp(B2L, a)
-k = max(bisect.bisect_right([g[0] for g in GC], T) - 1, 0); tg, ox, oy, r, A = GC[k]
+k = max(bisect.bisect_right([g[0] for g in GC], T) - 1, 0); tg, ox, oy, r, A, gfr = GC[k]
 ys, xs = np.nonzero(A >= 100); cx, cy = ox + (xs + 0.5) * r, oy + (ys + 0.5) * r
+if gfr == 'odom':
+    _a = at(MO, tg); _c, _s = math.cos(_a[2]), math.sin(_a[2]); cx, cy = _a[0] + _c * cx - _s * cy, _a[1] + _s * cx + _c * cy
 inw = (cx >= W[0]) & (cx <= W[1]) & (cy >= W[2]) & (cy <= W[3]); cx, cy = cx[inw], cy[inw]
 LP = []
 for ts, a0, da, rg in SC:
@@ -102,5 +106,5 @@ ax.scatter(LP[lk, 0], LP[lk, 1], s=2, c='#1e88e5', label='라이다 점(최근 1
 FP = np.array([[0.262, 0.165], [0.262, -0.165], [-0.248, -0.165], [-0.248, 0.165], [0.262, 0.165]]); c_, s_ = math.cos(pose[2]), math.sin(pose[2])
 ax.plot(pose[0] + FP[:, 0] * c_ - FP[:, 1] * s_, pose[1] + FP[:, 0] * s_ + FP[:, 1] * c_, color='#f9a825', lw=2, label='로버')
 ax.set_xlim(W[0], W[1]); ax.set_ylim(W[2], W[3]); ax.set_aspect('equal'); ax.grid(alpha=0.3); ax.legend(fontsize=8, loc='lower left')
-ax.set_title('%s t=%.0f s 전역 LETHAL 칸의 근거' % (Path(bag).name, tg)); ax.set_xlabel('map x (m)'); ax.set_ylabel('map y (m)')
+ax.set_title('%s t=%.0f s %s LETHAL 칸의 근거' % (Path(bag).name, tg, CTOP)); ax.set_xlabel('map x (m)'); ax.set_ylabel('map y (m)')
 fg.tight_layout(); fg.savefig(fig, dpi=110); print('그림', fig)
