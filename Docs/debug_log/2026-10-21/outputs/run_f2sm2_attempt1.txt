@@ -1,0 +1,8 @@
+started
+########## F0 게이트 12:12:41 ##########
+  A·B 통과 (average rate: 24.998)
+  J 통과 (깊이 15.2 Hz)
+  C 불합격(SLAM) — 주행하지 않음
+map->odom 100 개/5 s, 최대 간격 0.11 s, 최대 stamp 지연 1.05 s
+FAIL
+회수 f0_f2sm2.log
