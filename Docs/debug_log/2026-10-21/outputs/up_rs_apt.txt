@@ -1,0 +1,32 @@
+Setting up ros-humble-nvblox-examples-bringup (3.2.13-0jammy) ...
+Setting up ros-humble-isaac-ros-nvblox (3.2.5-0jammy) ...
+Processing triggers for libc-bin (2.35-0ubuntu3.8) ...
+== (a) 버전
+rs-enumerate-devices  version: 2.55.1.0
+realsense2_camera 4.51.1
+ros-humble-realsense2-camera 4.51.1-0jammy
+ros-humble-realsense2-camera-msgs 4.51.1-0jammy
+ros-humble-realsense2-description 4.51.1-0jammy
+== (b) realsense_splitter 빌드(src_rs 복사본)
+[Processing: realsense_splitter]
+[Processing: realsense_splitter]
+Finished <<< realsense_splitter [1min 29s]
+
+Summary: 1 package finished [1min 30s]
+realsense_splitter
+  nvblox::RealsenseSplitterNode
+nav2_behaviors
+librealsense_splitter_component.so
+realsense_splitter
+== (c) 기존 패키지
+isaac_ros_visual_slam
+nvblox_examples_bringup
+nvblox_nav2
+nvblox_ros
+/opt/ros/humble/share/nvblox_examples_bringup/config/sensors/realsense_emitter_flashing.yaml
+/workspaces/isaac_ros-dev/src/isaac_ros_nvblox/nvblox_examples/nvblox_examples_bringup/config/sensors/realsense_emitter_flashing.yaml
+== (d) 지금 스택
+1
+isaac_rs_test Up 4 minutes
+microros_agent Up 6 hours
+isaac_ros_dev-aarch64-container Up 7 hours

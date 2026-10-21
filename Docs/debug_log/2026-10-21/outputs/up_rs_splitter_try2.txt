@@ -1,0 +1,22 @@
+image sha256:e73aede88afe4155fdac4f67399728800df999e3ce7baea88ffbe689416a18fd 13689685138
+-rwxrwxr-x 1 root root 2233 Nov  5  2025 /usr/local/bin/scripts/workspace-entrypoint.sh
+uid=1000(admin) gid=1000(admin) groups=1000(admin),27(sudo),44(video),46(plugdev)
+isaac_rs_test Up 16 seconds
+== (a) 버전
+
+rs-enumerate-devices  version: 2.55.1.0
+realsense2_camera 4.51.1
+realsense2_camera_msgs 4.51.1
+== (b) realsense_splitter 빌드
+[1.482s] WARNING:colcon.colcon_core.package_selection:ignoring unknown package 'realsense_splitter' in --packages-select
+
+Summary: 0 packages finished [1.36s]
+Package 'realsense_splitter' not found
+ls: cannot access 'install_rs/realsense_splitter/lib': No such file or directory
+== (c) 기존 패키지
+cv2 4.5.4
+== (d) 지금 스택 카메라 영향 — 호스트 카메라 프로세스 · 깊이 주기(sensors 로그 대신 프로세스 존재만, 새 참가자 안 만듦)
+1
+isaac_rs_test Up 24 seconds
+microros_agent Up 6 hours
+isaac_ros_dev-aarch64-container Up 7 hours

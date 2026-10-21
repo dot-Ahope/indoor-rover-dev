@@ -1,0 +1,62 @@
+== 정리 뒤 남은 스택 프로세스: 1 · 옛 컨테이너 nvblox/cuVSLAM 3 · base active
+== [flash] 기동 로그
+Built with LibRealSense v2.55.1
+Device FW version: 5.15.0.2
+Failed to set value to sensor: depth_module.emitter_on_off = 0
+hwmon command 0x7b
+Loaded node '/camera/camera'
+Loaded node '/camera/realsense_splitter_node'
+Loaded node '/visual_slam_node'
+RealSense Node Is Up!
+RealSense ROS v4.51.1
+      1 [component_container_mt-1] [WARN] [1792570077.980627788] [visual_slam_node]: Delta between current and previous frame [500.996096 ms] is above threshold [50.000000 ms]
+      1 [component_container_mt-1] [WARN] [1792570070.021256110] [camera.camera]: Hardware Notification:Motion Module failure,1.79257e+12,Error,Hardware Error
+      1 [component_container_mt-1] [WARN] [1792570070.021036454] [camera.camera]: XXX Hardware Notification:Motion Module failure,1.79257e+12,Error,Hardware Error
+      1 [component_container_mt-1] [WARN] [1792570069.373526892] [camera.camera]: 
+      1 [component_container_mt-1] [WARN] [1792570068.356197993] [camera.camera]: re-enable the stream for the change to take effect.
+      1 [component_container_mt-1] [WARN] [1792570068.346158022] [camera.camera]: re-enable the stream for the change to take effect.
+  컨테이너 프로세스 pid 2023495
+  전체 CPU(10 s, 코어 6 = 100 %): 18.3
+  nv_static 프로세스 CPU(top 5 회, 코어 1 = 100): 85.3
+측정 60.0 s · 모드 flash (출력 = 분리 노드)
+  주기: 원시 깊이 56.1 · 원시 IR1 58.0 · 분리 깊이 27.0 · 분리 IR1 29.6 · 분리 IR2 29.9 · cuVSLAM odom 29.9 Hz
+  원시 깊이 유효 비율: 모드0 중앙 0.681 (n 1698, 0.669~0.690) · 모드1 중앙 0.182 (n 1637, 0.155~0.217) · 메타 없음 33
+    → 실제 프로젝터 켬 = 모드 0 (NVIDIA 분리 노드는 모드 1 = 켬 으로 가정)
+  원시 IR1 |라플라시안|: 모드0 중앙 5.382 (n 1774, 5.352~5.427) · 모드1 중앙 0.400 (n 1698, 0.376~0.466) · 메타 없음 8
+    → 실제 프로젝터 켬 = 모드 0 (NVIDIA 분리 노드는 모드 1 = 켬 으로 가정)
+  분리 깊이: n 1619 · 유효 중앙 0.182 (0.154~0.217) · 아래 절반 유효 중앙 0.125 (0.099~0.152) · 원시 가운데(0.432) 아래 프레임 1619
+  분리 IR1: n 1778 · 밝기 중앙 22.1 · FAST20 중앙 1821 (5~95 % 1807~1834) · FAST5 중앙 2626 · |라플라시안| 중앙 5.38 · 원시 가운데(2.89) 위 프레임 1778
+  분리 IR1 프레임의 메타: 노출 중앙 15365.0 µs · 게인 중앙 16.0 · emitter_mode 값 [0]
+  cuVSLAM: odom 1796 · 처음 대비 이동 끝 0.00 cm · 최대 0.00 cm
+  cuVSLAM vo_state: n 1795 · 값별 {1: 1795}
+  cuVSLAM 경고 수: 1
+  [flash] 정리: 남은 2
+== [off] 기동 로그
+Built with LibRealSense v2.55.1
+Device FW version: 5.15.0.2
+Loaded node '/camera/camera'
+Loaded node '/camera/realsense_splitter_node'
+Loaded node '/visual_slam_node'
+RealSense Node Is Up!
+RealSense ROS v4.51.1
+      1 [component_container_mt-1] [WARN] [1792570174.743887608] [visual_slam_node]: Delta between current and previous frame [96.322048 ms] is above threshold [50.000000 ms]
+      1 [component_container_mt-1] [WARN] [1792570174.683646280] [visual_slam_node]: Delta between current and previous frame [92.216064 ms] is above threshold [50.000000 ms]
+      1 [component_container_mt-1] [WARN] [1792570174.583227404] [visual_slam_node]: Delta between current and previous frame [86.060544 ms] is above threshold [50.000000 ms]
+      1 [component_container_mt-1] [WARN] [1792570174.203386334] [camera.camera]: 
+      1 [component_container_mt-1] [WARN] [1792570172.895241583] [camera.camera]: re-enable the stream for the change to take effect.
+      1 [component_container_mt-1] [WARN] [1792570172.862646543] [camera.camera]: re-enable the stream for the change to take effect.
+  컨테이너 프로세스 pid 2036481
+  전체 CPU(10 s, 코어 6 = 100 %): 13.1
+  nv_static 프로세스 CPU(top 5 회, 코어 1 = 100): 62.7
+측정 30.0 s · 모드 off (출력 = 원시(대조))
+  주기: 원시 깊이 28.4 · 원시 IR1 29.6 · 분리 깊이 28.4 · 분리 IR1 29.6 · 분리 IR2 30.1 · cuVSLAM odom 30.0 Hz
+  원시 깊이 유효 비율: 모드0 847 · 모드1 0 — 분류 불가
+  원시 IR1 |라플라시안|: 모드0 889 · 모드1 0 — 분류 불가
+  분리 깊이: n 851 · 유효 중앙 0.195 (0.172~0.227) · 아래 절반 유효 중앙 0.142 (0.116~0.172)
+  분리 IR1: n 889 · 밝기 중앙 49.1 · FAST20 중앙 77 (5~95 % 66~111) · FAST5 중앙 717 · |라플라시안| 중앙 3.90
+  분리 IR1 프레임의 메타: 노출 중앙 31979.0 µs · 게인 중앙 246.0 · emitter_mode 값 [0]
+  cuVSLAM: odom 900 · 처음 대비 이동 끝 0.56 cm · 최대 0.62 cm
+  cuVSLAM vo_state: n 900 · 값별 {1: 900}
+  cuVSLAM 경고 수: 3
+  [off] 정리: 남은 2
+== 끝 (스택은 prep 으로 복귀 필요, 시험 컨테이너 isaac_rs_test 는 떠 있음)

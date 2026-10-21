@@ -188,3 +188,73 @@
   | 점군 | 끔 | 켬(게이트 · 러너) | 켬 |
 - 읽기: 10-19 시험은 NVIDIA 방식의 **구조**(번갈이 + 분리)는 같았지만 **버전 · 위치 · fps(주행 30)** 가 달랐다. 10-19 의 이상 두 가지 — 메타데이터 `frame_emitter_mode` 가 반대로 나옴(§15.1), 자동 노출을 끄면 번갈이가 멈춤(§24.1) — 가 버전 차이 탓인지는 **미확인**. 반면 실패의 주원인(끈 IR 이 어둡고 특징 없음, §23.1 FAST 중앙 6)은 조명 · IR 필터 문제로 추정되어 버전을 맞춰도 남을 수 있다(추정). 60 fps 면 프레임당 노출 상한이 ≈ 16 ms 로 30 fps(33 ms)보다 짧아 끈 IR 은 더 어두울 쪽(추정).
 - 버전 맞추기에 필요한 것: 카메라 펌웨어 내리기(장치 변경 — 사용자 허락 필요, 5.15 로 되돌리기 가능), Isaac 컨테이너에 RealSense 이미지 층 추가(드라이버 2.55.1 · 4.51.1 — 컨테이너 안이라 호스트 sudo 불필요로 추정), `realsense_splitter` 소스 빌드, 카메라를 컨테이너로 옮기며 호스트 카메라 launch(점군 · 게이트 · depth_relay) 경로 재배선. rmem 키우기는 sudo — 사용자 결정.
+
+## §17 2번 — 컨테이너 RealSense 층 + realsense_splitter (사용자: "카메라 펌웨어 버전 낮출 필요는 없을 것 같다. 현재 시스템과 호환 문제 없는 것으로 판단. 2번 진행. 후 3번 진행.")
+- 결정(사용자): 카메라 펌웨어 5.15.0.2 유지(권장 5.13.0.50 과 다름 — 차이로 생기는 문제가 보이면 여기 기록).
+- 사전 조사(읽기만, `jobs/chk_isaac_rs_prereq*.sh`): 이미지 `isaac_ros_dev-aarch64:latest`(40.3 GB), 컨테이너 `isaac_ros_dev-aarch64-container`(privileged · net host · ipc host, /dev/video* 보임), 저장소 `isaac_ros_common` · `isaac_ros_nvblox` 둘 다 v3.2-14(release-3.2). `Dockerfile.realsense` = librealsense v2.55.1 소스 빌드(RSUSB 백엔드 · CUDA) + NVIDIA 포크 realsense-ros `release/4.51.1-isaac` deb. `realsense_splitter`(3.2.5) 소스는 `isaac_ros_nvblox/nvblox_examples/` 에 있음 — `realsense2_camera_msgs` 의존이라 새 층 위에서 빌드. 메모리 7.6 GB(사용 3.1), 6 코어, 디스크 여유 129 GB, 인터넷 됨.
+- 방식(되돌리기 쉬움 우선):
+  1. 새 이미지 `isaac_ros_dev-aarch64-rs` = 지금 이미지 + `Dockerfile.realsense`(make -j3 — 스택이 떠 있어 메모리 여유). 지금 컨테이너 · 호스트 드라이버는 건드리지 않음.
+  2. 새 이미지 안에서 `realsense_splitter` 를 빌드(작업 공간 마운트 `/workspaces/isaac_ros-dev` 의 install).
+  3. 교체는 3번(정지 시험)에서 스택을 내린 뒤: 옛 컨테이너 이름을 `…-container-pre-rs` 로 바꿔 보관(정지), 같은 옵션 · 같은 이름으로 새 이미지 컨테이너 생성 → 스크립트(`nvblox_up.sh` · `cuvslam_up.sh` · prep)는 이름이 같아 그대로. 되돌리기 = 이름 되돌림.
+- 2번 합격 기준(선언): (a) 새 이미지에서 `rs-enumerate-devices --version` 2.55.1 · `ros2 pkg xml realsense2_camera` 4.51.1, (b) `realsense_splitter` 빌드 성공 · `ros2 pkg executables realsense_splitter` 에 노드, (c) 기존 패키지(nvblox_ros · isaac_ros_visual_slam) 그대로 보임, (d) 지금 스택 · 호스트 카메라 영향 0(빌드 중 카메라 토픽 주기 유지). 카메라를 실제로 여는 확인은 호스트 드라이버가 카메라를 잡고 있어 3번에서.
+- 참고(웹): NVIDIA 포크 realsense-ros `release/4.51.1-isaac` 의 NVIDIA 쪽 변경은 깊이 정렬 패치 백포트 1 건(2024-09)뿐 — 노출 · 프로젝터 처리 변경 없음. 즉 10-19 의 '번갈이 중 자동 노출이 켠 프레임에 맞춰져 끈 IR 이 어둡다'(§24.1 밝기 17.7)를 고치는 코드는 보이지 않는다(동작은 3 번에서 측정).
+
+### §17.1 2번 결과 — 합격(a~d), 단 방식 ②·(c) 의 전제가 틀려 두 번 고침 (`outputs/rs_image_build_end.txt` · `up_rs_splitter_try2.txt` · `up_rs_apt.txt`)
+- 이미지 빌드 `BUILD_EXIT=0`(16:51, 이미지 43.2 GB, 기준 이미지 40.3 GB). 시험 컨테이너 `isaac_rs_test` = 옛 컨테이너와 같은 옵션 + `-v /dev:/dev` + 엔트리포인트 지정.
+- (a) `rs-enumerate-devices` 2.55.1.0 · `realsense2_camera` 4.51.1(deb `ros-humble-realsense2-camera 4.51.1-0jammy`) ✔
+- (b) `realsense_splitter` 빌드 1 분 30 초, 컴포넌트 `nvblox::RealsenseSplitterNode` 등록 ✔ — 원본 폴더는 그대로 두고 `src_rs/` 복사본에서(아래 2).
+- (c) `nvblox_ros` · `nvblox_nav2` · `nvblox_examples_bringup` · `isaac_ros_visual_slam` 보임 ✔ — 옛 컨테이너와 같은 판 apt 설치 뒤(아래 3).
+- (d) 호스트 카메라 프로세스 1 그대로, 옛 컨테이너 · microros_agent 그대로 ✔
+- 고친 것(실수 기록):
+
+| 칸 | 1. 사용자 admin 없음 | 2. colcon 이 분리 노드를 못 찾음 | 3. 새 이미지에 nvblox · cuVSLAM 없음 |
+|---|---|---|---|
+| 하려 한 것 | `up_rs_splitter.sh` 로 컨테이너 생성 뒤 `docker exec -u admin` | `colcon build --packages-select realsense_splitter` | (c) 기존 패키지 그대로 보임 |
+| 본 것 | `unable to find user admin` | `ignoring unknown package 'realsense_splitter'` | `ros2 pkg list` 에 nvblox_ros · isaac_ros_visual_slam 없음, 작업 공간에 `install/` 자체가 없음 |
+| 처음 추론 | 옛 컨테이너와 '같은 옵션' 이면 사용자도 같다 | 소스가 작업 공간 `src/` 에 있으니 colcon 이 잡는다 | nvblox · cuVSLAM 은 기준 이미지에 들어 있다(§17 방식 ② 의 전제) |
+| 판별 | 이미지에 ENTRYPOINT 없음 — 옛 컨테이너는 실행 때 `--entrypoint workspace-entrypoint.sh` 로 admin 을 만들었다 | `realsense_splitter/COLCON_IGNORE` 가 NVIDIA 배포본에 들어 있음(`chk_rs_ws.sh`) | 옛 컨테이너 `dpkg` 에 `ros-humble-isaac-ros-nvblox 3.2.5` · `isaac-ros-visual-slam 3.2.6` · `nvblox-examples-bringup 3.2.13`, `docker diff` 에 `A /opt/ros/humble/share/nvblox_ros` — **옛 컨테이너 쓰기 층에 apt 로 설치된 것**(`chk_rs_ws2.sh`) |
+| 결론 · 조치 | `--entrypoint` 추가 → `id admin` uid 1000 | 원본 대신 `src_rs/realsense_splitter` 복사본(COLCON_IGNORE 뺌)을 `--base-paths src_rs` 로 빌드 | 시험 컨테이너에 같은 판 3 개 apt 설치. 먼저 모의 설치(`chk_rs_apt_sim.sh`): Inst 46 · Remv 0 · realsense 변경 없음 확인 |
+| 다음에 알아보는 법 | 컨테이너를 '같은 옵션' 으로 다시 만들 땐 `docker inspect -f '{{.Path}} {{.Config.Entrypoint}}'` 까지 옮긴다 | NVIDIA 예제 패키지는 `COLCON_IGNORE` 부터 찾는다 | 이미지를 바꿀 땐 `docker diff <옛 컨테이너>` 로 쓰기 층에만 있는 설치를 먼저 센다 — 지금 운용 컨테이너는 이미지만으로 재현되지 않는다 |
+
+- 뜻: 교체(§17 방식 ③)할 때 새 컨테이너에도 같은 apt 설치가 필요하다. 옛 컨테이너 쓰기 층에 다른 손 설치가 더 있는지는 미확인(`docker diff` 전체 검토 필요).
+
+## §18 3번 정지 시험 nv1 선언(실행 전, 로버 안 움직임) — `jobs/run_nv_static.sh` · `nv_static.launch.py` · `anal_nv_static.py`
+- 구성: 주행 스택 내림(base 유지). 시험 컨테이너 `isaac_rs_test`(새 이미지) 안 한 component container 에 RealSense 드라이버(NVIDIA `realsense_emitter_flashing.yaml` 그대로, camera_name 만 'camera') + NVIDIA `realsense_splitter` + cuVSLAM(지금 그림자 설정, 입력 = 분리 노드의 끈 IR, QoS SENSOR_DATA). 로버 자세 = 지금 그대로(출발점, 역방향 ≈ −166°) — 10-19 정지 값과 장면이 달라서 **같은 자리 · 같은 드라이버의 프로젝터 상시 끔(30 fps) 대조 단계 O** 를 함께 잰다.
+- 단계 F(번갈이) 60 s · 단계 O(상시 끔) 30 s. 판정:
+  1. 메타데이터 방향: 원시 깊이에서 `frame_emitter_mode == 1` 프레임의 유효 비율이 0 보다 높아야(NVIDIA 분리 노드 가정). 반대면 분리 노드가 끈 깊이를 nvblox 로 보냄 → 불합격(10-19 우리 드라이버에서 반대였음).
+  2. 분리 깊이: 모든 프레임이 원시 두 무리 가운데 위 · 아래 절반 유효 중앙 ≥ 0.40(09-29 M1 켬 42 %).
+  3. 분리 끈 IR: 모든 프레임이 원시 가운데 아래(점 무늬 없음) · **밝기 · FAST20 중앙이 대조 O 의 80 % 이상**(이번 질문의 핵심 — 번갈이 때문에 끈 IR 이 어두워지는가).
+  4. 주기: 분리 깊이 · IR1 · IR2 각 ≥ 27 Hz.
+  5. cuVSLAM 60 s: odom ≥ 25 Hz · 처음 대비 이동 최대 ≤ 1 cm(10-20 L0 0.46 cm). vo_state 는 기록만(10-19 §23.1: 성공 표시 ≠ 정확).
+  6. CPU: 기록(10-19 S1 우리 구성 카메라 38 % + 분리 12 %).
+
+### §18.1 nv1 결과 — **불합격**(기준 1 · 2 · 3). NVIDIA 구성(드라이버 4.51.1 · librealsense 2.55.1 · 분리 노드)에서도 10-19 와 같은 두 문제가 그대로 나온다 (`outputs/run_nv_static.txt`, 17:07~17:10, 로버 정지 · 역방향)
+- 첫 실행(`outputs/run_nv_static_try1.txt`)은 전 토픽 0 Hz · cuVSLAM 적재 실패라 무효 — 원인과 고친 것은 §18.2. 아래는 고친 뒤 재실행 값.
+
+| 기준 | 단계 F(번갈이 60 s) | 단계 O(상시 끔 30 s) | 판정 |
+|---|---|---|---|
+| 1. 메타데이터 방향 | 원시 깊이 유효: **모드 0 = 0.681**(n 1698) · 모드 1 = 0.182(n 1637). IR |라플라시안|(점 무늬): 모드 0 = 5.38 · 모드 1 = 0.40 → **실제 켬 = 모드 0** | — | ✘ (분리 노드는 모드 1 = 켬 가정 → 끈 깊이를 nvblox 로, 켠 IR 을 cuVSLAM 으로 보냄) |
+| 2. 분리 깊이 | 1619 장 **전부 원시 가운데(0.432) 아래**, 유효 중앙 0.182 · 아래 절반 0.125 | 원시 = 0.195 · 아래 절반 0.142 | ✘ (기준 1 의 결과) |
+| 3. 분리 끈 IR | 1778 장 **전부 점 무늬 쪽**(|라플라시안| 5.38 > 가운데 2.89), 밝기 22.1 · FAST20 1821(점 무늬 모서리) · 노출 15365 µs · 게인 16 | 밝기 49.1 · FAST20 77 · |라플라시안| 3.90 · 노출 31979 µs · 게인 246 | ✘ — 게다가 **진짜 끈 프레임(모드 1)의 |라플라시안| 0.40 = 대조 O 의 10 %**: 번갈이 중 끈 IR 이 평평(어두움)해지는 10-19 현상이 NVIDIA 드라이버에서도 재현(밝기 · FAST 는 원시 끈 프레임에서 안 잼 — |라플라시안| 만) |
+| 4. 주기 | 원시 깊이 56.1 · IR1 58.0 → 분리 깊이 **27.0** · IR1 29.6 · IR2 29.9 | 깊이 28.4 · IR1 29.6 · IR2 30.1 | ✔ (깊이는 경계) |
+| 5. cuVSLAM | odom 29.9 Hz · 이동 최대 0.00 cm · vo_state 1 만 1795 | odom 30.0 Hz · 최대 0.62 cm · vo_state 1 만 900 | 수치 ✔ — 단 F 는 **켠(점 무늬) IR** 을 받은 값이라 뜻 없음(점 무늬는 카메라와 함께 움직임 → 정지 시험으론 드러나지 않음) |
+| 6. CPU | 프로세스 85.3 %(코어 1 = 100) · 전체 18.3 %(6 코어) | 62.7 % · 13.1 % | 기록(10-19 우리 구성 카메라 38 + 분리 12 = 50 %. cuVSLAM 이 같은 프로세스에 들어 있어 직접 비교 안 됨) |
+
+- 기타 관찰: F 기동 때 `Failed to set value to sensor: depth_module.emitter_on_off = 0` · `hwmon command 0x7b … failed (response -9)` 경고가 나오지만 번갈이 자체는 됐다(위 두 무리). F 에서 `Motion Module failure … Hardware Error` 알림 1 회(IMU 는 이번에 안 잼 — 영향 미확인).
+- 읽기:
+  1. **메타데이터 뒤집힘은 드라이버 판이 아니라 카메라 쪽**(펌웨어 5.15 또는 장치)으로 좁혀졌다 — 우리 드라이버 4.58.3(10-19)과 NVIDIA 권장 4.51.1 둘 다 같은 방향. NVIDIA 가 시험한 펌웨어 5.13.0.50 에서는 뒤집히지 않는지는 **미확인**(펌웨어를 바꿔야 판별 — 사용자 결정 사항). 사용자의 "현재 시스템과 호환 문제 없음" 판단과 다른 근거가 나온 셈이라 여기 적는다.
+  2. **끈 IR 이 어두워지는 문제는 NVIDIA 구성으로도 안 풀린다** — 뒤집힘만 고쳐(분리 노드 모드 값 반전 1 줄) 써도 cuVSLAM 은 |라플라시안| 0.40 짜리 평평한 영상을 받는다. 자동 노출이 켠 프레임(노출 15 ms · 게인 16)에 맞춰지기 때문(10-19 §24 와 같은 기전, 노출 메타로 확인). 끈 쪽 단독(상시 끔)은 노출 32 ms · 게인 246.
+  3. 따라서 NVIDIA 구성을 그대로 채택하는 것은 이 카메라 · 펌웨어에서 기각. 남은 길(추정, 시험 전): (가) 펌웨어 5.13.0.50 으로 내려 두 문제 재측정, (나) 2.55.1 에서 수동 노출이 받아들여지는지 시험(10-19 는 우리 드라이버가 거부), (다) 지금 운용(상시 끔 + 라이다 · 유령 점은 별도 대책) 유지.
+
+### §18.2 nv1 첫 실행 무효 — 실수 기록 2 건
+| 칸 | 1. cuVSLAM 적재 실패 · 프로세스 죽음 | 2. 모든 토픽 0 Hz |
+|---|---|---|
+| 하려 한 것 | `up_rs_splitter.sh` 로 만든 시험 컨테이너(옛 옵션 + `-v /dev:/dev`)에서 `nv_static.launch.py` | 같은 실행에서 `anal_nv_static.py` 로 `/camera/camera/...` 구독 |
+| 본 것 | `NitrosContext: cudaErrorNotSupported … setCUDAMemoryPoolSize Error` → `Failed to load node 'visual_slam_node' … Invalid argument`, 단계 O 는 `exit code -11` | 원시 깊이 · IR 까지 0 Hz(`run_nv_static_try1.txt`) — 카메라 노드는 Node Is Up · 프로필 열림 |
+| 처음 추론 | 내가 넣은 `image_qos`/`imu_qos` 파라미터가 틀렸다 | DDS 공유메모리 오류(`RTPS_TRANSPORT_SHM … open_and_lock_file failed`)로 전달이 막혔다 |
+| 의심한 이유 | 옛 컨테이너 cuVSLAM 기동 로그엔 같은 NitrosContext 오류가 없음(`chk_nv_cmp.txt`) — 파라미터가 아니라 컨테이너 차이 | 분석기가 받은 게 원시까지 0 — 전달 문제라면 같은 프로세스 안 분리 노드 · cuVSLAM 도 못 받아야 하는데 그건 판별 불가, 토픽 이름부터 확인 |
+| 판별 | `docker inspect` 비교: 실질 차이는 `-v /dev:/dev` 하나 → 컨테이너 커밋(`isaac_ros_dev-aarch64-rs:apt`) 뒤 `/dev/input` 만 마운트로 재생성 → cuVSLAM `Loaded node`, CUDA 오류 없음(`chk_nv_probe.txt`) | 같은 시험에서 `ros2 topic list`: 드라이버는 `/camera/depth/image_rect_raw` 로 발행, `/camera/camera/...` 는 구독자만 |
+| 결론 | 호스트 `/dev` 를 통째로 덮어 마운트하면 이 컨테이너에서 CUDA 메모리 풀이 안 됨. 기전 **미확인**(nvidia 런타임이 넣는 장치 노드를 덮는 것으로 추정) | realsense-ros **4.51.1 은 토픽에 노드 이름을 안 붙인다**(`/<ns>/depth/...`); 우리 4.58.3 은 `/<ns>/<name>/depth/...`. launch · 분석기의 원시 접두를 `/camera` 로 고침 |
+| 다음에 알아보는 법 | GPU 노드가 'Invalid argument' 로 안 뜨면 `NitrosContext` CUDA 오류부터 보고, 컨테이너 마운트를 옛 것과 diff | 드라이버 판을 바꾸면 기동 직후 `ros2 topic list` 로 이름부터 확인(4.54 경계) |
+
+- 지금 상태: 운용 구성 복귀 PREP_OK(`outputs/prep_back_1021.txt`, 위치 차 0.000 m). 시험 컨테이너 `isaac_rs_test`(이미지 `isaac_ros_dev-aarch64-rs:apt` = `-rs:latest` + apt 설치 층, `docker inspect` Size 차 ≈ 0.14 GB) 는 떠 있음 — 카메라는 안 잡음. 옛 컨테이너 교체는 안 함(§17 방식 ③ 보류 — §18.1 결론상 이유 없음).

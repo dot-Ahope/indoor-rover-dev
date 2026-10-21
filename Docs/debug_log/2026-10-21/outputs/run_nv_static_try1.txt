@@ -1,0 +1,39 @@
+== 정리 뒤 남은 스택 프로세스: 1 · 옛 컨테이너 nvblox/cuVSLAM 3 · base active
+== [flash] 기동 로그
+Built with LibRealSense v2.55.1
+Device FW version: 5.15.0.2
+RealSense Node Is Up!
+RealSense ROS v4.51.1
+      2 [component_container_mt-1]  21/10 16:58:35,066 ERROR [281470899693792] (synthetic-stream.cpp:58) Exception was thrown during callback: _devIhEESt10shared_ptrIT_EiEUlS0_E_SaIvELN9__gnu_cxx12_Lock_policyE2EE
+      2 [component_container_mt-1]  21/10 16:58:35,022 ERROR [281470899693792] (synthetic-stream.cpp:58) Exception was thrown during callback: _devIhEESt10shared_ptrIT_EiEUlS0_E_SaIvELN9__gnu_cxx12_Lock_policyE2EE
+      1 [ERROR] [launch_ros.actions.load_composable_nodes]: Failed to load node 'visual_slam_node' of type 'nvidia::isaac_ros::visual_slam::VisualSlamNode' in container '/nv_static_container': Component constructor threw an exception: Invalid argument
+      1 [component_container_mt-1] [WARN] [1792569514.898788786] [camera.camera]: 
+      1 [component_container_mt-1] [WARN] [1792569513.961954107] [camera.camera]: re-enable the stream for the change to take effect.
+      1 [component_container_mt-1] [WARN] [1792569513.943455279] [camera.camera]: re-enable the stream for the change to take effect.
+  컨테이너 프로세스 pid 1994486
+  전체 CPU(10 s, 코어 6 = 100 %): 7.4
+  nv_static 프로세스 CPU(top 5 회, 코어 1 = 100): 25.3
+측정 60.0 s · 모드 flash (출력 = 분리 노드)
+  주기: 원시 깊이 0.0 · 원시 IR1 0.0 · 분리 깊이 0.0 · 분리 IR1 0.0 · 분리 IR2 0.0 · cuVSLAM odom 0.0 Hz
+  원시 깊이 유효 비율: 모드0 0 · 모드1 0 — 분류 불가
+  원시 IR1 |라플라시안|: 모드0 0 · 모드1 0 — 분류 불가
+  cuVSLAM: odom 0 개
+  cuVSLAM 경고 수: 0
+  [flash] 정리: 남은 
+== [off] 기동 로그
+Built with LibRealSense v2.55.1
+RealSense ROS v4.51.1
+      1 [component_container_mt-1] [ERROR] [1792569608.053348077] [NitrosContext]: [NitrosContext] setCUDAMemoryPoolSize Error: GXF_FAILURE
+      1 [component_container_mt-1] [ERROR] [1792569608.053277130] [NitrosContext]: cudaErrorNotSupported (operation not supported)
+  컨테이너 프로세스 pid 2007780
+  전체 CPU(10 s, 코어 6 = 100 %): 18.1
+  nv_static 프로세스 CPU(top 5 회, 코어 1 = 100): 1.3
+[37;1m2026-10-21 17:00:45.731 [31;1m[[37;1mRTPS_TRANSPORT_SHM[31;1m Error] [37mFailed init_port fastrtps_port7413: open_and_lock_file failed[34;1m -> Function [36mopen_port_internal[m
+측정 30.0 s · 모드 off (출력 = 원시(대조))
+  주기: 원시 깊이 0.0 · 원시 IR1 0.0 · 분리 깊이 0.0 · 분리 IR1 0.0 · 분리 IR2 0.0 · cuVSLAM odom 0.0 Hz
+  원시 깊이 유효 비율: 모드0 0 · 모드1 0 — 분류 불가
+  원시 IR1 |라플라시안|: 모드0 0 · 모드1 0 — 분류 불가
+  cuVSLAM: odom 0 개
+  cuVSLAM 경고 수: 0
+  [off] 정리: 남은 
+== 끝 (스택은 prep 으로 복귀 필요, 시험 컨테이너 isaac_rs_test 는 떠 있음)
