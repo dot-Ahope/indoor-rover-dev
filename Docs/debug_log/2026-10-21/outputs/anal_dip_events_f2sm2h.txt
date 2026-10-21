@@ -1,0 +1,106 @@
+
+== 멈칫 12:30:27.01 (명령 0 근처 10 개 · 0.45 s) | 앞뒤 명령 v: -0.022 -0.022 -0.022 -0.022 -0.007 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000 -0.010 -0.020 -0.027
+   -1.79 s bt_navigator           Begin navigating from current location (5.13, -1.90) to (0.00, 0.00)
+   -1.74 s controller_server      Received a goal, begin computing control effort.
+   -1.73 s controller_server      Optimizer reset
+   +0.26 s controller_server      Exception in transformPose: Lookup would require extrapolation into the future.  Requested time 1792553426.773
+   +0.26 s controller_server      Unable to transform robot pose into global plan's frame
+   +0.26 s controller_server      [follow_path] [ActionServer] Aborting handle.
+   +0.29 s controller_server      Received a goal, begin computing control effort.
+   +0.37 s controller_server      Passing new path to controller.
+
+== 멈칫 12:30:28.12 (명령 0 근처 9 개 · 0.39 s) | 앞뒤 명령 v: -0.016 -0.012 -0.012 -0.012 -0.008 -0.008 -0.001 0.001 0.001 0.001 0.006 0.009 0.009 0.011 0.011 0.015
+   -0.84 s controller_server      Exception in transformPose: Lookup would require extrapolation into the future.  Requested time 1792553426.773
+   -0.84 s controller_server      Unable to transform robot pose into global plan's frame
+   -0.84 s controller_server      [follow_path] [ActionServer] Aborting handle.
+   -0.81 s controller_server      Received a goal, begin computing control effort.
+   -0.73 s controller_server      Passing new path to controller.
+
+== 멈칫 12:31:08.92 (명령 0 근처 5 개 · 0.20 s) | 앞뒤 명령 v: 0.065 0.050 0.035 0.020 0.005 0.000 0.000 0.000 0.000 0.010 0.020 0.030
+   +0.01 s controller_server      Exception in transformPose: Lookup would require extrapolation into the future.  Requested time 1792553468.401
+   +0.01 s controller_server      Unable to transform robot pose into global plan's frame
+   +0.01 s controller_server      [follow_path] [ActionServer] Aborting handle.
+   +0.01 s controller_server      Received a goal, begin computing control effort.
+   +0.19 s bt_navigator_navigate_ PathBlockedAhead: 앞 경로 (2.20, -0.84) 비용 99 — 2.0 s 지속되면 재계획
+
+== 멈칫 12:31:11.32 (명령 0 근처 7 개 · 0.30 s) | 앞뒤 명령 v: 0.065 0.050 0.035 0.020 0.005 0.000 0.000 0.000 0.000 0.000 0.000 0.010 0.020 0.030
+   -0.61 s smoother_server        Smoother simple_smoother did not complete smoothing in specified time limit(1.000000 seconds) and was interrup
+   -0.61 s smoother_server        Smoothed path leads to a collision at x: 2.212972, y: -1.050326, theta: -1.527601
+   -0.61 s smoother_server        [smooth_path] [ActionServer] Aborting handle.
+   -0.59 s bt_navigator_navigate_ PathBlockedAhead: 앞 경로 (2.20, -0.85) 비용 99 — 2.0 s 지속되면 재계획
+   -0.49 s controller_server      Passing new path to controller.
+   +0.01 s controller_server      Exception in transformPose: Lookup would require extrapolation into the future.  Requested time 1792553470.806
+   +0.02 s controller_server      Unable to transform robot pose into global plan's frame
+   +0.02 s controller_server      [follow_path] [ActionServer] Aborting handle.
+   +0.04 s behavior_server        Running wait
+
+== 멈칫 12:31:21.52 (명령 0 근처 1 개 · 0.00 s) | 앞뒤 명령 v: 0.065 0.050 0.035 0.020 0.005 0.015 0.025 0.035
+   -0.86 s controller_server      Passing new path to controller.
+
+== 멈칫 12:31:27.92 (명령 0 근처 4 개 · 0.15 s) | 앞뒤 명령 v: 0.065 0.050 0.035 0.020 0.005 0.000 0.000 0.000 0.010 0.020 0.030
+   -1.07 s controller_server      Passing new path to controller.
+   +0.04 s controller_server      Exception in transformPose: Lookup would require extrapolation into the future.  Requested time 1792553487.434
+   +0.04 s controller_server      Unable to transform robot pose into global plan's frame
+   +0.04 s controller_server      [follow_path] [ActionServer] Aborting handle.
+   +0.06 s controller_server      Received a goal, begin computing control effort.
+
+== 멈칫 12:31:28.92 (명령 0 근처 5 개 · 0.20 s) | 앞뒤 명령 v: 0.065 0.050 0.035 0.020 0.005 0.000 0.000 0.000 0.000 0.010 0.020 0.030
+   -0.96 s controller_server      Exception in transformPose: Lookup would require extrapolation into the future.  Requested time 1792553487.434
+   -0.96 s controller_server      Unable to transform robot pose into global plan's frame
+   -0.96 s controller_server      [follow_path] [ActionServer] Aborting handle.
+   -0.94 s controller_server      Received a goal, begin computing control effort.
+   +0.07 s controller_server      Exception in transformPose: Lookup would require extrapolation into the future.  Requested time 1792553488.471
+   +0.07 s controller_server      Unable to transform robot pose into global plan's frame
+   +0.07 s controller_server      [follow_path] [ActionServer] Aborting handle.
+   +0.07 s controller_server      Received a goal, begin computing control effort.
+
+== 멈칫 12:31:34.57 (명령 0 근처 1 개 · 0.00 s) | 앞뒤 명령 v: 0.065 0.050 0.035 0.020 0.005 0.015 0.025 0.035
+   -1.58 s controller_server      Passing new path to controller.
+
+== 멈칫 12:31:36.87 (명령 0 근처 2 개 · 0.05 s) | 앞뒤 명령 v: 0.066 0.051 0.036 0.021 0.006 0.000 0.010 0.020 0.030
+   -1.78 s controller_server      Passing new path to controller.
+   +0.23 s controller_server      Passing new path to controller.
+
+== 멈칫 12:31:37.52 (명령 0 근처 1 개 · 0.00 s) | 앞뒤 명령 v: 0.055 0.040 0.025 0.010 0.000 0.010 0.020 0.030
+   -0.42 s controller_server      Passing new path to controller.
+
+== 멈칫 12:31:54.42 (명령 0 근처 2 개 · 0.05 s) | 앞뒤 명령 v: 0.065 0.050 0.035 0.020 0.005 0.000 0.000 0.000 0.030
+   -0.87 s smoother_server        Smoothed path leads to a collision at x: 1.260000, y: 0.290000, theta: -0.041169
+   -0.87 s smoother_server        [smooth_path] [ActionServer] Aborting handle.
+   -0.83 s controller_server      Passing new path to controller.
+   -0.22 s controller_server      Optimizer reset
+   -0.21 s controller_server      Optimizer reset
+   -0.21 s controller_server      Optimizer fail to compute path
+   -0.21 s controller_server      [follow_path] [ActionServer] Aborting handle.
+
+== 멈칫 12:31:55.17 (명령 0 근처 7 개 · 0.30 s) | 앞뒤 명령 v: 0.035 0.020 0.005 0.000 0.000 0.000 0.030 0.000 0.000 0.030 0.000 0.000 0.030 0.000 0.030 0.030 0.030
+   -1.62 s smoother_server        Smoothed path leads to a collision at x: 1.260000, y: 0.290000, theta: -0.041169
+   -1.62 s smoother_server        [smooth_path] [ActionServer] Aborting handle.
+   -1.58 s controller_server      Passing new path to controller.
+   -0.97 s controller_server      Optimizer reset
+   -0.96 s controller_server      Optimizer reset
+   -0.96 s controller_server      Optimizer fail to compute path
+   -0.96 s controller_server      [follow_path] [ActionServer] Aborting handle.
+   -0.05 s smoother_server        Smoother simple_smoother did not complete smoothing in specified time limit(1.000000 seconds) and was interrup
+   -0.05 s smoother_server        Smoothed path leads to a collision at x: 1.160000, y: 0.290000, theta: 1.030394
+   -0.05 s smoother_server        [smooth_path] [ActionServer] Aborting handle.
+   -0.03 s bt_navigator_navigate_ PathBlockedAhead: 앞 경로 (0.93, 0.09) 비용 99 — 2.0 s 지속되면 재계획
+   -0.03 s controller_server      Received a goal, begin computing control effort.
+   -0.02 s controller_server      Optimizer reset
+   -0.01 s controller_server      Optimizer reset
+   -0.01 s controller_server      Optimizer fail to compute path
+   -0.01 s controller_server      [follow_path] [ActionServer] Aborting handle.
+   +0.01 s controller_server      Received a goal, begin computing control effort.
+   +0.03 s controller_server      Optimizer reset
+   +0.04 s controller_server      Optimizer reset
+   +0.04 s controller_server      Optimizer fail to compute path
+   +0.04 s controller_server      [follow_path] [ActionServer] Aborting handle.
+   +0.06 s behavior_server        Running monotone_escape
+   +0.06 s behavior_server        [monotone_escape] 시작 최근접 4.6 cm · 목표 5.0 cm · 모의 결과(닿는 양 m/rad): 앞:0.280 뒤:0.290 좌회전:없음(끝 4.6 cm) 우회전:
+   +0.06 s behavior_server        [monotone_escape] 선택: 앞 0.280
+
+== 멈칫 12:32:04.95 (명령 0 근처 1 개 · 0.00 s) | 앞뒤 명령 v: 0.030 0.030 0.030 0.030 0.000 0.010 0.020 0.030
+   -0.01 s behavior_server        [monotone_escape] 성공: 최근접 5.1 cm
+   -0.01 s behavior_server        monotone_escape completed successfully
+   +0.06 s controller_server      Received a goal, begin computing control effort.
+   +0.07 s controller_server      Optimizer reset

@@ -108,3 +108,24 @@
   2. **12:31:54~55 1.0 s @ (1.35, 0.05)**: `Optimizer fail to compute path` 3 회 · `PathBlockedAhead (0.93, 0.09) 비용 99` · 클리어 요청 → 곧 재개. 출발점 앞 0.9 m — 출발점 근처 낮은 상자([[start-low-box-test]]) 둘레로 추정(미확인).
   3. **짧은 멈칫 13 번**: 8 번은 FollowPath 중단 → 새 목표 수신(컨트롤러 재시작) 직후, 4 번은 `Passing new path to controller`(재계획 0.5 Hz) + `Control loop missed its desired rate`(43 회) 무렵, 1 번 기타. 컨트롤러가 다시 시작하거나 경로가 바뀌는 순간 명령이 0 으로 한두 주기 떨어지는 모양(기전 미확인).
 - 읽기: 멈춤의 공통 뿌리는 **경로 앞(0.3~1.5 m)의 전역 비용 99(내접) 칸** → PathBlockedAhead 가 주행을 끊고 → 재계획 · 복구로 넘어가는 흐름. 그 칸이 무엇인지(상자 · 사람 기억 · 벽 번짐)는 이 bag 만으로는 미확인 — f2sm2 에서 사람이 남긴 nvblox 기억이 복귀 경로 쪽에도 남아 있었을 가능성 있음(f2sm2 때 (1.5~2.6, −0.1~−1.5) 에도 PathBlockedAhead · §10). Wait 5 s 는 복구 순서상 필연이 아니라 RoundRobin 차례 — 같은 막힘에서도 클리어 · MonotoneEscape 차례면 짧게 끝난다.
+
+## §12 사용자 질문: ① f2sm2 가 W3 에서 중단되고 복귀하지 못한 이유 ② 복귀(f2sm2h) 중 짧은 멈칫 원인
+- 원문: `outputs/nav_events_ms.txt`(nav2 사건 0.01 s 시각, `chk_nav_ms.sh`), `anal_dip_events_f2sm2h.txt`(`jobs/anal_dip_events.py`), `chk_tf_extrap.txt`, `chk_dip_omega.txt`.
+### §12.1 W3 중단 → 복귀 안 함
+- 본 것(12:17:40 ~ 12:18:06): `PathBlockedAhead … (5.50~5.55, −2.20~−2.30) 비용 99 가 2.0 s 지속 → 주행 중단 · 재계획` 6 회, 그 사이 계획기 `GridBased failed … tolerance 0.25` 2 회, 복구 차례 MonotoneEscape(12:17:47, 12:18:04 — 둘 다 '최근접 14 cm, 성공' 으로 아무 것도 안 함) · Wait 5 s(12:17:54~59), 마지막 12:18:06 `navigate_to_pose Aborting` · `Goal failed`.
+- 추론:
+  1. **목표 칸 자체가 비용 99** 로 남았다(§10: 사람이 떠난 뒤에도 LETHAL 38~40 칸). PathBlockedAhead 는 로버 앞 0.3~1.5 m 경로 점을 보는데, W3 0.5 m 앞까지 오면 **경로 끝 = 목표점이 그 범위에 들어와 매번 2 s 만에 주행을 끊는다** — 목표가 막힌 칸이면 끝까지 갈 방법이 없다.
+  2. 복구가 그 칸을 못 지운다: 복구의 클리어는 `ClearCostmapExceptRegion reset_distance 3.0`(전역) — **로버 3 m 안은 지우지 않는다**(09-11 결정: 가까운 진짜 장애물을 잊지 않게). 사람 기억은 로버 0.5 m 앞이라 그대로.
+  3. 복구 횟수 소진: BT 최상위 `NavigateRecovery number_of_retries="6"` — 목표 2 동안 FollowPath 실패(12:16:56 · 57 Optimizer fail)와 위 6 회 중단으로 재시도를 다 써서 Goal failed.
+  4. 복귀를 안 한 것은 **러너 설계**: `job550_f0run.py` 176 행 `if not name.startswith('SUCCEEDED'): break` — 목표 하나라도 실패하면 남은 목표(출발점 복귀 포함)를 보내지 않는다(실패 뒤 자동으로 더 움직이지 않게 한 안전 쪽 선택). 그래서 사용자 요청으로 f2sm2h 를 따로 보냄.
+- 결론: 사람이 떠난 뒤 남은 기억(§10) × 목표 근처에서 PathBlockedAhead 가 목표점까지 검사 × 3 m 안은 안 지우는 복구 — 셋이 겹쳐 '비어 있는 목표' 를 포기했다. 기억을 누가 들고 있는지(nvblox 층 추정)는 미확인.
+### §12.2 복귀 중 짧은 멈칫 13 번(+ 정지 2 번)
+| 묶음 | 수 | 서명(0.01 s 시각 맞춤) | 원인 |
+|---|---|---|---|
+| A | 6 (12:30:27 · 28, 12:31:08 · 11 · 27 · 28) | 멈칫 −0.96~+0.07 s 에 `Exception in transformPose: Lookup would require extrapolation into the future` → `Unable to transform robot pose into global plan's frame` → `follow_path Aborting` → 곧 `Received a goal` | MPPI 가 로버 자세를 경로 좌표(map)로 못 옮겨 컨트롤러 중단 → 0 명령 → 재시작. 12:31:11 건은 그 뒤 PathBlockedAhead 와 겹쳐 복구 Wait 5 s(§11.3 의 5.1 s 정지) |
+| B | 4 (12:31:21 · 34 · 36 · 37) | 사건 없음 처럼 보였으나 `Control loop missed its desired rate of 10 Hz` 가 12:31:21.53 · 34.60 · 36.96 · 37.58 — 멈칫 바닥과 0.01~0.09 s 안. v 와 ω 가 함께 0 으로 5 주기(0.25 s) 떨어졌다 올라옴 | 컨트롤러 한 주기가 늦어 `velocity_smoother velocity_timeout 0.3 s` 를 넘기자 smoother 가 0 을 목표로 감속한 것으로 추정(감속 0.3 m/s² 로 0.08 → 0 에 0.27 s — 모양 일치) |
+| C | 2 (12:31:54 · 55) | `Optimizer fail to compute path` 3 회 + `PathBlockedAhead (0.93, 0.09)` → MonotoneEscape '최근접 4.6 cm' → 앞 0.28 m 탈출 | 출발점 앞 좁은 곳에서 MPPI 가 충돌 없는 궤적을 못 찾음(출발점 낮은 상자 둘레 추정) |
+| D | 1 (12:32:04) | MonotoneEscape 끝 → 새 목표 | C 의 뒤처리 |
+- A 의 시각 차: 요청 시각이 TF 최신값보다 0.004~0.088 s(한 번 0.386 s) 앞섬. 오늘 스택 nav2 로그에 이 예외 50 회(f2sm1 때 로그 31 회). MPPI `transform_tolerance` 는 10-07 §5 에 같은 기제(map→odom 지연)로 0.2 → 0.5 로 올린 상태인데도 남음 — 0.5 s 여유가 왜 0.004 s 차를 못 덮는지는 **미확인**(후보: tolerance 가 '기다리는 시간' 으로만 쓰이고 그동안 TF 가 안 들어옴 · 늦은 제어 주기(B)와 같은 CPU 지연). 
+- B · A 둘 다 '컨트롤러 주기가 늦다' 와 이어질 수 있음: 복귀 113 s 동안 `Control loop missed` 43 회, 그림자 구성 CPU 75 % 대. 미확인.
+- 다음에 알아보는 법: 멈칫을 볼 때 1 s 해상도 사건 표로는 'Passing new path' 만 보여 원인을 놓쳤다(§11.3 의 '4 번 = 새 경로 전달' 분류는 **틀림** — 실제는 B). 0.01 s 시각으로 맞추고, `Control loop missed` 를 걸러내지 말 것.
