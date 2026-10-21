@@ -1,0 +1,18 @@
+5d4
+< "DISPLAY"
+44d42
+< "ROS_DOMAIN_ID"
+54c52
+< /dev/input:/dev/input
+---
+> /dev:/dev
+58d55
+< /tmp/.X11-unix:/tmp/.X11-unix
+--- 옛 cuVSLAM 로그의 Nitros/Invalid
+/tmp/cuvslam_up.log
+/tmp/cuvslam.log
+[component_container_mt-1] [INFO] [1792552306.600849125] [NitrosContext]: [NitrosContext] Loading extension: gxf/lib/std/libgxf_std.so
+[component_container_mt-1] [INFO] [1792552306.602939214] [NitrosContext]: [NitrosContext] Loading extension: gxf/lib/libgxf_isaac_gxf_helpers.so
+[component_container_mt-1] [INFO] [1792552306.609179976] [NitrosContext]: [NitrosContext] Loading extension: gxf/lib/libgxf_isaac_sight.so
+[component_container_mt-1] [INFO] [1792552306.616411892] [NitrosContext]: [NitrosContext] Loading extension: gxf/lib/libgxf_isaac_atlas.so
+[component_container_mt-1] [INFO] [1792552306.632604707] [NitrosContext]: [NitrosContext] Loading extension: gxf/lib/multimedia/libgxf_multimedia.so

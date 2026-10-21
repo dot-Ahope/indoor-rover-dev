@@ -1,0 +1,121 @@
+======== flash (6636 줄)
+[INFO] [launch]: All log files can be found below /home/admin/.ros/log/2026-10-21-16-58-23-097707-jetson-desktop-1994453
+[INFO] [launch]: Default logging verbosity is set to INFO
+[INFO] [component_container_mt-1]: process started with pid [1994486]
+[component_container_mt-1] [INFO] [1792569504.593991692] [nv_static_container]: Load Library: /opt/ros/humble/lib/librealsense2_camera.so
+[component_container_mt-1] [INFO] [1792569504.866484558] [nv_static_container]: Found class: rclcpp_components::NodeFactoryTemplate<realsense2_camera::RealSenseNodeFactory>
+[component_container_mt-1] [INFO] [1792569504.867957378] [nv_static_container]: Instantiate class: rclcpp_components::NodeFactoryTemplate<realsense2_camera::RealSenseNodeFactory>
+[component_container_mt-1] [INFO] [1792569504.912002354] [camera.camera]: RealSense ROS v4.51.1
+[component_container_mt-1] [INFO] [1792569504.912124182] [camera.camera]: Built with LibRealSense v2.55.1
+[component_container_mt-1] [INFO] [1792569504.912150135] [camera.camera]: Running with LibRealSense v2.55.1
+[INFO] [launch_ros.actions.load_composable_nodes]: Loaded node '/camera/camera' in container '/nv_static_container'
+[component_container_mt-1] [INFO] [1792569504.917060292] [nv_static_container]: Load Library: /workspaces/isaac_ros-dev/install_rs/realsense_splitter/lib/librealsense_splitter_component.so
+[component_container_mt-1] [INFO] [1792569504.922528933] [nv_static_container]: Found class: rclcpp_components::NodeFactoryTemplate<nvblox::RealsenseSplitterNode>
+[component_container_mt-1] [INFO] [1792569504.922642025] [nv_static_container]: Instantiate class: rclcpp_components::NodeFactoryTemplate<nvblox::RealsenseSplitterNode>
+[component_container_mt-1] [INFO] [1792569504.935821497] [camera.realsense_splitter_node]: Creating a RealsenseSplitterNode().
+[INFO] [launch_ros.actions.load_composable_nodes]: Loaded node '/camera/realsense_splitter_node' in container '/nv_static_container'
+[component_container_mt-1] [INFO] [1792569504.953486344] [nv_static_container]: Load Library: /opt/ros/humble/lib/libvisual_slam_node.so
+[component_container_mt-1] [INFO] [1792569505.194805824] [nv_static_container]: Found class: rclcpp_components::NodeFactoryTemplate<nvidia::isaac_ros::visual_slam::VisualSlamNode>
+[component_container_mt-1] [INFO] [1792569505.194965989] [nv_static_container]: Instantiate class: rclcpp_components::NodeFactoryTemplate<nvidia::isaac_ros::visual_slam::VisualSlamNode>
+[component_container_mt-1] [ERROR] [1792569505.269296737] [NitrosContext]: cudaErrorNotSupported (operation not supported)
+[component_container_mt-1] [ERROR] [1792569505.269375620] [NitrosContext]: [NitrosContext] setCUDAMemoryPoolSize Error: GXF_FAILURE
+[component_container_mt-1] [INFO] [1792569505.270486987] [NitrosContext]: [NitrosContext] Loading extension: gxf/lib/std/libgxf_std.so
+[ERROR] [launch_ros.actions.load_composable_nodes]: Failed to load node 'visual_slam_node' of type 'nvidia::isaac_ros::visual_slam::VisualSlamNode' in container '/nv_static_container': Component constructor threw an exception: Inv
+[component_container_mt-1] [ERROR] [1792569505.295953100] [nv_static_container]: Component constructor threw an exception: Invalid argument
+[component_container_mt-1] [INFO] [1792569505.576073243] [camera.camera]: Device with serial number 253822300207 was found.
+[component_container_mt-1] 
+[component_container_mt-1] [INFO] [1792569505.576251650] [camera.camera]: Device with physical ID 2-1.3-4 was found.
+[component_container_mt-1] [INFO] [1792569505.576276578] [camera.camera]: Device with name Intel RealSense D455F was found.
+[component_container_mt-1] [INFO] [1792569505.576713874] [camera.camera]: Device with port number 2-1.3 was found.
+[component_container_mt-1] [INFO] [1792569505.576750963] [camera.camera]: Device USB type: 3.2
+[component_container_mt-1] [INFO] [1792569505.586594350] [camera.camera]: getParameters...
+[component_container_mt-1] [INFO] [1792569505.606014554] [camera.camera]: JSON file is not provided
+[component_container_mt-1] [INFO] [1792569505.606142591] [camera.camera]: Device Name: Intel RealSense D455F
+[component_container_mt-1] [INFO] [1792569505.606165472] [camera.camera]: Device Serial No: 253822300207
+[component_container_mt-1] [INFO] [1792569505.606180576] [camera.camera]: Device physical port: 2-1.3-4
+[component_container_mt-1] [INFO] [1792569505.606192769] [camera.camera]: Device FW version: 5.15.0.2
+[component_container_mt-1] [INFO] [1792569505.606203137] [camera.camera]: Device Product ID: 0x0B5C
+[component_container_mt-1] [INFO] [1792569505.606214209] [camera.camera]: Sync Mode: Off
+[component_container_mt-1]  21/10 16:58:30,381 ERROR [281472604956896] (rs.cpp:237) [rs2_set_option( options:0xffff6443e070, option:Emitter On Off, value:1 ) Invalid Value] hwmon command 0x7b( 17 0 0 0 ) failed (response -9= No ex
+[component_container_mt-1] [WARN] [1792569510.383187637] [camera.camera]: Failed to set value to sensor: depth_module.emitter_on_off = 0[0, 1]
+[component_container_mt-1] hwmon command 0x7b( 17 0 0 0 ) failed (response -9= No expected user action)
+[component_container_mt-1] [INFO] [1792569514.051975551] [camera.camera]: Stopping Sensor: Stereo Module
+[component_container_mt-1] [INFO] [1792569514.543521610] [camera.camera]: Starting Sensor: Stereo Module
+[component_container_mt-1] [INFO] [1792569514.706216848] [camera.camera]: Open profile: stream_type: Infra(1), Format: Y8, Width: 640, Height: 480, FPS: 60
+[component_container_mt-1] [INFO] [1792569514.706366197] [camera.camera]: Open profile: stream_type: Infra(2), Format: Y8, Width: 640, Height: 480, FPS: 60
+[component_container_mt-1] [INFO] [1792569514.706392822] [camera.camera]: Open profile: stream_type: Depth(0), Format: Z16, Width: 640, Height: 480, FPS: 60
+[component_container_mt-1] [INFO] [1792569514.706715169] [camera.camera]: Stopping Sensor: RGB Camera
+[component_container_mt-1]  21/10 16:58:34,710 WARNING [281472573696224] (messenger-libusb.cpp:42) control_transfer returned error, index: 768, error: Resource temporarily unavailable, number: 11
+[component_container_mt-1]  21/10 16:58:34,722 WARNING [281472573696224] (messenger-libusb.cpp:42) control_transfer returned error, index: 768, error: Resource temporarily unavailable, number: 11
+[component_container_mt-1]  21/10 16:58:34,739 WARNING [281472573696224] (messenger-libusb.cpp:42) control_transfer returned error, index: 768, error: Resource temporarily unavailable, number: 11
+[component_container_mt-1]  21/10 16:58:34,759 WARNING [281472573696224] (messenger-libusb.cpp:42) control_transfer returned error, index: 768, error: Resource temporarily unavailable, number: 11
+[component_container_mt-1]  21/10 16:58:34,781 WARNING [281472573696224] (messenger-libusb.cpp:42) control_transfer returned error, index: 768, error: Resource temporarily unavailable, number: 11
+[component_container_mt-1]  21/10 16:58:34,795 WARNING [281472573696224] (messenger-libusb.cpp:42) control_transfer returned error, index: 768, error: Resource temporarily unavailable, number: 11
+[component_container_mt-1]  21/10 16:58:34,808 WARNING [281472573696224] (messenger-libusb.cpp:42) control_transfer returned error, index: 768, error: Resource temporarily unavailable, number: 11
+[component_container_mt-1]  21/10 16:58:34,824 WARNING [281472573696224] (messenger-libusb.cpp:42) control_transfer returned error, index: 768, error: Resource temporarily unavailable, number: 11
+[component_container_mt-1] [INFO] [1792569514.849168990] [camera.camera]: Starting Sensor: RGB Camera
+[component_container_mt-1] [WARN] [1792569514.898788786] [camera.camera]: 
+[component_container_mt-1] [INFO] [1792569514.901700729] [camera.camera]: Open profile: stream_type: Color(0), Format: RGB8, Width: 640, Height: 480, FPS: 15
+[component_container_mt-1] [INFO] [1792569514.901903136] [camera.camera]: Stopping Sensor: Motion Module
+[component_container_mt-1]  21/10 16:58:34,918 WARNING [281472573696224] (messenger-libusb.cpp:42) control_transfer returned error, index: 768, error: Resource temporarily unavailable, number: 11
+[component_container_mt-1]  21/10 16:58:34,926 ERROR [281470899693792] (synthetic-stream.cpp:58) Exception was thrown during callback: _devIhEESt10shared_ptrIT_EiEUlS0_E_SaIvELN9__gnu_cxx12_Lock_policyE2EE
+[component_container_mt-1]  21/10 16:58:34,932 ERROR [281470899693792] (synthetic-stream.cpp:58) Exception was thrown during callback: _devIhEESt10shared_ptrIT_EiEUlS0_E_SaIvELN9__gnu_cxx12_Lock_policyE2EE
+[component_container_mt-1]  21/10 16:58:34,944 WARNING [281472604956896] (ds-calib-parsers.cpp:35) IMU Calibration is not available, default intrinsic and extrinsic will be used.
+[component_container_mt-1]  21/10 16:58:34,958 ERROR [281470899693792] (synthetic-stream.cpp:58) Exception was thrown during callback: _devIhEESt10shared_ptrIT_EiEUlS0_E_SaIvELN9__gnu_cxx12_Lock_policyE2EE
+[component_container_mt-1]  21/10 16:58:34,964 ERROR [281470899693792] (synthetic-stream.cpp:58) Exception was thrown during callback: _devIhEESt10shared_ptrIT_EiEUlS0_E_SaIvELN9__gnu_cxx12_Lock_policyE2EE
+[component_container_mt-1] [INFO] [1792569514.965775723] [camera.camera]: Starting Sensor: Motion Module
+[component_container_mt-1]  21/10 16:58:35,022 ERROR [281470899693792] (synthetic-stream.cpp:58) Exception was thrown during callback: _devIhEESt10shared_ptrIT_EiEUlS0_E_SaIvELN9__gnu_cxx12_Lock_policyE2EE
+[component_container_mt-1]  21/10 16:58:35,022 ERROR [281470899693792] (synthetic-stream.cpp:58) Exception was thrown during callback: _devIhEESt10shared_ptrIT_EiEUlS0_E_SaIvELN9__gnu_cxx12_Lock_policyE2EE
+[component_container_mt-1]  21/10 16:58:35,066 ERROR [281470899693792] (synthetic-stream.cpp:58) Exception was thrown during callback: _devIhEESt10shared_ptrIT_EiEUlS0_E_SaIvELN9__gnu_cxx12_Lock_policyE2EE
+[component_container_mt-1]  21/10 16:58:35,066 ERROR [281470899693792] (synthetic-stream.cpp:58) Exception was thrown during callback: _devIhEESt10shared_ptrIT_EiEUlS0_E_SaIvELN9__gnu_cxx12_Lock_policyE2EE
+[component_container_mt-1]  21/10 16:58:35,088 ERROR [281470899693792] (synthetic-stream.cpp:58) Exception was thrown during callback: _devIhEESt10shared_ptrIT_EiEUlS0_E_SaIvELN9__gnu_cxx12_Lock_policyE2EE
+======== off (24 줄)
+[INFO] [launch]: All log files can be found below /home/admin/.ros/log/2026-10-21-17-00-07-195787-jetson-desktop-2007747
+[INFO] [launch]: Default logging verbosity is set to INFO
+[INFO] [component_container_mt-1]: process started with pid [2007780]
+[component_container_mt-1] [INFO] [1792569607.662340497] [nv_static_container]: Load Library: /opt/ros/humble/lib/librealsense2_camera.so
+[component_container_mt-1] [INFO] [1792569607.856441165] [nv_static_container]: Found class: rclcpp_components::NodeFactoryTemplate<realsense2_camera::RealSenseNodeFactory>
+[component_container_mt-1] [INFO] [1792569607.857774684] [nv_static_container]: Instantiate class: rclcpp_components::NodeFactoryTemplate<realsense2_camera::RealSenseNodeFactory>
+[component_container_mt-1] [INFO] [1792569607.895428204] [camera.camera]: RealSense ROS v4.51.1
+[component_container_mt-1] [INFO] [1792569607.896215688] [camera.camera]: Built with LibRealSense v2.55.1
+[component_container_mt-1] [INFO] [1792569607.896263146] [camera.camera]: Running with LibRealSense v2.55.1
+[INFO] [launch_ros.actions.load_composable_nodes]: Loaded node '/camera/camera' in container '/nv_static_container'
+[component_container_mt-1] [INFO] [1792569607.900473470] [nv_static_container]: Load Library: /workspaces/isaac_ros-dev/install_rs/realsense_splitter/lib/librealsense_splitter_component.so
+[component_container_mt-1] [INFO] [1792569607.905076864] [nv_static_container]: Found class: rclcpp_components::NodeFactoryTemplate<nvblox::RealsenseSplitterNode>
+[component_container_mt-1] [INFO] [1792569607.905167171] [nv_static_container]: Instantiate class: rclcpp_components::NodeFactoryTemplate<nvblox::RealsenseSplitterNode>
+[component_container_mt-1] [INFO] [1792569607.915778202] [camera.realsense_splitter_node]: Creating a RealsenseSplitterNode().
+[INFO] [launch_ros.actions.load_composable_nodes]: Loaded node '/camera/realsense_splitter_node' in container '/nv_static_container'
+[component_container_mt-1] [INFO] [1792569607.931250011] [nv_static_container]: Load Library: /opt/ros/humble/lib/libvisual_slam_node.so
+[component_container_mt-1] [INFO] [1792569608.035108010] [nv_static_container]: Found class: rclcpp_components::NodeFactoryTemplate<nvidia::isaac_ros::visual_slam::VisualSlamNode>
+[component_container_mt-1] [INFO] [1792569608.035277136] [nv_static_container]: Instantiate class: rclcpp_components::NodeFactoryTemplate<nvidia::isaac_ros::visual_slam::VisualSlamNode>
+[component_container_mt-1] [ERROR] [1792569608.053277130] [NitrosContext]: cudaErrorNotSupported (operation not supported)
+[component_container_mt-1] [ERROR] [1792569608.053348077] [NitrosContext]: [NitrosContext] setCUDAMemoryPoolSize Error: GXF_FAILURE
+[component_container_mt-1] [INFO] [1792569608.053511571] [NitrosContext]: [NitrosContext] Loading extension: gxf/lib/std/libgxf_std.so
+[ERROR] [component_container_mt-1]: process has died [pid 2007780, exit code -11, cmd '/opt/ros/humble/lib/rclcpp_components/component_container_mt --ros-args -r __node:=nv_static_container -r __ns:=/'].
+[WARNING] [launch]: user interrupted with ctrl-c (SIGINT)
+[WARNING] [launch_ros.actions.load_composable_nodes]: Abandoning wait for the '/nv_static_container/_container/load_node' service response, due to shutdown.
+======== 환경
+ISAAC_ROS_WS=/workspaces/isaac_ros-dev
+RMW_IMPLEMENTATION=rmw_fastrtps_cpp
+ROS_DISTRO=humble
+ROS_PYTHON_VERSION=3
+ROS_ROOT=/opt/ros/humble
+--- 호스트 기본 환경
+--- 옛 컨테이너 env
+ISAAC_ROS_WS=/workspaces/isaac_ros-dev
+RMW_IMPLEMENTATION=rmw_fastrtps_cpp
+ROS_DISTRO=humble
+ROS_PYTHON_VERSION=3
+ROS_ROOT=/opt/ros/humble
+total 8476
+-rw-r--r-- 1 jetson jetson 8413728 Oct 21 12:11 fastrtps_66c09d88af7fa62b
+-rw-rw-r-- 1 jetson jetson       0 Oct 21 12:11 fastrtps_66c09d88af7fa62b_el
+-rw-r--r-- 1 jetson jetson   52416 Oct 21 17:00 fastrtps_port7411
+-rw-r--r-- 1 jetson jetson       0 Oct 21 17:00 fastrtps_port7413_el
+-rw-r--r-- 1 jetson jetson   52416 Oct 21 16:58 fastrtps_port7415
+-rw-r--r-- 1 jetson jetson   52416 Oct 21 12:11 fastrtps_port7417
+-rw-rw-rw- 1 root   root    197055 Oct 20 18:22 ipc_test_0
+-rw-rw-rw- 1 root   root    197055 Oct 20 18:22 ipc_test_a_0
+-rw-rw-rw- 1 root   root    197055 Oct 20 18:22 ipc_test_b_0
+Device Name                   Serial Number       Firmware Version
+RealSense D455F               253822300207        5.15.0.2

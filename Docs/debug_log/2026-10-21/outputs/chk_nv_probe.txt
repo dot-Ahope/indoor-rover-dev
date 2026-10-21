@@ -1,0 +1,45 @@
+commit sha256:881eb0cb00368c1e0b6396d9366b2b7f93a1a55f4f4898f103e56be481394ba0 13831976269
+uid=1000(admin) gid=1000(admin) groups=1000(admin),27(sudo),44(video),46(plugdev)
+[INFO] [launch_ros.actions.load_composable_nodes]: Loaded node '/camera/camera' in container '/nv_static_container'
+[INFO] [launch_ros.actions.load_composable_nodes]: Loaded node '/camera/realsense_splitter_node' in container '/nv_static_container'
+[INFO] [launch_ros.actions.load_composable_nodes]: Loaded node '/visual_slam_node' in container '/nv_static_container'
+[component_container_mt-1] [INFO] [1792569941.637823520] [camera.camera]: Open profile: stream_type: Infra(1), Format: Y8, Width: 640, Height: 480, FPS: 30
+[component_container_mt-1] [INFO] [1792569941.638049320] [camera.camera]: Open profile: stream_type: Infra(2), Format: Y8, Width: 640, Height: 480, FPS: 30
+[component_container_mt-1] [INFO] [1792569941.638081546] [camera.camera]: Open profile: stream_type: Depth(0), Format: Z16, Width: 640, Height: 480, FPS: 30
+[component_container_mt-1] [INFO] [1792569941.842823912] [camera.camera]: Open profile: stream_type: Color(0), Format: RGB8, Width: 640, Height: 480, FPS: 15
+[component_container_mt-1] [INFO] [1792569941.932112697] [camera.camera]: Open profile: stream_type: Accel(0)Format: MOTION_XYZ32F, FPS: 200
+[component_container_mt-1] [INFO] [1792569941.933600846] [camera.camera]: Open profile: stream_type: Gyro(0)Format: MOTION_XYZ32F, FPS: 200
+/camera/accel/imu_info
+/camera/accel/metadata
+/camera/accel/sample
+/camera/camera/depth/color/points
+/camera/camera/depth/image_rect_raw
+/camera/camera/depth/metadata
+/camera/camera/infra1/camera_info
+/camera/camera/infra1/image_rect_raw
+/camera/camera/infra1/metadata
+/camera/camera/infra2/camera_info
+/camera/camera/infra2/image_rect_raw
+/camera/camera/infra2/metadata
+/camera/color/camera_info
+/camera/color/image_raw
+/camera/color/image_raw/compressed
+/camera/color/image_raw/compressedDepth
+/camera/color/image_raw/theora
+/camera/color/metadata
+/camera/depth/camera_info
+/camera/depth/image_rect_raw
+/camera/depth/image_rect_raw/compressed
+/camera/depth/image_rect_raw/compressedDepth
+/camera/depth/image_rect_raw/theora
+/camera/depth/metadata
+/camera/extrinsics/depth_to_accel
+/camera/extrinsics/depth_to_color
+/camera/extrinsics/depth_to_gyro
+/camera/extrinsics/depth_to_infra1
+/camera/extrinsics/depth_to_infra2
+/camera/gyro/imu_info
+/camera/camera/depth/image_rect_raw
+/camera/camera/infra1/image_rect_raw
+/visual_slam/tracking/odometry
+남은 2
