@@ -1,0 +1,9 @@
+# 원문 출력 파일 저장을 빠뜨려 PC 대화 기록(세션 21d4aa9f, 10-21 16:5x)의 도구 출력에서 그대로 옮김 — §23
+# jobs/chk_rs_apt_sim.sh — 시험 컨테이너 apt 모의 설치(-s)
+W: Failed to fetch https://dl.yarnpkg.com/debian/dists/stable/InRelease  NO_PUBKEY 62D54FD4003F6525 (무관한 저장소)
+ros-humble-isaac-ros-nvblox: Candidate 3.2.5-0jammy
+ros-humble-isaac-ros-visual-slam: Candidate 3.2.6-0jammy
+ros-humble-nvblox-examples-bringup: Candidate 3.2.13-0jammy
+Inst 46 · Remv 0
+(realsense 관련 Inst/Remv 줄 없음)
+Inst ros-humble-isaac-ros-nitros (3.2.5-0jammy) … ros-humble-isaac-ros-nvblox (3.2.5-0jammy) 외 nvblox · visual-slam 13 줄(전부 isaac.download.nvidia.com arm64)
