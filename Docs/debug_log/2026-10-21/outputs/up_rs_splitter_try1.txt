@@ -1,0 +1,15 @@
+# 원문 출력 파일 저장을 빠뜨려 PC 대화 기록(세션 21d4aa9f, 10-21 16:5x)의 도구 출력에서 그대로 옮김 — §23
+# up_rs_splitter.sh 1 차(엔트리포인트 지정 전)
+image sha256:e73aede88afe4155fdac4f67399728800df999e3ce7baea88ffbe689416a18fd 13689685138
+isaac_rs_test Up 7 seconds
+== (a) 버전
+Error response from daemon: unable to find user admin: no matching entries in passwd file
+== (b) realsense_splitter 빌드
+Error response from daemon: unable to find user admin: no matching entries in passwd file
+== (c) 기존 패키지
+Error response from daemon: unable to find user admin: no matching entries in passwd file
+== (d) 지금 스택 카메라 영향
+1
+isaac_rs_test Up 8 seconds
+microros_agent Up 6 hours
+isaac_ros_dev-aarch64-container Up 7 hours

@@ -362,3 +362,20 @@
   2. 2번 nvblox `esdf_integrator_min_weight` — f2pr1(또는 f2sm1) bag 재생 A/B.
   3. 미뤄 둔 것: f2sm3 · f2sm4 그림자 반복, 사람 기억이 목표 칸을 막는 문제(§10 · §12.1), 복귀 중 멈칫(§12.2 TF 외삽 · 제어 주기), prep 위치 추정 첫 불합격(§21.1) 원인.
 - 정리 페이지: https://claude.ai/artifact/HgrT1HcmfuDrqFE6hRvREM (사본 `figures/day_summary_1021.html`, 생성기 `jobs/fig_day_summary_1021.py`). mx2 상세 페이지 https://claude.ai/artifact/U5NBfhdtgsDwt5E5LoohPt.
+
+## §23 추론별 데이터 위치 (사용자: "추론 정리할 때, 어떤 로그에 해당 추론에 사용된 데이터들이 저장되어 있는지도 적어달라." — 규약은 CLAUDE.md 기록 규약 '데이터 칸')
+- 정리하며 한 일: ① 원문 파일로 안 남긴 확인 출력 4 건을 PC 대화 기록에서 옮김(`outputs/up_rs_splitter_try1.txt` · `chk_rs_ws.txt` · `chk_rs_ws2.txt` · `chk_rs_apt_sim.txt`, 머리줄에 출처 표시) ② 스크래치패드에만 있던 bag 10 개를 `bags/` 로 복사(git 제외, 합 ≈ 0.5 GB): f2sm1 · f2sm2 · f2sm2h(오늘), 비교용 f2u1 · f2u3 · f2v4 · f2w1 · f2x1(10-14~19, 러너 tgz 그대로), f2z1 · f2z2(10-20, `f2z1_vis/` · `f2z2_vis/` 폴더를 tgz 로 묶음).
+- 원천 소실: Jetson `/tmp/nav2.log`(§12 멈칫 · W3 중단의 nav2 사건 원천) — 그 뒤 prep 이 여러 번 덮음. 남은 것은 발췌 `outputs/nav_events_ms.txt` · `chk_abort_f2sm2.txt` · `chk_bt_f2sm2h.txt`. 시험 드라이버 로그 Jetson `/tmp/nv_static_*.log` · `/tmp/mx2_*.log` · `/tmp/pr1_cam_*.log` 는 아직 있으나 휘발 — 쓴 부분은 각 `outputs/run_*.txt` 에 요약됨.
+
+| 추론(§) | 결과 원문(outputs/) | 도구(jobs/) | 입력 원천 |
+|---|---|---|---|
+| f2sm1 그림자 효과(§7) | `run_f2sm1.txt` · `anal_shadow_f2sm1.txt` · `gaps_f2sm1.txt` · `chk_f2sm1_logs.txt` · `run_meta_f2sm1.txt` | `2026-10-20/jobs/anal_ekf_replay.py` · `anal_topic_gaps.py` | `bags/bag_f2sm1.tgz`(/odometry/filtered · /odometry/ekf_vslam · /visual_slam/tracking/odometry · /tf) |
+| W3 중단 · 사람 기억(§10 · §12.1) | `run_f2sm2.txt` · `anal_goal_block_f2sm2.txt` · `chk_abort_f2sm2.txt` · `nav_events_ms.txt` | `anal_goal_block.py` · `chk_nav_ms.sh` | `bags/bag_f2sm2.tgz`(/global_costmap/costmap · /scan · /tf), nav2 로그(원천 소실, 발췌만) |
+| 복귀 멈칫 분류(§11.3 · §12.2) | `anal_stops_f2sm2h.txt` · `anal_cmd_dips_f2sm2h.txt` · `anal_dip_events_f2sm2h.txt` · `nav_events_f2sm2h.txt` · `chk_tf_extrap.txt` · `chk_dip_omega.txt` | `anal_stops.py` · `anal_cmd_dips.py` · `anal_dip_events.py` | `bags/bag_f2sm2h.tgz`(/cmd_vel · /odometry/filtered · /scan), nav2 로그(원천 소실) |
+| 유령 칸 출처 · 이동 가설(§13) | `anal_phantom_*.txt` · `anal_cells_shift_xcorr_f2sm1.txt` · `anal_birth_vs_slice.txt` | `anal_phantom_cells.py` · `anal_phantom_birth.py` · `anal_phantom_shift.py` · `anal_cells_shift_xcorr.py` · `anal_birth_vs_slice.py` | `bags/bag_f2sm1.tgz` · `bag_f2sm2h.tgz` · `bag_f2u1.tgz` 등(/global_costmap · /local_costmap/costmap · /nvblox_node/static_map_slice · /map · /scan · /tf) |
+| 켬/끔 맨바닥 정정(§15) | `anal_zone_ghosts.txt`(처음 수치 `anal_phantom_local_cmp.txt`) | `anal_zone_ghosts.py` | `bags/bag_f2u1 · f2u3 · f2v4 · f2w1 · f2x1`(켬) · `bag_f2z1 · f2z2 · f2sm1 · f2sm2`(끔), 토픽 /local_costmap/costmap · /map · /scan · /tf · /tf_static |
+| 시험 컨테이너 실수(§17.1) | `up_rs_splitter_try1.txt` · `up_rs_splitter_try2.txt` · `chk_rs_ws.txt` · `chk_rs_ws2.txt` · `chk_rs_apt_sim.txt` · `up_rs_apt.txt` · `rs_image_build_end.txt` | `up_rs_splitter.sh` · `chk_rs_ws*.sh` · `chk_rs_apt_sim.sh` · `up_rs_apt.sh` | Jetson `docker inspect/diff/dpkg`(그 시점 상태), 빌드 로그 Jetson `~/rs_build/build.log` |
+| nv1 무효 · 결과(§18) | `run_nv_static_try1.txt` · `chk_nv_log.txt` · `chk_nv_cmp.txt` · `chk_nv_probe.txt` · `run_nv_static.txt` | `run_nv_static.sh` · `nv_static.launch.py` · `anal_nv_static.py` · `chk_nv_*.sh` | 라이브 토픽(bag 없음) — 메타데이터 · 깊이 · IR 은 분석기가 실시간으로 셈, 드라이버 로그 Jetson `/tmp/nv_static_*.log`(휘발) |
+| 노출 고정 · 새어 든 점(§19) | `run_mx1.txt` · `run_mx2.txt` · `anal_mx2_leak.txt` | `run_mx1.sh` · `run_mx2.sh` · `anal_mx1.py` · `anal_mx2_leak.py` · `mx_cam.launch.py` | 라이브 토픽(bag 없음), 판별에 본 프레임 `figures/mx2/*.png`, 드라이버 로그 Jetson `/tmp/mx2_*.log`(휘발) |
+| 깊이 프리셋(§21) | `run_pr1.txt` · `prep_back_1021_3_fail.txt` · `prep_back_1021_4.txt` | `run_pr1.sh` · `anal_pr1.py` | 라이브 토픽(bag 없음), 복셀 비율 `figures/pr1/pr1_*.npz`, 영상 `figures/pr1/*.png`, 드라이버 로그 Jetson `/tmp/pr1_cam_*.log`(휘발) |
+- 앞으로: 정지 시험도 깊이 · IR · 메타데이터를 짧은 bag 으로 남겨 다시 셀 수 있게 한다(오늘 nv1 · mx · pr1 은 실시간 집계만 — 다른 지표로 다시 셀 수 없음).

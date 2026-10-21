@@ -173,6 +173,7 @@ code{font:.85em var(--mono)}
     <div><b>판별</b><p>저장한 끈 IR 프레임을 직접 봄 → 아래 바닥에 프로젝터 점 무늬. 흰 점 수(아래 1/4): 24 ms 0 · 28 ms 74 · 32 ms 209~221 · 대조 0.</p></div>
     <div><b>결론</b><p>노출이 프레임 주기(33.3 ms)에 가까워지면 켠 구간 빛이 끈 프레임에 섞임(기전 추정 · 미확인). FAST 증가는 가짜 특징이므로 28 ms 이상은 cuVSLAM 입력으로 부적합. 남는 것은 24 ms.</p></div>
     <div><b>다음에 알아보는 법</b><p>끈 IR 의 특징 수가 같은 노출의 대조보다 크면 먼저 프레임을 본다. 점 새어 듦은 아래 바닥(가까운 면)부터 나타난다.</p></div>
+    <div><b>데이터</b><p>경로는 <code>Docs/debug_log/2026-10-21/</code> 아래. 지표 <code>outputs/run_mx2.txt</code>(메타 노출 · 게인, 밝기 · FAST, 깊이 유효) · 흰 점 수 <code>outputs/anal_mx2_leak.txt</code>(도구 <code>jobs/anal_mx2_leak.py</code>) · 측정 도구 <code>jobs/anal_mx1.py</code> · <code>run_mx2.sh</code> · 판별에 본 프레임 <code>figures/mx2/*.png</code>. 실행 중 쓰기 거부(mx1)는 <code>outputs/run_mx1.txt</code>. 라이브 측정이라 bag 없음, 드라이버 로그는 Jetson <code>/tmp/mx2_*.log</code>(휘발).</p></div>
   </div>
 </section>
 
