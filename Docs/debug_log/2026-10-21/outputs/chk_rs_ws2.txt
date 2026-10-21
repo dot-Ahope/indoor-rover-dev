@@ -1,0 +1,34 @@
+# 원문 출력 파일 저장을 빠뜨려 PC 대화 기록(세션 21d4aa9f, 10-21 16:5x)의 도구 출력에서 그대로 옮김 — §23
+# jobs/chk_rs_ws2.sh — 옛 컨테이너 nvblox/cuVSLAM 출처 · 분리 노드 의존성
+  <depend>rclcpp</depend>
+  <depend>rclcpp_components</depend>
+  <depend>sensor_msgs</depend>
+  <depend>message_filters</depend>
+  <depend>realsense2_camera_msgs</depend>
+  <depend>isaac_ros_common</depend>
+--- 옛 컨테이너 dpkg
+ros-humble-isaac-ros-nitros 3.2.5-0jammy
+ros-humble-isaac-ros-nvblox 3.2.5-0jammy
+ros-humble-isaac-ros-visual-slam 3.2.6-0jammy
+ros-humble-isaac-ros-visual-slam-interfaces 3.2.5-0jammy
+ros-humble-nvblox-examples-bringup 3.2.13-0jammy
+ros-humble-nvblox-image-padding 3.2.5-0jammy
+ros-humble-nvblox-msgs 3.2.5-0jammy
+ros-humble-nvblox-nav2 3.2.5-0jammy
+ros-humble-nvblox-ros 3.2.5-0jammy
+ros-humble-nvblox-ros-common 3.2.5-0jammy
+ros-humble-nvblox-ros-python-utils 3.2.5-0jammy
+ros-humble-nvblox-rviz-plugin 3.2.5-0jammy
+--- 새 이미지 dpkg
+ros-humble-realsense2-camera 4.51.1-0jammy
+ros-humble-realsense2-camera-msgs 4.51.1-0jammy
+ros-humble-realsense2-description 4.51.1-0jammy
+--- 옛 컨테이너 diff(apt 로 들어온 것인지)
+A /opt/ros/humble/share/nvblox_ros
+A /opt/ros/humble/share/isaac_ros_visual_slam
+isaac_ros_dev-aarch64 sha256:dd032d9aa0a4647460ab83dac734a155234a66fabeb80f9c659e7d4542a1ac94
+isaac_ros_dev-aarch64-rs:latest e73aede88afe 43.2GB
+ubuntu:22.04 3ba65aa20f86 108MB
+isaac_ros_dev-aarch64:latest dd032d9aa0a4 40.3GB
+nvcr.io/nvidia/isaac/ros:aarch64-ros2_humble_4c0c55dddd2bbcc3e8d5f9753bee634c dd032d9aa0a4 40.3GB
+microros/micro-ros-agent:humble 16280d0753fd 627MB

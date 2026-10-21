@@ -152,6 +152,7 @@ figcaption{color:var(--mute);font-size:.82rem;margin-top:5px;max-width:80ch}
       <span class="k">의심한 이유</span><span>사용자 직접 관찰("nvblox 만 쓸 때는 안 나왔다")과 맞지 않음. 다시 보니 창 오른쪽 끝 열이 x 2.75 벽 가장자리를 포함했고, 시각 세 점은 잠깐 생겼다 사라지는 칸을 놓침.</span>
       <span class="k">판별</span><span><span class="mono">anal_zone_ghosts.py</span>: t 10~60 s 전체에서 한 번이라도 LETHAL 이 된 칸을 위치 목록으로. 켬 주행의 칸은 거의 다 벽 옆 열, 맨바닥은 0~3.</span>
       <span class="k">결론</span><span>사용자가 맞음. 상자 너머 맨바닥 · 문 사이 점은 프로젝터를 끈 뒤에만 생김.</span>
+      <span class="k">데이터</span><span>결과 <span class="mono">outputs/anal_zone_ghosts.txt</span>(처음 수치 <span class="mono">outputs/anal_phantom_local_cmp.txt</span>) · 도구 <span class="mono">jobs/anal_zone_ghosts.py</span> · 입력 <span class="mono">bags/bag_f2u1 · f2u3 · f2v4 · f2w1 · f2x1.tgz</span>(켬), <span class="mono">bag_f2z1 · f2z2 · f2sm1 · f2sm2.tgz</span>(끔) 의 /local_costmap/costmap · /map · /scan · /tf.</span>
       <span class="k">알아보는 법</span><span>켬/끔 같은 비교 창에 벽 · 상자 가장자리를 넣지 않는다. 칸 수가 아니라 위치 목록을 보고, 시각 몇 점이 아니라 구간 전체로 센다. 사용자 관찰과 어긋나면 내 창 설정부터 의심.</span>
     </div>
   </div>
@@ -165,6 +166,7 @@ figcaption{color:var(--mute);font-size:.82rem;margin-top:5px;max-width:80ch}
       <span class="k">의심한 이유</span><span>노출 · 게인 · 밝기가 대조와 같은데 특징만 5 배 — 장면이 안 바뀌었으니 늘 이유가 없음.</span>
       <span class="k">판별</span><span>저장한 끈 IR 프레임을 직접 봄 → 아래 바닥에 프로젝터 점무늬. 흰 점 수(아래 1/4): 24 ms 0 · 28 ms 74 · 32 ms 209~221 · 대조 0.</span>
       <span class="k">결론</span><span>노출이 프레임 주기(33.3 ms)에 가까워지면 켠 구간 빛이 섞임(기전 추정 · 미확인). 늘어난 특징은 카메라에 붙은 가짜.</span>
+      <span class="k">데이터</span><span>지표 <span class="mono">outputs/run_mx2.txt</span>(메타 노출 · 게인, 밝기 · FAST) · 흰 점 수 <span class="mono">outputs/anal_mx2_leak.txt</span>(도구 <span class="mono">jobs/anal_mx2_leak.py</span>) · 판별에 본 프레임 <span class="mono">figures/mx2/C32k248_IR_m1.png</span> 등. 라이브 측정이라 bag 없음, 드라이버 로그는 Jetson <span class="mono">/tmp/mx2_*.log</span>(휘발).</span>
       <span class="k">알아보는 법</span><span>끈 IR 특징 수가 같은 노출의 대조보다 크면 먼저 프레임을 본다. 새어 듦은 가까운 바닥부터 나타난다.</span>
     </div>
   </div>
@@ -176,6 +178,7 @@ figcaption{color:var(--mute);font-size:.82rem;margin-top:5px;max-width:80ch}
       <span class="k">처음 추론</span><span>옛 컨테이너와 '같은 옵션' 이면 같게 동작하고, 같은 판 패키지는 이미지에 들어 있다.</span>
       <span class="k">판별</span><span>① 옛 컨테이너는 실행 때 엔트리포인트로 사용자를 만듦 ② NVIDIA 배포본에 <span class="mono">COLCON_IGNORE</span> ③ <span class="mono">docker diff</span> — nvblox · cuVSLAM 은 옛 컨테이너 쓰기 층에 apt 로 설치된 것 ④ 실질 차이는 내가 넣은 <span class="mono">-v /dev:/dev</span> 하나, 빼니 정상 ⑤ <span class="mono">ros2 topic list</span> — 4.51.1 은 토픽에 노드 이름을 안 붙임.</span>
       <span class="k">결론</span><span>모두 내 설정 실수. 지금 운용 컨테이너는 이미지만으로 재현되지 않는다. /dev 마운트가 CUDA 를 막는 기전은 미확인.</span>
+      <span class="k">데이터</span><span>① <span class="mono">outputs/up_rs_splitter_try1.txt</span> ② <span class="mono">chk_rs_ws.txt</span> ③ <span class="mono">chk_rs_ws2.txt</span> · <span class="mono">chk_rs_apt_sim.txt</span>(①~③ 은 원문 파일을 안 남겨 대화 기록에서 옮김) ④ <span class="mono">chk_nv_log.txt</span> · <span class="mono">chk_nv_cmp.txt</span> · <span class="mono">chk_nv_probe.txt</span> ⑤ <span class="mono">run_nv_static_try1.txt</span> · <span class="mono">chk_nv_probe.txt</span>(토픽 목록). 모두 <span class="mono">outputs/</span>.</span>
       <span class="k">알아보는 법</span><span>컨테이너를 다시 만들 땐 엔트리포인트까지 옮기고 <span class="mono">docker diff</span> 로 손 설치를 먼저 센다. GPU 노드가 'Invalid argument' 면 NitrosContext CUDA 오류부터. 드라이버 판을 바꾸면 기동 직후 토픽 이름부터 확인.</span>
     </div>
   </div>
@@ -183,10 +186,27 @@ figcaption{color:var(--mute);font-size:.82rem;margin-top:5px;max-width:80ch}
   <div class="pm">
     <h3>그 밖의 정정(짧게)</h3>
     <div class="flow">
-      <span class="k">§10</span><span><b>본 것</b> 막힘 분석 도구가 늘 'LETHAL 0' 인데 nav2 는 '비용 99' 를 말함 → <b>판별</b> 코스트맵 메시지 값은 0~100(100 = LETHAL)인데 ≥ 253 으로 셈 → <b>알아보기</b> 메시지 값 범위를 먼저 확인.</span>
-      <span class="k">§11.3 → §12.2</span><span><b>본 것</b> 1 s 해상도 사건 표에서 멈칫 4 번을 '새 경로 전달' 로 분류 → <b>판별</b> 0.01 s 로 맞추니 <span class="mono">Control loop missed</span> 와 0.01~0.09 s 안 → <b>알아보기</b> 멈칫은 0.01 s 시각으로, 주기 경고를 걸러내지 않는다.</span>
+      <span class="k">§10</span><span><b>본 것</b> 막힘 분석 도구가 늘 'LETHAL 0' 인데 nav2 는 '비용 99' 를 말함 → <b>판별</b> 코스트맵 메시지 값은 0~100(100 = LETHAL)인데 ≥ 253 으로 셈 → <b>알아보기</b> 메시지 값 범위를 먼저 확인. <b>데이터</b> <span class="mono">outputs/anal_goal_block_f2sm2.txt</span> · <span class="mono">chk_abort_f2sm2.txt</span>, 입력 <span class="mono">bags/bag_f2sm2.tgz</span>.</span>
+      <span class="k">§11.3 → §12.2</span><span><b>본 것</b> 1 s 해상도 사건 표에서 멈칫 4 번을 '새 경로 전달' 로 분류 → <b>판별</b> 0.01 s 로 맞추니 <span class="mono">Control loop missed</span> 와 0.01~0.09 s 안 → <b>알아보기</b> 멈칫은 0.01 s 시각으로, 주기 경고를 걸러내지 않는다. <b>데이터</b> <span class="mono">outputs/nav_events_ms.txt</span> · <span class="mono">anal_dip_events_f2sm2h.txt</span>, 입력 <span class="mono">bags/bag_f2sm2h.tgz</span>; 원천 nav2 로그(Jetson <span class="mono">/tmp/nav2.log</span>)는 그 뒤 prep 이 덮어 소실.</span>
     </div>
   </div>
+</section>
+
+<section>
+  <h2>추론별 데이터 위치<span class="sec">§23</span></h2>
+  <p class="note">경로는 모두 <span class="mono">Docs/debug_log/2026-10-21/</span> 아래. bag 은 git 에서 빠지는 <span class="mono">bags/</span> 에 로컬 보관(오늘 스크래치패드에서 옮김). 라이브 정지 시험(nv1 · mx · pr1)은 bag 없이 실시간으로 셌습니다 — 다른 지표로 다시 세려면 다음부터 짧은 bag 을 남깁니다.</p>
+  <div class="tbl"><table>
+    <tr><th>추론</th><th>결과 원문</th><th>입력 원천</th></tr>
+    <tr><td>f2sm1 그림자 효과 §7</td><td class="mono">outputs/run_f2sm1.txt · anal_shadow_f2sm1.txt · gaps_f2sm1.txt</td><td class="mono">bags/bag_f2sm1.tgz</td></tr>
+    <tr><td>W3 중단 · 사람 기억 §10 · §12.1</td><td class="mono">outputs/anal_goal_block_f2sm2.txt · chk_abort_f2sm2.txt · nav_events_ms.txt</td><td class="mono">bags/bag_f2sm2.tgz · nav2 로그(소실)</td></tr>
+    <tr><td>복귀 멈칫 §11.3 · §12.2</td><td class="mono">outputs/anal_stops_f2sm2h.txt · anal_dip_events_f2sm2h.txt · chk_tf_extrap.txt</td><td class="mono">bags/bag_f2sm2h.tgz · nav2 로그(소실)</td></tr>
+    <tr><td>유령 칸 출처 §13</td><td class="mono">outputs/anal_phantom_*.txt · anal_birth_vs_slice.txt · anal_cells_shift_xcorr_f2sm1.txt</td><td class="mono">bags/bag_f2sm1 · f2sm2h · f2u1 …</td></tr>
+    <tr><td>켬/끔 맨바닥 §15</td><td class="mono">outputs/anal_zone_ghosts.txt</td><td class="mono">bags/bag_f2u1 … f2sm2 (9 개)</td></tr>
+    <tr><td>시험 컨테이너 §17.1 · §18.2</td><td class="mono">outputs/up_rs_*.txt · chk_rs_*.txt · chk_nv_*.txt · run_nv_static_try1.txt</td><td>그 시점 Jetson 상태(docker inspect · diff · dpkg)</td></tr>
+    <tr><td>NVIDIA 구성 §18.1</td><td class="mono">outputs/run_nv_static.txt</td><td>라이브 토픽 · Jetson /tmp/nv_static_*.log(휘발)</td></tr>
+    <tr><td>노출 고정 §19</td><td class="mono">outputs/run_mx1.txt · run_mx2.txt · anal_mx2_leak.txt</td><td class="mono">figures/mx2/*.png · Jetson /tmp/mx2_*.log(휘발)</td></tr>
+    <tr><td>깊이 프리셋 §21</td><td class="mono">outputs/run_pr1.txt</td><td class="mono">figures/pr1/*.npz · *.png · Jetson /tmp/pr1_cam_*.log(휘발)</td></tr>
+  </table></div>
 </section>
 
 <section>

@@ -1,0 +1,2 @@
+#!/bin/bash
+grep -aE "PathBlockedAhead|GridBased failed|Optimizer fail|follow_path\] \[ActionServer\] Aborting|Goal failed|Goal succeeded|Received a goal|Passing new path|stuck|nav_guard|Collision|collision|Control loop missed|Clearing|clear" /tmp/nav2.log | grep -av "Message Filter" | while read -r l; do t=$(echo "$l" | grep -o '\[17[0-9]*' | head -1 | tr -d '['); [ -n "$t" ] && echo "$(date -d @$t +%T) ${l#*]: }"; done | awk '$1>="12:30:10" && $1<="12:32:30"' | cut -c1-200
