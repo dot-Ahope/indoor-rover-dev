@@ -81,6 +81,11 @@ def _camera(context):
         'initial_reset': True,
         'publish_tf': True,
     }
+    # 10-21 §21: depth_preset:= 고급 모드 깊이 프리셋(0 Custom · 1 Default · 2 Hand · 3 High Accuracy · 4 High Density · 5 Medium Density).
+    #   기본 -1 = 지정 안 함(지금까지와 같음, 장치 값 0). 3 = 확신 낮은 짝을 버림 → 프로젝터 끔에서 무늬 없는 바닥 유령 점 대책 후보(§20~21)
+    preset = int(LaunchConfiguration('depth_preset').perform(context))
+    if preset >= 0:
+        cam_params['depth_module.visual_preset'] = preset
     if not flash and not eoff:
         return [Node(package='realsense2_camera', executable='realsense2_camera_node',
                      name='camera', namespace='camera', output='screen', parameters=[cam_params], additional_env=env)]
@@ -108,6 +113,7 @@ def generate_launch_description():
         DeclareLaunchArgument('emitter_flash', default_value='false'),
         DeclareLaunchArgument('stereo_fps', default_value='30'),
         DeclareLaunchArgument('emitter_off', default_value='false'),
+        DeclareLaunchArgument('depth_preset', default_value='-1', description='10-21 §21 깊이 프리셋(-1 = 지정 안 함, 3 = High Accuracy)'),
         DeclareLaunchArgument('dds_shm', default_value='false', description='10-20 §7.4 카메라 프로세스만 SHM+UDP(cuVSLAM 경로) — ekf.launch 의 cuVSLAM 도 같은 인자로'),
         DeclareLaunchArgument('decimation', default_value='4', description='10-20 §8 깊이 데시메이션 배율(4 = 지금, 2, 1 = 끔) — 점군 크기도 같이 바뀜'),
         OpaqueFunction(function=_camera),
