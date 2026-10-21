@@ -1,0 +1,91 @@
+== nav_guard · stuck · abort 관련
+[WARN] [1792552673.960231327] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[WARN] [1792552674.289918166] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[WARN] [1792552674.640524594] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[WARN] [1792552675.042005884] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[WARN] [1792552677.191024659] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[ERROR] [1792552679.331997684] [smoother_server]: Smoothed path leads to a collision at x: 5.208425, y: -1.937430, theta: -0.544421
+[WARN] [1792552679.332106616] [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+[WARN] [1792552680.521003620] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[WARN] [1792552680.804932497] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[WARN] [1792552680.854423616] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[WARN] [1792552681.391661073] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[WARN] [1792552681.584215075] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[ERROR] [1792552682.142172459] [smoother_server]: Smoothed path leads to a collision at x: 5.210141, y: -1.935080, theta: -0.568026
+[WARN] [1792552682.145059751] [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+[WARN] [1792552683.166052122] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[WARN] [1792552683.186366531] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[WARN] [1792552683.333096896] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[WARN] [1792552683.341380292] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[WARN] [1792552683.779217207] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[WARN] [1792552684.189421254] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[ERROR] [1792552684.254827422] [smoother_server]: Smoothed path leads to a collision at x: 5.187568, y: -1.923878, theta: -0.515560
+[WARN] [1792552684.256210969] [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+[WARN] [1792552685.900762107] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[WARN] [1792552685.929759864] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[WARN] [1792552686.101251959] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[WARN] [1792552686.123706778] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[WARN] [1792552686.180472862] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[WARN] [1792552686.360629520] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[WARN] [1792552686.360736661] [bt_navigator]: [navigate_to_pose] [ActionServer] Aborting handle.
+[ERROR] [1792552686.361112965] [bt_navigator]: Goal failed
+== 마지막 컨트롤러 경고 종류 집계(주행 중)
+    193 [WARN]  [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+     95 [WARN]  [controller_server]: Control loop missed its desired rate of 10.0000Hz
+     22 [WARN]  [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+     21 [WARN]  [global_costmap.global_costmap]: [NvbloxCostmapLayer] Can't transform: map to odom. Error: Lookup woul
+      8 [WARN]  [bt_navigator_navigate_to_pose_rclcpp_node]: PathBlockedAhead: 앞 경로 (5.50, -2.20) 비용 99 가 
+      7 [WARN]  [controller_server]: [follow_path] [ActionServer] Aborting handle.
+      5 [WARN]  [rclcpp]: Failed to get parameters: FollowPathMPPI.PreferForwardCritic.cost_weight
+      5 [ERROR]  [controller_server]: Optimizer fail to compute path
+      2 [WARN]  [planner_server]: Planning algorithm GridBased failed to generate a valid path to (5.50, -2.20)
+      2 [WARN]  [planner_server]: GridBased: failed to create plan with tolerance 0.25.
+      2 [WARN]  [planner_server]: [compute_path_to_pose] [ActionServer] Aborting handle.
+      2 [WARN]  [bt_navigator_navigate_to_pose_rclcpp_node]: PathBlockedAhead: 앞 경로 (5.55, -2.20) 비용 99 가 
+== PathBlockedAhead · 계획 실패 · 컨트롤러 실패 시각순
+12:16:06 PathBlockedAhead: 앞 경로 (1.66, -0.10) 비용 99 — 2.0 s 지속되면 재계획
+12:16:06 PathBlockedAhead: 앞 경로 (1.51, -0.02) 비용 99 — 2.0 s 지속되면 재계획
+12:16:11 PathBlockedAhead: 앞 경로 (1.91, -0.21) 비용 99 — 2.0 s 지속되면 재계획
+12:16:25 Optimizer fail to compute path
+12:16:25 [follow_path] [ActionServer] Aborting handle.
+12:16:25 Optimizer fail to compute path
+12:16:25 [follow_path] [ActionServer] Aborting handle.
+12:16:27 Optimizer fail to compute path
+12:16:27 [follow_path] [ActionServer] Aborting handle.
+12:16:30 PathBlockedAhead: 앞 경로 (2.14, -0.51) 비용 99 — 2.0 s 지속되면 재계획
+12:16:56 PathBlockedAhead: 앞 경로 (2.64, -1.45) 비용 99 — 2.0 s 지속되면 재계획
+12:16:56 Optimizer fail to compute path
+12:16:56 [follow_path] [ActionServer] Aborting handle.
+12:16:57 PathBlockedAhead: 앞 경로 (2.56, -1.11) 비용 99 — 2.0 s 지속되면 재계획
+12:16:57 Optimizer fail to compute path
+12:16:57 [follow_path] [ActionServer] Aborting handle.
+12:17:07 [follow_path] [ActionServer] Aborting handle.
+12:17:07 [follow_path] [ActionServer] Aborting handle.
+12:17:38 PathBlockedAhead: 앞 경로 (4.76, -2.12) 비용 99 — 2.0 s 지속되면 재계획
+12:17:40 PathBlockedAhead: 앞 경로 (4.69, -2.06) 비용 99 가 2.0 s 지속 → 주행 중단·재계획
+12:17:44 PathBlockedAhead: 앞 경로 (5.44, -1.97) 비용 99 — 2.0 s 지속되면 재계획
+12:17:45 PathBlockedAhead: 앞 경로 (5.55, -2.20) 비용 99 — 2.0 s 지속되면 재계획
+12:17:47 PathBlockedAhead: 앞 경로 (5.55, -2.20) 비용 99 가 2.0 s 지속 → 주행 중단·재계획
+12:17:47 Planning algorithm GridBased failed to generate a valid path to (5.50, -2.20)
+12:17:47 PathBlockedAhead: 앞 경로 (5.55, -2.20) 비용 99 가 2.0 s 지속 → 주행 중단·재계획
+12:17:47 Planning algorithm GridBased failed to generate a valid path to (5.50, -2.20)
+12:17:49 PathBlockedAhead: 앞 경로 (5.55, -2.30) 비용 99 — 2.0 s 지속되면 재계획
+12:17:50 PathBlockedAhead: 앞 경로 (5.46, -1.96) 비용 99 — 2.0 s 지속되면 재계획
+12:17:52 PathBlockedAhead: 앞 경로 (5.08, -1.86) 비용 99 — 2.0 s 지속되면 재계획
+12:17:54 PathBlockedAhead: 앞 경로 (5.50, -2.20) 비용 99 가 2.0 s 지속 → 주행 중단·재계획
+12:17:54 PathBlockedAhead: 앞 경로 (5.50, -2.20) 비용 99 가 2.0 s 지속 → 주행 중단·재계획
+12:17:59 PathBlockedAhead: 앞 경로 (5.50, -2.20) 비용 99 — 2.0 s 지속되면 재계획
+12:18:01 PathBlockedAhead: 앞 경로 (5.50, -2.20) 비용 99 가 2.0 s 지속 → 주행 중단·재계획
+12:18:01 PathBlockedAhead: 앞 경로 (5.50, -2.20) 비용 99 가 2.0 s 지속 → 주행 중단·재계획
+12:18:02 PathBlockedAhead: 앞 경로 (5.50, -2.20) 비용 99 — 2.0 s 지속되면 재계획
+12:18:04 PathBlockedAhead: 앞 경로 (5.50, -2.20) 비용 99 가 2.0 s 지속 → 주행 중단·재계획
+12:18:04 PathBlockedAhead: 앞 경로 (5.50, -2.20) 비용 99 가 2.0 s 지속 → 주행 중단·재계획
+12:18:04 PathBlockedAhead: 앞 경로 (5.50, -2.20) 비용 99 — 2.0 s 지속되면 재계획
+12:18:06 PathBlockedAhead: 앞 경로 (5.50, -2.20) 비용 99 가 2.0 s 지속 → 주행 중단·재계획
+12:18:06 PathBlockedAhead: 앞 경로 (5.50, -2.20) 비용 99 가 2.0 s 지속 → 주행 중단·재계획
+12:18:06 Goal failed
+== f2sm1 때 nav2 로그(/tmp/logkeep/1021_121134_nav2.log) 비교
+  Control loop missed: f2sm1 68 · f2sm2 95
+  tick rate 100.00 was exceeded: f2sm1 312 · f2sm2 193
+  Optimizer fail: f2sm1 0 · f2sm2 5
+  PathBlockedAhead: f2sm1 4 · f2sm2 26
