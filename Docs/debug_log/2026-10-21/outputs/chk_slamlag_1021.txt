@@ -1,0 +1,8 @@
+12:13:59 map->odom 47 개/5 s, 최대 간격 0.06 s, 최대 stamp 지연 0.09 s OK 
+12:14:06 map->odom 83 개/5 s, 최대 간격 0.09 s, 최대 stamp 지연 0.29 s OK 
+12:14:13 map->odom 68 개/5 s, 최대 간격 0.06 s, 최대 stamp 지연 -0.32 s OK 
+정지 부하: %Cpu(s): 33.2 us, 13.4 sy,  0.0 ni, 48.9 id,  0.0 wa,  2.5 hi,  2.1 si,  0.0 st
+8
+[localization_slam_toolbox_node-1] [INFO] [1792552448.920683553] [slam_toolbox]: Message Filter dropping message: frame 'lidar_link' at time 1792552448.879 for 
+[localization_slam_toolbox_node-1] [INFO] [1792552454.047712213] [slam_toolbox]: Message Filter dropping message: frame 'lidar_link' at time 1792552454.007 for 
+[localization_slam_toolbox_node-1] [INFO] [1792552456.650928239] [slam_toolbox]: Message Filter dropping message: frame 'lidar_link' at time 1792552456.599 for 
