@@ -6,8 +6,11 @@
     필수: Nav2 수명 주기 active(controller·planner·bt_navigator·behavior·nav_map_server), map→base_link TF, /wheel_odom ≥ 20 Hz,
           /odometry/filtered ≥ 20 Hz, 전역 코스트맵에 저장 지도(크기 > 100×100).
     기록: 실행 중 파라미터(PreferForward·visualize·궤적 간격·전역 plugins·nvblox 프레임·obstacle 소스·stuck shadow), 배터리, /tf 주기.
-  인자: [WAIT=15] [한도=150]"""
-import sys, time, math
+  인자: [WAIT=15] [한도=150]
+  10-21: 출발 위치 추정 검사 — 준비 뒤 map→base 가 기대 자세(환경 PREP_POSE, 기본 '0,0,0' = 출발 테이프)에서 위치 ±0.10 m · yaw ±2° 밖이면 PREP_FAIL.
+    근거: 10-20 에 prep 직후 SLAM 이 출발 위치를 21° · −41° 틀린 적 2 회(정상일 땐 yaw 0.0~1.0°, 위치 3 cm 안 — 그날 prep 15 회).
+    출발 테이프가 아닌 곳에서 prep 하면 PREP_POSE=any(검사 끔) 또는 PREP_POSE='x,y,yaw°'."""
+import sys, time, math, os
 import rclpy
 from rclpy.node import Node
 from rclpy.qos import QoSProfile, DurabilityPolicy, ReliabilityPolicy, qos_profile_sensor_data
@@ -21,6 +24,9 @@ import tf2_ros
 
 WAIT = float(sys.argv[1]) if len(sys.argv) > 1 else 15.0
 LIMIT = float(sys.argv[2]) if len(sys.argv) > 2 else 150.0
+PP = os.environ.get('PREP_POSE', '0,0,0').strip()
+POSE = None if PP == 'any' else tuple(float(v) for v in PP.split(','))
+POS_TOL, YAW_TOL = 0.10, 2.0
 LC = ['controller_server', 'planner_server', 'bt_navigator', 'behavior_server', 'nav_map_server']
 PARAMS = {'/controller_server': ['FollowPathMPPI.PreferForwardCritic.cost_weight', 'FollowPathMPPI.vx_min', 'FollowPathMPPI.visualize',
                                  'FollowPathMPPI.TrajectoryVisualizer.trajectory_step', 'FollowPathMPPI.TrajectoryVisualizer.time_step'],
@@ -105,6 +111,14 @@ def main():
         te = time.time(); n.gcm = None
         while time.time() - te < WAIT: rclpy.spin_once(n, timeout_sec=0.1); n.poll()
     p = n.tfm()
+    if ok and POSE is not None:   # 10-21: 출발 위치 추정 검사
+        if p is None:
+            ok = False; print('  ★ 위치 추정 검사: map→base 없음', flush=True)
+        else:
+            dp = math.hypot(p[0] - POSE[0], p[1] - POSE[1]); dy = (p[2] - POSE[2] + 180) % 360 - 180
+            good = dp <= POS_TOL and abs(dy) <= YAW_TOL
+            print('  위치 추정 검사(기대 %s): 위치 차 %.3f m · yaw 차 %+.1f° → %s' % (PP, dp, dy, '통과' if good else '★ 불합격 — SLAM 이 출발 위치를 틀림, prep 다시'), flush=True)
+            ok = ok and good
     print('  준비까지 %.1f s | Nav2 %s' % (tready, ' '.join('%s=%s' % (k.replace('_server', ''), v) for k, v in n.state.items())))
     print('  /wheel_odom %.1f Hz · /odometry/filtered %.1f Hz · /tf %.1f Hz · 배터리 %s V' % (n.hz('wheel'), n.hz('ekf'), n.hz('tf'), ('%.2f' % n.batt) if n.batt else '?'))
     print('  map→base: %s' % (('(%.3f, %.3f) yaw %.1f°' % p) if p else '없음'))
