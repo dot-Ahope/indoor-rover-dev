@@ -380,3 +380,4 @@
   4. 멈칫 A(TF 외삽) · B(제어 주기 늦음) — CPU 75 % 배경, 미해결.
   5. 미뤄 둔 것: 사람 기억이 목표 칸을 막는 문제, prep 위치 추정 첫 불합격(오늘 1 회째는 로버 반대 방향이 원인으로 확인 — 10-21 건은 여전히 미확인), Jetson 시험 컨테이너 · 이미지 정리(사용자 결정), 깊이 해상도(decimation 2) 시험 여부.
 - 큰 파일: Jetson `~/bags/bag_f2dr1` · `bag_f2dr2` · `bag_f2lp1`(470 MB) · `replay_*` — GB 급 아님, 정리 보류.
+- 정리 페이지: https://claude.ai/artifact/27XvmLSpeLpwC6oZSzvGXB (로컬 사본 `figures/day_summary_1022.html`, 생성기 `jobs/fig_day_summary_1022.py` — 10-21 페이지 CSS 를 그대로 읽어 씀, 그림 `figures/f2pi1_return_210.png` = 영상 t 210.2 s 장면). 영상 `videos/f2pi1_return_box.mp4`(13.5 MB, 651 장, git 제외) — 렌더 실수: 시간 그래프 오른쪽 축을 매 장 새로 만들어 축이 쌓여 150 장 뒤 거의 멈춤 → 한 번만 만들게 고침(생성기 주석).
