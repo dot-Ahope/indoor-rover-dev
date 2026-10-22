@@ -1,0 +1,2 @@
+===== 16:11:46 재생 f2lp1_i14 (static_mapper.projective_integrator_max_integration_distance_m:=1.4)
+재생 nvblox 덮어쓰기: -p use_sim_time:=true -p static_mapper.projective_integrator_max_integration_distance_m:=1.4
