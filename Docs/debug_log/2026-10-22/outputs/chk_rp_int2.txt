@@ -1,0 +1,10 @@
+== i14
+[INFO] [1792653107.566985593] [nvblox_node]: static_mapper.projective_integrator_max_integration_distance_m: 1.4
+ros/depth_image_callback   	100    	0.061
+Duration:          313.911830749s
+Topic information: Topic: /nvblox_node/static_map_slice | Type: nvblox_msgs/msg/DistanceMapSlice | Count: 2989 | Serialization Format: cdr
+== i20
+[INFO] [1792653440.864337092] [nvblox_node]: static_mapper.projective_integrator_max_integration_distance_m: 2
+ros/depth_image_callback   	100    	0.061
+Duration:          313.921014990s
+Topic information: Topic: /nvblox_node/static_map_slice | Type: nvblox_msgs/msg/DistanceMapSlice | Count: 2941 | Serialization Format: cdr

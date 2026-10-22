@@ -11,6 +11,9 @@ from rosbags.typesys import Stores, get_typestore, get_types_from_msg
 TS = get_typestore(Stores.ROS2_HUMBLE)
 TS.register(get_types_from_msg('std_msgs/Header header\nfloat32 resolution\nuint32 width\nuint32 height\ngeometry_msgs/Point origin\nfloat32 unknown_value\nfloat32[] data\n', 'nvblox_msgs/msg/DistanceMapSlice'))
 ZONES = {'A 맨바닥': (1.45, 2.65, -0.35, 0.45, 10, 60), 'B 문': (2.00, 2.60, -0.85, -0.45, 10, 60), '북쪽': (1.10, 2.20, 0.45, 1.15, 0, 42)}
+import os
+if os.environ.get('RET_WIN'):   # 10-22 §14: 복귀 접근 창의 상자 영역(상자 ±0.05 m) — 'a,b' 초(접촉 전까지)
+    _a, _b = (float(v) for v in os.environ['RET_WIN'].split(',')); ZONES['상자 복귀'] = (1.10, 1.31, -0.25, 0.03, _a, _b)
 BOXR, BT0 = (1.15, 1.35, -0.20, 0.05), None
 yq = lambda q: math.atan2(2 * (q.w * q.z + q.x * q.y), 1 - 2 * (q.y * q.y + q.z * q.z))
 drive = sys.argv[1]; MO = []
