@@ -1,0 +1,351 @@
+[INFO] [launch]: All log files can be found below /home/jetson/.ros/log/2026-10-22-13-48-24-096523-jetson-desktop-683831
+[INFO] [launch]: Default logging verbosity is set to INFO
+[INFO] [stuck_monitor.py-1]: process started with pid [683894]
+[INFO] [nav_guard.py-2]: process started with pid [683896]
+[INFO] [controller_server-3]: process started with pid [683898]
+[INFO] [smoother_server-4]: process started with pid [683900]
+[INFO] [planner_server-5]: process started with pid [683902]
+[INFO] [behavior_server-6]: process started with pid [683904]
+[INFO] [bt_navigator-7]: process started with pid [683912]
+[INFO] [waypoint_follower-8]: process started with pid [683920]
+[INFO] [velocity_smoother-9]: process started with pid [683922]
+[INFO] [lifecycle_manager-10]: process started with pid [683924]
+[INFO] [map_server-11]: process started with pid [683934]
+[INFO] [lifecycle_manager-12]: process started with pid [683936]
+[INFO] [nvblox_up-13]: process started with pid [683945]
+[planner_server-5] [INFO] [1792644505.632257949] [planner_server]: 
+[planner_server-5] 	planner_server lifecycle node launched. 
+[planner_server-5] 	Waiting on external lifecycle transitions to activate
+[planner_server-5] 	See https://design.ros2.org/articles/node_lifecycle.html for more information.
+[planner_server-5] [INFO] [1792644505.681423832] [planner_server]: Creating
+[waypoint_follower-8] [INFO] [1792644506.279046886] [waypoint_follower]: 
+[waypoint_follower-8] 	waypoint_follower lifecycle node launched. 
+[waypoint_follower-8] 	Waiting on external lifecycle transitions to activate
+[waypoint_follower-8] 	See https://design.ros2.org/articles/node_lifecycle.html for more information.
+[waypoint_follower-8] [INFO] [1792644506.390610940] [waypoint_follower]: Creating
+[smoother_server-4] [INFO] [1792644506.446477690] [smoother_server]: 
+[smoother_server-4] 	smoother_server lifecycle node launched. 
+[smoother_server-4] 	Waiting on external lifecycle transitions to activate
+[smoother_server-4] 	See https://design.ros2.org/articles/node_lifecycle.html for more information.
+[smoother_server-4] [INFO] [1792644506.537454841] [smoother_server]: Creating smoother server
+[velocity_smoother-9] [INFO] [1792644506.628070188] [velocity_smoother]: 
+[velocity_smoother-9] 	velocity_smoother lifecycle node launched. 
+[velocity_smoother-9] 	Waiting on external lifecycle transitions to activate
+[velocity_smoother-9] 	See https://design.ros2.org/articles/node_lifecycle.html for more information.
+[lifecycle_manager-12] [INFO] [1792644506.858406188] [lifecycle_manager_navmap]: Creating
+[behavior_server-6] [INFO] [1792644506.923020113] [behavior_server]: 
+[behavior_server-6] 	behavior_server lifecycle node launched. 
+[behavior_server-6] 	Waiting on external lifecycle transitions to activate
+[behavior_server-6] 	See https://design.ros2.org/articles/node_lifecycle.html for more information.
+[bt_navigator-7] [INFO] [1792644506.978145014] [bt_navigator]: 
+[bt_navigator-7] 	bt_navigator lifecycle node launched. 
+[bt_navigator-7] 	Waiting on external lifecycle transitions to activate
+[bt_navigator-7] 	See https://design.ros2.org/articles/node_lifecycle.html for more information.
+[bt_navigator-7] [INFO] [1792644506.983911896] [bt_navigator]: Creating
+[lifecycle_manager-12] [INFO] [1792644507.048019788] [lifecycle_manager_navmap]: [34m[1mCreating and initializing lifecycle service clients[0m[0m
+[map_server-11] [INFO] [1792644507.110112700] [nav_map_server]: 
+[map_server-11] 	nav_map_server lifecycle node launched. 
+[map_server-11] 	Waiting on external lifecycle transitions to activate
+[map_server-11] 	See https://design.ros2.org/articles/node_lifecycle.html for more information.
+[map_server-11] [INFO] [1792644507.114306986] [nav_map_server]: Creating
+[lifecycle_manager-10] [INFO] [1792644507.120930090] [lifecycle_manager_navigation]: Creating
+[controller_server-3] [INFO] [1792644507.275827318] [controller_server]: 
+[controller_server-3] 	controller_server lifecycle node launched. 
+[controller_server-3] 	Waiting on external lifecycle transitions to activate
+[controller_server-3] 	See https://design.ros2.org/articles/node_lifecycle.html for more information.
+[lifecycle_manager-10] [INFO] [1792644507.317544023] [lifecycle_manager_navigation]: [34m[1mCreating and initializing lifecycle service clients[0m[0m
+[controller_server-3] [INFO] [1792644507.607164615] [controller_server]: Creating controller server
+[lifecycle_manager-12] [INFO] [1792644507.952150309] [lifecycle_manager_navmap]: [34m[1mStarting managed nodes bringup...[0m[0m
+[lifecycle_manager-12] [INFO] [1792644507.952292074] [lifecycle_manager_navmap]: [34m[1mConfiguring nav_map_server[0m[0m
+[map_server-11] [INFO] [1792644507.954199402] [nav_map_server]: Configuring
+[map_server-11] [INFO] [1792644507.954377872] [map_io]: Loading yaml file: /home/jetson/maps/office/office_v3.yaml
+[map_server-11] [INFO] [1792644507.954902146] [map_io]: resolution: 0.05
+[map_server-11] [INFO] [1792644507.954927939] [map_io]: origin[0]: -5.29
+[map_server-11] [INFO] [1792644507.954937027] [map_io]: origin[1]: -6.96
+[map_server-11] [INFO] [1792644507.954944515] [map_io]: origin[2]: 0
+[map_server-11] [INFO] [1792644507.954952388] [map_io]: free_thresh: 0.25
+[map_server-11] [INFO] [1792644507.954959876] [map_io]: occupied_thresh: 0.65
+[map_server-11] [INFO] [1792644507.954968676] [map_io]: mode: trinary
+[map_server-11] [INFO] [1792644507.954979653] [map_io]: negate: 0
+[map_server-11] [INFO] [1792644507.955370066] [map_io]: Loading image_file: /home/jetson/maps/office/office_v3.pgm
+[map_server-11] [INFO] [1792644508.237152634] [map_io]: Read map /home/jetson/maps/office/office_v3.pgm: 333 X 242 map @ 0.05 m/cell
+[lifecycle_manager-12] [INFO] [1792644508.622646703] [lifecycle_manager_navmap]: [34m[1mActivating nav_map_server[0m[0m
+[map_server-11] [INFO] [1792644508.625655541] [nav_map_server]: Activating
+[map_server-11] [INFO] [1792644508.627494291] [nav_map_server]: Creating bond (nav_map_server) to lifecycle manager.
+[controller_server-3] [INFO] [1792644508.994030024] [local_costmap.local_costmap]: 
+[controller_server-3] 	local_costmap lifecycle node launched. 
+[controller_server-3] 	Waiting on external lifecycle transitions to activate
+[controller_server-3] 	See https://design.ros2.org/articles/node_lifecycle.html for more information.
+[controller_server-3] [INFO] [1792644508.995657183] [local_costmap.local_costmap]: Creating Costmap
+[planner_server-5] [INFO] [1792644509.038776015] [global_costmap.global_costmap]: 
+[planner_server-5] 	global_costmap lifecycle node launched. 
+[planner_server-5] 	Waiting on external lifecycle transitions to activate
+[planner_server-5] 	See https://design.ros2.org/articles/node_lifecycle.html for more information.
+[planner_server-5] [INFO] [1792644509.041096541] [global_costmap.global_costmap]: Creating Costmap
+[controller_server-3] [WARN] [1792644509.191369326] [rclcpp]: Failed to get parameters: FollowPathMPPI.PreferForwardCritic.cost_weight
+[controller_server-3] [WARN] [1792644509.334356873] [rclcpp]: Failed to get parameters: FollowPathMPPI.PreferForwardCritic.cost_weight
+[controller_server-3] [WARN] [1792644509.497236995] [rclcpp]: Failed to get parameters: FollowPathMPPI.PreferForwardCritic.cost_weight
+[lifecycle_manager-12] [INFO] [1792644509.745734888] [lifecycle_manager_navmap]: Server nav_map_server connected with bond.
+[lifecycle_manager-12] [INFO] [1792644509.745877708] [lifecycle_manager_navmap]: [34m[1mManaged nodes are active[0m[0m
+[lifecycle_manager-12] [INFO] [1792644509.745910382] [lifecycle_manager_navmap]: [34m[1mCreating bond timer...[0m[0m
+[controller_server-3] [WARN] [1792644509.777663037] [rclcpp]: Failed to get parameters: FollowPathMPPI.PreferForwardCritic.cost_weight
+[lifecycle_manager-10] [INFO] [1792644509.824757491] [lifecycle_manager_navigation]: [34m[1mStarting managed nodes bringup...[0m[0m
+[lifecycle_manager-10] [INFO] [1792644509.826001341] [lifecycle_manager_navigation]: [34m[1mConfiguring controller_server[0m[0m
+[map_server-11] [WARN] [1792644509.847151559] [nav_map_server.rclcpp]: failed to send response to /nav_map_server/get_state (timeout): client will not receive response, at ./src/rmw_response.cpp:154, at ./src/rcl/service.c:314
+[controller_server-3] [INFO] [1792644509.892841166] [controller_server]: Configuring controller interface
+[controller_server-3] [INFO] [1792644509.893729804] [controller_server]: getting goal checker plugins..
+[controller_server-3] [INFO] [1792644509.893799854] [controller_server]: Controller frequency set to 10.0000Hz
+[controller_server-3] [INFO] [1792644509.893867536] [local_costmap.local_costmap]: Configuring
+[controller_server-3] [INFO] [1792644510.323807490] [local_costmap.local_costmap]: Using plugin "nvblox_layer"
+[controller_server-3] [INFO] [1792644510.522491861] [local_costmap.local_costmap]: Name: nvblox_layer Topic name: /nvblox_node/static_map_slice Convert to binary costmap: 1 Max obstacle distance: 0.4
+[controller_server-3] [INFO] [1792644510.656844620] [local_costmap.local_costmap]: Initialized plugin "nvblox_layer"
+[controller_server-3] [INFO] [1792644510.656933039] [local_costmap.local_costmap]: Using plugin "obstacle_layer"
+[controller_server-3] [INFO] [1792644510.744594207] [local_costmap.local_costmap]: Subscribed to Topics: scan
+[controller_server-3] [INFO] [1792644511.112963410] [local_costmap.local_costmap]: Initialized plugin "obstacle_layer"
+[controller_server-3] [INFO] [1792644511.113093430] [local_costmap.local_costmap]: Using plugin "inflation_layer"
+[controller_server-3] [INFO] [1792644511.116210976] [local_costmap.local_costmap]: Initialized plugin "inflation_layer"
+[nvblox_up-13] [nvblox_up] nvblox_node pid 684151 (yaml nvblox_local.yaml, 로그 /tmp/nvblox_node.log, 부모 launch pid 683831) — 이후 래퍼 출력은 /tmp/nvblox_node_up.log
+[controller_server-3] [INFO] [1792644512.114255707] [controller_server]: Created progress_checker : progress_checker of type nav2_controller::PoseProgressChecker
+[controller_server-3] [INFO] [1792644512.139407820] [controller_server]: Created goal checker : general_goal_checker of type nav2_controller::SimpleGoalChecker
+[controller_server-3] [INFO] [1792644512.146494300] [controller_server]: Controller Server has general_goal_checker  goal checkers available.
+[controller_server-3] [INFO] [1792644512.148694150] [controller_server]: Created controller : FollowPath of type nav2_regulated_pure_pursuit_controller::RegulatedPurePursuitController
+[controller_server-3] [WARN] [1792644512.230670357] [controller_server]: Disabling reversing. Both use_rotate_to_heading and allow_reversing parameter cannot be set to true. By default setting use_rotate_to_heading true
+[controller_server-3] [INFO] [1792644512.298947734] [controller_server]: Created controller : FollowPathMPPI of type nav2_mppi_controller::MPPIController
+[controller_server-3] [INFO] [1792644512.502283590] [controller_server]: Controller period is equal to model dt. Control sequence shifting is ON
+[controller_server-3] [INFO] [1792644512.524374928] [controller_server]: ConstraintCritic instantiated with 1 power and 4.000000 weight.
+[controller_server-3] [INFO] [1792644512.524508692] [controller_server]: Critic loaded : mppi::critics::ConstraintCritic
+[controller_server-3] [INFO] [1792644512.534093336] [controller_server]: InflationCostCritic instantiated with 1 power and 300.000000 / 0.015000 weights. Critic will collision check based on footprint cost.
+[controller_server-3] [INFO] [1792644512.534218396] [controller_server]: Critic loaded : mppi::critics::CostCritic
+[controller_server-3] [INFO] [1792644512.538644530] [controller_server]: GoalCritic instantiated with 1 power and 10.000000 weight.
+[controller_server-3] [INFO] [1792644512.538753237] [controller_server]: Critic loaded : mppi::critics::GoalCritic
+[controller_server-3] [INFO] [1792644512.542703931] [controller_server]: GoalAngleCritic instantiated with 1 power, 3.000000 weight, and 0.400000 angular threshold.
+[controller_server-3] [INFO] [1792644512.542807166] [controller_server]: Critic loaded : mppi::critics::GoalAngleCritic
+[controller_server-3] [INFO] [1792644512.557149858] [controller_server]: ReferenceTrajectoryCritic instantiated with 1 power and 14.000000 weight
+[controller_server-3] [INFO] [1792644512.557264806] [controller_server]: Critic loaded : mppi::critics::PathAlignCritic
+[controller_server-3] [INFO] [1792644512.569485891] [controller_server]: Critic loaded : mppi::critics::PathFollowCritic
+[controller_server-3] [INFO] [1792644512.589075352] [controller_server]: PathAngleCritic instantiated with 1 power and 2.000000 weight. Reversing allowed.
+[controller_server-3] [INFO] [1792644512.589187900] [controller_server]: Critic loaded : mppi::critics::PathAngleCritic
+[controller_server-3] [INFO] [1792644512.706367600] [controller_server]: PreferForwardCritic instantiated with 1 power and 15.000000 weight.
+[controller_server-3] [INFO] [1792644512.706492276] [controller_server]: Critic loaded : mppi::critics::PreferForwardCritic
+[stuck_monitor.py-1] [INFO] [1792644512.717061593] [stuck_monitor]: stuck_monitor 시작 (window 2.0s, ratio 0.25, SHADOW(로그만))
+[controller_server-3] [INFO] [1792644512.862109977] [controller_server]: ClearanceBandCritic: 띠 0.060 m · 가중 20.0 · 점 간격 2
+[controller_server-3] [INFO] [1792644512.862246910] [controller_server]: Critic loaded : mppi::critics::ClearanceBandCritic
+[controller_server-3] [INFO] [1792644512.887324652] [controller_server]: Optimizer reset
+[controller_server-3] [INFO] [1792644513.030187395] [MPPIController]: Configured MPPI Controller: FollowPathMPPI
+[controller_server-3] [INFO] [1792644513.030296199] [controller_server]: Controller Server has FollowPath FollowPathMPPI  controllers available.
+[lifecycle_manager-10] [INFO] [1792644513.232760826] [lifecycle_manager_navigation]: [34m[1mConfiguring smoother_server[0m[0m
+[smoother_server-4] [INFO] [1792644513.233834142] [smoother_server]: Configuring smoother server
+[smoother_server-4] [INFO] [1792644513.779366158] [smoother_server]: Created smoother : simple_smoother of type nav2_smoother::SimpleSmoother
+[smoother_server-4] [INFO] [1792644513.799467060] [smoother_server]: Smoother Server has simple_smoother  smoothers available.
+[lifecycle_manager-10] [INFO] [1792644514.136294527] [lifecycle_manager_navigation]: [34m[1mConfiguring planner_server[0m[0m
+[planner_server-5] [INFO] [1792644514.141695477] [planner_server]: Configuring
+[planner_server-5] [INFO] [1792644514.141840698] [global_costmap.global_costmap]: Configuring
+[planner_server-5] [INFO] [1792644514.715944687] [global_costmap.global_costmap]: Using plugin "static_layer"
+[planner_server-5] [INFO] [1792644514.995461387] [global_costmap.global_costmap]: Subscribing to the map topic (/map_nav) with transient local durability
+[planner_server-5] [INFO] [1792644515.064559368] [global_costmap.global_costmap]: Initialized plugin "static_layer"
+[planner_server-5] [INFO] [1792644515.064689804] [global_costmap.global_costmap]: Using plugin "nvblox_layer"
+[planner_server-5] [INFO] [1792644515.325294250] [global_costmap.global_costmap]: Name: nvblox_layer Topic name: /nvblox_node/static_map_slice Convert to binary costmap: 1 Max obstacle distance: 0.4
+[nav_guard.py-2] [INFO] [1792644515.533896812] [nav_guard]: nav_guard 시작 (시간 = d0/0.07×2.0+30 s, 무진행 0.25 m/45 s)
+[planner_server-5] [INFO] [1792644515.557833748] [global_costmap.global_costmap]: Initialized plugin "nvblox_layer"
+[planner_server-5] [INFO] [1792644515.557997785] [global_costmap.global_costmap]: Using plugin "obstacle_layer"
+[planner_server-5] [INFO] [1792644515.580344268] [global_costmap.global_costmap]: Subscribed to Topics: scan
+[planner_server-5] [INFO] [1792644515.642862506] [global_costmap.global_costmap]: Initialized plugin "obstacle_layer"
+[planner_server-5] [INFO] [1792644515.648799987] [global_costmap.global_costmap]: Using plugin "inflation_layer"
+[planner_server-5] [INFO] [1792644515.661255703] [global_costmap.global_costmap]: Initialized plugin "inflation_layer"
+[planner_server-5] [INFO] [1792644515.799232905] [global_costmap.global_costmap]: StaticLayer: Resizing costmap to 333 X 242 at 0.050000 m/pix
+[planner_server-5] [INFO] [1792644515.801673115] [planner_server]: Created global planner plugin GridBased of type nav2_navfn_planner/NavfnPlanner
+[planner_server-5] [INFO] [1792644515.801785375] [planner_server]: Configuring plugin GridBased of type NavfnPlanner
+[planner_server-5] [WARN] [1792644515.803120748] [global_costmap.global_costmap]: [NvbloxCostmapLayer] Can't transform: map to odom. Error: "map" passed to lookupTransform argument target_frame does not exist. 
+[planner_server-5] [INFO] [1792644515.834872348] [planner_server]: Created global planner plugin SmacHybrid of type nav2_smac_planner/SmacPlannerHybrid
+[planner_server-5] [INFO] [1792644515.836419952] [planner_server]: Configuring SmacHybrid of type SmacPlannerHybrid
+[planner_server-5] [INFO] [1792644515.870514959] [planner_server]: Even sized heuristic lookup table size set 400.000000, increasing size by 1 to make odd
+[planner_server-5] [WARN] [1792644516.881257112] [global_costmap.global_costmap]: [NvbloxCostmapLayer] Can't transform: map to odom. Error: Lookup would require extrapolation at time 1792644516.777090, but only time 1792644515.949003 is in the buffer, when looking up transform from frame [odom] to frame [map]
+[planner_server-5] [INFO] [1792644519.316014827] [planner_server]: Configured plugin SmacHybrid of type SmacPlannerHybrid with maximum iterations 1000000, max on approach iterations 1000, and allowing unknown traversal. Tolerance 0.25.Using motion model: Dubin.
+[planner_server-5] [INFO] [1792644519.316164624] [planner_server]: Planner Server has GridBased SmacHybrid  planners available.
+[lifecycle_manager-10] [INFO] [1792644519.455192293] [lifecycle_manager_navigation]: [34m[1mConfiguring behavior_server[0m[0m
+[behavior_server-6] [INFO] [1792644519.455820666] [behavior_server]: Configuring
+[behavior_server-6] [INFO] [1792644519.520346429] [behavior_server]: Creating behavior plugin spin of type nav2_behaviors/Spin
+[behavior_server-6] [INFO] [1792644519.522376161] [behavior_server]: Configuring spin
+[behavior_server-6] [INFO] [1792644519.593282491] [behavior_server]: Creating behavior plugin backup of type nav2_behaviors/BackUp
+[behavior_server-6] [INFO] [1792644519.596849459] [behavior_server]: Configuring backup
+[behavior_server-6] [INFO] [1792644519.679909223] [behavior_server]: Creating behavior plugin drive_on_heading of type nav2_behaviors/DriveOnHeading
+[behavior_server-6] [INFO] [1792644519.685053685] [behavior_server]: Configuring drive_on_heading
+[behavior_server-6] [INFO] [1792644519.758487844] [behavior_server]: Creating behavior plugin wait of type nav2_behaviors/Wait
+[behavior_server-6] [INFO] [1792644519.764106146] [behavior_server]: Configuring wait
+[behavior_server-6] [INFO] [1792644519.824466711] [behavior_server]: Creating behavior plugin monotone_escape of type rover_navigation/MonotoneEscape
+[behavior_server-6] [INFO] [1792644519.833316834] [behavior_server]: Configuring monotone_escape
+[lifecycle_manager-10] [INFO] [1792644519.957102069] [lifecycle_manager_navigation]: [34m[1mConfiguring bt_navigator[0m[0m
+[bt_navigator-7] [INFO] [1792644519.958339775] [bt_navigator]: Configuring
+[lifecycle_manager-10] [INFO] [1792644520.476611287] [lifecycle_manager_navigation]: [34m[1mConfiguring waypoint_follower[0m[0m
+[waypoint_follower-8] [INFO] [1792644520.479117836] [waypoint_follower]: Configuring
+[waypoint_follower-8] [INFO] [1792644520.726886392] [waypoint_follower]: Created waypoint_task_executor : wait_at_waypoint of type nav2_waypoint_follower::WaitAtWaypoint
+[lifecycle_manager-10] [INFO] [1792644520.737889228] [lifecycle_manager_navigation]: [34m[1mConfiguring velocity_smoother[0m[0m
+[velocity_smoother-9] [INFO] [1792644520.739248185] [velocity_smoother]: Configuring velocity smoother
+[lifecycle_manager-10] [INFO] [1792644520.809307895] [lifecycle_manager_navigation]: [34m[1mActivating controller_server[0m[0m
+[controller_server-3] [INFO] [1792644520.812686921] [controller_server]: Activating
+[controller_server-3] [INFO] [1792644520.812823821] [local_costmap.local_costmap]: Activating
+[controller_server-3] [INFO] [1792644520.812857998] [local_costmap.local_costmap]: Checking transform
+[controller_server-3] [INFO] [1792644520.813100311] [local_costmap.local_costmap]: start
+[controller_server-3] [WARN] [1792644521.024736191] [controller_server]: Parameter controller_server.verbose not found
+[controller_server-3] [INFO] [1792644521.026842342] [controller_server]: Optimizer reset
+[controller_server-3] [INFO] [1792644521.027635841] [MPPIController]: Activated MPPI Controller: FollowPathMPPI
+[controller_server-3] [INFO] [1792644521.027671650] [controller_server]: Activating controller: FollowPath of type regulated_pure_pursuit_controller::RegulatedPurePursuitController
+[controller_server-3] [INFO] [1792644521.027751909] [controller_server]: Creating bond (controller_server) to lifecycle manager.
+[lifecycle_manager-10] [INFO] [1792644521.178762127] [lifecycle_manager_navigation]: Server controller_server connected with bond.
+[lifecycle_manager-10] [INFO] [1792644521.178913012] [lifecycle_manager_navigation]: [34m[1mActivating smoother_server[0m[0m
+[smoother_server-4] [INFO] [1792644521.179762801] [smoother_server]: Activating
+[smoother_server-4] [INFO] [1792644521.179859284] [smoother_server]: Creating bond (smoother_server) to lifecycle manager.
+[lifecycle_manager-10] [INFO] [1792644521.306565674] [lifecycle_manager_navigation]: Server smoother_server connected with bond.
+[lifecycle_manager-10] [INFO] [1792644521.306698414] [lifecycle_manager_navigation]: [34m[1mActivating planner_server[0m[0m
+[planner_server-5] [INFO] [1792644521.309117280] [planner_server]: Activating
+[planner_server-5] [INFO] [1792644521.309264389] [global_costmap.global_costmap]: Activating
+[planner_server-5] [INFO] [1792644521.309298726] [global_costmap.global_costmap]: Checking transform
+[planner_server-5] [INFO] [1792644521.309722260] [global_costmap.global_costmap]: start
+[planner_server-5] [INFO] [1792644522.322561093] [planner_server]: Activating plugin SmacHybrid of type SmacPlannerHybrid
+[planner_server-5] [INFO] [1792644522.322699434] [planner_server]: Activating plugin GridBased of type NavfnPlanner
+[planner_server-5] [INFO] [1792644522.338235766] [planner_server]: Creating bond (planner_server) to lifecycle manager.
+[lifecycle_manager-10] [INFO] [1792644522.472118142] [lifecycle_manager_navigation]: Server planner_server connected with bond.
+[lifecycle_manager-10] [INFO] [1792644522.472255746] [lifecycle_manager_navigation]: [34m[1mActivating behavior_server[0m[0m
+[behavior_server-6] [INFO] [1792644522.474087040] [behavior_server]: Activating
+[behavior_server-6] [INFO] [1792644522.474182916] [behavior_server]: Activating spin
+[behavior_server-6] [INFO] [1792644522.474216549] [behavior_server]: Activating backup
+[behavior_server-6] [INFO] [1792644522.474238565] [behavior_server]: Activating drive_on_heading
+[behavior_server-6] [INFO] [1792644522.474260454] [behavior_server]: Activating wait
+[behavior_server-6] [INFO] [1792644522.474288327] [behavior_server]: Activating monotone_escape
+[behavior_server-6] [INFO] [1792644522.474379946] [behavior_server]: Creating bond (behavior_server) to lifecycle manager.
+[lifecycle_manager-10] [INFO] [1792644522.585170246] [lifecycle_manager_navigation]: Server behavior_server connected with bond.
+[lifecycle_manager-10] [INFO] [1792644522.585282570] [lifecycle_manager_navigation]: [34m[1mActivating bt_navigator[0m[0m
+[bt_navigator-7] [INFO] [1792644522.586378799] [bt_navigator]: Activating
+[bt_navigator-7] [INFO] [1792644523.196596264] [bt_navigator]: Creating bond (bt_navigator) to lifecycle manager.
+[controller_server-3] [INFO] [1792644523.264441722] [local_costmap.local_costmap]: Received request to clear entirely the local_costmap
+[planner_server-5] [INFO] [1792644523.279368594] [global_costmap.global_costmap]: Received request to clear entirely the global_costmap
+[lifecycle_manager-10] [INFO] [1792644523.325414565] [lifecycle_manager_navigation]: Server bt_navigator connected with bond.
+[lifecycle_manager-10] [INFO] [1792644523.325575466] [lifecycle_manager_navigation]: [34m[1mActivating waypoint_follower[0m[0m
+[waypoint_follower-8] [INFO] [1792644523.326728497] [waypoint_follower]: Activating
+[waypoint_follower-8] [INFO] [1792644523.326839637] [waypoint_follower]: Creating bond (waypoint_follower) to lifecycle manager.
+[lifecycle_manager-10] [INFO] [1792644523.443215534] [lifecycle_manager_navigation]: Server waypoint_follower connected with bond.
+[lifecycle_manager-10] [INFO] [1792644523.443331985] [lifecycle_manager_navigation]: [34m[1mActivating velocity_smoother[0m[0m
+[velocity_smoother-9] [INFO] [1792644523.445557501] [velocity_smoother]: Activating
+[velocity_smoother-9] [INFO] [1792644523.445728034] [velocity_smoother]: Creating bond (velocity_smoother) to lifecycle manager.
+[lifecycle_manager-10] [INFO] [1792644523.583048958] [lifecycle_manager_navigation]: Server velocity_smoother connected with bond.
+[lifecycle_manager-10] [INFO] [1792644523.583162434] [lifecycle_manager_navigation]: [34m[1mManaged nodes are active[0m[0m
+[lifecycle_manager-10] [INFO] [1792644523.583196867] [lifecycle_manager_navigation]: [34m[1mCreating bond timer...[0m[0m
+[INFO] [navmap_ensure-14]: process started with pid [685331]
+[planner_server-5] [INFO] [1792644527.153991209] [global_costmap.global_costmap]: Message Filter dropping message: frame 'lidar_link' at time 1792644526.850 for reason 'the timestamp on the message is earlier than all the data in the transform cache'
+[navmap_ensure-14] [navmap_ensure] active (1)
+[INFO] [navmap_ensure-14]: process has finished cleanly [pid 685331]
+[bt_navigator-7] [INFO] [1792644635.346157405] [bt_navigator]: Begin navigating from current location (-0.01, 0.00) to (2.25, -1.60)
+[smoother_server-4] [INFO] [1792644635.368195781] [smoother_server]: Received a path to smooth.
+[nav_guard.py-2] [INFO] [1792644635.391101547] [nav_guard]: 목표 94ff84da: 남은 거리 3.82 m → 시간 한도 139 s (시작 뒤 0.0 s)
+[controller_server-3] [INFO] [1792644635.388943042] [controller_server]: Received a goal, begin computing control effort.
+[controller_server-3] [WARN] [1792644635.391437430] [controller_server]: No goal checker was specified in parameter 'current_goal_checker'. Server will use only plugin loaded general_goal_checker . This warning will appear once.
+[controller_server-3] [INFO] [1792644635.393769957] [controller_server]: Optimizer reset
+[bt_navigator-7] [WARN] [1792644636.558069057] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792644637.067546232] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[smoother_server-4] [INFO] [1792644637.427497430] [smoother_server]: Received a path to smooth.
+[bt_navigator-7] [WARN] [1792644637.456402630] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[controller_server-3] [INFO] [1792644637.491696814] [controller_server]: Passing new path to controller.
+[bt_navigator-7] [WARN] [1792644638.529370934] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792644638.551330523] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792644638.557312357] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792644638.593729715] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792644638.598603256] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792644639.128534723] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792644639.397216245] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792644639.466844389] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[smoother_server-4] [INFO] [1792644639.477991838] [smoother_server]: Received a path to smooth.
+[controller_server-3] [INFO] [1792644639.591700414] [controller_server]: Passing new path to controller.
+[smoother_server-4] [INFO] [1792644641.537800224] [smoother_server]: Received a path to smooth.
+[controller_server-3] [INFO] [1792644641.591687452] [controller_server]: Passing new path to controller.
+[bt_navigator-7] [INFO] [1792644642.317563393] [bt_navigator_navigate_to_pose_rclcpp_node]: PathBlockedAhead: 앞 경로 (1.85, 0.22) 비용 99 — 2.0 s 지속되면 재계획
+[smoother_server-4] [INFO] [1792644643.598558948] [smoother_server]: Received a path to smooth.
+[smoother_server-4] [ERROR] [1792644643.600330720] [smoother_server]: Smoothed path leads to a collision at x: 1.815616, y: -0.114082, theta: -0.701300
+[smoother_server-4] [WARN] [1792644643.600502725] [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+[bt_navigator-7] [WARN] [1792644643.626239211] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792644643.627315791] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792644643.680748124] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[controller_server-3] [INFO] [1792644643.691693677] [controller_server]: Passing new path to controller.
+[bt_navigator-7] [WARN] [1792644643.816469828] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792644644.694330838] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792644644.709418388] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792644644.716549317] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792644644.740105056] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792644644.747421527] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[planner_server-5] [WARN] [1792644645.627914851] [planner_server]: GridBased: failed to create plan with tolerance 0.25.
+[planner_server-5] [WARN] [1792644645.628102281] [planner_server]: Planning algorithm GridBased failed to generate a valid path to (2.25, -1.60)
+[planner_server-5] [WARN] [1792644645.628143467] [planner_server]: [compute_path_to_pose] [ActionServer] Aborting handle.
+[planner_server-5] [INFO] [1792644645.648682336] [global_costmap.global_costmap]: Received request to clear except a region the global_costmap
+[bt_navigator-7] [WARN] [1792644645.866376825] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792644646.316416666] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[planner_server-5] [WARN] [1792644646.324080541] [planner_server]: GridBased: failed to create plan with tolerance 0.25.
+[planner_server-5] [WARN] [1792644646.324288388] [planner_server]: Planning algorithm GridBased failed to generate a valid path to (2.25, -1.60)
+[planner_server-5] [WARN] [1792644646.324328901] [planner_server]: [compute_path_to_pose] [ActionServer] Aborting handle.
+[controller_server-3] [INFO] [1792644646.392730091] [controller_server]: Goal was canceled. Stopping the robot.
+[controller_server-3] [INFO] [1792644646.392883825] [controller_server]: [follow_path] [ActionServer] Client requested to cancel the goal. Cancelling.
+[controller_server-3] [INFO] [1792644646.393751342] [local_costmap.local_costmap]: Received request to clear except a region the local_costmap
+[planner_server-5] [INFO] [1792644646.394864019] [global_costmap.global_costmap]: Received request to clear except a region the global_costmap
+[bt_navigator-7] [WARN] [1792644646.398345577] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[planner_server-5] [WARN] [1792644647.321246733] [planner_server]: GridBased: failed to create plan with tolerance 0.25.
+[planner_server-5] [WARN] [1792644647.321397714] [planner_server]: Planning algorithm GridBased failed to generate a valid path to (2.25, -1.60)
+[planner_server-5] [WARN] [1792644647.321438195] [planner_server]: [compute_path_to_pose] [ActionServer] Aborting handle.
+[planner_server-5] [INFO] [1792644647.338997605] [global_costmap.global_costmap]: Received request to clear except a region the global_costmap
+[bt_navigator-7] [WARN] [1792644647.350350308] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[planner_server-5] [WARN] [1792644648.321222620] [planner_server]: GridBased: failed to create plan with tolerance 0.25.
+[planner_server-5] [WARN] [1792644648.321373954] [planner_server]: Planning algorithm GridBased failed to generate a valid path to (2.25, -1.60)
+[planner_server-5] [WARN] [1792644648.321413475] [planner_server]: [compute_path_to_pose] [ActionServer] Aborting handle.
+[behavior_server-6] [INFO] [1792644648.347994309] [behavior_server]: Running monotone_escape
+[behavior_server-6] [INFO] [1792644648.351490267] [behavior_server]: [monotone_escape] 시작 최근접 22.4 cm · 목표 5.0 cm · 모의 결과(닿는 양 m/rad): 앞:없음(끝 22.4 cm) 뒤:0.010 좌회전:0.018 우회전:없음(끝 22.4 cm)
+[behavior_server-6] [INFO] [1792644648.354582147] [behavior_server]: [monotone_escape] 성공: 최근접 22.4 cm
+[behavior_server-6] [INFO] [1792644648.354763273] [behavior_server]: monotone_escape completed successfully
+[planner_server-5] [WARN] [1792644648.372402333] [planner_server]: GridBased: failed to create plan with tolerance 0.25.
+[planner_server-5] [WARN] [1792644648.374075478] [planner_server]: Planning algorithm GridBased failed to generate a valid path to (2.25, -1.60)
+[planner_server-5] [WARN] [1792644648.375189051] [planner_server]: [compute_path_to_pose] [ActionServer] Aborting handle.
+[planner_server-5] [INFO] [1792644648.398955390] [global_costmap.global_costmap]: Received request to clear except a region the global_costmap
+[planner_server-5] [WARN] [1792644649.326850923] [planner_server]: GridBased: failed to create plan with tolerance 0.25.
+[planner_server-5] [WARN] [1792644649.328888176] [planner_server]: Planning algorithm GridBased failed to generate a valid path to (2.25, -1.60)
+[planner_server-5] [WARN] [1792644649.328940465] [planner_server]: [compute_path_to_pose] [ActionServer] Aborting handle.
+[behavior_server-6] [INFO] [1792644649.349589355] [behavior_server]: Running wait
+[behavior_server-6] [INFO] [1792644654.350049902] [behavior_server]: wait completed successfully
+[planner_server-5] [WARN] [1792644654.379244424] [planner_server]: GridBased: failed to create plan with tolerance 0.25.
+[planner_server-5] [WARN] [1792644654.381372880] [planner_server]: Planning algorithm GridBased failed to generate a valid path to (2.25, -1.60)
+[planner_server-5] [WARN] [1792644654.382390674] [planner_server]: [compute_path_to_pose] [ActionServer] Aborting handle.
+[planner_server-5] [INFO] [1792644654.399643513] [global_costmap.global_costmap]: Received request to clear except a region the global_costmap
+[planner_server-5] [WARN] [1792644655.321931849] [planner_server]: GridBased: failed to create plan with tolerance 0.25.
+[planner_server-5] [WARN] [1792644655.322185042] [planner_server]: Planning algorithm GridBased failed to generate a valid path to (2.25, -1.60)
+[planner_server-5] [WARN] [1792644655.322243412] [planner_server]: [compute_path_to_pose] [ActionServer] Aborting handle.
+[controller_server-3] [INFO] [1792644655.339017226] [local_costmap.local_costmap]: Received request to clear except a region the local_costmap
+[planner_server-5] [INFO] [1792644655.340258932] [global_costmap.global_costmap]: Received request to clear except a region the global_costmap
+[planner_server-5] [WARN] [1792644656.324437199] [planner_server]: GridBased: failed to create plan with tolerance 0.25.
+[planner_server-5] [WARN] [1792644656.324596501] [planner_server]: Planning algorithm GridBased failed to generate a valid path to (2.25, -1.60)
+[planner_server-5] [WARN] [1792644656.324642166] [planner_server]: [compute_path_to_pose] [ActionServer] Aborting handle.
+[planner_server-5] [INFO] [1792644656.340218884] [global_costmap.global_costmap]: Received request to clear except a region the global_costmap
+[bt_navigator-7] [WARN] [1792644656.350037168] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[planner_server-5] [WARN] [1792644657.324890992] [planner_server]: GridBased: failed to create plan with tolerance 0.25.
+[planner_server-5] [WARN] [1792644657.325047701] [planner_server]: Planning algorithm GridBased failed to generate a valid path to (2.25, -1.60)
+[planner_server-5] [WARN] [1792644657.325086774] [planner_server]: [compute_path_to_pose] [ActionServer] Aborting handle.
+[behavior_server-6] [INFO] [1792644657.341634981] [behavior_server]: Running monotone_escape
+[behavior_server-6] [INFO] [1792644657.342377214] [behavior_server]: [monotone_escape] 시작 최근접 22.5 cm · 목표 5.0 cm · 모의 결과(닿는 양 m/rad): 앞:없음(끝 22.5 cm) 뒤:0.010 좌회전:0.018 우회전:없음(끝 22.5 cm)
+[behavior_server-6] [INFO] [1792644657.343756973] [behavior_server]: [monotone_escape] 성공: 최근접 22.5 cm
+[behavior_server-6] [INFO] [1792644657.343826447] [behavior_server]: monotone_escape completed successfully
+[planner_server-5] [WARN] [1792644657.360724298] [planner_server]: GridBased: failed to create plan with tolerance 0.25.
+[planner_server-5] [WARN] [1792644657.360837134] [planner_server]: Planning algorithm GridBased failed to generate a valid path to (2.25, -1.60)
+[planner_server-5] [WARN] [1792644657.360865903] [planner_server]: [compute_path_to_pose] [ActionServer] Aborting handle.
+[planner_server-5] [INFO] [1792644657.378837646] [global_costmap.global_costmap]: Received request to clear except a region the global_costmap
+[planner_server-5] [WARN] [1792644658.323904000] [planner_server]: GridBased: failed to create plan with tolerance 0.25.
+[planner_server-5] [WARN] [1792644658.324068645] [planner_server]: Planning algorithm GridBased failed to generate a valid path to (2.25, -1.60)
+[planner_server-5] [WARN] [1792644658.324109607] [planner_server]: [compute_path_to_pose] [ActionServer] Aborting handle.
+[behavior_server-6] [INFO] [1792644658.340501169] [behavior_server]: Running wait
+[bt_navigator-7] [WARN] [1792644659.487036600] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792644659.494933570] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[behavior_server-6] [INFO] [1792644663.342958108] [behavior_server]: wait completed successfully
+[planner_server-5] [WARN] [1792644663.370807273] [planner_server]: GridBased: failed to create plan with tolerance 0.25.
+[planner_server-5] [WARN] [1792644663.372344413] [planner_server]: Planning algorithm GridBased failed to generate a valid path to (2.25, -1.60)
+[planner_server-5] [WARN] [1792644663.372393663] [planner_server]: [compute_path_to_pose] [ActionServer] Aborting handle.
+[planner_server-5] [INFO] [1792644663.389156245] [global_costmap.global_costmap]: Received request to clear except a region the global_costmap
+[bt_navigator-7] [WARN] [1792644664.221393316] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[planner_server-5] [WARN] [1792644664.324225686] [planner_server]: GridBased: failed to create plan with tolerance 0.25.
+[planner_server-5] [WARN] [1792644664.324376347] [planner_server]: Planning algorithm GridBased failed to generate a valid path to (2.25, -1.60)
+[planner_server-5] [WARN] [1792644664.324409756] [planner_server]: [compute_path_to_pose] [ActionServer] Aborting handle.
+[bt_navigator-7] [WARN] [1792644664.348586765] [bt_navigator]: [navigate_to_pose] [ActionServer] Aborting handle.
+[bt_navigator-7] [ERROR] [1792644664.349223106] [bt_navigator]: Goal failed
+[velocity_smoother-9] [WARN] [1792644675.954192004] [velocity_smoother.rclcpp]: failed to send response to /velocity_smoother/list_parameters (timeout): client will not receive response, at ./src/rmw_response.cpp:154, at ./src/rcl/service.c:314

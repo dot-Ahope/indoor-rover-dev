@@ -58,3 +58,37 @@
 - 같은 W3 회전에서 평소(f2sm1)엔 휠이 실제보다 많이 돌았다고 세는데(트랙이 미끄러짐), 이번엔 **실제보다 적게** 셌다 → 전선이 한쪽 트랙 아래에 끼어 차체 회전 모양이 달라진 흔적으로 추정(기전 미확인). 주행 전체 휠−EKF 회전 차 82.2°(f2sm1 11.3°)의 약 1/3 이 이 두 묶음, 나머지는 B 회전(+24.5°) 등.
 - 잘 작동했나: **EKF 방향은 SLAM 과 0~1.1° 안**(자이로가 회전을 맡아 휠 오차에 안 끌려감), 목표 2 SUCCEEDED(0.112 m), stuck 진단 0, 펌웨어 스톨 래치 없음, 주행 끝 map→odom 누적 보정 0.42 m · −4.9°(f2sm1 0.51 m · −4.2°)로 평소 범위. → 전선을 밟은 영향은 휠 적분에만 남고 위치 추정 · 주행에는 드러나지 않았다.
 - 데이터: 위 결과 파일 · 입력 `bags/bag_f2pr1.tgz`(/wheel_odom · /odometry/filtered · /tf · /cmd_vel · /rover/stuck) · `2026-10-21/bags/bag_f2sm1.tgz` · 러너 요약 `outputs/run_f2pr1.txt`, `2026-10-21/outputs/run_f2sm1.txt` · 멈칫 `outputs/anal_stops_f2pr1.txt` · `anal_dip_events_f2pr1.txt`(도구 `2026-10-21/jobs/anal_stops.py` · `anal_dip_events.py`) · nav2 원본 `outputs/nav2_f2pr1.log`.
+
+## §5 깊이 기록 주행 f2dr1 선언 (사용자: "(가) 시작") — 결과 보기 전
+- 목적: nvblox 입력(깊이 160×120 · camera_info)을 담은 bag 을 지금 운용 구성(프로젝터 끔 · 그림자 cuVSLAM · SHM)으로 남겨, 2번(esdf_integrator_min_weight)과 프리셋 비교를 **같은 입력 재생**으로 한다. f2pr1 · f2sm1 bag 에는 깊이 영상이 없음(§3).
+- 구성: prep `jobs/prep_dr_1022.sh`(= f2sm1 구성, depth_preset 지정 안 함 → visual_preset 0 확인), 러너 `run_f2c.sh f2dr1 … b910`, `BAG_DEPTH=1`(10-19 §3 옵션 — 깊이 best effort 구독, 끝나면 Jetson `~/bags/bag_f2dr1` 사본), STAGE `F2c-depthrec-p0`. 재생 도구 `2026-10-19/jobs/run_nvblox_replay.sh`(ROS_DOMAIN_ID 42 격리).
+- 기록 성공 기준: 깊이 · camera_info 각 ≥ 14.5 Hz(주행 시간 × 15 의 97 % 이상), 목표 3/3 은 기준 아님(주행 비교용으로 기록).
+- 프리셋 없음 기준선(실시간, f2sm1 재현 확인용): 맨바닥 영역 A(1.45~2.65, −0.35~0.45) · 문 영역 B(2.00~2.60, −0.85~−0.45) 유령 칸(`2026-10-21/jobs/anal_zone_ghosts.py`, t 10~60 s), 낮은 상자 `jobs/anal_box_detect.py`. f2sm1(A 50 · B 0, 상자 15~16 칸) 과 같은 범위면 입력 대표성 ✔.
+- R0 재생 충실도(A/B 전에): 같은 설정 재생 조각 vs 실시간 조각(/nvblox_node/static_map_slice, 거리 ≤ 0 칸) — 영역 A 에서 한 번이라도 장애물이 된 칸 수 차 ≤ 20 % 이고 상자 영역 칸 수 중앙 차 ≤ 2 → 재생 신뢰.
+- 2번 A/B(재생): min_weight 0.1(기준) · 1 · 2. **합격** = 영역 A 조각 유령 칸이 기준의 30 % 이하 **그리고** 상자 영역 칸 수 중앙(t0~t0+10 s)이 기준의 80 % 이상. 상자가 사라지면 불합격. 프리셋 3 과 견줄 수 있게 같은 지표로.
+
+### §5.1 prep 1 회째 PREP_FAIL — 로버가 출발 자세가 아님 (`outputs/prep_dr_1022_1.txt`)
+- 본 것: 위치 추정 검사(기대 0,0,0) 위치 차 0.160 m · yaw 차 +81.0° → 불합격. visual_preset 0(프리셋 없음 적용 ✔).
+- 원인(기록으로 확인): f2pr1 은 목표 3 (0, 0, −170°) 로 끝나 로버가 **출발 방향의 반대(map −166.5°)** 로 서 있다(`outputs/run_f2pr1.txt` 끝 줄 '출발 대비 최종 map Δyaw −166.7°'). prep 은 SLAM 초기 자세를 출발 테이프 (0,0,0°) 로 주므로 180° 가까이 틀린 초기값에서 정합이 엉뚱한 곳(+81°)에 붙음. 10-21 의 '첫 실패 원인 미확인'(0.049 m · 2.5°)과는 크기가 달라 다른 경우.
+- 조치: 사용자에게 출발 테이프 · 출발 방향으로 다시 놓아 달라고 요청 → 놓은 뒤 prep 재실행. 로버를 내가 돌리지 않음(움직임은 주행 "시작" 범위로만).
+
+### §5.2 prep 2 회째 통과 → 러너 기동 실패(Jetson 연결 끊김, 로버 안 움직임)
+- prep 2 회째(사용자가 출발 자세로 놓음): 위치 차 0.007 m · yaw 차 −0.0° → PREP_OK (`outputs/prep_dr_1022_2.txt`).
+- 러너: 파일 전송 3 회 'lost connection' → `ssh: connect to host 192.168.0.110 port 22: No route to host` → 기동 실패 (`outputs/run_f2dr1.txt`). 주행 명령은 나가지 않음.
+- PC 에서 본 것: 13:39:47 두 주소 무응답(`outputs/chk_ping_f2dr1.txt`), 13:40:05 잠깐 응답 뒤 13:40:35~13:41:53 다시 무응답, 13:42 부터 안정(`outputs/chk_ping_f2dr1_b.txt`).
+- Jetson 에서 본 것(`jobs/chk_wifi_1022.sh` · `chk_wifi_1022b.sh` → `outputs/chk_wifi_1022.txt` · `chk_wifi_1022b.txt`): 신원 jetson-desktop, 가동 3 h 12 m(재부팅 없음), WEB_DEV_5G 유지, 13:30~13:45 끊김 사건 없음 · 13:32 DHCP 갱신(같은 주소)만, 스택 생존(controller 1 · nvblox 4).
+- 추론: Jetson 무선 연결은 유지됐고 PC↔AP(또는 AP 안) 경로가 끊긴 것으로 추정(미확인 — PC 쪽 무선 기록 안 봄). 스택은 Jetson 안에서만 DDS 를 쓰므로 영향 없었을 것이나, 확실히 하려고 prep 3 회째 뒤 출발.
+
+### §5.3 prep 3 회째 PREP_FAIL — Nav2 수명 주기 활성화가 멈춤 (`outputs/prep_dr_1022_3.txt` · `chk_prep_fail_1022.txt`, 도구 `jobs/chk_prep_fail_1022.sh`)
+- 본 것: 150 s 기다린 뒤 controller · planner · behavior = inactive, bt_navigator = unconfigured(nav_map 만 active). 위치 추정은 됨(map→base (0.025, −0.006) · 1.2°). Jetson `/tmp/nav2.log`: planner_server · bt_navigator `failed to send response to /…/get_state (timeout)`(rmw_response.cpp:154), controller `Failed to get parameters: FollowPathMPPI.PreferForwardCritic.cost_weight` 반복. 네 서버 프로세스는 살아 있음.
+- 추론: 수명 주기 관리자가 `get_state` 서비스 응답을 못 받아 다음 전이로 못 넘어감 — 서비스 응답(DDS) 전달 문제. 직전 Jetson↔PC 경로 끊김(§5.2)과 관계가 있는지 미확인(Jetson 무선은 유지됐었음). 10-21 이전에도 있던 일인지 기록 대조 안 함.
+- 조치: prep 4 회째. 원본 nav2.log 는 prep 4 회째가 /tmp/logkeep 으로 옮김(필요하면 회수).
+
+## §6 f2dr1 결과 — 목표 1 ABORTED 29 s (사용자: "진행하다 중간에 멈췄다. 확인 필요.")
+- prep 4 회째 PREP_OK(0.007 m · +0.2°, `outputs/prep_dr_1022_4.txt`) → 러너 13:50:24 출발(`outputs/run_f2dr1_2.txt`; 1 회째 기동 실패 출력은 `run_f2dr1.txt`). 목표 1 (2.25, −1.60) **ABORTED 29.0 s**, 로버 map (0.73, 0.24, 19.6°) — 상자 북쪽, 출발에서 0.77 m. 러너는 중단 뒤 끝냄(로버 정지).
+- 본 것 1 — nav2 사건(`outputs/nav_events_ms_f2dr1.txt`, 도구 `jobs/anal_nav_ms.py`, 원본 `outputs/nav2_f2dr1.log` · Jetson `~/bags/logs_f2dr1/`): 13:50:42.31 PathBlockedAhead 앞 경로 (1.85, 0.22) 비용 99 → 13:50:43.60 스무더 충돌 (1.82, −0.11) → **13:50:45.62 부터 계획기 `failed to create plan with tolerance 0.25` 매초 반복** → MonotoneEscape(최근접 22.4 cm, 할 일 없음) · Wait 5 s · 다시 MonotoneEscape · Wait → 중단.
+- 본 것 2 — 전역 코스트맵 통과 가능 여부(`jobs/anal_door_pass.py` → `outputs/anal_door_pass_f2dr1.txt`; 값 < 99 칸만 4-이웃으로): 로버 → 목표 1 이 t 20 s(로버 (0.51, 0.18))까지 '닿음', **t 22 s 부터 '닿지 않음'**. 문 줄(y −0.60, x 1.80~2.85) 자체는 끝까지 통과 칸 있음(최소 62~75) → 막힌 곳은 문이 아니라 **로버(상자 북쪽)와 문 사이**.
+- 본 것 3 — 막은 칸의 근거(`2026-10-21/jobs/anal_phantom_cells.py` → `outputs/anal_phantom_f2dr1_abort.txt`, 그림 `figures/phantom_f2dr1_abort.png`, t 40 s): 근거 없는(저장 지도 · 라이다 둘 다 아님) LETHAL 111 칸 — 전부 nvblox 조각이 점유로 봄. 북쪽 덩어리 51 칸 (1.14~2.24, 0.52~1.02) · 상자 14 칸(실물) · 상자 동쪽 맨바닥 (2.44~2.59, −0.38~−0.13) 8 칸 · (2.39, 0.24) 4 · (1.47, −0.42) 3 · (1.94, −0.46) 2 등. 로컬 기준 구간 합(`outputs/anal_zone_ghosts_f2dr1.txt`, t 0~42 s): 맨바닥 영역 A 21 칸(t 13~25 s 에 생김), 문 영역 B 0, 북쪽 (1.10~2.20, 0.45~1.15) 110 칸.
+- 추론: 로버가 상자 **북쪽** 으로 돌았고(f2pr1 은 남쪽 — 미확인, 경로 비교 안 함), 그 길의 동쪽 출구(상자 동쪽 맨바닥 · 북쪽 덩어리 사이)에 카메라만 본 칸들이 전역 팽창(0.70 m)과 겹쳐 통과 칸이 끊겼다 → 계획 실패. 칸들이 유령(맨바닥)인지 사람 · 의자 같은 실물(라이다 높이 밖)인지는 영상 없이는 미확인 — 북쪽 덩어리는 라이다가 본 물체(초록) 옆이라 실물 가장자리일 수 있음. 맨바닥 영역 A 칸은 10-21 정의상 유령 후보.
+- 의미: 프리셋 없음(f2sm1 구성)에서 **유령 후보 칸이 실제로 주행을 끊은 첫 사례**(f2sm1 은 A 50 칸에도 3/3). 프리셋 3 의 대가(상자 칸 절반)와 견줄 근거.
+- 깊이 기록: 깊이 · camera_info 각 598 장(bag 41.9 s 전체 기준 14.28 Hz — 주행 구간만 따지면 15 Hz 근처로 추정, 미계산). bag `bags/bag_f2dr1.tgz`(PC), Jetson `~/bags/bag_f2dr1`. 출발 ~ 중단 29 s 의 상자 · 영역 A 를 담고 있어 **min_weight 재생 A/B 의 첫 입력으로 쓸 수 있음**(복귀 길은 없음).

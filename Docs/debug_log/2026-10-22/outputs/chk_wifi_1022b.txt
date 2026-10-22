@@ -1,0 +1,4 @@
+mon.log
+test_event_20260918_110443.txt
+wpa_debug.log
+Oct 22 13:32:13 jetson-desktop NetworkManager[829]: <info>  [1792643533.3584] dhcp4 (wlP1p1s0): state changed new lease, address=192.168.0.110
