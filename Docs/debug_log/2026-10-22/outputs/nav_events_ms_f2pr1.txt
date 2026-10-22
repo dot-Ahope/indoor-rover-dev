@@ -1,0 +1,316 @@
+11:34:30.45 bt_navigator Begin navigating from current location (-0.00, 0.00) to (2.25, -1.60)
+11:34:30.47 smoother_server Received a path to smooth.
+11:34:30.50 controller_server Received a goal, begin computing control effort.
+11:34:30.50 controller_server No goal checker was specified in parameter 'current_goal_checker'. Server will use only plugin loaded general_goal_checker . This warning will appear once.
+11:34:30.51 controller_server Optimizer reset
+11:34:32.52 smoother_server Received a path to smooth.
+11:34:32.55 controller_server Control loop missed its desired rate of 10.0000Hz
+11:34:32.55 controller_server Passing new path to controller.
+11:34:34.58 smoother_server Received a path to smooth.
+11:34:34.71 controller_server Passing new path to controller.
+11:34:36.63 smoother_server Received a path to smooth.
+11:34:36.64 smoother_server Smoothed path leads to a collision at x: 2.226134, y: -0.713544, theta: -1.520507
+11:34:36.64 smoother_server [smooth_path] [ActionServer] Aborting handle.
+11:34:36.70 controller_server Passing new path to controller.
+11:34:38.69 smoother_server Received a path to smooth.
+11:34:38.81 controller_server Passing new path to controller.
+11:34:40.76 smoother_server Received a path to smooth.
+11:34:40.80 controller_server Passing new path to controller.
+11:34:42.81 smoother_server Received a path to smooth.
+11:34:42.90 controller_server Passing new path to controller.
+11:34:44.88 smoother_server Received a path to smooth.
+11:34:45.00 controller_server Passing new path to controller.
+11:34:46.98 smoother_server Received a path to smooth.
+11:34:47.00 controller_server Passing new path to controller.
+11:34:47.21 controller_server Control loop missed its desired rate of 10.0000Hz
+11:34:47.56 controller_server Control loop missed its desired rate of 10.0000Hz
+11:34:49.02 smoother_server Received a path to smooth.
+11:34:49.10 controller_server Passing new path to controller.
+11:34:51.07 smoother_server Received a path to smooth.
+11:34:51.10 controller_server Passing new path to controller.
+11:34:53.15 smoother_server Received a path to smooth.
+11:34:53.20 controller_server Passing new path to controller.
+11:34:55.20 smoother_server Received a path to smooth.
+11:34:55.30 controller_server Passing new path to controller.
+11:34:57.25 smoother_server Received a path to smooth.
+11:34:57.30 controller_server Passing new path to controller.
+11:34:59.29 smoother_server Received a path to smooth.
+11:34:59.40 controller_server Passing new path to controller.
+11:34:59.71 controller_server Control loop missed its desired rate of 10.0000Hz
+11:35:01.34 smoother_server Received a path to smooth.
+11:35:01.40 controller_server Passing new path to controller.
+11:35:03.38 smoother_server Received a path to smooth.
+11:35:03.82 controller_server Control loop missed its desired rate of 10.0000Hz
+11:35:03.82 controller_server Passing new path to controller.
+11:35:05.44 smoother_server Received a path to smooth.
+11:35:05.52 controller_server Passing new path to controller.
+11:35:07.51 smoother_server Received a path to smooth.
+11:35:07.65 controller_server Control loop missed its desired rate of 10.0000Hz
+11:35:07.65 controller_server Passing new path to controller.
+11:35:09.57 smoother_server Received a path to smooth.
+11:35:09.65 controller_server Passing new path to controller.
+11:35:11.61 smoother_server Received a path to smooth.
+11:35:11.65 controller_server Passing new path to controller.
+11:35:12.35 controller_server Control loop missed its desired rate of 10.0000Hz
+11:35:13.66 smoother_server Received a path to smooth.
+11:35:13.75 controller_server Passing new path to controller.
+11:35:15.70 smoother_server Received a path to smooth.
+11:35:15.75 controller_server Passing new path to controller.
+11:35:17.75 smoother_server Received a path to smooth.
+11:35:17.85 controller_server Passing new path to controller.
+11:35:19.35 controller_server Exception in transformPose: Lookup would require extrapolation into the future.  Requested time 1792636518.833947 but the latest data is at time 1792636518.790133, when l
+11:35:19.35 controller_server Unable to transform robot pose into global plan's frame
+11:35:19.35 controller_server [follow_path] [ActionServer] Aborting handle.
+11:35:19.38 controller_server Received a goal, begin computing control effort.
+11:35:19.60 controller_server Control loop missed its desired rate of 10.0000Hz
+11:35:19.80 smoother_server Received a path to smooth.
+11:35:19.84 controller_server Passing new path to controller.
+11:35:21.85 smoother_server Received a path to smooth.
+11:35:21.90 controller_server Passing new path to controller.
+11:35:22.12 controller_server Reached the goal!
+11:35:22.15 bt_navigator Goal succeeded
+11:35:22.18 bt_navigator Begin navigating from current location (2.28, -1.46) to (5.50, -2.20)
+11:35:22.21 smoother_server Received a path to smooth.
+11:35:22.22 controller_server Received a goal, begin computing control effort.
+11:35:23.03 controller_server Control loop missed its desired rate of 10.0000Hz
+11:35:24.16 controller_server Control loop missed its desired rate of 10.0000Hz
+11:35:24.25 smoother_server Received a path to smooth.
+11:35:24.30 controller_server Passing new path to controller.
+11:35:25.42 controller_server Control loop missed its desired rate of 10.0000Hz
+11:35:26.30 smoother_server Received a path to smooth.
+11:35:26.37 controller_server Passing new path to controller.
+11:35:27.58 controller_server Exception in transformPose: Lookup would require extrapolation into the future.  Requested time 1792636527.035295 but the latest data is at time 1792636526.981357, when l
+11:35:27.58 controller_server Unable to transform robot pose into global plan's frame
+11:35:27.58 controller_server [follow_path] [ActionServer] Aborting handle.
+11:35:27.60 controller_server Received a goal, begin computing control effort.
+11:35:27.72 controller_server Control loop missed its desired rate of 10.0000Hz
+11:35:28.36 smoother_server Received a path to smooth.
+11:35:28.40 controller_server Passing new path to controller.
+11:35:29.41 controller_server Exception in transformPose: Lookup would require extrapolation into the future.  Requested time 1792636528.868243 but the latest data is at time 1792636528.867586, when l
+11:35:29.41 controller_server Unable to transform robot pose into global plan's frame
+11:35:29.41 controller_server [follow_path] [ActionServer] Aborting handle.
+11:35:29.85 smoother_server Received a path to smooth.
+11:35:29.87 controller_server Received a goal, begin computing control effort.
+11:35:30.20 controller_server Control loop missed its desired rate of 10.0000Hz
+11:35:31.89 smoother_server Received a path to smooth.
+11:35:32.00 controller_server Passing new path to controller.
+11:35:32.90 controller_server Control loop missed its desired rate of 10.0000Hz
+11:35:33.94 smoother_server Received a path to smooth.
+11:35:34.00 controller_server Passing new path to controller.
+11:35:34.46 controller_server Control loop missed its desired rate of 10.0000Hz
+11:35:35.98 smoother_server Received a path to smooth.
+11:35:36.06 controller_server Passing new path to controller.
+11:35:38.03 smoother_server Received a path to smooth.
+11:35:38.06 controller_server Passing new path to controller.
+11:35:39.36 controller_server Control loop missed its desired rate of 10.0000Hz
+11:35:40.07 smoother_server Received a path to smooth.
+11:35:40.16 controller_server Passing new path to controller.
+11:35:42.10 smoother_server Received a path to smooth.
+11:35:42.16 controller_server Passing new path to controller.
+11:35:44.16 smoother_server Received a path to smooth.
+11:35:44.26 controller_server Passing new path to controller.
+11:35:46.20 smoother_server Received a path to smooth.
+11:35:46.26 controller_server Passing new path to controller.
+11:35:48.25 smoother_server Received a path to smooth.
+11:35:48.36 controller_server Passing new path to controller.
+11:35:50.29 smoother_server Received a path to smooth.
+11:35:50.36 controller_server Passing new path to controller.
+11:35:52.35 smoother_server Received a path to smooth.
+11:35:52.36 controller_server Control loop missed its desired rate of 10.0000Hz
+11:35:52.46 controller_server Passing new path to controller.
+11:35:54.42 smoother_server Received a path to smooth.
+11:35:54.46 controller_server Passing new path to controller.
+11:35:56.48 smoother_server Received a path to smooth.
+11:35:56.56 controller_server Passing new path to controller.
+11:35:58.55 smoother_server Received a path to smooth.
+11:35:58.66 controller_server Passing new path to controller.
+11:36:00.16 controller_server Control loop missed its desired rate of 10.0000Hz
+11:36:00.59 smoother_server Received a path to smooth.
+11:36:00.66 controller_server Passing new path to controller.
+11:36:02.65 smoother_server Received a path to smooth.
+11:36:02.76 controller_server Passing new path to controller.
+11:36:04.72 smoother_server Received a path to smooth.
+11:36:04.76 controller_server Passing new path to controller.
+11:36:06.75 smoother_server Received a path to smooth.
+11:36:06.86 controller_server Passing new path to controller.
+11:36:07.67 controller_server Control loop missed its desired rate of 10.0000Hz
+11:36:08.79 smoother_server Received a path to smooth.
+11:36:08.86 controller_server Passing new path to controller.
+11:36:10.85 smoother_server Received a path to smooth.
+11:36:10.96 controller_server Passing new path to controller.
+11:36:12.91 smoother_server Received a path to smooth.
+11:36:12.96 controller_server Passing new path to controller.
+11:36:13.98 controller_server Reached the goal!
+11:36:14.01 bt_navigator Goal succeeded
+11:36:14.06 bt_navigator Begin navigating from current location (5.40, -2.15) to (0.00, 0.00)
+11:36:14.09 smoother_server Received a path to smooth.
+11:36:14.12 controller_server Received a goal, begin computing control effort.
+11:36:16.15 smoother_server Received a path to smooth.
+11:36:16.23 controller_server Passing new path to controller.
+11:36:18.21 smoother_server Received a path to smooth.
+11:36:18.33 controller_server Passing new path to controller.
+11:36:19.02 controller_server Control loop missed its desired rate of 10.0000Hz
+11:36:20.30 smoother_server Received a path to smooth.
+11:36:20.42 controller_server Passing new path to controller.
+11:36:22.35 smoother_server Received a path to smooth.
+11:36:22.42 controller_server Passing new path to controller.
+11:36:24.40 smoother_server Received a path to smooth.
+11:36:24.42 controller_server Passing new path to controller.
+11:36:26.44 smoother_server Received a path to smooth.
+11:36:26.53 controller_server Passing new path to controller.
+11:36:28.50 smoother_server Received a path to smooth.
+11:36:28.62 controller_server Passing new path to controller.
+11:36:30.56 smoother_server Received a path to smooth.
+11:36:30.62 controller_server Passing new path to controller.
+11:36:32.60 smoother_server Received a path to smooth.
+11:36:32.72 controller_server Passing new path to controller.
+11:36:34.66 smoother_server Received a path to smooth.
+11:36:34.72 controller_server Passing new path to controller.
+11:36:36.72 smoother_server Received a path to smooth.
+11:36:36.82 controller_server Passing new path to controller.
+11:36:38.80 smoother_server Received a path to smooth.
+11:36:38.93 controller_server Passing new path to controller.
+11:36:40.85 smoother_server Received a path to smooth.
+11:36:40.92 controller_server Passing new path to controller.
+11:36:42.90 smoother_server Received a path to smooth.
+11:36:43.02 controller_server Passing new path to controller.
+11:36:44.97 smoother_server Received a path to smooth.
+11:36:45.02 controller_server Passing new path to controller.
+11:36:47.01 smoother_server Received a path to smooth.
+11:36:47.12 controller_server Passing new path to controller.
+11:36:49.06 smoother_server Received a path to smooth.
+11:36:49.13 controller_server Passing new path to controller.
+11:36:50.26 controller_server Control loop missed its desired rate of 10.0000Hz
+11:36:51.11 smoother_server Received a path to smooth.
+11:36:51.22 controller_server Passing new path to controller.
+11:36:53.15 smoother_server Received a path to smooth.
+11:36:53.22 controller_server Passing new path to controller.
+11:36:55.20 smoother_server Received a path to smooth.
+11:36:55.23 controller_server Passing new path to controller.
+11:36:55.96 controller_server Control loop missed its desired rate of 10.0000Hz
+11:36:57.26 smoother_server Received a path to smooth.
+11:36:57.36 controller_server Passing new path to controller.
+11:36:59.31 smoother_server Received a path to smooth.
+11:36:59.36 controller_server Passing new path to controller.
+11:37:01.36 smoother_server Received a path to smooth.
+11:37:01.46 controller_server Passing new path to controller.
+11:37:02.39 controller_server Control loop missed its desired rate of 10.0000Hz
+11:37:03.40 smoother_server Received a path to smooth.
+11:37:03.49 controller_server Passing new path to controller.
+11:37:05.45 smoother_server Received a path to smooth.
+11:37:05.49 controller_server Passing new path to controller.
+11:37:07.51 smoother_server Received a path to smooth.
+11:37:07.67 controller_server Control loop missed its desired rate of 10.0000Hz
+11:37:07.67 controller_server Passing new path to controller.
+11:37:08.80 controller_server Control loop missed its desired rate of 10.0000Hz
+11:37:09.62 smoother_server Received a path to smooth.
+11:37:09.67 controller_server Passing new path to controller.
+11:37:10.16 controller_server Control loop missed its desired rate of 10.0000Hz
+11:37:10.21 controller_server Control loop missed its desired rate of 10.0000Hz
+11:37:10.37 controller_server Control loop missed its desired rate of 10.0000Hz
+11:37:11.67 smoother_server Received a path to smooth.
+11:37:11.77 controller_server Passing new path to controller.
+11:37:13.38 controller_server Exception in transformPose: Lookup would require extrapolation into the future.  Requested time 1792636632.824268 but the latest data is at time 1792636632.770160, when l
+11:37:13.38 controller_server Unable to transform robot pose into global plan's frame
+11:37:13.38 controller_server [follow_path] [ActionServer] Aborting handle.
+11:37:13.40 controller_server Received a goal, begin computing control effort.
+11:37:13.57 controller_server Control loop missed its desired rate of 10.0000Hz
+11:37:13.72 smoother_server Received a path to smooth.
+11:37:13.80 controller_server Passing new path to controller.
+11:37:15.77 smoother_server Received a path to smooth.
+11:37:15.80 controller_server Passing new path to controller.
+11:37:16.71 controller_server Exception in transformPose: Lookup would require extrapolation into the future.  Requested time 1792636636.194516 but the latest data is at time 1792636636.068187, when l
+11:37:16.71 controller_server Unable to transform robot pose into global plan's frame
+11:37:16.71 controller_server [follow_path] [ActionServer] Aborting handle.
+11:37:16.74 behavior_server Running monotone_escape
+11:37:16.74 behavior_server [monotone_escape] 시작 최근접 19.2 cm · 목표 5.0 cm · 모의 결과(닿는 양 m/rad): 앞:없음(끝 19.2 cm) 뒤:0.010 좌회전:없음(끝 19.2 cm) 우회전:0.018
+11:37:16.74 behavior_server [monotone_escape] 성공: 최근접 19.2 cm
+11:37:16.74 behavior_server monotone_escape completed successfully
+11:37:16.78 smoother_server Received a path to smooth.
+11:37:16.80 controller_server Received a goal, begin computing control effort.
+11:37:18.84 smoother_server Received a path to smooth.
+11:37:18.91 controller_server Passing new path to controller.
+11:37:20.87 smoother_server Received a path to smooth.
+11:37:20.91 controller_server Passing new path to controller.
+11:37:22.18 controller_server Control loop missed its desired rate of 10.0000Hz
+11:37:22.92 smoother_server Received a path to smooth.
+11:37:22.98 controller_server Passing new path to controller.
+11:37:23.78 controller_server Control loop missed its desired rate of 10.0000Hz
+11:37:24.62 controller_server Control loop missed its desired rate of 10.0000Hz
+11:37:24.97 smoother_server Received a path to smooth.
+11:37:25.02 controller_server Passing new path to controller.
+11:37:26.24 controller_server Control loop missed its desired rate of 10.0000Hz
+11:37:26.38 controller_server Control loop missed its desired rate of 10.0000Hz
+11:37:26.42 controller_server Control loop missed its desired rate of 10.0000Hz
+11:37:26.85 controller_server Control loop missed its desired rate of 10.0000Hz
+11:37:27.02 smoother_server Received a path to smooth.
+11:37:27.02 smoother_server Smoother simple_smoother did not complete smoothing in specified time limit(1.000000 seconds) and was interrupted after 0.000678 seconds
+11:37:27.02 smoother_server Smoothed path leads to a collision at x: 1.522526, y: -0.028336, theta: -0.061623
+11:37:27.02 smoother_server [smooth_path] [ActionServer] Aborting handle.
+11:37:27.04 bt_navigator_navigate_to_pose_rclcpp_node PathBlockedAhead: 앞 경로 (1.40, -0.02) 비용 99 — 2.0 s 지속되면 재계획
+11:37:27.10 controller_server Passing new path to controller.
+11:37:29.05 bt_navigator_navigate_to_pose_rclcpp_node PathBlockedAhead: 앞 경로 (1.40, -0.02) 비용 99 가 2.0 s 지속 → 주행 중단·재계획
+11:37:29.16 bt_navigator_navigate_to_pose_rclcpp_node Failed to get result for follow_path in node halt!
+11:37:29.16 bt_navigator_navigate_to_pose_rclcpp_node PathBlockedAhead: 앞 경로 (1.40, -0.02) 비용 99 가 2.0 s 지속 → 주행 중단·재계획
+11:37:29.16 behavior_server Running wait
+11:37:29.45 controller_server Exception in transformPose: Lookup would require extrapolation into the future.  Requested time 1792636648.935528 but the latest data is at time 1792636648.849984, when l
+11:37:29.45 controller_server Unable to transform robot pose into global plan's frame
+11:37:29.45 controller_server [follow_path] [ActionServer] Client requested to cancel the goal. Cancelling.
+11:37:34.16 behavior_server wait completed successfully
+11:37:34.20 smoother_server Received a path to smooth.
+11:37:34.22 controller_server Received a goal, begin computing control effort.
+11:37:34.23 controller_server Optimizer reset
+11:37:36.26 smoother_server Received a path to smooth.
+11:37:36.33 controller_server Passing new path to controller.
+11:37:38.33 smoother_server Received a path to smooth.
+11:37:38.43 controller_server Passing new path to controller.
+11:37:38.63 controller_server Control loop missed its desired rate of 10.0000Hz
+11:37:39.46 controller_server Control loop missed its desired rate of 10.0000Hz
+11:37:40.38 smoother_server Received a path to smooth.
+11:37:40.46 controller_server Passing new path to controller.
+11:37:42.42 smoother_server Received a path to smooth.
+11:37:42.46 controller_server Passing new path to controller.
+11:37:43.48 controller_server Control loop missed its desired rate of 10.0000Hz
+11:37:43.57 controller_server Control loop missed its desired rate of 10.0000Hz
+11:37:43.71 controller_server Control loop missed its desired rate of 10.0000Hz
+11:37:43.81 controller_server Control loop missed its desired rate of 10.0000Hz
+11:37:43.91 controller_server Control loop missed its desired rate of 10.0000Hz
+11:37:43.98 controller_server Control loop missed its desired rate of 10.0000Hz
+11:37:44.46 smoother_server Received a path to smooth.
+11:37:44.56 controller_server Passing new path to controller.
+11:37:45.97 controller_server Control loop missed its desired rate of 10.0000Hz
+11:37:46.08 controller_server Control loop missed its desired rate of 10.0000Hz
+11:37:46.17 controller_server Control loop missed its desired rate of 10.0000Hz
+11:37:46.29 controller_server Control loop missed its desired rate of 10.0000Hz
+11:37:46.36 controller_server Control loop missed its desired rate of 10.0000Hz
+11:37:46.50 smoother_server Received a path to smooth.
+11:37:46.56 controller_server Passing new path to controller.
+11:37:46.74 controller_server Control loop missed its desired rate of 10.0000Hz
+11:37:46.83 controller_server Control loop missed its desired rate of 10.0000Hz
+11:37:46.91 controller_server Control loop missed its desired rate of 10.0000Hz
+11:37:46.98 controller_server Control loop missed its desired rate of 10.0000Hz
+11:37:48.41 controller_server Control loop missed its desired rate of 10.0000Hz
+11:37:48.59 smoother_server Received a path to smooth.
+11:37:48.60 controller_server Control loop missed its desired rate of 10.0000Hz
+11:37:48.79 controller_server Passing new path to controller.
+11:37:49.03 controller_server Control loop missed its desired rate of 10.0000Hz
+11:37:49.14 controller_server Control loop missed its desired rate of 10.0000Hz
+11:37:49.20 controller_server Control loop missed its desired rate of 10.0000Hz
+11:37:49.56 controller_server Control loop missed its desired rate of 10.0000Hz
+11:37:50.67 smoother_server Received a path to smooth.
+11:37:50.76 controller_server Passing new path to controller.
+11:37:52.06 controller_server Control loop missed its desired rate of 10.0000Hz
+11:37:52.72 smoother_server Received a path to smooth.
+11:37:52.76 controller_server Passing new path to controller.
+11:37:54.77 smoother_server Received a path to smooth.
+11:37:54.86 controller_server Passing new path to controller.
+11:37:56.82 smoother_server Received a path to smooth.
+11:37:56.86 controller_server Passing new path to controller.
+11:37:58.87 smoother_server Received a path to smooth.
+11:37:58.96 controller_server Passing new path to controller.
+11:38:00.94 smoother_server Received a path to smooth.
+11:38:01.06 controller_server Passing new path to controller.
+11:38:02.98 smoother_server Received a path to smooth.
+11:38:03.06 controller_server Passing new path to controller.
+11:38:03.98 controller_server Reached the goal!
+11:38:04.02 bt_navigator Goal succeeded

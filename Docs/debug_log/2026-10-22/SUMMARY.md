@@ -39,3 +39,22 @@
   3. 따라서 프리셋 3 을 그대로 기본값으로 넣는 것은 선언 기준상 불합격. 남은 길(추정, 시험 전): (가) 중간 프리셋(5 Medium Density 등) 또는 고급 모드 개별 값(신뢰도 문턱)을 낮춰 절충점 찾기, (나) 프리셋 0 유지 + 2번(nvblox 최소 가중치)으로 깜빡이는 유령만 거르기, (다) 둘 조합.
 - ⚠ 2번 준비 사항: 지금 러너 bag 에는 **깊이 영상이 없다**(nvblox 출력 슬라이스 · 코스트맵만) → 최소 가중치를 bag 재생으로 A/B 하려면 깊이(`/camera/camera/depth/image_rect_raw` + camera_info, 160×120 ≈ 38 kB × 15 Hz)를 함께 기록한 주행이 먼저 필요.
 - 데이터: 러너 `outputs/run_f2pr1.txt` · bag `bags/bag_f2pr1.tgz`(PC 스크래치패드 `f0_f2pr1/` 에서 복사; /local_costmap/costmap · /global_costmap/costmap · /nvblox_node/static_map_slice · /map · /scan · /tf) · 유령 `outputs/anal_zone_ghosts_f2pr1.txt`(도구 `2026-10-21/jobs/anal_zone_ghosts.py`) · 상자 `outputs/anal_box_detect_f2pr1.txt` · `anal_box_detect_f2sm1.txt`(도구 `jobs/anal_box_detect.py`) · `outputs/anal_box_series_f2pr1.txt` · `anal_box_series_f2sm1.txt`(도구 `jobs/anal_box_series.py`) · 끝 상태 `outputs/anal_phantom_f2pr1_end.txt` · `anal_phantom_f2sm1_end_check.txt`(도구 `2026-10-21/jobs/anal_phantom_cells.py`, 그림 `figures/phantom_f2pr1_end.png`). f2sm1 입력 = `2026-10-21/bags/bag_f2sm1.tgz`.
+
+## §4 사용자 관찰 확인: "사람 장애물 문제 없었음. 복귀 시 문을 넘으면서 멈칫. W3 에서 전선을 밟았는데 잘 작동했는지."
+- 사람: 사용자 확인 — 이번 주행에 사람 장애물 문제 없음. f2pr1 은 비교용으로 유지.
+- 로그 원본 보관: Jetson `/tmp/nav2.log` · `slam.log` · `sensors.log` 를 prep 이 덮기 전에 `bags/logs_f2pr1/` 로(nav2 는 `outputs/nav2_f2pr1.log` 에도). 사건 0.01 s 표 `outputs/nav_events_ms_f2pr1.txt`(도구 `jobs/anal_nav_ms.py` — 10-21 chk_nav_ms.sh 의 PC 판).
+### §4.1 복귀 중 문 근처 멈칫 — 원인 두 가지, 둘 다 10-21 §12.2 에서 본 것과 같은 서명
+| 시각 · 위치(map) | 길이 | 서명(0.01 s) | 원인 |
+|---|---|---|---|
+| 11:37:13.34 (2.23, −1.06) · 11:37:16.64 (2.21, −0.84) — 문 들어가기 직전 · 문 안 | 0.20 · 0.15 s | 0.0x s 전 `Exception in transformPose: Lookup would require extrapolation into the future` → `Unable to transform robot pose` → `follow_path Aborting` → 곧 `Received a goal`. 16.74 MonotoneEscape '최근접 19.2 cm, 성공'(아무것도 안 함) | TF 미래 외삽으로 컨트롤러 중단 → 재시작(10-21 §12.2 묶음 A). 직전 수 초 `Control loop missed` 반복 |
+| 11:37:29~34 (1.94, −0.14) — 문 지난 뒤, 상자 쪽으로 돌며 | **4.9 s** | 27.02 `Smoothed path leads to a collision at (1.52, −0.03)` · `PathBlockedAhead: 앞 경로 (1.40, −0.02) 비용 99` → 29.05 '2.0 s 지속 → 주행 중단' → `Running wait` → 34.16 `wait completed` | 경로가 **출발점 낮은 상자(전면 x ≈ 1.15~1.35) 바로 옆** 칸(비용 99 = 내접)을 지남 → 막힘 검사가 주행을 끊고 복구 순서의 Wait 5 s 차례(10-21 §11.3 과 같은 기제) |
+- 읽기: 사용자가 본 '문을 넘으며 멈칫' 은 문 안의 짧은 두 번(TF 외삽)과 문 지난 직후 4.9 s 정지(상자 옆 경로 막힘 → Wait)로 보인다. 문 자체(문턱 · 유령)가 원인이라는 근거는 없음 — 그 구간 문 사이 유령 칸 0(§3). TF 외삽이 왜 0.5 s 여유로 안 덮이는지, 경로가 왜 상자에 붙어 계획되는지는 10-21 과 같이 **미확인**.
+### §4.2 W3 전선 — 위치 · 방향 추정은 정상, 휠 회전 수만 평소와 반대로 어긋남
+- 도구 `jobs/anal_slip_segments.py`(10 s 묶음으로 휠 /wheel_odom 적분 · EKF /odometry/filtered · SLAM map→base 의 회전 · 이동), 결과 `outputs/anal_slip_segments_f2pr1.txt` · 비교 `anal_slip_segments_f2sm1.txt`.
+  | W3 회전 구간(10 s 둘) | 휠 | EKF | SLAM(라이다) | 휠 − SLAM |
+  |---|---|---|---|---|
+  | f2pr1 11:36:11 · 11:36:21 | −90.2 · −54.9° | −104.3 · −69.1° | −104.3 · −70.2° | **+14.1 · +15.3°**(휠이 덜 셈) |
+  | f2sm1 11:41:55 · 11:42:05 | −141.4 · −75.4° | −108.7 · −66.8° | −109.0 · −67.5° | −32.4 · −7.9°(휠이 더 셈 — 평소 미끄러짐) |
+- 같은 W3 회전에서 평소(f2sm1)엔 휠이 실제보다 많이 돌았다고 세는데(트랙이 미끄러짐), 이번엔 **실제보다 적게** 셌다 → 전선이 한쪽 트랙 아래에 끼어 차체 회전 모양이 달라진 흔적으로 추정(기전 미확인). 주행 전체 휠−EKF 회전 차 82.2°(f2sm1 11.3°)의 약 1/3 이 이 두 묶음, 나머지는 B 회전(+24.5°) 등.
+- 잘 작동했나: **EKF 방향은 SLAM 과 0~1.1° 안**(자이로가 회전을 맡아 휠 오차에 안 끌려감), 목표 2 SUCCEEDED(0.112 m), stuck 진단 0, 펌웨어 스톨 래치 없음, 주행 끝 map→odom 누적 보정 0.42 m · −4.9°(f2sm1 0.51 m · −4.2°)로 평소 범위. → 전선을 밟은 영향은 휠 적분에만 남고 위치 추정 · 주행에는 드러나지 않았다.
+- 데이터: 위 결과 파일 · 입력 `bags/bag_f2pr1.tgz`(/wheel_odom · /odometry/filtered · /tf · /cmd_vel · /rover/stuck) · `2026-10-21/bags/bag_f2sm1.tgz` · 러너 요약 `outputs/run_f2pr1.txt`, `2026-10-21/outputs/run_f2sm1.txt` · 멈칫 `outputs/anal_stops_f2pr1.txt` · `anal_dip_events_f2pr1.txt`(도구 `2026-10-21/jobs/anal_stops.py` · `anal_dip_events.py`) · nav2 원본 `outputs/nav2_f2pr1.log`.
