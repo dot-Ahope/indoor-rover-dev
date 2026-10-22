@@ -1,0 +1,30 @@
+15:48:05.15 controller_server Control loop missed its desired rate of 10.0000Hz
+15:48:05.66 smoother_server Received a path to smooth.
+15:48:05.75 controller_server Passing new path to controller.
+15:48:06.56 controller_server Control loop missed its desired rate of 10.0000Hz
+15:48:07.73 smoother_server Received a path to smooth.
+15:48:07.76 controller_server Passing new path to controller.
+15:48:08.80 controller_server Control loop missed its desired rate of 10.0000Hz
+15:48:09.77 smoother_server Received a path to smooth.
+15:48:09.86 controller_server Passing new path to controller.
+15:48:11.41 controller_server Control loop missed its desired rate of 10.0000Hz
+15:48:11.82 smoother_server Received a path to smooth.
+15:48:11.86 controller_server Passing new path to controller.
+15:48:13.87 smoother_server Received a path to smooth.
+15:48:13.96 controller_server Passing new path to controller.
+15:48:15.93 smoother_server Received a path to smooth.
+15:48:15.96 controller_server Passing new path to controller.
+15:48:18.01 smoother_server Received a path to smooth.
+15:48:18.06 controller_server Passing new path to controller.
+15:48:20.06 smoother_server Received a path to smooth.
+15:48:20.16 controller_server Passing new path to controller.
+15:48:22.10 smoother_server Received a path to smooth.
+15:48:22.16 controller_server Passing new path to controller.
+15:48:24.15 smoother_server Received a path to smooth.
+15:48:24.26 controller_server Passing new path to controller.
+15:48:26.20 smoother_server Received a path to smooth.
+15:48:26.26 controller_server Passing new path to controller.
+15:48:28.25 smoother_server Received a path to smooth.
+15:48:28.36 controller_server Passing new path to controller.
+15:48:30.30 smoother_server Received a path to smooth.
+15:48:30.36 controller_server Passing new path to controller.
