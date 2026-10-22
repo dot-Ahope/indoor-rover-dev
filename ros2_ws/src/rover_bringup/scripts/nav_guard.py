@@ -63,9 +63,13 @@ class NavGuard(Node):
             g['d0'] = f.distance_remaining
             g['limit'] = g['d0'] / self.p('v_nominal') * self.p('time_factor') + self.p('time_margin')
             self.get_logger().info('목표 %s: 남은 거리 %.2f m → 시간 한도 %.0f s (시작 뒤 %.1f s)' % (gid.hex()[:8], g['d0'], g['limit'], now - g['t0']))
-        g['hist'].append((now, pos.x, pos.y))
+        # 2026-10-22 §18: 피드백은 BT 주기(bt_loop_duration 10 ms → 최대 100 Hz)로 와서, 매번 45 s 기록 전체를 다시 거르면
+        #   이 노드 혼자 CPU 25 %(f2pi1 실측) — 기록은 0.2 s 간격으로만 남기고 오래된 것은 앞에서부터 버린다(무진행 판정 해상도 0.2 s 면 충분).
+        if not g['hist'] or now - g['hist'][-1][0] >= 0.2:
+            g['hist'].append((now, pos.x, pos.y))
         keep = now - self.p('no_progress_s') - 2.0
-        g['hist'] = [h for h in g['hist'] if h[0] >= keep]
+        while g['hist'] and g['hist'][0][0] < keep:
+            g['hist'].pop(0)
 
     def cb_status(self, m):
         live = {bytes(s.goal_info.goal_id.uuid) for s in m.status_list if s.status in ACTIVE}

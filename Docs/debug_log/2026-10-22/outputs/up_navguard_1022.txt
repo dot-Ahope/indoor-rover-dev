@@ -1,0 +1,3 @@
+이전 sha 6b7381c5d260 (기대 6b7381c5d260)
+새 sha a23e0b3427ee (기대 a23e0b3427ee) · -rwxrwxr-x
+Jetson 문법 OK
