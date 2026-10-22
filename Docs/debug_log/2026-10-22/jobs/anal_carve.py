@@ -41,7 +41,7 @@ def chain(f):
     while f != 'base_link': p, A = static[f]; M = A @ M; f = p
     return M
 Bc = chain(FR[0][1]); fx, fy, cx, cy = K[0, 0], K[1, 1], K[0, 2], K[1, 2]; H, W = FR[0][2].shape; vv, uu = np.mgrid[0:H, 0:W]
-S = np.arange(0.02, 1.0, 0.02)
+S = np.arange(0.02, 1.6, 0.02)   # 광학 z 1.6 m 까지(10-22 §13: 첫 판 1.0 m 는 0.8 m 넘는 접근을 못 봄)
 print('bag %s · t %.0f~%.0f s 깊이 %d 장 · 칸 기둥 x %.2f~%.2f y %.2f~%.2f z %.2f~%.2f' % (Path(bag).name, TA, TB, len(FR), X0, X1, Y0, Y1, Z0, Z1))
 print('  t(s) | 카메라→칸 거리 · 방위 | 유효 화소 % | 기둥 안 점 | 기둥 지나 뒤에 닿은 광선(끝 ≤1.4 m · >1.4 m) | 기둥을 향한 화소 중 무효(깊이 0)')
 agg = []
