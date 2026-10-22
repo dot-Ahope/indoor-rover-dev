@@ -1,0 +1,52 @@
+===== 14:08:57 재생 f2dr2_mw01 (static_mapper.esdf_integrator_min_weight:=0.1)
+재생 nvblox 덮어쓰기: -p use_sim_time:=true -p static_mapper.esdf_integrator_min_weight:=0.1
+재생 끝 218 s
+재생 nvblox 로그 꼬리:
+ros/depth_image_callback	100    	15.0
+ros/esdf_integration       	100    	0.101
+ros/depth_image_integration	100    	0.072
+ros/depth_image_callback   	100    	0.062
+Bag size:          71.0 MiB
+Duration:          216.689438202s
+Topic information: Topic: /nvblox_node/static_map_slice | Type: nvblox_msgs/msg/DistanceMapSlice | Count: 2048 | 
+출력 /home/jetson/bags/replay_f2dr2_mw01
+[INFO] [1792645738.664737953] [nvblox_node]: static_mapper.esdf_integrator_min_weight: 0.1
+[INFO] [1792645738.664840389] [nvblox_node]: static_mapper.mesh_integrator_min_weight: 0.0001
+[INFO] [1792645738.664737953] [nvblox_node]: static_mapper.esdf_integrator_min_weight: 0.1
+[INFO] [1792645738.664840389] [nvblox_node]: static_mapper.mesh_integrator_min_weight: 0.0001
+묶음 6332684 B
+===== 14:12:54 재생 f2dr2_mw1 (static_mapper.esdf_integrator_min_weight:=1.0)
+재생 nvblox 덮어쓰기: -p use_sim_time:=true -p static_mapper.esdf_integrator_min_weight:=1.0
+재생 끝 219 s
+재생 nvblox 로그 꼬리:
+ros/depth_image_callback	100    	15.0
+ros/esdf_integration       	100    	0.104
+ros/depth_image_integration	100    	0.071
+ros/depth_image_callback   	100    	0.062
+Bag size:          71.2 MiB
+Duration:          217.518026923s
+Topic information: Topic: /nvblox_node/static_map_slice | Type: nvblox_msgs/msg/DistanceMapSlice | Count: 2063 | 
+출력 /home/jetson/bags/replay_f2dr2_mw1
+[INFO] [1792645975.864769991] [nvblox_node]: static_mapper.esdf_integrator_min_weight: 1
+[INFO] [1792645975.864855082] [nvblox_node]: static_mapper.mesh_integrator_min_weight: 0.0001
+[INFO] [1792645975.864769991] [nvblox_node]: static_mapper.esdf_integrator_min_weight: 1
+[INFO] [1792645975.864855082] [nvblox_node]: static_mapper.mesh_integrator_min_weight: 0.0001
+묶음 4644220 B
+===== 14:16:50 재생 f2dr2_mw2 (static_mapper.esdf_integrator_min_weight:=2.0)
+재생 nvblox 덮어쓰기: -p use_sim_time:=true -p static_mapper.esdf_integrator_min_weight:=2.0
+재생 끝 218 s
+재생 nvblox 로그 꼬리:
+ros/depth_image_callback	100    	15.0
+ros/esdf_integration       	100    	0.096
+ros/depth_image_integration	100    	0.069
+ros/depth_image_callback   	100    	0.062
+Bag size:          71.4 MiB
+Duration:          217.524788020s
+Topic information: Topic: /nvblox_node/static_map_slice | Type: nvblox_msgs/msg/DistanceMapSlice | Count: 2065 | 
+출력 /home/jetson/bags/replay_f2dr2_mw2
+[INFO] [1792646212.254261416] [nvblox_node]: static_mapper.esdf_integrator_min_weight: 2
+[INFO] [1792646212.254383436] [nvblox_node]: static_mapper.mesh_integrator_min_weight: 0.0001
+[INFO] [1792646212.254261416] [nvblox_node]: static_mapper.esdf_integrator_min_weight: 2
+[INFO] [1792646212.254383436] [nvblox_node]: static_mapper.mesh_integrator_min_weight: 0.0001
+묶음 3798364 B
+===== 14:20:46 끝

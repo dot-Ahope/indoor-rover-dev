@@ -1,0 +1,4 @@
+bag bag_f2dr2 · 처음 40 s
+  /nvblox_node/static_map_slice             375 개 9.38 Hz · 최대 간격 0.19 s · 지연 중앙 0.114 s p95 0.151 최대 0.209
+  /camera/camera/depth/image_rect_raw       548 개 13.70 Hz · 최대 간격 0.42 s · 지연 중앙 0.064 s p95 0.466 최대 1.027
+  /local_costmap/costmap                     63 개 1.57 Hz · 최대 간격 0.78 s · 지연 중앙 0.001 s p95 0.022 최대 44.831

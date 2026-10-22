@@ -1,0 +1,4 @@
+bag 길이 217.6 s
+/nvblox_node/static_map_slice 2053 9.43 Hz
+/camera/camera/depth/camera_info 3208 14.74 Hz
+/camera/camera/depth/image_rect_raw 3208 14.74 Hz
