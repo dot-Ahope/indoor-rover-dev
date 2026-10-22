@@ -117,6 +117,12 @@ for line in open(evf, encoding='utf-8', errors='replace'):
         txt = 'PathBlockedAhead' if 'PathBlockedAhead' in line else ('스무더 충돌' if 'collision' in line else ('TF 외삽 중단' if 'extrapolation' in line else line[12:60].strip()))
         if 'PathBlockedAhead' in line: txt = line[12:].split(':', 1)[-1].strip()[:40] if ':' in line[12:] else txt
         EV.append((t, txt))
+# 10-22 §17: 첫 판은 매 장 저장 지도 산점도 · tight_layout 을 다시 계산해 650 장에 40 분 넘게 걸림 → 지도 점은 한 번만 계산, 배치는 한 번만
+MAPP = None
+if MAP is not None:
+    _g = np.array(MAP.data).reshape(MAP.info.height, MAP.info.width); _yy, _xx = np.nonzero(_g >= 65); _r = MAP.info.resolution
+    MAPP = np.c_[MAP.info.origin.position.x + (_xx + .5) * _r, MAP.info.origin.position.y + (_yy + .5) * _r]
+    MAPP = MAPP[(MAPP[:, 0] > VX[0] - 0.2) & (MAPP[:, 0] < VX[1] + 0.2) & (MAPP[:, 1] > VX[2] - 0.2) & (MAPP[:, 1] < VX[3] + 0.2)]
 lc_cmap = ListedColormap([(0, 0, 0, 0), (0.95, 0.9, 0.6, 0.45), (0.95, 0.75, 0.35, 0.55), (1, 0.55, 0.15, 0.7), (0.85, 0.1, 0.1, 0.8)])
 fig = plt.figure(figsize=(14, 7.6), facecolor='white'); gs = fig.add_gridspec(2, 2, width_ratios=[1.45, 1], height_ratios=[1, 1])
 axM = fig.add_subplot(gs[:, 0]); axD = fig.add_subplot(gs[0, 1]); axT = fig.add_subplot(gs[1, 1])
@@ -126,14 +132,13 @@ with wr.saving(fig, out, dpi=90):
     while t <= TB:
         p = pose(t); Q = poly(p)
         axM.clear(); axM.set_xlim(VX[0], VX[1]); axM.set_ylim(VX[2], VX[3]); axM.set_aspect('equal'); axM.tick_params(labelsize=7); axM.grid(alpha=0.25)
-        if MAP is not None:
-            g = np.array(MAP.data).reshape(MAP.info.height, MAP.info.width); yy, xx = np.nonzero(g >= 65); r = MAP.info.resolution
-            axM.scatter(MAP.info.origin.position.x + (xx + .5) * r, MAP.info.origin.position.y + (yy + .5) * r, s=4, c='#9e9e9e', marker='s', lw=0)
+        if MAPP is not None: axM.scatter(MAPP[:, 0], MAPP[:, 1], s=4, c='#9e9e9e', marker='s', lw=0)
         tt, fr, ox, oy, r, A = last(LC, LCt, t); L = np.zeros_like(A); L[(A > 0) & (A < 50)] = 1; L[(A >= 50) & (A < 99)] = 2; L[A == 99] = 3; L[A >= 100] = 4
         a = mo_at(tt) if fr != 'map' else (0, 0, 0)
         ys, xs = np.nonzero(L > 0)
         if len(xs):
             P = to_map(np.c_[ox + (xs + .5) * r, oy + (ys + .5) * r], fr, tt); vals = L[ys, xs]
+            kin = (P[:, 0] > VX[0] - 0.1) & (P[:, 0] < VX[1] + 0.1) & (P[:, 1] > VX[2] - 0.1) & (P[:, 1] < VX[3] + 0.1); P, vals = P[kin], vals[kin]
             for lv, col in ((1, (0.95, 0.9, 0.6, 0.45)), (2, (0.95, 0.75, 0.35, 0.55)), (3, (1, 0.55, 0.15, 0.75)), (4, (0.85, 0.1, 0.1, 0.85))):
                 k = vals == lv
                 if k.any(): axM.scatter(P[k, 0], P[k, 1], s=26, c=[col], marker='s', lw=0)
@@ -186,6 +191,8 @@ with wr.saving(fig, out, dpi=90):
         rec = [txt for te, txt in EV if t - 2.0 <= te <= t]
         fig.suptitle('f2pi1 복귀 · 상자 둘레 — 자홍 테두리 = 카메라(nvblox) 칸 · 빨강/주황/노랑 = 로컬 코스트맵(MPPI) · 검정 사각 = 실제 상자 · 보라 = 전역 경로 · 청록 = 컨트롤러 경로 · 노랑 부채꼴 = 깊이 시야 2.0 m'
                      + ('\n최근 2 s 사건: ' + ' / '.join(rec[-2:]) if rec else '\n '), fontsize=9)
-        plt.tight_layout(rect=(0, 0, 1, 0.93)); wr.grab_frame(); t += DT; nfr += 1
+        if nfr == 0: plt.tight_layout(rect=(0, 0, 1, 0.93))
+        wr.grab_frame(); t += DT; nfr += 1
+        if nfr % 50 == 0: print('  %d 장 (t %.1f)' % (nfr, t), flush=True)
 print('영상', out, nfr, '장 · 실제 여유 최소 %.1f cm @ t %.1f · 지도 여유 그때 %s' % (100 * np.nanmin(CL_true), TT[np.nanargmin(CL_true)],
       '%.1f cm' % (100 * CL_map[np.nanargmin(CL_true)]) if not np.isnan(CL_map[np.nanargmin(CL_true)]) else '-'))

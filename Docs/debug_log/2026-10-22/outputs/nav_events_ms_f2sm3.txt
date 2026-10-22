@@ -1,0 +1,105 @@
+17:51:00.20 bt_navigator Begin navigating from current location (-0.00, 0.00) to (2.25, -1.60)
+17:51:00.27 controller_server Received a goal, begin computing control effort.
+17:51:00.27 controller_server No goal checker was specified in parameter 'current_goal_checker'. Server will use only plugin loaded general_goal_checker . This warning will appear once.
+17:51:00.27 controller_server Optimizer reset
+17:51:02.67 controller_server Control loop missed its desired rate of 10.0000Hz
+17:51:03.07 controller_server Control loop missed its desired rate of 10.0000Hz
+17:51:08.17 controller_server Exception in transformPose: Lookup would require extrapolation into the future.  Requested time 1792659067.650119 but the latest data is at time 1792659067.591266, when l
+17:51:08.17 controller_server Unable to transform robot pose into global plan's frame
+17:51:08.17 controller_server [follow_path] [ActionServer] Aborting handle.
+17:51:08.19 controller_server Received a goal, begin computing control effort.
+17:51:08.63 controller_server Control loop missed its desired rate of 10.0000Hz
+17:51:10.63 controller_server Control loop missed its desired rate of 10.0000Hz
+17:51:30.09 controller_server Control loop missed its desired rate of 10.0000Hz
+17:51:33.74 controller_server Exception in transformPose: Lookup would require extrapolation into the future.  Requested time 1792659093.218104 but the latest data is at time 1792659093.162492, when l
+17:51:33.74 controller_server Unable to transform robot pose into global plan's frame
+17:51:33.74 controller_server [follow_path] [ActionServer] Aborting handle.
+17:51:33.74 controller_server Received a goal, begin computing control effort.
+17:51:33.89 controller_server Control loop missed its desired rate of 10.0000Hz
+17:51:37.28 controller_server Control loop missed its desired rate of 10.0000Hz
+17:51:42.68 controller_server Control loop missed its desired rate of 10.0000Hz
+17:51:49.49 controller_server Control loop missed its desired rate of 10.0000Hz
+17:51:52.51 controller_server Reached the goal!
+17:51:52.54 bt_navigator Goal succeeded
+17:51:52.59 bt_navigator Begin navigating from current location (2.28, -1.46) to (5.50, -2.20)
+17:51:52.64 controller_server Received a goal, begin computing control effort.
+17:51:54.58 controller_server Control loop missed its desired rate of 10.0000Hz
+17:51:56.03 controller_server Control loop missed its desired rate of 10.0000Hz
+17:51:56.06 controller_server Control loop missed its desired rate of 10.0000Hz
+17:51:57.46 controller_server Control loop missed its desired rate of 10.0000Hz
+17:51:58.21 controller_server Control loop missed its desired rate of 10.0000Hz
+17:51:58.98 controller_server Control loop missed its desired rate of 10.0000Hz
+17:52:00.79 controller_server Exception in transformPose: Lookup would require extrapolation into the future.  Requested time 1792659120.249689 but the latest data is at time 1792659120.150886, when l
+17:52:00.79 controller_server Unable to transform robot pose into global plan's frame
+17:52:00.79 controller_server [follow_path] [ActionServer] Aborting handle.
+17:52:00.81 controller_server Received a goal, begin computing control effort.
+17:52:00.98 controller_server Control loop missed its desired rate of 10.0000Hz
+17:52:01.05 controller_server Control loop missed its desired rate of 10.0000Hz
+17:52:01.83 controller_server Control loop missed its desired rate of 10.0000Hz
+17:52:06.78 controller_server Control loop missed its desired rate of 10.0000Hz
+17:52:13.78 controller_server Control loop missed its desired rate of 10.0000Hz
+17:52:13.80 controller_server Control loop missed its desired rate of 10.0000Hz
+17:52:17.48 controller_server Control loop missed its desired rate of 10.0000Hz
+17:52:17.51 controller_server Control loop missed its desired rate of 10.0000Hz
+17:52:27.84 controller_server Control loop missed its desired rate of 10.0000Hz
+17:52:42.16 controller_server Reached the goal!
+17:52:42.19 bt_navigator Goal succeeded
+17:52:42.23 bt_navigator Begin navigating from current location (5.37, -2.14) to (0.00, 0.00)
+17:52:42.28 controller_server Received a goal, begin computing control effort.
+17:52:45.69 controller_server Control loop missed its desired rate of 10.0000Hz
+17:52:57.19 controller_server Control loop missed its desired rate of 10.0000Hz
+17:52:59.37 controller_server Control loop missed its desired rate of 10.0000Hz
+17:52:59.42 controller_server Control loop missed its desired rate of 10.0000Hz
+17:52:59.50 controller_server Control loop missed its desired rate of 10.0000Hz
+17:53:04.11 controller_server Control loop missed its desired rate of 10.0000Hz
+17:53:04.70 controller_server Control loop missed its desired rate of 10.0000Hz
+17:53:11.72 controller_server Control loop missed its desired rate of 10.0000Hz
+17:53:26.79 controller_server Control loop missed its desired rate of 10.0000Hz
+17:53:34.24 controller_server Control loop missed its desired rate of 10.0000Hz
+17:53:35.51 controller_server Control loop missed its desired rate of 10.0000Hz
+17:53:35.54 controller_server Control loop missed its desired rate of 10.0000Hz
+17:53:36.99 controller_server Control loop missed its desired rate of 10.0000Hz
+17:53:38.39 controller_server Control loop missed its desired rate of 10.0000Hz
+17:53:39.20 controller_server Exception in transformPose: Lookup would require extrapolation into the future.  Requested time 1792659218.681083 but the latest data is at time 1792659218.663006, when l
+17:53:39.20 controller_server Unable to transform robot pose into global plan's frame
+17:53:39.20 controller_server [follow_path] [ActionServer] Aborting handle.
+17:53:39.23 controller_server Received a goal, begin computing control effort.
+17:53:39.39 controller_server Control loop missed its desired rate of 10.0000Hz
+17:53:40.94 bt_navigator_navigate_to_pose_rclcpp_node PathBlockedAhead: 앞 경로 (1.45, -0.20) 비용 99 — 2.0 s 지속되면 재계획
+17:53:42.98 controller_server Control loop missed its desired rate of 10.0000Hz
+17:53:48.73 controller_server Control loop missed its desired rate of 10.0000Hz
+17:53:52.95 controller_server Control loop missed its desired rate of 10.0000Hz
+17:53:55.29 controller_server Control loop missed its desired rate of 10.0000Hz
+17:53:58.44 controller_server Control loop missed its desired rate of 10.0000Hz
+17:54:06.00 controller_server Control loop missed its desired rate of 10.0000Hz
+17:54:07.94 bt_navigator_navigate_to_pose_rclcpp_node PathBlockedAhead: 앞 경로 (1.15, 0.27) 비용 99 — 2.0 s 지속되면 재계획
+17:54:08.00 controller_server Exception in transformPose: Lookup would require extrapolation into the future.  Requested time 1792659247.484600 but the latest data is at time 1792659247.430945, when l
+17:54:08.00 controller_server Unable to transform robot pose into global plan's frame
+17:54:08.00 controller_server [follow_path] [ActionServer] Aborting handle.
+17:54:08.95 smoother_server Smoother simple_smoother did not complete smoothing in specified time limit(1.000000 seconds) and was interrupted after 0.000436 seconds
+17:54:08.95 smoother_server Smoothed path leads to a collision at x: 1.460000, y: 0.240000, theta: -0.241728
+17:54:08.95 smoother_server [smooth_path] [ActionServer] Aborting handle.
+17:54:08.96 bt_navigator_navigate_to_pose_rclcpp_node PathBlockedAhead: 앞 경로 (1.15, 0.28) 비용 99 — 2.0 s 지속되면 재계획
+17:54:08.96 controller_server Received a goal, begin computing control effort.
+17:54:08.97 controller_server Optimizer reset
+17:54:09.17 controller_server Control loop missed its desired rate of 10.0000Hz
+17:54:09.70 controller_server Control loop missed its desired rate of 10.0000Hz
+17:54:09.80 controller_server Control loop missed its desired rate of 10.0000Hz
+17:54:09.88 controller_server Control loop missed its desired rate of 10.0000Hz
+17:54:11.62 controller_server Control loop missed its desired rate of 10.0000Hz
+17:54:11.70 controller_server Control loop missed its desired rate of 10.0000Hz
+17:54:11.81 controller_server Control loop missed its desired rate of 10.0000Hz
+17:54:11.93 controller_server Control loop missed its desired rate of 10.0000Hz
+17:54:12.01 controller_server Control loop missed its desired rate of 10.0000Hz
+17:54:12.10 controller_server Control loop missed its desired rate of 10.0000Hz
+17:54:12.19 controller_server Control loop missed its desired rate of 10.0000Hz
+17:54:12.28 controller_server Control loop missed its desired rate of 10.0000Hz
+17:54:12.39 controller_server Control loop missed its desired rate of 10.0000Hz
+17:54:12.50 controller_server Control loop missed its desired rate of 10.0000Hz
+17:54:12.59 controller_server Control loop missed its desired rate of 10.0000Hz
+17:54:13.18 controller_server Control loop missed its desired rate of 10.0000Hz
+17:54:13.52 controller_server Control loop missed its desired rate of 10.0000Hz
+17:54:13.57 controller_server Control loop missed its desired rate of 10.0000Hz
+17:54:20.18 controller_server Control loop missed its desired rate of 10.0000Hz
+17:54:26.89 controller_server Reached the goal!
+17:54:26.92 bt_navigator Goal succeeded
