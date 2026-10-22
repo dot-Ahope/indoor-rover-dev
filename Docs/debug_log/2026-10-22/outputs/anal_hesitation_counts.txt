@@ -1,0 +1,3 @@
+outputs/nav2_f2pr1.log · 주기 늦음 60 · TF 외삽 중단 37
+outputs/nav2_f2pi1.log · 주기 늦음 72 · TF 외삽 중단 36
+outputs/nav2_f2lp1.log · 주기 늦음 72 · TF 외삽 중단 63

@@ -1,0 +1,5 @@
+visual_preset: Integer value is: 3
+/tmp/sensors.log
+/tmp/tegra_f2lp1.log
+/tmp/slam.log
+[INFO] [1792655039.478277733] [nvblox_node]: static_mapper.projective_integrator_max_integration_distance_m: 2
