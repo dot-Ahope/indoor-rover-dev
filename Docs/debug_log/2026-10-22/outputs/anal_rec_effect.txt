@@ -1,0 +1,10 @@
+bag bag_f2dr1 · 처음 40 s
+  /camera/camera/depth/image_rect_raw       570 개 14.25 Hz · 최대 간격 0.31 s · 지연 중앙 0.064 s p95 0.256 최대 0.840
+  /local_costmap/costmap                     62 개 1.55 Hz · 최대 간격 0.66 s · 지연 중앙 0.001 s p95 0.004 최대 45.448
+  /nvblox_node/static_map_slice             344 개 8.60 Hz · 최대 간격 0.41 s · 지연 중앙 0.113 s p95 0.155 최대 0.416
+bag bag_f2sm1 · 처음 40 s
+  /local_costmap/costmap                     67 개 1.68 Hz · 최대 간격 0.75 s · 지연 중앙 0.000 s p95 0.030 최대 42.163
+  /nvblox_node/static_map_slice             358 개 8.95 Hz · 최대 간격 0.21 s · 지연 중앙 0.114 s p95 0.152 최대 0.215
+bag bag_f2pr1 · 처음 40 s
+  /nvblox_node/static_map_slice             366 개 9.15 Hz · 최대 간격 0.30 s · 지연 중앙 0.113 s p95 0.151 최대 0.303
+  /local_costmap/costmap                     64 개 1.60 Hz · 최대 간격 0.67 s · 지연 중앙 0.001 s p95 0.012 최대 43.608
