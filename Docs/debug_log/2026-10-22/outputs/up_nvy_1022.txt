@@ -1,0 +1,2 @@
+이전 sha e86434bd8921 (기대 e86434bd8921)
+새 sha bf8abc842b27 (기대 bf8abc842b27) · 설치본 lrwxrwxrwx /home/jetson/ros2_ws/src/rover_navigation/config/nvblox_local.yaml · 같음? 예 · 값 max_integration_distance_m: 2.0
