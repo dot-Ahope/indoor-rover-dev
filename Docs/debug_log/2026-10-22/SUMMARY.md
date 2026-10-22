@@ -288,3 +288,13 @@
   1. 재생은 지도만 보여 준다 — 이 칸으로 Nav2 가 실제로 비켜 갔을지는 주행으로만 확인.
   2. 1.4 m 로 줄였던 이유(10-14 §6: 멀리서 처음 볼 때 면이 한 줄 두껍게 찍힘 · 각 오차가 거리에 비례)는 그대로 — 상자 옆 여유가 줄 수 있음(상자 옆 정지 문제, [box-side-stall]). 이번 칸도 1 칸씩 옮겨 다님.
   3. 다른 장면(프리셋 없음 f2dr2 2.0 재생 §11.3: A 102 → 132)에선 유령이 늘었음 — 프리셋 3 이라 적은 것.
+
+## §15 통합 거리 2.0 배포 · 검증 주행 f2pi1 선언 (사용자: "1번 진행 후 2번 시작")
+- 변경: `ros2_ws/src/rover_navigation/config/nvblox_local.yaml` `projective_integrator_max_integration_distance_m` 1.4 → **2.0**(근거 주석). 깊이 프리셋 3 은 그대로.
+- 배포(`jobs/up_nvy_1022.sh` → `outputs/up_nvy_1022.txt`): 첫 시도는 Jetson 판 sha e86434bd8921 이 저장소 HEAD(31b082c88032)와 달라 **덮어쓰기 중단** → 비교(`outputs/nvblox_local_jetson_pre1022.yaml`): 머리 주석 3 줄(10-19 §1 의 '160×120' 정정 주석이 배포 안 됐던 것)만 다르고 값은 같음 → 기대 sha 를 Jetson 판으로 바꿔 배포. 새 sha bf8abc842b27(저장소 판, LF), 설치본은 src 링크, 값 2.0 확인. 이전 판 사본 Jetson `/tmp/nvblox_local.yaml.pre_1022`.
+- 검증 주행 f2pi1(결과 보기 전 기준): b910 1 바퀴, `BAG_DEPTH=1`, STAGE `F2c-p3-i20`, prep `jobs/prep_op_1022.sh`(visual_preset 3 확인) + nvblox 로그에서 통합 거리 2 확인.
+  1. 상자 접촉 없음(`jobs/anal_contact.py`, 차체 ↔ 기록 상자 > 0)
+  2. 복귀 접근(160 s ~ 상자 옆 통과) 상자 영역 칸 ≥ 3(조각 · 전역 코스트맵, `jobs/anal_box_maps_series.py`)
+  3. 맨바닥 A 유령 ≤ 20(로컬 근거 없는 LETHAL, t 10~60 s, `2026-10-21/jobs/anal_zone_ghosts.py`)
+  4. 상자 옆 멈칫 · 정지 없음(복귀 상자 옆 구간 PathBlockedAhead · Wait · 후보 전부 충돌 0, nav2 로그)
+  - 목표 3/3 은 기록용. 4 만 실패면 '상자 옆 여유' 문제(10-14 §5.1 우려)로 따로 본다.
