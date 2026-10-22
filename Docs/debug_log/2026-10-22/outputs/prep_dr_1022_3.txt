@@ -1,0 +1,9 @@
+  [  4.0 s] 기다리는 것: controller_server planner_server bt_navigator behavior_server nav_map_server map→base TF /wheel_odom /odometry/filtered 전역 지도
+  [  9.0 s] 기다리는 것: controller_server planner_server bt_navigator behavior_server map→base TF /wheel_odom /odometry/filtered 전역 지도
+  [  9.4 s] 기다리는 것: controller_server planner_server bt_navigator behavior_server /wheel_odom /odometry/filtered 전역 지도
+  [ 22.9 s] 기다리는 것: controller_server planner_server bt_navigator behavior_server /wheel_odom 전역 지도
+  /wheel_odom 25.0 Hz · /odometry/filtered 30.0 Hz · /tf 50.0 Hz · 배터리 12.15 V
+PREP_FAIL
+  nvblox(컨테이너): 1 개 · cuVSLAM(컨테이너): 1 개 · vslam_twist 1 · ekf_vslam 1
+  ⏱ +187 s prep 끝 — PREP_FAIL
+visual_preset = Integer value is: 0

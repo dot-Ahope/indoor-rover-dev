@@ -1,0 +1,8 @@
+lost connection
+전송 재시도 1
+lost connection
+전송 재시도 2
+lost connection
+전송 재시도 3
+ssh: connect to host 192.168.0.110 port 22: No route to host
+기동 실패
