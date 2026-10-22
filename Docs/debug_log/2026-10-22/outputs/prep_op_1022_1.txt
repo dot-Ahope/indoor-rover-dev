@@ -1,0 +1,8 @@
+  SHM 고아 정리: 2 zombie segments cleaned · 남은 fastrtps 4
+  [  4.1 s] 기다리는 것: controller_server planner_server bt_navigator behavior_server nav_map_server map→base TF /wheel_odom /odometry/filtered 전역 지도
+  위치 추정 검사(기대 0,0,0): 위치 차 0.007 m · yaw 차 -0.5° → 통과
+  /wheel_odom 25.0 Hz · /odometry/filtered 30.0 Hz · /tf 50.0 Hz · 배터리 12.20 V
+PREP_OK
+  nvblox(컨테이너): 1 개 · cuVSLAM(컨테이너): 1 개 · vslam_twist 1 · ekf_vslam 1
+  ⏱ +70 s prep 끝 — PREP_OK
+visual_preset = Integer value is: 3
