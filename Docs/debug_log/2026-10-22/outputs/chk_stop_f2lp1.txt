@@ -1,0 +1,6 @@
+      x: 0.0
+기록기: 1
+기록기 남음: 0
+468M	/tmp/bag_f2lp1
+bag_f2lp1_0.db3
+metadata.yaml
