@@ -1,0 +1,11 @@
+주행 11:34:30 ~ 11:38:04 (213.6 s) · 멈춤(1.0 s 넘게 정지) 1 번 · 합 4.9 s
+
+11:37:29~11:37:34 (t 191.5~196.4, 4.9 s) @ (1.74, -0.34) | cmd_vel 8 개 중 0 명령 5 · 최대 |v| 0.030 · 최대 |ω| 0.11 | 앞 ±30° 라이다 최소 0.89 m
+    11:37:27.02 smoother_server Received a path to smooth.
+    11:37:27.02 smoother_server Smoother simple_smoother did not complete smoothing in specified time limit(1.000000 seconds) and was interrupted after 0.000678 secon
+    11:37:27.02 smoother_server Smoothed path leads to a collision at x: 1.522526, y: -0.028336, theta: -0.061623
+    11:37:27.02 smoother_server [smooth_path] [ActionServer] Aborting handle.
+    11:37:27.04 bt_navigator_navigate_to_pose_rclcpp_node PathBlockedAhead: 앞 경로 (1.40, -0.02) 비용 99 — 2.0 s 지속되면 재계획
+    11:37:27.10 controller_server Passing new path to controller.
+    11:37:29.05 bt_navigator_navigate_to_pose_rclcpp_node PathBlockedAhead: 앞 경로 (1.40, -0.02) 비용 99 가 2.0 s 지속 → 주행 중단·재계획
+    11:37:29.16 bt_navigator_navigate_to_pose_rclcpp_node Failed to get result for follow_path in node halt!
