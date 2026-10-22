@@ -125,7 +125,7 @@ if MAP is not None:
     MAPP = MAPP[(MAPP[:, 0] > VX[0] - 0.2) & (MAPP[:, 0] < VX[1] + 0.2) & (MAPP[:, 1] > VX[2] - 0.2) & (MAPP[:, 1] < VX[3] + 0.2)]
 lc_cmap = ListedColormap([(0, 0, 0, 0), (0.95, 0.9, 0.6, 0.45), (0.95, 0.75, 0.35, 0.55), (1, 0.55, 0.15, 0.7), (0.85, 0.1, 0.1, 0.8)])
 fig = plt.figure(figsize=(14, 7.6), facecolor='white'); gs = fig.add_gridspec(2, 2, width_ratios=[1.45, 1], height_ratios=[1, 1])
-axM = fig.add_subplot(gs[:, 0]); axD = fig.add_subplot(gs[0, 1]); axT = fig.add_subplot(gs[1, 1])
+axM = fig.add_subplot(gs[:, 0]); axD = fig.add_subplot(gs[0, 1]); axT = fig.add_subplot(gs[1, 1]); ax2 = axT.twinx()   # 10-22 §17: 오른쪽 축은 한 번만 만든다(매 장 twinx 하면 축이 쌓여 갈수록 느려짐 — 150 장에서 멈춘 듯 보였음)
 wr = FFMpegWriter(fps=FPS, bitrate=3200); clock = lambda t: datetime.datetime.fromtimestamp(T0 + t, KST).strftime('%H:%M:%S.%f')[:10]
 with wr.saving(fig, out, dpi=90):
     t = TA; nfr = 0
@@ -182,7 +182,7 @@ with wr.saving(fig, out, dpi=90):
         axT.clear(); axT.plot(TT, 100 * CL_true, color='black', lw=1.4, label='실제 여유(차체↔실제 상자)')
         axT.plot(TT, 100 * CL_map, color='#d32f2f', lw=1.2, label='지도 여유(차체↔로컬 치명 칸)'); axT.plot(TT, 100 * CL_sl, color='#c2185b', lw=0.8, ls='--', label='카메라 칸까지(조각)')
         axT.set_ylim(-2, 60); axT.set_xlim(TA, TB); axT.set_ylabel('cm'); axT.axvline(t, color='#555555', lw=0.8); axT.grid(alpha=0.3); axT.tick_params(labelsize=7)
-        ax2 = axT.twinx(); cv = np.array([q for q in CMD if TA <= q[0] <= TB])
+        ax2.clear(); cv = np.array([q for q in CMD if TA <= q[0] <= TB])
         if len(cv): ax2.plot(cv[:, 0], cv[:, 1], color='#1565c0', lw=0.7, alpha=0.7)
         ax2.set_ylim(-0.1, 0.12); ax2.set_ylabel('전진 명령 m/s', color='#1565c0', fontsize=8); ax2.tick_params(labelsize=7)
         for te, txt in EV:
