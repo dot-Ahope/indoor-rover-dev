@@ -1,0 +1,964 @@
+[INFO] [launch]: All log files can be found below /home/jetson/.ros/log/2026-10-22-16-43-53-072767-jetson-desktop-1394090
+[INFO] [launch]: Default logging verbosity is set to INFO
+[INFO] [stuck_monitor.py-1]: process started with pid [1394121]
+[INFO] [nav_guard.py-2]: process started with pid [1394123]
+[INFO] [controller_server-3]: process started with pid [1394125]
+[INFO] [smoother_server-4]: process started with pid [1394127]
+[INFO] [planner_server-5]: process started with pid [1394129]
+[INFO] [behavior_server-6]: process started with pid [1394131]
+[INFO] [bt_navigator-7]: process started with pid [1394133]
+[INFO] [waypoint_follower-8]: process started with pid [1394135]
+[INFO] [velocity_smoother-9]: process started with pid [1394139]
+[INFO] [lifecycle_manager-10]: process started with pid [1394148]
+[INFO] [map_server-11]: process started with pid [1394161]
+[INFO] [lifecycle_manager-12]: process started with pid [1394178]
+[INFO] [nvblox_up-13]: process started with pid [1394188]
+[bt_navigator-7] [INFO] [1792655034.212574099] [bt_navigator]: 
+[bt_navigator-7] 	bt_navigator lifecycle node launched. 
+[bt_navigator-7] 	Waiting on external lifecycle transitions to activate
+[bt_navigator-7] 	See https://design.ros2.org/articles/node_lifecycle.html for more information.
+[bt_navigator-7] [INFO] [1792655034.213018786] [bt_navigator]: Creating
+[planner_server-5] [INFO] [1792655034.326097932] [planner_server]: 
+[planner_server-5] 	planner_server lifecycle node launched. 
+[planner_server-5] 	Waiting on external lifecycle transitions to activate
+[planner_server-5] 	See https://design.ros2.org/articles/node_lifecycle.html for more information.
+[planner_server-5] [INFO] [1792655034.349392063] [planner_server]: Creating
+[planner_server-5] [INFO] [1792655034.956155815] [global_costmap.global_costmap]: 
+[planner_server-5] 	global_costmap lifecycle node launched. 
+[planner_server-5] 	Waiting on external lifecycle transitions to activate
+[planner_server-5] 	See https://design.ros2.org/articles/node_lifecycle.html for more information.
+[planner_server-5] [INFO] [1792655034.957706524] [global_costmap.global_costmap]: Creating Costmap
+[smoother_server-4] [INFO] [1792655035.016585248] [smoother_server]: 
+[smoother_server-4] 	smoother_server lifecycle node launched. 
+[smoother_server-4] 	Waiting on external lifecycle transitions to activate
+[smoother_server-4] 	See https://design.ros2.org/articles/node_lifecycle.html for more information.
+[smoother_server-4] [INFO] [1792655035.124763621] [smoother_server]: Creating smoother server
+[behavior_server-6] [INFO] [1792655035.263649111] [behavior_server]: 
+[behavior_server-6] 	behavior_server lifecycle node launched. 
+[behavior_server-6] 	Waiting on external lifecycle transitions to activate
+[behavior_server-6] 	See https://design.ros2.org/articles/node_lifecycle.html for more information.
+[controller_server-3] [INFO] [1792655035.337847392] [controller_server]: 
+[controller_server-3] 	controller_server lifecycle node launched. 
+[controller_server-3] 	Waiting on external lifecycle transitions to activate
+[controller_server-3] 	See https://design.ros2.org/articles/node_lifecycle.html for more information.
+[lifecycle_manager-10] [INFO] [1792655035.388962622] [lifecycle_manager_navigation]: Creating
+[lifecycle_manager-10] [INFO] [1792655035.500496948] [lifecycle_manager_navigation]: [34m[1mCreating and initializing lifecycle service clients[0m[0m
+[map_server-11] [INFO] [1792655035.675530603] [nav_map_server]: 
+[map_server-11] 	nav_map_server lifecycle node launched. 
+[map_server-11] 	Waiting on external lifecycle transitions to activate
+[map_server-11] 	See https://design.ros2.org/articles/node_lifecycle.html for more information.
+[map_server-11] [INFO] [1792655035.675951001] [nav_map_server]: Creating
+[lifecycle_manager-12] [INFO] [1792655035.855207102] [lifecycle_manager_navmap]: Creating
+[controller_server-3] [INFO] [1792655035.971993894] [controller_server]: Creating controller server
+[velocity_smoother-9] [INFO] [1792655035.981692525] [velocity_smoother]: 
+[velocity_smoother-9] 	velocity_smoother lifecycle node launched. 
+[velocity_smoother-9] 	Waiting on external lifecycle transitions to activate
+[velocity_smoother-9] 	See https://design.ros2.org/articles/node_lifecycle.html for more information.
+[waypoint_follower-8] [INFO] [1792655036.224283277] [waypoint_follower]: 
+[waypoint_follower-8] 	waypoint_follower lifecycle node launched. 
+[waypoint_follower-8] 	Waiting on external lifecycle transitions to activate
+[lifecycle_manager-12] [INFO] [1792655036.238039453] [lifecycle_manager_navmap]: [34m[1mCreating and initializing lifecycle service clients[0m[0m
+[waypoint_follower-8] 	See https://design.ros2.org/articles/node_lifecycle.html for more information.
+[waypoint_follower-8] [INFO] [1792655036.257194116] [waypoint_follower]: Creating
+[lifecycle_manager-10] [INFO] [1792655037.590329501] [lifecycle_manager_navigation]: Waiting for service controller_server/get_state...
+[controller_server-3] [INFO] [1792655037.717200473] [local_costmap.local_costmap]: 
+[controller_server-3] 	local_costmap lifecycle node launched. 
+[controller_server-3] 	Waiting on external lifecycle transitions to activate
+[controller_server-3] 	See https://design.ros2.org/articles/node_lifecycle.html for more information.
+[controller_server-3] [INFO] [1792655037.718944372] [local_costmap.local_costmap]: Creating Costmap
+[lifecycle_manager-12] [INFO] [1792655038.389864596] [lifecycle_manager_navmap]: Waiting for service nav_map_server/get_state...
+[controller_server-3] [WARN] [1792655039.809548088] [rclcpp]: Failed to get parameters: FollowPathMPPI.PreferForwardCritic.cost_weight
+[controller_server-3] [WARN] [1792655039.860666198] [rclcpp]: Failed to get parameters: FollowPathMPPI.PreferForwardCritic.cost_weight
+[controller_server-3] [WARN] [1792655039.928232159] [rclcpp]: Failed to get parameters: FollowPathMPPI.PreferForwardCritic.cost_weight
+[lifecycle_manager-12] [INFO] [1792655039.932049696] [lifecycle_manager_navmap]: [34m[1mStarting managed nodes bringup...[0m[0m
+[lifecycle_manager-12] [INFO] [1792655039.932200741] [lifecycle_manager_navmap]: [34m[1mConfiguring nav_map_server[0m[0m
+[map_server-11] [INFO] [1792655039.942722665] [nav_map_server]: Configuring
+[map_server-11] [INFO] [1792655039.942926512] [map_io]: Loading yaml file: /home/jetson/maps/office/office_v3.yaml
+[map_server-11] [INFO] [1792655039.943480962] [map_io]: resolution: 0.05
+[map_server-11] [INFO] [1792655039.943507939] [map_io]: origin[0]: -5.29
+[map_server-11] [INFO] [1792655039.943516868] [map_io]: origin[1]: -6.96
+[map_server-11] [INFO] [1792655039.943523812] [map_io]: origin[2]: 0
+[map_server-11] [INFO] [1792655039.943531140] [map_io]: free_thresh: 0.25
+[map_server-11] [INFO] [1792655039.943538212] [map_io]: occupied_thresh: 0.65
+[map_server-11] [INFO] [1792655039.943546565] [map_io]: mode: trinary
+[map_server-11] [INFO] [1792655039.943556325] [map_io]: negate: 0
+[map_server-11] [INFO] [1792655039.943891376] [map_io]: Loading image_file: /home/jetson/maps/office/office_v3.pgm
+[nvblox_up-13] [nvblox_up] nvblox_node pid 1394368 (yaml nvblox_local.yaml, 로그 /tmp/nvblox_node.log, 부모 launch pid 1394090) — 이후 래퍼 출력은 /tmp/nvblox_node_up.log
+[map_server-11] [INFO] [1792655040.051020594] [map_io]: Read map /home/jetson/maps/office/office_v3.pgm: 333 X 242 map @ 0.05 m/cell
+[controller_server-3] [WARN] [1792655040.063990216] [rclcpp]: Failed to get parameters: FollowPathMPPI.PreferForwardCritic.cost_weight
+[lifecycle_manager-10] [INFO] [1792655040.086995057] [lifecycle_manager_navigation]: [34m[1mStarting managed nodes bringup...[0m[0m
+[lifecycle_manager-10] [INFO] [1792655040.087151894] [lifecycle_manager_navigation]: [34m[1mConfiguring controller_server[0m[0m
+[controller_server-3] [INFO] [1792655040.102244148] [controller_server]: Configuring controller interface
+[controller_server-3] [INFO] [1792655040.102881705] [controller_server]: getting goal checker plugins..
+[controller_server-3] [INFO] [1792655040.102954412] [controller_server]: Controller frequency set to 10.0000Hz
+[controller_server-3] [INFO] [1792655040.103019150] [local_costmap.local_costmap]: Configuring
+[controller_server-3] [INFO] [1792655040.328935547] [local_costmap.local_costmap]: Using plugin "nvblox_layer"
+[lifecycle_manager-12] [INFO] [1792655040.358608325] [lifecycle_manager_navmap]: [34m[1mActivating nav_map_server[0m[0m
+[map_server-11] [INFO] [1792655040.366322857] [nav_map_server]: Activating
+[map_server-11] [INFO] [1792655040.366815034] [nav_map_server]: Creating bond (nav_map_server) to lifecycle manager.
+[controller_server-3] [INFO] [1792655040.440896543] [local_costmap.local_costmap]: Name: nvblox_layer Topic name: /nvblox_node/static_map_slice Convert to binary costmap: 1 Max obstacle distance: 0.4
+[lifecycle_manager-12] [INFO] [1792655040.606467350] [lifecycle_manager_navmap]: Server nav_map_server connected with bond.
+[lifecycle_manager-12] [INFO] [1792655040.606585018] [lifecycle_manager_navmap]: [34m[1mManaged nodes are active[0m[0m
+[lifecycle_manager-12] [INFO] [1792655040.606613659] [lifecycle_manager_navmap]: [34m[1mCreating bond timer...[0m[0m
+[controller_server-3] [INFO] [1792655040.697101035] [local_costmap.local_costmap]: Initialized plugin "nvblox_layer"
+[controller_server-3] [INFO] [1792655040.697212751] [local_costmap.local_costmap]: Using plugin "obstacle_layer"
+[controller_server-3] [INFO] [1792655040.730591126] [local_costmap.local_costmap]: Subscribed to Topics: scan
+[controller_server-3] [INFO] [1792655040.772443099] [local_costmap.local_costmap]: Initialized plugin "obstacle_layer"
+[controller_server-3] [INFO] [1792655040.772565439] [local_costmap.local_costmap]: Using plugin "inflation_layer"
+[controller_server-3] [INFO] [1792655040.785372144] [local_costmap.local_costmap]: Initialized plugin "inflation_layer"
+[controller_server-3] [INFO] [1792655040.924872758] [controller_server]: Created progress_checker : progress_checker of type nav2_controller::PoseProgressChecker
+[controller_server-3] [INFO] [1792655041.084509989] [controller_server]: Created goal checker : general_goal_checker of type nav2_controller::SimpleGoalChecker
+[controller_server-3] [INFO] [1792655041.106645201] [controller_server]: Controller Server has general_goal_checker  goal checkers available.
+[controller_server-3] [INFO] [1792655041.118287098] [controller_server]: Created controller : FollowPath of type nav2_regulated_pure_pursuit_controller::RegulatedPurePursuitController
+[controller_server-3] [WARN] [1792655041.243723462] [controller_server]: Disabling reversing. Both use_rotate_to_heading and allow_reversing parameter cannot be set to true. By default setting use_rotate_to_heading true
+[controller_server-3] [INFO] [1792655041.457175726] [controller_server]: Created controller : FollowPathMPPI of type nav2_mppi_controller::MPPIController
+[controller_server-3] [INFO] [1792655041.591896051] [controller_server]: Controller period is equal to model dt. Control sequence shifting is ON
+[controller_server-3] [INFO] [1792655041.700457701] [controller_server]: ConstraintCritic instantiated with 1 power and 4.000000 weight.
+[controller_server-3] [INFO] [1792655041.700590089] [controller_server]: Critic loaded : mppi::critics::ConstraintCritic
+[controller_server-3] [INFO] [1792655041.704549423] [controller_server]: InflationCostCritic instantiated with 1 power and 300.000000 / 0.015000 weights. Critic will collision check based on footprint cost.
+[controller_server-3] [INFO] [1792655041.704656435] [controller_server]: Critic loaded : mppi::critics::CostCritic
+[controller_server-3] [INFO] [1792655041.722795063] [controller_server]: GoalCritic instantiated with 1 power and 10.000000 weight.
+[controller_server-3] [INFO] [1792655041.722914651] [controller_server]: Critic loaded : mppi::critics::GoalCritic
+[controller_server-3] [INFO] [1792655041.724580243] [controller_server]: GoalAngleCritic instantiated with 1 power, 3.000000 weight, and 0.400000 angular threshold.
+[controller_server-3] [INFO] [1792655041.724639733] [controller_server]: Critic loaded : mppi::critics::GoalAngleCritic
+[controller_server-3] [INFO] [1792655041.777304616] [controller_server]: ReferenceTrajectoryCritic instantiated with 1 power and 14.000000 weight
+[controller_server-3] [INFO] [1792655041.777443501] [controller_server]: Critic loaded : mppi::critics::PathAlignCritic
+[controller_server-3] [INFO] [1792655041.864947031] [controller_server]: Critic loaded : mppi::critics::PathFollowCritic
+[controller_server-3] [INFO] [1792655041.933219929] [controller_server]: PathAngleCritic instantiated with 1 power and 2.000000 weight. Reversing allowed.
+[controller_server-3] [INFO] [1792655041.933407711] [controller_server]: Critic loaded : mppi::critics::PathAngleCritic
+[controller_server-3] [INFO] [1792655041.939613617] [controller_server]: PreferForwardCritic instantiated with 1 power and 15.000000 weight.
+[controller_server-3] [INFO] [1792655041.939725045] [controller_server]: Critic loaded : mppi::critics::PreferForwardCritic
+[controller_server-3] [INFO] [1792655042.031948479] [controller_server]: ClearanceBandCritic: 띠 0.060 m · 가중 20.0 · 점 간격 2
+[controller_server-3] [INFO] [1792655042.035838306] [controller_server]: Critic loaded : mppi::critics::ClearanceBandCritic
+[controller_server-3] [INFO] [1792655042.048337320] [controller_server]: Optimizer reset
+[controller_server-3] [INFO] [1792655042.441355488] [MPPIController]: Configured MPPI Controller: FollowPathMPPI
+[controller_server-3] [INFO] [1792655042.441438659] [controller_server]: Controller Server has FollowPath FollowPathMPPI  controllers available.
+[lifecycle_manager-10] [INFO] [1792655042.750604363] [lifecycle_manager_navigation]: [34m[1mConfiguring smoother_server[0m[0m
+[smoother_server-4] [INFO] [1792655042.751655119] [smoother_server]: Configuring smoother server
+[smoother_server-4] [INFO] [1792655043.442499984] [smoother_server]: Created smoother : simple_smoother of type nav2_smoother::SimpleSmoother
+[smoother_server-4] [INFO] [1792655043.448709377] [smoother_server]: Smoother Server has simple_smoother  smoothers available.
+[lifecycle_manager-10] [INFO] [1792655043.782005176] [lifecycle_manager_navigation]: [34m[1mConfiguring planner_server[0m[0m
+[planner_server-5] [INFO] [1792655043.792153359] [planner_server]: Configuring
+[planner_server-5] [INFO] [1792655043.792297396] [global_costmap.global_costmap]: Configuring
+[nav_guard.py-2] [INFO] [1792655043.951312398] [nav_guard]: nav_guard 시작 (시간 = d0/0.07×2.0+30 s, 무진행 0.25 m/45 s)
+[planner_server-5] [INFO] [1792655043.979472421] [global_costmap.global_costmap]: Using plugin "static_layer"
+[planner_server-5] [INFO] [1792655044.036689073] [global_costmap.global_costmap]: Subscribing to the map topic (/map_nav) with transient local durability
+[planner_server-5] [INFO] [1792655044.043967655] [global_costmap.global_costmap]: Initialized plugin "static_layer"
+[planner_server-5] [INFO] [1792655044.044132492] [global_costmap.global_costmap]: Using plugin "nvblox_layer"
+[planner_server-5] [INFO] [1792655044.052866611] [global_costmap.global_costmap]: Name: nvblox_layer Topic name: /nvblox_node/static_map_slice Convert to binary costmap: 1 Max obstacle distance: 0.4
+[planner_server-5] [INFO] [1792655044.215533352] [global_costmap.global_costmap]: Initialized plugin "nvblox_layer"
+[planner_server-5] [INFO] [1792655044.215648076] [global_costmap.global_costmap]: Using plugin "obstacle_layer"
+[planner_server-5] [INFO] [1792655044.235912056] [global_costmap.global_costmap]: Subscribed to Topics: scan
+[stuck_monitor.py-1] [INFO] [1792655044.236562350] [stuck_monitor]: stuck_monitor 시작 (window 2.0s, ratio 0.25, SHADOW(로그만))
+[planner_server-5] [INFO] [1792655044.312995652] [global_costmap.global_costmap]: Initialized plugin "obstacle_layer"
+[planner_server-5] [INFO] [1792655044.313101479] [global_costmap.global_costmap]: Using plugin "inflation_layer"
+[planner_server-5] [INFO] [1792655044.326567502] [global_costmap.global_costmap]: Initialized plugin "inflation_layer"
+[planner_server-5] [INFO] [1792655044.506290275] [planner_server]: Created global planner plugin GridBased of type nav2_navfn_planner/NavfnPlanner
+[planner_server-5] [INFO] [1792655044.506417383] [planner_server]: Configuring plugin GridBased of type NavfnPlanner
+[planner_server-5] [INFO] [1792655044.511191784] [global_costmap.global_costmap]: StaticLayer: Resizing costmap to 333 X 242 at 0.050000 m/pix
+[planner_server-5] [WARN] [1792655044.515677792] [global_costmap.global_costmap]: [NvbloxCostmapLayer] Can't transform: map to odom. Error: Lookup would require extrapolation at time 1792655044.345550, but only time 1792655044.054811 is in the buffer, when looking up transform from frame [odom] to frame [map]
+[planner_server-5] [INFO] [1792655044.557555142] [planner_server]: Created global planner plugin SmacHybrid of type nav2_smac_planner/SmacPlannerHybrid
+[planner_server-5] [INFO] [1792655044.557683946] [planner_server]: Configuring SmacHybrid of type SmacPlannerHybrid
+[planner_server-5] [INFO] [1792655044.636880733] [planner_server]: Even sized heuristic lookup table size set 400.000000, increasing size by 1 to make odd
+[planner_server-5] [INFO] [1792655048.168872263] [planner_server]: Configured plugin SmacHybrid of type SmacPlannerHybrid with maximum iterations 1000000, max on approach iterations 1000, and allowing unknown traversal. Tolerance 0.25.Using motion model: Dubin.
+[planner_server-5] [INFO] [1792655048.169008780] [planner_server]: Planner Server has GridBased SmacHybrid  planners available.
+[lifecycle_manager-10] [INFO] [1792655048.266207582] [lifecycle_manager_navigation]: [34m[1mConfiguring behavior_server[0m[0m
+[behavior_server-6] [INFO] [1792655048.268659633] [behavior_server]: Configuring
+[behavior_server-6] [INFO] [1792655048.334494560] [behavior_server]: Creating behavior plugin spin of type nav2_behaviors/Spin
+[behavior_server-6] [INFO] [1792655048.338848947] [behavior_server]: Configuring spin
+[behavior_server-6] [INFO] [1792655048.420026697] [behavior_server]: Creating behavior plugin backup of type nav2_behaviors/BackUp
+[behavior_server-6] [INFO] [1792655048.423478621] [behavior_server]: Configuring backup
+[behavior_server-6] [INFO] [1792655048.508342959] [behavior_server]: Creating behavior plugin drive_on_heading of type nav2_behaviors/DriveOnHeading
+[behavior_server-6] [INFO] [1792655048.510958215] [behavior_server]: Configuring drive_on_heading
+[behavior_server-6] [INFO] [1792655048.563635034] [behavior_server]: Creating behavior plugin wait of type nav2_behaviors/Wait
+[behavior_server-6] [INFO] [1792655048.565904775] [behavior_server]: Configuring wait
+[behavior_server-6] [INFO] [1792655048.615338316] [behavior_server]: Creating behavior plugin monotone_escape of type rover_navigation/MonotoneEscape
+[behavior_server-6] [INFO] [1792655048.625652969] [behavior_server]: Configuring monotone_escape
+[lifecycle_manager-10] [INFO] [1792655048.706060260] [lifecycle_manager_navigation]: [34m[1mConfiguring bt_navigator[0m[0m
+[bt_navigator-7] [INFO] [1792655048.707762365] [bt_navigator]: Configuring
+[lifecycle_manager-10] [INFO] [1792655049.379646239] [lifecycle_manager_navigation]: [34m[1mConfiguring waypoint_follower[0m[0m
+[waypoint_follower-8] [INFO] [1792655049.381727333] [waypoint_follower]: Configuring
+[waypoint_follower-8] [INFO] [1792655049.593479380] [waypoint_follower]: Created waypoint_task_executor : wait_at_waypoint of type nav2_waypoint_follower::WaitAtWaypoint
+[lifecycle_manager-10] [INFO] [1792655049.616454780] [lifecycle_manager_navigation]: [34m[1mConfiguring velocity_smoother[0m[0m
+[velocity_smoother-9] [INFO] [1792655049.617823178] [velocity_smoother]: Configuring velocity smoother
+[lifecycle_manager-10] [INFO] [1792655049.645003424] [lifecycle_manager_navigation]: [34m[1mActivating controller_server[0m[0m
+[controller_server-3] [INFO] [1792655049.645628917] [controller_server]: Activating
+[controller_server-3] [INFO] [1792655049.645753082] [local_costmap.local_costmap]: Activating
+[controller_server-3] [INFO] [1792655049.645789147] [local_costmap.local_costmap]: Checking transform
+[controller_server-3] [INFO] [1792655049.646053188] [local_costmap.local_costmap]: start
+[controller_server-3] [WARN] [1792655049.855628617] [controller_server]: Parameter controller_server.verbose not found
+[controller_server-3] [INFO] [1792655049.859638641] [controller_server]: Optimizer reset
+[controller_server-3] [INFO] [1792655049.863748123] [MPPIController]: Activated MPPI Controller: FollowPathMPPI
+[controller_server-3] [INFO] [1792655049.863819198] [controller_server]: Activating controller: FollowPath of type regulated_pure_pursuit_controller::RegulatedPurePursuitController
+[controller_server-3] [INFO] [1792655049.863918465] [controller_server]: Creating bond (controller_server) to lifecycle manager.
+[lifecycle_manager-10] [INFO] [1792655049.984593196] [lifecycle_manager_navigation]: Server controller_server connected with bond.
+[lifecycle_manager-10] [INFO] [1792655049.984720689] [lifecycle_manager_navigation]: [34m[1mActivating smoother_server[0m[0m
+[smoother_server-4] [INFO] [1792655049.985955354] [smoother_server]: Activating
+[smoother_server-4] [INFO] [1792655049.986103807] [smoother_server]: Creating bond (smoother_server) to lifecycle manager.
+[lifecycle_manager-10] [INFO] [1792655050.110837460] [lifecycle_manager_navigation]: Server smoother_server connected with bond.
+[lifecycle_manager-10] [INFO] [1792655050.110957496] [lifecycle_manager_navigation]: [34m[1mActivating planner_server[0m[0m
+[planner_server-5] [INFO] [1792655050.111804788] [planner_server]: Activating
+[planner_server-5] [INFO] [1792655050.111925528] [global_costmap.global_costmap]: Activating
+[planner_server-5] [INFO] [1792655050.111962970] [global_costmap.global_costmap]: Checking transform
+[planner_server-5] [INFO] [1792655050.112186369] [global_costmap.global_costmap]: start
+[planner_server-5] [INFO] [1792655051.170436027] [planner_server]: Activating plugin SmacHybrid of type SmacPlannerHybrid
+[planner_server-5] [INFO] [1792655051.170558271] [planner_server]: Activating plugin GridBased of type NavfnPlanner
+[planner_server-5] [INFO] [1792655051.183206634] [planner_server]: Creating bond (planner_server) to lifecycle manager.
+[lifecycle_manager-10] [INFO] [1792655051.323937051] [lifecycle_manager_navigation]: Server planner_server connected with bond.
+[lifecycle_manager-10] [INFO] [1792655051.324095968] [lifecycle_manager_navigation]: [34m[1mActivating behavior_server[0m[0m
+[behavior_server-6] [INFO] [1792655051.325658485] [behavior_server]: Activating
+[behavior_server-6] [INFO] [1792655051.325760856] [behavior_server]: Activating spin
+[behavior_server-6] [INFO] [1792655051.325796985] [behavior_server]: Activating backup
+[behavior_server-6] [INFO] [1792655051.325822010] [behavior_server]: Activating drive_on_heading
+[behavior_server-6] [INFO] [1792655051.325844411] [behavior_server]: Activating wait
+[behavior_server-6] [INFO] [1792655051.325872380] [behavior_server]: Activating monotone_escape
+[behavior_server-6] [INFO] [1792655051.325958911] [behavior_server]: Creating bond (behavior_server) to lifecycle manager.
+[lifecycle_manager-10] [INFO] [1792655051.457441239] [lifecycle_manager_navigation]: Server behavior_server connected with bond.
+[lifecycle_manager-10] [INFO] [1792655051.457674655] [lifecycle_manager_navigation]: [34m[1mActivating bt_navigator[0m[0m
+[bt_navigator-7] [INFO] [1792655051.458854119] [bt_navigator]: Activating
+[bt_navigator-7] [INFO] [1792655052.015762014] [bt_navigator]: Creating bond (bt_navigator) to lifecycle manager.
+[controller_server-3] [INFO] [1792655052.092994766] [local_costmap.local_costmap]: Received request to clear entirely the local_costmap
+[lifecycle_manager-10] [INFO] [1792655052.172195457] [lifecycle_manager_navigation]: Server bt_navigator connected with bond.
+[lifecycle_manager-10] [INFO] [1792655052.172349510] [lifecycle_manager_navigation]: [34m[1mActivating waypoint_follower[0m[0m
+[waypoint_follower-8] [INFO] [1792655052.174788953] [waypoint_follower]: Activating
+[waypoint_follower-8] [INFO] [1792655052.174911293] [waypoint_follower]: Creating bond (waypoint_follower) to lifecycle manager.
+[planner_server-5] [INFO] [1792655052.211436046] [global_costmap.global_costmap]: Received request to clear entirely the global_costmap
+[lifecycle_manager-10] [INFO] [1792655052.312089653] [lifecycle_manager_navigation]: Server waypoint_follower connected with bond.
+[lifecycle_manager-10] [INFO] [1792655052.312211929] [lifecycle_manager_navigation]: [34m[1mActivating velocity_smoother[0m[0m
+[velocity_smoother-9] [INFO] [1792655052.313214619] [velocity_smoother]: Activating
+[velocity_smoother-9] [INFO] [1792655052.313388033] [velocity_smoother]: Creating bond (velocity_smoother) to lifecycle manager.
+[lifecycle_manager-10] [INFO] [1792655052.469305459] [lifecycle_manager_navigation]: Server velocity_smoother connected with bond.
+[lifecycle_manager-10] [INFO] [1792655052.469452952] [lifecycle_manager_navigation]: [34m[1mManaged nodes are active[0m[0m
+[lifecycle_manager-10] [INFO] [1792655052.469491161] [lifecycle_manager_navigation]: [34m[1mCreating bond timer...[0m[0m
+[INFO] [navmap_ensure-14]: process started with pid [1395525]
+[navmap_ensure-14] [navmap_ensure] active (1)
+[INFO] [navmap_ensure-14]: process has finished cleanly [pid 1395525]
+[controller_server-3] [INFO] [1792655373.399051119] [local_costmap.local_costmap]: Message Filter dropping message: frame 'lidar_link' at time 1792655373.096 for reason 'the timestamp on the message is earlier than all the data in the transform cache'
+[planner_server-5] [INFO] [1792655373.400856683] [global_costmap.global_costmap]: Message Filter dropping message: frame 'lidar_link' at time 1792655373.096 for reason 'the timestamp on the message is earlier than all the data in the transform cache'
+[controller_server-3] [INFO] [1792655446.459769946] [local_costmap.local_costmap]: Message Filter dropping message: frame 'lidar_link' at time 1792655446.138 for reason 'the timestamp on the message is earlier than all the data in the transform cache'
+[planner_server-5] [INFO] [1792655446.462465267] [global_costmap.global_costmap]: Message Filter dropping message: frame 'lidar_link' at time 1792655446.138 for reason 'the timestamp on the message is earlier than all the data in the transform cache'
+[planner_server-5] [WARN] [1792655448.883234593] [global_costmap.global_costmap]: [NvbloxCostmapLayer] Can't transform: map to odom. Error: Lookup would require extrapolation into the future.  Requested time 1792655448.777042 but the latest data is at time 1792655448.735687, when looking up transform from frame [odom] to frame [map]
+[controller_server-3] [INFO] [1792655450.726759227] [local_costmap.local_costmap]: Message Filter dropping message: frame 'lidar_link' at time 1792655450.421 for reason 'the timestamp on the message is earlier than all the data in the transform cache'
+[planner_server-5] [INFO] [1792655450.734139438] [global_costmap.global_costmap]: Message Filter dropping message: frame 'lidar_link' at time 1792655450.421 for reason 'the timestamp on the message is earlier than all the data in the transform cache'
+[bt_navigator-7] [INFO] [1792655452.950040039] [bt_navigator]: Begin navigating from current location (-0.00, 0.00) to (2.25, -1.60)
+[smoother_server-4] [INFO] [1792655452.975015774] [smoother_server]: Received a path to smooth.
+[smoother_server-4] [INFO] [1792655452.975571825] [smoother_server]: Smoother simple_smoother did not complete smoothing in specified time limit(1.000000 seconds) and was interrupted after 0.000545 seconds
+[smoother_server-4] [ERROR] [1792655452.978150758] [smoother_server]: Smoothed path leads to a collision at x: 2.214246, y: -0.860181, theta: -1.649828
+[smoother_server-4] [WARN] [1792655452.978335052] [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+[controller_server-3] [INFO] [1792655452.993460223] [controller_server]: Received a goal, begin computing control effort.
+[controller_server-3] [WARN] [1792655452.996257339] [controller_server]: No goal checker was specified in parameter 'current_goal_checker'. Server will use only plugin loaded general_goal_checker . This warning will appear once.
+[nav_guard.py-2] [INFO] [1792655452.997996500] [nav_guard]: 목표 85a63f2e: 남은 거리 3.91 m → 시간 한도 142 s (시작 뒤 0.0 s)
+[controller_server-3] [INFO] [1792655453.006221220] [controller_server]: Optimizer reset
+[bt_navigator-7] [WARN] [1792655453.743363612] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655454.613979688] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655454.621590403] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655454.886960980] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655454.896381163] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655454.903435252] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655454.981089877] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[smoother_server-4] [INFO] [1792655455.023116351] [smoother_server]: Received a path to smooth.
+[bt_navigator-7] [WARN] [1792655455.033602585] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655455.057123105] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[controller_server-3] [INFO] [1792655455.096503540] [controller_server]: Passing new path to controller.
+[bt_navigator-7] [WARN] [1792655455.112247515] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655455.625762950] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655455.712181896] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655457.031548458] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655457.042909985] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655457.061197340] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[smoother_server-4] [INFO] [1792655457.102343593] [smoother_server]: Received a path to smooth.
+[bt_navigator-7] [WARN] [1792655457.112710335] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655457.131658384] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655457.152342043] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655457.163078813] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655457.182052431] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[controller_server-3] [INFO] [1792655457.196512268] [controller_server]: Passing new path to controller.
+[bt_navigator-7] [WARN] [1792655457.412255801] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[smoother_server-4] [INFO] [1792655459.162311902] [smoother_server]: Received a path to smooth.
+[controller_server-3] [INFO] [1792655459.196521638] [controller_server]: Passing new path to controller.
+[bt_navigator-7] [WARN] [1792655459.282510875] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655459.681780944] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655459.719016668] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655460.327831794] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655460.332516205] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655460.351223382] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[smoother_server-4] [INFO] [1792655461.219462876] [smoother_server]: Received a path to smooth.
+[controller_server-3] [INFO] [1792655461.296529290] [controller_server]: Passing new path to controller.
+[bt_navigator-7] [WARN] [1792655461.731812132] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655462.042548369] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655462.195793585] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655462.301254505] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655462.376366167] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655462.621588146] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655462.627180171] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655462.637435261] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[planner_server-5] [WARN] [1792655462.691878050] [global_costmap.global_costmap]: [NvbloxCostmapLayer] Can't transform: map to odom. Error: Lookup would require extrapolation into the future.  Requested time 1792655462.577523 but the latest data is at time 1792655462.516210, when looking up transform from frame [odom] to frame [map]
+[controller_server-3] [WARN] [1792655462.789260463] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+[controller_server-3] [WARN] [1792655462.831773449] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+[smoother_server-4] [INFO] [1792655463.266993954] [smoother_server]: Received a path to smooth.
+[controller_server-3] [INFO] [1792655463.396553909] [controller_server]: Passing new path to controller.
+[bt_navigator-7] [WARN] [1792655463.618149189] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655465.239206873] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[smoother_server-4] [INFO] [1792655465.318573908] [smoother_server]: Received a path to smooth.
+[controller_server-3] [INFO] [1792655465.396604931] [controller_server]: Passing new path to controller.
+[bt_navigator-7] [WARN] [1792655467.334133767] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[smoother_server-4] [INFO] [1792655467.375658402] [smoother_server]: Received a path to smooth.
+[bt_navigator-7] [WARN] [1792655467.384854865] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[controller_server-3] [INFO] [1792655467.396500466] [controller_server]: Passing new path to controller.
+[bt_navigator-7] [WARN] [1792655467.431633689] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655467.434170797] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655468.376839572] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655469.373904928] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655469.376502517] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[smoother_server-4] [INFO] [1792655469.424728941] [smoother_server]: Received a path to smooth.
+[controller_server-3] [INFO] [1792655469.496511214] [controller_server]: Passing new path to controller.
+[bt_navigator-7] [WARN] [1792655470.116119793] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[smoother_server-4] [INFO] [1792655471.465082142] [smoother_server]: Received a path to smooth.
+[controller_server-3] [INFO] [1792655471.496519756] [controller_server]: Passing new path to controller.
+[bt_navigator-7] [WARN] [1792655472.684670240] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655472.700199136] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655472.717389464] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655472.725953266] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655472.891775860] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655472.912104819] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[smoother_server-4] [INFO] [1792655473.523016410] [smoother_server]: Received a path to smooth.
+[controller_server-3] [INFO] [1792655473.596585078] [controller_server]: Passing new path to controller.
+[bt_navigator-7] [WARN] [1792655474.602783575] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655475.006647115] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655475.499013514] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655475.503991663] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655475.516819638] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655475.532673474] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655475.552916062] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[smoother_server-4] [INFO] [1792655475.565552895] [smoother_server]: Received a path to smooth.
+[controller_server-3] [INFO] [1792655475.596495869] [controller_server]: Passing new path to controller.
+[bt_navigator-7] [WARN] [1792655477.612411321] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[smoother_server-4] [INFO] [1792655477.629945084] [smoother_server]: Received a path to smooth.
+[bt_navigator-7] [WARN] [1792655477.639098058] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655477.650122934] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655477.653732909] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655477.663042144] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655477.700501685] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655477.723085503] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655477.734486007] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655477.777157624] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655477.781782961] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[controller_server-3] [WARN] [1792655477.784384871] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+[controller_server-3] [INFO] [1792655477.784500394] [controller_server]: Passing new path to controller.
+[controller_server-3] [WARN] [1792655477.805447326] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+[bt_navigator-7] [WARN] [1792655478.110607450] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655479.383605450] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[smoother_server-4] [INFO] [1792655479.681478101] [smoother_server]: Received a path to smooth.
+[controller_server-3] [INFO] [1792655479.796539405] [controller_server]: Passing new path to controller.
+[bt_navigator-7] [WARN] [1792655480.102360863] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655481.489712403] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655481.491607985] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655481.627397237] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655481.720533209] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[smoother_server-4] [INFO] [1792655481.725821480] [smoother_server]: Received a path to smooth.
+[controller_server-3] [INFO] [1792655481.796464324] [controller_server]: Passing new path to controller.
+[smoother_server-4] [INFO] [1792655483.763321598] [smoother_server]: Received a path to smooth.
+[controller_server-3] [INFO] [1792655483.796499013] [controller_server]: Passing new path to controller.
+[bt_navigator-7] [WARN] [1792655485.175945659] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655485.515462409] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655485.592326419] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[planner_server-5] [WARN] [1792655485.732382437] [global_costmap.global_costmap]: [NvbloxCostmapLayer] Can't transform: map to odom. Error: Lookup would require extrapolation into the future.  Requested time 1792655485.618387 but the latest data is at time 1792655485.603235, when looking up transform from frame [odom] to frame [map]
+[bt_navigator-7] [WARN] [1792655485.801172421] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[smoother_server-4] [INFO] [1792655485.822168570] [smoother_server]: Received a path to smooth.
+[planner_server-5] [INFO] [1792655485.905551228] [global_costmap.global_costmap]: Message Filter dropping message: frame 'lidar_link' at time 1792655485.599 for reason 'the timestamp on the message is earlier than all the data in the transform cache'
+[bt_navigator-7] [WARN] [1792655485.981604460] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655486.033310200] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[controller_server-3] [ERROR] [1792655486.200791540] [controller_server]: Exception in transformPose: Lookup would require extrapolation into the future.  Requested time 1792655485.663966 but the latest data is at time 1792655485.603235, when looking up transform from frame [odom] to frame [map]
+[controller_server-3] [ERROR] [1792655486.201065885] [controller_server]: Unable to transform robot pose into global plan's frame
+[controller_server-3] [WARN] [1792655486.201280996] [controller_server]: [follow_path] [ActionServer] Aborting handle.
+[controller_server-3] [INFO] [1792655486.201516267] [controller_server]: Received a goal, begin computing control effort.
+[controller_server-3] [WARN] [1792655486.323816787] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+[bt_navigator-7] [WARN] [1792655487.715969457] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[smoother_server-4] [INFO] [1792655487.892613884] [smoother_server]: Received a path to smooth.
+[controller_server-3] [INFO] [1792655488.001790002] [controller_server]: Passing new path to controller.
+[bt_navigator-7] [WARN] [1792655488.113935786] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655488.126345156] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[smoother_server-4] [INFO] [1792655489.934077094] [smoother_server]: Received a path to smooth.
+[controller_server-3] [INFO] [1792655490.014505895] [controller_server]: Passing new path to controller.
+[planner_server-5] [WARN] [1792655490.400081896] [global_costmap.global_costmap]: [NvbloxCostmapLayer] Can't transform: map to odom. Error: Lookup would require extrapolation into the future.  Requested time 1792655490.278563 but the latest data is at time 1792655490.196321, when looking up transform from frame [odom] to frame [map]
+[planner_server-5] [INFO] [1792655490.496514618] [global_costmap.global_costmap]: Message Filter dropping message: frame 'lidar_link' at time 1792655490.191 for reason 'the timestamp on the message is earlier than all the data in the transform cache'
+[controller_server-3] [WARN] [1792655490.664389027] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+[bt_navigator-7] [WARN] [1792655490.971034741] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655490.971505765] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[smoother_server-4] [INFO] [1792655491.982626880] [smoother_server]: Received a path to smooth.
+[controller_server-3] [INFO] [1792655492.064485712] [controller_server]: Passing new path to controller.
+[bt_navigator-7] [WARN] [1792655492.682894430] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655492.712901854] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655493.306139885] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[controller_server-3] [WARN] [1792655493.465368378] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+[bt_navigator-7] [WARN] [1792655493.515002049] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655494.055809357] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[smoother_server-4] [INFO] [1792655494.064266980] [smoother_server]: Received a path to smooth.
+[bt_navigator-7] [WARN] [1792655494.166328272] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[controller_server-3] [INFO] [1792655494.170512603] [controller_server]: Passing new path to controller.
+[bt_navigator-7] [WARN] [1792655494.578097301] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[planner_server-5] [WARN] [1792655494.605352730] [global_costmap.global_costmap]: [NvbloxCostmapLayer] Can't transform: map to odom. Error: Lookup would require extrapolation into the future.  Requested time 1792655494.498596 but the latest data is at time 1792655494.484161, when looking up transform from frame [odom] to frame [map]
+[controller_server-3] [WARN] [1792655494.770090397] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+[smoother_server-4] [INFO] [1792655496.111757351] [smoother_server]: Received a path to smooth.
+[controller_server-3] [INFO] [1792655496.170255411] [controller_server]: Passing new path to controller.
+[smoother_server-4] [INFO] [1792655498.156921185] [smoother_server]: Received a path to smooth.
+[controller_server-3] [INFO] [1792655498.270185888] [controller_server]: Passing new path to controller.
+[bt_navigator-7] [WARN] [1792655499.137298702] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655499.148103827] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655499.158339878] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655499.181032212] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655499.267476284] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[controller_server-3] [WARN] [1792655499.274597896] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+[bt_navigator-7] [WARN] [1792655499.319145448] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[smoother_server-4] [INFO] [1792655500.201473486] [smoother_server]: Received a path to smooth.
+[controller_server-3] [INFO] [1792655500.270175916] [controller_server]: Passing new path to controller.
+[bt_navigator-7] [WARN] [1792655501.782380420] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655501.787949884] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655501.887434932] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[smoother_server-4] [INFO] [1792655502.255367092] [smoother_server]: Received a path to smooth.
+[bt_navigator-7] [WARN] [1792655502.262107699] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655502.304011228] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[controller_server-3] [INFO] [1792655502.370177607] [controller_server]: Passing new path to controller.
+[planner_server-5] [WARN] [1792655502.823143490] [global_costmap.global_costmap]: [NvbloxCostmapLayer] Can't transform: map to odom. Error: Lookup would require extrapolation into the future.  Requested time 1792655502.710761 but the latest data is at time 1792655502.690765, when looking up transform from frame [odom] to frame [map]
+[controller_server-3] [WARN] [1792655502.925961128] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+[smoother_server-4] [INFO] [1792655504.335109527] [smoother_server]: Received a path to smooth.
+[controller_server-3] [INFO] [1792655504.371912919] [controller_server]: Passing new path to controller.
+[controller_server-3] [INFO] [1792655504.993712640] [controller_server]: Reached the goal!
+[bt_navigator-7] [INFO] [1792655505.024657343] [bt_navigator]: Goal succeeded
+[bt_navigator-7] [INFO] [1792655505.064871696] [bt_navigator]: Begin navigating from current location (2.27, -1.46) to (5.50, -2.20)
+[nav_guard.py-2] [INFO] [1792655505.068209502] [nav_guard]: 목표 7b9bed83: 남은 거리 0.14 m → 시간 한도 34 s (시작 뒤 0.0 s)
+[smoother_server-4] [INFO] [1792655505.086058988] [smoother_server]: Received a path to smooth.
+[controller_server-3] [INFO] [1792655505.108066948] [controller_server]: Received a goal, begin computing control effort.
+[nav_guard.py-2] [INFO] [1792655505.112048103] [nav_guard]: 목표 7b9bed83: 남은 거리 3.43 m → 시간 한도 128 s (시작 뒤 0.0 s)
+[bt_navigator-7] [WARN] [1792655505.115780067] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655506.817354648] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[smoother_server-4] [INFO] [1792655507.180784806] [smoother_server]: Received a path to smooth.
+[bt_navigator-7] [WARN] [1792655507.190564969] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[controller_server-3] [INFO] [1792655507.214150549] [controller_server]: Passing new path to controller.
+[bt_navigator-7] [WARN] [1792655507.224691953] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655507.239794116] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655507.252430374] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[planner_server-5] [WARN] [1792655507.363796840] [global_costmap.global_costmap]: [NvbloxCostmapLayer] Can't transform: map to odom. Error: Lookup would require extrapolation into the future.  Requested time 1792655507.254747 but the latest data is at time 1792655507.171129, when looking up transform from frame [odom] to frame [map]
+[planner_server-5] [INFO] [1792655507.497317989] [global_costmap.global_costmap]: Message Filter dropping message: frame 'lidar_link' at time 1792655507.183 for reason 'the timestamp on the message is earlier than all the data in the transform cache'
+[bt_navigator-7] [WARN] [1792655507.515375162] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[controller_server-3] [WARN] [1792655507.633735427] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+[bt_navigator-7] [WARN] [1792655507.936679425] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655508.122050225] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655508.132248034] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655508.148770693] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[controller_server-3] [WARN] [1792655508.228206055] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+[controller_server-3] [WARN] [1792655508.260042307] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+[smoother_server-4] [INFO] [1792655509.240435037] [smoother_server]: Received a path to smooth.
+[controller_server-3] [INFO] [1792655509.333852782] [controller_server]: Passing new path to controller.
+[planner_server-5] [WARN] [1792655509.682976228] [global_costmap.global_costmap]: [NvbloxCostmapLayer] Can't transform: map to odom. Error: Lookup would require extrapolation into the future.  Requested time 1792655509.579170 but the latest data is at time 1792655509.571081, when looking up transform from frame [odom] to frame [map]
+[controller_server-3] [WARN] [1792655510.088187128] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+[bt_navigator-7] [WARN] [1792655510.093715823] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655510.283467344] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[controller_server-3] [WARN] [1792655510.722527396] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+[smoother_server-4] [INFO] [1792655511.290031342] [smoother_server]: Received a path to smooth.
+[controller_server-3] [INFO] [1792655511.388490278] [controller_server]: Passing new path to controller.
+[planner_server-5] [WARN] [1792655512.158982824] [global_costmap.global_costmap]: [NvbloxCostmapLayer] Can't transform: map to odom. Error: Lookup would require extrapolation into the future.  Requested time 1792655512.019273 but the latest data is at time 1792655511.971199, when looking up transform from frame [odom] to frame [map]
+[planner_server-5] [INFO] [1792655512.273285771] [global_costmap.global_costmap]: Message Filter dropping message: frame 'lidar_link' at time 1792655511.967 for reason 'the timestamp on the message is earlier than all the data in the transform cache'
+[bt_navigator-7] [WARN] [1792655512.460501561] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655512.484574101] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655512.511449006] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655512.531044278] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655512.549155468] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[controller_server-3] [WARN] [1792655512.580044042] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+[bt_navigator-7] [WARN] [1792655512.614400730] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655512.635736091] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655513.019218594] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655513.026182473] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[planner_server-5] [WARN] [1792655513.213003530] [global_costmap.global_costmap]: [NvbloxCostmapLayer] Can't transform: map to odom. Error: Lookup would require extrapolation into the future.  Requested time 1792655513.109179 but the latest data is at time 1792655512.771056, when looking up transform from frame [odom] to frame [map]
+[controller_server-3] [WARN] [1792655513.312053141] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+[smoother_server-4] [INFO] [1792655513.353685461] [smoother_server]: Received a path to smooth.
+[bt_navigator-7] [WARN] [1792655513.410567246] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655513.416983458] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[controller_server-3] [INFO] [1792655513.455574046] [controller_server]: Passing new path to controller.
+[controller_server-3] [WARN] [1792655514.022604571] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+[planner_server-5] [WARN] [1792655514.995444835] [global_costmap.global_costmap]: [NvbloxCostmapLayer] Can't transform: map to odom. Error: Lookup would require extrapolation into the future.  Requested time 1792655514.879630 but the latest data is at time 1792655514.867630, when looking up transform from frame [odom] to frame [map]
+[planner_server-5] [INFO] [1792655515.175035510] [global_costmap.global_costmap]: Message Filter dropping message: frame 'lidar_link' at time 1792655514.865 for reason 'the timestamp on the message is earlier than all the data in the transform cache'
+[smoother_server-4] [INFO] [1792655515.406717795] [smoother_server]: Received a path to smooth.
+[controller_server-3] [ERROR] [1792655515.426314283] [controller_server]: Exception in transformPose: Lookup would require extrapolation into the future.  Requested time 1792655514.887141 but the latest data is at time 1792655514.867630, when looking up transform from frame [odom] to frame [map]
+[controller_server-3] [ERROR] [1792655515.426562099] [controller_server]: Unable to transform robot pose into global plan's frame
+[controller_server-3] [WARN] [1792655515.426723000] [controller_server]: [follow_path] [ActionServer] Aborting handle.
+[bt_navigator-7] [WARN] [1792655515.446716781] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[controller_server-3] [INFO] [1792655515.451769493] [controller_server]: Received a goal, begin computing control effort.
+[controller_server-3] [WARN] [1792655515.587336087] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+[bt_navigator-7] [WARN] [1792655515.680906733] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[controller_server-3] [WARN] [1792655515.684792334] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+[planner_server-5] [WARN] [1792655516.152901925] [global_costmap.global_costmap]: [NvbloxCostmapLayer] Can't transform: map to odom. Error: Lookup would require extrapolation into the future.  Requested time 1792655516.041205 but the latest data is at time 1792655515.975249, when looking up transform from frame [odom] to frame [map]
+[controller_server-3] [WARN] [1792655516.324336266] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+[smoother_server-4] [INFO] [1792655517.477132564] [smoother_server]: Received a path to smooth.
+[controller_server-3] [INFO] [1792655517.524649848] [controller_server]: Passing new path to controller.
+[bt_navigator-7] [WARN] [1792655517.531741762] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[smoother_server-4] [INFO] [1792655519.527087623] [smoother_server]: Received a path to smooth.
+[controller_server-3] [INFO] [1792655519.624431066] [controller_server]: Passing new path to controller.
+[bt_navigator-7] [WARN] [1792655519.950241586] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655519.958534596] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655519.969945629] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655519.979512250] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655520.144701649] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655520.317441634] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655520.346657321] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[smoother_server-4] [INFO] [1792655521.586711007] [smoother_server]: Received a path to smooth.
+[controller_server-3] [INFO] [1792655521.624434334] [controller_server]: Passing new path to controller.
+[bt_navigator-7] [WARN] [1792655521.735203950] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[smoother_server-4] [INFO] [1792655523.635351824] [smoother_server]: Received a path to smooth.
+[planner_server-5] [WARN] [1792655523.778441549] [global_costmap.global_costmap]: [NvbloxCostmapLayer] Can't transform: map to odom. Error: Lookup would require extrapolation into the future.  Requested time 1792655523.649555 but the latest data is at time 1792655523.578252, when looking up transform from frame [odom] to frame [map]
+[bt_navigator-7] [WARN] [1792655523.805705011] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[planner_server-5] [INFO] [1792655523.871475411] [global_costmap.global_costmap]: Message Filter dropping message: frame 'lidar_link' at time 1792655523.567 for reason 'the timestamp on the message is earlier than all the data in the transform cache'
+[controller_server-3] [ERROR] [1792655524.129614445] [controller_server]: Exception in transformPose: Lookup would require extrapolation into the future.  Requested time 1792655523.600119 but the latest data is at time 1792655523.578252, when looking up transform from frame [odom] to frame [map]
+[controller_server-3] [ERROR] [1792655524.130568301] [controller_server]: Unable to transform robot pose into global plan's frame
+[controller_server-3] [WARN] [1792655524.130784372] [controller_server]: [follow_path] [ActionServer] Aborting handle.
+[controller_server-3] [INFO] [1792655524.131038237] [controller_server]: Received a goal, begin computing control effort.
+[controller_server-3] [WARN] [1792655524.317552150] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+[controller_server-3] [WARN] [1792655524.343424622] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+[bt_navigator-7] [WARN] [1792655524.935369835] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[smoother_server-4] [INFO] [1792655525.685546075] [smoother_server]: Received a path to smooth.
+[controller_server-3] [INFO] [1792655525.732558766] [controller_server]: Passing new path to controller.
+[smoother_server-4] [INFO] [1792655527.747506320] [smoother_server]: Received a path to smooth.
+[controller_server-3] [INFO] [1792655527.831203969] [controller_server]: Passing new path to controller.
+[bt_navigator-7] [WARN] [1792655528.148278331] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655528.155509482] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655528.168645084] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655528.524640030] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655528.556774949] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[planner_server-5] [WARN] [1792655528.587494333] [global_costmap.global_costmap]: [NvbloxCostmapLayer] Can't transform: map to odom. Error: Lookup would require extrapolation into the future.  Requested time 1792655528.441025 but the latest data is at time 1792655528.357552, when looking up transform from frame [odom] to frame [map]
+[planner_server-5] [INFO] [1792655528.660775638] [global_costmap.global_costmap]: Message Filter dropping message: frame 'lidar_link' at time 1792655528.351 for reason 'the timestamp on the message is earlier than all the data in the transform cache'
+[controller_server-3] [WARN] [1792655528.763558302] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+[smoother_server-4] [INFO] [1792655529.798501759] [smoother_server]: Received a path to smooth.
+[controller_server-3] [INFO] [1792655529.863656523] [controller_server]: Passing new path to controller.
+[bt_navigator-7] [WARN] [1792655530.646681342] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655530.819863008] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655530.864946356] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655531.385494043] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[smoother_server-4] [INFO] [1792655531.845720439] [smoother_server]: Received a path to smooth.
+[controller_server-3] [INFO] [1792655531.963660182] [controller_server]: Passing new path to controller.
+[bt_navigator-7] [WARN] [1792655532.014866708] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655532.819630457] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655533.761519928] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655533.883824423] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[smoother_server-4] [INFO] [1792655533.902548754] [smoother_server]: Received a path to smooth.
+[controller_server-3] [INFO] [1792655533.964298894] [controller_server]: Passing new path to controller.
+[controller_server-3] [WARN] [1792655534.283127428] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+[bt_navigator-7] [WARN] [1792655534.818391701] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655534.821584254] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655534.889898739] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[smoother_server-4] [INFO] [1792655535.954896286] [smoother_server]: Received a path to smooth.
+[controller_server-3] [INFO] [1792655536.063656462] [controller_server]: Passing new path to controller.
+[bt_navigator-7] [WARN] [1792655536.545229711] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655536.778121706] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655537.163267508] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[smoother_server-4] [INFO] [1792655537.993027225] [smoother_server]: Received a path to smooth.
+[controller_server-3] [INFO] [1792655538.063650138] [controller_server]: Passing new path to controller.
+[smoother_server-4] [INFO] [1792655540.042835899] [smoother_server]: Received a path to smooth.
+[controller_server-3] [INFO] [1792655540.063635916] [controller_server]: Passing new path to controller.
+[bt_navigator-7] [WARN] [1792655540.675749392] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655540.882579214] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[smoother_server-4] [INFO] [1792655542.123241176] [smoother_server]: Received a path to smooth.
+[controller_server-3] [INFO] [1792655542.176232146] [controller_server]: Passing new path to controller.
+[bt_navigator-7] [WARN] [1792655542.294699011] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[smoother_server-4] [INFO] [1792655544.173490003] [smoother_server]: Received a path to smooth.
+[controller_server-3] [INFO] [1792655544.263661116] [controller_server]: Passing new path to controller.
+[bt_navigator-7] [WARN] [1792655545.433588070] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655545.886854403] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[smoother_server-4] [INFO] [1792655546.223442858] [smoother_server]: Received a path to smooth.
+[controller_server-3] [INFO] [1792655546.263652477] [controller_server]: Passing new path to controller.
+[bt_navigator-7] [WARN] [1792655546.971999704] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655547.112597990] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[smoother_server-4] [INFO] [1792655548.277377322] [smoother_server]: Received a path to smooth.
+[controller_server-3] [INFO] [1792655548.363660306] [controller_server]: Passing new path to controller.
+[bt_navigator-7] [WARN] [1792655550.348509096] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655550.351947129] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[smoother_server-4] [INFO] [1792655550.353238532] [smoother_server]: Received a path to smooth.
+[bt_navigator-7] [WARN] [1792655550.381854680] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[controller_server-3] [INFO] [1792655550.463644940] [controller_server]: Passing new path to controller.
+[bt_navigator-7] [WARN] [1792655551.497474788] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[smoother_server-4] [INFO] [1792655552.402507732] [smoother_server]: Received a path to smooth.
+[controller_server-3] [INFO] [1792655552.464872293] [controller_server]: Passing new path to controller.
+[bt_navigator-7] [WARN] [1792655552.651840276] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655553.944522378] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655553.956447221] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655553.982862528] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[smoother_server-4] [INFO] [1792655554.452498880] [smoother_server]: Received a path to smooth.
+[controller_server-3] [INFO] [1792655554.563654497] [controller_server]: Passing new path to controller.
+[bt_navigator-7] [WARN] [1792655555.162462199] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655555.301946754] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655555.986671734] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655556.181993435] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[smoother_server-4] [INFO] [1792655556.502458352] [smoother_server]: Received a path to smooth.
+[controller_server-3] [INFO] [1792655556.563665819] [controller_server]: Passing new path to controller.
+[controller_server-3] [INFO] [1792655556.789822845] [controller_server]: Reached the goal!
+[bt_navigator-7] [INFO] [1792655556.822035912] [bt_navigator]: Goal succeeded
+[bt_navigator-7] [INFO] [1792655556.879725534] [bt_navigator]: Begin navigating from current location (5.37, -2.13) to (0.00, 0.00)
+[nav_guard.py-2] [INFO] [1792655556.888164214] [nav_guard]: 목표 79b68991: 남은 거리 0.13 m → 시간 한도 34 s (시작 뒤 0.0 s)
+[smoother_server-4] [INFO] [1792655556.912035693] [smoother_server]: Received a path to smooth.
+[controller_server-3] [INFO] [1792655556.949207804] [controller_server]: Received a goal, begin computing control effort.
+[bt_navigator-7] [WARN] [1792655556.950494822] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[nav_guard.py-2] [INFO] [1792655556.967048490] [nav_guard]: 목표 79b68991: 남은 거리 6.55 m → 시간 한도 217 s (시작 뒤 0.1 s)
+[bt_navigator-7] [WARN] [1792655557.830658373] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655558.182441288] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[stuck_monitor.py-1] [WARN] [1792655558.359801402] [stuck_monitor]: STUCK: 지령 9.7cm/33° 인데 관측 0.8cm/2.1° (비율 0.08) [shadow — 조치 없음]
+[smoother_server-4] [INFO] [1792655558.971141042] [smoother_server]: Received a path to smooth.
+[controller_server-3] [INFO] [1792655559.053087116] [controller_server]: Passing new path to controller.
+[bt_navigator-7] [WARN] [1792655560.501298924] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655560.515415583] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655560.530895136] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[controller_server-3] [WARN] [1792655560.663652749] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+[bt_navigator-7] [WARN] [1792655560.665959642] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[controller_server-3] [WARN] [1792655560.760677243] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+[bt_navigator-7] [WARN] [1792655560.796740197] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[smoother_server-4] [INFO] [1792655561.017388850] [smoother_server]: Received a path to smooth.
+[bt_navigator-7] [WARN] [1792655561.050997515] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[controller_server-3] [INFO] [1792655561.053099409] [controller_server]: Passing new path to controller.
+[bt_navigator-7] [WARN] [1792655562.864938369] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655562.925529976] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655562.946443789] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655562.966817680] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655563.039766592] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655563.088919229] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[smoother_server-4] [INFO] [1792655563.098135598] [smoother_server]: Received a path to smooth.
+[bt_navigator-7] [WARN] [1792655563.117314793] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655563.152830210] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[controller_server-3] [INFO] [1792655563.153693566] [controller_server]: Passing new path to controller.
+[planner_server-5] [WARN] [1792655563.565089082] [global_costmap.global_costmap]: [NvbloxCostmapLayer] Can't transform: map to odom. Error: Lookup would require extrapolation into the future.  Requested time 1792655563.432554 but the latest data is at time 1792655563.348779, when looking up transform from frame [odom] to frame [map]
+[planner_server-5] [INFO] [1792655563.647292990] [global_costmap.global_costmap]: Message Filter dropping message: frame 'lidar_link' at time 1792655563.339 for reason 'the timestamp on the message is earlier than all the data in the transform cache'
+[controller_server-3] [WARN] [1792655563.801468497] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+[bt_navigator-7] [WARN] [1792655565.179238715] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[smoother_server-4] [INFO] [1792655565.194986597] [smoother_server]: Received a path to smooth.
+[bt_navigator-7] [WARN] [1792655565.211234911] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[controller_server-3] [INFO] [1792655565.301640626] [controller_server]: Passing new path to controller.
+[controller_server-3] [WARN] [1792655565.610913848] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+[bt_navigator-7] [WARN] [1792655567.233381552] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[smoother_server-4] [INFO] [1792655567.250836722] [smoother_server]: Received a path to smooth.
+[controller_server-3] [INFO] [1792655567.301565091] [controller_server]: Passing new path to controller.
+[bt_navigator-7] [WARN] [1792655567.453053662] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655567.982682153] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655568.436502213] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655568.440355300] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655568.449355567] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655568.990549018] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655569.310160087] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[smoother_server-4] [INFO] [1792655569.322028833] [smoother_server]: Received a path to smooth.
+[bt_navigator-7] [WARN] [1792655569.372529994] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655569.380452176] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[controller_server-3] [INFO] [1792655569.401627886] [controller_server]: Passing new path to controller.
+[bt_navigator-7] [WARN] [1792655569.582732735] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655570.515819171] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655570.525190266] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655570.652304622] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655570.812314788] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[planner_server-5] [WARN] [1792655570.858985582] [global_costmap.global_costmap]: [NvbloxCostmapLayer] Can't transform: map to odom. Error: Lookup would require extrapolation into the future.  Requested time 1792655570.731098 but the latest data is at time 1792655570.634305, when looking up transform from frame [odom] to frame [map]
+[controller_server-3] [WARN] [1792655570.915969518] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+[bt_navigator-7] [WARN] [1792655570.962729212] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655571.088845583] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[smoother_server-4] [INFO] [1792655571.416691550] [smoother_server]: Received a path to smooth.
+[bt_navigator-7] [WARN] [1792655571.486699822] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[controller_server-3] [WARN] [1792655571.567791085] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+[controller_server-3] [INFO] [1792655571.567912081] [controller_server]: Passing new path to controller.
+[bt_navigator-7] [WARN] [1792655572.224044318] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655573.173645033] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[planner_server-5] [WARN] [1792655573.277558973] [global_costmap.global_costmap]: [NvbloxCostmapLayer] Can't transform: map to odom. Error: Lookup would require extrapolation into the future.  Requested time 1792655573.161209 but the latest data is at time 1792655573.137159, when looking up transform from frame [odom] to frame [map]
+[controller_server-3] [WARN] [1792655573.384227820] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+[controller_server-3] [WARN] [1792655573.569066553] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+[smoother_server-4] [INFO] [1792655573.570536553] [smoother_server]: Received a path to smooth.
+[controller_server-3] [INFO] [1792655573.616072526] [controller_server]: Passing new path to controller.
+[controller_server-3] [WARN] [1792655574.020876469] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+[smoother_server-4] [INFO] [1792655575.635823299] [smoother_server]: Received a path to smooth.
+[controller_server-3] [INFO] [1792655575.716079911] [controller_server]: Passing new path to controller.
+[bt_navigator-7] [WARN] [1792655575.915189998] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655575.935131811] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655575.944739777] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655576.412565617] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655576.716144062] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[smoother_server-4] [INFO] [1792655577.683465722] [smoother_server]: Received a path to smooth.
+[controller_server-3] [INFO] [1792655577.716089171] [controller_server]: Passing new path to controller.
+[controller_server-3] [WARN] [1792655578.526638307] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+[bt_navigator-7] [WARN] [1792655578.764347370] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655578.778668772] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655578.787813331] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655578.824031396] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655578.849051361] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655578.919442910] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[smoother_server-4] [INFO] [1792655579.730383836] [smoother_server]: Received a path to smooth.
+[controller_server-3] [INFO] [1792655579.816111638] [controller_server]: Passing new path to controller.
+[bt_navigator-7] [WARN] [1792655581.652012459] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[smoother_server-4] [INFO] [1792655581.800197979] [smoother_server]: Received a path to smooth.
+[controller_server-3] [INFO] [1792655581.916066492] [controller_server]: Passing new path to controller.
+[bt_navigator-7] [WARN] [1792655583.311562094] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655583.319585720] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655583.344018754] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655583.474542089] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655583.483400815] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[planner_server-5] [WARN] [1792655583.685758275] [global_costmap.global_costmap]: [NvbloxCostmapLayer] Can't transform: map to odom. Error: Lookup would require extrapolation into the future.  Requested time 1792655583.576746 but the latest data is at time 1792655583.513729, when looking up transform from frame [odom] to frame [map]
+[planner_server-5] [INFO] [1792655583.832130871] [global_costmap.global_costmap]: Message Filter dropping message: frame 'lidar_link' at time 1792655583.525 for reason 'the timestamp on the message is earlier than all the data in the transform cache'
+[bt_navigator-7] [WARN] [1792655583.836168861] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655583.850709663] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655583.889031189] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[smoother_server-4] [INFO] [1792655583.910109136] [smoother_server]: Received a path to smooth.
+[bt_navigator-7] [WARN] [1792655583.911421755] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655583.945340928] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655583.955201894] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[controller_server-3] [WARN] [1792655584.141943253] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+[controller_server-3] [INFO] [1792655584.142083738] [controller_server]: Passing new path to controller.
+[smoother_server-4] [INFO] [1792655586.002526213] [smoother_server]: Received a path to smooth.
+[controller_server-3] [INFO] [1792655586.042057380] [controller_server]: Passing new path to controller.
+[bt_navigator-7] [WARN] [1792655586.661922090] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[smoother_server-4] [INFO] [1792655588.058408741] [smoother_server]: Received a path to smooth.
+[bt_navigator-7] [WARN] [1792655588.125190667] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[controller_server-3] [INFO] [1792655588.142055674] [controller_server]: Passing new path to controller.
+[smoother_server-4] [INFO] [1792655590.102658471] [smoother_server]: Received a path to smooth.
+[controller_server-3] [INFO] [1792655590.142797274] [controller_server]: Passing new path to controller.
+[planner_server-5] [WARN] [1792655591.541598183] [global_costmap.global_costmap]: [NvbloxCostmapLayer] Can't transform: map to odom. Error: Lookup would require extrapolation into the future.  Requested time 1792655591.431794 but the latest data is at time 1792655591.414454, when looking up transform from frame [odom] to frame [map]
+[bt_navigator-7] [WARN] [1792655591.542307166] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655591.851512555] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[smoother_server-4] [INFO] [1792655592.175424224] [smoother_server]: Received a path to smooth.
+[controller_server-3] [INFO] [1792655592.242058145] [controller_server]: Passing new path to controller.
+[bt_navigator-7] [WARN] [1792655593.785563024] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655593.877255728] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[smoother_server-4] [INFO] [1792655594.253652082] [smoother_server]: Received a path to smooth.
+[controller_server-3] [INFO] [1792655594.342285069] [controller_server]: Passing new path to controller.
+[smoother_server-4] [INFO] [1792655596.313968663] [smoother_server]: Received a path to smooth.
+[controller_server-3] [INFO] [1792655596.349194023] [controller_server]: Passing new path to controller.
+[bt_navigator-7] [WARN] [1792655596.523530781] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655596.534578668] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655596.868966013] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[smoother_server-4] [INFO] [1792655598.375092380] [smoother_server]: Received a path to smooth.
+[controller_server-3] [INFO] [1792655598.442493911] [controller_server]: Passing new path to controller.
+[planner_server-5] [WARN] [1792655598.923606988] [global_costmap.global_costmap]: [NvbloxCostmapLayer] Can't transform: map to odom. Error: Lookup would require extrapolation into the future.  Requested time 1792655598.782082 but the latest data is at time 1792655598.709905, when looking up transform from frame [odom] to frame [map]
+[planner_server-5] [INFO] [1792655599.011297192] [global_costmap.global_costmap]: Message Filter dropping message: frame 'lidar_link' at time 1792655598.706 for reason 'the timestamp on the message is earlier than all the data in the transform cache'
+[controller_server-3] [ERROR] [1792655599.256948380] [controller_server]: Exception in transformPose: Lookup would require extrapolation into the future.  Requested time 1792655598.731323 but the latest data is at time 1792655598.709905, when looking up transform from frame [odom] to frame [map]
+[controller_server-3] [ERROR] [1792655599.257382890] [controller_server]: Unable to transform robot pose into global plan's frame
+[controller_server-3] [WARN] [1792655599.258238951] [controller_server]: [follow_path] [ActionServer] Aborting handle.
+[controller_server-3] [INFO] [1792655599.275961938] [local_costmap.local_costmap]: Received request to clear except a region the local_costmap
+[controller_server-3] [INFO] [1792655599.279264256] [controller_server]: Received a goal, begin computing control effort.
+[bt_navigator-7] [WARN] [1792655599.416636012] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655599.424536114] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655599.443731567] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655599.459701377] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655599.464097394] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[controller_server-3] [WARN] [1792655599.468000340] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+[controller_server-3] [WARN] [1792655599.492450495] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+[bt_navigator-7] [WARN] [1792655599.611181089] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655599.612782198] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[smoother_server-4] [INFO] [1792655600.432492170] [smoother_server]: Received a path to smooth.
+[controller_server-3] [INFO] [1792655600.479498401] [controller_server]: Passing new path to controller.
+[bt_navigator-7] [WARN] [1792655601.614851579] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[smoother_server-4] [INFO] [1792655602.484535658] [smoother_server]: Received a path to smooth.
+[controller_server-3] [INFO] [1792655602.579497880] [controller_server]: Passing new path to controller.
+[smoother_server-4] [INFO] [1792655604.549339575] [smoother_server]: Received a path to smooth.
+[controller_server-3] [INFO] [1792655604.579623780] [controller_server]: Passing new path to controller.
+[bt_navigator-7] [WARN] [1792655605.191583504] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[planner_server-5] [WARN] [1792655606.408111861] [global_costmap.global_costmap]: [NvbloxCostmapLayer] Can't transform: map to odom. Error: Lookup would require extrapolation into the future.  Requested time 1792655606.294671 but the latest data is at time 1792655606.293885, when looking up transform from frame [odom] to frame [map]
+[controller_server-3] [WARN] [1792655606.566916874] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+[controller_server-3] [WARN] [1792655606.597951759] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+[smoother_server-4] [INFO] [1792655606.605572140] [smoother_server]: Received a path to smooth.
+[bt_navigator-7] [WARN] [1792655606.671861859] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[controller_server-3] [INFO] [1792655606.679547010] [controller_server]: Passing new path to controller.
+[bt_navigator-7] [WARN] [1792655606.703905066] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655606.757154225] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655606.762290747] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[smoother_server-4] [INFO] [1792655608.675694962] [smoother_server]: Received a path to smooth.
+[controller_server-3] [INFO] [1792655608.779495494] [controller_server]: Passing new path to controller.
+[planner_server-5] [WARN] [1792655609.336213740] [global_costmap.global_costmap]: [NvbloxCostmapLayer] Can't transform: map to odom. Error: Lookup would require extrapolation into the future.  Requested time 1792655609.219341 but the latest data is at time 1792655609.189906, when looking up transform from frame [odom] to frame [map]
+[controller_server-3] [WARN] [1792655609.514121563] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+[smoother_server-4] [INFO] [1792655610.714002781] [smoother_server]: Received a path to smooth.
+[controller_server-3] [INFO] [1792655610.814404289] [controller_server]: Passing new path to controller.
+[planner_server-5] [WARN] [1792655611.595382137] [global_costmap.global_costmap]: [NvbloxCostmapLayer] Can't transform: map to odom. Error: Lookup would require extrapolation into the future.  Requested time 1792655611.452451 but the latest data is at time 1792655611.397845, when looking up transform from frame [odom] to frame [map]
+[planner_server-5] [INFO] [1792655611.701459641] [global_costmap.global_costmap]: Message Filter dropping message: frame 'lidar_link' at time 1792655611.397 for reason 'the timestamp on the message is earlier than all the data in the transform cache'
+[controller_server-3] [WARN] [1792655611.780518872] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+[bt_navigator-7] [WARN] [1792655611.864484858] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[smoother_server-4] [INFO] [1792655612.777126661] [smoother_server]: Received a path to smooth.
+[controller_server-3] [INFO] [1792655612.880618798] [controller_server]: Passing new path to controller.
+[bt_navigator-7] [WARN] [1792655613.674783326] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[planner_server-5] [WARN] [1792655613.807152967] [global_costmap.global_costmap]: [NvbloxCostmapLayer] Can't transform: map to odom. Error: Lookup would require extrapolation into the future.  Requested time 1792655613.692508 but the latest data is at time 1792655613.686182, when looking up transform from frame [odom] to frame [map]
+[controller_server-3] [WARN] [1792655614.120761869] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+[bt_navigator-7] [WARN] [1792655614.497149367] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655614.505281317] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655614.513171659] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655614.701289997] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655614.720418312] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655614.751329737] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655614.764063184] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655614.775665905] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[smoother_server-4] [INFO] [1792655614.848898959] [smoother_server]: Received a path to smooth.
+[controller_server-3] [INFO] [1792655614.921160749] [controller_server]: Passing new path to controller.
+[bt_navigator-7] [INFO] [1792655616.131175847] [bt_navigator_navigate_to_pose_rclcpp_node]: PathBlockedAhead: 앞 경로 (1.49, -0.07) 비용 99 — 2.0 s 지속되면 재계획
+[smoother_server-4] [INFO] [1792655616.905295488] [smoother_server]: Received a path to smooth.
+[controller_server-3] [INFO] [1792655617.020872444] [controller_server]: Passing new path to controller.
+[bt_navigator-7] [WARN] [1792655617.102176710] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[controller_server-3] [WARN] [1792655617.129162629] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+[bt_navigator-7] [WARN] [1792655617.163808771] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655617.315488493] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655617.467072147] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[planner_server-5] [WARN] [1792655617.501512394] [global_costmap.global_costmap]: [NvbloxCostmapLayer] Can't transform: map to odom. Error: Lookup would require extrapolation into the future.  Requested time 1792655617.392656 but the latest data is at time 1792655617.386305, when looking up transform from frame [odom] to frame [map]
+[bt_navigator-7] [WARN] [1792655617.511410931] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655617.705963307] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[planner_server-5] [INFO] [1792655617.709271129] [global_costmap.global_costmap]: Message Filter dropping message: frame 'lidar_link' at time 1792655617.394 for reason 'the timestamp on the message is earlier than all the data in the transform cache'
+[bt_navigator-7] [WARN] [1792655617.786149808] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[controller_server-3] [ERROR] [1792655617.929095512] [controller_server]: Exception in transformPose: Lookup would require extrapolation into the future.  Requested time 1792655617.396680 but the latest data is at time 1792655617.386305, when looking up transform from frame [odom] to frame [map]
+[controller_server-3] [ERROR] [1792655617.929469797] [controller_server]: Unable to transform robot pose into global plan's frame
+[controller_server-3] [WARN] [1792655617.929705036] [controller_server]: [follow_path] [ActionServer] Aborting handle.
+[controller_server-3] [INFO] [1792655617.946769763] [local_costmap.local_costmap]: Received request to clear except a region the local_costmap
+[planner_server-5] [INFO] [1792655617.949452124] [global_costmap.global_costmap]: Received request to clear except a region the global_costmap
+[smoother_server-4] [INFO] [1792655618.168861933] [smoother_server]: Received a path to smooth.
+[controller_server-3] [INFO] [1792655618.187106187] [controller_server]: Received a goal, begin computing control effort.
+[bt_navigator-7] [WARN] [1792655619.619131825] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [INFO] [1792655620.129695970] [bt_navigator_navigate_to_pose_rclcpp_node]: PathBlockedAhead: 앞 경로 (1.44, -0.06) 비용 99 — 2.0 s 지속되면 재계획
+[smoother_server-4] [INFO] [1792655620.212574625] [smoother_server]: Received a path to smooth.
+[controller_server-3] [INFO] [1792655620.287345554] [controller_server]: Passing new path to controller.
+[bt_navigator-7] [WARN] [1792655622.100393826] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[smoother_server-4] [INFO] [1792655622.282141330] [smoother_server]: Received a path to smooth.
+[bt_navigator-7] [WARN] [1792655622.314225211] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[controller_server-3] [INFO] [1792655622.387350774] [controller_server]: Passing new path to controller.
+[smoother_server-4] [INFO] [1792655624.331933816] [smoother_server]: Received a path to smooth.
+[controller_server-3] [INFO] [1792655624.387427434] [controller_server]: Passing new path to controller.
+[planner_server-5] [WARN] [1792655625.312665123] [global_costmap.global_costmap]: [NvbloxCostmapLayer] Can't transform: map to odom. Error: Lookup would require extrapolation into the future.  Requested time 1792655625.203188 but the latest data is at time 1792655625.190193, when looking up transform from frame [odom] to frame [map]
+[bt_navigator-7] [WARN] [1792655625.330567477] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655625.355182214] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655625.360638907] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[planner_server-5] [INFO] [1792655625.496806403] [global_costmap.global_costmap]: Message Filter dropping message: frame 'lidar_link' at time 1792655625.188 for reason 'the timestamp on the message is earlier than all the data in the transform cache'
+[controller_server-3] [WARN] [1792655625.722581066] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+[bt_navigator-7] [WARN] [1792655626.220371798] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655626.289439595] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[smoother_server-4] [INFO] [1792655626.372091970] [smoother_server]: Received a path to smooth.
+[controller_server-3] [INFO] [1792655626.422943483] [controller_server]: Passing new path to controller.
+[bt_navigator-7] [WARN] [1792655626.919570720] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[planner_server-5] [WARN] [1792655627.137290204] [global_costmap.global_costmap]: [NvbloxCostmapLayer] Can't transform: map to odom. Error: Lookup would require extrapolation into the future.  Requested time 1792655627.025070 but the latest data is at time 1792655626.981921, when looking up transform from frame [odom] to frame [map]
+[controller_server-3] [WARN] [1792655627.389291306] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+[smoother_server-4] [INFO] [1792655628.443148595] [smoother_server]: Received a path to smooth.
+[controller_server-3] [INFO] [1792655628.489408851] [controller_server]: Passing new path to controller.
+[bt_navigator-7] [WARN] [1792655628.501750828] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655628.531880597] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655628.547639072] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655628.631933870] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[planner_server-5] [WARN] [1792655628.737687941] [global_costmap.global_costmap]: [NvbloxCostmapLayer] Can't transform: map to odom. Error: Lookup would require extrapolation into the future.  Requested time 1792655628.625173 but the latest data is at time 1792655628.581776, when looking up transform from frame [odom] to frame [map]
+[planner_server-5] [INFO] [1792655628.883971069] [global_costmap.global_costmap]: Message Filter dropping message: frame 'lidar_link' at time 1792655628.578 for reason 'the timestamp on the message is earlier than all the data in the transform cache'
+[bt_navigator-7] [WARN] [1792655628.964812473] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[controller_server-3] [WARN] [1792655628.976046670] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+[bt_navigator-7] [WARN] [1792655630.247795675] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[smoother_server-4] [INFO] [1792655630.484260230] [smoother_server]: Received a path to smooth.
+[controller_server-3] [INFO] [1792655630.576151088] [controller_server]: Passing new path to controller.
+[planner_server-5] [WARN] [1792655631.297870762] [global_costmap.global_costmap]: [NvbloxCostmapLayer] Can't transform: map to odom. Error: Lookup would require extrapolation into the future.  Requested time 1792655631.193074 but the latest data is at time 1792655631.174437, when looking up transform from frame [odom] to frame [map]
+[controller_server-3] [WARN] [1792655631.471738998] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+[controller_server-3] [WARN] [1792655631.498893724] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+[bt_navigator-7] [WARN] [1792655632.496907659] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655632.502831568] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655632.539104324] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655632.547653344] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655632.558709839] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655632.568973508] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655632.587829942] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[smoother_server-4] [INFO] [1792655632.613866103] [smoother_server]: Received a path to smooth.
+[bt_navigator-7] [WARN] [1792655632.620282508] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655632.632153526] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655632.638683791] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[controller_server-3] [INFO] [1792655632.678040521] [controller_server]: Passing new path to controller.
+[smoother_server-4] [INFO] [1792655634.668971907] [smoother_server]: Received a path to smooth.
+[controller_server-3] [INFO] [1792655634.776137865] [controller_server]: Passing new path to controller.
+[bt_navigator-7] [WARN] [1792655635.181335416] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655635.196423853] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655635.198423535] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655635.888138021] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[smoother_server-4] [INFO] [1792655636.712327597] [smoother_server]: Received a path to smooth.
+[controller_server-3] [INFO] [1792655636.776153588] [controller_server]: Passing new path to controller.
+[bt_navigator-7] [WARN] [1792655637.252595457] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655637.640617174] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655637.648080974] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655637.658336387] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655637.753234738] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655637.758060210] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[smoother_server-4] [INFO] [1792655638.759200496] [smoother_server]: Received a path to smooth.
+[controller_server-3] [INFO] [1792655638.876134043] [controller_server]: Passing new path to controller.
+[controller_server-3] [WARN] [1792655640.195924177] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+[bt_navigator-7] [WARN] [1792655640.438420614] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[smoother_server-4] [INFO] [1792655640.823653312] [smoother_server]: Received a path to smooth.
+[controller_server-3] [INFO] [1792655640.876142223] [controller_server]: Passing new path to controller.
+[bt_navigator-7] [WARN] [1792655640.903006251] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[controller_server-3] [WARN] [1792655641.186159335] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+[controller_server-3] [WARN] [1792655642.595168274] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+[bt_navigator-7] [WARN] [1792655642.762828274] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[controller_server-3] [WARN] [1792655642.807955341] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+[bt_navigator-7] [WARN] [1792655642.855968680] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[controller_server-3] [WARN] [1792655642.886532351] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+[smoother_server-4] [INFO] [1792655642.948464008] [smoother_server]: Received a path to smooth.
+[bt_navigator-7] [WARN] [1792655642.954499088] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[controller_server-3] [WARN] [1792655642.991490237] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+[controller_server-3] [INFO] [1792655642.991666083] [controller_server]: Passing new path to controller.
+[controller_server-3] [WARN] [1792655643.148398936] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+[planner_server-5] [WARN] [1792655643.178734632] [global_costmap.global_costmap]: [NvbloxCostmapLayer] Can't transform: map to odom. Error: Lookup would require extrapolation into the future.  Requested time 1792655643.053684 but the latest data is at time 1792655642.965715, when looking up transform from frame [odom] to frame [map]
+[bt_navigator-7] [WARN] [1792655643.183213276] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[controller_server-3] [WARN] [1792655643.328804224] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+[bt_navigator-7] [WARN] [1792655643.985467538] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[controller_server-3] [WARN] [1792655644.553604072] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+[controller_server-3] [WARN] [1792655644.678168945] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+[controller_server-3] [WARN] [1792655644.750335118] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+[controller_server-3] [WARN] [1792655644.829426673] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+[smoother_server-4] [INFO] [1792655644.996906924] [smoother_server]: Received a path to smooth.
+[controller_server-3] [INFO] [1792655645.028900499] [controller_server]: Passing new path to controller.
+[bt_navigator-7] [WARN] [1792655645.218366152] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[controller_server-3] [WARN] [1792655645.229069131] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+[bt_navigator-7] [WARN] [1792655645.245402410] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655645.255053002] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655645.257547069] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[controller_server-3] [WARN] [1792655645.330053413] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+[controller_server-3] [WARN] [1792655645.454070941] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+[controller_server-3] [WARN] [1792655645.547717955] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+[bt_navigator-7] [WARN] [1792655645.586807446] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[controller_server-3] [WARN] [1792655645.681093585] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+[controller_server-3] [WARN] [1792655645.802455088] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+[controller_server-3] [WARN] [1792655645.945685734] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+[controller_server-3] [WARN] [1792655646.763649415] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+[smoother_server-4] [INFO] [1792655647.046523963] [smoother_server]: Received a path to smooth.
+[smoother_server-4] [ERROR] [1792655647.047691362] [smoother_server]: Smoothed path leads to a collision at x: 1.110000, y: 0.140000, theta: -0.112747
+[smoother_server-4] [WARN] [1792655647.047805446] [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+[controller_server-3] [INFO] [1792655647.145780540] [controller_server]: Passing new path to controller.
+[bt_navigator-7] [WARN] [1792655648.136691888] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655648.170236874] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655648.180782568] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655648.198306479] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655648.296784214] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655648.302432785] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655648.328606519] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655648.356875778] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[controller_server-3] [WARN] [1792655648.365225559] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+[planner_server-5] [WARN] [1792655648.379187111] [global_costmap.global_costmap]: [NvbloxCostmapLayer] Can't transform: map to odom. Error: Lookup would require extrapolation into the future.  Requested time 1792655648.263797 but the latest data is at time 1792655648.261831, when looking up transform from frame [odom] to frame [map]
+[controller_server-3] [WARN] [1792655648.531844022] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+[controller_server-3] [WARN] [1792655648.579831312] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+[smoother_server-4] [INFO] [1792655649.087887709] [smoother_server]: Received a path to smooth.
+[smoother_server-4] [ERROR] [1792655649.088898559] [smoother_server]: Smoothed path leads to a collision at x: 0.960000, y: 0.140000, theta: -0.049468
+[smoother_server-4] [WARN] [1792655649.089008450] [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+[controller_server-3] [INFO] [1792655649.145774528] [controller_server]: Passing new path to controller.
+[smoother_server-4] [INFO] [1792655651.141679647] [smoother_server]: Received a path to smooth.
+[bt_navigator-7] [WARN] [1792655651.157305991] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655651.180235424] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[controller_server-3] [INFO] [1792655651.245770241] [controller_server]: Passing new path to controller.
+[bt_navigator-7] [WARN] [1792655652.946798016] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655652.947716479] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[smoother_server-4] [INFO] [1792655653.215597667] [smoother_server]: Received a path to smooth.
+[controller_server-3] [INFO] [1792655653.245846928] [controller_server]: Passing new path to controller.
+[bt_navigator-7] [WARN] [1792655655.256453568] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655655.261221886] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655655.268663189] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[smoother_server-4] [INFO] [1792655655.272842272] [smoother_server]: Received a path to smooth.
+[bt_navigator-7] [WARN] [1792655655.280427484] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655655.287538633] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655655.358613666] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[controller_server-3] [INFO] [1792655655.361625318] [controller_server]: Passing new path to controller.
+[bt_navigator-7] [WARN] [1792655655.859663818] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[smoother_server-4] [INFO] [1792655657.318156406] [smoother_server]: Received a path to smooth.
+[controller_server-3] [INFO] [1792655657.346279932] [controller_server]: Passing new path to controller.
+[bt_navigator-7] [WARN] [1792655657.418941642] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655658.109552301] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655658.369349350] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655658.457981223] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655658.781051702] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655658.796463190] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655658.798867142] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655658.892593840] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1792655659.189023978] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[smoother_server-4] [INFO] [1792655659.358827221] [smoother_server]: Received a path to smooth.
+[controller_server-3] [INFO] [1792655659.445790302] [controller_server]: Passing new path to controller.
+[controller_server-3] [INFO] [1792655660.170527441] [controller_server]: Reached the goal!
+[bt_navigator-7] [INFO] [1792655660.207404154] [bt_navigator]: Goal succeeded
