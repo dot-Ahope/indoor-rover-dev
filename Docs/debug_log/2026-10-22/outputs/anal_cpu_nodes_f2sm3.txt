@@ -1,0 +1,39 @@
+proc 로그 proc_f2sm3.log · 220 s · 프로세스 383 · 합 400 %(6 코어 = 600 %)
+   30.8 %  pid 1697389  ros2
+   30.6 %  pid 1697602  python3
+   28.0 %  pid 1685559  controller_serv
+   24.4 %  pid 1685469  localization_sl
+   21.2 %  pid 1685170  component_conta
+   19.5 %  pid 1685557  python3
+   18.6 %  pid 1685587  bt_navigator
+   17.9 %  pid 1684595  component_conta
+   16.3 %  pid 1685848  nvblox_node
+   14.6 %  pid 999      polkitd
+   12.7 %  pid 1684982  python3
+   11.6 %  pid 1685600  lifecycle_manag
+   11.3 %  pid 1684599  rplidar_node
+   10.9 %  pid 1684985  ekf_node
+   10.0 %  pid 1685041  ekf_node
+   10.0 %  pid 1685563  planner_server
+    8.9 %  pid 1684601  python3
+    8.6 %  pid 1685555  python3
+    8.4 %  pid 1685567  behavior_server
+    7.4 %  pid 2728     micro_ros_agent
+    7.4 %  pid 1684978  sensor_conditio
+    6.8 %  pid 1685561  smoother_server
+    6.5 %  pid 1685598  velocity_smooth
+    6.2 %  pid 1685589  waypoint_follow
+    5.4 %  pid 1685604  map_server
+같은 이름 합 상위:
+   89.7 %  python3
+   39.0 %  component_conta
+   35.0 %  ros2
+   28.0 %  controller_serv
+   24.4 %  localization_sl
+   20.9 %  ekf_node
+   18.6 %  bt_navigator
+   16.8 %  lifecycle_manag
+   16.3 %  nvblox_node
+   14.6 %  polkitd
+   11.3 %  rplidar_node
+   10.0 %  planner_server

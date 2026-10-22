@@ -1,0 +1,52 @@
+
+== 멈칫 17:51:08.18 (명령 0 근처 7 개 · 0.28 s) | 앞뒤 명령 v: 0.068 0.053 0.038 0.023 0.008 0.000 0.000 0.000 0.000 0.000 0.000 0.010 0.020 0.030
+   -0.02 s controller_server      Exception in transformPose: Lookup would require extrapolation into the future.  Requested time 1792659067.650
+   -0.02 s controller_server      Unable to transform robot pose into global plan's frame
+   -0.02 s controller_server      [follow_path] [ActionServer] Aborting handle.
+   +0.00 s controller_server      Received a goal, begin computing control effort.
+
+== 멈칫 17:51:33.72 (명령 0 근처 4 개 · 0.15 s) | 앞뒤 명령 v: 0.065 0.050 0.035 0.020 0.005 0.000 0.000 0.000 0.010 0.020 0.030
+   +0.02 s controller_server      Exception in transformPose: Lookup would require extrapolation into the future.  Requested time 1792659093.218
+   +0.02 s controller_server      Unable to transform robot pose into global plan's frame
+   +0.02 s controller_server      [follow_path] [ActionServer] Aborting handle.
+   +0.02 s controller_server      Received a goal, begin computing control effort.
+
+== 멈칫 17:51:37.27 (명령 0 근처 1 개 · 0.00 s) | 앞뒤 명령 v: 0.067 0.052 0.037 0.022 0.007 0.017 0.027 0.037
+
+== 멈칫 17:51:52.87 (명령 0 근처 13 개 · 0.60 s) | 앞뒤 명령 v: 0.021 0.027 0.027 0.012 0.005 -0.008 -0.008 0.002 0.002 0.002 0.002 0.002 0.002 0.008 0.008 0.010 0.010 0.020 0.020 0.025
+   -0.37 s controller_server      Reached the goal!
+   -0.34 s bt_navigator           Goal succeeded
+   -0.29 s bt_navigator           Begin navigating from current location (2.28, -1.46) to (5.50, -2.20)
+   -0.24 s controller_server      Received a goal, begin computing control effort.
+
+== 멈칫 17:52:00.72 (명령 0 근처 6 개 · 0.25 s) | 앞뒤 명령 v: 0.062 0.047 0.032 0.017 0.002 0.000 0.000 0.000 0.000 0.000 0.010 0.020 0.030
+   +0.07 s controller_server      Exception in transformPose: Lookup would require extrapolation into the future.  Requested time 1792659120.249
+   +0.07 s controller_server      Unable to transform robot pose into global plan's frame
+   +0.07 s controller_server      [follow_path] [ActionServer] Aborting handle.
+   +0.09 s controller_server      Received a goal, begin computing control effort.
+
+== 멈칫 17:52:42.47 (명령 0 근처 1 개 · 0.00 s) | 앞뒤 명령 v: 0.036 0.029 0.029 0.014 -0.001 -0.011 -0.021 -0.031
+   -0.31 s controller_server      Reached the goal!
+   -0.28 s bt_navigator           Goal succeeded
+   -0.24 s bt_navigator           Begin navigating from current location (5.37, -2.14) to (0.00, 0.00)
+   -0.19 s controller_server      Received a goal, begin computing control effort.
+
+== 멈칫 17:52:44.92 (명령 0 근처 18 개 · 0.85 s) | 앞뒤 명령 v: -0.017 -0.014 -0.012 -0.012 -0.009 -0.009 -0.005 -0.005 -0.008 -0.008 0.001 0.001 -0.002 -0.002 0.005 0.005 0.005 0.005 0.005 0.005 0.008 0.010 0.017 0.017 0.018
+
+== 멈칫 17:52:46.67 (명령 0 근처 3 개 · 0.09 s) | 앞뒤 명령 v: 0.025 0.025 0.013 0.013 0.008 0.008 0.008 0.010 0.010 0.020
+
+== 멈칫 17:53:26.77 (명령 0 근처 1 개 · 0.00 s) | 앞뒤 명령 v: 0.067 0.052 0.037 0.022 0.007 0.017 0.027 0.037
+
+== 멈칫 17:53:39.12 (명령 0 근처 6 개 · 0.25 s) | 앞뒤 명령 v: 0.066 0.051 0.036 0.021 0.006 0.000 0.000 0.000 0.000 0.000 0.010 0.020 0.030
+   +0.07 s controller_server      Exception in transformPose: Lookup would require extrapolation into the future.  Requested time 1792659218.681
+   +0.07 s controller_server      Unable to transform robot pose into global plan's frame
+   +0.07 s controller_server      [follow_path] [ActionServer] Aborting handle.
+   +0.10 s controller_server      Received a goal, begin computing control effort.
+
+== 멈칫 17:53:48.72 (명령 0 근처 1 개 · 0.00 s) | 앞뒤 명령 v: 0.067 0.052 0.037 0.022 0.007 0.017 0.027 0.037
+
+== 멈칫 17:54:07.97 (명령 0 근처 7 개 · 0.30 s) | 앞뒤 명령 v: 0.065 0.050 0.035 0.020 0.005 0.000 0.000 0.000 0.000 0.000 0.000 0.010 0.020 0.030
+   -0.04 s bt_navigator_navigate_ PathBlockedAhead: 앞 경로 (1.15, 0.27) 비용 99 — 2.0 s 지속되면 재계획
+   +0.02 s controller_server      Exception in transformPose: Lookup would require extrapolation into the future.  Requested time 1792659247.484
+   +0.02 s controller_server      Unable to transform robot pose into global plan's frame
+   +0.02 s controller_server      [follow_path] [ActionServer] Aborting handle.

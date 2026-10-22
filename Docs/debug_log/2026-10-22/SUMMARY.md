@@ -346,3 +346,37 @@
 - 판정(10-21 §8 · 10-20 §9.6 그대로): 3/3 · `/vslam/odom` ≥ 14 Hz · 0.5 s 넘는 끊김 ≤ 2 · vslam_twist 버림 ≤ 1/10 s · **W3 회전 최대 창 그림자가 주 EKF 보다 ≥ 10 % 작음** · 상자 옆 +2 cm 이내 · 부하 f2v1 범위. 도구 `2026-10-20/jobs/anal_ekf_replay.py`(`RTOPICS=/odometry/ekf_vslam`).
 - 추가 확인: nav_guard CPU < 5 %(f2pi1 24.8 %), 멈칫 A · B 수(f2pi1 5 · 5)와 CPU 평균 변화 — 기록용.
 - 반복 판정은 f2sm3 · f2sm4 까지 모아서(세 번 모두 ≥ 10 % · 평균 ≥ 20 % → `vslam:=on` 시험).
+
+## §20 f2sm3 결과 — 그림자 판정 전부 통과(W3 −41 %), nav_guard 부하는 목표 미달 (사용자: "그리는 동안, 다음 것 하나 진행하고, 오늘 일 마무리하자." → 로버 출발 자세 · "시작")
+- prep `outputs/prep_op_1022_4.txt`(0.003 m · −0.7°, 프리셋 3) → 러너 `outputs/run_f2sm3.txt`: 목표 1 · 2 · 3 SUCCEEDED 52.3 · 49.6 · 104.7 s(총 207.6 s). bag `bags/bag_f2sm3.tgz`(40 MB, 그림자 토픽 포함), 로그 `bags/logs_f2sm3/`(회수 `jobs/get_logs_f2sm3.sh`), nav2 `outputs/nav2_f2sm3.log`.
+- §19 판정:
+  | 기준 | f2sm3 | (f2sm1, 10-21) | 판정 |
+  |---|---|---|---|
+  | 3/3 | 3/3 | 3/3 | ✔ |
+  | `/vslam/odom` ≥ 14 Hz | 14.9 Hz | 15.0 | ✔ |
+  | 0.5 s 넘는 끊김 ≤ 2 | /vslam/odom 0 · cuVSLAM 원 출력 1(0.61 s @ t 8.8) | 2 | ✔ |
+  | vslam_twist 버림 ≤ 1/10 s | 10 s 마다 출력 148~150 · 버림 0 | 0 | ✔ |
+  | **W3 회전 최대 창 ≥ 10 % 작음** | 주 EKF 30.7 → 그림자 **18.0 cm(−41 %)** | 24.1 → 16.1(−33 %) | ✔ |
+  | 상자 옆 +2 cm 이내 | 출발 3.4 → 4.9(+1.5) · 복귀 2.9 → 3.6(+0.7) | +0.9 · +0.6 | ✔ |
+  | 부하 f2v1 범위 | CPU 75 % | 75.7 % | ✔ |
+  - 원문: `outputs/anal_shadow_f2sm3.txt`(도구 `2026-10-20/jobs/anal_ekf_replay.py`, `RTOPICS=/odometry/ekf_vslam`; 그림 `figures/shadow_f2sm3.png`) · `outputs/gaps_f2sm3.txt`(`2026-10-21/jobs/anal_topic_gaps.py`) · `outputs/chk_f2sm3_logs.txt`(`jobs/chk_f2sm3_logs.sh`; cuVSLAM 프레임 간격 경고 30 은 prep 이후 누적) · `outputs/anal_cpu_f2pi1_cmp.txt`.
+  - 그 밖: 전 구간 95 % 21.4 → 12.8 cm, 절대 끝 66.1 → 39.3 cm(cuVSLAM 단독 10.3 cm).
+  - 실수 기록: 첫 실행에서 환경 변수 `RTOPICS=/odometry/ekf_vslam` 을 Git Bash 가 Windows 경로(`C:/Program Files/Git/odometry/ekf_vslam`)로 바꿔 '토픽 없음' 으로 나옴 → `MSYS_NO_PATHCONV=1` 로 다시. 다음에 알아보는 법: 슬래시로 시작하는 ROS 토픽을 환경 변수 · 인자로 줄 땐 Git Bash 경로 변환을 끈다.
+- 반복 판정 진행: f2sm1 −33 % · f2sm3 −41 %(f2sm2 제외) → **f2sm4 한 번 더**(세 번 모두 ≥ 10 % · 평균 ≥ 20 % 면 `vslam:=on` 시험).
+- nav_guard 부하(`outputs/anal_cpu_nodes_f2sm3.txt`, pid 대응 러너 rss): **24.8 → 19.5 %** — 목표(< 5 %) 미달. 기록 거르기는 일부일 뿐 주원인이 아님 → 남은 원인 미확인(후보: 피드백 메시지를 고주파로 받는 rclpy 자체 비용 — 피드백 주기 실측 필요). 판정 동작은 정상(목표마다 시간 한도 로그, 오류 · 개입 0).
+- 멈칫(`outputs/nav_events_ms_f2sm3.txt` · `anal_stops_f2sm3.txt` · `anal_dip_events_f2sm3.txt`): 짧은 멈칫 12(f2pi1 14), 주기 늦음 64(72) · TF 외삽 5(5). 0.5 s 넘는 정지 1 번 — 17:54:08~09(1.1 s) @ (1.40, −0.29) 복귀 상자 옆: PathBlockedAhead (1.15, 0.27) · (1.15, 0.28) 비용 99 + 스무더 충돌 (1.46, 0.24). CPU 75 %(f2pi1 76).
+
+## §21 오늘 마무리
+- 결정(사용자):
+  1. **깊이 프리셋 3 기본**(§10, `camera.launch.py depth_preset` 기본 3) — 프리셋 없음은 맨바닥 유령이 출구를 막아 주행 중단(f2dr1).
+  2. **nvblox 통합 거리 2.0 m**(§15, `nvblox_local.yaml`) — 프리셋 3 + 1.4 m 는 복귀 때 낮은 상자를 못 보고 충돌(f2lp1 §13). 검증 f2pi1 · f2sm3 모두 3/3 · 복귀 상자 칸 있음 · 유령 A 4.
+  - 기각: nvblox `esdf_integrator_min_weight` 1 · 2(유령과 상자가 함께 줄어듦, §9), 깊이 프리셋 5(정지 시험 상자 안정 복셀 5 < 8, §14.1).
+- 밝힌 것: 상자 옆 '밀린 칸' 의 기전 = nvblox 기억(odom) 이 EKF 오차만큼 로버 기준으로 틀어짐(§11~§11.3, 복귀 때 그 자리는 깊이 0 이라 갱신 · 비우기 없음), 로컬 코스트맵 여유와 실제 여유의 차(§17 영상: 1.1 vs 5.6 cm).
+- 바로잡은 내 오류(각 § 안에 칸 형식): §6 '평소와 다른 길' · §11.2 '출발 기억' · §11.3 '보임 = 관측' · carve 도구 z 범위 · 광선 1.0 m · §17 '전역 코스트맵도 밀림'(미확인 발언) · 영상 렌더 40 분(매 장 재계산) · RTOPICS 경로 변환.
+- 남은 일(다음):
+  1. **f2sm4** 그림자 반복 → 세 번 판정 → `vslam:=on` 주행 시험(상자 옆 기억 오차 근본 대책).
+  2. 상자 옆 여유: 기억 오차 + 칸 판정 반올림 — 1 의 효과를 본 뒤 남는 몫 판단.
+  3. nav_guard 19.5 % · polkitd 15 % · lifecycle_manager 11 % 원인(피드백 주기 실측).
+  4. 멈칫 A(TF 외삽) · B(제어 주기 늦음) — CPU 75 % 배경, 미해결.
+  5. 미뤄 둔 것: 사람 기억이 목표 칸을 막는 문제, prep 위치 추정 첫 불합격(오늘 1 회째는 로버 반대 방향이 원인으로 확인 — 10-21 건은 여전히 미확인), Jetson 시험 컨테이너 · 이미지 정리(사용자 결정), 깊이 해상도(decimation 2) 시험 여부.
+- 큰 파일: Jetson `~/bags/bag_f2dr1` · `bag_f2dr2` · `bag_f2lp1`(470 MB) · `replay_*` — GB 급 아님, 정리 보류.
