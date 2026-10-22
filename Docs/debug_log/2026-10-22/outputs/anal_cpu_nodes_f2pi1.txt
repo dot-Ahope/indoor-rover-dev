@@ -1,0 +1,39 @@
+proc 로그 proc_f2pi1.log · 223 s · 프로세스 377 · 합 401 %(6 코어 = 600 %)
+   30.5 %  pid 1425779  python3
+   30.0 %  pid 1425571  ros2
+   28.0 %  pid 1394125  controller_serv
+   26.3 %  pid 1394032  localization_sl
+   24.8 %  pid 1394123  python3
+   18.4 %  pid 1394133  bt_navigator
+   18.1 %  pid 1393304  component_conta
+   16.5 %  pid 1394368  nvblox_node
+   15.3 %  pid 999      polkitd
+   14.8 %  pid 1393728  component_conta
+   12.3 %  pid 1393556  python3
+   11.4 %  pid 1393308  rplidar_node
+   11.2 %  pid 1394148  lifecycle_manag
+   11.1 %  pid 1393558  ekf_node
+    9.9 %  pid 1394129  planner_server
+    9.7 %  pid 1393566  ekf_node
+    8.7 %  pid 1393310  python3
+    8.5 %  pid 1394121  python3
+    8.3 %  pid 2728     micro_ros_agent
+    8.1 %  pid 1394131  behavior_server
+    7.5 %  pid 1393552  sensor_conditio
+    6.6 %  pid 1394127  smoother_server
+    6.2 %  pid 1394135  waypoint_follow
+    6.1 %  pid 1394139  velocity_smooth
+    5.2 %  pid 1394161  map_server
+같은 이름 합 상위:
+   94.8 %  python3
+   34.3 %  ros2
+   32.9 %  component_conta
+   28.0 %  controller_serv
+   26.3 %  localization_sl
+   20.8 %  ekf_node
+   18.4 %  bt_navigator
+   16.5 %  nvblox_node
+   16.1 %  lifecycle_manag
+   15.3 %  polkitd
+   11.4 %  rplidar_node
+    9.9 %  planner_server
