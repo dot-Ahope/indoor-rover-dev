@@ -1,0 +1,65 @@
+13:50:35.34 bt_navigator Begin navigating from current location (-0.01, 0.00) to (2.25, -1.60)
+13:50:35.36 smoother_server Received a path to smooth.
+13:50:35.38 controller_server Received a goal, begin computing control effort.
+13:50:35.39 controller_server No goal checker was specified in parameter 'current_goal_checker'. Server will use only plugin loaded general_goal_checker . This warning will appear once.
+13:50:35.39 controller_server Optimizer reset
+13:50:37.42 smoother_server Received a path to smooth.
+13:50:37.49 controller_server Passing new path to controller.
+13:50:39.47 smoother_server Received a path to smooth.
+13:50:39.59 controller_server Passing new path to controller.
+13:50:41.53 smoother_server Received a path to smooth.
+13:50:41.59 controller_server Passing new path to controller.
+13:50:42.31 bt_navigator_navigate_to_pose_rclcpp_node PathBlockedAhead: 앞 경로 (1.85, 0.22) 비용 99 — 2.0 s 지속되면 재계획
+13:50:43.59 smoother_server Received a path to smooth.
+13:50:43.60 smoother_server Smoothed path leads to a collision at x: 1.815616, y: -0.114082, theta: -0.701300
+13:50:43.60 smoother_server [smooth_path] [ActionServer] Aborting handle.
+13:50:43.69 controller_server Passing new path to controller.
+13:50:45.62 planner_server GridBased: failed to create plan with tolerance 0.25.
+13:50:45.62 planner_server Planning algorithm GridBased failed to generate a valid path to (2.25, -1.60)
+13:50:45.62 planner_server [compute_path_to_pose] [ActionServer] Aborting handle.
+13:50:46.32 planner_server GridBased: failed to create plan with tolerance 0.25.
+13:50:46.32 planner_server Planning algorithm GridBased failed to generate a valid path to (2.25, -1.60)
+13:50:46.32 planner_server [compute_path_to_pose] [ActionServer] Aborting handle.
+13:50:46.39 controller_server Goal was canceled. Stopping the robot.
+13:50:46.39 controller_server [follow_path] [ActionServer] Client requested to cancel the goal. Cancelling.
+13:50:47.32 planner_server GridBased: failed to create plan with tolerance 0.25.
+13:50:47.32 planner_server Planning algorithm GridBased failed to generate a valid path to (2.25, -1.60)
+13:50:47.32 planner_server [compute_path_to_pose] [ActionServer] Aborting handle.
+13:50:48.32 planner_server GridBased: failed to create plan with tolerance 0.25.
+13:50:48.32 planner_server Planning algorithm GridBased failed to generate a valid path to (2.25, -1.60)
+13:50:48.32 planner_server [compute_path_to_pose] [ActionServer] Aborting handle.
+13:50:48.34 behavior_server Running monotone_escape
+13:50:48.35 behavior_server [monotone_escape] 시작 최근접 22.4 cm · 목표 5.0 cm · 모의 결과(닿는 양 m/rad): 앞:없음(끝 22.4 cm) 뒤:0.010 좌회전:0.018 우회전:없음(끝 22.4 cm)
+13:50:48.35 behavior_server [monotone_escape] 성공: 최근접 22.4 cm
+13:50:48.35 behavior_server monotone_escape completed successfully
+13:50:48.37 planner_server GridBased: failed to create plan with tolerance 0.25.
+13:50:48.37 planner_server Planning algorithm GridBased failed to generate a valid path to (2.25, -1.60)
+13:50:48.37 planner_server [compute_path_to_pose] [ActionServer] Aborting handle.
+13:50:49.32 planner_server GridBased: failed to create plan with tolerance 0.25.
+13:50:49.32 planner_server Planning algorithm GridBased failed to generate a valid path to (2.25, -1.60)
+13:50:49.32 planner_server [compute_path_to_pose] [ActionServer] Aborting handle.
+13:50:49.34 behavior_server Running wait
+13:50:54.35 behavior_server wait completed successfully
+13:50:54.37 planner_server GridBased: failed to create plan with tolerance 0.25.
+13:50:54.38 planner_server Planning algorithm GridBased failed to generate a valid path to (2.25, -1.60)
+13:50:54.38 planner_server [compute_path_to_pose] [ActionServer] Aborting handle.
+13:50:55.32 planner_server GridBased: failed to create plan with tolerance 0.25.
+13:50:55.32 planner_server Planning algorithm GridBased failed to generate a valid path to (2.25, -1.60)
+13:50:55.32 planner_server [compute_path_to_pose] [ActionServer] Aborting handle.
+13:50:56.32 planner_server GridBased: failed to create plan with tolerance 0.25.
+13:50:56.32 planner_server Planning algorithm GridBased failed to generate a valid path to (2.25, -1.60)
+13:50:56.32 planner_server [compute_path_to_pose] [ActionServer] Aborting handle.
+13:50:57.32 planner_server GridBased: failed to create plan with tolerance 0.25.
+13:50:57.32 planner_server Planning algorithm GridBased failed to generate a valid path to (2.25, -1.60)
+13:50:57.32 planner_server [compute_path_to_pose] [ActionServer] Aborting handle.
+13:50:57.34 behavior_server Running monotone_escape
+13:50:57.34 behavior_server [monotone_escape] 시작 최근접 22.5 cm · 목표 5.0 cm · 모의 결과(닿는 양 m/rad): 앞:없음(끝 22.5 cm) 뒤:0.010 좌회전:0.018 우회전:없음(끝 22.5 cm)
+13:50:57.34 behavior_server [monotone_escape] 성공: 최근접 22.5 cm
+13:50:57.34 behavior_server monotone_escape completed successfully
+13:50:57.36 planner_server GridBased: failed to create plan with tolerance 0.25.
+13:50:57.36 planner_server Planning algorithm GridBased failed to generate a valid path to (2.25, -1.60)
+13:50:57.36 planner_server [compute_path_to_pose] [ActionServer] Aborting handle.
+13:50:58.32 planner_server GridBased: failed to create plan with tolerance 0.25.
+13:50:58.32 planner_server Planning algorithm GridBased failed to generate a valid path to (2.25, -1.60)
+13:50:58.32 planner_server [compute_path_to_pose] [ActionServer] Aborting handle.
+13:50:58.34 behavior_server Running wait
