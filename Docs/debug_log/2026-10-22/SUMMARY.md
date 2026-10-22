@@ -318,3 +318,31 @@
   | C 목표 바뀜 | 4 — 16:51:45.3 · 46.8 · 52:37.1 · 52:39.9 | 0.0~0.9 s | `Reached the goal` → 새 목표 → 제자리 회전 · 짧은 후진 | 목표 사이 정상 동작 |
   - 공통 배경(측정): 주행 중 CPU 평균 **76 %**(6 코어 합 456 %, `outputs/anal_cpu_f2pi1_cmp.txt`; f2pr1 74 · f2dr2 76 %), 이 주행 창에서 'Control loop missed' 72 회 중 멈칫이 된 것 5 회. nav2 로그 전체(prep 이후) 주기 늦음 · TF 외삽 = f2pr1 60 · 37, f2pi1 72 · 36, f2lp1 72 · 63(`outputs/anal_hesitation_counts.txt`).
   - 읽기: A · B 모두 '시간이 늦다' — A 는 TF 가 늦게 도착, B 는 컨트롤러 계산이 늦게 끝남. 둘 다 CPU 가 바쁠 때 생길 수 있는 모양(추정, 미확인). 10-21 §12.2 와 같은 분류 · 같은 서명 → 새 문제 아님. 통합 거리 2.0 은 주기 늦음 수를 눈에 띄게 늘리지 않았음(72 vs 72).
+
+## §17 복귀 상자 영상 — 어떤 값으로 알았고 왜 붙어 지나갔나 (사용자: "진행을 영상으로 시각화 해달라. 복귀 시 상자를 어떤 값으로 인식했고 왜 못 피해갔는지 알고자 한다. 다음 단계 전부 진행하자.")
+- 영상 `videos/f2pi1_return_box.mp4`(git 제외, 도구 `jobs/fig_return_video.py`, t 150~215 s 1 배속; 출력 줄 `outputs/fig_return_video.txt`): 왼쪽 = 상자 둘레 확대(로컬 코스트맵 = MPPI 가 보는 값 · nvblox 조각 칸 · 실제 상자 · 전역/컨트롤러 경로 · 깊이 시야 2.0 m), 오른쪽 위 = 그 순간 깊이 영상(프리셋 3)과 상자 투영 · 상자 쪽 유효 화소 수, 오른쪽 아래 = 실제 여유 · 지도 여유 · 전진 명령 시간 그래프 + nav2 사건.
+- 값: 실제 여유(차체 ↔ 실제 상자) 최소 **1.1 cm @ t 210.2 s**, 그 순간 로컬 코스트맵 치명 칸까지 여유 **5.6 cm** — MPPI 는 4.5 cm 더 있다고 보고 지나감. 이유는 §16(지도 속 상자 칸이 실제 북쪽 면보다 약 3 cm 남쪽 + 칸 판정 반올림).
+- **정정(말로 한 설명)**: §11 대화에서 "전역 코스트맵(map)도 옮겨진 상자를 본다" 고 했으나 확인하지 않은 말 — 10-21 §13.2 에선 전역 코스트맵 카메라 칸이 map→odom 변화만큼 움직이지 않았다(가장 잘 겹치는 이동 (0, 0)). 오늘 측정한 밀림은 **nvblox 조각(odom)과 로컬 코스트맵** 기준이며 그건 유효. 전역 코스트맵 nvblox 층이 칸을 어떻게 갱신하는지(매 조각 다시 그림 vs 표시만 누적)는 미확인.
+
+## §18 CPU 노드별 (멈칫 A · B 배경) · nav_guard 대책
+- 도구 `jobs/anal_cpu_nodes.py`(러너 proc 로그, 주행 절반 넘게 살아 있던 프로세스, 한 코어 = 100 %) → `outputs/anal_cpu_nodes_f2pi1.txt`; 명령줄 대응은 러너 `rss_f2pi1.txt`(PC 스크래치패드 `f0_f2pi1/` — bag tgz 와 별도, 휘발 → 아래 값만 남김).
+  | 묶음 | CPU(한 코어 = 100 %) |
+  |---|---|
+  | Nav2: controller 28.0 · bt_navigator 18.4 · lifecycle_manager 11.2 · planner 9.9 · behavior 8.1 · smoother 6.6 · waypoint 6.2 · velocity_smoother 6.1 · map_server 5.2 | ≈ 100 |
+  | 측정 · 러너: `ros2`(bag 기록기로 추정) 30.0 · python3 1425779(러너 job550 로 추정 — 주행 시작 뒤 생긴 pid) 30.5 | ≈ 60 |
+  | **nav_guard 24.8** · stuck_monitor 8.5 | 33 |
+  | 그림자 · rf2o: cuVSLAM 컨테이너 14.8 · ekf_node 둘 11.1 · 9.7 · rf2o_gate 12.3 · vslam_twist 5.6 | ≈ 53 |
+  | SLAM(localization) 26.3 · 카메라 컨테이너 18.1 · nvblox 16.5 · rplidar 11.4 · scan_deskew 8.7 · sensor_conditioner 7.5 · micro_ros_agent 8.3 | ≈ 97 |
+  | polkitd 15.3(왜 주행 중 도는지 미확인) | 15 |
+  합 401 %(6 코어 600 %), CPU 평균 76 %(§16).
+- **nav_guard 24.8 %** 원인(코드 읽기): `/navigate_to_pose/_action/feedback` 을 받을 때마다 최근 45 s 위치 기록 전체를 파이썬 리스트로 다시 거름 — 피드백은 BT 주기(`bt_loop_duration 10` ms)로 최대 100 Hz 라 기록이 수천 개(추정, 피드백 주기 실측 안 함). 판정 기능에 비해 과한 부하.
+  - 수정 `ros2_ws/src/rover_bringup/scripts/nav_guard.py`: 기록은 0.2 s 간격으로만 쌓고 오래된 것은 앞에서부터 버림(무진행 0.25 m / 45 s 판정에 0.2 s 해상도면 충분 — 판정 식은 그대로).
+  - 배포(`jobs/up_navguard_1022.sh` → `outputs/up_navguard_1022.txt`): Jetson 판 = 저장소 HEAD(6b7381c5d260, `jobs/chk_navguard_inst.sh`) 확인 → 새 sha a23e0b3427ee, 설치본은 src 링크, Jetson `py_compile` OK. 다음 prep 부터 적용. 확인 = 다음 주행 nav_guard CPU < 5 %.
+- 줄일 수 있는 다른 후보(결정 안 함): bag 기록기 · 러너(시험 때만), polkitd(원인 찾기), lifecycle_manager 11 %(bond 주기?) — 미확인.
+
+## §19 다음 주행 f2sm3 선언 — 그림자 cuVSLAM 반복(10-21 §8 의 3 번째 중 2 번째) + nav_guard 부하 확인 (결과 보기 전)
+- 왜 지금 주행이 필요한가: 오늘 주행(f2pr1 · f2dr2 · f2lp1 · f2pi1)은 모두 `vslam:=shadow` 였지만 러너가 그림자 토픽(`/odometry/ekf_vslam` · `/vslam/odom` · `/visual_slam/tracking/odometry`)을 기록하지 않아 W3 감소율을 못 잼(bag 토픽 목록 확인). 10-21 반복 판정은 f2sm1(−33 %) 하나만 유효(f2sm2 는 사람 방해로 제외).
+- 구성: 지금 기본(깊이 프리셋 3 · 통합 거리 2.0 · 프로젝터 끔 · 그림자 · SHM) + nav_guard 수정판. prep `jobs/prep_op_1022.sh`. 러너 `run_f2c.sh f2sm3 … b910`, `EXTRA_TOPICS_ADD="/odometry/ekf_vslam /vslam/odom /visual_slam/tracking/odometry"`, 깊이 기록 안 함(f2sm1 과 같은 부하 조건), STAGE `F2c-sm-p3i20`.
+- 판정(10-21 §8 · 10-20 §9.6 그대로): 3/3 · `/vslam/odom` ≥ 14 Hz · 0.5 s 넘는 끊김 ≤ 2 · vslam_twist 버림 ≤ 1/10 s · **W3 회전 최대 창 그림자가 주 EKF 보다 ≥ 10 % 작음** · 상자 옆 +2 cm 이내 · 부하 f2v1 범위. 도구 `2026-10-20/jobs/anal_ekf_replay.py`(`RTOPICS=/odometry/ekf_vslam`).
+- 추가 확인: nav_guard CPU < 5 %(f2pi1 24.8 %), 멈칫 A · B 수(f2pi1 5 · 5)와 CPU 평균 변화 — 기록용.
+- 반복 판정은 f2sm3 · f2sm4 까지 모아서(세 번 모두 ≥ 10 % · 평균 ≥ 20 % → `vslam:=on` 시험).
