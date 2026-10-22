@@ -298,3 +298,23 @@
   3. 맨바닥 A 유령 ≤ 20(로컬 근거 없는 LETHAL, t 10~60 s, `2026-10-21/jobs/anal_zone_ghosts.py`)
   4. 상자 옆 멈칫 · 정지 없음(복귀 상자 옆 구간 PathBlockedAhead · Wait · 후보 전부 충돌 0, nav2 로그)
   - 목표 3/3 은 기록용. 4 만 실패면 '상자 옆 여유' 문제(10-14 §5.1 우려)로 따로 본다.
+
+## §16 f2pi1 결과(프리셋 3 + 통합 거리 2.0) · 주행 중 멈칫 분석 (사용자: "주행 완료 후, 주행중에 멈칫멈칫하는 현상에 대해서도 분석 설명 해달라.")
+- 주행(`outputs/run_f2pi1.txt`): 목표 1 · 2 · 3 SUCCEEDED 52.1 · 51.8 · 103.3 s(총 207.5 s), 복귀 0.145 m. 확인 `outputs/chk_live_cfg_f2pi1.txt`(visual_preset 3 · 실시간 nvblox 통합 거리 2). bag `bags/bag_f2pi1.tgz`(52 MB, 깊이 포함), 로그 `bags/logs_f2pi1/`(회수 `jobs/get_logs_f2pi1.sh`), nav2 `outputs/nav2_f2pi1.log`.
+- §15 기준:
+  | 기준 | 결과 | 판정 |
+  |---|---|---|
+  | 1 상자 접촉 없음 | 최소 **+0.012 m** @ 16:54:08.7(t 210.1, 로버 (0.99, 0.14, −173°)) — 그때 상자 칸 로컬 5 · 전역 5 · 조각 5 (`outputs/anal_contact_f2pi1.txt`) | ✔(형식) — 단 1.2 cm 는 SLAM 오차 범위, 실제 닿았는지 미확인 |
+  | 2 복귀 상자 칸 ≥ 3 | t 160 s 부터 조각 3 → 6~7, 전역 3~8, 로컬 5~7(상자 2.35 m · −23° 에서 처음) (`outputs/anal_box_maps_series_f2pi1.txt`) | ✔ |
+  | 3 맨바닥 A 유령 ≤ 20 | A 4 · B 0 (`outputs/anal_zone_ghosts_f2pi1.txt`) | ✔ |
+  | 4 상자 옆 멈칫 · 정지 없음 | 0.5 s 넘는 정지 0, 하지만 상자 옆 PathBlockedAhead 2(16:53:36 (1.49, −0.07) · 16:53:40 (1.44, −0.06)) · 스무더 충돌 2(16:54:07 (1.11, 0.14) · 16:54:09 (0.96, 0.14)) | ✘(선언대로 엄격히) |
+  - 출발 상자: t0 + 0.65 s 에 8 칸, 10 s 중앙 8(`outputs/anal_box_detect_f2pi1.txt`) — f2pr1(7 칸 · 10.8 s 뒤)보다 나음.
+- 1.2 cm 근접의 원인(`jobs/anal_cell_timeline.py` → `outputs/anal_cell_timeline_f2pi1.txt`): 옆을 지나던 t 205~210 s 에 지도의 상자 칸은 y −0.15~−0.10 줄(칸 위 끝 −0.05) — 실제 북쪽 면(−0.02)보다 **약 3 cm 남쪽**(로버 반대쪽)으로 기억돼 있었다. 상자는 그때 시야 밖(보임 0) → 기억의 오차(§11 기전, 이번엔 반대 방향)만큼 로버가 여유를 더 있다고 보고 붙어 지나감 + 칸 판정 여유 2~5 cm(10-13 §12.2).
+- **멈칫 분석**(`2026-10-21/jobs/anal_stops.py` · `anal_dip_events.py`, 사건 `outputs/nav_events_ms_f2pi1.txt`(도구 `jobs/anal_nav_ms.py`; 'Received/Passing new path' 만 거르고 'Control loop missed' 는 남김 — 10-21 §12.2 교훈) → `outputs/anal_stops_f2pi1.txt` · `anal_dip_events_f2pi1.txt`): 0.5 s 넘는 정지 **0**, 전진 명령이 0 근처로 떨어진 짧은 멈칫 **14 번**.
+  | 묶음 | 수 · 시각 | 길이 | 서명(0.01 s) | 원인 |
+  |---|---|---|---|---|
+  | A TF 외삽 | 5 — 16:51:26.2 · 51:55.4 · 52:04.1 · 53:19.2 · 53:37.9 | 0.05~0.30 s | `Exception in transformPose: Lookup would require extrapolation into the future`(요청 시각이 TF 최신보다 10~60 ms 앞) → `follow_path Aborting` → 0.02~0.26 s 뒤 `Received a goal` | 컨트롤러가 로버 자세를 map 으로 못 옮겨 스스로 중단 → 0 명령 → 재시작 |
+  | B 제어 주기 늦음 | 5 — 16:51:47.5 · 50.1 · 52.5 · 53.2 · 53:04.0 | 0.00~0.10 s | 명령 바닥과 `Control loop missed its desired rate of 10 Hz` 가 0.01~0.11 s 안(5/5) | 컨트롤러 한 주기가 늦어 velocity_smoother `velocity_timeout 0.3 s` 를 넘김 → smoother 가 0 으로 감속(0.3 m/s² 로 0.065 → 0 에 5 주기 — 명령값 모양 일치, `params.txt`) — 추정(컨트롤러 출력 토픽은 bag 에 없어 직접 확인 못 함) |
+  | C 목표 바뀜 | 4 — 16:51:45.3 · 46.8 · 52:37.1 · 52:39.9 | 0.0~0.9 s | `Reached the goal` → 새 목표 → 제자리 회전 · 짧은 후진 | 목표 사이 정상 동작 |
+  - 공통 배경(측정): 주행 중 CPU 평균 **76 %**(6 코어 합 456 %, `outputs/anal_cpu_f2pi1_cmp.txt`; f2pr1 74 · f2dr2 76 %), 이 주행 창에서 'Control loop missed' 72 회 중 멈칫이 된 것 5 회. nav2 로그 전체(prep 이후) 주기 늦음 · TF 외삽 = f2pr1 60 · 37, f2pi1 72 · 36, f2lp1 72 · 63(`outputs/anal_hesitation_counts.txt`).
+  - 읽기: A · B 모두 '시간이 늦다' — A 는 TF 가 늦게 도착, B 는 컨트롤러 계산이 늦게 끝남. 둘 다 CPU 가 바쁠 때 생길 수 있는 모양(추정, 미확인). 10-21 §12.2 와 같은 분류 · 같은 서명 → 새 문제 아님. 통합 거리 2.0 은 주기 늦음 수를 눈에 띄게 늘리지 않았음(72 vs 72).
