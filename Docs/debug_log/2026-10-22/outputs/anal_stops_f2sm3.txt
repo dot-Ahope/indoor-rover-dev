@@ -1,0 +1,11 @@
+주행 17:51:00 ~ 17:54:27 (206.8 s) · 멈춤(0.5 s 넘게 정지) 1 번 · 합 1.1 s
+
+17:54:08~17:54:09 (t 199.8~200.9, 1.1 s) @ (1.40, -0.29) | cmd_vel 6 개 중 0 명령 2 · 최대 |v| 0.040 · 최대 |ω| 0.05 | 앞 ±30° 라이다 최소 1.75 m
+    17:54:06.00 controller_server Control loop missed its desired rate of 10.0000Hz
+    17:54:07.94 bt_navigator_navigate_to_pose_rclcpp_node PathBlockedAhead: 앞 경로 (1.15, 0.27) 비용 99 — 2.0 s 지속되면 재계획
+    17:54:08.00 controller_server Exception in transformPose: Lookup would require extrapolation into the future.  Requested time 1792659247.484600 but the latest dat
+    17:54:08.00 controller_server Unable to transform robot pose into global plan's frame
+    17:54:08.00 controller_server [follow_path] [ActionServer] Aborting handle.
+    17:54:08.95 smoother_server Smoother simple_smoother did not complete smoothing in specified time limit(1.000000 seconds) and was interrupted after 0.000436 secon
+    17:54:08.95 smoother_server Smoothed path leads to a collision at x: 1.460000, y: 0.240000, theta: -0.241728
+    17:54:08.95 smoother_server [smooth_path] [ActionServer] Aborting handle.
