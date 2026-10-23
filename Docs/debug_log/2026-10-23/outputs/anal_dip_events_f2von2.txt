@@ -1,0 +1,23 @@
+
+== 멈칫 12:41:23.71 (명령 0 근처 10 개 · 0.45 s) | 앞뒤 명령 v: 0.025 0.019 0.019 0.019 0.004 0.004 0.004 0.004 0.002 0.008 0.008 0.006 0.006 0.006 0.016 0.022 0.022
+   -0.42 s controller_server      Reached the goal!
+   -0.38 s bt_navigator           Goal succeeded
+   -0.34 s bt_navigator           Begin navigating from current location (2.30, -1.47) to (5.50, -2.20)
+   -0.29 s controller_server      Received a goal, begin computing control effort.
+
+== 멈칫 12:42:12.76 (명령 0 근처 2 개 · 0.05 s) | 앞뒤 명령 v: 0.067 0.052 0.037 0.022 0.007 -0.008 -0.018 -0.028 -0.038
+   -0.20 s controller_server      Reached the goal!
+   -0.17 s bt_navigator           Goal succeeded
+   -0.11 s bt_navigator           Begin navigating from current location (5.44, -2.17) to (0.00, 0.00)
+   -0.05 s controller_server      Received a goal, begin computing control effort.
+
+== 멈칫 12:42:15.51 (명령 0 근처 12 개 · 0.55 s) | 앞뒤 명령 v: -0.012 -0.013 -0.013 -0.013 -0.003 -0.008 -0.008 0.002 0.002 -0.000 -0.000 0.007 0.007 0.010 0.010 0.010 0.013 0.012 0.012
+
+== 멈칫 12:42:17.06 (명령 0 근처 2 개 · 0.05 s) | 앞뒤 명령 v: 0.015 0.015 0.014 0.014 0.009 0.009 0.012 0.012 0.017
+
+== 멈칫 12:43:42.16 (명령 0 근처 1 개 · 0.00 s) | 앞뒤 명령 v: 0.063 0.048 0.033 0.018 0.003 0.013 0.023 0.033
+   -0.25 s controller_server      Optimizer reset
+   -0.24 s controller_server      Optimizer reset
+   -0.24 s controller_server      Optimizer fail to compute path
+   -0.24 s controller_server      [follow_path] [ActionServer] Aborting handle.
+   -0.22 s controller_server      Received a goal, begin computing control effort.
