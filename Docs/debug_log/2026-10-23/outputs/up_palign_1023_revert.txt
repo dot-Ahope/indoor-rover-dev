@@ -1,0 +1,2 @@
+  /home/jetson/ros2_ws/src/rover_navigation/config/nav2_params.yaml → ['14.0'] (바뀜)
+  /home/jetson/ros2_ws/install/rover_navigation/share/rover_navigation/config/nav2_params.yaml → ['14.0'] (바뀜)
