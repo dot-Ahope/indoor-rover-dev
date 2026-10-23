@@ -1,0 +1,12 @@
+이전 src/path_blocked_ahead_condition.cpp 78710d858c05
+이전 config/nav_to_pose_no_spin.xml 62d8fd06bee1
+새 src/path_blocked_ahead_condition.cpp d8e03afcc44b
+새 config/nav_to_pose_no_spin.xml b448fcc23ff1
+2
+Starting >>> rover_navigation
+Finished <<< rover_navigation [28.2s]
+
+Summary: 1 package finished [29.1s]
+lrwxrwxrwx 1 jetson jetson 72 Sep  7 15:50 install/rover_navigation/share/rover_navigation/config/nav_to_pose_no_spin.xml -> /home/jetson/ros2_ws/src/rover_navi
+lrwxrwxrwx 1 jetson jetson 82 Oct  1 17:28 install/rover_navigation/lib/librover_path_blocked_ahead_bt_node.so -> /home/jetson/ros2_ws/build/rover_navigation/librover_path_blocked_ahead_bt_node.so
+1
