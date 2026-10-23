@@ -206,7 +206,7 @@ with wr.saving(fig, out, dpi=100):
             goal_l.set_data([ge[0], tip[0]], [ge[1], tip[1]]); goal_h.set_offsets([tip]); goal_h.set_paths([matplotlib.markers.MarkerStyle((3, 0, math.degrees(gyaw) - 90)).get_path().transformed(matplotlib.markers.MarkerStyle((3, 0, math.degrees(gyaw) - 90)).get_transform())])
         cm = last(cmds, t) if cmds else (0, 0, 0)
         clock.set_text(time.strftime('%H:%M:%S', time.localtime(t)) + '.%d' % int((t % 1) * 10))
-        sub.set_text('구간 시작 뒤 %5.1f s  ·  %.0f배속' % (t - tA, SPEED))
+        sub.set_text('구간 시작 뒤 %5.1f s  ·  %g배속' % (t - tA, SPEED))
         vals = ['%+.3f m/s' % cm[1], '%+.2f rad/s' % cm[2], '%.2f m' % plen(pl) if len(pl) > 1 else '—', '%+.0f°' % math.degrees(yaw), '%+.0f°' % math.degrees(p[-1][2]) if p else '—']
         for s_, v in zip(stats, vals): s_.set_text(v)
         recent = [(te, lab, det) for te, lab, det in NEV if t - 2.5 <= te <= t]
