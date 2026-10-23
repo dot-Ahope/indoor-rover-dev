@@ -1,0 +1,102 @@
+
+== 멈칫 14:45:32.43 (명령 0 근처 7 개 · 0.30 s) | 앞뒤 명령 v: 0.065 0.050 0.035 0.020 0.005 0.000 0.000 0.000 0.000 0.000 0.000 0.010 0.013 0.013
+   +0.03 s controller_server      Exception in transformPose: Lookup would require extrapolation into the future.  Requested time 1792734331.931
+   +0.03 s controller_server      Unable to transform robot pose into global plan's frame
+   +0.03 s controller_server      [follow_path] [ActionServer] Aborting handle.
+   +0.05 s controller_server      Received a goal, begin computing control effort.
+
+== 멈칫 14:45:52.48 (명령 0 근처 4 개 · 0.15 s) | 앞뒤 명령 v: 0.069 0.054 0.039 0.024 0.009 0.000 0.000 0.000 0.010 0.020 0.030
+   +0.05 s controller_server      Exception in transformPose: Lookup would require extrapolation into the future.  Requested time 1792734352.031
+   +0.05 s controller_server      Unable to transform robot pose into global plan's frame
+   +0.05 s controller_server      [follow_path] [ActionServer] Aborting handle.
+   +0.07 s controller_server      Received a goal, begin computing control effort.
+
+== 멈칫 14:47:15.88 (명령 0 근처 2 개 · 0.05 s) | 앞뒤 명령 v: 0.065 0.050 0.035 0.020 0.005 0.000 0.010 0.020 0.030
+   -0.33 s bt_navigator_navigate_ PathBlockedAhead: 앞 경로 (-1.64, -4.72) 비용 99 가 2.0 s 지속 → 주행 중단·재계획
+   -0.24 s controller_server      Goal was canceled. Stopping the robot.
+   -0.24 s controller_server      [follow_path] [ActionServer] Client requested to cancel the goal. Cancelling.
+   -0.23 s bt_navigator_navigate_ PathBlockedAhead: 앞 경로 (-1.64, -4.72) 비용 99 가 2.0 s 지속 → 주행 중단·재계획
+
+== 멈칫 14:47:18.70 (명령 0 근처 2 개 · 0.19 s) | 앞뒤 명령 v: 0.080 0.075 0.075 0.060 0.000 0.045 0.030 0.015 0.000 0.010 0.020 0.030
+   -0.11 s bt_navigator_navigate_ PathBlockedAhead: 앞 경로 (-1.65, -4.70) 비용 99 가 2.0 s 지속 → 주행 중단·재계획
+   -0.02 s controller_server      Goal was canceled. Stopping the robot.
+   -0.02 s controller_server      [follow_path] [ActionServer] Client requested to cancel the goal. Cancelling.
+   -0.01 s bt_navigator_navigate_ PathBlockedAhead: 앞 경로 (-1.65, -4.70) 비용 99 가 2.0 s 지속 → 주행 중단·재계획
+   -0.01 s behavior_server        Running monotone_escape
+   -0.00 s behavior_server        [monotone_escape] 시작 최근접 10.4 cm · 목표 5.0 cm · 모의 결과(닿는 양 m/rad): 앞:0.010 뒤:0.010 좌회전:0.018 우회전:없음(끝 10.4 cm)
+   -0.00 s behavior_server        [monotone_escape] 성공: 최근접 10.4 cm
+   -0.00 s behavior_server        monotone_escape completed successfully
+   +0.04 s smoother_server        Smoother simple_smoother did not complete smoothing in specified time limit(1.000000 seconds) and was interrup
+   +0.04 s smoother_server        Smoothed path leads to a collision at x: -1.690000, y: -4.160000, theta: 0.000000
+   +0.04 s smoother_server        [smooth_path] [ActionServer] Aborting handle.
+   +0.06 s bt_navigator_navigate_ PathBlockedAhead: 앞 경로 (-1.64, -4.72) 비용 99 — 2.0 s 지속되면 재계획
+   +0.06 s controller_server      Received a goal, begin computing control effort.
+
+== 멈칫 14:47:21.08 (명령 0 근처 2 개 · 0.06 s) | 앞뒤 명령 v: 0.064 0.049 0.034 0.019 0.004 0.000 0.010 0.020 0.030
+   -0.33 s bt_navigator_navigate_ PathBlockedAhead: 앞 경로 (-1.64, -4.72) 비용 99 가 2.0 s 지속 → 주행 중단·재계획
+   -0.23 s controller_server      Goal was canceled. Stopping the robot.
+   -0.23 s controller_server      [follow_path] [ActionServer] Client requested to cancel the goal. Cancelling.
+   -0.23 s bt_navigator_navigate_ PathBlockedAhead: 앞 경로 (-1.64, -4.72) 비용 99 가 2.0 s 지속 → 주행 중단·재계획
+   -0.22 s behavior_server        Running wait
+
+== 멈칫 14:47:28.25 (명령 0 근처 2 개 · 0.04 s) | 앞뒤 명령 v: 0.064 0.049 0.034 0.019 0.004 0.000 0.010 0.020 0.030
+   -0.32 s bt_navigator_navigate_ PathBlockedAhead: 앞 경로 (-1.65, -4.75) 비용 99 가 2.0 s 지속 → 주행 중단·재계획
+   -0.23 s controller_server      Goal was canceled. Stopping the robot.
+   -0.23 s controller_server      [follow_path] [ActionServer] Client requested to cancel the goal. Cancelling.
+   -0.22 s bt_navigator_navigate_ PathBlockedAhead: 앞 경로 (-1.65, -4.75) 비용 99 가 2.0 s 지속 → 주행 중단·재계획
+   +0.31 s smoother_server        Smoother simple_smoother did not complete smoothing in specified time limit(1.000000 seconds) and was interrup
+   +0.31 s smoother_server        Smoothed path leads to a collision at x: -1.690000, y: -4.410000, theta: -1.571178
+   +0.31 s smoother_server        [smooth_path] [ActionServer] Aborting handle.
+   +0.32 s bt_navigator_navigate_ PathBlockedAhead: 앞 경로 (-1.64, -4.75) 비용 99 — 2.0 s 지속되면 재계획
+   +0.33 s controller_server      Received a goal, begin computing control effort.
+
+== 멈칫 14:47:43.79 (명령 0 근처 2 개 · 0.05 s) | 앞뒤 명령 v: 0.062 0.047 0.032 0.017 0.002 -0.006 -0.016 -0.018 -0.028
+   -0.23 s controller_server      Reached the goal!
+   -0.20 s bt_navigator           Goal succeeded
+   -0.16 s bt_navigator           Begin navigating from current location (-1.55, -5.36) to (-1.65, -3.70)
+   -0.12 s smoother_server        Smoothed path leads to a collision at x: -1.703296, y: -3.740265, theta: 1.156845
+   -0.12 s smoother_server        [smooth_path] [ActionServer] Aborting handle.
+   -0.10 s controller_server      Received a goal, begin computing control effort.
+
+== 멈칫 14:47:49.99 (명령 0 근처 3 개 · 0.15 s) | 앞뒤 명령 v: -0.050 -0.038 -0.038 -0.023 -0.008 0.007 0.017 0.002 -0.013 -0.023 -0.027
+
+== 멈칫 14:47:50.74 (명령 0 근처 7 개 · 0.55 s) | 앞뒤 명령 v: -0.027 -0.031 -0.017 -0.017 -0.007 -0.007 0.003 0.003 -0.012 -0.014 -0.021 -0.021 -0.021 -0.006 -0.005 0.008 0.018 0.028 0.028
+
+== 멈칫 14:47:51.94 (명령 0 근처 12 개 · 0.55 s) | 앞뒤 명령 v: 0.021 0.016 0.011 0.011 -0.004 -0.004 -0.004 -0.004 -0.004 -0.004 0.000 0.000 0.000 0.000 0.000 0.000 0.010 0.020 0.030
+   +0.44 s controller_server      Optimizer reset
+   +0.46 s controller_server      Optimizer reset
+   +0.46 s controller_server      Optimizer fail to compute path
+   +0.46 s controller_server      [follow_path] [ActionServer] Aborting handle.
+   +0.49 s controller_server      Received a goal, begin computing control effort.
+
+== 멈칫 14:47:58.84 (명령 0 근처 1 개 · 0.00 s) | 앞뒤 명령 v: 0.060 0.045 0.030 0.015 0.008 0.018 0.026 0.026
+
+== 멈칫 14:48:00.14 (명령 0 근처 9 개 · 0.75 s) | 앞뒤 명령 v: 0.026 0.036 0.038 0.023 0.008 0.018 0.023 0.008 0.008 0.001 0.001 0.011 0.021 0.026 0.026 0.011 0.006 0.008 0.008 0.008 0.018 0.027 0.036
+
+== 멈칫 14:48:03.34 (명령 0 근처 48 개 · 4.75 s) | 앞뒤 명령 v: 0.012 0.022 0.032 0.017 0.002 -0.013 -0.022 -0.007 0.008 -0.007 -0.017 -0.012 -0.012 -0.019 -0.019 -0.009 -0.009 -0.009 -0.019 -0.004 -0.001 -0.008 -0.008 -0.018 -0.025 -0.027 -0.027 -0.027 -0.012 0.003 0.006 0.016 0.026 0.036 0.021 0.006 -0.009 0.006 0.007 0.017 0.021 0.021 0.006 -0.009 -0.019 -0.029 -0.037 -0.022 -0.007 0.004 0.004 0.004 0.009 -0.006 -0.016 -0.001 0.014 0.003 0.003 0.013 0.023 0.030 0.030 0.015 0.008 0.008 0.005 0.004 0.004 0.004 0.011 0.021 0.031 0.016 0.006 0.006 0.016 0.001 -0.009 -0.009 -0.019 -0.007 -0.007 0.008 0.018 0.003 -0.010 -0.020 -0.023 -0.008 -0.002 -0.012 -0.012 0.003 0.013 0.017 0.002 0.012 0.020 0.005 -0.010 -0.016 -0.016
+
+== 멈칫 14:48:08.74 (명령 0 근처 35 개 · 3.35 s) | 앞뒤 명령 v: -0.017 -0.027 -0.032 -0.017 -0.010 -0.001 -0.001 -0.006 -0.006 0.002 0.002 0.012 0.022 0.032 0.022 0.011 0.011 0.011 -0.004 -0.014 -0.024 -0.033 -0.018 -0.024 -0.024 -0.009 0.006 -0.009 -0.019 -0.004 0.003 -0.000 -0.000 0.001 0.001 0.011 0.021 0.006 -0.009 -0.001 -0.001 -0.011 -0.012 -0.020 -0.020 -0.005 -0.001 0.004 0.004 0.014 0.024 0.013 0.013 -0.002 -0.008 -0.008 -0.014 -0.004 -0.004 -0.014 -0.014 -0.014 0.001 0.011 0.005 0.001 0.001 -0.012 -0.012 -0.012 -0.012 0.003 0.013 0.023 0.017
+
+== 멈칫 14:48:12.69 (명령 0 근처 6 개 · 0.35 s) | 앞뒤 명령 v: 0.031 0.041 0.026 0.011 0.005 0.005 -0.003 -0.003 0.012 0.016 0.001 -0.000 -0.010 -0.013 -0.023
+
+== 멈칫 14:48:13.74 (명령 0 근처 7 개 · 0.71 s) | 앞뒤 명령 v: -0.029 -0.018 -0.018 -0.018 -0.009 0.006 0.011 0.011 -0.004 0.011 0.014 0.011 0.011 0.009 0.009 0.009 0.019 0.020 0.005 -0.010 -0.020 -0.027
+   -0.20 s bt_navigator_navigate_ PathBlockedAhead: 앞 경로 (-1.64, -4.47) 비용 99 — 2.0 s 지속되면 재계획
+
+== 멈칫 14:48:15.04 (명령 0 근처 48 개 · 4.90 s) | 앞뒤 명령 v: -0.022 -0.022 -0.025 -0.025 -0.010 0.000 0.000 0.010 0.010 -0.005 -0.013 -0.013 0.002 0.010 0.010 0.010 0.000 0.000 0.000 0.000 -0.008 -0.008 -0.007 -0.007 0.008 0.014 -0.001 -0.001 0.014 0.024 0.009 -0.006 -0.016 -0.026 -0.011 0.004 0.014 0.024 0.034 0.019 0.004 -0.009 -0.009 -0.006 -0.006 -0.016 -0.026 -0.011 -0.007 -0.007 0.008 0.016 0.019 0.019 0.004 -0.002 -0.012 -0.022 -0.007 0.004 0.014 0.024 0.012 0.012 -0.003 -0.011 0.004 0.014 0.013 0.013 0.015 0.015 -0.000 -0.005 -0.015 -0.023 -0.033 -0.039 -0.024 -0.009 -0.018 -0.018 -0.003 0.012 0.002 0.002 0.012 0.015 0.016 0.016 0.001 -0.001 -0.001 0.014 0.024 0.034 0.044 0.029 0.014 0.024 0.009 -0.006 -0.002 -0.002 0.013 0.014 0.024
+   -1.50 s bt_navigator_navigate_ PathBlockedAhead: 앞 경로 (-1.64, -4.47) 비용 99 — 2.0 s 지속되면 재계획
+   +0.50 s bt_navigator_navigate_ PathBlockedAhead: 앞 경로 (-1.64, -4.47) 비용 99 가 2.0 s 지속 → 주행 중단·재계획
+
+== 멈칫 14:50:40.29 (명령 0 근처 1 개 · 0.00 s) | 앞뒤 명령 v: 0.065 0.050 0.035 0.020 0.005 -0.010 -0.020 -0.030
+   -0.24 s controller_server      Reached the goal!
+   -0.21 s bt_navigator           Goal succeeded
+   -0.17 s bt_navigator           Begin navigating from current location (5.35, -2.20) to (0.00, 0.00)
+   -0.11 s controller_server      Received a goal, begin computing control effort.
+
+== 멈칫 14:50:47.34 (명령 0 근처 12 개 · 0.55 s) | 앞뒤 명령 v: -0.013 -0.013 -0.011 -0.011 -0.002 -0.002 -0.002 -0.002 0.002 0.002 -0.006 -0.006 0.009 0.009 0.004 0.004 0.013 0.013 0.023
+
+== 멈칫 14:51:40.84 (명령 0 근처 2 개 · 0.05 s) | 앞뒤 명령 v: 0.055 0.040 0.025 0.010 0.000 0.000 0.010 0.020 0.030
+   -0.30 s bt_navigator_navigate_ PathBlockedAhead: 앞 경로 (1.35, 0.04) 비용 99 가 2.0 s 지속 → 주행 중단·재계획
+   -0.26 s controller_server      Goal was canceled. Stopping the robot.
+   -0.26 s controller_server      [follow_path] [ActionServer] Client requested to cancel the goal. Cancelling.
+   -0.25 s bt_navigator_navigate_ PathBlockedAhead: 앞 경로 (1.35, 0.04) 비용 99 가 2.0 s 지속 → 주행 중단·재계획
+   -0.25 s behavior_server        Running wait
