@@ -1,0 +1,62 @@
+17:20:00.41 bt_navigator Begin navigating from current location (0.01, -0.00) to (2.25, -1.60)
+17:20:00.45 smoother_server Received a path to smooth.
+17:20:00.48 controller_server Received a goal, begin computing control effort.
+17:20:00.48 controller_server No goal checker was specified in parameter 'current_goal_checker'. Server will use only plugin loaded general_goal_checker . This warning will appear once.
+17:20:00.49 controller_server Optimizer reset
+17:20:16.06 controller_server Control loop missed its desired rate of 10.0000Hz
+17:20:16.13 controller_server Control loop missed its desired rate of 10.0000Hz
+17:20:18.09 controller_server Control loop missed its desired rate of 10.0000Hz
+17:20:18.23 controller_server Control loop missed its desired rate of 10.0000Hz
+17:20:18.61 controller_server Control loop missed its desired rate of 10.0000Hz
+17:20:18.69 controller_server Control loop missed its desired rate of 10.0000Hz
+17:20:31.24 controller_server Control loop missed its desired rate of 10.0000Hz
+17:20:36.65 controller_server Control loop missed its desired rate of 10.0000Hz
+17:20:38.06 controller_server Control loop missed its desired rate of 10.0000Hz
+17:20:51.38 controller_server Reached the goal!
+17:20:51.41 bt_navigator Goal succeeded
+17:20:51.44 bt_navigator Begin navigating from current location (2.28, -1.46) to (5.50, -2.20)
+17:20:51.48 smoother_server Received a path to smooth.
+17:20:51.50 controller_server Received a goal, begin computing control effort.
+17:20:54.31 controller_server Control loop missed its desired rate of 10.0000Hz
+17:20:54.82 controller_server Control loop missed its desired rate of 10.0000Hz
+17:20:56.76 controller_server Control loop missed its desired rate of 10.0000Hz
+17:20:58.35 controller_server Control loop missed its desired rate of 10.0000Hz
+17:20:59.95 controller_server Control loop missed its desired rate of 10.0000Hz
+17:21:12.34 controller_server Control loop missed its desired rate of 10.0000Hz
+17:21:12.36 controller_server Control loop missed its desired rate of 10.0000Hz
+17:21:19.50 controller_server Control loop missed its desired rate of 10.0000Hz
+17:21:40.22 controller_server Reached the goal!
+17:21:40.26 bt_navigator Goal succeeded
+17:21:40.31 bt_navigator Begin navigating from current location (5.39, -2.15) to (0.00, 0.00)
+17:21:40.33 smoother_server Received a path to smooth.
+17:21:40.35 controller_server Received a goal, begin computing control effort.
+17:21:50.56 controller_server Control loop missed its desired rate of 10.0000Hz
+17:22:20.55 controller_server Control loop missed its desired rate of 10.0000Hz
+17:22:26.40 controller_server Control loop missed its desired rate of 10.0000Hz
+17:22:26.46 controller_server Control loop missed its desired rate of 10.0000Hz
+17:22:32.05 controller_server Control loop missed its desired rate of 10.0000Hz
+17:22:34.25 controller_server Control loop missed its desired rate of 10.0000Hz
+17:22:36.25 controller_server Control loop missed its desired rate of 10.0000Hz
+17:22:36.27 controller_server Control loop missed its desired rate of 10.0000Hz
+17:22:39.35 controller_server Control loop missed its desired rate of 10.0000Hz
+17:22:40.15 bt_navigator_navigate_to_pose_rclcpp_node PathBlockedAhead: 앞 경로 (1.30, 0.04) 비용 99 — 2.0 s 지속되면 재계획
+17:22:42.16 bt_navigator_navigate_to_pose_rclcpp_node PathBlockedAhead: 앞 경로 (1.30, 0.04) 비용 99 가 2.0 s 지속 → 주행 중단·재계획
+17:22:42.25 controller_server Goal was canceled. Stopping the robot.
+17:22:42.25 controller_server [follow_path] [ActionServer] Client requested to cancel the goal. Cancelling.
+17:22:42.25 bt_navigator_navigate_to_pose_rclcpp_node PathBlockedAhead: 앞 경로 (1.30, 0.04) 비용 99 가 2.0 s 지속 → 주행 중단·재계획
+17:22:43.08 smoother_server Received a path to smooth.
+17:22:43.10 controller_server Received a goal, begin computing control effort.
+17:22:45.85 controller_server Control loop missed its desired rate of 10.0000Hz
+17:22:49.86 controller_server Control loop missed its desired rate of 10.0000Hz
+17:22:50.57 controller_server Control loop missed its desired rate of 10.0000Hz
+17:23:06.16 controller_server Control loop missed its desired rate of 10.0000Hz
+17:23:06.48 controller_server Control loop missed its desired rate of 10.0000Hz
+17:23:06.97 controller_server Control loop missed its desired rate of 10.0000Hz
+17:23:07.06 controller_server Control loop missed its desired rate of 10.0000Hz
+17:23:07.26 controller_server Control loop missed its desired rate of 10.0000Hz
+17:23:07.47 controller_server Control loop missed its desired rate of 10.0000Hz
+17:23:09.29 controller_server Control loop missed its desired rate of 10.0000Hz
+17:23:09.37 controller_server Control loop missed its desired rate of 10.0000Hz
+17:23:11.46 controller_server Control loop missed its desired rate of 10.0000Hz
+17:23:22.39 controller_server Reached the goal!
+17:23:22.43 bt_navigator Goal succeeded
