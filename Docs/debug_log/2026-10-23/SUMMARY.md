@@ -195,3 +195,13 @@
   2. 차이의 기전(추정, §4 와 같은 결론을 수치로): 2 s 마다 **로버 자리에서 경로를 다시 그리므로** 매 주기 1~4 cm 의 안쪽 치우침이 새 경로의 출발점이 되어 **되돌아가지 않고 쌓임**(톱니처럼). 컨트롤러는 '받은 경로' 는 잘 따르지만 '처음 그린 선' 으로는 돌아가지 않음.
   3. 굽은 구간 오차는 PathAlign 28 에서 확실히 작음(95 % 5.0~5.3 대 8~9.6 cm) → 28 은 추종 자체는 개선했지만, 톱니 누적 때문에 상자 옆 결과가 갈렸던 것(§6.1)과 맞음.
 - 따라서 손잡이는 **다시 그리기 쪽**: 주기적 다시 그리기(replan_hz 0.5)가 매번 로버 자리에서 경로를 새로 시작하는 것이 치우침을 굳힘.
+
+## §15 NavFn 을 직사각 로버에 맞추려 추가한 것 검토 (사용자: "우린 직사각형의 로버를 구동중이므로, Smac Hybrid를 쓰는게 좋겠다. 그런데 내 기억에, Navfn을 직사각형 로버에 사용하려고, 이것저것 추가한 것이 있는 것으로 아는데, 무엇이 있었는지 검토하라.")
+- 확인한 현재 계획기: `GridBased` = `nav2_navfn_planner/NavfnPlanner`(use_astar false · tolerance 0.25 · allow_unknown true), BT `planner_id="GridBased"`. `SmacHybrid` 는 `planner_plugins` 에 등록만(블록 그대로: DUBIN · R 0.10 · cost 1.2 · 72 bins). f2von2 bag params.txt 로도 확인.
+- 기록 전체 훑기(읽기 전용 검색 에이전트, 원천: 09-08~10-23 SUMMARY · `Docs/04_navigation/PASSAGE_PROBLEM_ANALYSIS_2026-09-16.md` · nav2_params.yaml · nav_to_pose_no_spin.xml · rover_navigation src · 러너) — 핵심 항목은 직접 재확인(job613 `planner_id='GridBased'` 고정 21 행, SmacHybrid 블록 733~750 행):
+  - 계획기 단(켜져 있음): ① 전역 inflation 0.70 / 2.0(NavFn 이 팽창 경계에 붙어 S 자 — 09-14 · 09-16 §1.12) ② BT SmoothPath(simple_smoother, 격자 꺾임 78° → 16.6°, 09-16 §1.12~1.13) ③ 실패 시 원경로 CopyPath(10-14 §14, 끝 방향 0° 덮어쓰기 해소) ④ footprint_padding 0.01(09-14 §2.22~2.25) ⑤ 러너 경로 끝 자동 yaw(`job550` path_end_yaw · `job613` 상주 조회기 — 09-28 §12 · §16, 10-13 §4) ⑥ yaw_goal_tolerance 0.35(09-28 §17) ⑦ 재계획 정책(RateController 0.01 / prep 0.5 Hz, PathBlockedAhead — 10-01 §8.24 · §8.39).
+  - 컨트롤러 단: MPPI 경로 크리틱 점 간격 튜닝(PathAlign offset 3 · PathFollow offset 20 — NavFn 점 간격 0.025 m 기준, 09-16), CostCritic(09-18), MonotoneEscape(10-15), ClearanceBandCritic(꺼짐), pad_relief(사실상 꺼짐), RPP 쪽 보정들(RPP 를 안 써서 사실상 무효).
+  - 그때 기각 · 정리 안 된 것: 목표 여유 게이트 `job377`(지금 러너엔 없음), A3 `ClearCostmapAroundRobot`(구현 안 됨).
+- SmacHybrid 09-14~15 결과(원문 재확인): R 0.10 · cost 1.2 만 정상, 통로선 목표에선 모서리 heading 7.7°(NavFn 18.7°) · 상자 선상 목표에선 더 나쁨, 계획기를 바꿔도 모서리 통과 띠 0.10~0.14 m 라 같은 곳을 지남(sm1 계획 여유 −4.9 cm), **되돌린 이유 = MPPI 치우침으로 패딩 차체가 가구 LETHAL 에 겹치자 'no valid path' 15 회 → 48 s ABORT**(NavFn 은 출발 칸만 봐서 재계획됨).
+- 다시 바꿀 때 걸리는 점(추정): 출발 차체 충돌 대책 없음(복구 클리어는 로버 옆 보존) · PathBlockedAhead 재계획이 좁은 자세에서 일어나 거부를 부를 수 있음 · MPPI 경로 크리틱 offset 재튜닝(Smac 점 간격 ≈ 0.1 m) · `job613` planner_id 고정 → 경로 끝 yaw 를 NavFn 으로 계산하는 불일치(Humble Smac Hybrid 는 목표 heading 을 지켜 루프 위험) · SimpleSmoother 와 겹쳐 회전반경 깨짐 · inflation 0.70 에서 R · cost_penalty 미시험 · CPU 미측정.
+- 문서 불일치(에이전트 지적, 원문 대조 미완): PASSAGE 분석 표가 pd1 을 'NavFn + RPP' 로 적었으나 09-14 §2.25 는 Smac BT 조건으로 읽힘 · nav2_params 의 패딩 아래 옛 주석(내접 0.215 · inflation 0.35) 남음.
