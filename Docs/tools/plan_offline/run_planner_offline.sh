@@ -1,0 +1,17 @@
+#!/bin/bash
+# run_planner_offline — (Jetson) ROS_DOMAIN_ID 42 에 오프라인 planner_server + 수명 관리자 + map→base_link 고정 TF 를 띄우고 query_planners.py 실행 뒤 모두 정리 (2026-10-23, 로버 안 움직임).
+#   입력: /tmp/planoff/{planner_offline.yaml, query_planners.py, scenes.npz}. 출력: /tmp/planoff/result.npz 와 로그. 주행 스택(기본 도메인)과 섞이지 않게 도메인 42.
+#   인자: planner_id 목록(쉼표)
+D=/tmp/planoff; cd $D; export ROS_DOMAIN_ID=42
+source /opt/ros/humble/setup.bash
+PIDS=${1:-GridBased}
+setsid ros2 run nav2_planner planner_server --ros-args --params-file $D/planner_offline.yaml > $D/planner.log 2>&1 &
+setsid ros2 run nav2_lifecycle_manager lifecycle_manager --ros-args -r __node:=lifecycle_manager_offline --params-file $D/planner_offline.yaml > $D/lcm.log 2>&1 &
+setsid ros2 run tf2_ros static_transform_publisher --frame-id map --child-frame-id base_link > $D/tf.log 2>&1 &
+sleep 6
+python3 -u $D/query_planners.py $D/scenes.npz $D/result.npz "$PIDS" 2>&1 | tee $D/query.log
+# 정리: 이 스크립트가 띄운 세 프로세스 묶음만(setsid 로 각자 프로세스 그룹)
+for p in $(pgrep -f "planner_offline.yaml|static_transform_publisher --frame-id map --child-frame-id base_link"); do kill -INT -$(ps -o pgid= $p | tr -d ' ') 2>/dev/null; done
+sleep 2; echo "남은 오프라인 프로세스: $(pgrep -fc 'planner_offline.yaml')"
+grep -aiE "error|exception|warn" $D/planner.log | grep -v "tick rate" | sort | uniq -c | sort -rn | head -12
+echo "RESULT_B64_BEGIN"; base64 -w0 $D/result.npz; echo; echo "RESULT_B64_END"

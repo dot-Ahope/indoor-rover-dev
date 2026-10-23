@@ -361,3 +361,28 @@
 - B0 구성: NavFn(GridBased) + SimpleSmoother/CopyPath + MPPI(PathAlign 14 · PreferForward 15 · CostCritic) + BT 재계획 0.01 Hz + PathBlockedAhead(only_new) · vslam on · 깊이 프리셋 3 · nvblox 통합 2.0. 태그 `navfn-baseline-20261023`(이 § 를 담은 커밋, 로컬 — push 는 사용자 결정).
 - 기준 수치(b910 3 회, 상자 = 기록 위치 기준 실제 여유): f2rp1 15.4 · f2rp2 5.5 · f2rp5 **3.1 cm**. 다시 그린 경로 자체 여유 13.3 · 10.2 · 8.9 cm, 추종에서 0~6 cm 손실(§17.1 · §18.1 · §20.9). no5: f2rp3 8/8(막힘 오판 5 · Wait 2) · f2rp4 8/8(막힘 0 · 최소 2.9 cm). 알려진 결함: 경로 여유 부족(NavFn 점 계획) + 굽은 곳 모서리 깎기 · 차체 방향 기울어짐(MPPI) + 막힘 재계획 출발 자리 의존.
 - 다음: 브랜치 `feature/smac-hybrid`(태그에서 분기), 계획 `Docs/06_planner/SMAC_HYBRID_PLAN.md` §3(P1~P7) → §4 오프라인 비교 → §5 주행.
+
+## §22 Phase P §4 오프라인 계획기 비교(첫 판) · 컨트롤러 재평가 (사용자: "그 순서로 오프라인 비교 진행하자. 그리고 현재 컨트롤러의 문제는 없는 것인지 다시 한 번 평가.") — 브랜치 `feature/smac-hybrid`
+### §22.1 도구(P7, `Docs/tools/plan_offline/`)
+- `prep_scenes.py`(PC: bag → 장면 npz — 그 시각 전역 코스트맵 · 로버 자세 · 러너 목표 자세) → `gen_yaml.py`(오프라인 planner_server 설정: 기록 지도의 치명 · 미지 칸만 static 층으로, 실제와 같은 inflation 0.70/2.0 · 풋프린트로 재구성) → `up_bundle.sh` + `run_planner_offline.sh` + `query_planners.py`(Jetson ROS_DOMAIN_ID 42, 실제 planner_server 플러그인 호출) → `anal_plan_compare.py`(PC: 차체 ↔ 실제 상자 여유 · 치명까지 · 길이 · 꺾임 · 그림) · `anal_fp_global.py`(차체가 전역 치명에 걸리나).
+- 재구성 검증: 6 장면 모두 기록 코스트맵과 **칸 일치 1.0000**(패딩 0.01). 패딩 0 판은 0.64(감쇠 값이 달라짐 — 의도된 차이).
+- 장면(`outputs/plan_offline/prep_scenes.txt`): b910 막힘 뒤 재계획 자리 3(f2rp1 · rp2 · rp5), f2rp5 복귀 출발부터(상자 아는 지도), f2rp3 서쪽 통로 남행 · 북행.
+### §22.2 결과(`outputs/plan_offline/anal_plan_compare_1~3.txt`, 실행 원문 `run_planoff_1~3.txt`, 결과 `result_1~3.npz`, 그림 `figures/plan_offline{,_2,_3}/`)
+- 판정 기준(계획 §4, 실행 전 문서에 있음): 상자 옆 경로 여유 NavFn 보다 ≥ 5 cm · 서쪽 통로 계획 실패 0 · 계획 시간 중앙 ≤ 0.5 s.
+- 차체 ↔ 상자 여유(경로를 정확히 따른다는 가정, cm):
+
+| 장면 | NavFn(B0) | Smac 기본형 6 변형(R 0.10/0.15 × cp 1.2/2/3) | Smac B144(R 0.10 · cp 3 · 방향 144 칸) |
+|---|---|---|---|
+| rp1 재계획 | 13.3 | 6.2~13.5 | 16.5 |
+| rp2 재계획 | 8.0 | 4.0(6 변형 모두 같은 경로) | 7.0 |
+| rp5 재계획 | 9.1 | 9.6(모두 같음) | 11.8 |
+| rp5 복귀 전체 | 9.0 | 6.4 | 12.2 |
+| 서쪽 통로 남 · 북 | 성공 · 성공 | **실패 · 실패(모든 변형)** | 실패 · 성공(최대 꺾임 201° — 고리) |
+
+- 읽기: ① 기본형 Smac 은 상자 여유가 NavFn 보다 **나쁘거나 같음**, cost_penalty 를 1.2 → 3.0 으로 바꿔도 경로가 거의 같음 — 1.1.20 의 해석 확장(목표까지 Dubins 곡선을 바로 그어 차체만 안 닿으면 붙임, 비용 안 봄, 최대 3 m)이 경로 대부분을 정하는 것으로 추정(미확인 — 아래 ②). ② 해석 확장 최대 길이를 0.5 · 1.0 m 로 줄인 변형은 **장면 대부분에서 즉시 실패 · 예외('vector::reserve')** — 설치판(nav2_smac_planner 1.1.20, `outputs/plan_offline/chk_smac_ver.txt`)에서 이 설정은 못 씀. 방향 144 칸 변형만 대체로 작동, 개선 −1~+3.2 cm(기준 5 cm 미달). ③ 서쪽 통로: 북행 목표 자세(−1.65, −3.70, 82°)는 전역 지도에서 **차체가 치명 칸에 걸림**(Smac 은 목표 거부), 남행은 출발 · 목표는 괜찮으나 로버가 실제로 지난 자세도 2/175 개가 치명에 걸리는 경계 통로(`anal_fp_global_west_rp3_g4.txt` · `_g5.txt`) — 점 계획(NavFn)은 지나고 차체 계획(Smac)은 격자 자세로는 못 이음. ④ 계획 시간은 모두 0.001~0.04 s.
+- **판정: 기준 미달** — 지금 설정 · 설치판으로는 Smac 으로 바꿀 근거 없음(주행 시험으로 안 감, 계획 §4).
+- 상자 옆 틈(`outputs/plan_offline/anal_box_gap.txt`): 상자 북쪽 치명까지 틈 0.70~0.90 m → 가운데로 가면 양옆 18~28 cm 가능. 두 계획기 모두 9~16 cm — **꺾임 안쪽(상자 쪽)으로 짧게 도는 성질**(최단 길이 대 비용의 맞바꿈)이 계획기 종류와 무관하게 남음. 경로를 가운데로 미는 손잡이는 계획기보다 **전역 비용장(inflation 감쇠를 더 완만하게 = cost_scaling_factor < 2)** 쪽 — §1 은 2 → 5(더 가파르게)만 시험했음(미시험 방향).
+### §22.3 컨트롤러 재평가(보조 에이전트가 계산, 수치 원문 확인함)
+- 출력: `outputs/anal_track_err_f2rp1to5.txt` · `anal_ctrl_eval.txt`(도구 `jobs/anal_ctrl_eval.py`, 기준 = MPPI 가 매 틱 낸 `/transformed_global_plan`, 병진 틱만) · `anal_ctrl_rate.txt`(`jobs/anal_ctrl_rate.py`) · `mppi_params_snapshot.txt`(`jobs/chk_mppi_params.py`).
+- 측정: 굽은 구간에서 경로 **안쪽으로** 치우친 비율 69~91 %(5 주행), 복귀 때 상자는 꺾임 안쪽 → 상자 옆 상자 쪽 치우침 최대 +7.1~+11.2 cm · 방향 오차 최대 +6~+15°. 갈 때(상자가 바깥쪽)는 반대로 −4~−5 cm. 직선 구간 옆 오차 중앙 3~5 cm, 95 % 9~11 cm. 실효 제어 주기 9.7~9.8 Hz, 0.2 s 넘는 틱 17~32 개(≈ 1 %), 주기 놓침 경고 27~86 /주행, 최적화 실패 0~2. 실행 중 파라미터 = yaml(차이는 visualize 하나 — launch mppi_viz:=lite).
+- 읽기: 컨트롤러 문제 있음 — **굽은 곳 안쪽 깎기(일관됨)** + 직선의 작은 옆 오차를 잘 안 고침. 제어 주기 누락은 주원인 아님(추정). f2rp5 의 6 cm 손실이 이 성질과 맞음. 상자 근접 = 계획 경로 자체의 안쪽 치우침(9~16 cm, 가능 18~28) + 컨트롤러 안쪽 깎기(+7~11 cm)의 합.
