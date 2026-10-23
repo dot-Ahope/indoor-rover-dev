@@ -42,25 +42,25 @@ def T3(tr):
     M[:3, 3] = [tr.translation.x, tr.translation.y, tr.translation.z]; return M
 
 
-static = {}; ob = []; mo = []; loc = []; glo = []; plans = []; scans = []; cmds = []
+raws = []; static = {}; ob = []; mo = []; loc = []; glo = []; plans = []; scans = []; cmds = []
 with AnyReader([Path(bag)], default_typestore=get_typestore(Stores.ROS2_HUMBLE)) as rd:
     t0 = None
-    for c, t, raw in rd.messages(connections=[c for c in rd.connections if c.topic in ('/tf', '/tf_static', '/local_costmap/costmap', '/global_costmap/costmap', '/plan_smoothed', '/scan', '/cmd_vel')]):
+    for c, t, raw in rd.messages(connections=[c for c in rd.connections if c.topic in ('/tf', '/tf_static', '/local_costmap/costmap', '/global_costmap/costmap', '/plan', '/plan_smoothed', '/scan', '/cmd_vel')]):
         ts = t / 1e9
         if t0 is None:
             t0 = ts; day = time.strftime('%Y-%m-%d ', time.localtime(t0)); ep = lambda s: time.mktime(time.strptime(day + s, '%Y-%m-%d %H:%M:%S')); tA, tB = ep(h0), ep(h1)
         if c.topic == '/tf_static':
             for tr in rd.deserialize(raw, c.msgtype).transforms: static[tr.child_frame_id] = (tr.header.frame_id, T3(tr.transform))
             continue
-        if ts > tB + 2 or (ts < tA - 3 and c.topic not in ('/global_costmap/costmap', '/plan_smoothed', '/tf')): continue
+        if ts > tB + 2 or (ts < tA - 3 and c.topic not in ('/global_costmap/costmap', '/plan', '/plan_smoothed', '/tf')): continue
         m = rd.deserialize(raw, c.msgtype)
         if c.topic == '/tf':
             for tr in m.transforms:
                 if tr.child_frame_id == 'base_link' and tr.header.frame_id == 'odom': ob.append((ts, T3(tr.transform)))
                 elif tr.child_frame_id == 'odom' and tr.header.frame_id == 'map': mo.append((ts, T3(tr.transform)))
-        elif c.topic == '/plan_smoothed':   # BT 가 컨트롤러에 넘긴 경로(러너 조회기의 /plan 은 섞이지 않음)
+        elif c.topic in ('/plan', '/plan_smoothed'):   # 어느 것이 BT 경로였는지는 아래에서 nav2 사건으로 가림
             if len(m.poses) > 1:
-                q = m.poses[-1].pose.orientation; plans.append((ts, np.array([[p.pose.position.x, p.pose.position.y] for p in m.poses]), math.atan2(2 * (q.w * q.z + q.x * q.y), 1 - 2 * (q.y * q.y + q.z * q.z))))
+                q = m.poses[-1].pose.orientation; (plans if c.topic == '/plan_smoothed' else raws).append((ts, np.array([[p.pose.position.x, p.pose.position.y] for p in m.poses]), math.atan2(2 * (q.w * q.z + q.x * q.y), 1 - 2 * (q.y * q.y + q.z * q.z))))
         elif c.topic == '/cmd_vel': cmds.append((ts, m.linear.x, m.angular.z))
         elif c.topic == '/scan':
             r = np.array(m.ranges); a = m.angle_min + np.arange(len(r)) * m.angle_increment; ok = np.isfinite(r) & (r > m.range_min) & (r < 6); scans.append((ts, m.header.frame_id, np.c_[r[ok] * np.cos(a[ok]), r[ok] * np.sin(a[ok]), np.zeros(ok.sum()), np.ones(ok.sum())]))
@@ -86,6 +86,23 @@ if EVF:
             te = time.mktime(time.strptime(day + line[:8], '%Y-%m-%d %H:%M:%S')) + float(line[8:11])
             det = line.split('Running ')[-1].strip() if lab == '복구' else ''
             if tA - 1 <= te <= tB + 1 and not (NEV and NEV[-1][1] == lab and te - NEV[-1][0] < 0.3): NEV.append((te, lab, det))
+# ★ 10-23 §20.7 정정: BT 가 컨트롤러에 준 경로 = 스무딩 성공이면 /plan_smoothed, 실패('Smoothed path leads to a collision')면 원경로 /plan(CopyPath).
+#   첫 판은 /plan_smoothed 만 그려, 스무딩이 실패한 동안(f2rp4 서쪽 통로 경로 4 개) 화면 경로가 묵은 것이었다. nav_events 가 있으면 BT 계획마다 골라 씀.
+#   /plan 에는 러너 조회기 경로도 섞이므로 BT 계획 시각('Received a path to smooth')에 가장 가까운 것만.
+if EVF:
+    bt = []
+    for line in open(EVF, encoding='utf-8', errors='replace'):
+        if 'Received a path to smooth' in line or 'Smoothed path leads to a collision' in line:
+            te = time.mktime(time.strptime(day + line[:8], '%Y-%m-%d %H:%M:%S')) + float(line[8:11])
+            if 'Received' in line: bt.append([te, True])
+            elif bt: bt[-1][1] = False
+    sel = []
+    for te, ok in bt:
+        cand = [q for q in plans if 0 <= q[0] - te + 0.05 < 1.5] if ok else []
+        if cand: sel.append(cand[0]); continue
+        cand = [q for q in raws if 0 <= te + 0.05 - q[0] < 1.5]
+        if cand: sel.append((te,) + tuple(cand[-1][1:]))
+    if sel: plans = sorted(sel, key=lambda q: q[0]); print("BT 경로 %d 개(원경로 %d)" % (len(sel), sum(1 for te, ok in bt if not ok)))
 times = np.arange(tA, tB, DT); trail = np.array([(last(mo, t)[1] @ last(ob, t)[1])[:2, 3] for t in times])
 x0, x1 = trail[:, 0].min() - 1.0, trail[:, 0].max() + 1.0; y0, y1 = trail[:, 1].min() - 1.0, trail[:, 1].max() + 1.0
 
