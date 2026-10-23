@@ -16,7 +16,7 @@
 
 ## 2. 버전 · git 전략 (사용자: "NavFn과 분리")
 
-1. **B0 = NavFn 기준선 고정**(이 계획의 출발점): 구성 = 깊이 프리셋 3 · nvblox 통합 2.0 · `vslam:=on` · 재계획 0.01 Hz + PathBlockedAhead · PathAlign 14. 기준 주행 = b910 2 회(f2rp1 · f2rp2, 10-23) + no5 1 회(f2rp3, §20). 통과 뒤 원본 브랜치 `feature/nvblox-migration` 커밋에 태그 `navfn-baseline-<날짜>`(push 는 사용자 결정).
+1. **B0 = NavFn 기준선 고정 — ✔ 2026-10-23 확정('결함 기준선', 사용자), 태그 `navfn-baseline-20261023`. 수치: b910 상자 옆 실제 여유 15.4 · 5.5 · 3.1 cm(f2rp1 · f2rp2 · f2rp5), no5 f2rp3 · f2rp4 8/8 — `Docs/debug_log/2026-10-23/SUMMARY.md` §21.** (당초 문구:) 구성 = 깊이 프리셋 3 · nvblox 통합 2.0 · `vslam:=on` · 재계획 0.01 Hz + PathBlockedAhead · PathAlign 14. 기준 주행 = b910 2 회(f2rp1 · f2rp2, 10-23) + no5 1 회(f2rp3, §20). 통과 뒤 원본 브랜치 `feature/nvblox-migration` 커밋에 태그 `navfn-baseline-<날짜>`(push 는 사용자 결정).
 2. **작업 브랜치 `feature/smac-hybrid`** 를 그 태그에서 분기. Smac 관련 변경은 모두 여기서.
 3. **같은 코드에서 고를 수 있게**: launch 인자 `planner:=navfn|smac`(기본 navfn — `camera_layer:=nvblox|stvl` 과 같은 방식). BT · 계획기 파라미터 · 러너 조회기 · MPPI 경로 크리틱 값 묶음을 인자로 바꿔 끼움. NavFn 설정은 지우지 않고 대조군으로 남김.
 4. Phase P 종료(§7) 뒤 원본 브랜치로 합칠지 · 기본값을 smac 로 바꿀지는 사용자 결정. `TEST_COURSE_AND_GATES.md` 는 Phase P 판을 새로 씀(CLAUDE.md 규칙).
