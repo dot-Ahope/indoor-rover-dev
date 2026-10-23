@@ -15,10 +15,18 @@
 //     흔들릴 때마다 재계획, f2a8 에서 200 s 에 170 회(§8.21). 여기서는 앞 1.5 m 만, 2 s 지속일 때만 본다.
 //   · RateController 주기를 다시 올림: 막히지 않았는데도 경로가 통로 사이를 오가는 문제(§8.22~8.24)가 돌아온다.
 //   · 진행 검사기 시간 단축: 좁은 통로에서 천천히 정렬하는 정상 주행까지 실패로 만든다.
+//
+// 2026-10-23 §20.2 only_new(기본 true): 경로를 받은 순간 이미 min_cost 이상이던 점은, 지금 값이 그때보다 커질 때만 막힘으로 센다.
+//   f2rp3 서쪽 통로(실물 상자 · 벽 사이): 새 경로가 올 때마다 **같은 틱(10~20 ms 뒤)** 에 (−1.64, −4.72) 비용 99 를 봄 = 계획기가
+//   이미 그 칸을 지나는 경로를 낸 것 → 다시 계획해도 같은 경로 → 막힘 5 회 · 탈출 · 대기 2 회, 목표 5 에 52 s(f2v2 31.6 s).
+//   반면 상자 막힘(f2rp1 · f2rp2 · f2rp3 복귀)은 경로를 받고 59 s 뒤 처음 99 → 새로 생긴 정보라 재계획이 의미 있음. 둘 다 99 라서
+//   min_cost 100 으로는 가를 수 없다(상자 막힘까지 꺼짐). 같은 지도로 다시 계획해 봐야 같은 답이면 재계획은 소용없다는 논리.
+//   남는 위험: 경로를 받기 직전에 생긴 장애물이 이미 코스트맵 발행본에 들어 있었다면 '이미 알던 것' 으로 빠진다(계획기도 그 판을 봤으므로 같은 판단).
 #include <cmath>
 #include <limits>
 #include <memory>
 #include <string>
+#include <vector>
 
 #include "behaviortree_cpp_v3/condition_node.h"
 #include "geometry_msgs/msg/pose_stamped.hpp"
@@ -60,6 +68,7 @@ public:
       BT::InputPort<double>("skip_near", 0.30, "로버 가까이 보지 않는 길이(m)"),
       BT::InputPort<double>("hold_time", 2.0, "막힘이 이만큼 이어져야 SUCCESS(s)"),
       BT::InputPort<int>("min_cost", 99, "막힘 판정 OccupancyGrid 값(99=내접 253, 100=치명 254)"),
+      BT::InputPort<bool>("only_new", true, "경로 받을 때 이미 min_cost 이상이던 점은 값이 더 커질 때만 막힘으로 셈(§20.2)"),
       BT::InputPort<std::string>("costmap_topic", "/global_costmap/costmap", "전역 코스트맵 토픽"),
       BT::InputPort<std::string>("global_frame", "map", "경로·코스트맵 좌표계"),
       BT::InputPort<std::string>("robot_base_frame", "base_link", "로버 좌표계"),
@@ -76,20 +85,41 @@ public:
     }
     // 경로가 바뀌었으면(재계획) 타이머를 처음부터. 계획 시각 + 점 수로 구분한다.
     const rclcpp::Time stamp(path.header.stamp);
-    if (stamp != path_stamp_ || path.poses.size() != path_size_) {
-      path_stamp_ = stamp;
-      path_size_ = path.poses.size();
-      reset();
-    }
     double lookahead = 1.5, skip_near = 0.30, hold_time = 2.0;
     int min_cost = 99;
+    bool only_new = true;
     std::string global_frame = "map", base_frame = "base_link";
     getInput("lookahead", lookahead);
     getInput("skip_near", skip_near);
     getInput("hold_time", hold_time);
     getInput("min_cost", min_cost);
+    getInput("only_new", only_new);
     getInput("global_frame", global_frame);
     getInput("robot_base_frame", base_frame);
+    const auto & g = *grid_;
+    const double res = g.info.resolution, ox = g.info.origin.position.x, oy = g.info.origin.position.y;
+    // 경로 점이 놓인 칸 값(지도 밖이면 −1)
+    auto cell_cost = [&](const geometry_msgs::msg::PoseStamped & p) {
+        const int mx = static_cast<int>(std::floor((p.pose.position.x - ox) / res));
+        const int my = static_cast<int>(std::floor((p.pose.position.y - oy) / res));
+        if (mx < 0 || my < 0 || mx >= static_cast<int>(g.info.width) || my >= static_cast<int>(g.info.height)) {return -1;}
+        return static_cast<int>(g.data[my * g.info.width + mx]);
+      };
+    if (stamp != path_stamp_ || path.poses.size() != path_size_) {
+      path_stamp_ = stamp;
+      path_size_ = path.poses.size();
+      reset();
+      // 받은 순간의 칸 값 = 계획기가 알고도 지나간 값
+      init_cost_.resize(path.poses.size());
+      int known = 0;
+      for (size_t i = 0; i < path.poses.size(); ++i) {
+        init_cost_[i] = cell_cost(path.poses[i]);
+        if (init_cost_[i] >= min_cost) {++known;}
+      }
+      if (only_new && known > 0) {
+        RCLCPP_INFO(node_->get_logger(), "PathBlockedAhead: 새 경로 점 %d 개가 받을 때 이미 비용 ≥ %d — 값이 더 커질 때만 막힘으로 셈", known, min_cost);
+      }
+    }
 
     geometry_msgs::msg::PoseStamped robot;
     if (!nav2_util::getCurrentPose(robot, *tf_, global_frame, base_frame, 0.2)) {
@@ -106,8 +136,6 @@ public:
     }
 
     // 앞으로 경로 길이를 누적하며 skip_near~lookahead 구간의 칸 값을 본다
-    const auto & g = *grid_;
-    const double res = g.info.resolution, ox = g.info.origin.position.x, oy = g.info.origin.position.y;
     double along = 0.0;
     bool blocked = false;
     double bx = 0.0, by = 0.0;
@@ -119,12 +147,10 @@ public:
       }
       if (along > lookahead) {break;}
       if (along < skip_near) {continue;}
-      const double px = path.poses[i].pose.position.x, py = path.poses[i].pose.position.y;
-      const int mx = static_cast<int>(std::floor((px - ox) / res));
-      const int my = static_cast<int>(std::floor((py - oy) / res));
-      if (mx < 0 || my < 0 || mx >= static_cast<int>(g.info.width) || my >= static_cast<int>(g.info.height)) {continue;}
-      const int c = g.data[my * g.info.width + mx];
-      if (c >= min_cost) {blocked = true; bx = px; by = py; bcost = c; break;}
+      const int c = cell_cost(path.poses[i]);
+      if (c < min_cost) {continue;}
+      if (only_new && c <= init_cost_[i]) {continue;}   // 계획 때 이미 알던 값 — 다시 계획해도 같은 답
+      blocked = true; bx = path.poses[i].pose.position.x; by = path.poses[i].pose.position.y; bcost = c; break;
     }
 
     const rclcpp::Time now = node_->now();
@@ -154,6 +180,7 @@ private:
   nav_msgs::msg::OccupancyGrid::SharedPtr grid_;
   rclcpp::Time path_stamp_{0, 0, RCL_ROS_TIME};
   size_t path_size_{0};
+  std::vector<int> init_cost_;   // 경로 받은 순간 각 점의 칸 값
   std::unique_ptr<rclcpp::Time> blocked_since_;
 };
 
