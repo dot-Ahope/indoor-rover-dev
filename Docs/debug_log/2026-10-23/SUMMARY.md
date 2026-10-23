@@ -145,3 +145,14 @@
 - 판정 3(상자 옆, 기록): 실제 최소 여유 **3.3 cm**(t 201 s, 그때 상자 칸 4), 상자 옆 로버 y 0.16~0.19 대 경로 선 0.22~0.26 → 경로보다 상자 쪽 6~8 cm. 172 s 기억의 밀림 3.5~4.8 cm(f2pr1 같은 창 4.1~5.0) — **줄지 않음**(`outputs/anal_contact_f2von1.txt` · `anal_plan_series_f2von1.txt` · `anal_track_dev_f2von1.txt` · `anal_memory_shift_f2von1.txt`). 예상(§10 대화: '상자 옆은 장담 못 함, 그림자 상자 옆 지표는 오히려 +0.1~1.5 cm') 과 같은 방향.
 - 판정 4(부작용) ✔ 오히려 좋아짐: 짧은 멈칫 **5**(이전 12~14), 0.5 s 넘는 정지 0, TF 외삽 **2**(이전 5), 주기 늦음 **38**(이전 50~72), CPU **70 %**(이전 75~76 — rf2o · rf2o_gate · 그림자 EKF 를 안 띄운 몫 추정)(`outputs/nav_events_ms_f2von1.txt` · `anal_stops_f2von1.txt` · `anal_dip_events_f2von1.txt`).
 - 읽기: vslam:=on 은 **오도메트리 · 부하 · 멈칫에 이득, 상자 옆 여유 문제는 못 풂**. 상자 옆의 기억 밀림(3.5~5 cm)은 회전 미끄러짐만의 몫이 아님 — 남은 후보: 칸 반올림 · 관측 시 면 과장(10-19 §14) · SLAM 보정 자체의 흔들림. 주행 1 회.
+
+## §11 반복 f2von2 (사용자: "정방향 놓았다. 시작.") — 기준 §10 그대로, 구성 · 러너 인자 f2von1 과 같음(이름만 f2von2)
+- 채택 판단(선언): f2von2 도 §10 판정 1 · 2 · 4 통과(특히 W3 ≤ 20 cm, 멈칫 ≤ 18, 사건 없는 MPPI 정지 0) → vslam:=on 을 기본 구성 후보로(prep 기본값 바꾸는 것은 사용자 결정). 상자 옆(판정 3)은 기록만.
+
+### §11.1 f2von2 결과 — 판정 1 · 2 · 4 통과(오도메트리 · 멈칫 · CPU 이득 재현), 상자 옆 실제 여유 0.3 cm(거의 접촉)
+- 러너 `outputs/run_f2von2.txt`: 3/3 · 51.4 · 49.2 · 103.5 s(총 204.3 s), stuck 진단 1, 휠 −166.0° 대 EKF −162.9°. prep `outputs/prep_von_1023_2.txt`(0.016 m · +1.2°, odom1 /vslam/odom). params.txt PathAlign 14.0 · odom1 /vslam/odom. bag `bags/bag_f2von2.tgz`, 로그 `bags/logs_f2von2/`.
+- 판정 1 ✔: /vslam/odom 15.0 Hz · 끊김 0, vslam_twist 버림 0(43 창), cuVSLAM 간격 경고 없음(`outputs/gaps_f2von2.txt` · `chk_vslam_twist_f2von2.txt`).
+- 판정 2 ✔: 주 EKF W3 **13.2 cm**, 전 구간 95 % **9.6 cm**, 끝 **26.1 cm**, 상자 옆 출발 95 % 5.7 cm(f2von1 7.8)(`outputs/anal_ekf_f2von2.txt`, 그림 `figures/ekf_f2von2.png`).
+- 판정 4 ✔: 짧은 멈칫 5 · 0.5 s 넘는 정지 0 · TF 외삽 0 · 주기 늦음 48 · CPU 70 %. 상자 옆 PathBlockedAhead 3 · 스무더 충돌 1 · 복구 0(`outputs/nav_events_ms_f2von2.txt` · `anal_stops_f2von2.txt` · `anal_dip_events_f2von2.txt`).
+- 판정 3(기록) — **나쁨**: 실제 최소 여유 **0.3 cm** @ t 201.9 s(로버 (0.96, 0.17, 175°), 그때 상자 칸 로컬 · 전역 · 조각 5)(`outputs/anal_contact_f2von2.txt`). 상자 옆 로버 y 0.17~0.18 대 경로 선 0.22~0.27 → 상자 쪽 5~9 cm(`anal_plan_series_f2von2.txt` · `anal_track_dev_f2von2.txt`). 172 s 기억의 y 밀림 +0.8~1.8 cm(x −1.6~−4.0)로 f2von1(3.2~4.7) · f2pr1(4~5)보다 작음(`anal_memory_shift_f2von2.txt`).
+- 읽기: vslam:=on 2 회 모두 오도메트리 · 멈칫 · 부하는 일관되게 좋아짐 → §11 선언대로 **기본 구성 후보**. 그러나 상자 옆은 f2von1 3.3 · f2von2 0.3 cm 로 나쁨 — 기억 밀림이 줄었는데도 로버가 경로 선보다 5~9 cm 상자 쪽으로 감. **상자 옆 근접은 기억 밀림보다 'MPPI 가 경로 선 남쪽을 달리는 것' 이 주된 몫**(f2pi1 · f2pa2 · f2von1 · f2von2 모두 5~12 cm, f2sm3 · f2pa1 만 1~5 cm). vslam:=on 이 이것을 키웠는지는 4 주행 대 2 주행으로 판단 불가(미확인).
