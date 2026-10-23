@@ -1,0 +1,7 @@
+74.1 1 STUCK: 지령 15.7cm/5° 인데 관측 2.8cm/4.0° (비율 0.18) [('ratio', '0.180'), ('shadow', 'True')]
+80.1 1 STUCK: 지령 15.9cm/10° 인데 관측 1.0cm/4.4° (비율 0.06) [('ratio', '0.064'), ('shadow', 'True')]
+110.3 1 STUCK: 지령 9.3cm/32° 인데 관측 0.3cm/3.5° (비율 0.11) [('ratio', '0.110'), ('shadow', 'True')]
+146.7 1 STUCK: 지령 15.7cm/15° 인데 관측 0.0cm/0.9° (비율 0.06) [('ratio', '0.059'), ('shadow', 'True')]
+bag_f2von1 stuck 메시지 4
+bag_f2pa1 stuck 메시지 0
+bag_f2sm3 stuck 메시지 1
