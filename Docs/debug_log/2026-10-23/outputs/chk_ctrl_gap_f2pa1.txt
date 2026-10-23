@@ -1,0 +1,7 @@
+F:\6_Indoor_Rover\Rover\Docs\debug_log\2026-10-23\jobs\chk_ctrl_gap.py:22: RuntimeWarning: All-NaN slice encountered
+  print('%-28s %4d 개 · 최대 수신 간격 %.2f s (t %.2f → %.2f) · header 시각 최대 간격 %.2f s' % (k, len(a), g.max() if len(g) else 0, a[i, 0], a[i + 1, 0] if len(a) > 1 else 0, np.nanmax(np.diff(a[:, 1])) if len(a) > 1 else 0))
+/cmd_vel                      191 개 · 최대 수신 간격 0.50 s (t 157.62 → 158.12) · header 시각 최대 간격 nan s
+/trajectories                  88 개 · 최대 수신 간격 1.29 s (t 156.81 → 158.09) · header 시각 최대 간격 0.00 s
+/transformed_global_plan       88 개 · 최대 수신 간격 1.29 s (t 156.81 → 158.09) · header 시각 최대 간격 1.30 s
+/local_costmap/costmap         17 개 · 최대 수신 간격 0.63 s (t 150.73 → 151.36) · header 시각 최대 간격 0.63 s
+/plan                           4 개 · 최대 수신 간격 2.39 s (t 155.64 → 158.03) · header 시각 최대 간격 2.39 s
