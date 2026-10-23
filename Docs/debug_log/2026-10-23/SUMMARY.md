@@ -125,3 +125,23 @@
   | f2pa2 | + PathAlign 28 | 21.5 → 14.3 | −33 % |
   - 10-21 §8 반복 판정(세 번 모두 ≥ 10 % · 평균 ≥ 20 %)은 f2sm1 · f2sm3 둘만 순수 반복. f2pa1 · f2pa2 는 MPPI 가중이 다르나 주 EKF 와 그림자 EKF 를 **같은 주행 안에서** 견주는 지표라 컨트롤러 설정이 비율을 크게 바꿀 이유는 적음(추정) — 이것들을 반복으로 셀지는 사용자 결정.
 - 제안: ① PathAlign 을 Jetson 에서 14 로 되돌림(이득 불확실 · 정지 위험 후보, §6.1~§8) ② f2pa1 · f2pa2 를 그림자 반복으로 인정하면 판정 통과(4 번 모두 −31~−41 %) → `vslam:=on`(주 EKF 에 cuVSLAM 병진 속도) 주행 시험 선언 — 상자 옆 기억 오차의 근본 대책.
+
+## §10 PathAlign 14 복귀 · vslam:=on 주행 f2von1 선언 (사용자: "14로 되돌리고 vslam on 시험 진행하라") — 결과 보기 전
+- 되돌림(`jobs/up_palign_1023.sh 14.0` → `outputs/up_palign_1023_revert.txt`): Jetson 소스 · 설치본 yaml PathAlign 14.0(저장소와 같음). 다음 prep 부터.
+- 판단 근거(사용자에게 설명한 것): 28 과 vslam:=on 을 같이 바꾸면 원인 분리 불가 → 하나만 바꿈. f2pa1 · f2pa2 를 그림자 반복으로 셀지는 사용자 결정 대신 '진행' 지시로 시험 진입(그림자 4 회 모두 −31~−41 %, 순수 반복은 2 회).
+- 구성: prep `jobs/prep_von_1023.sh`(`SENSORS_ADD="emitter_off:=true vslam:=on dds_shm:=true"` — ekf.launch 가 주 EKF `odom1` 을 `/vslam/odom`(vx · vy)로, rf2o 는 안 띄움, 회전 중 휠 병진 σ 0.3(B3) 그대로). 그 밖 오늘 기본(프리셋 3 · 통합 2.0 · PathAlign 14 · nav_guard 수정판). 러너 `run_f2c.sh f2von1 … b910`, `EXTRA_TOPICS_ADD="/vslam/odom /visual_slam/tracking/odometry"`, STAGE `F2c-vslam-on`.
+- 같은 주행 안 비교 대상(그림자 EKF)은 on 모드에선 없음 → 이전 주행의 주 EKF · 그림자 EKF 와 견줌.
+- 판정:
+  1. 안전 · 동작: 3/3, ABORT 0, `/vslam/odom` ≥ 14 Hz · 0.5 s 넘는 끊김 ≤ 2 · vslam_twist 버림 ≤ 1/10 s, stuck 진단 · 펌웨어 래치 없음.
+  2. **주 지표 — W3 회전 창 10 s 위치 오차(주 EKF vs SLAM, `2026-10-20/jobs/anal_ekf_replay.py`)**: ≤ 20 cm(이전 주 EKF 21.5~30.7, 그림자 14.3~18.0). 주행 전체 95 % · 끝 위치 오차도 기록.
+  3. 상자 옆: 실제 최소 여유(`2026-10-22/jobs/anal_contact.py` · `jobs/anal_track_dev.py`)와 복귀 상자 기억 밀림(`2026-10-22/jobs/anal_memory_shift.py`, 172 s 기준) — 기록 · 비교(1 회라 판정 아님).
+  4. 부작용: 짧은 멈칫 ≤ 18 · 0.5 s 넘는 정지 ≤ 1 · 사건 없는 MPPI 정지 0 · TF 외삽 ≤ 10 · 목표 시간 f2sm3 +15 % 이내.
+- 1 이 깨지면(ABORT · 큰 위치 튐 · 정체) 그 주행에서 멈추고 rf2o(shadow) 구성으로 복귀.
+
+### §10.1 f2von1 결과 — 위치 추정은 확실히 좋아짐 · CPU 와 멈칫은 줄어듦 · 상자 옆 여유는 그대로(3.3 cm)
+- prep `outputs/prep_von_1023_1.txt`: PREP_OK(0.003 m · +1.2°), 주 EKF `odom1 = /vslam/odom`, rf2o 0 · 그림자 EKF 0. 러너 `outputs/run_f2von1.txt`: 3/3 · 52.8 · 47.7 · 103.5 s(총 204.3 s, f2sm3 대비 +1 · −4 · −1 %), params.txt PathAlign 14.0 · odom1 /vslam/odom. bag `bags/bag_f2von1.tgz`, 로그 `bags/logs_f2von1/`.
+- 판정 1(안전 · 동작): 3/3 ✔, `/vslam/odom` 15.0 Hz · 끊김 0 ✔(`outputs/gaps_f2von1.txt`), vslam_twist 10 s 창 41 개 중 버림 2 가 1 창(나머지 0) — 기준 '≤ 1/10 s' 를 한 창에서 넘음(경계, `outputs/chk_vslam_twist_f2von1.txt`), cuVSLAM 프레임 간격 경고 0. stuck 진단 4(그림자 — 개입 없음): 그 시각 휠 · EKF · SLAM 모두 13~14 cm 움직였고(`jobs/anal_motion_window.py` → `outputs/anal_motion_window_f2von1.txt`), stuck_monitor 는 **라이다 스캔만**으로 이동을 관측(EKF 안 씀, 코드 확인) → 스캔 관측의 과소 오판(09-29 에 알려진 약점), vslam:=on 과 무관. f2sm3 1 · f2pa1 0.
+- **판정 2(주 지표) ✔**: 주 EKF W3 회전 창 **16.8 cm**(≤ 20; 이전 주 EKF 21.5~30.7, 그림자 14.3~18.0). 전 구간 10 s 창 95 % **11.7 cm**(이전 주 14.0~21.4), 절대 끝 **31.1 cm**(이전 39~66)(`outputs/anal_ekf_f2von1.txt`, 그림 `figures/ekf_f2von1.png`). 단 상자 옆 출발 구간(t 18~36 s) 95 % 7.8 cm — 이전 주 EKF 3.4~4.9 보다 나쁨(cuVSLAM 단독도 9.0 — 출발 직후 cuVSLAM 쪽 오차, 원인 미확인).
+- 판정 3(상자 옆, 기록): 실제 최소 여유 **3.3 cm**(t 201 s, 그때 상자 칸 4), 상자 옆 로버 y 0.16~0.19 대 경로 선 0.22~0.26 → 경로보다 상자 쪽 6~8 cm. 172 s 기억의 밀림 3.5~4.8 cm(f2pr1 같은 창 4.1~5.0) — **줄지 않음**(`outputs/anal_contact_f2von1.txt` · `anal_plan_series_f2von1.txt` · `anal_track_dev_f2von1.txt` · `anal_memory_shift_f2von1.txt`). 예상(§10 대화: '상자 옆은 장담 못 함, 그림자 상자 옆 지표는 오히려 +0.1~1.5 cm') 과 같은 방향.
+- 판정 4(부작용) ✔ 오히려 좋아짐: 짧은 멈칫 **5**(이전 12~14), 0.5 s 넘는 정지 0, TF 외삽 **2**(이전 5), 주기 늦음 **38**(이전 50~72), CPU **70 %**(이전 75~76 — rf2o · rf2o_gate · 그림자 EKF 를 안 띄운 몫 추정)(`outputs/nav_events_ms_f2von1.txt` · `anal_stops_f2von1.txt` · `anal_dip_events_f2von1.txt`).
+- 읽기: vslam:=on 은 **오도메트리 · 부하 · 멈칫에 이득, 상자 옆 여유 문제는 못 풂**. 상자 옆의 기억 밀림(3.5~5 cm)은 회전 미끄러짐만의 몫이 아님 — 남은 후보: 칸 반올림 · 관측 시 면 과장(10-19 §14) · SLAM 보정 자체의 흔들림. 주행 1 회.
