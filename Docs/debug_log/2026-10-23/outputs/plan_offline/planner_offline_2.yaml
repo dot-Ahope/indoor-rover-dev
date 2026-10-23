@@ -1,0 +1,219 @@
+# planner_offline — 계획기 오프라인 비교(Phase P §4 · P7) 전용 planner_server 설정. gen_yaml.py 로 생성(패딩 0.01, 변형 6 개). Jetson ROS_DOMAIN_ID 42 에서만.
+# 전역 코스트맵 = 기록된 /global_costmap/costmap 의 치명 칸(100) · 미지(−1)만 static_layer 로 받고(/offline_map), 실제와 같은 inflation(0.70/2.0) · 풋프린트로 다시 부풀림
+#   → 실제 계획기가 본 지도를 재구성(일치율은 query_planners.py 가 확인; 2026-10-23 첫 판 6 장면 모두 1.0000).
+#   99(내접)를 직접 넣지 않는 이유: StaticLayer 비삼진 변환은 99 → 251 이 되어 내접(253) 의미를 잃음(NavFn 은 ≥ 253 을 장애물로 봄).
+# GridBased = B0 NavFn 과 같은 값. cache_obstacle_heuristic false — 장면마다 지도가 바뀌는데 목표가 같으면 묵은 휴리스틱을 씀(실주행 설정은 true, P6 에서 검토).
+planner_server:
+  ros__parameters:
+    expected_planner_frequency: 1.0
+    use_sim_time: false
+    planner_plugins: ["GridBased", "Smac_R10_C12_A05", "Smac_R10_C30_A05", "Smac_R10_C50_A05", "Smac_R10_C30_A10", "Smac_R05_C30_A05", "Smac_R10_C30_A05_B144"]
+    GridBased:
+      plugin: "nav2_navfn_planner/NavfnPlanner"
+      tolerance: 0.25
+      use_astar: false
+      allow_unknown: true
+    Smac_R10_C12_A05:
+      plugin: "nav2_smac_planner/SmacPlannerHybrid"
+      tolerance: 0.25
+      downsample_costmap: false
+      downsampling_factor: 1
+      allow_unknown: true
+      max_iterations: 1000000
+      max_on_approach_iterations: 1000
+      max_planning_time: 5.0
+      motion_model_for_search: "DUBIN"
+      angle_quantization_bins: 72
+      analytic_expansion_ratio: 3.5
+      analytic_expansion_max_length: 0.5
+      minimum_turning_radius: 0.1
+      reverse_penalty: 2.0
+      change_penalty: 0.0
+      non_straight_penalty: 1.05
+      cost_penalty: 1.2
+      retrospective_penalty: 0.015
+      lookup_table_size: 20.0
+      cache_obstacle_heuristic: false
+      smooth_path: true
+      smoother:
+        max_iterations: 1000
+        w_smooth: 0.3
+        w_data: 0.2
+        tolerance: 1.0e-10
+        do_refinement: true
+        refinement_num: 2
+    Smac_R10_C30_A05:
+      plugin: "nav2_smac_planner/SmacPlannerHybrid"
+      tolerance: 0.25
+      downsample_costmap: false
+      downsampling_factor: 1
+      allow_unknown: true
+      max_iterations: 1000000
+      max_on_approach_iterations: 1000
+      max_planning_time: 5.0
+      motion_model_for_search: "DUBIN"
+      angle_quantization_bins: 72
+      analytic_expansion_ratio: 3.5
+      analytic_expansion_max_length: 0.5
+      minimum_turning_radius: 0.1
+      reverse_penalty: 2.0
+      change_penalty: 0.0
+      non_straight_penalty: 1.05
+      cost_penalty: 3.0
+      retrospective_penalty: 0.015
+      lookup_table_size: 20.0
+      cache_obstacle_heuristic: false
+      smooth_path: true
+      smoother:
+        max_iterations: 1000
+        w_smooth: 0.3
+        w_data: 0.2
+        tolerance: 1.0e-10
+        do_refinement: true
+        refinement_num: 2
+    Smac_R10_C50_A05:
+      plugin: "nav2_smac_planner/SmacPlannerHybrid"
+      tolerance: 0.25
+      downsample_costmap: false
+      downsampling_factor: 1
+      allow_unknown: true
+      max_iterations: 1000000
+      max_on_approach_iterations: 1000
+      max_planning_time: 5.0
+      motion_model_for_search: "DUBIN"
+      angle_quantization_bins: 72
+      analytic_expansion_ratio: 3.5
+      analytic_expansion_max_length: 0.5
+      minimum_turning_radius: 0.1
+      reverse_penalty: 2.0
+      change_penalty: 0.0
+      non_straight_penalty: 1.05
+      cost_penalty: 5.0
+      retrospective_penalty: 0.015
+      lookup_table_size: 20.0
+      cache_obstacle_heuristic: false
+      smooth_path: true
+      smoother:
+        max_iterations: 1000
+        w_smooth: 0.3
+        w_data: 0.2
+        tolerance: 1.0e-10
+        do_refinement: true
+        refinement_num: 2
+    Smac_R10_C30_A10:
+      plugin: "nav2_smac_planner/SmacPlannerHybrid"
+      tolerance: 0.25
+      downsample_costmap: false
+      downsampling_factor: 1
+      allow_unknown: true
+      max_iterations: 1000000
+      max_on_approach_iterations: 1000
+      max_planning_time: 5.0
+      motion_model_for_search: "DUBIN"
+      angle_quantization_bins: 72
+      analytic_expansion_ratio: 3.5
+      analytic_expansion_max_length: 1.0
+      minimum_turning_radius: 0.1
+      reverse_penalty: 2.0
+      change_penalty: 0.0
+      non_straight_penalty: 1.05
+      cost_penalty: 3.0
+      retrospective_penalty: 0.015
+      lookup_table_size: 20.0
+      cache_obstacle_heuristic: false
+      smooth_path: true
+      smoother:
+        max_iterations: 1000
+        w_smooth: 0.3
+        w_data: 0.2
+        tolerance: 1.0e-10
+        do_refinement: true
+        refinement_num: 2
+    Smac_R05_C30_A05:
+      plugin: "nav2_smac_planner/SmacPlannerHybrid"
+      tolerance: 0.25
+      downsample_costmap: false
+      downsampling_factor: 1
+      allow_unknown: true
+      max_iterations: 1000000
+      max_on_approach_iterations: 1000
+      max_planning_time: 5.0
+      motion_model_for_search: "DUBIN"
+      angle_quantization_bins: 72
+      analytic_expansion_ratio: 3.5
+      analytic_expansion_max_length: 0.5
+      minimum_turning_radius: 0.05
+      reverse_penalty: 2.0
+      change_penalty: 0.0
+      non_straight_penalty: 1.05
+      cost_penalty: 3.0
+      retrospective_penalty: 0.015
+      lookup_table_size: 20.0
+      cache_obstacle_heuristic: false
+      smooth_path: true
+      smoother:
+        max_iterations: 1000
+        w_smooth: 0.3
+        w_data: 0.2
+        tolerance: 1.0e-10
+        do_refinement: true
+        refinement_num: 2
+    Smac_R10_C30_A05_B144:
+      plugin: "nav2_smac_planner/SmacPlannerHybrid"
+      tolerance: 0.25
+      downsample_costmap: false
+      downsampling_factor: 1
+      allow_unknown: true
+      max_iterations: 1000000
+      max_on_approach_iterations: 1000
+      max_planning_time: 5.0
+      motion_model_for_search: "DUBIN"
+      angle_quantization_bins: 144
+      analytic_expansion_ratio: 3.5
+      analytic_expansion_max_length: 0.5
+      minimum_turning_radius: 0.1
+      reverse_penalty: 2.0
+      change_penalty: 0.0
+      non_straight_penalty: 1.05
+      cost_penalty: 3.0
+      retrospective_penalty: 0.015
+      lookup_table_size: 20.0
+      cache_obstacle_heuristic: false
+      smooth_path: true
+      smoother:
+        max_iterations: 1000
+        w_smooth: 0.3
+        w_data: 0.2
+        tolerance: 1.0e-10
+        do_refinement: true
+        refinement_num: 2
+
+global_costmap:
+  global_costmap:
+    ros__parameters:
+      update_frequency: 2.0
+      publish_frequency: 2.0
+      global_frame: map
+      robot_base_frame: base_link
+      resolution: 0.05
+      track_unknown_space: true
+      trinary_costmap: true          # StaticLayer 가 읽는 코스트맵 단위 값: 100 → 치명, −1 → 미지, 나머지 → 빈 칸
+      lethal_cost_threshold: 100
+      footprint: "[[0.262, 0.165], [0.262, -0.165], [-0.248, -0.165], [-0.248, 0.165]]"
+      footprint_padding: 0.01
+      plugins: ["static_layer", "inflation_layer"]
+      static_layer:
+        plugin: "nav2_costmap_2d::StaticLayer"
+        map_topic: /offline_map
+        map_subscribe_transient_local: true
+      inflation_layer:
+        plugin: "nav2_costmap_2d::InflationLayer"
+        inflation_radius: 0.70
+        cost_scaling_factor: 2.0
+      always_send_full_costmap: true
+
+lifecycle_manager_offline:
+  ros__parameters:
+    autostart: true
+    node_names: ["planner_server"]
+    bond_timeout: 0.0
