@@ -1,0 +1,43 @@
+
+== 멈칫 14:16:40.05 (명령 0 근처 9 개 · 0.40 s) | 앞뒤 명령 v: 0.014 0.014 0.014 0.014 0.004 0.004 0.004 0.001 0.001 0.005 0.005 0.005 0.005 0.015 0.015 0.020
+   -0.60 s controller_server      Reached the goal!
+   -0.57 s bt_navigator           Goal succeeded
+   -0.48 s bt_navigator           Begin navigating from current location (2.28, -1.47) to (5.50, -2.20)
+   -0.42 s controller_server      Received a goal, begin computing control effort.
+
+== 멈칫 14:17:28.66 (명령 0 근처 2 개 · 0.10 s) | 앞뒤 명령 v: 0.060 0.045 0.030 0.015 0.000 0.010 -0.005 -0.015 -0.025 -0.035
+   -0.24 s controller_server      Reached the goal!
+   -0.21 s bt_navigator           Goal succeeded
+   -0.13 s bt_navigator           Begin navigating from current location (5.42, -2.15) to (0.00, 0.00)
+   -0.08 s controller_server      Received a goal, begin computing control effort.
+
+== 멈칫 14:17:31.36 (명령 0 근처 10 개 · 0.45 s) | 앞뒤 명령 v: -0.016 -0.016 -0.013 -0.013 -0.010 -0.010 -0.002 -0.002 -0.007 -0.007 0.006 0.006 0.006 0.006 0.012 0.012 0.012
+
+== 멈칫 14:18:29.56 (명령 0 근처 8 개 · 0.35 s) | 앞뒤 명령 v: 0.065 0.050 0.035 0.020 0.005 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.010 0.020 0.030
+   -0.41 s bt_navigator_navigate_ PathBlockedAhead: 앞 경로 (1.41, 0.02) 비용 99 가 2.0 s 지속 → 주행 중단·재계획
+   -0.31 s bt_navigator_navigate_ Failed to get result for follow_path in node halt!
+   -0.30 s bt_navigator_navigate_ PathBlockedAhead: 앞 경로 (1.41, 0.02) 비용 99 가 2.0 s 지속 → 주행 중단·재계획
+   +0.04 s controller_server      Exception in transformPose: Lookup would require extrapolation into the future.  Requested time 1792732709.071
+   +0.04 s controller_server      Unable to transform robot pose into global plan's frame
+   +0.04 s controller_server      [follow_path] [ActionServer] Client requested to cancel the goal. Cancelling.
+
+== 멈칫 14:18:40.26 (명령 0 근처 6 개 · 0.25 s) | 앞뒤 명령 v: 0.065 0.050 0.035 0.020 0.005 0.000 0.000 0.000 0.000 0.000 0.010 0.020 0.030
+   -0.02 s controller_server      Exception in transformPose: Lookup would require extrapolation into the future.  Requested time 1792732719.737
+   -0.02 s controller_server      Unable to transform robot pose into global plan's frame
+   -0.02 s controller_server      [follow_path] [ActionServer] Aborting handle.
+   -0.01 s controller_server      Received a goal, begin computing control effort.
+
+== 멈칫 14:18:41.26 (명령 0 근처 1 개 · 0.00 s) | 앞뒤 명령 v: 0.055 0.040 0.025 0.010 0.000 0.010 0.020 0.030
+   -1.01 s controller_server      Exception in transformPose: Lookup would require extrapolation into the future.  Requested time 1792732719.737
+   -1.01 s controller_server      Unable to transform robot pose into global plan's frame
+   -1.01 s controller_server      [follow_path] [ActionServer] Aborting handle.
+   -1.00 s controller_server      Received a goal, begin computing control effort.
+
+== 멈칫 14:18:57.60 (명령 0 근처 10 개 · 0.70 s) | 앞뒤 명령 v: 0.085 0.085 0.085 0.083 0.000 0.068 0.053 0.000 0.038 0.023 0.000 0.008 0.000 0.000 0.000 0.000 0.000 0.000 0.010 0.020 0.030
+   -0.04 s controller_server      Optimizer reset
+   -0.03 s controller_server      Optimizer reset
+   -0.03 s controller_server      Optimizer fail to compute path
+   -0.03 s controller_server      [follow_path] [ActionServer] Aborting handle.
+   -0.01 s behavior_server        Running monotone_escape
+   -0.00 s behavior_server        [monotone_escape] 시작 최근접 4.2 cm · 목표 5.0 cm · 모의 결과(닿는 양 m/rad): 앞:없음(끝 4.2 cm) 뒤:0.130 좌회전:없음(끝 4.2 cm) 우회전:0
+   -0.00 s behavior_server        [monotone_escape] 선택: 우회전 0.053
