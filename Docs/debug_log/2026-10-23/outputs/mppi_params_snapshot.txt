@@ -1,0 +1,441 @@
+# mppi_params_snapshot — 2026-10-23, 도구 jobs/chk_mppi_params.py. YAML = 저장소 ros2_ws/src/rover_navigation/config/nav2_params.yaml (git HEAD 9ce20486, 마지막 수정 커밋 d767368f, LF 기준 sha256 앞 12 = 43d5e8ea720a = 주행 5 회 run_meta 의 Jetson 설치본 43d5e8ea720a 와 같음). 실행 중 = bag_f2rp1~5/params.txt (/tmp/nav2_params_active.yaml 709a6ca4a749 로 기동)
+### ① nav2_params.yaml controller_server 블록 원문 (행 78~285) — FollowPath(RPP) 는 BT 가 안 씀(controller_id="FollowPathMPPI"), 참고로 함께 남김
+  78| controller_server:
+  79|   ros__parameters:
+  80|     # ★ 2026-09-16: 20 → 10 Hz. MPPI 를 Orin Nano CPU 예산 안에서 쓰기 위해: 56 step@20 Hz 는 루프 미달 306 건/90 s(mp3).
+  81|     #   10 Hz + model_dt 0.1 + 32 step 이면 지평 3.2 s(0.26 m, RPP lookahead 급)를 mp2(32 step@20 Hz)의 절반 연산으로 얻는다.
+  82|     #   0.08 m/s 로봇은 한 주기 0.8 cm 이동이라 10 Hz 로 충분. MPPI 는 Humble 에서 CPU(xtensor) 전용 — GPU 를 쓰지 않는다.
+  83|     controller_frequency: 10.0
+  84|     min_x_velocity_threshold: 0.001
+  85|     min_y_velocity_threshold: 0.5
+  86|     min_theta_velocity_threshold: 0.001
+  87|     odom_topic: /odometry/filtered
+  88|     progress_checker_plugin: "progress_checker"
+  89|     goal_checker_plugins: ["general_goal_checker"]
+  90|     controller_plugins: ["FollowPath", "FollowPathMPPI"]   # ★현재 FollowPath=RPP (09-03 벤치마크 A/B). MPPI 대기
+  91| 
+  92|     progress_checker:
+  93|       # ⚠ SimpleProgressChecker 는 '병진'만 진행으로 인정 → 제자리 회전이 필요한 목표에서
+  94|       #   20초마다 "Failed to make progress" 로 중단·재시도를 반복함 (2026-09-02 실측).
+  95|       #   스키드스티어는 제자리 회전이 정상 동작이므로 PoseProgressChecker(회전도 인정)를 쓴다.
+  96|       plugin: "nav2_controller::PoseProgressChecker"
+  97|       required_movement_radius: 0.25
+  98|       required_movement_angle: 0.5      # rad — 이만큼 회전해도 '진행'으로 인정
+  99|       movement_time_allowance: 25.0
+ 100| 
+ 101|     general_goal_checker:
+ 102|       stateful: True
+ 103|       plugin: "nav2_controller::SimpleGoalChecker"
+ 104|       # 0.15 복원 (2026-09-03): 펌웨어 데드밴드 보상(MIN_WHEEL_SPEED_MPS 0.020) 플래시·검증 완료.
+ 105|       #   (09-02 에는 목표 근접 미세명령 정체로 0.25 임시 완화했었음)
+ 106|       # 2026-09-28: 0.07 시도 → 0.15 복원. f0a5 에서 0.07 은 목표 0.131 m 옆에서 v −0.003 지령만 50 s 내며 정체(09-02 정체 재현,
+ 107|       #   09-28 SUMMARY §20). 이 값은 전역이라 중간 목표에도 걸린다. 복귀 정밀도는 xy 0.15 끝(≈12 cm)을 기록·수용(§21).
+ 108|       xy_goal_tolerance: 0.15
+ 109|       # 2026-09-28: 0.15 → 0.35 rad (20°). f0a3 목표 2 에서 xy 통과(stateful) 뒤 방향 오차 39° 를 맞추려다
+ 110|       #   GoalCritic(위치, 10)·GoalAngleCritic(방향, 3)이 반대 회전을 요구해 10 s 동안 ω 부호가 6 번 바뀌었다(09-28 SUMMARY §15).
+ 111|       #   크리틱 가중을 바꾸지 않은 이유: GoalCritic 10 은 09-17 mp8(목표 옆 0.24 m 정지) 해결값(오프라인 시뮬 근거)이라 낮추면 회귀 위험,
+ 112|       #   GoalAngle 을 키우면 0.4 m 접근 구간 전체에서 방향을 먼저 맞추려 해 위치 수렴을 해친다 — 둘 다 접근 거동 전체를 바꾼다.
+ 113|       #   허용을 넓히면 "xy 통과 뒤 방향 보정" 자체가 줄고, 제자리 회전(180° 당 10~27 cm 슬립, §6)도 준다. 러너 경로 끝 자동 yaw(§16)와 함께 쓴다.
+ 114|       #   대가: 도착 방향이 최대 20° 어긋날 수 있다(F0 목적 = 위치 복귀에는 무관). 되돌리기 = 0.15. 이전: 09-08 0.25→0.15 (RPP 시절, job58f)
+ 115|       yaw_goal_tolerance: 0.35
+ 116| 
+ 117|     # RPP(Regulated Pure Pursuit) — 차동/스키드스티어 저속에 적합, 튜닝 파라미터가 직관적
+ 118|     FollowPath:
+ 119|       plugin: "nav2_regulated_pure_pursuit_controller::RegulatedPurePursuitController"
+ 120|       desired_linear_vel: 0.08          # 2026-09-07 스케일 정정 후 실속도 기준 (펌웨어 최대 0.085 대비 여유)
+ 121|       # 2026-09-08 §5.y 실측 튜닝: 0.30/0.20/0.45/1.5 → 0.40/0.35/0.60/2.0.
+ 122|       #   속도스케일 lookahead 가 1.5s×0.08=0.12m 로 하한 0.20(5cm 격자 4칸)에 걸려 조향 이득 과대 →
+ 123|       #   직진 중 ω 스파이크 19회/주행 → 5~9회, 부호반전 2→0~1회/m, ω 평균 0.086→0.05 (job58 시리즈).
+ 124|       # 2026-09-09: use_velocity_scaled_lookahead_dist=true 이므로 실효 lookahead 는
+ 125|       #   clamp(v * lookahead_time, min, max) = clamp(0.08*2.0=0.16, min, max) = **min_lookahead_dist**.
+ 126|       #   즉 lookahead_dist 는 이 속도에서 쓰이지 않는다. 실제 조절 손잡이는 min 이다.
+ 127|       # 0.35 → 0.25 인하 사유(job119): 계획은 상자 좌측으로 +0.399 를 요구했는데 로버는 같은 x 에서
+ 128|       #   +0.230 — 8.5cm 안쪽으로 잘라 들어갔고(코너 컷), 되돌리는 우회전 곡률로 0.40m 를 투영한
+ 129|       #   RPP 충돌검사가 "collision ahead" 로 중단시켰다. lookahead 를 줄이면 경로 추종이 더 충실해져
+ 130|       #   컷이 줄어든다. 대가는 조향 진동 — job119 의 '직진 중 ω 부호반전 0회' 를 기준선으로 비교한다.
+ 131|       lookahead_dist: 0.25
+ 132|       min_lookahead_dist: 0.25
+ 133|       max_lookahead_dist: 0.60
+ 134|       lookahead_time: 2.0
+ 135|       use_velocity_scaled_lookahead_dist: true
+ 136|       transform_tolerance: 0.2
+ 137|       min_approach_linear_velocity: 0.02
+ 138|       approach_velocity_scaling_dist: 0.30
+ 139|       use_collision_detection: true
+ 140|       # 2026-09-08 야간: 1.5 → 5.0. 이 값 × 현재속도 = 충돌검사 거리이므로 0.08m/s 에서는 1.5s 가
+ 141|       #   **0.12m** 밖에 안 봤다. 그래서 상자를 코스트맵이 알고 있어도 컨트롤러가 그냥 밟고 지나감(job66/70).
+ 142|       #   5.0s → 0.40m 앞까지 검사 → job76 에서 실제로 abort + BackUp 복구가 걸려 **밀고 가는 일이 사라졌다.**
+ 143|       #   대가: 좁은 통로에서 경로가 내접영역을 스치면 자주 abort → 복구 루프. 통로 여유가 근본 해법.
+ 144|       # ★ 2026-09-11: 5.0 → 1.5 로 되돌림. 위 09-08 진단이 오진이었다.
+ 145|       #   "코스트맵이 알고 있어도 밟고 지나감(job66/70)" 의 진짜 원인은 BT 의 ClearEntireCostmap 이었다 —
+ 146|       #   RPP 가 충돌을 감지하면 BT 가 로컬 코스트맵을 통째로 지워 장애물이 사라졌고 그래서 밟았다
+ 147|       #   (09-11 job222 로그 17ms 인과, BT 를 ClearCostmapExceptRegion 으로 교체해 해결).
+ 148|       #   job76 에서 "밀고 가는 일이 사라진" 것은 5.0s 가 abort 를 더 자주 내서 BackUp 이 걸린 것이지
+ 149|       #   원인을 고친 게 아니다. 원인이 제거된 지금 5.0 은 대가만 남는다:
+ 150|       #     - 제자리 회전 중에는 이 값 × 각속도 = 훑는 각도 → 5.0 × 0.32 rad/s = **92°**.
+ 151|       #       그 사이 한 자세라도 걸리면 회전 자체를 거부한다. 물리 틈 0.73m(로버 0.33m)에서
+ 152|       #       패딩 포함 허용 자세각이 47° 이므로 반드시 걸린다 → job231/236/247 ABORTED.
+ 153|       #   1.5 s = 직진 0.12 m / 회전 27°. 0.08 m/s 로버의 제동거리는 수 cm 라 0.12 m 는 충분하다.
+ 154|       #   Nav2 기본값은 1.0.
+ 155|       # ★ 2026-09-14 (09-14 SUMMARY §2.15): 1.5 → 0.75 s. 이 값은 **시간** 기준이라 검사 거리 = 값 × v 다.
+ 156|       #   비용 감속을 풀어(cost_scaling_dist 0.25) 통로 진입 속도가 0.03 → 0.08 이 되자 검사 거리가 4.5 → 12 cm 로 2.7배 늘었고,
+ 157|       #   차선 변경(heading +20~30°) 중 앞우 모서리 앞 1~2셀(상자 가장자리 격자 반올림·상자 앞 유령 셀)에 걸려 spd1/spd2 가 ABORTED.
+ 158|       #   inf1~4(0.03, 검사 4.5 cm)는 같은 셀을 지나쳐 4/4 완주했다. 0.75 s × 0.08 = 6 cm 로 그 검사 거리를 복원한다.
+ 159|       #   0.08 m/s 제동거리 < 1 cm 라 6 cm 는 여전히 충분. 회전 중 훑는 각도도 0.75 × 0.32 = 14°(1.5 는 27°).
+ 160|       max_allowed_time_to_collision_up_to_carrot: 0.75
+ 161|       # 곡률·장애물 근접 시 감속
+ 162|       use_regulated_linear_velocity_scaling: true
+ 163|       use_cost_regulated_linear_velocity_scaling: true
+ 164|       regulated_linear_scaling_min_radius: 0.35
+ 165|       # 2026-09-14 (09-14 SUMMARY §2.12): 통로 통과 속도가 0.08 → 0.033 으로 떨어지는 원인이 이 비용 감속이었다.
+ 166|       #   RPP 는 로버 중심 셀의 inflation 비용에서 장애물 거리 d 를 역산해 d < cost_scaling_dist(기본 0.6 m)이면
+ 167|       #   v = desired × d/0.6. 통로에서 d ≈ 0.25 → 0.033 (4회 주행 실측 0.032~0.039, 진입 전엔 0.080).
+ 168|       #   폭 0.33 로버에겐 폭 1.2 m 미만의 모든 통로에서 항상 켜진다. 0.25 = 패딩면에서 5.5 cm 안에 장애물일 때만 감속.
+ 169|       #   inflation_cost_scaling_factor 는 역산에 쓰이므로 로컬 inflation_layer.cost_scaling_factor(2.5)와 같아야 한다(기본 3.0 이면 거리를 작게 봄).
+ 170|       #   min_speed 0.03 → 0.05: 0.03 은 궤도 stick-slip 영역(덜컹거림). 충돌검사(0.12 m)는 그대로 — 0.08 m/s 제동거리 < 1 cm.
+ 171|       cost_scaling_dist: 0.25
+ 172|       cost_scaling_gain: 1.0
+ 173|       inflation_cost_scaling_factor: 2.5
+ 174|       regulated_linear_scaling_min_speed: 0.05
+ 175|       # 스키드스티어는 제자리 회전 가능 → 경로 시작 시 헤딩 정렬
+ 176|       use_rotate_to_heading: true
+ 177|       # 2026-09-08: 0.25 로 낮추면 회전↔추종 모드 채터 6회(스파이크 28회) → 0.5 유지 (job58e 기각)
+ 178|       # ★ 2026-09-11: 0.5 → 1.0 rad (28.6° → 57°). 경로 첫 구간이 이 각도 이상 꺾일 때만 제자리 회전.
+ 179|       #   근거: 통로 free 폭 0.82 m(job248 A)에 대해 패딩 포함 차체 대각선이 0.74 m — **제자리에서
+ 180|       #   50° 도는 것이 이 공간에서 가장 공간을 많이 먹는 동작**이다. job247·s4r1 이 정확히 그 자세
+ 181|       #   (48°/50°)에서 굳었고, job251 이 탈출한 순간은 v 0.08·ω 0.20 의 **곡선**이었다.
+ 182|       #   NavFn 경로는 8-연결 격자에서 나와 첫 0.25 m(lookahead)가 자주 꺾이므로 28.6° 조건은
+ 183|       #   그 격자 인공물에 쉽게 걸린다. 57° 미만은 곡선으로 흡수한다.
+ 184|       #   목표 지점의 자세 정렬은 shouldRotateToGoalHeading(goal_dist_tol 조건)이라 영향 없다.
+ 185|       rotate_to_heading_min_angle: 1.0
+ 186|       rotate_to_heading_angular_vel: 0.32   # 2026-09-07 B_eff 0.443: 실 최대 0.384 rad/s 대비 여유
+ 187|       # ⚠ RPP 는 rotateToHeading 각속도를 '현재 측정속도 ± max_angular_accel×dt' 로 클램프한다.
+ 188|       #   1.0 이면 20Hz 제어주기에서 첫 명령이 1.0×0.05 = 0.05 rad/s 뿐 → 로버 기동 임계(정지마찰·
+ 189|       #   PWM 데드밴드) 미달로 안 움직임 → 측정속도 0 유지 → 영원히 0.05 반복(데드락). 2026-09-02 실측.
+ 190|       #   4.0 으로 첫 명령 0.2 rad/s 확보 (실측상 0.3 rad/s 에서 정상 회전 확인됨).
+ 191|       max_angular_accel: 4.0
+ 192|       # NavFn 경로엔 후진 cusp 이 없어 RPP 에선 실효 제한적 — 실제 후진 기동은 MPPI(vx_min<0)가 담당.
+ 193|       # true 로 두는 건 무해하며, 추후 Smac(후진 경로 생성) 도입 시 바로 유효해짐.
+ 194|       allow_reversing: true
+ 195|       max_robot_pose_search_dist: 5.0
+ 196| 
+ 197|     # MPPI — N1 벤치마크 후보. 샘플링 기반이라 좁은 공간·후진·장애물 근접 기동이 RPP보다 강함.
+ 198|     # ⚠ CPU 무거움(batch 1000×32step@20Hz) → 벤치마크에서 지연 시 batch_size·controller_frequency 하향.
+ 199|     # 전환 방법: BT 기본 controller_id 가 "FollowPath" 이므로, 벤치마크 시 두 블록의 이름을 맞바꿔 재기동.
+ 200|     FollowPathMPPI:
+ 201|       plugin: "nav2_mppi_controller::MPPIController"
+ 202|       # ★ 2026-09-16 mp2 분석(09-16 SUMMARY §1): 32 step × 0.05 s = 1.6 s 지평은 0.08 m/s 에서 **0.13 m** 뿐.
+ 203|       #   경로 크리틱은 "지평 끝이 도달한 경로 점 index" 로 켜지는데(offset_from_furthest), 점간격 0.026~0.047 m 라
+ 204|       #   index 가 3~5 에 그쳐 PathAlign(가중 14, 문턱 20)이 **한 번도 켜지지 않았다**. 경로를 잡아주는 힘이
+ 205|       #   PathFollow(5) 하나뿐이라 상자 앞 0.23 m 의 코스트맵 기울기(ObstaclesCritic)가 로버를 왼쪽으로 제자리
+ 206|       #   회전시켰고(t18~20, 경로 요구 0°), 통로 입구에서 heading 오차 47~62° 가 된 뒤 60 s 머뭇거림(진행 실패 2회).
+ 207|       #   56 step(=Nav2 기본, 2.8 s ≈ 0.22 m) 으로 지평을 늘리고 아래 index 문턱을 우리 지평에 맞춘다. CPU 1.75×.
+ 208|       #   ★ mp3 결과(09-16 §1.9): 56 step 은 이 Jetson 에서 20 Hz 를 못 냈다(루프 미달 306 건/90 s, load 11.8, EKF 위반 91) 그리고
+ 209|       #   모서리 정체는 그대로였다 → 32 로 되돌림. MPPI 재도전 시 batch 500 이하 또는 10 Hz 에서 지평을 다시 설계할 것.
+ 210|       time_steps: 32
+ 211|       model_dt: 0.1             # 2026-09-16: = 1/controller_frequency(10 Hz). 32 step → 지평 3.2 s
+ 212|       batch_size: 1000
+ 213|       # ★ 2026-09-16 mp4(job345, /trajectories): 입구에서 명령 평균이 0 으로 내려가자 후보 궤적 끝단 분포가 ±1 cm 로 붕괴
+ 214|       #   (앞>5 cm 후보 78 % → 2 %). 잡음이 시간축마다 독립이라 끝단 산포 ≈ std/√32×3.2 s ≈ 3 cm 뿐이라 내접 띠(15 cm)
+ 215|       #   너머의 출구를 표본이 못 본다 → 탐색 폭(vx/wz_std)·선택 날카로움(temperature)·반복(iteration) 을 올린다.
+ 216|       vx_std: 0.08              # 0.05 → 0.08 (vx_max 와 같은 크기; 클리핑되더라도 분포 폭 확보)
+ 217|       vy_std: 0.0
+ 218|       wz_std: 0.4               # 0.3 → 0.4
+ 219|       vx_max: 0.08          # 2026-09-07 스케일 정정 후 실속도 기준 (펌웨어 한계 0.085)
+ 220|       # ★ 2026-10-01 §8.28 (사용자 지시): −0.06 → 0.0 — 경로 추종 중 후진 금지. 카메라(D455f)는 앞만 보고 라이다(0.185 m 단면)는
+ 221|       #   낮은 물체를 못 보므로, 후진하면 뒤의 낮은 장애물이 완전한 사각이다(f2a10 에서 경로를 후진으로 따라감 — 사용자 관찰).
+ 222|       #   대가: 좁은 곳 이탈을 위한 짧은 후진 기동이 없어짐(제자리 회전으로 대신). 복구용 BackUp(0.15 m) 은 BT 에 그대로 — 별도 검토 대상.
+ 223|       # ★ 2026-10-01 §8.30 (사용자 결정): 0.0 → −0.06 되돌림. "후진이 허용되던 이전 방식 유지, 우선 실내를 자유자재로 움직이는 것부터 완성".
+ 224|       #   호 회전(Ackermann)은 시뮬에서 MPPI 단독으로는 앞뒤 반복 기동을 못 찾음(§8.29) → 기구학 계획기와 함께 나중 과제. 후진 중 낮은 물체 사각은 알려진 한계로 남김.
+ 225|       vx_min: -0.06
+ 226|       vy_max: 0.0
+ 227|       wz_max: 0.38          # 2026-09-07 B_eff 0.443 (실 최대 0.384)
+ 228|       iteration_count: 2        # 1 → 2 (10 Hz·32 step 이라 20 Hz·1 회와 같은 연산량 = mp2 수준)
+ 229|       prune_distance: 1.0
+ 230|       # ★ 2026-10-07 §5·§6: 0.2 → 0.5. slam 의 map→odom stamp 가 1.49 s 멈춰 '미래 여유'(transform_timeout 0.5)를 다 쓰자
+ 231|       #   MPPI 경로 변환이 6.6 ms 차로 실패 → follow_path 중단·wait 5 s(f2c2 t 235, 같은 오류 7 회). 10-01 f2a1·f2a2 와 같은 기제.
+ 232|       #   대가: 최대 0.5 s 묵은 map→odom 으로 경로를 odom 에 옮길 수 있으나 map→odom 은 느리게 변하는 보정값이라 영향 작음(추정).
+ 233|       transform_tolerance: 0.5
+ 234|       # ★ 2026-09-17 §12: 0.15 → 0.3 (Nav2 기본값으로 복귀). 0.15 는 09-16 mp4 에서 네 손잡이 중 하나로 함께 바꿨을 뿐
+ 235|       #   단독 효과는 검증되지 않았다(당시 시뮬레이션에서 입구 정지를 푼 것은 PathFollow 10/20).
+ 236|       #   조향 흔들림(통로 명령 ω 부호반전 10~15 /m, 고주파 RMS 0.06~0.08 rad/s)의 기제 = softmax 유효 표본 수(ESS)
+ 237|       #   0.15 에서 ESS ≈ 10/1000 → 평균 제어의 표본 잡음 ≈ wz_std/√ESS = 0.12~0.14 rad/s 가 매 주기 독립으로 섞인다.
+ 238|       #   0.3 이면 ESS ≈ 81~89 → 0.04 rad/s. 시뮬레이션(실측 구동계: 지연 0.1 s·ω 이득 0.7·smoother 가속 1.2):
+ 239|       #   통로 반전 6~13 → 0 /m, 입구 정지 없음, 대가는 6 s 진행 −15~−23 %·목표 허용오차 진입 7.3 → 12.3 s.
+ 240|       #   실주행 반복으로 확인 전까지 잠정. 진행이 과하게 느리면 0.22(ESS ≈ 30, 반전 0~7 /m, 진행 −5~−11 %)가 대안.
+ 241|       # ★ 2026-09-17 §13 mp12(0.3): 통로 반전 8.8 /m·RMS 0.059 로 0.15(mp9~11) 와 차이 없음, 느려진다는 예측도 빗나감
+ 242|       #   → 위 ESS 기제는 실측으로 확인되지 않았다. 사용자 결정으로 기준 구성(0.15, 3/3 성공)으로 복귀하고 원인을 오프라인에서 가린다.
+ 243|       temperature: 0.15
+ 244|       gamma: 0.015
+ 245|       motion_model: "DiffDrive"
+ 246|       # ★ 2026-09-17 mp7: 끔. 주기마다 후보 궤적 MarkerArray(≈2232 점)를 발행·bag 기록(≈5 MB/s)하는 비용이 15W 모드 CPU 를 압박.
+ 247|       #   mp4~mp6 분석용 기록은 확보됨. 진단 주행에만 true 로 켠다.
+ 248|       visualize: false
+ 249|       # ★ 2026-09-18 §15~17: ObstaclesCritic → CostCritic. 1.1.20 소스 확인 — consider_footprint 일 때 ObstaclesCritic 은 차체 둘레 최대비용(내접 안이면 항상 253)
+ 250|       #   에서 거리를 역산해 옆 여유 1~14 cm 가 같은 비용(거리 0.175 고정)이 되고, 거리 역산용 cost_scaling_factor/inflation_radius 를 크리틱 파라미터로
+ 251|       #   읽는데(README 'Humble only') 이 YAML 에 없어 기본 10/0.55 로 돌고 있었다(로컬 코스트맵은 2.5/0.40; job451 실행 중 값으로 확인). CostCritic 은 충돌은 같은 둘레
+ 252|       #   검사, 점수는 중심 칸 비용(거리 기울기 있음). 오프라인 시뮬(job452, dy2·dy4·dy6 세 장면×seed 2): LETHAL 여유 최소 +0.5~2.4 cm, 정체 없음, 입구 진행 −0~7 %.
+ 253|       #   되돌리기 = 아래 목록에서 CostCritic ↔ ObstaclesCritic 한 줄. 판정 기준은 09-18 SUMMARY §16.
+ 254|       critics: ["ConstraintCritic", "CostCritic", "GoalCritic", "GoalAngleCritic", "PathAlignCritic", "PathFollowCritic", "PathAngleCritic", "PreferForwardCritic", "ClearanceBandCritic"]
+ 255|       ConstraintCritic: {enabled: true, cost_power: 1, cost_weight: 4.0}
+ 256|       # ★ 2026-09-17 mp8 (09-17 SUMMARY §7): 목표 0.24 m 옆에서 정지. 경로 크리틱이 목표 0.6/0.4 m 안에서 꺼져 GoalCritic(5) 만 남고,
+ 257|       #   상자 모서리 때문에 늦게 시작한 중심선 복귀가 끊겼다. 오프라인 MPPI 시뮬(job355, 펌웨어 데드밴드 모델, bag_mp8 t=33 s 12 s):
+ 258|       #   현재 0.234 m(실측 0.243 재현) / 문턱 0.2 → 0.144 / 문턱 0.2 + GoalCritic 10 → 0.116 m (xy tol 0.15) → 둘 다 적용.
+ 259|       GoalCritic: {enabled: true, cost_power: 1, cost_weight: 10.0, threshold_to_consider: 1.0}
+ 260|       GoalAngleCritic: {enabled: true, cost_power: 1, cost_weight: 3.0, threshold_to_consider: 0.4}
+ 261|       # 10-08 §6: 5.0 → 15.0 — 앞 회전 우선(사용자). 오프라인 시뮬(job944/946, seed 3): W3 출발 후진 0.36~1.19 → 0.22~0.45 m, 세 번 모두 돌아서 전진.
+ 262|       #   좁은 서쪽 통로 입구 LETHAL 최소 여유 0.029~0.057 → 0.023~0.045 m 로 동등. 30 은 좁은 곳에서 여유 −0.025(충돌)라 기각. 후진 한도(vx_min −0.06)는 그대로.
+ 263|       PreferForwardCritic: {enabled: true, cost_power: 1, cost_weight: 15.0, threshold_to_consider: 0.4}
+ 264|       # consider_footprint: 직사각 풋프린트(0.5×0.33) 정확 반영 — CPU 비용 있으나 좁은 공간 정확성에 필수
+ 265|       ObstaclesCritic: {enabled: true, cost_power: 1, repulsion_weight: 1.5, critical_weight: 20.0, consider_footprint: true, collision_cost: 10000.0, collision_margin_distance: 0.05, near_goal_distance: 0.5}   # 09-18: 목록에서 빠짐(A/B 복귀용으로 둠)
+ 266|       # CostCritic (09-18): 기본값 그대로(README 예시와 같음). near_goal_distance 는 0.5 유지 — README 예시 1.0 이면 상자 뒤 모서리(x 1.25~1.35, 목표에서 0.65~0.75 m)
+ 267|       #   에서 선호 항이 꺼진다. critical_cost 300 = 중심이 내접(옆 여유 < 1 cm) 안에 들어가는 궤적 점 벌점. cost_weight 3.81/254 × 평균 중심 비용(0~252) → 최대 ≈3.8.
+ 268|       CostCritic: {enabled: true, cost_power: 1, cost_weight: 3.81, critical_cost: 300.0, consider_footprint: true, collision_cost: 1000000.0, near_goal_distance: 0.5}
+ 269|       # ★ 2026-10-15 §29: 우리 크리틱 ClearanceBandCritic(rover_navigation 플러그인). 근거 SUMMARY §28 — 실패 3 건 모두 MPPI 가 정확 여유 2.7~4.4 cm 까지
+ 270|       #   서서히 붙은 뒤 칸 판정 위상이 바뀌어 서 있는 자세부터 충돌. CostCritic 은 풋프린트 253(치명 17.5 cm 안이면 늘 나옴)을 벌하지 않는다.
+ 271|       #   차체(패딩 포함) ↔ 치명 칸 중심 정확 거리 < band 인 점에 (band − d)/band, 점수 = weight × 합 / 점 수. band 0.06 = 뒤집힘 상한 4.4 cm + 1.6 cm.
+ 272|       #   weight 20: 띠 한가운데(3 cm)를 계속 지나는 궤적 ≈ 10 — 옆 5 cm 비키는 PathAlign 비용(14 × 0.05 ≈ 0.7)보다 훨씬 큼, 충돌(1e6)보다 훨씬 작음 → 좁은 곳은 지나감.
+ 273|       #   끄기(A/B) = enabled: false.
+ 274|       #   ★ 10-15 §30: 끔 — 통로에서 계산 최대 162 ms · 놓침 428(§29.6). 통합 거리 1.0 시험을 크리틱 없는 기준선과 같은 조건으로.
+ 275|       ClearanceBandCritic: {enabled: false, cost_power: 1, cost_weight: 20.0, band: 0.06, trajectory_point_step: 2}
+ 276|       # offset_from_furthest 20 → 3 (09-16): 지평 0.22 m / 점간격 ~0.04 m = index 5~6 이므로 3 이면 0.1 m 만 나아가도 켜진다.
+ 277|       PathAlignCritic: {enabled: true, cost_power: 1, cost_weight: 14.0, max_path_occupancy_ratio: 0.05, trajectory_point_step: 3, threshold_to_consider: 0.20, offset_from_furthest: 3}
+ 278|       # ★ 2026-09-16 §1.14 (job354/355 재구성·시뮬레이션): 입구 기어감의 실체는 '당근이 짧은 추종'. offset 5 점 = 경로 점간격 0.025 m 에서
+ 279|       #   12.5 cm 뿐이라 진행해도 비용이 거의 안 줄고, 브레이크(PathAlign·Obstacles)만 이동에 비례해 커져 v≈0.02 에서 평형.
+ 280|       #   weight 5→10·offset 5→20(0.5 m) 이면 시뮬레이션에서 6 s 에 0.25 m 전진·경로 정렬(yaw 32→7°), 평균열 LETHAL 미접촉. 회피·정렬 가중은 유지.
+ 281|       PathFollowCritic: {enabled: true, cost_power: 1, cost_weight: 10.0, offset_from_furthest: 20, threshold_to_consider: 0.2}
+ 282|       # max_angle_to_furthest 1.0 → 0.5 rad (09-16): mp2 정체 중 경로 방위 오차 44~62° 에서 1.0 rad(57°) 문턱은 간헐적으로만 켜졌다.
+ 283|       #   29° 부터 켜서 모서리에서 제자리 우회전을 유도. (weight 2 유지 — 한 번에 바꾸는 손잡이를 지평·index·각도 3개로 한정)
+ 284|       PathAngleCritic: {enabled: true, cost_power: 1, cost_weight: 2.0, offset_from_furthest: 4, threshold_to_consider: 0.2, max_angle_to_furthest: 0.5}
+ 285| 
+
+### ② 실행 중 controller_server 값(f2rp1 params.txt, RPP FollowPath.* 제외)
+  /bond_disable_heartbeat_timeout: True
+  FollowPathMPPI.ClearanceBandCritic.band: 0.06
+  FollowPathMPPI.ClearanceBandCritic.cost_power: 1
+  FollowPathMPPI.ClearanceBandCritic.cost_weight: 20.0
+  FollowPathMPPI.ClearanceBandCritic.enabled: False
+  FollowPathMPPI.ClearanceBandCritic.trajectory_point_step: 2
+  FollowPathMPPI.ConstraintCritic.cost_power: 1
+  FollowPathMPPI.ConstraintCritic.cost_weight: 4.0
+  FollowPathMPPI.ConstraintCritic.enabled: True
+  FollowPathMPPI.CostCritic.collision_cost: 1000000.0
+  FollowPathMPPI.CostCritic.consider_footprint: True
+  FollowPathMPPI.CostCritic.cost_power: 1
+  FollowPathMPPI.CostCritic.cost_weight: 3.81
+  FollowPathMPPI.CostCritic.critical_cost: 300.0
+  FollowPathMPPI.CostCritic.enabled: True
+  FollowPathMPPI.CostCritic.inflation_layer_name: ''
+  FollowPathMPPI.CostCritic.near_goal_distance: 0.5
+  FollowPathMPPI.GoalAngleCritic.cost_power: 1
+  FollowPathMPPI.GoalAngleCritic.cost_weight: 3.0
+  FollowPathMPPI.GoalAngleCritic.enabled: True
+  FollowPathMPPI.GoalAngleCritic.threshold_to_consider: 0.4
+  FollowPathMPPI.GoalCritic.cost_power: 1
+  FollowPathMPPI.GoalCritic.cost_weight: 10.0
+  FollowPathMPPI.GoalCritic.enabled: True
+  FollowPathMPPI.GoalCritic.threshold_to_consider: 1.0
+  FollowPathMPPI.PathAlignCritic.cost_power: 1
+  FollowPathMPPI.PathAlignCritic.cost_weight: 14.0
+  FollowPathMPPI.PathAlignCritic.enabled: True
+  FollowPathMPPI.PathAlignCritic.max_path_occupancy_ratio: 0.05
+  FollowPathMPPI.PathAlignCritic.offset_from_furthest: 3
+  FollowPathMPPI.PathAlignCritic.threshold_to_consider: 0.2
+  FollowPathMPPI.PathAlignCritic.trajectory_point_step: 3
+  FollowPathMPPI.PathAlignCritic.use_path_orientations: False
+  FollowPathMPPI.PathAngleCritic.cost_power: 1
+  FollowPathMPPI.PathAngleCritic.cost_weight: 2.0
+  FollowPathMPPI.PathAngleCritic.enabled: True
+  FollowPathMPPI.PathAngleCritic.forward_preference: True
+  FollowPathMPPI.PathAngleCritic.max_angle_to_furthest: 0.5
+  FollowPathMPPI.PathAngleCritic.offset_from_furthest: 4
+  FollowPathMPPI.PathAngleCritic.threshold_to_consider: 0.2
+  FollowPathMPPI.PathFollowCritic.cost_power: 1
+  FollowPathMPPI.PathFollowCritic.cost_weight: 10.0
+  FollowPathMPPI.PathFollowCritic.enabled: True
+  FollowPathMPPI.PathFollowCritic.offset_from_furthest: 20
+  FollowPathMPPI.PathFollowCritic.threshold_to_consider: 0.2
+  FollowPathMPPI.PreferForwardCritic.cost_power: 1
+  FollowPathMPPI.PreferForwardCritic.cost_weight: 15.0
+  FollowPathMPPI.PreferForwardCritic.enabled: True
+  FollowPathMPPI.PreferForwardCritic.threshold_to_consider: 0.4
+  FollowPathMPPI.TrajectoryVisualizer.time_step: 4
+  FollowPathMPPI.TrajectoryVisualizer.trajectory_step: 100
+  FollowPathMPPI.batch_size: 1000
+  FollowPathMPPI.critics: ['ConstraintCritic', 'CostCritic', 'GoalCritic', 'GoalAngleCritic', 'PathAlignCritic', 'PathFollowCritic', 'PathAngleCritic', 'PreferForwardCritic', 'ClearanceBandCritic']
+  FollowPathMPPI.enforce_path_inversion: False
+  FollowPathMPPI.gamma: 0.015
+  FollowPathMPPI.iteration_count: 2
+  FollowPathMPPI.max_robot_pose_search_dist: 1.5
+  FollowPathMPPI.model_dt: 0.1
+  FollowPathMPPI.motion_model: 'DiffDrive'
+  FollowPathMPPI.plugin: 'nav2_mppi_controller::MPPIController'
+  FollowPathMPPI.prune_distance: 1.0
+  FollowPathMPPI.regenerate_noises: False
+  FollowPathMPPI.reset_period: 1.0
+  FollowPathMPPI.retry_attempt_limit: 1
+  FollowPathMPPI.temperature: 0.15
+  FollowPathMPPI.time_steps: 32
+  FollowPathMPPI.transform_tolerance: 0.5
+  FollowPathMPPI.visualize: True
+  FollowPathMPPI.vx_max: 0.08
+  FollowPathMPPI.vx_min: -0.06
+  FollowPathMPPI.vx_std: 0.08
+  FollowPathMPPI.vy_max: 0.0
+  FollowPathMPPI.vy_std: 0.0
+  FollowPathMPPI.wz_max: 0.38
+  FollowPathMPPI.wz_std: 0.4
+  controller_frequency: 10.0
+  controller_plugins: ['FollowPath', 'FollowPathMPPI']
+  controller_server.verbose: False
+  failure_tolerance: 0.0
+  general_goal_checker.plugin: 'nav2_controller::SimpleGoalChecker'
+  general_goal_checker.stateful: True
+  general_goal_checker.xy_goal_tolerance: 0.15
+  general_goal_checker.yaw_goal_tolerance: 0.35
+  goal_checker_plugins: ['general_goal_checker']
+  min_theta_velocity_threshold: 0.001
+  min_x_velocity_threshold: 0.001
+  min_y_velocity_threshold: 0.5
+  odom_topic: '/odometry/filtered'
+  progress_checker.movement_time_allowance: 25.0
+  progress_checker.plugin: 'nav2_controller::PoseProgressChecker'
+  progress_checker.required_movement_angle: 0.5
+  progress_checker.required_movement_radius: 0.25
+  progress_checker_plugin: 'progress_checker'
+  publish_zero_velocity: True
+  speed_limit_topic: 'speed_limit'
+  use_sim_time: False
+
+### ③ YAML ↔ 실행 중 차이(RPP FollowPath.* 제외)
+  [f2rp1]
+    실행 중에만(YAML 에 없음 = 기본값 또는 launch/prep 이 넣음): FollowPathMPPI.CostCritic.inflation_layer_name = ''
+    YAML 에만(실행 중 노드에 없음 = 안 읽힘): FollowPathMPPI.ObstaclesCritic.collision_cost = 10000.0
+    YAML 에만(실행 중 노드에 없음 = 안 읽힘): FollowPathMPPI.ObstaclesCritic.collision_margin_distance = 0.05
+    YAML 에만(실행 중 노드에 없음 = 안 읽힘): FollowPathMPPI.ObstaclesCritic.consider_footprint = True
+    YAML 에만(실행 중 노드에 없음 = 안 읽힘): FollowPathMPPI.ObstaclesCritic.cost_power = 1
+    YAML 에만(실행 중 노드에 없음 = 안 읽힘): FollowPathMPPI.ObstaclesCritic.critical_weight = 20.0
+    YAML 에만(실행 중 노드에 없음 = 안 읽힘): FollowPathMPPI.ObstaclesCritic.enabled = True
+    YAML 에만(실행 중 노드에 없음 = 안 읽힘): FollowPathMPPI.ObstaclesCritic.near_goal_distance = 0.5
+    YAML 에만(실행 중 노드에 없음 = 안 읽힘): FollowPathMPPI.ObstaclesCritic.repulsion_weight = 1.5
+    실행 중에만(YAML 에 없음 = 기본값 또는 launch/prep 이 넣음): FollowPathMPPI.PathAlignCritic.use_path_orientations = False
+    실행 중에만(YAML 에 없음 = 기본값 또는 launch/prep 이 넣음): FollowPathMPPI.PathAngleCritic.forward_preference = True
+    실행 중에만(YAML 에 없음 = 기본값 또는 launch/prep 이 넣음): FollowPathMPPI.TrajectoryVisualizer.time_step = 4
+    실행 중에만(YAML 에 없음 = 기본값 또는 launch/prep 이 넣음): FollowPathMPPI.TrajectoryVisualizer.trajectory_step = 100
+    실행 중에만(YAML 에 없음 = 기본값 또는 launch/prep 이 넣음): FollowPathMPPI.enforce_path_inversion = False
+    실행 중에만(YAML 에 없음 = 기본값 또는 launch/prep 이 넣음): FollowPathMPPI.max_robot_pose_search_dist = 1.5
+    실행 중에만(YAML 에 없음 = 기본값 또는 launch/prep 이 넣음): FollowPathMPPI.regenerate_noises = False
+    실행 중에만(YAML 에 없음 = 기본값 또는 launch/prep 이 넣음): FollowPathMPPI.reset_period = 1.0
+    실행 중에만(YAML 에 없음 = 기본값 또는 launch/prep 이 넣음): FollowPathMPPI.retry_attempt_limit = 1
+    값 다름: FollowPathMPPI.visualize  YAML False → 실행 중 True
+    실행 중에만(YAML 에 없음 = 기본값 또는 launch/prep 이 넣음): controller_server.verbose = False
+    실행 중에만(YAML 에 없음 = 기본값 또는 launch/prep 이 넣음): failure_tolerance = 0.0
+    실행 중에만(YAML 에 없음 = 기본값 또는 launch/prep 이 넣음): publish_zero_velocity = True
+    실행 중에만(YAML 에 없음 = 기본값 또는 launch/prep 이 넣음): speed_limit_topic = 'speed_limit'
+    실행 중에만(YAML 에 없음 = 기본값 또는 launch/prep 이 넣음): use_sim_time = False
+  [f2rp2]
+    실행 중에만(YAML 에 없음 = 기본값 또는 launch/prep 이 넣음): FollowPathMPPI.CostCritic.inflation_layer_name = ''
+    YAML 에만(실행 중 노드에 없음 = 안 읽힘): FollowPathMPPI.ObstaclesCritic.collision_cost = 10000.0
+    YAML 에만(실행 중 노드에 없음 = 안 읽힘): FollowPathMPPI.ObstaclesCritic.collision_margin_distance = 0.05
+    YAML 에만(실행 중 노드에 없음 = 안 읽힘): FollowPathMPPI.ObstaclesCritic.consider_footprint = True
+    YAML 에만(실행 중 노드에 없음 = 안 읽힘): FollowPathMPPI.ObstaclesCritic.cost_power = 1
+    YAML 에만(실행 중 노드에 없음 = 안 읽힘): FollowPathMPPI.ObstaclesCritic.critical_weight = 20.0
+    YAML 에만(실행 중 노드에 없음 = 안 읽힘): FollowPathMPPI.ObstaclesCritic.enabled = True
+    YAML 에만(실행 중 노드에 없음 = 안 읽힘): FollowPathMPPI.ObstaclesCritic.near_goal_distance = 0.5
+    YAML 에만(실행 중 노드에 없음 = 안 읽힘): FollowPathMPPI.ObstaclesCritic.repulsion_weight = 1.5
+    실행 중에만(YAML 에 없음 = 기본값 또는 launch/prep 이 넣음): FollowPathMPPI.PathAlignCritic.use_path_orientations = False
+    실행 중에만(YAML 에 없음 = 기본값 또는 launch/prep 이 넣음): FollowPathMPPI.PathAngleCritic.forward_preference = True
+    실행 중에만(YAML 에 없음 = 기본값 또는 launch/prep 이 넣음): FollowPathMPPI.TrajectoryVisualizer.time_step = 4
+    실행 중에만(YAML 에 없음 = 기본값 또는 launch/prep 이 넣음): FollowPathMPPI.TrajectoryVisualizer.trajectory_step = 100
+    실행 중에만(YAML 에 없음 = 기본값 또는 launch/prep 이 넣음): FollowPathMPPI.enforce_path_inversion = False
+    실행 중에만(YAML 에 없음 = 기본값 또는 launch/prep 이 넣음): FollowPathMPPI.max_robot_pose_search_dist = 1.5
+    실행 중에만(YAML 에 없음 = 기본값 또는 launch/prep 이 넣음): FollowPathMPPI.regenerate_noises = False
+    실행 중에만(YAML 에 없음 = 기본값 또는 launch/prep 이 넣음): FollowPathMPPI.reset_period = 1.0
+    실행 중에만(YAML 에 없음 = 기본값 또는 launch/prep 이 넣음): FollowPathMPPI.retry_attempt_limit = 1
+    값 다름: FollowPathMPPI.visualize  YAML False → 실행 중 True
+    실행 중에만(YAML 에 없음 = 기본값 또는 launch/prep 이 넣음): controller_server.verbose = False
+    실행 중에만(YAML 에 없음 = 기본값 또는 launch/prep 이 넣음): failure_tolerance = 0.0
+    실행 중에만(YAML 에 없음 = 기본값 또는 launch/prep 이 넣음): publish_zero_velocity = True
+    실행 중에만(YAML 에 없음 = 기본값 또는 launch/prep 이 넣음): speed_limit_topic = 'speed_limit'
+    실행 중에만(YAML 에 없음 = 기본값 또는 launch/prep 이 넣음): use_sim_time = False
+  [f2rp3]
+    실행 중에만(YAML 에 없음 = 기본값 또는 launch/prep 이 넣음): FollowPathMPPI.CostCritic.inflation_layer_name = ''
+    YAML 에만(실행 중 노드에 없음 = 안 읽힘): FollowPathMPPI.ObstaclesCritic.collision_cost = 10000.0
+    YAML 에만(실행 중 노드에 없음 = 안 읽힘): FollowPathMPPI.ObstaclesCritic.collision_margin_distance = 0.05
+    YAML 에만(실행 중 노드에 없음 = 안 읽힘): FollowPathMPPI.ObstaclesCritic.consider_footprint = True
+    YAML 에만(실행 중 노드에 없음 = 안 읽힘): FollowPathMPPI.ObstaclesCritic.cost_power = 1
+    YAML 에만(실행 중 노드에 없음 = 안 읽힘): FollowPathMPPI.ObstaclesCritic.critical_weight = 20.0
+    YAML 에만(실행 중 노드에 없음 = 안 읽힘): FollowPathMPPI.ObstaclesCritic.enabled = True
+    YAML 에만(실행 중 노드에 없음 = 안 읽힘): FollowPathMPPI.ObstaclesCritic.near_goal_distance = 0.5
+    YAML 에만(실행 중 노드에 없음 = 안 읽힘): FollowPathMPPI.ObstaclesCritic.repulsion_weight = 1.5
+    실행 중에만(YAML 에 없음 = 기본값 또는 launch/prep 이 넣음): FollowPathMPPI.PathAlignCritic.use_path_orientations = False
+    실행 중에만(YAML 에 없음 = 기본값 또는 launch/prep 이 넣음): FollowPathMPPI.PathAngleCritic.forward_preference = True
+    실행 중에만(YAML 에 없음 = 기본값 또는 launch/prep 이 넣음): FollowPathMPPI.TrajectoryVisualizer.time_step = 4
+    실행 중에만(YAML 에 없음 = 기본값 또는 launch/prep 이 넣음): FollowPathMPPI.TrajectoryVisualizer.trajectory_step = 100
+    실행 중에만(YAML 에 없음 = 기본값 또는 launch/prep 이 넣음): FollowPathMPPI.enforce_path_inversion = False
+    실행 중에만(YAML 에 없음 = 기본값 또는 launch/prep 이 넣음): FollowPathMPPI.max_robot_pose_search_dist = 1.5
+    실행 중에만(YAML 에 없음 = 기본값 또는 launch/prep 이 넣음): FollowPathMPPI.regenerate_noises = False
+    실행 중에만(YAML 에 없음 = 기본값 또는 launch/prep 이 넣음): FollowPathMPPI.reset_period = 1.0
+    실행 중에만(YAML 에 없음 = 기본값 또는 launch/prep 이 넣음): FollowPathMPPI.retry_attempt_limit = 1
+    값 다름: FollowPathMPPI.visualize  YAML False → 실행 중 True
+    실행 중에만(YAML 에 없음 = 기본값 또는 launch/prep 이 넣음): controller_server.verbose = False
+    실행 중에만(YAML 에 없음 = 기본값 또는 launch/prep 이 넣음): failure_tolerance = 0.0
+    실행 중에만(YAML 에 없음 = 기본값 또는 launch/prep 이 넣음): publish_zero_velocity = True
+    실행 중에만(YAML 에 없음 = 기본값 또는 launch/prep 이 넣음): speed_limit_topic = 'speed_limit'
+    실행 중에만(YAML 에 없음 = 기본값 또는 launch/prep 이 넣음): use_sim_time = False
+  [f2rp4]
+    실행 중에만(YAML 에 없음 = 기본값 또는 launch/prep 이 넣음): FollowPathMPPI.CostCritic.inflation_layer_name = ''
+    YAML 에만(실행 중 노드에 없음 = 안 읽힘): FollowPathMPPI.ObstaclesCritic.collision_cost = 10000.0
+    YAML 에만(실행 중 노드에 없음 = 안 읽힘): FollowPathMPPI.ObstaclesCritic.collision_margin_distance = 0.05
+    YAML 에만(실행 중 노드에 없음 = 안 읽힘): FollowPathMPPI.ObstaclesCritic.consider_footprint = True
+    YAML 에만(실행 중 노드에 없음 = 안 읽힘): FollowPathMPPI.ObstaclesCritic.cost_power = 1
+    YAML 에만(실행 중 노드에 없음 = 안 읽힘): FollowPathMPPI.ObstaclesCritic.critical_weight = 20.0
+    YAML 에만(실행 중 노드에 없음 = 안 읽힘): FollowPathMPPI.ObstaclesCritic.enabled = True
+    YAML 에만(실행 중 노드에 없음 = 안 읽힘): FollowPathMPPI.ObstaclesCritic.near_goal_distance = 0.5
+    YAML 에만(실행 중 노드에 없음 = 안 읽힘): FollowPathMPPI.ObstaclesCritic.repulsion_weight = 1.5
+    실행 중에만(YAML 에 없음 = 기본값 또는 launch/prep 이 넣음): FollowPathMPPI.PathAlignCritic.use_path_orientations = False
+    실행 중에만(YAML 에 없음 = 기본값 또는 launch/prep 이 넣음): FollowPathMPPI.PathAngleCritic.forward_preference = True
+    실행 중에만(YAML 에 없음 = 기본값 또는 launch/prep 이 넣음): FollowPathMPPI.TrajectoryVisualizer.time_step = 4
+    실행 중에만(YAML 에 없음 = 기본값 또는 launch/prep 이 넣음): FollowPathMPPI.TrajectoryVisualizer.trajectory_step = 100
+    실행 중에만(YAML 에 없음 = 기본값 또는 launch/prep 이 넣음): FollowPathMPPI.enforce_path_inversion = False
+    실행 중에만(YAML 에 없음 = 기본값 또는 launch/prep 이 넣음): FollowPathMPPI.max_robot_pose_search_dist = 1.5
+    실행 중에만(YAML 에 없음 = 기본값 또는 launch/prep 이 넣음): FollowPathMPPI.regenerate_noises = False
+    실행 중에만(YAML 에 없음 = 기본값 또는 launch/prep 이 넣음): FollowPathMPPI.reset_period = 1.0
+    실행 중에만(YAML 에 없음 = 기본값 또는 launch/prep 이 넣음): FollowPathMPPI.retry_attempt_limit = 1
+    값 다름: FollowPathMPPI.visualize  YAML False → 실행 중 True
+    실행 중에만(YAML 에 없음 = 기본값 또는 launch/prep 이 넣음): controller_server.verbose = False
+    실행 중에만(YAML 에 없음 = 기본값 또는 launch/prep 이 넣음): failure_tolerance = 0.0
+    실행 중에만(YAML 에 없음 = 기본값 또는 launch/prep 이 넣음): publish_zero_velocity = True
+    실행 중에만(YAML 에 없음 = 기본값 또는 launch/prep 이 넣음): speed_limit_topic = 'speed_limit'
+    실행 중에만(YAML 에 없음 = 기본값 또는 launch/prep 이 넣음): use_sim_time = False
+  [f2rp5]
+    실행 중에만(YAML 에 없음 = 기본값 또는 launch/prep 이 넣음): FollowPathMPPI.CostCritic.inflation_layer_name = ''
+    YAML 에만(실행 중 노드에 없음 = 안 읽힘): FollowPathMPPI.ObstaclesCritic.collision_cost = 10000.0
+    YAML 에만(실행 중 노드에 없음 = 안 읽힘): FollowPathMPPI.ObstaclesCritic.collision_margin_distance = 0.05
+    YAML 에만(실행 중 노드에 없음 = 안 읽힘): FollowPathMPPI.ObstaclesCritic.consider_footprint = True
+    YAML 에만(실행 중 노드에 없음 = 안 읽힘): FollowPathMPPI.ObstaclesCritic.cost_power = 1
+    YAML 에만(실행 중 노드에 없음 = 안 읽힘): FollowPathMPPI.ObstaclesCritic.critical_weight = 20.0
+    YAML 에만(실행 중 노드에 없음 = 안 읽힘): FollowPathMPPI.ObstaclesCritic.enabled = True
+    YAML 에만(실행 중 노드에 없음 = 안 읽힘): FollowPathMPPI.ObstaclesCritic.near_goal_distance = 0.5
+    YAML 에만(실행 중 노드에 없음 = 안 읽힘): FollowPathMPPI.ObstaclesCritic.repulsion_weight = 1.5
+    실행 중에만(YAML 에 없음 = 기본값 또는 launch/prep 이 넣음): FollowPathMPPI.PathAlignCritic.use_path_orientations = False
+    실행 중에만(YAML 에 없음 = 기본값 또는 launch/prep 이 넣음): FollowPathMPPI.PathAngleCritic.forward_preference = True
+    실행 중에만(YAML 에 없음 = 기본값 또는 launch/prep 이 넣음): FollowPathMPPI.TrajectoryVisualizer.time_step = 4
+    실행 중에만(YAML 에 없음 = 기본값 또는 launch/prep 이 넣음): FollowPathMPPI.TrajectoryVisualizer.trajectory_step = 100
+    실행 중에만(YAML 에 없음 = 기본값 또는 launch/prep 이 넣음): FollowPathMPPI.enforce_path_inversion = False
+    실행 중에만(YAML 에 없음 = 기본값 또는 launch/prep 이 넣음): FollowPathMPPI.max_robot_pose_search_dist = 1.5
+    실행 중에만(YAML 에 없음 = 기본값 또는 launch/prep 이 넣음): FollowPathMPPI.regenerate_noises = False
+    실행 중에만(YAML 에 없음 = 기본값 또는 launch/prep 이 넣음): FollowPathMPPI.reset_period = 1.0
+    실행 중에만(YAML 에 없음 = 기본값 또는 launch/prep 이 넣음): FollowPathMPPI.retry_attempt_limit = 1
+    값 다름: FollowPathMPPI.visualize  YAML False → 실행 중 True
+    실행 중에만(YAML 에 없음 = 기본값 또는 launch/prep 이 넣음): controller_server.verbose = False
+    실행 중에만(YAML 에 없음 = 기본값 또는 launch/prep 이 넣음): failure_tolerance = 0.0
+    실행 중에만(YAML 에 없음 = 기본값 또는 launch/prep 이 넣음): publish_zero_velocity = True
+    실행 중에만(YAML 에 없음 = 기본값 또는 launch/prep 이 넣음): speed_limit_topic = 'speed_limit'
+    실행 중에만(YAML 에 없음 = 기본값 또는 launch/prep 이 넣음): use_sim_time = False
+
+### ④ 주행끼리 실행 중 값 차이(f2rp1 기준)
+  f2rp2: 없음
+  f2rp3: 없음
+  f2rp4: 없음
+  f2rp5: 없음
