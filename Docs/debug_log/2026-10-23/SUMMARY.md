@@ -386,3 +386,10 @@
 - 출력: `outputs/anal_track_err_f2rp1to5.txt` · `anal_ctrl_eval.txt`(도구 `jobs/anal_ctrl_eval.py`, 기준 = MPPI 가 매 틱 낸 `/transformed_global_plan`, 병진 틱만) · `anal_ctrl_rate.txt`(`jobs/anal_ctrl_rate.py`) · `mppi_params_snapshot.txt`(`jobs/chk_mppi_params.py`).
 - 측정: 굽은 구간에서 경로 **안쪽으로** 치우친 비율 69~91 %(5 주행), 복귀 때 상자는 꺾임 안쪽 → 상자 옆 상자 쪽 치우침 최대 +7.1~+11.2 cm · 방향 오차 최대 +6~+15°. 갈 때(상자가 바깥쪽)는 반대로 −4~−5 cm. 직선 구간 옆 오차 중앙 3~5 cm, 95 % 9~11 cm. 실효 제어 주기 9.7~9.8 Hz, 0.2 s 넘는 틱 17~32 개(≈ 1 %), 주기 놓침 경고 27~86 /주행, 최적화 실패 0~2. 실행 중 파라미터 = yaml(차이는 visualize 하나 — launch mppi_viz:=lite).
 - 읽기: 컨트롤러 문제 있음 — **굽은 곳 안쪽 깎기(일관됨)** + 직선의 작은 옆 오차를 잘 안 고침. 제어 주기 누락은 주원인 아님(추정). f2rp5 의 6 cm 손실이 이 성질과 맞음. 상자 근접 = 계획 경로 자체의 안쪽 치우침(9~16 cm, 가능 18~28) + 컨트롤러 안쪽 깎기(+7~11 cm)의 합.
+
+## §23 하루 마무리 (사용자: "4륜 구동도 제자리 회전은 되는 것 아닌가? 우선 오늘 일 마무리하고, 아티팩트로도 정리해주고 푸시하라. 의사결정을 위해 smac planner 관련하여 봐야할 것들도 정리해달라.")
+- 제자리 회전: 됨(스키드스티어 = 좌우 반대 회전). Hybrid-A*(DUBIN)는 조향 차 가정 → 우리에겐 불필요한 제약, 차동 · 스키드스티어용은 Smac State Lattice(diff). 단 트랙 제자리 회전은 미끄러짐이 큼(10-02 · 09-28). 정리 `Docs/06_planner/SMAC_HYBRID_PLAN.md` §8 · §9(의사결정 항목 D1~D9).
+- 브랜치: §22 는 문서 · 오프라인 도구만(ros2_ws 변경 0)이라 `feature/nvblox-migration` 을 `feature/smac-hybrid` 끝으로 앞당김(fast-forward) — 공개 사본 동기화가 원본 줄 기준이라. `feature/smac-hybrid` 는 Smac 코드 변경용으로 그대로 둠. 태그 `navfn-baseline-20261023` = 9ce20486.
+- Jetson 상태: 주행 스택 실행 중(f2rp5 뒤, vslam on · 재계획 0.01 · only_new · PathAlign 14), 로버는 출발점 근처 −178°. 오프라인 계획기(도메인 42)는 정리됨(남은 프로세스 0). 배터리 마지막 확인 12.12 V(f2rp5 prep). 오늘 주행 **9 번**(f2pa1 · 2, f2von1 · 2, f2rp1~5) — §20 · §20.4 · §20.8 의 '9 · 11 · 12 번째' 와 대화의 '13 번' 은 잘못 센 것(정정).
+- 정리 페이지: https://claude.ai/artifact/QqHgHLaFosoaqvAbwsBNu7 (생성기 `jobs/fig_day_summary_1023.py` → 로컬 `figures/day_summary_1023.html`). 영상 장면 `figures/f2rp5_return_box_frame.png` · `f2rp4_west_corridor_frame.png`.
+- 다음: D5(전역 비용장 완만하게 — NavFn 으로 오프라인) · D1(Lattice diff 오프라인) · 컨트롤러 안쪽 깎기(MPPI 오프라인 모의). 미해결 그대로: TF 외삽 중단, 제어 주기 늦음, nav_guard CPU, 상자 기억 밀림(odom).
