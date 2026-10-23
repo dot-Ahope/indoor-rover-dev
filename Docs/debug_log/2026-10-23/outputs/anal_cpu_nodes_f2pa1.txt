@@ -1,0 +1,22 @@
+proc 로그 proc_f2pa1.log · 224 s · 프로세스 357 · 합 391 %(6 코어 = 600 %)
+   31.4 %  pid 38547    python3
+   31.1 %  pid 38358    ros2
+   27.9 %  pid 26316    controller_serv
+   25.3 %  pid 26223    localization_sl
+   19.7 %  pid 26314    python3
+   18.5 %  pid 26324    bt_navigator
+   17.8 %  pid 25331    component_conta
+   16.4 %  pid 26624    nvblox_node
+같은 이름 합 상위:
+   90.1 %  python3
+   34.3 %  ros2
+   29.3 %  component_conta
+   27.9 %  controller_serv
+   25.3 %  localization_sl
+   21.1 %  ekf_node
+   18.5 %  bt_navigator
+   16.8 %  lifecycle_manag
+   16.4 %  nvblox_node
+   15.1 %  polkitd
+   11.5 %  rplidar_node
+   10.0 %  planner_server
