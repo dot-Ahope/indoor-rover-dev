@@ -46,3 +46,31 @@
 - 차이는 로버 자리: 경로 출발점(= 그 순간 로버) y 가 상자 옆(x 1.1~1.5)에서 **f2pi1 0.14~0.19 · f2sm3 0.19~0.24** — f2pi1 로버가 경로 선(y ≈ 0.26~0.28)보다 **8~12 cm 남쪽(상자 쪽)** 에 있었고 f2sm3 는 3~5 cm.
 - 읽기(추론): 복귀 경로는 상자 북쪽을 **왼쪽으로 감아 도는 곡선**이고 상자는 곡선 안쪽. MPPI 가 남동쪽에서 들어오며 곡선 안쪽을 질러(지평 0.26 m 라 곡선을 짧게만 봄) 상자 쪽으로 붙고, 2 s 마다 그 자리에서 경로를 다시 그려 다시 바깥 선으로 돌아가지 못함 — '곡선 안쪽 질러가기 + 다시 그리기 고정' 추정. 거기에 로컬 상자 기억이 3 cm 남쪽(10-22 §16)이라 MPPI 에겐 여유가 남아 보였음. f2pi1 이 f2sm3 보다 더 질러간 이유(들어오는 각 · 속도)는 미확인.
 - 손잡이 후보(정하지 않음): ① 곡선 안쪽 질러가기 억제 — PathAlignCritic 가중(14) ↑ 또는 PathFollowCritic `offset_from_furthest`(20) ↓, ② 전역 경로가 상자 북쪽을 더 크게 돌게(§1 결과로는 감쇠로 +0~5 cm 뿐), ③ 기억 오차(cuVSLAM 융합). ①은 10-13 cost_weight 3 배처럼 좁은 곳 머뭇거림 위험이 있어 주행 A/B 로만 판단 가능.
+
+## §5 주행 f2pa1 선언 — MPPI PathAlignCritic 가중 14 → 28 (사용자: 로버 출발 자세 · "시작") — 결과 보기 전
+- 바꾸는 것 하나: `PathAlignCritic.cost_weight` 14 → 28(Jetson 소스 · 설치본 yaml 만, `jobs/up_palign_1023.sh`; 저장소 yaml 은 채택 전까지 14). 실행 중 변경 없이 prep 재기동으로 적용(10-14 교훈). 그 밖은 10-22 f2sm3 와 같음(프리셋 3 · 통합 2.0 · nav_guard 수정판 · 그림자).
+- 러너 `run_f2c.sh f2pa1 … b910`, `EXTRA_TOPICS_ADD="/odometry/ekf_vslam /vslam/odom /visual_slam/tracking/odometry"`, STAGE `F2c-palign28`.
+- 판정(f2pi1 · f2sm3 와 같은 도구):
+  1. 주 지표: 상자 옆(x 1.1~1.5) 로버 위치가 경로 선(출발 0.3 m 밖 경로점)보다 상자 쪽으로 **≤ 5 cm**(`anal_plan_series.py` 출발점 y 대 경로점 y; f2pi1 8~12 · f2sm3 3~5) **그리고** 실제 최소 여유 ≥ 8 cm(`anal_contact.py` · `anal_track_dev.py`; f2pi1 1.1 · f2sm3 9.1).
+  2. 부작용: 짧은 멈칫 ≤ 18(f2pi1 14 · f2sm3 12 의 +50 %), 0.5 s 넘는 정지 ≤ 1, 목표 시간 f2sm3(52.3 · 49.6 · 104.7 s) 대비 +15 % 이내.
+  3. 기록용: 3/3, 그림자 판정 항목(설정 하나가 달라 f2sm4 순수 반복은 아님 — 참고값).
+- 한계: 주행 1 회. 1 은 f2sm3(바꾸기 전)도 통과 범위라, 통과해도 '효과' 라기보다 '해 없음' 의 근거 — 효과 주장은 반복 뒤.
+
+### §5.1 출발 전 — Jetson 재부팅 발견 · prep 재전송 (`outputs/prep_op_1023_1.txt` · `chk_day_start_1023.txt` · `up_prep_1023.txt` · `prep_op_1023_2.txt`)
+- prep 1 회째가 아무 출력 없이 끝나고 `visual_preset = Node not found` → 점검(`jobs/chk_day_start_1023.sh`): 가동 1 h 24 m(밤사이 재부팅), `/tmp` prep 5 개 없음, Isaac 컨테이너 안 떠 있음(nvblox_up.sh 가 docker start), 에이전트 컨테이너만 Up 16 h.
+- 재전송(스크래치패드 `up_prep_1022.sh` 그대로 — 저장소 `Docs/tools` 판과 해시 같음: prep_fast c636f4060d · prep_patrol 6bdd126a30 · chk_prep d06751ab73) → prep 2 회째 PREP_OK(0.004 m · +0.9°, /wheel_odom 25 Hz — 보드 세션 살아 있음, 배터리 12.28 V, visual_preset 3, nvblox · cuVSLAM 각 1).
+- PathAlign 28 은 prep 1 회째 전에 yaml 에 반영돼 있었으므로 2 회째 기동에 적용(주행 뒤 params.txt 로 확인).
+
+### §5.2 f2pa1 결과 — 판정 1 · 2 모두 통과: 상자 옆 실제 여유 최소 12.3 cm, 경로 선에서 상자 쪽 ≤ 5 cm, 부작용 없음
+- 주행(`outputs/run_f2pa1.txt`): 목표 1 · 2 · 3 SUCCEEDED 52.9 · 50.2 · 107.4 s(총 210.7 s; f2sm3 대비 +1 · +1 · +3 %). 실행 중 값 `FollowPathMPPI.PathAlignCritic.cost_weight: 28.0`(bag `params.txt`). bag `bags/bag_f2pa1.tgz`(41 MB), 로그 `bags/logs_f2pa1/`, nav2 `outputs/nav2_f2pa1.log`.
+- 판정 1(주 지표):
+  | | f2pi1(14) | f2sm3(14) | **f2pa1(28)** |
+  |---|---|---|---|
+  | 상자 옆(x 1.1~1.5) 로버 y | 0.14~0.19 | 0.19~0.24 | **0.24~0.29** |
+  | 그때 경로 선 y(출발 0.3 m 밖) | 0.24~0.31 | 0.26~0.28 | 0.28~0.30 |
+  | 경로 선보다 상자 쪽 | 8~12 cm | 3~5 cm | **1~5 cm** ✔ |
+  | 실제 최소 여유 | 1.1 cm | 9.1 cm | **12.3 cm** ✔ |
+  - 원문 `outputs/anal_plan_series_f2pa1.txt` · `anal_track_dev_f2pa1.txt` · `anal_contact_f2pa1.txt`(0.12 m 문턱 안에 든 것은 t 207.7 s 한 순간 +0.120 m — 그때 상자 칸 로컬 · 전역 · 조각 11 칸).
+- 판정 2(부작용): 짧은 멈칫 12(≤ 18 ✔), 0.5 s 넘는 정지 1(0.8 s, t 155.7 s W3 복귀 길 (3.16, −1.98) — 상자와 무관, 주기 늦음 직후) ✔, 목표 시간 +15 % 이내 ✔. 주기 늦음 53 · TF 외삽 5 · 상자 둘레 PathBlockedAhead 2 · 스무더 충돌 1 · 복구 0(`outputs/nav_events_ms_f2pa1.txt` · `anal_stops_f2pa1.txt` · `anal_dip_events_f2pa1.txt`). 컨트롤러 CPU 27.9 %(f2pi1 28.0) — 가중 하나라 계산량 같음(`outputs/anal_cpu_nodes_f2pa1.txt`).
+- 기록용(그림자, 설정 하나 달라 f2sm4 순수 반복 아님): W3 24.0 → 16.6 cm(−31 %), /vslam/odom 15.0 Hz · 끊김 0(`outputs/anal_shadow_f2pa1.txt` · `gaps_f2pa1.txt`, 그림 `figures/shadow_f2pa1.png`).
+- 읽기 · 한계: 곡선 안쪽 질러가기가 이번엔 1~5 cm 로 작았음 — 가중 28 의 효과와 맞는 방향이나 **주행 1 회**이고 f2sm3(가중 14)도 3~5 cm 였으므로 '효과 확정' 이 아니라 '해 없음 + 좋은 방향' 의 근거. 채택하려면 반복(같은 구성 1~2 회 더)으로 f2pi1 같은 큰 질러가기가 다시 안 나오는지 봐야 함.

@@ -1,0 +1,11 @@
+jetson-desktop
+up 1 hour, 24 minutes
+Fri Oct 23 10:21:06 AM KST 2026
+ls: No directory
+ls: No directory
+ls: No directory
+ls: No directory
+ls: No directory
+프로세스: camera 0 · nav2 controller 0 · slam 0 · agent 2
+microros_agent Up 16 hours
+/dev/nvme0n1p1  233G   99G  122G  45% /
