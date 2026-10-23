@@ -252,3 +252,13 @@
 - f2rp2 실제 순서(`outputs/nav_events_ms_f2rp2.txt`): 목표 3 첫 경로(t 110.4 s, W3) 상자 자리 관통(상자 기억 없음) → 14:18:27.14 상자 칸이 앞 경로 (1.41, 0.02) 에 비용 99 로 들어옴('경로 막힘 감지') → 29.15 2 s 지속 → 주행 중단 → 30.08 새 경로(6.73 → 3.10 m, 상자 여유 +10.2 cm) → 40.25 TF 외삽 중단(1 번, 같은 경로 재수신) → **57.57 MPPI 'Optimizer fail to compute path'**(상자 옆 최근접 4.2 cm — 충돌 없는 궤적 없음) → MonotoneEscape 우회전 0.053 rad, 최근접 5.1 cm → 58.34 새 경로.
 - **§18.1 정정**: 14:18:57.57 의 FollowPath 실패를 'TF 외삽 중단' 이라 적었으나 실제는 **MPPI 최적화 실패**(최근접 4.2 cm). 다음에 알아보는 법: 'Aborting handle' 은 원인이 여럿 — 바로 앞 줄(Optimizer fail / transformPose)을 같이 본다.
 - 영상 `videos/f2rp2_replan.mp4`(git 제외, 14:17:30~14:19:12, 3 배속, 도구 `jobs/fig_replan_video.py` = `Docs/tools/fig_run_video.py` + 막힘 검사 구간 · 비용 ≥ 99 점 · nav2 사건 줄, 출력 `outputs/fig_replan_video_f2rp2.txt`).
+
+## §20 좁은 통로 확인 f2rp3(no5) 선언 · 계획기 변경 계획 착수 (사용자: "1번까지 진행하고, 플래너 변경 계획 진행하자.") — 결과 보기 전
+- 목적: 지금 구성(vslam on · 재계획 0.01 + PathBlockedAhead)이 경로를 오래 쓰는 대가(주행 전체 경로 이탈 95 % 11.4~11.6 cm)가 서쪽 통로 같은 좁은 곳에서 문제를 내는지.
+- 코스 `no5`(8 목표: B → C → 서쪽 통로 → 남서(위치만) → 서쪽 통로 → 위 복도 → W3 → 출발, 10-14 §26~27 기준선 코스). prep `jobs/prep_rp_1023.sh`, 러너 `run_f2c.sh f2rp3 … no5`, STAGE `F2c-replan001`. 비교: 10-15 f2v2(no5, 그때 기본 · 서쪽 통로 최소 여유 3.2 cm) · f2w2(ClearanceBandCritic, 8/8, 통로 5.1~6.0) · f2v1 · 10-14 f2t1(서쪽 통로 정체).
+- 판정:
+  1. 8/8 도착(남서는 위치만), ABORT 0, nav_guard 취소 0, 접촉 0.
+  2. 정체: 복구 Wait ≤ 1 회, 한 자리 10 s 넘는 정지 0.
+  3. 기록: 서쪽 통로 · 출발 상자 최소 정확 여유(`2026-10-15/jobs/anal_band_run.py`), 재계획 수 · PathBlockedAhead 정지 · MonotoneEscape · MPPI 최적화 실패, 짧은 멈칫, 목표별 시간(f2v2 대비).
+- 배터리: 오늘 주행 9 회째 — prep 의 배터리 값 확인 뒤 출발(낮으면 사용자에게 알림).
+- 계획기 변경 계획: `Docs/06_planner/SMAC_HYBRID_PLAN.md` 작성(§15 검토 · §14~§19 결론 근거).

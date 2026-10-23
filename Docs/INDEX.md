@@ -9,6 +9,7 @@
 | [`03_jetson/`](03_jetson/) | Jetson Orin Nano 설정, 센서 드라이버 | [JETSON_SETUP_BRIEF.md](03_jetson/JETSON_SETUP_BRIEF.md) | 2026-05·08 |
 | [`04_navigation/`](04_navigation/) | SLAM·Nav2·코스·게이트·절차 | [NAV2_EXPLORATION_PLAN.md](04_navigation/NAV2_EXPLORATION_PLAN.md), [TEST_COURSE_AND_GATES.md](04_navigation/TEST_COURSE_AND_GATES.md) | 2026-09 |
 | [`05_nvblox/`](05_nvblox/) | Isaac ROS nvblox 이전(Phase N) | [NVBLOX_MIGRATION_PLAN.md](05_nvblox/NVBLOX_MIGRATION_PLAN.md) | 2026-09~ |
+| [`06_planner/`](06_planner/) | 전역 계획기 전환 NavFn → Smac Hybrid-A*(Phase P) | [SMAC_HYBRID_PLAN.md](06_planner/SMAC_HYBRID_PLAN.md) | 2026-10~ |
 | [`debug_log/`](debug_log/) | 날짜별 실험 기록 `<날짜>/{SUMMARY.md, jobs/, outputs/, bags/(로컬)}` — 기준선 [2026-09-21/BASELINE_STVL.md](debug_log/2026-09-21/BASELINE_STVL.md) | — | 2026-08~ |
 | (루트) | [PROJECT_OVERVIEW.md](../PROJECT_OVERVIEW.md) 프로젝트 전반, [CLAUDE.md](../CLAUDE.md) 작업 지침 | | |
 
