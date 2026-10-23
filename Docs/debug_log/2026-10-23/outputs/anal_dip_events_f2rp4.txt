@@ -1,0 +1,55 @@
+
+== 멈칫 15:33:13.49 (명령 0 근처 6 개 · 0.25 s) | 앞뒤 명령 v: 0.065 0.050 0.035 0.020 0.005 0.000 0.000 0.000 0.000 0.000 0.010 0.020 0.030
+   +0.02 s controller_server      Exception in transformPose: Lookup would require extrapolation into the future.  Requested time 1792737193.001
+   +0.02 s controller_server      Unable to transform robot pose into global plan's frame
+   +0.02 s controller_server      [follow_path] [ActionServer] Aborting handle.
+   +0.04 s controller_server      Received a goal, begin computing control effort.
+
+== 멈칫 15:33:33.24 (명령 0 근처 1 개 · 0.00 s) | 앞뒤 명령 v: 0.066 0.051 0.036 0.021 0.009 0.019 0.029 0.039
+   -0.22 s controller_server      Reached the goal!
+   -0.18 s bt_navigator           Goal succeeded
+   -0.15 s bt_navigator           Begin navigating from current location (2.27, -1.47) to (-1.60, -2.00)
+   -0.11 s controller_server      Received a goal, begin computing control effort.
+
+== 멈칫 15:35:22.39 (명령 0 근처 1 개 · 0.00 s) | 앞뒤 명령 v: 0.029 0.029 0.029 0.014 -0.001 -0.011 -0.021 -0.030
+   -0.36 s controller_server      Reached the goal!
+   -0.36 s bt_navigator           [navigate_to_pose] [ActionServer] Client requested to cancel the goal. Cancelling.
+   -0.36 s bt_navigator           Goal canceled
+   -0.34 s bt_navigator           Begin navigating from current location (-1.55, -5.37) to (-1.65, -3.70)
+   -0.31 s smoother_server        Smoothed path leads to a collision at x: -1.660731, y: -3.752949, theta: 1.121095
+   -0.31 s smoother_server        [smooth_path] [ActionServer] Aborting handle.
+   -0.29 s controller_server      Received a goal, begin computing control effort.
+
+== 멈칫 15:35:24.54 (명령 0 근처 7 개 · 0.30 s) | 앞뒤 명령 v: -0.055 -0.055 -0.040 -0.025 -0.010 0.000 0.000 0.000 0.000 0.000 0.000 -0.010 -0.020 -0.030
+   -0.13 s controller_server      Optimizer reset
+   -0.12 s controller_server      Optimizer reset
+   -0.12 s controller_server      Optimizer fail to compute path
+   -0.12 s controller_server      [follow_path] [ActionServer] Aborting handle.
+   -0.09 s controller_server      Received a goal, begin computing control effort.
+   +0.02 s controller_server      Optimizer reset
+   +0.02 s controller_server      Optimizer reset
+   +0.02 s controller_server      Optimizer fail to compute path
+   +0.02 s controller_server      [follow_path] [ActionServer] Aborting handle.
+
+== 멈칫 15:35:29.94 (명령 0 근처 4 개 · 0.15 s) | 앞뒤 명령 v: -0.020 -0.028 -0.028 -0.013 0.002 0.009 0.009 0.009 0.019 0.018 0.018
+
+== 멈칫 15:37:58.00 (명령 0 근처 2 개 · 0.05 s) | 앞뒤 명령 v: 0.065 0.050 0.035 0.020 0.006 -0.009 -0.019 -0.029 -0.039
+   -0.24 s controller_server      Reached the goal!
+   -0.21 s bt_navigator           Goal succeeded
+   -0.16 s bt_navigator           Begin navigating from current location (5.36, -2.20) to (0.00, 0.00)
+   -0.12 s controller_server      Received a goal, begin computing control effort.
+
+== 멈칫 15:38:05.65 (명령 0 근처 10 개 · 0.55 s) | 앞뒤 명령 v: -0.017 -0.017 -0.012 -0.012 -0.001 -0.001 0.002 0.002 -0.006 -0.006 0.008 0.008 0.012 0.012 0.005 0.005 0.013 0.013 0.023
+
+== 멈칫 15:38:56.58 (명령 0 근처 2 개 · 0.17 s) | 앞뒤 명령 v: 0.054 0.054 0.057 0.057 0.000 0.042 0.027 0.012 0.000 0.010 0.020 0.030
+   -0.10 s bt_navigator_navigate_ PathBlockedAhead: 앞 경로 (1.36, 0.03) 비용 99 가 2.0 s 지속 → 주행 중단·재계획
+   -0.02 s controller_server      Goal was canceled. Stopping the robot.
+   -0.02 s controller_server      [follow_path] [ActionServer] Client requested to cancel the goal. Cancelling.
+   -0.02 s bt_navigator_navigate_ PathBlockedAhead: 앞 경로 (1.36, 0.03) 비용 99 가 2.0 s 지속 → 주행 중단·재계획
+   -0.01 s behavior_server        Running monotone_escape
+   -0.01 s behavior_server        [monotone_escape] 시작 최근접 19.0 cm · 목표 5.0 cm · 모의 결과(닿는 양 m/rad): 앞:없음(끝 19.0 cm) 뒤:0.010 좌회전:없음(끝 19.0 cm) 우회
+   -0.00 s behavior_server        [monotone_escape] 성공: 최근접 19.0 cm
+   -0.00 s behavior_server        monotone_escape completed successfully
+   +0.06 s controller_server      Received a goal, begin computing control effort.
+
+== 멈칫 15:39:33.20 (명령 0 근처 1 개 · 0.00 s) | 앞뒤 명령 v: 0.065 0.050 0.035 0.020 0.005 0.015 0.025 0.035

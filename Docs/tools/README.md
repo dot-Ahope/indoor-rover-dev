@@ -41,6 +41,7 @@
 | `anal_mppi_sim.py` | MPPI 오프라인 시뮬(bag 의 경로 · 로컬 코스트맵 재생, CostCritic, `fpchk=1` = Nav2 방식 칸 단위 둘레 검사 · 후보 전부 충돌 집계). Jetson 에서 실행 | `job776_mppi_sim_ack.py`(10-01) |
 | `fig_box_approach_video.py` | 위 내용을 지도 좌표 영상으로(전역 코스트맵 · 로컬 치명 칸 · 경로 · 카메라 시야 · 차체) | (10-13 신규) |
 | `fig_run_video.py` | 주행 구간 영상(일반판): 전역 코스트맵 · 전역 경로(바뀌면 직전 경로를 점선으로) · 로컬 치명 칸 · 라이다 · 차체, 끝에 경로 급변 시각 표 | (10-14 신규) |
+| `fig_drive_video.py` | 주행 구간 영상 **재설계판**(1920×1080): 로버 따라가는 확대 판 · 미니맵 · 상태 수치 · 범례 · 사건 시간줄, 막힘 검사 구간 · 비용 ≥ 99 점. 인자 bag 출력 시작 끝 [배속] [nav_events] [제목] — 영상은 이것을 기본으로 | (10-23 신규, 사용자: 옛 화면 디자인 별로) |
 | `fig_patrol_goals.py` | 순회 코스 목표 지점을 저장 지도(office_v3) 위에 순서 · 위치만/방향까지 구분으로 | (10-14 신규) |
 | `anal_traj_size.py` | bag → MPPI 궤적 메시지 크기 · 기록 주기 | `traj_size.py` |
 | `anal_reverse.py` | 러너 csv → 목표별 후진 거리 · 시간 | `rev_eval.py` |
