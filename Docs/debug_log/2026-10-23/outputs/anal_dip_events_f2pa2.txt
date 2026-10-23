@@ -1,0 +1,43 @@
+
+== 멈칫 10:38:03.57 (명령 0 근처 9 개 · 0.55 s) | 앞뒤 명령 v: 0.032 0.042 0.027 0.012 -0.003 -0.013 -0.005 -0.005 -0.012 -0.012 -0.004 -0.004 -0.004 0.003 0.006 0.006 0.010 0.010 0.011
+   -0.44 s controller_server      Reached the goal!
+   -0.40 s bt_navigator           Goal succeeded
+   -0.32 s bt_navigator           Begin navigating from current location (2.28, -1.46) to (5.50, -2.20)
+   -0.25 s controller_server      Received a goal, begin computing control effort.
+
+== 멈칫 10:38:06.42 (명령 0 근처 1 개 · 0.00 s) | 앞뒤 명령 v: 0.030 0.030 0.030 0.015 0.000 0.010 0.020 0.030
+
+== 멈칫 10:38:40.77 (명령 0 근처 114 개 · 5.65 s) | 앞뒤 명령 v: 0.035 0.026 0.016 0.016 0.007 0.007 0.002 0.002 0.001 0.001 -0.001 -0.001 -0.000 -0.000 -0.000 -0.000 -0.001 -0.001 -0.001 -0.001 -0.001 -0.001 -0.001 -0.001 -0.001 -0.001 -0.001 -0.001 -0.001 -0.001 -0.001 -0.001 -0.001 -0.001 -0.001 -0.001 -0.001 -0.001 -0.000 -0.000 -0.000 -0.000 -0.001 -0.001 -0.000 -0.000 -0.000 -0.000 -0.000 -0.000 -0.000 -0.000 -0.000 -0.000 0.000 0.000 -0.000 -0.000 -0.000 -0.000 -0.000 -0.000 0.000 0.000 0.002 0.002 0.006 0.006 0.006 0.006 0.008 0.008 0.005 0.005 0.006 0.006 0.005 0.005 0.004 0.004 0.004 0.004 0.004 0.004 0.003 0.003 0.004 0.004 0.003 0.003 0.003 0.003 0.003 0.003 0.003 0.003 0.002 0.002 0.003 0.003 0.002 0.002 0.003 0.003 -0.001 -0.001 0.002 0.002 -0.001 -0.001 0.001 0.001 -0.002 -0.002 0.001 0.001 -0.002 -0.002 0.013 0.023 0.033
+
+== 멈칫 10:38:49.82 (명령 0 근처 1 개 · 0.00 s) | 앞뒤 명령 v: 0.056 0.041 0.026 0.011 -0.004 -0.014 -0.024 -0.034
+
+== 멈칫 10:38:50.53 (명령 0 근처 2 개 · 0.05 s) | 앞뒤 명령 v: -0.042 -0.034 -0.034 -0.019 -0.004 0.001 0.011 0.013 0.013
+
+== 멈칫 10:38:58.83 (명령 0 근처 1 개 · 0.00 s) | 앞뒤 명령 v: 0.044 0.044 0.029 0.014 -0.001 -0.011 -0.021 -0.031
+   -0.37 s controller_server      Reached the goal!
+   -0.33 s bt_navigator           Goal succeeded
+   -0.29 s bt_navigator           Begin navigating from current location (5.36, -2.19) to (0.00, 0.00)
+   -0.23 s controller_server      Received a goal, begin computing control effort.
+
+== 멈칫 10:39:00.47 (명령 0 근처 4 개 · 0.15 s) | 앞뒤 명령 v: -0.014 -0.014 -0.010 -0.010 -0.008 -0.008 0.001 0.001 -0.014 -0.024 -0.034
+   -1.98 s bt_navigator           Goal succeeded
+   -1.94 s bt_navigator           Begin navigating from current location (5.36, -2.19) to (0.00, 0.00)
+   -1.88 s controller_server      Received a goal, begin computing control effort.
+
+== 멈칫 10:39:01.43 (명령 0 근처 25 개 · 1.40 s) | 앞뒤 명령 v: -0.028 -0.023 -0.023 -0.011 -0.005 -0.005 -0.005 -0.005 -0.005 -0.001 -0.001 -0.004 0.004 0.004 0.004 0.004 0.004 0.008 0.008 0.005 0.008 0.008 0.007 0.007 0.007 0.010 0.010 0.011 0.011 0.009 0.006 0.006 0.006 0.011 0.011 0.021
+
+== 멈칫 10:39:04.97 (명령 0 근처 2 개 · 0.05 s) | 앞뒤 명령 v: 0.033 0.027 0.027 0.012 0.008 0.008 0.010 0.010 0.020
+
+== 멈칫 10:39:47.78 (명령 0 근처 4 개 · 0.15 s) | 앞뒤 명령 v: 0.065 0.050 0.035 0.020 0.005 0.000 0.000 0.000 0.010 0.020 0.030
+   +0.05 s controller_server      Exception in transformPose: Lookup would require extrapolation into the future.  Requested time 1792719587.322
+   +0.05 s controller_server      Unable to transform robot pose into global plan's frame
+   +0.05 s controller_server      [follow_path] [ActionServer] Aborting handle.
+   +0.06 s controller_server      Received a goal, begin computing control effort.
+
+== 멈칫 10:39:48.43 (명령 0 근처 1 개 · 0.00 s) | 앞뒤 명령 v: 0.060 0.045 0.030 0.015 0.000 -0.015 -0.025 -0.035
+   -0.60 s controller_server      Exception in transformPose: Lookup would require extrapolation into the future.  Requested time 1792719587.322
+   -0.60 s controller_server      Unable to transform robot pose into global plan's frame
+   -0.60 s controller_server      [follow_path] [ActionServer] Aborting handle.
+   -0.59 s controller_server      Received a goal, begin computing control effort.
+
+== 멈칫 10:39:49.93 (명령 0 근처 2 개 · 0.05 s) | 앞뒤 명령 v: -0.016 -0.016 -0.011 -0.011 -0.003 -0.003 0.012 0.022 0.032
