@@ -393,3 +393,10 @@
 - Jetson 상태: 주행 스택 실행 중(f2rp5 뒤, vslam on · 재계획 0.01 · only_new · PathAlign 14), 로버는 출발점 근처 −178°. 오프라인 계획기(도메인 42)는 정리됨(남은 프로세스 0). 배터리 마지막 확인 12.12 V(f2rp5 prep). 오늘 주행 **9 번**(f2pa1 · 2, f2von1 · 2, f2rp1~5) — §20 · §20.4 · §20.8 의 '9 · 11 · 12 번째' 와 대화의 '13 번' 은 잘못 센 것(정정).
 - 정리 페이지: https://claude.ai/artifact/QqHgHLaFosoaqvAbwsBNu7 (생성기 `jobs/fig_day_summary_1023.py` → 로컬 `figures/day_summary_1023.html`). 영상 장면 `figures/f2rp5_return_box_frame.png` · `f2rp4_west_corridor_frame.png`.
 - 다음: D5(전역 비용장 완만하게 — NavFn 으로 오프라인) · D1(Lattice diff 오프라인) · 컨트롤러 안쪽 깎기(MPPI 오프라인 모의). 미해결 그대로: TF 외삽 중단, 제어 주기 늦음, nav_guard CPU, 상자 기억 밀림(odom).
+
+## §24 대화 정리 — Dubins · 전진 · 후진 원호 · FG 방향 부호 · 주말 공부 (사용자: "우선 정리하고 마무리하자. 아티팩트에도 반영하라. 주말동안 공부해야 할 것들도 제시해둬라")
+- Dubins(설정 `DUBIN`) = 전진만 · 최소 회전반경 원호 + 직선. 후진 · 제자리 회전 없음 → 좁은 곳 방향 바꾸기는 고리 경로(09-14 4.3 m · 오늘 서쪽 통로 201°). 전진 · 후진 반복(3 점 턴)은 Reeds-Shepp(`REEDS_SHEPP`, reverse_penalty · change_penalty 로 조절), 제자리 회전까지는 Lattice(diff). `reverse_penalty 2.0` 은 DUBIN 에선 안 쓰임.
+- 사용자 제안(전진 · 후진 원호 반복이 미끄러짐 극복에 도움) → 계획 문서 D10. 근거(물리 추정 + 10-08 통제 시험 90° 당 제자리 6.2 · 반피벗 6.9 · 피벗 4.0 cm, 순서 교란 · 변동 66~76 % 로 미확정), 대가(반전 구간 오도메트리 · 후진 중 카메라 시야 밖 · 시간), 시험(ABAB 교대 제자리 / 피벗 / 원호 왕복 R 0.3 · 0.5).
+- FG 방향 부호(사용자: "내린 명령을 통해 보정할 수 없는가?"): **이미 명령 부호로 보정 중** — `firmware/rover_jupiter_fw/App/drivers/integrated_bldc_driver.c:153`(0 아닌 duty 의 부호 기록, 0 이면 직전 유지) → `fg_encoder_driver.c:151 · 170`(펄스에 그 부호), `app/speed_controller.c:202`(역 duty 제동 금지 = 감속은 동력 끊고 굴림). 남는 약점: ① 반전 순간 — 부호는 명령과 함께 바로 뒤집히나 바퀴는 관성으로 옛 방향으로 더 돔 → 그 펄스가 반대로 세어짐(그 거리의 2 배 오차) ② 명령 0 에서 굴러감 · 밀림 · 구속 떨림. 개선안: 멈춘 뒤 방향 바꾸기(0 명령 → FG 무펄스 예 50 ms → 방향 · 부호 전환, 그 사이 펄스는 옛 부호; 펌웨어 기존 TODO(production) '②'), Jetson 쪽은 EKF 의 cuVSLAM 속도가 일부 눌러 줌(미측정). **먼저 잴 것**(로버 안 움직임): 오늘 bag 의 반전 순간(W3 출발 · 탈출)에서 `/wheel_odom` 대 `/vslam/odom` 속도 부호 불일치 시간 · 거리 — 반전당 mm 면 지금 방식으로 충분, cm 면 펌웨어 수정 근거. D10 시험 전에.
+- 주말 공부 목록: 정리 페이지 '주말 공부' 절(계획 · 비용장 · MPPI · 스키드스티어 미끄러짐 · 단상 엔코더 · EKF, 각각 읽고 답할 질문 포함).
+- push: 이 § 와 D10 커밋은 아직 안 함(사용자 결정).
