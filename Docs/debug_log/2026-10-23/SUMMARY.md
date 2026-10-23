@@ -219,3 +219,15 @@
   1. 주 지표: 상자 옆(x 1.1~1.5) 로버 중심이 **그때 쓰던 경로 선**에서 상자 쪽으로 ≤ 5 cm(경로가 하나로 유지되면 `jobs/anal_track_err.py` 의 상자 둘레 값 = 원래 선 대비) **그리고** 실제 최소 여유 ≥ 8 cm(`2026-10-22/jobs/anal_contact.py`).
   2. 재계획 · 정지: 경로 수(목표당), PathBlockedAhead 횟수 · 그때 정지 시간, 계획 실패 0.
   3. 부작용: 3/3, 짧은 멈칫 ≤ 10(vslam on 기준 5), 0.5 s 넘는 정지는 PathBlockedAhead 로 설명되는 것만, 목표 시간 f2von 대비 +15 % 이내, 굽은 구간 추종 오차 95 % 기록.
+
+### §17.1 f2rp1 결과 — 판정 1 · 2 · 3 통과: 상자 옆 실제 여유 최소 약 15 cm, 경로 선 위를 달림
+- 확인(`jobs/chk_rp_cfg.sh` → `outputs/chk_rp_cfg_f2rp1.txt` — prep 출력 끝 줄이 끊겨 따로 확인): visual_preset 3 · odom1 /vslam/odom · rf2o 0 · BT RateController 0.01. prep `outputs/prep_rp_1023_1.txt`(0.006 m · 0.0°). 러너 `outputs/run_f2rp1.txt`: 3/3 · 52.2 · 48.7 · 107.7 s(f2von 대비 −1 · +2 · +4 %), stuck 진단 1. bag `bags/bag_f2rp1.tgz`, 로그 `bags/logs_f2rp1/`.
+- 판정 1 ✔: 상자 옆(x 1.0~1.2) 로버 y 0.29~0.31, 그때 경로 선 y 0.28~0.30 → 상자 쪽 치우침 **0**(오히려 1 cm 북쪽), 실제 최소 여유 **약 15.4 cm**(t 205 s; 0.12 m 문턱 안에 든 순간 없음)(`outputs/anal_track_dev_f2rp1.txt` · `anal_contact_f2rp1.txt` · `anal_plan_series_f2rp1.txt`). 상자 둘레 추종 오차 95 % 5.2 · 최대 5.5 cm(`outputs/anal_track_err_f2rp1.txt` — 방향 없는 거리).
+  | | f2pi1 | f2pa2 | f2von1 | f2von2 | **f2rp1** |
+  |---|---|---|---|---|---|
+  | 재계획 | 0.5 Hz | 0.5 Hz | 0.5 Hz | 0.5 Hz | **목표당 1 + 막힘** |
+  | 상자 옆 실제 최소 여유 | 1.1 | 6.7 | 3.3 | 0.3 | **≈ 15.4 cm** |
+- 판정 2(재계획 · 정지): 경로 5 개(목표 1 · 2 각 1, 목표 3 은 3 개). 예상대로 목표 3 첫 경로(t 110.8 s, W3 에서)는 상자 기억이 없어 **상자 자리를 관통**(여유 −9.4 cm). 상자가 보인 뒤 14:06:16.35 PathBlockedAhead(앞 경로 (1.46, 0.04) 비용 99) — 타이머가 한 번 다시 시작돼 14:06:22.12 에 주행 중단 → 22.17 정지 → **23.13 새 경로**(상자 여유 +13.3 cm). 정지 약 1 s(0.5 s 넘는 정지 0.7 s 한 번). 그 뒤 14:06:26 · 29.67 TF 외삽 중단 2 번으로 FollowPath 실패 → 복구 MonotoneEscape(최근접 22 cm, 바로 성공) → 경로 한 번 더(+16.2 cm). 계획 실패 0(`outputs/nav_events_ms_f2rp1.txt` · `anal_stops_f2rp1.txt`).
+- 판정 3 ✔: 짧은 멈칫 9(≤ 10), TF 외삽 3, 주기 늦음 27, 시간 +4 % 이내(`outputs/anal_dip_events_f2rp1.txt`).
+- 대가 · 관찰: 경로를 오래 쓰므로 주행 전체 추종 오차는 커짐(중앙 4.7 · 95 % 11.4 cm, 0.5 Hz 때 1.5~1.7 · 6.3~6.7) — 상자 외 다른 좁은 자리(문 · 서쪽 통로)에서 어떤지는 이 코스(b910)로는 다 못 봄(문 통과는 3/3 이상 없음).
+- 읽기: §14 가설(로버 자리 재계획이 치우침을 굳힘)과 맞는 결과 — 같은 vslam on 구성에서 0.3~3.3 cm → 15.4 cm. 주행 1 회. '눈앞 새 장애물' 은 PathBlockedAhead 로 약 1 s 정지 후 우회 경로.
