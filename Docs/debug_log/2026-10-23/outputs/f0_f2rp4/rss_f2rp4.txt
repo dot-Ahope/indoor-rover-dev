@@ -1,0 +1,25 @@
+    PID   RSS %CPU COMMAND         COMMAND
+1441987 570348 11.6 component_conta /opt/ros/humble/lib/rclcpp_components/component_container_mt --ros-args -r __node:=cuvslam_container -r __ns:=/
+1442710 397068 20.7 nvblox_node    /opt/ros/humble/lib/nvblox_ros/nvblox_node --ros-args --params-file /tmp/nvblox_active.yaml -r camera_0/depth/image:=/camera/camera/depth/image_rect_raw -r camera_0/depth/camera_info:=/camera/camera/depth/camera_info
+1442355 293800 12.1 localization_sl /home/jetson/slam_ws/install/slam_toolbox/lib/slam_toolbox/localization_slam_toolbox_node --ros-args -r __node:=slam_toolbox --params-file /home/jetson/ros2_ws/install/rover_bringup/share/rover_bringup/config/slam.yaml --params-file /tmp/launch_params__w4ynade --params-file /tmp/launch_params_ozpdphjv
+1441485 129188 20.8 component_conta /opt/ros/humble/lib/rclcpp_components/component_container_mt --ros-args -r __node:=realsense2_camera_container -r __ns:=/camera
+   2141 118856 0.2 gnome-shell     /usr/bin/gnome-shell
+   1554 104824 0.8 dockerd         /usr/bin/dockerd -H fd:// --containerd=/run/containerd/containerd.sock
+   1716 72520  0.0 Xorg            /usr/lib/xorg/Xorg vt1 -displayfd 3 -auth /run/user/128/gdm/Xauthority -nolisten tcp -background none -noreset -keeptty -novtswitch -verbose 3
+1442444 70800 13.5 planner_server  /opt/ros/humble/lib/nav2_planner/planner_server --ros-args --log-level info --ros-args -r __node:=planner_server --params-file /tmp/launch_params_mv92ta8h -r /tf:=tf -r /tf_static:=tf_static
+1441467 63724  2.2 ros2            /usr/bin/python3 /opt/ros/humble/bin/ros2 launch rover_bringup sensors.launch.py viz:=map emitter_off:=true vslam:=on dds_shm:=true
+   1253 63172  0.7 containerd      /usr/bin/containerd
+1442438 63004  5.1 python3         python3 /home/jetson/ros2_ws/install/rover_bringup/lib/rover_bringup/nav_guard.py --ros-args -r __node:=nav_guard
+1217037 62964  0.3 ros2            /usr/bin/python3 /opt/ros/humble/bin/ros2 param get /camera/camera depth_module.visual_preset
+1007875 62244  0.3 ros2            /usr/bin/python3 /opt/ros/humble/bin/ros2 param get /camera/camera depth_module.visual_preset
+1441491 62208  9.9 python3         python3 /home/jetson/ros2_ws/install/rover_bringup/lib/rover_bringup/scan_deskew.py --ros-args -r __node:=scan_deskew --params-file /tmp/launch_params_a1pzjxqu
+1442436 60796  5.8 python3         python3 /home/jetson/ros2_ws/install/rover_bringup/lib/rover_bringup/stuck_monitor.py --ros-args -r __node:=stuck_monitor --params-file /tmp/launch_params_qmg0tqwv
+  24212 59424  0.3 python3         /usr/bin/python3 -c from ros2cli.daemon.daemonize import main; main() --name ros2-daemon --ros-domain-id 0 --rmw-implementation rmw_fastrtps_cpp
+1441849 57424  6.6 python3         python3 /home/jetson/ros2_ws/install/rover_bringup/lib/rover_bringup/vslam_twist.py --ros-args -r __node:=vslam_twist --params-file /tmp/launch_params_xo387nn0
+1441487 56752  4.9 python3         python3 /home/jetson/ros2_ws/install/rover_bringup/lib/rover_bringup/depth_relay.py --ros-args -r __node:=depth_relay --params-file /tmp/launch_params__e7qgrdc
+1441948 56744  2.6 ros2            /usr/bin/python3 /opt/ros/humble/bin/ros2 launch /tmp/cuvslam_active.launch.py
+1442451 48244 12.0 bt_navigator    /opt/ros/humble/lib/nav2_bt_navigator/bt_navigator --ros-args --log-level info --ros-args -r __node:=bt_navigator --params-file /tmp/launch_params_mv92ta8h -r /tf:=tf -r /tf_static:=tf_static
+   2668 46076  0.3 python3         python3 /home/jetson/ros2_ws/install/rover_bringup/lib/rover_bringup/display_info_pub.py --ros-args -r __node:=display_info_pub
+   2804 45052  4.6 micro_ros_agent /uros_ws/install/micro_ros_agent/lib/micro_ros_agent/micro_ros_agent serial --dev /dev/rover -b 460800
+1442440 44532 12.5 controller_serv /opt/ros/humble/lib/nav2_controller/controller_server --ros-args --log-level info --ros-args --params-file /tmp/launch_params_mv92ta8h -r /tf:=tf -r /tf_static:=tf_static -r cmd_vel:=cmd_vel_nav
+    896 43584  0.1 snapd           /snap/snapd/current/usr/lib/snapd/snapd
