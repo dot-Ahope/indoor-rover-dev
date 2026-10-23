@@ -205,3 +205,17 @@
 - SmacHybrid 09-14~15 결과(원문 재확인): R 0.10 · cost 1.2 만 정상, 통로선 목표에선 모서리 heading 7.7°(NavFn 18.7°) · 상자 선상 목표에선 더 나쁨, 계획기를 바꿔도 모서리 통과 띠 0.10~0.14 m 라 같은 곳을 지남(sm1 계획 여유 −4.9 cm), **되돌린 이유 = MPPI 치우침으로 패딩 차체가 가구 LETHAL 에 겹치자 'no valid path' 15 회 → 48 s ABORT**(NavFn 은 출발 칸만 봐서 재계획됨).
 - 다시 바꿀 때 걸리는 점(추정): 출발 차체 충돌 대책 없음(복구 클리어는 로버 옆 보존) · PathBlockedAhead 재계획이 좁은 자세에서 일어나 거부를 부를 수 있음 · MPPI 경로 크리틱 offset 재튜닝(Smac 점 간격 ≈ 0.1 m) · `job613` planner_id 고정 → 경로 끝 yaw 를 NavFn 으로 계산하는 불일치(Humble Smac Hybrid 는 목표 heading 을 지켜 루프 위험) · SimpleSmoother 와 겹쳐 회전반경 깨짐 · inflation 0.70 에서 R · cost_penalty 미시험 · CPU 미측정.
 - 문서 불일치(에이전트 지적, 원문 대조 미완): PASSAGE 분석 표가 pd1 을 'NavFn + RPP' 로 적었으나 09-14 §2.25 는 Smac BT 조건으로 읽힘 · nav2_params 의 패딩 아래 옛 주석(내접 0.215 · inflation 0.35) 남음.
+
+## §16 vslam:=on 기본 채택 (사용자: "vslam on 기본으로 채택하고 A 시험 진행하라")
+- 변경: `Docs/tools/prep_patrol.sh` — 기본 센서 인자 `emitter_off:=true vslam:=on dds_shm:=true`(환경 `ODOM=vslam`, 예전 `rf2o:=true shadow:=false gate_v:=on gate_vref:=wheel` 은 `ODOM=rf2o`), 재계획 주기를 환경 `REPLAN_HZ`(기본 0.5)로. launch 파일 기본값(ekf.launch vslam off 등)은 그대로 — 운용 기본은 prep 이 정함.
+- Jetson `/tmp/prep_patrol.sh` 교체(`jobs/up_prep_patrol_1023.sh` → `outputs/up_prep_patrol_1023.txt`): 이전 6bdd126a30 → 새 9a8a8e3361(저장소 판과 같음), `bash -n` OK. ⚠ Jetson 재부팅 뒤 재전송하는 prep 묶음(`up_prep_1022.sh`)은 옛 prep_patrol 을 담고 있음 → 다음 재전송은 저장소 판으로 다시 만들 것.
+- CLAUDE.md §6 에 오도메트리 줄 추가.
+
+## §17 A 시험 f2rp1 선언 — 주기 재계획 끔(목표당 1 회 + 막힘 · 목표 변경 때만), NavFn 그대로 (결과 보기 전)
+- 가설(§14): 2 s 마다 로버 자리에서 경로를 다시 그려 추종 치우침이 톱니처럼 쌓임 → 경로를 유지하면 컨트롤러가 원래 선으로 돌아옴.
+- 구성: 운용 기본(§16 vslam on · 프리셋 3 · 통합 2.0 · PathAlign 14) + `REPLAN_HZ=0.01`(BT RateController 기본값 = 목표당 1 회). 재계획은 PathBlockedAhead(앞 0.30~1.5 m 경로 비용 ≥ 99 가 2 s)와 목표 변경 때만. prep `jobs/prep_rp_1023.sh`, 러너 `run_f2c.sh f2rp1 … b910`, STAGE `F2c-replan001`.
+- 예상되는 새 동작(미리 적음): 목표 3(W3 → 출발) 경로는 W3 에서 한 번 그려지는데 그때 상자 기억은 사라진 뒤(10-22 §13: t ≈ 100 s) → 경로가 상자 자리를 지날 수 있음 → 상자가 보이면(≈ 156~160 s) PathBlockedAhead 로 멈춘 뒤 재계획(2 s 정지 + 계획). '눈앞에 새 장애물' 대응의 예시로 관찰.
+- 판정:
+  1. 주 지표: 상자 옆(x 1.1~1.5) 로버 중심이 **그때 쓰던 경로 선**에서 상자 쪽으로 ≤ 5 cm(경로가 하나로 유지되면 `jobs/anal_track_err.py` 의 상자 둘레 값 = 원래 선 대비) **그리고** 실제 최소 여유 ≥ 8 cm(`2026-10-22/jobs/anal_contact.py`).
+  2. 재계획 · 정지: 경로 수(목표당), PathBlockedAhead 횟수 · 그때 정지 시간, 계획 실패 0.
+  3. 부작용: 3/3, 짧은 멈칫 ≤ 10(vslam on 기준 5), 0.5 s 넘는 정지는 PathBlockedAhead 로 설명되는 것만, 목표 시간 f2von 대비 +15 % 이내, 굽은 구간 추종 오차 95 % 기록.
