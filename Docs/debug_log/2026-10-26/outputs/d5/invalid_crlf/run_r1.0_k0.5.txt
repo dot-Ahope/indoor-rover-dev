@@ -1,0 +1,81 @@
+/tmp/planoff/run_planner_offline.sh: line 6: /opt/ros/humble/setup.bash: No such file or directory
+/tmp/planoff/run_planner_offline.sh: line 8: $'\r': command not found
+/tmp/planoff/run_planner_offline.sh: line 9: $'\r': command not found
+/tmp/planoff/run_planner_offline.sh: line 10: $'\r': command not found
+sleep: invalid time interval ‘6\r’
+Try 'sleep --help' for more information.
+b910_rp1_replan: 재구성 일치 1.0000 (±1 1.0000, 내접 칸 일치 1.0000, 내접 칸 수 기록 17973 · 재구성 17973)
+[WARN] [1792980085.528038320] [plan_offline_query]: Ignoring unexpected goal response. There may be more than one action server for the action '/compute_path_to_pose'
+   GridBased      성공 · 점  113 · 길이  2.86 m · 계획 0.001 s (왕복 0.08 s)
+[WARN] [1792980085.534645935] [plan_offline_query]: Ignoring unexpected goal response. There may be more than one action server for the action '/compute_path_to_pose'
+[WARN] [1792980085.535424041] [plan_offline_query]: Ignoring unexpected result response. There may be more than one action server for the action '/compute_path_to_pose'
+[WARN] [1792980085.537266760] [plan_offline_query]: Ignoring unexpected result response. There may be more than one action server for the action '/compute_path_to_pose'
+[WARN] [1792980085.539100293] [plan_offline_query]: Ignoring unexpected goal response. There may be more than one action server for the action '/compute_path_to_pose'
+   Smac_R10_C30_A05_B144 실패(상태 0) · 점    0 · 길이  0.00 m · 계획 0.000 s (왕복 0.01 s)
+[WARN] [1792980085.566069459] [plan_offline_query]: Ignoring unexpected goal response. There may be more than one action server for the action '/compute_path_to_pose'
+[WARN] [1792980085.566808940] [plan_offline_query]: Ignoring unexpected result response. There may be more than one action server for the action '/compute_path_to_pose'
+[WARN] [1792980085.568148377] [plan_offline_query]: Ignoring unexpected result response. There may be more than one action server for the action '/compute_path_to_pose'
+b910_rp2_replan: 재구성 일치 1.0000 (±1 1.0000, 내접 칸 일치 1.0000, 내접 칸 수 기록 19323 · 재구성 19323)
+[WARN] [1792980087.465106055] [plan_offline_query]: Ignoring unexpected goal response. There may be more than one action server for the action '/compute_path_to_pose'
+   GridBased      실패(상태 0) · 점    0 · 길이  0.00 m · 계획 0.000 s (왕복 0.01 s)
+[WARN] [1792980087.474130519] [plan_offline_query]: Ignoring unexpected goal response. There may be more than one action server for the action '/compute_path_to_pose'
+[WARN] [1792980087.475406946] [plan_offline_query]: Ignoring unexpected result response. There may be more than one action server for the action '/compute_path_to_pose'
+[WARN] [1792980087.495409477] [plan_offline_query]: Ignoring unexpected result response. There may be more than one action server for the action '/compute_path_to_pose'
+[WARN] [1792980087.498567343] [plan_offline_query]: Ignoring unexpected goal response. There may be more than one action server for the action '/compute_path_to_pose'
+   Smac_R10_C30_A05_B144 실패(상태 0) · 점    0 · 길이  0.00 m · 계획 0.000 s (왕복 0.03 s)
+[WARN] [1792980087.535844696] [plan_offline_query]: Ignoring unexpected goal response. There may be more than one action server for the action '/compute_path_to_pose'
+[WARN] [1792980087.536678228] [plan_offline_query]: Ignoring unexpected result response. There may be more than one action server for the action '/compute_path_to_pose'
+[WARN] [1792980087.538105956] [plan_offline_query]: Ignoring unexpected result response. There may be more than one action server for the action '/compute_path_to_pose'
+west_rp3_g4: 재구성 일치 1.0000 (±1 1.0000, 내접 칸 일치 1.0000, 내접 칸 수 기록 18752 · 재구성 18752)
+[WARN] [1792980089.413161922] [plan_offline_query]: Ignoring unexpected goal response. There may be more than one action server for the action '/compute_path_to_pose'
+   GridBased      실패(상태 0) · 점    0 · 길이  0.00 m · 계획 0.000 s (왕복 0.02 s)
+[WARN] [1792980089.432669204] [plan_offline_query]: Ignoring unexpected goal response. There may be more than one action server for the action '/compute_path_to_pose'
+[WARN] [1792980089.433960159] [plan_offline_query]: Ignoring unexpected result response. There may be more than one action server for the action '/compute_path_to_pose'
+[WARN] [1792980089.436865313] [plan_offline_query]: Ignoring unexpected result response. There may be more than one action server for the action '/compute_path_to_pose'
+[WARN] [1792980089.440164400] [plan_offline_query]: Ignoring unexpected goal response. There may be more than one action server for the action '/compute_path_to_pose'
+   Smac_R10_C30_A05_B144 실패(상태 0) · 점    0 · 길이  0.00 m · 계획 0.000 s (왕복 0.03 s)
+[WARN] [1792980089.479633347] [plan_offline_query]: Ignoring unexpected goal response. There may be more than one action server for the action '/compute_path_to_pose'
+[WARN] [1792980089.480483551] [plan_offline_query]: Ignoring unexpected result response. There may be more than one action server for the action '/compute_path_to_pose'
+[WARN] [1792980089.481985714] [plan_offline_query]: Ignoring unexpected result response. There may be more than one action server for the action '/compute_path_to_pose'
+west_rp3_g5: 재구성 일치 1.0000 (±1 1.0000, 내접 칸 일치 1.0000, 내접 칸 수 기록 17830 · 재구성 17830)
+[WARN] [1792980090.961090598] [plan_offline_query]: Ignoring unexpected goal response. There may be more than one action server for the action '/compute_path_to_pose'
+   GridBased      실패(상태 0) · 점    0 · 길이  0.00 m · 계획 0.000 s (왕복 0.01 s)
+[WARN] [1792980090.970463970] [plan_offline_query]: Ignoring unexpected goal response. There may be more than one action server for the action '/compute_path_to_pose'
+[WARN] [1792980090.971829008] [plan_offline_query]: Ignoring unexpected result response. There may be more than one action server for the action '/compute_path_to_pose'
+[WARN] [1792980090.979380590] [plan_offline_query]: Ignoring unexpected goal response. There may be more than one action server for the action '/compute_path_to_pose'
+[WARN] [1792980090.980722684] [plan_offline_query]: Ignoring unexpected result response. There may be more than one action server for the action '/compute_path_to_pose'
+[WARN] [1792980090.992890550] [plan_offline_query]: Ignoring unexpected result response. There may be more than one action server for the action '/compute_path_to_pose'
+[WARN] [1792980090.996335306] [plan_offline_query]: Ignoring unexpected goal response. There may be more than one action server for the action '/compute_path_to_pose'
+   Smac_R10_C30_A05_B144 실패(상태 0) · 점    0 · 길이  0.00 m · 계획 0.000 s (왕복 0.03 s)
+[WARN] [1792980091.034790714] [plan_offline_query]: Ignoring unexpected goal response. There may be more than one action server for the action '/compute_path_to_pose'
+[WARN] [1792980091.035657335] [plan_offline_query]: Ignoring unexpected result response. There may be more than one action server for the action '/compute_path_to_pose'
+[WARN] [1792980091.037721500] [plan_offline_query]: Ignoring unexpected goal response. There may be more than one action server for the action '/compute_path_to_pose'
+[WARN] [1792980091.038458773] [plan_offline_query]: Ignoring unexpected result response. There may be more than one action server for the action '/compute_path_to_pose'
+[WARN] [1792980091.039886213] [plan_offline_query]: Ignoring unexpected result response. There may be more than one action server for the action '/compute_path_to_pose'
+b910_rp5_replan: 재구성 일치 1.0000 (±1 1.0000, 내접 칸 일치 1.0000, 내접 칸 수 기록 17981 · 재구성 17981)
+[WARN] [1792980092.915016431] [plan_offline_query]: Ignoring unexpected goal response. There may be more than one action server for the action '/compute_path_to_pose'
+   GridBased      실패(상태 0) · 점    0 · 길이  0.00 m · 계획 0.000 s (왕복 0.02 s)
+[WARN] [1792980092.940488041] [plan_offline_query]: Ignoring unexpected goal response. There may be more than one action server for the action '/compute_path_to_pose'
+[WARN] [1792980092.941814294] [plan_offline_query]: Ignoring unexpected result response. There may be more than one action server for the action '/compute_path_to_pose'
+[WARN] [1792980092.944790874] [plan_offline_query]: Ignoring unexpected goal response. There may be more than one action server for the action '/compute_path_to_pose'
+[WARN] [1792980092.945935328] [plan_offline_query]: Ignoring unexpected result response. There may be more than one action server for the action '/compute_path_to_pose'
+[WARN] [1792980092.948441461] [plan_offline_query]: Ignoring unexpected result response. There may be more than one action server for the action '/compute_path_to_pose'
+[WARN] [1792980092.951476603] [plan_offline_query]: Ignoring unexpected goal response. There may be more than one action server for the action '/compute_path_to_pose'
+   Smac_R10_C30_A05_B144 실패(상태 0) · 점    0 · 길이  0.00 m · 계획 0.000 s (왕복 0.04 s)
+[WARN] [1792980092.987148781] [plan_offline_query]: Ignoring unexpected goal response. There may be more than one action server for the action '/compute_path_to_pose'
+[WARN] [1792980092.987948872] [plan_offline_query]: Ignoring unexpected result response. There may be more than one action server for the action '/compute_path_to_pose'
+[WARN] [1792980092.989412921] [plan_offline_query]: Ignoring unexpected goal response. There may be more than one action server for the action '/compute_path_to_pose'
+[WARN] [1792980092.990114705] [plan_offline_query]: Ignoring unexpected result response. There may be more than one action server for the action '/compute_path_to_pose'
+[WARN] [1792980092.991494655] [plan_offline_query]: Ignoring unexpected result response. There may be more than one action server for the action '/compute_path_to_pose'
+b910_rp5_full: 재구성 일치 1.0000 (±1 1.0000, 내접 칸 일치 1.0000, 내접 칸 수 기록 17981 · 재구성 17981)
+[WARN] [1792980094.464947490] [plan_offline_query]: Ignoring unexpected goal response. There may be more than one action server for the action '/compute_path_to_pose'
+   GridBased      실패(상태 0) · 점    0 · 길이  0.00 m · 계획 0.000 s (왕복 0.02 s)
+[WARN] [1792980094.474839599] [plan_offline_query]: Ignoring unexpected goal response. There may be more than one action server for the action '/compute_path_to_pose'
+[WARN] [1792980094.476342306] [plan_offline_query]: Ignoring unexpected result response. There may be more than one action server for the action '/compute_path_to_pose'
+[WARN] [1792980094.479541805] [plan_offline_query]: Ignoring unexpected goal response. There may be more than one action server for the action '/compute_path_to_pose'
+[WARN] [1792980094.480886811] [plan_offline_query]: Ignoring unexpected result response. There may be more than one action server for the action '/compute_path_to_pose'
+[WARN] [1792980094.516525259] [plan_offline_query]: Ignoring unexpected result response. There may be more than one action server for the action '/compute_path_to_pose'
+[WARN] [1792980094.519374251] [plan_offline_query]: Ignoring unexpected goal response. There may be more than one action server for the action '/compute_path_to_pose'
+   Smac_R10_C30_A05_B144 실패(상태 0) · 점    0 · 길이  0.00 m · 계획 0.000 s (왕복 0.05 s)
+저장 /tmp/planoff/result.npz
+/tmp/planoff/run_planner_offline.sh: line 18: syntax error: unexpected end of file
