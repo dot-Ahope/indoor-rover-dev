@@ -1,0 +1,41 @@
+
+== 멈칫 15:12:32.37 (명령 0 근처 2 개 · 0.05 s) | 앞뒤 명령 v: 0.015 0.015 0.012 0.012 0.007 0.007 0.017 0.027 0.028
+   -0.73 s controller_server      Reached the goal!
+   -0.70 s bt_navigator           Goal succeeded
+   -0.67 s bt_navigator           Begin navigating from current location (2.24, -1.45) to (5.50, -2.20)
+   -0.65 s controller_server      Received a goal, begin computing control effort.
+
+== 멈칫 15:12:34.72 (명령 0 근처 2 개 · 0.05 s) | 앞뒤 명령 v: 0.068 0.053 0.038 0.023 0.008 0.000 0.010 0.020 0.030
+
+== 멈칫 15:13:18.92 (명령 0 근처 14 개 · 0.90 s) | 앞뒤 명령 v: 0.066 0.051 0.036 0.021 0.006 0.000 -0.000 -0.000 -0.007 -0.007 -0.010 -0.006 -0.006 -0.006 -0.002 -0.002 -0.000 -0.000 0.002 -0.013 -0.023 -0.033
+   -0.23 s controller_server      Reached the goal!
+   -0.19 s bt_navigator           Goal succeeded
+   -0.18 s planner_server         GridBased: failed to create plan with tolerance 0.25.
+   -0.18 s planner_server         Planning algorithm GridBased failed to generate a valid path to (0.00, 0.00)
+   -0.18 s planner_server         [compute_path_to_pose] [ActionServer] Aborting handle.
+   -0.17 s bt_navigator           Begin navigating from current location (5.35, -2.16) to (0.00, 0.00)
+   +0.09 s planner_server         SmacHybrid: failed to create plan, no valid path found.
+   +0.09 s planner_server         Planning algorithm SmacHybrid failed to generate a valid path to (0.00, 0.00)
+   +0.09 s planner_server         [compute_path_to_pose] [ActionServer] Aborting handle.
+   +0.19 s smoother_server        Smoother simple_smoother did not complete smoothing in specified time limit(1.000000 seconds) and was interrup
+   +0.19 s smoother_server        Smoothed path leads to a collision at x: 1.409889, y: -0.205804, theta: 0.065138
+   +0.20 s smoother_server        [smooth_path] [ActionServer] Aborting handle.
+   +0.21 s controller_server      Received a goal, begin computing control effort.
+
+== 멈칫 15:13:21.02 (명령 0 근처 11 개 · 1.05 s) | 앞뒤 명령 v: -0.022 -0.032 -0.017 -0.010 -0.003 -0.003 -0.013 -0.023 -0.008 0.004 0.006 0.006 0.016 0.020 0.020 0.024 0.021 0.021 0.017 0.017 0.002 -0.013 -0.002 -0.002 0.008 0.008 0.017 0.026 0.026
+   -1.91 s smoother_server        Smoother simple_smoother did not complete smoothing in specified time limit(1.000000 seconds) and was interrup
+   -1.91 s smoother_server        Smoothed path leads to a collision at x: 1.409889, y: -0.205804, theta: 0.065138
+   -1.90 s smoother_server        [smooth_path] [ActionServer] Aborting handle.
+   -1.89 s controller_server      Received a goal, begin computing control effort.
+
+== 멈칫 15:14:04.52 (명령 0 근처 8 개 · 0.35 s) | 앞뒤 명령 v: 0.065 0.050 0.035 0.020 0.005 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.010 0.020 0.030
+   +0.06 s controller_server      Exception in transformPose: Lookup would require extrapolation into the future.  Requested time 1792995244.048
+   +0.06 s controller_server      Unable to transform robot pose into global plan's frame
+   +0.06 s controller_server      [follow_path] [ActionServer] Aborting handle.
+   +0.08 s controller_server      Received a goal, begin computing control effort.
+
+== 멈칫 15:14:14.57 (명령 0 근처 7 개 · 0.30 s) | 앞뒤 명령 v: 0.065 0.050 0.035 0.020 0.005 0.000 0.000 0.000 0.000 0.000 0.000 0.010 0.020 0.030
+   +0.06 s controller_server      Exception in transformPose: Lookup would require extrapolation into the future.  Requested time 1792995254.114
+   +0.06 s controller_server      Unable to transform robot pose into global plan's frame
+   +0.06 s controller_server      [follow_path] [ActionServer] Aborting handle.
+   +0.27 s controller_server      Received a goal, begin computing control effort.

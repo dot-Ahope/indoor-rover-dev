@@ -256,3 +256,11 @@
 - 영상(1.5 배속, git 제외): `videos/f2sa1_return_box.mp4`(15:14:15~15:15:05) · `videos/f2sa2_return_box.mp4`(15:36:20~15:37:10), 비교 `videos/cmp_f2sh2_vs_f2sa2.mp4`(위 f2sh2 = MPPI 14 · 10, 아래 f2sa2 = 28 · 5, ffmpeg 세로 붙임). 생성 기록 `outputs/fig_drive_video_f2sa*.txt`. 장면 `figures/f2sa2_return_box_frame.png`.
 - 비교 그림 `figures/box_compare_b0_smac_mppi.png`(`jobs/fig_box_compare.py` → `outputs/fig_box_compare_mppi.txt`): 오른쪽 판에 Smac 4 주행 — f2sh2(파랑)는 상자 동쪽 대각선에서 경로 안쪽으로 깎아 10.8 cm, f2sa1 · f2sa2 는 점선(경로) 바깥 호를 따라 14.6 · 14.9 cm.
 - 영상 도구 수정: 스무더 사건이 하나라도 있으면 Smac 경로 규칙(점 간격 > 0.04 m)을 건너뛰어, NavFn 대체가 한 번 있던 f2sa1 첫 영상에 Smac 경로가 빠졌음 → 두 규칙을 항상 합침(f2sa1 다시 렌더: BT 경로 1 + Smac 3).
+
+## §13 28 · 5 에서 '경로와 어긋나 멈췄다 다시 움직임' 이 있었나 (사용자: "MPPI 28/5에서, 중간중간 전역경로와의 괴리로, 멈췄다가 다시 움직이는 경우가 있었는가?")
+- 도구: `2026-10-21/jobs/anal_dip_events.py`(전진 명령 < 0.01 묶음 + 앞 2 s ~ 뒤 0.5 s nav2 사건) → `outputs/anal_dip_events_f2{sh1,sh2,sa1,sa2}.txt`, W3 출발 회전 확인 `jobs/chk_w3_turn.py` → `outputs/chk_w3_turn.txt`.
+- 멈칫 수: f2sh1 5 · f2sh2 4 · **f2sa1 6 · f2sa2 7**. 종류별:
+  - **목표 바뀜(W3 도착 → 복귀 출발)에서 전진 0 근처 0.9~2.35 s**: 네 주행 모두(f2sh1 1.55 · f2sh2 1.35 · f2sa1 0.9 + 1.05 · f2sa2 2.35 s). 그 동안 회전 명령 −0.21~−0.37 rad/s · 실제 −0.10~−0.35 → **제자리에서 돌아서는 중**(멈춘 것 아님). f2sa1 은 그 사이 Smac 실패 → NavFn 대체 계획.
+  - **TF 외삽으로 컨트롤러 중단 0.15~0.35 s**: f2sh1 2 · f2sh2 2 · f2sa1 2 · f2sa2 2(그중 f2sa2 15:36:33 은 막힘 감지 1.27 s 뒤 TF 중단).
+  - 사건 없는 0.05 s 이하: 명령이 0 을 스치는 것.
+- 결론: 28 · 5 두 주행에 10-23 f2pa2 같은 '경로 · 목표 어긋남으로 1 s 넘게 서 있는' 정지는 **없음**. 멈칫 수가 1~3 개 많은 것은 W3 돌아서기 구간을 둘로 나눠 센 것(f2sa1)과 사건 없는 0.05 s 스침 — 성격은 14 · 10 판과 같음.
