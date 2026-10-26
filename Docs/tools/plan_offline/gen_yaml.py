@@ -13,10 +13,11 @@ blocks = []
 LAT = '/opt/ros/humble/share/nav2_smac_planner/sample_primitives/5cm_resolution/0.5m_turning_radius/diff/output.json'
 for n in names:
     # Lattice_C{cp×10}_P{회전 벌점}[_REV] — 2026-10-26 D1: 설치판 diff 원형(5 cm · R 0.5 m, 제자리 회전 원형 포함). _REV = 후진 확장 허용
-    m = re.match(r'Lattice_C(\d+)_P(\d+)(_REV)?(?:_A(\d+))?$', n)
+    m = re.match(r'Lattice_C(\d+)_P(\d+)(_REV)?(?:_A(\d+))?(?:_M(\d+))?$', n)   # _M = 해석 확장 비용 상한(포크 전용, 2026-10-26 §5)
     if m:
         CP, RP, REV = int(m.group(1)) / 10, float(m.group(2)), 'true' if m.group(3) else 'false'
         AL = int(m.group(4)) / 10 if m.group(4) else 3.0   # _A = 해석 확장 최대 길이 ×10
+        MC = float(m.group(5)) if m.group(5) else 200.0
         blocks.append(f'''    {n}:
       plugin: "nav2_smac_planner/SmacPlannerLattice"
       allow_unknown: true
@@ -33,6 +34,7 @@ for n in names:
       rotation_penalty: {RP}
       retrospective_penalty: 0.015
       lattice_filepath: "{LAT}"
+      analytic_expansion_max_cost: {MC}
       lookup_table_size: 20.0
       cache_obstacle_heuristic: false
       allow_reverse_expansion: {REV}
@@ -46,7 +48,7 @@ for n in names:
         refinement_num: 2
 ''')
         continue
-    m = re.match(r'Smac_R(\d+)_C(\d+)(?:_A(\d+))?(?:_B(\d+))?(_RS)?$', n)   # _RS = REEDS_SHEPP(전진 · 후진, 2026-10-26)
+    m = re.match(r'Smac_R(\d+)_C(\d+)(?:_A(\d+))?(?:_B(\d+))?(_RS)?(?:_M(\d+))?$', n)   # _RS = REEDS_SHEPP(전진 · 후진, 2026-10-26)
     if not m: raise SystemExit('이름 형식: ' + n)
     R, CP = int(m.group(1)) / 100, int(m.group(2)) / 10; AL = int(m.group(3)) / 10 if m.group(3) else 3.0; B = int(m.group(4)) if m.group(4) else 72
     blocks.append(f'''    {n}:
@@ -62,6 +64,7 @@ for n in names:
       angle_quantization_bins: {B}
       analytic_expansion_ratio: 3.5
       analytic_expansion_max_length: {AL}
+      analytic_expansion_max_cost: {float(m.group(6)) if m.group(6) else 200.0}
       minimum_turning_radius: {R}
       reverse_penalty: 2.0
       change_penalty: 0.0

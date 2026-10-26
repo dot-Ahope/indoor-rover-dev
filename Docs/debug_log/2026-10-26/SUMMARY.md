@@ -61,3 +61,15 @@
 - 서쪽 통로: RS 4 변형 모두 남 · 북 실패(북은 0.05 s — 목표 차체 충돌로 바로 거부). 패딩 0 으로도 실패, 그 판에선 상자 장면 rp2 가 2.1 cm 로 급락 — 작은 설정 차이에 경로가 크게 바뀜(장면 민감).
 - **도구 실수**: 첫 RS 실행은 조회표 계산으로 planner_server 기동이 30 s 를 넘어 질의 쪽이 '계획 서버 없음' 으로 끝났는데, 결과 파일을 앞 실행(Lattice) 것으로 읽어 표가 잘못 나옴 → `query_planners.py` 대기 180 s, 무효 판 `outputs/hyb/invalid_wait30/`. 다음에 알아보는 법: 결과 표의 계획기 이름이 요청한 것과 같은지 먼저 봄.
 - 읽기: Hybrid 를 쓰려면 ① 서쪽 통로 같은 경계 통로 · 목표 충돌 → **실패 시 NavFn 대체(D3) + 목표 자세 검사(D4)** 가 필수 ② 상자 여유 개선은 작고(+3 cm) 장면에 민감 — 1.1.20 엔 해석 확장을 비용에 묶는 설정이 없음(§4). 새 판 소스 빌드(D6)가 근본 손잡이일 수 있음(미확인).
+
+## §5 Smac 포크 — Jazzy 의 해석 확장 비용 상한(analytic_expansion_max_cost)을 Humble 1.1.20 에 이식 (사용자: "2로 가자")
+- 근거(소스 비교, PC 스크래치패드 sparse clone: navigation2 1.1.20 a097086 · jazzy 426682f): Jazzy `analytic_expansion.cpp` getAnalyticPath 는 곡선 위 칸 비용을 모아 **max_cost(기본 200) 를 넘는 칸에 들어갔다 다시 나오면 곡선을 버림**(목표가 높은 비용 안이라 끝에서만 들어가는 것은 허용, override 면 목표 가까이 허용). 1.1.20 엔 이 검사 · 파라미터가 없음 → 해석 확장이 비용을 무시하고 경로를 정해 cost_penalty 가 효과 없던 것(§3.1 · §4 추정)과 맞음. Jazzy 는 `d < √2`(한 칸 안) 도 건너뜀.
+- 패치 `Docs/06_planner/smac_fork/nav2_smac_planner_rover_maxcost.patch`(4 파일 +59/−4): types.hpp SearchInfo 2 필드 · hybrid/lattice 파라미터 선언(Jazzy 와 같은 이름 · 기본값) · analytic_expansion.cpp 검사 이식. Jazzy 와 다른 점 1: override 거리 판정에 `goal->motion_table.min_turning_radius`(1.1.20 Lattice 표에 없음) 대신 `_search_info.minimum_turning_radius`(칸 단위).
+- 빌드: Jetson `~/smac_ws`(1.1.20 태그 + 패치, Release, 2 분 44 초), .so 에 파라미터 이름 있음(`jobs/up_smac_fork_1026.sh` → `outputs/up_smac_fork_1026.txt`). 주행 스택은 /opt/ros 판 그대로(오버레이는 오프라인 · planner:=smac 때만).
+- §5.1 선언(결과 보기 전): 같은 6 장면, 오버레이로. 변형 Hybrid RS(해석 확장 1.0 m · 기본 3 m) × max_cost {200, 100, 60}, cost_penalty 1.2 판, DUBIN 판, Lattice 판. 판정: §1 과 같음(상자 4 장면 NavFn 대비 평균 ≥ +5 cm · 나빠짐 0, 서쪽 통로 결과 기록, 계획 ≤ 0.5 s) + **cost_penalty · max_cost 를 바꾸면 경로가 바뀌는가**(이식이 작동하는지).
+
+### §5.1 · §5.2 포크 결과 — 이식은 실제로 실리고 결과도 재현되나, 상자 여유는 나아지지 않음
+- 원문 `outputs/fork/run_fork.txt` · `anal_fork.txt`(7 변형), 확인 판 `run_chk_{stock1,stock2,fork1,fork2}.txt` · `anal_chk_*.txt`, 그림 `figures/fork*/`.
+- 적재 확인(§5.2, 질의 뒤 측정): 포크 판 planner_server 의 /proc/maps = `~/smac_ws/.../libnav2_smac_planner.so`, `analytic_expansion_max_cost` = 200.0 / 설치판은 /opt/ros .so · 'Parameter not set'. 같은 판 두 번 실행 결과 장면마다 **완전히 같음**(결정적). (§5.1 의 '포크 파라미터 선언 수 0' 은 기동 전 조회라 의미 없었음 — 도구 쪽에서 질의 뒤로 옮김.)
+- 포크 vs 설치판(같은 설정): `RS + 해석 1.0 m` 은 rp2 만 14.4 → **4.3 cm**(나빠짐), 나머지 같음. `RS + 해석 3 m + max_cost 60` 은 설치판과 **모든 장면 같음**(13.5 · 6.8 · 3.4 · 3.0) — 비용 상한이 이 장면들에선 경로를 거의 안 바꿈. 7 변형 판: max_cost 60 · 100 · 200, cost_penalty 1.2 · 3.0 사이도 대부분 같은 경로. Lattice + max_cost 100: 16.5 · 7.5 · **0.1** · 11.2. 서쪽 통로는 Lattice 북행만 성공, 나머지 실패 그대로.
+- 판정 ✘(평균 +5 · 나빠짐 0 둘 다 미달). 이식 자체는 작동(rp2 경로가 바뀜)하나, **cost_penalty 가 경로를 거의 못 바꾸는 원인은 해석 확장만이 아님**(미확인 — 탐색 비용식 · 휴리스틱 쪽 의심, 계측 필요).
