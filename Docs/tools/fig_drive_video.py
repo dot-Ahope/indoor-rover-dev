@@ -104,9 +104,9 @@ if EVF:
         if cand: sel.append((te,) + tuple(cand[-1][1:]))
     if sel: plans = sorted(sel, key=lambda q: q[0]); print("BT 경로 %d 개(원경로 %d)" % (len(sel), sum(1 for te, ok in bt if not ok)))
 # 2026-10-26 §8: planner:=smac 주행은 BT 경로가 Smac(→ CopyPath) 이라 스무더 사건이 없음 → /plan 중 점 간격 중앙 > 0.04 m(Smac ≈ 0.07, 러너 조회 NavFn 0.025)를 BT 경로로
-if not any('Received a path to smooth' in l for l in (open(EVF, encoding='utf-8', errors='replace') if EVF else [])):
-    sm = [q for q in raws if len(q[1]) > 3 and np.median(np.hypot(*np.diff(q[1], axis=0).T)) > 0.04]
-    if sm: plans = sorted(sm + plans, key=lambda q: q[0]); print('Smac 경로 %d 개(점 간격 > 0.04 m)' % len(sm))
+#   (첫 판은 스무더 사건이 하나라도 있으면 이 규칙을 건너뛰어, NavFn 대체가 한 번 있던 f2sa1 영상에 Smac 경로가 빠졌음 → 항상 합침)
+sm = [q for q in raws if len(q[1]) > 3 and np.median(np.hypot(*np.diff(q[1], axis=0).T)) > 0.04]
+if sm: plans = sorted(sm + plans, key=lambda q: q[0]); print('Smac 경로 %d 개(점 간격 > 0.04 m)' % len(sm))
 times = np.arange(tA, tB, DT); trail = np.array([(last(mo, t)[1] @ last(ob, t)[1])[:2, 3] for t in times])
 x0, x1 = trail[:, 0].min() - 1.0, trail[:, 0].max() + 1.0; y0, y1 = trail[:, 1].min() - 1.0, trail[:, 1].max() + 1.0
 
