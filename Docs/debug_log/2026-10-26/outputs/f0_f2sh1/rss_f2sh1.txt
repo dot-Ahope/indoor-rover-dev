@@ -1,0 +1,25 @@
+    PID   RSS %CPU COMMAND         COMMAND
+  67705 590560 11.3 component_conta /opt/ros/humble/lib/rclcpp_components/component_container_mt --ros-args -r __node:=cuvslam_container -r __ns:=/
+  68252 401232 17.6 nvblox_node    /opt/ros/humble/lib/nvblox_ros/nvblox_node --ros-args --params-file /tmp/nvblox_active.yaml -r camera_0/depth/image:=/camera/camera/depth/image_rect_raw -r camera_0/depth/camera_info:=/camera/camera/depth/camera_info
+  67895 302636 11.6 localization_sl /home/jetson/slam_ws/install/slam_toolbox/lib/slam_toolbox/localization_slam_toolbox_node --ros-args -r __node:=slam_toolbox --params-file /home/jetson/ros2_ws/install/rover_bringup/share/rover_bringup/config/slam.yaml --params-file /tmp/launch_params__vy7soqo --params-file /tmp/launch_params_yx0w_7_2
+   2143 137496 0.1 gnome-shell     /usr/bin/gnome-shell
+  67112 131852 20.2 component_conta /opt/ros/humble/lib/rclcpp_components/component_container_mt --ros-args -r __node:=realsense2_camera_container -r __ns:=/camera
+   1606 115632 0.1 dockerd         /usr/bin/dockerd -H fd:// --containerd=/run/containerd/containerd.sock
+   1728 80812  0.0 Xorg            /usr/lib/xorg/Xorg vt1 -displayfd 3 -auth /run/user/128/gdm/Xauthority -nolisten tcp -background none -noreset -keeptty -novtswitch -verbose 3
+   1242 71740  0.1 containerd      /usr/bin/containerd
+  67990 70656 23.6 planner_server  /opt/ros/humble/lib/nav2_planner/planner_server --ros-args --log-level info --ros-args -r __node:=planner_server --params-file /tmp/launch_params_kpomf3s8 -r /tf:=tf -r /tf_static:=tf_static
+  67984 62944  4.7 python3         python3 /home/jetson/ros2_ws/install/rover_bringup/lib/rover_bringup/nav_guard.py --ros-args -r __node:=nav_guard
+  67094 62868  1.9 ros2            /usr/bin/python3 /opt/ros/humble/bin/ros2 launch rover_bringup sensors.launch.py viz:=map emitter_off:=true vslam:=on dds_shm:=true
+  67982 62828  5.6 python3         python3 /home/jetson/ros2_ws/install/rover_bringup/lib/rover_bringup/stuck_monitor.py --ros-args -r __node:=stuck_monitor --params-file /tmp/launch_params_y27yk9o8
+  67118 62100  9.6 python3         python3 /home/jetson/ros2_ws/install/rover_bringup/lib/rover_bringup/scan_deskew.py --ros-args -r __node:=scan_deskew --params-file /tmp/launch_params_hj78kdqq
+  67384 61892  6.0 python3         python3 /home/jetson/ros2_ws/install/rover_bringup/lib/rover_bringup/vslam_twist.py --ros-args -r __node:=vslam_twist --params-file /tmp/launch_params_02s81bbi
+  66049 61768  1.4 python3         /usr/bin/python3 -c from ros2cli.daemon.daemonize import main; main() --name ros2-daemon --ros-domain-id 0 --rmw-implementation rmw_fastrtps_cpp
+  67114 60792  4.7 python3         python3 /home/jetson/ros2_ws/install/rover_bringup/lib/rover_bringup/depth_relay.py --ros-args -r __node:=depth_relay --params-file /tmp/launch_params_3q7blxtc
+  67664 59420  2.4 ros2            /usr/bin/python3 /opt/ros/humble/bin/ros2 launch /tmp/cuvslam_active.launch.py
+  46427 59104  0.0 python3         /usr/bin/python3 -c from ros2cli.daemon.daemonize import main; main() --name ros2-daemon --ros-domain-id 42 --rmw-implementation rmw_fastrtps_cpp
+    889 55744  0.1 snapd           /snap/snapd/current/usr/lib/snapd/snapd
+  67986 49976 12.6 controller_serv /opt/ros/humble/lib/nav2_controller/controller_server --ros-args --log-level info --ros-args --params-file /tmp/launch_params_kpomf3s8 -r /tf:=tf -r /tf_static:=tf_static -r cmd_vel:=cmd_vel_nav
+  68001 49720 11.8 bt_navigator    /opt/ros/humble/lib/nav2_bt_navigator/bt_navigator --ros-args --log-level info --ros-args -r __node:=bt_navigator --params-file /tmp/launch_params_kpomf3s8 -r /tf:=tf -r /tf_static:=tf_static
+   2762 43988  1.4 micro_ros_agent /uros_ws/install/micro_ros_agent/lib/micro_ros_agent/micro_ros_agent serial --dev /dev/rover -b 460800
+   2667 43344  0.1 python3         python3 /home/jetson/ros2_ws/install/rover_bringup/lib/rover_bringup/display_info_pub.py --ros-args -r __node:=display_info_pub
+  67992 40512  9.8 behavior_server /opt/ros/humble/lib/nav2_behaviors/behavior_server --ros-args --log-level info --ros-args -r __node:=behavior_server --params-file /tmp/launch_params_kpomf3s8 -r /tf:=tf -r /tf_static:=tf_static
