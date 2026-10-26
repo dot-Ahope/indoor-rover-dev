@@ -1,0 +1,3 @@
+소스 a097086 2025-11-17
+ 1 file changed, 30 insertions(+)
+(PC 쪽 출력은 빌드 중 연결 끊김으로 잘림 — 18:29 확인: libnav2_smac_planner.so 18:17 생성 · SMAC_EXP_DIR 문자열 1 · colcon events.log JobEnded rc 0)
