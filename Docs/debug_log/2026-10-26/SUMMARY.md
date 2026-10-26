@@ -222,3 +222,16 @@
 - A14 · A28 · A28Fw5 모두 1 s 넘는 정지 **0**(씨앗 10 × 3), 평균 속도 0.076~0.078, 16 s 전진 0.96~0.97 m. 실제(A28)는 t 100.6~105.6 s 5.5 s 정지.
 - 판정(선언 규칙): 재현 ✘ → 'PathAlign 28 이 정지를 부르는가' 는 시뮬로 판단 불가. 시뮬과 실제의 차이 후보(미확인): 목표 크리틱의 목표 자세(시뮬은 경로 끝 · goal_yaw 0), 실제 MPPI 의 직전 해 이어 쓰기(warm start)와 정지 상태 되먹임 세부, 경로 전환 시각.
 - 정리(§10): 굽은 곳 깎기 줄이기 후보 = PathAlign 28 + PathFollow 5(꼬리 19.8 → 11.2 cm, 평균 차 구분 불가). 정지 위험은 10-23 실주행 1 회(f2pa2)가 유일한 증거이고 시뮬로는 확인 못 함 → 실주행 시험 여부는 사용자 결정.
+
+## §11 실주행 A/B 선언 — Smac + PathAlign 28 · PathFollow 5 (사용자: "진행하자." — §10.7 의 1 번) — 결과 보기 전
+- 구성: §7 Smac 구성 그대로 + MPPI PathAlign 14 → **28**, PathFollow 10 → **5**(Jetson yaml 만, `jobs/up_mppi_path_1026.sh 28 5`, 시험 뒤 `14 10` 으로 되돌림). 주행 f2sa1 · f2sa2 = b910.
+- 비교 대상: f2sh1 · f2sh2(같은 Smac, 14 · 10): 상자 옆 실제 최소 18.4 · 10.8 cm, 복귀 굽은 곳 안쪽 이탈 최대(odom, §9 방식) f2sh2 +15.7.
+- 판정: ① 전부 도착 · 접촉 0 · ABORT 0 ② 상자 옆 실제 최소 ≥ 8 cm(2 회) ③ **1 s 넘는 '이유 없는' 정지 0**(10-23 f2pa2 형 — W3 근처 포함), 있으면 즉시 기록 · 되돌림 ④ 복귀 굽은 곳 안쪽 이탈 최대(odom) 기록 — f2sh2 +15.7 대비 ⑤ 목표 시간 · 짧은 멈칫 기록.
+
+### §11.1 f2sa1(Smac + PathAlign 28 · PathFollow 5) 결과 — 3/3 · 정지 0 · 상자 옆 14.6 cm · **굽은 곳 안쪽 이탈 +4.6 cm**(같은 Smac 14 · 10 판 10.7 · 15.7)
+- 러너 `outputs/run_f2sa1.txt`: 3/3 · 51.8 · 47.0 · 106.9 s(총 205.8 s), stuck 진단 0. prep `outputs/prep_smac_1026_5.txt`(0.005 m · 12.17 V, 실행 중 PathAlign 28.0 · PathFollow 5.0 확인). bag `bags/bag_f2sa1.tgz`, 로그 → `outputs/nav2_f2sa1.log` · `nav_events_ms_f2sa1.txt`.
+- 판정 ③ ✔: 1 s 넘는 정지 **0**(`outputs/anal_stops_f2sa1.txt`), W3 근처 포함.
+- 상자 옆 실제 최소(`outputs/anal_contact_f2sa1_d30.txt`): 갈 때 17.6 · 복귀 **14.6 cm**(15:14:53.1, 로버 (1.05, 0.30, −181°)) ② ✔.
+- 굽은 곳 안쪽 이탈(odom, 컨트롤러 자기 좌표 · '안쪽 +'; 도구 `jobs/anal_bend_dev_odom.py` → `outputs/anal_bend_dev_odom_sa1.txt`): f2sh1 +10.7 · f2sh2 +15.7 → **f2sa1 +4.6 cm**(95 % +4.3, 중앙 +0.9). 같은 창 map→odom 변화 5~7 cm(비교 판들과 같은 크기).
+- 계획: 복귀 출발(15:13:19) Smac 'no valid path'(목표 (0, 0)) → NavFn 대체(설계대로 작동, 스무딩 충돌 → 원경로). 그 경로는 아직 모르는 상자를 관통(−15.5) → 15:15 전 로버 (2.44, −1.43) 에서 재계획 Smac 성공(17.0 cm, 계기 미확인 — 막힘 로그 0). Smac 실패 원인(목표 자세 차체 충돌 추정 — D4)은 미확인. NavFn 도 한 번 'failed with tolerance 0.25'.
+- 1 회라 판단 보류 — f2sa2 로 재현 확인.

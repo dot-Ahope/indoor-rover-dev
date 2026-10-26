@@ -6,3 +6,4 @@ echo "BT 사본: PlanSmacOrNavFn $(grep -c 'PlanSmacOrNavFn' /tmp/nav_to_pose_ac
 echo "bt_navigator xml = $(timeout 8 ros2 param get /bt_navigator default_nav_to_pose_bt_xml 2>&1 | tail -1)"
 for p in motion_model_for_search cost_penalty analytic_expansion_max_length max_planning_time cache_obstacle_heuristic; do echo "SmacHybrid.$p = $(timeout 8 ros2 param get /planner_server SmacHybrid.$p 2>&1 | tail -1)"; done
 echo "visual_preset = $(timeout 8 ros2 param get /camera/camera depth_module.visual_preset 2>&1 | tail -1) · odom1 = $(timeout 8 ros2 param get /ekf_filter_node odom1 2>&1 | tail -1)"
+echo "MPPI PathAlign = $(timeout 8 ros2 param get /controller_server FollowPathMPPI.PathAlignCritic.cost_weight 2>&1 | tail -1) · PathFollow = $(timeout 8 ros2 param get /controller_server FollowPathMPPI.PathFollowCritic.cost_weight 2>&1 | tail -1)"
