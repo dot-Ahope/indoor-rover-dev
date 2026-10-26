@@ -3,6 +3,7 @@
 #   입력: /tmp/planoff/{planner_offline.yaml, query_planners.py, scenes.npz}. 출력: /tmp/planoff/result.npz 와 로그. 주행 스택(기본 도메인)과 섞이지 않게 도메인 42.
 #   인자: planner_id 목록(쉼표)
 D=/tmp/planoff; cd $D; export ROS_DOMAIN_ID=42
+export RCUTILS_LOGGING_BUFFERED_STREAM=0   # 2026-10-26 §20: query_planners 가 질의마다 planner.log 새 줄(실패 사유)을 읽음 — 버퍼에 묶이지 않게
 source /opt/ros/humble/setup.bash
 PIDS=${1:-GridBased}
 # 2026-10-26 §5: 두 번째 인자 = 오버레이 작업공간(예 ~/smac_ws — Smac 포크). 주면 /opt/ros 위에 덧씌움

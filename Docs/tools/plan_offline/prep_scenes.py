@@ -4,7 +4,9 @@
   장면 = (이름, 지도 = 그 시각 직전의 /global_costmap/costmap, 출발 = 그 시각 로버 자세(map, /tf), 목표 = 러너 기록의 목표 자세).
     목표 자세는 러너 출력의 '목표 N 출발: map (x, y, yaw°)' 줄(경로 끝 방향 자동 yaw 포함) — BT 가 실제로 받은 목표.
   출력: npz 하나(장면별 grid int8 · origin · res · start · goal · 메타) — Jetson 쪽 query_planners.py 입력.
-  인자: 출력.npz 날짜폴더  (장면 목록은 아래 SCENES — 실행마다 고쳐 씀)"""
+  인자: 출력.npz 날짜폴더 [장면.json]  (장면.json 이 없으면 아래 SCENES)
+    장면.json(2026-10-26 §20) = [[이름, 주행, 지도 시각, 출발 시각 또는 null, 목표 번호, 설명, 목표 방향 더하기(도, 생략 가능)], ...]
+    러너 출력은 날짜폴더/outputs/run_<주행>.txt, 없으면 outputs/drives/<주행>/run_<주행>.txt(10-26 정리 뒤 위치)"""
 import sys, math, bisect, time, re, json
 from pathlib import Path
 import numpy as np
@@ -34,6 +36,8 @@ def goals_of(runtxt):
 
 
 out, day = sys.argv[1], Path(sys.argv[2]); data = {}; meta = []
+if len(sys.argv) > 3: SCENES = [tuple(e) for e in json.load(open(sys.argv[3], encoding='utf-8'))]
+SCENES = [tuple(e) + (0.0,) * (7 - len(e)) for e in SCENES]   # 7 번째 = 목표 방향 더하기(도)
 import tarfile, tempfile, shutil
 for run in sorted({s[1] for s in SCENES}):
     tmp = tempfile.mkdtemp(); tarfile.open(day / 'bags' / ('bag_%s.tgz' % run)).extractall(tmp)
@@ -53,13 +57,15 @@ for run in sorted({s[1] for s in SCENES}):
     for L in (MO, OB, GR): L.sort(key=lambda q: q[0])
     at = lambda L, t: L[max(bisect.bisect_right([q[0] for q in L], t) - 1, 0)]
     ep = lambda s: time.mktime(time.strptime(d0 + s[:8], '%Y-%m-%d %H:%M:%S')) + float(s[8:])
-    G = goals_of(day / 'outputs' / ('run_%s.txt' % run))
-    for name, r, tg, tst, gi, desc in SCENES:
+    rt = day / 'outputs' / ('run_%s.txt' % run)
+    G = goals_of(rt if rt.exists() else day / 'outputs' / 'drives' / run / ('run_%s.txt' % run))
+    for name, r, tg, tst, gi, desc, dyaw in SCENES:
         if r != run: continue
         g = at(GR, ep(tg)); st = comp(at(MO, ep(tst or tg))[1], at(OB, ep(tst or tg))[1])
         data[name + '/grid'] = g[4]; data[name + '/info'] = np.array([g[1], g[2], g[3], g[0]])
-        data[name + '/start'] = np.array(st); data[name + '/goal'] = np.array(G[gi])
-        meta.append(dict(name=name, run=run, grid_time=tg, grid_stamp=time.strftime('%H:%M:%S', time.localtime(g[0])), start_time=tst or tg, goal=gi, desc=desc))
-        print('%-16s 지도 %s(%dx%d) 출발 (%.2f, %.2f, %.0f°) → 목표 %d (%.2f, %.2f, %.0f°) | %s' % (name, meta[-1]['grid_stamp'], g[4].shape[1], g[4].shape[0], st[0], st[1], math.degrees(st[2]), gi, *G[gi][:2], math.degrees(G[gi][2]), desc))
+        gl = (G[gi][0], G[gi][1], math.atan2(math.sin(G[gi][2] + math.radians(dyaw)), math.cos(G[gi][2] + math.radians(dyaw))))
+        data[name + '/start'] = np.array(st); data[name + '/goal'] = np.array(gl)
+        meta.append(dict(name=name, run=run, grid_time=tg, grid_stamp=time.strftime('%H:%M:%S', time.localtime(g[0])), start_time=tst or tg, goal=gi, goal_dyaw=dyaw, desc=desc))
+        print('%-16s 지도 %s(%dx%d) 출발 (%.2f, %.2f, %.0f°) → 목표 %d (%.2f, %.2f, %.0f°) | %s' % (name, meta[-1]['grid_stamp'], g[4].shape[1], g[4].shape[0], st[0], st[1], math.degrees(st[2]), gi, *gl[:2], math.degrees(gl[2]), desc))
 data['meta'] = np.array(json.dumps(meta, ensure_ascii=False))
 np.savez_compressed(out, **data); print('저장', out, '장면', len(meta))
