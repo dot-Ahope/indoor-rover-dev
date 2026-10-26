@@ -8,4 +8,4 @@ H=$(cd "$(dirname "$0")" && pwd)
   echo "base64 -d > /tmp/planoff/planner_offline.yaml <<'B64'"; tr -d '\r' < "$1" | base64 -w0; echo; echo B64
   for f in query_planners.py run_planner_offline.sh; do echo "base64 -d > /tmp/planoff/$f <<'B64'"; tr -d '\r' < "$H/$f" | base64 -w0; echo; echo B64; done
   echo "base64 -d > /tmp/planoff/scenes.npz <<'B64'"; base64 -w0 "$2"; echo; echo B64
-  echo 'bash /tmp/planoff/run_planner_offline.sh "$1"'; } > "$3"
+  echo 'bash /tmp/planoff/run_planner_offline.sh "$1" "$2"'; } > "$3"

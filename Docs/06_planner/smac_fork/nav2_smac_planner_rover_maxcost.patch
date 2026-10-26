@@ -1,0 +1,130 @@
+diff --git a/nav2_smac_planner/include/nav2_smac_planner/types.hpp b/nav2_smac_planner/include/nav2_smac_planner/types.hpp
+index f2cd73d..28bc4a3 100644
+--- a/nav2_smac_planner/include/nav2_smac_planner/types.hpp
++++ b/nav2_smac_planner/include/nav2_smac_planner/types.hpp
+@@ -43,6 +43,10 @@ struct SearchInfo
+   float rotation_penalty;
+   float analytic_expansion_ratio;
+   float analytic_expansion_max_length;
++  // rover fork(2026-10-26): Jazzy 의 해석 확장 비용 상한 이식 — 해석 확장 곡선이 이 비용(0~254)을 넘는 칸을
++  //   지났다가 다시 나오면 그 곡선을 버림(탐색이 계속). 1.1.20 엔 없어 cost_penalty 가 경로에 효과를 못 냄(Docs/debug_log/2026-10-26 §4~§5).
++  float analytic_expansion_max_cost;
++  bool analytic_expansion_max_cost_override;
+   std::string lattice_filepath;
+   bool cache_obstacle_heuristic;
+   bool allow_reverse_expansion;
+diff --git a/nav2_smac_planner/src/analytic_expansion.cpp b/nav2_smac_planner/src/analytic_expansion.cpp
+index d0e068c..e256953 100644
+--- a/nav2_smac_planner/src/analytic_expansion.cpp
++++ b/nav2_smac_planner/src/analytic_expansion.cpp
+@@ -137,12 +137,12 @@ typename AnalyticExpansion<NodeT>::AnalyticExpansionNodes AnalyticExpansion<Node
+   // into higher cost areas far out from the goal itself, let search to the work of getting
+   // close before the analytic expansion brings it home. This should never be smaller than
+   // 4-5x the minimum turning radius being used, or planning times will begin to spike.
+-  if (d > _search_info.analytic_expansion_max_length) {
+-    return AnalyticExpansionNodes();
+-  }
+-
+   // A move of sqrt(2) is guaranteed to be in a new cell
+   static const float sqrt_2 = std::sqrt(2.);
++  // rover fork(2026-10-26): Jazzy 처럼 한 칸 안(d < sqrt 2)도 건너뜀
++  if (d > _search_info.analytic_expansion_max_length || d < sqrt_2) {
++    return AnalyticExpansionNodes();
++  }
+   unsigned int num_intervals = std::floor(d / sqrt_2);
+ 
+   AnalyticExpansionNodes possible_nodes;
+@@ -159,6 +159,8 @@ typename AnalyticExpansion<NodeT>::AnalyticExpansionNodes AnalyticExpansion<Node
+   float angle = 0.0;
+   Coordinates proposed_coordinates;
+   bool failure = false;
++  std::vector<float> node_costs;  // rover fork: 곡선 위 칸 비용(Jazzy 이식)
++  node_costs.reserve(num_intervals);
+ 
+   // Check intermediary poses (non-goal, non-start)
+   for (float i = 1; i <= num_intervals; i++) {
+@@ -182,6 +184,7 @@ typename AnalyticExpansion<NodeT>::AnalyticExpansionNodes AnalyticExpansion<Node
+       if (next->isNodeValid(_traverse_unknown, _collision_checker) && next != prev) {
+         // Save the node, and its previous coordinates in case we need to abort
+         possible_nodes.emplace_back(next, initial_node_coords, proposed_coordinates);
++        node_costs.emplace_back(next->getCost());
+         prev = next;
+       } else {
+         // Abort
+@@ -196,6 +199,32 @@ typename AnalyticExpansion<NodeT>::AnalyticExpansionNodes AnalyticExpansion<Node
+     }
+   }
+ 
++  // rover fork(2026-10-26): Jazzy 의 비용 상한 검사 이식 — 곡선이 max_cost 를 넘는 칸에 들어갔다가 다시 나오면 버림.
++  //   목표가 높은 비용 칸 안이라 '끝에서만' 들어가는 것은 허용. override 는 목표 가까이(2π·최소 회전반경 안)면 그래도 허용.
++  //   Jazzy 는 goal->motion_table.min_turning_radius 를 쓰나 1.1.20 Lattice 표엔 없어 _search_info.minimum_turning_radius(칸 단위, d 와 같은 단위)를 씀.
++  if (!failure) {
++    const float max_cost = _search_info.analytic_expansion_max_cost;
++    auto max_cost_it = std::max_element(node_costs.begin(), node_costs.end());
++    if (max_cost_it != node_costs.end() && *max_cost_it > max_cost) {
++      bool cost_exit_high_cost_region = false;
++      for (auto iter = node_costs.rbegin(); iter != node_costs.rend(); ++iter) {
++        const float & curr_cost = *iter;
++        if (curr_cost <= max_cost) {
++          cost_exit_high_cost_region = true;
++        } else if (curr_cost > max_cost && cost_exit_high_cost_region) {
++          failure = true;
++          break;
++        }
++      }
++      // override 를 먼저 봄 — Lattice 에서 minimum_turning_radius 가 안 채워졌을 수 있어 꺼져 있으면 읽지 않게
++      if (failure && _search_info.analytic_expansion_max_cost_override &&
++        d < 2.0f * M_PI * _search_info.minimum_turning_radius)
++      {
++        failure = false;
++      }
++    }
++  }
++
+   // Reset to initial poses to not impact future searches
+   for (const auto & node_pose : possible_nodes) {
+     const auto & n = node_pose.node;
+diff --git a/nav2_smac_planner/src/smac_planner_hybrid.cpp b/nav2_smac_planner/src/smac_planner_hybrid.cpp
+index fa6ae69..ee82df5 100644
+--- a/nav2_smac_planner/src/smac_planner_hybrid.cpp
++++ b/nav2_smac_planner/src/smac_planner_hybrid.cpp
+@@ -125,6 +125,17 @@ void SmacPlannerHybrid::configure(
+   node->get_parameter(name + ".analytic_expansion_max_length", analytic_expansion_max_length_m);
+   _search_info.analytic_expansion_max_length =
+     analytic_expansion_max_length_m / _costmap->getResolution();
++  // rover fork(2026-10-26): Jazzy 와 같은 이름 · 기본값(200 · false)
++  nav2_util::declare_parameter_if_not_declared(
++    node, name + ".analytic_expansion_max_cost", rclcpp::ParameterValue(200.0));
++  double analytic_expansion_max_cost = 200.0;
++  node->get_parameter(name + ".analytic_expansion_max_cost", analytic_expansion_max_cost);
++  _search_info.analytic_expansion_max_cost = static_cast<float>(analytic_expansion_max_cost);
++  nav2_util::declare_parameter_if_not_declared(
++    node, name + ".analytic_expansion_max_cost_override", rclcpp::ParameterValue(false));
++  node->get_parameter(
++    name + ".analytic_expansion_max_cost_override",
++    _search_info.analytic_expansion_max_cost_override);
+ 
+   nav2_util::declare_parameter_if_not_declared(
+     node, name + ".max_planning_time", rclcpp::ParameterValue(5.0));
+diff --git a/nav2_smac_planner/src/smac_planner_lattice.cpp b/nav2_smac_planner/src/smac_planner_lattice.cpp
+index 31090e1..25d5250 100644
+--- a/nav2_smac_planner/src/smac_planner_lattice.cpp
++++ b/nav2_smac_planner/src/smac_planner_lattice.cpp
+@@ -116,6 +116,17 @@ void SmacPlannerLattice::configure(
+   node->get_parameter(name + ".analytic_expansion_max_length", analytic_expansion_max_length_m);
+   _search_info.analytic_expansion_max_length =
+     analytic_expansion_max_length_m / _costmap->getResolution();
++  // rover fork(2026-10-26): Jazzy 와 같은 이름 · 기본값(200 · false)
++  nav2_util::declare_parameter_if_not_declared(
++    node, name + ".analytic_expansion_max_cost", rclcpp::ParameterValue(200.0));
++  double analytic_expansion_max_cost = 200.0;
++  node->get_parameter(name + ".analytic_expansion_max_cost", analytic_expansion_max_cost);
++  _search_info.analytic_expansion_max_cost = static_cast<float>(analytic_expansion_max_cost);
++  nav2_util::declare_parameter_if_not_declared(
++    node, name + ".analytic_expansion_max_cost_override", rclcpp::ParameterValue(false));
++  node->get_parameter(
++    name + ".analytic_expansion_max_cost_override",
++    _search_info.analytic_expansion_max_cost_override);
+ 
+   nav2_util::declare_parameter_if_not_declared(
+     node, name + ".max_planning_time", rclcpp::ParameterValue(5.0));
