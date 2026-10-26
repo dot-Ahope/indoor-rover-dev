@@ -40,9 +40,9 @@ P = dict(vx_std=0.05, wz_std=0.3, temperature=0.3, gamma=0.015, iters=1, batch=1
          humble=0, cons_w=4.0, dyn_path=0, dyn_cost=0, regen=0,
          lag_steps=0, w_gain=1.0, v_gain=1.0, w_acc=0.0,
          obst=0, cost_w=3.81, crit_cost=300.0, cc_coll=1e6, near_thr=0.5, t_abs=0.0,   # 09-18: CostCritic·near_goal·절대 시각
-         cycles=40, seed=1, label='', ack_r=0.0, fpchk=0, pad=0.01, unstuck=0, us_k=20, us_d=0.30, us_t=10.0, resample=0.0, wheel_max=0.0)   # pad = footprint_padding(10-13 §11: 0 으로 줄였을 때 평가용. 기록된 코스트맵의 inflation 은 0.01 기준 그대로)
+         cycles=40, seed=1, label='', ack_r=0.0, fpchk=0, pad=0.01, unstuck=0, us_k=20, us_d=0.30, us_t=10.0, resample=0.0, wheel_max=0.0, path_topic='plan')   # pad = footprint_padding(10-13 §11: 0 으로 줄였을 때 평가용. 기록된 코스트맵의 inflation 은 0.01 기준 그대로)
 for a in sys.argv[3:]:
-    k, v = a.split('='); P[k] = v if k in ('label', 'wobble_on') else float(v)
+    k, v = a.split('='); P[k] = v if k in ('label', 'wobble_on', 'path_topic') else float(v)
 for k in ('iters', 'batch', 'steps', 'align_off', 'align_step', 'follow_off', 'angle_off', 'cycles', 'seed', 'lag_steps', 'humble', 'dyn_path', 'dyn_cost', 'regen', 'obst', 'fpchk', 'unstuck', 'us_k'):
     P[k] = int(P[k])
 rng = np.random.default_rng(P['seed'])
@@ -72,7 +72,9 @@ while r.has_next():
         lcs.append((t, deserialize_message(data, OccupancyGrid)))
     elif topic == '/transformed_global_plan':
         tplans.append((t, deserialize_message(data, Path)))
-    elif topic == '/plan':
+    elif topic == '/plan_smoothed' and P['path_topic'] == 'smoothed':   # 10-26 §10.6: NavFn(B0) 주행은 BT 경로 = /plan_smoothed(러너 조회 /plan 이 섞이지 않게)
+        gplans.append((t, deserialize_message(data, Path)))
+    elif topic == '/plan' and P['path_topic'] != 'smoothed':
         gplans.append((t, deserialize_message(data, Path)))
     elif topic == '/cmd_vel':
         m = deserialize_message(data, Twist); cmds.append((t, m.linear.x, m.angular.z))
