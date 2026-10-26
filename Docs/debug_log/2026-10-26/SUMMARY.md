@@ -235,3 +235,19 @@
 - 굽은 곳 안쪽 이탈(odom, 컨트롤러 자기 좌표 · '안쪽 +'; 도구 `jobs/anal_bend_dev_odom.py` → `outputs/anal_bend_dev_odom_sa1.txt`): f2sh1 +10.7 · f2sh2 +15.7 → **f2sa1 +4.6 cm**(95 % +4.3, 중앙 +0.9). 같은 창 map→odom 변화 5~7 cm(비교 판들과 같은 크기).
 - 계획: 복귀 출발(15:13:19) Smac 'no valid path'(목표 (0, 0)) → NavFn 대체(설계대로 작동, 스무딩 충돌 → 원경로). 그 경로는 아직 모르는 상자를 관통(−15.5) → 15:15 전 로버 (2.44, −1.43) 에서 재계획 Smac 성공(17.0 cm, 계기 미확인 — 막힘 로그 0). Smac 실패 원인(목표 자세 차체 충돌 추정 — D4)은 미확인. NavFn 도 한 번 'failed with tolerance 0.25'.
 - 1 회라 판단 보류 — f2sa2 로 재현 확인.
+
+### §11.2 f2sa2 결과 · A/B 정리 — PathAlign 28 · PathFollow 5 가 굽은 곳 깎기를 줄임(2/2), 정지 없음
+- 러너 `outputs/run_f2sa2.txt`: 3/3 · 52.0 · 45.7 · 101.2 s(총 199.1 s), stuck 진단 2(관찰 모드). prep `outputs/prep_smac_1026_6.txt`(0.006 m · 12.12 V, PathAlign 28 · PathFollow 5 확인). bag `bags/bag_f2sa2.tgz`, 로그 → `outputs/nav2_f2sa2.log` · `nav_events_ms_f2sa2.txt`.
+- BT 경로 전부 Smac(스무더 0). 1 s 넘는 정지 0(`outputs/anal_stops_f2sa2.txt`). 막힘 감지 1(상자 (1.24, 0.07)) → 재계획 경로 15.7 cm(`outputs/anal_plan_series_f2sa2.txt`).
+- 상자 옆 실제 최소(`outputs/anal_contact_f2sa2_d30.txt`): 갈 때 18.8 · 복귀 **14.9 cm**. 굽은 곳 안쪽 이탈(odom, `outputs/anal_bend_dev_odom_sa2.txt`) **+1.6 cm**(95 % +0.9).
+
+| 주행 | MPPI PathAlign · PathFollow | 상자 옆 실제 최소(복귀) | 굽은 곳 안쪽 이탈 최대(odom) | 1 s 넘는 정지 | 총 시간 |
+|---|---|---|---|---|---|
+| f2sh1 | 14 · 10 | 18.4 | +10.7 | 0 | 205.8 |
+| f2sh2 | 14 · 10 | 10.8 | +15.7 | 0 | 201.7 |
+| f2sa1 | **28 · 5** | 14.6 | **+4.6** | 0 | 205.8 |
+| f2sa2 | **28 · 5** | 14.9 | **+1.6** | 0 | 199.1 |
+
+- 판정(§11): ① ✔ ② ✔(14.6 · 14.9) ③ ✔ 정지 0(2 회) ④ 안쪽 이탈 10.7 · 15.7 → 4.6 · 1.6 cm ⑤ 시간 같은 수준.
+- 읽기: 굽은 곳 깎기가 줄고 상자 옆 여유가 두 번 다 ~15 cm 로 고름(14 · 10 판은 18.4 · 10.8 로 흩어짐). 10-23 f2pa2 형 정지는 이 2 회에선 안 나옴(그때는 NavFn 경로 + W3 앞 경로 꺾임 장면 — Smac 경로에선 그 모양이 덜 생길 수 있음, 추정). 각 2 회라 표본이 작음.
+- 상태: Jetson yaml 은 아직 28 · 5(저장소 기본 14 · 10). 채택(저장소 반영) 여부는 사용자 결정.
