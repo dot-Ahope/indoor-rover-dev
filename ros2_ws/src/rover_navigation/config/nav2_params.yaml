@@ -738,8 +738,8 @@ planner_server:
       allow_unknown: true
       max_iterations: 1000000
       max_on_approach_iterations: 1000
-      max_planning_time: 5.0
-      motion_model_for_search: "DUBIN"       # 전진만. 스키드스티어라 제자리 회전은 되지만 경로에 후진 cusp 을 넣지 않는다(RPP/MPPI 전진 추종)
+      max_planning_time: 2.0                 # 10-26 §7: 실패 시 NavFn 대체로 넘어가는 시간 상한(오프라인 성공 판은 모두 ≤ 0.04 s)
+      motion_model_for_search: "REEDS_SHEPP"   # 10-26 §6.3: 변형별 오프라인 최선(설치판 RS + 해석 1.0 m, 상자 +3.1 cm · 나빠짐 0). 이전 DUBIN       # 전진만. 스키드스티어라 제자리 회전은 되지만 경로에 후진 cusp 을 넣지 않는다(RPP/MPPI 전진 추종)
       angle_quantization_bins: 72            # 5°
       # 2026-09-14 정지 A/B(09-14 §2.19): R 0.20/cost 2.0 은 목표 heading 제약으로 4.3 m 루프, R 0.05 는 틈을 파고들어 4.96 m 반대편 우회.
       #   R 0.10/cost 1.2 만 정상(길이 2.0~2.1). 목표가 통로선(+0.35)이면 모서리 heading 7.7°(NavFn 18.7°)·상자 셀 0.40 으로 우세,
@@ -748,10 +748,12 @@ planner_server:
       reverse_penalty: 2.0
       change_penalty: 0.0
       non_straight_penalty: 1.05
-      cost_penalty: 1.2                      # 비용(inflation) 회피 가중 — 2.0 이면 좌측 물체 옆(0.215)으로 붙어 루프
+      cost_penalty: 3.0                      # 10-26 §7: 1.2 → 3.0(변형별 오프라인 최선 판의 값). 옛 주석(09-14, DUBIN · 해석 3 m 판): 2.0 이면 좌측 물체 옆(0.215)으로 붙어 루프
       retrospective_penalty: 0.015
+      analytic_expansion_ratio: 3.5
+      analytic_expansion_max_length: 1.0     # 10-26 §6.3: 1.1.20 기본 3.0 m 는 목표 3 m 안에서 곧바로 곡선 연결(비용 안 봄) — 1.0 m 가 상자 장면 최선
       lookup_table_size: 20.0
-      cache_obstacle_heuristic: true
+      cache_obstacle_heuristic: false        # 10-26: 같은 목표에서 지도가 바뀌면(막힘 재계획) 묵은 휴리스틱을 씀 — 오프라인 비교도 false
       smooth_path: true
       smoother:
         max_iterations: 1000

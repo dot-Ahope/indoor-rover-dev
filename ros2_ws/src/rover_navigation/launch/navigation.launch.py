@@ -99,14 +99,33 @@ def _make_active_params(context):
         raise RuntimeError('global_camera 는 obstacle|stvl|nvblox 중 하나: %s' % gcam)
     # 2026-10-08 §3: replan_hz 를 주면 BT RateController 주기를 바꾼 사본을 써서 '보이는 순간 재계획'(기본 0.01 = 목표당 1 회, 10-01 §8.24).
     rhz = LaunchConfiguration('replan_hz').perform(context).strip()
-    if rhz:
+    # 2026-10-26 §7 (Phase P, 사용자: "A진행"): planner:=smac 이면 BT 의 경로 계획을 'Smac Hybrid → 실패하면 NavFn(+SimpleSmoother)' 로 바꾼 사본을 씀.
+    #   왜 대체 경로: 서쪽 통로처럼 전역 지도상 차체가 겨우 걸리는 통로 · 목표 자세는 차체 계획기(Smac)가 모두 실패(10-26 §6.3) — NavFn(점 계획)이 받음.
+    #   Smac 경로는 CopyPath step 0.03 으로 다시 찍어 MPPI 경로 크리틱 점 간격을 NavFn 판과 맞춤(SimpleSmoother 는 Smac 경로에 안 씀 — Smac 자체 smoother).
+    planner = LaunchConfiguration('planner').perform(context).strip().lower()
+    if planner not in ('navfn', 'smac'):
+        raise RuntimeError('planner 는 navfn|smac: %s' % planner)
+    if rhz or planner == 'smac':
         bt_src = params['bt_navigator']['ros__parameters']['default_nav_to_pose_bt_xml']
         with open(bt_src, encoding='utf-8') as f:
             bt = f.read()
-        assert bt.count('<RateController hz="0.01">') == 1, 'BT RateController 줄을 못 찾음'
+        if rhz:
+            assert bt.count('<RateController hz="0.01">') == 1, 'BT RateController 줄을 못 찾음'
+            bt = bt.replace('<RateController hz="0.01">', '<RateController hz="%s">' % float(rhz))
+        if planner == 'smac':
+            a = bt.index('<Sequence name="PlanAndSmooth">')
+            b = bt.index('</Sequence>', bt.index('</Fallback>', a)) + len('</Sequence>')
+            navfn_block = bt[a:b]
+            assert 'planner_id="GridBased"' in navfn_block and 'SmoothOrRaw' in navfn_block, 'BT PlanAndSmooth 블록 모양이 다름'
+            smac_block = ('<Fallback name="PlanSmacOrNavFn">\n'
+                          '              <Sequence name="PlanSmac">\n'
+                          '                <ComputePathToPose goal="{goal}" path="{raw_path}" planner_id="SmacHybrid"/>\n'
+                          '                <CopyPath input_path="{raw_path}" output_path="{path}" step="0.03"/>\n'
+                          '              </Sequence>\n              ')
+            bt = bt[:a] + smac_block + navfn_block + '\n            </Fallback>' + bt[b:]
         bt_dst = '/tmp/nav_to_pose_active.xml'
         with open(bt_dst, 'w', encoding='utf-8') as f:
-            f.write(bt.replace('<RateController hz="0.01">', '<RateController hz="%s">' % float(rhz)))
+            f.write(bt)
         params['bt_navigator']['ros__parameters']['default_nav_to_pose_bt_xml'] = bt_dst
     # 2026-10-07 §11 (사용자): 장기 주행에서만 MPPI 후보 궤적·최적 궤적(/trajectories MarkerArray)·변환 경로(/transformed_global_plan) 발행.
     #   왜: 경로를 '계획하는 모습' 을 시각화하려면 매 주기 예측이 필요. 평소엔 끔 — 09-17 mp7: 기본 간격이면 ≈5 MB/s 기록·15 W CPU 압박.
@@ -181,6 +200,8 @@ def generate_launch_description():
         DeclareLaunchArgument('use_sim_time', default_value='false'),
         DeclareLaunchArgument('replan_hz', default_value='',
                               description='BT 주기 재계획 Hz(비우면 원본 0.01 = 목표당 1 회). 10-08 §3 A/B'),
+        DeclareLaunchArgument('planner', default_value='navfn',
+                              description='전역 계획: navfn(B0) | smac(Smac Hybrid → 실패 시 NavFn, 10-26 §7)'),
         DeclareLaunchArgument('mppi_viz', default_value='false',
                               description='장기 주행 기록용 MPPI 후보·최적 궤적 발행(10-07 §11, 기본 끔)'),
         DeclareLaunchArgument('global_camera', default_value='obstacle',

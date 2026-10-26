@@ -1,0 +1,138 @@
+<!--
+  rover_navigation 커스텀 BT (2026-09-03) — 기본 navigate_to_pose_w_replanning_and_recovery.xml 에서
+  복구동작 Spin 제거. 근거: WT-600 은 제자리 회전 스윕 φ60cm 인데 실내 좁은 통로에서 실패 시 벽에
+  붙은 상태가 대부분 → Spin 이 모서리를 벽에 밀어넣어 접촉·헛바퀴 유발 (09-02, 09-03 실발생).
+  라이다 최소감지 0.2m 사각이라 costmap 도 근접 벽을 못 봄. BackUp(0.15m, 0.05m/s) → Wait 순으로 유지.
+
+  ★ 2026-09-11: ClearEntireCostmap → ClearCostmapExceptRegion.
+  ─────────────────────────────────────────────────────────────────────────────
+  증상: 상자를 잘 피해 가다가 갑자기 상자 쪽으로 경로를 틀고 치고 지나갔다(09-10 job198/216).
+  우리는 이것을 STVL 감쇠 → 절두체 clearing → 화각 이탈 순으로 의심했고 **셋 다 틀렸다.**
+  통제 실험으로 하나씩 지웠다:
+    · 정면 접근 (trial0, cmd_vel 직접) : cam~box 0.15m 까지 가도 로컬 100 유지 → 거리 아님
+    · 제자리 회전 (rot1, cmd_vel 직접) : 상자 방위 -82°(화각 밖)에도 로컬 100 유지 → 방위 아님
+  남은 차이는 하나, **Nav2 가 운전했는가**. 재현 주행 로그(job222)가 17ms 간격으로 답했다:
+      [ERROR] RegulatedPurePursuitController detected collision ahead!
+      [INFO]  Received request to clear entirely the local_costmap
+  연쇄:
+    t=1~8  lc 100 / gc 99, 계획여유 +0.12~0.19 m (정상 우회)
+    t=8    RPP 충돌 감지 → 아래 ClearLocalCostmap-Context 발동 → lc 0
+    t=9    복구 서브트리까지 진행해 gc 0 → 계획횡 +0.682 → +0.294, 계획여유 -0.161 m
+    t=10   로버가 상자 쪽으로 진행
+  즉 **Nav2 는 멈춰야 할 이유를 지워버리고 다시 간다.**
+  RPP 의 충돌 감지 자체는 옳았다(계획여유가 12cm 뿐이라 5초 앞 검사에 걸린다).
+  틀린 것은 그 다음 대응이다.
+
+  고침: 전체 삭제 대신 **로봇 주변 reset_distance 안을 보존하고 그 바깥만** 지운다.
+
+  ★ 2026-09-11 2차 조정: 로컬 1.2 → 2.5 m, 전역 2.0 → 3.0 m.
+    1.2 m 로는 부족했다(job236). 상자가 로버 중심에서 1.37 m 에 있을 때 반경 **밖**이라
+    그대로 지워졌고, 계획이 곧바로 상자를 관통하는 직선으로 바뀌었다:
+       t=13  clear_geo 1.068 → 로버중심~상자 약 1.37m > 1.2m → lc 0 / gc 0
+             계획횡 +0.293 → +0.038,  ② 계획 여유 -10.7cm, 계획 접촉 샘플 24%
+       t=23  상자가 1.2m 안으로 들어오자 보존되어 lc 99~100 유지
+    지표 ⑤ 도 같은 말을 한다: "로컬이 상자를 잃은 18샘플 중 깊이점이 있었던 것 **18 (100%)**"
+    — 카메라는 보고 있는데 코스트맵이 버렸다.
+
+    로컬 2.5 m 는 로컬 코스트맵 반경(3×3m → 1.5m)을 넘으므로 **로컬 클리어를 사실상
+    비활성화**한다. 이것이 의도다 — 로컬은 롤링 창이라 유령이 스크롤로 자동 제거되며,
+    별도 클리어가 필요 없다. 전역 3.0 m 는 멀리 있는 유령만 정리한다.
+    유령 제거는 **시간 감쇠**(로컬 30초 / 전역 90초)가 담당한다.
+  대가: 진짜로 갇혔을 때 클리어로는 못 푼다 → BackUp(0.15m) → Wait 이 담당한다.
+  대가: 유령 장애물이 **로봇 가까이** 생겨 갇히면 클리어로는 못 푼다. 그 경우는
+    BackUp(0.15m) → Wait 이 담당한다. 우리 환경(실내 소형, 진짜 장애물이 문제)에서는
+    "가짜를 못 지우는 것" 보다 "진짜를 지우는 것" 이 훨씬 위험하다.
+  기각한 대안:
+    · Clear 노드 자체를 제거 → RecoveryNode 구조가 무너져 실패가 곧바로 상위로 전파된다.
+    · RPP 의 max_allowed_time_to_collision_up_to_carrot 축소 → 충돌 감지를 늦춰 증상만 가린다.
+      안전 여유를 줄이는 방향이므로 근본과 반대다.
+  ⚠ 이 수정은 '지우지 않게' 할 뿐이다. 계획여유가 12cm 뿐이라 RPP 가 충돌을 감지하는 것
+    자체는 남는다 — 계획을 상자에서 더 밀어내는 것(inflation·padding)은 별도 과제다.
+-->
+
+<!--
+  This Behavior Tree replans the global path periodically at 1 Hz and it also has
+  recovery actions specific to planning / control as well as general system issues.
+  This will be continuous if a kinematically valid planner is selected.
+-->
+<root main_tree_to_execute="MainTree">
+  <BehaviorTree ID="MainTree">
+    <RecoveryNode number_of_retries="6" name="NavigateRecovery">
+      <PipelineSequence name="NavigateWithReplanning">
+        <!-- ★ 2026-10-01 §8.24 (사용자 승인 A): 재계획 = 목표가 바뀌었을 때·주행이 실패했을 때만. hz 1.0 → 0.01(100 s 에 한 번 = 사실상 목표당 1 회).
+             RateController 는 처음 틱에 바로 계획하고, 목표 변경(GoalUpdated)·주행 실패(FollowPath 실패 → NavigateRecovery 복구 → 이 파이프라인 재시작)
+             때 다시 처음 틱이 되어 곧바로 재계획한다. 진짜로 막히면 진행 검사기(0.25 m/25 s)가 FollowPath 를 실패시켜 재계획으로 이어진다.
+             §8.17 의 IsPathValid 방식은 폐기 — 병목 여유 7~12 cm 에서 센서 표시가 흔들릴 때마다 '무효'가 되어 200 s 에 170 회 재계획(f2a8, §8.21). -->
+        <RateController hz="0.01">
+          <RecoveryNode number_of_retries="1" name="ComputePathToPose">
+            <!-- 2026-09-14 (09-14 SUMMARY §2.22): GridBased(NavFn) → SmacHybrid. NavFn 8-연결 최단 경로가 상자 앞왼쪽 모서리를 대각선으로
+                 잘라(상자 앞 0.3 m 에서 횡 +0.27, 패딩면이 가장자리와 겹침) 0.08 m/s 에서 정체. Smac Hybrid-A*(R 0.10, cost 1.2)는 정지 A/B 에서
+                 통로선 목표 기준 모서리 heading 7.7°(NavFn 18.7°). 되돌리려면 planner_id="GridBased". -->
+            <!-- 2026-09-15 (09-15 §2): SmacHybrid → GridBased 로 되돌림. MPPI 가 좌측으로 치우쳐(+0.40) 패딩 footprint 가 좌측 가구 LETHAL 에 닿자
+                 Smac 은 시작 footprint 충돌로 재계획을 15회 거부해 ABORT. NavFn 은 시작 셀만 보므로 inflation 띠 안에서도 재계획된다. 곡률 완화는 MPPI 몫. -->
+            <!-- 2026-09-16 A 계획: SmoothPath(simple_smoother) 연결. 정지 A/B(job340)에서 inflation 0.70 과 함께 0.1 m 창 최대 꺾임 78° → 16.6°.
+                 실패(충돌 검사 등) 시 ForceSuccess 로 원 경로를 그대로 쓴다 — RecoveryNode 의 클리어를 유발하지 않기 위해. -->
+            <Fallback name="PlanSmacOrNavFn">
+              <Sequence name="PlanSmac">
+                <ComputePathToPose goal="{goal}" path="{raw_path}" planner_id="SmacHybrid"/>
+                <CopyPath input_path="{raw_path}" output_path="{path}" step="0.03"/>
+              </Sequence>
+              <Sequence name="PlanAndSmooth">
+              <!-- mp4(09-16 §1.13): {path} 를 두 번(원경로→스무딩) 쓰면 FollowPath 가 1 s 마다 목표를 두 번 보내 대기 목표가
+                   "Aborting handle" 로 매초 폐기됐다. 원경로는 {raw_path}, 컨트롤러는 스무딩 결과 {path} 만 본다.
+                   ★ 09-17 mp6: 스무딩 실패 시 {path} 를 직전 값으로 두면, 상자 뒤 모서리에서 "Smoothed path leads to a collision"
+                   이 3 회 연속(34.7~36.8 s) 나는 동안 컨트롤러가 3 s 묵은 경로를 따랐다 → 실패하면 **새 원경로**를 {path} 로 복사한다.
+                   복사는 TruncatePath(distance 0 = 점을 지우지 않음). (해소됨 2026-10-14 §14: TruncatePath → 우리 노드 CopyPath. 아래는 그때의 TODO 원문) 옛 TODO: TruncatePath 는 마지막 점 방향을 atan2(0,0)=0 으로
+                   덮어쓴다 — 목표 yaw 가 0 이 아닌 목표에서는 정렬 방향이 바뀌므로 전용 복사 노드로 교체할 것. -->
+              <ComputePathToPose goal="{goal}" path="{raw_path}" planner_id="GridBased"/>
+              <Fallback name="SmoothOrRaw">
+                <SmoothPath unsmoothed_path="{raw_path}" smoothed_path="{path}" smoother_id="simple_smoother" max_smoothing_duration="1.0" check_for_collisions="true"/>
+                <CopyPath input_path="{raw_path}" output_path="{path}"/>
+              </Fallback>
+            </Sequence>
+            </Fallback>
+            <ClearCostmapExceptRegion name="ClearGlobalCostmap-Context" reset_distance="3.0" service_name="global_costmap/clear_except_global_costmap"/>
+          </RecoveryNode>
+        </RateController>
+        <RecoveryNode number_of_retries="1" name="FollowPath">
+          <!-- 2026-09-15 (09-15 SUMMARY §1~2): RPP("FollowPath") → MPPI("FollowPathMPPI"). 상자 뒤 목표에서 RPP 는 둘레 LETHAL 검사로
+               상자 옆에서 멈췄다 섰다 한다(bk1 정지 2회). Smac 파라미터 스윕으로는 복귀를 상자 뒤로 못 미룬다(09-15 §1). MPPI 는 지평 안 샘플 궤적을
+               장애물 비용·경로 추종 비용으로 골라 비켜 지나간다. 되돌리려면 controller_id="FollowPath". -->
+          <!-- 2026-09-16 mp3: MPPI(56 step) 도 같은 자리 정체 42 s + CPU 과부하(루프 미달 306 건) + 기억 소실 후 상자 접촉 → RPP 복귀 (09-16 §1.9) -->
+          <!-- 2026-09-16 사용자 결정: Orin Nano 에서 MPPI 유지. CPU 는 10 Hz·model_dt 0.1·32 step 으로 맞춘다 (분석 문서 §4 B3). -->
+          <!-- ★ 2026-10-01 §8.39 (사용자 승인 (a)): 앞 경로가 막히면 주행을 끊어 재계획으로 넘긴다.
+               f2a12 목표 7: 의자가 통로를 0.39 m 로 좁혀 경로 위가 99~100 이 됐는데 재계획이 없어 MPPI 가 45 s 동안 제자리에서 떨었다(§8.37).
+               PathBlockedAhead = 로버 앞 0.30~1.5 m 경로 점 중 전역 비용 ≥ 99(내접)가 2 s 이어지면 SUCCESS → Inverter 로 FAILURE →
+               ReactiveSequence 가 FollowPath 를 멈춤(로버 정지) → 이 RecoveryNode 재시도도 곧바로 실패 → 파이프라인 실패 →
+               NavigateRecovery 복구(클리어 except region: 3 m 안의 의자는 지우지 않음) → 파이프라인 재시작 = RateController 첫 틱 = 재계획.
+               새 경로가 없으면 계획 실패로 깔끔히 ABORTED(떨지 않음). 재계획되면 경로가 바뀌어 타이머가 다시 시작된다. -->
+          <!-- ★ 2026-10-23 §20.2 only_new="true": 경로를 받을 때 이미 99 이던 점(계획기가 알고 지나간 빠듯한 칸)은 값이 더 커질 때만 막힘.
+               f2rp3 서쪽 통로(실물 상자 · 벽 사이)에서 새 경로마다 같은 틱에 99 → 막힘 5 회 · 대기 2 회. 상자 막힘(경로 받고 59 s 뒤 99)은 그대로 잡음.
+               min_cost 100 은 기각 — 상자 막힘도 99 라 함께 꺼짐. 예전 동작은 only_new="false". -->
+          <ReactiveSequence name="FollowUnlessBlocked">
+            <Inverter>
+              <PathBlockedAhead path="{path}" lookahead="1.5" skip_near="0.30" hold_time="2.0" min_cost="99" only_new="true"/>
+            </Inverter>
+            <FollowPath path="{path}" controller_id="FollowPathMPPI"/>
+          </ReactiveSequence>
+          <ClearCostmapExceptRegion name="ClearLocalCostmap-Context" reset_distance="2.5" service_name="local_costmap/clear_except_local_costmap"/>
+        </RecoveryNode>
+      </PipelineSequence>
+      <ReactiveFallback name="RecoveryFallback">
+        <GoalUpdated/>
+        <RoundRobin name="RecoveryActions">
+          <Sequence name="ClearingActions">
+            <ClearCostmapExceptRegion name="ClearLocalCostmap-Subtree" reset_distance="2.5" service_name="local_costmap/clear_except_local_costmap"/>
+            <ClearCostmapExceptRegion name="ClearGlobalCostmap-Subtree" reset_distance="3.0" service_name="global_costmap/clear_except_global_costmap"/>
+          </Sequence>
+          <!-- ★ 2026-10-15 §26: Nav2 BackUp(0.15 m) → 우리 MonotoneEscape(behavior_server 플러그인, BackUp 액션 형식).
+               상자 옆 교착(서 있는 자세부터 '닿음')에선 Nav2 BackUp 이 첫 점부터 충돌로 0.0 s 에 실패했다(f2v1 · f2v3 · f2v4 등 5 건).
+               MonotoneEscape 는 앞 · 뒤 직진 · 좌 · 우 회전 중 '모든 치명 칸까지 정확한 거리가 줄지 않는' 움직임만 골라 여유 5 cm 까지 천천히 이동 →
+               성공하면 BT 가 경로를 다시 계획, 못 하면 움직이지 않고 실패 → 아래 Wait(기존과 같음). backup_dist/speed 는 쓰지 않음. 근거 SUMMARY §25 · §26 -->
+          <BackUp backup_dist="0.30" backup_speed="0.03" time_allowance="20.0" server_name="monotone_escape"/>
+          <Wait wait_duration="5"/>
+        </RoundRobin>
+      </ReactiveFallback>
+    </RecoveryNode>
+  </BehaviorTree>
+</root>
