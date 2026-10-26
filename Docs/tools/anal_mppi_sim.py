@@ -6,6 +6,9 @@
    [10-13 §8 추가] 후보가 전부 충돌인 주기는 Nav2 처럼 실패로 세고(그 주기 명령 0) 끝에 횟수·첫 시각을 낸다(실제의 "Optimizer fail to compute path").
    [10-14 추가] unstuck=1: '갇혔을 때만 패딩 0' 흉내 — 후보 전부 충돌이 us_k 주기(기본 20 = 2 s) 이어지면 패딩을 0 으로, 그 뒤 us_d m(기본 0.30) 움직였거나 us_t s(기본 10) 지나면 원래 패딩으로.
         끝에 전환 횟수·패딩 0 이던 시간·되돌린 뒤 다시 갇힌 횟수를 낸다. 왜: 10-13 §14.2 는 탈출만 봤고, 되돌린 순간 다시 갇히는지는 안 봤다.
+   [10-26 §10 추가] resample=s: 경로를 호 길이 s(m) 간격으로 다시 찍음 — 실주행 BT CopyPath step 0.03(Smac 경로)과 같게(경로 크리틱 offset 은 점 개수).
+        wheel_max=m/s: 펌웨어 바퀴 포화(한쪽 바퀴가 넘으면 두 바퀴 비례 축소, microros_task.c cmdvel_callback) 흉내 — 실측 0.085.
+        매 주기 로버 중심 ↔ 경로 옆 거리를 '굽은 곳 안쪽 +' 부호로 기록(dev), 끝에 안쪽 최대 · 중앙 · 1 s 넘는 정지 시간 출력. 왜: 굽은 곳 안쪽 깎기(10-26 §9) 원인 크리틱 찾기.
    ---- 이하 job776 원문 ----
    [job776, 2026-10-01 §8.29] job452 + Ackermann 최소 회전 반경(ack_r>0 이면 |ω| ≤ |v|/ack_r — Nav2 1.1.x AckermannMotionModel::applyConstraints 와 같은 규칙, 표본·평균 제어 모두),
    후진 거리·제자리 회전 시간 집계 추가.
@@ -37,7 +40,7 @@ P = dict(vx_std=0.05, wz_std=0.3, temperature=0.3, gamma=0.015, iters=1, batch=1
          humble=0, cons_w=4.0, dyn_path=0, dyn_cost=0, regen=0,
          lag_steps=0, w_gain=1.0, v_gain=1.0, w_acc=0.0,
          obst=0, cost_w=3.81, crit_cost=300.0, cc_coll=1e6, near_thr=0.5, t_abs=0.0,   # 09-18: CostCritic·near_goal·절대 시각
-         cycles=40, seed=1, label='', ack_r=0.0, fpchk=0, pad=0.01, unstuck=0, us_k=20, us_d=0.30, us_t=10.0)   # pad = footprint_padding(10-13 §11: 0 으로 줄였을 때 평가용. 기록된 코스트맵의 inflation 은 0.01 기준 그대로)
+         cycles=40, seed=1, label='', ack_r=0.0, fpchk=0, pad=0.01, unstuck=0, us_k=20, us_d=0.30, us_t=10.0, resample=0.0, wheel_max=0.0)   # pad = footprint_padding(10-13 §11: 0 으로 줄였을 때 평가용. 기록된 코스트맵의 inflation 은 0.01 기준 그대로)
 for a in sys.argv[3:]:
     k, v = a.split('='); P[k] = v if k in ('label', 'wobble_on') else float(v)
 for k in ('iters', 'batch', 'steps', 'align_off', 'align_step', 'follow_off', 'angle_off', 'cycles', 'seed', 'lag_steps', 'humble', 'dyn_path', 'dyn_cost', 'regen', 'obst', 'fpchk', 'unstuck', 'us_k'):
@@ -98,7 +101,7 @@ else:
     O_ = np.stack([dx_ * c_ + dy_ * s_, -dx_ * s_ + dy_ * c_], 1)
     k0 = int(np.argmin(np.hypot(O_[:, 0] - pose[1], O_[:, 1] - pose[2])))
     seg = np.concatenate([[0], np.cumsum(np.hypot(*np.diff(O_[k0:], axis=0).T))])
-    path = O_[k0:k0 + int(np.searchsorted(seg, P['prune'])) + 1]
+    path = resample_path(O_[k0:k0 + int(np.searchsorted(seg, P['prune'])) + 1])
 x0, y0, th0 = pose[1], pose[2], pose[3]
 
 
@@ -109,6 +112,25 @@ def set_cost(tt):
     return gl_[0]
 
 
+def resample_path(Q):   # 10-26 §10: BT CopyPath step 과 같은 호 길이 재표본(끝 점 유지)
+    if P['resample'] <= 0 or len(Q) < 2: return Q
+    s_ = np.concatenate([[0], np.cumsum(np.hypot(*np.diff(Q, axis=0).T))])
+    u_ = np.arange(0, s_[-1], P['resample'])
+    R_ = np.stack([np.interp(u_, s_, Q[:, 0]), np.interp(u_, s_, Q[:, 1])], 1)
+    return np.vstack([R_, Q[-1:]])
+
+
+def dev_inside(Q, x_, y_):   # 10-26 §10: 경로 옆 거리, 굽은 곳 안쪽(경로가 휘는 쪽)이 + · 곧은 곳(±0.5 m 방향 변화 < 15°)은 nan
+    a_, b_ = Q[:-1], Q[1:]; ab_ = b_ - a_; q_ = np.array([x_, y_])
+    u_ = np.clip(np.einsum('ij,ij->i', q_ - a_, ab_) / np.maximum(np.einsum('ij,ij->i', ab_, ab_), 1e-12), 0, 1)
+    F_ = a_ + u_[:, None] * ab_; k_ = int(np.argmin(np.linalg.norm(F_ - q_, axis=1))); d_ = float(np.linalg.norm(F_[k_] - q_))
+    t_ = ab_[k_] / max(np.linalg.norm(ab_[k_]), 1e-9); side_ = np.sign(t_[0] * (q_[1] - F_[k_][1]) - t_[1] * (q_[0] - F_[k_][0]))   # + = 경로 왼쪽
+    s_ = np.concatenate([[0], np.cumsum(np.linalg.norm(ab_, axis=1))]); i0_ = int(np.searchsorted(s_, s_[k_] - 0.5)); i1_ = min(int(np.searchsorted(s_, s_[k_] + 0.5)), len(ab_) - 1)
+    h_ = np.unwrap(np.arctan2(ab_[i0_:i1_ + 1, 1], ab_[i0_:i1_ + 1, 0])); turn_ = h_[-1] - h_[0] if len(h_) > 1 else 0.0
+    if abs(turn_) < math.radians(15): return float('nan')
+    return float(d_ * side_ * np.sign(turn_))   # 왼쪽으로 휘면 왼쪽이 안쪽
+
+
 def set_path(tt, rx_, ry_):
     global path
     gp_ = latest(gplans, tt); a_ = latest(mo, tt)
@@ -117,7 +139,7 @@ def set_path(tt, rx_, ry_):
     O_ = np.stack([dx_ * c_ + dy_ * s_, -dx_ * s_ + dy_ * c_], 1)
     k0_ = int(np.argmin(np.hypot(O_[:, 0] - rx_, O_[:, 1] - ry_)))
     seg_ = np.concatenate([[0], np.cumsum(np.hypot(*np.diff(O_[k0_:], axis=0).T))])
-    path = O_[k0_:k0_ + int(np.searchsorted(seg_, P['prune'])) + 1]
+    path = resample_path(O_[k0_:k0_ + int(np.searchsorted(seg_, P['prune'])) + 1])
     if len(path) < 2: path = O_[-2:]
     return gp_[0]
 
@@ -275,6 +297,7 @@ print('%s bag %s t=%.1f 자세 (%.3f,%.3f) yaw %+.1f° 초기 cmd v %+.3f w %+.3
     P['label'], BAG.split('/')[-1], AT, x0, y0, math.degrees(th0), mean_v[0], mean_w[0], len(path), np.hypot(*(path[1] - path[0])), P['obst'],
     ' '.join('%s=%g' % (k, P[k]) for k in ('vx_std', 'wz_std', 'temperature', 'iters', 'align_w', 'follow_w', 'follow_off', 'cost_w', 'crit_cost', 'near_thr'))))
 print('  cyc |  cmd v    w  | 로버 x y yaw | furth | 충돌% | 끝단전방 중앙/최대 | 평균비용 obst align follow angle+goal | 최저후보 v w | 평균열 최대비용/충돌스텝 | LETHAL 여유')
+DEV, VLOG = [], []
 for cyc in range(P['cycles']):
     _tt = T0 + AT + cyc * P['dt']
     if P['dyn_cost']: DYN['costs'].add(set_cost(_tt))
@@ -308,7 +331,7 @@ for cyc in range(P['cycles']):
     Xm, Ym, THm = rollout(mean_v[None, :], mean_w[None, :], rx, ry, rth)
     cm_, fpm, _ = pose_costs(Xm, Ym, THm); mean_max_cost = float(cm_.max()); mean_coll = int(np.argmax(cm_ >= 254.0)) if (cm_ >= 254.0).any() else -1
     fwd_end = (X[:, -1] - rx) * math.cos(rth) + (Y[:, -1] - ry) * math.sin(rth)
-    clr = lethal_clear(rx, ry, rth); CLEAR.append(clr)
+    clr = lethal_clear(rx, ry, rth); CLEAR.append(clr); DEV.append(dev_inside(path, rx, ry)); VLOG.append(float(mean_v[0]))
     if cyc % 2 == 0 or cyc == P['cycles'] - 1:
         print('  %3d | %+.3f %+.3f | %.3f %.3f %+5.1f° | %3d | %3.0f%% | %+.3f %+.3f | %6.2f %5.2f %5.2f %5.2f %5.2f | %+.3f %+.3f' % (
             cyc, mean_v[0], mean_w[0], rx, ry, math.degrees(rth), m['furthest'], 100 * m['coll'].mean(), np.median(fwd_end), fwd_end.max(),
@@ -334,6 +357,11 @@ for cyc in range(P['cycles']):
     WPREV[0] = w0; WCLOG.append(w0)
     CMDQ.append((v0, w0)); v0, w0 = CMDQ.pop(0) if len(CMDQ) > P['lag_steps'] else (0.0, 0.0)
     v0 *= P['v_gain']; w0 *= P['w_gain']
+    if P['wheel_max'] > 0:   # 10-26 §10.2: 펌웨어 cmdvel_callback 과 같게 — v 를 ±max 로 자른 뒤 한쪽 바퀴가 max 를 넘으면 두 바퀴를 같은 비율로 줄임(곡률 유지)
+        v0 = max(-P['wheel_max'], min(P['wheel_max'], v0))
+        _vl, _vr = v0 - w0 * P['track_b'] / 2, v0 + w0 * P['track_b'] / 2; _pk = max(abs(_vl), abs(_vr))
+        if _pk > P['wheel_max']: _vl *= P['wheel_max'] / _pk; _vr *= P['wheel_max'] / _pk
+        v0, w0 = (_vl + _vr) / 2, (_vr - _vl) / P['track_b']
     if P['db'] > 0 or P['promote'] > 0:
         def fw(vw):
             if abs(vw) < P['eps']: return 0.0
@@ -349,6 +377,13 @@ for cyc in range(P['cycles']):
     _c, _fp, _ = pose_costs(np.array([[rx]]), np.array([[ry]]), np.array([[rth]])); MINCOST.append(float(_c[0, 0]))
     mean_v = np.concatenate([mean_v[1:], mean_v[-1:]]); mean_w = np.concatenate([mean_w[1:], mean_w[-1:]])
 dx = (rx - x0) * math.cos(th0) + (ry - y0) * math.sin(th0); dy = -(rx - x0) * math.sin(th0) + (ry - y0) * math.cos(th0)
+_D = np.array([d for d in DEV if d == d]); _V = np.array(VLOG); _st = 0; _run = 0
+for _v in _V:
+    _run = _run + 1 if abs(_v) < 0.01 else 0
+    if _run == 10: _st += 10
+    elif _run > 10: _st += 1
+print('     굽은 곳 경로 이탈(안쪽 +): 최대 %+.3f · 중앙 %+.3f m (굽은 곳 주기 %d/%d) · 1 s 넘는 정지 %.1f s · 평균 속도 %.3f m/s · resample %g' % (
+    _D.max() if len(_D) else float('nan'), np.median(_D) if len(_D) else float('nan'), len(_D), len(DEV), _st * P['dt'], float(np.mean(_V)), P['resample']))
 print('     후진 거리 %.3f m · 제자리 회전 시간 %.1f s · 경로 끝 도달 %s 주기' % (REV[0], SPIN[0], REACH[0]))
 if P['unstuck']: print('     갇힘 해제: 패딩 0 전환 %d 회 · 패딩 0 이던 시간 %.1f s · 되돌린 뒤 5 s 안에 다시 갇힘 %d 회 · 끝날 때 패딩 %s | %s' % (US['n'], US.get('zero', 0) * P['dt'], US['restick'], '0' if US['on'] else '원래', ' → '.join(US['events'][:8])))
 print('     후보 전부 충돌(실패) 주기 %d 회%s · 끝 3 s 이동 %.3f m · fpchk=%d' % (len(FAILS), (' — 처음 %.1f s, 마지막 %.1f s' % (FAILS[0] * P['dt'], FAILS[-1] * P['dt'])) if FAILS else '', float(np.sum(np.abs(MOVE[-30:]))), P['fpchk']))
