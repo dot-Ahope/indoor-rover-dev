@@ -115,3 +115,12 @@
 - 서쪽 통로: 모든 Hybrid 남 · 북 실패, Lattice 는 북만 성공.
 - 비용 골(`run_variants` 결과의 재구성 지도, 상자 북쪽 x 1.15~1.30 단면 최소 비용 위치): 그 선을 따르면 차체 ↔ 상자 약 **18 cm**(rp5 x 1.30 은 13). 계획기들은 8~14 cm — 비용 골까지 4~10 cm 남음.
 - 판정 ✘(+5 · 나빠짐 0 동시 만족 없음). 가장 가까운 후보 = 설치판 `Smac_R10_C30_A10_RS`(나빠짐 0, 평균 +3.1). cp 를 올려도 여유가 늘지 않는 이유는 미확인(탐색 각도 칸 · 원형 길이 대 0.85 m 틈 폭 추정).
+
+## §7 Smac Hybrid 주행 준비 (사용자: "A진행") — 브랜치 `feature/smac-hybrid`
+- 구현(로버 안 움직임):
+  - `navigation.launch.py` 인자 `planner:=navfn|smac`(기본 navfn = B0 그대로). smac 이면 BT 사본(/tmp/nav_to_pose_active.xml)의 PlanAndSmooth 를 `Fallback(PlanSmacOrNavFn)` = [SmacHybrid → CopyPath step 0.03] 실패 시 [기존 NavFn → SimpleSmoother/CopyPath] 로 바꿈. 미리보기 `outputs/bt_smac_preview.xml`(XML 검사 통과).
+  - `CopyPath` 에 `step` 포트: 호 길이 간격으로 다시 찍음(끝 점은 그대로) — Smac 점 간격 ≈ 0.07 m 를 NavFn 판 0.026~0.047 에 맞춰 MPPI 경로 크리틱 offset(점 개수) 의미 유지.
+  - `nav2_params.yaml` SmacHybrid: REEDS_SHEPP · cp 3.0 · 해석 확장 1.0 m · 캐시 끔 · max_planning_time 2.0(대체로 넘어가는 시간 상한). R 0.10 · 72 칸 그대로. = 오프라인 최선 판(§6.3) + 시간 상한.
+  - `Docs/tools/prep_patrol.sh` `NAV_ADD` 환경. prep `jobs/prep_smac_1026.sh`(BT 사본 · Smac 매개변수 확인 포함).
+  - 배포 `jobs/up_smac_nav_1026.sh` → `outputs/up_smac_nav_1026.txt`(첫 판 launch 문법 오류 — 파이썬 heredoc 의 '\n' 이 실제 줄바꿈으로 깨짐, 메모리에 적어 둔 함정 그대로. 스택이 꺼진 동안이라 쓰인 적 없음, Edit 로 고쳐 재배포 `up_smac_nav_1026_b.txt`, CopyPath .so 재빌드 확인 `chk_copypath_so.txt`). 설치본 링크 유지.
+- §7.1 주행 선언(결과 보기 전): f2sh1 · f2sh2 = b910, f2sh3 = no5. 판정: ① 전부 도착 · ABORT 0 · 접촉 0 · nav_guard 취소 0 ② **상자 옆 실제 최소 여유 ≥ 8 cm(b910 두 번 모두)** — B0 15.4 · 5.5 · 3.1 ③ Smac 이 실제로 쓰였나(nav2 로그의 계획 · 대체 횟수, BT 경로 중 Smac 비율) · 경로 후진 구간 · 실제 후진(cmd_vel < 0) 기록 ④ no5 서쪽 통로 통과(대체 작동) · 복구 Wait ≤ 1 ⑤ 짧은 멈칫 · CPU ≤ B0(f2rp4 · f2rp5) + 20 %. 실패 시 planner:=navfn 으로 되돌림(같은 코드).

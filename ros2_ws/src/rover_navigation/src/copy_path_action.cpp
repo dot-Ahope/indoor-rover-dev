@@ -9,10 +9,16 @@
 //
 // 동작: input_path 를 output_path 로 그대로 쓴다. 입력이 없거나 점이 0 개면 FAILURE.
 //
+// 2026-10-26 (Docs/debug_log/2026-10-26/SUMMARY.md §7): step > 0 이면 경로를 호 길이 step 간격으로 다시 찍는다(위치는 선형 보간,
+//   방향은 그 구간 시작 점의 방향, 마지막 점은 원래 그대로). 왜: Smac Hybrid 경로 점 간격 ≈ 0.07 m 인데 MPPI 경로 크리틱의
+//   offset_from_furthest 는 '점 개수' 라(PathAlign 3 = NavFn 경로에선 ≈ 0.1 m), 간격이 다르면 크리틱이 켜지는 거리가 2~3 배로 바뀜.
+//   NavFn(+SimpleSmoother) 경로 간격 0.026~0.047 m 에 맞춰 0.03 m 로 쓴다. step 0(기본) = 예전과 같은 그대로 복사.
+//
 // 기각한 대안:
 //   · BT.CPP SetBlackboard: 값 포트가 문자열이라 nav_msgs::Path 를 그대로 옮길 수 없다(v3).
 //   · ComputePathToPose 가 바로 {path} 에 쓰고 SmoothPath 도 {path} 에 덮어쓰기: 한 틱에 {path} 가 두 번 바뀌어
 //     FollowPath 가 목표를 두 번 받는다(09-16 mp4, "Aborting handle" 매초).
+#include <cmath>
 #include <string>
 
 #include "behaviortree_cpp_v3/action_node.h"
@@ -32,6 +38,7 @@ public:
     return {
       BT::InputPort<nav_msgs::msg::Path>("input_path", "복사할 경로"),
       BT::OutputPort<nav_msgs::msg::Path>("output_path", "그대로 복사된 경로(점 위치·방향 유지)"),
+      BT::InputPort<double>("step", 0.0, "0 보다 크면 이 호 길이 간격(m)으로 다시 찍음"),
     };
   }
 
@@ -40,6 +47,31 @@ public:
     nav_msgs::msg::Path p;
     if (!getInput("input_path", p) || p.poses.empty()) {
       return BT::NodeStatus::FAILURE;
+    }
+    double step = 0.0;
+    getInput("step", step);
+    if (step > 0.0 && p.poses.size() > 1) {
+      nav_msgs::msg::Path r;
+      r.header = p.header;
+      r.poses.push_back(p.poses.front());
+      double carry = 0.0;   // 직전에 찍은 점 뒤로 이 구간 시작까지 남은 거리
+      for (size_t i = 1; i < p.poses.size(); ++i) {
+        const auto & a = p.poses[i - 1].pose.position;
+        const auto & b = p.poses[i].pose.position;
+        const double seg = std::hypot(b.x - a.x, b.y - a.y);
+        double s = step - carry;
+        while (s < seg) {
+          auto q = p.poses[i - 1];
+          q.pose.position.x = a.x + (b.x - a.x) * s / seg;
+          q.pose.position.y = a.y + (b.y - a.y) * s / seg;
+          r.poses.push_back(q);
+          s += step;
+        }
+        carry = seg - (s - step);
+      }
+      r.poses.push_back(p.poses.back());   // 끝 점(목표 방향 포함)은 원래 그대로
+      setOutput("output_path", r);
+      return BT::NodeStatus::SUCCESS;
     }
     setOutput("output_path", p);
     return BT::NodeStatus::SUCCESS;
