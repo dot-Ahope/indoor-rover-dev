@@ -1,0 +1,4 @@
+  prep_patrol: 오도메트리 vslam · 재계획 0.01 Hz · 궤적 발행 lite · PreferForward 15.0 · 추가 nav 인자 planner:=smac
+/tmp/prep_fast.sh: line 7: set: +: invalid option
+set: usage: set [-abefhkmnptuvxBCHP] [-o option-name] [--] [arg ...]
+/tmp/prep_fast.sh: line 68: syntax error: unexpected end of file

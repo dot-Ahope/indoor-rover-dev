@@ -124,3 +124,21 @@
   - `Docs/tools/prep_patrol.sh` `NAV_ADD` 환경. prep `jobs/prep_smac_1026.sh`(BT 사본 · Smac 매개변수 확인 포함).
   - 배포 `jobs/up_smac_nav_1026.sh` → `outputs/up_smac_nav_1026.txt`(첫 판 launch 문법 오류 — 파이썬 heredoc 의 '\n' 이 실제 줄바꿈으로 깨짐, 메모리에 적어 둔 함정 그대로. 스택이 꺼진 동안이라 쓰인 적 없음, Edit 로 고쳐 재배포 `up_smac_nav_1026_b.txt`, CopyPath .so 재빌드 확인 `chk_copypath_so.txt`). 설치본 링크 유지.
 - §7.1 주행 선언(결과 보기 전): f2sh1 · f2sh2 = b910, f2sh3 = no5. 판정: ① 전부 도착 · ABORT 0 · 접촉 0 · nav_guard 취소 0 ② **상자 옆 실제 최소 여유 ≥ 8 cm(b910 두 번 모두)** — B0 15.4 · 5.5 · 3.1 ③ Smac 이 실제로 쓰였나(nav2 로그의 계획 · 대체 횟수, BT 경로 중 Smac 비율) · 경로 후진 구간 · 실제 후진(cmd_vel < 0) 기록 ④ no5 서쪽 통로 통과(대체 작동) · 복구 Wait ≤ 1 ⑤ 짧은 멈칫 · CPU ≤ B0(f2rp4 · f2rp5) + 20 %. 실패 시 planner:=navfn 으로 되돌림(같은 코드).
+
+### §7.2 prep 첫 시도 실패 — 아침에 보낸 prep 스크립트가 CRLF 였음(내 실수)
+| 칸 | 내용 |
+|---|---|
+| 하려 한 것 | f2sh1 prep(`jobs/prep_smac_1026.sh`) |
+| 본 것 | prep_patrol 첫 줄 뒤 아무 노드도 안 뜸(`outputs/prep_smac_1026_1.txt`), 전체 출력 `/tmp/prep_fast.sh: line 7: set: +: invalid option · line 68: syntax error`(`prep_smac_1026_2.txt`) |
+| 판별 | §0 의 재전송 묶음(`jobs/up_prep_1026.sh`)이 작업 사본(주말 체크아웃 뒤 CRLF)을 그대로 base64 로 보냄. §0 의 '저장소와 같음' 해시도 CRLF 사본끼리 비교 — 저장소(git blob, LF) 해시는 prep_fast c636f4060d · chk_prep d06751ab73 로 다름 |
+| 결론 | CR 을 빼고 재전송(`up_prep_1026b.txt`: 세 파일 CR 0, 해시 = git HEAD blob). prep 재시도 PREP_OK(`prep_smac_1026_3.txt`: 0.003 m · 12.22 V, BT 사본 PlanSmacOrNavFn 1 · step 1, SmacHybrid REEDS_SHEPP · cp 3.0 · 해석 1.0 · 2.0 s) |
+| 다음에 알아보는 법 | Jetson 으로 보내는 텍스트는 항상 `tr -d '\r'`, 해시 비교는 `git show HEAD:<경로>` 기준 |
+
+### §7.3 f2sh1(b910, planner:=smac) 결과 — 3/3 · **상자 옆 실제 최소 여유 18.4 cm**(B0 15.4 · 5.5 · 3.1)
+- 러너 `outputs/run_f2sh1.txt`: 3/3 · 51.4 · 47.9 · 104.6 s(총 205.8 s; f2rp5 202.8). bag `bags/bag_f2sh1.tgz`, 로그 `bags/logs_f2sh1/` → `outputs/nav2_f2sh1.log` · `nav_events_ms_f2sh1.txt`.
+- Smac 사용: nav2 로그에 SimpleSmoother 호출('Received a path to smooth') **0** = BT 경로 전부 Smac(NavFn 대체 0). 막힘 중단 1(상자 (1.36, −0.11), 경로 받고 새로 99) → Smac 재계획.
+- 상자 옆(`outputs/anal_contact_f2sh1_d30.txt` · `anal_plan_series_f2sh1.txt` · `anal_track_dev_f2sh1.txt` · `anal_band_run_f2sh1.txt`, 상자 = 기록 위치):
+  - 막힘 뒤 다시 그린 Smac 경로 상자 여유 **18.5 cm**(NavFn 판 8.9~13.3). 갈 때 경로 13.5 · 17.7.
+  - 실제 최소 여유: 갈 때 **18.9 cm**(12:47:33.6), 복귀 **18.4 cm**(12:50:26.4, 로버 (1.06, 0.32, −172°)). 상자 옆 구간 경로 이탈 −1.3~+1.1 cm(경로 위). 굽은 곳 진입(t 181~186)은 경로보다 상자 쪽 +8~11 cm 로 여전히 안쪽 깎기 — 그러나 경로가 상자에서 멀어 여유가 남음. 로컬 코스트맵 정확 여유 최소 8.1 cm(벽 쪽 포함 전체, < 6 cm 0 프레임).
+  - 후진 지령(< −0.01 m/s) 38 개 · 1.9 s · 최소 −0.05.
+- 판정(§7.1): ① ✔ ② ✔(18.4 ≥ 8, 1 회째) ③ 기록 ✔ ⑤ 아래 수치 비교는 3 회 뒤. 재현 확인 = f2sh2.
