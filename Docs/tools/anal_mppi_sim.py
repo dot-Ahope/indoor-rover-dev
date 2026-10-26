@@ -382,8 +382,9 @@ for _v in _V:
     _run = _run + 1 if abs(_v) < 0.01 else 0
     if _run == 10: _st += 10
     elif _run > 10: _st += 1
-print('     굽은 곳 경로 이탈(안쪽 +): 최대 %+.3f · 중앙 %+.3f m (굽은 곳 주기 %d/%d) · 1 s 넘는 정지 %.1f s · 평균 속도 %.3f m/s · resample %g' % (
-    _D.max() if len(_D) else float('nan'), np.median(_D) if len(_D) else float('nan'), len(_D), len(DEV), _st * P['dt'], float(np.mean(_V)), P['resample']))
+print('     굽은 곳 경로 이탈(안쪽 +): 최대 %+.3f · 중앙 %+.3f m (굽은 곳 주기 %d/%d) · 1 s 넘는 정지 %.1f s · 평균 속도 %.3f m/s · resample %g · 첫 굽은 곳 이탈 %+.3f · 굽은 곳 95%% %+.3f' % (
+    _D.max() if len(_D) else float('nan'), np.median(_D) if len(_D) else float('nan'), len(_D), len(DEV), _st * P['dt'], float(np.mean(_V)), P['resample'],
+    _D[0] if len(_D) else float('nan'), np.percentile(_D, 95) if len(_D) else float('nan')))
 print('     후진 거리 %.3f m · 제자리 회전 시간 %.1f s · 경로 끝 도달 %s 주기' % (REV[0], SPIN[0], REACH[0]))
 if P['unstuck']: print('     갇힘 해제: 패딩 0 전환 %d 회 · 패딩 0 이던 시간 %.1f s · 되돌린 뒤 5 s 안에 다시 갇힘 %d 회 · 끝날 때 패딩 %s | %s' % (US['n'], US.get('zero', 0) * P['dt'], US['restick'], '0' if US['on'] else '원래', ' → '.join(US['events'][:8])))
 print('     후보 전부 충돌(실패) 주기 %d 회%s · 끝 3 s 이동 %.3f m · fpchk=%d' % (len(FAILS), (' — 처음 %.1f s, 마지막 %.1f s' % (FAILS[0] * P['dt'], FAILS[-1] * P['dt'])) if FAILS else '', float(np.sum(np.abs(MOVE[-30:]))), P['fpchk']))
