@@ -5,7 +5,7 @@
     · 바탕 = 전역 코스트맵(map), RViz 'costmap' 색표 흉내 — 0 = 비움(바탕 그대로) · 1~98 = 파랑 → 빨강 · 99 내접 = 하늘색 · 100 치명 = 자홍 · −1 미지 = 회청.
     · 로컬 코스트맵 치명 칸(MPPI 가 보는 것) = 노란 테두리 칸, 라이다 /scan = 빨간 점, 전역 경로(BT 경로) = 초록 선, 차체(풋프린트) = 초록 다각형, base_link 축 = 빨강 x · 초록 y.
   BT 경로 고르기 · 데이터 읽기는 fig_drive_video.py 와 같은 규칙(nav_events 의 스무더 사건 + /plan 점 간격 > 0.04 m = Smac).
-  사용: fig_rviz_video.py bag 출력.mp4 시작HH:MM:SS 끝HH:MM:SS [배속=1] [nav_events.txt] [제목] [창 m=3.0]"""
+  사용: fig_rviz_video.py bag 출력.mp4 시작HH:MM:SS 끝HH:MM:SS [배속=1] [nav_events.txt] [제목] [창 m=3.0] [한 변 px=720]"""
 import sys, time, math
 from pathlib import Path
 import numpy as np, matplotlib
@@ -19,6 +19,8 @@ plt.rcParams.update({'font.family': 'Malgun Gothic', 'axes.unicode_minus': False
 bag, out, h0, h1 = sys.argv[1:5]; SPEED = float(sys.argv[5]) if len(sys.argv) > 5 else 1.0; FPS = 10; DT = SPEED / FPS
 EVF = sys.argv[6] if len(sys.argv) > 6 and sys.argv[6] != '-' else None; TITLE = sys.argv[7] if len(sys.argv) > 7 else Path(bag).name.replace('bag_', '')
 VW = float(sys.argv[8]) if len(sys.argv) > 8 else 3.0
+PX = int(sys.argv[9]) if len(sys.argv) > 9 else 720   # 10-26: 화면 한 변 픽셀(합본 1080 용)
+FS = PX / 720.0
 FP = np.array([[0.262, 0.165], [0.262, -0.165], [-0.248, -0.165], [-0.248, 0.165]])
 BG = '#303030'; GRIDC = '#a0a0a4'; GREEN = '#19ff00'; RED = '#ff2a2a'; YEL = '#ffd400'; TXT = '#e8e8e8'
 
@@ -90,7 +92,7 @@ def chain(frame):
 def last(L, t): return L[max(np.searchsorted([x[0] for x in L], t, side='right') - 1, 0)]
 def w2(M, P): return (M @ np.c_[P[:, 0], P[:, 1], np.zeros(len(P)), np.ones(len(P))].T).T[:, :2]
 times = np.arange(tA, tB, DT); CM = rviz_costmap_cmap()
-fig = plt.figure(figsize=(7.2, 7.2), dpi=100, facecolor=BG); ax = fig.add_axes([0, 0, 1, 1]); ax.set_facecolor(BG); ax.set_axis_off()
+fig = plt.figure(figsize=(PX / 100, PX / 100), dpi=100, facecolor=BG); ax = fig.add_axes([0, 0, 1, 1]); ax.set_facecolor(BG); ax.set_axis_off()
 gext = lambda g: (g[1], g[1] + g[4].shape[1] * g[3], g[2], g[2] + g[4].shape[0] * g[3])
 g0 = glo[0]; im = ax.imshow(np.clip(g0[4], -1, 100) + 1, origin='lower', extent=gext(g0), cmap=CM, vmin=0, vmax=101, interpolation='nearest', zorder=1)
 gl_lines = []
@@ -100,11 +102,11 @@ path_l, = ax.plot([], [], color=GREEN, lw=2.6, zorder=5)
 trail_l, = ax.plot([], [], color='#ffffff', lw=1.0, alpha=0.5, zorder=5)
 body = Polygon(FP, closed=True, fill=False, ec=GREEN, lw=2.0, zorder=6); ax.add_patch(body)
 axx, = ax.plot([], [], color='#ff0000', lw=2.5, zorder=7); axy, = ax.plot([], [], color='#00ff00', lw=2.5, zorder=7)
-tx = fig.text(0.02, 0.98, '', color=TXT, fontsize=11, va='top', bbox=dict(fc='#000000', alpha=0.55, ec='none'))
-ev = fig.text(0.02, 0.03, '', color=YEL, fontsize=12, va='bottom', fontweight='bold', bbox=dict(fc='#000000', alpha=0.55, ec='none'))
-fig.text(0.98, 0.98, TITLE, color=TXT, fontsize=10, va='top', ha='right', bbox=dict(fc='#000000', alpha=0.55, ec='none'))
-fig.text(0.98, 0.03, '전역 costmap: 파랑→빨강 비용 · 하늘색 내접 · 자홍 치명 | 노랑 □ 로컬 치명 | 빨강 라이다 | 초록 경로 · 차체', color=TXT, fontsize=7.5, va='bottom', ha='right')
-px_per_m = 720 / VW; loc_s.set_sizes([(0.05 * px_per_m * 0.72 * 0.85) ** 2])
+tx = fig.text(0.02, 0.98, '', color=TXT, fontsize=11 * FS, va='top', bbox=dict(fc='#000000', alpha=0.55, ec='none'))
+ev = fig.text(0.02, 0.03, '', color=YEL, fontsize=12 * FS, va='bottom', fontweight='bold', bbox=dict(fc='#000000', alpha=0.55, ec='none'))
+fig.text(0.98, 0.98, TITLE, color=TXT, fontsize=10 * FS, va='top', ha='right', bbox=dict(fc='#000000', alpha=0.55, ec='none'))
+fig.text(0.98, 0.03, '전역 costmap: 파랑→빨강 비용 · 하늘색 내접 · 자홍 치명 | 노랑 □ 로컬 치명 | 빨강 라이다 | 초록 경로 · 차체', color=TXT, fontsize=7.5 * FS, va='bottom', ha='right')
+px_per_m = PX / VW; loc_s.set_sizes([(0.05 * px_per_m * 0.72 * 0.85) ** 2])
 trail = np.array([(last(mo, t)[1] @ last(ob, t)[1])[:2, 3] for t in times])
 gid = None; wr = FFMpegWriter(fps=FPS, bitrate=4000)
 with wr.saving(fig, out, dpi=100):

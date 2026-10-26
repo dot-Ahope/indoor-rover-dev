@@ -295,3 +295,8 @@
 - 사용자 확인: 16:12:13~17 통로에서 로버는 상자 날개에 **닿지 않음**(기록 최소 0.8 cm 와 어긋나지 않음 — 칸 단위 · 기억 오차를 생각하면 실제 틈은 그 근처, 미측정).
 - 새 도구 `Docs/tools/fig_rviz_video.py`(720×720, 로버 따라가는 3 m 창): 어두운 바탕(#303030) · 1 m 격자, 전역 코스트맵 RViz 'costmap' 색표 흉내(파랑 → 빨강 비용 · 하늘색 내접 99 · 자홍 치명 100 · 회청 미지, 낮은 비용은 더 투명), 노란 칸 = 로컬 치명, 빨간 점 = /scan, 초록 = BT 경로 · 차체, 빨강 / 초록 = base_link x / y 축, 시각 · 명령 · 로버 자세 · 최근 사건(Smac 실패 → NavFn · 최적화 실패 · 복구 · 막힘). BT 경로 고르기는 fig_drive_video 와 같은 규칙.
 - 합본(git 제외, 왼쪽 실제 촬영 1280×720 · 오른쪽 RViz 스타일 720×720, 1 배속): `videos/f2sa3_real_rviz_corridor.mp4`(16:11:45~16:13:35) · `videos/f2sa3_real_rviz_box.mp4`(16:16:15~16:17:09). 생성 기록 `outputs/fig_rviz_video_f2sa3_*.txt`, 확인 장면 `figures/real/real_rviz_corridor_161217.png`.
+
+### §17.1 고화질 · 2 배속 판 (사용자: "실제 영상 구간 잘라놓은 것이, 해상도가 좋지 못해 보기 안좋다. 그리고 조금 배속을 걸어달라.")
+- 실제 촬영: 4K 원본에서 1920×1080(lanczos) · 2 배속 · crf 19 로 다시 자름 `videos/real/f2sa3_real_{corridor,box}_hd_x2.mp4`. RViz 스타일: 1080×1080 · 2 배속(도구에 한 변 px 인자 추가) `videos/real/f2sa3_rviz_{corridor,box}_1080_x2.mp4`(`outputs/fig_rviz_video_f2sa3_*_x2.txt`).
+- 합본(git 제외, 3000×1080): `videos/f2sa3_real_rviz_corridor_hd_x2.mp4`(55 s = 16:11:45~16:13:35) · `videos/f2sa3_real_rviz_box_hd_x2.mp4`(27 s = 16:16:15~16:17:09). 확인 장면 `figures/real/real_rviz_corridor_hd_x2.png`(16:12:17) · `_end.png`(16:13:33 — 두 쪽 모두 로버 북행).
+- 내 실수: 첫 통로 판은 `-t 110` 을 입력 뒤에 둬 출력 길이로 걸려 원본 220 s 를 2 배속으로 잘랐고(3300 장), 합칠 때 `-shortest` 가 필터 그래프에 안 먹어 시각화 끝 장면이 55 s 동안 멈춰 있었음 → `-t` 를 입력 앞으로, hstack `shortest=1`. 다음에 알아보는 법: 자른 뒤 ffprobe 로 길이 · 장 수를 기대값과 대조.
