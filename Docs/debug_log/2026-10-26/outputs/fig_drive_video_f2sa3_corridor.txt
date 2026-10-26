@@ -1,0 +1,3 @@
+BT 경로 5 개(원경로 5)
+Smac 경로 5 개(점 간격 > 0.04 m)
+저장 Docs/debug_log/2026-10-26/videos/real/f2sa3_viz_corridor.mp4 프레임 1100
