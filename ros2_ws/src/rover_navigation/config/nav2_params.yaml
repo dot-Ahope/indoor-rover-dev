@@ -274,11 +274,14 @@ controller_server:
       #   ★ 10-15 §30: 끔 — 통로에서 계산 최대 162 ms · 놓침 428(§29.6). 통합 거리 1.0 시험을 크리틱 없는 기준선과 같은 조건으로.
       ClearanceBandCritic: {enabled: false, cost_power: 1, cost_weight: 20.0, band: 0.06, trajectory_point_step: 2}
       # offset_from_furthest 20 → 3 (09-16): 지평 0.22 m / 점간격 ~0.04 m = index 5~6 이므로 3 이면 0.1 m 만 나아가도 켜진다.
-      PathAlignCritic: {enabled: true, cost_power: 1, cost_weight: 14.0, max_path_occupancy_ratio: 0.05, trajectory_point_step: 3, threshold_to_consider: 0.20, offset_from_furthest: 3}
+      # ★ 2026-10-26 §11~§14(사용자 채택, Smac 구성): PathAlign 14 → 28 · PathFollow 10 → 5 — 굽은 곳 안쪽 깎기 10.7 · 15.7 → 4.6 · 1.6 cm,
+      #   상자 옆 실제 최소 18.4 · 10.8 → 14.6 · 14.9 cm, 정지 0(f2sa1 · f2sa2 대 f2sh1 · f2sh2). 시뮬(씨앗 10)도 같은 방향(최악 19.8 → 11.2). 근거 Docs/debug_log/2026-10-26/SUMMARY.md §10~§13.
+      #   10-23 NavFn 판 28 단독은 f2pa2 에서 5.5 s 정지 1 회(목표 · 경로 방향 57° 어긋남) — Smac 판 2 회엔 없음.
+      PathAlignCritic: {enabled: true, cost_power: 1, cost_weight: 28.0, max_path_occupancy_ratio: 0.05, trajectory_point_step: 3, threshold_to_consider: 0.20, offset_from_furthest: 3}
       # ★ 2026-09-16 §1.14 (job354/355 재구성·시뮬레이션): 입구 기어감의 실체는 '당근이 짧은 추종'. offset 5 점 = 경로 점간격 0.025 m 에서
       #   12.5 cm 뿐이라 진행해도 비용이 거의 안 줄고, 브레이크(PathAlign·Obstacles)만 이동에 비례해 커져 v≈0.02 에서 평형.
       #   weight 5→10·offset 5→20(0.5 m) 이면 시뮬레이션에서 6 s 에 0.25 m 전진·경로 정렬(yaw 32→7°), 평균열 LETHAL 미접촉. 회피·정렬 가중은 유지.
-      PathFollowCritic: {enabled: true, cost_power: 1, cost_weight: 10.0, offset_from_furthest: 20, threshold_to_consider: 0.2}
+      PathFollowCritic: {enabled: true, cost_power: 1, cost_weight: 5.0, offset_from_furthest: 20, threshold_to_consider: 0.2}   # 10-26: 10 → 5(앞 20 점 당김 = 굽은 곳 지름길 줄임)
       # max_angle_to_furthest 1.0 → 0.5 rad (09-16): mp2 정체 중 경로 방위 오차 44~62° 에서 1.0 rad(57°) 문턱은 간헐적으로만 켜졌다.
       #   29° 부터 켜서 모서리에서 제자리 우회전을 유도. (weight 2 유지 — 한 번에 바꾸는 손잡이를 지평·index·각도 3개로 한정)
       PathAngleCritic: {enabled: true, cost_power: 1, cost_weight: 2.0, offset_from_furthest: 4, threshold_to_consider: 0.2, max_angle_to_furthest: 0.5}
