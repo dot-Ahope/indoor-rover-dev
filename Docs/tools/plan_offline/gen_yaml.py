@@ -46,7 +46,7 @@ for n in names:
         refinement_num: 2
 ''')
         continue
-    m = re.match(r'Smac_R(\d+)_C(\d+)(?:_A(\d+))?(?:_B(\d+))?$', n)
+    m = re.match(r'Smac_R(\d+)_C(\d+)(?:_A(\d+))?(?:_B(\d+))?(_RS)?$', n)   # _RS = REEDS_SHEPP(전진 · 후진, 2026-10-26)
     if not m: raise SystemExit('이름 형식: ' + n)
     R, CP = int(m.group(1)) / 100, int(m.group(2)) / 10; AL = int(m.group(3)) / 10 if m.group(3) else 3.0; B = int(m.group(4)) if m.group(4) else 72
     blocks.append(f'''    {n}:
@@ -58,7 +58,7 @@ for n in names:
       max_iterations: 1000000
       max_on_approach_iterations: 1000
       max_planning_time: 5.0
-      motion_model_for_search: "DUBIN"
+      motion_model_for_search: "{'REEDS_SHEPP' if m.group(5) else 'DUBIN'}"
       angle_quantization_bins: {B}
       analytic_expansion_ratio: 3.5
       analytic_expansion_max_length: {AL}
