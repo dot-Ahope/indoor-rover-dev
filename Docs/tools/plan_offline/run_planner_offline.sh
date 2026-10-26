@@ -10,6 +10,8 @@ PIDS=${1:-GridBased}
 OV=${2:-}; if [ -n "$OV" ]; then source $OV/install/setup.bash; echo "오버레이 $OV · nav2_smac_planner = $(ros2 pkg prefix nav2_smac_planner)"; fi
 # 2026-10-26: 앞 실행의 잔재가 있으면 액션 서버가 여럿이 되어 결과가 섞임(D5 첫 판 무효) — 시작 전에 확인하고 있으면 중단
 n0=$(pgrep -fc '/tmp/planoff/planner_offline'); if [ "$n0" != 0 ]; then echo "중단: 앞 실행 잔재 $n0 개 — kill_planoff 로 정리 뒤 다시"; exit 1; fi
+# 2026-10-26 §22: 세 번째 인자 = 1 이면 Smac 탐색 기록(진단 빌드 ~/smac_dbg_ws 의 SMAC_EXP_DIR) 을 $D/exp 에 남기고 끝에 묶어 출력
+EXP=${3:-}; if [ "$EXP" = 1 ]; then rm -rf $D/exp; mkdir -p $D/exp; export SMAC_EXP_DIR=$D/exp; fi
 setsid ros2 run nav2_planner planner_server --ros-args --params-file $D/planner_offline.yaml > $D/planner.log 2>&1 &
 setsid ros2 run nav2_lifecycle_manager lifecycle_manager --ros-args -r __node:=lifecycle_manager_offline --params-file $D/planner_offline.yaml > $D/lcm.log 2>&1 &
 setsid ros2 run tf2_ros static_transform_publisher --frame-id map --child-frame-id base_link > $D/tf.log 2>&1 &
@@ -26,3 +28,4 @@ for p in $(pgrep -f "planner_offline.yaml|static_transform_publisher --frame-id 
 sleep 2; echo "남은 오프라인 프로세스: $(pgrep -fc 'planner_offline.yaml')"
 grep -aiE "error|exception|warn" $D/planner.log | grep -v "tick rate" | sort | uniq -c | sort -rn | head -12
 echo "RESULT_B64_BEGIN"; base64 -w0 $D/result.npz; echo; echo "RESULT_B64_END"
+if [ "$EXP" = 1 ]; then echo "탐색 기록 $(ls $D/exp | wc -l) 개 · 줄 $(cat $D/exp/* 2>/dev/null | wc -l)"; echo "EXP_B64_BEGIN"; tar czf - -C $D exp | base64 -w0; echo; echo "EXP_B64_END"; fi
