@@ -4,11 +4,48 @@
   변형 이름 규칙: Smac_R{R×100}_C{cp×10}[_A{해석 확장 최대 길이×10}][_B{방향 칸}] — 예 Smac_R10_C30_A05 = R 0.10 · cp 3.0 · 해석 확장 ≤ 0.5 m.
     해석 확장(analytic expansion) = 탐색 중 목표까지 Dubins 곡선을 바로 그어 보고, 차체가 치명에 안 닿으면 그대로 붙이는 단축(비용은 안 봄).
     1.1.20 기본은 비율 3.5 · 최대 3.0 m — 경로가 3 m 안이면 거의 처음부터 이 곡선이 붙어 cost_penalty 가 효과를 못 냄(첫 비교 결과, 2026-10-23 §22).
-  인자: 출력.yaml 패딩 변형이름...  (첫 비교 판 = 패딩 0.01, GridBased + Smac_R10_C12 … Smac_R15_C30, 해석 확장 기본)"""
-import sys, re
+  인자: 출력.yaml 패딩 변형이름...  (첫 비교 판 = 패딩 0.01, GridBased + Smac_R10_C12 … Smac_R15_C30, 해석 확장 기본)
+  환경: INFL_R · INFL_K = 전역 inflation 반경 · cost_scaling_factor(기본 0.70 · 2.0 = 실주행 값). 2026-10-26 D5 에서 추가."""
+import sys, re, os
 out, pad, names = sys.argv[1], float(sys.argv[2]), sys.argv[3:]
+IR, IK = float(os.environ.get('INFL_R', '0.70')), float(os.environ.get('INFL_K', '2.0'))
 blocks = []
+LAT = '/opt/ros/humble/share/nav2_smac_planner/sample_primitives/5cm_resolution/0.5m_turning_radius/diff/output.json'
 for n in names:
+    # Lattice_C{cp×10}_P{회전 벌점}[_REV] — 2026-10-26 D1: 설치판 diff 원형(5 cm · R 0.5 m, 제자리 회전 원형 포함). _REV = 후진 확장 허용
+    m = re.match(r'Lattice_C(\d+)_P(\d+)(_REV)?(?:_A(\d+))?$', n)
+    if m:
+        CP, RP, REV = int(m.group(1)) / 10, float(m.group(2)), 'true' if m.group(3) else 'false'
+        AL = int(m.group(4)) / 10 if m.group(4) else 3.0   # _A = 해석 확장 최대 길이 ×10
+        blocks.append(f'''    {n}:
+      plugin: "nav2_smac_planner/SmacPlannerLattice"
+      allow_unknown: true
+      tolerance: 0.25
+      max_iterations: 1000000
+      max_on_approach_iterations: 1000
+      max_planning_time: 5.0
+      analytic_expansion_ratio: 3.5
+      analytic_expansion_max_length: {AL}
+      reverse_penalty: 2.0
+      change_penalty: 0.05
+      non_straight_penalty: 1.05
+      cost_penalty: {CP}
+      rotation_penalty: {RP}
+      retrospective_penalty: 0.015
+      lattice_filepath: "{LAT}"
+      lookup_table_size: 20.0
+      cache_obstacle_heuristic: false
+      allow_reverse_expansion: {REV}
+      smooth_path: true
+      smoother:
+        max_iterations: 1000
+        w_smooth: 0.3
+        w_data: 0.2
+        tolerance: 1.0e-10
+        do_refinement: true
+        refinement_num: 2
+''')
+        continue
     m = re.match(r'Smac_R(\d+)_C(\d+)(?:_A(\d+))?(?:_B(\d+))?$', n)
     if not m: raise SystemExit('이름 형식: ' + n)
     R, CP = int(m.group(1)) / 100, int(m.group(2)) / 10; AL = int(m.group(3)) / 10 if m.group(3) else 3.0; B = int(m.group(4)) if m.group(4) else 72
@@ -42,7 +79,7 @@ for n in names:
         do_refinement: true
         refinement_num: 2
 ''')
-y = f'''# planner_offline — 계획기 오프라인 비교(Phase P §4 · P7) 전용 planner_server 설정. gen_yaml.py 로 생성(패딩 {pad}, 변형 {len(names)} 개). Jetson ROS_DOMAIN_ID 42 에서만.
+y = f'''# planner_offline — 계획기 오프라인 비교(Phase P §4 · P7) 전용 planner_server 설정. gen_yaml.py 로 생성(패딩 {pad}, inflation {IR}/{IK}, 변형 {len(names)} 개). Jetson ROS_DOMAIN_ID 42 에서만.
 # 전역 코스트맵 = 기록된 /global_costmap/costmap 의 치명 칸(100) · 미지(−1)만 static_layer 로 받고(/offline_map), 실제와 같은 inflation(0.70/2.0) · 풋프린트로 다시 부풀림
 #   → 실제 계획기가 본 지도를 재구성(일치율은 query_planners.py 가 확인; 2026-10-23 첫 판 6 장면 모두 1.0000).
 #   99(내접)를 직접 넣지 않는 이유: StaticLayer 비삼진 변환은 99 → 251 이 되어 내접(253) 의미를 잃음(NavFn 은 ≥ 253 을 장애물로 봄).
@@ -78,8 +115,8 @@ global_costmap:
         map_subscribe_transient_local: true
       inflation_layer:
         plugin: "nav2_costmap_2d::InflationLayer"
-        inflation_radius: 0.70
-        cost_scaling_factor: 2.0
+        inflation_radius: {IR}
+        cost_scaling_factor: {IK}
       always_send_full_costmap: true
 
 lifecycle_manager_offline:
