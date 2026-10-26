@@ -48,7 +48,7 @@ fig, axs = plt.subplots(1, 2, figsize=(16, 7.2), sharex=True, sharey=True)
 cols = ['#5b3cc4', '#0f766e', '#c2255c', '#e8590c', '#1c7ed6']
 rows = {0: [], 1: []}
 for k, (name, bag) in enumerate(runs):
-    smac = 'sh' in name; ax = axs[1 if smac else 0]; col = cols[k % len(cols)]
+    smac = name.startswith('f2s'); ax = axs[1 if smac else 0]; col = cols[k % len(cols)]
     T, P, seg, PL = load(bag)
     C = np.array([clr(p) for p in P[seg]]); i = int(np.argmin(C)); pm = P[seg][i]; tmin = T[seg][i]
     # 점선 = 최소 여유 순간에 쓰이던 BT 경로(그 시각 이전 마지막). 첫 판은 복귀 구간 시작 직전 경로를 그려 B0 는 막힘 전 '상자 관통' 경로가 나왔음
@@ -62,7 +62,7 @@ for k, (name, bag) in enumerate(runs):
     c, s = math.cos(pm[2]), math.sin(pm[2]); W = np.c_[pm[0] + c * FP[:, 0] - s * FP[:, 1], pm[1] + s * FP[:, 0] + c * FP[:, 1]]
     ax.add_patch(Polygon(W, closed=True, fc=col, ec=col, lw=1.8, alpha=0.25)); ax.plot(*pm[:2], 'o', color=col, ms=5)
     rows[1 if smac else 0].append((name, 100 * C[i]))
-for ax, ttl in zip(axs, ('B0 · NavFn (f2rp1 · f2rp2 · f2rp5, 10-23)', 'Smac Hybrid RS (f2sh1 · f2sh2, 10-26)')):
+for ax, ttl in zip(axs, ('B0 · NavFn (f2rp1 · f2rp2 · f2rp5, 10-23)', 'Smac Hybrid RS (10-26) — f2sh: MPPI 14 · 10, f2sa: 28 · 5')):
     ax.add_patch(Rectangle((BOX[0], BOX[2]), BOX[1] - BOX[0], BOX[3] - BOX[2], fc='#e03131', ec='#1f2328', lw=1.0, zorder=5))
     ax.set_xlim(0.3, 2.4); ax.set_ylim(-0.75, 0.85); ax.set_aspect('equal'); ax.grid(color='#e5e7eb', lw=0.6)
     ax.set_title(ttl, loc='left', fontsize=13); ax.legend(loc='upper left', fontsize=10, frameon=False); ax.set_xlabel('map x (m)')
