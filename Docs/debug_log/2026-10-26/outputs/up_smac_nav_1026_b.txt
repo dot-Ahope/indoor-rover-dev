@@ -1,0 +1,15 @@
+이전 launch/navigation.launch.py 2e9009822517
+이전 config/nav2_params.yaml ea0d911e40a0
+이전 src/copy_path_action.cpp 689059171806
+새 launch/navigation.launch.py b8a1bb4074f1
+새 config/nav2_params.yaml ea0d911e40a0
+새 src/copy_path_action.cpp 689059171806
+prep_patrol ee70033fbe
+Starting >>> rover_navigation
+Finished <<< rover_navigation [3.99s]
+
+Summary: 1 package finished [4.58s]
+설치본 config/nav2_params.yaml = 링크 → /home/jetson/ros2_ws/src/rover_navigation/config/nav2_params.yaml
+설치본 launch/navigation.launch.py = 링크 → /home/jetson/ros2_ws/src/rover_navigation/launch/navigation.launch.py
+1
+0

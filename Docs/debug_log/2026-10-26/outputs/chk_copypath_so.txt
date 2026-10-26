@@ -1,0 +1,4 @@
+Mon Oct 26 12:38:02 PM KST 2026
+-rwxrwxr-x 1 jetson jetson 523608 2026-10-26_12:37:49 /home/jetson/ros2_ws/build/rover_navigation/librover_copy_path_bt_node.so
+1
+1

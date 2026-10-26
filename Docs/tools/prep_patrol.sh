@@ -13,6 +13,7 @@ case "${ODOM:-vslam}" in
   *) echo "ODOM 은 vslam|rf2o"; exit 1;;
 esac
 # 10-19 §16: SENSORS_ADD 로 센서 인자 추가(예: "emitter_flash:=true stereo_fps:=30" — 프로젝터 번갈이 · 분리 노드). 뒤에 오므로 같은 인자는 덮어씀.
-export EXTRA_SENSORS="$S ${SENSORS_ADD:-}" EXTRA_NAV="global_camera:=nvblox replan_hz:=${REPLAN_HZ:-0.5} $V" STUCK_SHADOW=true FWD
-echo "  prep_patrol: 오도메트리 ${ODOM:-vslam} · 재계획 ${REPLAN_HZ:-0.5} Hz · 궤적 발행 $VIZ · PreferForward $FWD"
+# 2026-10-26 §7: NAV_ADD 로 navigation.launch 인자 추가(예 "planner:=smac" — Smac Hybrid → 실패 시 NavFn)
+export EXTRA_SENSORS="$S ${SENSORS_ADD:-}" EXTRA_NAV="global_camera:=nvblox replan_hz:=${REPLAN_HZ:-0.5} $V ${NAV_ADD:-}" STUCK_SHADOW=true FWD
+echo "  prep_patrol: 오도메트리 ${ODOM:-vslam} · 재계획 ${REPLAN_HZ:-0.5} Hz · 궤적 발행 $VIZ · PreferForward $FWD · 추가 nav 인자 ${NAV_ADD:-없음}"
 bash /tmp/prep_fast.sh
