@@ -1,0 +1,43 @@
+장면 · 계획기 | 점 · 길이 m | 상자 여유 차체 · 중심(cm) | 치명까지 차체(cm) | 최대 꺾임 0.3 m(°) | 계획 s
+b910_rp1_replan  GridBased     |  113 ·  2.86 |   13.3 ·   13.3 |   14.5 |    82 | 0.002
+b910_rp1_replan  Smac_R10_C12_A10_RS |   40 ·  2.80 |   13.2 ·   13.3 |   12.3 |    24 | 0.005
+b910_rp1_replan  Smac_R10_C12_A10_RS_NS |   40 ·  2.95 |   10.3 ·   17.3 |    9.8 |    45 | 0.004
+b910_rp1_replan  Smac_R10_C30_A10_RS |   41 ·  2.87 |   13.6 ·   13.7 |   12.3 |    32 | 0.005
+b910_rp1_replan  Smac_R10_C30_A10_RS_NS |   41 ·  3.01 |   12.8 ·   17.8 |    5.7 |    45 | 0.003
+b910_rp1_replan  Smac_R10_C60_A10_RS |   40 ·  2.86 |   15.2 ·   15.3 |   12.3 |    33 | 0.004
+b910_rp1_replan  Smac_R10_C60_A10_RS_NS |   40 ·  2.97 |   10.1 ·   18.6 |    9.4 |    45 | 0.004
+b910_rp2_replan  GridBased     |  121 ·  3.09 |    8.0 ·   10.2 |    7.9 |    90 | 0.001
+b910_rp2_replan  Smac_R10_C12_A10_RS |   45 ·  3.15 |    8.6 ·    9.8 |    8.6 |    35 | 0.008
+b910_rp2_replan  Smac_R10_C12_A10_RS_NS |   45 ·  3.34 |   10.3 ·   11.3 |    8.7 |    68 | 0.006
+b910_rp2_replan  Smac_R10_C30_A10_RS |   45 ·  3.15 |    8.6 ·    9.8 |    8.6 |    35 | 0.007
+b910_rp2_replan  Smac_R10_C30_A10_RS_NS |   45 ·  3.34 |   10.3 ·   11.3 |    8.7 |    68 | 0.005
+b910_rp2_replan  Smac_R10_C60_A10_RS |   45 ·  3.15 |    8.6 ·    9.8 |    8.6 |    35 | 0.007
+b910_rp2_replan  Smac_R10_C60_A10_RS_NS |   45 ·  3.34 |   10.3 ·   11.3 |    8.7 |    68 | 0.006
+west_rp3_g4      GridBased     |   72 ·  2.11 |  413.5 ·  451.4 |    0.0 |   180 | 0.001
+west_rp3_g4      Smac_R10_C12_A10_RS | 실패
+west_rp3_g4      Smac_R10_C12_A10_RS_NS | 실패
+west_rp3_g4      Smac_R10_C30_A10_RS | 실패
+west_rp3_g4      Smac_R10_C30_A10_RS_NS | 실패
+west_rp3_g4      Smac_R10_C60_A10_RS | 실패
+west_rp3_g4      Smac_R10_C60_A10_RS_NS | 실패
+west_rp3_g5      GridBased     |   69 ·  1.77 |  422.9 ·  434.9 |    2.1 |    90 | 0.012
+west_rp3_g5      Smac_R10_C12_A10_RS | 실패
+west_rp3_g5      Smac_R10_C12_A10_RS_NS | 실패
+west_rp3_g5      Smac_R10_C30_A10_RS | 실패
+west_rp3_g5      Smac_R10_C30_A10_RS_NS | 실패
+west_rp3_g5      Smac_R10_C60_A10_RS | 실패
+west_rp3_g5      Smac_R10_C60_A10_RS_NS | 실패
+b910_rp5_replan  GridBased     |  114 ·  2.92 |    9.1 ·    9.1 |   11.9 |    90 | 0.002
+b910_rp5_replan  Smac_R10_C12_A10_RS |   41 ·  2.88 |   12.1 ·   12.2 |   16.3 |    32 | 0.008
+b910_rp5_replan  Smac_R10_C12_A10_RS_NS |   41 ·  3.04 |    3.6 ·   12.6 |   13.5 |    68 | 0.003
+b910_rp5_replan  Smac_R10_C30_A10_RS |   41 ·  2.88 |   12.1 ·   12.2 |   16.3 |    32 | 0.004
+b910_rp5_replan  Smac_R10_C30_A10_RS_NS |   41 ·  3.04 |    3.6 ·   12.6 |   13.5 |    68 | 0.003
+b910_rp5_replan  Smac_R10_C60_A10_RS |   41 ·  2.88 |   12.1 ·   12.2 |   16.3 |    32 | 0.004
+b910_rp5_replan  Smac_R10_C60_A10_RS_NS |   41 ·  3.04 |    3.6 ·   12.6 |   13.5 |    68 | 0.003
+b910_rp5_full    GridBased     |  273 ·  6.90 |    9.0 ·    9.0 |   11.7 |    90 | 0.002
+b910_rp5_full    Smac_R10_C12_A10_RS |   94 ·  6.78 |   13.0 ·   13.1 |   18.5 |   140 | 0.018
+b910_rp5_full    Smac_R10_C12_A10_RS_NS |   94 ·  7.12 |   11.0 ·   15.5 |    9.2 |   135 | 0.017
+b910_rp5_full    Smac_R10_C30_A10_RS |   94 ·  6.78 |   13.0 ·   13.1 |   18.5 |   140 | 0.018
+b910_rp5_full    Smac_R10_C30_A10_RS_NS |   94 ·  7.12 |   11.0 ·   15.5 |    9.2 |   135 | 0.017
+b910_rp5_full    Smac_R10_C60_A10_RS |   94 ·  6.78 |   13.0 ·   13.1 |   18.5 |   140 | 0.018
+b910_rp5_full    Smac_R10_C60_A10_RS_NS |   94 ·  7.12 |   11.0 ·   15.5 |    9.2 |   135 | 0.017
