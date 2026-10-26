@@ -251,3 +251,8 @@
 - 판정(§11): ① ✔ ② ✔(14.6 · 14.9) ③ ✔ 정지 0(2 회) ④ 안쪽 이탈 10.7 · 15.7 → 4.6 · 1.6 cm ⑤ 시간 같은 수준.
 - 읽기: 굽은 곳 깎기가 줄고 상자 옆 여유가 두 번 다 ~15 cm 로 고름(14 · 10 판은 18.4 · 10.8 로 흩어짐). 10-23 f2pa2 형 정지는 이 2 회에선 안 나옴(그때는 NavFn 경로 + W3 앞 경로 꺾임 장면 — Smac 경로에선 그 모양이 덜 생길 수 있음, 추정). 각 2 회라 표본이 작음.
 - 상태: Jetson yaml 은 아직 28 · 5(저장소 기본 14 · 10). 채택(저장소 반영) 여부는 사용자 결정.
+
+## §12 시각화 (사용자: "영상으로 시각화해달라.")
+- 영상(1.5 배속, git 제외): `videos/f2sa1_return_box.mp4`(15:14:15~15:15:05) · `videos/f2sa2_return_box.mp4`(15:36:20~15:37:10), 비교 `videos/cmp_f2sh2_vs_f2sa2.mp4`(위 f2sh2 = MPPI 14 · 10, 아래 f2sa2 = 28 · 5, ffmpeg 세로 붙임). 생성 기록 `outputs/fig_drive_video_f2sa*.txt`. 장면 `figures/f2sa2_return_box_frame.png`.
+- 비교 그림 `figures/box_compare_b0_smac_mppi.png`(`jobs/fig_box_compare.py` → `outputs/fig_box_compare_mppi.txt`): 오른쪽 판에 Smac 4 주행 — f2sh2(파랑)는 상자 동쪽 대각선에서 경로 안쪽으로 깎아 10.8 cm, f2sa1 · f2sa2 는 점선(경로) 바깥 호를 따라 14.6 · 14.9 cm.
+- 영상 도구 수정: 스무더 사건이 하나라도 있으면 Smac 경로 규칙(점 간격 > 0.04 m)을 건너뛰어, NavFn 대체가 한 번 있던 f2sa1 첫 영상에 Smac 경로가 빠졌음 → 두 규칙을 항상 합침(f2sa1 다시 렌더: BT 경로 1 + Smac 3).
