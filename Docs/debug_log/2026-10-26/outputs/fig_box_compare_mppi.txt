@@ -1,0 +1,2 @@
+B0 f2rp1 15.2 cm · f2rp2 5.5 cm · f2rp5 3.1 cm
+Smac f2sh1 18.4 cm · f2sh2 10.8 cm · f2sa1 14.6 cm · f2sa2 14.9 cm
