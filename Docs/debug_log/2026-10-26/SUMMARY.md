@@ -362,3 +362,8 @@
 | 다음에 알아보는 법 | 상관 하나로 원인을 말하지 말고, 그 변수만 바꾸는 판별 시험을 먼저. 내가 만든 충돌 지표는 계획기 판정과 같은지 확인된 것만 원인 설명에 씀 |
 
 - 다음 판별(제안, 아직 안 함): 출발 ↔ 지도 바꿔 끼우기 — 실패 순간 지도 + 성공 순간 출발 자세, 성공 순간 지도 + 실패 순간 출발 자세. 출발 자세가 정하면 '통로 안에서 출발하면 Smac 이 못 뻗음' 확정.
+
+## §21 하루 정리 (사용자: "오늘은 정리하고, 아티팩트로도 만들어 로컬에도 저장해달라.")
+- 정리 페이지: https://claude.ai/artifact/8ZGY58t9gRAHwf86yhTh3n (비공개). 로컬 사본 = 게시 원본 `figures/day_summary_1026.html`(494 kB, 그림 내장). 만드는 법: `jobs/report_1026_head.html`(10-20 틀) + `jobs/report_1026_body.html` + 그림 `figures/report/{box,corr,yaw}.jpg`(원본 `figures/compare/box_compare_b0_smac_mppi.png` · `figures/real_video/real_rviz_corridor_hd_x2.png` · `figures/planner_offline/goal_yaw.png`(도구 `jobs/fig_goal_yaw.py`)) → `jobs/fill_report_1026.py`.
+- 오늘 결론 요약: 계획기 쪽 손잡이로 상자 여유 +5 cm ✘(§1~§6) · Smac Hybrid 실주행 b910 18.4 · 10.8 cm(§7) · MPPI 28 · 5 로 굽은 곳 깎기 4.6 · 1.6 cm 채택(§11 · §14) · 서쪽 통로 8/8 이나 여유 0.8 cm · 정지 15.3 s(§15) · 통로 Smac 실패는 목표 방향 탓 아님(§20.1).
+- 상태: Jetson 스택 켜짐(f2sa3 뒤), nav2_params 28 · 5 저장소 판. 미결정: §15 선택지, 다음 판별(출발 ↔ 지도 바꿔 끼우기). push 안 함(feature/smac-hybrid 는 a10a315a 이후 미푸시).

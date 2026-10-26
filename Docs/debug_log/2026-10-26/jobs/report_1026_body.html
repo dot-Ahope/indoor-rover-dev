@@ -1,0 +1,122 @@
+
+<div class="wrap">
+<header>
+  <div class="eyebrow">Indoor Rover · 2026-10-26 · Docs/debug_log/2026-10-26 §0–§20</div>
+  <h1>10-26 Smac Hybrid 실주행</h1>
+  <p class="lead">상자 옆 여유를 늘리려고 계획기 쪽 손잡이(전역 비용장, Smac Lattice · Hybrid, Jazzy 포크)를 오프라인으로 시험했고, 가장 나은 Smac Hybrid 판을 실제로 달렸습니다. 남은 손실이 컨트롤러의 굽은 곳 깎기라는 것을 확인해 MPPI 경로 가중치를 바꿨고(28 · 5), 서쪽 통로 주행은 통과했지만 여유가 0.8 cm 였습니다. 끝으로 통로에서 Smac 이 실패한 이유를 가렸습니다.</p>
+</header>
+
+<section>
+  <h2>오늘의 판정</h2>
+  <div class="verdicts">
+    <div class="v no"><b>계획기 쪽 손잡이로는 상자 여유 +5 cm 를 못 얻음</b><span>전역 비용 완만화는 오히려 더 붙음, 패딩은 바닥만 정함, Lattice · Hybrid 변형 중 최선이 평균 +3.1 cm (§1 · §3 · §6.3)</span></div>
+    <div class="v ok"><b>Smac Hybrid 실주행 b910 2/2 · 상자 옆 18.4 · 10.8 cm</b><span>B0(NavFn) 15.4 · 5.5 · 3.1 cm. 계획 경로 여유는 17~18 cm 로 멀어졌고 남은 손실은 굽은 곳 깎기 (§7.3 · §7.4)</span></div>
+    <div class="v ok"><b>MPPI PathAlign 28 · PathFollow 5 채택</b><span>굽은 곳 안쪽 이탈 10.7 · 15.7 → 4.6 · 1.6 cm, 상자 옆 14.6 · 14.9 cm, 1 s 넘는 정지 0 (§11 · §14)</span></div>
+    <div class="v wait"><b>서쪽 통로 f2sa3 8/8, 그러나 여유 0.8 cm · 정지 5 번 15.3 s</b><span>통로에선 Smac 실패 → NavFn 경로를 바짝 따름. 닿지는 않음(사용자 확인). 판정 ③ ✘ (§15 · §17)</span></div>
+    <div class="v no"><b>통로 Smac 실패는 목표 방향 탓이 아님</b><span>같은 순간에서 목표 방향 13 가지 모두 같은 결과 — 결과는 출발 자세 · 지도 쪽이 정함 (§20.1)</span></div>
+    <div class="v ok"><b>바퀴 반전 순간 휠 부호 오차는 최대 3.1 mm</b><span>9 주행 159 번 반전. 지금 속도에선 펌웨어 '멈춘 뒤 방향 바꾸기' 근거 없음 (§2)</span></div>
+  </div>
+</section>
+
+<section>
+  <h2>계획기 오프라인 비교<span class="sec">§1 · §3 · §4 · §5 · §6</span></h2>
+  <p>10-23 실주행 장면 6 개(상자 4 · 서쪽 통로 2)를 그대로 꺼내 오프라인 planner_server 에 물었습니다. 기준은 상자 4 장면에서 NavFn 대비 차체 여유 평균 +5 cm 이상, 나빠지는 장면 0 입니다.</p>
+  <div class="tbl"><table>
+    <tr><th>변형(변형마다 프로세스 따로)</th><th>rp1</th><th>rp2</th><th>rp5</th><th>rp5 전체</th><th>평균 차</th><th>나빠진 장면</th></tr>
+    <tr><td>NavFn(B0)</td><td class="n">13.3</td><td class="n">8.0</td><td class="n">9.1</td><td class="n">9.0</td><td class="n">—</td><td class="n">—</td></tr>
+    <tr class="bad"><td>Hybrid DUBIN R0.10 cp 3.0</td><td class="n">13.5</td><td class="n">6.3</td><td class="n">9.4</td><td class="n">1.3</td><td class="n">−2.2</td><td class="n">2</td></tr>
+    <tr class="bad"><td>Hybrid RS cp 3.0(해석 3 m)</td><td class="n">13.5</td><td class="n">6.8</td><td class="n">3.4</td><td class="n">3.0</td><td class="n">−3.2</td><td class="n">3</td></tr>
+    <tr class="hl"><td>Hybrid RS cp 3.0 해석 1.0 m</td><td class="n">13.6</td><td class="n">14.4</td><td class="n">12.3</td><td class="n">11.4</td><td class="n">+3.1</td><td class="n">0</td></tr>
+    <tr><td>Lattice cp 2 회전 5</td><td class="n">14.0</td><td class="n">8.2</td><td class="n">16.0</td><td class="n">8.1</td><td class="n">+1.7</td><td class="n">1</td></tr>
+  </table></div>
+  <p class="note">단위 cm(차체 ↔ 상자). 원문 <span class="mono">outputs/planner_offline/sep/anal_all.txt</span>. 서쪽 통로는 Hybrid 전부 실패, Lattice 는 북행만 성공. Jazzy 의 해석 확장 비용 상한을 이식한 포크(<span class="mono">Docs/06_planner/smac_fork/</span>)는 이 장면들에서 이득 없음(<span class="mono">planner_offline/sep_fork/</span>). 기준은 못 넘었지만 나빠진 장면이 없는 'RS + 해석 1.0 m' 를 실주행 후보로 골랐습니다.</p>
+</section>
+
+<section>
+  <h2>Smac 실주행과 MPPI 굽은 곳 깎기<span class="sec">§7 · §9 · §10 · §11</span></h2>
+  <p>Smac 경로는 상자에서 멀어졌지만, 로버는 굽은 곳에서 받은 경로보다 상자 쪽으로 파고들었습니다. 컨트롤러 자기 좌표(odom)에서 재도 +15.7 cm 였고 위치 보정 몫은 5 cm 이하라, MPPI 가 경로 안쪽을 깎은 것입니다. 오프라인 시뮬이 처음엔 이것을 재현하지 못했는데, 실제 로버는 바깥 바퀴가 펌웨어 한계 0.085 m/s 에 걸려 두 바퀴가 같은 비율로 느려지고 있었습니다(시뮬 구동계 정정 뒤 재현).</p>
+  <div class="tbl"><table>
+    <tr><th>주행</th><th>MPPI PathAlign · PathFollow</th><th>상자 옆 실제 최소(복귀)</th><th>굽은 곳 안쪽 이탈 최대</th><th>1 s 넘는 정지</th><th>총 시간</th></tr>
+    <tr><td>f2sh1</td><td>14 · 10</td><td class="n">18.4 cm</td><td class="n">+10.7 cm</td><td class="n">0</td><td class="n">205.8 s</td></tr>
+    <tr><td>f2sh2</td><td>14 · 10</td><td class="n">10.8 cm</td><td class="n">+15.7 cm</td><td class="n">0</td><td class="n">201.7 s</td></tr>
+    <tr class="hl"><td>f2sa1</td><td>28 · 5</td><td class="n">14.6 cm</td><td class="n">+4.6 cm</td><td class="n">0</td><td class="n">205.8 s</td></tr>
+    <tr class="hl"><td>f2sa2</td><td>28 · 5</td><td class="n">14.9 cm</td><td class="n">+1.6 cm</td><td class="n">0</td><td class="n">199.1 s</td></tr>
+  </table></div>
+  <figure><img src="{{img:box}}" alt="B0 와 Smac 주행의 상자 옆 궤적 비교"><figcaption>복귀 길 상자(빨강) 옆. 왼쪽 B0(NavFn), 오른쪽 Smac 4 주행. 실선 = 지나간 길, 점선 = 가장 가까운 순간에 따르던 전역 경로, 칠한 차체 = 상자와 가장 가까운 순간. f2sh2 는 상자 동쪽 대각선에서 경로 안쪽으로 깎았고, 28 · 5 두 주행은 경로 바깥 호를 따랐습니다. 도구 <span class="mono">jobs/fig_box_compare.py</span>.</figcaption></figure>
+  <p class="note">시뮬(씨앗 10)에서 28 · 5 는 깎기 최악 19.8 → 11.2 cm 였지만 평균 차는 표준오차 안이라 '구분 불가' 로 기록했고, 실주행 A/B 2 회로 판단했습니다(<span class="mono">outputs/mppi_sim/sim_corner_1026d_summary.txt</span>). 28 · 5 주행의 멈칫은 W3 돌아서기와 TF 중단뿐, 10-23 f2pa2 같은 '이유 없는' 정지는 없었습니다(§13).</p>
+</section>
+
+<section>
+  <h2>서쪽 통로 f2sa3<span class="sec">§15 · §16 · §17</span></h2>
+  <p>8 목표 모두 도착했습니다. 통로 계획 5 번은 모두 Smac 실패 → NavFn 대체였고, 다듬기(SimpleSmoother)도 충돌로 실패해 NavFn 원경로가 그대로 쓰였습니다. 가장 좁은 곳은 치명 칸 사이 0.50 m(10-23 과 같음)로, 차체 + 패딩 0.35 m 면 양옆 7.5 cm 입니다.</p>
+  <div class="tbl"><table>
+    <tr><th></th><th>B0 f2rp4(10-23, 14 · 10)</th><th>f2sa3(Smac → NavFn, 28 · 5)</th></tr>
+    <tr><td>통로 최소 정확 여유</td><td class="n">2.9 cm</td><td class="n">0.8 cm</td></tr>
+    <tr><td>컨트롤러 경로와의 이탈 중앙 · 95 %</td><td class="n">4.1 · 13.9 cm</td><td class="n">1.0 · 10.4 cm</td></tr>
+    <tr><td>목표 4 · 5 시간</td><td class="n">26.2 · 32.6 s</td><td class="n">39.7 · 49.8 s</td></tr>
+    <tr class="bad"><td>1 s 넘는 정지 · 복구 Wait</td><td class="n">—</td><td class="n">5 번 15.3 s · 2</td></tr>
+  </table></div>
+  <figure><img src="{{img:corr}}" alt="실제 촬영과 RViz 스타일 시각화 합본의 한 장면"><figcaption>16:12:17 — 왼쪽 실제 촬영, 오른쪽 RViz 스타일 시각화(초록 = BT 경로 · 차체, 노랑 = 로컬 치명, 빨간 점 = 라이다). 로버가 빨간 쇼핑백과 날개가 열린 상자 사이에 비스듬히 끼어 있습니다. 합본 영상 <span class="mono">videos/f2sa3_real_rviz_corridor_hd_x2.mp4</span>(git 제외), 도구 <span class="mono">Docs/tools/fig_rviz_video.py</span>.</figcaption></figure>
+  <p>읽기(추정, 각 1 회): 상자 구간(Smac 경로)에선 경로를 바짝 따르는 것이 이득이었고, 통로(벽 쪽으로 붙는 NavFn 경로)에선 같은 가중치가 MPPI 가 가운데로 비켜 갈 여지를 줄였습니다.</p>
+</section>
+
+<section>
+  <h2>통로에서 Smac 은 왜 실패했나<span class="sec">§19 · §20</span></h2>
+  <p>영상에서는 두 계획기가 모두 통로를 지나는 경로를 낸 것처럼 보였습니다. 경로 메시지를 점 간격으로 나눠 보니(NavFn 0.025 m, Smac 0.07 m) 16:13:08 전까지 통로의 초록 선은 전부 NavFn 이었고, 16:13:08 에는 Smac 도 가장 좁은 곳을 지나는 경로를 냈습니다. 통로 자체가 Smac 에게 불가능한 것은 아닙니다.</p>
+  <p>그래서 Smac 에 물은 6 순간(실패 5 · 성공 1)을 오프라인으로 꺼내, 목표 방향만 13 가지로 바꿔 실주행과 같은 설정(시간 상한 2.0 s)으로 물었습니다. 원래 방향의 결과는 실주행과 6/6 같았습니다.</p>
+  <figure><img src="{{img:yaw}}" alt="순간별 목표 방향 시험 결과 격자"><figcaption>행 = Smac 에 물은 순간과 그때 로버 자세, 열 = 목표 방향 더하기. 초록 = 성공, 빨강 = 실패. 칸 숫자는 §19 에서 쓴 내 지표(목표 자세 차체 아래 치명 칸 수)로, 결과와 무관했습니다. 원문 <span class="mono">outputs/planner_offline/goal_yaw/anal_goal_yaw.txt</span>.</figcaption></figure>
+  <p>실패 순간은 모든 방향에서 실패, 성공 순간은 모든 방향에서 성공했습니다. 실패는 모두 시간 상한 전에 났고, 세 순간은 0.01~0.05 s 만에 실패했습니다. 시간이 모자란 것이 아니라 탐색할 칸이 바닥난 모양입니다. 남은 후보는 출발 자세(통로 안 · 남쪽 끝에서 출발하면 첫 원호를 못 뻗음, 추정)와 그 순간의 지도입니다.</p>
+</section>
+
+<section>
+  <h2>바로잡은 내 오류</h2>
+
+  <div class="pm">
+    <h3>한 서버에 Smac 변형 여럿을 올린 비교는 무효였다 <span class="pill no">§6.1</span></h3>
+    <div class="flow">
+      <span class="k">하려 한 것</span><span>오프라인 도구로 Smac 변형 여럿을 한 planner_server 에 플러그인으로 올려 한 번에 비교(10-23 §22.2, 10-26 §3 · §4.2 · §5.1).</span>
+      <span class="k">본 것</span><span>cost_penalty · 비용 상한 · 회전 벌점 · 운동 모델을 바꿔도 경로가 같았고, 같은 설정 <span class="mono">Smac_R10_C30_A10_RS</span> 가 f2rp2 에서 14.4 cm(§4.2) · 8.6 cm(§6.1) 로 달랐음. 원문 <span class="mono">outputs/planner_offline/hyb/run_rs.txt</span> · <span class="mono">cause/run_ns.txt</span>.</span>
+      <span class="k">처음 추론</span><span>1.1.20 의 해석 확장이 비용을 무시해서(§3.1 · §4), 다음엔 후처리 smoother 때문(§6.1)이라고 봄.</span>
+      <span class="k">의심한 이유</span><span>같은 설정 · 같은 장면인데 '함께 올린 다른 변형' 에 따라 결과가 바뀜. 같은 구성 재실행은 결정적이었으니 무작위도 아님.</span>
+      <span class="k">판별</span><span>소스: <span class="mono">node_hybrid.hpp:446</span> 의 <span class="mono">static HybridMotionTable motion_table</span>, Lattice 도 <span class="mono">node_lattice.hpp:417</span> static, 초기화는 <span class="mono">a_star.cpp:115</span> 에서 지도 크기가 바뀔 때만. 변형마다 프로세스를 따로 띄우는 <span class="mono">Docs/tools/plan_offline/run_variants.sh</span> 로 다시 잼(<span class="mono">planner_offline/sep/</span>).</span>
+      <span class="k">결론</span><span>한 프로세스의 Smac 인스턴스들이 한 설정을 공유. 여러 변형을 한 서버에서 비교한 결과는 무효이고, 'cost_penalty 가 효과 없음 · 해석 확장 탓' 이라는 읽기도 근거 없음으로 되돌림. 실주행(Smac 하나)은 해당 없음.</span>
+      <span class="k">알아보는 법</span><span>같은 프로세스에 같은 플러그인을 여럿 올리는 비교는 static 상태 공유부터 의심. 같은 설정의 결과가 이웃 변형에 따라 바뀌면 그 신호.</span>
+    </div>
+  </div>
+
+  <div class="pm">
+    <h3>목표 자세 차체 아래 치명 칸으로 Smac 실패를 설명했다 <span class="pill no">§19 → §20.1</span></h3>
+    <div class="flow">
+      <span class="k">하려 한 것</span><span>"플래너만 바꿨는데 왜 통로를 지나갔나" 라는 질문에 Smac 실패 원인을 설명.</span>
+      <span class="k">본 것</span><span>6 순간의 목표 자세 차체 아래 치명 칸: 실패 5 중 3 순간 2 · 18 · 22 칸, 성공 순간 0(<span class="mono">outputs/drives/f2sa3/chk_smac_fail_cells.txt</span>, 도구 <span class="mono">jobs/chk_smac_fail_cells.py</span>, 입력 <span class="mono">bags/bag_f2sa3.tgz</span> /global_costmap/costmap · /tf).</span>
+      <span class="k">처음 추론</span><span>목표 방향에 차체가 들어가지 않아서 실패했다(3/5).</span>
+      <span class="k">의심한 이유</span><span>표본이 6 순간뿐이고, 내가 만든 칸 지표가 Smac 의 충돌 판정과 같은지 확인하지 않았음. 그보다 앞서 대화에서 "통로가 Smac 에게 불가능" 이라고 답한 것도 영상과 맞지 않았음(사용자 지적).</span>
+      <span class="k">판별</span><span>같은 순간에서 목표 방향만 13 가지로 바꿔 질의(<span class="mono">jobs/run_goal_yaw_1026.sh</span> → <span class="mono">planner_offline/goal_yaw/</span>). 치명 칸이 있는 방향도 성공(성공 순간), 치명 0 인 방향도 실패(실패 순간).</span>
+      <span class="k">결론</span><span>내 칸 지표와 Smac 결과는 무관. 목표 방향 가설 기각. Smac 의 실제 충돌 판정 방식은 소스로 확인하지 않음(미확인).</span>
+      <span class="k">알아보는 법</span><span>상관 하나로 원인을 말하기 전에 그 변수만 바꾸는 판별 시험을 먼저. 내가 만든 충돌 지표는 계획기 판정과 같은지 확인된 것만 원인 설명에 씀.</span>
+    </div>
+  </div>
+
+  <div class="pm">
+    <h3>그 밖의 정정(같은 순서로 짧게)</h3>
+    <div class="flow">
+      <span class="k">§1.1 · §7.2</span><span><b>본 것</b> D5 다섯 판 모두 재구성 일치 1.0000 인데 NavFn 실패 다수, 아침 prep 은 노드가 하나도 안 뜸 → <b>판별</b> 실행 원문의 <span class="mono">$'\r': command not found</span>, 주말 체크아웃으로 스크립트가 CRLF, 해시도 CRLF 사본끼리 비교 → <b>결론</b> planner_server 20 개가 쌓여 첫 D5 결과 무효(<span class="mono">planner_offline/d5/invalid_crlf/</span>) → <b>알아보기</b> Jetson 으로 보내는 텍스트는 항상 <span class="mono">tr -d '\r'</span>, 해시는 <span class="mono">git show HEAD:</span> 기준.</span>
+      <span class="k">§2</span><span><b>본 것</b> 교차상관 지연이 탐색 끝 +480~500 ms 에 붙음 → <b>판별</b> 기준 회전이 카메라 IMU 축 그대로(v1), 다음엔 휠을 융합한 EKF yaw(v2) → <b>결론</b> IMU 를 tf_static 으로 base_link 에 돌려 씀(<span class="mono">outputs/rev_sign/</span>) → <b>알아보기</b> 지연이 탐색 끝에 붙으면 축 · 좌표부터, 기준 신호가 비교 대상을 융합했는지 설정에서 확인.</span>
+      <span class="k">§4.2</span><span>REEDS_SHEPP 서버가 조회표 계산으로 30 s 넘게 기동해 질의가 빈손, 결과 파일은 앞 실행 것을 읽음 → 대기 180 s(<span class="mono">planner_offline/hyb/invalid_wait30/</span>). 결과 표의 계획기 이름이 요청과 같은지 먼저 본다.</span>
+      <span class="k">§10.2</span><span>시뮬 구동계 <span class="mono">w_gain 0.7</span>(회전만 줄임)이 곡률을 바꿔 깎기를 가림 → 실제 로그로 바깥 바퀴 포화(0.086 m/s)를 확인하고 펌웨어와 같은 비례 축소 <span class="mono">wheel_max</span> 로(<span class="mono">outputs/drives/f2sh2/chk_cmd_vs_motion_f2sh2.txt</span>).</span>
+      <span class="k">§8 · §12</span><span>비교 그림 점선이 막힘 전 '상자 관통' 경로였음 → 최소 여유 순간의 경로로. 영상 도구가 스무더 사건이 하나라도 있으면 Smac 경로를 건너뜀 → 두 규칙을 항상 합침.</span>
+      <span class="k">§17.1</span><span>ffmpeg <span class="mono">-t</span> 를 입력 뒤에 둬 220 s 를 잘랐고 <span class="mono">-shortest</span> 가 필터 그래프에 안 먹음 → <span class="mono">-t</span> 를 입력 앞으로, <span class="mono">hstack shortest=1</span>. 자른 뒤 ffprobe 로 길이 · 장 수를 대조.</span>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>다음</h2>
+  <div class="flow">
+    <span class="k">1</span><span>통로 Smac 실패 판별 이어서: 출발 자세 ↔ 지도 바꿔 끼우기(오프라인, 로버 안 움직임). 출발이 정하면 회전반경 · 각도 칸 · 원호 길이 같은 탐색 설정을 시험</span>
+    <span class="k">2</span><span>§15 선택지 결정: 경로 출처별 MPPI(Smac 경로 28 · 5, NavFn 대체 14 · 10) · Smac 통로 실패 해결 · 14 · 10 복귀</span>
+    <span class="k">3</span><span>push(비공개 · 공개 dev) — 사용자 지시 뒤</span>
+  </div>
+  <p class="note">Jetson 스택은 f2sa3 뒤 켜진 그대로이고 nav2_params 는 28 · 5 저장소 판입니다. 원본 촬영(2.7 GB)과 영상 중간 파일(282 MB)은 사용자 지시로 지웠고, 실제 촬영 장면은 합본 영상 안에만 남아 있습니다. 폴더 지도와 도구 색인은 <span class="mono">TOOLS.md</span>.</p>
+</section>
+</div>

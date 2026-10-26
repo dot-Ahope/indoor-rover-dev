@@ -18,6 +18,7 @@
 | `figures/planner_offline/<변형>/` | 오프라인 비교 장면 6 장씩(변형 폴더 이름 = `outputs/planner_offline` 의 변형) | §1 · §3 ~ §6 |
 | `figures/compare/` | B0 대 Smac 상자 옆 그림 · 영상 정지 장면 | §8 · §12 |
 | `figures/real_video/` | 실제 촬영 장면 묶음 · 합본 확인 장면 | §16 · §17 |
+| `figures/report/` · `figures/day_summary_1026.html` | 정리 페이지 그림(jpg) · 정리 페이지 로컬 사본 | §21 |
 | `videos/`(git 제외) | 완성 영상(합본 · 비교). 중간 파일 `videos/real/` 은 사용자 지시로 삭제(§18.1) | §8 · §12 · §16 · §17 |
 | `bags/`(git 제외) | 주행 bag tgz 5 개 · Jetson 로그 `logs_<주행>/` | §7 ~ §15 |
 
