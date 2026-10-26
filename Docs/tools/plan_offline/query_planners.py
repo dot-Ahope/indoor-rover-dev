@@ -4,7 +4,7 @@
   순서(장면마다): 기록 지도의 치명 칸(100)과 미지(−1)만 /offline_map(transient local)로 발행 → 재구성된 /global_costmap/costmap 이 그 지도 크기 · 원점으로
     바뀌고 치명 칸 수가 같아질 때까지 기다림 → 기록 지도와 칸 값 비교(재구성 일치율) → planner_id 마다 ComputePathToPose(use_start) → 경로 · 계획 시간 · 실패 저장.
   출력: npz(장면/계획기별 경로 x, y, yaw · 시간 · 상태, 재구성 일치율) + 표준출력 요약. 인자: 장면.npz 결과.npz planner_id...(쉼표)"""
-import sys, json, math, time
+import sys, json, math, time, os, re
 import numpy as np
 import rclpy
 from rclpy.node import Node
@@ -16,6 +16,7 @@ from nav2_msgs.action import ComputePathToPose
 
 scenes = np.load(sys.argv[1]); out = sys.argv[2]; PIDS = sys.argv[3].split(',')
 meta = json.loads(str(scenes['meta']))
+PLANLOG = os.environ.get('PLANLOG', '/tmp/planoff/planner.log')   # run_planner_offline.sh 가 planner_server 출력을 쓰는 곳
 
 
 def pose(node, x, y, yaw):
@@ -56,15 +57,23 @@ for sc in meta:
     res[k + '/recon'] = C.astype(np.int8)
     line = '%s: 재구성 일치 %.4f (±1 %.4f, 내접 칸 일치 %.4f, 내접 칸 수 기록 %d · 재구성 %d)' % (k, agree, near, a99, (Gi == 99).sum(), (C == 99).sum()); print(line); summary.append(line)
     for pid in PIDS:
+        try: lp0 = os.path.getsize(PLANLOG)
+        except OSError: lp0 = None
         goal = ComputePathToPose.Goal(); goal.start = pose(n, *st); goal.goal = pose(n, *gl); goal.planner_id = pid; goal.use_start = True
         t1 = time.time(); fut = n.ac.send_goal_async(goal); rclpy.spin_until_future_complete(n, fut, timeout_sec=10)
         gh = fut.result(); rf = gh.get_result_async(); rclpy.spin_until_future_complete(n, rf, timeout_sec=15); wall = time.time() - t1
         r_ = rf.result(); P = r_.result.path.poses if r_ is not None else []
         arr = np.array([[p.pose.position.x, p.pose.position.y, 2 * math.atan2(p.pose.orientation.z, p.pose.orientation.w)] for p in P]) if P else np.zeros((0, 3))
         pt = r_.result.planning_time.sec + r_.result.planning_time.nanosec * 1e-9 if r_ is not None else -1
+        # 2026-10-26 §20: 이 질의 동안 planner.log 에 새로 나온 경고 · 오류(실패 사유) — 질의마다 붙여 저장
+        msg = ''
+        if lp0 is not None:
+            time.sleep(0.05)
+            with open(PLANLOG, 'rb') as f: f.seek(lp0); msg = ' | '.join(re.sub(r'^(\[[^]]*\] )?\[(WARN|ERROR)\] \[[\d.]+\] \[[^]]*\]: ', '', l) for l in f.read().decode('utf-8', 'replace').splitlines() if '[WARN]' in l or '[ERROR]' in l)
+        res['%s/%s/msg' % (k, pid)] = np.array(msg)
         res['%s/%s/path' % (k, pid)] = arr; res['%s/%s/t' % (k, pid)] = np.array([pt, wall, r_.status if r_ is not None else -1])
         L = float(np.hypot(*np.diff(arr[:, :2], axis=0).T).sum()) if len(arr) > 1 else 0.0
-        line = '   %-14s %s · 점 %4d · 길이 %5.2f m · 계획 %.3f s (왕복 %.2f s)' % (pid, '성공' if len(arr) else '실패(상태 %s)' % (r_.status if r_ else '?'), len(arr), L, pt, wall); print(line); summary.append(line)
+        line = '   %-14s %s · 점 %4d · 길이 %5.2f m · 계획 %.3f s (왕복 %.2f s)' % (pid, '성공' if len(arr) else '실패(상태 %s)' % (r_.status if r_ else '?'), len(arr), L, pt, wall) + ('  ← ' + msg[:160] if msg and not len(arr) else ''); print(line); summary.append(line)
 res['meta'] = scenes['meta']; res['summary'] = np.array('\n'.join(summary))
 np.savez_compressed(out, **res); print('저장', out)
 n.destroy_node(); rclpy.shutdown()
