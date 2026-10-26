@@ -1,0 +1,25 @@
+    PID   RSS %CPU COMMAND         COMMAND
+ 199198 600192 11.4 component_conta /opt/ros/humble/lib/rclcpp_components/component_container_mt --ros-args -r __node:=cuvslam_container -r __ns:=/
+ 199885 406700 17.8 nvblox_node    /opt/ros/humble/lib/nvblox_ros/nvblox_node --ros-args --params-file /tmp/nvblox_active.yaml -r camera_0/depth/image:=/camera/camera/depth/image_rect_raw -r camera_0/depth/camera_info:=/camera/camera/depth/camera_info
+ 199519 296820 11.7 localization_sl /home/jetson/slam_ws/install/slam_toolbox/lib/slam_toolbox/localization_slam_toolbox_node --ros-args -r __node:=slam_toolbox --params-file /home/jetson/ros2_ws/install/rover_bringup/share/rover_bringup/config/slam.yaml --params-file /tmp/launch_params_hynbkwgc --params-file /tmp/launch_params_3nx85bcn
+ 198798 147272 20.1 component_conta /opt/ros/humble/lib/rclcpp_components/component_container_mt --ros-args -r __node:=realsense2_camera_container -r __ns:=/camera
+   2143 137512 0.1 gnome-shell     /usr/bin/gnome-shell
+   1606 120944 0.2 dockerd         /usr/bin/dockerd -H fd:// --containerd=/run/containerd/containerd.sock
+   1728 80812  0.0 Xorg            /usr/lib/xorg/Xorg vt1 -displayfd 3 -auth /run/user/128/gdm/Xauthority -nolisten tcp -background none -noreset -keeptty -novtswitch -verbose 3
+   1242 73500  0.2 containerd      /usr/bin/containerd
+ 199613 70400 23.6 planner_server  /opt/ros/humble/lib/nav2_planner/planner_server --ros-args --log-level info --ros-args -r __node:=planner_server --params-file /tmp/launch_params_ykkj0_2k -r /tf:=tf -r /tf_static:=tf_static
+ 198739 66848  2.0 ros2            /usr/bin/python3 /opt/ros/humble/bin/ros2 launch rover_bringup sensors.launch.py viz:=map emitter_off:=true vslam:=on dds_shm:=true
+ 198800 62820  4.6 python3         python3 /home/jetson/ros2_ws/install/rover_bringup/lib/rover_bringup/depth_relay.py --ros-args -r __node:=depth_relay --params-file /tmp/launch_params_0x1rmy5t
+ 199607 62696  4.5 python3         python3 /home/jetson/ros2_ws/install/rover_bringup/lib/rover_bringup/nav_guard.py --ros-args -r __node:=nav_guard
+  66049 62296  0.5 python3         /usr/bin/python3 -c from ros2cli.daemon.daemonize import main; main() --name ros2-daemon --ros-domain-id 0 --rmw-implementation rmw_fastrtps_cpp
+ 199605 61308  5.6 python3         python3 /home/jetson/ros2_ws/install/rover_bringup/lib/rover_bringup/stuck_monitor.py --ros-args -r __node:=stuck_monitor --params-file /tmp/launch_params_4pk7cpmd
+ 198804 60100  9.6 python3         python3 /home/jetson/ros2_ws/install/rover_bringup/lib/rover_bringup/scan_deskew.py --ros-args -r __node:=scan_deskew --params-file /tmp/launch_params_72wv4nb3
+ 199062 59624  6.3 python3         python3 /home/jetson/ros2_ws/install/rover_bringup/lib/rover_bringup/vslam_twist.py --ros-args -r __node:=vslam_twist --params-file /tmp/launch_params_rhec7iz7
+ 199155 59604  2.5 ros2            /usr/bin/python3 /opt/ros/humble/bin/ros2 launch /tmp/cuvslam_active.launch.py
+  46427 59104  0.0 python3         /usr/bin/python3 -c from ros2cli.daemon.daemonize import main; main() --name ros2-daemon --ros-domain-id 42 --rmw-implementation rmw_fastrtps_cpp
+    889 55116  0.1 snapd           /snap/snapd/current/usr/lib/snapd/snapd
+ 199617 53844 11.9 bt_navigator    /opt/ros/humble/lib/nav2_bt_navigator/bt_navigator --ros-args --log-level info --ros-args -r __node:=bt_navigator --params-file /tmp/launch_params_ykkj0_2k -r /tf:=tf -r /tf_static:=tf_static
+ 199609 47764 12.6 controller_serv /opt/ros/humble/lib/nav2_controller/controller_server --ros-args --log-level info --ros-args --params-file /tmp/launch_params_ykkj0_2k -r /tf:=tf -r /tf_static:=tf_static -r cmd_vel:=cmd_vel_nav
+   2762 44548  2.0 micro_ros_agent /uros_ws/install/micro_ros_agent/lib/micro_ros_agent/micro_ros_agent serial --dev /dev/rover -b 460800
+   2667 43608  0.2 python3         python3 /home/jetson/ros2_ws/install/rover_bringup/lib/rover_bringup/display_info_pub.py --ros-args -r __node:=display_info_pub
+ 199545 42516  0.7 ros2            /usr/bin/python3 /opt/ros/humble/bin/ros2 launch rover_navigation navigation.launch.py stuck_shadow:=true nav_map:=/home/jetson/maps/office/office_v3.yaml global_camera:=nvblox replan_hz:=0.01 mppi_viz:=lite planner:=smac
