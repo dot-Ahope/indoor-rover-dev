@@ -367,3 +367,17 @@
 - 정리 페이지: https://claude.ai/artifact/8ZGY58t9gRAHwf86yhTh3n (비공개). 로컬 사본 = 게시 원본 `figures/day_summary_1026.html`(494 kB, 그림 내장). 만드는 법: `jobs/report_1026_head.html`(10-20 틀) + `jobs/report_1026_body.html` + 그림 `figures/report/{box,corr,yaw}.jpg`(원본 `figures/compare/box_compare_b0_smac_mppi.png` · `figures/real_video/real_rviz_corridor_hd_x2.png` · `figures/planner_offline/goal_yaw.png`(도구 `jobs/fig_goal_yaw.py`)) → `jobs/fill_report_1026.py`.
 - 오늘 결론 요약: 계획기 쪽 손잡이로 상자 여유 +5 cm ✘(§1~§6) · Smac Hybrid 실주행 b910 18.4 · 10.8 cm(§7) · MPPI 28 · 5 로 굽은 곳 깎기 4.6 · 1.6 cm 채택(§11 · §14) · 서쪽 통로 8/8 이나 여유 0.8 cm · 정지 15.3 s(§15) · 통로 Smac 실패는 목표 방향 탓 아님(§20.1).
 - 상태: Jetson 스택 켜짐(f2sa3 뒤), nav2_params 28 · 5 저장소 판. 미결정: §15 선택지, 다음 판별(출발 ↔ 지도 바꿔 끼우기). push 안 함(feature/smac-hybrid 는 a10a315a 이후 미푸시).
+
+## §22 Smac 탐색 과정 시각화 (사용자: "경로를 못내다가, 경로를 만드는 부분을 시각화해줄 수 있겠는가?") — 그림 1 차 · 영상은 내일
+- 방법: 1.1.20 에는 탐색 노드를 내보내는 기능이 없음 → 1.1.20 원본(설치판과 같은 태그 a097086)에 **기록만** 넣은 진단 빌드 `~/smac_dbg_ws`(패치 `Docs/06_planner/smac_fork/nav2_smac_planner_rover_expdump.patch` — `a_star.cpp` 탐색 루프에서 방문 노드의 칸 x · y · 방향 칸 · 부모 x · y 를 환경 `SMAC_EXP_DIR` 이 있을 때만 질의마다 파일로). 비용 상한 포크(`~/smac_ws`)는 경로가 설치판과 달라질 수 있어(§5.2) 안 씀. 빌드 `jobs/up_smac_expdbg_1026.sh` → `outputs/setup/up_smac_expdbg_1026.txt`(PC 출력은 Wi-Fi 끊김으로 잘림, Jetson 에서 rc 0 · .so 확인). 질의 `jobs/run_expdbg_1026.sh`(§20 의 6 순간, 원래 목표 방향, 실주행 값) → `outputs/planner_offline/goal_yaw/run_expdbg.txt` · `result_expdbg.npz` · 탐색 기록 `exp_expdbg.tgz`(exp_0~5 = 순간 순서, 702 393 줄; 24 MB 라 묶어 둠). 도구 고침: `run_planner_offline.sh` 세 번째 인자 1 = 기록 받기, `up_bundle.sh` 인자 전달.
+- 재현: 진단 빌드에서도 실패 5 · 성공 1 그대로, 재구성 일치 6/6.
+- 방문 노드 수(본 것): 16:11:56 **340 556** · 16:12:15 **1** · 16:12:22 **332 907** · 16:12:35 **14 551** · 16:12:59 **14 355** · 16:13:08(성공) **23**.
+- 그림 `figures/planner_offline/smac_expansion.png`(도구 `jobs/fig_smac_expansion.py`; 제목의 '칸 n' 은 연속 좌표 고유 수라 의미 없음 — 내일 다시 그릴 때 뺌, 스크립트는 고쳐 둠). 읽기(그림에서 본 것 + 추정 표시):
+  - 16:12:15(로버가 가장 좁은 곳 −60°): **출발 노드 하나만 방문** = 출발 자세에서 뻗은 원호가 전부 충돌로 버려짐.
+  - 16:12:22(같은 자리 −61°): 출발에서 **뒤(북쪽)로만** 33 만 개 뻗고 남쪽 좁은 곳으로는 못 들어감.
+  - 16:12:35 · 16:12:59(남쪽 끝): 남쪽 넓은 쪽으로만 1.4 만 개, 북쪽 좁은 곳으로 못 들어감.
+  - 16:11:56(북쪽 입구): 북쪽에서 크게 퍼지고 남쪽 넓은 곳에도 노드가 있음 — 남쪽 노드가 좁은 곳을 지나 온 것인지 창 밖으로 돌아 온 것인지는 **미확인**(부모 사슬로 확인할 것).
+  - 16:13:08(통로 안, 이미 북향 96°): 23 노드 만에 목표로 곧게 연결(해석 확장으로 추정).
+  - → 결론(추정): 가장 좁은 곳(y −4.6~−4.8, 꺾임)이 Smac 이산 탐색에선 **넘을 수 없는 벽** 처럼 작동 — 이미 그 방향으로 정렬돼 있을 때만 통과. §20.1 의 '출발 자세 · 지도' 후보 중 출발 쪽을 지지하나, 출발 ↔ 지도 바꿔 끼우기 판별은 아직.
+- 영상 `videos/smac_expansion_fail_vs_ok.mp4`(git 제외)는 **초안**(6 s, 끝 붙잡기 없음 — 성공 쪽이 첫 장에 끝남). 로그 눈금 · 끝 3 s 붙잡기로 고친 렌더링은 사용자 지시로 **내일**(`exp_expdbg.tgz` 를 `outputs/planner_offline/goal_yaw/exp/` 에 풀고 같은 명령).
+- 다음(내일): ① 영상 렌더링 ② 16:11:56 남쪽 노드의 부모 사슬 확인 ③ 출발 ↔ 지도 바꿔 끼우기 ④ 좁은 곳 통과 조건(각도 칸 144 · 회전반경 · 원호 길이) 오프라인.

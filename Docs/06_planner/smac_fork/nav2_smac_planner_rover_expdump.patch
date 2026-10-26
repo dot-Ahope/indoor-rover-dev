@@ -1,0 +1,57 @@
+--- a/nav2_smac_planner/src/a_star.cpp
++++ b/nav2_smac_planner/src/a_star.cpp
+@@ -24,10 +24,32 @@
+ #include <thread>
+ #include <utility>
+ #include <vector>
++#include <array>
++#include <cstdlib>
++#include <fstream>
++#include <string>
+ 
+ #include "nav2_smac_planner/a_star.hpp"
+ using namespace std::chrono;  // NOLINT
+ 
++namespace
++{
++// 2026-10-26 rover 진단(Docs/debug_log/2026-10-26 §22): 환경 SMAC_EXP_DIR 가 있으면 Hybrid 탐색에서 방문한 노드(칸 x, y, 방향 칸, 부모 x, y)를
++//   질의마다 <dir>/exp_<n>.txt 로 남긴다. 동작은 바꾸지 않음(기록만). 오프라인 진단 빌드 전용 — 주행 스택에 쓰지 않는다.
++struct ExpansionDump
++{
++  bool on{std::getenv("SMAC_EXP_DIR") != nullptr};
++  std::vector<std::array<float, 5>> rows;
++  ~ExpansionDump()
++  {
++    if (!on) {return;}
++    static int n = 0;
++    std::ofstream f(std::string(std::getenv("SMAC_EXP_DIR")) + "/exp_" + std::to_string(n++) + ".txt");
++    for (const auto & r : rows) {f << r[0] << ' ' << r[1] << ' ' << r[2] << ' ' << r[3] << ' ' << r[4] << '\n';}
++  }
++};
++}  // namespace
++
+ namespace nav2_smac_planner
+ {
+ 
+@@ -228,6 +251,7 @@
+   const float & tolerance)
+ {
+   steady_clock::time_point start_time = steady_clock::now();
++  ExpansionDump dump;  // 2026-10-26 rover 진단(위 설명)
+   _tolerance = tolerance;
+   _best_heuristic_node = {std::numeric_limits<float>::max(), 0};
+   clearQueue();
+@@ -287,6 +311,13 @@
+ 
+     // 2) Mark Nbest as visited
+     current_node->visited();
++    if constexpr (std::is_same<NodeT, NodeHybrid>::value) {
++      if (dump.on) {
++        const auto * par = current_node->parent;
++        dump.rows.push_back({current_node->pose.x, current_node->pose.y, current_node->pose.theta,
++            par ? par->pose.x : -1.0f, par ? par->pose.y : -1.0f});
++      }
++    }
+ 
+     // 2.1) Use an analytic expansion (if available) to generate a path
+     expansion_result = nullptr;

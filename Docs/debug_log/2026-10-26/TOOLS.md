@@ -51,4 +51,5 @@
 | §17 | 실제 + RViz 합본 | `Docs/tools/fig_rviz_video.py` + ffmpeg | `videos/f2sa3_real_rviz_*_hd_x2.mp4` | 첫 판 -t 위치 실수(§17.1) |
 | §19 | 통로에서 Smac 실패 · NavFn 성공 차이 | `jobs/chk_corr_paths.py` · `jobs/chk_smac_fail_cells.py` | Smac 도 16:13:08 통로 경로 냄 · 실패 3/5 는 목표 자세 차체 아래 치명(`drives/f2sa3/chk_*`) | ✘ 처음 답(통로가 Smac 에 불가능) 틀림 · 나머지 2 번 ？ |
 | §20 | 목표 방향이 Smac 실패 원인인가 | `jobs/run_goal_yaw_1026.sh`(plan_offline, 장면 `jobs/scenes_goal_yaw_1026.json`) · `jobs/anal_goal_yaw.py` | 실패 순간 65/65 실패 · 성공 순간 13/13 성공(`planner_offline/goal_yaw/`) | ✘ 목표 방향 가설 기각 · §19 칸 지표도 정정 |
+| §22 | Smac 이 어디까지 뻗었나(탐색 과정) | 진단 빌드 `jobs/up_smac_expdbg_1026.sh`(패치 `Docs/06_planner/smac_fork/nav2_smac_planner_rover_expdump.patch`) · `jobs/run_expdbg_1026.sh` · `jobs/fig_smac_expansion.py` | 방문 노드 340 556 · 1 · 332 907 · 14 551 · 14 355 · 성공 23(`planner_offline/goal_yaw/exp_expdbg.tgz`) | ？ 좁은 곳이 탐색의 벽(추정), 영상은 내일 |
 | — | bag · 로그 가져오기 | `jobs/get_logs_<주행>.sh` | `bags/logs_<주행>/` → `outputs/drives/<주행>/nav2_*.log` | — |
