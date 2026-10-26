@@ -306,3 +306,7 @@
 - 후(파일 이름 그대로, 위치만 — `git mv` 로 이력 유지): `outputs/` = `setup/` · `planner_offline/` · `rev_sign/` · `drives/<주행>/` · `mppi_sim/` · `compare/` · `fig_video/`, `figures/` = `planner_offline/` · `compare/` · `real_video/`(옛 `real/`). `jobs/` · `videos/` · `bags/` 는 그대로(용도 앞머리로 이미 구분 · git 제외). 폴더 지도와 도구 색인은 `TOOLS.md`.
 - §0~§17 의 경로는 같은 규칙으로 자리에서 고침(스크립트 치환 54 줄, 고친 뒤 SUMMARY 의 모든 경로가 실제로 있는지 확인 — 없다고 나온 것은 글롭 패턴과 10-23 경로뿐). 다른 날짜 폴더 · `Docs/tools` 에서 10-26 산출물을 가리키는 곳은 없었음(grep).
 - §16 의 원본 촬영 `videos/20261026_160944.mp4`(2.7 GB)는 **사용자가 지움**(10-26 저녁). 남은 것 = 잘라 둔 구간 `videos/real/f2sa3_real_{corridor_161145,box_161615}.mp4`(1280×720) · `f2sa3_real_{corridor,box}_hd_x2.mp4`(1920×1080 · 2 배속). 이 두 구간 밖 장면이나 4K 로 다시 자르는 것은 **원천 소실**.
+
+### §18.1 영상 중간 파일 삭제 (사용자: "중간파일 지워라.")
+- 지움: `videos/real/` 10 개 · 282 MB — 잘라 둔 실제 촬영 4 개(`f2sa3_real_{corridor_161145,box_161615}.mp4` · `f2sa3_real_{corridor,box}_hd_x2.mp4`), RViz 스타일 단독 4 개(`f2sa3_rviz_{corridor,box}{,_1080_x2}.mp4`), 옛 스타일 시각화 단독 2 개(`f2sa3_viz_{corridor,box}.mp4`). git 제외 폴더라 저장소 변화 없음.
+- 남은 것(`videos/`, 243 MB): 합본 · 비교 영상 11 개. 실제 촬영 장면은 이제 합본 안에만 있음 — `cmp_f2sa3_*` · `f2sa3_real_rviz_{corridor,box}.mp4`(1280×720 · 1 배속) · `f2sa3_real_rviz_*_hd_x2.mp4`(1920×1080 · 2 배속). 단독 촬영 파일 · 4K 원본은 원천 소실(§18). 시각화 단독 판은 bag(`bags/bag_f2sa3.tgz`) 과 `Docs/tools/fig_rviz_video.py` · `fig_drive_video.py` 로 다시 만들 수 있음.
