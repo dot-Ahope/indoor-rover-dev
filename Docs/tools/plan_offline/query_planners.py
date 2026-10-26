@@ -37,7 +37,7 @@ rclpy.init(); n = Q(); res = {}; summary = []
 def spin(sec):
     t = time.time()
     while time.time() - t < sec: rclpy.spin_once(n, timeout_sec=0.05)
-if not n.ac.wait_for_server(timeout_sec=30): print('계획 서버 없음'); sys.exit(1)
+if not n.ac.wait_for_server(timeout_sec=180): print('계획 서버 없음(180 s)'); sys.exit(1)   # 2026-10-26: REEDS_SHEPP 판은 시작(조회표 계산)이 30 s 를 넘겨 첫 시도가 빈손
 for sc in meta:
     k = sc['name']; G = scenes[k + '/grid']; ox, oy, r, _ = scenes[k + '/info']; st = scenes[k + '/start']; gl = scenes[k + '/goal']
     m = OccupancyGrid(); m.header.frame_id = 'map'; m.header.stamp = n.get_clock().now().to_msg()
