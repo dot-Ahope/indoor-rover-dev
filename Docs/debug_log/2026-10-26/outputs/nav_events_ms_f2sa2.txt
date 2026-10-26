@@ -1,0 +1,130 @@
+15:30:22.47 planner_server 
+15:30:22.58 planner_server Creating
+15:30:22.64 smoother_server 
+15:30:22.72 smoother_server Creating smoother server
+15:30:22.84 controller_server 
+15:30:22.88 controller_server Creating controller server
+15:30:23.55 bt_navigator 
+15:30:23.56 bt_navigator Creating
+15:30:23.60 velocity_smoother 
+15:30:23.66 behavior_server 
+15:30:27.29 controller_server Configuring controller interface
+15:30:27.29 controller_server getting goal checker plugins..
+15:30:27.29 controller_server Controller frequency set to 10.0000Hz
+15:30:27.94 controller_server Created progress_checker : progress_checker of type nav2_controller::PoseProgressChecker
+15:30:27.95 controller_server Created goal checker : general_goal_checker of type nav2_controller::SimpleGoalChecker
+15:30:27.95 controller_server Controller Server has general_goal_checker  goal checkers available.
+15:30:27.95 controller_server Created controller : FollowPath of type nav2_regulated_pure_pursuit_controller::RegulatedPurePursuitController
+15:30:27.96 controller_server Disabling reversing. Both use_rotate_to_heading and allow_reversing parameter cannot be set to true. By default setting use_rotate_to_heading true
+15:30:28.00 controller_server Created controller : FollowPathMPPI of type nav2_mppi_controller::MPPIController
+15:30:28.01 controller_server Controller period is equal to model dt. Control sequence shifting is ON
+15:30:28.02 controller_server ConstraintCritic instantiated with 1 power and 4.000000 weight.
+15:30:28.02 controller_server Critic loaded : mppi::critics::ConstraintCritic
+15:30:28.02 controller_server InflationCostCritic instantiated with 1 power and 300.000000 / 0.015000 weights. Critic will collision check based on footprint cost.
+15:30:28.02 controller_server Critic loaded : mppi::critics::CostCritic
+15:30:28.03 controller_server GoalCritic instantiated with 1 power and 10.000000 weight.
+15:30:28.03 controller_server Critic loaded : mppi::critics::GoalCritic
+15:30:28.03 controller_server GoalAngleCritic instantiated with 1 power, 3.000000 weight, and 0.400000 angular threshold.
+15:30:28.03 controller_server Critic loaded : mppi::critics::GoalAngleCritic
+15:30:28.03 controller_server ReferenceTrajectoryCritic instantiated with 1 power and 28.000000 weight
+15:30:28.03 controller_server Critic loaded : mppi::critics::PathAlignCritic
+15:30:28.04 controller_server Critic loaded : mppi::critics::PathFollowCritic
+15:30:28.04 controller_server PathAngleCritic instantiated with 1 power and 2.000000 weight. Reversing allowed.
+15:30:28.04 controller_server Critic loaded : mppi::critics::PathAngleCritic
+15:30:28.04 controller_server PreferForwardCritic instantiated with 1 power and 15.000000 weight.
+15:30:28.04 controller_server Critic loaded : mppi::critics::PreferForwardCritic
+15:30:28.14 controller_server ClearanceBandCritic: 띠 0.060 m · 가중 20.0 · 점 간격 2
+15:30:28.14 controller_server Critic loaded : mppi::critics::ClearanceBandCritic
+15:30:28.17 controller_server Optimizer reset
+15:30:28.22 controller_server Controller Server has FollowPath FollowPathMPPI  controllers available.
+15:30:28.26 smoother_server Configuring smoother server
+15:30:28.33 smoother_server Created smoother : simple_smoother of type nav2_smoother::SimpleSmoother
+15:30:28.34 smoother_server Smoother Server has simple_smoother  smoothers available.
+15:30:28.43 planner_server Configuring
+15:30:28.89 planner_server Created global planner plugin GridBased of type nav2_navfn_planner/NavfnPlanner
+15:30:28.89 planner_server Configuring plugin GridBased of type NavfnPlanner
+15:30:28.92 planner_server Created global planner plugin SmacHybrid of type nav2_smac_planner/SmacPlannerHybrid
+15:30:28.92 planner_server Configuring SmacHybrid of type SmacPlannerHybrid
+15:30:28.96 planner_server Even sized heuristic lookup table size set 400.000000, increasing size by 1 to make odd
+15:30:56.13 planner_server Configured plugin SmacHybrid of type SmacPlannerHybrid with maximum iterations 1000000, max on approach iterations 1000, and allowing unknown traversal. Tolerance 0.25.Using
+15:30:56.13 planner_server Planner Server has GridBased SmacHybrid  planners available.
+15:30:56.24 behavior_server Configuring
+15:30:56.29 behavior_server Creating behavior plugin spin of type nav2_behaviors/Spin
+15:30:56.29 behavior_server Configuring spin
+15:30:56.35 behavior_server Creating behavior plugin backup of type nav2_behaviors/BackUp
+15:30:56.36 behavior_server Configuring backup
+15:30:56.41 behavior_server Creating behavior plugin drive_on_heading of type nav2_behaviors/DriveOnHeading
+15:30:56.41 behavior_server Configuring drive_on_heading
+15:30:56.46 behavior_server Creating behavior plugin wait of type nav2_behaviors/Wait
+15:30:56.46 behavior_server Configuring wait
+15:30:56.51 behavior_server Creating behavior plugin monotone_escape of type rover_navigation/MonotoneEscape
+15:30:56.52 behavior_server Configuring monotone_escape
+15:30:56.63 bt_navigator Configuring
+15:30:57.43 velocity_smoother Configuring velocity smoother
+15:30:57.47 controller_server Activating
+15:30:57.68 controller_server Parameter controller_server.verbose not found
+15:30:57.68 controller_server Optimizer reset
+15:30:57.68 controller_server Activating controller: FollowPath of type regulated_pure_pursuit_controller::RegulatedPurePursuitController
+15:30:57.68 controller_server Creating bond (controller_server) to lifecycle manager.
+15:30:57.80 smoother_server Activating
+15:30:57.80 smoother_server Creating bond (smoother_server) to lifecycle manager.
+15:30:57.93 planner_server Activating
+15:30:58.99 planner_server Activating plugin SmacHybrid of type SmacPlannerHybrid
+15:30:58.99 planner_server Activating plugin GridBased of type NavfnPlanner
+15:30:59.00 planner_server Creating bond (planner_server) to lifecycle manager.
+15:30:59.13 behavior_server Activating
+15:30:59.13 behavior_server Activating spin
+15:30:59.13 behavior_server Activating backup
+15:30:59.13 behavior_server Activating drive_on_heading
+15:30:59.13 behavior_server Activating wait
+15:30:59.13 behavior_server Activating monotone_escape
+15:30:59.13 behavior_server Creating bond (behavior_server) to lifecycle manager.
+15:30:59.26 bt_navigator Activating
+15:31:00.00 bt_navigator Creating bond (bt_navigator) to lifecycle manager.
+15:31:00.25 velocity_smoother Activating
+15:31:00.25 velocity_smoother Creating bond (velocity_smoother) to lifecycle manager.
+15:33:54.07 bt_navigator Begin navigating from current location (-0.01, -0.00) to (2.25, -1.60)
+15:33:54.09 controller_server Received a goal, begin computing control effort.
+15:33:54.09 controller_server No goal checker was specified in parameter 'current_goal_checker'. Server will use only plugin loaded general_goal_checker . This warning will appear once.
+15:33:54.10 controller_server Optimizer reset
+15:33:54.70 controller_server Control loop missed its desired rate of 10.0000Hz
+15:34:01.67 controller_server Control loop missed its desired rate of 10.0000Hz
+15:34:30.58 controller_server Control loop missed its desired rate of 10.0000Hz
+15:34:31.14 controller_server Control loop missed its desired rate of 10.0000Hz
+15:34:34.15 controller_server Control loop missed its desired rate of 10.0000Hz
+15:34:45.97 controller_server Reached the goal!
+15:34:46.01 bt_navigator Goal succeeded
+15:34:46.04 bt_navigator Begin navigating from current location (2.25, -1.44) to (5.50, -2.20)
+15:34:46.07 controller_server Received a goal, begin computing control effort.
+15:34:48.01 controller_server Control loop missed its desired rate of 10.0000Hz
+15:34:50.90 controller_server Control loop missed its desired rate of 10.0000Hz
+15:34:50.94 controller_server Control loop missed its desired rate of 10.0000Hz
+15:34:51.60 controller_server Control loop missed its desired rate of 10.0000Hz
+15:34:52.46 controller_server Control loop missed its desired rate of 10.0000Hz
+15:34:57.11 controller_server Control loop missed its desired rate of 10.0000Hz
+15:35:31.72 controller_server Reached the goal!
+15:35:31.76 bt_navigator Goal succeeded
+15:35:31.82 bt_navigator Begin navigating from current location (5.34, -2.16) to (0.00, 0.00)
+15:35:31.87 controller_server Received a goal, begin computing control effort.
+15:35:41.92 controller_server Control loop missed its desired rate of 10.0000Hz
+15:36:18.91 controller_server Control loop missed its desired rate of 10.0000Hz
+15:36:20.36 controller_server Control loop missed its desired rate of 10.0000Hz
+15:36:21.67 controller_server Exception in transformPose: Lookup would require extrapolation into the future.  Requested time 1792996581.148727 but the latest data is at time 1792996581.145253, when l
+15:36:21.67 controller_server Unable to transform robot pose into global plan's frame
+15:36:21.67 controller_server [follow_path] [ActionServer] Aborting handle.
+15:36:21.68 controller_server Received a goal, begin computing control effort.
+15:36:22.07 controller_server Control loop missed its desired rate of 10.0000Hz
+15:36:28.66 controller_server Control loop missed its desired rate of 10.0000Hz
+15:36:28.68 controller_server Control loop missed its desired rate of 10.0000Hz
+15:36:31.75 bt_navigator_navigate_to_pose_rclcpp_node PathBlockedAhead: 앞 경로 (1.24, 0.07) 비용 99 — 2.0 s 지속되면 재계획
+15:36:33.07 controller_server Exception in transformPose: Lookup would require extrapolation into the future.  Requested time 1792996592.540710 but the latest data is at time 1792996592.537689, when l
+15:36:33.07 controller_server Unable to transform robot pose into global plan's frame
+15:36:33.08 controller_server [follow_path] [ActionServer] Aborting handle.
+15:36:33.97 controller_server Received a goal, begin computing control effort.
+15:36:33.97 controller_server Optimizer reset
+15:36:36.45 controller_server Control loop missed its desired rate of 10.0000Hz
+15:36:40.36 controller_server Control loop missed its desired rate of 10.0000Hz
+15:36:42.61 controller_server Control loop missed its desired rate of 10.0000Hz
+15:36:51.80 controller_server Control loop missed its desired rate of 10.0000Hz
+15:37:13.02 controller_server Reached the goal!
+15:37:13.06 bt_navigator Goal succeeded
