@@ -48,4 +48,5 @@
 | §15 | 서쪽 통로 추종 비교 | `jobs/anal_corridor_track.py` | 이탈 중앙 4.1 → 1.0 cm(`drives/f2sa3/`) | ？ 1 회씩 — NavFn 경로를 바짝 따른 탓(추정) |
 | §16 | 실제 촬영 판독 · 통로 폭 | `jobs/fig_real_tiles.py` · `jobs/anal_corridor_gap.py` | 통로 0.50 m 두 날 같음(`drives/f2sa3/anal_corridor_gap.txt`) | ✔ f2rp4 비교 유효 |
 | §17 | 실제 + RViz 합본 | `Docs/tools/fig_rviz_video.py` + ffmpeg | `videos/f2sa3_real_rviz_*_hd_x2.mp4` | 첫 판 -t 위치 실수(§17.1) |
+| §19 | 통로에서 Smac 실패 · NavFn 성공 차이 | `jobs/chk_corr_paths.py` · `jobs/chk_smac_fail_cells.py` | Smac 도 16:13:08 통로 경로 냄 · 실패 3/5 는 목표 자세 차체 아래 치명(`drives/f2sa3/chk_*`) | ✘ 처음 답(통로가 Smac 에 불가능) 틀림 · 나머지 2 번 ？ |
 | — | bag · 로그 가져오기 | `jobs/get_logs_<주행>.sh` | `bags/logs_<주행>/` → `outputs/drives/<주행>/nav2_*.log` | — |
