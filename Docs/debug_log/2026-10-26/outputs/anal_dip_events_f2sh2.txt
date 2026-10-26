@@ -1,0 +1,24 @@
+
+== 멈칫 13:17:15.38 (명령 0 근처 1 개 · 0.00 s) | 앞뒤 명령 v: 0.049 0.049 0.034 0.019 0.004 -0.011 -0.021 -0.031
+   -0.15 s controller_server      Reached the goal!
+   -0.11 s bt_navigator           Goal succeeded
+   -0.08 s bt_navigator           Begin navigating from current location (5.44, -2.13) to (0.00, 0.00)
+   -0.02 s controller_server      Received a goal, begin computing control effort.
+
+== 멈칫 13:17:16.83 (명령 0 근처 28 개 · 1.35 s) | 앞뒤 명령 v: -0.025 -0.025 -0.019 -0.019 -0.007 -0.007 -0.009 -0.009 -0.010 -0.010 -0.007 -0.007 -0.008 -0.008 -0.003 -0.003 -0.002 -0.002 0.002 0.002 -0.002 -0.002 0.001 0.001 0.002 0.002 0.005 0.005 0.008 0.008 0.009 0.009 0.011 0.011 0.016
+   -1.60 s controller_server      Reached the goal!
+   -1.56 s bt_navigator           Goal succeeded
+   -1.53 s bt_navigator           Begin navigating from current location (5.44, -2.13) to (0.00, 0.00)
+   -1.47 s controller_server      Received a goal, begin computing control effort.
+
+== 멈칫 13:17:29.03 (명령 0 근처 4 개 · 0.15 s) | 앞뒤 명령 v: 0.065 0.050 0.035 0.020 0.005 0.000 0.000 0.000 0.010 0.020 0.030
+   +0.05 s controller_server      Exception in transformPose: Lookup would require extrapolation into the future.  Requested time 1792988248.565
+   +0.05 s controller_server      Unable to transform robot pose into global plan's frame
+   +0.05 s controller_server      [follow_path] [ActionServer] Aborting handle.
+   +0.07 s controller_server      Received a goal, begin computing control effort.
+
+== 멈칫 13:18:09.39 (명령 0 근처 7 개 · 0.30 s) | 앞뒤 명령 v: 0.065 0.050 0.035 0.020 0.005 0.000 0.000 0.000 0.000 0.000 0.000 0.010 0.020 0.030
+   +0.03 s controller_server      Exception in transformPose: Lookup would require extrapolation into the future.  Requested time 1792988288.901
+   +0.03 s controller_server      Unable to transform robot pose into global plan's frame
+   +0.03 s controller_server      [follow_path] [ActionServer] Aborting handle.
+   +0.48 s controller_server      Received a goal, begin computing control effort.
