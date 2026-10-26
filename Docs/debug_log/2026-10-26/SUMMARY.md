@@ -290,3 +290,8 @@
 - 배치가 10-23 과 같은가(`jobs/anal_corridor_gap.py` → `outputs/anal_corridor_gap.txt`, 남행 직전 전역 코스트맵): 가장 좁은 곳(y −4.7~−4.8) 치명 칸 사이 **0.50 m — 두 날 같음**(차체 + 패딩 0.35 m → 양옆 최대 7.5 cm). 지도상 통로 폭은 같아 f2rp4 와의 비교는 유효(물건 세부 차이는 미확인).
 - 붙인 영상(git 제외, 위 = 실제 촬영 · 아래 = 시각화, 같은 시각 1 배속): `videos/cmp_f2sa3_corridor.mp4`(110 s) · `videos/cmp_f2sa3_box.mp4`(54 s). 확인 장면 `figures/real/cmp_corridor_161217.png`(16:12:17 — 실제 로버가 비스듬히 끼인 순간, 시각화도 로버 −61° · 경로 −100° 로 비스듬, 복구 MonotoneEscape 표시). 시각화 생성 기록 `outputs/fig_drive_video_f2sa3_corridor.txt` · `_box.txt`.
 - 큰 원본(2.7 GB)은 지우지 않음 — 사용자 확인 뒤(큰 파일 규칙).
+
+## §17 실제 촬영 + RViz 스타일 시각화 합본 (사용자: "닿지 않았다. 실촬영 영상과 시각화 데이터 합쳐달라. 시각화 영상은 rviz스타일로 해달라.")
+- 사용자 확인: 16:12:13~17 통로에서 로버는 상자 날개에 **닿지 않음**(기록 최소 0.8 cm 와 어긋나지 않음 — 칸 단위 · 기억 오차를 생각하면 실제 틈은 그 근처, 미측정).
+- 새 도구 `Docs/tools/fig_rviz_video.py`(720×720, 로버 따라가는 3 m 창): 어두운 바탕(#303030) · 1 m 격자, 전역 코스트맵 RViz 'costmap' 색표 흉내(파랑 → 빨강 비용 · 하늘색 내접 99 · 자홍 치명 100 · 회청 미지, 낮은 비용은 더 투명), 노란 칸 = 로컬 치명, 빨간 점 = /scan, 초록 = BT 경로 · 차체, 빨강 / 초록 = base_link x / y 축, 시각 · 명령 · 로버 자세 · 최근 사건(Smac 실패 → NavFn · 최적화 실패 · 복구 · 막힘). BT 경로 고르기는 fig_drive_video 와 같은 규칙.
+- 합본(git 제외, 왼쪽 실제 촬영 1280×720 · 오른쪽 RViz 스타일 720×720, 1 배속): `videos/f2sa3_real_rviz_corridor.mp4`(16:11:45~16:13:35) · `videos/f2sa3_real_rviz_box.mp4`(16:16:15~16:17:09). 생성 기록 `outputs/fig_rviz_video_f2sa3_*.txt`, 확인 장면 `figures/real/real_rviz_corridor_161217.png`.
