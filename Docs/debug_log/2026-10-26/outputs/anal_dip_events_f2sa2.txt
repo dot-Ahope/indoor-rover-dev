@@ -1,0 +1,26 @@
+
+== 멈칫 15:34:01.61 (명령 0 근처 2 개 · 0.05 s) | 앞뒤 명령 v: 0.065 0.050 0.035 0.020 0.005 0.000 0.010 0.020 0.030
+
+== 멈칫 15:35:31.96 (명령 0 근처 2 개 · 0.05 s) | 앞뒤 명령 v: 0.066 0.051 0.036 0.021 0.006 -0.009 -0.019 -0.029 -0.039
+   -0.25 s controller_server      Reached the goal!
+   -0.21 s bt_navigator           Goal succeeded
+   -0.15 s bt_navigator           Begin navigating from current location (5.34, -2.16) to (0.00, 0.00)
+   -0.10 s controller_server      Received a goal, begin computing control effort.
+
+== 멈칫 15:35:34.01 (명령 0 근처 42 개 · 2.35 s) | 앞뒤 명령 v: -0.013 -0.013 -0.014 -0.014 -0.008 -0.008 -0.007 -0.007 -0.010 -0.010 -0.013 -0.013 -0.010 -0.010 -0.010 -0.013 -0.009 -0.009 -0.010 -0.010 -0.002 -0.002 -0.002 -0.002 0.002 0.002 -0.003 -0.003 -0.002 -0.002 -0.004 -0.004 -0.003 -0.003 -0.003 -0.003 0.000 0.000 0.003 0.003 0.003 0.003 -0.007 -0.007 0.001 0.001 -0.000 -0.000 0.003 0.003 0.008 0.008 0.018 0.028 0.038
+
+== 멈칫 15:35:41.92 (명령 0 근처 1 개 · 0.00 s) | 앞뒤 명령 v: 0.051 0.051 0.036 0.021 0.006 0.016 0.026 0.036
+
+== 멈칫 15:36:21.62 (명령 0 근처 8 개 · 0.35 s) | 앞뒤 명령 v: 0.065 0.050 0.035 0.020 0.005 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.010 0.020 0.030
+   +0.05 s controller_server      Exception in transformPose: Lookup would require extrapolation into the future.  Requested time 1792996581.148
+   +0.05 s controller_server      Unable to transform robot pose into global plan's frame
+   +0.05 s controller_server      [follow_path] [ActionServer] Aborting handle.
+   +0.06 s controller_server      Received a goal, begin computing control effort.
+
+== 멈칫 15:36:33.02 (명령 0 근처 8 개 · 0.35 s) | 앞뒤 명령 v: 0.064 0.049 0.034 0.019 0.004 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.010 0.020 0.030
+   -1.27 s bt_navigator_navigate_ PathBlockedAhead: 앞 경로 (1.24, 0.07) 비용 99 — 2.0 s 지속되면 재계획
+   +0.05 s controller_server      Exception in transformPose: Lookup would require extrapolation into the future.  Requested time 1792996592.540
+   +0.05 s controller_server      Unable to transform robot pose into global plan's frame
+   +0.06 s controller_server      [follow_path] [ActionServer] Aborting handle.
+
+== 멈칫 15:36:51.77 (명령 0 근처 1 개 · 0.00 s) | 앞뒤 명령 v: 0.065 0.050 0.035 0.020 0.005 0.015 0.025 0.035
