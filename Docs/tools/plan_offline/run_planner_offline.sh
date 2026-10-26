@@ -5,6 +5,8 @@
 D=/tmp/planoff; cd $D; export ROS_DOMAIN_ID=42
 source /opt/ros/humble/setup.bash
 PIDS=${1:-GridBased}
+# 2026-10-26: 앞 실행의 잔재가 있으면 액션 서버가 여럿이 되어 결과가 섞임(D5 첫 판 무효) — 시작 전에 확인하고 있으면 중단
+n0=$(pgrep -fc '/tmp/planoff/planner_offline'); if [ "$n0" != 0 ]; then echo "중단: 앞 실행 잔재 $n0 개 — kill_planoff 로 정리 뒤 다시"; exit 1; fi
 setsid ros2 run nav2_planner planner_server --ros-args --params-file $D/planner_offline.yaml > $D/planner.log 2>&1 &
 setsid ros2 run nav2_lifecycle_manager lifecycle_manager --ros-args -r __node:=lifecycle_manager_offline --params-file $D/planner_offline.yaml > $D/lcm.log 2>&1 &
 setsid ros2 run tf2_ros static_transform_publisher --frame-id map --child-frame-id base_link > $D/tf.log 2>&1 &
