@@ -1,0 +1,18 @@
+  [  8.5 s] 기다리는 것: controller_server planner_server bt_navigator behavior_server nav_map_server map→base TF /wheel_odom 전역 지도
+  [  8.5 s] 기다리는 것: controller_server planner_server bt_navigator behavior_server nav_map_server /wheel_odom 전역 지도
+  [  8.7 s] 기다리는 것: controller_server planner_server bt_navigator behavior_server nav_map_server /wheel_odom 전역 지도
+  [  8.8 s] 기다리는 것: controller_server planner_server bt_navigator behavior_server nav_map_server /wheel_odom 전역 지도
+  위치 추정 검사(기대 0,0,0): 위치 차 0.000 m · yaw 차 +0.0° → 통과
+  /wheel_odom 25.0 Hz · /odometry/filtered 30.0 Hz · /tf 49.7 Hz · 배터리 12.36 V
+PREP_OK
+  ⏱ +85 s prep 끝 — PREP_OK
+BT 사본: PlanSmacOrNavFn 1 · RateController RateController hz="0.01" · step 1
+bt_navigator xml = String value is: /tmp/nav_to_pose_active.xml
+SmacHybrid.tolerance = Double value is: 0.35
+SmacHybrid.motion_model_for_search = String value is: REEDS_SHEPP
+SmacHybrid.cost_penalty = Double value is: 3.0
+SmacHybrid.analytic_expansion_max_length = Double value is: 1.0
+SmacHybrid.max_planning_time = Double value is: 2.0
+SmacHybrid.cache_obstacle_heuristic = Boolean value is: False
+visual_preset = Integer value is: 3 · odom1 = String value is: /vslam/odom
+MPPI PathAlign = Double value is: 28.0 · PathFollow = Double value is: 5.0
