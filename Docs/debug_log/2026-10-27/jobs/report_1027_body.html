@@ -1,0 +1,164 @@
+
+<div class="wrap">
+<header>
+  <div class="eyebrow">Indoor Rover · 2026-10-27 · Docs/debug_log/2026-10-27 §0–§31</div>
+  <h1>10-27 TF 지연 추적</h1>
+  <p class="lead">서쪽 통로 Smac 실패를 허용치 0.35 로 고친 주행(f2st1)에서 출발해, 영상에서 보인 이상 두 가지(상자 앞 막힘, 전역 코스트맵 튐)를 원자료로 따라갔습니다. 막힘은 상자 자체였고, 튐은 nvblox 층의 결함이었으며, 그 결함을 일으킨 TF 지연은 SLAM 의 map→odom 시각 정체였습니다. 결함을 고치고 SLAM 미래 여유를 1.5 s 로 올린 f2tt1 은 TF 실패 0 · 정지 0 으로 완주했습니다. 정체의 근본 원인은 계측으로 LinkNearChains 단계까지 좁혔습니다.</p>
+</header>
+
+<section>
+  <h2>오늘의 판정</h2>
+  <div class="verdicts">
+    <div class="v ok"><b>통로 남행 Smac 복구 · 허용치 0.35</b><span>오프라인에서 남행 실패 원인이 목표 근처 수락 조건임을 보이고 0.35 로 올림. f2st1 남행 좁은 곳 여유 0.8 → 4.1 cm, 상자 장면 차 0 (§5 · §8 · §11)</span></div>
+    <div class="v ok"><b>막힘 판정 칸은 상자 자체의 내접 띠</b><span>유령 · 떨어진 덩어리 아님. 멀어지면 전역 지도가 낮은 상자를 잊고, 복귀 계획 뒤 카메라가 다시 찍음 (§14)</span></div>
+    <div class="v ok"><b>전역 코스트맵 튐 = nvblox 층 결함, 수정 확인</b><span>TF 조회 실패 때 변환 없이 슬라이스를 적음(상위 코드). return 한 줄 수정 뒤 경고 28 번에 틀어진 장 0 (§15 · §17 · §19)</span></div>
+    <div class="v ok"><b>TF 지연 = SLAM map→odom 시각 정체 → 여유 1.5 s</b><span>nav2 실패 33/33 이 정체 창 안. 통신 탓 아님. f2tt1 실패 0 · 정지 0 · 8/8 · 접촉 0 (§21 · §22 · §25)</span></div>
+    <div class="v wait"><b>정체 근본 원인: 처리의 64 % 가 LinkNearChains</b><span>계측판 재생으로 확인. 재정합 반경 0.75 m 에서 긴 처리 15 → 5 이지만 판정 기준(절반) 미달, 운용 미변경 (§29)</span></div>
+    <div class="v ok"><b>주행 전 검사 정리 · 출발 77 → 40 s</b><span>게이트 B · C · G2 를 한 노드로(23.6 → 6.7 s), 파라미터 확인을 chk_prep 한 노드로 (§24 · §25)</span></div>
+    <div class="v no"><b>f2tf1 복귀 상자 접촉 1 회</b><span>복귀 경로에서 상자가 카메라 시야(±43°) 밖. 카메라는 다른 것은 정상 감지 — 사용자 판단: 기능 · 센서 한계 (§19 · §20 · §21)</span></div>
+  </div>
+</section>
+
+<section>
+  <h2>주행 세 번<span class="sec">§11 · §19 · §25</span></h2>
+  <p>같은 코스 no5(8 목표, 약 28 m). 한 번에 하나씩만 바꿨습니다.</p>
+  <div class="tbl"><table>
+    <tr><th></th><th>f2st1</th><th>f2tf1</th><th>f2tt1</th></tr>
+    <tr><td>바꾼 것</td><td>Smac tol 0.35</td><td>+ nvblox 층 수정</td><td>+ SLAM timeout 1.5 · 검사 정리</td></tr>
+    <tr><td>결과 · 총 시간</td><td class="n">8/8 · 427.5 s</td><td class="n">8/8 · 412.8 s</td><td class="n">8/8 · 412.2 s</td></tr>
+    <tr><td>nav2 odom→map 조회 실패(층 · 컨트롤러)</td><td class="n">22 · 1</td><td class="n">28 · 5</td><td class="n">0 · 0</td></tr>
+    <tr><td>틀어진 전역 장(§15 서명)</td><td class="n">3</td><td class="n">0</td><td class="n">0</td></tr>
+    <tr><td>1 s 넘는 정지</td><td class="n">1 번 4.7 s</td><td class="n">1 번 5.1 s</td><td class="n">0</td></tr>
+    <tr><td>통로 최소 정확 여유</td><td class="n">2.9 cm</td><td class="n">3.8 cm</td><td class="n">3.1 cm</td></tr>
+    <tr class="bad"><td>출발 상자 복귀 최소</td><td class="n">16.3 cm</td><td class="n">−1.0 cm(접촉)</td><td class="n">14.4 cm</td></tr>
+    <tr><td>통로 북행 계획</td><td>Smac 실패 3 → NavFn</td><td>Smac</td><td>Smac 2 번</td></tr>
+  </table></div>
+  <figure><img src="{{img:tt1}}" alt="SLAM 미래 여유 시간선과 세 주행 지표 표"><figcaption>위: SLAM map→odom '지금 조회 여유'(받은 최신 stamp − 지금). f2tf1(여유 0.5 s)은 0 아래로 자주 떨어지고 그때마다 nav2 조회가 실패(▼ 33). f2tt1(1.5 s)은 한 번도 0 아래로 안 떨어짐. 톱니가 내려가는 정체 자체는 두 주행에 같이 있음. 도구 <span class="mono">jobs/fig_f2tt1_summary.py</span>.</figcaption></figure>
+</section>
+
+<section>
+  <h2>상자 앞 막힘 판정은 무엇을 봤나<span class="sec">§13 · §14</span></h2>
+  <div class="flow">
+    <span class="k">본 것</span><span>f2st1 복귀 11:24:46 PathBlockedAhead 가 경로 점 (1.13, 0.14) 에서 비용 99 를 봄 → 2 s → 중단 · 재계획. 영상에선 상자 북쪽 16 cm 의 둥근 덩어리처럼 보임.</span>
+    <span class="k">원자료</span><span>그 점은 출발 때부터 99 였음(상자 칸까지 14~18 cm, 내접 0.175 m 안). 로버가 2.4 m 멀어지자 nvblox · 전역에서 상자가 4 s 만에 사라짐 → 11:23:41.7 복귀 경로를 상자 없는 지도로 계획(그 점 41) → 11:24:32 카메라가 상자 모서리 칸 2 개를 다시 찍음 → 99. 라이다는 그동안 0 점.</span>
+    <span class="k">결론</span><span>막힘 노드는 맞게 동작. 덩어리는 상자 모서리 칸 1~2 개 둘레의 내접 원. 원인은 멀어지면 낮은 상자를 잊는 전역 지도.</span>
+  </div>
+  <figure><img src="{{img:block}}" alt="막힘 판정 점 주변 전역 코스트맵 값과 원자료 개수 시간선, 칸 위치"><figcaption>왼쪽: 그 점의 전역 값(99 = 막힘 기준)과 0.4 m 안 전역 치명 · nvblox · 라이다 수. 오른쪽: 갈 때(파랑) · 복귀(주황) 카메라 칸 위치와 기록 상자. 도구 <span class="mono">jobs/fig_block_cell.py</span>.</figcaption></figure>
+</section>
+
+<section>
+  <h2>전역 코스트맵이 순간 틀어진 이유<span class="sec">§15 · §16 · §17 · §19</span></h2>
+  <p>사용자가 영상 20 s · 31 s 에서 문이 막혔다 풀리고 상자가 벽 쪽으로 갔다 돌아오는 것을 짚었습니다. 코스트맵은 하나였고(발행자 1), 틀어진 메시지는 두 장뿐이었습니다.</p>
+  <div class="flow">
+    <span class="k">판별</span><span>틀어진 장의 새 치명 칸은 라이다 · SLAM 지도와 안 겹침. 슬라이스 원본은 멀쩡. 새 칸에 맞는 slice→map 변환을 찾으면 회전 0° · 이동 0(겹침 186/276) — 실제 map→odom 은 (0.43, 0.35) m · −7.5°.</span>
+    <span class="k">원인</span><span>상위 <span class="mono">nvblox_costmap_layer.cpp</span> 가 TF 조회 예외 때 경고만 찍고 return 하지 않아, 기본 생성 변환(단위)으로 그 슬라이스를 map 에 적음. 경고 시각 11:24:43.60 · 54.51 이 틀어진 장 직전.</span>
+    <span class="k">수정</span><span>catch 에 return 한 줄 · 빌드 · 정지 확인(일치율 1.000). 실주행 f2tf1 에서 경고 28 번 · 틀어진 장 0(같은 검출기로 f2st1 은 3 장). 패치 <span class="mono">Docs/05_nvblox/nvblox_nav2_rover.patch</span>.</span>
+  </div>
+  <figure><img src="{{img:gcm}}" alt="전역 코스트맵 연속 네 장, 두 번째 장이 틀어짐"><figcaption>f2st1 11:24:53.89 → 54.89(틀어진 장) → 56.89 → 58.89. 위 = 전역, 아래 = 같은 시각 로컬 치명 칸. 54.89 장만 벽 · 상자 · 문틀이 어긋남. 도구 <span class="mono">jobs/fig_gcm_frames.py</span>.</figcaption></figure>
+</section>
+
+<section>
+  <h2>TF 지연의 정체 — SLAM map→odom 시각 정체<span class="sec">§21 · §22 · §23</span></h2>
+  <div class="flow">
+    <span class="k">본 것</span><span>주행 중 CPU 68.5 %(포화 아님). 실패 33 건 모두 odom→map 조회. 그 순간 map→odom 은 20 Hz 로 계속 왔지만 stamp 가 0.6~1.1 s 같은 값 — 미래 여유 0.44 s 가 다 깎임.</span>
+    <span class="k">통신 탓?</span><span>정체 56 구간에서 SLAM 입력(/scan · odom TF) 도착 간격은 평소와 같음(0 / 56 이 0.2 s 넘음). SLAM CPU 는 정체 때 몰림(중앙 73 % vs 45 %), 스캔 버림 37 / 56. → 통신이 아니라 SLAM 안의 계산. 공유메모리로는 거의 안 풀릴 것(추정).</span>
+    <span class="k">이력</span><span>저장 bag 112 개: 매핑 모드(9 월)는 정체 거의 0, 위치 추정 순회(10-07~)는 모든 주행에 1 m 당 1~4 번 · 최대 약 1.2 s. 최근 회귀가 아님.</span>
+    <span class="k">조치</span><span>위치 추정 transform_timeout 0.5 → 1.5 s. 대가: 보정 반영이 최대 1.5 s 늦음(이 주행 보정량 기준 1~2 mm 추정).</span>
+  </div>
+</section>
+
+<section>
+  <h2>정체는 어느 단계에서 생기나<span class="sec">§26 · §29</span></h2>
+  <p>정체는 위치 추정이 스캔을 정합하는 순간마다(0.30 m 이동 또는 0.15 rad 회전마다, 54 구간 중 53) 생깁니다. 같은 bag 입력을 SLAM 에 다시 넣는 재생 도구(도메인 42, 운용 스택과 분리)로 파라미터 A/B 와 단계별 시간 계측(운용판과 분리된 사본 <span class="mono">~/slam_dbg_ws</span>)을 했습니다.</p>
+  <div class="tbl"><table>
+    <tr><th>단계(처리 스캔 101 개)</th><th>중앙</th><th>90 %</th><th>최대</th><th>몫</th></tr>
+    <tr><td>스캔 한 개 처리 전체</td><td class="n">168 ms</td><td class="n">534 ms</td><td class="n">1138 ms</td><td class="n">100 %</td></tr>
+    <tr class="bad"><td>LinkNearChains(반경 1.5 m 안 지도 사슬 4~7 개와 재정합)</td><td class="n">261</td><td class="n">450</td><td class="n">616</td><td class="n">64 %</td></tr>
+    <tr><td>순차 정합</td><td class="n">71</td><td class="n">94</td><td class="n">101</td><td class="n">16 %</td></tr>
+    <tr><td>루프 탐색</td><td class="n">4</td><td class="n">104</td><td class="n">364</td><td class="n">7 %</td></tr>
+  </table></div>
+  <div class="tbl"><table>
+    <tr><th>재정합 반경</th><th>&gt; 300 ms 스캔</th><th>&gt; 500 ms 스캔</th><th>&gt; 0.5 s 정체</th><th>원래 SLAM 대비 위치 차 중앙 · 최대</th></tr>
+    <tr><td>1.5 m(현재)</td><td class="n">34</td><td class="n">15</td><td class="n">8~10</td><td class="n">0.4 · 11.2 cm</td></tr>
+    <tr><td>1.0 m</td><td class="n">28</td><td class="n">9</td><td class="n">4</td><td class="n">0.9 · 11.8 cm</td></tr>
+    <tr class="hl"><td>0.75 m</td><td class="n">28</td><td class="n">5</td><td class="n">4</td><td class="n">1.0 · 9.9 cm</td></tr>
+  </table></div>
+  <p class="note">앞선 A/B(루프 탐색 끔 · 정합 범위 0.3 m · 버퍼 10)는 기준 두 번의 차보다 효과가 작았고, 루프 탐색을 끄면 위치 차 중앙이 0.4 → 3.6 cm 로 나빠졌습니다. 0.75 m 는 긴 처리를 뚜렷이 줄였지만 미리 정한 기준(절반 이하)에 못 미쳐 운용은 그대로 둡니다. 남은 비용은 사슬 하나와의 정합 1 회(≈ 70 ms)입니다.</p>
+</section>
+
+<section>
+  <h2>주행 전 검사 정리<span class="sec">§24</span></h2>
+  <ul>
+    <li>러너 게이트 B(보드) · C(SLAM 생존) · G2(출발 자세)를 한 노드 <span class="mono">Docs/tools/chk_drive_gate.py</span> 로: 참여자 3 → 1, 23.6 → 6.7 s, 같은 값.</li>
+    <li>CPU 게이트를 30 s 대기의 마지막 10 s 로, 러너 top 루프 제거(/proc 기록과 중복), UDP 손실 기록은 필요할 때만.</li>
+    <li>prep 의 <span class="mono">ros2 param get</span> 11 번을 <span class="mono">chk_prep.py</span> 한 노드 조회로. 대화 쪽 별도 30 s 대기 · top 은 하지 않음.</li>
+    <li>f2tt1: 게이트 시작 → 출발 40 s(f2tf1 77 s).</li>
+  </ul>
+</section>
+
+<section>
+  <h2>서쪽 통로 Smac<span class="sec">§1 ~ §8 · §27 · §28</span></h2>
+  <p>오전에 남행 실패를 오프라인으로 풀었습니다. Smac 은 목표 칸 · 방향이 정확히 맞거나 휴리스틱이 허용치 아래일 때만 끝나는데, 남행 목표가 내접 띠에 붙어 있어 수락에 실패했습니다. 허용치 0.35 로 남행이 살았고 상자 장면은 그대로였습니다. 저녁 f2tt1 은 북행도 두 번 Smac 이었습니다.</p>
+  <figure><img src="{{img:exp}}" alt="f2tt1 통로 세 순간의 Smac 오프라인 재질의 탐색"><figcaption>f2tt1 세 순간을 오프라인으로 다시 질의한 Smac 탐색(점 = 방문 노드, 초록 = 경로). 남행 1 148 · 북행 146 노드로 성공. 세 번째(북행 재계획)는 실주행에선 성공했지만 재질의는 실패 — 재질의가 쓴 2 초 전 지도엔 막힘 덩어리가 남아 있었고, 같은 시각 지도로는 벽 3 cm 거리의 출발 칸이 경계에 걸림(§28).</figcaption></figure>
+</section>
+
+<section>
+  <h2>지금 시스템은 어느 정도인가<span class="sec">§30</span></h2>
+  <div class="tbl"><table>
+    <tr><th>영역</th><th>최근 no5 4 회</th></tr>
+    <tr><td>완수 · 시간</td><td>8/8 × 4 · 448 → 428 → 413 → 412 s(평균 0.067 m/s)</td></tr>
+    <tr><td>도착 오차</td><td class="n">0.13~0.20 m · 방향 ±20° 안팎</td></tr>
+    <tr class="bad"><td>통로 최소 여유</td><td class="n">0.8 · 2.9 · 3.8 · 3.1 cm</td></tr>
+    <tr><td>오도메트리 드리프트(SLAM 보정)</td><td class="n">28 m 당 0.48~0.62 m(1.7~2.2 %) · 7~10°</td></tr>
+    <tr><td>계산 · 전력</td><td class="n">CPU 67 % · GPU 5 % · RAM 3.2/7.6 GB · 7.3 W · 최고 52 °C</td></tr>
+  </table></div>
+  <p class="note">정해진 실내 코스를 개입 없이 반복 완주하는 수준. 약점은 좁은 곳 cm 단위 여유 · 라이다 아래 낮은 물체 · SLAM 정합 비용 · NavFn 대체. 위치 정답과의 오차, 많은 회차, 움직이는 사람, 배터리 시간은 아직 안 잼.</p>
+</section>
+
+<section>
+  <h2>바로잡은 내 오류</h2>
+  <div class="pm">
+    <h3>상자 앞 막힘 칸을 '상자와 떨어진 덩어리' 로 말함 (§13 → §14)</h3>
+    <div class="flow">
+      <span class="k">하려 한 것</span><span>막힘 판정 좌표를 영상에 빨간 X 로 찍기(<span class="mono">fig_rviz_video.py</span>)</span>
+      <span class="k">본 것</span><span>X 가 기록 상자 북쪽 16 cm, 둘레에 둥근 회색 덩어리</span>
+      <span class="k">처음 추론</span><span>X = 치명 칸, 상자와 떨어진 밀림 또는 유령</span>
+      <span class="k">의심한 이유</span><span>막힘 기준이 99(내접)이지 100(치명)이 아님 · 덩어리 안 검정 칸이 1~2 개뿐</span>
+      <span class="k">판별</span><span>원자료 대조: 가장 가까운 치명 칸은 13~18 cm 떨어진 상자 모서리, 그 점은 출발 때부터 99</span>
+      <span class="k">다음에 알아보는 법</span><span>PathBlockedAhead 좌표는 막힌 칸이 아니라 '경로 점에서 본 비용'. 99 면 0.175 m 안 치명 칸을 찾아 그것을 장애물로 말한다</span>
+    </div>
+  </div>
+  <div class="pm">
+    <h3>TF 실패를 '부하가 방아쇠' 로 답함 (§16 → §21)</h3>
+    <div class="flow">
+      <span class="k">하려 한 것</span><span>층 TF 실패가 부하 탓인지 판단(<span class="mono">jobs/chk_tf_lag.py</span>)</span>
+      <span class="k">본 것</span><span>경고 20/22 가 Control loop missed 와 ±0.5 s 안에 겹침(무작위 11 %)</span>
+      <span class="k">처음 추론</span><span>순간 부하로 코스트맵 쪽 처리가 밀려 TF 를 늦게 받음</span>
+      <span class="k">의심한 이유</span><span>주행 CPU 68 % 로 포화가 아님 · 실패가 전부 odom→map 한 가지</span>
+      <span class="k">판별</span><span>map→odom stamp 를 직접 보니 발행은 20 Hz 그대로, stamp 만 0.6~1.3 s 멈춤 · 실패 33/33 이 그 창 안</span>
+      <span class="k">다음에 알아보는 법</span><span>'extrapolation into the future' 는 먼저 그 변환의 stamp 진행(발행 간격과 따로)을 본다. 두 증상이 함께 나면 공통 원인(여기선 SLAM 계산 몰림)을 의심한다</span>
+    </div>
+  </div>
+  <div class="pm">
+    <h3>탐색 영상 세 번째 칸을 'Smac 실패' 로 표시 (§27 → §28)</h3>
+    <div class="flow">
+      <span class="k">하려 한 것</span><span>f2tt1 통로 세 순간의 Smac 탐색 영상(<span class="mono">fig_smac_expansion_tt1.py</span>)</span>
+      <span class="k">본 것</span><span>세 번째 재질의가 실패</span>
+      <span class="k">문제</span><span>제목만 보면 실주행 실패로 읽혀 통로 영상(실주행 Smac 성공)과 모순으로 보임(사용자 지적)</span>
+      <span class="k">판별</span><span>지도 판 비교: 재질의 지도(15:58:09)엔 경로 위 내접 칸 4 개, 계획 시각 지도(15:58:11.40)엔 0</span>
+      <span class="k">다음에 알아보는 법</span><span>재질의 · 재생 결과는 상태 글자에 출처(실주행 / 재질의)를 붙인다. 재질의가 실주행과 다르면 먼저 지도 판 · 출발 자세 차이를 본다</span>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>남은 것</h2>
+  <ul>
+    <li>SLAM 정합 1 회 비용 줄이기(정합 탐색 범위 · 각도 해상도를 0.75 m 와 묶어 재생 A/B) — 결정 대기.</li>
+    <li>과거 주행(전역 nvblox 층을 켠 09-22 이후)의 '가짜 막힘' 을 §15 결함 관점으로 다시 보기.</li>
+    <li>좁은 곳 여유 cm 단위 · 순간 나타났다 사라지는 칸이 계획 순간을 흔드는 문제(§28).</li>
+    <li>다음 기능 단계 F2.5(장소 이름 이동 + 온디바이스 LLM)와의 순서 결정.</li>
+  </ul>
+  <p class="note">기록 <span class="mono">Docs/debug_log/2026-10-27/SUMMARY.md</span> §0~§31 · 도구 안내 <span class="mono">TOOLS.md</span>. 영상 · bag 은 git 제외 로컬 보관.</p>
+</section>
+</div>
