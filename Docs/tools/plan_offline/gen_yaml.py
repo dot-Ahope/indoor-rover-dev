@@ -6,11 +6,12 @@
     1.1.20 기본은 비율 3.5 · 최대 3.0 m — 경로가 3 m 안이면 거의 처음부터 이 곡선이 붙어 cost_penalty 가 효과를 못 냄(첫 비교 결과, 2026-10-23 §22).
   _NS = smooth_path false(2026-10-26 §6: 탐색 경로를 다듬기 전 그대로 보려고)
   인자: 출력.yaml 패딩 변형이름...  (첫 비교 판 = 패딩 0.01, GridBased + Smac_R10_C12 … Smac_R15_C30, 해석 확장 기본)
-  환경: SMAC_MAXT = Hybrid 계획 시간 상한(기본 5.0, 실주행 2.0). INFL_R · INFL_K = 전역 inflation 반경 · cost_scaling_factor(기본 0.70 · 2.0 = 실주행 값). 2026-10-26 D5 에서 추가."""
+  환경: SMAC_TOL = Hybrid tolerance(기본 0.25). SMAC_MAXT = Hybrid 계획 시간 상한(기본 5.0, 실주행 2.0). INFL_R · INFL_K = 전역 inflation 반경 · cost_scaling_factor(기본 0.70 · 2.0 = 실주행 값). 2026-10-26 D5 에서 추가."""
 import sys, re, os
 out, pad, names = sys.argv[1], float(sys.argv[2]), sys.argv[3:]
 IR, IK = float(os.environ.get('INFL_R', '0.70')), float(os.environ.get('INFL_K', '2.0'))
-MAXT = float(os.environ.get('SMAC_MAXT', '5.0'))   # Smac Hybrid max_planning_time — 2026-10-26 §20: 실주행 값 2.0 으로 재현할 때
+MAXT = float(os.environ.get('SMAC_MAXT', '5.0'))
+TOL = float(os.environ.get('SMAC_TOL', '0.25'))   # Smac Hybrid tolerance(m) — 2026-10-27 §5: 목표 수락 허용 시험   # Smac Hybrid max_planning_time — 2026-10-26 §20: 실주행 값 2.0 으로 재현할 때
 blocks = []
 LAT = '/opt/ros/humble/share/nav2_smac_planner/sample_primitives/5cm_resolution/0.5m_turning_radius/diff/output.json'
 for n in names:
@@ -55,7 +56,7 @@ for n in names:
     R, CP = int(m.group(1)) / 100, int(m.group(2)) / 10; AL = int(m.group(3)) / 10 if m.group(3) else 3.0; B = int(m.group(4)) if m.group(4) else 72
     blocks.append(f'''    {n}:
       plugin: "nav2_smac_planner/SmacPlannerHybrid"
-      tolerance: 0.25
+      tolerance: {TOL}
       downsample_costmap: false
       downsampling_factor: 1
       allow_unknown: true

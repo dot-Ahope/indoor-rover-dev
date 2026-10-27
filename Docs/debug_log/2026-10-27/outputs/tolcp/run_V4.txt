@@ -1,0 +1,33 @@
+sa3_115653: 재구성 일치 1.0000 (±1 1.0000, 내접 칸 일치 1.0000, 내접 칸 수 기록 18655 · 재구성 18655)
+   GridBased      성공 · 점   74 · 길이  2.16 m · 계획 0.002 s (왕복 0.01 s)
+   Smac_R10_C15_A10_RS 성공 · 점   29 · 길이  2.06 m · 계획 0.011 s (왕복 0.02 s)
+sa3_121553: 재구성 일치 1.0000 (±1 1.0000, 내접 칸 일치 1.0000, 내접 칸 수 기록 17664 · 재구성 17664)
+   GridBased      성공 · 점   38 · 길이  1.00 m · 계획 0.001 s (왕복 0.01 s)
+   Smac_R10_C15_A10_RS 실패(상태 6) · 점    0 · 길이  0.00 m · 계획 0.000 s (왕복 0.00 s)  ← Smac_R10_C15_A10_RS: failed to create plan, no valid path found. | Planning algorithm Smac_R10_C15_A10_RS failed to generate a valid path to (-1.60, -5.50) | [c
+sa3_122202: 재구성 일치 1.0000 (±1 1.0000, 내접 칸 일치 1.0000, 내접 칸 수 기록 17621 · 재구성 17621)
+   GridBased      성공 · 점   39 · 길이  1.00 m · 계획 0.001 s (왕복 0.01 s)
+   Smac_R10_C15_A10_RS 실패(상태 6) · 점    0 · 길이  0.00 m · 계획 0.000 s (왕복 0.86 s)  ← Smac_R10_C15_A10_RS: failed to create plan, no valid path found. | Planning algorithm Smac_R10_C15_A10_RS failed to generate a valid path to (-1.60, -5.50) | [c
+sa3_123521: 재구성 일치 1.0000 (±1 1.0000, 내접 칸 일치 1.0000, 내접 칸 수 기록 17733 · 재구성 17733)
+   GridBased      성공 · 점   65 · 길이  1.71 m · 계획 0.001 s (왕복 0.01 s)
+   Smac_R10_C15_A10_RS 실패(상태 6) · 점    0 · 길이  0.00 m · 계획 0.000 s (왕복 0.04 s)  ← Smac_R10_C15_A10_RS: failed to create plan, no valid path found. | Planning algorithm Smac_R10_C15_A10_RS failed to generate a valid path to (-1.65, -3.70) | [c
+sa3_125954: 재구성 일치 1.0000 (±1 1.0000, 내접 칸 일치 1.0000, 내접 칸 수 기록 17939 · 재구성 17939)
+   GridBased      성공 · 점   64 · 길이  1.63 m · 계획 0.011 s (왕복 0.02 s)
+   Smac_R10_C15_A10_RS 성공 · 점  197 · 길이 14.51 m · 계획 0.059 s (왕복 0.09 s)
+sa3_130865: 재구성 일치 1.0000 (±1 1.0000, 내접 칸 일치 1.0000, 내접 칸 수 기록 17911 · 재구성 17911)
+   GridBased      성공 · 점   47 · 길이  1.26 m · 계획 0.001 s (왕복 0.01 s)
+   Smac_R10_C15_A10_RS 성공 · 점   18 · 길이  1.26 m · 계획 0.003 s (왕복 0.01 s)
+저장 /tmp/planoff/result.npz
+확인: Smac_R10_C15_A10_RS.analytic_expansion_max_cost = Parameter not set
+적재된 smac .so: /opt/ros/humble/lib/libnav2_smac_planner.so 
+남은 오프라인 프로세스: 0
+      1 [WARN] [1793062790.490243471] [rclcpp]: Failed to get parameters: Smac_R10_C15_A10_RS.analytic_expansion_max_cost
+      1 [WARN] [1793062782.156731207] [planner_server]: [compute_path_to_pose] [ActionServer] Aborting handle.
+      1 [WARN] [1793062782.156673542] [planner_server]: Planning algorithm Smac_R10_C15_A10_RS failed to generate a valid path to (-1.65, -3.70)
+      1 [WARN] [1793062782.156491234] [planner_server]: Smac_R10_C15_A10_RS: failed to create plan, no valid path found.
+      1 [WARN] [1793062779.869061569] [planner_server]: [compute_path_to_pose] [ActionServer] Aborting handle.
+      1 [WARN] [1793062779.869004255] [planner_server]: Planning algorithm Smac_R10_C15_A10_RS failed to generate a valid path to (-1.60, -5.50)
+      1 [WARN] [1793062779.868791514] [planner_server]: Smac_R10_C15_A10_RS: failed to create plan, no valid path found.
+      1 [WARN] [1793062777.162006355] [planner_server]: [compute_path_to_pose] [ActionServer] Aborting handle.
+      1 [WARN] [1793062777.161944242] [planner_server]: Planning algorithm Smac_R10_C15_A10_RS failed to generate a valid path to (-1.60, -5.50)
+      1 [WARN] [1793062777.161793358] [planner_server]: Smac_R10_C15_A10_RS: failed to create plan, no valid path found.
+(base64 묶음 생략 — result_V4.npz)
