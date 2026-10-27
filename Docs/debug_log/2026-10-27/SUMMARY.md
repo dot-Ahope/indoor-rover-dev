@@ -128,3 +128,8 @@
   - ⑤ 출발 상자 복귀 실제 최소 ≥ 8 cm
   - 기록: 목표 4 경로 끝 ↔ 목표 거리, 목표별 시간(f2sa3 52.3 · 55.4 · 26.4 · 39.7 · 49.8 · 22.9 · 96.7 · 104.4 s).
 - 다음: prep(재부팅 뒤라 base · 에이전트부터 — 보드 리셋이 필요할 수 있음) → 사용자 "시작". 통로에 사람이 없을 때.
+
+## §10 f2st1 prep (사용자: "prep 진행하라")
+- 에이전트 확인(`outputs/` 없음 — 화면 확인): microros_agent 컨테이너 Up · 세션 수립 1 · `/wheel_odom` 토픽 있음 → 보드 리셋 불필요. (컨테이너 'Up 17 hours' · /dev/ttyUSB0 '10-26 18:38' 은 부팅 직후 시계가 맞기 전 시각으로 찍힌 것으로 추정 — 가동 2 시간과 안 맞음, 미확인.)
+- prep `jobs/prep_smac_1027.sh`(10-26 판 + tolerance 조회) → `outputs/prep_smac_1027_1.txt`: **PREP_OK** +85 s · 위치 추정 0.000 m · 0.0° · /wheel_odom 25 Hz · /odometry/filtered 30 Hz · /tf 49.7 Hz · 12.36 V · BT 사본 PlanSmacOrNavFn 1 · RateController 0.01 · step 0.03 · **SmacHybrid.tolerance 0.35** · REEDS_SHEPP · cp 3.0 · 해석 1.0 · 2.0 s · 캐시 끔 · 프리셋 3 · odom1 /vslam/odom · MPPI 28 · 5.
+- 러너: 스크래치패드 `run_f2c.sh no5`(→ `run_f0.sh`, 10-26 f2sa3 와 같은 호출, STAGE F2c-smac-tol35). 스크래치패드 러너 파일 수정 시각 갱신(§9 의 7 일 삭제 대비).
