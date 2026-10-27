@@ -1,0 +1,27 @@
+오버레이 /home/jetson/smac_dbg_ws · nav2_smac_planner = /home/jetson/smac_dbg_ws/install/nav2_smac_planner
+tt1_157741: 재구성 일치 1.0000 (±1 1.0000, 내접 칸 일치 1.0000, 내접 칸 수 기록 18684 · 재구성 18684)
+   GridBased      성공 · 점   80 · 길이  2.07 m · 계획 0.002 s (왕복 0.01 s)
+   Smac_R10_C30_A10_RS 성공 · 점   27 · 길이  1.96 m · 계획 0.023 s (왕복 0.04 s)
+tt1_158058: 재구성 일치 1.0000 (±1 1.0000, 내접 칸 일치 1.0000, 내접 칸 수 기록 18620 · 재구성 18620)
+   GridBased      성공 · 점   63 · 길이  1.68 m · 계획 0.001 s (왕복 0.02 s)
+   Smac_R10_C30_A10_RS 성공 · 점   25 · 길이  1.75 m · 계획 0.004 s (왕복 0.01 s)
+tt1_158114: 재구성 일치 1.0000 (±1 1.0000, 내접 칸 일치 1.0000, 내접 칸 수 기록 18692 · 재구성 18692)
+   GridBased      성공 · 점   64 · 길이  1.74 m · 계획 0.001 s (왕복 0.01 s)
+   Smac_R10_C30_A10_RS 실패(상태 6) · 점    0 · 길이  0.00 m · 계획 0.000 s (왕복 0.08 s)  ← Smac_R10_C30_A10_RS: failed to create plan, no valid path found. | Planning algorithm Smac_R10_C30_A10_RS failed to generate a valid path to (-1.65, -3.70) | [c
+tt1_158114b: 재구성 일치 1.0000 (±1 1.0000, 내접 칸 일치 1.0000, 내접 칸 수 기록 17920 · 재구성 17920)
+   GridBased      성공 · 점   68 · 길이  1.73 m · 계획 0.009 s (왕복 0.02 s)
+   Smac_R10_C30_A10_RS 실패(상태 6) · 점    0 · 길이  0.00 m · 계획 0.000 s (왕복 0.01 s)  ← Smac_R10_C30_A10_RS: failed to create plan, invalid use: Starting point in lethal space! Cannot create feasible plan.. | Planning algorithm Smac_R10_C30_A10_RS 
+저장 /tmp/planoff/result.npz
+확인: Smac_R10_C30_A10_RS.analytic_expansion_max_cost = Parameter not set
+적재된 smac .so: /home/jetson/smac_dbg_ws/install/nav2_smac_planner/lib/libnav2_smac_planner.so 
+남은 오프라인 프로세스: 0
+      1 [WARN] [1793086565.823732289] [rclcpp]: Failed to get parameters: Smac_R10_C30_A10_RS.analytic_expansion_max_cost
+      1 [WARN] [1793086564.032006879] [planner_server]: [compute_path_to_pose] [ActionServer] Aborting handle.
+      1 [WARN] [1793086564.031956189] [planner_server]: Planning algorithm Smac_R10_C30_A10_RS failed to generate a valid path to (-1.65, -3.70)
+      1 [WARN] [1793086564.031808536] [planner_server]: Smac_R10_C30_A10_RS: failed to create plan, invalid use: Starting point in lethal space! Cannot create feasible plan..
+      1 [WARN] [1793086562.152215377] [planner_server]: [compute_path_to_pose] [ActionServer] Aborting handle.
+      1 [WARN] [1793086562.152148911] [planner_server]: Planning algorithm Smac_R10_C30_A10_RS failed to generate a valid path to (-1.65, -3.70)
+      1 [WARN] [1793086562.151954952] [planner_server]: Smac_R10_C30_A10_RS: failed to create plan, no valid path found.
+(base64 묶음 생략 — result_V1.npz · exp_V1.tgz)
+탐색 기록 4 개 · 줄 13991
+(base64 묶음 생략 — result_V1.npz · exp_V1.tgz)
