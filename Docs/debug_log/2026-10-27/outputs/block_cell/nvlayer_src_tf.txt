@@ -1,0 +1,88 @@
+  const nvblox_msgs::msg::DistanceMapSlice::ConstSharedPtr slice)
+{
+  if (!enabled_) {
+    return;
+  }
+
+  auto node = node_.lock();
+  if (!node) {
+    throw std::runtime_error{"Failed to lock node"};
+  }
+
+  // If the slice frame is not equal to the nav2 costmap global frame,
+  // we listen for the transform.
+  std::string slice_frame = slice->header.frame_id;
+  if (nav2_costmap_global_frame_ != slice_frame) {
+    rclcpp::Time timestamp = slice->header.stamp;
+    geometry_msgs::msg::Transform T_G_S_msg;
+
+    // Logging.
+    auto & clk = *node->get_clock();
+    constexpr int kWarnMessagePeriodMs = 1000;
+
+    // Get the transform from tf.
+    try {
+      T_G_S_msg =
+        tf_buffer_->lookupTransform(nav2_costmap_global_frame_, slice_frame, timestamp).transform;
+    } catch (tf2::TransformException & e) {
+      RCLCPP_WARN_STREAM_THROTTLE(
+        node->get_logger(), clk, kWarnMessagePeriodMs,
+        "[NvbloxCostmapLayer] Can't transform: "
+          << nav2_costmap_global_frame_ << " to " << slice_frame
+          << ". Error: " << e.what());
+    }
+
+    // Convert rotation Eigen.
+    const Eigen::Quaternionf quaternion(T_G_S_msg.rotation.w, T_G_S_msg.rotation.x,
+      T_G_S_msg.rotation.y, T_G_S_msg.rotation.z);
+
+    // Rotate the x-axis and convert the resulting direction vector to polar coordinates.
+    const Eigen::Vector3f rotated_x_axis = quaternion * Eigen::Vector3f::UnitX();
+    const float polar_angle_rad =
+      std::acos(rotated_x_axis.z() / rotated_x_axis.norm());
+    const float azimuth_angle_rad =
+      atan2(rotated_x_axis.y(), rotated_x_axis.x());
+
+    // Check that the transform is 2d:
+    // - polar angle = PI / 2 (direction vector lies on x/y-plane)
+    // - z-translation = 0
+    constexpr float kDegreesToRadians = M_PI / 180.0;
+    constexpr float kMaxAllowedLatitudeRad = 1.f * kDegreesToRadians;
+    constexpr float kMaxAllowedHeightDifferenceM = 1e-2;
+    bool is_2d_transform =
+      std::abs(polar_angle_rad - M_PI_2) <= kMaxAllowedLatitudeRad;
+    is_2d_transform &= std::abs(T_G_S_msg.translation.z) <= kMaxAllowedHeightDifferenceM;
+    if (!is_2d_transform) {
+      RCLCPP_WARN_STREAM_THROTTLE(
+        node->get_logger(), clk, kWarnMessagePeriodMs,
+        "[NvbloxCostmapLayer] Transformation from "
+          << nav2_costmap_global_frame_ << " to " << slice_frame
+          << " must be 2d, but it is 3d.");
+    }
+
+    // Update the 2d transform
+    T_G_S_ =
+      Eigen::Isometry2f(
+      Eigen::Translation2f(T_G_S_msg.translation.x, T_G_S_msg.translation.y) *
+      Eigen::Rotation2Df(azimuth_angle_rad));
+  }
+
+  RCLCPP_DEBUG(node->get_logger(), "Slice callback.");
+  slice_ = slice;
+}
+
+bool NvbloxCostmapLayer::lookupInSlice(const Eigen::Vector2f & pos, float * distance)
+{
+  // If we don't have any slice, we don't have any costs. :(
+  if (slice_ == nullptr) {
+    return false;
+  }
+
+  // Else look up in the actual slice.
+  Eigen::Vector2f scaled_position =
+    (pos - Eigen::Vector2f(slice_->origin.x, slice_->origin.y)) / slice_->resolution;
+  Eigen::Vector2i pos_index = scaled_position.array().floor().cast<int>();  // 2026-09-21 수정: origin 은 픽셀 모서리(DistanceMapSlice.msg) → floor 가 맞음. round 는 −1 셀 평행이동을 일으킴(rover §10.4)
+
+  if (pos_index.x() < 0 || pos_index.x() >= static_cast<int>(slice_->width) || pos_index.y() < 0 ||
+7908a18 Fix deserialization of Nvblox map when dynamic object detection is enabled
+ M src/nvblox_costmap_layer.cpp
