@@ -151,7 +151,7 @@ with wr.saving(fig, out, dpi=100):
         tx.set_text('%s  ×%g\ncmd v %+.3f m/s  ω %+.2f rad/s\n로버 (%.2f, %.2f) %+.0f°' % (time.strftime('%H:%M:%S', time.localtime(t)) + '.%d' % int(t % 1 * 10), SPEED, cm[1], cm[2], c[0], c[1], math.degrees(yaw)))
         rec = [lab for te, lab in NEV if t - 2.5 <= te <= t]; ev.set_text('● ' + rec[-1] if rec else '')
         bk = [q for q in BLK if t - 2.5 <= q[0] <= t]
-        if bk: blk_m.set_data([bk[-1][1]], [bk[-1][2]]); blk_t.set_position((bk[-1][1] + 0.08, bk[-1][2] + 0.06)); blk_t.set_text('막힘 판정 칸(비용 99)')
+        if bk: blk_m.set_data([bk[-1][1]], [bk[-1][2]]); blk_t.set_position((bk[-1][1] + 0.08, bk[-1][2] + 0.06)); blk_t.set_text('막힘 판정 경로 점(비용 99 = 내접)')
         else: blk_m.set_data([], []); blk_t.set_text('')
         wr.grab_frame()
 print('저장', out, '프레임', len(times), '· 경로', len(plans))
