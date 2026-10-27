@@ -1,0 +1,9 @@
+주행 11:18:23 ~ 11:25:30 (427.3 s) · 멈춤(1.0 s 넘게 정지) 1 번 · 합 4.7 s
+
+11:24:48~11:24:53 (t 392.3~397.0, 4.7 s) @ (1.84, -0.64) | cmd_vel 2 개 중 0 명령 0 · 최대 |v| 0.020 · 최대 |ω| 0.07 | 앞 ±30° 라이다 최소 1.35 m
+    11:24:46.10 bt_navigator_navigate_to_pose_rclcpp_node PathBlockedAhead: 앞 경로 (1.13, 0.14) 비용 99 — 2.0 s 지속되면 재계획
+    11:24:48.10 bt_navigator_navigate_to_pose_rclcpp_node PathBlockedAhead: 앞 경로 (1.13, 0.14) 비용 99 가 2.0 s 지속 → 주행 중단·재계획
+    11:24:48.15 controller_server Goal was canceled. Stopping the robot.
+    11:24:48.15 controller_server [follow_path] [ActionServer] Client requested to cancel the goal. Cancelling.
+    11:24:48.15 bt_navigator_navigate_to_pose_rclcpp_node PathBlockedAhead: 앞 경로 (1.13, 0.14) 비용 99 가 2.0 s 지속 → 주행 중단·재계획
+    11:24:48.15 behavior_server Running wait
