@@ -1,0 +1,9 @@
+PC HEAD blob: prep_fast.sh aeb6e6cf3b prep_patrol.sh 4fe16954f6 chk_prep.py e5892acd65  nav2_params 62452c951d
+wsl: ø»ì·´ $±¸ÒÌÆ¹Ğ ¨ºÜ´|¹ ¬À©Æ`Õ Lµ”² wsl2.localhostForwarding $ÁÈtÇ È©Æ´ÀÉ JÅµÂÈ²ä².
+bash: /mnt/c/Users/magma/AppData/Local/Temp/claude/F--6-Indoor-Rover-Rover/21d4aa9f-8412-4905-b23d-17554af330ea/scratchpad/run_jn.sh: No such file or directory
+prep_fast.sh aeb6e6cf3b CR 0
+prep_patrol.sh 4fe16954f6 CR 0
+chk_prep.py e5892acd65 CR 0
+ì´ì „ src 7bce0cb94734 Â· ì„¤ì¹˜ë³¸ 7bce0cb94734 ì¼ë°˜íŒŒì¼
+ìƒˆ src af07af0c0b47 Â· ì„¤ì¹˜ë³¸ af07af0c0b47 Â· nav2_params blob 62452c951d
+      tolerance: 0.35                        # 10-27 Â§5 Â· Â§8: 0.25 â†’ 0.35. 1.1.20 ì€ ì´ ê°’ì„ ê±°ë¦¬ ì•„ë‹Œ 'íœ´ë¦¬ìŠ¤í‹±(cost_penalty ê³±í•œ ì¥ì• ë¬¼ ë¹„ìš© ê±°ë¦¬ í¬í•¨)' ê³¼ ë¹„êµ â†’
