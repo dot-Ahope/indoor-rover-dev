@@ -1,0 +1,41 @@
+rc 0
+  prep_patrol: 오도메트리 vslam · 재계획 0.01 Hz · 궤적 발행 lite · PreferForward 15.0 · 추가 nav 인자 planner:=smac
+########## 1. 정리 ##########
+  정리 전 프로세스: 0
+  정리 후: 0 | /dev/shm fastrtps 잔재: 12
+  SHM 고아 정리: 1 zombie segments cleaned · 남은 fastrtps 4
+  직전 기록 보관: /tmp/logkeep/1027_154843_*.log (3 개) · 보관 벌 수 3
+  ⏱ +6 s 정리 끝
+########## 2. base ##########
+  에이전트 컨테이너 1 개 · 세션 수립 기록 1 건 · robot_state_publisher 1 개
+########## 3. sensors (자이로 캘리브, 로버 정지) ##########
+  gyro bias calibrated: (-0.00778, -0.00069, -0.00182) rad/s, std=(0.0027, 0.0022, 0.0018)
+  ⏱ +26 s 자이로 캘리브 끝
+########## 4. slam(위치 추정) + 5. nav2 ##########
+  ⏱ +27 s slam 기동 로그 확인
+  ⏱ +27 s nav2 기동
+########## 6. 준비 확인(노드 1 개) ##########
+  clear_entirely_local_costmap: 완료
+  clear_entirely_global_costmap: 완료
+  위치 추정 검사(기대 0,0,0): 위치 차 0.003 m · yaw 차 +0.0° → 통과
+  준비까지 39.6 s | Nav2 controller=active planner=active bt_navigator=active behavior=active nav_map=active
+  /wheel_odom 25.0 Hz · /odometry/filtered 30.0 Hz · /tf 50.0 Hz · 배터리 12.27 V
+  map→base: (-0.003, -0.001) yaw 0.0°
+  전역 코스트맵: 333×242 · 치명/내접 24945 칸
+  /controller_server: PreferForward=15.0 · vx_min=-0.06 · visualize=True · trajectory_step=100 · time_step=4 · PreferForward=28.0 · PreferForward=5.0
+  /global_costmap/global_costmap: plugins=['static_layer', 'nvblox_layer', 'obstacle_layer', 'inflation_layer'] · nav2_costmap_global_frame=map · observation_sources=scan
+  /stuck_monitor: shadow_mode=True
+  /planner_server: tolerance=0.35 · motion_model_for_search=REEDS_SHEPP · cost_penalty=3.0 · analytic_expansion_max_length=1.0 · max_planning_time=2.0 · cache_obstacle_heuristic=False
+  /camera/camera: visual_preset=3
+  /ekf_filter_node: odom1=/vslam/odom
+  /slam_toolbox: mode=localization · transform_timeout=1.5
+  /bt_navigator: default_nav_to_pose_bt_xml=/tmp/nav_to_pose_active.xml
+PREP_OK
+  ⏱ +84 s 확인 끝
+########## 7. 로그·프로세스(DDS 조회 없음) ##########
+  설치본 PreferForward cost_weight: 15.0 · BT RateController hz="0.01" · # 자동 생성(navigation.launch.py, camera_layer=nvblox, global_camera=nvblox) — 원�
+  navmap_ensure: active (1) · no map 경고 0 · SHM 오류 0
+  EKF 위반 21회 · slam 폐기 2회 · load 9.29 6.40 5.52
+  프로세스: rplidar=1 realsense2_camera=0 sensor_conditioner=1 ekf=1 rf2o_laser_odometry=0 rf2o_gate.py=0 localization_slam=1 controller_server=1 planner_server=1 bt_navigator=1 nav_map_server=1 s
+  nvblox(컨테이너): 1 개 · cuVSLAM(컨테이너): 1 개 · vslam_twist 1 · ekf_vslam 0
+  ⏱ +84 s prep 끝 — PREP_OK

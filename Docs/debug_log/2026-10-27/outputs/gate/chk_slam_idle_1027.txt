@@ -1,0 +1,5 @@
+  C map->odom 379 개/20 s, 최대 간격 0.07 s, 최대 stamp 지연 -0.27 s
+GATE B=OK C=OK G2=0.396
+slam 스캔 버림(전체) 15 · 최근: [localization_slam_toolbox_node-1] [INFO] [1793083479.183780565] [slam_toolbox]: Message Filter dropping message: frame 'lidar_link' at time 1793083479.071 for 
+[localization_slam_toolbox_node-1] [INFO] [1793083502.673296826] [slam_toolbox]: Message Filter dropping message: frame 'lidar_link' at time 1793083502.583 for 
+[localization_slam_toolbox_node-1] [INFO] [1793083534.825737014] [slam_toolbox]: Message Filter dropping message: frame 'lidar_link' at time 1793083534.738 for 
