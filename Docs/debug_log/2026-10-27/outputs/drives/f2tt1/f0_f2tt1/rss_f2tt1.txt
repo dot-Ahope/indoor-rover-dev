@@ -1,0 +1,25 @@
+    PID   RSS %CPU COMMAND         COMMAND
+1302186 598724 10.7 component_conta /opt/ros/humble/lib/rclcpp_components/component_container_mt --ros-args -r __node:=cuvslam_container -r __ns:=/
+1302859 412488 17.0 nvblox_node    /opt/ros/humble/lib/nvblox_ros/nvblox_node --ros-args --params-file /tmp/nvblox_active.yaml -r camera_0/depth/image:=/camera/camera/depth/image_rect_raw -r camera_0/depth/camera_info:=/camera/camera/depth/camera_info
+1302504 300108 10.0 localization_sl /home/jetson/slam_ws/install/slam_toolbox/lib/slam_toolbox/localization_slam_toolbox_node --ros-args -r __node:=slam_toolbox --params-file /home/jetson/ros2_ws/install/rover_bringup/share/rover_bringup/config/slam.yaml --params-file /tmp/launch_params_iorpvx4h --params-file /tmp/launch_params_22la8vxz
+   2131 133660 0.1 gnome-shell     /usr/bin/gnome-shell
+1301760 129472 20.8 component_conta /opt/ros/humble/lib/rclcpp_components/component_container_mt --ros-args -r __node:=realsense2_camera_container -r __ns:=/camera
+   1603 126972 0.7 dockerd         /usr/bin/dockerd -H fd:// --containerd=/run/containerd/containerd.sock
+   1700 78864  0.0 Xorg            /usr/lib/xorg/Xorg vt1 -displayfd 3 -auth /run/user/128/gdm/Xauthority -nolisten tcp -background none -noreset -keeptty -novtswitch -verbose 3
+   1234 73400  0.6 containerd      /usr/bin/containerd
+1302600 71920 17.4 planner_server  /opt/ros/humble/lib/nav2_planner/planner_server --ros-args --log-level info --ros-args -r __node:=planner_server --params-file /tmp/launch_params_gaj3s1m0 -r /tf:=tf -r /tf_static:=tf_static
+1301737 64780  0.8 ros2            /usr/bin/python3 /opt/ros/humble/bin/ros2 launch rover_bringup sensors.launch.py viz:=map emitter_off:=true vslam:=on dds_shm:=true
+1302594 64516  3.7 python3         python3 /home/jetson/ros2_ws/install/rover_bringup/lib/rover_bringup/nav_guard.py --ros-args -r __node:=nav_guard
+1024216 61932  0.3 python3         /usr/bin/python3 -c from ros2cli.daemon.daemonize import main; main() --name ros2-daemon --ros-domain-id 0 --rmw-implementation rmw_fastrtps_cpp
+1302008 61440  5.5 python3         python3 /home/jetson/ros2_ws/install/rover_bringup/lib/rover_bringup/vslam_twist.py --ros-args -r __node:=vslam_twist --params-file /tmp/launch_params_8je_3zp5
+1302592 60624  4.8 python3         python3 /home/jetson/ros2_ws/install/rover_bringup/lib/rover_bringup/stuck_monitor.py --ros-args -r __node:=stuck_monitor --params-file /tmp/launch_params_mo7wc946
+1301766 59948  9.4 python3         python3 /home/jetson/ros2_ws/install/rover_bringup/lib/rover_bringup/scan_deskew.py --ros-args -r __node:=scan_deskew --params-file /tmp/launch_params_i2ldysp9
+1302107 59604  0.9 ros2            /usr/bin/python3 /opt/ros/humble/bin/ros2 launch /tmp/cuvslam_active.launch.py
+1301762 58372  3.9 python3         python3 /home/jetson/ros2_ws/install/rover_bringup/lib/rover_bringup/depth_relay.py --ros-args -r __node:=depth_relay --params-file /tmp/launch_params_j_4rp1i_
+    871 55532  0.1 snapd           /snap/snapd/current/usr/lib/snapd/snapd
+1302605 51532 11.2 bt_navigator    /opt/ros/humble/lib/nav2_bt_navigator/bt_navigator --ros-args --log-level info --ros-args -r __node:=bt_navigator --params-file /tmp/launch_params_gaj3s1m0 -r /tf:=tf -r /tf_static:=tf_static
+1302596 44964 12.3 controller_serv /opt/ros/humble/lib/nav2_controller/controller_server --ros-args --log-level info --ros-args --params-file /tmp/launch_params_gaj3s1m0 -r /tf:=tf -r /tf_static:=tf_static -r cmd_vel:=cmd_vel_nav
+    259 44584  0.1 systemd-journal /lib/systemd/systemd-journald
+   2588 43496  0.3 python3         python3 /home/jetson/ros2_ws/install/rover_bringup/lib/rover_bringup/display_info_pub.py --ros-args -r __node:=display_info_pub
+   2685 42532  3.6 micro_ros_agent /uros_ws/install/micro_ros_agent/lib/micro_ros_agent/micro_ros_agent serial --dev /dev/rover -b 460800
+1302602 40488  9.5 behavior_server /opt/ros/humble/lib/nav2_behaviors/behavior_server --ros-args --log-level info --ros-args -r __node:=behavior_server --params-file /tmp/launch_params_gaj3s1m0 -r /tf:=tf -r /tf_static:=tf_static
