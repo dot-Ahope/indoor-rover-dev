@@ -54,9 +54,10 @@ for f, u in enumerate(steps):
     fg, axs = plt.subplots(1, 3, figsize=(14.4, 8.1))
     for a, d in zip(axs, D):
         done = u >= len(d['W']); ok = len(d['sp']) > 0
-        t = '%s  %s\n%s · 방문 %d / %d' % (TIME[d['k']], ('Smac 성공' if ok else 'Smac 실패') if done else '탐색 중', WHERE[d['k']], min(u, len(d['W'])), len(d['W']))
+        # 10-27 §28: 모든 칸은 '오프라인 재질의' 결과 — 실주행 결과와 헷갈리지 않게 상태 글자에 명시(사용자 지적: 통로 영상은 Smac 계속, 이 영상은 실패)
+        t = '%s  %s\n%s · 방문 %d / %d' % (TIME[d['k']], ('재질의 성공' if ok else '재질의 실패(실주행은 성공)') if done else '재질의 탐색 중', WHERE[d['k']], min(u, len(d['W'])), len(d['W']))
         draw(a, d, int(u), t, ('#0f7a3c' if ok else '#b3263e') if done else '#1b1f24')
-    fg.suptitle('f2tt1 서쪽 통로 — Smac Hybrid(tol 0.35 · cp 3.0) 탐색. 분홍 점선 = 목표, 파랑 = 출발, 점 = 방문 노드(색 = 순서), 초록 = 만든 경로', x=0.01, ha='left', fontsize=11.5)
+    fg.suptitle('f2tt1 서쪽 통로 — 실주행 세 순간을 오프라인으로 다시 질의한 Smac Hybrid(tol 0.35 · cp 3.0) 탐색. 분홍 점선 = 목표, 파랑 = 출발, 점 = 방문 노드(색 = 순서), 초록 = 만든 경로', x=0.01, ha='left', fontsize=11.5)
     fg.tight_layout(); fg.savefig('%s/f%04d.png' % (tmp, f), dpi=100)
     if LAST and f == len(steps) - 1: fg.savefig(LAST, dpi=110)
     plt.close(fg)
