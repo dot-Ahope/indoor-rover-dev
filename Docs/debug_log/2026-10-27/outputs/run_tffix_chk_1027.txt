@@ -1,0 +1,21 @@
+  [ 24.1 s] 기다리는 것: controller_server planner_server bt_navigator behavior_server /wheel_odom /odometry/filtered 전역 지도
+  [ 24.3 s] 기다리는 것: controller_server planner_server bt_navigator behavior_server /wheel_odom 전역 지도
+  [ 25.5 s] 기다리는 것: controller_server planner_server bt_navigator behavior_server /wheel_odom 전역 지도
+  [ 25.8 s] 기다리는 것: controller_server planner_server bt_navigator behavior_server /wheel_odom 전역 지도
+  위치 추정 검사(기대 0,0,0): 위치 차 0.016 m · yaw 차 -0.1° → 통과
+  /wheel_odom 25.0 Hz · /odometry/filtered 30.0 Hz · /tf 50.0 Hz · 배터리 12.32 V
+PREP_OK
+  ⏱ +90 s prep 끝 — PREP_OK
+BT 사본: PlanSmacOrNavFn 1 · RateController RateController hz="0.01" · step 1
+bt_navigator xml = 
+SmacHybrid.tolerance = Double value is: 0.35
+SmacHybrid.motion_model_for_search = String value is: REEDS_SHEPP
+SmacHybrid.cost_penalty = 
+SmacHybrid.analytic_expansion_max_length = Double value is: 1.0
+SmacHybrid.max_planning_time = Double value is: 2.0
+SmacHybrid.cache_obstacle_heuristic = Boolean value is: False
+visual_preset = Integer value is: 3 · odom1 = String value is: /vslam/odom
+MPPI PathAlign = Double value is: 28.0 · PathFollow = Double value is: 5.0
+== 층 라이브러리: 2026-10-27 14:46:20 · 로드 오류 0
+전역 메시지 74 장 · 로버 2.5 m 안 로컬 치명 칸 중앙 238 · 전역 일치율 중앙 1.000 · 최소 1.000 · 0.8 미만 장 0
+nav2.log [NvbloxCostmapLayer] 줄 0 (Can't transform 0 · must be 2d 0)
