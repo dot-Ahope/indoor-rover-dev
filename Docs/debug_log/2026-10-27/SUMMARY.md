@@ -149,3 +149,9 @@
   - `videos/cmp_corridor_f2sa3_vs_f2st1.mp4`(54 s, 1440×764, 2 배속): 왼쪽 f2sa3 16:11:52~16:13:40 · 오른쪽 f2st1 11:20:33~11:21:40(둘 다 목표 4 출발부터, f2st1 이 먼저 끝나 마지막 장면 유지). 단독판 `videos/f2sa3_corridor_rviz_x2.mp4` · `videos/f2st1_corridor_rviz_x2.mp4`.
   - `videos/f2st1_box_stop_rviz.mp4`(45 s, 1 배속, 11:24:25~11:25:10): 복귀 길 상자 앞 — 11:24:46 PathBlockedAhead 가 앞 경로 (1.13, 0.14) 비용 99 를 봄 → 2 s 지속 11:24:48 주행 중단 · Wait 5 s → 11:24:53 재계획 → 11:24:57 TF 외삽으로 컨트롤러 중단 1 회 → 상자 북쪽으로 지나감(복귀 최소 16.3 cm).
 - 첫 f2sa3 렌더링은 상위 백그라운드 명령이 끝나면서 함께 종료돼 파일이 불완전(moov 없음) → 단독으로 다시 렌더링.
+
+## §13 영상 다시 — 밝은 스타일 · 경로 출처 색 (사용자: "rviz 스타일 … 보기 안좋다. smac_expansion 에 적용한 스타일이 눈이 편하다" · "오늘자 주행은 Smac 실패하여 NavFn 으로 주행한 것은 없는 것이지?")
+- 질문 답(본 것): **있음.** 통로 창 경로 메시지(`outputs/drives/f2st1/chk_corr_paths_f2st1.txt`, 도구 `2026-10-26/jobs/chk_corr_paths.py`, 입력 `bags/bag_f2st1.tgz`): 남행 11:20:37.62 Smac(점 간격 0.075; 앞의 0.025 판은 러너 조회용 NavFn) · **북행 11:21:02 · 11:21:06 · 11:21:12 세 번 모두 NavFn**(0.025, /plan_smoothed 동반 — 스무딩 충돌로 원경로) · 11:21:34 목표 6 은 다시 Smac. §11 의 'Smac 실패 3 = 북행' 과 같음.
+- 도구 `Docs/tools/fig_rviz_video.py` 에 환경 `FIG_STYLE=light` 추가: smac_expansion 과 같은 흰 바탕 · 회색 코스트맵(내접 진회색 · 치명 검정 · 미지 연노랑) · 파랑 차체, **경로를 출처별로**(Smac 초록 실선 · NavFn 주황 점선) + 오른쪽 위 '따르는 경로: Smac/NavFn', PathBlockedAhead 사건의 좌표를 **빨간 X '막힘 판정 칸'** 으로 2.5 s 표시. 기본(변수 없음)은 예전 RViz 스타일 그대로.
+- 새 영상(git 제외, 생성 기록 `outputs/fig_video/fig_light_*.txt`): `videos/cmp_corridor_f2sa3_vs_f2st1_light.mp4`(54 s, 2 배속, 왼쪽 f2sa3 · 오른쪽 f2st1) · 단독 `videos/f2sa3_corridor_light_x2.mp4` · `videos/f2st1_corridor_light_x2.mp4` · `videos/f2st1_box_stop_light.mp4`(45 s, 1 배속). §12 의 어두운 판 4 개는 대체돼 지움(같은 bag 으로 언제든 재생성).
+- 상자 멈춤 영상에서 본 것: 막힘 판정 칸 (1.13, 0.14) 은 기록 상자(x 1.151~1.261, y −0.20~−0.02) 북쪽 약 16 cm 의 **작은 둥근 치명 덩어리**이고, 그때 따르던 Smac 경로가 그 위를 지남 → 경로를 그린 뒤 새로 찍힌 칸으로 보임. 그 덩어리가 상자의 기억 밀림인지 · 바닥 유령 칸인지는 **미확인**(카메라 · 라이다 원자료 대조 필요).
