@@ -1,0 +1,23 @@
+주행 15:00:03~15:07:02 (421 s) · 전체 CPU 사용률(/proc/stat) 68.5 % (6 코어 기준, 100 % = 모든 코어 포화)
+프로세스별 평균 CPU(코어 1 개 = 100 %%), 상위 15:
+    32.3 %  1022643  controller_server
+    32.1 %  1077387  job550_f0run.py
+    27.9 %  1077205  ros2
+    21.8 %  1022556  slam_toolbox(localization_slam_toolbox_node)
+    20.5 %  1022641  nav_guard(nav_guard.py)
+    18.7 %  1022651  bt_navigator(bt_navigator)
+    17.5 %  1021744  realsense2_camera_container(component_container_mt)
+    16.2 %  1022900  nvblox_node
+    13.6 %  1005     polkitd
+    12.6 %  1022245  cuvslam_container(component_container_mt)
+    12.0 %  1021748  rplidar_node(rplidar_node)
+    11.4 %  1022686  lifecycle_manage(lifecycle_manager)
+    11.2 %  1022095  ekf_filter_node(ekf_node)
+     9.6 %  1022647  planner_server(planner_server)
+     8.9 %  1021750  scan_deskew(scan_deskew.py)
+  (프로세스 합 359 % = 코어 3.59 개분, 전체 용량 6 개)
+tegrastats 416 초: 코어 평균 % 중앙 67 · 10% 60 · 90% 76 · 최소 코어 % 중앙 61 · 주파수 1497 MHz(최대)
+  코어 평균 ≥ 95 % 인 초 비율 1 %
+Control loop missed 84 번 · 그 초 코어 평균 % 중앙 73 (전체 중앙 67)
+층 경고 28 번 · 그 초 코어 평균 % 중앙 73 (전체 중앙 67)
+컨트롤러 TF 중단 5 번 · 그 초 코어 평균 % 중앙 73 (전체 중앙 67)

@@ -68,9 +68,13 @@ def _make_slam(context):
         #   미래에 찍는다(slam_toolbox_common.cpp publishTransformLoop). 처리가 밀려 이 미래 여유가 다 소진되면(f2a2 실주행 최대 0.57 s 밀림)
         #   컨트롤러가 로봇 자세를 map 으로 바꾸지 못해 follow_path 가 중단된다(f2a2 3 회, 밀림이 0.04 ms 만 넘어도 실패 — 대기 없이 즉시 실패).
         #   0.5 s 면 관측 최대 밀림을 거의 덮는다. 대가: 0.5 s 안의 보정 변화가 늦게 반영될 수 있으나 map→odom 은 느리게 변하는 보정값이라 영향 작음(추정).
+        # 2026-10-27 §21: 0.5 → 1.5. f2st1 · f2tf1 에서 nav2 의 odom→map 외삽 실패(전역 nvblox 층 50 · 컨트롤러 중단 6)가 전부
+        #   SLAM stamp 가 0.5 s 넘게 멈춘 창 안(33/33 · 23/23) — 멈춤 최대 0.91 · 1.30 s, > 0.5 s 26 · 36 번, 대부분 직전에 'Message Filter dropping'(스캔 처리 밀림).
+        #   1.5 s 면 관측 최대를 덮는다. 대가: 보정 반영이 최대 1.5 s 늦음 — f2tf1 보정 변화 0.4 m / 400 s 기준 1~2 mm(추정).
+        #   근본(SLAM 스캔 처리 시간 · 버림 줄이기)은 별도 A/B 과제. 근거 Docs/debug_log/2026-10-27/SUMMARY.md §21
         params.append({'mode': 'localization', 'minimum_travel_distance': 0.30,
                        'minimum_travel_heading': 0.15, 'map_update_interval': 10.0,
-                       'transform_timeout': 0.5})
+                       'transform_timeout': 1.5})
         exe = 'localization_slam_toolbox_node'
     return [LogInfo(msg=msg), Node(
         package='slam_toolbox', executable=exe,
