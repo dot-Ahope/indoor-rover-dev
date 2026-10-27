@@ -5,7 +5,7 @@
     · 바탕 = 전역 코스트맵(map), RViz 'costmap' 색표 흉내 — 0 = 비움(바탕 그대로) · 1~98 = 파랑 → 빨강 · 99 내접 = 하늘색 · 100 치명 = 자홍 · −1 미지 = 회청.
     · 로컬 코스트맵 치명 칸(MPPI 가 보는 것) = 노란 테두리 칸, 라이다 /scan = 빨간 점, 전역 경로(BT 경로) = 초록 선, 차체(풋프린트) = 초록 다각형, base_link 축 = 빨강 x · 초록 y.
   BT 경로 고르기 · 데이터 읽기는 fig_drive_video.py 와 같은 규칙(nav_events 의 스무더 사건 + /plan 점 간격 > 0.04 m = Smac).
-  환경 FIG_STYLE=light(10-27 §13): 밝은 화면 + 경로 출처별 색(Smac 초록 · NavFn 주황 점선).
+  환경 FIG_STYLE=light(10-27 §13): 밝은 화면 + 경로 출처별 색(Smac 초록 · NavFn 주황 점선). FIG_FOV=반각,거리 · FIG_BOX=x0,x1,y0,y1(10-27 §20): 카메라 시야 부채꼴 · 기록 상자.
   사용: fig_rviz_video.py bag 출력.mp4 시작HH:MM:SS 끝HH:MM:SS [배속=1] [nav_events.txt] [제목] [창 m=3.0] [한 변 px=720]"""
 import sys, time, math
 from pathlib import Path
@@ -122,6 +122,16 @@ fig.text(0.98, 0.98, TITLE, color=TXT, fontsize=10 * FS, va='top', ha='right', b
 blk_m, = ax.plot([], [], 'x', color='#c92a2a', ms=16 * FS, mew=3.5, zorder=8)
 blk_t = ax.text(0, 0, '', color='#c92a2a', fontsize=10 * FS, fontweight='bold', zorder=8, va='bottom')
 src_t = fig.text(0.98, 0.91, '', fontsize=11 * FS, va='top', ha='right', fontweight='bold', bbox=BOX)
+# 10-27 §20: 환경 FIG_FOV=반각°,거리m(카메라 시야 부채꼴, camera_link 기준) · FIG_BOX=x0,x1,y0,y1(기록 상자, map 점선) — 상자가 시야에 들어왔는지 보이기
+_env = __import__('os').environ
+FOV = [float(v) for v in _env['FIG_FOV'].split(',')] if _env.get('FIG_FOV') else None
+CAMF = next((f for f in ('camera_link', 'camera_depth_frame', 'camera_color_frame') if f in static), None) if FOV else None
+fov_p = Polygon(np.zeros((3, 2)), closed=True, fc='#f59f00', alpha=0.12, ec='#f59f00', lw=1.2, zorder=4) if CAMF else None
+if fov_p is not None: ax.add_patch(fov_p)
+if _env.get('FIG_BOX'):
+    bx0, bx1, by0, by1 = [float(v) for v in _env['FIG_BOX'].split(',')]
+    ax.add_patch(Polygon([[bx0, by0], [bx1, by0], [bx1, by1], [bx0, by1]], closed=True, fill=False, ec='#7048e8', ls='--', lw=2.0, zorder=6))
+    ax.text(bx1 + 0.03, by0, '기록 상자', color='#7048e8', fontsize=9 * FS, fontweight='bold', zorder=6, va='bottom')
 fig.text(0.98, 0.03, ('코스트맵: 흰→회색 비용 · 진회색 내접 · 검정 치명 | 주황 □ 로컬 치명 | 분홍 점 라이다 | 경로: 초록 Smac · 주황 점선 NavFn | 파랑 차체' if LIGHT else
           '전역 costmap: 파랑→빨강 비용 · 하늘색 내접 · 자홍 치명 | 노랑 □ 로컬 치명 | 빨강 라이다 | 초록 경로 · 차체'), color=TXT, fontsize=7.5 * FS, va='bottom', ha='right', bbox=(BOX if LIGHT else None))
 px_per_m = PX / VW; loc_s.set_sizes([(0.05 * px_per_m * 0.72 * 0.85) ** 2])
@@ -145,6 +155,9 @@ with wr.saving(fig, out, dpi=100):
             path_l.set_color(GREEN if src == 'Smac' else NAVC); path_l.set_linestyle('-' if src == 'Smac' else (0, (3, 2)))
             src_t.set_text(('따르는 경로: ' + src) if src else ''); src_t.set_color(GREEN if src == 'Smac' else NAVC)
         trail_l.set_data(trail[:n + 1, 0], trail[:n + 1, 1]); body.set_xy(w2(Mmb, FP))
+        if fov_p is not None:
+            Mc = Mmb @ chain(CAMF); a_ = np.radians(np.linspace(-FOV[0], FOV[0], 25))
+            fov_p.set_xy(w2(Mc, np.r_[[[0, 0]], np.c_[FOV[1] * np.cos(a_), FOV[1] * np.sin(a_)]]))
         o = c; xa = w2(Mmb, np.array([[0.3, 0.0]]))[0]; ya = w2(Mmb, np.array([[0.0, 0.3]]))[0]
         axx.set_data([o[0], xa[0]], [o[1], xa[1]]); axy.set_data([o[0], ya[0]], [o[1], ya[1]])
         cm = last(cmds, t) if cmds else (0, 0, 0)
