@@ -735,7 +735,9 @@ planner_server:
       allow_unknown: true
     SmacHybrid:
       plugin: "nav2_smac_planner/SmacPlannerHybrid"
-      tolerance: 0.25
+      tolerance: 0.35                        # 10-27 §5 · §8: 0.25 → 0.35. 1.1.20 은 이 값을 거리 아닌 '휴리스틱(cost_penalty 곱한 장애물 비용 거리 포함)' 과 비교 →
+                                             #   서쪽 통로 남쪽 주머니 목표(내접 띠 옆, 고비용)에서 5.7 cm 앞 노드도 수락 못 해 실패(f2sa3 16:11:56 · 10-23 rp3 g4). 0.35 면 둘 다 성공,
+                                             #   상자 4 장면은 경로 점까지 같음(오프라인). 기각: cost_penalty 1.5(끝 방향 105° 틀어짐 · 14.5 m 우회).
       downsample_costmap: false
       downsampling_factor: 1
       allow_unknown: true
