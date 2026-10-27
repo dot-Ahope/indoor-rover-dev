@@ -1,0 +1,21 @@
+diff --git a/nvblox_nav2/src/nvblox_costmap_layer.cpp b/nvblox_nav2/src/nvblox_costmap_layer.cpp
+index 79767ba..8e73804 100644
+--- a/nvblox_nav2/src/nvblox_costmap_layer.cpp
++++ b/nvblox_nav2/src/nvblox_costmap_layer.cpp
+@@ -254,6 +254,7 @@ void NvbloxCostmapLayer::sliceCallback(
+         "[NvbloxCostmapLayer] Can't transform: "
+           << nav2_costmap_global_frame_ << " to " << slice_frame
+           << ". Error: " << e.what());
++      return;  // 2026-10-27 수정: 조회 실패 시 이 슬라이스를 버림(직전 slice_ · T_G_S_ 유지). 원래는 기본 Transform(단위)으로 odom 슬라이스를 map 에 적어 장애물이 0.5 m 틀어짐(rover 10-27 §15)
+     }
+ 
+     // Convert rotation Eigen.
+@@ -305,7 +306,7 @@ bool NvbloxCostmapLayer::lookupInSlice(const Eigen::Vector2f & pos, float * dist
+   // Else look up in the actual slice.
+   Eigen::Vector2f scaled_position =
+     (pos - Eigen::Vector2f(slice_->origin.x, slice_->origin.y)) / slice_->resolution;
+-  Eigen::Vector2i pos_index = scaled_position.array().round().cast<int>();
++  Eigen::Vector2i pos_index = scaled_position.array().floor().cast<int>();  // 2026-09-21 수정: origin 은 픽셀 모서리(DistanceMapSlice.msg) → floor 가 맞음. round 는 −1 셀 평행이동을 일으킴(rover §10.4)
+ 
+   if (pos_index.x() < 0 || pos_index.x() >= static_cast<int>(slice_->width) || pos_index.y() < 0 ||
+     pos_index.y() >= static_cast<int>(slice_->height))

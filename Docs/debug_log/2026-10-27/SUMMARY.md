@@ -227,3 +227,12 @@
   - **방아쇠는 부하가 맞다**(추정, 겹침 20/22 근거). 다만 결과가 '0.55 m · 7.5° 틀어진 장애물' 이 되는 것은 코드 결함 때문 — 실패하면 그 슬라이스를 건너뛰어야 하는데 단위 변환으로 씀.
   - 수정(catch 에서 return)은 **잘못 찍히는 것은 완전히 없앰**(그 순간 전역 카메라 층이 직전 슬라이스로 0.1~0.5 s 늦을 뿐 — 로컬 · MPPI 는 원래 영향 없음). **부하 자체 · 경고 · 컨트롤러 늦음(70 번/436 s, 11:24:57.60 컨트롤러 TF 외삽 중단 1 번)은 그대로.**
   - 둘은 따로 다룰 일: ① 결함 수정 — 부하가 없어도 TF 타이밍 실패는 가끔 생기므로 코드는 견뎌야 함(작고 확실) ② 부하 — 그 순간 무엇이 CPU · 실행기를 잡는지 미확인(Jetson 프로세스별 CPU 기록 필요).
+
+## §17 nvblox 층 TF 실패 처리 수정 · 빌드 · 정지 확인 (사용자: "진행하라") — 로버 안 움직임
+- 판정(실행 전 정함): ① 빌드 rc 0 · 라이브러리 갱신 ② prep PREP_OK · 층 로드 오류 0 ③ 정지 120 s 동안 전역 메시지마다 '로버 2.5 m 안 로컬 치명 칸이 전역에서도 치명(±1 칸)인 비율' 중앙 ≥ 0.95 · 0.8 미만 장 0(§15 의 틀어진 장이면 이 값이 크게 떨어짐).
+- 수정 `jobs/prep_nvlayer_tffix_1027.sh` → `outputs/prep_nvlayer_tffix_1027.txt`: Jetson `~/workspaces/isaac_ros-dev/src/isaac_ros_nvblox/nvblox_nav2/src/nvblox_costmap_layer.cpp` 슬라이스 콜백 catch 에 `return;` 1 줄(조회 실패 시 그 슬라이스를 버림 → 직전 slice_ · T_G_S_ 짝 유지). 원본 대비 전체 차이(09-21 floor + 이번 return)는 저장소 **`Docs/05_nvblox/nvblox_nav2_rover.patch`**(상위 release-3.2 7908a18 기준, 컨테이너 쪽 nvblox 는 무변경). 빌드 `colcon build --symlink-install --packages-select nvblox_nav2` rc 0 · 40 s, `install/nvblox_nav2/lib/libnvblox_nav2.so` → build 14:46:20 · sha 2a387c45575d(확인 `jobs/chk_nvlayer_so.sh`; 스크립트 안의 옛 이름 libnvblox_costmap_layer.so 확인은 틀린 경로라 NO 로 찍힘 — 무시).
+- 재기동 · 확인 `jobs/up_tffix_chk_1027.sh` → `jobs/run_tffix_chk_1027.sh`(prep_smac_1027 + `jobs/chk_nvlayer_tffix_1027.py`) → `outputs/run_tffix_chk_1027.txt`:
+  - ① ✔ ② ✔ PREP_OK +90 s · 위치 추정 0.016 m · −0.1° · tolerance 0.35 · 프리셋 3 · odom1 /vslam/odom · MPPI 28 · 5, 층 로드 오류 0. (SmacHybrid.cost_penalty · bt xml 조회가 빈 값 — 조회 시간 초과로 보임, 설정 파일은 안 바꿈. 다음 prep 때 다시 봄.)
+  - ③ ✔ 전역 74 장 · 로컬 치명 중앙 238 칸 · 일치율 중앙 1.000 · 최소 1.000 · 0.8 미만 0. 층 경고 0 줄.
+- 한계(정직하게): 정지 120 s 동안 **TF 실패가 한 번도 안 일어나** 고친 경로(return) 자체는 실제로 타지 않았다. 확인한 것은 '정상 경로가 깨지지 않음' 까지. 고친 경로의 확인은 다음 주행에서: 층 경고가 찍힌 시각 직후 전역 장에 §15 서명(새로 생긴 칸 = 단위 변환 슬라이스, `jobs/chk_gcm_fit.py`)이 없어야 한다.
+- Jetson 스택은 이 구성으로 떠 있음(f2st1 과 같은 구성 + 수정 층).
