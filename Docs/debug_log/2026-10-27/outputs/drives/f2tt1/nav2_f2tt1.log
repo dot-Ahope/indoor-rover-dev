@@ -1,0 +1,901 @@
+[INFO] [launch]: All log files can be found below /home/jetson/.ros/log/2026-10-27-15-49-05-491857-jetson-desktop-1302530
+[INFO] [launch]: Default logging verbosity is set to INFO
+[INFO] [stuck_monitor.py-1]: process started with pid [1302592]
+[INFO] [nav_guard.py-2]: process started with pid [1302594]
+[INFO] [controller_server-3]: process started with pid [1302596]
+[INFO] [smoother_server-4]: process started with pid [1302598]
+[INFO] [planner_server-5]: process started with pid [1302600]
+[INFO] [behavior_server-6]: process started with pid [1302602]
+[INFO] [bt_navigator-7]: process started with pid [1302605]
+[INFO] [waypoint_follower-8]: process started with pid [1302626]
+[INFO] [velocity_smoother-9]: process started with pid [1302628]
+[INFO] [lifecycle_manager-10]: process started with pid [1302638]
+[INFO] [map_server-11]: process started with pid [1302643]
+[INFO] [lifecycle_manager-12]: process started with pid [1302645]
+[INFO] [nvblox_up-13]: process started with pid [1302648]
+[controller_server-3] [INFO] [1793083746.420836604] [controller_server]: 
+[controller_server-3] 	controller_server lifecycle node launched. 
+[controller_server-3] 	Waiting on external lifecycle transitions to activate
+[controller_server-3] 	See https://design.ros2.org/articles/node_lifecycle.html for more information.
+[controller_server-3] [INFO] [1793083746.429782864] [controller_server]: Creating controller server
+[controller_server-3] [INFO] [1793083746.436555257] [local_costmap.local_costmap]: 
+[controller_server-3] 	local_costmap lifecycle node launched. 
+[controller_server-3] 	Waiting on external lifecycle transitions to activate
+[controller_server-3] 	See https://design.ros2.org/articles/node_lifecycle.html for more information.
+[controller_server-3] [INFO] [1793083746.438071149] [local_costmap.local_costmap]: Creating Costmap
+[planner_server-5] [INFO] [1793083746.441071189] [planner_server]: 
+[planner_server-5] 	planner_server lifecycle node launched. 
+[planner_server-5] 	Waiting on external lifecycle transitions to activate
+[planner_server-5] 	See https://design.ros2.org/articles/node_lifecycle.html for more information.
+[planner_server-5] [INFO] [1793083746.444491210] [planner_server]: Creating
+[planner_server-5] [INFO] [1793083746.550750838] [global_costmap.global_costmap]: 
+[planner_server-5] 	global_costmap lifecycle node launched. 
+[planner_server-5] 	Waiting on external lifecycle transitions to activate
+[planner_server-5] 	See https://design.ros2.org/articles/node_lifecycle.html for more information.
+[planner_server-5] [INFO] [1793083746.552826110] [global_costmap.global_costmap]: Creating Costmap
+[waypoint_follower-8] [INFO] [1793083746.536738548] [waypoint_follower]: 
+[waypoint_follower-8] 	waypoint_follower lifecycle node launched. 
+[waypoint_follower-8] 	Waiting on external lifecycle transitions to activate
+[waypoint_follower-8] 	See https://design.ros2.org/articles/node_lifecycle.html for more information.
+[waypoint_follower-8] [INFO] [1793083746.538005791] [waypoint_follower]: Creating
+[smoother_server-4] [INFO] [1793083747.515974387] [smoother_server]: 
+[smoother_server-4] 	smoother_server lifecycle node launched. 
+[smoother_server-4] 	Waiting on external lifecycle transitions to activate
+[smoother_server-4] 	See https://design.ros2.org/articles/node_lifecycle.html for more information.
+[smoother_server-4] [INFO] [1793083747.519551246] [smoother_server]: Creating smoother server
+[behavior_server-6] [INFO] [1793083747.784984741] [behavior_server]: 
+[behavior_server-6] 	behavior_server lifecycle node launched. 
+[behavior_server-6] 	Waiting on external lifecycle transitions to activate
+[behavior_server-6] 	See https://design.ros2.org/articles/node_lifecycle.html for more information.
+[lifecycle_manager-10] [INFO] [1793083747.846583918] [lifecycle_manager_navigation]: Creating
+[lifecycle_manager-12] [INFO] [1793083747.999538306] [lifecycle_manager_navmap]: Creating
+[lifecycle_manager-10] [INFO] [1793083748.057346730] [lifecycle_manager_navigation]: [34m[1mCreating and initializing lifecycle service clients[0m[0m
+[lifecycle_manager-12] [INFO] [1793083748.097422062] [lifecycle_manager_navmap]: [34m[1mCreating and initializing lifecycle service clients[0m[0m
+[velocity_smoother-9] [INFO] [1793083748.226833367] [velocity_smoother]: 
+[velocity_smoother-9] 	velocity_smoother lifecycle node launched. 
+[velocity_smoother-9] 	Waiting on external lifecycle transitions to activate
+[velocity_smoother-9] 	See https://design.ros2.org/articles/node_lifecycle.html for more information.
+[map_server-11] [INFO] [1793083748.534300181] [nav_map_server]: 
+[map_server-11] 	nav_map_server lifecycle node launched. 
+[map_server-11] 	Waiting on external lifecycle transitions to activate
+[map_server-11] 	See https://design.ros2.org/articles/node_lifecycle.html for more information.
+[map_server-11] [INFO] [1793083748.534739940] [nav_map_server]: Creating
+[bt_navigator-7] [INFO] [1793083748.768774881] [bt_navigator]: 
+[bt_navigator-7] 	bt_navigator lifecycle node launched. 
+[bt_navigator-7] 	Waiting on external lifecycle transitions to activate
+[bt_navigator-7] 	See https://design.ros2.org/articles/node_lifecycle.html for more information.
+[bt_navigator-7] [INFO] [1793083748.784437693] [bt_navigator]: Creating
+[planner_server-5] [WARN] [1793083749.084800070] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[planner_server-5] [WARN] [1793083749.238844544] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[planner_server-5] [WARN] [1793083749.280017930] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[planner_server-5] [WARN] [1793083749.287761556] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[planner_server-5] [WARN] [1793083749.292038600] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[planner_server-5] [WARN] [1793083749.295633668] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[planner_server-5] [WARN] [1793083749.299324579] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[planner_server-5] [WARN] [1793083749.302690935] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[planner_server-5] [WARN] [1793083749.343800607] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[planner_server-5] [WARN] [1793083749.372034859] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[planner_server-5] [WARN] [1793083749.376495141] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[planner_server-5] [WARN] [1793083749.379576303] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[planner_server-5] [WARN] [1793083749.383309103] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[planner_server-5] [WARN] [1793083749.388812493] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[planner_server-5] [WARN] [1793083749.500790046] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[lifecycle_manager-12] [INFO] [1793083749.619647035] [lifecycle_manager_navmap]: [34m[1mStarting managed nodes bringup...[0m[0m
+[lifecycle_manager-12] [INFO] [1793083749.619787456] [lifecycle_manager_navmap]: [34m[1mConfiguring nav_map_server[0m[0m
+[map_server-11] [INFO] [1793083749.627452584] [nav_map_server]: Configuring
+[map_server-11] [INFO] [1793083749.627648943] [map_io]: Loading yaml file: /home/jetson/maps/office/office_v3.yaml
+[map_server-11] [INFO] [1793083749.628196162] [map_io]: resolution: 0.05
+[map_server-11] [INFO] [1793083749.628222211] [map_io]: origin[0]: -5.29
+[map_server-11] [INFO] [1793083749.628231299] [map_io]: origin[1]: -6.96
+[map_server-11] [INFO] [1793083749.628238275] [map_io]: origin[2]: 0
+[map_server-11] [INFO] [1793083749.628245348] [map_io]: free_thresh: 0.25
+[map_server-11] [INFO] [1793083749.628252228] [map_io]: occupied_thresh: 0.65
+[map_server-11] [INFO] [1793083749.628260740] [map_io]: mode: trinary
+[map_server-11] [INFO] [1793083749.628270692] [map_io]: negate: 0
+[map_server-11] [INFO] [1793083749.628666930] [map_io]: Loading image_file: /home/jetson/maps/office/office_v3.pgm
+[planner_server-5] [WARN] [1793083749.711616731] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[map_server-11] [INFO] [1793083749.716293436] [map_io]: Read map /home/jetson/maps/office/office_v3.pgm: 333 X 242 map @ 0.05 m/cell
+[controller_server-3] [WARN] [1793083749.760007806] [rclcpp]: Failed to get parameters: FollowPathMPPI.PreferForwardCritic.cost_weight
+[planner_server-5] [WARN] [1793083749.814477522] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[controller_server-3] [WARN] [1793083749.904925117] [rclcpp]: Failed to get parameters: FollowPathMPPI.PreferForwardCritic.cost_weight
+[lifecycle_manager-12] [INFO] [1793083749.940805169] [lifecycle_manager_navmap]: [34m[1mActivating nav_map_server[0m[0m
+[map_server-11] [INFO] [1793083749.949684899] [nav_map_server]: Activating
+[map_server-11] [INFO] [1793083749.952056085] [nav_map_server]: Creating bond (nav_map_server) to lifecycle manager.
+[planner_server-5] [WARN] [1793083750.120057007] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[stuck_monitor.py-1] [INFO] [1793083750.168321453] [stuck_monitor]: stuck_monitor 시작 (window 2.0s, ratio 0.25, SHADOW(로그만))
+[planner_server-5] [WARN] [1793083750.194510291] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[controller_server-3] [WARN] [1793083750.199754536] [rclcpp]: Failed to get parameters: FollowPathMPPI.PreferForwardCritic.cost_weight
+[controller_server-3] [WARN] [1793083750.222159276] [rclcpp]: Failed to get parameters: FollowPathMPPI.PreferForwardCritic.cost_weight
+[controller_server-3] [WARN] [1793083750.240510980] [rclcpp]: Failed to get parameters: FollowPathMPPI.PreferForwardCritic.cost_weight
+[planner_server-5] [WARN] [1793083750.267638122] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[controller_server-3] [WARN] [1793083750.365009028] [rclcpp]: Failed to get parameters: FollowPathMPPI.PreferForwardCritic.cost_weight
+[planner_server-5] [WARN] [1793083750.367079307] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[lifecycle_manager-10] [INFO] [1793083750.371955187] [lifecycle_manager_navigation]: Waiting for service controller_server/get_state...
+[lifecycle_manager-12] [INFO] [1793083750.381013675] [lifecycle_manager_navmap]: Server nav_map_server connected with bond.
+[lifecycle_manager-12] [INFO] [1793083750.381168624] [lifecycle_manager_navmap]: [34m[1mManaged nodes are active[0m[0m
+[lifecycle_manager-12] [INFO] [1793083750.381201938] [lifecycle_manager_navmap]: [34m[1mCreating bond timer...[0m[0m
+[controller_server-3] [WARN] [1793083750.411758798] [rclcpp]: Failed to get parameters: FollowPathMPPI.PreferForwardCritic.cost_weight
+[planner_server-5] [WARN] [1793083750.523781824] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[controller_server-3] [WARN] [1793083750.627784511] [rclcpp]: Failed to get parameters: FollowPathMPPI.PreferForwardCritic.cost_weight
+[planner_server-5] [WARN] [1793083750.705904353] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[controller_server-3] [WARN] [1793083750.801056655] [rclcpp]: Failed to get parameters: FollowPathMPPI.PreferForwardCritic.cost_weight
+[controller_server-3] [WARN] [1793083751.006535380] [rclcpp]: Failed to get parameters: FollowPathMPPI.PreferForwardCritic.cost_weight
+[planner_server-5] [WARN] [1793083751.013095734] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[controller_server-3] [WARN] [1793083751.179783555] [rclcpp]: Failed to get parameters: FollowPathMPPI.PreferForwardCritic.cost_weight
+[planner_server-5] [WARN] [1793083751.194982958] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[controller_server-3] [WARN] [1793083751.243591865] [rclcpp]: Failed to get parameters: FollowPathMPPI.PreferForwardCritic.cost_weight
+[controller_server-3] [WARN] [1793083751.330253346] [rclcpp]: Failed to get parameters: FollowPathMPPI.PreferForwardCritic.cost_weight
+[planner_server-5] [WARN] [1793083751.346653654] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[controller_server-3] [WARN] [1793083751.390533854] [rclcpp]: Failed to get parameters: FollowPathMPPI.PreferForwardCritic.cost_weight
+[planner_server-5] [WARN] [1793083751.406165048] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[controller_server-3] [WARN] [1793083751.443880619] [rclcpp]: Failed to get parameters: FollowPathMPPI.PreferForwardCritic.cost_weight
+[planner_server-5] [WARN] [1793083751.446262941] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[planner_server-5] [WARN] [1793083751.465776381] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[controller_server-3] [WARN] [1793083751.467708480] [rclcpp]: Failed to get parameters: FollowPathMPPI.PreferForwardCritic.cost_weight
+[controller_server-3] [WARN] [1793083751.493895782] [rclcpp]: Failed to get parameters: FollowPathMPPI.PreferForwardCritic.cost_weight
+[planner_server-5] [WARN] [1793083751.494713730] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[planner_server-5] [WARN] [1793083751.502651475] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[controller_server-3] [WARN] [1793083751.504369583] [rclcpp]: Failed to get parameters: FollowPathMPPI.PreferForwardCritic.cost_weight
+[planner_server-5] [WARN] [1793083751.515780088] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[controller_server-3] [WARN] [1793083751.532038056] [rclcpp]: Failed to get parameters: FollowPathMPPI.PreferForwardCritic.cost_weight
+[planner_server-5] [WARN] [1793083751.532593339] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[controller_server-3] [WARN] [1793083751.552689903] [rclcpp]: Failed to get parameters: FollowPathMPPI.PreferForwardCritic.cost_weight
+[controller_server-3] [WARN] [1793083751.571257678] [rclcpp]: Failed to get parameters: FollowPathMPPI.PreferForwardCritic.cost_weight
+[planner_server-5] [WARN] [1793083751.571578521] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[controller_server-3] [WARN] [1793083751.579252866] [rclcpp]: Failed to get parameters: FollowPathMPPI.PreferForwardCritic.cost_weight
+[planner_server-5] [WARN] [1793083751.580077662] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[controller_server-3] [WARN] [1793083751.593216067] [rclcpp]: Failed to get parameters: FollowPathMPPI.PreferForwardCritic.cost_weight
+[planner_server-5] [WARN] [1793083751.593603792] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[planner_server-5] [WARN] [1793083751.621447343] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[controller_server-3] [WARN] [1793083751.620406251] [rclcpp]: Failed to get parameters: FollowPathMPPI.PreferForwardCritic.cost_weight
+[controller_server-3] [WARN] [1793083751.712231590] [rclcpp]: Failed to get parameters: FollowPathMPPI.PreferForwardCritic.cost_weight
+[planner_server-5] [WARN] [1793083751.725643572] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[planner_server-5] [WARN] [1793083751.771151411] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[controller_server-3] [WARN] [1793083751.881592623] [rclcpp]: Failed to get parameters: FollowPathMPPI.PreferForwardCritic.cost_weight
+[planner_server-5] [WARN] [1793083751.896835772] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[controller_server-3] [WARN] [1793083751.943399232] [rclcpp]: Failed to get parameters: FollowPathMPPI.PreferForwardCritic.cost_weight
+[controller_server-3] [WARN] [1793083751.977271151] [rclcpp]: Failed to get parameters: FollowPathMPPI.PreferForwardCritic.cost_weight
+[planner_server-5] [WARN] [1793083751.978458616] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[controller_server-3] [WARN] [1793083751.987993024] [rclcpp]: Failed to get parameters: FollowPathMPPI.PreferForwardCritic.cost_weight
+[planner_server-5] [WARN] [1793083751.988534707] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[controller_server-3] [WARN] [1793083751.994832299] [rclcpp]: Failed to get parameters: FollowPathMPPI.PreferForwardCritic.cost_weight
+[planner_server-5] [WARN] [1793083751.995362174] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[controller_server-3] [WARN] [1793083752.008168727] [rclcpp]: Failed to get parameters: FollowPathMPPI.PreferForwardCritic.cost_weight
+[planner_server-5] [WARN] [1793083752.009305086] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[controller_server-3] [WARN] [1793083752.021222200] [rclcpp]: Failed to get parameters: FollowPathMPPI.PreferForwardCritic.cost_weight
+[planner_server-5] [WARN] [1793083752.021997939] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[controller_server-3] [WARN] [1793083752.033680966] [rclcpp]: Failed to get parameters: FollowPathMPPI.PreferForwardCritic.cost_weight
+[planner_server-5] [WARN] [1793083752.037883318] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[controller_server-3] [WARN] [1793083752.050876470] [rclcpp]: Failed to get parameters: FollowPathMPPI.PreferForwardCritic.cost_weight
+[controller_server-3] [WARN] [1793083752.067185256] [rclcpp]: Failed to get parameters: FollowPathMPPI.PreferForwardCritic.cost_weight
+[planner_server-5] [WARN] [1793083752.068070374] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[controller_server-3] [WARN] [1793083752.144763640] [rclcpp]: Failed to get parameters: FollowPathMPPI.PreferForwardCritic.cost_weight
+[planner_server-5] [WARN] [1793083752.148412085] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[controller_server-3] [WARN] [1793083752.163252756] [rclcpp]: Failed to get parameters: FollowPathMPPI.PreferForwardCritic.cost_weight
+[planner_server-5] [WARN] [1793083752.164054640] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[planner_server-5] [WARN] [1793083752.177100721] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[controller_server-3] [WARN] [1793083752.183850714] [rclcpp]: Failed to get parameters: FollowPathMPPI.PreferForwardCritic.cost_weight
+[controller_server-3] [WARN] [1793083752.189050125] [rclcpp]: Failed to get parameters: FollowPathMPPI.PreferForwardCritic.cost_weight
+[planner_server-5] [WARN] [1793083752.189883434] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[controller_server-3] [WARN] [1793083752.194884758] [rclcpp]: Failed to get parameters: FollowPathMPPI.PreferForwardCritic.cost_weight
+[controller_server-3] [WARN] [1793083752.210769145] [rclcpp]: Failed to get parameters: FollowPathMPPI.PreferForwardCritic.cost_weight
+[planner_server-5] [WARN] [1793083752.195362054] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[planner_server-5] [WARN] [1793083752.202551102] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[planner_server-5] [WARN] [1793083752.207799731] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[controller_server-3] [WARN] [1793083752.317511349] [rclcpp]: Failed to get parameters: FollowPathMPPI.PreferForwardCritic.cost_weight
+[planner_server-5] [WARN] [1793083752.325745041] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[planner_server-5] [WARN] [1793083752.350678796] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[nvblox_up-13] [nvblox_up] nvblox_node pid 1302859 (yaml nvblox_local.yaml, 로그 /tmp/nvblox_node.log, 부모 launch pid 1302530) — 이후 래퍼 출력은 /tmp/nvblox_node_up.log
+[controller_server-3] [WARN] [1793083752.349299516] [rclcpp]: Failed to get parameters: FollowPathMPPI.PreferForwardCritic.cost_weight
+[controller_server-3] [WARN] [1793083752.370729566] [rclcpp]: Failed to get parameters: FollowPathMPPI.PreferForwardCritic.cost_weight
+[planner_server-5] [WARN] [1793083752.374786282] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[controller_server-3] [WARN] [1793083752.393979615] [rclcpp]: Failed to get parameters: FollowPathMPPI.PreferForwardCritic.cost_weight
+[planner_server-5] [WARN] [1793083752.396021766] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[controller_server-3] [WARN] [1793083752.411490330] [rclcpp]: Failed to get parameters: FollowPathMPPI.PreferForwardCritic.cost_weight
+[planner_server-5] [WARN] [1793083752.413441278] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[controller_server-3] [WARN] [1793083752.437483322] [rclcpp]: Failed to get parameters: FollowPathMPPI.PreferForwardCritic.cost_weight
+[planner_server-5] [WARN] [1793083752.440050098] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[controller_server-3] [WARN] [1793083752.488826466] [rclcpp]: Failed to get parameters: FollowPathMPPI.PreferForwardCritic.cost_weight
+[planner_server-5] [WARN] [1793083752.489716353] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[controller_server-3] [WARN] [1793083752.499058242] [rclcpp]: Failed to get parameters: FollowPathMPPI.PreferForwardCritic.cost_weight
+[planner_server-5] [WARN] [1793083752.499860702] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[controller_server-3] [WARN] [1793083752.510429866] [rclcpp]: Failed to get parameters: FollowPathMPPI.PreferForwardCritic.cost_weight
+[planner_server-5] [WARN] [1793083752.512578132] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[controller_server-3] [WARN] [1793083752.521443333] [rclcpp]: Failed to get parameters: FollowPathMPPI.PreferForwardCritic.cost_weight
+[controller_server-3] [WARN] [1793083752.535439432] [rclcpp]: Failed to get parameters: FollowPathMPPI.PreferForwardCritic.cost_weight
+[planner_server-5] [WARN] [1793083752.536390568] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[controller_server-3] [WARN] [1793083752.551561299] [rclcpp]: Failed to get parameters: FollowPathMPPI.PreferForwardCritic.cost_weight
+[planner_server-5] [WARN] [1793083752.552415312] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[controller_server-3] [WARN] [1793083752.566555511] [rclcpp]: Failed to get parameters: FollowPathMPPI.PreferForwardCritic.cost_weight
+[planner_server-5] [WARN] [1793083752.567261456] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[planner_server-5] [WARN] [1793083752.589046750] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[controller_server-3] [WARN] [1793083752.603484527] [rclcpp]: Failed to get parameters: FollowPathMPPI.PreferForwardCritic.cost_weight
+[planner_server-5] [WARN] [1793083752.604797084] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[controller_server-3] [WARN] [1793083752.616077793] [rclcpp]: Failed to get parameters: FollowPathMPPI.PreferForwardCritic.cost_weight
+[planner_server-5] [WARN] [1793083752.617248457] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[lifecycle_manager-10] [INFO] [1793083752.622687365] [lifecycle_manager_navigation]: [34m[1mStarting managed nodes bringup...[0m[0m
+[lifecycle_manager-10] [INFO] [1793083752.622832842] [lifecycle_manager_navigation]: [34m[1mConfiguring controller_server[0m[0m
+[controller_server-3] [INFO] [1793083752.624423552] [controller_server]: Configuring controller interface
+[controller_server-3] [INFO] [1793083752.628264037] [controller_server]: getting goal checker plugins..
+[controller_server-3] [INFO] [1793083752.628390153] [controller_server]: Controller frequency set to 10.0000Hz
+[controller_server-3] [INFO] [1793083752.628470380] [local_costmap.local_costmap]: Configuring
+[planner_server-5] [WARN] [1793083752.636099859] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[planner_server-5] [WARN] [1793083752.652741520] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[planner_server-5] [WARN] [1793083752.661815176] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[planner_server-5] [WARN] [1793083752.681899644] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[nav_guard.py-2] [INFO] [1793083752.688285496] [nav_guard]: nav_guard 시작 (시간 = d0/0.07×2.0+30 s, 무진행 0.25 m/45 s)
+[planner_server-5] [WARN] [1793083752.692693456] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[planner_server-5] [WARN] [1793083752.708682838] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[planner_server-5] [WARN] [1793083752.718051513] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[planner_server-5] [WARN] [1793083752.730918740] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[planner_server-5] [WARN] [1793083752.739236019] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[planner_server-5] [WARN] [1793083752.758532139] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[planner_server-5] [WARN] [1793083752.766487581] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[planner_server-5] [WARN] [1793083752.773541648] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[planner_server-5] [WARN] [1793083752.779668163] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[controller_server-3] [INFO] [1793083752.780528769] [local_costmap.local_costmap]: Using plugin "nvblox_layer"
+[planner_server-5] [WARN] [1793083752.784614894] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[planner_server-5] [WARN] [1793083752.788758845] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[planner_server-5] [WARN] [1793083752.804112525] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[planner_server-5] [WARN] [1793083752.811591503] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[planner_server-5] [WARN] [1793083752.818365432] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[controller_server-3] [INFO] [1793083752.822596714] [local_costmap.local_costmap]: Name: nvblox_layer Topic name: /nvblox_node/static_map_slice Convert to binary costmap: 1 Max obstacle distance: 0.4
+[planner_server-5] [WARN] [1793083752.824396360] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[planner_server-5] [WARN] [1793083752.828504309] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[planner_server-5] [WARN] [1793083752.832689830] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[planner_server-5] [WARN] [1793083752.841918852] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[planner_server-5] [WARN] [1793083752.848328704] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[planner_server-5] [WARN] [1793083752.853981955] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[planner_server-5] [WARN] [1793083752.860314045] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[planner_server-5] [WARN] [1793083752.868506807] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[planner_server-5] [WARN] [1793083752.874602345] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[planner_server-5] [WARN] [1793083752.879353325] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[planner_server-5] [WARN] [1793083752.883633504] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[planner_server-5] [WARN] [1793083752.888130651] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[planner_server-5] [WARN] [1793083752.894101065] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[planner_server-5] [WARN] [1793083752.902356869] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[planner_server-5] [WARN] [1793083752.906458930] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[planner_server-5] [WARN] [1793083752.912061971] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[planner_server-5] [WARN] [1793083752.919275756] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[planner_server-5] [WARN] [1793083752.927821202] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[controller_server-3] [INFO] [1793083752.935036331] [local_costmap.local_costmap]: Initialized plugin "nvblox_layer"
+[controller_server-3] [INFO] [1793083752.935209169] [local_costmap.local_costmap]: Using plugin "obstacle_layer"
+[planner_server-5] [WARN] [1793083752.935322901] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[planner_server-5] [WARN] [1793083752.944554131] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[planner_server-5] [WARN] [1793083752.955857752] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[planner_server-5] [WARN] [1793083752.960511192] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[planner_server-5] [WARN] [1793083752.964856174] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[controller_server-3] [INFO] [1793083752.965815695] [local_costmap.local_costmap]: Subscribed to Topics: scan
+[planner_server-5] [WARN] [1793083752.969431563] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[planner_server-5] [WARN] [1793083752.976812106] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[planner_server-5] [WARN] [1793083752.981085629] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[planner_server-5] [WARN] [1793083752.987128141] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[planner_server-5] [WARN] [1793083752.996860188] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[planner_server-5] [WARN] [1793083753.006268992] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[planner_server-5] [WARN] [1793083753.015611906] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[planner_server-5] [WARN] [1793083753.023746362] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[planner_server-5] [WARN] [1793083753.030831342] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[planner_server-5] [WARN] [1793083753.038747871] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[planner_server-5] [WARN] [1793083753.049616213] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[controller_server-3] [INFO] [1793083753.050142983] [local_costmap.local_costmap]: Initialized plugin "obstacle_layer"
+[controller_server-3] [INFO] [1793083753.050248683] [local_costmap.local_costmap]: Using plugin "inflation_layer"
+[planner_server-5] [WARN] [1793083753.056059347] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[planner_server-5] [WARN] [1793083753.077694940] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[controller_server-3] [INFO] [1793083753.078869381] [local_costmap.local_costmap]: Initialized plugin "inflation_layer"
+[planner_server-5] [WARN] [1793083753.161472514] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[planner_server-5] [WARN] [1793083753.178469995] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[planner_server-5] [WARN] [1793083753.192437868] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[planner_server-5] [WARN] [1793083753.213013233] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[planner_server-5] [WARN] [1793083753.241276319] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[planner_server-5] [WARN] [1793083753.261318033] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[planner_server-5] [WARN] [1793083753.326244493] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[planner_server-5] [WARN] [1793083753.372096280] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[planner_server-5] [WARN] [1793083753.383165110] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[planner_server-5] [WARN] [1793083753.389410701] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[planner_server-5] [WARN] [1793083753.409097139] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[controller_server-3] [INFO] [1793083753.422401341] [controller_server]: Created progress_checker : progress_checker of type nav2_controller::PoseProgressChecker
+[controller_server-3] [INFO] [1793083753.425596907] [controller_server]: Created goal checker : general_goal_checker of type nav2_controller::SimpleGoalChecker
+[controller_server-3] [INFO] [1793083753.432043241] [controller_server]: Controller Server has general_goal_checker  goal checkers available.
+[controller_server-3] [INFO] [1793083753.433827047] [controller_server]: Created controller : FollowPath of type nav2_regulated_pure_pursuit_controller::RegulatedPurePursuitController
+[controller_server-3] [WARN] [1793083753.443013475] [controller_server]: Disabling reversing. Both use_rotate_to_heading and allow_reversing parameter cannot be set to true. By default setting use_rotate_to_heading true
+[controller_server-3] [INFO] [1793083753.461594307] [controller_server]: Created controller : FollowPathMPPI of type nav2_mppi_controller::MPPIController
+[controller_server-3] [INFO] [1793083753.470553911] [controller_server]: Controller period is equal to model dt. Control sequence shifting is ON
+[planner_server-5] [WARN] [1793083753.474683046] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[controller_server-3] [INFO] [1793083753.475538595] [controller_server]: ConstraintCritic instantiated with 1 power and 4.000000 weight.
+[controller_server-3] [INFO] [1793083753.475632006] [controller_server]: Critic loaded : mppi::critics::ConstraintCritic
+[controller_server-3] [INFO] [1793083753.480453324] [controller_server]: InflationCostCritic instantiated with 1 power and 300.000000 / 0.015000 weights. Critic will collision check based on footprint cost.
+[controller_server-3] [INFO] [1793083753.480554128] [controller_server]: Critic loaded : mppi::critics::CostCritic
+[controller_server-3] [INFO] [1793083753.482544980] [controller_server]: GoalCritic instantiated with 1 power and 10.000000 weight.
+[controller_server-3] [INFO] [1793083753.482618359] [controller_server]: Critic loaded : mppi::critics::GoalCritic
+[controller_server-3] [INFO] [1793083753.484779553] [controller_server]: GoalAngleCritic instantiated with 1 power, 3.000000 weight, and 0.400000 angular threshold.
+[controller_server-3] [INFO] [1793083753.485131758] [controller_server]: Critic loaded : mppi::critics::GoalAngleCritic
+[controller_server-3] [INFO] [1793083753.488714825] [controller_server]: ReferenceTrajectoryCritic instantiated with 1 power and 28.000000 weight
+[controller_server-3] [INFO] [1793083753.488783851] [controller_server]: Critic loaded : mppi::critics::PathAlignCritic
+[controller_server-3] [INFO] [1793083753.491177886] [controller_server]: Critic loaded : mppi::critics::PathFollowCritic
+[controller_server-3] [INFO] [1793083753.495991172] [controller_server]: PathAngleCritic instantiated with 1 power and 2.000000 weight. Reversing allowed.
+[controller_server-3] [INFO] [1793083753.496134217] [controller_server]: Critic loaded : mppi::critics::PathAngleCritic
+[controller_server-3] [INFO] [1793083753.498663904] [controller_server]: PreferForwardCritic instantiated with 1 power and 15.000000 weight.
+[controller_server-3] [INFO] [1793083753.498737538] [controller_server]: Critic loaded : mppi::critics::PreferForwardCritic
+[controller_server-3] [INFO] [1793083753.516974678] [controller_server]: ClearanceBandCritic: 띠 0.060 m · 가중 20.0 · 점 간격 2
+[controller_server-3] [INFO] [1793083753.517096923] [controller_server]: Critic loaded : mppi::critics::ClearanceBandCritic
+[controller_server-3] [INFO] [1793083753.528530596] [controller_server]: Optimizer reset
+[planner_server-5] [WARN] [1793083753.554109237] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[controller_server-3] [INFO] [1793083753.568575496] [MPPIController]: Configured MPPI Controller: FollowPathMPPI
+[controller_server-3] [INFO] [1793083753.571674546] [controller_server]: Controller Server has FollowPath FollowPathMPPI  controllers available.
+[lifecycle_manager-10] [INFO] [1793083753.641632540] [lifecycle_manager_navigation]: [34m[1mConfiguring smoother_server[0m[0m
+[smoother_server-4] [INFO] [1793083753.643792294] [smoother_server]: Configuring smoother server
+[planner_server-5] [WARN] [1793083753.692004131] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[planner_server-5] [WARN] [1793083753.725530566] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[planner_server-5] [WARN] [1793083753.744076644] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[planner_server-5] [WARN] [1793083753.758508917] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[smoother_server-4] [INFO] [1793083753.764638345] [smoother_server]: Created smoother : simple_smoother of type nav2_smoother::SimpleSmoother
+[smoother_server-4] [INFO] [1793083753.774768966] [smoother_server]: Smoother Server has simple_smoother  smoothers available.
+[planner_server-5] [WARN] [1793083753.775864587] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[planner_server-5] [WARN] [1793083753.796934529] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[planner_server-5] [WARN] [1793083753.816651880] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[lifecycle_manager-10] [INFO] [1793083753.839913033] [lifecycle_manager_navigation]: [34m[1mConfiguring planner_server[0m[0m
+[planner_server-5] [WARN] [1793083753.840368857] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[planner_server-5] [INFO] [1793083753.840707173] [planner_server]: Configuring
+[planner_server-5] [INFO] [1793083753.840778439] [global_costmap.global_costmap]: Configuring
+[planner_server-5] [INFO] [1793083753.905440250] [global_costmap.global_costmap]: Using plugin "static_layer"
+[planner_server-5] [INFO] [1793083753.934923442] [global_costmap.global_costmap]: Subscribing to the map topic (/map_nav) with transient local durability
+[planner_server-5] [INFO] [1793083753.958752838] [global_costmap.global_costmap]: Initialized plugin "static_layer"
+[planner_server-5] [INFO] [1793083753.962496519] [global_costmap.global_costmap]: Using plugin "nvblox_layer"
+[planner_server-5] [INFO] [1793083753.984459644] [global_costmap.global_costmap]: Name: nvblox_layer Topic name: /nvblox_node/static_map_slice Convert to binary costmap: 1 Max obstacle distance: 0.4
+[planner_server-5] [INFO] [1793083754.076166450] [global_costmap.global_costmap]: Initialized plugin "nvblox_layer"
+[planner_server-5] [INFO] [1793083754.076788104] [global_costmap.global_costmap]: Using plugin "obstacle_layer"
+[planner_server-5] [INFO] [1793083754.082927067] [global_costmap.global_costmap]: Subscribed to Topics: scan
+[planner_server-5] [INFO] [1793083754.140938441] [global_costmap.global_costmap]: Initialized plugin "obstacle_layer"
+[planner_server-5] [INFO] [1793083754.141046669] [global_costmap.global_costmap]: Using plugin "inflation_layer"
+[planner_server-5] [INFO] [1793083754.155828490] [global_costmap.global_costmap]: Initialized plugin "inflation_layer"
+[planner_server-5] [INFO] [1793083754.295802303] [planner_server]: Created global planner plugin GridBased of type nav2_navfn_planner/NavfnPlanner
+[planner_server-5] [INFO] [1793083754.295936388] [planner_server]: Configuring plugin GridBased of type NavfnPlanner
+[planner_server-5] [INFO] [1793083754.305321351] [global_costmap.global_costmap]: StaticLayer: Resizing costmap to 333 X 242 at 0.050000 m/pix
+[planner_server-5] [WARN] [1793083754.317080700] [global_costmap.global_costmap]: [NvbloxCostmapLayer] Can't transform: map to odom. Error: Lookup would require extrapolation into the past.  Requested time 1793083754.150324 but the earliest data is at time 1793083755.545792, when looking up transform from frame [odom] to frame [map]
+[planner_server-5] [INFO] [1793083754.341333184] [planner_server]: Created global planner plugin SmacHybrid of type nav2_smac_planner/SmacPlannerHybrid
+[planner_server-5] [INFO] [1793083754.341473956] [planner_server]: Configuring SmacHybrid of type SmacPlannerHybrid
+[planner_server-5] [INFO] [1793083754.358538576] [planner_server]: Even sized heuristic lookup table size set 400.000000, increasing size by 1 to make odd
+[planner_server-5] [WARN] [1793083755.322367069] [global_costmap.global_costmap]: [NvbloxCostmapLayer] Can't transform: map to odom. Error: Lookup would require extrapolation into the past.  Requested time 1793083755.209545 but the earliest data is at time 1793083755.545792, when looking up transform from frame [odom] to frame [map]
+[INFO] [navmap_ensure-14]: process started with pid [1304035]
+[navmap_ensure-14] [navmap_ensure] active (1)
+[INFO] [navmap_ensure-14]: process has finished cleanly [pid 1304035]
+[planner_server-5] [INFO] [1793083781.590963166] [planner_server]: Configured plugin SmacHybrid of type SmacPlannerHybrid with maximum iterations 1000000, max on approach iterations 1000, and allowing unknown traversal. Tolerance 0.35.Using motion model: Reeds-Shepp.
+[planner_server-5] [INFO] [1793083781.591110787] [planner_server]: Planner Server has GridBased SmacHybrid  planners available.
+[lifecycle_manager-10] [INFO] [1793083781.700028618] [lifecycle_manager_navigation]: [34m[1mConfiguring behavior_server[0m[0m
+[behavior_server-6] [INFO] [1793083781.702709543] [behavior_server]: Configuring
+[behavior_server-6] [INFO] [1793083781.756793389] [behavior_server]: Creating behavior plugin spin of type nav2_behaviors/Spin
+[behavior_server-6] [INFO] [1793083781.760297254] [behavior_server]: Configuring spin
+[behavior_server-6] [INFO] [1793083781.807100498] [behavior_server]: Creating behavior plugin backup of type nav2_behaviors/BackUp
+[behavior_server-6] [INFO] [1793083781.809919219] [behavior_server]: Configuring backup
+[behavior_server-6] [INFO] [1793083781.852868570] [behavior_server]: Creating behavior plugin drive_on_heading of type nav2_behaviors/DriveOnHeading
+[behavior_server-6] [INFO] [1793083781.855190762] [behavior_server]: Configuring drive_on_heading
+[behavior_server-6] [INFO] [1793083781.891192514] [behavior_server]: Creating behavior plugin wait of type nav2_behaviors/Wait
+[behavior_server-6] [INFO] [1793083781.896530362] [behavior_server]: Configuring wait
+[behavior_server-6] [INFO] [1793083781.949753219] [behavior_server]: Creating behavior plugin monotone_escape of type rover_navigation/MonotoneEscape
+[behavior_server-6] [INFO] [1793083781.957093984] [behavior_server]: Configuring monotone_escape
+[lifecycle_manager-10] [INFO] [1793083782.021094813] [lifecycle_manager_navigation]: [34m[1mConfiguring bt_navigator[0m[0m
+[bt_navigator-7] [INFO] [1793083782.022319911] [bt_navigator]: Configuring
+[lifecycle_manager-10] [INFO] [1793083782.677548335] [lifecycle_manager_navigation]: [34m[1mConfiguring waypoint_follower[0m[0m
+[waypoint_follower-8] [INFO] [1793083782.679329452] [waypoint_follower]: Configuring
+[waypoint_follower-8] [INFO] [1793083782.851567417] [waypoint_follower]: Created waypoint_task_executor : wait_at_waypoint of type nav2_waypoint_follower::WaitAtWaypoint
+[lifecycle_manager-10] [INFO] [1793083782.858716495] [lifecycle_manager_navigation]: [34m[1mConfiguring velocity_smoother[0m[0m
+[velocity_smoother-9] [INFO] [1793083782.859448840] [velocity_smoother]: Configuring velocity smoother
+[lifecycle_manager-10] [INFO] [1793083782.913720534] [lifecycle_manager_navigation]: [34m[1mActivating controller_server[0m[0m
+[controller_server-3] [INFO] [1793083782.914426958] [controller_server]: Activating
+[controller_server-3] [INFO] [1793083782.914548850] [local_costmap.local_costmap]: Activating
+[controller_server-3] [INFO] [1793083782.914587603] [local_costmap.local_costmap]: Checking transform
+[controller_server-3] [INFO] [1793083782.914851932] [local_costmap.local_costmap]: start
+[controller_server-3] [WARN] [1793083783.123888028] [controller_server]: Parameter controller_server.verbose not found
+[controller_server-3] [INFO] [1793083783.126001285] [controller_server]: Optimizer reset
+[controller_server-3] [INFO] [1793083783.128161712] [MPPIController]: Activated MPPI Controller: FollowPathMPPI
+[controller_server-3] [INFO] [1793083783.128224658] [controller_server]: Activating controller: FollowPath of type regulated_pure_pursuit_controller::RegulatedPurePursuitController
+[controller_server-3] [INFO] [1793083783.128310869] [controller_server]: Creating bond (controller_server) to lifecycle manager.
+[lifecycle_manager-10] [INFO] [1793083783.247922060] [lifecycle_manager_navigation]: Server controller_server connected with bond.
+[lifecycle_manager-10] [INFO] [1793083783.249492739] [lifecycle_manager_navigation]: [34m[1mActivating smoother_server[0m[0m
+[smoother_server-4] [INFO] [1793083783.251296897] [smoother_server]: Activating
+[smoother_server-4] [INFO] [1793083783.251441030] [smoother_server]: Creating bond (smoother_server) to lifecycle manager.
+[lifecycle_manager-10] [INFO] [1793083783.378711173] [lifecycle_manager_navigation]: Server smoother_server connected with bond.
+[lifecycle_manager-10] [INFO] [1793083783.378829481] [lifecycle_manager_navigation]: [34m[1mActivating planner_server[0m[0m
+[planner_server-5] [INFO] [1793083783.380776812] [planner_server]: Activating
+[planner_server-5] [INFO] [1793083783.381100376] [global_costmap.global_costmap]: Activating
+[planner_server-5] [INFO] [1793083783.381144057] [global_costmap.global_costmap]: Checking transform
+[planner_server-5] [INFO] [1793083783.381401538] [global_costmap.global_costmap]: start
+[planner_server-5] [INFO] [1793083784.440216471] [planner_server]: Activating plugin SmacHybrid of type SmacPlannerHybrid
+[planner_server-5] [INFO] [1793083784.440385085] [planner_server]: Activating plugin GridBased of type NavfnPlanner
+[planner_server-5] [INFO] [1793083784.454776492] [planner_server]: Creating bond (planner_server) to lifecycle manager.
+[lifecycle_manager-10] [INFO] [1793083784.587990585] [lifecycle_manager_navigation]: Server planner_server connected with bond.
+[lifecycle_manager-10] [INFO] [1793083784.588125469] [lifecycle_manager_navigation]: [34m[1mActivating behavior_server[0m[0m
+[behavior_server-6] [INFO] [1793083784.588926169] [behavior_server]: Activating
+[behavior_server-6] [INFO] [1793083784.589017244] [behavior_server]: Activating spin
+[behavior_server-6] [INFO] [1793083784.589052349] [behavior_server]: Activating backup
+[behavior_server-6] [INFO] [1793083784.589074462] [behavior_server]: Activating drive_on_heading
+[behavior_server-6] [INFO] [1793083784.589092351] [behavior_server]: Activating wait
+[behavior_server-6] [INFO] [1793083784.589116223] [behavior_server]: Activating monotone_escape
+[behavior_server-6] [INFO] [1793083784.589202114] [behavior_server]: Creating bond (behavior_server) to lifecycle manager.
+[lifecycle_manager-10] [INFO] [1793083784.708717143] [lifecycle_manager_navigation]: Server behavior_server connected with bond.
+[lifecycle_manager-10] [INFO] [1793083784.708832923] [lifecycle_manager_navigation]: [34m[1mActivating bt_navigator[0m[0m
+[bt_navigator-7] [INFO] [1793083784.709642327] [bt_navigator]: Activating
+[bt_navigator-7] [INFO] [1793083785.474718886] [bt_navigator]: Creating bond (bt_navigator) to lifecycle manager.
+[controller_server-3] [INFO] [1793083785.514804587] [local_costmap.local_costmap]: Received request to clear entirely the local_costmap
+[planner_server-5] [INFO] [1793083785.526701637] [global_costmap.global_costmap]: Received request to clear entirely the global_costmap
+[lifecycle_manager-10] [INFO] [1793083785.595006453] [lifecycle_manager_navigation]: Server bt_navigator connected with bond.
+[lifecycle_manager-10] [INFO] [1793083785.595144570] [lifecycle_manager_navigation]: [34m[1mActivating waypoint_follower[0m[0m
+[waypoint_follower-8] [INFO] [1793083785.596757042] [waypoint_follower]: Activating
+[waypoint_follower-8] [INFO] [1793083785.596869366] [waypoint_follower]: Creating bond (waypoint_follower) to lifecycle manager.
+[lifecycle_manager-10] [INFO] [1793083785.735134480] [lifecycle_manager_navigation]: Server waypoint_follower connected with bond.
+[lifecycle_manager-10] [INFO] [1793083785.736766568] [lifecycle_manager_navigation]: [34m[1mActivating velocity_smoother[0m[0m
+[velocity_smoother-9] [INFO] [1793083785.738569382] [velocity_smoother]: Activating
+[velocity_smoother-9] [INFO] [1793083785.738736780] [velocity_smoother]: Creating bond (velocity_smoother) to lifecycle manager.
+[lifecycle_manager-10] [INFO] [1793083785.884685903] [lifecycle_manager_navigation]: Server velocity_smoother connected with bond.
+[lifecycle_manager-10] [INFO] [1793083785.884836980] [lifecycle_manager_navigation]: [34m[1mManaged nodes are active[0m[0m
+[lifecycle_manager-10] [INFO] [1793083785.884898294] [lifecycle_manager_navigation]: [34m[1mCreating bond timer...[0m[0m
+[planner_server-5] [INFO] [1793084085.262973876] [global_costmap.global_costmap]: Message Filter dropping message: frame 'lidar_link' at time 1793084084.958 for reason 'the timestamp on the message is earlier than all the data in the transform cache'
+[controller_server-3] [INFO] [1793084085.272808059] [local_costmap.local_costmap]: Message Filter dropping message: frame 'lidar_link' at time 1793084084.958 for reason 'the timestamp on the message is earlier than all the data in the transform cache'
+[bt_navigator-7] [INFO] [1793084128.079835034] [bt_navigator]: Begin navigating from current location (-0.01, -0.00) to (2.25, -1.60)
+[controller_server-3] [INFO] [1793084128.113859174] [controller_server]: Received a goal, begin computing control effort.
+[controller_server-3] [WARN] [1793084128.114017739] [controller_server]: No goal checker was specified in parameter 'current_goal_checker'. Server will use only plugin loaded general_goal_checker . This warning will appear once.
+[controller_server-3] [INFO] [1793084128.117452990] [controller_server]: Optimizer reset
+[nav_guard.py-2] [INFO] [1793084128.121794510] [nav_guard]: 목표 199abdbf: 남은 거리 3.75 m → 시간 한도 137 s (시작 뒤 0.0 s)
+[bt_navigator-7] [WARN] [1793084131.118410946] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084131.734972434] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084132.727257667] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084135.857979139] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084137.270274464] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084138.809905171] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084141.397422055] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084143.909188045] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084143.919628328] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084146.247530987] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084146.260829478] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084152.339666390] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084152.689197850] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084154.207794685] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084154.939957527] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084159.467352237] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084161.209369630] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084161.413952645] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084161.430036510] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084161.821161587] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084161.843702371] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084163.331702819] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084166.601242545] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084168.965132518] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084169.000377182] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084174.225124660] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084176.681342357] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084176.780463745] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[controller_server-3] [INFO] [1793084178.731457003] [controller_server]: Reached the goal!
+[bt_navigator-7] [INFO] [1793084178.761247341] [bt_navigator]: Goal succeeded
+[bt_navigator-7] [INFO] [1793084178.789174673] [bt_navigator]: Begin navigating from current location (2.25, -1.44) to (-1.60, -2.00)
+[nav_guard.py-2] [INFO] [1793084178.794813038] [nav_guard]: 목표 e2aad213: 남은 거리 0.15 m → 시간 한도 34 s (시작 뒤 0.0 s)
+[controller_server-3] [INFO] [1793084178.815987537] [controller_server]: Received a goal, begin computing control effort.
+[bt_navigator-7] [WARN] [1793084178.820060313] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[nav_guard.py-2] [INFO] [1793084178.823526732] [nav_guard]: 목표 e2aad213: 남은 거리 3.97 m → 시간 한도 143 s (시작 뒤 0.0 s)
+[bt_navigator-7] [WARN] [1793084178.879314323] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084178.919552018] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084179.109729631] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084180.639536034] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084181.209306481] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084181.570858745] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084182.563397646] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084184.964881328] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084186.759601330] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084186.814380312] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084186.847268034] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084189.145081103] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084189.328398650] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084189.334074936] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084189.364433166] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084194.014506720] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084196.841090094] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084196.851983834] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084196.858808959] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084196.868105429] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084198.504076260] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084199.353443429] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084200.704852852] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084202.916904133] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084204.909685372] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[stuck_monitor.py-1] [WARN] [1793084204.911998313] [stuck_monitor]: STUCK: 지령 15.5cm/3° 인데 관측 2.4cm/2.4° (비율 0.15) [shadow — 조치 없음]
+[bt_navigator-7] [WARN] [1793084205.727946871] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084209.238073606] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084209.307168365] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084211.573519670] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084211.590143586] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084213.724055431] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084213.844951762] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084215.044489930] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084219.139712837] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084220.517137895] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084224.314929415] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084224.706328560] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084224.714818540] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084226.388291502] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084226.412801698] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084228.028071277] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084229.005246702] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084231.945952655] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[controller_server-3] [INFO] [1793084233.037959066] [controller_server]: Reached the goal!
+[bt_navigator-7] [INFO] [1793084233.074648199] [bt_navigator]: Goal succeeded
+[bt_navigator-7] [INFO] [1793084233.099606186] [bt_navigator]: Begin navigating from current location (-1.47, -1.99) to (-1.65, -3.70)
+[nav_guard.py-2] [INFO] [1793084233.104230533] [nav_guard]: 목표 10628f9d: 남은 거리 0.13 m → 시간 한도 34 s (시작 뒤 0.0 s)
+[controller_server-3] [INFO] [1793084233.131285455] [controller_server]: Received a goal, begin computing control effort.
+[nav_guard.py-2] [INFO] [1793084233.135541245] [nav_guard]: 목표 10628f9d: 남은 거리 1.78 m → 시간 한도 81 s (시작 뒤 0.0 s)
+[bt_navigator-7] [WARN] [1793084236.254483681] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084236.780275654] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084239.000710548] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084239.136413908] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084239.142158708] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084241.330096042] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084241.423192312] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084244.015444348] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084247.203192087] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084248.666697723] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084248.674810411] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084248.724669329] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084248.803366333] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084253.143359201] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084253.411067147] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084253.549689968] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084258.604140222] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084259.424819249] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[controller_server-3] [INFO] [1793084261.053124996] [controller_server]: Reached the goal!
+[bt_navigator-7] [INFO] [1793084261.083862091] [bt_navigator]: Goal succeeded
+[bt_navigator-7] [INFO] [1793084261.123149680] [bt_navigator]: Begin navigating from current location (-1.74, -3.53) to (-1.60, -5.50)
+[nav_guard.py-2] [INFO] [1793084261.131017175] [nav_guard]: 목표 846112d1: 남은 거리 0.13 m → 시간 한도 34 s (시작 뒤 0.0 s)
+[bt_navigator-7] [WARN] [1793084261.143875174] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084261.166235380] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[controller_server-3] [INFO] [1793084261.220792569] [controller_server]: Received a goal, begin computing control effort.
+[nav_guard.py-2] [INFO] [1793084261.226530937] [nav_guard]: 목표 846112d1: 남은 거리 1.96 m → 시간 한도 86 s (시작 뒤 0.1 s)
+[bt_navigator-7] [WARN] [1793084263.764291594] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[controller_server-3] [WARN] [1793084263.925791952] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+[bt_navigator-7] [WARN] [1793084266.104397697] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084266.145348222] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[controller_server-3] [WARN] [1793084266.251496165] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+[controller_server-3] [WARN] [1793084266.367071560] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+[controller_server-3] [WARN] [1793084266.443842614] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+[bt_navigator-7] [WARN] [1793084267.751587551] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084268.356983466] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[controller_server-3] [WARN] [1793084268.780767917] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+[bt_navigator-7] [WARN] [1793084268.845919061] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084268.855882083] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[controller_server-3] [WARN] [1793084268.860639139] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+[bt_navigator-7] [WARN] [1793084268.877036361] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084268.950216126] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[controller_server-3] [WARN] [1793084268.957788956] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+[controller_server-3] [WARN] [1793084269.034444679] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+[controller_server-3] [WARN] [1793084271.944570269] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+[controller_server-3] [WARN] [1793084272.025864068] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+[controller_server-3] [WARN] [1793084273.923082610] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+[controller_server-3] [WARN] [1793084275.323143457] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+[controller_server-3] [WARN] [1793084276.351290936] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+[controller_server-3] [WARN] [1793084276.512403284] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+[bt_navigator-7] [WARN] [1793084276.564071482] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084276.567202115] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[controller_server-3] [WARN] [1793084276.622779211] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+[controller_server-3] [WARN] [1793084278.735488035] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+[controller_server-3] [WARN] [1793084278.882113177] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+[controller_server-3] [WARN] [1793084278.988319140] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+[controller_server-3] [WARN] [1793084279.130451365] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+[bt_navigator-7] [WARN] [1793084281.288859234] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084285.318105950] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[controller_server-3] [INFO] [1793084285.750092702] [controller_server]: Reached the goal!
+[bt_navigator-7] [INFO] [1793084285.787594601] [bt_navigator]: Goal succeeded
+[bt_navigator-7] [INFO] [1793084285.803439260] [bt_navigator]: Begin navigating from current location (-1.50, -5.34) to (-1.65, -3.70)
+[nav_guard.py-2] [INFO] [1793084285.809680878] [nav_guard]: 목표 03af5316: 남은 거리 0.13 m → 시간 한도 34 s (시작 뒤 0.0 s)
+[controller_server-3] [INFO] [1793084285.824969519] [controller_server]: Received a goal, begin computing control effort.
+[nav_guard.py-2] [INFO] [1793084285.828063735] [nav_guard]: 목표 03af5316: 남은 거리 1.94 m → 시간 한도 86 s (시작 뒤 0.0 s)
+[bt_navigator-7] [WARN] [1793084287.109054787] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084287.115126350] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [INFO] [1793084288.394944597] [bt_navigator_navigate_to_pose_rclcpp_node]: PathBlockedAhead: 앞 경로 (-1.60, -4.70) 비용 99 — 2.0 s 지속되면 재계획
+[bt_navigator-7] [WARN] [1793084288.397730387] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084289.421915896] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084289.427697819] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084289.449779488] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084289.508190856] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084289.512191438] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084290.400183258] [bt_navigator_navigate_to_pose_rclcpp_node]: PathBlockedAhead: 앞 경로 (-1.60, -4.70) 비용 99 가 2.0 s 지속 → 주행 중단·재계획
+[controller_server-3] [INFO] [1793084290.425983004] [controller_server]: Goal was canceled. Stopping the robot.
+[controller_server-3] [INFO] [1793084290.426156386] [controller_server]: [follow_path] [ActionServer] Client requested to cancel the goal. Cancelling.
+[controller_server-3] [INFO] [1793084290.427586450] [local_costmap.local_costmap]: Received request to clear except a region the local_costmap
+[bt_navigator-7] [WARN] [1793084290.428599668] [bt_navigator_navigate_to_pose_rclcpp_node]: PathBlockedAhead: 앞 경로 (-1.60, -4.70) 비용 99 가 2.0 s 지속 → 주행 중단·재계획
+[controller_server-3] [INFO] [1793084290.429085572] [local_costmap.local_costmap]: Received request to clear except a region the local_costmap
+[planner_server-5] [INFO] [1793084290.430459603] [global_costmap.global_costmap]: Received request to clear except a region the global_costmap
+[bt_navigator-7] [WARN] [1793084290.438482944] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[controller_server-3] [INFO] [1793084291.420092147] [controller_server]: Received a goal, begin computing control effort.
+[controller_server-3] [INFO] [1793084291.424063193] [controller_server]: Optimizer reset
+[bt_navigator-7] [INFO] [1793084293.399032910] [bt_navigator_navigate_to_pose_rclcpp_node]: PathBlockedAhead: 앞 경로 (-1.63, -4.34) 비용 99 — 2.0 s 지속되면 재계획
+[bt_navigator-7] [WARN] [1793084293.452934176] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084294.521096753] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084296.048648899] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084296.120959166] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084297.850272649] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084298.855125780] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084298.923322981] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084299.458634683] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084299.470015738] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084299.514608851] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084299.519981063] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[controller_server-3] [WARN] [1793084301.136529232] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+[bt_navigator-7] [WARN] [1793084302.358800196] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084303.309843814] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[controller_server-3] [WARN] [1793084303.323729336] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+[bt_navigator-7] [WARN] [1793084304.633243298] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084304.642027081] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[controller_server-3] [WARN] [1793084304.721337297] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+[controller_server-3] [WARN] [1793084304.948618498] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+[controller_server-3] [WARN] [1793084305.032340317] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+[controller_server-3] [WARN] [1793084305.144435346] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+[controller_server-3] [WARN] [1793084305.224411792] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+[bt_navigator-7] [WARN] [1793084305.719316830] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[controller_server-3] [WARN] [1793084305.826930812] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+[controller_server-3] [WARN] [1793084305.923594347] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+[controller_server-3] [WARN] [1793084309.832898872] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+[controller_server-3] [WARN] [1793084309.952509257] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+[controller_server-3] [WARN] [1793084310.086093937] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+[controller_server-3] [WARN] [1793084310.153656398] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+[bt_navigator-7] [WARN] [1793084310.950145458] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[controller_server-3] [WARN] [1793084312.443960410] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+[controller_server-3] [WARN] [1793084312.535455836] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+[bt_navigator-7] [WARN] [1793084314.119580960] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084314.541609572] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084314.613572822] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084314.625627211] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084314.629757237] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[controller_server-3] [WARN] [1793084314.723544548] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+[bt_navigator-7] [WARN] [1793084314.869168097] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[controller_server-3] [WARN] [1793084317.333029315] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+[controller_server-3] [WARN] [1793084317.438348310] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+[controller_server-3] [INFO] [1793084318.077247827] [controller_server]: Reached the goal!
+[bt_navigator-7] [INFO] [1793084318.112903841] [bt_navigator]: Goal succeeded
+[bt_navigator-7] [INFO] [1793084318.148867321] [bt_navigator]: Begin navigating from current location (-1.65, -3.83) to (-1.60, -2.10)
+[nav_guard.py-2] [INFO] [1793084318.152953987] [nav_guard]: 목표 f64072df: 남은 거리 0.15 m → 시간 한도 34 s (시작 뒤 0.0 s)
+[controller_server-3] [INFO] [1793084318.170392333] [controller_server]: Received a goal, begin computing control effort.
+[nav_guard.py-2] [INFO] [1793084318.175507288] [nav_guard]: 목표 f64072df: 남은 거리 1.78 m → 시간 한도 81 s (시작 뒤 0.0 s)
+[bt_navigator-7] [WARN] [1793084319.274337813] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084319.280261436] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084319.320126520] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[controller_server-3] [WARN] [1793084319.575422587] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+[bt_navigator-7] [WARN] [1793084319.721707855] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084319.814120401] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084319.819904851] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084320.522156451] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084322.337388080] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084322.343359609] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084323.460989011] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084325.801262424] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084325.809936092] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084327.065895206] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084327.069121490] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084327.131224282] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084327.629485895] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084331.400367098] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084332.004406734] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084336.373595918] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084336.383475226] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084340.499804155] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084341.082134236] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084341.681088845] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[controller_server-3] [INFO] [1793084341.887356967] [controller_server]: Reached the goal!
+[bt_navigator-7] [INFO] [1793084341.919601316] [bt_navigator]: Goal succeeded
+[bt_navigator-7] [INFO] [1793084341.976604321] [bt_navigator]: Begin navigating from current location (-1.64, -2.23) to (5.50, -2.20)
+[nav_guard.py-2] [INFO] [1793084341.981353121] [nav_guard]: 목표 28b2c300: 남은 거리 0.13 m → 시간 한도 34 s (시작 뒤 0.0 s)
+[controller_server-3] [INFO] [1793084342.025568976] [controller_server]: Received a goal, begin computing control effort.
+[bt_navigator-7] [WARN] [1793084342.028538196] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[nav_guard.py-2] [INFO] [1793084342.031445365] [nav_guard]: 목표 28b2c300: 남은 거리 7.36 m → 시간 한도 240 s (시작 뒤 0.0 s)
+[bt_navigator-7] [WARN] [1793084343.412848406] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084343.431134621] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084343.437445937] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084343.628357351] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084343.807463888] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084343.948322802] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084347.928365202] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084348.327943285] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084348.430237414] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084349.928820536] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084351.319450141] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084351.339884205] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084351.486022370] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084351.496991219] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084351.503134818] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084354.550895580] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084356.669946859] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084364.033267367] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084364.047583753] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084364.052507054] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084373.900829741] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084376.703013101] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084378.591614821] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084378.771352170] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084378.917748333] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084381.584232580] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084381.712572871] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084381.912236908] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084384.682053062] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084384.703225807] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084384.726900300] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084384.732321763] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084384.882255934] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084385.400785339] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084385.401762844] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084385.536659292] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084386.372409624] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084390.643246992] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084392.131560886] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084396.503347253] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084400.902318431] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084405.084895136] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084405.206620039] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084405.211666994] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084405.261905167] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084405.323946939] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084405.334404059] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084405.873436024] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084407.256316726] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084407.591576733] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084407.901606577] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084408.030347270] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084408.072357454] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084410.281522084] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084412.416742626] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084414.662631225] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084414.752247111] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084414.969821009] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084415.411047184] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084415.531980511] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084420.051491274] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084425.152173825] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084425.227637651] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084425.233298066] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084425.483648048] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084425.499435492] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084425.510561371] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084425.515856110] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084432.774066883] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084434.552872475] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084435.097268574] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084435.115518694] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084435.419465143] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084435.549665985] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084438.151807496] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[controller_server-3] [INFO] [1793084438.557686186] [controller_server]: Reached the goal!
+[bt_navigator-7] [INFO] [1793084438.590072015] [bt_navigator]: Goal succeeded
+[bt_navigator-7] [INFO] [1793084438.639518708] [bt_navigator]: Begin navigating from current location (5.35, -2.15) to (0.00, 0.00)
+[nav_guard.py-2] [INFO] [1793084438.650149243] [nav_guard]: 목표 9231cb57: 남은 거리 0.13 m → 시간 한도 34 s (시작 뒤 0.0 s)
+[controller_server-3] [INFO] [1793084438.691301448] [controller_server]: Received a goal, begin computing control effort.
+[nav_guard.py-2] [INFO] [1793084438.695399378] [nav_guard]: 목표 9231cb57: 남은 거리 6.58 m → 시간 한도 218 s (시작 뒤 0.0 s)
+[stuck_monitor.py-1] [WARN] [1793084440.096428423] [stuck_monitor]: STUCK: 지령 9.2cm/30° 인데 관측 0.6cm/0.1° (비율 0.06) [shadow — 조치 없음]
+[bt_navigator-7] [WARN] [1793084440.611276744] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084443.060797758] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084444.403218048] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084447.911612578] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084448.353163101] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084449.728631361] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084450.071778658] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084450.636021004] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084450.851971655] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084450.971354342] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084450.981505564] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084450.984479329] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084452.094769232] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084452.104892293] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084453.208100231] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084453.212645920] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084453.247974409] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084453.257529772] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084458.113762874] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084458.252429189] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084459.319248352] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084460.437666443] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084460.444677688] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084462.982329186] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084462.989287949] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084465.177583909] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084465.186144358] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084465.251496902] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084465.278239213] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084465.285145623] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084465.316162798] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084465.400767512] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084465.925971844] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084465.929412024] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084467.313049450] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084469.911283172] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084469.982187136] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084470.049404766] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084470.420764128] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084470.713174838] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084470.721460334] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084470.816433271] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084472.250323665] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084473.110152618] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084475.911499906] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084475.921589431] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084477.855570587] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084480.322956811] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084480.409657789] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084480.554947275] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[controller_server-3] [WARN] [1793084480.633202623] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+[bt_navigator-7] [WARN] [1793084480.788212949] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084483.142221909] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084483.145519045] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084485.331906953] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084485.396338922] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084488.673569498] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084488.733686474] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084490.124344809] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084490.925588309] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084491.156966946] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084491.162246644] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084491.196936393] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084492.802021883] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[controller_server-3] [WARN] [1793084492.929227624] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+[bt_navigator-7] [WARN] [1793084493.210804918] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084493.216035463] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084493.344084112] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084493.353398987] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084493.525134136] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084493.534246476] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084493.617525004] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084493.624526456] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084493.633465863] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084494.014724287] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084494.612090466] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[controller_server-3] [WARN] [1793084495.536232813] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+[controller_server-3] [WARN] [1793084495.614699913] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+[bt_navigator-7] [WARN] [1793084495.672197505] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084495.782424688] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084495.913909869] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [INFO] [1793084499.403247586] [bt_navigator_navigate_to_pose_rclcpp_node]: PathBlockedAhead: 앞 경로 (1.24, 0.07) 비용 99 — 2.0 s 지속되면 재계획
+[bt_navigator-7] [WARN] [1793084500.092250498] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084500.303819027] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084500.629187149] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084500.632925611] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084500.812754572] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084501.403646487] [bt_navigator_navigate_to_pose_rclcpp_node]: PathBlockedAhead: 앞 경로 (1.24, 0.07) 비용 99 가 2.0 s 지속 → 주행 중단·재계획
+[controller_server-3] [INFO] [1793084501.493488821] [controller_server]: Goal was canceled. Stopping the robot.
+[controller_server-3] [INFO] [1793084501.493640602] [controller_server]: [follow_path] [ActionServer] Client requested to cancel the goal. Cancelling.
+[controller_server-3] [INFO] [1793084501.495756866] [local_costmap.local_costmap]: Received request to clear except a region the local_costmap
+[bt_navigator-7] [WARN] [1793084501.496800357] [bt_navigator_navigate_to_pose_rclcpp_node]: PathBlockedAhead: 앞 경로 (1.24, 0.07) 비용 99 가 2.0 s 지속 → 주행 중단·재계획
+[bt_navigator-7] [WARN] [1793084501.498883468] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[behavior_server-6] [INFO] [1793084501.500232921] [behavior_server]: Running monotone_escape
+[behavior_server-6] [INFO] [1793084501.501117879] [behavior_server]: [monotone_escape] 시작 최근접 20.9 cm · 목표 5.0 cm · 모의 결과(닿는 양 m/rad): 앞:0.010 뒤:0.010 좌회전:0.018 우회전:없음(끝 20.9 cm)
+[behavior_server-6] [INFO] [1793084501.504482377] [behavior_server]: [monotone_escape] 성공: 최근접 20.9 cm
+[behavior_server-6] [INFO] [1793084501.509575317] [behavior_server]: monotone_escape completed successfully
+[controller_server-3] [INFO] [1793084501.562874847] [controller_server]: Received a goal, begin computing control effort.
+[bt_navigator-7] [WARN] [1793084506.303142534] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084506.314423331] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084506.691792349] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[controller_server-3] [WARN] [1793084507.037178941] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+[bt_navigator-7] [WARN] [1793084508.296109709] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084509.117522161] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084509.130897878] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084509.134653461] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084509.142733670] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084513.088577655] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084513.096096790] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084513.215680195] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084516.422861032] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084516.505415472] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084517.154433939] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084517.164292800] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084517.883735538] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084517.955447724] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084521.224316934] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084525.627276814] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084526.642890347] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084526.654215210] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084527.433880599] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084527.632349331] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084529.154467045] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084531.854493966] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084531.900656104] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084531.905379368] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084532.182510986] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084535.396007453] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084536.633422197] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084537.307246987] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084537.443991423] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793084538.112620806] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[controller_server-3] [INFO] [1793084540.089533448] [controller_server]: Reached the goal!
+[bt_navigator-7] [INFO] [1793084540.123197499] [bt_navigator]: Goal succeeded
