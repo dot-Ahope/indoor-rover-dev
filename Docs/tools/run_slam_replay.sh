@@ -6,9 +6,9 @@
 set +u
 V=$1; BAG=$2; OFF=${3:-0}; DUR=${4:-100000}; O=/tmp/slamrep; mkdir -p $O
 export ROS_DOMAIN_ID=42 FASTRTPS_DEFAULT_PROFILES_FILE=$HOME/ros2_ws/install/rover_bringup/share/rover_bringup/config/fastdds_udp_only.xml
-source /opt/ros/humble/setup.bash; source ~/ros2_ws/install/setup.bash; source ~/slam_ws/install/setup.bash
+source /opt/ros/humble/setup.bash; source ~/ros2_ws/install/setup.bash; SW=${SLAM_WS:-$HOME/slam_ws}; source $SW/install/setup.bash   # 10-27 §29: SLAM_WS=~/slam_dbg_ws 면 계측판
 Y=$HOME/ros2_ws/install/rover_bringup/share/rover_bringup/config/slam.yaml
-setsid nohup ~/slam_ws/install/slam_toolbox/lib/slam_toolbox/localization_slam_toolbox_node --ros-args -r __node:=slam_toolbox --params-file $Y \
+setsid nohup $SW/install/slam_toolbox/lib/slam_toolbox/localization_slam_toolbox_node --ros-args -r __node:=slam_toolbox --params-file $Y \
   -p mode:=localization -p map_file_name:=/home/jetson/maps/office/office_v3 -p "map_start_pose:=[0.0,0.0,0.0]" -p map_start_at_dock:=false \
   -p minimum_travel_distance:=0.30 -p minimum_travel_heading:=0.15 -p map_update_interval:=10.0 -p transform_timeout:=1.5 -p use_sim_time:=true \
   ${SLAM_EXTRA:-} > $O/$V.log 2>&1 &

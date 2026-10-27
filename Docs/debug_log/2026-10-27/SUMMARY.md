@@ -411,3 +411,51 @@
 | 문제 | 제목만 보면 실주행에서 실패한 것으로 읽힘 — 통로 영상(실주행)과 모순으로 보임(사용자 지적) |
 | 결론 | 이 영상의 모든 칸은 재질의 — 상태를 '재질의 성공 / 재질의 실패(실주행은 성공)' 로, 큰 제목에 '실주행 세 순간을 오프라인으로 다시 질의한' 을 넣어 다시 렌더링(`videos/smac_expansion_tt1.mp4`, `figures/smac_expansion_tt1_end.png`) |
 | 다음에 알아보는 법 | 재질의 · 재생 결과를 그릴 때는 상태 글자에 출처(실주행 / 재질의)를 붙인다. 재질의가 실주행과 다르면 먼저 지도 판 · 출발 자세 차이를 본다(장면은 '직전 발행 지도' — 계획 시각과 최대 1~2 s 차) |
+
+## §29 SLAM 포크 단계별 시간 계측 (사용자: "SLAM 포크에 처리 단계별 시간 계측(기록만, 동작 그대로)을 넣고 같은 재생으로 어느 단계가 0.3~0.5 s 를 쓰는지 직접 재라")
+- 소스 원문(읽기만) `outputs/slamproc/slam_src_dump.txt`: 위치 추정 = `slam_toolbox_localization.cpp` laserCallback(odom 조회 → shouldProcessScan(포크 수정: 거리 또는 회전) → addScan) → `Mapper::ProcessLocalization`(순차 정합 MatchScan → AddVertex → AddEdges(LinkChainToScan · LinkNearChains) → TryCloseLoop → AddScanToLocalizationBuffer(버퍼 넘치면 RemoveNodeFromGraph)) → setTransformFromPoses.
+- 계측판: `jobs/prep_slam_dbg_1027.sh` — 운용 `~/slam_ws` 는 그대로, 사본 `~/slam_dbg_ws` 에 위 단계별 경과 시간을 stderr '[ROVER_T]' 로 찍는 줄만 넣고(동작 불변) Release 빌드. 재생 러너 `Docs/tools/run_slam_replay.sh` 에 `SLAM_WS` 환경(기본 ~/slam_ws) 추가.
+
+## §30 사용자: "결과 기다리는 동안, 현재 시스템 성능 어느 정도인지 평가" — 최근 no5 4 회(f2sa3 10-26 · f2st1 · f2tf1 · f2tt1) 기준
+- 데이터: 각 `outputs/drives/<run>/run_<run>.txt`(10-26 f2sa3 는 `2026-10-26/outputs/drives/f2sa3/`), anal_band_run · anal_stops · anal_contact, `outputs/load/anal_slam_freeze_*`, tegrastats 요약 `jobs/anal_sys_perf.py` → `outputs/load/anal_sys_perf.txt`(f2st1 은 tegra 원문을 그날 안 옮겨 없음).
+
+| 영역 | 측정값(4 회) | 읽기 |
+|---|---|---|
+| 임무 완수 | 8/8 × 4(f2sa3 목표 4 는 위치만 도착 XY) · ABORT 0 · nav_guard 취소 0 | 이 코스에서는 안정 |
+| 시간 | 448.0 · 427.5 · 412.8 · 412.2 s(약 28 m, 평균 0.067 m/s · 지령 상한 0.08) | 정지 · 재계획이 줄며 단축 |
+| 도착 오차 | 목표 대비 0.13~0.20 m · 끝 방향 −24~+21°(러너 기록) | 목표 허용치 수준 — 정밀 정지는 아님 |
+| 통로 최소 정확 여유 | 0.8 · 2.9 · 3.8 · 3.1 cm(fp 100 0) | 좁은 곳은 늘 수 cm — 여유 없음 |
+| 접촉 | 1 회(f2tf1 복귀 상자, 센서 시야 밖) · 나머지 0 | 낮은 상자 = 카메라 시야 · 기억 한계(§21 사용자: 기능 · 센서 한계) |
+| 1 s 넘는 정지 | 5 · 1 · 1 · 0 번 | f2tt1 에서 0 |
+| nav2 TF 실패 | f2st1 23 · f2tf1 33 · f2tt1 0 | timeout 1.5 로 끊김(§25) — SLAM 정체 자체는 남음 |
+| 오도메트리 드리프트(SLAM 보정량) | 0.51 · 0.53 · 0.62 · 0.48 m · yaw 6.6~10.5°(28 m 당) | 1.7~2.2 % — SLAM 위치 추정이 필수 |
+| 회전 미끄러짐 흔적(휠 − EKF 누적 회전) | 8 · 55 · 57 · 40° | 스키드스티어 회전 슬립, EKF(vslam)로 보정 |
+| 계산 부하 | CPU 코어 평균 중앙 67 %(90 % 76) · GPU 중앙 5 %(90 % 56~64) · RAM 3.1~3.2/7.6 GB · 전력 평균 7.3 W(최대 8.3) · 온도 최대 52 °C · CPU 1497 MHz | 여유 있음(포화 아님). 계측 몫 ≈ 0.8 코어(§21) |
+| 제어 주기 | Control loop missed 70 · 84 · 43 /약 420 s(10 Hz 의 1~2 %) | 대부분 제때 |
+
+- 총평(추정 포함): **정해진 실내 코스를 사람 개입 없이 반복 완주하는 수준**에는 도달. 약점은 ① 좁은 곳 여유가 cm 단위(계획 · 제어가 벽에 붙음) ② 라이다 아래 낮은 물체는 카메라 시야에 달림 ③ SLAM 정합 처리 지연(근본 미해결, §29) ④ Smac 이 못 풀면 NavFn 대체(최근 2 회는 대체 0). 아직 측정 안 한 것: 실측 위치 정답과의 오차(줄자 · 외부 측정 없음), 회차 수(4 회라 신뢰구간 넓음), 사람 등 움직이는 장애물, 배터리 1 회 충전 주행 시간.
+### §29.1 계측 결과 — 처리 시간의 64 % 가 LinkNearChains(가까운 지도 스캔 사슬과의 재정합)
+- 빌드 `outputs/slamproc/prep_slam_dbg_1027.txt`(Jetson `/tmp/slam_dbg_build.log`: Finished 14 min 8 s; 로컬 명령은 10 분에서 끊겨 결과 줄을 따로 확인). 재생 `jobs/up_slamrep_dbg_1027.sh`(SLAM_WS=~/slam_dbg_ws, f2tt1 첫 210 s) → `outputs/slamproc/run_slamrep_dbg_1027.txt`, 원문 `outputs/slamproc/rep/T0dbg.{log,txt}`(MO 4204 · 스캔 버림 22 — 기준 V0a 19~23 과 같은 수준, 계측이 동작을 바꾸지 않음), 분석 `jobs/anal_slam_timing.py` → `outputs/slamproc/anal_slam_timing_T0dbg.txt`. 본 스택 SLAM 1(안 건드림).
+
+| 단계 | 중앙 | 90 % | 최대 (ms) | 몫 |
+|---|---|---|---|---|
+| addScan 전체(처리 스캔 101 개) | 168 | 534 | 1138 | 100 % |
+| LinkNearChains(AddEdges 안) | **261** | **450** | **616** | **64 %** |
+| 순차 정합 MatchScan | 71 | 94 | 101 | 16 % |
+| TryCloseLoop | 4 | 104 | 364 | 7 % |
+| 버퍼 정리 · AddVertex · LinkChainToScan · odom 조회 | ≈ 0 | | | 0 % |
+
+- 300 ms 넘은 스캔 34 개 평균: LinkNearChains 364 · 순차 정합 72 · 루프 50 ms. LinkNearChains 는 새 스캔 반경 link_scan_maximum_distance(1.5 m) 안의 지도 스캔 사슬마다(이번 5~6 개, nmeans) 순차 정합기로 다시 맞춘다(Mapper.cpp LinkNearChains → FindNearChains → MatchScan). 지도가 0.05 m 간격 노드로 촘촘해 사슬이 많음(추정).
+- §26.3 에서 정합 탐색 범위(0.5 → 0.3)가 조금만 줄인 것도 이와 맞음 — 사슬 수가 그대로라서.
+- 다음 A/B(선언): link_scan_maximum_distance 1.5 → 1.0 · 0.75(계측판, 같은 재생). 채택 기준 = 처리 > 300 ms 스캔 수 · stamp > 0.4 s 정체 수가 기준(34 · 19~23)의 절반 이하 & 원래 SLAM 대비 위치 차 중앙 ≤ 1 cm · 최대 ≤ 기준 + 2 cm.
+### §29.2 link_scan_maximum_distance A/B(계측판, 같은 재생) — 줄지만 판정 기준(절반) 미달
+- 실행 `jobs/up_slamrep_link_1027.sh`(L10 · L075) → `outputs/slamproc/run_slamrep_L{10,075}.txt`, 원문 `outputs/slamproc/rep/L{10,075}.*`, 분석 `outputs/slamproc/anal_slam_timing_link.txt` · `anal_slam_replay_link.txt`. 본 스택 SLAM 1(매번).
+
+| 변형 | LinkNearChains 중앙 | addScan 90 % · 최대 | > 300 ms · > 500 ms 스캔 | 사슬 수 중앙 | stamp > 0.4 · > 0.5 s | 원래 SLAM 대비 위치 차 중앙 · 최대 |
+|---|---|---|---|---|---|---|
+| 기준 1.5 m(T0dbg; V0a · V0b) | 260 ms | 534 · 1138 | 34 · 15 | 4 | 23 · 10(19~23 · 8~9) | 0.4 · 11.2 cm |
+| 1.0 m | 176 | 478 · 962 | 28 · 9 | 3.5 | 18 · 4 | 0.9 · 11.8 |
+| 0.75 m | 134 | 424 · 809 | 28 · 5 | 3 | 13 · 4 | 1.0 · 9.9 |
+
+- 판정(§29.1 선언): 0.75 m 도 > 300 ms 스캔 34 → 28 · > 0.4 s 정체 19~23 → 13 으로 **절반에 못 미침** → 채택 기준 미달. 긴 쪽은 뚜렷이 줄어듦(> 500 ms 15 → 5 · > 0.5 s 정체 8~10 → 4 · 최대 1.14 → 0.81 s). 위치 차 중앙 0.4 → 1.0 cm(기준 ≤ 1 cm 경계).
+- 읽기: 사슬 수가 4 → 3 으로 줄어든 만큼 LinkNearChains 가 줄었고, 남은 시간은 사슬 하나 · 순차 정합 1 회의 비용(각 ≈ 70 ms 수준, 정합 탐색 0.5 m × 0.01 m · 각도)이 차지 → 다음 후보는 사슬 수가 아니라 **정합 1 회 비용**(correlation_search_space_dimension · 각도 해상도) 또는 0.75 m 와의 조합. 운용 설정은 바꾸지 않음(결정 안 함).

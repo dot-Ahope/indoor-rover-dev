@@ -1,0 +1,27 @@
+== T0dbg
+처리한 스캔 101 개 (단위 ms)
+단계               중앙      90%       최대     합(s)       몫%  설명
+CB.add        167.7    534.4   1138.0    21.63     100   addScan 전체
+AS.proc         0.1    519.8    908.3    18.53      86   ProcessLocalization
+PL.edges      260.0    450.2    615.8    13.49      62   AddEdges
+AE.chain        0.0      0.0      0.0     0.00       0    └ LinkChainToScan
+PL.loop         4.3    104.0    364.0     1.61       7   TryCloseLoop
+CB.odom         0.0      0.1      3.0     0.01       0   odom 조회 등
+== L10
+처리한 스캔 101 개 (단위 ms)
+단계               중앙      90%       최대     합(s)       몫%  설명
+CB.add        155.0    477.6    962.2    18.74     100   addScan 전체
+AS.proc         0.2    442.2    588.4    15.76      84   ProcessLocalization
+PL.edges      176.3    405.1    494.4    10.89      58   AddEdges
+AE.chain        0.0      0.0      0.0     0.00       0    └ LinkChainToScan
+PL.loop         4.3     98.6    328.3     1.57       8   TryCloseLoop
+CB.odom         0.0      0.1      2.1     0.00       0   odom 조회 등
+== L075
+처리한 스캔 101 개 (단위 ms)
+단계               중앙      90%       최대     합(s)       몫%  설명
+CB.add        149.9    423.8    809.3    17.18     100   addScan 전체
+AS.proc         0.0    406.3    523.4    14.03      82   ProcessLocalization
+PL.edges      133.6    363.2    443.2     9.42      55   AddEdges
+AE.chain        0.0      0.0      0.1     0.00       0    └ LinkChainToScan
+PL.loop         4.4     99.0    322.1     1.44       8   TryCloseLoop
+CB.odom         0.0      0.1      1.8     0.01       0   odom 조회 등
