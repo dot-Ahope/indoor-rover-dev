@@ -320,3 +320,21 @@
   - 10-12 의 매우 높은 bag(f2f3 10.9 · f2g2 9.3 · f2i1 10.8 · f2m1 11.5 /m)은 같은 날 mppi_viz 통신 폭증 · Nav2 중단 시기(10-12 §, 메모리)와 겹침 — 별개 원인으로 봄(추정).
   - 09 월 여유 음수 bag 4 개는 SLAM 이 bag 시작 시점에 stamp 를 수 초 늦게 내던 경우(시작 정렬 · 재기동 직후 추정) — 이번 현상과 다른 꼴, 미확인.
 - 함의: ① 10-01 에 timeout 0.5 로 올린 뒤에도 0.5 s 넘는 정체가 매 주행 수십 번 있었으므로, 그동안의 순회에서도 컨트롤러 TF 중단 · 전역 nvblox 층 TF 실패가 같은 빈도로 있었을 것(각 주행 nav2 로그로 확인 가능, 미확인). ② 특히 §15 결함(TF 실패 순간 장애물이 틀어진 자리에 찍힘)은 전역 nvblox 층을 켠 09-22 이후 주행 전체에 영향을 줬을 수 있음 — 과거 '가짜 막힘' 해석을 다시 볼 거리. ③ §21 의 timeout 1.5 는 10-07 이후 관측 최대 간격(중앙 1.2 s, 개별 최대 4.4 s @ f2f1 — 10-12 이상 시기)을 대부분 덮음.
+
+## §24 사용자: "테스트 주행 전 여러 검사 중 중복 · 불필요한 것 없애자" — 정리 · 확인
+- 읽은 단계: prep = `Docs/tools/prep_patrol.sh` → `prep_fast.sh`(정리 · base · 센서 자이로 캘리브 · SLAM · Nav2 · `chk_prep.py` 한 노드 확인 · 로그/프로세스 목록) + 날짜별 래퍼(`prep_smac_1027.sh`: `ros2 param get` 약 11 번). 러너 = 스크래치패드 `run_f2c.sh` → `run_f0.sh`(전송) → Jetson `job551_f0drive.sh`(게이트 A 프로세스 중복 · B `ros2 topic hz /wheel_odom` 12 s · J nvblox · C `job386_slamalive.py` 5 s · G2 `job440_startclear.py` ≤ 60 s · sleep 30 · P CPU 10 s · bag · tegrastats · top 2 s · /proc 2 s · UDP 손실 2 s) → `job550_f0run.py`. 대화 쪽: 내가 따로 둔 30 s 대기 · 1 s top(f2tf1).
+
+| 항목 | 판단 | 조치 |
+|---|---|---|
+| B · C · G2 가 참여자 3 개 · 약 24 s | 같은 기준을 한 노드로 가능 | **`Docs/tools/chk_drive_gate.py`** 하나로(기준 그대로, 마지막 줄 `GATE B= C= G2=`) |
+| sleep 30 뒤 P 10 s 따로 | 대기 중에 재도 같음 | 30 s 의 마지막 10 s 로 P 측정(총 40 → 30 s) |
+| 러너 top 2 s 루프 | /proc 프로세스별 틱 기록과 겹침, top 실행 자체 CPU | 제거(명령줄은 rss_ 스냅숏 args) |
+| UDP 손실 기록 | 10-12 포화 조사용, 10-13 해결 | `NET_LOG=1` 일 때만 |
+| prep 래퍼의 `ros2 param get` 약 11 번 | 회당 참여자 · 수 초, chk_prep 조회와 겹침 | **`chk_prep.py` PARAMS 에 추가**(Smac 6 · MPPI PathAlign/PathFollow · 깊이 프리셋 · EKF odom1 · SLAM mode/transform_timeout · BT xml), 래퍼 `jobs/prep_smac_1027b.sh` |
+| 대화 쪽 30 s 대기 · 1 s top | 러너가 자기 게이트 노드 뒤 30 s 를 이미 기다림 · CPU 는 이미 기록 | 하지 않음 |
+| 유지 | A(고아 · 중복 프로세스) · J(nvblox · 깊이) · 러너 30 s · prep 위치 추정 검사 · 코스트맵 재마킹 대기 · 사후 params 스냅숏(job451, 주행 재현 규칙) | 그대로 |
+
+- 게이트 비교 `jobs/cmp_gate_1027.sh`(+ `up_cmp_gate_1027.sh`) → `outputs/gate/cmp_gate_1027.txt`, 같은 정지 상태: 옛 B 25.03 Hz · 12.3 s / C OK(지연 0.38) · 7.0 s / G2 0.397 · 4.2 s = **23.6 s**; 새 B 25.0 · G2 0.397(로컬 · 라이다 모두 같음) · **6.7 s**. 새 C 는 그 순간 **FAIL(stamp 지연 1.14 s)** — 바로 뒤 20 s 관찰(`jobs/chk_slam_idle_1027.sh` → `outputs/gate/chk_slam_idle_1027.txt`)은 최대 −0.27 s OK. 그때 로버가 −175° 로 서 있어 위치 추정이 틀린 상태(§21 PREP_FAIL)였음 → 그 상태의 SLAM 정체로 봄(새 노드 결함 아님, 추정). C 기준(지연 < 1.0 s)은 timeout 1.5 에서 '2.5 s 넘는 정체' 를 뜻하게 됨 — 생존 검사로는 그대로 둠.
+- 러너 수정: 스크래치패드 `job551_f0drive.sh`(사본 `jobs/job551_f0drive.sh`, 이전 판 = `2026-10-21/jobs/job551_f0drive.sh` blob 2276c25f0c) · `run_f0.sh`(전송 목록에 chk_drive_gate.py, job386 · job440 뺌; 사본 `jobs/run_f0.sh`, 비밀번호 <PW>). 문법 검사 OK. **실주행에서는 아직 안 돌려 봄** — 다음 주행이 첫 확인.
+- 사용자가 로버를 출발 방향으로 옮김 → prep `jobs/run_prep_full_1027.sh`(필터 없이 원문을 /tmp/prep_full_1027b.txt 로, 요약만 출력) → `outputs/gate/prep_full_1027b.txt`: **PREP_OK** +84 s · 위치 추정 0.003 m · 0.0° · 파라미터 한 노드로 전부(tolerance 0.35 · REEDS_SHEPP · cp 3.0 · 1.0 · 2.0 s · 캐시 끔 · PathAlign 28 · PathFollow 5 · 프리셋 3 · odom1 /vslam/odom · SLAM localization · **transform_timeout 1.5** · BT /tmp/nav_to_pose_active.xml). 출력 이름표 결함(Critic 값이 모두 'PreferForward' 로 찍힘) 수정(다음 prep 부터).
+- 미확인: 그 직전 `prep_smac_1027b.sh`(grep 필터판)가 11 s 만에 prep 출력 없이 끝남(`outputs/gate/prep_1027b.txt`) — 원인 모름. 다음부터 prep 은 원문을 파일로 남기는 방식으로.
