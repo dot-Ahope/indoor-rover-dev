@@ -1,0 +1,47 @@
+[INFO] [1793085981.629406896] [slam_toolbox]: Node using stack size 40000000
+[INFO] [1793085981.683838393] [slam_toolbox]: Using solver plugin solver_plugins::CeresSolver
+[INFO] [1793085981.684272104] [slam_toolbox]: CeresSolver: Using SCHUR_JACOBI preconditioner.
+Load From File /home/jetson/maps/office/office_v3.posegraph 
+Mapper <- Module
+Mapper <- m_pSequentialScanMatcher
+Mapper <- m_pGraph
+MapperGraph <- Graph; Graph <- m_Edges; Graph <- m_Vertices
+MapperGraph <- m_pMapper; MapperGraph <- m_pLoopScanMatcher; MapperGraph <- m_pTraversal
+Mapper <- m_pMapperSensorManager
+MapperSensorManager <- m_ScanManagers; MapperSensorManager <- m_Scans
+Mapper <- m_Listeners
+**Finished serializing Mapper**
+Load From File
+**Serializing Dataset**
+Dataset <- m_SensorNameLookup
+Dataset <- m_Data
+Dataset <- m_Lasers
+Dataset <- m_pDatasetInfo
+**Finished serializing Dataset**
+Registering sensor: [Custom Described Lidar]
+WARNING: Logging before InitGoogleLogging() is written to STDERR
+W1027 16:26:23.470412 1475631 preprocessor.cc:62] Specified options.num_threads: 50 exceeds maximum available from the threading model Ceres was compiled with: 6.  Bounding to maximum number available.
+[INFO] [1793085985.400559764] [slam_toolbox]: Message Filter dropping message: frame 'lidar_link' at time 1793084119.607 for reason 'discarding message because the queue is full'
+[WARN] [1793085987.370750970] [slam_toolbox]: minimum laser range setting (0.0 m) exceeds the capabilities of the used Lidar (0.2 m)
+Registering sensor: [Custom Described Lidar]
+[INFO] [1793085989.626336758] [slam_toolbox]: Message Filter dropping message: frame 'lidar_link' at time 1793084123.995 for reason 'discarding message because the queue is full'
+[INFO] [1793085992.685374149] [slam_toolbox]: Message Filter dropping message: frame 'lidar_link' at time 1793084127.068 for reason 'discarding message because the queue is full'
+[INFO] [1793085995.733800904] [slam_toolbox]: Message Filter dropping message: frame 'lidar_link' at time 1793084130.013 for reason 'discarding message because the queue is full'
+[INFO] [1793086007.974452194] [slam_toolbox]: Message Filter dropping message: frame 'lidar_link' at time 1793084142.301 for reason 'discarding message because the queue is full'
+[INFO] [1793086014.595123215] [slam_toolbox]: Message Filter dropping message: frame 'lidar_link' at time 1793084148.781 for reason 'discarding message because the queue is full'
+[INFO] [1793086018.174850264] [slam_toolbox]: Message Filter dropping message: frame 'lidar_link' at time 1793084152.384 for reason 'discarding message because the queue is full'
+[INFO] [1793086023.451168330] [slam_toolbox]: Message Filter dropping message: frame 'lidar_link' at time 1793084157.581 for reason 'discarding message because the queue is full'
+[INFO] [1793086042.780117032] [slam_toolbox]: Message Filter dropping message: frame 'lidar_link' at time 1793084176.269 for reason 'discarding message because the queue is full'
+[INFO] [1793086046.548143052] [slam_toolbox]: Message Filter dropping message: frame 'lidar_link' at time 1793084180.653 for reason 'discarding message because the queue is full'
+[INFO] [1793086049.293093365] [slam_toolbox]: Message Filter dropping message: frame 'lidar_link' at time 1793084183.453 for reason 'discarding message because the queue is full'
+[INFO] [1793086062.658472520] [slam_toolbox]: Message Filter dropping message: frame 'lidar_link' at time 1793084196.349 for reason 'discarding message because the queue is full'
+W1027 16:27:48.775272 1475631 preprocessor.cc:62] Specified options.num_threads: 50 exceeds maximum available from the threading model Ceres was compiled with: 6.  Bounding to maximum number available.
+[INFO] [1793086072.526809282] [slam_toolbox]: Message Filter dropping message: frame 'lidar_link' at time 1793084206.541 for reason 'discarding message because the queue is full'
+[INFO] [1793086097.564342609] [slam_toolbox]: Message Filter dropping message: frame 'lidar_link' at time 1793084231.901 for reason 'discarding message because the queue is full'
+[INFO] [1793086100.888526767] [slam_toolbox]: Message Filter dropping message: frame 'lidar_link' at time 1793084235.101 for reason 'discarding message because the queue is full'
+[INFO] [1793086105.516817871] [slam_toolbox]: Message Filter dropping message: frame 'lidar_link' at time 1793084239.805 for reason 'discarding message because the queue is full'
+[INFO] [1793086114.274461249] [slam_toolbox]: Message Filter dropping message: frame 'lidar_link' at time 1793084248.589 for reason 'discarding message because the queue is full'
+[INFO] [1793086122.375502761] [slam_toolbox]: Message Filter dropping message: frame 'lidar_link' at time 1793084256.285 for reason 'discarding message because the queue is full'
+[INFO] [1793086152.529461521] [slam_toolbox]: Message Filter dropping message: frame 'lidar_link' at time 1793084286.557 for reason 'discarding message because the queue is full'
+[INFO] [1793086162.303611187] [slam_toolbox]: Message Filter dropping message: frame 'lidar_link' at time 1793084296.349 for reason 'discarding message because the queue is full'
+[INFO] [1793086197.795042128] [rclcpp]: signal_handler(SIGINT/SIGTERM)
