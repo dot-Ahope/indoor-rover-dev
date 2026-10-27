@@ -1,0 +1,6 @@
+ 09:06:49 up 7 min,  0 users,  load average: 0.41, 0.40, 0.23
+WEB_DEV_5G
+ls: cannot access '/tmp/prep_fast.sh': No such file or directory ls: cannot access '/tmp/prep_patrol.sh': No such file or directory ls: cannot access '/tmp/chk_prep.py': No such file or directory 
+nav2 0 slam 0 cam 0
+/home/jetson/smac_dbg_ws /home/jetson/smac_ws 
+/dev/nvme0n1p1  233G   99G  122G  45% /
