@@ -29,9 +29,17 @@ POSE = None if PP == 'any' else tuple(float(v) for v in PP.split(','))
 POS_TOL, YAW_TOL = 0.10, 2.0
 LC = ['controller_server', 'planner_server', 'bt_navigator', 'behavior_server', 'nav_map_server']
 PARAMS = {'/controller_server': ['FollowPathMPPI.PreferForwardCritic.cost_weight', 'FollowPathMPPI.vx_min', 'FollowPathMPPI.visualize',
-                                 'FollowPathMPPI.TrajectoryVisualizer.trajectory_step', 'FollowPathMPPI.TrajectoryVisualizer.time_step'],
+                                 'FollowPathMPPI.TrajectoryVisualizer.trajectory_step', 'FollowPathMPPI.TrajectoryVisualizer.time_step',
+                                 'FollowPathMPPI.PathAlignCritic.cost_weight', 'FollowPathMPPI.PathFollowCritic.cost_weight'],
           '/global_costmap/global_costmap': ['plugins', 'nvblox_layer.nav2_costmap_global_frame', 'obstacle_layer.observation_sources'],
-          '/stuck_monitor': ['shadow_mode']}
+          '/stuck_monitor': ['shadow_mode'],
+          # 10-27 §24: 날짜별 prep 래퍼가 `ros2 param get` 을 약 11 번 따로 부르던 것(회당 참여자 1 개 · 수 초)을 여기로 — 같은 노드 한 번에
+          '/planner_server': ['SmacHybrid.tolerance', 'SmacHybrid.motion_model_for_search', 'SmacHybrid.cost_penalty',
+                              'SmacHybrid.analytic_expansion_max_length', 'SmacHybrid.max_planning_time', 'SmacHybrid.cache_obstacle_heuristic'],
+          '/camera/camera': ['depth_module.visual_preset'],
+          '/ekf_filter_node': ['odom1'],
+          '/slam_toolbox': ['mode', 'transform_timeout'],
+          '/bt_navigator': ['default_nav_to_pose_bt_xml']}
 
 
 def pval(v):
@@ -124,7 +132,7 @@ def main():
     print('  map→base: %s' % (('(%.3f, %.3f) yaw %.1f°' % p) if p else '없음'))
     print('  전역 코스트맵: %s' % (('%d×%d · 치명/내접 %d 칸' % n.gcm) if n.gcm else '비운 뒤 아직 수신 없음'))
     for nd, names in PARAMS.items():
-        v = n.pv.get(nd); print('  %s: %s' % (nd, ' · '.join('%s=%s' % (a.split('.')[-1] if 'Critic' not in a else 'PreferForward', b) for a, b in zip(names, v)) if v else '조회 실패'))
+        v = n.pv.get(nd); print('  %s: %s' % (nd, ' · '.join('%s=%s' % (a.split('.')[-1] if 'Critic' not in a else a.split('.')[-2].replace('Critic', ''), b) for a, b in zip(names, v)) if v else '조회 실패'))
     print('PREP_OK' if ok else 'PREP_FAIL'); rclpy.shutdown(); return 0 if ok else 1
 
 
