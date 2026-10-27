@@ -1,0 +1,8 @@
+주행 15:00:09 ~ 15:07:02 (412.9 s) · 멈춤(1.0 s 넘게 정지) 1 번 · 합 5.1 s
+
+15:06:13~15:06:18 (t 369.4~374.4, 5.1 s) @ (2.16, -1.31) | cmd_vel 4 개 중 0 명령 2 · 최대 |v| 0.020 · 최대 |ω| 0.05 | 앞 ±30° 라이다 최소 0.64 m
+    15:06:11.11 controller_server Control loop missed its desired rate of 10.0000Hz
+    15:06:13.51 controller_server Exception in transformPose: Lookup would require extrapolation into the future.  Requested time 1793081172.996048 but the latest dat
+    15:06:13.51 controller_server Unable to transform robot pose into global plan's frame
+    15:06:13.51 controller_server [follow_path] [ActionServer] Aborting handle.
+    15:06:13.55 behavior_server Running wait
