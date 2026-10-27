@@ -348,3 +348,49 @@
 - ④ ✔ 통로 최소 정확 여유 **3.1 cm**(< 2.7 cm 프레임 0 · fp 100 0, 15:58:09.5 남쪽 주머니 북행 출발 회전 중; 경계값) — `anal_band_run_f2tt1.txt`.
 - 기록: 출발 상자 복귀 최소 **14.4 cm**(복귀 때 상자 칸 2 개 — 카메라가 봄; `anal_contact_f2tt1_d30.txt`). 복귀 16:01:39 PathBlockedAhead (1.24, 0.07) 99 → 2 s → 중단 · 재계획 · MonotoneEscape(1 s 넘는 정지로는 안 잡힘) — §14 와 같은 '잊었다 다시 봄'. 통로 15:58:08 PathBlockedAhead (−1.60, −4.70) → 재계획. 통로 경로: 남행 15:57:41.17 Smac · **북행 15:58:05.80 · 15:58:11.40 Smac**(`chk_corr_paths_f2tt1.txt`; f2tf1 에 이어 2 회 연속 북행 Smac 성공, Smac 실패 0).
 - 결론: §21 의 transform_timeout 1.5 로 **SLAM stamp 정체가 nav2 TF 실패로 이어지는 길이 끊겼다**(정체 자체는 남음 — 근본 원인 SLAM 처리 시간은 별도). 1 회 결과.
+
+## §26 사용자: "이번 주행에서 상자는 테이프 자리로 되돌린 상태였다. 실제 접촉 없었다. 더 중요한 문제부터 해결하자"
+- 사용자 확인(관찰): f2tt1 상자 테이프 자리 · **접촉 없음**(§25 복귀 최소 14.4 cm 와 일치).
+- 우선순위 판단: SLAM 스캔 처리 지연(근본) > 과거 '가짜 막힘' 재해석. 이유: timeout 1.5 는 증상 차단이고 정체가 1.5 s 를 넘으면 다시 실패 · 보정 반영 1.5 s 늦음 · 스캔 버림은 위치 추정 품질도 깎음. 재해석은 지난 기록만 바꿈.
+### §26.1 정체는 무엇에 맞춰 나나 — 위치 추정 스캔 정합(이동 0.30 m · 회전 0.15 rad 마다) 때마다
+- `jobs/anal_slam_freeze_trigger.py` → `outputs/slamproc/anal_slam_freeze_trigger_{f2tt1,f2tf1}.txt`(입력 각 bag /tf):
+
+| 가설 | f2tt1 | f2tf1 | 판정 |
+|---|---|---|---|
+| ① 정합 조건(0.30 m · 0.15 rad)마다 처리 지연 | 정체 사이 이동 중앙 0.35 m · 회전 0.32 rad, **문턱 이상 53/54** | 0.29 m · 0.30 rad, 53/55 | 지지 |
+| ② 지도 갱신 주기 10 s | 10 s 배수 비율 13 %(무작위 ≈ 20 %) | 11 % | 기각 |
+| 운동 상태 | 정체 직전 1 s: 서 있음 0 · 직진 16 · 회전 포함 39 | 0 · 10 · 46 | 회전 중에 많음 |
+
+- 새 stamp 간격은 97 % 가 < 0.15 s(스캔마다 정상 갱신), 정합하는 스캔에서만 0.4~1.3 s. 정합 1 회의 무엇이 무거운지(순차 정합 · 루프 탐색 · 최적화)는 아직 모름 → 재생 A/B.
+### §26.2 재생 A/B 도구
+- `Docs/tools/run_slam_replay.sh` + `Docs/tools/slam_replay_feed.py`(Jetson, **ROS_DOMAIN_ID 42** — 떠 있는 스택과 분리, 로버 안 움직임): 주행 bag 의 /scan · /tf(원래 map→odom 은 뺌) · /tf_static 을 실시간 1 배로 내보내고 /clock 발행, 포크 localization_slam_toolbox_node 를 slam.yaml + slam.launch.py 위치 추정 값(0.30 · 0.15 · 10 s · timeout 1.5) + use_sim_time 으로 띄워 그 map→odom 과 SLAM CPU 틱을 기록. 변형은 SLAM_EXTRA. ⚠ 처음 판의 pgrep/pkill 패턴이 본 스택 SLAM(launch 도 같은 명령줄 꼴)까지 걸 수 있어 실행 전에 빼고 띄운 pid 만 죽이게 고침. 분석 `jobs/anal_slam_replay.py`(정체 · 여유 · CPU · 원래 SLAM 대비 위치 차).
+- 시험 실행(60 s): map→odom 1204 줄 · 스캔 버림 11 · 오류 0.
+- A/B 선언(결과 보기 전): 입력 f2tt1 첫 210 s(출발~통로 왕복), 변형 V0a · V0b(같은 설정 2 번 = 실행 간 편차) · V1 루프 탐색 끔 · V2 정합 해상도 0.01 → 0.02 · V3 정합 탐색 범위 0.5 → 0.3 m · V4 스캔 버퍼 20 → 10. 지표: > 0.4 s 정체 수 · 최대 간격 · SLAM CPU · 원래 SLAM 대비 위치 차(중앙 · 최대). 채택 후보 기준: 정체 수가 V0a · V0b 범위보다 뚜렷이 적고(절반 이하) 위치 차 최대가 V0 범위 + 2 cm 이내. 재생은 본 스택이 떠 있는(정지) 상태라 CPU 경쟁이 주행 때보다 작음 — 절대값이 아니라 변형 간 비교로만 읽음.
+### §26.3 재생 A/B 결과 — 채택 후보 없음, 무거운 부분은 탐색 범위 · 루프 탐색 · 버퍼가 아님
+- 실행 `jobs/run_slamrep_batch_1027.sh`(+ `up_slamrep_batch_1027.sh`) → `outputs/slamproc/run_slamrep_batch_1027.txt`, 원문 `outputs/slamproc/rep/`(변형별 .txt · .log), 분석 `jobs/anal_slam_replay.py` → `outputs/slamproc/anal_slam_replay_ab1.txt`. 본 스택 SLAM 프로세스 수 앞 1 · 뒤 1(안 건드림).
+
+| 변형 | > 0.4 s 정체 | 최대 | SLAM CPU | 원래 SLAM 대비 위치 차 중앙 · 최대 |
+|---|---|---|---|---|
+| V0a 기준 | 19 | 1.01 s | 23 % | 0.4 · 11.2 cm |
+| V0b 기준 재실행 | 23 | 0.70 s | 23 % | 0.4 · 11.2 cm |
+| V1 do_loop_closing false | 17 | 1.01 s | 21 % | **3.6 · 16.5 cm**(나빠짐) |
+| V2 correlation_search_space_resolution 0.02 | — | — | — | 기동 중 종료 'Mapper FATAL ERROR - unable to get pointer in probability search'(지도 해상도와 안 맞는 것으로 추정) |
+| V3 correlation_search_space_dimension 0.3 | 15 | 1.01 s | 19 % | 0.4 · 11.4 cm |
+| V4 scan_buffer_size 10 | 19 | 1.01 s | 22 % | 0.3 · 11.5 cm |
+
+- 정체 길이 분포(> 0.3 s, 0.1 s 단위): 모든 변형이 0.3~0.5 s 에 몰리고 1.0 s 는 각 1 번(같은 자리). 기준 두 번의 차(19 vs 23)보다 변형 효과가 작음 → **판정 기준(절반 이하) 통과 변형 없음**. 위치 차 최대 11 cm 는 기준끼리도 같아 재생 고유의 차(시작 정렬 등)로 봄, V1 만 중앙값이 9 배 나빠짐 → 루프 탐색은 위치 추정 정확도에 필요.
+- 재생(정지 스택, CPU 경쟁 작음)에서도 정체가 남음 → CPU 경쟁이 주원인은 아님. 정합 1 회당 0.3~0.5 s 의 고정 비용이 어디인지는 이 변형들로 못 가림 → 다음: 포크(`~/slam_ws`)의 위치 추정 처리 단계별 시간 계측(기록만, 동작 불변)을 넣어 재생으로 측정.
+
+## §27 f2tt1 시각화 · Smac 탐색 영상 (사용자: "방금 전 주행 관련하여 시각화 해달라. smac_expansion도 만들어달라")
+- 요약 그림 `figures/f2tt1_summary.png`(도구 `jobs/fig_f2tt1_summary.py`, 표 값은 §19 · §25 원문에서 옮김 — 머리에 출처): 위 = SLAM map→odom '지금 조회 여유'(최신 stamp − 지금) 시간선, f2tf1(0.5) 은 0 아래로 자주 떨어지고 nav2 실패 33(▼), f2tt1(1.5) 은 0 아래 0 s · 실패 0. 아래 = f2st1 · f2tf1 · f2tt1 지표 표 · 목표별 시간.
+- 영상(git 제외, 생성 기록 `outputs/fig_video/fig_light_f2tt1_{corridor_x2,return}.txt`): `videos/f2tt1_corridor_light_x2.mp4`(15:57:38~15:58:50, 2 배속 — 남행 · 북행 모두 Smac, 15:58:08 막힘 감지 → 재계획) · `videos/f2tt1_return_light.mp4`(16:01:20~16:02:20, 1 배속, FIG_FOV · FIG_BOX — 이번엔 기록 상자가 시야 안에 들어와 다시 찍힘 → 막힘 판정 → MonotoneEscape 로 비켜 감).
+- Smac 탐색: 장면 `jobs/scenes_tt1_exp_1027.json` → `outputs/tt1_exp/scenes_tt1.npz`(prep_scenes, 재구성 일치 1.0000), 진단 빌드 재질의 `jobs/run_tt1_exp_1027.sh`(§7 V1 = tol 0.35 · cp 3.0 · 2.0 s, 도메인 42; SLAM A/B 끝난 뒤 실행) → `outputs/tt1_exp/run_V1.txt` · `result_V1.npz` · `exp_V1.tgz`. 영상 `videos/smac_expansion_tt1.mp4`(git 제외) · 마지막 장 `figures/smac_expansion_tt1_end.png`(도구 `jobs/fig_smac_expansion_tt1.py`).
+
+| 장면 | 실주행 | 오프라인 재질의 |
+|---|---|---|
+| 15:57:41 남행(통로 북쪽 입구 출발) | Smac 성공 | 성공 · 방문 1 148 · 1.96 m |
+| 15:58:05.80 북행(남쪽 끝 출발 −85°) | Smac 성공 | 성공 · 방문 **146** · 1.75 m |
+| 15:58:11.40 북행 재계획(막힘 뒤, −168°) — 15:58:09 판 지도(장면 '직전 지도' 규칙) | Smac 성공 | **실패** · 방문 12 697(탐색이 남쪽 주머니 밖 동쪽으로 퍼짐) |
+| 같은 순간 — 계획 시각과 같은 15:58:11.40 판 지도 | 〃 | **실패 · 방문 0**(즉시 — 출발 칸 쪽 문제로 추정, 미확인) |
+
+- 읽기: 북행 첫 계획(−85°, 남쪽을 보고 선 채 출발)은 146 노드로 바로 풀림 — 10-26 · f2st1 의 북행 실패(남쪽 주머니 −102° · −183° 출발)와 출발 자세가 다름. 재계획 순간은 실주행에선 성공했지만 오프라인 두 지도 모두 재현 안 됨 → 그 순간 계획기 내부 지도(발행본과 다를 수 있음) · 출발 자세의 몇 cm · 몇 도 차에 민감한 경계 사례로 봄(미확인).

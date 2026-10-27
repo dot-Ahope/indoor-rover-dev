@@ -1,0 +1,39 @@
+본 스택 SLAM 프로세스(앞): 1
+[V0a] SLAM pid 1410557(localization_sl) · 기동 1 · 추가 인자: 없음
+재생 끝: 메시지 8358 · 길이 210.0 s
+[V0a] MO 4205 줄 · 스캔 버림 22 · 오류 0
+[V0b] SLAM pid 1426858(localization_sl) · 기동 1 · 추가 인자: 없음
+재생 끝: 메시지 8358 · 길이 210.0 s
+[V0b] MO 4204 줄 · 스캔 버림 25 · 오류 0
+[V1_noloop] SLAM pid 1443080(localization_sl) · 기동 1 · 추가 인자: -p do_loop_closing:=false
+재생 끝: 메시지 8358 · 길이 210.0 s
+[V1_noloop] MO 4204 줄 · 스캔 버림 20 · 오류 0
+[V2_res02] SLAM pid 1459356(localization_sl) · 기동 1 · 추가 인자: -p correlation_search_space_resolution:=0.02
+재생 끝: 메시지 8358 · 길이 210.0 s
+/tmp/run_slam_replay.sh: line 18: 1459356 Aborted                 (core dumped) setsid nohup ~/slam_ws/install/slam_toolbox/lib/slam_toolbox/localization_slam_toolbox_node --ros-args -r __node:=slam_toolbox --params-file $Y -p mode:=localization -p map_file_name:=/home/jetson/maps/office/office_v3 -p "map_start_pose:=[0.0,0.0,0.0]" -p map_start_at_dock:=false -p minimum_travel_distance:=0.30 -p minimum_travel_heading:=0.15 -p map_update_interval:=10.0 -p transform_timeout:=1.5 -p use_sim_time:=true ${SLAM_EXTRA:-} > $O/$V.log 2>&1
+[V2_res02] MO 0 줄 · 스캔 버림 1 · 오류 2
+[V3_dim03] SLAM pid 1475631(localization_sl) · 기동 1 · 추가 인자: -p correlation_search_space_dimension:=0.3
+재생 끝: 메시지 8358 · 길이 210.0 s
+[V3_dim03] MO 4204 줄 · 스캔 버림 20 · 오류 0
+[V4_buf10] SLAM pid 1491848(localization_sl) · 기동 1 · 추가 인자: -p scan_buffer_size:=10
+재생 끝: 메시지 8358 · 길이 210.0 s
+[V4_buf10] MO 4205 줄 · 스캔 버림 20 · 오류 0
+본 스택 SLAM 프로세스(뒤): 1
+total 1440
+drwxrwxr-x  2 jetson jetson   4096 Oct 27 16:30 .
+drwxrwxrwt 29 root   root    45056 Oct 27 16:33 ..
+-rw-rw-r--  1 jetson jetson   3399 Oct 27 16:10 smoke.log
+-rw-rw-r--  1 jetson jetson  71878 Oct 27 16:10 smoke.txt
+-rw-rw-r--  1 jetson jetson   5772 Oct 27 16:15 V0a.log
+-rw-rw-r--  1 jetson jetson 250916 Oct 27 16:15 V0a.txt
+-rw-rw-r--  1 jetson jetson   6107 Oct 27 16:18 V0b.log
+-rw-rw-r--  1 jetson jetson 250863 Oct 27 16:18 V0b.txt
+-rw-rw-r--  1 jetson jetson   5010 Oct 27 16:22 V1_noloop.log
+-rw-rw-r--  1 jetson jetson 251165 Oct 27 16:22 V1_noloop.txt
+-rw-rw-r--  1 jetson jetson   1683 Oct 27 16:22 V2_res02.log
+-rw-rw-r--  1 jetson jetson     92 Oct 27 16:26 V2_res02.txt
+-rw-rw-r--  1 jetson jetson   5212 Oct 27 16:29 V3_dim03.log
+-rw-rw-r--  1 jetson jetson 250871 Oct 27 16:29 V3_dim03.txt
+-rw-rw-r--  1 jetson jetson   5414 Oct 27 16:33 V4_buf10.log
+-rw-rw-r--  1 jetson jetson 250769 Oct 27 16:33 V4_buf10.txt
+회수
