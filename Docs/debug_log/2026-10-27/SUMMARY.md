@@ -1,7 +1,7 @@
 # 2026-10-27 SUMMARY — 서쪽 통로에서 Smac 이 못 넘는 자리: 원인 판별과 탐색 설정
 
 ## §0 하루 시작
-- Jetson: 09:06 기준 가동 6 분(**재부팅됨**) · Wi-Fi WEB_DEV_5G(192.168.0.110, 응답 6~14 ms) · 스택 꺼짐(nav2 · slam · 카메라 0) · `/tmp` prep 스크립트 소실 → 주행 전 저장소 판 재전송 필요(CR 제거 · git blob 해시 대조, 10-26 §7.2). `~/smac_ws`(비용 상한 포크) · `~/smac_dbg_ws`(탐색 기록 진단 빌드) 남아 있음. 디스크 45 %. 원문 `outputs/chk_day_start_1027.txt`.
+- Jetson: 09:06 기준 가동 6 분(**재부팅됨**) · Wi-Fi WEB_DEV_5G(192.168.0.110, 응답 6~14 ms) · 스택 꺼짐(nav2 · slam · 카메라 0) · `/tmp` prep 스크립트 소실 → 주행 전 저장소 판 재전송 필요(CR 제거 · git blob 해시 대조, 10-26 §7.2). `~/smac_ws`(비용 상한 포크) · `~/smac_dbg_ws`(탐색 기록 진단 빌드) 남아 있음. 디스크 45 %. 원문 `outputs/setup/chk_day_start_1027.txt`.
 - PC: `feature/smac-hybrid` f63e2bda(10-26 §19~§22 미푸시 — personal 은 aae30064).
 - 이어받은 것(10-26 §22 '다음'): ① Smac 탐색 영상 렌더링 ② 16:11:56 남쪽 노드 부모 사슬 ③ 출발 ↔ 지도 바꿔 끼우기 ④ 좁은 곳 통과 Smac 설정 오프라인. 미결정: 10-26 §15 선택지(경로 출처별 MPPI · Smac 통로 실패 해결 · 14 · 10 복귀).
 
@@ -52,12 +52,12 @@
 - 새 영상(git 제외, 도구 `jobs/fig_smac_expansion_v2.py`, 입력 10-26 `result_expdbg.npz` · `scenes_expdbg.npz` · `exp_expdbg.tgz`):
   - `videos/smac_expansion_north.mp4`(9.7 s): **북행 · 같은 목표 5** 세 순간 — 16:12:35.21 실패(남쪽 끝 −102° 출발, 방문 14 551) · 16:12:59.54 실패(남쪽 끝 −183°, 14 355) · 16:13:08.65 성공(좁은 곳 바로 남쪽 · 북향, 23). 마지막 장면 `figures/smac_expansion_north_end.png`: 남쪽 끝 출발 두 번은 노드가 출발 자리와 남쪽 넓은 곳에만 퍼지고 좁은 곳 입구(y ≈ −4.8) 위로 못 올라감.
   - `videos/smac_expansion_south.mp4`(11.2 s): **남행 16:11:56.85** — 끝에 목표에 가장 가까운 노드(5.7 cm, 방향 −85° = 목표와 +15°)와 그 부모 사슬(출발까지 31 노드, 주황)을 그림 → 좁은 곳을 지나 목표 상자 안까지 들어간 길이 보임. 마지막 장면 `figures/smac_expansion_south_end.png`. 실제 로버도 목표 4 에 0.144 m 로 도착(NavFn 대체 경로, 10-26 `run_f2sa3.txt`).
-- 출력 기록 `outputs/fig_smac_expansion_{north,south}.txt`. 첫 렌더링은 '−' 글리프가 글꼴에 없어 네모 · 남행 제목 잘림 → 고쳐 다시 렌더링.
+- 출력 기록 `outputs/fig_video/fig_smac_expansion_{north,south}.txt`. 첫 렌더링은 '−' 글리프가 글꼴에 없어 네모 · 남행 제목 잘림 → 고쳐 다시 렌더링.
 
 ## §4 그림 읽기 질의 — 점선 상자 · '코스트맵 때문에 목표로 못 가 여러 경로를 그렸나' (사용자)
 - 점선 상자 = 목표 위치에 목표 방향으로 놓은 차체 직사각형(0.51 × 0.33 m, 그림은 패딩 없이), 화살표 = 목표 방향. 목표 4 의 방향 −100° 는 사용자가 정한 값이 아니라 러너가 자기 NavFn 경로 끝 0.3 m 방향으로 자동으로 붙인 값(10-26 `run_f2sa3.txt` '경로 자동 yaw'). 러너는 목표 4 를 위치만으로 판정하지만 Smac 은 이 방향까지 맞춰야 함.
 - Smac 1.1.20 충돌 판정(소스 `collision_checker.cpp:90~157`, 이번에 확인): ① 노드 **중심 칸이 내접(253) · 치명(254)이면 바로 충돌** ② 중심이 '내접 가능' 비용 이상이면 차체 둘레 선 칸 중 최대가 **치명(254) 이상**일 때 충돌 ③ 그보다 낮으면 둘레 검사 없이 통과. → 10-26 §19 · §20.1 의 내 지표(직사각형 안 전체의 치명 칸 수)는 이 판정과 다름이 소스로 확인됨(§20.1 의 '소스 미확인' 해소).
-- 목표 4 중심 칸(16:11:56.85 재구성 지도, 0~100 눈금): **92**(금지 아님), 바로 서쪽 열은 **99 = 내접(금지)**, 동쪽 84. 즉 목표는 내접 띠 바로 옆 — 중심을 둘 수 있는 자리가 한 칸 폭으로 좁음. 북행 목표 5 중심은 76(주변 68~84). 원문 `outputs/goal_cell_cost.txt`.
+- 목표 4 중심 칸(16:11:56.85 재구성 지도, 0~100 눈금): **92**(금지 아님), 바로 서쪽 열은 **99 = 내접(금지)**, 동쪽 84. 즉 목표는 내접 띠 바로 옆 — 중심을 둘 수 있는 자리가 한 칸 폭으로 좁음. 북행 목표 5 중심은 76(주변 68~84). 원문 `outputs/swap/goal_cell_cost.txt`.
 - 해석(일부 추정): Smac 은 목표와 같은 칸 · 같은 방향 칸에 정확히 닿거나, 비용 벌점이 곱해진 휴리스틱이 허용(5 칸)보다 작은 노드가 있어야 끝남. 16:11:56 은 둘 다 못 해서 A* 가 닿을 수 있는 다른 상태를 끝까지 펼침 → 방문 34 만 개가 통로 밖 · 건물 밖 미지 영역까지 퍼짐. 코스트맵은 (a) 목표 옆 내접 띠로 놓을 자리를 좁히고 (b) 목표 주변 고비용으로 휴리스틱을 키워 허용 판정을 막는 쪽으로 관여(b 는 미확인 — 허용 · cost_penalty 바꾼 재질의로 판별 예정).
 
 ## §5 선언 — 허용치 · cost_penalty 재질의 (사용자: "허용치와 cost_penalty 바꿔서 재질의 진행하라") — 결과 보기 전, 로버 안 움직임
@@ -119,7 +119,7 @@
 
 ## §9 주행 준비 (사용자: "1~3 진행하라") — prep 재전송 · tolerance 0.35 배포 · 판정 선언
 - **러너 소실 · 복구**: 스크래치패드 `run_jn.sh` 가 없어 첫 전송 실패(`No such file or directory`). 사용자: "어제 tools 정리하면서 옮겨진 것 아닌가" → 확인: 어제 정리(10-26 §18)는 저장소 `2026-10-26/outputs` · `figures` 만 git mv, 대화 기록에 run_jn.sh 를 옮기거나 지운 명령 없음, 다른 곳에 옮겨진 사본도 못 찾음(스크래치패드 · 저장소 검색; PC 전체 검색은 시간 제한으로 미완). 스크래치패드에 남은 파일은 모두 10-20 10:48 이후 수정분 — run_jn.sh 마지막 수정은 10-15(주소 변경) → **7 일 넘은 임시 파일이 일괄 삭제된 것으로 추정**(Windows 임시 폴더 자동 정리 추정, 10-21 소실과 같은 꼴, 확인 안 함). 복구: 저장소 `2026-10-08/jobs/run_jn.sh`(<PW> 가림) + 스크래치패드 `run_f0.sh` 의 값, 주소 192.168.0.110(메모리 절차). 값은 출력 · 기록 안 함.
-- 재전송 · 배포 `jobs/up_prep_params_1027.sh` → `outputs/up_prep_params_1027.txt`: prep_fast aeb6e6cf3b · prep_patrol 4fe16954f6 · chk_prep e5892acd65 · nav2_params 62452c951d — **모두 PC git HEAD blob 과 같음**, CR 0. nav2_params src · 설치본 7bce0cb94734(28 · 5 판) → af07af0c0b47, 설치본은 일반 파일(링크 아님 — 둘 다 덮음), tolerance 0.35 확인. 저장소 커밋 8b89ab51.
+- 재전송 · 배포 `jobs/up_prep_params_1027.sh` → `outputs/setup/up_prep_params_1027.txt`: prep_fast aeb6e6cf3b · prep_patrol 4fe16954f6 · chk_prep e5892acd65 · nav2_params 62452c951d — **모두 PC git HEAD blob 과 같음**, CR 0. nav2_params src · 설치본 7bce0cb94734(28 · 5 판) → af07af0c0b47, 설치본은 일반 파일(링크 아님 — 둘 다 덮음), tolerance 0.35 확인. 저장소 커밋 8b89ab51.
 - §9.1 주행 선언 **f2st1** = no5(8 목표, 10-26 f2sa3 와 같은 코스 · 구성) + **SmacHybrid tolerance 0.35** 만 바꿈. 비교: f2sa3(tol 0.25) · f2rp4(B0).
   - ① 8/8 · ABORT 0 · nav_guard 취소 0 · 접촉 0
   - ② **통로 남행(목표 4) 계획에 Smac 경로가 쓰였나**(nav2 로그 Smac 실패 · NavFn 대체 횟수, BT 경로 점 간격) — 오프라인 근거상 북쪽 입구 출발 남행은 Smac 성공 기대, 북행 · 좁은 곳 안 출발은 대체 그대로 기대
@@ -131,7 +131,7 @@
 
 ## §10 f2st1 prep (사용자: "prep 진행하라")
 - 에이전트 확인(`outputs/` 없음 — 화면 확인): microros_agent 컨테이너 Up · 세션 수립 1 · `/wheel_odom` 토픽 있음 → 보드 리셋 불필요. (컨테이너 'Up 17 hours' · /dev/ttyUSB0 '10-26 18:38' 은 부팅 직후 시계가 맞기 전 시각으로 찍힌 것으로 추정 — 가동 2 시간과 안 맞음, 미확인.)
-- prep `jobs/prep_smac_1027.sh`(10-26 판 + tolerance 조회) → `outputs/prep_smac_1027_1.txt`: **PREP_OK** +85 s · 위치 추정 0.000 m · 0.0° · /wheel_odom 25 Hz · /odometry/filtered 30 Hz · /tf 49.7 Hz · 12.36 V · BT 사본 PlanSmacOrNavFn 1 · RateController 0.01 · step 0.03 · **SmacHybrid.tolerance 0.35** · REEDS_SHEPP · cp 3.0 · 해석 1.0 · 2.0 s · 캐시 끔 · 프리셋 3 · odom1 /vslam/odom · MPPI 28 · 5.
+- prep `jobs/prep_smac_1027.sh`(10-26 판 + tolerance 조회) → `outputs/setup/prep_smac_1027_1.txt`: **PREP_OK** +85 s · 위치 추정 0.000 m · 0.0° · /wheel_odom 25 Hz · /odometry/filtered 30 Hz · /tf 49.7 Hz · 12.36 V · BT 사본 PlanSmacOrNavFn 1 · RateController 0.01 · step 0.03 · **SmacHybrid.tolerance 0.35** · REEDS_SHEPP · cp 3.0 · 해석 1.0 · 2.0 s · 캐시 끔 · 프리셋 3 · odom1 /vslam/odom · MPPI 28 · 5.
 - 러너: 스크래치패드 `run_f2c.sh no5`(→ `run_f0.sh`, 10-26 f2sa3 와 같은 호출, STAGE F2c-smac-tol35). 스크래치패드 러너 파일 수정 시각 갱신(§9 의 7 일 삭제 대비).
 
 ## §11 f2st1(no5, Smac tolerance 0.35) 결과 — 8/8 · **통로 남행 Smac 성공(실패 0)** · 통로 남행 최소 여유 **4.1 cm**(f2sa3 0.8) · 1 s 넘는 정지 **1 번 4.7 s**(f2sa3 5 번 15.3 s)
@@ -230,8 +230,8 @@
 
 ## §17 nvblox 층 TF 실패 처리 수정 · 빌드 · 정지 확인 (사용자: "진행하라") — 로버 안 움직임
 - 판정(실행 전 정함): ① 빌드 rc 0 · 라이브러리 갱신 ② prep PREP_OK · 층 로드 오류 0 ③ 정지 120 s 동안 전역 메시지마다 '로버 2.5 m 안 로컬 치명 칸이 전역에서도 치명(±1 칸)인 비율' 중앙 ≥ 0.95 · 0.8 미만 장 0(§15 의 틀어진 장이면 이 값이 크게 떨어짐).
-- 수정 `jobs/prep_nvlayer_tffix_1027.sh` → `outputs/prep_nvlayer_tffix_1027.txt`: Jetson `~/workspaces/isaac_ros-dev/src/isaac_ros_nvblox/nvblox_nav2/src/nvblox_costmap_layer.cpp` 슬라이스 콜백 catch 에 `return;` 1 줄(조회 실패 시 그 슬라이스를 버림 → 직전 slice_ · T_G_S_ 짝 유지). 원본 대비 전체 차이(09-21 floor + 이번 return)는 저장소 **`Docs/05_nvblox/nvblox_nav2_rover.patch`**(상위 release-3.2 7908a18 기준, 컨테이너 쪽 nvblox 는 무변경). 빌드 `colcon build --symlink-install --packages-select nvblox_nav2` rc 0 · 40 s, `install/nvblox_nav2/lib/libnvblox_nav2.so` → build 14:46:20 · sha 2a387c45575d(확인 `jobs/chk_nvlayer_so.sh`; 스크립트 안의 옛 이름 libnvblox_costmap_layer.so 확인은 틀린 경로라 NO 로 찍힘 — 무시).
-- 재기동 · 확인 `jobs/up_tffix_chk_1027.sh` → `jobs/run_tffix_chk_1027.sh`(prep_smac_1027 + `jobs/chk_nvlayer_tffix_1027.py`) → `outputs/run_tffix_chk_1027.txt`:
+- 수정 `jobs/prep_nvlayer_tffix_1027.sh` → `outputs/setup/prep_nvlayer_tffix_1027.txt`: Jetson `~/workspaces/isaac_ros-dev/src/isaac_ros_nvblox/nvblox_nav2/src/nvblox_costmap_layer.cpp` 슬라이스 콜백 catch 에 `return;` 1 줄(조회 실패 시 그 슬라이스를 버림 → 직전 slice_ · T_G_S_ 짝 유지). 원본 대비 전체 차이(09-21 floor + 이번 return)는 저장소 **`Docs/05_nvblox/nvblox_nav2_rover.patch`**(상위 release-3.2 7908a18 기준, 컨테이너 쪽 nvblox 는 무변경). 빌드 `colcon build --symlink-install --packages-select nvblox_nav2` rc 0 · 40 s, `install/nvblox_nav2/lib/libnvblox_nav2.so` → build 14:46:20 · sha 2a387c45575d(확인 `jobs/chk_nvlayer_so.sh`; 스크립트 안의 옛 이름 libnvblox_costmap_layer.so 확인은 틀린 경로라 NO 로 찍힘 — 무시).
+- 재기동 · 확인 `jobs/up_tffix_chk_1027.sh` → `jobs/run_tffix_chk_1027.sh`(prep_smac_1027 + `jobs/chk_nvlayer_tffix_1027.py`) → `outputs/setup/run_tffix_chk_1027.txt`:
   - ① ✔ ② ✔ PREP_OK +90 s · 위치 추정 0.016 m · −0.1° · tolerance 0.35 · 프리셋 3 · odom1 /vslam/odom · MPPI 28 · 5, 층 로드 오류 0. (SmacHybrid.cost_penalty · bt xml 조회가 빈 값 — 조회 시간 초과로 보임, 설정 파일은 안 바꿈. 다음 prep 때 다시 봄.)
   - ③ ✔ 전역 74 장 · 로컬 치명 중앙 238 칸 · 일치율 중앙 1.000 · 최소 1.000 · 0.8 미만 0. 층 경고 0 줄.
 - 한계(정직하게): 정지 120 s 동안 **TF 실패가 한 번도 안 일어나** 고친 경로(return) 자체는 실제로 타지 않았다. 확인한 것은 '정상 경로가 깨지지 않음' 까지. 고친 경로의 확인은 다음 주행에서: 층 경고가 찍힌 시각 직후 전역 장에 §15 서명(새로 생긴 칸 = 단위 변환 슬라이스, `jobs/chk_gcm_fit.py`)이 없어야 한다.
@@ -459,3 +459,11 @@
 
 - 판정(§29.1 선언): 0.75 m 도 > 300 ms 스캔 34 → 28 · > 0.4 s 정체 19~23 → 13 으로 **절반에 못 미침** → 채택 기준 미달. 긴 쪽은 뚜렷이 줄어듦(> 500 ms 15 → 5 · > 0.5 s 정체 8~10 → 4 · 최대 1.14 → 0.81 s). 위치 차 중앙 0.4 → 1.0 cm(기준 ≤ 1 cm 경계).
 - 읽기: 사슬 수가 4 → 3 으로 줄어든 만큼 LinkNearChains 가 줄었고, 남은 시간은 사슬 하나 · 순차 정합 1 회의 비용(각 ≈ 70 ms 수준, 정합 탐색 0.5 m × 0.01 m · 각도)이 차지 → 다음 후보는 사슬 수가 아니라 **정합 1 회 비용**(correlation_search_space_dimension · 각도 해상도) 또는 0.75 m 와의 조합. 운용 설정은 바꾸지 않음(결정 안 함).
+
+## §31 하루 정리 (사용자: "오늘 일 마무리하고, 정리하고, 아티팩트로도 만들어서 로컬에 저장 후 push")
+- 폴더: `outputs/` 바로 아래 파일 8 개를 옮김 — `outputs/setup/`(chk_day_start · prep_smac_1027_1 · up_prep_params · prep_nvlayer_tffix · run_tffix_chk) · `outputs/fig_video/`(fig_smac_expansion_{north,south}) · `outputs/swap/goal_cell_cost.txt`. 이 SUMMARY 의 해당 경로를 같이 고침(이름 불변). `TOOLS.md` 새로 씀(폴더 지도 · 도구 표).
+- 오늘 바뀐 운용 구성: ① Smac Hybrid tolerance 0.35(§8~§11) ② 호스트 nvblox 층 TF 실패 시 슬라이스 버림(§15~§17, 패치 `Docs/05_nvblox/nvblox_nav2_rover.patch`) ③ SLAM 위치 추정 transform_timeout 1.5(§21, `slam.launch.py`) ④ 주행 전 검사 정리(§24: `Docs/tools/chk_drive_gate.py` · `chk_prep.py` 파라미터 통합 · 러너 job551). 주행 3 회: f2st1 · f2tf1 · f2tt1 모두 8/8, 마지막 f2tt1 은 nav2 TF 실패 0 · 1 s 넘는 정지 0 · 접촉 0.
+- 확인한 원인: 막힘 판정 칸 = 상자 내접 띠(§14) · 전역 코스트맵 튐 = nvblox 층 결함(§15) · TF 지연 = SLAM map→odom stamp 정체(§21, 통신 아님 §22, 위치 추정 운용 내내 §23) · 정체 = 정합 처리 중 LinkNearChains 64 %(§29).
+- 남은 것: SLAM 정합 비용 자체(§29.2 link 0.75 m 부분 개선 · 결정 안 함) · 낮은 상자 잊기 · 카메라 시야(기능 · 센서 한계 — 사용자) · 좁은 곳 여유 cm 단위 · 과거 주행의 §15 영향 재해석.
+- Jetson 상태: 스택 기동 중(§24 prep 구성 + transform_timeout 1.5 + 수정 nvblox 층). `~/slam_dbg_ws`(계측판)는 운용에 안 쓰임, `/tmp/slamrep/` 재생 원문 남음(재부팅 시 소실 — PC `outputs/slamproc/rep/` 에 사본).
+- 정리 페이지(아티팩트 https://claude.ai/artifact/AADV8rNFR2titSNcC75d9r): `figures/day_summary_1027.html`(머리 `jobs/report_1027_head.html` + 본문 `jobs/report_1027_body.html` + 그림 `figures/report/*.jpg`, 조립 `jobs/fill_report_1027.py`).
