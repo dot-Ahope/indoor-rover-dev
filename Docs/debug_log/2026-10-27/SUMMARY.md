@@ -197,3 +197,22 @@
 | 다음에 알아보는 법 | PathBlockedAhead 좌표는 '막힌 칸' 이 아니라 '경로 점에서 본 비용' 이다 — 값이 99 면 그 점에서 내접 반경(0.175 m) 안의 치명 칸을 찾아 그것을 장애물로 말한다. 영상의 X 이름도 '막힘 판정 경로 점' 이 맞다 |
 - 영상 이름표 고침: `Docs/tools/fig_rviz_video.py` 빨간 X 글자 '막힘 판정 칸(비용 99)' → **'막힘 판정 경로 점(비용 99 = 내접)'**, `videos/f2st1_box_stop_light.mp4` 다시 렌더링(git 제외, 기록 `outputs/fig_video/fig_light_f2st1_box_stop.txt`). 11:24:46.9 장면: X 는 상자 서북 모서리의 로컬 치명 칸 2 개(주황 네모)를 둘러싼 둥근 내접 띠의 가장자리에 놓임.
 - 다음 후보(결정 안 함): 상자를 잊는 기전 확인(①) — nvblox 슬라이스 범위 · 전역 nvblox 층 설정을 보고, 필요하면 전역 지도에 카메라 장애물을 더 오래 두는 방안을 오프라인으로 비교.
+
+## §15 상자 멈춤 영상 20 s · 31 s 의 전역 코스트맵 튐 (사용자: "20초 부근 문 공간이 막혔다 안 막힘 · 31초 상자가 벽 쪽으로 갔다 돌아옴 · 입구도 막힘 → 코스트맵이 2개 띄워져 있었는가?")
+- 영상 `videos/f2st1_box_stop_light.mp4` 는 11:24:25 시작 · 1 배속 → 20 s ≈ 11:24:45, 31 s ≈ 11:24:56. 바탕 = /global_costmap/costmap(약 1 Hz) 의 그 시각 최신 메시지.
+- 데이터: 메시지별 점검 `jobs/chk_gcm_msgs.py` → `outputs/block_cell/chk_gcm_msgs_f2st1.txt`, 연속 장 그림 `jobs/fig_gcm_frames.py` → `figures/gcm_frames_f2st1_{a,b}.png`, 회전 · 이동 탐색 `jobs/chk_gcm_rot.py` → `chk_gcm_rot_f2st1.txt`, 새로 생긴 칸 · 라이다 그림 `jobs/fig_gcm_diff.py` → `figures/gcm_diff_f2st1.png`, /map 대조 `jobs/chk_gcm_static.py` → `chk_gcm_static_f2st1.txt`, 슬라이스 · EKF `jobs/chk_slice_tf.py` → `chk_slice_tf_1124{42,53}.txt`, 변환 맞추기 `jobs/chk_gcm_fit.py` → `chk_gcm_fit_f2st1.txt`, 층 소스(Jetson 읽기만) `outputs/block_cell/nvlayer_src_tf.txt`, 경고 `outputs/block_cell/nvlayer_tf_warn_f2st1.txt`(원천 `bags/logs_f2st1/nav2.log`). 입력 `bags/bag_f2st1.tgz`.
+
+### §15.1 판별 순서 · 본 것
+1. **코스트맵이 둘인가 → 아님.** bag 의 /global_costmap/costmap 연결 1 개(발행자 1), 모든 메시지 원점 (−5.29, −6.96) · 333×242 같음, 수신 − stamp 0.00 s.
+2. **튀는 메시지는 두 장뿐**: 11:24:43.89 · 11:24:54.89(영상 19~21 s · 30~32 s). 그림 `gcm_frames_f2st1_a/b.png` 에서 로버 3 m 안의 벽 · 상자 · 문틀이 틀어지고 다음 장에서 원래대로. 로컬 코스트맵(odom)은 같은 때 정상.
+3. **통째 회전 · 이동이 아님**: 3 m 안 치명 칸의 약 90 % 는 직전과 그대로 겹침(회전 ±40° · 이동 ±0.3 m 탐색해도 0° · 0 m 가 최적). 바뀐 칸 = 새로 생김 276 · 268, 사라짐 213 · 185.
+4. **새로 생긴 칸은 라이다도 SLAM 정적 지도도 아님**: 그 사이 라이다 스캔과 안 겹침, /map 에서는 258/276 · 254/268 이 빈 칸. 두 장(11 s 차)에서 같은 모양 · 같은 자리.
+5. **nvblox 슬라이스 원본은 멀쩡**: 이웃 슬라이스와 회전 0° 로 거의 전부 겹침, 원점 · 크기 일정, EKF odom→base_link 매끄러움(회전 중 0.1 s 당 ≤ 1.3°).
+6. **새로 생긴 칸 = 슬라이스(odom 좌표)를 변환 없이 map 에 적은 것**: slice→map 변환을 탐색하면 새로 생긴 칸에 맞는 최적이 yaw 0.0° · 이동 (−0.02, 0.00)(겹침 186/276), 11:24:54.89 도 0.4° · (0.00, −0.01)(206/268). 실제 map→odom 은 (0.43, 0.35, −7.5°) · (0.46, 0.39, −8.1°). 정상 칸은 실제 값 근처(−5.5°, (0.38, 0.30))에 맞음. → 그 순간 카메라 장애물 전체가 약 0.55 m · 7.5° 틀어진 자리에 찍힘: 상자 (1.1, 0.0) → 약 (0.7, −0.26)(남쪽 벽 쪽), 문틀 칸이 문 안쪽으로 → 사용자 관찰 '상자가 벽 쪽으로 · 입구 막힘' 과 같음.
+7. **원인 — 상위 코드 결함**: Jetson `~/workspaces/isaac_ros-dev/src/isaac_ros_nvblox/nvblox_nav2/src/nvblox_costmap_layer.cpp` 슬라이스 콜백은 `lookupTransform(map, odom, 슬라이스 stamp)` 가 예외를 내면 **경고만 찍고 return 하지 않아**, 기본 생성된 Transform(이동 0 · 회전 단위)을 `T_G_S_` 로 저장하고 그 슬라이스를 씀. nav2 로그 `[NvbloxCostmapLayer] Can't transform ... extrapolation into the future` 가 **11:24:43.60 · 11:24:54.51**(튄 메시지 0.3 s 전) — 이 주행 전체 23 번(1 s 당 1 번으로 줄여 찍힘), 모두 global_costmap. 로컬은 슬라이스와 같은 odom 프레임이라 조회를 안 해서 영향 없음. 두 시각 모두 'Control loop missed its desired rate' 와 겹침(43.85 · 54.90) → 순간 부하로 map→odom 이 슬라이스 stamp 보다 늦게 도착한 것으로 추정.
+
+### §15.2 결론 · 영향
+- **코스트맵은 하나다. TF 조회가 실패한 순간 nvblox 전역 층이 카메라 장애물을 map 변환 없이(odom 좌표 그대로) 적은 것**이 영상의 '문 막힘 · 상자 이동' 이다. 다음 정상 슬라이스(약 0.1 s 뒤)가 들어오면 돌아온다.
+- §14 미확인 ③(전역 P 값 57 ↔ 99 깜빡임, 로컬은 안 깜빡임)도 이것: 깜빡인 시각(11:24:44~45 · 11:24:55~56)이 튄 두 장과 같음.
+- 계획 · 막힘 판정에도 닿음: PathBlockedAhead 11:24:37.91 '(2.22, −0.84) 99' · 11:24:43.89 '(2.17, −0.49) 99'(문 쪽)가 경고 11:24:37.85 · 11:24:43.60 직후 — 2 s 를 못 버텨 중단은 안 됐지만 가짜 막힘이다. 튄 장에서 계획을 세우면 가짜 벽을 피하는 경로가 나올 수 있다(이번 주행에서 그런 계획이 있었는지는 미확인).
+- 고칠 곳(결정 안 함, 사용자 확인 필요): catch 에서 `return;`(직전 슬라이스 · 변환 쌍 유지)하도록 호스트 포크 1 줄 수정 + 재빌드. 대안: 조회에 대기 시간(예: 0.05 s) 주기. 주행 시험 전 오프라인 · 정지 확인 필요.
