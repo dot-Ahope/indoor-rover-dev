@@ -1,0 +1,16 @@
+  위치 추정 검사(기대 0,0,0): 위치 차 0.176 m · yaw 차 -13.6° → ★ 불합격 — SLAM 이 출발 위치를 틀림, prep 다시
+  /wheel_odom 25.0 Hz · /odometry/filtered 30.0 Hz · /tf 49.7 Hz · 배터리 12.26 V
+PREP_FAIL
+  ⏱ +91 s prep 끝 — PREP_FAIL
+BT 사본: PlanSmacOrNavFn 1 · RateController RateController hz="0.01" · step 1
+bt_navigator xml = String value is: /tmp/nav_to_pose_active.xml
+SmacHybrid.tolerance = Double value is: 0.35
+SmacHybrid.motion_model_for_search = String value is: REEDS_SHEPP
+SmacHybrid.cost_penalty = Double value is: 3.0
+SmacHybrid.analytic_expansion_max_length = Double value is: 1.0
+SmacHybrid.max_planning_time = Double value is: 2.0
+SmacHybrid.cache_obstacle_heuristic = Boolean value is: False
+visual_preset = Integer value is: 3 · odom1 = String value is: /vslam/odom
+MPPI PathAlign = Double value is: 28.0 · PathFollow = Double value is: 5.0
+slam_toolbox transform_timeout = Double value is: 1.5 · mode = String value is: localization
+nvblox 층 라이브러리 2026-10-27 14:46:20
