@@ -1,0 +1,400 @@
+[INFO] [1793091041.854703719] [slam_toolbox]: Node using stack size 40000000
+[INFO] [1793091041.927220903] [slam_toolbox]: Using solver plugin solver_plugins::CeresSolver
+[INFO] [1793091041.927803260] [slam_toolbox]: CeresSolver: Using SCHUR_JACOBI preconditioner.
+Load From File /home/jetson/maps/office/office_v3.posegraph 
+Mapper <- Module
+Mapper <- m_pSequentialScanMatcher
+Mapper <- m_pGraph
+MapperGraph <- Graph; Graph <- m_Edges; Graph <- m_Vertices
+MapperGraph <- m_pMapper; MapperGraph <- m_pLoopScanMatcher; MapperGraph <- m_pTraversal
+Mapper <- m_pMapperSensorManager
+MapperSensorManager <- m_ScanManagers; MapperSensorManager <- m_Scans
+Mapper <- m_Listeners
+**Finished serializing Mapper**
+Load From File
+**Serializing Dataset**
+Dataset <- m_SensorNameLookup
+Dataset <- m_Data
+Dataset <- m_Lasers
+Dataset <- m_pDatasetInfo
+**Finished serializing Dataset**
+Registering sensor: [Custom Described Lidar]
+WARNING: Logging before InitGoogleLogging() is written to STDERR
+W1027 17:50:43.563077 1851670 preprocessor.cc:62] Specified options.num_threads: 50 exceeds maximum available from the threading model Ceres was compiled with: 6.  Bounding to maximum number available.
+[INFO] [1793091045.740068898] [slam_toolbox]: Message Filter dropping message: frame 'lidar_link' at time 1793084119.607 for reason 'discarding message because the queue is full'
+[WARN] [1793091047.711240301] [slam_toolbox]: minimum laser range setting (0.0 m) exceeds the capabilities of the used Lidar (0.2 m)
+Registering sensor: [Custom Described Lidar]
+[ROVER_T] AE chain=0.0
+[ROVER_T] AE near=176.1 nmeans=4
+[ROVER_T] CB stamp=1793084121.823 odom=2.1 add=232.8
+[INFO] [1793091049.966738796] [slam_toolbox]: Message Filter dropping message: frame 'lidar_link' at time 1793084123.995 for reason 'discarding message because the queue is full'
+[INFO] [1793091053.024655408] [slam_toolbox]: Message Filter dropping message: frame 'lidar_link' at time 1793084127.068 for reason 'discarding message because the queue is full'
+[ROVER_T] AS proc=0.0 ok=0
+[ROVER_T] CB stamp=1793084129.101 odom=0.0 add=0.1
+[ROVER_T] AE chain=0.0
+[ROVER_T] AE near=183.9 nmeans=4
+[ROVER_T] PL t=1793084129.902 match=24.8 vertex=0.0 edges=185.7 loop=5.6 buffer=0.0 total=216.2
+[ROVER_T] AS proc=216.2 ok=1
+[ROVER_T] CB stamp=1793084129.902 odom=0.0 add=216.4
+[ROVER_T] AS proc=0.0 ok=0
+[ROVER_T] CB stamp=1793084133.597 odom=0.0 add=0.1
+[ROVER_T] AE chain=0.0
+[ROVER_T] AE near=339.8 nmeans=6
+[ROVER_T] PL t=1793084137.113 match=27.3 vertex=0.0 edges=340.1 loop=44.8 buffer=0.0 total=412.3
+[ROVER_T] AS proc=412.4 ok=1
+[ROVER_T] CB stamp=1793084137.113 odom=0.0 add=412.5
+[INFO] [1793091063.427106279] [slam_toolbox]: Message Filter dropping message: frame 'lidar_link' at time 1793084137.295 for reason 'discarding message because the queue is full'
+[ROVER_T] AS proc=0.0 ok=0
+[ROVER_T] CB stamp=1793084140.797 odom=0.0 add=0.2
+[ROVER_T] AE chain=0.0
+[ROVER_T] AE near=353.2 nmeans=5
+[ROVER_T] PL t=1793084142.093 match=38.4 vertex=0.0 edges=353.5 loop=28.5 buffer=0.0 total=420.5
+[ROVER_T] AS proc=420.6 ok=1
+[ROVER_T] CB stamp=1793084142.093 odom=0.0 add=420.8
+[INFO] [1793091068.406870635] [slam_toolbox]: Message Filter dropping message: frame 'lidar_link' at time 1793084142.189 for reason 'discarding message because the queue is full'
+[ROVER_T] AS proc=0.0 ok=0
+[ROVER_T] CB stamp=1793084143.101 odom=0.0 add=0.1
+[ROVER_T] AE chain=0.0
+[ROVER_T] AE near=390.0 nmeans=6
+[ROVER_T] PL t=1793084144.301 match=41.6 vertex=0.0 edges=390.3 loop=3.9 buffer=0.0 total=436.4
+[ROVER_T] AS proc=436.5 ok=1
+[ROVER_T] CB stamp=1793084144.301 odom=0.1 add=436.6
+[ROVER_T] AS proc=0.2 ok=0
+[ROVER_T] CB stamp=1793084146.589 odom=0.0 add=205.3
+[ROVER_T] AE chain=0.0
+[ROVER_T] AE near=465.4 nmeans=7
+[ROVER_T] PL t=1793084148.685 match=46.2 vertex=0.0 edges=465.7 loop=4.9 buffer=0.0 total=516.9
+[ROVER_T] AS proc=517.1 ok=1
+[ROVER_T] CB stamp=1793084148.685 odom=0.0 add=517.2
+[INFO] [1793091075.096079716] [slam_toolbox]: Message Filter dropping message: frame 'lidar_link' at time 1793084148.893 for reason 'discarding message because the queue is full'
+[ROVER_T] AS proc=0.0 ok=0
+[ROVER_T] CB stamp=1793084150.387 odom=0.1 add=0.2
+[ROVER_T] AE chain=0.0
+[ROVER_T] AE near=350.5 nmeans=6
+[ROVER_T] PL t=1793084152.285 match=43.9 vertex=0.0 edges=350.8 loop=4.0 buffer=0.0 total=398.8
+[ROVER_T] AS proc=398.9 ok=1
+[ROVER_T] CB stamp=1793084152.285 odom=0.0 add=399.0
+[INFO] [1793091078.574451139] [slam_toolbox]: Message Filter dropping message: frame 'lidar_link' at time 1793084152.493 for reason 'discarding message because the queue is full'
+[ROVER_T] AS proc=0.0 ok=0
+[ROVER_T] CB stamp=1793084155.581 odom=0.0 add=0.1
+[ROVER_T] AE chain=0.0
+[ROVER_T] AE near=420.2 nmeans=6
+[ROVER_T] PL t=1793084157.485 match=41.9 vertex=0.0 edges=420.5 loop=4.7 buffer=0.0 total=467.2
+[ROVER_T] AS proc=467.3 ok=1
+[ROVER_T] CB stamp=1793084157.485 odom=0.0 add=467.4
+[INFO] [1793091083.843196481] [slam_toolbox]: Message Filter dropping message: frame 'lidar_link' at time 1793084157.773 for reason 'discarding message because the queue is full'
+[ROVER_T] AS proc=0.0 ok=0
+[ROVER_T] CB stamp=1793084159.181 odom=0.1 add=0.2
+[ROVER_T] AE chain=0.0
+[ROVER_T] AE near=369.2 nmeans=6
+[ROVER_T] PL t=1793084160.781 match=64.8 vertex=0.0 edges=369.5 loop=3.9 buffer=0.0 total=438.2
+[ROVER_T] AS proc=438.3 ok=1
+[ROVER_T] CB stamp=1793084160.781 odom=0.1 add=438.5
+[INFO] [1793091087.118063665] [slam_toolbox]: Message Filter dropping message: frame 'lidar_link' at time 1793084160.980 for reason 'discarding message because the queue is full'
+[ROVER_T] AS proc=0.0 ok=0
+[ROVER_T] CB stamp=1793084163.773 odom=0.1 add=0.2
+[ROVER_T] AE chain=0.0
+[ROVER_T] AE near=345.1 nmeans=5
+[ROVER_T] PL t=1793084164.477 match=72.2 vertex=0.0 edges=345.6 loop=4.5 buffer=0.0 total=422.4
+[ROVER_T] AS proc=422.5 ok=1
+[ROVER_T] CB stamp=1793084164.477 odom=0.1 add=422.6
+[INFO] [1793091090.800018275] [slam_toolbox]: Message Filter dropping message: frame 'lidar_link' at time 1793084164.573 for reason 'discarding message because the queue is full'
+[ROVER_T] AS proc=0.0 ok=0
+[ROVER_T] CB stamp=1793084165.677 odom=0.0 add=0.2
+[ROVER_T] AE chain=0.0
+[ROVER_T] AE near=435.8 nmeans=5
+[ROVER_T] PL t=1793084169.277 match=65.7 vertex=0.0 edges=436.1 loop=5.6 buffer=0.0 total=507.5
+[ROVER_T] AS proc=507.5 ok=1
+[ROVER_T] CB stamp=1793084169.277 odom=0.0 add=507.7
+[INFO] [1793091095.686000666] [slam_toolbox]: Message Filter dropping message: frame 'lidar_link' at time 1793084169.373 for reason 'discarding message because the queue is full'
+[ROVER_T] AS proc=0.0 ok=0
+[ROVER_T] CB stamp=1793084172.672 odom=0.0 add=0.2
+[ROVER_T] AE chain=0.0
+[ROVER_T] AE near=386.9 nmeans=5
+[ROVER_T] PL t=1793084176.157 match=47.2 vertex=0.0 edges=387.3 loop=6.8 buffer=0.0 total=441.5
+[ROVER_T] AS proc=441.6 ok=1
+[ROVER_T] CB stamp=1793084176.157 odom=0.0 add=962.2
+[INFO] [1793091103.012166796] [slam_toolbox]: Message Filter dropping message: frame 'lidar_link' at time 1793084176.669 for reason 'discarding message because the queue is full'
+[ROVER_T] AS proc=0.0 ok=0
+[ROVER_T] CB stamp=1793084179.661 odom=0.0 add=0.2
+[ROVER_T] AE chain=0.0
+[ROVER_T] AE near=360.0 nmeans=5
+[ROVER_T] PL t=1793084180.557 match=70.8 vertex=0.0 edges=360.3 loop=3.8 buffer=0.0 total=435.1
+[ROVER_T] AS proc=435.1 ok=1
+[ROVER_T] CB stamp=1793084180.557 odom=0.0 add=435.3
+[INFO] [1793091106.882321363] [slam_toolbox]: Message Filter dropping message: frame 'lidar_link' at time 1793084180.653 for reason 'discarding message because the queue is full'
+[ROVER_T] AS proc=0.0 ok=0
+[ROVER_T] CB stamp=1793084181.261 odom=0.0 add=0.1
+[ROVER_T] AE chain=0.0
+[ROVER_T] AE near=403.2 nmeans=5
+[ROVER_T] PL t=1793084182.061 match=75.4 vertex=0.0 edges=403.6 loop=4.5 buffer=0.0 total=483.5
+[ROVER_T] AS proc=483.6 ok=1
+[ROVER_T] CB stamp=1793084182.061 odom=0.0 add=483.7
+[ROVER_T] AS proc=0.0 ok=0
+[ROVER_T] CB stamp=1793084182.749 odom=0.1 add=0.1
+[ROVER_T] AE chain=0.0
+[ROVER_T] AE near=494.0 nmeans=5
+[ROVER_T] PL t=1793084183.358 match=80.3 vertex=0.0 edges=494.4 loop=3.9 buffer=0.0 total=578.6
+[ROVER_T] AS proc=578.7 ok=1
+[ROVER_T] CB stamp=1793084183.358 odom=0.0 add=578.9
+[INFO] [1793091109.824376416] [slam_toolbox]: Message Filter dropping message: frame 'lidar_link' at time 1793084183.549 for reason 'discarding message because the queue is full'
+[ROVER_T] AS proc=0.0 ok=0
+[ROVER_T] CB stamp=1793084184.061 odom=0.0 add=0.1
+[ROVER_T] AE chain=0.0
+[ROVER_T] AE near=385.1 nmeans=5
+[ROVER_T] PL t=1793084184.653 match=87.8 vertex=0.0 edges=385.4 loop=4.0 buffer=0.0 total=477.3
+[ROVER_T] AS proc=477.3 ok=1
+[ROVER_T] CB stamp=1793084184.653 odom=0.1 add=477.6
+[ROVER_T] AS proc=0.0 ok=0
+[ROVER_T] CB stamp=1793084185.261 odom=0.0 add=0.1
+[ROVER_T] AE chain=0.0
+[ROVER_T] AE near=410.8 nmeans=5
+[ROVER_T] PL t=1793084189.053 match=102.8 vertex=0.0 edges=411.2 loop=4.3 buffer=0.0 total=518.4
+[ROVER_T] AS proc=518.5 ok=1
+[ROVER_T] CB stamp=1793084189.053 odom=0.0 add=518.6
+[ROVER_T] AS proc=0.0 ok=0
+[ROVER_T] CB stamp=1793084192.653 odom=0.0 add=0.1
+[ROVER_T] AE chain=0.0
+[ROVER_T] AE near=175.9 nmeans=3
+[ROVER_T] PL t=1793084196.237 match=81.9 vertex=0.0 edges=176.3 loop=4.8 buffer=0.0 total=263.1
+[ROVER_T] AS proc=263.2 ok=1
+[ROVER_T] CB stamp=1793084196.237 odom=0.0 add=779.8
+[INFO] [1793091122.923149744] [slam_toolbox]: Message Filter dropping message: frame 'lidar_link' at time 1793084196.638 for reason 'discarding message because the queue is full'
+[ROVER_T] AS proc=0.0 ok=0
+[ROVER_T] CB stamp=1793084199.245 odom=0.0 add=0.1
+[ROVER_T] AE chain=0.0
+[ROVER_T] AE near=151.5 nmeans=3
+W1027 17:52:09.086277 1851670 preprocessor.cc:62] Specified options.num_threads: 50 exceeds maximum available from the threading model Ceres was compiled with: 6.  Bounding to maximum number available.
+[ROVER_T] PL t=1793084202.829 match=108.0 vertex=0.0 edges=151.9 loop=328.3 buffer=0.0 total=588.3
+[ROVER_T] AS proc=588.4 ok=1
+[ROVER_T] CB stamp=1793084202.829 odom=0.1 add=588.5
+[ROVER_T] AS proc=0.0 ok=0
+[ROVER_T] CB stamp=1793084206.429 odom=0.0 add=266.9
+[ROVER_T] AE chain=0.0
+[ROVER_T] AE near=167.8 nmeans=3
+[ROVER_T] PL t=1793084209.725 match=131.1 vertex=0.0 edges=168.4 loop=44.3 buffer=0.0 total=343.9
+[ROVER_T] AS proc=344.0 ok=1
+[ROVER_T] CB stamp=1793084209.725 odom=0.0 add=344.1
+[INFO] [1793091135.954256398] [slam_toolbox]: Message Filter dropping message: frame 'lidar_link' at time 1793084209.837 for reason 'discarding message because the queue is full'
+[ROVER_T] AS proc=0.0 ok=0
+[ROVER_T] CB stamp=1793084213.423 odom=0.0 add=0.1
+[ROVER_T] AE chain=0.0
+[ROVER_T] AE near=208.9 nmeans=4
+[ROVER_T] PL t=1793084217.229 match=101.4 vertex=0.0 edges=209.2 loop=4.0 buffer=0.6 total=315.3
+[ROVER_T] AS proc=315.3 ok=1
+[ROVER_T] CB stamp=1793084217.229 odom=0.0 add=315.5
+[ROVER_T] AS proc=0.0 ok=0
+[ROVER_T] CB stamp=1793084220.925 odom=0.0 add=0.2
+[ROVER_T] AE chain=0.0
+[ROVER_T] AE near=219.8 nmeans=4
+[ROVER_T] PL t=1793084224.511 match=64.7 vertex=0.0 edges=220.1 loop=3.6 buffer=0.5 total=289.0
+[ROVER_T] AS proc=289.1 ok=1
+[ROVER_T] CB stamp=1793084224.511 odom=0.0 add=289.3
+[INFO] [1793091150.701006595] [slam_toolbox]: Message Filter dropping message: frame 'lidar_link' at time 1793084224.723 for reason 'discarding message because the queue is full'
+[ROVER_T] AS proc=0.0 ok=0
+[ROVER_T] CB stamp=1793084228.013 odom=0.1 add=0.3
+[ROVER_T] AE chain=0.0
+[ROVER_T] AE near=220.9 nmeans=4
+[ROVER_T] PL t=1793084231.613 match=72.3 vertex=0.0 edges=221.3 loop=96.6 buffer=0.6 total=390.8
+[ROVER_T] AS proc=390.9 ok=1
+[ROVER_T] CB stamp=1793084231.613 odom=0.0 add=391.0
+[ROVER_T] AS proc=0.0 ok=0
+[ROVER_T] CB stamp=1793084233.902 odom=0.1 add=0.2
+[ROVER_T] AE chain=0.0
+[ROVER_T] AE near=246.0 nmeans=4
+[ROVER_T] PL t=1793084234.909 match=65.3 vertex=0.0 edges=246.4 loop=98.5 buffer=0.6 total=410.8
+[ROVER_T] AS proc=410.9 ok=1
+[ROVER_T] CB stamp=1793084234.909 odom=0.0 add=411.4
+[ROVER_T] AS proc=0.0 ok=0
+[ROVER_T] CB stamp=1793084235.901 odom=0.0 add=0.1
+[ROVER_T] AE chain=0.0
+[ROVER_T] AE near=232.3 nmeans=4
+[ROVER_T] PL t=1793084236.605 match=79.2 vertex=0.0 edges=232.8 loop=99.0 buffer=0.6 total=411.6
+[ROVER_T] AS proc=411.7 ok=1
+[ROVER_T] CB stamp=1793084236.605 odom=0.0 add=512.7
+[INFO] [1793091163.026726787] [slam_toolbox]: Message Filter dropping message: frame 'lidar_link' at time 1793084236.909 for reason 'discarding message because the queue is full'
+[ROVER_T] AS proc=0.0 ok=0
+[ROVER_T] CB stamp=1793084237.309 odom=0.1 add=0.2
+[ROVER_T] AE chain=0.0
+[ROVER_T] AE near=241.2 nmeans=4
+[ROVER_T] PL t=1793084237.902 match=72.4 vertex=0.0 edges=241.6 loop=95.1 buffer=0.5 total=409.7
+[ROVER_T] AS proc=409.8 ok=1
+[ROVER_T] CB stamp=1793084237.902 odom=0.0 add=409.9
+[ROVER_T] AS proc=0.0 ok=0
+[ROVER_T] CB stamp=1793084238.605 odom=0.0 add=0.1
+[ROVER_T] AE chain=0.0
+[ROVER_T] AE near=239.4 nmeans=4
+[ROVER_T] PL t=1793084239.501 match=87.6 vertex=0.0 edges=240.5 loop=139.8 buffer=0.6 total=468.6
+[ROVER_T] AS proc=468.6 ok=1
+[ROVER_T] CB stamp=1793084239.501 odom=0.0 add=468.8
+[ROVER_T] AS proc=0.0 ok=0
+[ROVER_T] CB stamp=1793084240.399 odom=0.1 add=0.2
+[ROVER_T] AE chain=0.0
+[ROVER_T] AE near=255.0 nmeans=4
+[ROVER_T] PL t=1793084242.797 match=74.8 vertex=0.0 edges=255.3 loop=107.7 buffer=0.6 total=438.5
+[ROVER_T] AS proc=438.6 ok=1
+[ROVER_T] CB stamp=1793084242.797 odom=0.1 add=438.7
+[INFO] [1793091169.121757978] [slam_toolbox]: Message Filter dropping message: frame 'lidar_link' at time 1793084243.005 for reason 'discarding message because the queue is full'
+[ROVER_T] AS proc=0.0 ok=0
+[ROVER_T] CB stamp=1793084247.201 odom=0.0 add=0.1
+[ROVER_T] AE chain=0.0
+[ROVER_T] AE near=146.4 nmeans=3
+[ROVER_T] PL t=1793084248.492 match=86.3 vertex=0.0 edges=146.8 loop=13.9 buffer=0.8 total=247.9
+[ROVER_T] AS proc=251.4 ok=1
+[ROVER_T] CB stamp=1793084248.492 odom=0.0 add=251.7
+[INFO] [1793091174.628463218] [slam_toolbox]: Message Filter dropping message: frame 'lidar_link' at time 1793084248.589 for reason 'discarding message because the queue is full'
+[ROVER_T] AS proc=0.0 ok=0
+[ROVER_T] CB stamp=1793084252.189 odom=0.0 add=0.2
+[ROVER_T] AE chain=0.0
+[ROVER_T] AE near=90.3 nmeans=3
+[ROVER_T] PL t=1793084253.886 match=66.7 vertex=0.0 edges=90.7 loop=7.5 buffer=0.7 total=165.7
+[ROVER_T] AS proc=165.8 ok=1
+[ROVER_T] CB stamp=1793084253.886 odom=0.0 add=166.7
+[ROVER_T] AS proc=0.0 ok=0
+[ROVER_T] CB stamp=1793084256.189 odom=0.0 add=533.0
+[ROVER_T] AE chain=0.0
+[ROVER_T] AE near=93.4 nmeans=3
+[ROVER_T] PL t=1793084257.581 match=49.6 vertex=0.0 edges=93.7 loop=3.3 buffer=0.6 total=147.3
+[ROVER_T] AS proc=147.4 ok=1
+[ROVER_T] CB stamp=1793084257.581 odom=0.0 add=147.5
+[ROVER_T] AS proc=0.0 ok=0
+[ROVER_T] CB stamp=1793084260.476 odom=0.0 add=0.3
+[ROVER_T] AE chain=0.0
+[ROVER_T] AE near=114.5 nmeans=3
+[ROVER_T] PL t=1793084264.381 match=67.3 vertex=0.0 edges=115.0 loop=3.2 buffer=1.8 total=187.3
+[ROVER_T] AS proc=187.3 ok=1
+[ROVER_T] CB stamp=1793084264.381 odom=0.1 add=187.6
+[ROVER_T] AS proc=0.0 ok=0
+[ROVER_T] CB stamp=1793084267.980 odom=0.1 add=0.2
+[ROVER_T] AE chain=0.0
+[ROVER_T] AE near=98.7 nmeans=3
+[ROVER_T] PL t=1793084271.676 match=91.9 vertex=0.0 edges=99.0 loop=46.3 buffer=0.8 total=238.1
+[ROVER_T] AS proc=238.2 ok=1
+[ROVER_T] CB stamp=1793084271.676 odom=0.1 add=238.5
+[INFO] [1793091197.816397840] [slam_toolbox]: Message Filter dropping message: frame 'lidar_link' at time 1793084271.773 for reason 'discarding message because the queue is full'
+[ROVER_T] AS proc=0.0 ok=0
+[ROVER_T] CB stamp=1793084275.468 odom=0.1 add=0.3
+[ROVER_T] AE chain=0.0
+[ROVER_T] AE near=108.0 nmeans=2
+[ROVER_T] PL t=1793084278.979 match=67.7 vertex=0.0 edges=108.6 loop=2.8 buffer=0.6 total=179.7
+[ROVER_T] AS proc=179.8 ok=1
+[ROVER_T] CB stamp=1793084278.979 odom=0.0 add=179.9
+[ROVER_T] AS proc=0.0 ok=0
+[ROVER_T] CB stamp=1793084282.566 odom=0.0 add=0.3
+[ROVER_T] AE chain=0.0
+[ROVER_T] AE near=95.7 nmeans=2
+[ROVER_T] PL t=1793084286.461 match=83.9 vertex=0.0 edges=96.0 loop=2.8 buffer=1.0 total=183.8
+[ROVER_T] AS proc=183.9 ok=1
+[ROVER_T] CB stamp=1793084286.461 odom=0.1 add=416.7
+[ROVER_T] AS proc=0.0 ok=0
+[ROVER_T] CB stamp=1793084286.764 odom=0.0 add=0.2
+[ROVER_T] AE chain=0.0
+[ROVER_T] AE near=113.0 nmeans=2
+[ROVER_T] PL t=1793084287.164 match=72.6 vertex=0.0 edges=113.4 loop=4.5 buffer=0.8 total=191.4
+[ROVER_T] AS proc=191.5 ok=1
+[ROVER_T] CB stamp=1793084287.164 odom=0.1 add=191.7
+[ROVER_T] AS proc=0.0 ok=0
+[ROVER_T] CB stamp=1793084287.454 odom=0.1 add=0.3
+[ROVER_T] AE chain=0.0
+[ROVER_T] AE near=120.2 nmeans=2
+[ROVER_T] PL t=1793084287.852 match=69.2 vertex=0.0 edges=120.5 loop=2.6 buffer=0.6 total=193.0
+[ROVER_T] AS proc=193.1 ok=1
+[ROVER_T] CB stamp=1793084287.852 odom=0.0 add=193.8
+[ROVER_T] AS proc=0.0 ok=0
+[ROVER_T] CB stamp=1793084288.252 odom=0.0 add=0.2
+[ROVER_T] AE chain=0.0
+[ROVER_T] AE near=99.9 nmeans=2
+[ROVER_T] PL t=1793084288.860 match=53.5 vertex=0.0 edges=100.9 loop=2.8 buffer=0.6 total=157.9
+[ROVER_T] AS proc=157.9 ok=1
+[ROVER_T] CB stamp=1793084288.860 odom=0.0 add=158.2
+[ROVER_T] AS proc=0.0 ok=0
+[ROVER_T] CB stamp=1793084289.453 odom=0.0 add=0.2
+[ROVER_T] AE chain=0.0
+[ROVER_T] AE near=106.0 nmeans=2
+[ROVER_T] PL t=1793084289.965 match=61.8 vertex=0.0 edges=106.3 loop=2.6 buffer=0.5 total=171.2
+[ROVER_T] AS proc=171.3 ok=1
+[ROVER_T] CB stamp=1793084289.965 odom=0.0 add=171.5
+[ROVER_T] AS proc=0.0 ok=0
+[ROVER_T] CB stamp=1793084290.364 odom=0.0 add=0.2
+[ROVER_T] AE chain=0.0
+[ROVER_T] AE near=90.1 nmeans=2
+[ROVER_T] PL t=1793084291.852 match=65.3 vertex=0.0 edges=90.4 loop=2.8 buffer=0.6 total=159.2
+[ROVER_T] AS proc=159.3 ok=1
+[ROVER_T] CB stamp=1793084291.852 odom=0.0 add=159.5
+[ROVER_T] AS proc=0.0 ok=0
+[ROVER_T] CB stamp=1793084292.461 odom=0.0 add=0.2
+[ROVER_T] AE chain=0.0
+[ROVER_T] AE near=86.6 nmeans=2
+[ROVER_T] PL t=1793084293.260 match=57.4 vertex=0.0 edges=87.0 loop=3.2 buffer=0.9 total=148.6
+[ROVER_T] AS proc=148.6 ok=1
+[ROVER_T] CB stamp=1793084293.260 odom=0.0 add=148.8
+[ROVER_T] AS proc=0.0 ok=0
+[ROVER_T] CB stamp=1793084293.949 odom=0.0 add=0.2
+[ROVER_T] AE chain=0.0
+[ROVER_T] AE near=96.7 nmeans=2
+[ROVER_T] PL t=1793084294.558 match=53.6 vertex=0.0 edges=97.1 loop=3.0 buffer=0.6 total=154.5
+[ROVER_T] AS proc=154.5 ok=1
+[ROVER_T] CB stamp=1793084294.558 odom=0.0 add=155.0
+[ROVER_T] AS proc=0.0 ok=0
+[ROVER_T] CB stamp=1793084295.245 odom=0.0 add=0.2
+[ROVER_T] AE chain=0.0
+[ROVER_T] AE near=160.8 nmeans=3
+[ROVER_T] PL t=1793084296.046 match=63.2 vertex=0.0 edges=161.2 loop=4.8 buffer=2.9 total=232.2
+[ROVER_T] AS proc=232.3 ok=1
+[ROVER_T] CB stamp=1793084296.046 odom=0.0 add=232.4
+[ROVER_T] AS proc=0.0 ok=0
+[ROVER_T] CB stamp=1793084296.845 odom=0.0 add=84.7
+[ROVER_T] AE chain=0.0
+[ROVER_T] AE near=134.2 nmeans=3
+[ROVER_T] PL t=1793084297.645 match=51.5 vertex=1.0 edges=134.6 loop=2.6 buffer=0.7 total=190.4
+[ROVER_T] AS proc=190.5 ok=1
+[ROVER_T] CB stamp=1793084297.645 odom=0.0 add=190.7
+[ROVER_T] AS proc=0.0 ok=0
+[ROVER_T] CB stamp=1793084298.556 odom=0.0 add=0.3
+[ROVER_T] AE chain=0.0
+[ROVER_T] AE near=130.7 nmeans=3
+[ROVER_T] PL t=1793084299.852 match=49.0 vertex=0.0 edges=131.1 loop=4.0 buffer=0.6 total=184.8
+[ROVER_T] AS proc=184.9 ok=1
+[ROVER_T] CB stamp=1793084299.852 odom=0.1 add=185.0
+[ROVER_T] AS proc=0.1 ok=0
+[ROVER_T] CB stamp=1793084303.245 odom=0.0 add=0.3
+[ROVER_T] AE chain=0.0
+[ROVER_T] AE near=91.3 nmeans=3
+W1027 17:53:51.686389 1851696 preprocessor.cc:62] Specified options.num_threads: 50 exceeds maximum available from the threading model Ceres was compiled with: 6.  Bounding to maximum number available.
+[ROVER_T] PL t=1793084305.549 match=70.2 vertex=0.0 edges=91.6 loop=284.7 buffer=0.5 total=447.2
+[ROVER_T] AS proc=447.2 ok=1
+[ROVER_T] CB stamp=1793084305.549 odom=0.0 add=447.4
+[ROVER_T] AS proc=0.2 ok=0
+[ROVER_T] CB stamp=1793084308.543 odom=0.1 add=0.6
+[ROVER_T] AE chain=0.0
+[ROVER_T] AE near=101.3 nmeans=3
+[ROVER_T] PL t=1793084312.238 match=41.0 vertex=0.0 edges=101.6 loop=3.6 buffer=0.8 total=147.1
+[ROVER_T] AS proc=147.2 ok=1
+[ROVER_T] CB stamp=1793084312.238 odom=0.0 add=147.4
+[ROVER_T] AS proc=0.0 ok=0
+[ROVER_T] CB stamp=1793084315.532 odom=0.1 add=0.2
+[ROVER_T] AS proc=0.0 ok=0
+[ROVER_T] CB stamp=1793084316.524 odom=0.0 add=274.2
+[INFO] [1793091242.687903990] [slam_toolbox]: Message Filter dropping message: frame 'lidar_link' at time 1793084316.636 for reason 'discarding message because the queue is full'
+[ROVER_T] AE chain=0.0
+[ROVER_T] AE near=118.1 nmeans=3
+[ROVER_T] PL t=1793084319.132 match=48.3 vertex=0.0 edges=118.5 loop=3.2 buffer=1.1 total=171.1
+[ROVER_T] AS proc=171.3 ok=1
+[ROVER_T] CB stamp=1793084319.132 odom=0.0 add=171.4
+[ROVER_T] AS proc=0.0 ok=0
+[ROVER_T] CB stamp=1793084319.932 odom=0.0 add=0.2
+[ROVER_T] AE chain=0.0
+[ROVER_T] AE near=109.6 nmeans=3
+[ROVER_T] PL t=1793084323.533 match=54.6 vertex=0.0 edges=110.0 loop=2.9 buffer=0.5 total=168.0
+[ROVER_T] AS proc=168.1 ok=1
+[ROVER_T] CB stamp=1793084323.533 odom=0.1 add=168.2
+[ROVER_T] AS proc=0.0 ok=0
+[ROVER_T] CB stamp=1793084324.524 odom=0.0 add=0.2
+[ROVER_T] AE chain=0.0
+[ROVER_T] AE near=113.1 nmeans=3
+[ROVER_T] PL t=1793084325.420 match=65.9 vertex=0.0 edges=113.5 loop=3.1 buffer=0.6 total=183.2
+[ROVER_T] AS proc=183.3 ok=1
+[ROVER_T] CB stamp=1793084325.420 odom=0.0 add=183.5
+[ROVER_T] AS proc=0.0 ok=0
+[ROVER_T] CB stamp=1793084327.228 odom=0.1 add=0.9
+[INFO] [1793091258.193964219] [rclcpp]: signal_handler(SIGINT/SIGTERM)

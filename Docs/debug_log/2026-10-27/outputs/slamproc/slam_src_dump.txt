@@ -1,0 +1,449 @@
+/home/jetson/slam_ws/src/slam_toolbox/src:
+experimental
+laser_utils.cpp
+loop_closure_assistant.cpp
+map_saver.cpp
+merge_maps_kinematic.cpp
+slam_mapper.cpp
+slam_toolbox_async.cpp
+slam_toolbox_async_node.cpp
+slam_toolbox_common.cpp
+slam_toolbox_localization.cpp
+slam_toolbox_localization_node.cpp
+slam_toolbox_sync.cpp
+slam_toolbox_sync_node.cpp
+== /home/jetson/slam_ws/src/slam_toolbox/src/experimental/slam_toolbox_map_and_localization.cpp
+/home/jetson/slam_ws/src/slam_toolbox/src/slam_toolbox_localization.cpp
+/home/jetson/slam_ws/src/slam_toolbox/src/experimental/slam_toolbox_map_and_localization.cpp:137:void MapAndLocalizationSlamToolbox::laserCallback(
+/home/jetson/slam_ws/src/slam_toolbox/src/experimental/slam_toolbox_map_and_localization.cpp-138-  sensor_msgs::msg::LaserScan::ConstSharedPtr scan)
+/home/jetson/slam_ws/src/slam_toolbox/src/experimental/slam_toolbox_map_and_localization.cpp-139-/*****************************************************************************/
+/home/jetson/slam_ws/src/slam_toolbox/src/experimental/slam_toolbox_map_and_localization.cpp-140-{
+/home/jetson/slam_ws/src/slam_toolbox/src/experimental/slam_toolbox_map_and_localization.cpp-141-  // store scan header
+/home/jetson/slam_ws/src/slam_toolbox/src/experimental/slam_toolbox_map_and_localization.cpp-142-  scan_header = scan->header;
+/home/jetson/slam_ws/src/slam_toolbox/src/experimental/slam_toolbox_map_and_localization.cpp-143-  // no odom info
+/home/jetson/slam_ws/src/slam_toolbox/src/experimental/slam_toolbox_map_and_localization.cpp-144-  Pose2 pose;
+/home/jetson/slam_ws/src/slam_toolbox/src/experimental/slam_toolbox_map_and_localization.cpp-145-  if (!pose_helper_->getOdomPose(pose, scan->header.stamp)) {
+/home/jetson/slam_ws/src/slam_toolbox/src/experimental/slam_toolbox_map_and_localization.cpp-146-    RCLCPP_WARN(get_logger(), "Failed to compute odom pose");
+/home/jetson/slam_ws/src/slam_toolbox/src/experimental/slam_toolbox_map_and_localization.cpp-147-    return;
+/home/jetson/slam_ws/src/slam_toolbox/src/experimental/slam_toolbox_map_and_localization.cpp-148-  }
+/home/jetson/slam_ws/src/slam_toolbox/src/experimental/slam_toolbox_map_and_localization.cpp-149-
+/home/jetson/slam_ws/src/slam_toolbox/src/experimental/slam_toolbox_map_and_localization.cpp-150-  // ensure the laser can be used
+/home/jetson/slam_ws/src/slam_toolbox/src/experimental/slam_toolbox_map_and_localization.cpp-151-  LaserRangeFinder * laser = getLaser(scan);
+/home/jetson/slam_ws/src/slam_toolbox/src/experimental/slam_toolbox_map_and_localization.cpp-152-
+/home/jetson/slam_ws/src/slam_toolbox/src/experimental/slam_toolbox_map_and_localization.cpp-153-  if (!laser) {
+/home/jetson/slam_ws/src/slam_toolbox/src/experimental/slam_toolbox_map_and_localization.cpp-154-    RCLCPP_WARN(get_logger(), "Failed to create laser device for"
+/home/jetson/slam_ws/src/slam_toolbox/src/experimental/slam_toolbox_map_and_localization.cpp-155-      " %s; discarding scan", scan->header.frame_id.c_str());
+/home/jetson/slam_ws/src/slam_toolbox/src/experimental/slam_toolbox_map_and_localization.cpp-156-    return;
+/home/jetson/slam_ws/src/slam_toolbox/src/experimental/slam_toolbox_map_and_localization.cpp-157-  }
+/home/jetson/slam_ws/src/slam_toolbox/src/experimental/slam_toolbox_map_and_localization.cpp-158-
+/home/jetson/slam_ws/src/slam_toolbox/src/experimental/slam_toolbox_map_and_localization.cpp-159-  addScan(laser, scan, pose);
+/home/jetson/slam_ws/src/slam_toolbox/src/experimental/slam_toolbox_map_and_localization.cpp-160-}
+/home/jetson/slam_ws/src/slam_toolbox/src/experimental/slam_toolbox_map_and_localization.cpp-161-
+/home/jetson/slam_ws/src/slam_toolbox/src/experimental/slam_toolbox_map_and_localization.cpp-162-/*****************************************************************************/
+/home/jetson/slam_ws/src/slam_toolbox/src/experimental/slam_toolbox_map_and_localization.cpp-163-LocalizedRangeScan * MapAndLocalizationSlamToolbox::addScan(
+/home/jetson/slam_ws/src/slam_toolbox/src/experimental/slam_toolbox_map_and_localization.cpp-164-  LaserRangeFinder * laser,
+/home/jetson/slam_ws/src/slam_toolbox/src/experimental/slam_toolbox_map_and_localization.cpp-165-  const sensor_msgs::msg::LaserScan::ConstSharedPtr & scan,
+/home/jetson/slam_ws/src/slam_toolbox/src/experimental/slam_toolbox_map_and_localization.cpp-166-  Pose2 & odom_pose)
+/home/jetson/slam_ws/src/slam_toolbox/src/experimental/slam_toolbox_map_and_localization.cpp-167-/*****************************************************************************/
+/home/jetson/slam_ws/src/slam_toolbox/src/experimental/slam_toolbox_map_and_localization.cpp-168-{
+/home/jetson/slam_ws/src/slam_toolbox/src/experimental/slam_toolbox_map_and_localization.cpp-169-  if (processor_type_ == PROCESS_LOCALIZATION) {
+/home/jetson/slam_ws/src/slam_toolbox/src/experimental/slam_toolbox_map_and_localization.cpp-170-    return LocalizationSlamToolbox::addScan(laser, scan, odom_pose);
+/home/jetson/slam_ws/src/slam_toolbox/src/experimental/slam_toolbox_map_and_localization.cpp-171-  }
+/home/jetson/slam_ws/src/slam_toolbox/src/experimental/slam_toolbox_map_and_localization.cpp-172-  else {
+/home/jetson/slam_ws/src/slam_toolbox/src/experimental/slam_toolbox_map_and_localization.cpp-173-    return SlamToolbox::addScan(laser, scan, odom_pose);
+/home/jetson/slam_ws/src/slam_toolbox/src/experimental/slam_toolbox_map_and_localization.cpp-174-  }
+/home/jetson/slam_ws/src/slam_toolbox/src/experimental/slam_toolbox_map_and_localization.cpp-175-}
+/home/jetson/slam_ws/src/slam_toolbox/src/experimental/slam_toolbox_map_and_localization.cpp-176-
+/home/jetson/slam_ws/src/slam_toolbox/src/experimental/slam_toolbox_map_and_localization.cpp-177-}  // namespace slam_toolbox
+/home/jetson/slam_ws/src/slam_toolbox/src/experimental/slam_toolbox_map_and_localization.cpp-178-
+/home/jetson/slam_ws/src/slam_toolbox/src/experimental/slam_toolbox_map_and_localization.cpp-179-#include "rclcpp_components/register_node_macro.hpp"
+/home/jetson/slam_ws/src/slam_toolbox/src/experimental/slam_toolbox_map_and_localization.cpp-180-
+/home/jetson/slam_ws/src/slam_toolbox/src/experimental/slam_toolbox_map_and_localization.cpp-181-// Register the component with class_loader.
+/home/jetson/slam_ws/src/slam_toolbox/src/experimental/slam_toolbox_map_and_localization.cpp-182-// This acts as a sort of entry point, allowing the component to be discoverable when its library
+--
+/home/jetson/slam_ws/src/slam_toolbox/src/slam_toolbox_localization.cpp:117:void LocalizationSlamToolbox::laserCallback(
+/home/jetson/slam_ws/src/slam_toolbox/src/slam_toolbox_localization.cpp-118-  sensor_msgs::msg::LaserScan::ConstSharedPtr scan)
+/home/jetson/slam_ws/src/slam_toolbox/src/slam_toolbox_localization.cpp-119-/*****************************************************************************/
+/home/jetson/slam_ws/src/slam_toolbox/src/slam_toolbox_localization.cpp-120-{
+/home/jetson/slam_ws/src/slam_toolbox/src/slam_toolbox_localization.cpp-121-  // store scan header
+/home/jetson/slam_ws/src/slam_toolbox/src/slam_toolbox_localization.cpp-122-  scan_header = scan->header;
+/home/jetson/slam_ws/src/slam_toolbox/src/slam_toolbox_localization.cpp-123-  // no odom info
+/home/jetson/slam_ws/src/slam_toolbox/src/slam_toolbox_localization.cpp-124-  Pose2 pose;
+/home/jetson/slam_ws/src/slam_toolbox/src/slam_toolbox_localization.cpp-125-  if (!pose_helper_->getOdomPose(pose, scan->header.stamp)) {
+/home/jetson/slam_ws/src/slam_toolbox/src/slam_toolbox_localization.cpp-126-    RCLCPP_WARN(get_logger(), "Failed to compute odom pose");
+/home/jetson/slam_ws/src/slam_toolbox/src/slam_toolbox_localization.cpp-127-    return;
+/home/jetson/slam_ws/src/slam_toolbox/src/slam_toolbox_localization.cpp-128-  }
+/home/jetson/slam_ws/src/slam_toolbox/src/slam_toolbox_localization.cpp-129-
+/home/jetson/slam_ws/src/slam_toolbox/src/slam_toolbox_localization.cpp-130-  // ensure the laser can be used
+/home/jetson/slam_ws/src/slam_toolbox/src/slam_toolbox_localization.cpp-131-  LaserRangeFinder * laser = getLaser(scan);
+/home/jetson/slam_ws/src/slam_toolbox/src/slam_toolbox_localization.cpp-132-
+/home/jetson/slam_ws/src/slam_toolbox/src/slam_toolbox_localization.cpp-133-  if (!laser) {
+/home/jetson/slam_ws/src/slam_toolbox/src/slam_toolbox_localization.cpp-134-    RCLCPP_WARN(get_logger(), "SynchronousSlamToolbox: Failed to create laser"
+/home/jetson/slam_ws/src/slam_toolbox/src/slam_toolbox_localization.cpp-135-      " device for %s; discarding scan", scan->header.frame_id.c_str());
+/home/jetson/slam_ws/src/slam_toolbox/src/slam_toolbox_localization.cpp-136-    return;
+/home/jetson/slam_ws/src/slam_toolbox/src/slam_toolbox_localization.cpp-137-  }
+/home/jetson/slam_ws/src/slam_toolbox/src/slam_toolbox_localization.cpp-138-
+/home/jetson/slam_ws/src/slam_toolbox/src/slam_toolbox_localization.cpp-139-  if (shouldProcessScan(scan, pose)) {
+/home/jetson/slam_ws/src/slam_toolbox/src/slam_toolbox_localization.cpp-140-    addScan(laser, scan, pose);
+/home/jetson/slam_ws/src/slam_toolbox/src/slam_toolbox_localization.cpp-141-  }
+/home/jetson/slam_ws/src/slam_toolbox/src/slam_toolbox_localization.cpp-142-}
+/home/jetson/slam_ws/src/slam_toolbox/src/slam_toolbox_localization.cpp-143-
+/home/jetson/slam_ws/src/slam_toolbox/src/slam_toolbox_localization.cpp-144-/*****************************************************************************/
+/home/jetson/slam_ws/src/slam_toolbox/src/slam_toolbox_localization.cpp-145-LocalizedRangeScan * LocalizationSlamToolbox::addScan(
+/home/jetson/slam_ws/src/slam_toolbox/src/slam_toolbox_localization.cpp-146-  LaserRangeFinder * laser,
+/home/jetson/slam_ws/src/slam_toolbox/src/slam_toolbox_localization.cpp-147-  const sensor_msgs::msg::LaserScan::ConstSharedPtr & scan,
+/home/jetson/slam_ws/src/slam_toolbox/src/slam_toolbox_localization.cpp-148-  Pose2 & odom_pose)
+/home/jetson/slam_ws/src/slam_toolbox/src/slam_toolbox_localization.cpp-149-/*****************************************************************************/
+/home/jetson/slam_ws/src/slam_toolbox/src/slam_toolbox_localization.cpp-150-{
+/home/jetson/slam_ws/src/slam_toolbox/src/slam_toolbox_localization.cpp-151-  boost::mutex::scoped_lock l(pose_mutex_);
+/home/jetson/slam_ws/src/slam_toolbox/src/slam_toolbox_localization.cpp-152-
+/home/jetson/slam_ws/src/slam_toolbox/src/slam_toolbox_localization.cpp-153-  if (processor_type_ == PROCESS_LOCALIZATION && process_near_pose_) {
+/home/jetson/slam_ws/src/slam_toolbox/src/slam_toolbox_localization.cpp-154-    processor_type_ = PROCESS_NEAR_REGION;
+/home/jetson/slam_ws/src/slam_toolbox/src/slam_toolbox_localization.cpp-155-  }
+/home/jetson/slam_ws/src/slam_toolbox/src/slam_toolbox_localization.cpp-156-
+/home/jetson/slam_ws/src/slam_toolbox/src/slam_toolbox_localization.cpp-157-  LocalizedRangeScan * range_scan = getLocalizedRangeScan(
+/home/jetson/slam_ws/src/slam_toolbox/src/slam_toolbox_localization.cpp-158-    laser, scan, odom_pose);
+/home/jetson/slam_ws/src/slam_toolbox/src/slam_toolbox_localization.cpp-159-
+/home/jetson/slam_ws/src/slam_toolbox/src/slam_toolbox_localization.cpp-160-  // Add the localized range scan to the smapper
+/home/jetson/slam_ws/src/slam_toolbox/src/slam_toolbox_localization.cpp-161-  boost::mutex::scoped_lock lock(smapper_mutex_);
+/home/jetson/slam_ws/src/slam_toolbox/src/slam_toolbox_localization.cpp-162-  bool processed = false, update_reprocessing_transform = false;
+== common addScan
+LocalizedRangeScan * SlamToolbox::addScan(
+  LaserRangeFinder * laser,
+  PosedScan & scan_w_pose)
+/*****************************************************************************/
+{
+  return addScan(laser, scan_w_pose.scan, scan_w_pose.pose);
+}
+
+/*****************************************************************************/
+LocalizedRangeScan * SlamToolbox::addScan(
+  LaserRangeFinder * laser,
+  const sensor_msgs::msg::LaserScan::ConstSharedPtr & scan,
+  Pose2 & odom_pose)
+/*****************************************************************************/
+{
+  // get our localized range scan
+  LocalizedRangeScan * range_scan = getLocalizedRangeScan(
+    laser, scan, odom_pose);
+
+  // Add the localized range scan to the smapper
+  boost::mutex::scoped_lock lock(smapper_mutex_);
+  bool processed = false, update_reprocessing_transform = false;
+
+  Matrix3 covariance;
+  covariance.SetToIdentity();
+
+  if (processor_type_ == PROCESS) {
+    processed = smapper_->getMapper()->Process(range_scan, &covariance);
+  } else if (processor_type_ == PROCESS_FIRST_NODE) {
+    processed = smapper_->getMapper()->ProcessAtDock(range_scan, &covariance);
+    processor_type_ = PROCESS;
+    update_reprocessing_transform = true;
+  } else if (processor_type_ == PROCESS_NEAR_REGION) {
+    boost::mutex::scoped_lock l(pose_mutex_);
+    if (!process_near_pose_) {
+      RCLCPP_ERROR(get_logger(), "Process near region called without a "
+        "valid region request. Ignoring scan.");
+      return nullptr;
+    }
+    range_scan->SetOdometricPose(*process_near_pose_);
+    range_scan->SetCorrectedPose(range_scan->GetOdometricPose());
+    process_near_pose_.reset(nullptr);
+    processed = smapper_->getMapper()->ProcessAgainstNodesNearBy(
+      range_scan, false, &covariance);
+    update_reprocessing_transform = true;
+    processor_type_ = PROCESS;
+  } else {
+    RCLCPP_FATAL(get_logger(),
+      "SlamToolbox: No valid processor type set! Exiting.");
+    exit(-1);
+  }
+
+  // if successfully processed, create odom to map transformation
+  // and add our scan to storage
+  if (processed) {
+    if (enable_interactive_mode_) {
+      scan_holder_->addScan(*scan);
+    }
+
+    setTransformFromPoses(range_scan->GetCorrectedPose(), odom_pose,
+      scan->header.stamp, update_reprocessing_transform);
+    dataset_->Add(range_scan);
+
+    publishPose(range_scan->GetCorrectedPose(), covariance, scan->header.stamp);
+  } else {
+    delete range_scan;
+    range_scan = nullptr;
+  }
+
+== Mapper ProcessLocalization
+kt_bool Mapper::ProcessLocalization(LocalizedRangeScan * pScan, Matrix3 * covariance)
+{
+  if (pScan == NULL) {
+    return false;
+  }
+
+  karto::LaserRangeFinder * pLaserRangeFinder = pScan->GetLaserRangeFinder();
+
+  // validate scan
+  if (pLaserRangeFinder == NULL || pScan == NULL ||
+    pLaserRangeFinder->Validate(pScan) == false)
+  {
+    return false;
+  }
+
+  if (m_Initialized == false) {
+    // initialize mapper with range threshold from device
+    Initialize(pLaserRangeFinder->GetRangeThreshold());
+  }
+
+  // get last scan
+  LocalizedRangeScan * pLastScan = m_pMapperSensorManager->GetLastScan(
+    pScan->GetSensorName());
+
+  // update scans corrected pose based on last correction
+  if (pLastScan != NULL) {
+    Transform lastTransform(pLastScan->GetOdometricPose(),
+      pLastScan->GetCorrectedPose());
+    pScan->SetCorrectedPose(lastTransform.TransformPose(
+        pScan->GetOdometricPose()));
+  }
+
+  // test if scan is outside minimum boundary
+  // or if heading is larger then minimum heading
+  if (!HasMovedEnough(pScan, pLastScan)) {
+    return false;
+  }
+
+  Matrix3 cov;
+  cov.SetToIdentity();
+
+  // correct scan (if not first scan)
+  if (m_pUseScanMatching->GetValue() && pLastScan != NULL) {
+    Pose2 bestPose;
+    m_pSequentialScanMatcher->MatchScan(pScan,
+      m_pMapperSensorManager->GetRunningScans(pScan->GetSensorName()),
+      bestPose,
+      cov);
+    pScan->SetSensorPose(bestPose);
+    if (covariance) {
+      *covariance = cov;
+    }
+  }
+
+  // add scan to buffer and assign id
+  m_pMapperSensorManager->AddScan(pScan);
+
+  Vertex<LocalizedRangeScan> * scan_vertex = NULL;
+  if (m_pUseScanMatching->GetValue()) {
+    // add to graph
+    scan_vertex = m_pGraph->AddVertex(pScan);
+    m_pGraph->AddEdges(pScan, cov);
+
+    m_pMapperSensorManager->AddRunningScan(pScan);
+
+    if (m_pDoLoopClosing->GetValue()) {
+      std::vector<Name> deviceNames = m_pMapperSensorManager->GetSensorNames();
+      const_forEach(std::vector<Name>, &deviceNames)
+      {
+        m_pGraph->TryCloseLoop(pScan, *iter);
+      }
+    }
+  }
+
+  m_pMapperSensorManager->SetLastScan(pScan);
+  AddScanToLocalizationBuffer(pScan, scan_vertex);
+
+  return true;
+}
+
+void Mapper::AddScanToLocalizationBuffer(LocalizedRangeScan * pScan, Vertex <LocalizedRangeScan> * scan_vertex)
+{
+  // generate the info to store and later decay, outside of dataset
+  LocalizationScanVertex lsv;
+  lsv.scan = pScan;
+  lsv.vertex = scan_vertex;
+  m_LocalizationScanVertices.push(lsv);
+
+  if (m_LocalizationScanVertices.size() > getParamScanBufferSize()) {
+    LocalizationScanVertex & oldLSV = m_LocalizationScanVertices.front();
+    RemoveNodeFromGraph(oldLSV.vertex);
+
+    // delete node and scans
+    // free hat!
+    // No need to delete from m_scans as those pointers will be freed memory
+    oldLSV.vertex->RemoveObject();
+    m_pMapperSensorManager->RemoveScan(oldLSV.scan);
+    if (oldLSV.scan) {
+      delete oldLSV.scan;
+      oldLSV.scan = NULL;
+    }
+
+    m_LocalizationScanVertices.pop();
+  }
+}
+
+== git diff(포크 변경)
+diff --git a/src/slam_toolbox_common.cpp b/src/slam_toolbox_common.cpp
+index 77ac6b1..c33560a 100644
+--- a/src/slam_toolbox_common.cpp
++++ b/src/slam_toolbox_common.cpp
+@@ -537,7 +537,13 @@ bool SlamToolbox::shouldProcessScan(
+ 
+   // check moved enough, within 10% for correction error
+   const double dist2 = last_pose.SquaredDistance(pose);
+-  if (dist2 < 0.8 * min_dist2 || scan_ctr < 5) {
++  // [rover fork 2026-09-28] 스키드스티어 순수 회전 슬립 보정용: 병진 거리 "또는" 회전각이 문턱을 넘으면 처리.
++  //   원본은 거리만 봐서 제자리 회전 중 스캔을 모두 버렸다(Docs/debug_log/2026-09-28/SUMMARY.md §3.1, §8).
++  const double dheading = std::fabs(karto::math::NormalizeAngle(pose.GetHeading() - last_pose.GetHeading()));
++  // 주의: Karto 의 getParamMinimumTravelHeading() 은 **도(degree)** 로 돌려준다(내부는 라디안) → 라디안으로 변환.
++  //   09-28 첫 빌드는 변환 없이 비교해 문턱이 1.7189 rad(≈98°)가 되어 회전당 2 회만 처리됐다(§9).
++  const double min_heading = karto::math::DegreesToRadians(smapper_->getMapper()->getParamMinimumTravelHeading());
++  if ((dist2 < 0.8 * min_dist2 && dheading < 0.8 * min_heading) || scan_ctr < 5) {
+     return false;
+   }
+ 
+  // Add the localized range scan to the smapper
+  boost::mutex::scoped_lock lock(smapper_mutex_);
+  bool processed = false, update_reprocessing_transform = false;
+
+  Matrix3 covariance;
+  covariance.SetToIdentity();
+
+  if (processor_type_ == PROCESS_NEAR_REGION) {
+    if (!process_near_pose_) {
+      RCLCPP_ERROR(get_logger(),
+        "Process near region called without a "
+        "valid region request. Ignoring scan.");
+      return nullptr;
+    }
+
+    // set our position to the requested pose and process
+    range_scan->SetOdometricPose(*process_near_pose_);
+    range_scan->SetCorrectedPose(range_scan->GetOdometricPose());
+    process_near_pose_.reset(nullptr);
+    processed = smapper_->getMapper()->ProcessAgainstNodesNearBy(range_scan, true, &covariance);
+
+    // reset to localization mode
+    update_reprocessing_transform = true;
+    processor_type_ = PROCESS_LOCALIZATION;
+  } else if (processor_type_ == PROCESS_LOCALIZATION) {
+    processed = smapper_->getMapper()->ProcessLocalization(range_scan, &covariance);
+    update_reprocessing_transform = false;
+  } else {
+    RCLCPP_FATAL(get_logger(), "LocalizationSlamToolbox: "
+      "No valid processor type set! Exiting.");
+    exit(-1);
+  }
+
+  // if successfully processed, create odom to map transformation
+  if (!processed) {
+    delete range_scan;
+    range_scan = nullptr;
+  } else {
+    // compute our new transform
+    setTransformFromPoses(range_scan->GetCorrectedPose(), odom_pose,
+      scan->header.stamp, update_reprocessing_transform);
+
+    publishPose(range_scan->GetCorrectedPose(), covariance, scan->header.stamp);
+  }
+
+  return range_scan;
+}
+
+/*****************************************************************************/
+void LocalizationSlamToolbox::localizePoseCallback(
+  const
+  geometry_msgs::msg::PoseWithCovarianceStamped::SharedPtr msg)
+/*****************************************************************************/
+{
+  if (processor_type_ != PROCESS_LOCALIZATION) {
+    RCLCPP_ERROR(get_logger(),
+== AddEdges
+void MapperGraph::AddEdges(LocalizedRangeScan * pScan, const Matrix3 & rCovariance)
+{
+  MapperSensorManager * pSensorManager = m_pMapper->m_pMapperSensorManager;
+
+  const Name rSensorName = pScan->GetSensorName();
+
+  // link to previous scan
+  kt_int32s previousScanNum = pScan->GetStateId() - 1;
+  if (pSensorManager->GetLastScan(rSensorName) != NULL) {
+    assert(previousScanNum >= 0);
+    LocalizedRangeScan * pPrevScan = pSensorManager->GetScan(rSensorName, previousScanNum);
+    if (!pPrevScan) {
+      return;
+    }
+    LinkScans(pPrevScan, pScan, pScan->GetSensorPose(), rCovariance);
+  }
+
+  Pose2Vector means;
+  std::vector<Matrix3> covariances;
+
+  // first scan (link to first scan of other robots)
+  if (pSensorManager->GetLastScan(rSensorName) == NULL) {
+    assert(pSensorManager->GetScans(rSensorName).size() == 1);
+
+    std::vector<Name> deviceNames = pSensorManager->GetSensorNames();
+    forEach(std::vector<Name>, &deviceNames)
+    {
+      const Name & rCandidateSensorName = *iter;
+
+      // skip if candidate device is the same or other device has no scans
+      if ((rCandidateSensorName == rSensorName) ||
+        (pSensorManager->GetScans(rCandidateSensorName).empty()))
+      {
+        continue;
+      }
+
+      Pose2 bestPose;
+      Matrix3 covariance;
+      kt_double response = m_pMapper->m_pSequentialScanMatcher->MatchScan<LocalizedRangeScanMap>(
+        pScan,
+        pSensorManager->GetScans(rCandidateSensorName),
+        bestPose, covariance);
+      LinkScans(pSensorManager->GetScan(rCandidateSensorName, 0), pScan, bestPose, covariance);
+
+      // only add to means and covariances if response was high "enough"
+      if (response > m_pMapper->m_pLinkMatchMinimumResponseFine->GetValue()) {
+        means.push_back(bestPose);
+        covariances.push_back(covariance);
+      }
+    }
+  } else {
+    // link to running scans
+    Pose2 scanPose = pScan->GetSensorPose();
+    means.push_back(scanPose);
+    covariances.push_back(rCovariance);
+    LinkChainToScan(pSensorManager->GetRunningScans(rSensorName), pScan, scanPose, rCovariance);
+  }
+
+  // link to other near chains (chains that include new scan are invalid)
+  LinkNearChains(pScan, means, covariances);
+
+  if (!means.empty()) {
+    pScan->SetSensorPose(ComputeWeightedMean(means, covariances));
+  }
+}
+
+kt_bool MapperGraph::TryCloseLoop(LocalizedRangeScan * pScan, const Name & rSensorName)
+== includes Mapper.cpp
+19:#include <karto_sdk/Types.h>
+20:#include <math.h>
+21:#include <assert.h>
+22:#include <boost/serialization/vector.hpp>
+23:#include <sstream>
+24:#include <fstream>
+25:#include <stdexcept>
+26:#include <queue>
+27:#include <set>
+28:#include <list>
+19:#include <memory>
+20:#include <string>
+21:#include "slam_toolbox/slam_toolbox_localization.hpp"
+243:#include "rclcpp_components/register_node_macro.hpp"
+104M	/home/jetson/slam_ws/src
+82M	/home/jetson/slam_ws/build
+24M	/home/jetson/slam_ws/install
+/dev/nvme0n1p1  233G  101G  120G  46% /
