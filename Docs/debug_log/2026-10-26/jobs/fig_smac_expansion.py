@@ -74,7 +74,7 @@ for f, u in enumerate(steps):
     for a, row in zip(ax2, pick):
         draw(a, *row, upto=int(u), title=False)
         k, W, sp = row[0], row[3], row[5]; done = u >= len(W)
-        a.set_title('%s  Smac %s\n방문 %d / %d' % (TIME[k], ('성공' if len(sp) else '실패 — 더 뻗을 곳 없음') if done else '탐색 중', min(u, len(W)), len(W)), fontsize=12, loc='left',
+        a.set_title('%s  Smac %s\n방문 %d / %d' % (TIME[k], ('성공' if len(sp) else '실패') if done else '탐색 중', min(u, len(W)), len(W)), fontsize=12, loc='left',
                     color=('#0f7a3c' if len(sp) else '#b3263e') if done else '#1b1f24')
     fg.tight_layout(); fg.savefig('%s/f%04d.png' % (tmp, f), dpi=100); plt.close(fg)
 subprocess.run(['ffmpeg', '-y', '-loglevel', 'error', '-framerate', '15', '-i', tmp + '/f%04d.png', '-vf', 'pad=ceil(iw/2)*2:ceil(ih/2)*2', '-pix_fmt', 'yuv420p', '-c:v', 'libx264', '-crf', '20', VID], check=True)
