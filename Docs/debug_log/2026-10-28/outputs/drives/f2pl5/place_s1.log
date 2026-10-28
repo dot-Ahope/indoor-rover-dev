@@ -1,0 +1,26 @@
+########## S1 f2pl5 게이트 15:28:27 ##########
+  B /wheel_odom 25.1 Hz
+  C map->odom 65 개/5 s, 최대 간격 0.19 s, 최대 stamp 지연 -1.19 s
+  G2 로컬 코스트맵 LETHAL ↔ 차체 외곽 최소 0.362 m @ 차체 (-0.28, +0.53)
+  G2 라이다 점 ↔ 차체 외곽 최소 0.352 m @ 차체 (-0.28, +0.52)
+  게이트 노드 5.0 s
+GATE B=OK C=OK G2=0.352
+[INFO] [1793168923.216045335] [place_server]: 경로 방향 조회기: 준비됨
+[INFO] [1793168923.219040413] [place_server]: 장소 7 곳 적재(office_v3) · home=출발점 · dry_run=False
+########## S1 f2pl5 명령 15:29:05 ##########
+PLAN w3: where; go_to W3; return
+>> where
+   0.0 s  info    map (-0.01, 0.00, -0°)
+<< where → info (기대대로) 0.0 s
+>> go_to W3
+   0.1 s  accepted  W3  목표 (5.50, -2.20, 8°) 경로 끝 방향(286 점) · 여유 0.39 m · 거리 5.94 m
+   0.1 s  moving  W3  
+   91.7 s  arrived  W3  상태 4 · 91.6 s
+<< go_to W3 → arrived (기대대로) 91.7 s
+>> return
+   0.1 s  accepted  출발점  목표 (0.00, 0.00, -172°) 경로 끝 방향(265 점) · 여유 0.18 m · 거리 5.76 m
+   0.1 s  moving  출발점  
+   100.2 s  arrived  출발점  상태 4 · 100.1 s
+<< return → arrived (기대대로) 100.2 s
+########## S1 f2pl5 끝 15:32:20 rc 0 ##########
+=== 끝 15:32:29 bag 24953690 B ===
