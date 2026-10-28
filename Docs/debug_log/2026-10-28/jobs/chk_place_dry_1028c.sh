@@ -6,6 +6,6 @@ python3 -c "import yaml" 2>&1 | head -1
 setsid nohup python3 $SRC/scripts/place_server.py --ros-args -p places_file:=$SRC/config/places.yaml -p dry_run:=true > /tmp/place_server_dry_c.log 2>&1 &
 PS=$!; sleep 12
 C="python3 $SRC/scripts/place_cmd.py"
-for c in "where" "list" "go_to 출발점" "go_to B" "go_to C" "go_to 통로 북쪽" "go_to 남서" "go_to W3" "go_to 통로 북쪽"; do echo "## $c"; $C $c --wait 25; echo "  rc $?"; done
+for c in "where" "list" "go_to 출발점" "go_to B" "go_to C" "go_to 위 복도" "go_to 통로 북쪽" "go_to 남서" "go_to W3" "go_to 통로 북쪽" "go_to 위 복도"; do echo "## $c"; $C $c --wait 25; echo "  rc $?"; done
 kill -INT $PS; sleep 2; kill -9 $PS 2>/dev/null; pkill -f "path_end_yaw.py --serve" 2>/dev/null
 echo "== 서버 로그"; grep -av "^\s*$" /tmp/place_server_dry_c.log | tail -25 | cut -c1-220

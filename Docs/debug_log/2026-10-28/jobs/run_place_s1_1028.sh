@@ -18,9 +18,10 @@ setsid nohup tegrastats --interval 1000 > /tmp/tegra_$NAME.log 2>&1 &
 sleep 30   # DDS 참여자(서버 · 경로 조회기 · 기록기) 생성 뒤 30 s(09-21 규칙) — 그 사이 서버 준비
 grep -a "장소\|조회기" /tmp/place_server_s1.log | tail -2
 echo "########## S1 $NAME 명령 $(date +%T) ##########"
-# §8: 둘째 인자 PLAN — full(기본, no5 순서 전체) · fromC(C 에서 다시 시작: B 구간을 뺀 나머지) · fromSW(§9, 남서에서)
+# §8: 둘째 인자 PLAN — full(기본, no5 순서 전체) · fromC(C 에서 다시 시작: B 구간을 뺀 나머지) · fromSW(§9, 남서에서) · upB(§13)
 case "${2:-full}" in
   fromC) CMDS="where; go_to 통로 북쪽; go_to 남서; go_to 통로 북쪽; go_to 위 복도; go_to W3 @stop20; wait 5; go_to W3; return" ;;
+  upB)   CMDS="where; go_to 통로 북쪽; go_to 위 복도; go_to 통로 북쪽; go_to 위 복도; return" ;;   # §13: 위 복도를 no5 좌표로 되돌린 판별 시험(같은 구간 2 번)
   fromSW) CMDS="where; go_to 통로 북쪽; go_to 위 복도; go_to W3 @stop20; wait 5; go_to W3; return" ;;   # §9: 남서 구석에서 다시 시작
   *)     CMDS="where; go_to B; go_to 위 복도; go_to 통로 북쪽; go_to 남서; go_to 통로 북쪽; go_to 위 복도; go_to W3 @stop20; wait 5; go_to W3; return" ;;
 esac
