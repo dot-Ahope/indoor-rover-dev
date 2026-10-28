@@ -23,3 +23,10 @@
 | 12 | 그때 주변 · 주기 | `jobs/anal_leg_env.py` | `outputs/leg_env_C.txt` 주기 20/s 같음, 오른쪽 라이다 0.06~0.07(no5 0.11~0.15) | 동쪽에 가까움 | ？(앞쪽 감속은 설명 안 됨) |
 | 12 | 경로 가로 위치 | `jobs/anal_plan_x.py` | `outputs/plan_x_C.txt` 4 cm 동쪽 | 목표 10 cm 북쪽 탓 | ？(판별 시험 전) |
 | 12 | 동쪽 가장자리 이력 | `jobs/anal_place_clear.py` 여러 판 | `outputs/east_edge_history.txt` · `corridor_grid_y29.txt` 한 칸 안쪽 | 환경 변화 또는 흔들림 | ？ |
+| 13 | 위 복도 (−1.60, −2.10) 사전 여유 | `jobs/anal_place_clear.py`(f2pl4 bag 13:40:18) | `outputs/place_clear_upB_f2pl4.txt` 40~55° 0.124~0.111 · 90° 0.010 | 경로 끝 ≈ 50° 면 통과, 여유 1.8 cm | ？(f2pl5) |
+| 13.1 | 위 복도 넣은 dry_run | `jobs/up_place_dry_1028c.sh` → `jobs/chk_place_dry_1028c.sh` | `outputs/chk_place_dry_1028c5.txt` 경로 조회 전부 상태 6 | 계획기 쪽 문제 | ✔ |
+| 13.1 | 계획기 상태 | `jobs/chk_nav_alive_1028.sh` | (대화 기록) GridBased tolerance 0.25 실패 · 프로세스 살아 있음 | 시작 · 목표 칸 문제 | ✔ |
+| 13.1 | 로버 둘레 전역 칸 | `jobs/chk_costmap_robot.py`(+ `chk_costmap_robot_1028.sh`) | `outputs/costmap_robot_1519b.txt` 남쪽 y −0.57 치명 띠 2.4 m | 출발점에 갇힘 | ✔ |
+| 13.1 | 같은 자리 f2pl4 끝 | `jobs/anal_place_clear.py` | `outputs/costmap_start_f2pl4_end.txt` 띠 없음 | 13:44 이후 생김 | ✔ |
+| 13.1 | 라이다가 보나 | `jobs/chk_scan_band.py` | `outputs/scan_band_1519.txt` 띠 자리 점 없음 | 라이다 아님 | ✔ |
+| 13.1 | 비우면 사라지나 | `jobs/chk_clear_global_1028.sh` | `outputs/clear_global_1528.txt` 5 · 20 s 뒤 그대로 | nvblox 기억 | ？(층별 미확인) |
