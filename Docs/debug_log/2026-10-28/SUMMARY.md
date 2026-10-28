@@ -294,3 +294,4 @@
 - Jetson 상태: f2pl5 prep 스택이 그대로 떠 있고 **방향 추정이 약 30° 틀린 상태**(§16.1)이며, place_web · dry_run 서버는 끔. **다음 주행 전 반드시 prep**(로버를 출발 테이프에 다시 놓고).
 - 설치: `place_web.py` 는 소스 · CMakeLists 에만 있고 Jetson colcon 설치는 아직이다(시험은 `/tmp` 사본으로 함).
 - push: 하지 않음(지시 대기). personal 대비 로컬 커밋 16 개 이상.
+- 정리 페이지(아티팩트 https://claude.ai/artifact/PdR3Zkxx3Utn1s7D5Lpp5A): `figures/day_summary_1028.html`(머리 `jobs/report_1028_head.html` + 본문 `jobs/report_1028_body.html` + 그림 `outputs/fig_place_run_f2pl5.png` · `outputs/gcm_reach_1610.png`, 조립 `jobs/fill_report_1028.py`). 사용자: "아티팩트로도 정리하고 push하라" → push.
