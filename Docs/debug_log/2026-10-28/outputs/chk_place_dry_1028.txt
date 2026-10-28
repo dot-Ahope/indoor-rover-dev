@@ -1,0 +1,61 @@
+13866a25d3 306c7be411 537db31533 b3c9e67d2b ab14b20cd1 
+## list
+0.0 s  info    출발점(출발 테이프, 처음 자리, 시작점, 홈) · B(비) · C(씨, 위 복도) · 통로 북쪽(서쪽 통로, 서쪽 통로 북쪽, 통로 입구) · 남서(남서 구석, 통로 남쪽, 서쪽 통로 남쪽, 남쪽 주머니) · W3(더블유3, 동쪽 끝)
+  rc 0
+## where
+0.0 s  info    map (-0.18, -0.06, 5°)
+  rc 0
+## go_to B
+0.0 s  accepted  B  [dry_run — 보내지 않음] 목표 (2.25, -1.60, -80°) 경로 끝 방향(157 점) · 여유 0.75 m · 거리 2.87 m
+25 s 안에 끝 상태 없음
+  rc 1
+## go_to 위 복도
+0.2 s  accepted  C  [dry_run — 보내지 않음] 목표 (-1.60, -2.00, -172°) 경로 끝 방향(304 점) · 여유 0.55 m · 거리 2.41 m
+25 s 안에 끝 상태 없음
+  rc 1
+## go_to 남서
+0.1 s  rejected  남서  목표 여유 0.000 m < 0.10
+  rc 1
+## go_to W3
+0.0 s  accepted  W3  [dry_run — 보내지 않음] 목표 (5.50, -2.20, 9°) 경로 끝 방향(285 점) · 여유 0.39 m · 거리 6.07 m
+25 s 안에 끝 상태 없음
+  rc 1
+## return
+0.0 s  accepted  출발점  [dry_run — 보내지 않음] 목표 (0.00, 0.00, 18°) 경로 끝 방향(9 점) · 여유 0.29 m · 거리 0.18 m
+25 s 안에 끝 상태 없음
+  rc 1
+## go_to 화장실
+0.0 s  rejected  화장실  등록되지 않은 장소
+  rc 1
+## go_to
+0.0 s  rejected    등록되지 않은 장소
+  rc 1
+## stop
+0.1 s  canceled    정지 요청 — Nav2 목표 전부 취소
+  rc 0
+== 서버 로그
+[INFO] [1793155263.765017122] [place_server]: [ab8280c7] info  map (-0.18, -0.06, 5°)
+[INFO] [1793155268.639125554] [place_server]: [da4b6f97] accepted B [dry_run — 보내지 않음] 목표 (2.25, -1.60, -80°) 경로 끝 방향(157 점) · 여유 0.75 m · 거리 2.87 m
+[INFO] [1793155296.353526861] [place_server]: [bddf14ca] accepted C [dry_run — 보내지 않음] 목표 (-1.60, -2.00, -172°) 경로 끝 방향(304 점) · 여유 0.55 m · 거리 2.41 m
+[INFO] [1793155323.839887862] [place_server]: [1639b24f] rejected 남서 목표 여유 0.000 m < 0.10
+[INFO] [1793155325.959871124] [place_server]: [0803c0f7] accepted W3 [dry_run — 보내지 않음] 목표 (5.50, -2.20, 9°) 경로 끝 방향(285 점) · 여유 0.39 m · 거리 6.07 m
+[INFO] [1793155354.003421645] [place_server]: [1c440c00] accepted 출발점 [dry_run — 보내지 않음] 목표 (0.00, 0.00, 18°) 경로 끝 방향(9 점) · 여유 0.29 m · 거리 0.18 m
+[INFO] [1793155380.921779063] [place_server]: [35eba7c6] rejected 화장실 등록되지 않은 장소
+[INFO] [1793155383.780624163] [place_server]: [2d0f29e8] rejected  등록되지 않은 장소
+[INFO] [1793155386.787283657] [place_server]: [7524d734] canceled  정지 요청 — Nav2 목표 전부 취소
+Traceback (most recent call last):
+  File "/home/jetson/ros2_ws/src/rover_navigation/scripts/place_server.py", line 216, in <module>
+    main()
+  File "/home/jetson/ros2_ws/src/rover_navigation/scripts/place_server.py", line 206, in main
+    try: rclpy.spin(n)
+  File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/__init__.py", line 229, in spin
+    executor.spin_once()
+  File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/executors.py", line 776, in spin_once
+    self._spin_once_impl(timeout_sec)
+  File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/executors.py", line 765, in _spin_once_impl
+    handler, entity, node = self.wait_for_ready_callbacks(timeout_sec=timeout_sec)
+  File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/executors.py", line 748, in wait_for_ready_callbacks
+    return next(self._cb_iter)
+  File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/executors.py", line 649, in _wait_for_ready_callbacks
+    raise ExternalShutdownException()
+rclpy.executors.ExternalShutdownException

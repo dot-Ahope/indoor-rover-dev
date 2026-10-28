@@ -59,3 +59,14 @@
 - 설계 초안 **`Docs/07_language/F25_PLACE_LLM_DESIGN.md` v0.1**: 원칙(LLM 은 좌표를 만들지 않음 — 오인식은 '정지' 로 끝남) · 전제(지금 스택 측정값: prep 위치 검사 ≤ 1.6 cm, no5 4 회 8/8, 도착 오차 0.09~0.23 m, 주행 중 RAM 3.2/7.6 GB · GPU 90 % 56~64 %) · 구조(장소 등록부 `places.yaml` → `place_server`(서비스 · NavigateToPose · 목표 여유 검사) ← `intent_node`(규칙 기준선 + llama.cpp 문법 고정 JSON) · 정지는 LLM 우회 빠른 길) · 안전 · LLM 후보와 자원 예산(추정, 추론은 정지 상태에서만) · 시험 T1~T5 초안 · 단계 S0~S5 · 결정 항목 6 개 · 위험.
 - 색인 `Docs/INDEX.md` 에 `07_language/` 행, `NAV2_EXPLORATION_PLAN.md §7.4` 4.5 행에 설계 링크.
 - 다음: §8 결정(장소 이름 · '돌아와' 뜻 · 입력 창구 · 이동 중 새 명령 · 여러 단계 명령 · 모델 라이선스) → S0(places.yaml) → S1(place_server, LLM 없이 실주행).
+
+## §7 F2.5 S0 · S1 구현 · dry_run 정지 시험 (사용자: "우선 우리가 부르던 이름으로 수행하자")
+- 이름(설계 §8-1) = 기록에서 써 온 이름 그대로(10-01 §8.3x · 10-14 §27.3): 출발점 (0, 0) · B (2.25, −1.6) · C (−1.6, −2.0; 별칭 '위 복도' — 위 복도 (−1.6, −2.1) 와 10 cm 차라 한 자리로) · 통로 북쪽 (−1.65, −3.7) · 남서 (−1.6, −5.5, 위치만 f) · W3 (5.5, −2.2). '돌아와' = 출발점(09-30 §9 사용자 표현). 이동 중 새 go_to = 거절('먼저 stop', 설계 §8-4 결정 전 기본값).
+- 코드(ros2_ws/src/rover_navigation): `config/places.yaml`(등록부) · `scripts/place_server.py`(/place/command → 등록부 → 경로 끝 방향(별도 상주 `path_end_yaw.py` — 09-28 §20 사고 교훈) → 목표 여유 검사(차체 ↔ 치명 ≥ 0.10 m, 장소별 min_clear) → NavigateToPose, f 모드는 xy 0.15 m 안이면 취소하고 arrived, stop = Nav2 목표 전부 취소, dry_run 파라미터) · `scripts/place_cmd.py`(명령 창구 — 여러 명령을 한 프로세스 · 참여자 1 개로, '@stopN' 정지 시험, 기대 상태 아니면 멈춤) · `scripts/path_end_yaw.py`(러너 job613 사본) · CMakeLists 설치 줄. 아직 colcon 설치는 안 함(Jetson src 에서 직접 실행).
+- dry_run 시험 `jobs/up_place_dry_1028.sh` → `jobs/chk_place_dry_1028.sh`, 원문 `outputs/chk_place_dry_1028.txt`(1 차) · `outputs/chk_place_dry_1028b.txt`(수정 뒤):
+  - 1 차: list · where · 별칭('위 복도' → C) · 모르는 장소('화장실' · 빈 이름) 거절 · stop 정상. B · C · W3 · 출발점 경로 끝 방향 계산 · 여유 0.29~0.75 m. **남서 거절 — 목표 여유 0.000 m**(등록 좌표에 차체를 놓으면 벽 칸에 닿는 좁은 구석). dry_run 의 accepted 가 끝 상태가 아니어서 창구가 25 s 기다림 · 종료 때 ExternalShutdownException 출력.
+  - 수정: 장소별 `min_clear`(남서 0.0 — no5 에서 위치만 목표로 f2tf1 · f2tt1 · f2tt2 반복 도착 (−1.47~−1.50, −5.31~−5.37), 근거를 등록부 주석에, TODO(improve) 좌표 옮김 검토) · dry_run 끝 상태 'checked' · 종료 예외 처리 · stop 때 진행 중 이동 명령에도 canceled 알림(기다리는 쪽이 멈추지 않게).
+  - 2 차: 이동 명령 5 개 모두 checked(0.0~0.8 s), 거절 2 · stop 정상. 관찰: **출발점에서 남서로 바로** 가면 경로 끝 방향 154°(431 점 · 5.63 m) — no5(북쪽에서 −100° 로 진입)와 다른 진입, 검증 안 된 길.
+### §7.1 S1 실주행 선언(f2pl1) — 결과 보기 전
+- 실행: `jobs/up_place_s1_1028.sh` → Jetson `jobs/run_place_s1_1028.sh`(setsid nohup — PC 끊겨도 계속): 게이트(chk_drive_gate B · C · G2) → place_server · bag(/place/* 포함) · tegrastats 기동 → 30 s → 명령 한 묶음: where; go_to B; go_to 위 복도; go_to 통로 북쪽; go_to 남서; go_to 통로 북쪽; go_to 위 복도; **go_to W3 @stop20**(이동 20 s 뒤 stop); wait 5; go_to W3; return. 순서는 no5 와 같게(검증된 길만).
+- 판정: ① 이동 명령 9 개 arrived(남서는 위치 도착), @stop 은 canceled ② stop 뒤 1 s 안에 /cmd_vel 0 · 로버 정지(bag 으로) · 다시 보낸 go_to W3 arrived ③ nav2 TF 실패 0 · 접촉 0 ④ 구간 시간이 no5 같은 구간(f2tt1 · f2tt2)과 ±20 % 안 ⑤ 명령 → moving 지연 기록(경로 방향 조회 포함).
