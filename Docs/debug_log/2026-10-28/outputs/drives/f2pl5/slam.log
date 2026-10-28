@@ -1,0 +1,74 @@
+[INFO] [launch]: All log files can be found below /home/jetson/.ros/log/2026-10-28-15-25-48-834121-jetson-desktop-1468212
+[INFO] [launch]: Default logging verbosity is set to INFO
+[INFO] [launch.user]: [slam.launch] slam_toolbox = 포크 /home/jetson/slam_ws/install/slam_toolbox/lib/slam_toolbox/async_slam_toolbox_node
+[INFO] [launch.user]: [slam.launch] 위치 추정(지도 고정): /home/jetson/maps/office/office_v3 에서 시작 자세 (0.000, 0.000, 0.000)
+[INFO] [localization_slam_toolbox_node-1]: process started with pid [1468218]
+[localization_slam_toolbox_node-1] [INFO] [1793168749.067006683] [slam_toolbox]: Node using stack size 40000000
+[localization_slam_toolbox_node-1] [INFO] [1793168749.490007958] [slam_toolbox]: Using solver plugin solver_plugins::CeresSolver
+[localization_slam_toolbox_node-1] [INFO] [1793168749.493705396] [slam_toolbox]: CeresSolver: Using SCHUR_JACOBI preconditioner.
+[localization_slam_toolbox_node-1] Load From File /home/jetson/maps/office/office_v3.posegraph 
+[localization_slam_toolbox_node-1] Mapper <- Module
+[localization_slam_toolbox_node-1] Mapper <- m_pSequentialScanMatcher
+[localization_slam_toolbox_node-1] Mapper <- m_pGraph
+[localization_slam_toolbox_node-1] MapperGraph <- Graph; Graph <- m_Edges; Graph <- m_Vertices
+[localization_slam_toolbox_node-1] MapperGraph <- m_pMapper; MapperGraph <- m_pLoopScanMatcher; MapperGraph <- m_pTraversal
+[localization_slam_toolbox_node-1] Mapper <- m_pMapperSensorManager
+[localization_slam_toolbox_node-1] MapperSensorManager <- m_ScanManagers; MapperSensorManager <- m_Scans
+[localization_slam_toolbox_node-1] Mapper <- m_Listeners
+[localization_slam_toolbox_node-1] **Finished serializing Mapper**
+[localization_slam_toolbox_node-1] Load From File
+[localization_slam_toolbox_node-1] **Serializing Dataset**
+[localization_slam_toolbox_node-1] Dataset <- m_SensorNameLookup
+[localization_slam_toolbox_node-1] Dataset <- m_Data
+[localization_slam_toolbox_node-1] Dataset <- m_Lasers
+[localization_slam_toolbox_node-1] Dataset <- m_pDatasetInfo
+[localization_slam_toolbox_node-1] **Finished serializing Dataset**
+[localization_slam_toolbox_node-1] Registering sensor: [Custom Described Lidar]
+[localization_slam_toolbox_node-1] WARNING: Logging before InitGoogleLogging() is written to STDERR
+[localization_slam_toolbox_node-1] W1028 15:25:54.489642 1468218 preprocessor.cc:62] Specified options.num_threads: 50 exceeds maximum available from the threading model Ceres was compiled with: 6.  Bounding to maximum number available.
+[localization_slam_toolbox_node-1] [WARN] [1793168758.178399545] [slam_toolbox]: minimum laser range setting (0.0 m) exceeds the capabilities of the used Lidar (0.2 m)
+[localization_slam_toolbox_node-1] Registering sensor: [Custom Described Lidar]
+[localization_slam_toolbox_node-1] [INFO] [1793168839.734937419] [slam_toolbox]: Message Filter dropping message: frame 'lidar_link' at time 1793168839.711 for reason 'discarding message because the queue is full'
+[localization_slam_toolbox_node-1] [INFO] [1793168843.708602299] [slam_toolbox]: Message Filter dropping message: frame 'lidar_link' at time 1793168843.577 for reason 'discarding message because the queue is full'
+[localization_slam_toolbox_node-1] [INFO] [1793168851.649489130] [slam_toolbox]: Message Filter dropping message: frame 'lidar_link' at time 1793168851.618 for reason 'discarding message because the queue is full'
+[localization_slam_toolbox_node-1] [INFO] [1793168855.326278055] [slam_toolbox]: Message Filter dropping message: frame 'lidar_link' at time 1793168855.303 for reason 'discarding message because the queue is full'
+[localization_slam_toolbox_node-1] [INFO] [1793168859.724764563] [slam_toolbox]: Message Filter dropping message: frame 'lidar_link' at time 1793168859.700 for reason 'discarding message because the queue is full'
+[localization_slam_toolbox_node-1] [INFO] [1793168862.653661787] [slam_toolbox]: Message Filter dropping message: frame 'lidar_link' at time 1793168862.635 for reason 'discarding message because the queue is full'
+[localization_slam_toolbox_node-1] [INFO] [1793168872.064311471] [slam_toolbox]: Message Filter dropping message: frame 'lidar_link' at time 1793168871.943 for reason 'discarding message because the queue is full'
+[localization_slam_toolbox_node-1] [INFO] [1793168876.002377784] [slam_toolbox]: Message Filter dropping message: frame 'lidar_link' at time 1793168875.880 for reason 'discarding message because the queue is full'
+[localization_slam_toolbox_node-1] [INFO] [1793168878.843819053] [slam_toolbox]: Message Filter dropping message: frame 'lidar_link' at time 1793168878.791 for reason 'discarding message because the queue is full'
+[localization_slam_toolbox_node-1] [INFO] [1793168908.904983563] [slam_toolbox]: Message Filter dropping message: frame 'lidar_link' at time 1793168908.752 for reason 'discarding message because the queue is full'
+[localization_slam_toolbox_node-1] [INFO] [1793168915.935363356] [slam_toolbox]: Message Filter dropping message: frame 'lidar_link' at time 1793168915.921 for reason 'discarding message because the queue is full'
+[localization_slam_toolbox_node-1] [INFO] [1793168919.664080491] [slam_toolbox]: Message Filter dropping message: frame 'lidar_link' at time 1793168919.652 for reason 'discarding message because the queue is full'
+[localization_slam_toolbox_node-1] [INFO] [1793168922.497820414] [slam_toolbox]: Message Filter dropping message: frame 'lidar_link' at time 1793168922.473 for reason 'discarding message because the queue is full'
+[localization_slam_toolbox_node-1] [INFO] [1793168946.792821439] [slam_toolbox]: Message Filter dropping message: frame 'lidar_link' at time 1793168946.755 for reason 'discarding message because the queue is full'
+[localization_slam_toolbox_node-1] [INFO] [1793168950.733687719] [slam_toolbox]: Message Filter dropping message: frame 'lidar_link' at time 1793168950.366 for reason 'discarding message because the queue is full'
+[localization_slam_toolbox_node-1] [INFO] [1793168965.212552358] [slam_toolbox]: Message Filter dropping message: frame 'lidar_link' at time 1793168964.958 for reason 'discarding message because the queue is full'
+[localization_slam_toolbox_node-1] [INFO] [1793168970.786364205] [slam_toolbox]: Message Filter dropping message: frame 'lidar_link' at time 1793168970.350 for reason 'discarding message because the queue is full'
+[localization_slam_toolbox_node-1] [INFO] [1793168973.649397758] [slam_toolbox]: Message Filter dropping message: frame 'lidar_link' at time 1793168973.245 for reason 'discarding message because the queue is full'
+[localization_slam_toolbox_node-1] [INFO] [1793168979.020099376] [slam_toolbox]: Message Filter dropping message: frame 'lidar_link' at time 1793168978.637 for reason 'discarding message because the queue is full'
+[localization_slam_toolbox_node-1] [INFO] [1793168981.720788201] [slam_toolbox]: Message Filter dropping message: frame 'lidar_link' at time 1793168981.246 for reason 'discarding message because the queue is full'
+[localization_slam_toolbox_node-1] [INFO] [1793168985.627422670] [slam_toolbox]: Message Filter dropping message: frame 'lidar_link' at time 1793168985.038 for reason 'discarding message because the queue is full'
+[localization_slam_toolbox_node-1] [INFO] [1793168995.187533033] [slam_toolbox]: Message Filter dropping message: frame 'lidar_link' at time 1793168994.525 for reason 'discarding message because the queue is full'
+[localization_slam_toolbox_node-1] [INFO] [1793168998.767810982] [slam_toolbox]: Message Filter dropping message: frame 'lidar_link' at time 1793168998.335 for reason 'discarding message because the queue is full'
+[localization_slam_toolbox_node-1] [INFO] [1793169006.596822635] [slam_toolbox]: Message Filter dropping message: frame 'lidar_link' at time 1793169006.110 for reason 'discarding message because the queue is full'
+[localization_slam_toolbox_node-1] [INFO] [1793169013.763323201] [slam_toolbox]: Message Filter dropping message: frame 'lidar_link' at time 1793169013.406 for reason 'discarding message because the queue is full'
+[localization_slam_toolbox_node-1] [INFO] [1793169018.876056600] [slam_toolbox]: Message Filter dropping message: frame 'lidar_link' at time 1793169018.510 for reason 'discarding message because the queue is full'
+[localization_slam_toolbox_node-1] [INFO] [1793169024.308261031] [slam_toolbox]: Message Filter dropping message: frame 'lidar_link' at time 1793169024.093 for reason 'discarding message because the queue is full'
+[localization_slam_toolbox_node-1] [INFO] [1793169043.937911341] [slam_toolbox]: Message Filter dropping message: frame 'lidar_link' at time 1793169043.776 for reason 'discarding message because the queue is full'
+[localization_slam_toolbox_node-1] [INFO] [1793169047.408635873] [slam_toolbox]: Message Filter dropping message: frame 'lidar_link' at time 1793169047.277 for reason 'discarding message because the queue is full'
+[localization_slam_toolbox_node-1] [INFO] [1793169050.277673165] [slam_toolbox]: Message Filter dropping message: frame 'lidar_link' at time 1793169049.965 for reason 'discarding message because the queue is full'
+[localization_slam_toolbox_node-1] [INFO] [1793169054.314233423] [slam_toolbox]: Message Filter dropping message: frame 'lidar_link' at time 1793169054.062 for reason 'discarding message because the queue is full'
+[localization_slam_toolbox_node-1] [INFO] [1793169057.637605481] [slam_toolbox]: Message Filter dropping message: frame 'lidar_link' at time 1793169057.261 for reason 'discarding message because the queue is full'
+[localization_slam_toolbox_node-1] [INFO] [1793169063.531463691] [slam_toolbox]: Message Filter dropping message: frame 'lidar_link' at time 1793169063.357 for reason 'discarding message because the queue is full'
+[localization_slam_toolbox_node-1] [INFO] [1793169071.147253687] [slam_toolbox]: Message Filter dropping message: frame 'lidar_link' at time 1793169070.653 for reason 'discarding message because the queue is full'
+[localization_slam_toolbox_node-1] [INFO] [1793169077.819215496] [slam_toolbox]: Message Filter dropping message: frame 'lidar_link' at time 1793169077.437 for reason 'discarding message because the queue is full'
+[localization_slam_toolbox_node-1] [INFO] [1793169085.013729074] [slam_toolbox]: Message Filter dropping message: frame 'lidar_link' at time 1793169084.541 for reason 'discarding message because the queue is full'
+[localization_slam_toolbox_node-1] [INFO] [1793169090.163719975] [slam_toolbox]: Message Filter dropping message: frame 'lidar_link' at time 1793169089.822 for reason 'discarding message because the queue is full'
+[localization_slam_toolbox_node-1] [INFO] [1793169093.584355560] [slam_toolbox]: Message Filter dropping message: frame 'lidar_link' at time 1793169093.021 for reason 'discarding message because the queue is full'
+[localization_slam_toolbox_node-1] [INFO] [1793169108.555745334] [slam_toolbox]: Message Filter dropping message: frame 'lidar_link' at time 1793169107.809 for reason 'discarding message because the queue is full'
+[localization_slam_toolbox_node-1] [INFO] [1793169111.550585063] [slam_toolbox]: Message Filter dropping message: frame 'lidar_link' at time 1793169111.104 for reason 'discarding message because the queue is full'
+[localization_slam_toolbox_node-1] [INFO] [1793169114.970215221] [slam_toolbox]: Message Filter dropping message: frame 'lidar_link' at time 1793169114.605 for reason 'discarding message because the queue is full'
+[localization_slam_toolbox_node-1] [INFO] [1793169120.583132366] [slam_toolbox]: Message Filter dropping message: frame 'lidar_link' at time 1793169120.399 for reason 'discarding message because the queue is full'
+[localization_slam_toolbox_node-1] [INFO] [1793169126.387039055] [slam_toolbox]: Message Filter dropping message: frame 'lidar_link' at time 1793169126.001 for reason 'discarding message because the queue is full'
+[localization_slam_toolbox_node-1] [INFO] [1793169130.210220620] [slam_toolbox]: Message Filter dropping message: frame 'lidar_link' at time 1793169129.981 for reason 'discarding message because the queue is full'
