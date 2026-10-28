@@ -15,3 +15,5 @@
 | 9 | 그 칸 출처 | `jobs/anal_cell_src.py` | `outputs/cell_src_f2pl2.txt` 라이다 27~184 점 · nvblox 0.21~0.28 | 실재 물체 가장자리, 99↔100 흔들림 | ✔ |
 | 9 | 옮길 자리 | `jobs/anal_place_clear.py`(x 여러 개, 두 bag) | `outputs/place_clear_center.txt` −1.78 에서 0.10~0.16 | 가운데로 | ？(f2pl3) |
 | 9 | 6 곳 전부 dry_run(남서에서) | `jobs/up_place_dry_1028c.sh` → `jobs/chk_place_dry_1028c.sh`(목록 바꿈) | `outputs/chk_place_dry_1028c3.txt` 6 checked | 실주행 준비 | ？(f2pl3) |
+| 10 | f2pl3 where 응답 없음 | bag /place/* 개수 확인(인라인 rosbags) | command 1 · status 0, f2pl2 command 4 중 2 기록 | 첫 메시지 연결 경쟁 | ？(원인 미확인, 수정 뒤 f2pl4) |
+| 10 | 창구 수정 확인 | `jobs/up_place_dry_1028c.sh` | `outputs/chk_place_dry_1028c4.txt` 9/9 | 양방향 확인 동작 | ✔ |
