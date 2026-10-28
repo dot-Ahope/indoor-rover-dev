@@ -12,3 +12,7 @@
 ## §2 prep 재전송 · prep
 - `jobs/up_prep_1028.sh`(재전송 + `jobs/prep_smac_1028.sh`, 원문은 Jetson `/tmp/prep_full_1.txt`) → `outputs/prep_smac_1028_1.txt`: prep_fast aeb6e6cf3b · prep_patrol 4fe16954f6 · chk_prep 64b8beeadd · chk_drive_gate 5e92ec4a0a — **모두 PC HEAD blob 과 같음** · CR 0. 보드 세션 그대로(에이전트 세션 1 · /wheel_odom 25 Hz, 리셋 불필요).
 - **PREP_OK** +86 s · 위치 추정 0.008 m · −0.3° · 배터리 12.37 V · tolerance 0.35 · REEDS_SHEPP · cp 3.0 · PathAlign 28 · PathFollow 5 · 프리셋 3 · odom1 /vslam/odom · SLAM localization · transform_timeout 1.5. chk_prep 이름표 수정(10-27 §24) 반영 확인(PathAlign · PathFollow 로 찍힘).
+
+## §3 f2tt2 첫 시도 — PC WSL 기동 실패로 러너 미실행
+- 사용자 "시작" 10:21:37 → 러너 호출(`wsl … run_f2c.sh f2tt2 …`)이 즉시 끝남, `outputs/drives/f2tt2/run_f2tt2.txt` 0 B. 이어 Jetson 상태 확인도 같은 오류: `wsl -l -v` = Ubuntu-22.04 · docker-desktop 모두 Stopped, 실행 시 'Wsl/Service/CreateInstance/E_FAIL'(PC 쪽). Jetson 에 닿는 모든 명령이 WSL(sshpass) 경유 → **러너는 시작 안 됨, 로버 안 움직였을 것**(현장 확인 요청).
+- 대응: `wsl --shutdown` 뒤 재시도 — PC 의 WSL · Docker Desktop 을 모두 내리는 조치라 사용자 확인 대기. 원인 미확인.
