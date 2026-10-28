@@ -1,0 +1,29 @@
+########## S1 f2pl2 게이트 13:21:55 ##########
+  B /wheel_odom 25.0 Hz
+  C map->odom 56 개/5 s, 최대 간격 0.06 s, 최대 stamp 지연 -1.33 s
+  G2 로컬 코스트맵 LETHAL ↔ 차체 외곽 최소 0.515 m @ 차체 (-0.34, +0.67)
+  G2 라이다 점 ↔ 차체 외곽 최소 0.530 m @ 차체 (-0.38, +0.68)
+  게이트 노드 5.0 s
+GATE B=OK C=OK G2=0.515
+[INFO] [1793161329.706137142] [place_server]: 경로 방향 조회기: 준비됨
+[INFO] [1793161329.707214874] [place_server]: 장소 6 곳 적재(office_v3) · home=출발점 · dry_run=False
+########## S1 f2pl2 명령 13:22:32 ##########
+PLAN fromC: where; go_to 통로 북쪽; go_to 남서; go_to 통로 북쪽; go_to 위 복도; go_to W3 @stop20; wait 5; go_to W3; return
+>> where
+   0.2 s  info    map (-1.50, -2.01, -176°)
+<< where → info (기대대로) 0.2 s
+>> go_to 통로 북쪽
+   0.1 s  accepted  통로 북쪽  목표 (-1.65, -3.70, -86°) 경로 끝 방향(77 점) → 여유 위해 -35° 고침(원래 여유 0.000) · 여유 0.10 m · 거리 1.70 m
+   0.1 s  moving  통로 북쪽  
+   31.0 s  arrived  통로 북쪽  상태 4 · 30.9 s
+<< go_to 통로 북쪽 → arrived (기대대로) 31.0 s
+>> go_to 남서
+   0.0 s  accepted  남서  목표 (-1.60, -5.50, -109°) 경로 끝 방향(78 점) · 여유 0.01 m · 거리 1.94 m
+   0.0 s  moving  남서  
+   26.6 s  arrived  남서  상태 4 · 26.6 s
+<< go_to 남서 → arrived (기대대로) 26.6 s
+>> go_to 통로 북쪽
+   0.1 s  rejected  통로 북쪽  목표 여유 0.000 m < 0.10 · 방향 74° 경로 끝 방향(69 점)
+<< go_to 통로 북쪽 → rejected (기대 arrived/checked) 0.1 s
+########## S1 f2pl2 끝 13:23:31 rc 1 ##########
+=== 끝 13:23:36 bag 7222922 B ===
