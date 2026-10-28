@@ -40,3 +40,4 @@
 | 16.1 | 닫은 칸이 정적 벽인가 | `jobs/anal_gcm_vs_static.py` | `outputs/gcm_vs_static_1610.txt` N 185 칸 · 남쪽 띠는 # | 돌아간 벽 | ✔ — §13.1 해석 정정(§16.2) |
 | 16.1 | 방향 추정 오차 | `jobs/chk_scan_align.py` | `outputs/scan_align_1615.txt` 0.140 → −32.5° 에서 0.295 | yaw 약 30° 틀림 | ✔ |
 | 16.1 | 정지 중 어느 TF 가 돌았나 | 인라인 rosbags(f2pl5 bag 끝) | `outputs/odom_yaw_end_f2pl5.txt` odom→base −161.4° → 지금 −144.8°, map→odom 불변 | odom yaw 드리프트 + SLAM 미보정 | ？(자이로/cuVSLAM 미확인) |
+| 17 | 하루 마무리 | — | SUMMARY §17 · CLAUDE.md §6 F2.5 줄 | 다음 주행 전 prep 필수(방향 추정 틀림) | — |
