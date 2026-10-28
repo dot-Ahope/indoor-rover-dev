@@ -32,5 +32,5 @@
 | 13.1 | 비우면 사라지나 | `jobs/chk_clear_global_1028.sh` | `outputs/clear_global_1528.txt` 5 · 20 s 뒤 그대로 | nvblox 기억 | ？(층별 미확인) |
 | 14 | prep #2 | `jobs/up_prep_1028.sh 2` | `outputs/prep_smac_1028_2.txt` PREP_OK 0.010 m | 재기동으로 갇힘 풀림 기대 | ✔ |
 | 14 | prep 뒤 dry_run | `jobs/up_place_dry_1028c.sh` → `jobs/chk_place_dry_1028c.sh`(목록: W3 먼저) | `outputs/chk_place_dry_1028c6.txt` 8/8 | 경로 조회 정상 | ✔ |
-| 14.1 | f2pl5 W3 왕복 | `jobs/up_place_s1_1028.sh f2pl5 w3` | `outputs/drives/f2pl5/place_s1.log` 91.7 · 100.2 s arrived | 통과 | ✔(접촉 확인 대기) |
+| 14.1 | f2pl5 W3 왕복 | `jobs/up_place_s1_1028.sh f2pl5 w3` | `outputs/drives/f2pl5/place_s1.log` 91.7 · 100.2 s arrived | 통과 | ✔(접촉 0, 사용자) |
 | 14.1 | 명령 · 결과 그림 | `Docs/tools/fig_place_run.py`(새 상시 도구) | `outputs/fig_place_run_f2pl5.png` | 막힘 재계획 1 회 위치 · 시각 표시 | ✔ |
