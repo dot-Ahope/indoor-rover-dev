@@ -1,0 +1,7 @@
+ 10:05:06 up  1:11,  0 users,  load average: 0.04, 0.06, 0.04
+Wi-Fi WEB_DEV_5G
+ls: cannot access '/tmp/prep_fast.sh': No such file or directory ls: cannot access '/tmp/prep_patrol.sh': No such file or directory ls: cannot access '/tmp/chk_prep.py': No such file or directory ls: cannot access '/tmp/prep_smac_1027.sh': No such file or directory ls: cannot access '/tmp/chk_drive_gate.py': No such file or directory 
+nav2 0 · slam 0 · cam 0 · agent 1 · nvblox 
+slam.launch transform_timeout: 'transform_timeout': 1.5 · nvblox 층 return 수정: 1
+배터리: 
+/dev/nvme0n1p1  233G  100G  122G  45% /
