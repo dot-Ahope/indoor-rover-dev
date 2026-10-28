@@ -34,3 +34,9 @@
 | 14 | prep 뒤 dry_run | `jobs/up_place_dry_1028c.sh` → `jobs/chk_place_dry_1028c.sh`(목록: W3 먼저) | `outputs/chk_place_dry_1028c6.txt` 8/8 | 경로 조회 정상 | ✔ |
 | 14.1 | f2pl5 W3 왕복 | `jobs/up_place_s1_1028.sh f2pl5 w3` | `outputs/drives/f2pl5/place_s1.log` 91.7 · 100.2 s arrived | 통과 | ✔(접촉 0, 사용자) |
 | 14.1 | 명령 · 결과 그림 | `Docs/tools/fig_place_run.py`(새 상시 도구) | `outputs/fig_place_run_f2pl5.png` | 막힘 재계획 1 회 위치 · 시각 표시 | ✔ |
+| 16 | 휴대폰 웹 창구 확인 | `jobs/up_place_web_1028.sh` → `jobs/chk_place_web_1028.sh` | `outputs/place_web_chk1.txt` 403/200 · 명령 5/5 · PC 200 | 동작 | ✔(휴대폰 미확인) |
+| 16.1 | 경로 없음 재발 · 둘레 | `jobs/chk_costmap_robot.py` · `jobs/chk_scan_band.py` | `outputs/chk_costmap_robot_1607.txt` · `chk_scan_band_1607.txt` | §13.1 과 같음 | ✔ |
+| 16.1 | 어디서 닫혔나 | `jobs/chk_costmap_dump.py` → `jobs/fig_gcm_reach.py` | `outputs/gcm_reach_1610.png` 닿는 칸 1.3 m² | 출발 방 닫힘 | ✔ |
+| 16.1 | 닫은 칸이 정적 벽인가 | `jobs/anal_gcm_vs_static.py` | `outputs/gcm_vs_static_1610.txt` N 185 칸 · 남쪽 띠는 # | 돌아간 벽 | ✔ — §13.1 해석 정정(§16.2) |
+| 16.1 | 방향 추정 오차 | `jobs/chk_scan_align.py` | `outputs/scan_align_1615.txt` 0.140 → −32.5° 에서 0.295 | yaw 약 30° 틀림 | ✔ |
+| 16.1 | 정지 중 어느 TF 가 돌았나 | 인라인 rosbags(f2pl5 bag 끝) | `outputs/odom_yaw_end_f2pl5.txt` odom→base −161.4° → 지금 −144.8°, map→odom 불변 | odom yaw 드리프트 + SLAM 미보정 | ？(자이로/cuVSLAM 미확인) |

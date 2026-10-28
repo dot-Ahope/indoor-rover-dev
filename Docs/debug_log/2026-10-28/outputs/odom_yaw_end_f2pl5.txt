@@ -1,0 +1,4 @@
+bag 끝(정지 뒤) TF
+  map→odom 15:32:20 (0.019, 0.041, -2.1°)
+  odom→base_link 15:32:20 (0.085, 0.019, -161.4°)
+끝 8 s /odometry/filtered ω 평균 0.00318 rad/s (10.95 °/min) · n 241
