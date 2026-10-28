@@ -1,0 +1,425 @@
+[INFO] [launch]: All log files can be found below /home/jetson/.ros/log/2026-10-28-15-25-49-978298-jetson-desktop-1468241
+[INFO] [launch]: Default logging verbosity is set to INFO
+[INFO] [stuck_monitor.py-1]: process started with pid [1468306]
+[INFO] [nav_guard.py-2]: process started with pid [1468308]
+[INFO] [controller_server-3]: process started with pid [1468310]
+[INFO] [smoother_server-4]: process started with pid [1468312]
+[INFO] [planner_server-5]: process started with pid [1468314]
+[INFO] [behavior_server-6]: process started with pid [1468318]
+[INFO] [bt_navigator-7]: process started with pid [1468325]
+[INFO] [waypoint_follower-8]: process started with pid [1468331]
+[INFO] [velocity_smoother-9]: process started with pid [1468341]
+[INFO] [lifecycle_manager-10]: process started with pid [1468344]
+[INFO] [map_server-11]: process started with pid [1468347]
+[INFO] [lifecycle_manager-12]: process started with pid [1468349]
+[INFO] [nvblox_up-13]: process started with pid [1468351]
+[planner_server-5] [INFO] [1793168751.480963241] [planner_server]: 
+[planner_server-5] 	planner_server lifecycle node launched. 
+[planner_server-5] 	Waiting on external lifecycle transitions to activate
+[planner_server-5] 	See https://design.ros2.org/articles/node_lifecycle.html for more information.
+[planner_server-5] [INFO] [1793168751.537793279] [planner_server]: Creating
+[lifecycle_manager-12] [INFO] [1793168751.855553676] [lifecycle_manager_navmap]: Creating
+[behavior_server-6] [INFO] [1793168751.860968581] [behavior_server]: 
+[behavior_server-6] 	behavior_server lifecycle node launched. 
+[behavior_server-6] 	Waiting on external lifecycle transitions to activate
+[behavior_server-6] 	See https://design.ros2.org/articles/node_lifecycle.html for more information.
+[velocity_smoother-9] [INFO] [1793168751.900419689] [velocity_smoother]: 
+[velocity_smoother-9] 	velocity_smoother lifecycle node launched. 
+[velocity_smoother-9] 	Waiting on external lifecycle transitions to activate
+[velocity_smoother-9] 	See https://design.ros2.org/articles/node_lifecycle.html for more information.
+[lifecycle_manager-12] [INFO] [1793168751.921541531] [lifecycle_manager_navmap]: [34m[1mCreating and initializing lifecycle service clients[0m[0m
+[smoother_server-4] [INFO] [1793168751.948039973] [smoother_server]: 
+[smoother_server-4] 	smoother_server lifecycle node launched. 
+[smoother_server-4] 	Waiting on external lifecycle transitions to activate
+[smoother_server-4] 	See https://design.ros2.org/articles/node_lifecycle.html for more information.
+[smoother_server-4] [INFO] [1793168751.953489023] [smoother_server]: Creating smoother server
+[lifecycle_manager-10] [INFO] [1793168752.221721391] [lifecycle_manager_navigation]: Creating
+[controller_server-3] [INFO] [1793168752.273197774] [controller_server]: 
+[controller_server-3] 	controller_server lifecycle node launched. 
+[controller_server-3] 	Waiting on external lifecycle transitions to activate
+[controller_server-3] 	See https://design.ros2.org/articles/node_lifecycle.html for more information.
+[controller_server-3] [INFO] [1793168752.338248733] [controller_server]: Creating controller server
+[waypoint_follower-8] [INFO] [1793168752.375553368] [waypoint_follower]: 
+[waypoint_follower-8] 	waypoint_follower lifecycle node launched. 
+[waypoint_follower-8] 	Waiting on external lifecycle transitions to activate
+[waypoint_follower-8] 	See https://design.ros2.org/articles/node_lifecycle.html for more information.
+[waypoint_follower-8] [INFO] [1793168752.377024107] [waypoint_follower]: Creating
+[lifecycle_manager-10] [INFO] [1793168752.467089969] [lifecycle_manager_navigation]: [34m[1mCreating and initializing lifecycle service clients[0m[0m
+[bt_navigator-7] [INFO] [1793168752.524615679] [bt_navigator]: 
+[bt_navigator-7] 	bt_navigator lifecycle node launched. 
+[bt_navigator-7] 	Waiting on external lifecycle transitions to activate
+[bt_navigator-7] 	See https://design.ros2.org/articles/node_lifecycle.html for more information.
+[bt_navigator-7] [INFO] [1793168752.592803801] [bt_navigator]: Creating
+[planner_server-5] [INFO] [1793168752.681277001] [global_costmap.global_costmap]: 
+[planner_server-5] 	global_costmap lifecycle node launched. 
+[planner_server-5] 	Waiting on external lifecycle transitions to activate
+[planner_server-5] 	See https://design.ros2.org/articles/node_lifecycle.html for more information.
+[planner_server-5] [INFO] [1793168752.683704636] [global_costmap.global_costmap]: Creating Costmap
+[planner_server-5] [WARN] [1793168752.726109093] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[planner_server-5] [WARN] [1793168752.735315360] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[planner_server-5] [WARN] [1793168752.740483153] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[planner_server-5] [WARN] [1793168752.742669179] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[planner_server-5] [WARN] [1793168752.745760805] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[planner_server-5] [WARN] [1793168752.796160160] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[map_server-11] [INFO] [1793168752.826872249] [nav_map_server]: 
+[map_server-11] 	nav_map_server lifecycle node launched. 
+[map_server-11] 	Waiting on external lifecycle transitions to activate
+[map_server-11] 	See https://design.ros2.org/articles/node_lifecycle.html for more information.
+[map_server-11] [INFO] [1793168752.828175750] [nav_map_server]: Creating
+[planner_server-5] [WARN] [1793168752.989163812] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[controller_server-3] [INFO] [1793168753.036336752] [local_costmap.local_costmap]: 
+[controller_server-3] 	local_costmap lifecycle node launched. 
+[controller_server-3] 	Waiting on external lifecycle transitions to activate
+[controller_server-3] 	See https://design.ros2.org/articles/node_lifecycle.html for more information.
+[controller_server-3] [INFO] [1793168753.041497536] [local_costmap.local_costmap]: Creating Costmap
+[planner_server-5] [WARN] [1793168753.178796949] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[planner_server-5] [WARN] [1793168753.272323793] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[planner_server-5] [WARN] [1793168753.456054392] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[planner_server-5] [WARN] [1793168753.460272873] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[planner_server-5] [WARN] [1793168753.463282287] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[controller_server-3] [WARN] [1793168753.505342669] [rclcpp]: Failed to get parameters: FollowPathMPPI.PreferForwardCritic.cost_weight
+[controller_server-3] [WARN] [1793168753.605569998] [controller_server.rclcpp]: failed to send response to /controller_server/get_parameters (timeout): client will not receive response, at ./src/rmw_response.cpp:154, at ./src/rcl/service.c:314
+[planner_server-5] [WARN] [1793168753.638922402] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[controller_server-3] [WARN] [1793168753.705883731] [controller_server.rclcpp]: failed to send response to /controller_server/get_state (timeout): client will not receive response, at ./src/rmw_response.cpp:154, at ./src/rcl/service.c:314
+[planner_server-5] [WARN] [1793168753.872994818] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[lifecycle_manager-12] [INFO] [1793168754.088450565] [lifecycle_manager_navmap]: Waiting for service nav_map_server/get_state...
+[planner_server-5] [WARN] [1793168754.315468531] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[lifecycle_manager-12] [INFO] [1793168754.561197857] [lifecycle_manager_navmap]: [34m[1mStarting managed nodes bringup...[0m[0m
+[lifecycle_manager-12] [INFO] [1793168754.561344646] [lifecycle_manager_navmap]: [34m[1mConfiguring nav_map_server[0m[0m
+[map_server-11] [INFO] [1793168754.576468459] [nav_map_server]: Configuring
+[map_server-11] [INFO] [1793168754.576674354] [map_io]: Loading yaml file: /home/jetson/maps/office/office_v3.yaml
+[map_server-11] [INFO] [1793168754.577272358] [map_io]: resolution: 0.05
+[map_server-11] [INFO] [1793168754.577298087] [map_io]: origin[0]: -5.29
+[map_server-11] [INFO] [1793168754.577307176] [map_io]: origin[1]: -6.96
+[map_server-11] [INFO] [1793168754.577314120] [map_io]: origin[2]: 0
+[map_server-11] [INFO] [1793168754.577321480] [map_io]: free_thresh: 0.25
+[map_server-11] [INFO] [1793168754.577328584] [map_io]: occupied_thresh: 0.65
+[map_server-11] [INFO] [1793168754.577336489] [map_io]: mode: trinary
+[map_server-11] [INFO] [1793168754.577346153] [map_io]: negate: 0
+[map_server-11] [INFO] [1793168754.577768663] [map_io]: Loading image_file: /home/jetson/maps/office/office_v3.pgm
+[map_server-11] [INFO] [1793168754.638179336] [map_io]: Read map /home/jetson/maps/office/office_v3.pgm: 333 X 242 map @ 0.05 m/cell
+[planner_server-5] [WARN] [1793168754.797777654] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[planner_server-5] [WARN] [1793168754.875112425] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[planner_server-5] [WARN] [1793168754.912661132] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[planner_server-5] [WARN] [1793168755.007361552] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[lifecycle_manager-10] [INFO] [1793168755.022088392] [lifecycle_manager_navigation]: [34m[1mStarting managed nodes bringup...[0m[0m
+[lifecycle_manager-10] [INFO] [1793168755.022230317] [lifecycle_manager_navigation]: [34m[1mConfiguring controller_server[0m[0m
+[controller_server-3] [INFO] [1793168755.027119412] [controller_server]: Configuring controller interface
+[controller_server-3] [INFO] [1793168755.027776330] [controller_server]: getting goal checker plugins..
+[controller_server-3] [INFO] [1793168755.027880430] [controller_server]: Controller frequency set to 10.0000Hz
+[controller_server-3] [INFO] [1793168755.027960592] [local_costmap.local_costmap]: Configuring
+[lifecycle_manager-12] [INFO] [1793168755.258144203] [lifecycle_manager_navmap]: [34m[1mActivating nav_map_server[0m[0m
+[map_server-11] [INFO] [1793168755.266936759] [nav_map_server]: Activating
+[map_server-11] [INFO] [1793168755.294562343] [nav_map_server]: Creating bond (nav_map_server) to lifecycle manager.
+[planner_server-5] [WARN] [1793168755.331431699] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[controller_server-3] [INFO] [1793168755.380339802] [local_costmap.local_costmap]: Using plugin "nvblox_layer"
+[controller_server-3] [INFO] [1793168755.522094823] [local_costmap.local_costmap]: Name: nvblox_layer Topic name: /nvblox_node/static_map_slice Convert to binary costmap: 1 Max obstacle distance: 0.4
+[controller_server-3] [INFO] [1793168755.691076373] [local_costmap.local_costmap]: Initialized plugin "nvblox_layer"
+[controller_server-3] [INFO] [1793168755.691180249] [local_costmap.local_costmap]: Using plugin "obstacle_layer"
+[planner_server-5] [WARN] [1793168755.763661766] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[planner_server-5] [WARN] [1793168755.789734881] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[controller_server-3] [INFO] [1793168755.821545472] [local_costmap.local_costmap]: Subscribed to Topics: scan
+[planner_server-5] [WARN] [1793168755.837807692] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[planner_server-5] [WARN] [1793168755.848460376] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[planner_server-5] [WARN] [1793168755.855929879] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[planner_server-5] [WARN] [1793168755.862051016] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[planner_server-5] [WARN] [1793168755.869885140] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[planner_server-5] [WARN] [1793168755.876375986] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[planner_server-5] [WARN] [1793168755.885548395] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[planner_server-5] [WARN] [1793168755.903920031] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[planner_server-5] [WARN] [1793168755.915005562] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[planner_server-5] [WARN] [1793168755.920018565] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[planner_server-5] [WARN] [1793168755.957305503] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[planner_server-5] [WARN] [1793168756.047995322] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[controller_server-3] [INFO] [1793168756.140557621] [local_costmap.local_costmap]: Initialized plugin "obstacle_layer"
+[controller_server-3] [INFO] [1793168756.140669689] [local_costmap.local_costmap]: Using plugin "inflation_layer"
+[controller_server-3] [INFO] [1793168756.144350903] [local_costmap.local_costmap]: Initialized plugin "inflation_layer"
+[planner_server-5] [WARN] [1793168756.164200605] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[planner_server-5] [WARN] [1793168756.359303272] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[stuck_monitor.py-1] [INFO] [1793168756.377670044] [stuck_monitor]: stuck_monitor 시작 (window 2.0s, ratio 0.25, SHADOW(로그만))
+[lifecycle_manager-12] [INFO] [1793168756.390717498] [lifecycle_manager_navmap]: Server nav_map_server connected with bond.
+[lifecycle_manager-12] [INFO] [1793168756.390856767] [lifecycle_manager_navmap]: [34m[1mManaged nodes are active[0m[0m
+[lifecycle_manager-12] [INFO] [1793168756.390887488] [lifecycle_manager_navmap]: [34m[1mCreating bond timer...[0m[0m
+[planner_server-5] [WARN] [1793168756.445618382] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[controller_server-3] [INFO] [1793168756.799455433] [controller_server]: Created progress_checker : progress_checker of type nav2_controller::PoseProgressChecker
+[planner_server-5] [WARN] [1793168756.880560125] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[nvblox_up-13] [nvblox_up] nvblox_node pid 1468566 (yaml nvblox_local.yaml, 로그 /tmp/nvblox_node.log, 부모 launch pid 1468241) — 이후 래퍼 출력은 /tmp/nvblox_node_up.log
+[planner_server-5] [WARN] [1793168756.954965163] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[controller_server-3] [INFO] [1793168756.986155061] [controller_server]: Created goal checker : general_goal_checker of type nav2_controller::SimpleGoalChecker
+[controller_server-3] [INFO] [1793168756.988891027] [controller_server]: Controller Server has general_goal_checker  goal checkers available.
+[controller_server-3] [INFO] [1793168756.991122655] [controller_server]: Created controller : FollowPath of type nav2_regulated_pure_pursuit_controller::RegulatedPurePursuitController
+[controller_server-3] [WARN] [1793168757.003173243] [controller_server]: Disabling reversing. Both use_rotate_to_heading and allow_reversing parameter cannot be set to true. By default setting use_rotate_to_heading true
+[planner_server-5] [WARN] [1793168757.029029038] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[planner_server-5] [WARN] [1793168757.044918029] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[planner_server-5] [WARN] [1793168757.080328999] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[planner_server-5] [WARN] [1793168757.091090039] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[planner_server-5] [WARN] [1793168757.193804781] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[controller_server-3] [INFO] [1793168757.207082546] [controller_server]: Created controller : FollowPathMPPI of type nav2_mppi_controller::MPPIController
+[planner_server-5] [WARN] [1793168757.269647180] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[planner_server-5] [WARN] [1793168757.398045072] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[planner_server-5] [WARN] [1793168757.417405797] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[controller_server-3] [INFO] [1793168757.440786724] [controller_server]: Controller period is equal to model dt. Control sequence shifting is ON
+[planner_server-5] [WARN] [1793168757.484766915] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[planner_server-5] [WARN] [1793168757.526755678] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[planner_server-5] [WARN] [1793168757.547875472] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[nav_guard.py-2] [INFO] [1793168757.587592829] [nav_guard]: nav_guard 시작 (시간 = d0/0.07×2.0+30 s, 무진행 0.25 m/45 s)
+[planner_server-5] [WARN] [1793168757.589073135] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[controller_server-3] [INFO] [1793168757.599535381] [controller_server]: ConstraintCritic instantiated with 1 power and 4.000000 weight.
+[controller_server-3] [INFO] [1793168757.602031722] [controller_server]: Critic loaded : mppi::critics::ConstraintCritic
+[controller_server-3] [INFO] [1793168757.651691627] [controller_server]: InflationCostCritic instantiated with 1 power and 300.000000 / 0.015000 weights. Critic will collision check based on footprint cost.
+[controller_server-3] [INFO] [1793168757.661649535] [controller_server]: Critic loaded : mppi::critics::CostCritic
+[controller_server-3] [INFO] [1793168757.674802561] [controller_server]: GoalCritic instantiated with 1 power and 10.000000 weight.
+[controller_server-3] [INFO] [1793168757.674929349] [controller_server]: Critic loaded : mppi::critics::GoalCritic
+[controller_server-3] [INFO] [1793168757.690492793] [controller_server]: GoalAngleCritic instantiated with 1 power, 3.000000 weight, and 0.400000 angular threshold.
+[controller_server-3] [INFO] [1793168757.690617085] [controller_server]: Critic loaded : mppi::critics::GoalAngleCritic
+[controller_server-3] [INFO] [1793168757.706062221] [controller_server]: ReferenceTrajectoryCritic instantiated with 1 power and 28.000000 weight
+[controller_server-3] [INFO] [1793168757.706186449] [controller_server]: Critic loaded : mppi::critics::PathAlignCritic
+[planner_server-5] [WARN] [1793168757.714481709] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[controller_server-3] [INFO] [1793168757.716169926] [controller_server]: Critic loaded : mppi::critics::PathFollowCritic
+[controller_server-3] [INFO] [1793168757.727997370] [controller_server]: PathAngleCritic instantiated with 1 power and 2.000000 weight. Reversing allowed.
+[controller_server-3] [INFO] [1793168757.728126495] [controller_server]: Critic loaded : mppi::critics::PathAngleCritic
+[controller_server-3] [INFO] [1793168757.738163094] [controller_server]: PreferForwardCritic instantiated with 1 power and 15.000000 weight.
+[controller_server-3] [INFO] [1793168757.738550499] [controller_server]: Critic loaded : mppi::critics::PreferForwardCritic
+[controller_server-3] [INFO] [1793168757.864505043] [controller_server]: ClearanceBandCritic: 띠 0.060 m · 가중 20.0 · 점 간격 2
+[controller_server-3] [INFO] [1793168757.865380177] [controller_server]: Critic loaded : mppi::critics::ClearanceBandCritic
+[planner_server-5] [WARN] [1793168757.905006427] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[controller_server-3] [INFO] [1793168757.955234831] [controller_server]: Optimizer reset
+[controller_server-3] [INFO] [1793168758.002183348] [MPPIController]: Configured MPPI Controller: FollowPathMPPI
+[controller_server-3] [INFO] [1793168758.002285303] [controller_server]: Controller Server has FollowPath FollowPathMPPI  controllers available.
+[planner_server-5] [WARN] [1793168758.265496537] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[planner_server-5] [WARN] [1793168758.483806716] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[lifecycle_manager-10] [INFO] [1793168758.492302655] [lifecycle_manager_navigation]: [34m[1mConfiguring smoother_server[0m[0m
+[smoother_server-4] [INFO] [1793168758.494200095] [smoother_server]: Configuring smoother server
+[planner_server-5] [WARN] [1793168758.511231429] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[planner_server-5] [WARN] [1793168758.545789474] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[planner_server-5] [WARN] [1793168758.565516644] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[planner_server-5] [WARN] [1793168758.605153583] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[planner_server-5] [WARN] [1793168758.631092741] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[planner_server-5] [WARN] [1793168758.659793466] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[planner_server-5] [WARN] [1793168758.678067082] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[planner_server-5] [WARN] [1793168758.697071443] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[planner_server-5] [WARN] [1793168758.718705271] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[smoother_server-4] [INFO] [1793168758.723972619] [smoother_server]: Created smoother : simple_smoother of type nav2_smoother::SimpleSmoother
+[planner_server-5] [WARN] [1793168758.731234147] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[planner_server-5] [WARN] [1793168758.776151362] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[smoother_server-4] [INFO] [1793168758.737631869] [smoother_server]: Smoother Server has simple_smoother  smoothers available.
+[planner_server-5] [WARN] [1793168758.794903234] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[planner_server-5] [WARN] [1793168758.818499689] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[planner_server-5] [WARN] [1793168758.830350014] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[planner_server-5] [WARN] [1793168758.862132283] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[planner_server-5] [WARN] [1793168758.913975495] [rclcpp]: Failed to get parameters: SmacHybrid.tolerance
+[lifecycle_manager-10] [INFO] [1793168758.935045751] [lifecycle_manager_navigation]: [34m[1mConfiguring planner_server[0m[0m
+[planner_server-5] [INFO] [1793168758.935743823] [planner_server]: Configuring
+[planner_server-5] [INFO] [1793168758.935860627] [global_costmap.global_costmap]: Configuring
+[planner_server-5] [INFO] [1793168759.077782180] [global_costmap.global_costmap]: Using plugin "static_layer"
+[planner_server-5] [INFO] [1793168759.100168353] [global_costmap.global_costmap]: Subscribing to the map topic (/map_nav) with transient local durability
+[planner_server-5] [INFO] [1793168759.114679025] [global_costmap.global_costmap]: Initialized plugin "static_layer"
+[planner_server-5] [INFO] [1793168759.116759672] [global_costmap.global_costmap]: Using plugin "nvblox_layer"
+[planner_server-5] [INFO] [1793168759.134036582] [global_costmap.global_costmap]: Name: nvblox_layer Topic name: /nvblox_node/static_map_slice Convert to binary costmap: 1 Max obstacle distance: 0.4
+[planner_server-5] [INFO] [1793168759.210784228] [global_costmap.global_costmap]: Initialized plugin "nvblox_layer"
+[planner_server-5] [INFO] [1793168759.210989547] [global_costmap.global_costmap]: Using plugin "obstacle_layer"
+[planner_server-5] [INFO] [1793168759.237805824] [global_costmap.global_costmap]: Subscribed to Topics: scan
+[planner_server-5] [INFO] [1793168759.318817712] [global_costmap.global_costmap]: Initialized plugin "obstacle_layer"
+[planner_server-5] [INFO] [1793168759.320383461] [global_costmap.global_costmap]: Using plugin "inflation_layer"
+[planner_server-5] [INFO] [1793168759.325436978] [global_costmap.global_costmap]: Initialized plugin "inflation_layer"
+[planner_server-5] [INFO] [1793168759.423365444] [planner_server]: Created global planner plugin GridBased of type nav2_navfn_planner/NavfnPlanner
+[planner_server-5] [INFO] [1793168759.423716976] [planner_server]: Configuring plugin GridBased of type NavfnPlanner
+[planner_server-5] [INFO] [1793168759.448329657] [global_costmap.global_costmap]: StaticLayer: Resizing costmap to 333 X 242 at 0.050000 m/pix
+[planner_server-5] [INFO] [1793168759.453149598] [planner_server]: Created global planner plugin SmacHybrid of type nav2_smac_planner/SmacPlannerHybrid
+[planner_server-5] [INFO] [1793168759.453268866] [planner_server]: Configuring SmacHybrid of type SmacPlannerHybrid
+[planner_server-5] [WARN] [1793168759.457497650] [global_costmap.global_costmap]: [NvbloxCostmapLayer] Can't transform: map to odom. Error: Lookup would require extrapolation into the past.  Requested time 1793168759.271440 but the earliest data is at time 1793168760.647913, when looking up transform from frame [odom] to frame [map]
+[planner_server-5] [INFO] [1793168759.479379646] [planner_server]: Even sized heuristic lookup table size set 400.000000, increasing size by 1 to make odd
+[planner_server-5] [WARN] [1793168760.544874515] [global_costmap.global_costmap]: [NvbloxCostmapLayer] Can't transform: map to odom. Error: Lookup would require extrapolation into the past.  Requested time 1793168760.433816 but the earliest data is at time 1793168760.647913, when looking up transform from frame [odom] to frame [map]
+[INFO] [navmap_ensure-14]: process started with pid [1469750]
+[navmap_ensure-14] [navmap_ensure] active (2)
+[INFO] [navmap_ensure-14]: process has finished cleanly [pid 1469750]
+[planner_server-5] [INFO] [1793168787.336691808] [planner_server]: Configured plugin SmacHybrid of type SmacPlannerHybrid with maximum iterations 1000000, max on approach iterations 1000, and allowing unknown traversal. Tolerance 0.35.Using motion model: Reeds-Shepp.
+[planner_server-5] [INFO] [1793168787.337001418] [planner_server]: Planner Server has GridBased SmacHybrid  planners available.
+[lifecycle_manager-10] [INFO] [1793168787.446401985] [lifecycle_manager_navigation]: [34m[1mConfiguring behavior_server[0m[0m
+[behavior_server-6] [INFO] [1793168787.450156929] [behavior_server]: Configuring
+[behavior_server-6] [INFO] [1793168787.501121612] [behavior_server]: Creating behavior plugin spin of type nav2_behaviors/Spin
+[behavior_server-6] [INFO] [1793168787.503220884] [behavior_server]: Configuring spin
+[behavior_server-6] [INFO] [1793168787.548183795] [behavior_server]: Creating behavior plugin backup of type nav2_behaviors/BackUp
+[behavior_server-6] [INFO] [1793168787.549950735] [behavior_server]: Configuring backup
+[behavior_server-6] [INFO] [1793168787.630612080] [behavior_server]: Creating behavior plugin drive_on_heading of type nav2_behaviors/DriveOnHeading
+[behavior_server-6] [INFO] [1793168787.634362352] [behavior_server]: Configuring drive_on_heading
+[behavior_server-6] [INFO] [1793168787.676016158] [behavior_server]: Creating behavior plugin wait of type nav2_behaviors/Wait
+[behavior_server-6] [INFO] [1793168787.678272875] [behavior_server]: Configuring wait
+[behavior_server-6] [INFO] [1793168787.717763343] [behavior_server]: Creating behavior plugin monotone_escape of type rover_navigation/MonotoneEscape
+[behavior_server-6] [INFO] [1793168787.724928451] [behavior_server]: Configuring monotone_escape
+[lifecycle_manager-10] [INFO] [1793168787.795064125] [lifecycle_manager_navigation]: [34m[1mConfiguring bt_navigator[0m[0m
+[bt_navigator-7] [INFO] [1793168787.796627090] [bt_navigator]: Configuring
+[lifecycle_manager-10] [INFO] [1793168788.511287707] [lifecycle_manager_navigation]: [34m[1mConfiguring waypoint_follower[0m[0m
+[waypoint_follower-8] [INFO] [1793168788.514865781] [waypoint_follower]: Configuring
+[waypoint_follower-8] [INFO] [1793168788.708681900] [waypoint_follower]: Created waypoint_task_executor : wait_at_waypoint of type nav2_waypoint_follower::WaitAtWaypoint
+[lifecycle_manager-10] [INFO] [1793168788.722405472] [lifecycle_manager_navigation]: [34m[1mConfiguring velocity_smoother[0m[0m
+[velocity_smoother-9] [INFO] [1793168788.724267776] [velocity_smoother]: Configuring velocity smoother
+[lifecycle_manager-10] [INFO] [1793168788.764328567] [lifecycle_manager_navigation]: [34m[1mActivating controller_server[0m[0m
+[controller_server-3] [INFO] [1793168788.764780743] [controller_server]: Activating
+[controller_server-3] [INFO] [1793168788.764902891] [local_costmap.local_costmap]: Activating
+[controller_server-3] [INFO] [1793168788.764938348] [local_costmap.local_costmap]: Checking transform
+[controller_server-3] [INFO] [1793168788.765172852] [local_costmap.local_costmap]: start
+[controller_server-3] [WARN] [1793168788.972377620] [controller_server]: Parameter controller_server.verbose not found
+[controller_server-3] [INFO] [1793168788.974982317] [controller_server]: Optimizer reset
+[controller_server-3] [INFO] [1793168788.977444993] [MPPIController]: Activated MPPI Controller: FollowPathMPPI
+[controller_server-3] [INFO] [1793168788.977682761] [controller_server]: Activating controller: FollowPath of type regulated_pure_pursuit_controller::RegulatedPurePursuitController
+[controller_server-3] [INFO] [1793168788.977787341] [controller_server]: Creating bond (controller_server) to lifecycle manager.
+[lifecycle_manager-10] [INFO] [1793168789.106593881] [lifecycle_manager_navigation]: Server controller_server connected with bond.
+[lifecycle_manager-10] [INFO] [1793168789.106776991] [lifecycle_manager_navigation]: [34m[1mActivating smoother_server[0m[0m
+[smoother_server-4] [INFO] [1793168789.107679294] [smoother_server]: Activating
+[smoother_server-4] [INFO] [1793168789.107798690] [smoother_server]: Creating bond (smoother_server) to lifecycle manager.
+[lifecycle_manager-10] [INFO] [1793168789.244924042] [lifecycle_manager_navigation]: Server smoother_server connected with bond.
+[lifecycle_manager-10] [INFO] [1793168789.245059119] [lifecycle_manager_navigation]: [34m[1mActivating planner_server[0m[0m
+[planner_server-5] [INFO] [1793168789.247425312] [planner_server]: Activating
+[planner_server-5] [INFO] [1793168789.247571205] [global_costmap.global_costmap]: Activating
+[planner_server-5] [INFO] [1793168789.247615302] [global_costmap.global_costmap]: Checking transform
+[planner_server-5] [INFO] [1793168789.247886511] [global_costmap.global_costmap]: start
+[planner_server-5] [INFO] [1793168790.310837029] [planner_server]: Activating plugin SmacHybrid of type SmacPlannerHybrid
+[planner_server-5] [INFO] [1793168790.310975914] [planner_server]: Activating plugin GridBased of type NavfnPlanner
+[planner_server-5] [INFO] [1793168790.315229403] [planner_server]: Creating bond (planner_server) to lifecycle manager.
+[lifecycle_manager-10] [INFO] [1793168790.430948744] [lifecycle_manager_navigation]: Server planner_server connected with bond.
+[lifecycle_manager-10] [INFO] [1793168790.431383543] [lifecycle_manager_navigation]: [34m[1mActivating behavior_server[0m[0m
+[behavior_server-6] [INFO] [1793168790.432487261] [behavior_server]: Activating
+[behavior_server-6] [INFO] [1793168790.432576672] [behavior_server]: Activating spin
+[behavior_server-6] [INFO] [1793168790.432608545] [behavior_server]: Activating backup
+[behavior_server-6] [INFO] [1793168790.432628962] [behavior_server]: Activating drive_on_heading
+[behavior_server-6] [INFO] [1793168790.432646242] [behavior_server]: Activating wait
+[behavior_server-6] [INFO] [1793168790.432671363] [behavior_server]: Activating monotone_escape
+[behavior_server-6] [INFO] [1793168790.432755270] [behavior_server]: Creating bond (behavior_server) to lifecycle manager.
+[lifecycle_manager-10] [INFO] [1793168790.548435186] [lifecycle_manager_navigation]: Server behavior_server connected with bond.
+[lifecycle_manager-10] [INFO] [1793168790.548564214] [lifecycle_manager_navigation]: [34m[1mActivating bt_navigator[0m[0m
+[bt_navigator-7] [INFO] [1793168790.549473622] [bt_navigator]: Activating
+[bt_navigator-7] [INFO] [1793168791.239081188] [bt_navigator]: Creating bond (bt_navigator) to lifecycle manager.
+[controller_server-3] [INFO] [1793168791.280998363] [local_costmap.local_costmap]: Received request to clear entirely the local_costmap
+[lifecycle_manager-10] [INFO] [1793168791.359089956] [lifecycle_manager_navigation]: Server bt_navigator connected with bond.
+[lifecycle_manager-10] [INFO] [1793168791.359220905] [lifecycle_manager_navigation]: [34m[1mActivating waypoint_follower[0m[0m
+[waypoint_follower-8] [INFO] [1793168791.360227467] [waypoint_follower]: Activating
+[waypoint_follower-8] [INFO] [1793168791.360329422] [waypoint_follower]: Creating bond (waypoint_follower) to lifecycle manager.
+[planner_server-5] [INFO] [1793168791.392157261] [global_costmap.global_costmap]: Received request to clear entirely the global_costmap
+[lifecycle_manager-10] [INFO] [1793168791.485718502] [lifecycle_manager_navigation]: Server waypoint_follower connected with bond.
+[lifecycle_manager-10] [INFO] [1793168791.485843850] [lifecycle_manager_navigation]: [34m[1mActivating velocity_smoother[0m[0m
+[velocity_smoother-9] [INFO] [1793168791.486902990] [velocity_smoother]: Activating
+[velocity_smoother-9] [INFO] [1793168791.487084308] [velocity_smoother]: Creating bond (velocity_smoother) to lifecycle manager.
+[lifecycle_manager-10] [INFO] [1793168791.608712331] [lifecycle_manager_navigation]: Server velocity_smoother connected with bond.
+[lifecycle_manager-10] [INFO] [1793168791.608827343] [lifecycle_manager_navigation]: [34m[1mManaged nodes are active[0m[0m
+[lifecycle_manager-10] [INFO] [1793168791.608899537] [lifecycle_manager_navigation]: [34m[1mCreating bond timer...[0m[0m
+[controller_server-3] [INFO] [1793168917.826529108] [local_costmap.local_costmap]: Message Filter dropping message: frame 'lidar_link' at time 1793168917.504 for reason 'the timestamp on the message is earlier than all the data in the transform cache'
+[bt_navigator-7] [INFO] [1793168948.449890578] [bt_navigator]: Begin navigating from current location (-0.01, 0.00) to (5.50, -2.20)
+[controller_server-3] [INFO] [1793168948.536910110] [controller_server]: Received a goal, begin computing control effort.
+[controller_server-3] [WARN] [1793168948.537232137] [controller_server]: No goal checker was specified in parameter 'current_goal_checker'. Server will use only plugin loaded general_goal_checker . This warning will appear once.
+[nav_guard.py-2] [INFO] [1793168948.542401848] [nav_guard]: 목표 63abd6e4: 남은 거리 6.80 m → 시간 한도 224 s (시작 뒤 0.1 s)
+[controller_server-3] [INFO] [1793168948.544126483] [controller_server]: Optimizer reset
+[bt_navigator-7] [WARN] [1793168948.584708021] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793168950.648057611] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793168954.215535455] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793168956.875660144] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793168963.613226867] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793168963.619025528] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793168964.798802665] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793168965.035890841] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793168969.286295051] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793168969.354743806] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793168978.813821881] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793168978.819199567] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793168979.680787619] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793168979.687401796] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793168979.763298803] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793168979.764868937] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793168981.105436953] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793168981.316265099] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793168982.952922104] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793168982.954849177] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793168985.313499892] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793168985.568881452] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793168988.982049057] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793168989.271211122] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793168989.350389456] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793168991.500679362] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793168991.550211954] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[controller_server-3] [WARN] [1793168998.358141727] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+[bt_navigator-7] [WARN] [1793168998.722437603] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793169001.908312213] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793169005.344701775] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793169005.356245878] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793169005.370035306] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793169005.381257094] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793169005.383703193] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793169008.847614638] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793169008.904162220] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793169008.944930674] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793169013.453372532] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793169015.703703068] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793169015.783938076] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793169017.655184043] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793169021.044159154] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793169024.383060014] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793169025.912753720] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793169029.384626531] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793169030.255926141] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793169032.382658569] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793169033.052729726] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793169033.363832589] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793169033.396888781] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793169034.717131442] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793169039.258375153] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793169040.020775611] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[controller_server-3] [INFO] [1793169040.054486801] [controller_server]: Reached the goal!
+[bt_navigator-7] [WARN] [1793169040.077222643] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [INFO] [1793169040.088293194] [bt_navigator]: Goal succeeded
+[bt_navigator-7] [INFO] [1793169040.156045730] [bt_navigator]: Begin navigating from current location (5.35, -2.15) to (0.00, 0.00)
+[nav_guard.py-2] [INFO] [1793169040.160300978] [nav_guard]: 목표 36524e85: 남은 거리 0.14 m → 시간 한도 34 s (시작 뒤 0.0 s)
+[controller_server-3] [INFO] [1793169040.218008982] [controller_server]: Received a goal, begin computing control effort.
+[nav_guard.py-2] [INFO] [1793169040.226987494] [nav_guard]: 목표 36524e85: 남은 거리 6.47 m → 시간 한도 215 s (시작 뒤 0.1 s)
+[bt_navigator-7] [WARN] [1793169040.320620490] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793169040.334036625] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793169040.342651509] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793169040.348542717] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793169042.551651029] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793169043.789432807] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793169050.487484912] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793169052.376590795] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793169053.017138317] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793169053.956673471] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793169055.276548739] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793169057.567456193] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793169061.276637789] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793169063.416858241] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793169063.477748656] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793169063.509728587] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793169065.553841684] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793169065.558641943] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793169069.086836782] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793169070.416723606] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793169084.722269544] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793169086.049354691] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793169090.896463049] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[controller_server-3] [WARN] [1793169090.922705601] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+[bt_navigator-7] [WARN] [1793169094.486883739] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793169097.939106399] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793169097.958091681] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [INFO] [1793169100.806654801] [bt_navigator_navigate_to_pose_rclcpp_node]: PathBlockedAhead: 앞 경로 (1.24, 0.09) 비용 99 — 2.0 s 지속되면 재계획
+[bt_navigator-7] [WARN] [1793169101.221261311] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793169101.231395190] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793169102.807956797] [bt_navigator_navigate_to_pose_rclcpp_node]: PathBlockedAhead: 앞 경로 (1.24, 0.09) 비용 99 가 2.0 s 지속 → 주행 중단·재계획
+[controller_server-3] [INFO] [1793169102.818270042] [controller_server]: Goal was canceled. Stopping the robot.
+[controller_server-3] [INFO] [1793169102.818430015] [controller_server]: [follow_path] [ActionServer] Client requested to cancel the goal. Cancelling.
+[controller_server-3] [INFO] [1793169102.819493219] [local_costmap.local_costmap]: Received request to clear except a region the local_costmap
+[bt_navigator-7] [WARN] [1793169102.820951092] [bt_navigator_navigate_to_pose_rclcpp_node]: PathBlockedAhead: 앞 경로 (1.24, 0.09) 비용 99 가 2.0 s 지속 → 주행 중단·재계획
+[controller_server-3] [INFO] [1793169102.822920983] [local_costmap.local_costmap]: Received request to clear except a region the local_costmap
+[planner_server-5] [INFO] [1793169102.824027677] [global_costmap.global_costmap]: Received request to clear except a region the global_costmap
+[bt_navigator-7] [WARN] [1793169102.826903966] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[controller_server-3] [INFO] [1793169103.288802124] [controller_server]: Received a goal, begin computing control effort.
+[bt_navigator-7] [WARN] [1793169106.932745587] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793169107.859227399] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793169107.911084834] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793169107.937124947] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793169110.019586255] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793169115.329646901] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793169116.519411055] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793169126.020431455] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793169126.027791992] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[controller_server-3] [WARN] [1793169126.091353213] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+[bt_navigator-7] [WARN] [1793169139.747213129] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1793169139.757876849] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[controller_server-3] [INFO] [1793169140.213333243] [controller_server]: Reached the goal!
+[bt_navigator-7] [INFO] [1793169140.247400091] [bt_navigator]: Goal succeeded
