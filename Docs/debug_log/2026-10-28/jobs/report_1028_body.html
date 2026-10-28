@@ -1,0 +1,138 @@
+
+<div class="wrap">
+<header>
+  <div class="eyebrow">Indoor Rover · 2026-10-28 · Docs/debug_log/2026-10-28 §0–§17</div>
+  <h1>10-28 장소 이름 이동</h1>
+  <p class="lead">어제 넣은 두 변경을 한 번 더 주행해 운용으로 확정한 뒤, F2.5 의 첫 두 단계(장소 등록부와 이름으로 보내는 서버)를 만들어 실주행까지 했습니다. 다섯 번 중 두 번이 통과했고, 나머지 세 번은 모두 '거절 · 멈춤' 쪽으로 끝나 위험한 동작은 없었습니다. 휴대폰 창구를 시험하다가, 오래 세워 둔 로버의 방향 추정이 돌아가 경로가 전부 막히는 문제를 찾았습니다. 온디바이스 LLM 은 아직 돌리지 않았습니다.</p>
+</header>
+
+<section>
+  <h2>오늘의 판정</h2>
+  <div class="verdicts">
+    <div class="v ok"><b>10-27 변경 운용 확정</b><span>f2tt2 8/8 · nav2 TF 실패 0 · §1 기준 ①~⑤ 통과. f2tt1 과 합쳐 2/2 (§1~§4)</span></div>
+    <div class="v ok"><b>이름 → 등록부 → 이동 · 정지 · 복귀 실주행 통과</b><span>f2pl4 명령 6 개 전부 기대대로 · stop 뒤 /cmd_vel 0 까지 0.29 s · 접촉 0 (§11)</span></div>
+    <div class="v ok"><b>W3 왕복 f2pl5</b><span>91.7 s · 100.2 s 도착, TF 0 · 중단 0 · 접촉 0 (§14.1)</span></div>
+    <div class="v ok"><b>휴대폰 창구 place_web (모의 서버로)</b><span>키 없으면 403 · 명령 5/5 응답 · PC→Jetson 15 ms. 휴대폰 실접속은 미확인 (§16)</span></div>
+    <div class="v no"><b>정지 중 방향 추정 드리프트</b><span>43 분 정지에 odom yaw +16.6°, SLAM 은 안 고침 → 돌아간 벽이 출발 방 출구를 막아 경로 전부 실패 (§16.1)</span></div>
+    <div class="v wait"><b>온디바이스 LLM</b><span>아직 미실행. 오늘 명령은 러너에 적은 고정 문자열 — 다음은 S2(한국어 문장 묶음 + 규칙 기준선) (§15)</span></div>
+  </div>
+</section>
+
+<section>
+  <h2>무엇을 만들었나<span class="sec">§6 · §7 · §10 · §16</span></h2>
+  <p>원칙은 하나입니다. <b>LLM 은 좌표를 만들지 않는다</b> — 등록부에 있는 이름 하나를 고를 뿐이고, 잘못 알아들으면 '거절 · 정지' 로 끝나야 합니다. 그래서 언어 쪽보다 먼저, 이름을 받아 안전하게 움직이는 아래층을 LLM 없이 만들었습니다.</p>
+  <div class="tbl"><table>
+    <tr><th>층</th><th>파일</th><th>하는 일</th></tr>
+    <tr><td>S0 등록부</td><td class="n">config/places.yaml</td><td>좌표의 유일한 출처. 장소 7 곳(출발점 · B · C · 위 복도 · 통로 북쪽 · 남서 · W3) + 별칭 · 방향 방식 · 장소별 최소 여유</td></tr>
+    <tr><td>S1 서버</td><td class="n">place_server.py</td><td><span class="mono">go_to · return · stop · list · where</span>. 경로 끝 방향 계산 → 그 자세의 차체 여유 검사(≥ 0.10 m, 모자라면 ±45° 안에서 방향 고침) → NavigateToPose</td></tr>
+    <tr><td>보내기</td><td class="n">place_cmd.py</td><td>명령 묶음 전송. 양방향 연결 확인 뒤 보냄, 조회 명령만 한 번 재전송(이동은 되풀이 안 함)</td></tr>
+    <tr><td>휴대폰</td><td class="n">place_web.py</td><td>8080 웹 창구. 장소 버튼은 4 s 안 두 번 눌러야 출발 · 정지는 한 번 · 상태 30 줄 · 배터리 · 끊김 띠. 접근 키는 Jetson 에만</td></tr>
+  </table></div>
+</section>
+
+<section>
+  <h2>실주행 다섯 번<span class="sec">§7.1 – §14.1</span></h2>
+  <div class="tbl"><table>
+    <tr><th>주행</th><th>결과</th><th>무엇이 멈췄나 / 무엇을 고쳤나</th></tr>
+    <tr class="bad"><td class="n">f2pl1</td><td><span class="pill no">2 도착 · 1 거절</span></td><td>통로 북쪽 거절 '여유 0.000 m' — 경로 끝 방향이 통로에 비스듬(−51°). → 여유가 모자라면 ±45° 안에서 가장 가까운 통과 방향으로 고쳐 보냄</td></tr>
+    <tr class="bad"><td class="n">f2pl2</td><td><span class="pill no">2 도착 · 1 거절</span></td><td>남쪽에서 온 통로 북쪽 거절 — 방향으로는 못 풂, 등록 좌표가 동쪽 물체 쪽으로 치우침. → x −1.65 → −1.78(통로 가운데, 두 bag 으로 재계산)</td></tr>
+    <tr class="bad"><td class="n">f2pl3</td><td><span class="pill no">안 움직임</span></td><td>첫 'where' 가 서버에 닿지 않음(새 참여자의 첫 메시지 유실). → 양방향 연결 확인 · 조회 재전송</td></tr>
+    <tr class="hl"><td class="n">f2pl4</td><td><span class="pill ok">6/6 기대대로</span></td><td>통로 북쪽 · 위 복도 · W3 @stop20(취소) · W3 · 복귀. 위 복도 구간만 no5 보다 +31~38 % 느림 → §12 분석</td></tr>
+    <tr class="hl"><td class="n">f2pl5</td><td><span class="pill ok">2/2 도착</span></td><td>W3 왕복(사용자 지정). 복귀 중 막힘 → 재계획 1 회, 이어서 도착</td></tr>
+  </table></div>
+  <figure><img src="{{img:run}}" alt="f2pl5 명령별 궤적, 명령 목록과 결과, 명령 흐름 시간축, cmd_vel"><figcaption>f2pl5 한 장 요약. 지도 위 명령별 궤적(★ 도착, 화살표 = 끝 방향) · 명령과 서버 설명 · 상태 흐름 시간축(→ 막힘 재계획) · 지령 속도. 도구 <span class="mono">Docs/tools/fig_place_run.py</span> (새 상시 도구, f2pl4 bag 으로도 그려짐).</figcaption></figure>
+</section>
+
+<section>
+  <h2>위 복도 구간은 왜 느렸나<span class="sec">§12</span></h2>
+  <p>같은 구간을 기존 좌표 러너(no5)와 비교하니 컨트롤러 주기 · BT 사건 · 끝 방향은 같고, 다른 것은 셋이었습니다. 목표가 10 cm 북쪽(제가 위 복도를 C 로 합침) → Smac 경로가 4 cm 동쪽, 통로 동쪽 가장자리가 한 칸 안쪽, 그래서 오른쪽 라이다 여유가 4~8 cm 적었습니다. MPPI 가 스스로 속도를 낮춘 것과 맞는 방향이지만, 구간 앞쪽 감속은 이것으로 설명되지 않아 미확인입니다. 위 복도를 원래 좌표로 되돌렸고, 판별 시험(upB)은 보류 중입니다.</p>
+  <div class="tbl"><table>
+    <tr><th>항목</th><th>no5</th><th>f2pl4</th></tr>
+    <tr><td>목표</td><td class="n">(−1.60, −2.10)</td><td class="n">(−1.60, −2.00)</td></tr>
+    <tr><td>소요</td><td class="n">22.6–23.9 s</td><td class="n">31.3 s</td></tr>
+    <tr><td>경로 x (y −3.2 / −2.9 / −2.6)</td><td class="n">−1.836 / −1.837 / −1.780</td><td class="n">−1.796 / −1.793 / −1.742</td></tr>
+    <tr><td>차체 오른쪽 ↔ 라이다</td><td class="n">0.11–0.15 m</td><td class="n">0.06–0.07 m</td></tr>
+    <tr><td>지령 속도</td><td>거의 내내 0.080</td><td>0.01–0.08 오감, 평균 0.060</td></tr>
+  </table></div>
+</section>
+
+<section>
+  <h2>세워 둔 로버의 방향이 돌아갔다<span class="sec">§16.1</span></h2>
+  <p>f2pl5 복귀 뒤 휴대폰 창구를 시험하는데, 모든 목표에서 경로 조회가 실패했습니다. 오전 dry run(§13.1)에서 출발점에 갇혔던 것과 같은 증상입니다.</p>
+  <div class="tbl"><table>
+    <tr><th>본 것</th><th>값</th><th>데이터</th></tr>
+    <tr><td>로버에서 닿는 칸</td><td>1.3 m² 뿐, W3 · B · C · 통로 북쪽 모두 못 닿음</td><td class="n">outputs/gcm_reach_1610.png</td></tr>
+    <tr><td>치명인데 정적 지도는 빈 칸</td><td>185 칸 — 동쪽 출구를 가로지르는 사선, 정적 벽을 로버 둘레로 돌린 모양</td><td class="n">outputs/gcm_vs_static_1610.txt</td></tr>
+    <tr><td>라이다 ↔ 정적 지도 일치</td><td>지금 그대로 0.140 · −32.5° 돌리면 0.295</td><td class="n">outputs/scan_align_1615.txt</td></tr>
+    <tr class="bad"><td>odom 기준 로버 방향</td><td>−161.4° (15:32) → −144.8° (16:15), <b>+16.6°</b>. map→odom 은 그대로</td><td class="n">outputs/odom_yaw_end_f2pl5.txt</td></tr>
+  </table></div>
+  <figure><img src="{{img:reach}}" alt="16:10 전역 코스트맵에서 로버가 닿을 수 있는 영역"><figcaption>16:10 전역 코스트맵에서 로버 칸부터 넓이 우선으로 닿는 칸(비용 ≤ 98). 출발 방이 치명 선으로 닫혀 있음. 도구 <span class="mono">jobs/chk_costmap_dump.py</span> → <span class="mono">jobs/fig_gcm_reach.py</span>.</figcaption></figure>
+  <p><b>읽기</b>: 정지 중 EKF odom 방향이 돌았고(측정, ≈ 0.39 °/min), SLAM 위치 추정은 로버가 움직이지 않으면 스캔을 처리하지 않아 고치지 않았습니다(map→odom 불변은 측정, 기전은 추정). 그래서 라이다 · 카메라가 실제 벽을 돌아간 자리에 칠했습니다. <b>미확인</b>: 돌린 것이 카메라 IMU 자이로 잔여 바이어스인지 cuVSLAM 인지, 스캔 맞춤 30° 와 odom 16.6° 의 차이.</p>
+  <p><b>안전 의미</b>: 휴대폰으로 아무 때나 명령을 넣게 되면 오래 서 있던 로버가 틀린 방향 추정으로 출발할 수 있습니다. 이번엔 경로가 아예 안 나와 멈췄지만, 오차가 작으면 경로가 나올 수 있습니다.</p>
+</section>
+
+<section>
+  <h2>바로잡은 내 오류</h2>
+  <div class="pm">
+    <h3>러너가 시작도 안 했다고 말함 (§3 → §3.1)</h3>
+    <div class="flow">
+      <span class="k">하려 한 것</span><span>f2tt2 러너 실행(<span class="mono">run_f2c.sh</span> → Jetson <span class="mono">job551</span>)</span>
+      <span class="k">본 것</span><span>PC 쪽 출력 0 B · 'No medium found' · 이어 WSL E_FAIL</span>
+      <span class="k">처음 추론</span><span>WSL 이 안 떠서 러너 미실행 → 로버 안 움직임</span>
+      <span class="k">틀린 이유</span><span>Jetson 러너는 setsid nohup 으로 독립 실행되어 끝까지 주행. PC 쪽 폴링 · 회수만 죽음</span>
+      <span class="k">다음에 알아보는 법</span><span>'안 움직였다' 고 말하기 전에 Jetson <span class="mono">/tmp/f0_&lt;이름&gt;.log</span> · <span class="mono">pgrep job551</span> 을 본다. 못 보면 '모름' 이라 하고 현장 확인을 요청</span>
+    </div>
+  </div>
+  <div class="pm">
+    <h3>dry run 에서 '통로 북쪽' 을 빼놓고 "5 개 모두 통과" 로 보고 (§7 → §8.1)</h3>
+    <div class="flow">
+      <span class="k">하려 한 것</span><span>등록부 장소 전부를 실주행 전에 검사(<span class="mono">chk_place_dry_1028.sh</span>)</span>
+      <span class="k">본 것</span><span>checked 5 — 명령 목록에 통로 북쪽이 없었음</span>
+      <span class="k">처음 추론</span><span>'이동 명령 5 개' 라 수가 맞아 보여 등록부 전부 통과로 봄</span>
+      <span class="k">의심한 이유</span><span>f2pl1 이 바로 그 장소에서 거절</span>
+      <span class="k">다음에 알아보는 법</span><span>dry run 은 등록부를 읽어 모든 장소를 돌고, 결과 수 = 장소 수를 확인. 출발 자리가 바뀌는 검사는 그 자리에서 다시 본다</span>
+    </div>
+  </div>
+  <div class="pm">
+    <h3>위 복도를 C 로 합침 (§7 → §12.3)</h3>
+    <div class="flow">
+      <span class="k">하려 한 것</span><span>위 복도 (−1.6, −2.1) 와 C (−1.6, −2.0) 를 '10 cm 차' 라 한 장소로</span>
+      <span class="k">본 것</span><span>그 구간 31.3 s(no5 22.6~23.9 s), 경로 4 cm 동쪽</span>
+      <span class="k">처음 추론</span><span>도착 허용 0.15 m 안이라 같은 자리</span>
+      <span class="k">의심한 이유</span><span>도착점이 같아도 좁은 통로 안 경로 선은 목표에 따라 바뀜</span>
+      <span class="k">다음에 알아보는 법</span><span>검증된 목표를 합치거나 옮길 때는 그 경로가 좁은 곳을 지나는지 먼저 보고, 지나면 오프라인 계획으로 경로 차를 잰다</span>
+    </div>
+  </div>
+  <div class="pm">
+    <h3>출발점 갇힘을 '13:44 이후 생긴 nvblox 기억' 으로 봄 (§13.1 → §16.2)</h3>
+    <div class="flow">
+      <span class="k">하려 한 것</span><span>갇힘 원인 칸이 언제 생겼나 — f2pl4 끝 판과 비교(<span class="mono">anal_place_clear.py</span>)</span>
+      <span class="k">본 것</span><span>15:19 격자에 y −0.57~−0.62 치명 띠, f2pl4 끝 격자엔 없음</span>
+      <span class="k">처음 추론</span><span>새로 생긴 띠 → nvblox 기억</span>
+      <span class="k">의심한 이유</span><span>정적 지도와 겹치니 그 띠는 원래 벽. f2pl4 끝 격자는 ±0.5 m 만 그려 그 자리를 못 봤음(범위가 다른 두 격자 비교)</span>
+      <span class="k">결론</span><span>막은 것은 동쪽 출구의 '돌아간 벽'. §13.1 시점도 같은 기전일 가능성이 크나 그때 TF · 스캔을 남기지 않아 미확인(원천 소실)</span>
+      <span class="k">다음에 알아보는 법</span><span>두 판은 같은 창 크기로 비교 · 치명 칸은 먼저 정적 지도와 겹쳐 나눔 · 정지 중 생긴 치명이면 TF yaw 이력과 스캔-지도 맞춤부터</span>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>결정이 필요한 것</h2>
+  <ul>
+    <li><b>드리프트 대책</b>(추천 순): ⓐ place_server 출발 전 라이다 ↔ 정적 지도 일치 점수 검사, 낮으면 거절 — 원인과 상관없이 잡고 코드가 작음 · ⓑ 정지 판정(바퀴 0 · 지령 0) 중 EKF yaw 고정 — 원인이 자이로일 때만 맞음 · ⓒ 출발 전 제자리 소회전.</li>
+    <li>설계 §8-4~6: 이동 중 새 명령 · 여러 단계 명령 · 모델 라이선스.</li>
+    <li>place_web 상주 기동: prep 뒤 띄우고 주행 30 s 전에는 새로 띄우지 않는 방식.</li>
+  </ul>
+</section>
+
+<section>
+  <h2>남은 것</h2>
+  <ul>
+    <li><b>다음 주행 전 반드시 prep</b> — Jetson 스택은 방향 추정이 약 30° 틀린 채로 떠 있음. 로버를 출발 테이프에 다시 놓고.</li>
+    <li>휴대폰 실접속(ALOPS 권장) · place_web 종료 처리 수정 확인 · colcon 설치.</li>
+    <li>위 복도 판별 시험 upB(보류) · 통로 남쪽 좁은 곳 회전 중 한 칸 더 찍히는 막힘(§5).</li>
+    <li>S2: 한국어 문장 묶음 + 규칙 기준선 → 그 뒤 온디바이스 모델 비교.</li>
+  </ul>
+  <p class="note">기록 <span class="mono">Docs/debug_log/2026-10-28/SUMMARY.md</span> §0~§17 · 도구 안내 <span class="mono">TOOLS.md</span> · 설계 <span class="mono">Docs/07_language/F25_PLACE_LLM_DESIGN.md</span> v0.2. bag 은 git 제외 로컬 보관.</p>
+</section>
+</div>

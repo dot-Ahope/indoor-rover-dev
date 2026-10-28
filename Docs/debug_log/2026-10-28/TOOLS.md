@@ -41,3 +41,4 @@
 | 16.1 | 방향 추정 오차 | `jobs/chk_scan_align.py` | `outputs/scan_align_1615.txt` 0.140 → −32.5° 에서 0.295 | yaw 약 30° 틀림 | ✔ |
 | 16.1 | 정지 중 어느 TF 가 돌았나 | 인라인 rosbags(f2pl5 bag 끝) | `outputs/odom_yaw_end_f2pl5.txt` odom→base −161.4° → 지금 −144.8°, map→odom 불변 | odom yaw 드리프트 + SLAM 미보정 | ？(자이로/cuVSLAM 미확인) |
 | 17 | 하루 마무리 | — | SUMMARY §17 · CLAUDE.md §6 F2.5 줄 | 다음 주행 전 prep 필수(방향 추정 틀림) | — |
+| 17 | 정리 페이지 | `jobs/fill_report_1028.py`(`report_1028_head/body.html`) | `figures/day_summary_1028.html` · 아티팩트 | — | — |
