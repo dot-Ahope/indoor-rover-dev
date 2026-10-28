@@ -19,3 +19,7 @@
 | 10 | 창구 수정 확인 | `jobs/up_place_dry_1028c.sh` | `outputs/chk_place_dry_1028c4.txt` 9/9 | 양방향 확인 동작 | ✔ |
 | 11 | f2pl4 정지 지연 | 인라인 rosbags(/place/command · /cmd_vel · /odometry/filtered) | `outputs/stop_cmdvel_f2pl4.txt` cmd_vel 0 +0.29 s · 정지 +0.47 s | 판정 ② 통과 | ✔ |
 | 11 | 구간별 nav2 사건 | 인라인 nav2.log 시간 창 집계 | 위 복도 구간 0 건, 통로 · 복귀 막힘 각 1 | 위 복도 느림은 막힘 탓 아님 | ？ |
+| 12 | 위 복도 구간 비교 | `jobs/anal_leg_compare.py` | `outputs/leg_compare_C.txt` · `leg_compare_other.txt` 이 구간만 평균 0.060 m/s | MPPI 감속 | ✔ |
+| 12 | 그때 주변 · 주기 | `jobs/anal_leg_env.py` | `outputs/leg_env_C.txt` 주기 20/s 같음, 오른쪽 라이다 0.06~0.07(no5 0.11~0.15) | 동쪽에 가까움 | ？(앞쪽 감속은 설명 안 됨) |
+| 12 | 경로 가로 위치 | `jobs/anal_plan_x.py` | `outputs/plan_x_C.txt` 4 cm 동쪽 | 목표 10 cm 북쪽 탓 | ？(판별 시험 전) |
+| 12 | 동쪽 가장자리 이력 | `jobs/anal_place_clear.py` 여러 판 | `outputs/east_edge_history.txt` · `corridor_grid_y29.txt` 한 칸 안쪽 | 환경 변화 또는 흔들림 | ？ |
