@@ -1,0 +1,11 @@
+주행 10:22:31 ~ 10:29:25 (413.9 s) · 멈춤(1.0 s 넘게 정지) 1 번 · 합 4.9 s
+
+10:29:03~10:29:08 (t 397.7~402.6, 4.9 s) @ (0.82, 0.23) | cmd_vel 3 개 중 0 명령 0 · 최대 |v| 0.030 · 최대 |ω| 0.18 | 앞 ±30° 라이다 최소 1.54 m
+    10:29:02.26 controller_server Control loop missed its desired rate of 10.0000Hz
+    10:29:02.40 controller_server Control loop missed its desired rate of 10.0000Hz
+    10:29:02.52 controller_server Control loop missed its desired rate of 10.0000Hz
+    10:29:02.76 bt_navigator_navigate_to_pose_rclcpp_node PathBlockedAhead: 앞 경로 (-0.02, 0.07) 비용 99 가 2.0 s 지속 → 주행 중단·재계획
+    10:29:02.82 controller_server Goal was canceled. Stopping the robot.
+    10:29:02.82 controller_server [follow_path] [ActionServer] Client requested to cancel the goal. Cancelling.
+    10:29:02.83 bt_navigator_navigate_to_pose_rclcpp_node PathBlockedAhead: 앞 경로 (-0.02, 0.07) 비용 99 가 2.0 s 지속 → 주행 중단·재계획
+    10:29:02.83 behavior_server Running wait
