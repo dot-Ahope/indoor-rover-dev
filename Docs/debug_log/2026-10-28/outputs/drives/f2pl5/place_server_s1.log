@@ -1,0 +1,25 @@
+[INFO] [1793168923.216045335] [place_server]: 경로 방향 조회기: 준비됨
+[INFO] [1793168923.219040413] [place_server]: 장소 7 곳 적재(office_v3) · home=출발점 · dry_run=False
+[INFO] [1793168948.396206675] [place_server]: [70ae9bf4] info  map (-0.01, 0.00, -0°)
+[INFO] [1793168948.446883948] [place_server]: [f0bed1f6] accepted W3 목표 (5.50, -2.20, 8°) 경로 끝 방향(286 점) · 여유 0.39 m · 거리 5.94 m
+[INFO] [1793168948.454199717] [place_server]: [f0bed1f6] moving W3 
+[INFO] [1793169040.089719419] [place_server]: [f0bed1f6] arrived W3 상태 4 · 91.6 s
+[INFO] [1793169040.149175641] [place_server]: [a633184c] accepted 출발점 목표 (0.00, 0.00, -172°) 경로 끝 방향(265 점) · 여유 0.18 m · 거리 5.76 m
+[INFO] [1793169040.153513548] [place_server]: [a633184c] moving 출발점 
+[INFO] [1793169140.250286428] [place_server]: [a633184c] arrived 출발점 상태 4 · 100.1 s
+Traceback (most recent call last):
+  File "/home/jetson/ros2_ws/src/rover_navigation/scripts/place_server.py", line 230, in <module>
+    main()
+  File "/home/jetson/ros2_ws/src/rover_navigation/scripts/place_server.py", line 220, in main
+    try: rclpy.spin(n)
+  File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/__init__.py", line 229, in spin
+    executor.spin_once()
+  File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/executors.py", line 776, in spin_once
+    self._spin_once_impl(timeout_sec)
+  File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/executors.py", line 765, in _spin_once_impl
+    handler, entity, node = self.wait_for_ready_callbacks(timeout_sec=timeout_sec)
+  File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/executors.py", line 748, in wait_for_ready_callbacks
+    return next(self._cb_iter)
+  File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/executors.py", line 621, in _wait_for_ready_callbacks
+    wait_set = _rclpy.WaitSet(
+rclpy._rclpy_pybind11.RCLError: failed to initialize wait set: the given context is not valid, either rcl_init() was not called or rcl_shutdown() was called., at ./src/rcl/wait.c:130
