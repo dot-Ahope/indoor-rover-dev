@@ -1,0 +1,19 @@
+prep_fast.sh blob aeb6e6cf3b CR 0
+prep_patrol.sh blob 4fe16954f6 CR 0
+chk_prep.py blob 64b8beeadd CR 0
+chk_drive_gate.py blob 5e92ec4a0a CR 0
+rc 0
+  prep_patrol: 오도메트리 vslam · 재계획 0.01 Hz · 궤적 발행 lite · PreferForward 15.0 · 추가 nav 인자 planner:=smac
+  에이전트 컨테이너 1 개 · 세션 수립 기록 1 건 · robot_state_publisher 1 개
+  gyro bias calibrated: (-0.00573, -0.00040, -0.00173) rad/s, std=(0.0026, 0.0023, 0.0018)
+  위치 추정 검사(기대 0,0,0): 위치 차 0.008 m · yaw 차 -0.3° → 통과
+  준비까지 42.5 s | Nav2 controller=active planner=active bt_navigator=active behavior=active nav_map=active
+  /wheel_odom 25.0 Hz · /odometry/filtered 30.0 Hz · /tf 49.7 Hz · 배터리 12.37 V
+  /controller_server: PreferForward=15.0 · vx_min=-0.06 · visualize=True · trajectory_step=100 · time_step=4 · PathAlign=28.0 · PathFollow=5.0
+  /planner_server: tolerance=0.35 · motion_model_for_search=REEDS_SHEPP · cost_penalty=3.0 · analytic_expansion_max_length=1.0 · max_planning_time=2.0 · cache_obstacle_heuristic=False
+  /camera/camera: visual_preset=3
+  /ekf_filter_node: odom1=/vslam/odom
+  /slam_toolbox: mode=localization · transform_timeout=1.5
+  /bt_navigator: default_nav_to_pose_bt_xml=/tmp/nav_to_pose_active.xml
+PREP_OK
+  ⏱ +86 s prep 끝 — PREP_OK
