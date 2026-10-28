@@ -160,7 +160,17 @@ class PlaceServer(Node):
         c = self.clearance(gx, gy, gth)
         mc = float(pl['min_clear']) if 'min_clear' in pl else self.p('min_clear')   # 장소별 기준(등록부에 근거와 함께) — 10-28 §7 남서
         if c is None: return self.say(rid, 'rejected', pl['name'], '전역 코스트맵 없음')
-        if c < mc: return self.say(rid, 'rejected', pl['name'], '목표 여유 %.3f m < %.2f' % (c, mc))
+        if c < mc and mode != 'f' and not mode.lstrip('-').replace('.', '').isdigit():
+            # 10-28 §8: 경로 끝 방향이 좁은 곳에 비스듬히 들어가면(통로 북쪽 −51°) 그 자세 그대로는 차체가 옆 치명 칸에 겹친다.
+            # no5 에서는 같은 목표(−55~−64°)를 Nav2 가 받아 로버가 통로 축 쪽(−74~−87°)으로 서서 끝냈음(f2tt2 등 4 회).
+            # → 경로 끝 방향에서 가장 가까운, 여유 기준을 넘는 방향으로 고쳐 보낸다(±45° 안, 5° 간격). 못 찾으면 거절.
+            # TODO(improve): ±45° · 5° 는 통로 북쪽 한 사례로 정한 값 — 다른 좁은 곳이 생기면 다시 본다
+            for k in range(1, 10):
+                cand = [(self.clearance(gx, gy, gth + s * math.radians(5 * k)), gth + s * math.radians(5 * k)) for s in (-1, 1)]
+                cc, ct = max(cand)
+                if cc >= mc:
+                    why += ' → 여유 위해 %+.0f° 고침(원래 여유 %.3f)' % (math.degrees(ct - gth), c); c, gth = cc, math.atan2(math.sin(ct), math.cos(ct)); break
+        if c < mc: return self.say(rid, 'rejected', pl['name'], '목표 여유 %.3f m < %.2f · 방향 %.0f° %s' % (c, mc, math.degrees(gth), why))   # 10-28 §8: 거절 때도 방향을 남김(f2pl1 은 방향 기록 없어 재현 필요했음)
         info = '목표 (%.2f, %.2f, %.0f°) %s · 여유 %.2f m · 거리 %.2f m' % (gx, gy, math.degrees(gth), why, c, math.hypot(gx - P[0], gy - P[1]))
         if self.p('dry_run'): return self.say(rid, 'checked', pl['name'], '[dry_run — 보내지 않음] ' + info)   # checked = 검사 통과 · 목표 안 보냄(끝 상태)
         if not self.ac.wait_for_server(timeout_sec=3): return self.say(rid, 'rejected', pl['name'], 'navigate_to_pose 서버 없음')

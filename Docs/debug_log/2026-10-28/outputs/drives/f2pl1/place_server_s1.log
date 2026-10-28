@@ -1,0 +1,10 @@
+[INFO] [1793160714.999249807] [place_server]: 경로 방향 조회기: 준비됨
+[INFO] [1793160715.001289140] [place_server]: 장소 6 곳 적재(office_v3) · home=출발점 · dry_run=False
+[INFO] [1793160740.201494169] [place_server]: [f37137af] info  map (-0.10, 0.03, 5°)
+[INFO] [1793160741.312690938] [place_server]: [71367690] accepted B 목표 (2.25, -1.60, -79°) 경로 끝 방향(156 점) · 여유 0.44 m · 거리 2.86 m
+[INFO] [1793160741.320700712] [place_server]: [71367690] moving B 
+[INFO] [1793160795.795991761] [place_server]: [71367690] arrived B 상태 4 · 54.5 s
+[INFO] [1793160795.837927930] [place_server]: [82301fb1] accepted C 목표 (-1.60, -2.00, -173°) 경로 끝 방향(159 점) · 여유 0.57 m · 거리 3.89 m
+[INFO] [1793160795.844679455] [place_server]: [82301fb1] moving C 
+[INFO] [1793160849.720079121] [place_server]: [82301fb1] arrived C 상태 4 · 53.9 s
+[INFO] [1793160849.748294506] [place_server]: [492c7b5b] rejected 통로 북쪽 목표 여유 0.000 m < 0.10
