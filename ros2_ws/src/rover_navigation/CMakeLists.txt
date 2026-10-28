@@ -43,5 +43,7 @@ install(FILES behavior_plugins.xml mppi_critic_plugins.xml DESTINATION share/${P
 install(DIRECTORY config launch DESTINATION share/${PROJECT_NAME})
 # 2026-09-22 N6-0: 컨테이너 nvblox 기동 래퍼(launch 의 ExecuteProcess 가 bash 로 부름)
 install(PROGRAMS scripts/nvblox_up.sh DESTINATION share/${PROJECT_NAME}/scripts)
+# F2.5 장소 이동(2026-10-28, Docs/07_language/F25_PLACE_LLM_DESIGN.md) — place_server 는 같은 폴더의 path_end_yaw.py 를 상주로 띄운다
+install(PROGRAMS scripts/place_server.py scripts/place_cmd.py scripts/path_end_yaw.py DESTINATION lib/${PROJECT_NAME})
 
 ament_package()
