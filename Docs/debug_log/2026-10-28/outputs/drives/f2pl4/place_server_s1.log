@@ -1,0 +1,35 @@
+[INFO] [1793162355.038623127] [place_server]: 경로 방향 조회기: 준비됨
+[INFO] [1793162355.039735354] [place_server]: 장소 6 곳 적재(office_v3) · home=출발점 · dry_run=False
+[INFO] [1793162384.109269403] [place_server]: [ab6fca2c] info  map (-1.44, -5.36, -114°)
+[INFO] [1793162384.149947002] [place_server]: [c08af8ab] accepted 통로 북쪽 목표 (-1.78, -3.70, 102°) 경로 끝 방향(68 점) · 여유 0.17 m · 거리 1.69 m
+[INFO] [1793162384.158005911] [place_server]: [c08af8ab] moving 통로 북쪽 
+[INFO] [1793162418.256683545] [place_server]: [c08af8ab] arrived 통로 북쪽 상태 4 · 34.1 s
+[INFO] [1793162418.279958967] [place_server]: [3927077f] accepted C 목표 (-1.60, -2.00, 50°) 경로 끝 방향(77 점) · 여유 0.18 m · 거리 1.84 m
+[INFO] [1793162418.284252222] [place_server]: [3927077f] moving C 
+[INFO] [1793162449.573147137] [place_server]: [3927077f] arrived C 상태 4 · 31.3 s
+[INFO] [1793162449.621036394] [place_server]: [2112a196] accepted W3 목표 (5.50, -2.20, 13°) 경로 끝 방향(306 점) · 여유 0.40 m · 거리 7.15 m
+[INFO] [1793162449.624319474] [place_server]: [2112a196] moving W3 
+[INFO] [1793162469.699322385] [place_server]: [2112a196] canceled W3 stop 으로 취소 · 20.1 s
+[INFO] [1793162469.700940164] [place_server]: [99110a97] canceled W3 정지 요청 — Nav2 목표 전부 취소
+[INFO] [1793162474.790567629] [place_server]: [3bc3f51f] accepted W3 목표 (5.50, -2.20, 12°) 경로 끝 방향(255 점) · 여유 0.40 m · 거리 6.12 m
+[INFO] [1793162474.802718349] [place_server]: [3bc3f51f] moving W3 
+[INFO] [1793162556.202951652] [place_server]: [3bc3f51f] arrived W3 상태 4 · 81.4 s
+[INFO] [1793162556.250217571] [place_server]: [5f786f98] accepted 출발점 목표 (0.00, 0.00, 169°) 경로 끝 방향(252 점) · 여유 0.25 m · 거리 5.76 m
+[INFO] [1793162556.254748211] [place_server]: [5f786f98] moving 출발점 
+[INFO] [1793162661.228787318] [place_server]: [5f786f98] arrived 출발점 상태 4 · 105.0 s
+Traceback (most recent call last):
+  File "/home/jetson/ros2_ws/src/rover_navigation/scripts/place_server.py", line 230, in <module>
+    main()
+  File "/home/jetson/ros2_ws/src/rover_navigation/scripts/place_server.py", line 220, in main
+    try: rclpy.spin(n)
+  File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/__init__.py", line 229, in spin
+    executor.spin_once()
+  File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/executors.py", line 776, in spin_once
+    self._spin_once_impl(timeout_sec)
+  File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/executors.py", line 765, in _spin_once_impl
+    handler, entity, node = self.wait_for_ready_callbacks(timeout_sec=timeout_sec)
+  File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/executors.py", line 748, in wait_for_ready_callbacks
+    return next(self._cb_iter)
+  File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/executors.py", line 621, in _wait_for_ready_callbacks
+    wait_set = _rclpy.WaitSet(
+rclpy._rclpy_pybind11.RCLError: failed to initialize wait set: the given context is not valid, either rcl_init() was not called or rcl_shutdown() was called., at ./src/rcl/wait.c:130
