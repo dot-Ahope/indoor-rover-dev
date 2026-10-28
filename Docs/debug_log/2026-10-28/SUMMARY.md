@@ -122,3 +122,11 @@
 ### §9.1 다음 실주행 선언(f2pl3, PLAN fromSW) — 결과 보기 전
 - 명령: where; go_to 통로 북쪽; go_to 위 복도; go_to W3 @stop20; wait 5; go_to W3; return.
 - 판정: ① 이동 5 개 arrived(통로 북쪽 = 옮긴 자리, 도착 오차 0.20 m 안) · @stop canceled ② stop 뒤 1 s 안에 /cmd_vel 0 · 로버 정지 · 다시 보낸 W3 arrived ③ TF 실패 0 · 접촉 0 ④ 통로 북쪽 외 구간 시간 no5 ±20 % ⑤ 통로 북쪽 → 위 복도 구간에서 통로 안 정지(PathBlockedAhead) 횟수 기록(옮긴 자리라 no5 와 비교만).
+
+## §10 f2pl3: 첫 'where' 응답 없음 → 명령 묶음 멈춤, 로버 안 움직임 · 창구 연결 확인 수정
+- 13:30:37 게이트 B · C OK · G2 0.176 m(좁은 남서 구석, 기준 0.10 위). C 의 '최대 stamp 지연 −0.84 s'(음수)는 처음 보는 값 — 미확인, 기록만.
+- 13:31:14 명령: `>> where` → 5.0 s 동안 끝 상태 없음 → 창구가 설계대로 멈춤(rc 1). 이동 명령은 하나도 안 보냄 → **로버 안 움직임**(남서 구석 그대로).
+- 본 것: bag `bags/bag_f2pl3.tgz` 의 /place/command 1 개(13:31:15 'where') · **/place/status 0 개**. 서버 로그 `outputs/drives/f2pl3/place_server_s1.log` 에 수신 흔적 없음(기동 두 줄뿐). f2pl2 bag 에서도 /place/command 는 4 번 보냈는데 2 개만 기록 — 새로 뜬 참여자의 첫 메시지가 상대가 아직 연결 전이면 빠지는 꼴.
+- 추론: 창구가 `pub.get_subscription_count() > 0`(우리 쪽 발행자가 서버 구독자를 봄)만 확인하고 바로 보냄 → 서버 쪽에서 아직 연결이 덜 됐거나, 서버의 /place/status 발행자를 우리가 아직 못 봐서 응답을 놓침. 둘 중 어느 쪽인지(또는 서버 콜백 정체)는 **미확인**(서버가 수신 로그를 안 남김).
+- 수정 `scripts/place_cmd.py`: 양방향 확인(명령 구독자 + `/place/status` 발행자) 뒤 1 s 더 기다리고 보냄 · 조회 명령(where · list)만 2 s 응답 없으면 한 번 다시 보냄(이동 명령은 되풀이하지 않음 — 두 번 가는 일 방지). 첫 판은 Humble 에 없는 `Subscription.get_publisher_count()` 를 써서 dry_run 에서 예외 → `node.count_publishers()` 로 고침. dry_run(장소 6 곳 + 조회, 명령마다 새 프로세스 9 회) 9/9 기대대로, 0.0~0.2 s: `outputs/chk_place_dry_1028c4.txt`.
+- 다음: f2pl4 = §9.1 과 같은 명령 · 판정(PLAN fromSW).

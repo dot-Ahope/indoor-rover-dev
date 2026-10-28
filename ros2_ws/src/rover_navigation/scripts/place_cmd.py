@@ -22,8 +22,12 @@ rclpy.init(); n = Node('place_cmd_%s' % uuid.uuid4().hex[:6]); got = []
 n.create_subscription(String, '/place/status', lambda m: got.append(m.data), 10)
 pub = n.create_publisher(String, '/place/command', 10)
 T0 = time.time()
-while pub.get_subscription_count() == 0 and time.time() - T0 < 5: rclpy.spin_once(n, timeout_sec=0.1)
-if pub.get_subscription_count() == 0: print('place_server 없음'); sys.exit(1)
+# 10-28 §10: 명령 쪽(우리 → 서버)만 연결 확인하고 바로 보냈더니 f2pl3 에서 첫 'where' 가 서버에 닿지 않음(서버 로그에 수신 흔적 없음).
+# → 양방향(서버의 /place/status 발행자까지) 연결을 확인하고 1 s 더 기다린 뒤 보낸다.
+while (pub.get_subscription_count() == 0 or n.count_publishers('/place/status') == 0) and time.time() - T0 < 10: rclpy.spin_once(n, timeout_sec=0.1)
+if pub.get_subscription_count() == 0 or n.count_publishers('/place/status') == 0: print('place_server 없음(명령 구독 %d · 상태 발행 %d)' % (pub.get_subscription_count(), n.count_publishers('/place/status'))); sys.exit(1)
+te = time.time() + 1.0
+while time.time() < te: rclpy.spin_once(n, timeout_sec=0.1)
 
 
 def send(text):
@@ -45,6 +49,8 @@ for c in cmds:
     print('>> %s%s' % (c, ' (@stop %g s)' % stop_after if stop_after is not None else ''), flush=True)
     while time.time() - t0 < wait:
         rclpy.spin_once(n, timeout_sec=0.1)
+        if head in ('where', 'list') and last is None and time.time() - t0 > 2.0 and not stop_sent:
+            rid = send(c); stop_sent = True; print('   %.1f s  (응답 없음 — 한 번 다시 보냄, 조회 명령만)' % (time.time() - t0), flush=True)   # 조회는 되풀이해도 무해
         if stop_after is not None and t_move and not stop_sent and time.time() - t_move >= stop_after:
             send('stop'); stop_sent = True; print('   %.1f s  (stop 보냄)' % (time.time() - t0), flush=True)
         while got:
