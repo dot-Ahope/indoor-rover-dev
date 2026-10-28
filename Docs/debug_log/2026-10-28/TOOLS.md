@@ -17,3 +17,5 @@
 | 9 | 6 곳 전부 dry_run(남서에서) | `jobs/up_place_dry_1028c.sh` → `jobs/chk_place_dry_1028c.sh`(목록 바꿈) | `outputs/chk_place_dry_1028c3.txt` 6 checked | 실주행 준비 | ？(f2pl3) |
 | 10 | f2pl3 where 응답 없음 | bag /place/* 개수 확인(인라인 rosbags) | command 1 · status 0, f2pl2 command 4 중 2 기록 | 첫 메시지 연결 경쟁 | ？(원인 미확인, 수정 뒤 f2pl4) |
 | 10 | 창구 수정 확인 | `jobs/up_place_dry_1028c.sh` | `outputs/chk_place_dry_1028c4.txt` 9/9 | 양방향 확인 동작 | ✔ |
+| 11 | f2pl4 정지 지연 | 인라인 rosbags(/place/command · /cmd_vel · /odometry/filtered) | `outputs/stop_cmdvel_f2pl4.txt` cmd_vel 0 +0.29 s · 정지 +0.47 s | 판정 ② 통과 | ✔ |
+| 11 | 구간별 nav2 사건 | 인라인 nav2.log 시간 창 집계 | 위 복도 구간 0 건, 통로 · 복귀 막힘 각 1 | 위 복도 느림은 막힘 탓 아님 | ？ |
