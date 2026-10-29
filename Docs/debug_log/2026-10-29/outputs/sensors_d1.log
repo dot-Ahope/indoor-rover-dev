@@ -1,0 +1,599 @@
+[INFO] [launch]: All log files can be found below /home/jetson/.ros/log/2026-10-29-15-52-41-743583-jetson-desktop-97851
+[INFO] [launch]: Default logging verbosity is set to INFO
+[INFO] [component_container_mt-1]: process started with pid [97869]
+[INFO] [depth_relay.py-2]: process started with pid [97871]
+[INFO] [rplidar_node-3]: process started with pid [97873]
+[INFO] [scan_deskew.py-4]: process started with pid [97875]
+[INFO] [foxglove_bridge-5]: process started with pid [97877]
+[rplidar_node-3] [INFO] [1793256762.057191129] [rplidar_node]: RPLidar running on ROS2 package rplidar_ros. RPLIDAR SDK Version:2.0.0
+[rplidar_node-3] [INFO] [1793256762.117594854] [rplidar_node]: RPLidar S/N: 65FEE18BC7E49CCDA3EB9AF4F1234C73
+[rplidar_node-3] [INFO] [1793256762.117700841] [rplidar_node]: Firmware Ver: 1.02
+[rplidar_node-3] [INFO] [1793256762.117724330] [rplidar_node]: Hardware Rev: 18
+[foxglove_bridge-5] [INFO] [1793256762.152750141] [foxglove_bridge]: Starting foxglove_bridge (humble, 3.2.4@)
+[foxglove_bridge-5] [INFO] [1793256762.163734498] [foxglove_bridge]: Server listening on port 8765
+[rplidar_node-3] [INFO] [1793256762.169140914] [rplidar_node]: RPLidar health status : 0
+[rplidar_node-3] [INFO] [1793256762.169238901] [rplidar_node]: RPLidar health status : OK.
+[rplidar_node-3] [INFO] [1793256762.169260822] [rplidar_node]: Start
+[component_container_mt-1] [INFO] [1793256762.233206230] [camera.realsense2_camera_container]: Load Library: /opt/ros/humble/lib/librealsense2_camera.so
+[component_container_mt-1] [INFO] [1793256762.527404535] [camera.realsense2_camera_container]: Found class: rclcpp_components::NodeFactoryTemplate<realsense2_camera::RealSenseNodeFactory>
+[component_container_mt-1] [INFO] [1793256762.528847558] [camera.realsense2_camera_container]: Instantiate class: rclcpp_components::NodeFactoryTemplate<realsense2_camera::RealSenseNodeFactory>
+[component_container_mt-1] [INFO] [1793256762.553978488] [camera.camera]: RealSense ROS v4.58.3
+[component_container_mt-1] [INFO] [1793256762.555316899] [camera.camera]: Built with LibRealSense v2.58.3
+[component_container_mt-1] [INFO] [1793256762.555950360] [camera.camera]: Running with LibRealSense v2.58.3
+[INFO] [launch_ros.actions.load_composable_nodes]: Loaded node '/camera/camera' in container '/camera/realsense2_camera_container'
+[component_container_mt-1]  29/10 15:52:42,559 WARNING [281472047900896] (context.cpp:41) No valid configuration file found at : /home/jetson/.realsense-config.json loading defaults
+[component_container_mt-1] [INFO] [1793256762.566855803] [camera.realsense2_camera_container]: Load Library: /home/jetson/ros2_ws/install/rover_bringup/lib/libemitter_splitter_component.so
+[component_container_mt-1] [INFO] [1793256762.586811908] [camera.realsense2_camera_container]: Found class: rclcpp_components::NodeFactoryTemplate<rover_bringup::EmitterSplitter>
+[component_container_mt-1] [INFO] [1793256762.586943112] [camera.realsense2_camera_container]: Instantiate class: rclcpp_components::NodeFactoryTemplate<rover_bringup::EmitterSplitter>
+[component_container_mt-1] [INFO] [1793256762.634336269] [camera.camera]: Device with serial number 253822300207 was found.
+[component_container_mt-1] 
+[component_container_mt-1] [INFO] [1793256762.634475794] [camera.camera]: Device with physical ID /sys/devices/platform/bus@0/3610000.usb/usb2/2-1/2-1.3/2-1.3:1.0/video4linux/video0 was found.
+[component_container_mt-1] [INFO] [1793256762.634499667] [camera.camera]: Device with name RealSense D455F was found.
+[component_container_mt-1] [INFO] [1793256762.634897152] [camera.camera]: Device with port number 2-1.3 was found.
+[component_container_mt-1] [INFO] [1793256762.634931361] [camera.camera]: Device USB type: 3.2
+[component_container_mt-1] [INFO] [1793256762.634950913] [camera.camera]: Resetting device...
+[foxglove_bridge-5] [INFO] [1793256762.678326500] [foxglove_bridge]: Advertising new channel 1 for topic "/tf_static"
+[foxglove_bridge-5] [INFO] [1793256762.680225698] [foxglove_bridge]: Advertising new channel 2 for topic "/tf"
+[foxglove_bridge-5] [INFO] [1793256762.682069182] [foxglove_bridge]: Advertising new channel 3 for topic "/robot_description"
+[INFO] [launch_ros.actions.load_composable_nodes]: Loaded node '/emitter_splitter' in container '/camera/realsense2_camera_container'
+[depth_relay.py-2] [INFO] [1793256762.835479516] [depth_relay]: depth_relay: min_range 0.45 m, voxel 0.05 m, min_points_per_voxel 3
+[scan_deskew.py-4] [INFO] [1793256762.914643979] [scan_deskew]: scan_deskew: /scan_raw → /scan (ref=end, EKF ω 기반 회전 디스큐)
+[foxglove_bridge-5] [INFO] [1793256763.184942723] [foxglove_bridge]: Advertising new channel 4 for topic "/scan"
+[rplidar_node-3] [INFO] [1793256763.622890375] [rplidar_node]: current scan mode: Standard, sample rate: 16 Khz, max_distance: 16.0 m, scan frequency:10.0 Hz, 
+[component_container_mt-1] [INFO] [1793256768.679023654] [camera.camera]: Device with serial number 253822300207 was found.
+[component_container_mt-1] 
+[component_container_mt-1] [INFO] [1793256768.679193291] [camera.camera]: Device with physical ID /sys/devices/platform/bus@0/3610000.usb/usb2/2-1/2-1.3/2-1.3:1.0/video4linux/video0 was found.
+[component_container_mt-1] [INFO] [1793256768.679240365] [camera.camera]: Device with name RealSense D455F was found.
+[component_container_mt-1] [INFO] [1793256768.679961412] [camera.camera]: Device with port number 2-1.3 was found.
+[component_container_mt-1] [INFO] [1793256768.680011046] [camera.camera]: Device USB type: 3.2
+[component_container_mt-1] [INFO] [1793256768.681097257] [camera.camera]: getParameters...
+[component_container_mt-1] [WARN] [1793256768.685677630] [camera.camera]: For the 'unite_imu_method' param update to take effect, re-enable either gyro or accel stream.
+[component_container_mt-1] [INFO] [1793256768.685840899] [camera.camera]: JSON file is not provided
+[component_container_mt-1] [INFO] [1793256768.685897829] [camera.camera]: Device Name: RealSense D455F
+[component_container_mt-1] [INFO] [1793256768.685934182] [camera.camera]: Device Serial No: 253822300207
+[component_container_mt-1] [INFO] [1793256768.685956871] [camera.camera]: Device physical port: /sys/devices/platform/bus@0/3610000.usb/usb2/2-1/2-1.3/2-1.3:1.0/video4linux/video0
+[component_container_mt-1] [INFO] [1793256768.685979560] [camera.camera]: Device FW version: 5.15.0.2
+[component_container_mt-1] [INFO] [1793256768.685999529] [camera.camera]: Device Product ID: 0x0B5C
+[component_container_mt-1] [INFO] [1793256768.686017193] [camera.camera]: Sync Mode: Off
+[component_container_mt-1] [WARN] [1793256769.600166123] [camera.camera]: re-enable the stream for the change to take effect.
+[component_container_mt-1] [WARN] [1793256769.602651548] [camera.camera]: re-enable the stream for the change to take effect.
+[component_container_mt-1] [WARN] [1793256769.614407194] [camera.camera]: Could not set param: rgb_camera.power_line_frequency with 3 Range: [0, 2]: parameter 'rgb_camera.power_line_frequency' could not be set: Parameter {rgb_camera.power_line_frequency} doesn't comply with integer range.
+[component_container_mt-1] [WARN] [1793256769.628542182] [camera.camera]: re-enable the stream for the change to take effect.
+[component_container_mt-1] [INFO] [1793256769.659500885] [camera.camera]: Stopping Sensor: Depth Module
+[component_container_mt-1] [INFO] [1793256769.659968580] [camera.camera]: Stopping Sensor: RGB Camera
+[component_container_mt-1] [INFO] [1793256769.660042919] [camera.camera]: Stopping Sensor: Motion Module
+[component_container_mt-1] [INFO] [1793256769.728529050] [camera.camera]: Starting Sensor: Depth Module
+[INFO] [sensor_conditioner_node-6]: process started with pid [98097]
+[INFO] [ekf_node-7]: process started with pid [98099]
+[INFO] [cuvslam_up.sh-8]: process started with pid [98101]
+[INFO] [vslam_twist.py-9]: process started with pid [98103]
+[component_container_mt-1] [INFO] [1793256770.066561611] [camera.camera]: Open profile: stream_type: Infra(1), Format: Y8, Width: 640, Height: 480, FPS: 15
+[component_container_mt-1] [INFO] [1793256770.066743857] [camera.camera]: Open profile: stream_type: Infra(2), Format: Y8, Width: 640, Height: 480, FPS: 15
+[component_container_mt-1] [INFO] [1793256770.066770578] [camera.camera]: Open profile: stream_type: Depth(0), Format: Z16, Width: 640, Height: 480, FPS: 15
+[component_container_mt-1] [INFO] [1793256770.093598330] [camera.camera]: Starting Sensor: RGB Camera
+[component_container_mt-1] [INFO] [1793256770.103542686] [camera.camera]: Open profile: stream_type: Color(0), Format: RGB8, Width: 640, Height: 480, FPS: 15
+[component_container_mt-1]  29/10 15:52:50,114 WARNING [281472047900896] (ds-calib-parsers.cpp:36) IMU Calibration is not available, default intrinsic and extrinsic will be used.
+[component_container_mt-1] [INFO] [1793256770.142752729] [camera.camera]: Starting Sensor: Motion Module
+[component_container_mt-1] [INFO] [1793256770.157654846] [camera.camera]: Open profile: stream_type: Accel(0)Format: MOTION_XYZ32F, FPS: 100
+[component_container_mt-1] [INFO] [1793256770.157787618] [camera.camera]: Open profile: stream_type: Gyro(0)Format: MOTION_XYZ32F, FPS: 200
+[component_container_mt-1]  29/10 15:52:50,158 WARNING [281471604353248] (backend-hid.cpp:740) HID set_power 1 failed for /sys/devices/platform/bus@0/3610000.usb/usb2/2-1/2-1.3/2-1.3:1.5/0003:8086:0B5C.0001/HID-SENSOR-200073.2.auto/iio:device0/buffer/enable
+[cuvslam_up.sh-8] [cuvslam_up] 컨테이너 정지 상태 → docker start
+[component_container_mt-1] [INFO] [1793256770.335654394] [camera.camera]: RealSense Node Is Up!
+[component_container_mt-1] [WARN] [1793256771.480720401] [camera.camera]: No matching stream for texture 'Process - Any'. Set 'pointcloud.stream_profile' to 'depth(1)', 'color(2)', or 'infrared(3)' to enable textured pointclouds.
+[vslam_twist.py-9] [INFO] [1793256771.907924406] [vslam_twist]: base_link→camera_link 받음(0.234, 0.044, 0.143) — 변환 시작
+[component_container_mt-1] [INFO] [1793256772.704008215] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 32 · 키없음 0 | IR1(끔) 입력 31 · 켬 31 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 30 · 키없음 0 | IR2(끔) 입력 31 · 켬 31 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 30 · 키없음 0
+[cuvslam_up.sh-8] [cuvslam_up] cuVSLAM pid 98415 98458 (로그 /tmp/cuvslam.log, DDS fastdds_shm_udp.xml, 부모 launch 97851) — 이후 래퍼 출력은 /tmp/cuvslam_up.log
+[sensor_conditioner_node-6] [INFO] [1793256780.743886544] [sensor_conditioner]: gyro bias calibrated: (-0.00574, -0.00066, -0.00169) rad/s, std=(0.0026, 0.0024, 0.0017)
+[vslam_twist.py-9] [INFO] [1793256780.848592668] [vslam_twist]: 출력 18 · 버림 0 (최근 10 s)
+[foxglove_bridge-5] [INFO] [1793256782.273552119] [foxglove_bridge]: Advertising new channel 5 for topic "/map_metadata"
+[foxglove_bridge-5] [INFO] [1793256782.275709213] [foxglove_bridge]: Advertising new channel 6 for topic "/map"
+[component_container_mt-1] [INFO] [1793256782.704241770] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[sensor_conditioner_node-6] [INFO] [1793256782.746660653] [sensor_conditioner]: ZUPT #1: bias y -0.000658 → -0.000649 (관측 -0.000572), 잔차 yaw rate -0.000078 rad/s = -0.27 °/분
+[ekf_node-7] Failed to meet update rate! Took 0.041071062999999997933seconds. Try decreasing the rate, limiting sensor output frequency, or limiting the number of sensors.
+[ekf_node-7] Failed to meet update rate! Took 0.11225884999999999336seconds. Try decreasing the rate, limiting sensor output frequency, or limiting the number of sensors.
+[ekf_node-7] Failed to meet update rate! Took 0.10966110099999999694seconds. Try decreasing the rate, limiting sensor output frequency, or limiting the number of sensors.
+[ekf_node-7] Failed to meet update rate! Took 0.061028097000000003369seconds. Try decreasing the rate, limiting sensor output frequency, or limiting the number of sensors.
+[ekf_node-7] Failed to meet update rate! Took 0.049048410000000000619seconds. Try decreasing the rate, limiting sensor output frequency, or limiting the number of sensors.
+[ekf_node-7] Failed to meet update rate! Took 0.04956791599999999659seconds. Try decreasing the rate, limiting sensor output frequency, or limiting the number of sensors.
+[ekf_node-7] Failed to meet update rate! Took 0.049954168000000000183seconds. Try decreasing the rate, limiting sensor output frequency, or limiting the number of sensors.
+[ekf_node-7] Failed to meet update rate! Took 0.085879687999999995696seconds. Try decreasing the rate, limiting sensor output frequency, or limiting the number of sensors.
+[ekf_node-7] Failed to meet update rate! Took 0.035973202000000002732seconds. Try decreasing the rate, limiting sensor output frequency, or limiting the number of sensors.
+[ekf_node-7] Failed to meet update rate! Took 0.045371395000000001863seconds. Try decreasing the rate, limiting sensor output frequency, or limiting the number of sensors.
+[ekf_node-7] Failed to meet update rate! Took 0.046588682999999998791seconds. Try decreasing the rate, limiting sensor output frequency, or limiting the number of sensors.
+[ekf_node-7] Failed to meet update rate! Took 0.04063207299999999772seconds. Try decreasing the rate, limiting sensor output frequency, or limiting the number of sensors.
+[ekf_node-7] Failed to meet update rate! Took 0.050140733999999999304seconds. Try decreasing the rate, limiting sensor output frequency, or limiting the number of sensors.
+[ekf_node-7] Failed to meet update rate! Took 0.090779879999999993356seconds. Try decreasing the rate, limiting sensor output frequency, or limiting the number of sensors.
+[ekf_node-7] Failed to meet update rate! Took 0.069558613000000005244seconds. Try decreasing the rate, limiting sensor output frequency, or limiting the number of sensors.
+[ekf_node-7] Failed to meet update rate! Took 0.039151705000000001922seconds. Try decreasing the rate, limiting sensor output frequency, or limiting the number of sensors.
+[ekf_node-7] Failed to meet update rate! Took 0.044357762000000001967seconds. Try decreasing the rate, limiting sensor output frequency, or limiting the number of sensors.
+[ekf_node-7] Failed to meet update rate! Took 0.047268800999999999179seconds. Try decreasing the rate, limiting sensor output frequency, or limiting the number of sensors.
+[ekf_node-7] Failed to meet update rate! Took 0.078283953000000003342seconds. Try decreasing the rate, limiting sensor output frequency, or limiting the number of sensors.
+[ekf_node-7] Failed to meet update rate! Took 0.056657010000000000705seconds. Try decreasing the rate, limiting sensor output frequency, or limiting the number of sensors.
+[ekf_node-7] Failed to meet update rate! Took 0.033718343999999997318seconds. Try decreasing the rate, limiting sensor output frequency, or limiting the number of sensors.
+[ekf_node-7] Failed to meet update rate! Took 0.035743657999999997599seconds. Try decreasing the rate, limiting sensor output frequency, or limiting the number of sensors.
+[ekf_node-7] Failed to meet update rate! Took 0.064670646999999997773seconds. Try decreasing the rate, limiting sensor output frequency, or limiting the number of sensors.
+[ekf_node-7] Failed to meet update rate! Took 0.033693287000000002318seconds. Try decreasing the rate, limiting sensor output frequency, or limiting the number of sensors.
+[ekf_node-7] Failed to meet update rate! Took 0.034218009000000000619seconds. Try decreasing the rate, limiting sensor output frequency, or limiting the number of sensors.
+[ekf_node-7] Failed to meet update rate! Took 0.037659945000000000226seconds. Try decreasing the rate, limiting sensor output frequency, or limiting the number of sensors.
+[vslam_twist.py-9] [INFO] [1793256790.853403503] [vslam_twist]: 출력 139 · 버림 2 (최근 10 s)
+[ekf_node-7] Failed to meet update rate! Took 0.03408177999999999902seconds. Try decreasing the rate, limiting sensor output frequency, or limiting the number of sensors.
+[component_container_mt-1] [INFO] [1793256792.704488477] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 147 · 키없음 0 | IR1(끔) 입력 147 · 켬 147 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 147 · 키없음 0 | IR2(끔) 입력 147 · 켬 147 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 147 · 키없음 0
+[vslam_twist.py-9] [INFO] [1793256800.848268511] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793256802.704903125] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 149 · 키없음 0 | IR1(끔) 입력 149 · 켬 149 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 149 · 키없음 0 | IR2(끔) 입력 149 · 켬 149 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 149 · 키없음 0
+[sensor_conditioner_node-6] [INFO] [1793256804.035972689] [sensor_conditioner]: ZUPT #11: bias y -0.000598 → -0.000594 (관측 -0.000559), 잔차 yaw rate -0.000036 rad/s = -0.12 °/분
+[ekf_node-7] Failed to meet update rate! Took 0.051140926000000003215seconds. Try decreasing the rate, limiting sensor output frequency, or limiting the number of sensors.
+[ekf_node-7] Failed to meet update rate! Took 0.10702997399999999995seconds. Try decreasing the rate, limiting sensor output frequency, or limiting the number of sensors.
+[ekf_node-7] Failed to meet update rate! Took 0.035883405999999999636seconds. Try decreasing the rate, limiting sensor output frequency, or limiting the number of sensors.
+[vslam_twist.py-9] [INFO] [1793256810.848206580] [vslam_twist]: 출력 149 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793256812.705195338] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[vslam_twist.py-9] [INFO] [1793256820.847986886] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793256822.705543331] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[sensor_conditioner_node-6] [INFO] [1793256824.469048591] [sensor_conditioner]: ZUPT #21: bias y -0.000591 → -0.000577 (관측 -0.000449), 잔차 yaw rate -0.000127 rad/s = -0.44 °/분
+[vslam_twist.py-9] [INFO] [1793256830.848879136] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793256832.705897824] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[vslam_twist.py-9] [INFO] [1793256840.849261389] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793256842.706267906] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[sensor_conditioner_node-6] [INFO] [1793256844.496641538] [sensor_conditioner]: ZUPT #31: bias y -0.000620 → -0.000634 (관측 -0.000759), 잔차 yaw rate +0.000125 rad/s = +0.43 °/분
+[vslam_twist.py-9] [INFO] [1793256850.849034572] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793256852.706567496] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[vslam_twist.py-9] [INFO] [1793256860.848107772] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+[ekf_node-7] Failed to meet update rate! Took 0.083258510999999993385seconds. Try decreasing the rate, limiting sensor output frequency, or limiting the number of sensors.
+[component_container_mt-1] [INFO] [1793256862.707593388] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 149 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 149 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[ekf_node-7] Failed to meet update rate! Took 0.077386159999999995507seconds. Try decreasing the rate, limiting sensor output frequency, or limiting the number of sensors.
+[ekf_node-7] Failed to meet update rate! Took 0.035044498000000000315seconds. Try decreasing the rate, limiting sensor output frequency, or limiting the number of sensors.
+[sensor_conditioner_node-6] [INFO] [1793256864.817752453] [sensor_conditioner]: ZUPT #41: bias y -0.000647 → -0.000652 (관측 -0.000698), 잔차 yaw rate +0.000046 rad/s = +0.16 °/분
+[vslam_twist.py-9] [INFO] [1793256870.847918795] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+[ekf_node-7] Failed to meet update rate! Took 0.034257335999999999343seconds. Try decreasing the rate, limiting sensor output frequency, or limiting the number of sensors.
+[ekf_node-7] Failed to meet update rate! Took 0.036643205999999997613seconds. Try decreasing the rate, limiting sensor output frequency, or limiting the number of sensors.
+[component_container_mt-1] [INFO] [1793256872.707316878] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 148 · 키없음 0 | IR1(끔) 입력 148 · 켬 149 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 149 · 키없음 0 | IR2(끔) 입력 148 · 켬 148 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 148 · 키없음 0
+[ekf_node-7] Failed to meet update rate! Took 0.0839688370000000045seconds. Try decreasing the rate, limiting sensor output frequency, or limiting the number of sensors.
+[vslam_twist.py-9] [INFO] [1793256880.851290646] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793256882.707346947] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 152 · 키없음 0 | IR1(끔) 입력 152 · 켬 152 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 152 · 키없음 0 | IR2(끔) 입력 152 · 켬 152 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 152 · 키없음 0
+[sensor_conditioner_node-6] [INFO] [1793256885.408049729] [sensor_conditioner]: ZUPT #51: bias y -0.000614 → -0.000629 (관측 -0.000759), 잔차 yaw rate +0.000130 rad/s = +0.45 °/분
+[vslam_twist.py-9] [INFO] [1793256890.848750540] [vslam_twist]: 출력 149 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793256892.707855602] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 149 · 키없음 0 | IR1(끔) 입력 149 · 켬 149 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 149 · 키없음 0 | IR2(끔) 입력 149 · 켬 149 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 149 · 키없음 0
+[vslam_twist.py-9] [INFO] [1793256900.847981158] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793256902.708131972] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[sensor_conditioner_node-6] [INFO] [1793256905.436100186] [sensor_conditioner]: ZUPT #61: bias y -0.000598 → -0.000580 (관측 -0.000419), 잔차 yaw rate -0.000161 rad/s = -0.55 °/분
+[vslam_twist.py-9] [INFO] [1793256910.848854914] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793256912.708525287] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[vslam_twist.py-9] [INFO] [1793256920.847934224] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793256922.708866261] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[sensor_conditioner_node-6] [INFO] [1793256925.463727991] [sensor_conditioner]: ZUPT #71: bias y -0.000623 → -0.000614 (관측 -0.000528), 잔차 yaw rate -0.000086 rad/s = -0.29 °/분
+[vslam_twist.py-9] [INFO] [1793256930.849462780] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793256932.709237714] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[vslam_twist.py-9] [INFO] [1793256940.848797968] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793256942.709426264] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[sensor_conditioner_node-6] [INFO] [1793256945.492284332] [sensor_conditioner]: ZUPT #81: bias y -0.000654 → -0.000670 (관측 -0.000812), 잔차 yaw rate +0.000142 rad/s = +0.49 °/분
+[vslam_twist.py-9] [INFO] [1793256950.849224823] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793256952.709792309] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[vslam_twist.py-9] [INFO] [1793256960.856003741] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793256962.709924922] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[sensor_conditioner_node-6] [INFO] [1793256965.519675515] [sensor_conditioner]: ZUPT #91: bias y -0.000634 → -0.000629 (관측 -0.000585), 잔차 yaw rate -0.000045 rad/s = -0.15 °/분
+[ekf_node-7] Failed to meet update rate! Took 0.042206392000000002296seconds. Try decreasing the rate, limiting sensor output frequency, or limiting the number of sensors.
+[vslam_twist.py-9] [INFO] [1793256970.854607660] [vslam_twist]: 출력 149 · 버림 0 (최근 10 s)
+[ekf_node-7] Failed to meet update rate! Took 0.12862288799999999078seconds. Try decreasing the rate, limiting sensor output frequency, or limiting the number of sensors.
+[ekf_node-7] Failed to meet update rate! Took 0.043990385999999999378seconds. Try decreasing the rate, limiting sensor output frequency, or limiting the number of sensors.
+[ekf_node-7] Failed to meet update rate! Took 0.053733261999999996916seconds. Try decreasing the rate, limiting sensor output frequency, or limiting the number of sensors.
+[component_container_mt-1] [INFO] [1793256972.710433150] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 149 · 키없음 0 | IR1(끔) 입력 149 · 켬 149 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 149 · 키없음 0 | IR2(끔) 입력 149 · 켬 149 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 149 · 키없음 0
+[vslam_twist.py-9] [INFO] [1793256980.848870145] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793256982.710719150] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[sensor_conditioner_node-6] [INFO] [1793256985.868030068] [sensor_conditioner]: ZUPT #101: bias y -0.000623 → -0.000651 (관측 -0.000899), 잔차 yaw rate +0.000248 rad/s = +0.85 °/분
+[vslam_twist.py-9] [INFO] [1793256990.848867203] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793256992.711115861] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[vslam_twist.py-9] [INFO] [1793257000.849362634] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793257002.711378220] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[sensor_conditioner_node-6] [INFO] [1793257005.895771844] [sensor_conditioner]: ZUPT #111: bias y -0.000669 → -0.000678 (관측 -0.000755), 잔차 yaw rate +0.000077 rad/s = +0.26 °/분
+[vslam_twist.py-9] [INFO] [1793257010.848807364] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793257012.711786814] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[vslam_twist.py-9] [INFO] [1793257020.848263508] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793257022.712038529] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[sensor_conditioner_node-6] [INFO] [1793257025.923656400] [sensor_conditioner]: ZUPT #121: bias y -0.000673 → -0.000644 (관측 -0.000375), 잔차 yaw rate -0.000268 rad/s = -0.92 °/분
+[vslam_twist.py-9] [INFO] [1793257030.850721917] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793257032.712242745] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[vslam_twist.py-9] [INFO] [1793257040.850990999] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793257042.712966042] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[sensor_conditioner_node-6] [INFO] [1793257045.952070025] [sensor_conditioner]: ZUPT #131: bias y -0.000649 → -0.000653 (관측 -0.000689), 잔차 yaw rate +0.000037 rad/s = +0.13 °/분
+[vslam_twist.py-9] [INFO] [1793257050.852225576] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793257052.712940475] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[vslam_twist.py-9] [INFO] [1793257060.851114183] [vslam_twist]: 출력 149 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793257062.713413830] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 149 · 키없음 0 | IR1(끔) 입력 149 · 켬 149 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 149 · 키없음 0 | IR2(끔) 입력 149 · 켬 149 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 149 · 키없음 0
+[sensor_conditioner_node-6] [INFO] [1793257065.979753902] [sensor_conditioner]: ZUPT #141: bias y -0.000665 → -0.000678 (관측 -0.000790), 잔차 yaw rate +0.000112 rad/s = +0.39 °/분
+[vslam_twist.py-9] [INFO] [1793257070.848886299] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793257072.713728613] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[vslam_twist.py-9] [INFO] [1793257080.848881458] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793257082.714049728] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[sensor_conditioner_node-6] [INFO] [1793257086.008848681] [sensor_conditioner]: ZUPT #151: bias y -0.000684 → -0.000683 (관측 -0.000672), 잔차 yaw rate -0.000011 rad/s = -0.04 °/분
+[vslam_twist.py-9] [INFO] [1793257090.849484857] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793257092.714362167] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[vslam_twist.py-9] [INFO] [1793257100.848818034] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793257102.714787725] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[sensor_conditioner_node-6] [INFO] [1793257106.035993845] [sensor_conditioner]: ZUPT #161: bias y -0.000667 → -0.000654 (관측 -0.000537), 잔차 yaw rate -0.000118 rad/s = -0.40 °/분
+[vslam_twist.py-9] [INFO] [1793257110.848733403] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793257112.715015898] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[vslam_twist.py-9] [INFO] [1793257120.848886314] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793257122.715306022] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[sensor_conditioner_node-6] [INFO] [1793257126.064182102] [sensor_conditioner]: ZUPT #171: bias y -0.000685 → -0.000676 (관측 -0.000602), 잔차 yaw rate -0.000074 rad/s = -0.26 °/분
+[vslam_twist.py-9] [INFO] [1793257130.848722892] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793257132.715560336] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[vslam_twist.py-9] [INFO] [1793257140.849347207] [vslam_twist]: 출력 149 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793257142.715904443] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[sensor_conditioner_node-6] [INFO] [1793257146.094148459] [sensor_conditioner]: ZUPT #181: bias y -0.000721 → -0.000720 (관측 -0.000720), 잔차 yaw rate -0.000001 rad/s = -0.00 °/분
+[vslam_twist.py-9] [INFO] [1793257150.849817820] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793257152.716320809] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 149 · 키없음 0 | IR1(끔) 입력 149 · 켬 149 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 149 · 키없음 0 | IR2(끔) 입력 149 · 켬 149 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 149 · 키없음 0
+[vslam_twist.py-9] [INFO] [1793257160.849627420] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793257162.716646292] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[sensor_conditioner_node-6] [INFO] [1793257166.120813557] [sensor_conditioner]: ZUPT #191: bias y -0.000690 → -0.000692 (관측 -0.000711), 잔차 yaw rate +0.000019 rad/s = +0.07 °/분
+[vslam_twist.py-9] [INFO] [1793257170.848810825] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793257172.717023265] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[vslam_twist.py-9] [INFO] [1793257180.849697070] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793257182.717220170] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[sensor_conditioner_node-6] [INFO] [1793257186.158291840] [sensor_conditioner]: ZUPT #201: bias y -0.000704 → -0.000712 (관측 -0.000781), 잔차 yaw rate +0.000070 rad/s = +0.24 °/분
+[vslam_twist.py-9] [INFO] [1793257190.848844188] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793257192.717610747] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[vslam_twist.py-9] [INFO] [1793257200.849247478] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793257202.717845834] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[sensor_conditioner_node-6] [INFO] [1793257206.177461251] [sensor_conditioner]: ZUPT #211: bias y -0.000724 → -0.000723 (관측 -0.000711), 잔차 yaw rate -0.000012 rad/s = -0.04 °/분
+[vslam_twist.py-9] [INFO] [1793257210.848659827] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793257212.718339237] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[vslam_twist.py-9] [INFO] [1793257220.848890702] [vslam_twist]: 출력 149 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793257222.718591420] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[sensor_conditioner_node-6] [INFO] [1793257226.205820189] [sensor_conditioner]: ZUPT #221: bias y -0.000695 → -0.000684 (관측 -0.000585), 잔차 yaw rate -0.000099 rad/s = -0.34 °/분
+[vslam_twist.py-9] [INFO] [1793257230.848859941] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793257232.718713234] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[vslam_twist.py-9] [INFO] [1793257240.848200652] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793257242.719209978] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 149 · 키없음 0 | IR1(끔) 입력 149 · 켬 149 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 149 · 키없음 0 | IR2(끔) 입력 149 · 켬 149 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 149 · 키없음 0
+[sensor_conditioner_node-6] [INFO] [1793257246.234078086] [sensor_conditioner]: ZUPT #231: bias y -0.000740 → -0.000728 (관측 -0.000615), 잔차 yaw rate -0.000112 rad/s = -0.39 °/분
+[vslam_twist.py-9] [INFO] [1793257250.848817794] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793257252.719543105] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[vslam_twist.py-9] [INFO] [1793257260.848633700] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793257262.719878959] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[sensor_conditioner_node-6] [INFO] [1793257266.262488713] [sensor_conditioner]: ZUPT #241: bias y -0.000722 → -0.000719 (관측 -0.000689), 잔차 yaw rate -0.000029 rad/s = -0.10 °/분
+[vslam_twist.py-9] [INFO] [1793257270.848805559] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793257272.720194979] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[vslam_twist.py-9] [INFO] [1793257280.848724042] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793257282.720485596] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[sensor_conditioner_node-6] [INFO] [1793257286.291175855] [sensor_conditioner]: ZUPT #251: bias y -0.000672 → -0.000675 (관측 -0.000702), 잔차 yaw rate +0.000027 rad/s = +0.09 °/분
+[vslam_twist.py-9] [INFO] [1793257290.854398973] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793257292.721035877] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[vslam_twist.py-9] [INFO] [1793257300.848737738] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793257302.721071942] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[sensor_conditioner_node-6] [INFO] [1793257306.320234560] [sensor_conditioner]: ZUPT #261: bias y -0.000694 → -0.000691 (관측 -0.000663), 잔차 yaw rate -0.000027 rad/s = -0.09 °/분
+[vslam_twist.py-9] [INFO] [1793257310.848252518] [vslam_twist]: 출력 149 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793257312.721247219] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[vslam_twist.py-9] [INFO] [1793257320.849014068] [vslam_twist]: 출력 149 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793257322.721686930] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 148 · 키없음 0 | IR1(끔) 입력 148 · 켬 148 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 148 · 키없음 0 | IR2(끔) 입력 148 · 켬 148 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 148 · 키없음 0
+[sensor_conditioner_node-6] [INFO] [1793257326.348014664] [sensor_conditioner]: ZUPT #271: bias y -0.000743 → -0.000726 (관측 -0.000572), 잔차 yaw rate -0.000154 rad/s = -0.53 °/분
+[vslam_twist.py-9] [INFO] [1793257330.848197527] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793257332.722041431] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[vslam_twist.py-9] [INFO] [1793257340.849146205] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793257342.722441383] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[sensor_conditioner_node-6] [INFO] [1793257346.376543566] [sensor_conditioner]: ZUPT #281: bias y -0.000753 → -0.000745 (관측 -0.000672), 잔차 yaw rate -0.000073 rad/s = -0.25 °/분
+[vslam_twist.py-9] [INFO] [1793257350.849181904] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793257352.722720702] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[vslam_twist.py-9] [INFO] [1793257360.849852578] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793257362.723119907] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[sensor_conditioner_node-6] [INFO] [1793257366.405051933] [sensor_conditioner]: ZUPT #291: bias y -0.000712 → -0.000733 (관측 -0.000921), 잔차 yaw rate +0.000188 rad/s = +0.65 °/분
+[vslam_twist.py-9] [INFO] [1793257370.848562175] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793257372.723336269] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[vslam_twist.py-9] [INFO] [1793257380.850296073] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793257382.723652837] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[sensor_conditioner_node-6] [INFO] [1793257386.433425907] [sensor_conditioner]: ZUPT #301: bias y -0.000733 → -0.000765 (관측 -0.001052), 잔차 yaw rate +0.000287 rad/s = +0.99 °/분
+[vslam_twist.py-9] [INFO] [1793257390.849461612] [vslam_twist]: 출력 149 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793257392.724084301] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[vslam_twist.py-9] [INFO] [1793257400.848897284] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793257402.724065299] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 149 · 켬 149 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 149 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[sensor_conditioner_node-6] [INFO] [1793257406.462541552] [sensor_conditioner]: ZUPT #311: bias y -0.000745 → -0.000737 (관측 -0.000663), 잔차 yaw rate -0.000074 rad/s = -0.25 °/분
+[vslam_twist.py-9] [INFO] [1793257410.849209124] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793257412.725025221] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 149 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 149 · 켬 149 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 149 · 키없음 0
+[vslam_twist.py-9] [INFO] [1793257420.848862076] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793257422.725084038] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[sensor_conditioner_node-6] [INFO] [1793257426.490911720] [sensor_conditioner]: ZUPT #321: bias y -0.000724 → -0.000716 (관측 -0.000641), 잔차 yaw rate -0.000075 rad/s = -0.26 °/분
+[vslam_twist.py-9] [INFO] [1793257430.848887086] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793257432.725261465] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[vslam_twist.py-9] [INFO] [1793257440.849291065] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793257442.725683393] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[sensor_conditioner_node-6] [INFO] [1793257446.519632353] [sensor_conditioner]: ZUPT #331: bias y -0.000747 → -0.000750 (관측 -0.000777), 잔차 yaw rate +0.000026 rad/s = +0.09 °/분
+[vslam_twist.py-9] [INFO] [1793257450.848772692] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793257452.726001940] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[vslam_twist.py-9] [INFO] [1793257460.847994869] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793257462.726309717] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[sensor_conditioner_node-6] [INFO] [1793257466.548131242] [sensor_conditioner]: ZUPT #341: bias y -0.000713 → -0.000715 (관측 -0.000737), 잔차 yaw rate +0.000022 rad/s = +0.08 °/분
+[vslam_twist.py-9] [INFO] [1793257470.848845177] [vslam_twist]: 출력 149 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793257472.726555810] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[vslam_twist.py-9] [INFO] [1793257480.848821392] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793257482.726880514] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[sensor_conditioner_node-6] [INFO] [1793257486.576809237] [sensor_conditioner]: ZUPT #351: bias y -0.000712 → -0.000705 (관측 -0.000637), 잔차 yaw rate -0.000068 rad/s = -0.23 °/분
+[vslam_twist.py-9] [INFO] [1793257490.848833176] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793257492.727023210] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[vslam_twist.py-9] [INFO] [1793257500.848812270] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793257502.727730325] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 149 · 키없음 0 | IR1(끔) 입력 149 · 켬 149 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 149 · 키없음 0 | IR2(끔) 입력 149 · 켬 149 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 149 · 키없음 0
+[sensor_conditioner_node-6] [INFO] [1793257506.607125682] [sensor_conditioner]: ZUPT #361: bias y -0.000726 → -0.000731 (관측 -0.000781), 잔차 yaw rate +0.000050 rad/s = +0.17 °/분
+[vslam_twist.py-9] [INFO] [1793257510.849158784] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793257512.727864573] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[vslam_twist.py-9] [INFO] [1793257520.848789642] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793257522.728255165] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[sensor_conditioner_node-6] [INFO] [1793257526.634346764] [sensor_conditioner]: ZUPT #371: bias y -0.000735 → -0.000731 (관측 -0.000698), 잔차 yaw rate -0.000033 rad/s = -0.11 °/분
+[vslam_twist.py-9] [INFO] [1793257530.848665902] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793257532.728469609] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[vslam_twist.py-9] [INFO] [1793257540.848107124] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793257542.728970670] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[sensor_conditioner_node-6] [INFO] [1793257546.663640939] [sensor_conditioner]: ZUPT #381: bias y -0.000727 → -0.000727 (관측 -0.000720), 잔차 yaw rate -0.000007 rad/s = -0.02 °/분
+[vslam_twist.py-9] [INFO] [1793257550.851869175] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793257552.729198972] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[vslam_twist.py-9] [INFO] [1793257560.848648234] [vslam_twist]: 출력 149 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793257562.729544063] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[sensor_conditioner_node-6] [INFO] [1793257566.693039346] [sensor_conditioner]: ZUPT #391: bias y -0.000698 → -0.000715 (관측 -0.000868), 잔차 yaw rate +0.000153 rad/s = +0.53 °/분
+[vslam_twist.py-9] [INFO] [1793257570.848095205] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793257572.729749424] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[vslam_twist.py-9] [INFO] [1793257580.848774297] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793257582.729877392] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 149 · 켬 149 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 149 · 키없음 0 | IR2(끔) 입력 150 · 켬 149 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 149 · 키없음 0
+[sensor_conditioner_node-6] [INFO] [1793257586.721027987] [sensor_conditioner]: ZUPT #401: bias y -0.000694 → -0.000692 (관측 -0.000672), 잔차 yaw rate -0.000020 rad/s = -0.07 °/분
+[vslam_twist.py-9] [INFO] [1793257590.848818795] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793257592.730423600] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 149 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 149 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[vslam_twist.py-9] [INFO] [1793257600.848820303] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793257602.730814621] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 149 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[sensor_conditioner_node-6] [INFO] [1793257606.749774231] [sensor_conditioner]: ZUPT #411: bias y -0.000699 → -0.000680 (관측 -0.000515), 잔차 yaw rate -0.000165 rad/s = -0.57 °/분
+[vslam_twist.py-9] [INFO] [1793257610.848707617] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793257612.731073273] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[vslam_twist.py-9] [INFO] [1793257620.848602599] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793257622.731438060] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[sensor_conditioner_node-6] [INFO] [1793257626.778714316] [sensor_conditioner]: ZUPT #421: bias y -0.000716 → -0.000694 (관측 -0.000493), 잔차 yaw rate -0.000201 rad/s = -0.69 °/분
+[vslam_twist.py-9] [INFO] [1793257630.851788298] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793257632.731714127] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[vslam_twist.py-9] [INFO] [1793257640.848080450] [vslam_twist]: 출력 149 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793257642.732120713] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[sensor_conditioner_node-6] [INFO] [1793257646.807516266] [sensor_conditioner]: ZUPT #431: bias y -0.000695 → -0.000702 (관측 -0.000768), 잔차 yaw rate +0.000066 rad/s = +0.23 °/분
+[vslam_twist.py-9] [INFO] [1793257650.848009252] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793257652.732358386] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[vslam_twist.py-9] [INFO] [1793257660.848636752] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793257662.732792118] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 149 · 켬 149 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 149 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[sensor_conditioner_node-6] [INFO] [1793257666.836341401] [sensor_conditioner]: ZUPT #441: bias y -0.000688 → -0.000710 (관측 -0.000912), 잔차 yaw rate +0.000202 rad/s = +0.69 °/분
+[vslam_twist.py-9] [INFO] [1793257670.848766560] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793257672.733009543] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 149 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 149 · 켬 149 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 149 · 키없음 0
+[vslam_twist.py-9] [INFO] [1793257680.849270257] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793257682.733316239] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[sensor_conditioner_node-6] [INFO] [1793257686.865280892] [sensor_conditioner]: ZUPT #451: bias y -0.000708 → -0.000714 (관측 -0.000764), 잔차 yaw rate +0.000050 rad/s = +0.17 °/분
+[vslam_twist.py-9] [INFO] [1793257690.848363560] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793257692.733646029] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[vslam_twist.py-9] [INFO] [1793257700.848648124] [vslam_twist]: 출력 149 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793257702.733961535] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 149 · 키없음 0 | IR1(끔) 입력 149 · 켬 149 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 149 · 키없음 0 | IR2(끔) 입력 149 · 켬 149 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 149 · 키없음 0
+[sensor_conditioner_node-6] [INFO] [1793257706.894622528] [sensor_conditioner]: ZUPT #461: bias y -0.000694 → -0.000693 (관측 -0.000681), 잔차 yaw rate -0.000012 rad/s = -0.04 °/분
+[vslam_twist.py-9] [INFO] [1793257710.849769215] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793257712.734241893] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[vslam_twist.py-9] [INFO] [1793257720.851555533] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793257722.734621636] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[sensor_conditioner_node-6] [INFO] [1793257726.923352197] [sensor_conditioner]: ZUPT #471: bias y -0.000712 → -0.000693 (관측 -0.000528), 잔차 yaw rate -0.000165 rad/s = -0.57 °/분
+[vslam_twist.py-9] [INFO] [1793257730.848813279] [vslam_twist]: 출력 149 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793257732.734904469] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[vslam_twist.py-9] [INFO] [1793257740.848845888] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793257742.735095065] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[sensor_conditioner_node-6] [INFO] [1793257746.952070400] [sensor_conditioner]: ZUPT #481: bias y -0.000677 → -0.000667 (관측 -0.000580), 잔차 yaw rate -0.000087 rad/s = -0.30 °/분
+[vslam_twist.py-9] [INFO] [1793257750.850054172] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793257752.735418711] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[vslam_twist.py-9] [INFO] [1793257760.847980902] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793257762.735855056] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 149 · 키없음 0 | IR1(끔) 입력 149 · 켬 149 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 149 · 키없음 0 | IR2(끔) 입력 149 · 켬 149 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 149 · 키없음 0
+[sensor_conditioner_node-6] [INFO] [1793257766.981136767] [sensor_conditioner]: ZUPT #491: bias y -0.000686 → -0.000708 (관측 -0.000912), 잔차 yaw rate +0.000203 rad/s = +0.70 °/분
+[vslam_twist.py-9] [INFO] [1793257770.850620317] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793257772.736220604] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[vslam_twist.py-9] [INFO] [1793257780.848925247] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793257782.736531901] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[sensor_conditioner_node-6] [INFO] [1793257787.010174774] [sensor_conditioner]: ZUPT #501: bias y -0.000699 → -0.000683 (관측 -0.000541), 잔차 yaw rate -0.000142 rad/s = -0.49 °/분
+[vslam_twist.py-9] [INFO] [1793257790.848899726] [vslam_twist]: 출력 149 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793257792.736950360] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 149 · 키없음 0 | IR1(끔) 입력 149 · 켬 149 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 149 · 키없음 0 | IR2(끔) 입력 149 · 켬 149 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 149 · 키없음 0
+[vslam_twist.py-9] [INFO] [1793257800.853003352] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793257802.737287208] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[sensor_conditioner_node-6] [INFO] [1793257807.039115269] [sensor_conditioner]: ZUPT #511: bias y -0.000693 → -0.000679 (관측 -0.000554), 잔차 yaw rate -0.000125 rad/s = -0.43 °/분
+[vslam_twist.py-9] [INFO] [1793257810.848981908] [vslam_twist]: 출력 149 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793257812.737547180] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[vslam_twist.py-9] [INFO] [1793257820.848440439] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793257822.737924747] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[sensor_conditioner_node-6] [INFO] [1793257827.068824074] [sensor_conditioner]: ZUPT #521: bias y -0.000686 → -0.000661 (관측 -0.000432), 잔차 yaw rate -0.000229 rad/s = -0.79 °/분
+[vslam_twist.py-9] [INFO] [1793257830.848786863] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793257832.738074202] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[vslam_twist.py-9] [INFO] [1793257840.847982392] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793257842.738572557] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 149 · 키없음 0 | IR1(끔) 입력 149 · 켬 149 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 149 · 키없음 0 | IR2(끔) 입력 149 · 켬 149 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 149 · 키없음 0
+[sensor_conditioner_node-6] [INFO] [1793257847.097292292] [sensor_conditioner]: ZUPT #531: bias y -0.000682 → -0.000685 (관측 -0.000716), 잔차 yaw rate +0.000030 rad/s = +0.10 °/분
+[vslam_twist.py-9] [INFO] [1793257850.848756813] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793257852.738841551] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[vslam_twist.py-9] [INFO] [1793257860.848783937] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793257862.739216397] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[sensor_conditioner_node-6] [INFO] [1793257867.126677660] [sensor_conditioner]: ZUPT #541: bias y -0.000711 → -0.000724 (관측 -0.000842), 잔차 yaw rate +0.000118 rad/s = +0.41 °/분
+[vslam_twist.py-9] [INFO] [1793257870.848132599] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793257872.739489888] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[vslam_twist.py-9] [INFO] [1793257880.850137595] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793257882.739840333] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[sensor_conditioner_node-6] [INFO] [1793257887.155651046] [sensor_conditioner]: ZUPT #551: bias y -0.000735 → -0.000735 (관측 -0.000729), 잔차 yaw rate -0.000006 rad/s = -0.02 °/분
+[vslam_twist.py-9] [INFO] [1793257890.849722954] [vslam_twist]: 출력 149 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793257892.740140753] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[vslam_twist.py-9] [INFO] [1793257900.848773575] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793257902.740422752] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[sensor_conditioner_node-6] [INFO] [1793257907.185413558] [sensor_conditioner]: ZUPT #561: bias y -0.000724 → -0.000715 (관측 -0.000633), 잔차 yaw rate -0.000082 rad/s = -0.28 °/분
+[vslam_twist.py-9] [INFO] [1793257910.848830899] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793257912.740895247] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[vslam_twist.py-9] [INFO] [1793257920.849158810] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793257922.742785536] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[sensor_conditioner_node-6] [INFO] [1793257927.215244263] [sensor_conditioner]: ZUPT #571: bias y -0.000693 → -0.000696 (관측 -0.000716), 잔차 yaw rate +0.000020 rad/s = +0.07 °/분
+[vslam_twist.py-9] [INFO] [1793257930.848735166] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793257932.741451420] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 149 · 키없음 0 | IR1(끔) 입력 149 · 켬 149 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 149 · 키없음 0 | IR2(끔) 입력 149 · 켬 149 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 149 · 키없음 0
+[vslam_twist.py-9] [INFO] [1793257940.849151742] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793257942.741824179] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[sensor_conditioner_node-6] [INFO] [1793257947.243356651] [sensor_conditioner]: ZUPT #581: bias y -0.000666 → -0.000671 (관측 -0.000711), 잔차 yaw rate +0.000041 rad/s = +0.14 °/분
+[vslam_twist.py-9] [INFO] [1793257950.849335710] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793257952.742134640] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[vslam_twist.py-9] [INFO] [1793257960.849084445] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793257962.742654053] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[sensor_conditioner_node-6] [INFO] [1793257967.271909481] [sensor_conditioner]: ZUPT #591: bias y -0.000665 → -0.000676 (관측 -0.000768), 잔차 yaw rate +0.000092 rad/s = +0.32 °/분
+[vslam_twist.py-9] [INFO] [1793257970.848797105] [vslam_twist]: 출력 149 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793257972.742898022] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[vslam_twist.py-9] [INFO] [1793257980.848839852] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793257982.743176711] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[sensor_conditioner_node-6] [INFO] [1793257987.301639283] [sensor_conditioner]: ZUPT #601: bias y -0.000685 → -0.000687 (관측 -0.000707), 잔차 yaw rate +0.000020 rad/s = +0.07 °/분
+[vslam_twist.py-9] [INFO] [1793257990.848832521] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793257992.743620178] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[vslam_twist.py-9] [INFO] [1793258000.847941137] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793258002.743875714] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[sensor_conditioner_node-6] [INFO] [1793258007.331208658] [sensor_conditioner]: ZUPT #611: bias y -0.000677 → -0.000670 (관측 -0.000611), 잔차 yaw rate -0.000059 rad/s = -0.20 °/분
+[vslam_twist.py-9] [INFO] [1793258010.848030604] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793258012.743993567] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 149 · 키없음 0 | IR1(끔) 입력 149 · 켬 149 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 149 · 키없음 0 | IR2(끔) 입력 149 · 켬 149 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 149 · 키없음 0
+[vslam_twist.py-9] [INFO] [1793258020.848744404] [vslam_twist]: 출력 149 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793258022.744603334] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[sensor_conditioner_node-6] [INFO] [1793258027.360225870] [sensor_conditioner]: ZUPT #621: bias y -0.000683 → -0.000673 (관측 -0.000585), 잔차 yaw rate -0.000088 rad/s = -0.30 °/분
+[vslam_twist.py-9] [INFO] [1793258030.848042377] [vslam_twist]: 출력 151 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793258032.744961378] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[vslam_twist.py-9] [INFO] [1793258040.848843029] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793258042.745295171] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[sensor_conditioner_node-6] [INFO] [1793258047.389155402] [sensor_conditioner]: ZUPT #631: bias y -0.000699 → -0.000719 (관측 -0.000899), 잔차 yaw rate +0.000179 rad/s = +0.62 °/분
+[vslam_twist.py-9] [INFO] [1793258050.849590761] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793258052.745528811] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[vslam_twist.py-9] [INFO] [1793258060.848732982] [vslam_twist]: 출력 149 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793258062.745890921] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[sensor_conditioner_node-6] [INFO] [1793258067.418580395] [sensor_conditioner]: ZUPT #641: bias y -0.000713 → -0.000726 (관측 -0.000842), 잔차 yaw rate +0.000116 rad/s = +0.40 °/분
+[vslam_twist.py-9] [INFO] [1793258070.849111875] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793258072.746362337] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[vslam_twist.py-9] [INFO] [1793258080.849389288] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793258082.746744275] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[sensor_conditioner_node-6] [INFO] [1793258087.447609569] [sensor_conditioner]: ZUPT #651: bias y -0.000711 → -0.000723 (관측 -0.000838), 잔차 yaw rate +0.000114 rad/s = +0.39 °/분
+[vslam_twist.py-9] [INFO] [1793258090.848719919] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793258092.746966242] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[vslam_twist.py-9] [INFO] [1793258100.848806678] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793258102.747093814] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 149 · 키없음 0 | IR1(끔) 입력 149 · 켬 149 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 149 · 키없음 0 | IR2(끔) 입력 149 · 켬 149 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 149 · 키없음 0
+[sensor_conditioner_node-6] [INFO] [1793258107.476673161] [sensor_conditioner]: ZUPT #661: bias y -0.000704 → -0.000712 (관측 -0.000781), 잔차 yaw rate +0.000069 rad/s = +0.24 °/분
+[vslam_twist.py-9] [INFO] [1793258110.848625440] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793258112.747680807] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 149 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[vslam_twist.py-9] [INFO] [1793258120.847860264] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793258122.747959263] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[sensor_conditioner_node-6] [INFO] [1793258127.506393891] [sensor_conditioner]: ZUPT #671: bias y -0.000736 → -0.000744 (관측 -0.000812), 잔차 yaw rate +0.000068 rad/s = +0.23 °/분
+[vslam_twist.py-9] [INFO] [1793258130.849698495] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793258132.748340691] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[vslam_twist.py-9] [INFO] [1793258140.849000317] [vslam_twist]: 출력 149 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793258142.748615424] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[sensor_conditioner_node-6] [INFO] [1793258147.535927709] [sensor_conditioner]: ZUPT #681: bias y -0.000740 → -0.000736 (관측 -0.000698), 잔차 yaw rate -0.000038 rad/s = -0.13 °/분
+[vslam_twist.py-9] [INFO] [1793258150.848743402] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793258152.749008148] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[vslam_twist.py-9] [INFO] [1793258160.848790631] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793258162.749365036] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[sensor_conditioner_node-6] [INFO] [1793258167.564873489] [sensor_conditioner]: ZUPT #691: bias y -0.000728 → -0.000738 (관측 -0.000829), 잔차 yaw rate +0.000091 rad/s = +0.31 °/분
+[vslam_twist.py-9] [INFO] [1793258170.849485573] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793258172.749755314] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[vslam_twist.py-9] [INFO] [1793258180.848765923] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793258182.749827709] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[sensor_conditioner_node-6] [INFO] [1793258187.594024033] [sensor_conditioner]: ZUPT #701: bias y -0.000717 → -0.000722 (관측 -0.000772), 잔차 yaw rate +0.000050 rad/s = +0.17 °/분
+[vslam_twist.py-9] [INFO] [1793258190.848500900] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793258192.750292427] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 149 · 키없음 0 | IR1(끔) 입력 149 · 켬 149 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 149 · 키없음 0 | IR2(끔) 입력 149 · 켬 149 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 149 · 키없음 0
+[vslam_twist.py-9] [INFO] [1793258200.849075931] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793258202.750903511] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[sensor_conditioner_node-6] [INFO] [1793258207.623898980] [sensor_conditioner]: ZUPT #711: bias y -0.000780 → -0.000773 (관측 -0.000716), 잔차 yaw rate -0.000058 rad/s = -0.20 °/분
+[vslam_twist.py-9] [INFO] [1793258210.848452070] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793258212.751322235] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[vslam_twist.py-9] [INFO] [1793258220.847981912] [vslam_twist]: 출력 149 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793258222.751867461] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[sensor_conditioner_node-6] [INFO] [1793258227.653460155] [sensor_conditioner]: ZUPT #721: bias y -0.000775 → -0.000779 (관측 -0.000820), 잔차 yaw rate +0.000041 rad/s = +0.14 °/분
+[vslam_twist.py-9] [INFO] [1793258230.848844413] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793258232.751637404] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[vslam_twist.py-9] [INFO] [1793258240.848825326] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793258242.752185176] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[sensor_conditioner_node-6] [INFO] [1793258247.682005040] [sensor_conditioner]: ZUPT #731: bias y -0.000759 → -0.000766 (관측 -0.000829), 잔차 yaw rate +0.000063 rad/s = +0.22 °/분
+[vslam_twist.py-9] [INFO] [1793258250.848846735] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793258252.755531649] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[vslam_twist.py-9] [INFO] [1793258260.849261712] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793258262.753877654] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[sensor_conditioner_node-6] [INFO] [1793258267.711390595] [sensor_conditioner]: ZUPT #741: bias y -0.000712 → -0.000733 (관측 -0.000921), 잔차 yaw rate +0.000188 rad/s = +0.64 °/분
+[vslam_twist.py-9] [INFO] [1793258270.849096787] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793258272.752926265] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[vslam_twist.py-9] [INFO] [1793258280.848764715] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793258282.753309956] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 149 · 키없음 0 | IR1(끔) 입력 149 · 켬 149 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 149 · 키없음 0 | IR2(끔) 입력 149 · 켬 149 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 149 · 키없음 0
+[sensor_conditioner_node-6] [INFO] [1793258287.740788728] [sensor_conditioner]: ZUPT #751: bias y -0.000748 → -0.000736 (관측 -0.000633), 잔차 yaw rate -0.000103 rad/s = -0.36 °/분
+[vslam_twist.py-9] [INFO] [1793258290.849560519] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793258292.753745359] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[vslam_twist.py-9] [INFO] [1793258300.848322657] [vslam_twist]: 출력 149 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793258302.754000119] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[sensor_conditioner_node-6] [INFO] [1793258307.770315665] [sensor_conditioner]: ZUPT #761: bias y -0.000742 → -0.000718 (관측 -0.000506), 잔차 yaw rate -0.000212 rad/s = -0.73 °/분
+[vslam_twist.py-9] [INFO] [1793258310.849341868] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793258312.754308071] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[vslam_twist.py-9] [INFO] [1793258320.848743657] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793258322.754763781] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[sensor_conditioner_node-6] [INFO] [1793258327.801966800] [sensor_conditioner]: ZUPT #771: bias y -0.000749 → -0.000751 (관측 -0.000772), 잔차 yaw rate +0.000021 rad/s = +0.07 °/분
+[vslam_twist.py-9] [INFO] [1793258330.848075666] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793258332.755066572] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[vslam_twist.py-9] [INFO] [1793258340.848775415] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793258342.756207263] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[sensor_conditioner_node-6] [INFO] [1793258347.829292216] [sensor_conditioner]: ZUPT #781: bias y -0.000747 → -0.000749 (관측 -0.000759), 잔차 yaw rate +0.000011 rad/s = +0.04 °/분
+[vslam_twist.py-9] [INFO] [1793258350.848038017] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793258352.755419687] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 149 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 149 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[vslam_twist.py-9] [INFO] [1793258360.849550572] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793258362.756058101] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 149 · 키없음 0 | IR1(끔) 입력 149 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 149 · 켬 149 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 149 · 키없음 0
+[sensor_conditioner_node-6] [INFO] [1793258367.858556823] [sensor_conditioner]: ZUPT #791: bias y -0.000741 → -0.000752 (관측 -0.000842), 잔차 yaw rate +0.000091 rad/s = +0.31 °/분
+[vslam_twist.py-9] [INFO] [1793258370.851465823] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793258372.756399796] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[vslam_twist.py-9] [INFO] [1793258380.849162627] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793258382.756708560] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[sensor_conditioner_node-6] [INFO] [1793258387.887645759] [sensor_conditioner]: ZUPT #801: bias y -0.000710 → -0.000696 (관측 -0.000572), 잔차 yaw rate -0.000124 rad/s = -0.43 °/분
+[vslam_twist.py-9] [INFO] [1793258390.854482277] [vslam_twist]: 출력 149 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793258392.757057935] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[vslam_twist.py-9] [INFO] [1793258400.849553013] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793258402.757312046] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[sensor_conditioner_node-6] [INFO] [1793258407.917174782] [sensor_conditioner]: ZUPT #811: bias y -0.000742 → -0.000747 (관측 -0.000790), 잔차 yaw rate +0.000043 rad/s = +0.15 °/분
+[vslam_twist.py-9] [INFO] [1793258410.848900987] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793258412.757713946] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[vslam_twist.py-9] [INFO] [1793258420.848161383] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793258422.757979531] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[sensor_conditioner_node-6] [INFO] [1793258427.946854308] [sensor_conditioner]: ZUPT #821: bias y -0.000756 → -0.000741 (관측 -0.000611), 잔차 yaw rate -0.000130 rad/s = -0.45 °/분
+[vslam_twist.py-9] [INFO] [1793258430.848778093] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793258432.758356589] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[vslam_twist.py-9] [INFO] [1793258440.849061559] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793258442.758764800] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[sensor_conditioner_node-6] [INFO] [1793258447.976195319] [sensor_conditioner]: ZUPT #831: bias y -0.000763 → -0.000760 (관측 -0.000729), 잔차 yaw rate -0.000031 rad/s = -0.11 °/분
+[vslam_twist.py-9] [INFO] [1793258450.848976135] [vslam_twist]: 출력 149 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793258452.760022306] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 149 · 키없음 0 | IR1(끔) 입력 149 · 켬 149 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 149 · 키없음 0 | IR2(끔) 입력 149 · 켬 149 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 149 · 키없음 0
+[vslam_twist.py-9] [INFO] [1793258460.855817617] [vslam_twist]: 출력 151 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793258462.759405435] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[sensor_conditioner_node-6] [INFO] [1793258468.005459254] [sensor_conditioner]: ZUPT #841: bias y -0.000753 → -0.000757 (관측 -0.000794), 잔차 yaw rate +0.000037 rad/s = +0.13 °/분
+[vslam_twist.py-9] [INFO] [1793258470.847988717] [vslam_twist]: 출력 149 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793258472.759698698] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[vslam_twist.py-9] [INFO] [1793258480.848770240] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793258482.759965715] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[sensor_conditioner_node-6] [INFO] [1793258488.035006339] [sensor_conditioner]: ZUPT #851: bias y -0.000769 → -0.000781 (관측 -0.000886), 잔차 yaw rate +0.000105 rad/s = +0.36 °/분
+[vslam_twist.py-9] [INFO] [1793258490.848811736] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793258492.760383742] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[vslam_twist.py-9] [INFO] [1793258500.848611495] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793258502.760627812] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[sensor_conditioner_node-6] [INFO] [1793258508.064459686] [sensor_conditioner]: ZUPT #861: bias y -0.000769 → -0.000745 (관측 -0.000532), 잔차 yaw rate -0.000213 rad/s = -0.73 °/분
+[vslam_twist.py-9] [INFO] [1793258510.847986538] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793258512.760993040] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[vslam_twist.py-9] [INFO] [1793258520.849300466] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793258522.761544294] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[sensor_conditioner_node-6] [INFO] [1793258528.095962329] [sensor_conditioner]: ZUPT #871: bias y -0.000719 → -0.000725 (관측 -0.000781), 잔차 yaw rate +0.000056 rad/s = +0.19 °/분
+[vslam_twist.py-9] [INFO] [1793258530.849094253] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793258532.761554386] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[vslam_twist.py-9] [INFO] [1793258540.847954451] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793258542.761949301] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 149 · 키없음 0 | IR1(끔) 입력 149 · 켬 149 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 149 · 키없음 0 | IR2(끔) 입력 149 · 켬 149 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 149 · 키없음 0
+[sensor_conditioner_node-6] [INFO] [1793258548.123484553] [sensor_conditioner]: ZUPT #881: bias y -0.000756 → -0.000775 (관측 -0.000938), 잔차 yaw rate +0.000163 rad/s = +0.56 °/분
+[vslam_twist.py-9] [INFO] [1793258550.850596738] [vslam_twist]: 출력 148 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793258552.762295585] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 149 · 키없음 0 | IR1(끔) 입력 149 · 켬 149 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 149 · 키없음 0 | IR2(끔) 입력 149 · 켬 149 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 149 · 키없음 0
+[vslam_twist.py-9] [INFO] [1793258560.856420966] [vslam_twist]: 출력 149 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793258562.762603642] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 149 · 키없음 0 | IR1(끔) 입력 149 · 켬 149 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 149 · 키없음 0 | IR2(끔) 입력 149 · 켬 149 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 149 · 키없음 0
+[sensor_conditioner_node-6] [INFO] [1793258568.153673252] [sensor_conditioner]: ZUPT #891: bias y -0.000740 → -0.000748 (관측 -0.000820), 잔차 yaw rate +0.000072 rad/s = +0.25 °/분
+[vslam_twist.py-9] [INFO] [1793258570.848503093] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793258572.763025895] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[vslam_twist.py-9] [INFO] [1793258580.848723363] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793258582.763350212] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[sensor_conditioner_node-6] [INFO] [1793258588.182244206] [sensor_conditioner]: ZUPT #901: bias y -0.000770 → -0.000771 (관측 -0.000781), 잔차 yaw rate +0.000010 rad/s = +0.03 °/분
+[vslam_twist.py-9] [INFO] [1793258590.848779775] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793258592.763601426] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[vslam_twist.py-9] [INFO] [1793258600.848754607] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793258602.763998332] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[sensor_conditioner_node-6] [INFO] [1793258608.211921201] [sensor_conditioner]: ZUPT #911: bias y -0.000761 → -0.000750 (관측 -0.000650), 잔차 yaw rate -0.000100 rad/s = -0.34 °/분
+[vslam_twist.py-9] [INFO] [1793258610.848637365] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793258612.766601863] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[vslam_twist.py-9] [INFO] [1793258620.848641496] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793258622.764505842] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 149 · 켬 149 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 149 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[sensor_conditioner_node-6] [INFO] [1793258628.241883364] [sensor_conditioner]: ZUPT #921: bias y -0.000739 → -0.000741 (관측 -0.000750), 잔차 yaw rate +0.000010 rad/s = +0.03 °/분
+[vslam_twist.py-9] [INFO] [1793258630.848799933] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793258632.764948909] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 149 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 149 · 켬 149 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 149 · 키없음 0
+[vslam_twist.py-9] [INFO] [1793258640.848779546] [vslam_twist]: 출력 149 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793258642.765304228] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[sensor_conditioner_node-6] [INFO] [1793258648.270867788] [sensor_conditioner]: ZUPT #931: bias y -0.000701 → -0.000711 (관측 -0.000803), 잔차 yaw rate +0.000091 rad/s = +0.31 °/분
+[vslam_twist.py-9] [INFO] [1793258650.854656025] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+[component_container_mt-1] [INFO] [1793258652.765560760] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0
+[vslam_twist.py-9] [INFO] [1793258660.848732950] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
