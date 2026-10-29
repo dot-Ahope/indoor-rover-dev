@@ -10,36 +10,36 @@
 | [`anal_box_history.py`](../../tools/anal_box_history.py) | anal_box_history — 로버가 장애물 옆에서 멈췄을 때, 그 장애물 칸이 코스트맵에 '언제부터' 있었는지와 로버·경로가 '어떻게' 다가갔는지를 시간순으로 낸다. (2026-10-13) | 10-13 §4.6 · 10-13 §5 |
 | [`anal_box_layers.py`](../../tools/anal_box_layers.py) | anal_box_layers — 정지 때 차체 옆에 있던 치명 칸(상자 끝)을 '어느 층이 언제' 채웠는지 시간순으로 본다. (2026-10-13) | 10-13 §6 |
 | [`anal_box_pass.py`](../../tools/anal_box_pass.py) | anal_box_pass — 여러 주행에서 '같은 구역을 지날 때' 차체와 로컬 코스트맵 치명 칸 사이 여유가 얼마였는지 나란히 본다. (2026-10-13) | 10-13 §10 · 10-13 §12 · 10-13 §12.1 · … +4 |
-| [`anal_mppi_sim.py`](../../tools/anal_mppi_sim.py) | anal_mppi_sim — MPPI 오프라인 시뮬(Humble 1.1.20 동작 흉내, bag 의 경로·로컬 코스트맵 재생). Jetson 에서 실행(rosbag2_py). (2026-10-13 고정 이름, 원본 job776) | 10-13 §8 · 10-13 §9 · 10-13 §11 · … +2 |
+| [`anal_mppi_sim.py`](../../tools/anal_mppi_sim.py) | anal_mppi_sim — MPPI 오프라인 시뮬(Humble 1.1.20 동작 흉내, bag 의 경로·로컬 코스트맵 재생). Jetson 에서 실행(rosbag2_py). (2026-10-13 고정 이름, 원본 job776) | 10-13 §11 · 10-13 §8 · 10-13 §9 · … +2 |
 | [`anal_navlog.py`](../../tools/anal_navlog.py) | 10-12 §3.3: Nav2 로그(PC 로 회수한 사본) 요약 — 종류별 횟수(주행 창), 10 s 칸 히스토그램, 반복 아닌 경고·오류 원문. 인자: nav2.log HH:MM:SS HH:MM:SS [원문 최대 줄] | — |
 | [`anal_odom_drift.py`](../../tools/anal_odom_drift.py) | anal_odom_drift — 구간마다 '어느 오도메트리 재료가 SLAM 과 얼마나 어긋났나'를 견준다. (2026-10-13) | 10-13 §14 |
 | [`anal_plan_keepout.py`](../../tools/anal_plan_keepout.py) | anal_plan_keepout — 전역 지도에서 '카메라(nvblox)가 본 장애물' 둘레만 통과 금지 띠로 두껍게 했을 때 전역 경로가 어떻게 달라지는지 기록된 bag 으로 본다. (2026-10-14) | 10-14 §1 |
 | [`anal_proc_cpu.py`](../../tools/anal_proc_cpu.py) | 10-12 §3.3: 프로세스별 CPU(전 프로세스 틱 기록) 구간 비교. 인자: 이름=proc.log@시작epoch@끝epoch ...  (코어 1 개 = 100) | — |
-| [`anal_record_index.py`](../../tools/anal_record_index.py) | anal_record_index — 실험 기록 자동 색인 3 종 (2026-10-29, PC). 기록이 늘면 다시 돌려 덮어쓴다(손으로 고치지 않는다). | — |
+| [`anal_record_index.py`](../../tools/anal_record_index.py) | anal_record_index — 실험 기록 자동 색인 3 종 (2026-10-29, PC). 기록이 늘면 다시 돌려 덮어쓴다(손으로 고치지 않는다). | 10-29 §6 |
 | [`anal_recorder_cpu.py`](../../tools/anal_recorder_cpu.py) | anal_recorder_cpu — 주행별 bag 기록기(ros2 bag record)의 CPU 사용을 시간순으로, 다른 주요 프로세스·전체 부하와 함께 본다. (2026-10-13) | 10-13 §3 |
 | [`anal_reverse.py`](../../tools/anal_reverse.py) | 10-12 §1.2: 러너 csv 로 목표별 후진·제자리 회전 집계. 후진 거리 = 지령 v < −0.005 인 표본 사이 odom 이동 길이(EKF, 미끄러짐은 못 봄). | — |
-| [`anal_rtps_acklag.py`](../../tools/anal_rtps_acklag.py) | anal_rtps_acklag — 한 토픽의 쓰는 쪽이 보낸 HEARTBEAT(가진 표본 번호 범위)와 읽는 쪽들이 보낸 ACKNACK(어디까지 받았나)을 시간순으로 맞춰, | 10-13 §1.2 |
+| [`anal_rtps_acklag.py`](../../tools/anal_rtps_acklag.py) | anal_rtps_acklag — 한 토픽의 쓰는 쪽이 보낸 HEARTBEAT(가진 표본 번호 범위)와 읽는 쪽들이 보낸 ACKNACK(어디까지 받았나)을 시간순으로 맞춰, | 10-13 §1.2 · 10-13 §2 |
 | [`anal_rtps_onset.py`](../../tools/anal_rtps_onset.py) | anal_rtps_onset — 포화가 시작되는 몇 초를 잘게(기본 0.2 s) 나눠, 어느 읽는 쪽이 먼저 뒤처졌는지 본다. (2026-10-13) | 10-13 §1.2 · 10-13 §2.1 |
 | [`anal_rtps_pcap.py`](../../tools/anal_rtps_pcap.py) | anal_rtps_pcap — 루프백 캡처(pcap)에서 DDS(RTPS) 패킷을 종류·보낸 쪽·받는 쪽별로 센다. (2026-10-13) | 10-13 §0 · 10-13 §1 · 10-13 §1.2 |
 | [`anal_tf_rate.py`](../../tools/anal_tf_rate.py) | 10-12 §3.3: bag 의 /tf 발행량 추이 — 10 s 칸마다 프레임 쌍별 변환 수(Hz)와 /tf 메시지 수. 인자: bag | 10-13 §2.1 |
 | [`anal_top.py`](../../tools/anal_top.py) | 10-12 §2: top 기록(2 s 간격)에서 구간별 부하 — load average, 유휴 %, 프로세스별 CPU 평균. 인자: top.log HH:MM:SS HH:MM:SS [..구간 더] | — |
 | [`anal_traj_size.py`](../../tools/anal_traj_size.py) | 10-12 §7.3: /trajectories(MPPI 궤적 발행) 메시지의 크기·주기 추이 — 10 s 칸마다 메시지 수, 직렬화 크기(kB), 마커 수. 인자: bag... | — |
 | [`anal_udp_drops.py`](../../tools/anal_udp_drops.py) | 10-12 §9.2: UDP 손실 시간순 분석. 인자: net_<이름>.log 포화시작(HH:MM:SS) | 10-13 §1.2 · 10-13 §4.4 |
-| [`chk_drive_gate.py`](../../tools/chk_drive_gate.py) | chk_drive_gate — 주행 직전 게이트 B · C · G2 를 한 노드(DDS 참여자 1 개)로 (2026-10-27 §24, Jetson, 로버 안 움직임). | 10-27 §24 · 10-27 §31 |
+| [`chk_drive_gate.py`](../../tools/chk_drive_gate.py) | chk_drive_gate — 주행 직전 게이트 B · C · G2 를 한 노드(DDS 참여자 1 개)로 (2026-10-27 §24, Jetson, 로버 안 움직임). | 10-27 §24 · 10-27 §31 · 10-28 §2 · … +1 |
 | [`chk_jetson_state.sh`](../../tools/chk_jetson_state.sh) | 상태 확인(로버 안 움직임): 재부팅 여부·IP·스택·/tmp 스크립트·캡처 도구 권한. 10-13 세션 시작용 | 10-13 §0 |
 | [`chk_padding_dynamic.py`](../../tools/chk_padding_dynamic.py) | chk_padding_dynamic — 실행 중에 코스트맵 footprint_padding 을 바꾸면 실제로 반영되는지 본다. 로버는 움직이지 않는다(명령을 내지 않음). (2026-10-14) | 10-14 §7 · 10-14 §7.1 |
-| [`chk_prep.py`](../../tools/chk_prep.py) | prep 확인을 한 프로세스(DDS 참여자 1 개)로 (2026-10-12 §13). | 10-15 §1 · 10-15 §1.1 · 10-21 §1 · … +4 |
+| [`chk_prep.py`](../../tools/chk_prep.py) | prep 확인을 한 프로세스(DDS 참여자 1 개)로 (2026-10-12 §13). | 10-15 §1 · 10-15 §1.1 · 10-20 §7.4 · … +11 |
 | [`fig_bag_reception.py`](../../tools/fig_bag_reception.py) | fig_bag_reception — bag 기록기가 토픽별로 '제때 받았는지'를 시간축으로 그린다. (2026-10-13) | 10-13 §3 |
 | [`fig_box_approach_video.py`](../../tools/fig_box_approach_video.py) | fig_box_approach_video — 로버가 장애물(상자)에 다가가 멈추기까지를 지도 좌표 영상으로 만든다. (2026-10-13) | 10-13 §4.6 |
-| [`fig_drive_video.py`](../../tools/fig_drive_video.py) | fig_drive_video — 주행 한 구간을 영상으로(1920 × 1080). fig_run_video · 10-23 fig_replan_video 의 화면 재설계판 (2026-10-23 §20.5). | 10-23 §20.5 · 10-23 §20.6 · 10-23 §20.7 · … +2 |
-| [`fig_patrol_goals.py`](../../tools/fig_patrol_goals.py) | fig_patrol_goals — 순회 코스의 목표 지점을 저장 지도(office_v3) 위에 순서대로 그린다. (2026-10-14) | 10-14 §12 · 10-14 27.2 · 10-14 27.3 |
+| [`fig_drive_video.py`](../../tools/fig_drive_video.py) | fig_drive_video — 주행 한 구간을 영상으로(1920 × 1080). fig_run_video · 10-23 fig_replan_video 의 화면 재설계판 (2026-10-23 §20.5). | 10-23 §20.5 · 10-23 §20.6 · 10-23 §20.7 · … +3 |
+| [`fig_patrol_goals.py`](../../tools/fig_patrol_goals.py) | fig_patrol_goals — 순회 코스의 목표 지점을 저장 지도(office_v3) 위에 순서대로 그린다. (2026-10-14) | 10-14 27.2 · 10-14 27.3 · 10-14 §12 |
 | [`fig_place_run.py`](../../tools/fig_place_run.py) | fig_place_run — 장소 이름 명령 주행(F2.5 place_server) 한 번을 그림 한 장으로 (2026-10-28 §14, PC). | 10-28 §14.1 · 10-28 §17 |
-| [`fig_run_video.py`](../../tools/fig_run_video.py) | fig_run_video — 주행 한 구간을 지도 좌표 영상으로 만든다(특정 장애물 없이 주행 전체를 보는 일반판). (2026-10-14) | 10-14 §10 · 10-14 §13.4 · 10-14 19.3 · … +2 |
+| [`fig_run_video.py`](../../tools/fig_run_video.py) | fig_run_video — 주행 한 구간을 지도 좌표 영상으로 만든다(특정 장애물 없이 주행 전체를 보는 일반판). (2026-10-14) | 10-14 19.3 · 10-14 §10 · 10-14 §13.4 · … +2 |
 | [`fig_rviz_video.py`](../../tools/fig_rviz_video.py) | fig_rviz_video — 주행 구간을 RViz 스타일(어두운 바탕 · 1 m 격자 · costmap 색표 · 초록 경로 · 빨간 라이다 · 차체 외곽 · 좌표축)로 정사각 영상 (2026-10-26 §17). | 10-26 §17 · 10-26 §18.1 · 10-27 §12 · … +3 |
 | [`fig_stop_costmap.py`](../../tools/fig_stop_costmap.py) | fig_stop_costmap — 로버가 멈춘 순간의 로컬 코스트맵·차체 풋프린트·라이다 점을 겹쳐 그리고, 풋프린트에 걸린 비용과 실제 여유(라이다)를 수치로 낸다. (2026-10-13) | 10-13 §4.5 · 10-14 §9.2 |
-| [`prep_fast.sh`](../../tools/prep_fast.sh) | prep_fast — 순회용 빠른 기동(정리 → 센서 → SLAM 위치 추정 → Nav2 → 준비 확인). 로버 안 움직임. 옛 이름 job972_prep_fast.sh(10-12 §13) | 10-14 §25 · 10-15 §1.1 · 10-20 §6 · … +6 |
-| [`prep_patrol.sh`](../../tools/prep_patrol.sh) | prep_patrol — 순회 구성으로 빠른 prep. 로버 안 움직임. 인자: VIZ(lite\|true\|off, 기본 lite) [FWD=15.0] | 10-13 §1 · 10-13 §1.1 · 10-15 §1.1 · … +9 |
-| [`README.md`](../../tools/README.md) | Docs/tools — 계속 쓰는 도구 (2026-10-13~) | 08-27 한 일 · 08-28 코드 위치 이전 (사용자 요청) · 10-07 §9 · … +3 |
+| [`prep_fast.sh`](../../tools/prep_fast.sh) | prep_fast — 순회용 빠른 기동(정리 → 센서 → SLAM 위치 추정 → Nav2 → 준비 확인). 로버 안 움직임. 옛 이름 job972_prep_fast.sh(10-12 §13) | 10-14 §25 · 10-15 §1 · 10-15 §1.1 · … +12 |
+| [`prep_patrol.sh`](../../tools/prep_patrol.sh) | prep_patrol — 순회 구성으로 빠른 prep. 로버 안 움직임. 인자: VIZ(lite\|true\|off, 기본 lite) [FWD=15.0] | 10-13 §1 · 10-13 §1.1 · 10-15 §1 · … +16 |
+| [`README.md`](../../tools/README.md) | Docs/tools — 계속 쓰는 도구 (2026-10-13~) | 08-27 한 일 · 08-28 코드 위치 이전 (사용자 요청) · 09-18 15.3 · … +8 |
 | [`run_slam_replay.sh`](../../tools/run_slam_replay.sh) | run_slam_replay — 위치 추정 SLAM 을 주행 bag 입력으로 다시 돌려 map→odom stamp 정체를 잰다 (2026-10-27 §26, Jetson, 로버 안 움직임). | 10-27 §26.2 · 10-27 §29 |
 | [`slam_replay_feed.py`](../../tools/slam_replay_feed.py) | slam_replay_feed — 주행 bag 의 /scan · /tf(map→odom 뺌) · /tf_static 을 실시간 1 배로 다시 내보내고(/clock 포함), | 10-27 §26.2 |
 | [`up_tools.sh`](../../tools/up_tools.sh) | up_tools — Jetson /tmp 로 도구 전송(실행 안 함). 비밀번호는 run_jn.sh 에서 읽는다. 재부팅 뒤 한 번. | 10-14 §7.1 |
@@ -48,7 +48,7 @@
 
 | 파일 | 설명 | 언급 |
 |---|---|---|
-| [`job0.sh`](../../debug_log/2026-08-26/jobs/job0.sh) | Step 0 추가 점검: L4T/JetPack 버전, USB 장치, CH340 인식 여부 | — |
+| [`job0.sh`](../../debug_log/2026-08-26/jobs/job0.sh) | Step 0 추가 점검: L4T/JetPack 버전, USB 장치, CH340 인식 여부 | 08-26 (머리) |
 | [`job0b.sh`](../../debug_log/2026-08-26/jobs/job0b.sh) | CH340이 ttyUSB로 안 잡히는 원인 조사: 커널 로그 + brltty 여부 | — |
 | [`job0c.sh`](../../debug_log/2026-08-26/jobs/job0c.sh) | udev 규칙: CH340(1a86:7523) -> /dev/rover 심볼릭 링크 고정 | — |
 | [`job1.sh`](../../debug_log/2026-08-26/jobs/job1.sh) | Step 1: micro-ros-agent 컨테이너 실행 (심볼릭 링크 resolve 후 전달) | — |
@@ -83,12 +83,12 @@
 |---|---|---|
 | [`job4a.sh`](../../debug_log/2026-08-27/jobs/job4a.sh) | Step 4 사전: 필요 패키지 apt 가용성 + 현재 USB 장치 | — |
 | [`job4b.sh`](../../debug_log/2026-08-27/jobs/job4b.sh) | D455 camera_link 오프셋 (Intel realsense2_description xacro) | — |
-| [`job4c.sh`](../../debug_log/2026-08-27/jobs/job4c.sh) |  | — |
-| [`job4d.sh`](../../debug_log/2026-08-27/jobs/job4d.sh) | 현재 Jetson의 RealSense 준비 상태 진단 (JETSON_REALSENSE_INSTALL.md 게이트 기준) | — |
-| [`job4e.sh`](../../debug_log/2026-08-27/jobs/job4e.sh) | Step 4 준비 (저리스크): rplidar_ros 설치, RealSense 패키지 업그레이드, udev 규칙 2종 | — |
+| [`job4c.sh`](../../debug_log/2026-08-27/jobs/job4c.sh) | (단계) JOINT_CHAIN | — |
+| [`job4d.sh`](../../debug_log/2026-08-27/jobs/job4d.sh) | 현재 Jetson의 RealSense 준비 상태 진단 (JETSON_REALSENSE_INSTALL.md 게이트 기준) | 08-27 한 일 |
+| [`job4e.sh`](../../debug_log/2026-08-27/jobs/job4e.sh) | Step 4 준비 (저리스크): rplidar_ros 설치, RealSense 패키지 업그레이드, udev 규칙 2종 | 08-27 한 일 |
 | [`job4f.sh`](../../debug_log/2026-08-27/jobs/job4f.sh) | JetsonHacks 저장소 2종 클론 + 빌드 스크립트 원문 확인 | — |
-| [`job4g.sh`](../../debug_log/2026-08-27/jobs/job4g.sh) | RealSense IMU용 HID 센서 커널 모듈 소스 빌드 (root로 실행, 백그라운드, 로그 /tmp/hid_build.log) | — |
-| [`job4g_diag.sh`](../../debug_log/2026-08-27/jobs/job4g_diag.sh) |  | — |
+| [`job4g.sh`](../../debug_log/2026-08-27/jobs/job4g.sh) | RealSense IMU용 HID 센서 커널 모듈 소스 빌드 (root로 실행, 백그라운드, 로그 /tmp/hid_build.log) | 08-27 한 일 |
+| [`job4g_diag.sh`](../../debug_log/2026-08-27/jobs/job4g_diag.sh) | (단계) PROCS · TOP · MEM | — |
 | [`job4g_launch.sh`](../../debug_log/2026-08-27/jobs/job4g_launch.sh) |  | — |
 | [`job4h.sh`](../../debug_log/2026-08-27/jobs/job4h.sh) | ws 배포: rover_description(xacro+mesh+launch) + rover_bringup(lidar/camera/slam/foxglove launch, slam.yaml) → colcon → xacro 검증 | — |
 | [`job4i.sh`](../../debug_log/2026-08-27/jobs/job4i.sh) | 재부팅 후 복구·검증: HID 모듈 로드 확인 → bringup(base+ekf+static TF) 복구 | — |
@@ -104,11 +104,11 @@
 | [`job4s.sh`](../../debug_log/2026-08-27/jobs/job4s.sh) |  | — |
 | [`job4t.sh`](../../debug_log/2026-08-27/jobs/job4t.sh) | 손 회전 동적 검증 녹화 150s: 광학 y(=로봇 yaw축) 자이로 + EKF yaw 각속도 | — |
 | [`job4u.sh`](../../debug_log/2026-08-27/jobs/job4u.sh) | 손 회전 녹화 분석: D455f 자이로(광학 y) vs EKF vyaw | — |
-| [`job4v.sh`](../../debug_log/2026-08-27/jobs/job4v.sh) | USB 대역폭 테스트: 토폴로지 + (A) 카메라 풀스트림+LiDAR 동시 vs (B) 카메라 단독 비교 | — |
+| [`job4v.sh`](../../debug_log/2026-08-27/jobs/job4v.sh) | USB 대역폭 테스트: 토폴로지 + (A) 카메라 풀스트림+LiDAR 동시 vs (B) 카메라 단독 비교 | 08-27 결과 (수치) |
 | [`job4w.sh`](../../debug_log/2026-08-27/jobs/job4w.sh) | 동시 부하 재측정: LiDAR 발행 확인 후 scan/depth/color/imu/odom 5개 동시 15s (window 100) | — |
 | [`job4x.sh`](../../debug_log/2026-08-27/jobs/job4x.sh) | 센서 통합 launch로 전환 + slam_toolbox 스모크 테스트 + foxglove | — |
-| [`job4y.sh`](../../debug_log/2026-08-27/jobs/job4y.sh) | LiDAR yaw 정렬 측정: 로버 정면(카메라 방향) 0.3m에 손/책을 5초간 두고 실행 → lidar_yaw 산출 | — |
-| [`job4z.sh`](../../debug_log/2026-08-27/jobs/job4z.sh) | 회전 슬립 계수 정밀 캘리브레이션 (자이로 기준). 인자: 각속도 지령(기본 0.3), 지속 초(기본 4) | — |
+| [`job4y.sh`](../../debug_log/2026-08-27/jobs/job4y.sh) | LiDAR yaw 정렬 측정: 로버 정면(카메라 방향) 0.3m에 손/책을 5초간 두고 실행 → lidar_yaw 산출 | 08-27 미해결·다음 (다음 세션) · 08-27 한 일 |
+| [`job4z.sh`](../../debug_log/2026-08-27/jobs/job4z.sh) | 회전 슬립 계수 정밀 캘리브레이션 (자이로 기준). 인자: 각속도 지령(기본 0.3), 지속 초(기본 4) | 08-27 한 일 |
 | [`job5a.sh`](../../debug_log/2026-08-27/jobs/job5a.sh) | W3: 확정 URDF 반영 → colcon → base.launch 재시작(agent 포함) → sensors.launch 재시작(컨디셔너 1.0) | — |
 | [`job5b.sh`](../../debug_log/2026-08-27/jobs/job5b.sh) | W4 슬립 재캘리브레이션 (자이로 기준, WT-600 게이지 0.245 반영 펌웨어). 접지 상태·사용자 입회. | — |
 | [`job5c.sh`](../../debug_log/2026-08-27/jobs/job5c.sh) | 슬립 계수 0.46 배포 → 컨디셔너/EKF 재시작 → 정적 확인 + conditioned vs gyro 정합 스팟체크 | — |
@@ -120,18 +120,18 @@
 | [`job6a.sh`](../../debug_log/2026-08-28/jobs/job6a.sh) | 스택 상태 확인 + LiDAR yaw 정렬 사전 점검(현재 스캔 섹터별 거리 스냅샷) | — |
 | [`job6b.sh`](../../debug_log/2026-08-28/jobs/job6b.sh) | 재부팅 여부 확인 + 스택 전체 재시작 (base → sensors), 세션 검증 | — |
 | [`job6c.sh`](../../debug_log/2026-08-28/jobs/job6c.sh) | LiDAR yaw 정렬 v2: 개별 최근접 빔 각도 + 근거리(<0.8m) 세밀(10deg) 히스토그램 | — |
-| [`job6d.sh`](../../debug_log/2026-08-28/jobs/job6d.sh) | 종이 흔들기 추적: 15초간 근거리(<0.7m) 변동이 큰 섹터를 검출 → 종이 방향(lidar 프레임) 판정 | — |
+| [`job6d.sh`](../../debug_log/2026-08-28/jobs/job6d.sh) | 종이 흔들기 추적: 15초간 근거리(<0.7m) 변동이 큰 섹터를 검출 → 종이 방향(lidar 프레임) 판정 | 08-28 LiDAR yaw 최종 확정 (오후, 여러 차례 오락가락 후) · 08-28 결과 (수치) · 08-28 한 일 |
 | [`job6e.sh`](../../debug_log/2026-08-28/jobs/job6e.sh) | lidar_yaw=π 반영 → RSP 재빌드·재시작 → TF 확인 | — |
 | [`job6f.sh`](../../debug_log/2026-08-28/jobs/job6f.sh) | 검증: 종이를 base_link 프레임에서 추적 (LaserScan→base_link 변환). 정면이면 0deg, 좌 +90, 우 -90. | — |
 | [`job6g.sh`](../../debug_log/2026-08-28/jobs/job6g.sh) | 정밀 검증: base_link 프레임에서 (a)정지 기준선 3s → (b)흔들기 15s. 차이(변동)가 큰 상위 구간 + 최대변동 빔 각도 | — |
-| [`job6h.sh`](../../debug_log/2026-08-28/jobs/job6h.sh) | 벽 마주보기 검증: 정지 스캔, base_link 프레임 최근접 방향 = 벽 = 정면이어야 함 | — |
+| [`job6h.sh`](../../debug_log/2026-08-28/jobs/job6h.sh) | 벽 마주보기 검증: 정지 스캔, base_link 프레임 최근접 방향 = 벽 = 정면이어야 함 | 08-28 한 일 |
 | [`job6i.sh`](../../debug_log/2026-08-28/jobs/job6i.sh) | 원시 lidar 각도(θ_lidar, TF 무관) 분석 — 코너(정면+좌측 벽) ground truth와 대조해 회전 vs 반전 판정 | — |
-| [`job6j.sh`](../../debug_log/2026-08-28/jobs/job6j.sh) |  | — |
+| [`job6j.sh`](../../debug_log/2026-08-28/jobs/job6j.sh) | (단계) lidar_link TF yaw (0 기대) · 참고: base_link 프레임 근거리 방향 (코너 정면+좌측 벽이면 근거리가 0°~+90° 아크여야 정상) | — |
 | [`job6k.sh`](../../debug_log/2026-08-28/jobs/job6k.sh) | 트인 공간 + 정면 단일 물체: 유일 최근접 반사의 원시 θ_lidar = 로버 정면 하드웨어 각도 | — |
 | [`job6l.sh`](../../debug_log/2026-08-28/jobs/job6l.sh) | 현재 실제 상태 사실확인: 배포 URDF yaw, RSP 노드 수, TF, robot_description 파라미터 | — |
 | [`job6m.sh`](../../debug_log/2026-08-28/jobs/job6m.sh) | yaw=π 재적용 + 전체 스택 완전 재시작(base+sensors+foxglove) — stale TF 제거 | — |
-| [`job6n.sh`](../../debug_log/2026-08-28/jobs/job6n.sh) | 왼손/오른손 판정: 좌측벽(~325mm)·정면벽(~800mm)의 순수 원시 각도(θ_msg) 측정 → 방향성 판정 | — |
-| [`job6o.sh`](../../debug_log/2026-08-28/jobs/job6o.sh) | 현재 배포 TF(yaw=π)로 스캔을 base_link 프레임 변환 → 정면벽(800mm) base~0°, 좌측벽(325mm) base~+90° 확인 | — |
+| [`job6n.sh`](../../debug_log/2026-08-28/jobs/job6n.sh) | 왼손/오른손 판정: 좌측벽(~325mm)·정면벽(~800mm)의 순수 원시 각도(θ_msg) 측정 → 방향성 판정 | 08-28 LiDAR yaw 최종 확정 (오후, 여러 차례 오락가락 후) |
+| [`job6o.sh`](../../debug_log/2026-08-28/jobs/job6o.sh) | 현재 배포 TF(yaw=π)로 스캔을 base_link 프레임 변환 → 정면벽(800mm) base~0°, 좌측벽(325mm) base~+90° 확인 | 08-28 LiDAR yaw 최종 확정 (오후, 여러 차례 오락가락 후) |
 | [`job7a.sh`](../../debug_log/2026-08-28/jobs/job7a.sh) | SLAM 준비: slam_toolbox 기동 확인/시작 → /map·map→odom TF·현재 pose | — |
 | [`job7b.sh`](../../debug_log/2026-08-28/jobs/job7b.sh) | 보드 세션 진단: agent 상태, wheel_odom 실측, battery, heartbeat | — |
 | [`job7c.sh`](../../debug_log/2026-08-28/jobs/job7c.sh) | SLAM 맵핑용 제자리 360° 회전 + 실시간 충돌 가드. 접지·사방 확보 상태, 사용자 입회. | — |
@@ -153,12 +153,12 @@
 
 | 파일 | 설명 | 언급 |
 |---|---|---|
-| [`job10a.sh`](../../debug_log/2026-08-31/jobs/job10a.sh) |  | — |
-| [`job10b.sh`](../../debug_log/2026-08-31/jobs/job10b.sh) |  | — |
+| [`job10a.sh`](../../debug_log/2026-08-31/jobs/job10a.sh) | (단계) agent 컨테이너(리셋 시 재연결에 필요) · 현재 세션(리셋 전) · 주요 노드 | — |
+| [`job10b.sh`](../../debug_log/2026-08-31/jobs/job10b.sh) | (단계) 세션 재수립 확인 · odom 리셋 확인 (0 근처여야) · slam 재시작(맵 초기화) | — |
 | [`job10c.sh`](../../debug_log/2026-08-31/jobs/job10c.sh) | 깨끗한 odom: EKF 재시작(odom→0, 자이로 캘리브 10s, 로버 정지 유지) → slam 재시작 | — |
-| [`job10d.sh`](../../debug_log/2026-08-31/jobs/job10d.sh) |  | — |
-| [`job10e.sh`](../../debug_log/2026-08-31/jobs/job10e.sh) |  | — |
-| [`job10stop.sh`](../../debug_log/2026-08-31/jobs/job10stop.sh) |  | — |
+| [`job10d.sh`](../../debug_log/2026-08-31/jobs/job10d.sh) | (단계) 모든 joy/teleop 종료 · 원시 js0 중립값 (스틱 놓은 상태, 5초) — 1.00이면 장치 latch 문제 | — |
+| [`job10e.sh`](../../debug_log/2026-08-31/jobs/job10e.sh) | 필요한 데드존 | — |
+| [`job10stop.sh`](../../debug_log/2026-08-31/jobs/job10stop.sh) | (단계) 즉시 종료: 모든 joy/teleop/launch · 명시 정지 발행 · 로버 실제 정지 확인 | — |
 | [`job11.sh`](../../debug_log/2026-08-31/jobs/job11.sh) | teleop 정지 + 맵 저장 + 통계/PNG + 주행 궤적 정보 | — |
 | [`job14a.sh`](../../debug_log/2026-08-31/jobs/job14a.sh) | 스택 재시작: base(agent+RSP) + sensors(camera+lidar+ekf+foxglove). agent 재시작 → 보드 RESET 필요. | — |
 | [`job14b_straight.sh`](../../debug_log/2026-08-31/jobs/job14b_straight.sh) | 직진 캘리브레이션: 각속도 0으로 전진, 오도 유클리드 거리 TARGET 도달 시 정지. 풋프린트 가드. | — |
@@ -175,51 +175,51 @@
 | [`job15c_shutdown.sh`](../../debug_log/2026-08-31/jobs/job15c_shutdown.sh) | 안전 종료: 모터 정지 → Jetson 노드/agent 종료. (펌웨어/보드 무관) | — |
 | [`job16a_init.sh`](../../debug_log/2026-08-31/jobs/job16a_init.sh) | 세션 초기화: base(agent+rsp)+sensors(camera+lidar+ekf+foxglove)+slam. 보드 RESET됨. 로버 정지! | — |
 | [`job16b_tfdiag.sh`](../../debug_log/2026-08-31/jobs/job16b_tfdiag.sh) | 검증(자이로/scan/imu) + TF 진단(odom->base, map->odom 브로드캐스트율) + 조이스틱 기동. | — |
-| [`job16c_tfmon.sh`](../../debug_log/2026-08-31/jobs/job16c_tfmon.sh) |  | — |
-| [`job16d_tsverify.sh`](../../debug_log/2026-08-31/jobs/job16d_tsverify.sh) |  | — |
-| [`job16e_stamps.sh`](../../debug_log/2026-08-31/jobs/job16e_stamps.sh) |  | — |
-| [`job16f_latency.sh`](../../debug_log/2026-08-31/jobs/job16f_latency.sh) |  | — |
+| [`job16c_tfmon.sh`](../../debug_log/2026-08-31/jobs/job16c_tfmon.sh) | (단계) odom -> base_link (EKF) · map -> odom (slam) | — |
+| [`job16d_tsverify.sh`](../../debug_log/2026-08-31/jobs/job16d_tsverify.sh) | (단계) 안정 후 odom->base 재측정 · 각 소스 stamp vs 현재시각 (delay 직접 확인) | — |
+| [`job16e_stamps.sh`](../../debug_log/2026-08-31/jobs/job16e_stamps.sh) | (단계) 소스별 stamp vs 현재시각 (delay 직접 측정) | — |
+| [`job16f_latency.sh`](../../debug_log/2026-08-31/jobs/job16f_latency.sh) | (단계) 콜백 내 실측 지연 (수신시각 - stamp), 토픽별 평균 | — |
 | [`job16g_tfcadence.sh`](../../debug_log/2026-08-31/jobs/job16g_tfcadence.sh) | odom->base 와 map->odom 값 변화 주기 측정 (20초, 회전 중). /odometry/filtered 토픽도 병행. | — |
 | [`job16h_rotlog.sh`](../../debug_log/2026-08-31/jobs/job16h_rotlog.sh) | 스크립트가 직접 제자리 회전(0.6rad/s, 15s) + 동시 TF주기 로깅. 넓은공간·가드. | — |
-| [`job16i_slamdiag.sh`](../../debug_log/2026-08-31/jobs/job16i_slamdiag.sh) |  | — |
-| [`job16j_cpu.sh`](../../debug_log/2026-08-31/jobs/job16j_cpu.sh) |  | — |
+| [`job16i_slamdiag.sh`](../../debug_log/2026-08-31/jobs/job16i_slamdiag.sh) | (단계) slam.log 경고/드롭/타임아웃 (최근) · slam.log 마지막 10줄 · map->odom 브로드캐스트 지속 확인 (stamp 갱신되나) | — |
+| [`job16j_cpu.sh`](../../debug_log/2026-08-31/jobs/job16j_cpu.sh) | (단계) joy/teleop 정리 (cmd_vel 이중발행 제거) · 코어 수 / load · 프로세스별 CPU (2프레임, 상위) | — |
 | [`job16k_fgtest.sh`](../../debug_log/2026-08-31/jobs/job16k_fgtest.sh) | foxglove 끄고 CPU 확보 후, 스크립트 회전 중 map->odom 갱신되는지 확인. | — |
-| [`job16l_fgrestart.sh`](../../debug_log/2026-08-31/jobs/job16l_fgrestart.sh) |  | — |
-| [`job16m_joy.sh`](../../debug_log/2026-08-31/jobs/job16m_joy.sh) |  | — |
-| [`job17a_camcheck.sh`](../../debug_log/2026-08-31/jobs/job17a_camcheck.sh) |  | — |
-| [`job17b_optapply.sh`](../../debug_log/2026-08-31/jobs/job17b_optapply.sh) |  | — |
-| [`job17c_validate.sh`](../../debug_log/2026-08-31/jobs/job17c_validate.sh) |  | — |
-| [`job17d_clean.sh`](../../debug_log/2026-08-31/jobs/job17d_clean.sh) |  | — |
-| [`job17e_identify.sh`](../../debug_log/2026-08-31/jobs/job17e_identify.sh) |  | — |
+| [`job16l_fgrestart.sh`](../../debug_log/2026-08-31/jobs/job16l_fgrestart.sh) | (단계) slam transform_publish_period (map->odom 재발행 주기) · 정지 상태 map->odom stamp 갱신율 재측정 · foxglove_bridge 재시작 | — |
+| [`job16m_joy.sh`](../../debug_log/2026-08-31/jobs/job16m_joy.sh) | (단계) /joy 중립 확인 | — |
+| [`job17a_camcheck.sh`](../../debug_log/2026-08-31/jobs/job17a_camcheck.sh) | (단계) 카메라 토픽 목록 · 카메라 enable 파라미터 · 이미지 스트림 실제 발행 여부 (CPU 소비 확인) | — |
+| [`job17b_optapply.sh`](../../debug_log/2026-08-31/jobs/job17b_optapply.sh) | (단계) BEFORE · 소스 갱신·재빌드 · scan_deskew 재시작 | — |
+| [`job17c_validate.sh`](../../debug_log/2026-08-31/jobs/job17c_validate.sh) | (단계) foxglove 1개로 정리 · joy 정리(cmd_vel 단독화) · 회전 스크립트(15s) 백그라운드 기동 | — |
+| [`job17d_clean.sh`](../../debug_log/2026-08-31/jobs/job17d_clean.sh) | (단계) 프로세스 식별 · 가벼운 회전(ros2 topic pub, 12s) 백그라운드 + deskew CPU 측정 · 정지 | — |
+| [`job17e_identify.sh`](../../debug_log/2026-08-31/jobs/job17e_identify.sh) | (단계) 중복 인스턴스 확인 · 상위 CPU + python3 정체 · python3 PID별 실체 (cmdline) | — |
 | [`job18a_precheck.sh`](../../debug_log/2026-08-31/jobs/job18a_precheck.sh) | 무동작 사전점검: joy 정리 + 전압 + 방향별 여유 + 노드/TF 상태 | — |
 | [`job18b_restart.sh`](../../debug_log/2026-08-31/jobs/job18b_restart.sh) | sensors+slam 깨끗이 재시작 (base/agent 유지 → 보드 RESET 불필요). 로버 정지 유지! | — |
 | [`job18c_vxverify.sh`](../../debug_log/2026-08-31/jobs/job18c_vxverify.sh) | vx×1.022 검증: 최대속도 직진, odom vs slam(지면검증) 이동거리 비율. | — |
-| [`job18d_slamhealth.sh`](../../debug_log/2026-08-31/jobs/job18d_slamhealth.sh) |  | — |
+| [`job18d_slamhealth.sh`](../../debug_log/2026-08-31/jobs/job18d_slamhealth.sh) | (단계) slam 로그 (드롭/경고) · 현재 map->odom (slam이 보정한 양) · 현재 odom / map->base | — |
 | [`job18f_drive.sh`](../../debug_log/2026-08-31/jobs/job18f_drive.sh) | 직진 스케일 재검증: 방향 인자 F(전진)/B(후진). 최대속도 0.10. odom·slam·raw휠 모두 기록. | — |
 | [`job18g_speed.sh`](../../debug_log/2026-08-31/jobs/job18g_speed.sh) | 직진 스케일 vs 속도: 인자 방향(F/B) 속도(m/s). odom·slam·휠원시 기록. | — |
 | [`job19a_apply783.sh`](../../debug_log/2026-08-31/jobs/job19a_apply783.sh) | VX_SCALE 0.783 반영: 재빌드 → conditioner/EKF/slam 재시작 → 검증. 로버 정지! | — |
-| [`job20a_boot.sh`](../../debug_log/2026-08-31/jobs/job20a_boot.sh) | 부팅 후 full 스택 기동: base(agent+RSP) → sensors(camera/lidar/ekf/foxglove) → slam. 로버 정지! | 09-03 내일 할 일 (순서) · 09-09 1 · 09-09 내가 만든 오염 (기록 보존) |
+| [`job20a_boot.sh`](../../debug_log/2026-08-31/jobs/job20a_boot.sh) | 부팅 후 full 스택 기동: base(agent+RSP) → sensors(camera/lidar/ekf/foxglove) → slam. 로버 정지! | 09-03 내일 할 일 (순서) · 09-07 배포 (플래시 + Jetson 동시) · 09-09 1 · … +1 |
 | [`job8c.sh`](../../debug_log/2026-08-31/jobs/job8c.sh) | 수정 배포 상태 + 배터리 확인 (회전 테스트 가능 여부) | — |
 | [`job8d.sh`](../../debug_log/2026-08-31/jobs/job8d.sh) | 재부팅 후 전체 스택 재시작: base(agent+RSP) + sensors(lidar+scan_restamp+camera+ekf+foxglove) + slam | — |
 | [`job8e.sh`](../../debug_log/2026-08-31/jobs/job8e.sh) |  | — |
-| [`job8f.sh`](../../debug_log/2026-08-31/jobs/job8f.sh) |  | — |
-| [`job8f_launch.sh`](../../debug_log/2026-08-31/jobs/job8f_launch.sh) |  | — |
+| [`job8f.sh`](../../debug_log/2026-08-31/jobs/job8f.sh) | 동적 follow: /scan·/scan_raw 지연 실측(회전 중) | — |
+| [`job8f_launch.sh`](../../debug_log/2026-08-31/jobs/job8f_launch.sh) | (단계) 5초 후 로그 | — |
 | [`job8g.sh`](../../debug_log/2026-08-31/jobs/job8g.sh) | 회전 완료 대기 후 로그 읽기 | — |
 | [`job8h.sh`](../../debug_log/2026-08-31/jobs/job8h.sh) | scan_deskew 배포 → lidar 재시작 → 정지 시 무결성(스캔 왜곡 없음) 확인 | — |
 | [`job8i.sh`](../../debug_log/2026-08-31/jobs/job8i.sh) | 중복 정리 → 단일 lidar 파이프라인 재시작 → 정지 무결성 재확인 | — |
-| [`job8j.sh`](../../debug_log/2026-08-31/jobs/job8j.sh) |  | — |
-| [`job8k.sh`](../../debug_log/2026-08-31/jobs/job8k.sh) |  | — |
+| [`job8j.sh`](../../debug_log/2026-08-31/jobs/job8j.sh) | (단계) slam 건강성 (deskew /scan 소비 확인) · /scan 구독자 (slam·foxglove가 deskew /scan 받는지) | — |
+| [`job8k.sh`](../../debug_log/2026-08-31/jobs/job8k.sh) | (단계) spin.log · 회전 중 slam 드롭 (queue full) 최근 수 · 정지 확인 | — |
 | [`job9b.sh`](../../debug_log/2026-08-31/jobs/job9b.sh) | 조이스틱 장치 인식 + joy_node 패키지 확인 | — |
 | [`job9c.sh`](../../debug_log/2026-08-31/jobs/job9c.sh) | joy_node 기동 + /joy 12초 캡처 (사용자가 스틱·버튼 조작) → 축/버튼 활동 확인 | — |
 | [`job9e.sh`](../../debug_log/2026-08-31/jobs/job9e.sh) | joy_linux 설치 + joy_linux_node로 /dev/input/js0 읽기 → /joy 12초 캡처 | — |
-| [`job9i.sh`](../../debug_log/2026-08-31/jobs/job9i.sh) |  | — |
-| [`job9j.sh`](../../debug_log/2026-08-31/jobs/job9j.sh) |  | — |
-| [`job9k.sh`](../../debug_log/2026-08-31/jobs/job9k.sh) |  | — |
-| [`job9m.sh`](../../debug_log/2026-08-31/jobs/job9m.sh) |  | — |
-| [`job9n.sh`](../../debug_log/2026-08-31/jobs/job9n.sh) |  | — |
-| [`job9o.sh`](../../debug_log/2026-08-31/jobs/job9o.sh) |  | — |
-| [`job9p.sh`](../../debug_log/2026-08-31/jobs/job9p.sh) |  | — |
-| [`job9q.sh`](../../debug_log/2026-08-31/jobs/job9q.sh) |  | — |
+| [`job9i.sh`](../../debug_log/2026-08-31/jobs/job9i.sh) | (단계) 지금부터 12초! 좌스틱 상하→좌우, 버튼들 눌러주세요 | — |
+| [`job9j.sh`](../../debug_log/2026-08-31/jobs/job9j.sh) | (단계) 지금부터 10초! 데드맨으로 쓸 버튼을 눌러주세요 (여러개 눌러도 됨) | — |
+| [`job9k.sh`](../../debug_log/2026-08-31/jobs/job9k.sh) | (단계) 지금부터 10초! 버튼들을 눌러주세요 (스틱 말고 버튼) | — |
+| [`job9m.sh`](../../debug_log/2026-08-31/jobs/job9m.sh) | (단계) 15초! 좌스틱 앞으로 끝까지 + 우스틱 좌우 크게 | — |
+| [`job9n.sh`](../../debug_log/2026-08-31/jobs/job9n.sh) | 원시 js0 (별도 fd) | — |
+| [`job9o.sh`](../../debug_log/2026-08-31/jobs/job9o.sh) | (단계) 모든 joy 프로세스 종료 · 장치 상태 · 클린 원시 읽기 8초 — 스틱 움직여주세요 | — |
+| [`job9p.sh`](../../debug_log/2026-08-31/jobs/job9p.sh) | (단계) 장치 재인식 확인 · 클린 원시 읽기 8초 — 스틱 상하좌우 크게 움직여주세요 | — |
+| [`job9q.sh`](../../debug_log/2026-08-31/jobs/job9q.sh) | (단계) 15초! 좌스틱 앞→뒤, 우스틱 좌→우 (계속 조작) | — |
 | [`job9r_drive.sh`](../../debug_log/2026-08-31/jobs/job9r_drive.sh) | 조이스틱 주행 v4: "중립 안정 대기"(스틱 움직이다 놓으면 자동 감지) → teleop → cmd_vel 게이트 | — |
 | [`job9s.sh`](../../debug_log/2026-08-31/jobs/job9s.sh) | deadzone 0.25 재배포 → 단일 인스턴스 → 중립 cmd_vel=0 검증(/cmd_vel_test, 보드 무영향) | — |
 | [`job9stop.sh`](../../debug_log/2026-08-31/jobs/job9stop.sh) | 안전 정지: 모든 teleop/joy 종료 → /cmd_vel 중단 → watchdog 정지. 원인 진단. | — |
@@ -228,10 +228,10 @@
 
 | 파일 | 설명 | 언급 |
 |---|---|---|
-| [`job20a_boot.sh`](../../debug_log/2026-09-02/jobs/job20a_boot.sh) | 부팅 후 full 스택 기동: base(agent+RSP) → sensors(camera/lidar/ekf/foxglove) → slam. 로버 정지! | 09-03 내일 할 일 (순서) · 09-09 1 · 09-09 내가 만든 오염 (기록 보존) |
+| [`job20a_boot.sh`](../../debug_log/2026-09-02/jobs/job20a_boot.sh) | 부팅 후 full 스택 기동: base(agent+RSP) → sensors(camera/lidar/ekf/foxglove) → slam. 로버 정지! | 09-03 내일 할 일 (순서) · 09-07 배포 (플래시 + Jetson 동시) · 09-09 1 · … +1 |
 | [`job20c_pathdrive.sh`](../../debug_log/2026-09-02/jobs/job20c_pathdrive.sh) | 직진 검증 v2 — 경로방향 가드(로버 폭 밴드 내 진행방향 장애물만) + 전역 비상정지(3cm). | 09-02 개선: 주행 가드를 경로방향 방식으로 변경 |
 | [`job21a_reset.sh`](../../debug_log/2026-09-02/jobs/job21a_reset.sh) | 세션 초기화(손 이동 후): EKF+slam 재시작(base/agent 유지) + 회전공간 판정. 로버 정지! | — |
-| [`job21c_where.sh`](../../debug_log/2026-09-02/jobs/job21c_where.sh) | 회전 방해물 방위 진단 (무동작): 30도 섹터별 중심기준 최소거리 | — |
+| [`job21c_where.sh`](../../debug_log/2026-09-02/jobs/job21c_where.sh) | 회전 방해물 방위 진단 (무동작): 30도 섹터별 중심기준 최소거리 | 09-07 UART5 디버그 콘솔 — 현재 배선에서 동작하지 않음 (신규 확인) |
 | [`job21d_loop.sh`](../../debug_log/2026-09-02/jobs/job21d_loop.sh) | 회전 포함 드리프트 재측정 (올바른 스케일 0.783 적용 후). | — |
 | [`job21d_loop_v2.sh`](../../debug_log/2026-09-02/jobs/job21d_loop_v2.sh) | 회전 포함 드리프트 재측정 (올바른 스케일 0.783 적용 후). | — |
 | [`job22b_asym.sh`](../../debug_log/2026-09-02/jobs/job22b_asym.sh) | 좌/우 트랙 비대칭 정량화: 순수 직진(angular=0) 지령 시 실제 휨 측정. | — |
@@ -240,10 +240,10 @@
 | [`job24b_goal.sh`](../../debug_log/2026-09-02/jobs/job24b_goal.sh) | Nav2 첫 자율주행: 현재 위치 기준 정면 D미터 목표 전송 + 모니터링 | — |
 | [`job25a_fullreset.sh`](../../debug_log/2026-09-02/jobs/job25a_fullreset.sh) | 손 이동 후 전체 재초기화: Nav2 종료 → EKF → slam → Nav2 순. base/agent 유지. | — |
 | [`job25b_goaldir.sh`](../../debug_log/2026-09-02/jobs/job25b_goaldir.sh) | Nav2 방향 지정 목표: 현재 heading 기준 ANG도 방향으로 D미터, 목표자세=진행방향 | — |
-| [`job25e_nav2start.sh`](../../debug_log/2026-09-02/jobs/job25e_nav2start.sh) |  | 09-03 내일 할 일 (순서) · 09-08 부수 수정 |
-| [`job25g_diag2.sh`](../../debug_log/2026-09-02/jobs/job25g_diag2.sh) |  | — |
+| [`job25e_nav2start.sh`](../../debug_log/2026-09-02/jobs/job25e_nav2start.sh) | (단계) lifecycle · progress_checker · 기동 오류 | 09-03 내일 할 일 (순서) · 09-08 부수 수정 |
+| [`job25g_diag2.sh`](../../debug_log/2026-09-02/jobs/job25g_diag2.sh) | (단계) nav2.log 최근 30줄 (정지 구간 원인) · 반복 패턴 집계 · CPU 확보: foxglove 종료 | — |
 | [`job26a_goalmon.sh`](../../debug_log/2026-09-02/jobs/job26a_goalmon.sh) | 목표 전송 + cmd_vel 체인 모니터 (controller→/cmd_vel_nav→smoother→/cmd_vel) | — |
-| [`job27b_profile.sh`](../../debug_log/2026-09-02/jobs/job27b_profile.sh) |  | — |
+| [`job27b_profile.sh`](../../debug_log/2026-09-02/jobs/job27b_profile.sh) | (단계) Nav2 상태 재확인 · 전방 형상 프로파일 (로버 기준, 중심으로부터 거리) | — |
 | [`job30_goalabs.sh`](../../debug_log/2026-09-02/jobs/job30_goalabs.sh) | 절대좌표(map) 목표: x y yaw_deg timeout | 09-03 내일 할 일 (순서) |
 | [`job31_shutdown.sh`](../../debug_log/2026-09-02/jobs/job31_shutdown.sh) | 안전 종료: 모터 정지 → Jetson 노드 → agent. (펌웨어/보드 무관) | — |
 
@@ -252,79 +252,79 @@
 | 파일 | 설명 | 언급 |
 |---|---|---|
 | [`chk_board.sh`](../../debug_log/2026-09-03/jobs/chk_board.sh) |  | — |
-| [`cycle.sh`](../../debug_log/2026-09-03/jobs/cycle.sh) | 펌웨어 MIN 값 변경 → 빌드 → 플래시 → ST-Link 리셋 → EKF 재시작 → 데드밴드 측정 | — |
+| [`cycle.sh`](../../debug_log/2026-09-03/jobs/cycle.sh) | 펌웨어 MIN 값 변경 → 빌드 → 플래시 → ST-Link 리셋 → EKF 재시작 → 데드밴드 측정 | 09-09 7 |
 | [`job32b_deadband.sh`](../../debug_log/2026-09-03/jobs/job32b_deadband.sh) | 데드밴드 보상 검증: 미세 각속도 지령에 실제 회전하는지 (자이로 측정). | — |
 | [`job32c_reagent.sh`](../../debug_log/2026-09-03/jobs/job32c_reagent.sh) | 보드 재부팅(플래시) 후 agent 재연결 + 데드밴드 재측정 | — |
 | [`job32d_ekfrestart.sh`](../../debug_log/2026-09-03/jobs/job32d_ekfrestart.sh) |  | — |
 | [`job33a_reset_noagent.sh`](../../debug_log/2026-09-03/jobs/job33a_reset_noagent.sh) | 손 이동 후 초기화 — agent 는 절대 건드리지 않음(디버거 없어 RESET 불가) | 09-03 내일 할 일 (순서) |
-| [`job34c_verify.sh`](../../debug_log/2026-09-03/jobs/job34c_verify.sh) |  | — |
-| [`job34e_stuckdiag.sh`](../../debug_log/2026-09-03/jobs/job34e_stuckdiag.sh) |  | — |
-| [`job35a_prep.sh`](../../debug_log/2026-09-03/jobs/job35a_prep.sh) |  | — |
-| [`stage_microros.sh`](../../debug_log/2026-09-03/jobs/stage_microros.sh) |  | — |
+| [`job34c_verify.sh`](../../debug_log/2026-09-03/jobs/job34c_verify.sh) | (단계) 활성 컨트롤러 / tolerance / inflation · 기동 오류 재확인 | — |
+| [`job34e_stuckdiag.sh`](../../debug_log/2026-09-03/jobs/job34e_stuckdiag.sh) | (단계) 현재 사방 여유 · nav2.log MPPI/컨트롤러 경고 (최근) · 배터리 | — |
+| [`job35a_prep.sh`](../../debug_log/2026-09-03/jobs/job35a_prep.sh) | (단계) 1) 보드 세션 (RESET 후) · 2) EKF/slam 초기화 · 3) Nav2 기동 (RPP + no-spin BT) | — |
+| [`stage_microros.sh`](../../debug_log/2026-09-03/jobs/stage_microros.sh) | include/X/X/* -> include/X/  평탄화 | — |
 | [`wifi_diag.sh`](../../debug_log/2026-09-03/jobs/wifi_diag.sh) | Jetson Wi-Fi 끊김 진단 (읽기 전용) | — |
-| [`wifi_diag2.sh`](../../debug_log/2026-09-03/jobs/wifi_diag2.sh) |  | — |
+| [`wifi_diag2.sh`](../../debug_log/2026-09-03/jobs/wifi_diag2.sh) | (단계) station dump · 같은 SSID의 AP 목록 (로밍 후보) · kernel wifi 로그 30분 | — |
 | [`wifi_fix.sh`](../../debug_log/2026-09-03/jobs/wifi_fix.sh) | Jetson: Wi-Fi power save OFF (런타임 + NM 영구), 근거: 절약모드 ON + NM 끊김 로그 없음 + 간헐 무응답 | — |
 
 ## 2026-09-07 (9)
 
 | 파일 | 설명 | 언급 |
 |---|---|---|
-| [`job40a_stalltest.py`](../../debug_log/2026-09-07/jobs/job40a_stalltest.py) | 스톨 정책 검증 (받침대): /cmd_vel 을 20Hz 로 DUR 초 발행하며 /rover/status 전이·휠별 텔레메트리·휠 속도를 기록. | 09-07 받침대 스톨 검증 (`jobs/job40a_stalltest.py`, 결 · 09-07 다음 세션 할 일 (순서) |
+| [`job40a_stalltest.py`](../../debug_log/2026-09-07/jobs/job40a_stalltest.py) | 스톨 정책 검증 (받침대): /cmd_vel 을 20Hz 로 DUR 초 발행하며 /rover/status 전이·휠별 텔레메트리·휠 속도를 기록. | 09-07 다음 세션 할 일 (순서) · 09-07 받침대 스톨 검증 (`jobs/job40a_stalltest.py`, 결 |
 | [`job43_mon.py`](../../debug_log/2026-09-07/jobs/job43_mon.py) | 텔레메트리 모니터 (구독 전용 — /cmd_vel 을 발행하지 않음). | — |
 | [`job44_deadband.py`](../../debug_log/2026-09-07/jobs/job44_deadband.py) | 바닥 데드밴드 스윕 (2026-09-07, PWM 20kHz 이후 재실측). | — |
-| [`job45_tape.py`](../../debug_log/2026-09-07/jobs/job45_tape.py) | 직진 스케일 캘리브레이션 (2026-09-07, PWM 20kHz 이후 VX_SCALE 재측정). | — |
-| [`job46_rot.py`](../../debug_log/2026-09-07/jobs/job46_rot.py) | 제자리 회전 캘리브레이션 — 라이다 스캔 정합을 GT 로 사용 (2026-09-07). | — |
+| [`job45_tape.py`](../../debug_log/2026-09-07/jobs/job45_tape.py) | 직진 스케일 캘리브레이션 (2026-09-07, PWM 20kHz 이후 VX_SCALE 재측정). | 09-07 배포 (플래시 + Jetson 동시) |
+| [`job46_rot.py`](../../debug_log/2026-09-07/jobs/job46_rot.py) | 제자리 회전 캘리브레이션 — 라이다 스캔 정합을 GT 로 사용 (2026-09-07). | 09-07 배포 (플래시 + Jetson 동시) · 09-07 배포 완료 |
 | [`job53_bench.py`](../../debug_log/2026-09-07/jobs/job53_bench.py) | Nav2 컨트롤러 벤치마크 (2026-09-07, 스케일 교정 후 재측정). | — |
-| [`rover_cli.ps1`](../../debug_log/2026-09-07/jobs/rover_cli.ps1) |  | 09-07 UART5 디버그 콘솔 — 현재 배선에서 동작하지 않음 (신규 확인) |
+| [`rover_cli.ps1`](../../debug_log/2026-09-07/jobs/rover_cli.ps1) | rover_cli.ps1 - F405 UART5 debug console (Windows) | 09-07 UART5 디버그 콘솔 — 현재 배선에서 동작하지 않음 (신규 확인) |
 | [`run_sig.sh`](../../debug_log/2026-09-07/jobs/run_sig.sh) | 사용: run_sig.sh <출력이름> <DUR> <VX> | — |
-| [`stuck_monitor.py`](../../debug_log/2026-09-07/jobs/stuck_monitor.py) | stuck_monitor — rover-level 정체/접촉 감시 (2026-09-07). | 09-07 구현 (1·2번) · 09-18 9.3 · 09-29 §13 · … +1 |
+| [`stuck_monitor.py`](../../debug_log/2026-09-07/jobs/stuck_monitor.py) | stuck_monitor — rover-level 정체/접촉 감시 (2026-09-07). | 09-07 구현 (1·2번) · 09-07 구현 검증 주행 `job55` (RPP + stuck_monitor sh · 09-07 다음 세션 할 일 (순서) · … +59 |
 
 ## 2026-09-08 (42)
 
 | 파일 | 설명 | 언급 |
 |---|---|---|
-| [`job25e_nav2start.sh`](../../debug_log/2026-09-08/jobs/job25e_nav2start.sh) |  | 09-03 내일 할 일 (순서) · 09-08 부수 수정 |
+| [`job25e_nav2start.sh`](../../debug_log/2026-09-08/jobs/job25e_nav2start.sh) | (단계) lifecycle · progress_checker · 기동 오류 | 09-03 내일 할 일 (순서) · 09-08 부수 수정 |
 | [`job56_osc.py`](../../debug_log/2026-09-08/jobs/job56_osc.py) | RPP 조향 진동 측정 (2026-09-08, 계획 §5.y). job53_bench 와 같은 목표 주행 + 20 Hz 트레이스. | 09-08 RPP 조향 진동 측정·튜닝 `job58` (계획 §5.y) — 20 H · 09-08 다음 세션 절차 (충전 후) |
 | [`job59_sensors_restart.sh`](../../debug_log/2026-09-08/jobs/job59_sensors_restart.sh) | Jetson 측: 센서(camera/lidar/foxglove/EKF)+slam 재시작, agent 유지. 로버 정지 필수(자이로 캘리브 10s). | 09-08 부수 수정 |
-| [`job59b_depthchk.sh`](../../debug_log/2026-09-08/jobs/job59b_depthchk.sh) |  | — |
-| [`job59c_navchk.sh`](../../debug_log/2026-09-08/jobs/job59c_navchk.sh) |  | — |
+| [`job59b_depthchk.sh`](../../debug_log/2026-09-08/jobs/job59b_depthchk.sh) | 로버 정면 = 스캔각 ±π (LYAW=π) | — |
+| [`job59c_navchk.sh`](../../debug_log/2026-09-08/jobs/job59c_navchk.sh) | (단계) CPU (2초 평균) | — |
 | [`job59d_smfix.sh`](../../debug_log/2026-09-08/jobs/job59d_smfix.sh) | stale stuck_monitor 정리(최신 1개만 유지) + 현재 CPU 측정(top 기준) | — |
-| [`job59e_cpu.sh`](../../debug_log/2026-09-08/jobs/job59e_cpu.sh) |  | — |
+| [`job59e_cpu.sh`](../../debug_log/2026-09-08/jobs/job59e_cpu.sh) | (단계) 상위 CPU(3초 평균) | — |
 | [`job59f_depthcmp.py`](../../debug_log/2026-09-08/jobs/job59f_depthcmp.py) | depth 가상스캔 vs 라이다 각도별 비교 (로버 기준각). 카메라는 라이다보다 x +0.080m 앞. | — |
 | [`job59g_costchk.py`](../../debug_log/2026-09-08/jobs/job59g_costchk.py) | local costmap 에서 depth 전용 관측점(−20°, 1.46m)이 마킹됐는지 확인 (정적, 주행 없음). | — |
 | [`job60b_depthrows.py`](../../debug_log/2026-09-08/jobs/job60b_depthrows.py) | 깊이 이미지 행 띠별 최소 거리 (정면 열 ±40px). 상자가 어느 행(=높이)에 나타나는지 확인. | — |
-| [`job60c_voxchk.sh`](../../debug_log/2026-09-08/jobs/job60c_voxchk.sh) |  | — |
-| [`job60d_pcdiag.sh`](../../debug_log/2026-09-08/jobs/job60d_pcdiag.sh) |  | — |
-| [`job60e_pcon.sh`](../../debug_log/2026-09-08/jobs/job60e_pcon.sh) |  | — |
+| [`job60c_voxchk.sh`](../../debug_log/2026-09-08/jobs/job60c_voxchk.sh) | (단계) CPU (3초 평균) | — |
+| [`job60d_pcdiag.sh`](../../debug_log/2026-09-08/jobs/job60d_pcdiag.sh) | (단계) points 토픽 · realsense 파라미터 실제값 · sensors.log (pointcloud/decimation/param 경고) | — |
+| [`job60e_pcon.sh`](../../debug_log/2026-09-08/jobs/job60e_pcon.sh) | (단계) points 토픽 · CPU (3초 평균) | — |
 | [`job60f_pcbox.py`](../../debug_log/2026-09-08/jobs/job60f_pcbox.py) | 포인트클라우드에서 base_link 기준 낮은 물체 탐색: z 0.06~0.40, \|y\|<0.6, x 0.2~2.0 의 점을 x 10cm 구간별로 집계. | — |
 | [`job60h_clear.sh`](../../debug_log/2026-09-08/jobs/job60h_clear.sh) |  | — |
 | [`job60i_zchk.py`](../../debug_log/2026-09-08/jobs/job60i_zchk.py) |  | — |
-| [`job60j_minh.sh`](../../debug_log/2026-09-08/jobs/job60j_minh.sh) |  | — |
-| [`job61b_state.sh`](../../debug_log/2026-09-08/jobs/job61b_state.sh) |  | — |
-| [`job62_infl.sh`](../../debug_log/2026-09-08/jobs/job62_infl.sh) |  | — |
+| [`job60j_minh.sh`](../../debug_log/2026-09-08/jobs/job60j_minh.sh) | (단계) depth 소스를 끄고(clearing/marking 유지, 라이다만) | — |
+| [`job61b_state.sh`](../../debug_log/2026-09-08/jobs/job61b_state.sh) | (단계) 박스 방향 코스트맵 여유 계산 | — |
+| [`job62_infl.sh`](../../debug_log/2026-09-08/jobs/job62_infl.sh) | (단계) 코스트맵 광선 (0.22) | — |
 | [`job62b_fan.py`](../../debug_log/2026-09-08/jobs/job62b_fan.py) | 로컬 코스트맵을 부채꼴로 훑어 x=0.9~1.3m 구간에서 로버 중심이 지날 수 있는 y 슬롯을 찾는다. | — |
 | [`job62c_boxdim.py`](../../debug_log/2026-09-08/jobs/job62c_boxdim.py) | 포인트클라우드를 point_step 스트라이드로 정확히 읽어 base_link 기준 장애물 점의 경계상자를 낸다. | — |
-| [`job63_planquery.py`](../../debug_log/2026-09-08/jobs/job63_planquery.py) | 무주행 경로 질의 — 로버를 움직이지 않고 '경로가 존재하는가' 를 Nav2 플래너에 직접 묻는다. | 09-08 다음 세션 절차 (충전 후) |
+| [`job63_planquery.py`](../../debug_log/2026-09-08/jobs/job63_planquery.py) | 무주행 경로 질의 — 로버를 움직이지 않고 '경로가 존재하는가' 를 Nav2 플래너에 직접 묻는다. | 09-08 다음 세션 절차 (충전 후) · 09-08 전역 플래너가 경로를 못 내던 문제 `job64` |
 | [`job64c_globaldiag.py`](../../debug_log/2026-09-08/jobs/job64c_globaldiag.py) | 전역 코스트맵 진단: 목표 주변 비용/미지영역, 로버→목표 직선의 셀 상태. | — |
-| [`job64d_cleartest.sh`](../../debug_log/2026-09-08/jobs/job64d_cleartest.sh) |  | — |
+| [`job64d_cleartest.sh`](../../debug_log/2026-09-08/jobs/job64d_cleartest.sh) | (단계) 1) 전역·로컬 코스트맵 초기화 직후 질의 · 2) depth 소스를 전역에서 배제(마킹 높이 범위 0) 후 재질의 | — |
 | [`job64e_map.py`](../../debug_log/2026-09-08/jobs/job64e_map.py) | 전역 코스트맵·slam map 을 로버 기준 ASCII 로 출력 (전방 위쪽, 좌측 왼쪽). | 09-08 전역 플래너가 경로를 못 내던 문제 `job64` |
 | [`job67_foxglove.sh`](../../debug_log/2026-09-08/jobs/job67_foxglove.sh) |  | — |
-| [`job68_memory.sh`](../../debug_log/2026-09-08/jobs/job68_memory.sh) |  | — |
+| [`job68_memory.sh`](../../debug_log/2026-09-08/jobs/job68_memory.sh) | (단계) 현재 장면 (상자 위치) · 주변 여유 | — |
 | [`job71_watchbox.py`](../../debug_log/2026-09-08/jobs/job71_watchbox.py) | 상자 셀 추적 실험 — 접근하는 동안 코스트맵의 '상자 칸'이 언제·왜 사라지는지 직접 본다. | 09-08 다음: 원인 확정 실험 `job71_watchbox.py` (Nav2 미 |
-| [`job72_globalmark.sh`](../../debug_log/2026-09-08/jobs/job72_globalmark.sh) |  | — |
+| [`job72_globalmark.sh`](../../debug_log/2026-09-08/jobs/job72_globalmark.sh) | (단계) 전역 코스트맵 ASCII (상자가 어디든 찍히는지) · 코스트맵 관련 경고 (변환 실패 등) · 전역 voxel_layer 파라미터 실제값 | — |
 | [`job73_probe.py`](../../debug_log/2026-09-08/jobs/job73_probe.py) | 상자를 검출해 map 좌표로 바꾸고 로컬·전역 코스트맵 비용과 깊이점 z 분포를 한 번 출력(주행 없음). | 09-08 정정 A: "전역에 depth 가 마킹되지 않는다"는 **내 좌표 처리  |
-| [`job73_run.sh`](../../debug_log/2026-09-08/jobs/job73_run.sh) |  | 09-08 다음 후보 (전역에 깊이를 반영시키는 법) |
+| [`job73_run.sh`](../../debug_log/2026-09-08/jobs/job73_run.sh) | (단계) 현재 상태 · 전역 depth min_obstacle_height 를 -1.0 으로 낮추고 재확인 · 전역 depth obstacle_max_range 를 3.0 으로 올리고 재확인 | 09-08 다음 후보 (전역에 깊이를 반영시키는 법) |
 | [`job74_layers.sh`](../../debug_log/2026-09-08/jobs/job74_layers.sh) | 전역에 depth 가 안 찍히는 원인 후보를 런타임으로 하나씩 배제한다. 주행 없음. | — |
 | [`job75_forward.py`](../../debug_log/2026-09-08/jobs/job75_forward.py) | 전방 장애물 추적 (프레임 정정판) — 접근 중 코스트맵의 '앞쪽 장애물'이 유지되는지 본다. | 09-08 다음 검증 (상자 재배치 후) |
 | [`job78_killnav.sh`](../../debug_log/2026-09-08/jobs/job78_killnav.sh) | Nav2 만 강제 종료 (센서·slam·agent 유지). ssh 인라인 금지 — 파일로 실행할 것. | — |
-| [`job80_apply.sh`](../../debug_log/2026-09-08/jobs/job80_apply.sh) |  | — |
-| [`job82_apply.sh`](../../debug_log/2026-09-08/jobs/job82_apply.sh) |  | — |
+| [`job80_apply.sh`](../../debug_log/2026-09-08/jobs/job80_apply.sh) | (단계) 전역 코스트맵 (초기화 후) | — |
+| [`job82_apply.sh`](../../debug_log/2026-09-08/jobs/job82_apply.sh) | (단계) 현재 장면 | — |
 | [`job88_pad.sh`](../../debug_log/2026-09-08/jobs/job88_pad.sh) |  | — |
 | [`job90_infl.sh`](../../debug_log/2026-09-08/jobs/job90_infl.sh) |  | — |
 | [`run_osc.sh`](../../debug_log/2026-09-08/jobs/run_osc.sh) | 사용: run_osc.sh <csv이름> <x> <y> <yaw> <timeout> | — |
 | [`run_param.sh`](../../debug_log/2026-09-08/jobs/run_param.sh) | 사용: run_param.sh <node> <param=value> ...  (런타임 파라미터 변경 + 확인) | — |
 | [`run_smpos.sh`](../../debug_log/2026-09-08/jobs/run_smpos.sh) | stuck_monitor 정탐 검증 — /cmd_vel 을 /cmd_vel_test 로 리매핑해 로버는 정지한 채 "지령만" 흘림 | — |
-| [`stuck_monitor.py`](../../debug_log/2026-09-08/jobs/stuck_monitor.py) | stuck_monitor — rover-level 정체/접촉 감시 (2026-09-07). | 09-07 구현 (1·2번) · 09-18 9.3 · 09-29 §13 · … +1 |
+| [`stuck_monitor.py`](../../debug_log/2026-09-08/jobs/stuck_monitor.py) | stuck_monitor — rover-level 정체/접촉 감시 (2026-09-07). | 09-07 구현 (1·2번) · 09-07 구현 검증 주행 `job55` (RPP + stuck_monitor sh · 09-07 다음 세션 할 일 (순서) · … +59 |
 
 ## 2026-09-09 (78)
 
@@ -336,8 +336,8 @@
 | [`job103_obs.sh`](../../debug_log/2026-09-09/jobs/job103_obs.sh) | 깨끗한 상태(base+sensors+slam, 중복 없음)에서 보드 링크 60초 연속 관측. 아무것도 죽이지 않는다. | — |
 | [`job104_obs2.sh`](../../debug_log/2026-09-09/jobs/job104_obs2.sh) | 고아 Nav2 프로세스 제거(에이전트·보드 세션은 건드리지 않음) 후 링크 재관측. | — |
 | [`job105_bytes.sh`](../../debug_log/2026-09-09/jobs/job105_bytes.sh) | 결정적 측정: 보드->젯슨 UART 실바이트 유입량과 토픽 수신량을 같은 5초 버킷으로 동시 기록. | — |
-| [`job106_baud.sh`](../../debug_log/2026-09-09/jobs/job106_baud.sh) |  | — |
-| [`job107_port.sh`](../../debug_log/2026-09-09/jobs/job107_port.sh) |  | — |
+| [`job106_baud.sh`](../../debug_log/2026-09-09/jobs/job106_baud.sh) | (단계) agent 실행 인자 · /dev/ttyUSB0 실제 termios (호스트) · io 카운터 접근 시도 | — |
+| [`job107_port.sh`](../../debug_log/2026-09-09/jobs/job107_port.sh) | (단계) 시리얼 장치 전체 · by-id · 각 ttyUSB 의 드라이버/USB 장치 | — |
 | [`job108_rchar.sh`](../../debug_log/2026-09-09/jobs/job108_rchar.sh) | 결정적 측정: agent 가 시리얼에서 실제로 읽어들이는 바이트 수(rchar)를 토픽 수신량과 같은 버킷으로 기록. | — |
 | [`job109_inside.sh`](../../debug_log/2026-09-09/jobs/job109_inside.sh) | 문제 위치 판별: 컨테이너 내부(agent 와 같은 DDS 참가자 호스트)에서 본 주기 vs 젯슨 호스트에서 본 주기 | — |
 | [`job110_v6.sh`](../../debug_log/2026-09-09/jobs/job110_v6.sh) | agent 를 -v6(DEBUG) 로 띄워 보드가 실제로 어떤 datawriter 로 몇 개를 보내는지 센다. | — |
@@ -348,63 +348,63 @@
 | [`job115_normalagent.sh`](../../debug_log/2026-09-09/jobs/job115_normalagent.sh) | -v6 진단 에이전트를 정상 에이전트로 되돌린다 (base.launch 경유). | — |
 | [`job116_chk.sh`](../../debug_log/2026-09-09/jobs/job116_chk.sh) |  | — |
 | [`job117_baud.sh`](../../debug_log/2026-09-09/jobs/job117_baud.sh) |  | — |
-| [`job118_verify.sh`](../../debug_log/2026-09-09/jobs/job118_verify.sh) |  | — |
-| [`job120_why.sh`](../../debug_log/2026-09-09/jobs/job120_why.sh) |  | — |
-| [`job121_deploy.sh`](../../debug_log/2026-09-09/jobs/job121_deploy.sh) |  | — |
-| [`job122_fix.sh`](../../debug_log/2026-09-09/jobs/job122_fix.sh) |  | — |
-| [`job123_reinit.sh`](../../debug_log/2026-09-09/jobs/job123_reinit.sh) | 손으로 옮긴 뒤 좌표계 초기화: sensors(EKF) + slam + nav2 재기동. agent/base 는 건드리지 않는다. | — |
+| [`job118_verify.sh`](../../debug_log/2026-09-09/jobs/job118_verify.sh) | (단계) 전체 토픽 주기 (460800) · TF / EKF · ch341 드라이버 오류/오버런 흔적 (무비용 확인) | — |
+| [`job120_why.sh`](../../debug_log/2026-09-09/jobs/job120_why.sh) | (단계) nav2 로그 마지막 (취소/복구 사유) · stuck_monitor 관련 로그 · /rover/stuck 최근 값 | — |
+| [`job121_deploy.sh`](../../debug_log/2026-09-09/jobs/job121_deploy.sh) | (단계) Nav2 재기동 | — |
+| [`job122_fix.sh`](../../debug_log/2026-09-09/jobs/job122_fix.sh) | (단계) Nav2 재기동 | — |
+| [`job123_reinit.sh`](../../debug_log/2026-09-09/jobs/job123_reinit.sh) | 손으로 옮긴 뒤 좌표계 초기화: sensors(EKF) + slam + nav2 재기동. agent/base 는 건드리지 않는다. | 09-09 8.9 |
 | [`job125_avoid3.py`](../../debug_log/2026-09-09/jobs/job125_avoid3.py) | 회피 주행 계측판 (2026-09-09) — job92 의 여유 측정이 틀렸던 것을 고친다. | 09-09 순서를 하나 앞에 둬야 하는 이유 — 미해결 모순 · 09-10 원인 — 클러스터링 없는 median (job125_avoid3.py d · 09-11 지표 오염 — 관찰이 맞았다 · … +5 |
 | [`job127_pad.sh`](../../debug_log/2026-09-09/jobs/job127_pad.sh) |  | — |
 | [`job129_layers.sh`](../../debug_log/2026-09-09/jobs/job129_layers.sh) |  | — |
-| [`job130_stvl.sh`](../../debug_log/2026-09-09/jobs/job130_stvl.sh) |  | — |
+| [`job130_stvl.sh`](../../debug_log/2026-09-09/jobs/job130_stvl.sh) | (단계) 현재 사용 중인 코스트맵 레이어 플러그인 · STVL 설치 여부 · apt 에서 설치 가능한가 | — |
 | [`job131_probe.py`](../../debug_log/2026-09-09/jobs/job131_probe.py) | 경로 생성 실패 진단 — 전역/로컬 코스트맵을 로버 전방 부채꼴로 훑어 어디가 막혔는지 본다. | — |
-| [`job132_stop.sh`](../../debug_log/2026-09-09/jobs/job132_stop.sh) |  | — |
-| [`job133_verify.sh`](../../debug_log/2026-09-09/jobs/job133_verify.sh) |  | — |
-| [`job135_live.sh`](../../debug_log/2026-09-09/jobs/job135_live.sh) |  | — |
+| [`job132_stop.sh`](../../debug_log/2026-09-09/jobs/job132_stop.sh) | (단계) 모터 정지 · 노드 종료 · agent 종료 | — |
+| [`job133_verify.sh`](../../debug_log/2026-09-09/jobs/job133_verify.sh) | (단계) 실제 프로세스 (ros 관련) · 개수 · ros2 daemon 재시작 후 노드 목록 (캐시 제거) | — |
+| [`job135_live.sh`](../../debug_log/2026-09-09/jobs/job135_live.sh) | (단계) 실행 중인 로컬 코스트맵 파라미터 · 전역 코스트맵 | — |
 | [`job137_det.py`](../../debug_log/2026-09-09/jobs/job137_det.py) | job125 의 상자 검출이 왜 실패하는지 — 같은 필터를 단계별로 풀어서 점 수를 센다. | — |
-| [`job139_sys.sh`](../../debug_log/2026-09-09/jobs/job139_sys.sh) |  | — |
-| [`job142_stall.sh`](../../debug_log/2026-09-09/jobs/job142_stall.sh) |  | — |
+| [`job139_sys.sh`](../../debug_log/2026-09-09/jobs/job139_sys.sh) | (단계) /tf 에 실린 변환 · 상위 CPU · 온도/스로틀 | — |
+| [`job142_stall.sh`](../../debug_log/2026-09-09/jobs/job142_stall.sh) | (단계) /rover/status (스톨·래치) · 배터리 3회 · 휠 오도메트리 (정지 상태 확인) | — |
 | [`job143_estop.sh`](../../debug_log/2026-09-09/jobs/job143_estop.sh) | 즉시 정지: 지령 발행 주체부터 죽이고 0 지령을 반복 발행 | — |
-| [`job144_slam.sh`](../../debug_log/2026-09-09/jobs/job144_slam.sh) |  | — |
-| [`job145_alive.sh`](../../debug_log/2026-09-09/jobs/job145_alive.sh) |  | — |
-| [`job146_ekfin.sh`](../../debug_log/2026-09-09/jobs/job146_ekfin.sh) |  | — |
+| [`job144_slam.sh`](../../debug_log/2026-09-09/jobs/job144_slam.sh) | (단계) 현재 TF 체인 · EKF 출력 (map 기준 아님, odom 기준) · SLAM 맵 범위 vs 로버 위치 | — |
+| [`job145_alive.sh`](../../debug_log/2026-09-09/jobs/job145_alive.sh) | (단계) 살아있는 프로세스 · 토픽 발행률 · sensors.log 에서 ekf/노드 사망 흔적 | — |
+| [`job146_ekfin.sh`](../../debug_log/2026-09-09/jobs/job146_ekfin.sh) | (단계) EKF 입력 계통 · 각 노드 CPU · sensor_conditioner 최근 로그 | — |
 | [`job147_stamp.py`](../../debug_log/2026-09-09/jobs/job147_stamp.py) | EKF 가 입력은 받는데 출력을 안 하는 원인 추적 — 헤더 타임스탬프와 시스템 시각을 비교한다. | — |
-| [`job148_shm.sh`](../../debug_log/2026-09-09/jobs/job148_shm.sh) |  | — |
-| [`job149_hardstop.sh`](../../debug_log/2026-09-09/jobs/job149_hardstop.sh) |  | — |
+| [`job148_shm.sh`](../../debug_log/2026-09-09/jobs/job148_shm.sh) | (단계) /dev/shm 내용 · 문제 포트 파일의 소유·잠금 · 죽은 프로세스가 남긴 것인지: 현재 열려있는 참조 | — |
+| [`job149_hardstop.sh`](../../debug_log/2026-09-09/jobs/job149_hardstop.sh) | (단계) 지령 주체 확인 · 0 지령 반복 발행 · 보드가 보고하는 실제 모터 상태 | — |
 | [`job150_recover.sh`](../../debug_log/2026-09-09/jobs/job150_recover.sh) | DDS 공유메모리 잔재 복구. 핵심: SIGKILL 금지 — SIGTERM 으로 정상 종료시켜야 | — |
-| [`job151_check.sh`](../../debug_log/2026-09-09/jobs/job151_check.sh) |  | — |
-| [`job153_rt.sh`](../../debug_log/2026-09-09/jobs/job153_rt.sh) |  | — |
+| [`job151_check.sh`](../../debug_log/2026-09-09/jobs/job151_check.sh) | (단계) DDS 복구 확인 · TF 체인 · SHM 오류 재발 여부 | — |
+| [`job153_rt.sh`](../../debug_log/2026-09-09/jobs/job153_rt.sh) | (단계) 실행 중 파라미터 · 배포 파일 값 | — |
 | [`job154_reinit.sh`](../../debug_log/2026-09-09/jobs/job154_reinit.sh) | 손 이동 후 좌표계 초기화 + 설정 반영. SIGTERM 우선 (SIGKILL 은 FastDDS 공유메모리 잔재를 | 09-09 8.9 |
-| [`job156_stop.sh`](../../debug_log/2026-09-09/jobs/job156_stop.sh) |  | 09-09 8.9 · 09-16 1.6 · 09-16 1.13 |
-| [`job157_fg.sh`](../../debug_log/2026-09-09/jobs/job157_fg.sh) |  | — |
-| [`job158_alt.sh`](../../debug_log/2026-09-09/jobs/job158_alt.sh) |  | — |
-| [`job159_fgdeploy.sh`](../../debug_log/2026-09-09/jobs/job159_fgdeploy.sh) |  | — |
-| [`job160_stvlinst.sh`](../../debug_log/2026-09-09/jobs/job160_stvlinst.sh) |  | — |
-| [`job161_stvlparam.sh`](../../debug_log/2026-09-09/jobs/job161_stvlparam.sh) |  | — |
-| [`job162_p2.sh`](../../debug_log/2026-09-09/jobs/job162_p2.sh) |  | — |
-| [`job163_ex.sh`](../../debug_log/2026-09-09/jobs/job163_ex.sh) |  | — |
-| [`job164_stvlup.sh`](../../debug_log/2026-09-09/jobs/job164_stvlup.sh) |  | — |
-| [`job165_err.sh`](../../debug_log/2026-09-09/jobs/job165_err.sh) |  | — |
-| [`job166_nav2only.sh`](../../debug_log/2026-09-09/jobs/job166_nav2only.sh) |  | — |
+| [`job156_stop.sh`](../../debug_log/2026-09-09/jobs/job156_stop.sh) | (단계) 모터 정지 · SIGTERM 종료 (SIGKILL 금지) | 09-09 8.9 · 09-16 1.13 · 09-16 1.6 |
+| [`job157_fg.sh`](../../debug_log/2026-09-09/jobs/job157_fg.sh) | (단계) foxglove_bridge 설치 위치 · 선언된 파라미터 이름 (바이너리/라이브러리에서 추출) · 버전 | — |
+| [`job158_alt.sh`](../../debug_log/2026-09-09/jobs/job158_alt.sh) | (단계) A) Nav2 ObstacleLayer 의 observation_persistence 지원 여부 · B) foxglove_bridge 기본 capabilities · C) RealSense 고급모드/최소거리 관련 파라미터 | — |
+| [`job159_fgdeploy.sh`](../../debug_log/2026-09-09/jobs/job159_fgdeploy.sh) | (단계) foxglove 단독 기동 시험 (파라미터 수용 여부) | — |
+| [`job160_stvlinst.sh`](../../debug_log/2026-09-09/jobs/job160_stvlinst.sh) | (단계) 설치 전 · 설치 (sudo) · 설치 확인 | — |
+| [`job161_stvlparam.sh`](../../debug_log/2026-09-09/jobs/job161_stvlparam.sh) | (단계) 레이어 레벨 파라미터 후보 · 소스 레벨 파라미터 후보 | — |
+| [`job162_p2.sh`](../../debug_log/2026-09-09/jobs/job162_p2.sh) | (단계) 예제 파라미터 파일이 함께 설치됐는지 | — |
+| [`job163_ex.sh`](../../debug_log/2026-09-09/jobs/job163_ex.sh) | (단계) constrained_indoor_environment_config.yaml · global_costmap_params.yaml | — |
+| [`job164_stvlup.sh`](../../debug_log/2026-09-09/jobs/job164_stvlup.sh) | (단계) 스택 기동 (base → sensors → slam) · Nav2 기동 (STVL 로드 확인) | — |
+| [`job165_err.sh`](../../debug_log/2026-09-09/jobs/job165_err.sh) | (단계) planner_server 관련 로그 전체 · 마지막 40줄 | — |
+| [`job166_nav2only.sh`](../../debug_log/2026-09-09/jobs/job166_nav2only.sh) | (단계) STVL 초기화 로그 · 오류 · 부하 | — |
 | [`job168_pre.sh`](../../debug_log/2026-09-09/jobs/job168_pre.sh) |  | — |
-| [`job171_chk.sh`](../../debug_log/2026-09-09/jobs/job171_chk.sh) |  | — |
+| [`job171_chk.sh`](../../debug_log/2026-09-09/jobs/job171_chk.sh) | (단계) 보드 상태 (스톨·래치) · 배터리 5회 · TF/EKF 생존 | — |
 | [`job172_freeze.sh`](../../debug_log/2026-09-09/jobs/job172_freeze.sh) | job170 의 TF 정지(t≈4.0, 절대시각 ≈1788943244) 전후 로그 조사 | — |
-| [`job173_slam.sh`](../../debug_log/2026-09-09/jobs/job173_slam.sh) |  | — |
-| [`job174_dds.sh`](../../debug_log/2026-09-09/jobs/job174_dds.sh) |  | — |
-| [`job176_who.sh`](../../debug_log/2026-09-09/jobs/job176_who.sh) |  | — |
-| [`job177_env.sh`](../../debug_log/2026-09-09/jobs/job177_env.sh) |  | — |
-| [`job178_imu.sh`](../../debug_log/2026-09-09/jobs/job178_imu.sh) |  | — |
-| [`job179_clean.sh`](../../debug_log/2026-09-09/jobs/job179_clean.sh) |  | — |
-| [`job180_imuparam.sh`](../../debug_log/2026-09-09/jobs/job180_imuparam.sh) |  | — |
-| [`job181_dedup.sh`](../../debug_log/2026-09-09/jobs/job181_dedup.sh) |  | — |
+| [`job173_slam.sh`](../../debug_log/2026-09-09/jobs/job173_slam.sh) | (단계) slam_toolbox 프로세스/노드 · 발행 여부 · map→odom 조회 | — |
+| [`job174_dds.sh`](../../debug_log/2026-09-09/jobs/job174_dds.sh) | (단계) 전체 종료 (SIGTERM) + SHM 완전 정리 · 재기동 · 검증 | — |
+| [`job176_who.sh`](../../debug_log/2026-09-09/jobs/job176_who.sh) | (단계) TF 발행 주체 · 각 토픽 · 프로세스 생존 | — |
+| [`job177_env.sh`](../../debug_log/2026-09-09/jobs/job177_env.sh) | (단계) 각 노드 프로세스의 FASTRTPS 프로파일 적용 여부 · slam_toolbox 상세 · EKF 주기 위반 빈도 | — |
+| [`job178_imu.sh`](../../debug_log/2026-09-09/jobs/job178_imu.sh) | (단계) sensors + slam + nav2 재기동 (SIGTERM) · 효과 검증 | — |
+| [`job179_clean.sh`](../../debug_log/2026-09-09/jobs/job179_clean.sh) | (단계) 1단계 SIGTERM · 2단계 SIGKILL (SHM 비활성이라 잔재 위험 없음) · 재기동 | — |
+| [`job180_imuparam.sh`](../../debug_log/2026-09-09/jobs/job180_imuparam.sh) | (단계) 배포 파일 내용 · 실행 중 카메라 노드 파라미터 · 카메라 로그의 IMU 프로파일 | — |
+| [`job181_dedup.sh`](../../debug_log/2026-09-09/jobs/job181_dedup.sh) | (단계) 검증 | — |
 | [`job91_query.py`](../../debug_log/2026-09-09/jobs/job91_query.py) | 현재 자세 기준 전방 D m 목표에 대한 무주행 경로 질의. | 09-09 2 |
 | [`job92_avoid.py`](../../debug_log/2026-09-09/jobs/job92_avoid.py) | 회피 주행 검증 (2026-09-09) — inflation 0.40/패딩 0.02 배포 후 첫 실주행. | 09-09 3 |
-| [`job93_jump.sh`](../../debug_log/2026-09-09/jobs/job93_jump.sh) |  | — |
-| [`job94_clock.sh`](../../debug_log/2026-09-09/jobs/job94_clock.sh) |  | — |
-| [`job95_wodom.sh`](../../debug_log/2026-09-09/jobs/job95_wodom.sh) |  | — |
-| [`job96_session.sh`](../../debug_log/2026-09-09/jobs/job96_session.sh) |  | — |
+| [`job93_jump.sh`](../../debug_log/2026-09-09/jobs/job93_jump.sh) | (단계) 현재 TF · EKF odom (휠+자이로 적분) · 보드 원시 odom | — |
+| [`job94_clock.sh`](../../debug_log/2026-09-09/jobs/job94_clock.sh) | (단계) 시스템 시계 · 토픽 발행률 (개별, 10초) · 정지 상태 10초 동안 위치 변화 (모터 무지령) | — |
+| [`job95_wodom.sh`](../../debug_log/2026-09-09/jobs/job95_wodom.sh) | (단계) /wheel_odom 퍼블리셔 목록/QoS · BEST_EFFORT 로 10초 수신 · ekf 설정 (odom0 관련) | — |
+| [`job96_session.sh`](../../debug_log/2026-09-09/jobs/job96_session.sh) | (단계) 보드 발행 토픽 생존 확인 (각 6초) · 보드 노드 존재 · agent 컨테이너 | — |
 | [`job97_recover.sh`](../../debug_log/2026-09-09/jobs/job97_recover.sh) | 보드 RESET 후 복구: ① 보드 토픽 규정 주기 확인(실패 시 중단) ② EKF/SLAM/Nav2 재기동 | — |
-| [`job98_entities.sh`](../../debug_log/2026-09-09/jobs/job98_entities.sh) |  | — |
+| [`job98_entities.sh`](../../debug_log/2026-09-09/jobs/job98_entities.sh) | (단계) agent: 세션 수립 이력 (client_key 별) · agent: 최근 세션의 엔티티 생성 개수 · agent: 에러/경고 전체 | — |
 | [`job99_bytes.sh`](../../debug_log/2026-09-09/jobs/job99_bytes.sh) | 보드가 UART 로 실제 몇 바이트를 보내는지 측정 → 펌웨어 발행 실패 vs agent 드롭 을 가른다. | — |
 | [`run_j.sh`](../../debug_log/2026-09-09/jobs/run_j.sh) | 범용 러너: $1 = 스크립트 파일명 (스크래치패드 기준), 나머지 = 인자 | 09-10 부수적으로 고친 것 · 09-22 0 · 09-28 3.3 |
 | [`run_xfer_all.sh`](../../debug_log/2026-09-09/jobs/run_xfer_all.sh) | 재부팅 후 /tmp 작업 스크립트 일괄 재전송 | 09-10 부수적으로 고친 것 · 09-22 0 · 09-23 0 · … +1 |
@@ -415,15 +415,15 @@
 |---|---|---|
 | [`job125_avoid3.py`](../../debug_log/2026-09-10/jobs/job125_avoid3.py) | 회피 주행 계측판 (2026-09-09) — job92 의 여유 측정이 틀렸던 것을 고친다. | 09-09 순서를 하나 앞에 둬야 하는 이유 — 미해결 모순 · 09-10 원인 — 클러스터링 없는 median (job125_avoid3.py d · 09-11 지표 오염 — 관찰이 맞았다 · … +5 |
 | [`job182_s6base.sh`](../../debug_log/2026-09-10/jobs/job182_s6base.sh) | S6 기준선: Nav2 포함 상태에서 EKF 주기 위반 / slam 스캔 폐기 / 노드별 CPU 를 30초 창으로 잰다. | — |
-| [`job185_why.sh`](../../debug_log/2026-09-10/jobs/job185_why.sh) |  | — |
-| [`job186_stuck.sh`](../../debug_log/2026-09-10/jobs/job186_stuck.sh) |  | — |
-| [`job187_src.sh`](../../debug_log/2026-09-10/jobs/job187_src.sh) |  | — |
+| [`job185_why.sh`](../../debug_log/2026-09-10/jobs/job185_why.sh) | (단계) nav2 로그: 중단·복구·취소 · 건전성 | — |
+| [`job186_stuck.sh`](../../debug_log/2026-09-10/jobs/job186_stuck.sh) | (단계) 복구 행동 상태 토픽 존재/타입 · stuck_monitor 가 실제로 구독 중인가 · 배포된 stuck_monitor.py 에 억제 로직이 있는가 | — |
+| [`job187_src.sh`](../../debug_log/2026-09-10/jobs/job187_src.sh) | (단계) 배포된 stuck_monitor.py 88~140행 · import 확인 | — |
 | [`job188_sm.sh`](../../debug_log/2026-09-10/jobs/job188_sm.sh) |  | — |
 | [`job189_wait.sh`](../../debug_log/2026-09-10/jobs/job189_wait.sh) |  | — |
-| [`job190_err.sh`](../../debug_log/2026-09-10/jobs/job190_err.sh) |  | — |
-| [`job191_nofg.sh`](../../debug_log/2026-09-10/jobs/job191_nofg.sh) |  | — |
+| [`job190_err.sh`](../../debug_log/2026-09-10/jobs/job190_err.sh) | (단계) lifecycle 오류 전문 · planner_server 관련 전체 | — |
+| [`job191_nofg.sh`](../../debug_log/2026-09-10/jobs/job191_nofg.sh) | (단계) foxglove 클라이언트 연결 여부 · foxglove_bridge 정지 · 30초 재측정 | — |
 | [`job194_bagdrive.sh`](../../debug_log/2026-09-10/jobs/job194_bagdrive.sh) | 주행 + rosbag 기록 (2026-09-10). | 09-10 6 · 09-10 겪은 오류 (기록) |
-| [`job197_drift.sh`](../../debug_log/2026-09-10/jobs/job197_drift.sh) |  | — |
+| [`job197_drift.sh`](../../debug_log/2026-09-10/jobs/job197_drift.sh) | (단계) 현재 map→odom 보정량 (0 이면 SLAM 보정 없음) · 현재 로버 위치 · 지금 보이는 장애물 (base_link) | — |
 | [`job209_static.py`](../../debug_log/2026-09-10/jobs/job209_static.py) | 정지 상태 깊이 지속성 측정 (2026-09-10). | — |
 | [`job210_cluster.py`](../../debug_log/2026-09-10/jobs/job210_cluster.py) | 상자 검출을 클러스터링으로 고치고, 그 자리의 코스트맵 비용을 직접 읽는다 (2026-09-10). | — |
 | [`job213_axis.py`](../../debug_log/2026-09-10/jobs/job213_axis.py) | 정지 상태 yaw 드리프트의 원천 — 축을 바로잡아 다시 잰다 (2026-09-10). | — |
@@ -436,16 +436,16 @@
 | [`job218_approach.py`](../../debug_log/2026-09-11/jobs/job218_approach.py) | 접근 실험 — 로컬 코스트맵이 상자를 버리는 지점을 통제된 조건에서 잡는다 (2026-09-11). | 09-11 1 |
 | [`job218_back.py`](../../debug_log/2026-09-11/jobs/job218_back.py) | 접근 실험 후 같은 거리만큼 후진 복귀 — 다음 시행을 같은 조건에서 시작하기 위함. | 09-11 6 |
 | [`job220_rotate.py`](../../debug_log/2026-09-11/jobs/job220_rotate.py) | 회전 실험 — 로컬 코스트맵이 상자를 버리는 '방위'를 잡는다 (2026-09-11). | 09-11 1 |
-| [`job225_face.py`](../../debug_log/2026-09-11/jobs/job225_face.py) | 제자리 회전으로 map 기준 heading 을 맞춘다 (2026-09-11). | 09-11 6 · 09-14 2.6 · 09-14 2.8 · … +2 |
+| [`job225_face.py`](../../debug_log/2026-09-11/jobs/job225_face.py) | 제자리 회전으로 map 기준 heading 을 맞춘다 (2026-09-11). | 09-11 6 · 09-14 2.13 · 09-14 2.6 · … +2 |
 | [`job228_why.py`](../../debug_log/2026-09-11/jobs/job228_why.py) | RPP 가 무엇과 충돌한다고 보는지 찾는다 (2026-09-11). | — |
 | [`job230_map.py`](../../debug_log/2026-09-11/jobs/job230_map.py) | 로버 주변 로컬 코스트맵을 격자로 찍고, 같은 영역의 라이다·깊이 점을 겹쳐 본다 (2026-09-11). | 09-11 5 |
 | [`job233_pass.py`](../../debug_log/2026-09-11/jobs/job233_pass.py) | 통과 가능성 판정 — 이 배치에서 로버가 지나갈 틈이 있는가 (2026-09-11). | 09-11 5.1 · 09-11 5.6 · 09-11 7 |
-| [`job240_clean.sh`](../../debug_log/2026-09-11/jobs/job240_clean.sh) | ── 깨끗한 기동 절차 (2026-09-11 제정) ─────────────────────────────────────── | 09-11 5.4 · 09-11 5.7 · 09-11 중복 프로세스 (사용자 지적 "중첩된 프로세스가 있어 충돌이 일어나지 않 · … +10 |
+| [`job240_clean.sh`](../../debug_log/2026-09-11/jobs/job240_clean.sh) | ── 깨끗한 기동 절차 (2026-09-11 제정) ─────────────────────────────────────── | 09-11 5.4 · 09-11 5.7 · 09-11 절차 (확정) · … +10 |
 | [`job243_spin.py`](../../debug_log/2026-09-11/jobs/job243_spin.py) | 제자리 회전 중 병진 드리프트 실측 (2026-09-11). | — |
 | [`job248_audit.py`](../../debug_log/2026-09-11/jobs/job248_audit.py) | 구성 전면 점검 — 물리 공간 vs 코스트맵 vs 컨트롤러 판정 기준 (2026-09-11). | — |
 | [`job249_nav2only.sh`](../../debug_log/2026-09-11/jobs/job249_nav2only.sh) | nav2 만 재기동 — 중복 프로세스 없이. base/sensors/slam 은 건드리지 않는다(보드 세션 유지). | 09-11 중복 프로세스 (사용자 지적 "중첩된 프로세스가 있어 충돌이 일어나지 않 · 09-14 0 · 09-16 1.8 |
 | [`job250_rsp_then_drive.sh`](../../debug_log/2026-09-11/jobs/job250_rsp_then_drive.sh) | robot_state_publisher 중복 판정 → 프로세스가 정확히 1개일 때만 주행. | — |
-| [`job252_fix_then_drive.sh`](../../debug_log/2026-09-11/jobs/job252_fix_then_drive.sh) |  | — |
+| [`job252_fix_then_drive.sh`](../../debug_log/2026-09-11/jobs/job252_fix_then_drive.sh) | (단계) 고아 robot_state_publisher 정리 · 전 스택 중복 재감사 | — |
 | [`job254_s4run.sh`](../../debug_log/2026-09-11/jobs/job254_s4run.sh) | S4 1회차 절차: 게이트(중복·보드·통과폭) → 주행 D=1.8 (bag+로그분석) | 09-11 배운 것 · 09-11 절차 (확정) · 09-14 2 · … +3 |
 | [`job259_cycle.sh`](../../debug_log/2026-09-11/jobs/job259_cycle.sh) | 복귀 → heading 정렬 → 위치 확인 → S4 다음 회차 | — |
 | [`job263_snap_restart_run.sh`](../../debug_log/2026-09-11/jobs/job263_snap_restart_run.sh) |  | — |
@@ -453,24 +453,24 @@
 | [`job266_nudge.py`](../../debug_log/2026-09-11/jobs/job266_nudge.py) | 직선 미세 이동 — 상자 상대 게이트의 dx 를 맞추기 위해. 양수 전진 / 음수 후진. v=0.04. | — |
 | [`job267_cycle.sh`](../../debug_log/2026-09-11/jobs/job267_cycle.sh) | 손 이동 후 S4 회차: 재기동 → 상자 측정 → dy 벗어나면 중단 / dx 만 벗어나면 직진 보정 → 게이트 → 주행 | — |
 | [`job268_run3.sh`](../../debug_log/2026-09-11/jobs/job268_run3.sh) | S4 3/3 — 사용자 판단: 좌우 17cm 오프셋은 동등 처리. dx 만 직진 보정. 재기동 생략(6분 전 완료, 이후 주행 없음). | — |
-| [`job269_return.sh`](../../debug_log/2026-09-11/jobs/job269_return.sh) |  | — |
-| [`job270_stuckwhy.sh`](../../debug_log/2026-09-11/jobs/job270_stuckwhy.sh) |  | — |
+| [`job269_return.sh`](../../debug_log/2026-09-11/jobs/job269_return.sh) | (단계) 복귀 (Nav2 → 원점 0,0,0°) · 복귀 중 로그 | — |
+| [`job270_stuckwhy.sh`](../../debug_log/2026-09-11/jobs/job270_stuckwhy.sh) | (단계) 자세 / SLAM 보정 · RPP 충돌 판정 (100 기준) — 제자리 / 전진 / 회전 · 로컬 코스트맵 격자 (차체 좌표) | — |
 | [`job271_manual_return.sh`](../../debug_log/2026-09-11/jobs/job271_manual_return.sh) | Nav2 복귀 실패 후 수동 직진 복귀 — 전진 투영(RPP 기준 100) + 라이다 정면 게이트 | — |
 | [`job272_back_home.sh`](../../debug_log/2026-09-11/jobs/job272_back_home.sh) | 후진으로 원점 복귀 — 후방 투영(100) + 라이다 후방 게이트. 파서는 tf2_echo 의 대괄호 안만 읽는다. | — |
-| [`job273_left.sh`](../../debug_log/2026-09-11/jobs/job273_left.sh) |  | — |
+| [`job273_left.sh`](../../debug_log/2026-09-11/jobs/job273_left.sh) | (단계) 라이다 방위별 (차체 외곽 기준) · 로컬 코스트맵 격자 + 차체 근처 센서 점 · LETHAL 셀 센서 근거 (job248 B) | — |
 | [`job274_clear_back.sh`](../../debug_log/2026-09-11/jobs/job274_clear_back.sh) | 유령(센서 근거 없는 LETHAL) 제거 → 감사 → 게이트 후진 복귀 | — |
 | [`job275_ghost_then_back.py`](../../debug_log/2026-09-11/jobs/job275_ghost_then_back.py) | (1) 유령 띠 다중 프레임 감사: 30 프레임 동안 차체 좌측 띠(x -0.5~0.5, y +0.20~+0.35, z 0.06~0.40)에 | — |
 | [`job277_cmdvel.py`](../../debug_log/2026-09-11/jobs/job277_cmdvel.py) | /cmd_vel 명령 충돌 검증 (2026-09-11 저녁, 사용자 질문). | — |
 | [`job278_pubs_jp.py`](../../debug_log/2026-09-11/jobs/job278_pubs_jp.py) |  | — |
-| [`job279_interleave.py`](../../debug_log/2026-09-11/jobs/job279_interleave.py) |  | — |
+| [`job279_interleave.py`](../../debug_log/2026-09-11/jobs/job279_interleave.py) | 100ms 당 메시지 수 (2 이면 두 스트림 맞물림) | — |
 | [`job282_ab_timeout.py`](../../debug_log/2026-09-11/jobs/job282_ab_timeout.py) | velocity_smoother.velocity_timeout A/B 검증 (2026-09-11). | — |
 | [`job284_raw.py`](../../debug_log/2026-09-11/jobs/job284_raw.py) | 로컬 costmap_raw(0~255)로 footprint 둘레 값을 본다 — behavior_server 의 충돌 검사와 같은 데이터. | — |
 | [`job285_behavior.py`](../../debug_log/2026-09-11/jobs/job285_behavior.py) | behavior_server 의 'Collision Ahead' 즉시 실패 원인 (2026-09-11). | — |
 | [`job287_course_return.sh`](../../debug_log/2026-09-11/jobs/job287_course_return.sh) | 코스 주행 + Nav2 복귀 — 복구 동작(BackUp)이 살아난 뒤 첫 시험 | — |
 | [`job288_return_bag.sh`](../../debug_log/2026-09-11/jobs/job288_return_bag.sh) | Nav2 복귀 + bag + 로그 분석 (복귀에도 사후 분석 근거를 남긴다) | 09-11 5.15 · 09-14 2.8 |
-| [`job289_stuck.sh`](../../debug_log/2026-09-11/jobs/job289_stuck.sh) |  | — |
+| [`job289_stuck.sh`](../../debug_log/2026-09-11/jobs/job289_stuck.sh) | (단계) 자세 · 상자 (로버 기준, 지금 헤딩 178°) · 라이다 방위별 | — |
 | [`job291_full.sh`](../../debug_log/2026-09-11/jobs/job291_full.sh) | 손 이동 후 전체 검증: 재기동 → 코스 주행 → 복귀(출발 pose+180°) → face 0 | — |
-| [`job292_wall.sh`](../../debug_log/2026-09-11/jobs/job292_wall.sh) |  | — |
+| [`job292_wall.sh`](../../debug_log/2026-09-11/jobs/job292_wall.sh) | (단계) 현재 자세 / 전방 벽 · 전역 코스트맵: 전방 단면별 RPP 기준 폭 (2.2 m 까지) — 목표를 어디까지 둘 수 있나 | — |
 | [`job293_v2.sh`](../../debug_log/2026-09-11/jobs/job293_v2.sh) | v2: 목표를 벽 앞 창 안에 둔다. 상자 뒷면(map≈1.51)+0.45 ≤ 목표 ≤ 벽 inscribed 직전(map≈2.04) → 현재 x 0.139 기준 D=1.85. | — |
 | [`job294_v3.sh`](../../debug_log/2026-09-11/jobs/job294_v3.sh) | v2: 목표를 벽 앞 창 안에 둔다. 상자 뒷면(map≈1.51)+0.45 ≤ 목표 ≤ 벽 inscribed 직전(map≈2.04) → 현재 x 0.139 기준 D=1.85. | — |
 | [`job295_v4.sh`](../../debug_log/2026-09-11/jobs/job295_v4.sh) | v2: 목표를 벽 앞 창 안에 둔다. 상자 뒷면(map≈1.51)+0.45 ≤ 목표 ≤ 벽 inscribed 직전(map≈2.04) → 현재 x 0.139 기준 D=1.85. | — |
@@ -487,12 +487,12 @@
 | [`job306_depth_live.py`](../../debug_log/2026-09-11/jobs/job306_depth_live.py) | 정지 상태에서 깊이 점군을 8 s 표본해 '단독 셀' 의 출처를 본다 (2026-09-11). 로버는 움직이지 않는다. | 09-11 5.19 |
 | [`job307_scene.py`](../../debug_log/2026-09-11/jobs/job307_scene.py) | 정지 상태 현장 지도: 깊이(z 0.06~0.40) 와 라이다를 base_link 5 cm 격자에 겹쳐 그린다 (2026-09-11). 로버는 움직이지 않는다. | 09-11 5.19 |
 | [`job308_plan_ab.py`](../../debug_log/2026-09-11/jobs/job308_plan_ab.py) | 정지 상태 계획 A/B — inflation_radius 가 '상자 옆 틈' 에서 계획을 어디에 놓는가 (2026-09-11). 로버는 움직이지 않는다. | 09-11 5.19 |
-| [`run_j303.sh`](../../debug_log/2026-09-11/jobs/run_j303.sh) |  | — |
-| [`run_j304.sh`](../../debug_log/2026-09-11/jobs/run_j304.sh) |  | — |
-| [`run_j305.sh`](../../debug_log/2026-09-11/jobs/run_j305.sh) |  | — |
-| [`run_j306.sh`](../../debug_log/2026-09-11/jobs/run_j306.sh) |  | — |
+| [`run_j303.sh`](../../debug_log/2026-09-11/jobs/run_j303.sh) | (단계) v5 정체 순간 (첫 충돌 감지) · v5 nav2.log 충돌·복구 시각 목록 | — |
+| [`run_j304.sh`](../../debug_log/2026-09-11/jobs/run_j304.sh) | (단계) v5 로컬 @ 첫 충돌 · v5 전역 @ 첫 충돌 · v5 로컬 @ 출발 +3 s | — |
+| [`run_j305.sh`](../../debug_log/2026-09-11/jobs/run_j305.sh) | (단계) $B 로컬 신규 LETHAL 통계 · bag_v5 전역 신규 LETHAL 통계 | — |
+| [`run_j306.sh`](../../debug_log/2026-09-11/jobs/run_j306.sh) | (단계) 스택 상태 (노드 수) · RealSense 필터/프로파일 파라미터 (live) · 정지 깊이 표본 8 s | — |
 | [`run_j307.sh`](../../debug_log/2026-09-11/jobs/run_j307.sh) |  | — |
-| [`run_j308.sh`](../../debug_log/2026-09-11/jobs/run_j308.sh) |  | — |
+| [`run_j308.sh`](../../debug_log/2026-09-11/jobs/run_j308.sh) | (단계) 계획 A/B: inflation 0.35/3.0 vs 0.55/2.0 (목표 전방 2.0, 횡 +0.35) | — |
 | [`run_state.sh`](../../debug_log/2026-09-11/jobs/run_state.sh) |  | — |
 | [`run_xfer_all2.sh`](../../debug_log/2026-09-11/jobs/run_xfer_all2.sh) | 재부팅 후 /tmp 작업 스크립트 일괄 재전송 (2026-09-14: job* 전체) | 09-14 0 · 09-15 0 |
 
@@ -501,8 +501,8 @@
 | 파일 | 설명 | 언급 |
 |---|---|---|
 | [`job125_avoid3.py`](../../debug_log/2026-09-14/jobs/job125_avoid3.py) | 회피 주행 계측판 (2026-09-09) — job92 의 여유 측정이 틀렸던 것을 고친다. | 09-09 순서를 하나 앞에 둬야 하는 이유 — 미해결 모순 · 09-10 원인 — 클러스터링 없는 median (job125_avoid3.py d · 09-11 지표 오염 — 관찰이 맞았다 · … +5 |
-| [`job225_face.py`](../../debug_log/2026-09-14/jobs/job225_face.py) | 제자리 회전으로 map 기준 heading 을 맞춘다 (2026-09-11). | 09-11 6 · 09-14 2.6 · 09-14 2.8 · … +2 |
-| [`job240_clean.sh`](../../debug_log/2026-09-14/jobs/job240_clean.sh) | ── 깨끗한 기동 절차 (2026-09-11 제정) ─────────────────────────────────────── | 09-11 5.4 · 09-11 5.7 · 09-11 중복 프로세스 (사용자 지적 "중첩된 프로세스가 있어 충돌이 일어나지 않 · … +10 |
+| [`job225_face.py`](../../debug_log/2026-09-14/jobs/job225_face.py) | 제자리 회전으로 map 기준 heading 을 맞춘다 (2026-09-11). | 09-11 6 · 09-14 2.13 · 09-14 2.6 · … +2 |
+| [`job240_clean.sh`](../../debug_log/2026-09-14/jobs/job240_clean.sh) | ── 깨끗한 기동 절차 (2026-09-11 제정) ─────────────────────────────────────── | 09-11 5.4 · 09-11 5.7 · 09-11 절차 (확정) · … +10 |
 | [`job249_nav2only.sh`](../../debug_log/2026-09-14/jobs/job249_nav2only.sh) | nav2 만 재기동 — 중복 프로세스 없이. base/sensors/slam 은 건드리지 않는다(보드 세션 유지). | 09-11 중복 프로세스 (사용자 지적 "중첩된 프로세스가 있어 충돌이 일어나지 않 · 09-14 0 · 09-16 1.8 |
 | [`job254_s4run.sh`](../../debug_log/2026-09-14/jobs/job254_s4run.sh) | S4 1회차 절차: 게이트(중복·보드·통과폭) → 주행 D=1.8 (bag+로그분석) | 09-11 배운 것 · 09-11 절차 (확정) · 09-14 2 · … +3 |
 | [`job308_plan_ab.py`](../../debug_log/2026-09-14/jobs/job308_plan_ab.py) | 정지 상태 계획 A/B — inflation_radius 가 '상자 옆 틈' 에서 계획을 어디에 놓는가 (2026-09-11). 로버는 움직이지 않는다. | 09-11 5.19 |
@@ -522,32 +522,32 @@
 | [`run_ab317b.sh`](../../debug_log/2026-09-14/jobs/run_ab317b.sh) | Smac 파라미터 2안 (R 0.10, cost_penalty 1.2, non_straight 1.05) 라이브 적용 → 두 목표(정면 1.8,0 / 통로선 1.8,+0.35)로 정지 A/B, 주행 없음 | — |
 | [`run_ab317c.sh`](../../debug_log/2026-09-14/jobs/run_ab317c.sh) | Smac cost_penalty 스윕(정지, use_start=(0,0,0), 목표 1.8/+0.35, 주행 없음) — 라이브 코스트맵(상자 있음) 기준 | — |
 | [`run_boxgrow.sh`](../../debug_log/2026-09-14/jobs/run_boxgrow.sh) | 주행 중 코스트맵 상자 군집의 시간 변화: bag 의 여러 시각에 job304 를 돌려 상자 행(전진 0.9~1.6, 횡 -0.4~+0.4 중심)만 뽑는다 | — |
-| [`run_edge2.sh`](../../debug_log/2026-09-14/jobs/run_edge2.sh) |  | — |
+| [`run_edge2.sh`](../../debug_log/2026-09-14/jobs/run_edge2.sh) | (단계) 1. 재기동 (job240) · 2. 릴레이 고아 정리 · 3. 상자 가장자리 띠 z 분포 (필터 토픽, 20 s) — 상자 위치는 감사값 | — |
 | [`run_epi.sh`](../../debug_log/2026-09-14/jobs/run_epi.sh) | 주행 bag 에피소드 분석: NAME LOGT(이 시각 이후의 nav2.log 충돌만) [START x y yaw_deg] | 09-14 4 |
 | [`run_inf1.sh`](../../debug_log/2026-09-14/jobs/run_inf1.sh) | inflation 0.55/2.0 검증 주행: 재감사(상자 위치·창) 게이트 → job254 (중복·보드·클리어·상자 게이트 → bag 주행 → 로그 분석) | 09-14 2 · 09-14 2.10 · 09-14 2.13 · … +4 |
-| [`run_inf1a.sh`](../../debug_log/2026-09-14/jobs/run_inf1a.sh) |  | — |
-| [`run_inf2.sh`](../../debug_log/2026-09-14/jobs/run_inf2.sh) |  | — |
-| [`run_inf4.sh`](../../debug_log/2026-09-14/jobs/run_inf4.sh) |  | — |
-| [`run_j249b.sh`](../../debug_log/2026-09-14/jobs/run_j249b.sh) |  | — |
-| [`run_j308.sh`](../../debug_log/2026-09-14/jobs/run_j308.sh) |  | — |
-| [`run_j309.sh`](../../debug_log/2026-09-14/jobs/run_j309.sh) |  | — |
+| [`run_inf1a.sh`](../../debug_log/2026-09-14/jobs/run_inf1a.sh) | (단계) nav2.log inf1 구간: 충돌·복구 시각 · 첫 에피소드 LETHAL 군집 (로컬) · 차체 고정 LETHAL 마킹 (job310 2부) | — |
+| [`run_inf2.sh`](../../debug_log/2026-09-14/jobs/run_inf2.sh) | (단계) RealSense threshold/decimation 파라미터 이름 | — |
+| [`run_inf4.sh`](../../debug_log/2026-09-14/jobs/run_inf4.sh) | (단계) 1. 재기동 (job240) · 2. readback 게이트 | — |
+| [`run_j249b.sh`](../../debug_log/2026-09-14/jobs/run_j249b.sh) | (단계) nav2 재기동 (job249, /tmp/nav2_params.yaml 검증→배포→재기동) · 라이브 readback 게이트 | — |
+| [`run_j308.sh`](../../debug_log/2026-09-14/jobs/run_j308.sh) | (단계) 계획 A/B: inflation 0.35/3.0 vs 0.55/2.0 (목표 전방 2.0, 횡 +0.35) | — |
+| [`run_j309.sh`](../../debug_log/2026-09-14/jobs/run_j309.sh) | (단계) 1. YAML 배포 (src + install) · 2. nav2 재기동 (job249) · 3. 라이브 readback 게이트 | — |
 | [`run_j312.sh`](../../debug_log/2026-09-14/jobs/run_j312.sh) |  | — |
 | [`run_j318.sh`](../../debug_log/2026-09-14/jobs/run_j318.sh) |  | — |
 | [`run_j319.sh`](../../debug_log/2026-09-14/jobs/run_j319.sh) |  | — |
 | [`run_j320.sh`](../../debug_log/2026-09-14/jobs/run_j320.sh) |  | — |
 | [`run_moh.sh`](../../debug_log/2026-09-14/jobs/run_moh.sh) | min_obstacle_height 0.08 배포 → nav2 재기동(job249) → readback → 정지 검증(job312: 코스트맵 상자 범위) → 회전 게이트 → 정렬 → 상자 재검출 | — |
-| [`run_pd1.sh`](../../debug_log/2026-09-14/jobs/run_pd1.sh) |  | — |
+| [`run_pd1.sh`](../../debug_log/2026-09-14/jobs/run_pd1.sh) | (단계) 1. 재기동 · 2. 릴레이 정리 · 3. readback | — |
 | [`run_post.sh`](../../debug_log/2026-09-14/jobs/run_post.sh) | 주행 직후: bag·csv 회수(재부팅 전 필수) + 차체 고정점 판정(job310) | 09-14 0 · 09-14 4 |
-| [`run_prep2.sh`](../../debug_log/2026-09-14/jobs/run_prep2.sh) |  | — |
-| [`run_relay.sh`](../../debug_log/2026-09-14/jobs/run_relay.sh) |  | — |
-| [`run_relay2.sh`](../../debug_log/2026-09-14/jobs/run_relay2.sh) |  | — |
+| [`run_prep2.sh`](../../debug_log/2026-09-14/jobs/run_prep2.sh) | (단계) 1. 정면 바닥 잡음 30 s (정지) · 2. 제자리 정렬 -3.5° (상자 y -0.11 → -0.04 목표) · 3. 상자 재검출 | — |
+| [`run_relay.sh`](../../debug_log/2026-09-14/jobs/run_relay.sh) | (단계) 1. colcon build rover_bringup (symlink) · 2. 릴레이 기동 (standalone; 다음 부팅부터는 camera.launch 가 띄움) · 3. 정면 바닥 아티팩트 (필터 후, 30 s) | — |
+| [`run_relay2.sh`](../../debug_log/2026-09-14/jobs/run_relay2.sh) | (단계) 1. 재기동 (릴레이 새 버전, launch 파라미터) · 2. 릴레이 정리 + 로그 · 3. 상자 앞 점 (필터 후 60 s) | — |
 | [`run_ret.sh`](../../debug_log/2026-09-14/jobs/run_ret.sh) | Nav2 복귀(bag) → 출발 heading 정렬 → 자세·상자 재검출.  인자: NAME X Y YAW_deg FACE_deg | — |
-| [`run_spd1_align.sh`](../../debug_log/2026-09-14/jobs/run_spd1_align.sh) |  | — |
-| [`run_spd1_post.sh`](../../debug_log/2026-09-14/jobs/run_spd1_post.sh) |  | — |
+| [`run_spd1_align.sh`](../../debug_log/2026-09-14/jobs/run_spd1_align.sh) | (단계) 1. 릴레이 고아 정리 · 2. 회전 게이트 (job228 제자리 회전 투영) · 3. 정렬 +3.3° (상자 y +0.026 → -0.04) 후 재검출 | — |
+| [`run_spd1_post.sh`](../../debug_log/2026-09-14/jobs/run_spd1_post.sh) | (단계) spd1.csv 속도 프로파일 | — |
 | [`run_spd1_prep.sh`](../../debug_log/2026-09-14/jobs/run_spd1_prep.sh) | 손 배치 후: 재기동(job240) → 릴레이 중복 정리(job313) → readback 게이트(RPP 감속·decay·inflation) | — |
-| [`run_tc1.sh`](../../debug_log/2026-09-14/jobs/run_tc1.sh) |  | — |
-| [`run_tc2_prep.sh`](../../debug_log/2026-09-14/jobs/run_tc2_prep.sh) |  | — |
-| [`run_tc3.sh`](../../debug_log/2026-09-14/jobs/run_tc3.sh) |  | — |
+| [`run_tc1.sh`](../../debug_log/2026-09-14/jobs/run_tc1.sh) | (단계) 1. 재기동 · 2. 릴레이 고아 정리 · 3. readback | — |
+| [`run_tc2_prep.sh`](../../debug_log/2026-09-14/jobs/run_tc2_prep.sh) | (단계) 1. 재기동 · 2. 릴레이 고아 정리 · 3. readback | — |
+| [`run_tc3.sh`](../../debug_log/2026-09-14/jobs/run_tc3.sh) | (단계) 1. 재기동 · 2. 릴레이 고아 정리 · 3. readback | — |
 | [`run_xfer_all2.sh`](../../debug_log/2026-09-14/jobs/run_xfer_all2.sh) | 재부팅 후 /tmp 작업 스크립트 일괄 재전송 (2026-09-14: job* 전체) | 09-14 0 · 09-15 0 |
 | [`run_yaml_deploy.sh`](../../debug_log/2026-09-14/jobs/run_yaml_deploy.sh) |  | — |
 
@@ -558,16 +558,16 @@
 | [`job321_drift.py`](../../debug_log/2026-09-15/jobs/job321_drift.py) | 세션 누적 오차 점검 (2026-09-15, 사용자 우려: 시간이 지나 ROS 세션에 오차가 쌓였는가). 정지 30 s, 주행 없음. | — |
 | [`job322_snap.py`](../../debug_log/2026-09-15/jobs/job322_snap.py) | 컬러 카메라 한 프레임을 /tmp/snap.jpg 로 저장 (현장 확인용). 로버는 움직이지 않는다. | 09-22 5.2 |
 | [`job323_state.sh`](../../debug_log/2026-09-15/jobs/job323_state.sh) |  | — |
-| [`job324_diag.sh`](../../debug_log/2026-09-15/jobs/job324_diag.sh) |  | — |
-| [`job325_post_incident.sh`](../../debug_log/2026-09-15/jobs/job325_post_incident.sh) |  | — |
+| [`job324_diag.sh`](../../debug_log/2026-09-15/jobs/job324_diag.sh) | (단계) 현재 상태 · ~/.bashrc 꼬리 (자동 실행 의심 구간) · ~/.profile / ~/.bash_profile 사용자 추가 | — |
+| [`job325_post_incident.sh`](../../debug_log/2026-09-15/jobs/job325_post_incident.sh) | (단계) /tmp 잔존: bag·로그 · 어제 nav2.log 마지막 목표 상태 (있으면) · 어제 13:00~14:30 NetworkManager/wlan 이벤트 | — |
 | [`job326_net_fix.sh`](../../debug_log/2026-09-15/jobs/job326_net_fix.sh) | (sudo, 사용자 승인 09-16) 1) mavlink-router 비활성  2) Wi-Fi 자동접속 우선순위: WEB_DEV_5G(192.168.0.x) > ALOPS_ROBOTICS_5G  3) WEB_DEV_5G 로 전환 (nohup — 세션이 | — |
 | [`run_ab_bk.sh`](../../debug_log/2026-09-15/jobs/run_ab_bk.sh) | 상자 뒤 목표(1.8, 0) 정지 A/B: Smac cost_penalty × minimum_turning_radius 스윕 (상자 살아 있는 상태, 주행 없음). 인자: BX BY | — |
-| [`run_chk15.sh`](../../debug_log/2026-09-15/jobs/run_chk15.sh) |  | — |
-| [`run_front2.sh`](../../debug_log/2026-09-15/jobs/run_front2.sh) |  | — |
+| [`run_chk15.sh`](../../debug_log/2026-09-15/jobs/run_chk15.sh) | (단계) 릴레이 · readback | — |
+| [`run_front2.sh`](../../debug_log/2026-09-15/jobs/run_front2.sh) | (단계) 상자 앞 띠 (필터, 40 s) · 상자 띠 (필터, 12 s) | — |
 | [`run_inf1.sh`](../../debug_log/2026-09-15/jobs/run_inf1.sh) | inflation 0.55/2.0 검증 주행: 재감사(상자 위치·창) 게이트 → job254 (중복·보드·클리어·상자 게이트 → bag 주행 → 로그 분석) | 09-14 2 · 09-14 2.10 · 09-14 2.13 · … +4 |
 | [`run_j321.sh`](../../debug_log/2026-09-15/jobs/run_j321.sh) |  | — |
 | [`run_lan.sh`](../../debug_log/2026-09-15/jobs/run_lan.sh) | Jetson LAN(172.30.1.8) 연결 확인 + 스크립트 실행 러너: $1 = 실행할 원격 스크립트(스크래치패드 파일명) | 09-15 3.1 |
-| [`run_pd1.sh`](../../debug_log/2026-09-15/jobs/run_pd1.sh) |  | — |
+| [`run_pd1.sh`](../../debug_log/2026-09-15/jobs/run_pd1.sh) | (단계) 1. 재기동 · 2. 릴레이 정리 · 3. readback | — |
 | [`run_recon.sh`](../../debug_log/2026-09-15/jobs/run_recon.sh) |  | — |
 | [`run_usb.sh`](../../debug_log/2026-09-15/jobs/run_usb.sh) | USB 가상 IP(192.168.55.1) 링크 진단 — 핑, TCP 22 배너, ssh 3회(stderr 포함), norc 진단 스크립트 실행 | — |
 
@@ -577,11 +577,11 @@
 |---|---|---|
 | [`edits_0916.py`](../../debug_log/2026-09-16/jobs/edits_0916.py) | 2026-09-16 일괄 편집: 릴레이 CPU 수정·max_range, decay 120/180, 컨트롤러 10 Hz·MPPI model_dt·visualize, BT MPPI 유지, bag 토픽 | — |
 | [`edits_0916b.py`](../../debug_log/2026-09-16/jobs/edits_0916b.py) |  | — |
-| [`edits_0916c.py`](../../debug_log/2026-09-16/jobs/edits_0916c.py) |  | — |
+| [`edits_0916c.py`](../../debug_log/2026-09-16/jobs/edits_0916c.py) | 1) 러너: 감사 출력이 잘리면(최소폭 줄 없음) 한 번 재시도 | — |
 | [`edits_0916d.py`](../../debug_log/2026-09-16/jobs/edits_0916d.py) | 2026-09-16 저녁: DDS 를 루프백에 고정(IP 변경 면역) + 러너/잡에 프로파일 export + stuck_shadow | — |
-| [`job156_stop.sh`](../../debug_log/2026-09-16/jobs/job156_stop.sh) |  | 09-09 8.9 · 09-16 1.6 · 09-16 1.13 |
-| [`job231_drive.sh`](../../debug_log/2026-09-16/jobs/job231_drive.sh) | 검증 주행 — BT 수정(ClearCostmapExceptRegion) + 감쇠 복원(로컬 30초 선형) 상태. | 09-18 17.3 · 09-21 2 · 09-21 6 · … +1 |
-| [`job240_clean.sh`](../../debug_log/2026-09-16/jobs/job240_clean.sh) | ── 깨끗한 기동 절차 (2026-09-11 제정) ─────────────────────────────────────── | 09-11 5.4 · 09-11 5.7 · 09-11 중복 프로세스 (사용자 지적 "중첩된 프로세스가 있어 충돌이 일어나지 않 · … +10 |
+| [`job156_stop.sh`](../../debug_log/2026-09-16/jobs/job156_stop.sh) | (단계) 모터 정지 · SIGTERM 종료 (SIGKILL 금지) | 09-09 8.9 · 09-16 1.13 · 09-16 1.6 |
+| [`job231_drive.sh`](../../debug_log/2026-09-16/jobs/job231_drive.sh) | 검증 주행 — BT 수정(ClearCostmapExceptRegion) + 감쇠 복원(로컬 30초 선형) 상태. | 09-18 17.3 · 09-21 10.1 · 09-21 2 · … +1 |
+| [`job240_clean.sh`](../../debug_log/2026-09-16/jobs/job240_clean.sh) | ── 깨끗한 기동 절차 (2026-09-11 제정) ─────────────────────────────────────── | 09-11 5.4 · 09-11 5.7 · 09-11 절차 (확정) · … +10 |
 | [`job249_nav2only.sh`](../../debug_log/2026-09-16/jobs/job249_nav2only.sh) | nav2 만 재기동 — 중복 프로세스 없이. base/sensors/slam 은 건드리지 않는다(보드 세션 유지). | 09-11 중복 프로세스 (사용자 지적 "중첩된 프로세스가 있어 충돌이 일어나지 않 · 09-14 0 · 09-16 1.8 |
 | [`job323_state.sh`](../../debug_log/2026-09-16/jobs/job323_state.sh) |  | — |
 | [`job327_mp2why.py`](../../debug_log/2026-09-16/jobs/job327_mp2why.py) | mp2(NavFn+MPPI) 왼쪽 쏠림·정지 원인 분석 (2026-09-16). | 09-16 (머리) |
@@ -596,16 +596,16 @@
 | [`job340_smooth_ab.py`](../../debug_log/2026-09-16/jobs/job340_smooth_ab.py) | 계획 A/B (정지, 주행 없음) — A 계획: 격자 모서리를 입구에서 멀리·완만하게 (2026-09-16 분석 문서 §4 A1/A2). | 09-16 1.11 |
 | [`job341_relay_cpu.sh`](../../debug_log/2026-09-16/jobs/job341_relay_cpu.sh) | 새 릴레이 코드(array.array)의 CPU: 두 번째 인스턴스를 20 s 띄우고 top 으로 %CPU 표본 (원 릴레이는 그대로) | — |
 | [`job342_readback.sh`](../../debug_log/2026-09-16/jobs/job342_readback.sh) |  | — |
-| [`job343_chk.sh`](../../debug_log/2026-09-16/jobs/job343_chk.sh) |  | — |
+| [`job343_chk.sh`](../../debug_log/2026-09-16/jobs/job343_chk.sh) | (단계) job248 감사 (기준 표 0.9~1.4 행 + 틈) | — |
 | [`job345_traj.py`](../../debug_log/2026-09-16/jobs/job345_traj.py) | MPPI 후보 궤적(/trajectories, visualize=true) 분석 — 정체 순간 최적화기가 무엇을 보고 있었나 (2026-09-16 mp4). | — |
-| [`job346_mp4state.sh`](../../debug_log/2026-09-16/jobs/job346_mp4state.sh) |  | — |
-| [`job347_cancel.sh`](../../debug_log/2026-09-16/jobs/job347_cancel.sh) |  | — |
+| [`job346_mp4state.sh`](../../debug_log/2026-09-16/jobs/job346_mp4state.sh) | (단계) 로버 자세/명령 · nav2.log goal 이후 · syslog 15:56~15:59 wpa/NM | — |
+| [`job347_cancel.sh`](../../debug_log/2026-09-16/jobs/job347_cancel.sh) | (단계) nav2.log 1789541800~1812 (취소 출처) · bt_navigator 전체(goal 이후) | — |
 | [`job348_readback2.sh`](../../debug_log/2026-09-16/jobs/job348_readback2.sh) |  | — |
-| [`job349_health.sh`](../../debug_log/2026-09-16/jobs/job349_health.sh) |  | — |
-| [`job350_disc.sh`](../../debug_log/2026-09-16/jobs/job350_disc.sh) |  | — |
+| [`job349_health.sh`](../../debug_log/2026-09-16/jobs/job349_health.sh) | (단계) 노드 · TF · 토픽 hz | — |
+| [`job350_disc.sh`](../../debug_log/2026-09-16/jobs/job350_disc.sh) | (단계) IP · agent(docker) 로그 끝 · sensors.log 끝(EKF/컨디셔너) | — |
 | [`job351_now.sh`](../../debug_log/2026-09-16/jobs/job351_now.sh) |  | — |
 | [`job352_unblock.sh`](../../debug_log/2026-09-16/jobs/job352_unblock.sh) | job156 이 'ros2 topic pub -1 /cmd_vel' 에서 무한 대기(옛 참가자와 매칭 불가) → 죽이고 데몬 재시작 | — |
-| [`job353_stop2.sh`](../../debug_log/2026-09-16/jobs/job353_stop2.sh) | 전체 정지(타임아웃 있는 판): 옛 참가자 매칭 대기(ros2 topic pub -1) 를 쓰지 않는다. 로버는 정지 상태(펌웨어 watchdog 500 ms). | 09-16 2 |
+| [`job353_stop2.sh`](../../debug_log/2026-09-16/jobs/job353_stop2.sh) | 전체 정지(타임아웃 있는 판): 옛 참가자 매칭 대기(ros2 topic pub -1) 를 쓰지 않는다. 로버는 정지 상태(펌웨어 watchdog 500 ms). | 09-16 2 · 09-23 6 |
 | [`job354_critics.py`](../../debug_log/2026-09-16/jobs/job354_critics.py) | MPPI 크리틱 비용 재구성 — "상자 회피" 와 "경로 추종" 이 입구에서 어떻게 충돌하는가 (2026-09-16, mp4 bag). | 09-16 1.14 |
 | [`job355_mppi_sim.py`](../../debug_log/2026-09-16/jobs/job355_mppi_sim.py) | MPPI 오프라인 시뮬레이터 — bag 의 정지 장면(로컬 코스트맵·변환 경로·자세)에서 Humble MPPI 의 배치·크리틱·softmax 갱신을 | 09-16 1.14 · 09-17 12.3 |
 | [`job356_variants.sh`](../../debug_log/2026-09-16/jobs/job356_variants.sh) | job355 변형 일괄 실행 (bag_mp4 t=17 정체 시작 장면) | — |
@@ -613,24 +613,24 @@
 | [`job358_variants3.sh`](../../debug_log/2026-09-16/jobs/job358_variants3.sh) |  | — |
 | [`job359_agentchk.sh`](../../debug_log/2026-09-16/jobs/job359_agentchk.sh) | 에이전트 컨테이너가 루프백 프로파일을 받았는지 + 세션/토픽 가시성 (루프백 CLI vs 전체 인터페이스 CLI) | — |
 | [`job360_wl_test.sh`](../../debug_log/2026-09-16/jobs/job360_wl_test.sh) | 화이트리스트별 /wheel_odom 가시성 (에이전트가 어떤 주소를 광고하는지 간접 확인) | — |
-| [`job361_fix.sh`](../../debug_log/2026-09-16/jobs/job361_fix.sh) |  | — |
-| [`job362_slamdiag.sh`](../../debug_log/2026-09-16/jobs/job362_slamdiag.sh) |  | — |
-| [`job363_rsp.sh`](../../debug_log/2026-09-16/jobs/job363_rsp.sh) |  | — |
-| [`job364_mp5state.sh`](../../debug_log/2026-09-16/jobs/job364_mp5state.sh) |  | — |
+| [`job361_fix.sh`](../../debug_log/2026-09-16/jobs/job361_fix.sh) | (단계) robot_state_publisher 고아 정리 · TF/SLAM · Wi-Fi 최근 deauth | — |
+| [`job362_slamdiag.sh`](../../debug_log/2026-09-16/jobs/job362_slamdiag.sh) | (단계) slam.log 이유(전체) · TF 체인 · /scan | — |
+| [`job363_rsp.sh`](../../debug_log/2026-09-16/jobs/job363_rsp.sh) | (단계) BT XML 설치 · robot_state_publisher 재기동(되돌린 프로파일) | — |
+| [`job364_mp5state.sh`](../../debug_log/2026-09-16/jobs/job364_mp5state.sh) | (단계) 로버 상태 · nav2.log: goal 이후 이벤트 · drive 로그 후반 | — |
 | [`job365_mp5ana.sh`](../../debug_log/2026-09-16/jobs/job365_mp5ana.sh) |  | — |
 | [`job366_mp5sim.sh`](../../debug_log/2026-09-16/jobs/job366_mp5sim.sh) |  | — |
 | [`run_alt.sh`](../../debug_log/2026-09-16/jobs/run_alt.sh) | 대체 호스트(172.30.1.8)로 스크립트 실행 + bag/csv 회수 | — |
-| [`run_alt2.sh`](../../debug_log/2026-09-16/jobs/run_alt2.sh) |  | — |
-| [`run_alt3.sh`](../../debug_log/2026-09-16/jobs/run_alt3.sh) |  | — |
+| [`run_alt2.sh`](../../debug_log/2026-09-16/jobs/run_alt2.sh) | (단계) job327 mp4 | — |
+| [`run_alt3.sh`](../../debug_log/2026-09-16/jobs/run_alt3.sh) | (단계) syslog Sep 16 15:5x wifi · job345 | — |
 | [`run_dds_deploy.sh`](../../debug_log/2026-09-16/jobs/run_dds_deploy.sh) | fastdds_udp_only.xml + base.launch.py 배포(src+install) → 전체 정지(job156) → 깨끗한 기동(job240, base 부터) | — |
 | [`run_drive_nohup.sh`](../../debug_log/2026-09-16/jobs/run_drive_nohup.sh) | 주행 러너 v2 (09-15 교훈): 원격에서 nohup 으로 게이트+주행을 띄우고 로그 파일을 폴링한다 — ssh 가 끊겨도 주행은 기록되고, 재접속 후 이어 읽는다. | 09-18 13.3 · 09-18 17.3 · 09-21 10.1 · … +2 |
-| [`run_fix3.sh`](../../debug_log/2026-09-16/jobs/run_fix3.sh) |  | — |
-| [`run_gate.sh`](../../debug_log/2026-09-16/jobs/run_gate.sh) | 게이트만 (재기동·주행 없음): 상자 감사 + 통로 띠 + 창(3 표본 중앙값) | 09-18 13.3 |
+| [`run_fix3.sh`](../../debug_log/2026-09-16/jobs/run_fix3.sh) | (단계) job240 (에이전트 유지) · readback | — |
+| [`run_gate.sh`](../../debug_log/2026-09-16/jobs/run_gate.sh) | 게이트만 (재기동·주행 없음): 상자 감사 + 통로 띠 + 창(3 표본 중앙값) | 09-16 1.12 · 09-18 13.3 |
 | [`run_j312.sh`](../../debug_log/2026-09-16/jobs/run_j312.sh) |  | — |
 | [`run_j327.sh`](../../debug_log/2026-09-16/jobs/run_j327.sh) |  | — |
 | [`run_j327b.sh`](../../debug_log/2026-09-16/jobs/run_j327b.sh) |  | — |
 | [`run_j329.sh`](../../debug_log/2026-09-16/jobs/run_j329.sh) |  | — |
-| [`run_j333.sh`](../../debug_log/2026-09-16/jobs/run_j333.sh) |  | — |
+| [`run_j333.sh`](../../debug_log/2026-09-16/jobs/run_j333.sh) | (단계) STVL voxel_min_points 지원 여부 · job333 (필터 출력, odom 월드 복셀) | — |
 | [`run_j333b.sh`](../../debug_log/2026-09-16/jobs/run_j333b.sh) | job333 을 raw(백그라운드)·filtered(전경) 두 토픽으로 동시에 DUR 초 실행, 사건(y ≥ EVENT_Y) 기록 | — |
 | [`run_j338.sh`](../../debug_log/2026-09-16/jobs/run_j338.sh) |  | — |
 | [`run_j338b.sh`](../../debug_log/2026-09-16/jobs/run_j338b.sh) | job338 재실행: mp2 + (있으면) bk1 업로드 후 분석 | — |
@@ -642,10 +642,10 @@
 | [`run_prep.sh`](../../debug_log/2026-09-16/jobs/run_prep.sh) | 주행 준비만(주행 없음): 재기동(job240, 에이전트 유지) → 릴레이 고아 정리 → 파라미터 readback → 상자 감사 → 게이트 수치 | — |
 | [`run_prep_alt.sh`](../../debug_log/2026-09-16/jobs/run_prep_alt.sh) | 주행 준비만(주행 없음): 재기동(job240, 에이전트 유지) → 릴레이 고아 정리 → 파라미터 readback → 상자 감사 → 게이트 수치 | — |
 | [`run_relay_deploy.sh`](../../debug_log/2026-09-16/jobs/run_relay_deploy.sh) | depth_relay.py + camera.launch.py 를 src·install 에 배포 (반영은 다음 sensors 재기동) | — |
-| [`run_restart2.sh`](../../debug_log/2026-09-16/jobs/run_restart2.sh) |  | — |
+| [`run_restart2.sh`](../../debug_log/2026-09-16/jobs/run_restart2.sh) | (단계) 정지 · 기동 (base → 보드 리셋 게이트) | — |
 | [`run_snap.sh`](../../debug_log/2026-09-16/jobs/run_snap.sh) |  | — |
-| [`run_xml_check.sh`](../../debug_log/2026-09-16/jobs/run_xml_check.sh) |  | — |
-| [`run_xml_revert.sh`](../../debug_log/2026-09-16/jobs/run_xml_revert.sh) |  | — |
+| [`run_xml_check.sh`](../../debug_log/2026-09-16/jobs/run_xml_check.sh) | (단계) 프로파일 CLI 에서 /wheel_odom 보임 → 기동 진행 · 여전히 안 보임 | — |
+| [`run_xml_revert.sh`](../../debug_log/2026-09-16/jobs/run_xml_revert.sh) | (단계) 화이트리스트 시험(되돌리기 전) | — |
 
 ## 2026-09-17 (129)
 
@@ -656,28 +656,28 @@
 | [`edits_0917c.py`](../../debug_log/2026-09-17/jobs/edits_0917c.py) |  | — |
 | [`edits_0917d.py`](../../debug_log/2026-09-17/jobs/edits_0917d.py) |  | — |
 | [`edits_sim_db.py`](../../debug_log/2026-09-17/jobs/edits_sim_db.py) |  | — |
-| [`fw_build.sh`](../../debug_log/2026-09-17/jobs/fw_build.sh) |  | — |
-| [`fw_thresh_edit.py`](../../debug_log/2026-09-17/jobs/fw_thresh_edit.py) |  | — |
-| [`fw_verify.sh`](../../debug_log/2026-09-17/jobs/fw_verify.sh) |  | — |
+| [`fw_build.sh`](../../debug_log/2026-09-17/jobs/fw_build.sh) | (단계) 불변식 검사가 실제로 걸리는지 (MIN 을 4 mm/s 로 바꾼 사본 전처리) · 정상 헤더 전처리 · 빌드 | — |
+| [`fw_thresh_edit.py`](../../debug_log/2026-09-17/jobs/fw_thresh_edit.py) | ---- 1) rover_platform.h ---- | — |
+| [`fw_verify.sh`](../../debug_log/2026-09-17/jobs/fw_verify.sh) | 0.005f = 0x3ba3d70a, 0.010f = 0x3c23d70a, 0.008f = 0x3c23d70a? (0.008f = 0x3c03126f) | — |
 | [`job125_avoid3.py`](../../debug_log/2026-09-17/jobs/job125_avoid3.py) | 회피 주행 계측판 (2026-09-09) — job92 의 여유 측정이 틀렸던 것을 고친다. | 09-09 순서를 하나 앞에 둬야 하는 이유 — 미해결 모순 · 09-10 원인 — 클러스터링 없는 median (job125_avoid3.py d · 09-11 지표 오염 — 관찰이 맞았다 · … +5 |
-| [`job231_drive.sh`](../../debug_log/2026-09-17/jobs/job231_drive.sh) | 검증 주행 — BT 수정(ClearCostmapExceptRegion) + 감쇠 복원(로컬 30초 선형) 상태. | 09-18 17.3 · 09-21 2 · 09-21 6 · … +1 |
+| [`job231_drive.sh`](../../debug_log/2026-09-17/jobs/job231_drive.sh) | 검증 주행 — BT 수정(ClearCostmapExceptRegion) + 감쇠 복원(로컬 30초 선형) 상태. | 09-18 17.3 · 09-21 10.1 · 09-21 2 · … +1 |
 | [`job248_audit.py`](../../debug_log/2026-09-17/jobs/job248_audit.py) | 구성 전면 점검 — 물리 공간 vs 코스트맵 vs 컨트롤러 판정 기준 (2026-09-11). | — |
 | [`job254_s4run.sh`](../../debug_log/2026-09-17/jobs/job254_s4run.sh) | S4 1회차 절차: 게이트(중복·보드·통과폭) → 주행 D=1.8 (bag+로그분석) | 09-11 배운 것 · 09-11 절차 (확정) · 09-14 2 · … +3 |
 | [`job355_mppi_sim.py`](../../debug_log/2026-09-17/jobs/job355_mppi_sim.py) | MPPI 오프라인 시뮬레이터 — bag 의 정지 장면(로컬 코스트맵·변환 경로·자세)에서 Humble MPPI 의 배치·크리틱·softmax 갱신을 | 09-16 1.14 · 09-17 12.3 |
 | [`job367_boot.sh`](../../debug_log/2026-09-17/jobs/job367_boot.sh) |  | — |
-| [`job368_clusters.sh`](../../debug_log/2026-09-17/jobs/job368_clusters.sh) |  | — |
+| [`job368_clusters.sh`](../../debug_log/2026-09-17/jobs/job368_clusters.sh) | (단계) BOX_HINT $hint · TF camera | — |
 | [`job369_boxrange.py`](../../debug_log/2026-09-17/jobs/job369_boxrange.py) | 상자 거리 교차검증 (2026-09-17): 깊이 클러스터 0.96 m vs 컬러 영상 추정 1.38 m 불일치. 로버는 움직이지 않는다. | 09-17 13.1 |
 | [`job370_scanmatch.py`](../../debug_log/2026-09-17/jobs/job370_scanmatch.py) | 오늘 출발 자세 vs 어제 mp5 출발 자세 — 라이다 스캔 정합(ICP)으로 로버 변위를 구해, 어제 상자 위치(깊이 1.174/−0.013)가 | — |
 | [`job371_costbox.py`](../../debug_log/2026-09-17/jobs/job371_costbox.py) | 코스트맵 상자 위치 비교(감사 스크립트 우회): 오늘 로컬 코스트맵 vs 어제 mp5 bag 출발 시 로컬 코스트맵. | — |
 | [`job372_cells.py`](../../debug_log/2026-09-17/jobs/job372_cells.py) | 로컬·전역 코스트맵 상자 영역(x 0.5~1.8, \|y\|<0.4) LETHAL 셀 목록 + 3 회(10 s 간격) 반복 — 앞쪽 셀이 잡음인지 지속인지 | — |
-| [`job373_mp6post.sh`](../../debug_log/2026-09-17/jobs/job373_mp6post.sh) |  | — |
+| [`job373_mp6post.sh`](../../debug_log/2026-09-17/jobs/job373_mp6post.sh) | (단계) nav2.log goal 이후 · drive 로그 주요 | — |
 | [`job374_mp6ana.sh`](../../debug_log/2026-09-17/jobs/job374_mp6ana.sh) |  | — |
 | [`job375_goalsim.sh`](../../debug_log/2026-09-17/jobs/job375_goalsim.sh) |  | — |
 | [`job376_goalview.sh`](../../debug_log/2026-09-17/jobs/job376_goalview.sh) |  | — |
 | [`job377_goalclear.py`](../../debug_log/2026-09-17/jobs/job377_goalclear.py) | 목표 여유 게이트 (2026-09-17, mp6 교훈): 목표 자리에 로버 풋프린트를 놓았을 때 전역 코스트맵 LETHAL 셀까지 최소거리. | 09-17 3 |
-| [`job378_goalcands.sh`](../../debug_log/2026-09-17/jobs/job378_goalcands.sh) |  | — |
+| [`job378_goalcands.sh`](../../debug_log/2026-09-17/jobs/job378_goalcands.sh) | (단계) BT 로드 확인 · 목표 후보 풋프린트 여유 (≥0.20) | — |
 | [`job379_navevents.sh`](../../debug_log/2026-09-17/jobs/job379_navevents.sh) | 마지막 "Begin navigating" 이후 nav2.log 이벤트(경로 전달·반복 제외) + 드라이브 로그 표 + bag 압축 | 09-18 12.2 |
-| [`job380_health.sh`](../../debug_log/2026-09-17/jobs/job380_health.sh) |  | — |
+| [`job380_health.sh`](../../debug_log/2026-09-17/jobs/job380_health.sh) | (단계) 프로세스 · 토픽 hz · TF 지연 | — |
 | [`job381_slam.sh`](../../debug_log/2026-09-17/jobs/job381_slam.sh) |  | — |
 | [`job382_slamgraph.sh`](../../debug_log/2026-09-17/jobs/job382_slamgraph.sh) |  | — |
 | [`job383_slamlast.sh`](../../debug_log/2026-09-17/jobs/job383_slamlast.sh) |  | — |
@@ -686,7 +686,7 @@
 | [`job386_slamalive.py`](../../debug_log/2026-09-17/jobs/job386_slamalive.py) | SLAM 생존 게이트 (2026-09-17 mp7): slam_toolbox 프로세스가 살아 있어도 그래프에서 사라지거나 map->odom 이 끊길 수 있다. | 09-17 5 · 10-21 §9 · 10-27 §24 |
 | [`job387_slambt.sh`](../../debug_log/2026-09-17/jobs/job387_slambt.sh) | 사용자 승인(09-17): 정지한 slam_toolbox 의 전 스레드 역추적 (읽기 전용 attach, 끝나면 detach) | — |
 | [`job388_pm25.sh`](../../debug_log/2026-09-17/jobs/job388_pm25.sh) | 사용자 승인(09-17): 전력 모드 15W(0) → 25W(1). 전후 확인. | — |
-| [`job389_pmconf.sh`](../../debug_log/2026-09-17/jobs/job389_pmconf.sh) |  | — |
+| [`job389_pmconf.sh`](../../debug_log/2026-09-17/jobs/job389_pmconf.sh) | (단계) nvpmodel.conf POWER_MODEL 블록 (CPU/GPU/EMC) · 현재 (10 s 뒤) | — |
 | [`job390_pmrevert.sh`](../../debug_log/2026-09-17/jobs/job390_pmrevert.sh) | 25W 가 CPU 상한을 1344 MHz 로 낮춤(15W 는 1497) → 사용자 승인 범위의 원복: 15W(0) | — |
 | [`job391_fastdds.sh`](../../debug_log/2026-09-17/jobs/job391_fastdds.sh) | 사용자 승인(09-17): ros-humble-fastrtps 2.6.11 → 2.6.12 (StatefulWriter 락 순서 역전 수정 #6463) | — |
 | [`job392_rsp_start.sh`](../../debug_log/2026-09-17/jobs/job392_rsp_start.sh) |  | — |
@@ -695,15 +695,15 @@
 | [`job395_status.py`](../../debug_log/2026-09-17/jobs/job395_status.py) | mp8: /rover/status 키-값 전체를 시간순으로(값이 바뀔 때만) + 같은 시각 cmd/wheel 속도 | — |
 | [`job396_goalsim8.sh`](../../debug_log/2026-09-17/jobs/job396_goalsim8.sh) | mp8 목표 앞 정지 재현·대안 시뮬레이션 (t=33 s: 상자 통과 직후, 목표까지 약 0.5 m) | — |
 | [`job397_lowspeed.py`](../../debug_log/2026-09-17/jobs/job397_lowspeed.py) | 저속 정지 출발 실측 (2026-09-17, 펌웨어 STOP 0.010→0.005 플래시 후) — 로버가 움직인다: 사용자 출발 지시 필수. | 09-17 8.4 |
-| [`job398_cmdsrc.sh`](../../debug_log/2026-09-17/jobs/job398_cmdsrc.sh) |  | 09-17 8.6 |
-| [`job399_afterflash.sh`](../../debug_log/2026-09-17/jobs/job399_afterflash.sh) |  | 09-17 8.6 |
+| [`job398_cmdsrc.sh`](../../debug_log/2026-09-17/jobs/job398_cmdsrc.sh) | (단계) $(date +%T) /cmd_vel 발행자 · /cmd_vel 샘플 3 s · /cmd_vel_nav(컨트롤러 출력) 샘플 2 s | 09-17 8.6 |
+| [`job399_afterflash.sh`](../../debug_log/2026-09-17/jobs/job399_afterflash.sh) | (단계) 에이전트 세션 로그(최근) · stuck_monitor 로그(최근 20분) · sensors.log 자이로/EKF 경고(최근) | 09-17 8.6 |
 | [`job400_rotclear.py`](../../debug_log/2026-09-17/jobs/job400_rotclear.py) | 제자리 회전 스윕 여유 (2026-09-17 저속 실측 전): 로컬 코스트맵 LETHAL 셀과 base 중심 거리 최소값. | — |
-| [`job401_whydrop.sh`](../../debug_log/2026-09-17/jobs/job401_whydrop.sh) |  | — |
+| [`job401_whydrop.sh`](../../debug_log/2026-09-17/jobs/job401_whydrop.sh) | (단계) syslog 13:3x Wi-Fi · 스택 상태 | — |
 | [`job402_ddssplit.sh`](../../debug_log/2026-09-17/jobs/job402_ddssplit.sh) |  | 09-17 8.7 |
 | [`job403_critics_rb.sh`](../../debug_log/2026-09-17/jobs/job403_critics_rb.sh) |  | — |
 | [`job404_lowtgt.py`](../../debug_log/2026-09-17/jobs/job404_lowtgt.py) | mp9: 휠 목표가 1~9 mm/s(옛 펌웨어라면 버려졌을 구간)였던 순간 수와 그때 실제 휠 속도, /cmd_vel 최소 크기 | — |
 | [`job405_recheck.sh`](../../debug_log/2026-09-17/jobs/job405_recheck.sh) |  | 09-17 10 |
-| [`job406_bandcells.sh`](../../debug_log/2026-09-17/jobs/job406_bandcells.sh) |  | 09-17 11 |
+| [`job406_bandcells.sh`](../../debug_log/2026-09-17/jobs/job406_bandcells.sh) | (단계) 감사: 근거 없는 셀 좌표 · 원시 깊이 낮은 점(통로 띠 x 0.3~1.6, y -0.1~0.5, z 0.05~0.3) 지금 | 09-17 11 |
 | [`job407_wobble.py`](../../debug_log/2026-09-17/jobs/job407_wobble.py) | 조향 흔들림 분석 (2026-09-17, mp9·mp10·mp11 bag). 로버는 움직이지 않는다. | 09-17 12.1 |
 | [`job408_wobblesim.sh`](../../debug_log/2026-09-17/jobs/job408_wobblesim.sh) | 흔들림 A/B 시뮬레이션 (백그라운드): 통로 장면 bag_mp11 t=10, 입구 장면 bag_mp4 t=17, 목표 근처 장면 bag_mp8 t=33 | 09-17 12.3 |
 | [`job409_lag.py`](../../debug_log/2026-09-17/jobs/job409_lag.py) | 명령 ω → 실제 yaw rate 지연·이득 (mp9·mp10·mp11): /cmd_vel ω 와 /odometry/filtered ω(카메라 자이로 융합) 를 20 ms 격자로 맞춘 뒤 | 09-17 12.2 |
@@ -734,8 +734,8 @@
 | [`run_fastdds.sh`](../../debug_log/2026-09-17/jobs/run_fastdds.sh) |  | — |
 | [`run_gate2.sh`](../../debug_log/2026-09-17/jobs/run_gate2.sh) | 재부팅 뒤 /tmp 소실 대비: 감사 도구 전송 → 릴레이 고아 → readback → 게이트 (재기동 없음) | 09-28 3.3 |
 | [`run_getlogs.sh`](../../debug_log/2026-09-17/jobs/run_getlogs.sh) | Jetson /tmp 로그를 스크래치패드로 회수: 인자 PREFIX | — |
-| [`run_j369.sh`](../../debug_log/2026-09-17/jobs/run_j369.sh) |  | — |
-| [`run_j371.sh`](../../debug_log/2026-09-17/jobs/run_j371.sh) |  | — |
+| [`run_j369.sh`](../../debug_log/2026-09-17/jobs/run_j369.sh) | (단계) (1)(2)(3) 깊이·구름·스캔 · 어제 mp5 bag 업로드·정합 | — |
+| [`run_j371.sh`](../../debug_log/2026-09-17/jobs/run_j371.sh) | (단계) 코스트맵 비교 · 고친 감사 · 게이트 | — |
 | [`run_j394.sh`](../../debug_log/2026-09-17/jobs/run_j394.sh) |  | — |
 | [`run_j395.sh`](../../debug_log/2026-09-17/jobs/run_j395.sh) |  | — |
 | [`run_j396.sh`](../../debug_log/2026-09-17/jobs/run_j396.sh) |  | — |
@@ -766,18 +766,18 @@
 | [`run_j427b.sh`](../../debug_log/2026-09-17/jobs/run_j427b.sh) |  | — |
 | [`run_j427c.sh`](../../debug_log/2026-09-17/jobs/run_j427c.sh) |  | — |
 | [`run_j427d.sh`](../../debug_log/2026-09-17/jobs/run_j427d.sh) |  | — |
-| [`run_lowprep.sh`](../../debug_log/2026-09-17/jobs/run_lowprep.sh) |  | — |
-| [`run_lowspeed.sh`](../../debug_log/2026-09-17/jobs/run_lowspeed.sh) |  | — |
+| [`run_lowprep.sh`](../../debug_log/2026-09-17/jobs/run_lowprep.sh) | (단계) 1. 재기동 · 2. 릴레이 · 3. SLAM·보드·회전 여유 | — |
+| [`run_lowspeed.sh`](../../debug_log/2026-09-17/jobs/run_lowspeed.sh) | (단계) 끝 $(date +%T) · 150 s 초과 — 로그 | — |
 | [`run_mp6ana.sh`](../../debug_log/2026-09-17/jobs/run_mp6ana.sh) |  | — |
 | [`run_mp6post.sh`](../../debug_log/2026-09-17/jobs/run_mp6post.sh) |  | — |
-| [`run_mp7prep.sh`](../../debug_log/2026-09-17/jobs/run_mp7prep.sh) |  | — |
-| [`run_mp8prep.sh`](../../debug_log/2026-09-17/jobs/run_mp8prep.sh) |  | — |
-| [`run_mp9prep.sh`](../../debug_log/2026-09-17/jobs/run_mp9prep.sh) |  | 09-22 0 · 09-22 2 · 09-22 4 · … +3 |
+| [`run_mp7prep.sh`](../../debug_log/2026-09-17/jobs/run_mp7prep.sh) | (단계) 1. 재기동 · 2. 릴레이·readback·게이트 · 3. BT·목표 후보 | — |
+| [`run_mp8prep.sh`](../../debug_log/2026-09-17/jobs/run_mp8prep.sh) | (단계) 1. 재기동 · 2. 릴레이·readback·상자 게이트 · 3. BT·목표 후보 | — |
+| [`run_mp9prep.sh`](../../debug_log/2026-09-17/jobs/run_mp9prep.sh) | (단계) 1. 재기동 ($H) · 2. 릴레이·readback·상자 게이트 · 3. 목표 근처 크리틱·SLAM·목표 여유 | 09-22 0 · 09-22 2 · 09-22 4 · … +3 |
 | [`run_pm25.sh`](../../debug_log/2026-09-17/jobs/run_pm25.sh) |  | — |
 | [`run_pmrevert.sh`](../../debug_log/2026-09-17/jobs/run_pmrevert.sh) |  | — |
 | [`run_post3.sh`](../../debug_log/2026-09-17/jobs/run_post3.sh) |  | 09-18 12.2 · 09-18 17.3 · 09-21 6 · … +2 |
 | [`run_slambt.sh`](../../debug_log/2026-09-17/jobs/run_slambt.sh) |  | — |
-| [`run_verify2612.sh`](../../debug_log/2026-09-17/jobs/run_verify2612.sh) |  | — |
+| [`run_verify2612.sh`](../../debug_log/2026-09-17/jobs/run_verify2612.sh) | (단계) rsp · job240 · churn | — |
 | [`run_wait423.sh`](../../debug_log/2026-09-17/jobs/run_wait423.sh) |  | — |
 | [`run_waitsim.sh`](../../debug_log/2026-09-17/jobs/run_waitsim.sh) | 원격 시뮬 로그에 끝 표시가 나올 때까지 대기(최대 N 초) 후 출력 | — |
 
@@ -786,7 +786,7 @@
 | 파일 | 설명 | 언급 |
 |---|---|---|
 | [`job125_avoid3.py`](../../debug_log/2026-09-18/jobs/job125_avoid3.py) | 회피 주행 계측판 (2026-09-09) — job92 의 여유 측정이 틀렸던 것을 고친다. | 09-09 순서를 하나 앞에 둬야 하는 이유 — 미해결 모순 · 09-10 원인 — 클러스터링 없는 median (job125_avoid3.py d · 09-11 지표 오염 — 관찰이 맞았다 · … +5 |
-| [`job231_drive.sh`](../../debug_log/2026-09-18/jobs/job231_drive.sh) | 검증 주행 — BT 수정(ClearCostmapExceptRegion) + 감쇠 복원(로컬 30초 선형) 상태. | 09-18 17.3 · 09-21 2 · 09-21 6 · … +1 |
+| [`job231_drive.sh`](../../debug_log/2026-09-18/jobs/job231_drive.sh) | 검증 주행 — BT 수정(ClearCostmapExceptRegion) + 감쇠 복원(로컬 30초 선형) 상태. | 09-18 17.3 · 09-21 10.1 · 09-21 2 · … +1 |
 | [`job254_s4run.sh`](../../debug_log/2026-09-18/jobs/job254_s4run.sh) | S4 1회차 절차: 게이트(중복·보드·통과폭) → 주행 D=1.8 (bag+로그분석) | 09-11 배운 것 · 09-11 절차 (확정) · 09-14 2 · … +3 |
 | [`job379_navevents.sh`](../../debug_log/2026-09-18/jobs/job379_navevents.sh) | 마지막 "Begin navigating" 이후 nav2.log 이벤트(경로 전달·반복 제외) + 드라이브 로그 표 + bag 압축 | 09-18 12.2 |
 | [`job428_wifi_dfs.sh`](../../debug_log/2026-09-18/jobs/job428_wifi_dfs.sh) | WEB_DEV_5G(ipTIME AX3000R, 5 GHz ch36·160 MHz = DFS 52~64 포함) 끊김이 DFS/채널 전환과 관련되는지 (2026-09-18). 읽기 전용. | 09-18 4 |
@@ -806,8 +806,8 @@
 | [`job430_disk.sh`](../../debug_log/2026-09-18/jobs/job430_disk.sh) | 로그·산출물 누적 조사 (2026-09-18, 읽기 전용 — 삭제 없음). sudo 는 크기 읽기에만. | 09-18 8 |
 | [`job430b_logs.sh`](../../debug_log/2026-09-18/jobs/job430b_logs.sh) | logrotate 설치·예약 여부, ~/.ros/log 구성 (읽기 전용) | 09-18 8 |
 | [`job430c_talkers.sh`](../../debug_log/2026-09-18/jobs/job430c_talkers.sh) | syslog 를 채우는 프로그램 (읽기 전용): 최근 7 일 날짜별 크기, 9/17 하루 프로그램별 줄 수·바이트 | 09-18 8 |
-| [`job431_odomdrift.py`](../../debug_log/2026-09-18/jobs/job431_odomdrift.py) | odom 이 옆 이동을 덜 세는 원인 (2026-09-18). 로버는 움직이지 않는다. 인자: BAG GOAL_EPOCH [T_END] ... (T_END: 목표 도착 s — 주면 그 뒤 정지 구간 보정을 뺀다; 09-18 §11 에서 추가) | 09-18 9.1 · 09-18 11.2 |
-| [`job431b_crab.py`](../../debug_log/2026-09-18/jobs/job431b_crab.py) | SLAM(map) 자세로 본 '진행 방향 − 몸체 방향'(게걸음 각) 통계 (2026-09-18). 인자: BAG GOAL_EPOCH [...] | 09-18 9.1 · 09-18 11.2 |
+| [`job431_odomdrift.py`](../../debug_log/2026-09-18/jobs/job431_odomdrift.py) | odom 이 옆 이동을 덜 세는 원인 (2026-09-18). 로버는 움직이지 않는다. 인자: BAG GOAL_EPOCH [T_END] ... (T_END: 목표 도착 s — 주면 그 뒤 정지 구간 보정을 뺀다; 09-18 §11 에서 추가) | 09-18 11.2 · 09-18 9.1 |
+| [`job431b_crab.py`](../../debug_log/2026-09-18/jobs/job431b_crab.py) | SLAM(map) 자세로 본 '진행 방향 − 몸체 방향'(게걸음 각) 통계 (2026-09-18). 인자: BAG GOAL_EPOCH [...] | 09-18 11.2 · 09-18 9.1 |
 | [`job431c_bigcorr.py`](../../debug_log/2026-09-18/jobs/job431c_bigcorr.py) | [job431c] 큰 옆 보정(\|δl\|>1 cm)의 시각·당시 운동 목록 + 시간대별 누적. 원판 job431: | — |
 | [`job431d_morows.py`](../../debug_log/2026-09-18/jobs/job431d_morows.py) | map->odom 원시 기록 점검(2026-09-18): 한 보정이 두 번 세어지는지. 인자: BAG GOAL_EPOCH T0 T1 | 09-18 11.2 |
 | [`job432_run.sh`](../../debug_log/2026-09-18/jobs/job432_run.sh) | 장착 yaw 측정 실행 (정지, 모터 경로 없음): 라이다 노드 단독 + 카메라(IMU·컬러 끔) → 측정 → 두 노드 종료 | 09-18 9.2 |
@@ -839,7 +839,7 @@
 | [`run_deploy_cc.sh`](../../debug_log/2026-09-18/jobs/run_deploy_cc.sh) | nav2_params.yaml 배포(src+install) — CostCritic 교체 (09-18 §17). nav2 재기동 없음(다음 run_mp9prep 이 재기동). 설치본과 diff 로 바뀐 줄만 확인, 기존본 백업. | 09-18 17.5 |
 | [`run_drive_gateonly.sh`](../../debug_log/2026-09-18/jobs/run_drive_gateonly.sh) | 주행 러너 v2 (09-15 교훈): 원격에서 nohup 으로 게이트+주행을 띄우고 로그 파일을 폴링한다 — ssh 가 끊겨도 주행은 기록되고, 재접속 후 이어 읽는다. | — |
 | [`run_drive_nohup.sh`](../../debug_log/2026-09-18/jobs/run_drive_nohup.sh) | 주행 러너 v2 (09-15 교훈): 원격에서 nohup 으로 게이트+주행을 띄우고 로그 파일을 폴링한다 — ssh 가 끊겨도 주행은 기록되고, 재접속 후 이어 읽는다. | 09-18 13.3 · 09-18 17.3 · 09-21 10.1 · … +2 |
-| [`run_gate.sh`](../../debug_log/2026-09-18/jobs/run_gate.sh) | 게이트만 (재기동·주행 없음): 상자 감사 + 통로 띠 + 창(3 표본 중앙값) | 09-18 13.3 |
+| [`run_gate.sh`](../../debug_log/2026-09-18/jobs/run_gate.sh) | 게이트만 (재기동·주행 없음): 상자 감사 + 통로 띠 + 창(3 표본 중앙값) | 09-16 1.12 · 09-18 13.3 |
 | [`run_j428b.sh`](../../debug_log/2026-09-18/jobs/run_j428b.sh) |  | — |
 | [`run_j428c.sh`](../../debug_log/2026-09-18/jobs/run_j428c.sh) |  | — |
 | [`run_j428d.sh`](../../debug_log/2026-09-18/jobs/run_j428d.sh) |  | — |
@@ -854,7 +854,7 @@
 | [`run_j434.sh`](../../debug_log/2026-09-18/jobs/run_j434.sh) |  | — |
 | [`run_j435.sh`](../../debug_log/2026-09-18/jobs/run_j435.sh) |  | 09-18 10 |
 | [`run_j435b.sh`](../../debug_log/2026-09-18/jobs/run_j435b.sh) |  | — |
-| [`run_j435c.sh`](../../debug_log/2026-09-18/jobs/run_j435c.sh) |  | — |
+| [`run_j435c.sh`](../../debug_log/2026-09-18/jobs/run_j435c.sh) |  | 09-18 13 |
 | [`run_j435d.sh`](../../debug_log/2026-09-18/jobs/run_j435d.sh) |  | — |
 | [`run_j435e.sh`](../../debug_log/2026-09-18/jobs/run_j435e.sh) |  | — |
 | [`run_j435f.sh`](../../debug_log/2026-09-18/jobs/run_j435f.sh) |  | — |
@@ -882,16 +882,16 @@
 | [`run_j452chk.sh`](../../debug_log/2026-09-18/jobs/run_j452chk.sh) |  | — |
 | [`run_j452get.sh`](../../debug_log/2026-09-18/jobs/run_j452get.sh) |  | — |
 | [`run_j453.sh`](../../debug_log/2026-09-18/jobs/run_j453.sh) |  | — |
-| [`run_post3.sh`](../../debug_log/2026-09-18/jobs/run_post3.sh) |  | 09-18 12.2 · 09-18 17.3 · 09-21 6 · … +2 |
+| [`run_post3.sh`](../../debug_log/2026-09-18/jobs/run_post3.sh) | 09-18: 주행 구간 nav2 로그 원본·top 기록도 회수(재부팅 시 /tmp 소실) | 09-18 12.2 · 09-18 17.3 · 09-21 6 · … +2 |
 | [`run_xfer_exist.sh`](../../debug_log/2026-09-18/jobs/run_xfer_exist.sh) |  | — |
-| [`wifi_mon.sh`](../../debug_log/2026-09-18/jobs/wifi_mon.sh) | Wi-Fi 계측 (2026-09-18 A안: WEB_DEV_5G 가 끊고 재인증을 거부하는 원인 — DFS(160 MHz) vs PMF/드라이버). | 09-18 7.2 · 09-23 5 |
+| [`wifi_mon.sh`](../../debug_log/2026-09-18/jobs/wifi_mon.sh) | Wi-Fi 계측 (2026-09-18 A안: WEB_DEV_5G 가 끊고 재인증을 거부하는 원인 — DFS(160 MHz) vs PMF/드라이버). | 09-18 7.2 · 09-18 7.3 · 09-23 0.1 · … +4 |
 
 ## 2026-09-21 (94)
 
 | 파일 | 설명 | 언급 |
 |---|---|---|
 | [`job125_avoid3.py`](../../debug_log/2026-09-21/jobs/job125_avoid3.py) | 회피 주행 계측판 (2026-09-09) — job92 의 여유 측정이 틀렸던 것을 고친다. | 09-09 순서를 하나 앞에 둬야 하는 이유 — 미해결 모순 · 09-10 원인 — 클러스터링 없는 median (job125_avoid3.py d · 09-11 지표 오염 — 관찰이 맞았다 · … +5 |
-| [`job231_drive.sh`](../../debug_log/2026-09-21/jobs/job231_drive.sh) | 검증 주행 — BT 수정(ClearCostmapExceptRegion) + 감쇠 복원(로컬 30초 선형) 상태. | 09-18 17.3 · 09-21 2 · 09-21 6 · … +1 |
+| [`job231_drive.sh`](../../debug_log/2026-09-21/jobs/job231_drive.sh) | 검증 주행 — BT 수정(ClearCostmapExceptRegion) + 감쇠 복원(로컬 30초 선형) 상태. | 09-18 17.3 · 09-21 10.1 · 09-21 2 · … +1 |
 | [`job457_cpustate.sh`](../../debug_log/2026-09-21/jobs/job457_cpustate.sh) |  | — |
 | [`job458_nearrange.py`](../../debug_log/2026-09-21/jobs/job458_nearrange.py) | S2 근거리 측정 (2026-09-21 §5). 인자: NAME D_FRONT DEC [SEC=10] [W=0.18] [H=0.14] [DEPTH=0.11] | 09-21 5 |
 | [`job459_setdec.sh`](../../debug_log/2026-09-21/jobs/job459_setdec.sh) | 디시메이션 런타임 변경 시험 (S2): realsense-ros 4.x 는 필터 파라미터가 동적이라 재기동 없이 바뀌는지 본다. 인자: DEC | 09-21 5 |
@@ -976,20 +976,20 @@
 | [`run_j488.sh`](../../debug_log/2026-09-21/jobs/run_j488.sh) | 인자: stvl\|nvblox BX BY | 09-22 2 |
 | [`run_j489.sh`](../../debug_log/2026-09-21/jobs/run_j489.sh) |  | — |
 | [`run_j490.sh`](../../debug_log/2026-09-21/jobs/run_j490.sh) | 시각화용 원자료: STVL 모드 코스트맵 JSON → nvblox 모드로 전환(+nvblox 기동) → 코스트맵·슬라이스 JSON → STVL 복귀·nvblox 정지 → JSON 회수 | 09-21 10.3 |
-| [`run_j492.sh`](../../debug_log/2026-09-21/jobs/run_j492.sh) | 읽기 전용: nvblox_nav2 층의 거리→비용 변환·격자 조회 코드와 슬라이스 origin 규약 확인 (DDS 참여 없음) | — |
+| [`run_j492.sh`](../../debug_log/2026-09-21/jobs/run_j492.sh) | 읽기 전용: nvblox_nav2 층의 거리→비용 변환·격자 조회 코드와 슬라이스 origin 규약 확인 (DDS 참여 없음) | 09-21 10.4 |
 | [`run_j492b.sh`](../../debug_log/2026-09-21/jobs/run_j492b.sh) | 읽기 전용: lookupInSlice 구현·슬라이스 origin 계산·절단 기본값 | — |
 | [`run_j492c.sh`](../../debug_log/2026-09-21/jobs/run_j492c.sh) | 읽기 전용: 슬라이스 origin 이 픽셀 모서리인지 중심인지 (esdf_slice_conversions.cu) | — |
 | [`run_j493.sh`](../../debug_log/2026-09-21/jobs/run_j493.sh) | §10.5: 층 결함(round→floor) 수정·재빌드 → 같은 배치에서 STVL(stvl2) / 수정 nvblox 층(nvfix) 코스트맵·슬라이스 JSON 재캡처 → STVL 복귀·nvblox 정지 → JSON·감사 출력 회수 | 09-21 10.5 |
 | [`run_j495.sh`](../../debug_log/2026-09-21/jobs/run_j495.sh) | 읽기 전용: 재빌드된 nvblox_nav2 .so 의 실제 경로·시각과 Nav2 가 로드한 라이브러리 확인 | — |
 | [`run_j496.sh`](../../debug_log/2026-09-21/jobs/run_j496.sh) | 마감 상태 확인·정리: 설치 .so 가 build 로의 심볼릭인지, 컨테이너에 nvblox 프로세스가 남았는지(남았으면 job473 stop 으로 정지) | — |
 | [`run_j497.sh`](../../debug_log/2026-09-21/jobs/run_j497.sh) |  | — |
-| [`run_post3.sh`](../../debug_log/2026-09-21/jobs/run_post3.sh) |  | 09-18 12.2 · 09-18 17.3 · 09-21 6 · … +2 |
+| [`run_post3.sh`](../../debug_log/2026-09-21/jobs/run_post3.sh) | 09-18: 주행 구간 nav2 로그 원본·top 기록도 회수(재부팅 시 /tmp 소실) | 09-18 12.2 · 09-18 17.3 · 09-21 6 · … +2 |
 
 ## 2026-09-22 (42)
 
 | 파일 | 설명 | 언급 |
 |---|---|---|
-| [`job240_clean.sh`](../../debug_log/2026-09-22/jobs/job240_clean.sh) | ── 깨끗한 기동 절차 (2026-09-11 제정) ─────────────────────────────────────── | 09-11 5.4 · 09-11 5.7 · 09-11 중복 프로세스 (사용자 지적 "중첩된 프로세스가 있어 충돌이 일어나지 않 · … +10 |
+| [`job240_clean.sh`](../../debug_log/2026-09-22/jobs/job240_clean.sh) | ── 깨끗한 기동 절차 (2026-09-11 제정) ─────────────────────────────────────── | 09-11 5.4 · 09-11 5.7 · 09-11 절차 (확정) · … +10 |
 | [`job254_s4run.sh`](../../debug_log/2026-09-22/jobs/job254_s4run.sh) | S4 1회차 절차: 게이트(중복·보드·통과폭) → 주행 D=1.8 (bag+로그분석) | 09-11 배운 것 · 09-11 절차 (확정) · 09-14 2 · … +3 |
 | [`job442_clearwait.sh`](../../debug_log/2026-09-22/jobs/job442_clearwait.sh) | 사람 흔적 셀 제거(09-18): 로컬·전역 코스트맵을 비우고 8 s 동안 현재 센서로 다시 채운다(상자는 카메라 앞이라 곧바로 재마킹) | 09-18 13.3 |
 | [`job453_runmeta.sh`](../../debug_log/2026-09-22/jobs/job453_runmeta.sh) | 주행 재현 메타 (2026-09-18 §17): "무엇으로 달렸는지" 를 bag 옆에 남긴다 — 실행 중 노드의 실제 파라미터(job451), 배포 파일 해시, 단계·메모, 기록 토픽. | 09-18 17.3 |
@@ -1056,14 +1056,14 @@
 | [`job547_cpuidle.sh`](../../debug_log/2026-09-23/jobs/job547_cpuidle.sh) |  | — |
 | [`job549_cond.sh`](../../debug_log/2026-09-23/jobs/job549_cond.sh) |  | 09-23 15 |
 | [`job550_f0run.py`](../../debug_log/2026-09-23/jobs/job550_f0run.py) | F0 코스 확장 러너 (2026-09-23): 상자 코스와 무관한 연속 목표 주행 + 왕복 복귀 오차 계측. | 09-23 16 · 09-28 §12 · 09-28 §16 · … +5 |
-| [`job551_f0drive.sh`](../../debug_log/2026-09-23/jobs/job551_f0drive.sh) | F0 주행 래퍼(Jetson, 2026-09-23): 일반 게이트(A 프로세스·B 보드·J nvblox·C SLAM·G2 출발 자세) → bag·tegrastats·top·RSS → job550 → 메타(job453). | 09-23 16 · 10-07 §2.2 · 10-12 §3.4 · … +8 |
+| [`job551_f0drive.sh`](../../debug_log/2026-09-23/jobs/job551_f0drive.sh) | F0 주행 래퍼(Jetson, 2026-09-23): 일반 게이트(A 프로세스·B 보드·J nvblox·C SLAM·G2 출발 자세) → bag·tegrastats·top·RSS → job550 → 메타(job453). | 09-23 16 · 10-07 §2.2 · 10-12 §3.4 · … +9 |
 | [`job552_goalyaw.py`](../../debug_log/2026-09-23/jobs/job552_goalyaw.py) | 목표 도착 뒤 최종 heading 확인 (09-23): bag 끝(목표 도달 시점)의 map yaw·EKF(odom) yaw 와 출발 yaw 의 차, 그리고 라이다 스캔 상관으로 잰 출발→도착 실제 회전. | 09-23 §17 |
 | [`job553_yawseries.py`](../../debug_log/2026-09-23/jobs/job553_yawseries.py) | 목표 도달 전후 yaw 시계열 (09-23): map yaw·EKF yaw·지령 ω 를 'Reached the goal' 전 6 s ~ 후 3 s, 0.5 s 간격으로. | 09-23 §17 |
 | [`job556_abortmap.py`](../../debug_log/2026-09-23/jobs/job556_abortmap.py) | F0-a 복귀 중단 분석 (09-23): 지정 시각들에서 로컬 코스트맵(odom) 치명 셀(OccupancyGrid 100 = LETHAL, 99 = 내접)과 차체 풋프린트(0.5×0.33) 최소 거리·위치, | 09-23 §18 |
 | [`job557_boxdrift.py`](../../debug_log/2026-09-23/jobs/job557_boxdrift.py) | F0-a 상자 이동 검증 (09-23): 3 s 간격으로 로컬(odom)·전역(map) 코스트맵의 상자 LETHAL(100) 셀 범위를 map 좌표로, 그리고 map→odom. | 09-23 §18.1 |
 | [`job558_cause.py`](../../debug_log/2026-09-23/jobs/job558_cause.py) | F0-a 중단 원인 분석 (09-23) — bag_f0a1 만으로. | 09-23 §19 |
 | [`job559_fpframes.py`](../../debug_log/2026-09-23/jobs/job559_fpframes.py) | F0-a 원인 2 보강 (09-23): 복귀 구간 로컬 코스트맵 **매 프레임**에서 그 순간 자세의 풋프린트(패딩 0.01) 최대 비용과 | 09-23 §19 |
-| [`run_f0.sh`](../../debug_log/2026-09-23/jobs/run_f0.sh) | F0 PC 러너: Jetson 에 파일 전송(재시도 3) → job551 을 setsid nohup 으로 기동 → 로그 폴링(끊겨도 주행은 계속) → 끝나면 산출물 회수 | 09-23 16 · 09-23 §19 · 10-01 §7.2 · … +11 |
+| [`run_f0.sh`](../../debug_log/2026-09-23/jobs/run_f0.sh) | F0 PC 러너: Jetson 에 파일 전송(재시도 3) → job551 을 setsid nohup 으로 기동 → 로그 폴링(끊겨도 주행은 계속) → 끝나면 산출물 회수 | 09-23 16 · 09-23 §19 · 10-01 §7.2 · … +13 |
 | [`run_j535.sh`](../../debug_log/2026-09-23/jobs/run_j535.sh) | PC: 네트워크 전환 실행 → 90 s 동안 두 IP 핑 → 붙은 쪽에서 상태·NM 로그 확인 | 09-23 5 |
 | [`run_j540.sh`](../../debug_log/2026-09-23/jobs/run_j540.sh) |  | — |
 | [`run_jx.sh`](../../debug_log/2026-09-23/jobs/run_jx.sh) | 범용 러너(09-22): 새 scratchpad 의 Jetson 측 파일 하나를 CRLF 제거 후 전송·실행. 인자: <job파일> [인자…] | 09-23 5 |
@@ -1092,17 +1092,17 @@
 | [`job620_straightscan.py`](../../debug_log/2026-09-28/jobs/job620_straightscan.py) | [job620 = job567 의 직진판, 09-28 §23: 구간 = \|v\| 또는 \|ω\| 지령, 휠 적분 거리 추가] | 09-28 §23 |
 | [`job623_straightbag.py`](../../debug_log/2026-09-28/jobs/job623_straightbag.py) | 직진 전·후진 분석 (2026-09-28 §23, bag 만으로): | — |
 | [`job626_icrfit.py`](../../debug_log/2026-09-28/jobs/job626_icrfit.py) | B2 ICR 식별 (2026-09-28 §26, PC 에서 실행): 회전 시험 스캔 정합 출력에서 회전별 (중심 이동 d, 회전각 θ)를 읽어 | 09-28 §26 |
-| [`run_f0.sh`](../../debug_log/2026-09-28/jobs/run_f0.sh) | F0 PC 러너: Jetson 에 파일 전송(재시도 3) → job551 을 setsid nohup 으로 기동 → 로그 폴링(끊겨도 주행은 계속) → 끝나면 산출물 회수 | 09-23 16 · 09-23 §19 · 10-01 §7.2 · … +11 |
+| [`run_f0.sh`](../../debug_log/2026-09-28/jobs/run_f0.sh) | F0 PC 러너: Jetson 에 파일 전송(재시도 3) → job551 을 setsid nohup 으로 기동 → 로그 폴링(끊겨도 주행은 계속) → 끝나면 산출물 회수 | 09-23 16 · 09-23 §19 · 10-01 §7.2 · … +13 |
 | [`run_jn.sh`](../../debug_log/2026-09-28/jobs/run_jn.sh) | 범용 러너(09-28, 현재 스크래치패드 기준 — 옛 82ce61d4 폴더 소실 대체): $1 = 스크립트 파일명, 나머지 = 인자. 환경 JETSON_HOST, JX_TIMEOUT | 09-28 3.3 · 10-07 §1.0 · 10-08 §5 · … +3 |
 | [`run_spin.sh`](../../debug_log/2026-09-28/jobs/run_spin.sh) | 회전 시험 PC 러너(09-28): 전송(재시도 3) → job565 를 setsid nohup 으로 기동 → 로그 폴링 → 산출물 회수 | 09-29 §3 |
 | [`run_straight.sh`](../../debug_log/2026-09-28/jobs/run_straight.sh) | 회전 시험 PC 러너(09-28): 전송(재시도 3) → job565 를 setsid nohup 으로 기동 → 로그 폴링 → 산출물 회수 | 09-28 §23 |
-| [`slam_toolbox_rover_fork.patch`](../../debug_log/2026-09-28/jobs/slam_toolbox_rover_fork.patch) |  | 09-28 §9 |
+| [`slam_toolbox_rover_fork.patch`](../../debug_log/2026-09-28/jobs/slam_toolbox_rover_fork.patch) | check moved enough, within 10% for correction error | 09-28 §9 |
 
 ## 2026-09-29 (49)
 
 | 파일 | 설명 | 언급 |
 |---|---|---|
-| [`job240_clean.sh`](../../debug_log/2026-09-29/jobs/job240_clean.sh) | ── 깨끗한 기동 절차 (2026-09-11 제정) ─────────────────────────────────────── | 09-11 5.4 · 09-11 5.7 · 09-11 중복 프로세스 (사용자 지적 "중첩된 프로세스가 있어 충돌이 일어나지 않 · … +10 |
+| [`job240_clean.sh`](../../debug_log/2026-09-29/jobs/job240_clean.sh) | ── 깨끗한 기동 절차 (2026-09-11 제정) ─────────────────────────────────────── | 09-11 5.4 · 09-11 5.7 · 09-11 절차 (확정) · … +10 |
 | [`job627_ekfreplay.py`](../../debug_log/2026-09-29/jobs/job627_ekfreplay.py) | B2·B3 오프라인 검증 재생기 (2026-09-28 §27): 회전 시험 bag 의 /wheel_odom·/imu/data·/tf_static 을 **도메인 42** 에서 sim time 으로 재생, | 09-28 §27 · 09-29 §1 |
 | [`job628_b2ab.sh`](../../debug_log/2026-09-29/jobs/job628_b2ab.sh) | (EKF 노드 이름은 ekf.yaml 키와 같게 ekf_filter_node 유지 — 도메인 42 라 라이브와 안 섞임) | 09-28 §27 · 09-29 §1 |
 | [`job630_b2ab_all.sh`](../../debug_log/2026-09-29/jobs/job630_b2ab_all.sh) | B2·B3 오프라인 A/B 일괄(Jetson, 09-28 §27): 네트워크가 끊겨도 계속 돌도록 setsid nohup 으로 띄워 /tmp/b2ab_all.txt 에 쓴다. | 09-28 §27 · 09-29 §1 |
@@ -1156,7 +1156,7 @@
 
 | 파일 | 설명 | 언급 |
 |---|---|---|
-| [`job240_clean.sh`](../../debug_log/2026-09-30/jobs/job240_clean.sh) | ── 깨끗한 기동 절차 (2026-09-11 제정) ─────────────────────────────────────── | 09-11 5.4 · 09-11 5.7 · 09-11 중복 프로세스 (사용자 지적 "중첩된 프로세스가 있어 충돌이 일어나지 않 · … +10 |
+| [`job240_clean.sh`](../../debug_log/2026-09-30/jobs/job240_clean.sh) | ── 깨끗한 기동 절차 (2026-09-11 제정) ─────────────────────────────────────── | 09-11 5.4 · 09-11 5.7 · 09-11 절차 (확정) · … +10 |
 | [`job680_slambias.py`](../../debug_log/2026-09-30/jobs/job680_slambias.py) | 09-30 §3 SLAM 앞뒤 치우침 시험: 출발 테이프에서 직진 DIST m(EKF 기준) 뒤 정지, SLAM 이동 vs 사용자 줄자. | 09-30 §3 · 09-30 §3.2 |
 | [`job681_fp_build.sh`](../../debug_log/2026-09-30/jobs/job681_fp_build.sh) | 09-30 §3: footprint 실측 반영 빌드 | — |
 | [`job682_slambias_run.sh`](../../debug_log/2026-09-30/jobs/job682_slambias_run.sh) | 09-30 §3: prep(새 footprint) → footprint 적용 확인 → 0.70 m 직진 SLAM 치우침 시험 | — |
@@ -1212,9 +1212,9 @@
 | [`f2_candidates.py`](../../debug_log/2026-10-01/jobs/f2_candidates.py) | 10-01 §8: F2 웨이포인트 후보 — office_v2 격자에서 각 후보의 벽까지 여유(가장 가까운 점유 셀 거리)와 미지 비율, 그림 | 10-01 §8 |
 | [`fit_scan.py`](../../debug_log/2026-10-01/jobs/fit_scan.py) | 10-01 §8.40: 기록된 로버 자세가 맞는지 — 라이다 스캔(그 자세로 map 에 놓은 것)을 저장 지도 벽에 맞추는 데 필요한 보정(dx, dy, dθ) | 10-01 §8.39 · 10-01 §8.41 |
 | [`fit_scan2.py`](../../debug_log/2026-10-01/jobs/fit_scan2.py) | 10-01 §8.40: 국소(±0.3 m, ±4°) 격자 탐색 — 책상 반복 구조 때문에 Powell 이 1.3~2.7 m 옆 칸으로 빠지는 것(fit_scan.py) 방지 | 10-01 §8.40 |
-| [`job240_clean.sh`](../../debug_log/2026-10-01/jobs/job240_clean.sh) | ── 깨끗한 기동 절차 (2026-09-11 제정) ─────────────────────────────────────── | 09-11 5.4 · 09-11 5.7 · 09-11 중복 프로세스 (사용자 지적 "중첩된 프로세스가 있어 충돌이 일어나지 않 · … +10 |
+| [`job240_clean.sh`](../../debug_log/2026-10-01/jobs/job240_clean.sh) | ── 깨끗한 기동 절차 (2026-09-11 제정) ─────────────────────────────────────── | 09-11 5.4 · 09-11 5.7 · 09-11 절차 (확정) · … +10 |
 | [`job550_f0run.py`](../../debug_log/2026-10-01/jobs/job550_f0run.py) | F0 코스 확장 러너 (2026-09-23): 상자 코스와 무관한 연속 목표 주행 + 왕복 복귀 오차 계측. | 09-23 16 · 09-28 §12 · 09-28 §16 · … +5 |
-| [`job551_f0drive.sh`](../../debug_log/2026-10-01/jobs/job551_f0drive.sh) | F0 주행 래퍼(Jetson, 2026-09-23): 일반 게이트(A 프로세스·B 보드·J nvblox·C SLAM·G2 출발 자세) → bag·tegrastats·top·RSS → job550 → 메타(job453). | 09-23 16 · 10-07 §2.2 · 10-12 §3.4 · … +8 |
+| [`job551_f0drive.sh`](../../debug_log/2026-10-01/jobs/job551_f0drive.sh) | F0 주행 래퍼(Jetson, 2026-09-23): 일반 게이트(A 프로세스·B 보드·J nvblox·C SLAM·G2 출발 자세) → bag·tegrastats·top·RSS → job550 → 메타(job453). | 09-23 16 · 10-07 §2.2 · 10-12 §3.4 · … +9 |
 | [`job697_restore_chk.py`](../../debug_log/2026-10-01/jobs/job697_restore_chk.py) | 09-30 §4 F1-2 복원 확인: 불러온 /map 크기·원점(저장본 office_v1 = 301×213, 원점 (−5.09, −6.96))과 | 10-01 §6 |
 | [`job719_cut.sh`](../../debug_log/2026-10-01/jobs/job719_cut.sh) | 09-30 §17: 점프 전(bag +699 s, 17:36:15)까지만 지도 되살리기 — 도메인 42 에서 office_v1 이어 그리기 slam(현 slam.yaml)을 sim time 으로 띄우고 | 09-30 §17 |
 | [`job719_cutreplay.py`](../../debug_log/2026-10-01/jobs/job719_cutreplay.py) | 09-30 §17: 점프 전까지만 지도 되살리기 — 매핑 bag 을 **도메인 42**·sim time 으로 CUT 초까지만 재생해 | 09-30 §17 |
@@ -1285,7 +1285,7 @@
 | [`render_jumphole.py`](../../debug_log/2026-10-01/jobs/render_jumphole.py) | 10-01 §8.42: 점프 지점 주변 지도 구멍(미지 칸)과 점프 전·후 추정 자세 | 10-01 §8.42 |
 | [`render_sensviz.py`](../../debug_log/2026-10-01/jobs/render_sensviz.py) | 10-01 §8.22: f2a8 D 구간 — 센서가 통로를 어떻게 '막힘'으로 만들었나(1 s 프레임 → mp4 + 핵심 장면 그림) | 10-01 §8.22 |
 | [`render_westcorr.py`](../../debug_log/2026-10-01/jobs/render_westcorr.py) | 10-01 §8.31: f2a10 목표 2(서쪽 통로 중간) — 왜 통로를 못 지났나. 같은 시각의 두 판: | 10-01 §8.31 |
-| [`run_f0.sh`](../../debug_log/2026-10-01/jobs/run_f0.sh) | F0 PC 러너: Jetson 에 파일 전송(재시도 3) → job551 을 setsid nohup 으로 기동 → 로그 폴링(끊겨도 주행은 계속) → 끝나면 산출물 회수 | 09-23 16 · 09-23 §19 · 10-01 §7.2 · … +11 |
+| [`run_f0.sh`](../../debug_log/2026-10-01/jobs/run_f0.sh) | F0 PC 러너: Jetson 에 파일 전송(재시도 3) → job551 을 setsid nohup 으로 기동 → 로그 폴링(끊겨도 주행은 계속) → 끝나면 산출물 회수 | 09-23 16 · 09-23 §19 · 10-01 §7.2 · … +13 |
 | [`run_x723.sh`](../../debug_log/2026-10-01/jobs/run_x723.sh) | 10-01 §2: 루프 클로저 끔(nolc) 변형으로 점프 전 재생 → 격자 생성 | — |
 | [`run_x724.sh`](../../debug_log/2026-10-01/jobs/run_x724.sh) | 10-01 §4: 남쪽 통로 구간(+590 s 이후) 스캔을 빼고(=+590 s 에서 자름) 루프 클로저 끔으로 재생 → 격자 | 10-01 §4 |
 | [`run_x730.sh`](../../debug_log/2026-10-01/jobs/run_x730.sh) |  | — |
@@ -1303,7 +1303,7 @@
 | [`clear_cand.py`](../../debug_log/2026-10-02/jobs/clear_cand.py) | 10-02 §5: 경로 계획용 격자에서 지울 후보(움직이는 물체) 찾기 — office_v3 점유 칸 중 이후 주행에서 "비어 있음" 증거가 쌓인 칸 | 10-02 §5 |
 | [`cmp_maps.py`](../../debug_log/2026-10-02/jobs/cmp_maps.py) | 10-02 §1: 후보 지도 판정 H-1(구멍)·H-3(옛 지도 보존)·H-4(남쪽 벽) — 기준 office_v2(·v1) | 10-02 §1.1 |
 | [`get803.sh`](../../debug_log/2026-10-02/jobs/get803.sh) |  | — |
-| [`job551_f0drive.sh`](../../debug_log/2026-10-02/jobs/job551_f0drive.sh) | F0 주행 래퍼(Jetson, 2026-09-23): 일반 게이트(A 프로세스·B 보드·J nvblox·C SLAM·G2 출발 자세) → bag·tegrastats·top·RSS → job550 → 메타(job453). | 09-23 16 · 10-07 §2.2 · 10-12 §3.4 · … +8 |
+| [`job551_f0drive.sh`](../../debug_log/2026-10-02/jobs/job551_f0drive.sh) | F0 주행 래퍼(Jetson, 2026-09-23): 일반 게이트(A 프로세스·B 보드·J nvblox·C SLAM·G2 출발 자세) → bag·tegrastats·top·RSS → job550 → 메타(job453). | 09-23 16 · 10-07 §2.2 · 10-12 §3.4 · … +9 |
 | [`job726_prep_map.sh`](../../debug_log/2026-10-02/jobs/job726_prep_map.sh) | 10-01 §5·§7: 지도 불러오기 prep — 기본 office_v3(10-02 §4, 이전 office_v2)(출발 테이프 = 0,0,0). 인자/환경: | 10-01 §5 · 10-01 §7 · 10-02 §4 · … +1 |
 | [`job731_f2_prep.sh`](../../debug_log/2026-10-02/jobs/job731_f2_prep.sh) | 10-01 §8.1 F2 첫 주행 prep: office_v3(10-02 §4, MAP= 로 바꿈) + slam_toolbox 위치 추정 모드(LOC=slamloc), 전체 스택 → 시작 자세 확인(L-d) | 10-01 §8.1 · 10-02 §4 |
 | [`job760_nav2_restart.sh`](../../debug_log/2026-10-02/jobs/job760_nav2_restart.sh) | 10-01 §8.18: Nav2 만 재시작(새 BT 적용) — 센서·EKF·위치 추정(slam_toolbox)·에이전트는 그대로(로버가 손으로 옮겨지지 않아 위치 추정 유효). | 10-01 §8.18 · 10-02 §4 |
@@ -1354,7 +1354,7 @@
 | [`rf2o_fix.py`](../../debug_log/2026-10-02/jobs/rf2o_fix.py) | 10-02 §13 R1b: rf2o 속도의 좌표 보정 검증 — v_base = R(라이다 yaw)·v_rf2o − ω × r_lidar, 자이로(EKF) yaw 로 적분 | 10-02 §13.2 |
 | [`rf2o_lever.py`](../../debug_log/2026-10-02/jobs/rf2o_lever.py) | 10-02 §18: rf2o 단독 자세의 출렁임이 실제 차체 움직임인지, 라이다 위치(중심 앞 0.152 m)의 원운동인지 확인 | 10-02 §18 |
 | [`rot_models.py`](../../debug_log/2026-10-02/jobs/rot_models.py) | 10-02 §8: 제자리 회전 구간에서 주행계 이동 모델 비교 — 기준 = SLAM(map) 이동 D (09-29 §3.1: 회전 중 SLAM 오차 1~2 cm) | 10-02 §8.2 |
-| [`run_f0.sh`](../../debug_log/2026-10-02/jobs/run_f0.sh) | F0 PC 러너: Jetson 에 파일 전송(재시도 3) → job551 을 setsid nohup 으로 기동 → 로그 폴링(끊겨도 주행은 계속) → 끝나면 산출물 회수 | 09-23 16 · 09-23 §19 · 10-01 §7.2 · … +11 |
+| [`run_f0.sh`](../../debug_log/2026-10-02/jobs/run_f0.sh) | F0 PC 러너: Jetson 에 파일 전송(재시도 3) → job551 을 setsid nohup 으로 기동 → 로그 폴링(끊겨도 주행은 계속) → 끝나면 산출물 회수 | 09-23 16 · 09-23 §19 · 10-01 §7.2 · … +13 |
 | [`run_f2b2.sh`](../../debug_log/2026-10-02/jobs/run_f2b2.sh) | 10-02 §6.2: 목표 문자열을 파일 안에 적어 wsl 인자 분리 문제를 피함(f2b1 실수). 인자: NAME GOALS_KEY(rest\|full) | 10-02 §6.3 · 10-02 §7.2 |
 | [`run_x805.sh`](../../debug_log/2026-10-02/jobs/run_x805.sh) |  | — |
 | [`run_x810.sh`](../../debug_log/2026-10-02/jobs/run_x810.sh) | 10-02 §6: 재부팅 뒤 보조 스크립트 재전송(실행 안 함) | 10-02 §6 |
@@ -1367,7 +1367,7 @@
 
 | 파일 | 설명 | 언급 |
 |---|---|---|
-| [`job240_clean.sh`](../../debug_log/2026-10-06/jobs/job240_clean.sh) | ── 깨끗한 기동 절차 (2026-09-11 제정) ─────────────────────────────────────── | 09-11 5.4 · 09-11 5.7 · 09-11 중복 프로세스 (사용자 지적 "중첩된 프로세스가 있어 충돌이 일어나지 않 · … +10 |
+| [`job240_clean.sh`](../../debug_log/2026-10-06/jobs/job240_clean.sh) | ── 깨끗한 기동 절차 (2026-09-11 제정) ─────────────────────────────────────── | 09-11 5.4 · 09-11 5.7 · 09-11 절차 (확정) · … +10 |
 | [`job726_prep_map.sh`](../../debug_log/2026-10-06/jobs/job726_prep_map.sh) | 10-01 §5·§7: 지도 불러오기 prep — 기본 office_v3(10-02 §4, 이전 office_v2)(출발 테이프 = 0,0,0). 인자/환경: | 10-01 §5 · 10-01 §7 · 10-02 §4 · … +1 |
 | [`job850_deploy.sh`](../../debug_log/2026-10-06/jobs/job850_deploy.sh) | 10-06 R3: rover_bringup(rf2o_gate.py·rf2o.yaml·ekf.launch.py·CMakeLists) 배포·빌드, 재생용 bag 풀기 | — |
 | [`job851_r3chk.sh`](../../debug_log/2026-10-06/jobs/job851_r3chk.sh) | 10-06 R3 정지 기동 확인: rf2o·게이트·그림자 EKF 동작, 발행률, 게이트 판정, CPU(10 s) | — |
@@ -1387,7 +1387,7 @@
 | [`occ_kill.sh`](../../debug_log/2026-10-06/jobs/occ_kill.sh) | 합성 가림 재생 정리 — PID 로만(이름 pkill 은 자기 자신·라이브 스택을 죽일 수 있음) | 10-06 §10.1 |
 | [`occ_rec.py`](../../debug_log/2026-10-06/jobs/occ_rec.py) | 10-06 §10: 합성 가림 재생 기록 — 시험 EKF B(/odometry/filtered), 진실 대용(/truth_odom), /cmd_vel. 인자: OUT SEC | 10-06 §10 |
 | [`occ_run.sh`](../../debug_log/2026-10-06/jobs/occ_run.sh) | 10-06 §10: 합성 가림 1 조건 — 인자 DOMAIN COVERAGE OUT [CENTER_DEG RHO] | 10-06 §10 |
-| [`occ_scan.py`](../../debug_log/2026-10-06/jobs/occ_scan.py) | 10-06 §10 T2 합성: bag 스캔(/scan_in)에 '바닥에 고정된 사람 몸'을 그려 /scan 으로 — 회전 중 가림이 rf2o·EKF 를 흔드는가. | 10-06 §10 · 10-06 §11 |
+| [`occ_scan.py`](../../debug_log/2026-10-06/jobs/occ_scan.py) | 10-06 §10 T2 합성: bag 스캔(/scan_in)에 '바닥에 고정된 사람 몸'을 그려 /scan 으로 — 회전 중 가림이 rf2o·EKF 를 흔드는가. | 10-06 §10 · 10-06 §11 · 10-06 §11.1 |
 | [`occm_eval.py`](../../debug_log/2026-10-06/jobs/occm_eval.py) | 10-06 §10: 합성 가림 결과 — 단계 정지 시점마다 오른쪽 앞끝 예측 대각 거리 − 줄자 | — |
 | [`r3_eval.py`](../../debug_log/2026-10-06/jobs/r3_eval.py) | 10-02 §14 R2 판정 계산 — EKF A/B(+ 라이브 EKF) 를 줄자·SLAM·구석 벽 일관성으로 비교 | 10-06 §2 |
 | [`r3_rec.py`](../../debug_log/2026-10-06/jobs/r3_rec.py) | 10-06 R3: 정식 ekf.launch(rf2o:=true shadow:=true) 재생 검증 기록기 — /odometry/filtered(B), /odometry/ekf_a(A). 인자: OUT SEC | 10-06 §2 |
@@ -1427,7 +1427,7 @@
 | [`get901.sh`](../../debug_log/2026-10-07/jobs/get901.sh) |  | — |
 | [`get915.sh`](../../debug_log/2026-10-07/jobs/get915.sh) | 10-07 §4: 재생 결과 회수(인자 = 파일 이름들) | — |
 | [`job550_f0run.py`](../../debug_log/2026-10-07/jobs/job550_f0run.py) | F0 코스 확장 러너 (2026-09-23): 상자 코스와 무관한 연속 목표 주행 + 왕복 복귀 오차 계측. | 09-23 16 · 09-28 §12 · 09-28 §16 · … +5 |
-| [`job551_f0drive.sh`](../../debug_log/2026-10-07/jobs/job551_f0drive.sh) | F0 주행 래퍼(Jetson, 2026-09-23): 일반 게이트(A 프로세스·B 보드·J nvblox·C SLAM·G2 출발 자세) → bag·tegrastats·top·RSS → job550 → 메타(job453). | 09-23 16 · 10-07 §2.2 · 10-12 §3.4 · … +8 |
+| [`job551_f0drive.sh`](../../debug_log/2026-10-07/jobs/job551_f0drive.sh) | F0 주행 래퍼(Jetson, 2026-09-23): 일반 게이트(A 프로세스·B 보드·J nvblox·C SLAM·G2 출발 자세) → bag·tegrastats·top·RSS → job550 → 메타(job453). | 09-23 16 · 10-07 §2.2 · 10-12 §3.4 · … +9 |
 | [`job726_prep_map.sh`](../../debug_log/2026-10-07/jobs/job726_prep_map.sh) | 10-01 §5·§7: 지도 불러오기 prep — 기본 office_v3(10-02 §4, 이전 office_v2)(출발 테이프 = 0,0,0). 인자/환경: | 10-01 §5 · 10-01 §7 · 10-02 §4 · … +1 |
 | [`job876_g4.sh`](../../debug_log/2026-10-07/jobs/job876_g4.sh) | 10-06 §12.1: G4(회전 중 병진 타당성) 켜고 5 조건, 도메인 81~85 — 1 분마다 진행 줄(current.log 에 보이게) | 10-06 §12 · 10-06 §13 · 10-07 §1 |
 | [`job900_chk.sh`](../../debug_log/2026-10-07/jobs/job900_chk.sh) | 10-07 시작 점검: 가동 시간, 스택 프로세스, 재생에 필요한 파일 | — |
@@ -1471,12 +1471,12 @@
 | [`render_f2c2_box2.py`](../../debug_log/2026-10-07/jobs/render_f2c2_box2.py) | 10-07 §2.5: 복귀 마지막 60 s — 로컬 코스트맵 치명 칸(라이다+nvblox, map 좌표로)을 라이다 점과 겹침 → 라이다에 없는 치명 칸 = 카메라만 본 낮은 물체(상자 후보) | 10-07 §2.6 |
 | [`render_f2c2_g6.py`](../../debug_log/2026-10-07/jobs/render_f2c2_g6.py) | 10-07 §2.5: f2c2 마지막 목표(출발 복귀) — 계획 경로(시각별)와 실제 궤적, 전역 코스트맵 위 상자. 사용자 관찰 "상자를 피하는 경로였는데 다시 상자 쪽으로 틀어 돌아옴" 확인 | — |
 | [`render_f2d2_box2.py`](../../debug_log/2026-10-07/jobs/render_f2d2_box2.py) | 10-07 §2.5: 복귀 마지막 60 s — 로컬 코스트맵 치명 칸(라이다+nvblox, map 좌표로)을 라이다 점과 겹침 → 라이다에 없는 치명 칸 = 카메라만 본 낮은 물체(상자 후보) | 10-07 §7.1 |
-| [`render_rviz.py`](../../debug_log/2026-10-07/jobs/render_rviz.py) | 10-07 §9.2 RViz 풍 bag 시각화(사용자 지정 스타일) — 720×720, 10 fps(실제 속도), 로버 진행 방향이 위(RViz 고정 프레임 base_link 처럼). | 10-07 §9.2 · 10-07 §10.2 · 10-07 §11 · … +1 |
+| [`render_rviz.py`](../../debug_log/2026-10-07/jobs/render_rviz.py) | 10-07 §9.2 RViz 풍 bag 시각화(사용자 지정 스타일) — 720×720, 10 fps(실제 속도), 로버 진행 방향이 위(RViz 고정 프레임 base_link 처럼). | 10-07 §10.2 · 10-07 §11 · 10-07 §9.2 · … +1 |
 | [`render_sc.py`](../../debug_log/2026-10-07/jobs/render_sc.py) | 10-07 §9 쇼케이스: bag 구간(job930_extract npz) → 위에서 본 데이터 영상(720×720, 10 fps = 실제 속도). | 10-07 §9 |
 | [`rp_eval.py`](../../debug_log/2026-10-07/jobs/rp_eval.py) | 10-07 §4 B: f2c2 재생 abs vs wheel — 게이트 csv 로 회전 표본(제자리·곡선)의 G4 σ 키움·버림 비율, 재생 EKF B 와 라이브 B 궤적 차 | 10-07 §4.1 |
 | [`rp_run.sh`](../../debug_log/2026-10-07/jobs/rp_run.sh) | 10-07 §4: 주행 bag 재생(가림 합성 없음) — 인자 DOMAIN BAG OUT. 환경 GV(gate_v) GVREF(gate_vref). 라이브 EKF B 는 /truth_odom 으로 기록 | 10-07 §4.1 |
-| [`run_f0.sh`](../../debug_log/2026-10-07/jobs/run_f0.sh) | F0 PC 러너: Jetson 에 파일 전송(재시도 3) → job551 을 setsid nohup 으로 기동 → 로그 폴링(끊겨도 주행은 계속) → 끝나면 산출물 회수 | 09-23 16 · 09-23 §19 · 10-01 §7.2 · … +11 |
-| [`run_f2c.sh`](../../debug_log/2026-10-07/jobs/run_f2c.sh) | 10-07 §2: rf2o + G4 켠 F2 순회(10-02 f2b 와 같은 10 목표). 목표 문자열은 래퍼 안에(10-02 §6.2 wsl 인자 분리 실수). 인자: NAME NOTE GIT_HEAD [rest5] | 10-07 §2.1 · 10-07 §2.2 · 10-07 §2.4 · … +31 |
+| [`run_f0.sh`](../../debug_log/2026-10-07/jobs/run_f0.sh) | F0 PC 러너: Jetson 에 파일 전송(재시도 3) → job551 을 setsid nohup 으로 기동 → 로그 폴링(끊겨도 주행은 계속) → 끝나면 산출물 회수 | 09-23 16 · 09-23 §19 · 10-01 §7.2 · … +13 |
+| [`run_f2c.sh`](../../debug_log/2026-10-07/jobs/run_f2c.sh) | 10-07 §2: rf2o + G4 켠 F2 순회(10-02 f2b 와 같은 10 목표). 목표 문자열은 래퍼 안에(10-02 §6.2 wsl 인자 분리 실수). 인자: NAME NOTE GIT_HEAD [rest5] | 10-07 §11 · 10-07 §2.1 · 10-07 §2.2 · … +33 |
 | [`run_jn.sh`](../../debug_log/2026-10-07/jobs/run_jn.sh) | 범용 러너(10-07 재작성 — 스크래치패드 사본 소실, 09-28 판 + JX_WHY 실시간 로그): $1 = 스크립트, 나머지 = 인자. 환경 JETSON_HOST, JX_TIMEOUT, JX_WHY | 09-28 3.3 · 10-07 §1.0 · 10-08 §5 · … +3 |
 | [`up901.sh`](../../debug_log/2026-10-07/jobs/up901.sh) | 10-07: 재부팅 뒤 G4 재생 준비 — bag_step1·합성 스크립트·게이트 소스 업로드, 빌드, bag 풀기 | 10-07 §1.0 |
 | [`up904.sh`](../../debug_log/2026-10-07/jobs/up904.sh) | 10-07 §2: 재부팅 뒤 보조 스크립트 재전송(실행 안 함) | 10-07 §2 · 10-07 §2.1 |
@@ -1506,12 +1506,12 @@
 | [`ratio_anal.py`](../../debug_log/2026-10-08/jobs/ratio_anal.py) | 10-08 §5 비율 시험 분석(PC): 회전마다 정지 스캔끼리 직접 정합(실제 이동) − 휠 추측항법 = 미끄러짐. rot2.py 와 같은 잣대. | 10-08 §5 |
 | [`ratio_pool.py`](../../debug_log/2026-10-08/jobs/ratio_pool.py) | 10-08 §5.6: 실행 1·2 회전을 합쳐 §5·§5.1·§5.5 판정(V·Q0·Q1·Q2·Q3) — ratio_anal.py 의 csv 를 읽음 | 10-08 §5.6 |
 | [`render_goals.py`](../../debug_log/2026-10-08/jobs/render_goals.py) | 10-08 §3: 이번 순회 목표 10 개(저장 지도 office_v3 위) — 순서·이름·판정 방식, 지난 순회(10-07 f2c1+f2c2) 실제 궤적, 상자 위치 | — |
-| [`render_rviz.py`](../../debug_log/2026-10-08/jobs/render_rviz.py) | 10-07 §9.2 RViz 풍 bag 시각화(사용자 지정 스타일) — 720×720, 10 fps(실제 속도), 로버 진행 방향이 위(RViz 고정 프레임 base_link 처럼). | 10-07 §9.2 · 10-07 §10.2 · 10-07 §11 · … +1 |
+| [`render_rviz.py`](../../debug_log/2026-10-08/jobs/render_rviz.py) | 10-07 §9.2 RViz 풍 bag 시각화(사용자 지정 스타일) — 720×720, 10 fps(실제 속도), 로버 진행 방향이 위(RViz 고정 프레임 base_link 처럼). | 10-07 §10.2 · 10-07 §11 · 10-07 §9.2 · … +1 |
 | [`render_whatif.py`](../../debug_log/2026-10-08/jobs/render_whatif.py) | 10-08 §2: 카메라만 본 장애물 묶음(전역 nvblox 였다면 계획기에 들어갔을 칸)을 저장 지도 위에 번호로 — 사용자가 실제 물체인지 확인 | 10-08 §2.1 |
-| [`rot2.py`](../../debug_log/2026-10-08/jobs/rot2.py) | 10-08 §4: 주행 중 '도는' 구간 전부(제자리·피벗·호) — 회전축 위치, 트랙 속도, 미끄러짐을 같은 잣대로 비교. | 10-08 §4 · 10-08 §5 · 10-08 §5.4 |
+| [`rot2.py`](../../debug_log/2026-10-08/jobs/rot2.py) | 10-08 §4: 주행 중 '도는' 구간 전부(제자리·피벗·호) — 회전축 위치, 트랙 속도, 미끄러짐을 같은 잣대로 비교. | 10-02 §11.1 · 10-02 §12 · 10-02 §12.1 · … +10 |
 | [`rot2_stats.py`](../../debug_log/2026-10-08/jobs/rot2_stats.py) | 10-08 §4: rot2.py 결과(≥45° 회전)를 회전 종류별로 묶음. 종류는 트랙 속도로 정함(회전축 추정과 독립): | 10-08 §4 |
 | [`rot_fig.py`](../../debug_log/2026-10-08/jobs/rot_fig.py) | 10-08 §4 그림: 회전축 위치(차체 좌표)와 90°당 미끄러짐, 회전 종류별 | — |
-| [`run_f2c.sh`](../../debug_log/2026-10-08/jobs/run_f2c.sh) | 10-07 §2: rf2o + G4 켠 F2 순회(10-02 f2b 와 같은 10 목표). 목표 문자열은 래퍼 안에(10-02 §6.2 wsl 인자 분리 실수). 인자: NAME NOTE GIT_HEAD [rest5] | 10-07 §2.1 · 10-07 §2.2 · 10-07 §2.4 · … +31 |
+| [`run_f2c.sh`](../../debug_log/2026-10-08/jobs/run_f2c.sh) | 10-07 §2: rf2o + G4 켠 F2 순회(10-02 f2b 와 같은 10 목표). 목표 문자열은 래퍼 안에(10-02 §6.2 wsl 인자 분리 실수). 인자: NAME NOTE GIT_HEAD [rest5] | 10-07 §11 · 10-07 §2.1 · 10-07 §2.2 · … +33 |
 | [`run_jn.sh`](../../debug_log/2026-10-08/jobs/run_jn.sh) | 범용 러너(10-07 재작성 — 스크래치패드 사본 소실, 09-28 판 + JX_WHY 실시간 로그): $1 = 스크립트, 나머지 = 인자. 환경 JETSON_HOST, JX_TIMEOUT, JX_WHY | 09-28 3.3 · 10-07 §1.0 · 10-08 §5 · … +3 |
 | [`run_ratio.sh`](../../debug_log/2026-10-08/jobs/run_ratio.sh) | 비율 시험 PC 러너(10-08 §5, 09-28 run_spin.sh 기반): 전송(재시도 3) → job941 을 setsid nohup 으로 기동 → 로그 폴링 → 산출물 회수 | 10-08 §5 |
 | [`slip_model.py`](../../debug_log/2026-10-08/jobs/slip_model.py) | 10-08 §5.11: 회전 중 '뒤로 밀림' 보정 모델 오프라인 적합(실행 1·2 40 회, 한 개 빼고 검증 LOO) | 10-08 §5.11 |
@@ -1527,7 +1527,7 @@
 | [`fig_f2f1.py`](../../debug_log/2026-10-12/jobs/fig_f2f1.py) | 10-12 §2 그림: f2f1 복귀 상자 구간 — 위 = 그 순간의 로컬 코스트맵(RViz 색)·차체·경로·MPPI 최적 궤적 4 장면, 아래 = 시간축(지령 속도, TF 끊김·사건, CPU) | 10-12 §2 |
 | [`gap_eval.py`](../../debug_log/2026-10-12/jobs/gap_eval.py) | 10-12 §2: 토픽·TF 끊김 찾기 — bag 기록 시각(수신) 간격과 메시지 stamp 간격. 인자: bag [최소 간격 s=0.5] | 10-12 §2 · 10-12 §3 |
 | [`get960.sh`](../../debug_log/2026-10-12/jobs/get960.sh) | 10-12 §3.3: Nav2·센서 로그 통째 회수(재부팅 전에) | — |
-| [`job551_f0drive.sh`](../../debug_log/2026-10-12/jobs/job551_f0drive.sh) | F0 주행 래퍼(Jetson, 2026-09-23): 일반 게이트(A 프로세스·B 보드·J nvblox·C SLAM·G2 출발 자세) → bag·tegrastats·top·RSS → job550 → 메타(job453). | 09-23 16 · 10-07 §2.2 · 10-12 §3.4 · … +8 |
+| [`job551_f0drive.sh`](../../debug_log/2026-10-12/jobs/job551_f0drive.sh) | F0 주행 래퍼(Jetson, 2026-09-23): 일반 게이트(A 프로세스·B 보드·J nvblox·C SLAM·G2 출발 자세) → bag·tegrastats·top·RSS → job550 → 메타(job453). | 09-23 16 · 10-07 §2.2 · 10-12 §3.4 · … +9 |
 | [`job947_state.sh`](../../debug_log/2026-10-12/jobs/job947_state.sh) |  | 10-12 §1 |
 | [`job951_chk.sh`](../../debug_log/2026-10-12/jobs/job951_chk.sh) | 10-12 §1: prep 뒤 확인(로버 안 움직임) — Nav2 수명 주기, 실행 중 PreferForward 가중, 원점, nvblox | 10-12 §1.1 |
 | [`job952_navlog.sh`](../../debug_log/2026-10-12/jobs/job952_navlog.sh) | 10-12 §2: f2f1 주행 중 Nav2·EKF·SLAM 로그의 경고·오류(10:32~10:36) — 로버 안 움직임 | — |
@@ -1555,7 +1555,7 @@
 | [`onset_ctx.py`](../../debug_log/2026-10-12/jobs/onset_ctx.py) | 10-12 §8: (1) 포화 시작 직전 20 s 의 주행 상태 (2) 포화 없는 구간에서 '도는 정도'와 프로세스 부하의 관계 | 10-12 §8.1 |
 | [`proc_cmp2.py`](../../debug_log/2026-10-12/jobs/proc_cmp2.py) | 10-12 §3.3: 프로세스별 CPU(전 프로세스 틱 기록) 구간 비교. 인자: 이름=proc.log@시작epoch@끝epoch ...  (코어 1 개 = 100) | 10-12 §3.3 · 10-12 §4 |
 | [`rev_eval.py`](../../debug_log/2026-10-12/jobs/rev_eval.py) | 10-12 §1.2: 러너 csv 로 목표별 후진·제자리 회전 집계. 후진 거리 = 지령 v < −0.005 인 표본 사이 odom 이동 길이(EKF, 미끄러짐은 못 봄). | 10-12 §1.2 |
-| [`run_f0.sh`](../../debug_log/2026-10-12/jobs/run_f0.sh) | F0 PC 러너: Jetson 에 파일 전송(재시도 3) → job551 을 setsid nohup 으로 기동 → 로그 폴링(끊겨도 주행은 계속) → 끝나면 산출물 회수 | 09-23 16 · 09-23 §19 · 10-01 §7.2 · … +11 |
+| [`run_f0.sh`](../../debug_log/2026-10-12/jobs/run_f0.sh) | F0 PC 러너: Jetson 에 파일 전송(재시도 3) → job551 을 setsid nohup 으로 기동 → 로그 폴링(끊겨도 주행은 계속) → 끝나면 산출물 회수 | 09-23 16 · 09-23 §19 · 10-01 §7.2 · … +13 |
 | [`tf_rate.py`](../../debug_log/2026-10-12/jobs/tf_rate.py) | 10-12 §3.3: bag 의 /tf 발행량 추이 — 10 s 칸마다 프레임 쌍별 변환 수(Hz)와 /tf 메시지 수. 인자: bag | 10-12 §3.3 · 10-12 §4 |
 | [`top_eval.py`](../../debug_log/2026-10-12/jobs/top_eval.py) | 10-12 §2: top 기록(2 s 간격)에서 구간별 부하 — load average, 유휴 %, 프로세스별 CPU 평균. 인자: top.log HH:MM:SS HH:MM:SS [..구간 더] | 10-12 §2 · 10-12 §3 |
 | [`traj_size.py`](../../debug_log/2026-10-12/jobs/traj_size.py) | 10-12 §7.3: /trajectories(MPPI 궤적 발행) 메시지의 크기·주기 추이 — 10 s 칸마다 메시지 수, 직렬화 크기(kB), 마커 수. 인자: bag... | 10-12 §7.3 |
@@ -1585,14 +1585,14 @@
 | [`fetch_one.sh`](../../debug_log/2026-10-13/jobs/fetch_one.sh) | (PC·WSL) Jetson /tmp 의 파일 하나를 PC 로 회수. 인자: 원격 파일명, 받을 폴더(/mnt/...). 비밀번호는 run_jn.sh 에서 읽는다(여기에 적지 않음). | — |
 | [`fig_report.py`](../../debug_log/2026-10-13/jobs/fig_report.py) | fig_report — 10-13 하루 기록을 한 장짜리 HTML 로 만든다(그림은 data URI 로 넣음). (2026-10-13, PC 에서 실행) | 10-13 §15 |
 | [`job550_f0run.py`](../../debug_log/2026-10-13/jobs/job550_f0run.py) | F0 코스 확장 러너 (2026-09-23): 상자 코스와 무관한 연속 목표 주행 + 왕복 복귀 오차 계측. | 09-23 16 · 09-28 §12 · 09-28 §16 · … +5 |
-| [`job551_f0drive.sh`](../../debug_log/2026-10-13/jobs/job551_f0drive.sh) | F0 주행 래퍼(Jetson, 2026-09-23): 일반 게이트(A 프로세스·B 보드·J nvblox·C SLAM·G2 출발 자세) → bag·tegrastats·top·RSS → job550 → 메타(job453). | 09-23 16 · 10-07 §2.2 · 10-12 §3.4 · … +8 |
+| [`job551_f0drive.sh`](../../debug_log/2026-10-13/jobs/job551_f0drive.sh) | F0 주행 래퍼(Jetson, 2026-09-23): 일반 게이트(A 프로세스·B 보드·J nvblox·C SLAM·G2 출발 자세) → bag·tegrastats·top·RSS → job550 → 메타(job453). | 09-23 16 · 10-07 §2.2 · 10-12 §3.4 · … +9 |
 | [`job613_pathyaw.py`](../../debug_log/2026-10-13/jobs/job613_pathyaw.py) | 경로 끝 방향 조회(단독 프로세스, 2026-09-28 §20): 현재 위치 → (GX, GY) 경로를 planner(GridBased)에서 받아 끝 0.3 m 구간 방향(rad)을 출력. | 09-28 §20 · 10-13 §4 · 10-21 §3 |
 | [`prep_deploy_costw.sh`](../../debug_log/2026-10-13/jobs/prep_deploy_costw.sh) | (10-13 §12) MPPI CostCritic cost_weight 를 Jetson 의 nav2_params.yaml(소스·설치본)에 반영 → 순회 prep(lite, 15) → 실행 중 값 확인. 인자: 값(기본 11.43). 로버 안 움직임 | 10-13 §12.1 |
 | [`prep_deploy_ginfl.sh`](../../debug_log/2026-10-13/jobs/prep_deploy_ginfl.sh) | (10-13 §5.3) 전역 inflation 감쇠 계수를 Jetson 의 nav2_params.yaml(소스·설치본)에 반영 → 순회 prep → 실행 중 값 확인. 인자: 값(기본 3.0). 로버 안 움직임 | 10-13 §5.6 |
 | [`prep_patrol_run.sh`](../../debug_log/2026-10-13/jobs/prep_patrol_run.sh) | (오늘만) run_jn.sh 는 인자를 넘기지만 여기서는 f2m1 용으로 고정: 캡처 권한 확인 + 순회 prep(궤적 발행 원래대로, 벌점 15). 로버 안 움직임 | — |
 | [`put_bin.sh`](../../debug_log/2026-10-13/jobs/put_bin.sh) | (PC·WSL) 스크래치패드의 이진 파일을 그대로 Jetson /tmp 로 전송(put_one.sh 는 CR 을 지우므로 이진 파일엔 쓰면 안 됨). 비밀번호는 run_jn.sh 에서 읽는다. | — |
-| [`put_one.sh`](../../debug_log/2026-10-13/jobs/put_one.sh) | (PC·WSL) 스크래치패드의 파일을 Jetson /tmp 로 전송(CR 제거). 인자: 파일명 ... 비밀번호는 run_jn.sh 에서 읽는다(여기에 적지 않음). | 10-20 §2.1 · 10-21 §3 |
-| [`run_f0.sh`](../../debug_log/2026-10-13/jobs/run_f0.sh) | F0 PC 러너: Jetson 에 파일 전송(재시도 3) → job551 을 setsid nohup 으로 기동 → 로그 폴링(끊겨도 주행은 계속) → 끝나면 산출물 회수 | 09-23 16 · 09-23 §19 · 10-01 §7.2 · … +11 |
+| [`put_one.sh`](../../debug_log/2026-10-13/jobs/put_one.sh) | (PC·WSL) 스크래치패드의 파일을 Jetson /tmp 로 전송(CR 제거). 인자: 파일명 ... 비밀번호는 run_jn.sh 에서 읽는다(여기에 적지 않음). | 10-20 §2.1 · 10-21 §3 · 10-22 §0 |
+| [`run_f0.sh`](../../debug_log/2026-10-13/jobs/run_f0.sh) | F0 PC 러너: Jetson 에 파일 전송(재시도 3) → job551 을 setsid nohup 으로 기동 → 로그 폴링(끊겨도 주행은 계속) → 끝나면 산출물 회수 | 09-23 16 · 09-23 §19 · 10-01 §7.2 · … +13 |
 | [`run_sim_box.sh`](../../debug_log/2026-10-13/jobs/run_sim_box.sh) | (10-13 §7) MPPI 오프라인 시뮬(job776)로 f2o1·f2p1 상자 옆 정지를 재현해 본다 — 계산만, 로버 안 움직임. 인자: 추가 key=val(없으면 현재 값), 환경 SEEDS·LABEL | 10-13 §7.1 |
 | [`run_sim_box2.sh`](../../debug_log/2026-10-13/jobs/run_sim_box2.sh) | (10-13 §8) MPPI 오프라인 시뮬(anal_mppi_sim, EXTRA 로 fpchk=1 등 추가 인자)로 f2o1·f2p1 상자 옆 정지를 재현해 본다 — 계산만, 로버 안 움직임. 인자: 추가 key=val(없으면 현재 값), 환경 SEE | 10-13 §8.1 |
 | [`run_sim_box3.sh`](../../debug_log/2026-10-13/jobs/run_sim_box3.sh) | (10-13 §8) MPPI 오프라인 시뮬(anal_mppi_sim, EXTRA 로 fpchk=1 등 추가 인자)로 f2o1·f2p1 상자 옆 정지를 재현해 본다 — 계산만, 로버 안 움직임. 인자: 추가 key=val(없으면 현재 값), 환경 SEE | 10-13 §8.1 |
@@ -1613,7 +1613,7 @@
 | [`anal_box_shift_angle.py`](../../debug_log/2026-10-14/jobs/anal_box_shift_angle.py) | anal_box_shift_angle — 기억된 상자가 밀린 양(10-13 §6.2) 가운데 '각도(yaw) 몫'과 '위치 몫'을 가른다. (2026-10-14, 오늘만 — 사용자 지적: "1 칸 두꺼워지는 이유에 각도 문제도 있다고 본다") | 10-14 §4 |
 | [`anal_ctrl_timing.py`](../../debug_log/2026-10-14/jobs/anal_ctrl_timing.py) | anal_ctrl_timing — 패딩 토글 뒤 컨트롤러가 '느려졌는지·흔들리는 입력을 받았는지'를 bag · top 기록으로 견준다. (2026-10-14 §23, 오늘만) | 10-14 §23 |
 | [`anal_free_wobble.py`](../../debug_log/2026-10-14/jobs/anal_free_wobble.py) | anal_free_wobble — 로버 둘레가 완전히 빈 칸(비용 0)일 때만 골라 좌우 틀기(\|ω\|>0.05 부호 바뀜)를 센다. (2026-10-14 §23, 오늘만) | 10-14 §23 |
-| [`anal_hesitation.py`](../../debug_log/2026-10-14/jobs/anal_hesitation.py) | anal_hesitation — '멈칫거리며 움직임'(사용자 영상)을 수치로: 구간별 명령 속도가 순항(≥0.06)에서 0.03 아래로 떨어졌다 돌아오는 횟수, | 10-14 §18 · 10-14 21.1 |
+| [`anal_hesitation.py`](../../debug_log/2026-10-14/jobs/anal_hesitation.py) | anal_hesitation — '멈칫거리며 움직임'(사용자 영상)을 수치로: 구간별 명령 속도가 순항(≥0.06)에서 0.03 아래로 떨어졌다 돌아오는 횟수, | 10-14 21.1 · 10-14 §18 |
 | [`anal_lc_hist.py`](../../debug_log/2026-10-14/jobs/anal_lc_hist.py) | anal_lc_hist — 로컬 코스트맵(/local_costmap/costmap) 값 분포를 구간별로 견준다. (2026-10-14 §21, 오늘만) | 10-14 21.3 |
 | [`anal_navfn_replay.py`](../../debug_log/2026-10-14/jobs/anal_navfn_replay.py) | anal_navfn_replay — 발행된 전역 코스트맵 위에서 NavFn 과 같은 비용 변환으로 다익스트라 최단 경로를 다시 구해, bag 의 /plan 과 견준다. (2026-10-14 §24, 오늘만) | 10-14 §24 |
 | [`anal_path_endyaw.py`](../../debug_log/2026-10-14/jobs/anal_path_endyaw.py) | anal_path_endyaw — 계획기 경로(/plan)와 컨트롤러가 받은 경로(/transformed_global_plan)의 끝 방향을 시간순으로 견준다. (2026-10-14, 오늘만) | 10-14 §16 · 10-14 §17 |
@@ -1645,11 +1645,11 @@
 | [`chk_prep_md5.sh`](../../debug_log/2026-10-14/jobs/chk_prep_md5.sh) | (10-14 §25) Jetson /tmp 의 prep 스크립트 md5 확인 — 로버 안 움직임 | 10-14 §25 |
 | [`chk_rate_f2t1.sh`](../../debug_log/2026-10-14/jobs/chk_rate_f2t1.sh) | (10-14 §18) f2t1 동안 30 s 칸별: 컨트롤러 주기 미달·좌표 변환 미래 요청 경고 수, PathBlocked/follow 중단 — 로버 안 움직임 | — |
 | [`fig_box_end_plans.py`](../../debug_log/2026-10-14/jobs/fig_box_end_plans.py) | fig_box_end_plans — 복귀 길 상자 끝(출발점 동쪽)에서 계획기 경로가 '곧게' 나온 주행과 '상자 끝을 감아 돌게' 나온 주행을 나란히. (2026-10-14 §24, 오늘만) | 10-14 §24 |
-| [`fig_no5_route.py`](../../debug_log/2026-10-14/jobs/fig_no5_route.py) | fig_no5_route — 8 목표 순회 코스(no5)를 저장 지도(office_v3) 위에: 목표 번호 + 실제로 달린 궤적(목표 구간마다 색). (2026-10-14 §27, 오늘만) | 10-14 §27 · 10-14 27.2 · 10-14 27.3 |
+| [`fig_no5_route.py`](../../debug_log/2026-10-14/jobs/fig_no5_route.py) | fig_no5_route — 8 목표 순회 코스(no5)를 저장 지도(office_v3) 위에: 목표 번호 + 실제로 달린 궤적(목표 구간마다 색). (2026-10-14 §27, 오늘만) | 10-14 27.2 · 10-14 27.3 · 10-14 §27 |
 | [`prep_pad_only.sh`](../../debug_log/2026-10-14/jobs/prep_pad_only.sh) | (10-14 §9) pad_relief 만 다시 띄우고 상태 확인 — 로버 안 움직임 | 10-14 §9.1 |
-| [`prep_patrol_pad.sh`](../../debug_log/2026-10-14/jobs/prep_patrol_pad.sh) | (10-14 §9) 순회 prep(viz, 벌점) 뒤 pad_relief 노드를 접속과 분리해 띄운다(mode 인자: on\|shadow, 기본 shadow — 10-14 §19: 실행 중 패딩 변경 뒤 멈칫거림 의심). 로버 안 움직임 | 10-14 19.1 · 10-15 §0 · 10-15 §1.1 · … +2 |
+| [`prep_patrol_pad.sh`](../../debug_log/2026-10-14/jobs/prep_patrol_pad.sh) | (10-14 §9) 순회 prep(viz, 벌점) 뒤 pad_relief 노드를 접속과 분리해 띄운다(mode 인자: on\|shadow, 기본 shadow — 10-14 §19: 실행 중 패딩 변경 뒤 멈칫거림 의심). 로버 안 움직임 | 10-14 19.1 · 10-15 §0 · 10-15 §1 · … +3 |
 | [`run_detached.sh`](../../debug_log/2026-10-14/jobs/run_detached.sh) | (PC·WSL) 연결이 불안정할 때: 파일을 재시도하며 보내고, Jetson 에서 setsid nohup 으로 스크립트를 띄운 뒤(접속이 끊겨도 계속 돎) 결과 파일을 재시도하며 읽어 온다. | 10-14 §8.5 · 10-14 §8.6 |
-| [`run_f2c.sh`](../../debug_log/2026-10-14/jobs/run_f2c.sh) | 10-07 §2: rf2o + G4 켠 F2 순회(10-02 f2b 와 같은 10 목표). 목표 문자열은 래퍼 안에(10-02 §6.2 wsl 인자 분리 실수). 인자: NAME NOTE GIT_HEAD [rest5] | 10-07 §2.1 · 10-07 §2.2 · 10-07 §2.4 · … +31 |
+| [`run_f2c.sh`](../../debug_log/2026-10-14/jobs/run_f2c.sh) | 10-07 §2: rf2o + G4 켠 F2 순회(10-02 f2b 와 같은 10 목표). 목표 문자열은 래퍼 안에(10-02 §6.2 wsl 인자 분리 실수). 인자: NAME NOTE GIT_HEAD [rest5] | 10-07 §11 · 10-07 §2.1 · 10-07 §2.2 · … +33 |
 | [`run_sim_unstuck2.sh`](../../debug_log/2026-10-14/jobs/run_sim_unstuck2.sh) | (10-14 §2) '갇혔을 때만 패딩 0' 되돌림 시뮬: 정지 자세 2 곳 × us_d 3 개 × 씨앗 5, 300 주기, fpchk=1 unstuck=1 — 계산만, 로버 안 움직임 | 10-14 §2.1 |
 | [`up_bt_copypath.sh`](../../debug_log/2026-10-14/jobs/up_bt_copypath.sh) | (10-14 §14) CopyPath BT 노드 배포: 저장소 파일 4 개를 Jetson 소스에 두고 rover_navigation 만 빌드 — 로버 안 움직임(실행 중 스택은 다음 prep 때 새 노드를 읽음) | 10-14 §14 |
 | [`up_pad_shadow.sh`](../../debug_log/2026-10-14/jobs/up_pad_shadow.sh) | (10-14 §19) 실행 중인 pad_relief 를 관찰 모드(shadow)로 다시 띄움 — 패딩은 바꾸지 않고 판정·기록만. 로버 안 움직임 | 10-14 19.1 |
@@ -1660,7 +1660,7 @@
 | 파일 | 설명 | 언급 |
 |---|---|---|
 | [`anal_ahead_cells.py`](../../debug_log/2026-10-15/jobs/anal_ahead_cells.py) | anal_ahead_cells — 로컬 코스트맵 프레임마다 차체 둘레(앞으로 늘린 직사각형) 안 치명 칸 수와 위치를 차체 좌표로. (2026-10-15 §3, 오늘만) | 10-15 §3 |
-| [`anal_band_run.py`](../../debug_log/2026-10-15/jobs/anal_band_run.py) | anal_band_run — 주행 전체에서 차체(패딩 포함) ↔ 로컬 치명 칸 정확 여유와 Nav2 식 풋프린트 판정. (2026-10-15 §29.2, 오늘만) | 10-15 §29.2 · 10-15 §29.6 · 10-23 §20 · … +2 |
+| [`anal_band_run.py`](../../debug_log/2026-10-15/jobs/anal_band_run.py) | anal_band_run — 주행 전체에서 차체(패딩 포함) ↔ 로컬 치명 칸 정확 여유와 Nav2 식 풋프린트 판정. (2026-10-15 §29.2, 오늘만) | 10-15 §29.2 · 10-15 §29.6 · 10-23 §20 · … +3 |
 | [`anal_box_true_vs_map.py`](../../debug_log/2026-10-15/jobs/anal_box_true_vs_map.py) | anal_box_true_vs_map — 출발점 시험 상자의 기록 위치(고정)와 로컬 코스트맵이 찍은 상자 칸을 지도 좌표에서 비교. (2026-10-15 §29.4, 오늘만) | 10-15 §29.4 · 10-15 §29.7 · 10-15 §30 · … +1 |
 | [`anal_cam_vs_lidar.py`](../../debug_log/2026-10-15/jobs/anal_cam_vs_lidar.py) | anal_cam_vs_lidar — 카메라(nvblox 거리 지도 조각)가 라이다로 확인되는 면을 실제보다 앞에(과대) / 같게 / 뒤에(과소) 찍는지, 아예 못 찍는지(누락). (2026-10-15 §9, 오늘만) | 10-15 9.2 |
 | [`anal_cell_first_seen.py`](../../debug_log/2026-10-15/jobs/anal_cell_first_seen.py) | anal_cell_first_seen — 기준 순간의 카메라만 치명 칸들이 '처음 치명이 된 순간' 카메라에서 본 방위각 · 거리, 그리고 그 전에 시야 안에 있었는데 안 찍혔던 순간. (2026-10-15 §7, 오늘만) | 10-15 §7 |
@@ -1675,8 +1675,8 @@
 | [`anal_mapfix_replan.py`](../../debug_log/2026-10-15/jobs/anal_mapfix_replan.py) | anal_mapfix_replan — 저장 지도 서쪽 벽(서쪽 통로 y −3.85~−4.45)을 오늘 라이다 위치로 고쳤다면 계획 경로가 상자 옆을 얼마나 띄워 지나는지. (2026-10-15 §11, 오늘만 — 실제 지도는 안 바꿈) | 10-15 §11 |
 | [`anal_memory_shift.py`](../../debug_log/2026-10-15/jobs/anal_memory_shift.py) | anal_memory_shift — odom 에 기억된 칸이 '처음 찍힌 순간'과 '나중 순간' 사이 map→odom 변화 때문에 지도(실제 세계) 위에서 얼마나 밀렸는지. (2026-10-15 §24, 오늘만) | 10-15 24.1 · 10-22 §11 · 10-22 §11.3 · … +1 |
 | [`anal_monotone_escape.py`](../../debug_log/2026-10-15/jobs/anal_monotone_escape.py) | anal_monotone_escape — '여유가 줄지 않는 곧은 이동'으로 멈춘 자세에서 빠져나갈 수 있는지, 기록된 실패 순간의 로컬 코스트맵으로 시뮬레이션. (2026-10-15 §25, 오늘만) | 10-15 25.1 |
-| [`anal_motion_probe.py`](../../debug_log/2026-10-15/jobs/anal_motion_probe.py) | anal_motion_probe — 한 순간의 로컬 코스트맵 위에 차체(패딩 포함 직사각형)를 기본 움직임대로 옮겨 놓고, 치명 칸(100)에 닿는지 · 가장 가까운 치명 칸까지 거리. (2026-10-15 §5, 오늘만) | 10-15 §5 · 10-15 18.1 · 10-15 18.3 · … +1 |
-| [`anal_near_cells_src.py`](../../debug_log/2026-10-15/jobs/anal_near_cells_src.py) | anal_near_cells_src — 기준 순간에 차체에서 R 안에 있던 로컬 치명 칸들을 지도 좌표로 뽑고, 칸마다 (1) 그 순간 라이다 점이 3.5 cm 안에 있었나 (2) 다른 순간들에도 그 칸이 치명이었나. (2026-10-15 §5, 오늘 | 10-15 §5 · 10-15 18.1 · 10-15 20.1 |
+| [`anal_motion_probe.py`](../../debug_log/2026-10-15/jobs/anal_motion_probe.py) | anal_motion_probe — 한 순간의 로컬 코스트맵 위에 차체(패딩 포함 직사각형)를 기본 움직임대로 옮겨 놓고, 치명 칸(100)에 닿는지 · 가장 가까운 치명 칸까지 거리. (2026-10-15 §5, 오늘만) | 10-15 18.1 · 10-15 18.3 · 10-15 20.1 · … +1 |
+| [`anal_near_cells_src.py`](../../debug_log/2026-10-15/jobs/anal_near_cells_src.py) | anal_near_cells_src — 기준 순간에 차체에서 R 안에 있던 로컬 치명 칸들을 지도 좌표로 뽑고, 칸마다 (1) 그 순간 라이다 점이 3.5 cm 안에 있었나 (2) 다른 순간들에도 그 칸이 치명이었나. (2026-10-15 §5, 오늘 | 10-15 18.1 · 10-15 20.1 · 10-15 §5 |
 | [`anal_passage_gap.py`](../../debug_log/2026-10-15/jobs/anal_passage_gap.py) | anal_passage_gap — 서쪽 통로(map x ≈ −1.7)를 남북으로 지날 때, y 띠(5 cm)마다 로컬 코스트맵 치명 칸의 왼쪽(서) · 오른쪽(동) 경계와 그 사이 폭. (2026-10-15 §3, 오늘만) | 10-15 §3 |
 | [`anal_path_center.py`](../../debug_log/2026-10-15/jobs/anal_path_center.py) | anal_path_center — 서쪽 통로 목표(출발점) x 를 바꾸면 남서로 가는 계획 경로가 상자 옆을 얼마나 띄워 지나는지, 기록된 전역 코스트맵으로 다시 계산. (2026-10-15 §9, 오늘만) | 10-15 9.1 |
 | [`anal_replan_trace.py`](../../debug_log/2026-10-15/jobs/anal_replan_trace.py) | anal_replan_trace — 한 구간 동안 (1) 계획기 경로(/plan)가 나올 때마다 처음 0.6 m 방향과 상자 구역에 가장 가까이 가는 거리, (2) 상자 구역의 카메라만 치명 칸 수(로컬), | 10-15 §19 |
@@ -1712,7 +1712,7 @@
 | [`fig_stall_cells.py`](../../debug_log/2026-10-15/jobs/fig_stall_cells.py) | fig_stall_cells — 서쪽 통로 남쪽 정지 자리: 멈추기 전 · 멈춘 순간 · 복귀 출발의 로컬 치명 칸(라이다 확인 / 카메라만)과 차체, 그리고 차체 옆 여유의 시간 변화. (2026-10-15 §6, 오늘만) | 10-15 §6 |
 | [`fig_stall_view.py`](../../debug_log/2026-10-15/jobs/fig_stall_view.py) | fig_stall_view — 정지 순간 로버 주변: 전역 코스트맵 바탕 + 로컬 치명 칸 + 라이다 + 계획기 경로 + 차체. (2026-10-15 §3, 10-14 fig_box_end_plans.py 를 창 위치만 인자로 바꿔 복사) | 10-15 §3 |
 | [`run_escape_test.py`](../../debug_log/2026-10-15/jobs/run_escape_test.py) | run_escape_test — MonotoneEscape 실제 시험 단계별 도구(Jetson 에서 실행). (2026-10-15 §27) | 10-15 §27 · 10-15 §27.3 · 10-15 §27.4 |
-| [`run_f2c.sh`](../../debug_log/2026-10-15/jobs/run_f2c.sh) | 10-07 §2: rf2o + G4 켠 F2 순회(10-02 f2b 와 같은 10 목표). 목표 문자열은 래퍼 안에(10-02 §6.2 wsl 인자 분리 실수). 인자: NAME NOTE GIT_HEAD [rest5] | 10-07 §2.1 · 10-07 §2.2 · 10-07 §2.4 · … +31 |
+| [`run_f2c.sh`](../../debug_log/2026-10-15/jobs/run_f2c.sh) | 10-07 §2: rf2o + G4 켠 F2 순회(10-02 f2b 와 같은 10 목표). 목표 문자열은 래퍼 안에(10-02 §6.2 wsl 인자 분리 실수). 인자: NAME NOTE GIT_HEAD [rest5] | 10-07 §11 · 10-07 §2.1 · 10-07 §2.2 · … +33 |
 | [`up_band_critic.sh`](../../debug_log/2026-10-15/jobs/up_band_critic.sh) | (10-15 §29) ClearanceBandCritic 배포 + 빌드 — /tmp/cbc.tar 를 src 에 풀고(바뀌는 원본은 날짜 붙여 백업) colcon 빌드. 로버 안 움직임 | 10-15 §29 |
 | [`up_cfg_intdist.sh`](../../debug_log/2026-10-15/jobs/up_cfg_intdist.sh) | (10-15 §30) nvblox 통합 거리 1.0 · ClearanceBandCritic 끔 설정 배포 — /tmp 의 두 yaml 을 Jetson src 로(원본 백업). 설치본은 src 링크라 다음 기동부터. 로버 안 움직임 | 10-15 §30 · 10-15 §30.1 |
 | [`up_escape.sh`](../../debug_log/2026-10-15/jobs/up_escape.sh) | (10-15 §26) MonotoneEscape 배포 + 빌드 — /tmp/esc.tar 를 src 에 풀고(바뀌는 원본은 날짜 붙여 백업) colcon 빌드. 로버 안 움직임 | 10-15 §26 |
@@ -1725,13 +1725,13 @@
 
 | 파일 | 설명 | 언급 |
 |---|---|---|
-| [`anal_box_cells_in.py`](../../debug_log/2026-10-19/jobs/anal_box_cells_in.py) | anal_box_cells_in — nvblox 조각에서 '실제 상자 안' 칸 수와 상자 주변 칸 무리의 위치를 시간에 따라. (2026-10-19 §22) | 10-19 §22 · 10-20 §3 |
+| [`anal_box_cells_in.py`](../../debug_log/2026-10-19/jobs/anal_box_cells_in.py) | anal_box_cells_in — nvblox 조각에서 '실제 상자 안' 칸 수와 상자 주변 칸 무리의 위치를 시간에 따라. (2026-10-19 §22) | 10-19 §22 · 10-20 §3 · 10-20 §3.1 |
 | [`anal_box_memory.py`](../../debug_log/2026-10-19/jobs/anal_box_memory.py) | anal_box_memory — 복귀 길 상자 옆 통과 때 지도의 상자 칸은 언제 · 어디서 본 기억인가, 그 기억이 통과 순간까지 얼마나 밀렸나. (2026-10-19 §11) | 10-19 §11 |
 | [`anal_box_points.py`](../../debug_log/2026-10-19/jobs/anal_box_points.py) | anal_box_points — 깊이 영상 화소를 그 순간의 tf 로 지도 좌표 점으로 바꿔, 출발점 시험 상자의 면이 관측마다 어디에 찍히는지. (2026-10-19 §10) | 10-19 §10 · 10-19 §14 · 10-19 §22 |
-| [`anal_slice_box.py`](../../debug_log/2026-10-19/jobs/anal_slice_box.py) | anal_slice_box — nvblox 거리 지도 조각(실시간 또는 재생)이 출발점 시험 상자를 실제보다 얼마나 크게 찍는지. (2026-10-19 §4) | 10-19 §4 · 10-19 §21 |
+| [`anal_slice_box.py`](../../debug_log/2026-10-19/jobs/anal_slice_box.py) | anal_slice_box — nvblox 거리 지도 조각(실시간 또는 재생)이 출발점 시험 상자를 실제보다 얼마나 크게 찍는지. (2026-10-19 §4) | 10-19 §21 · 10-19 §4 · 10-20 §2 · … +2 |
 | [`anal_split_s1.py`](../../debug_log/2026-10-19/jobs/anal_split_s1.py) | anal_split_s1 — 분리 노드 S1 판정 측정(10-19 §15). 로버 안 움직임. | 10-19 §15.1 |
 | [`anal_vslam_cmp.py`](../../debug_log/2026-10-19/jobs/anal_vslam_cmp.py) | anal_vslam_cmp — 오프라인 cuVSLAM(프로젝터 끔 · 켬 × IMU 융합 켬 · 끔)과 EKF 를 SLAM 자세(기준) 대비 비교. (2026-10-19 §23, PC) | 10-19 §23.1 · 10-20 §1 · 10-20 §3.1 |
-| [`chk_day_start.sh`](../../debug_log/2026-10-19/jobs/chk_day_start.sh) | (10-19) 하루 시작 상태: 가동 시간 · /tmp prep 스크립트 · 디스크 · 실행 중 스택 · 배터리 — 로버 안 움직임 | 10-19 §0 |
+| [`chk_day_start.sh`](../../debug_log/2026-10-19/jobs/chk_day_start.sh) | (10-19) 하루 시작 상태: 가동 시간 · /tmp prep 스크립트 · 디스크 · 실행 중 스택 · 배터리 — 로버 안 움직임 | 10-19 §0 · 10-27 §31 |
 | [`chk_depth_topic.sh`](../../debug_log/2026-10-19/jobs/chk_depth_topic.sh) | (10-19 §1) 깊이 토픽 실측: QoS · 해상도 · 주기 · 대역폭, bag 저장 형식 플러그인 — 로버 안 움직임 | 10-19 §1 |
 | [`chk_eoff.sh`](../../debug_log/2026-10-19/jobs/chk_eoff.sh) | 10-19 §25: 프로젝터 끔 구성 정지 점검(읽기만) — 프로젝터 상태, 원시 IR · 깊이 주기, IR 밝기 | 10-19 §25 |
 | [`chk_f2y1.sh`](../../debug_log/2026-10-19/jobs/chk_f2y1.sh) | 10-19 §19: f2y1 결과 — 러너 로그 요약, IR bag 토픽 수, 부하 지표(읽기만) | 10-19 §19.1 |
@@ -1752,16 +1752,16 @@
 | [`get_f2z1.sh`](../../debug_log/2026-10-19/jobs/get_f2z1.sh) |  | — |
 | [`get_replays.sh`](../../debug_log/2026-10-19/jobs/get_replays.sh) | (PC·WSL, 10-19 §6) 재생 출력 tgz 회수 — 인자: 꼬리표 ... | — |
 | [`get_vso.sh`](../../debug_log/2026-10-19/jobs/get_vso.sh) |  | — |
-| [`job551_f0drive.sh`](../../debug_log/2026-10-19/jobs/job551_f0drive.sh) | F0 주행 래퍼(Jetson, 2026-09-23): 일반 게이트(A 프로세스·B 보드·J nvblox·C SLAM·G2 출발 자세) → bag·tegrastats·top·RSS → job550 → 메타(job453). | 09-23 16 · 10-07 §2.2 · 10-12 §3.4 · … +8 |
+| [`job551_f0drive.sh`](../../debug_log/2026-10-19/jobs/job551_f0drive.sh) | F0 주행 래퍼(Jetson, 2026-09-23): 일반 게이트(A 프로세스·B 보드·J nvblox·C SLAM·G2 출발 자세) → bag·tegrastats·top·RSS → job550 → 메타(job453). | 09-23 16 · 10-07 §2.2 · 10-12 §3.4 · … +9 |
 | [`mk_vslam_bag.py`](../../debug_log/2026-10-19/jobs/mk_vslam_bag.py) | mk_vslam_bag — IR bag(§17 프로세스 안 기록)을 cuVSLAM 오프라인 입력 bag 으로: 프로젝터 끔 / 켬 프레임을 다른 토픽으로 나누고 IMU · tf_static 을 붙인다. (2026-10-19 §23, Jetson 호스트 | — |
 | [`pack_replay.sh`](../../debug_log/2026-10-19/jobs/pack_replay.sh) | (10-19 §6) ~/bags 의 재생 출력을 /tmp 에 tgz 로 묶음(PC 회수용) — 인자: 꼬리표 ... 로버 안 움직임 | — |
 | [`prep_eoff.sh`](../../debug_log/2026-10-19/jobs/prep_eoff.sh) | 10-19 §25: 프로젝터 상시 끔 구성 prep(로버 정지) | — |
 | [`prep_flash.sh`](../../debug_log/2026-10-19/jobs/prep_flash.sh) | 10-19 §16: 번갈이 구성 prep(로버 안 움직임) | 10-19 §16.1 |
 | [`rec_depth_test.sh`](../../debug_log/2026-10-19/jobs/rec_depth_test.sh) | (10-19 §1) 정지 30 s 깊이 bag 시험 기록 — 깊이 · camera_info · tf · tf_static, 깊이 · tf 는 best effort 구독. 저장은 재부팅에도 남는 ~/bags. 로버 안 움직임 | 10-19 §1 |
 | [`rm_s2_flash.sh`](../../debug_log/2026-10-19/jobs/rm_s2_flash.sh) | 10-19 §18: 큰 bag 정리 — s2_flash30rec(§16 ③ IR 8 Hz, 수치는 §16.1 기록) 삭제. 삭제 전 대상 확인 | 10-19 §18 |
-| [`run_f0.sh`](../../debug_log/2026-10-19/jobs/run_f0.sh) | F0 PC 러너: Jetson 에 파일 전송(재시도 3) → job551 을 setsid nohup 으로 기동 → 로그 폴링(끊겨도 주행은 계속) → 끝나면 산출물 회수 | 09-23 16 · 09-23 §19 · 10-01 §7.2 · … +11 |
+| [`run_f0.sh`](../../debug_log/2026-10-19/jobs/run_f0.sh) | F0 PC 러너: Jetson 에 파일 전송(재시도 3) → job551 을 setsid nohup 으로 기동 → 로그 폴링(끊겨도 주행은 계속) → 끝나면 산출물 회수 | 09-23 16 · 09-23 §19 · 10-01 §7.2 · … +13 |
 | [`run_ir_exposure.sh`](../../debug_log/2026-10-19/jobs/run_ir_exposure.sh) | (10-19 §24) IR 노출 · 게인 정지 시험 — 스택 내리고(base 유지) 카메라 단독(번갈이 30, 지금 설정) → chk_ir_exposure.py → 카메라 종료. 로버 안 움직임 | — |
-| [`run_nvblox_replay.sh`](../../debug_log/2026-10-19/jobs/run_nvblox_replay.sh) | (10-19 §2) 기록한 깊이 bag 을 컨테이너 nvblox 에 다시 넣어 거리 지도 조각을 얻는다 — 설정만 바꾼 오프라인 A/B 용. 로버 안 움직임 | 10-19 §2 · 10-19 §15.1 · 10-22 §5 · … +1 |
+| [`run_nvblox_replay.sh`](../../debug_log/2026-10-19/jobs/run_nvblox_replay.sh) | (10-19 §2) 기록한 깊이 bag 을 컨테이너 nvblox 에 다시 넣어 거리 지도 조각을 얻는다 — 설정만 바꾼 오프라인 A/B 용. 로버 안 움직임 | 10-19 §15.1 · 10-19 §2 · 10-22 §5 · … +1 |
 | [`run_split_s1.sh`](../../debug_log/2026-10-19/jobs/run_split_s1.sh) | (10-19 §15 S1) 분리 노드 정지 시험 — 주행 스택 내리고(base 유지) 카메라를 스택 설정 + 깊이 · IR 640×480×60 + emitter_on_off 로 띄워 | 10-19 §15.1 |
 | [`run_vslam_offline.sh`](../../debug_log/2026-10-19/jobs/run_vslam_offline.sh) | (10-19 §23) 오프라인 cuVSLAM 켬/끔 비교 — 실시간 스택 내림(base 유지, 로버 정지) → 입력 bag 만들기(호스트) → 컨테이너에서 IMU 융합 켬 · 끔 두 판. | 10-19 §23.1 |
 | [`run_vso.sh`](../../debug_log/2026-10-19/jobs/run_vso.sh) |  | — |
@@ -1777,7 +1777,7 @@
 |---|---|---|
 | [`anal_box_face_points.py`](../../debug_log/2026-10-20/jobs/anal_box_face_points.py) | anal_box_face_points — 정지 bag 에서 깊이 '점' 자체가 상자 면 밖으로 얼마나 나오나(센서 몫) vs nvblox 칸 면(지도 몫). (2026-10-20 §8, PC) | 10-20 §8.1 · 10-20 §8.2 |
 | [`anal_box_static.py`](../../debug_log/2026-10-20/jobs/anal_box_static.py) | anal_box_static — 정지 상태 짧은 bag 에서 깊이 품질과 nvblox 조각의 시험 상자 · 빈 바닥 표현을 잰다. (2026-10-20 §2, PC) | 10-20 §2.1 · 10-20 §7.4 · 10-20 §8.2 · … +1 |
-| [`anal_ekf_replay.py`](../../debug_log/2026-10-20/jobs/anal_ekf_replay.py) | anal_ekf_replay — EKF 오프라인 재실행 변형(V0~V3)을 주행 때 EKF · cuVSLAM 과 함께 SLAM 기준으로 비교. (2026-10-20 §5, PC) | 10-20 §5.1 · 10-20 §6.3 · 10-21 §7 · … +5 |
+| [`anal_ekf_replay.py`](../../debug_log/2026-10-20/jobs/anal_ekf_replay.py) | anal_ekf_replay — EKF 오프라인 재실행 변형(V0~V3)을 주행 때 EKF · cuVSLAM 과 함께 SLAM 기준으로 비교. (2026-10-20 §5, PC) | 10-20 §5.1 · 10-20 §6.3 · 10-21 §23 · … +5 |
 | [`anal_vslam_rpe.py`](../../debug_log/2026-10-20/jobs/anal_vslam_rpe.py) | anal_vslam_rpe — 짧은 창(Δ s) 상대 오차: cuVSLAM · EKF 가 Δ 초 동안 움직인 양이 SLAM 이 본 움직임과 얼마나 다른가. (2026-10-20 §4, PC) | 10-20 §4 |
 | [`chk_day_start_1020.sh`](../../debug_log/2026-10-20/jobs/chk_day_start_1020.sh) | 10-20: 하루 시작 상태 + f2z1 cuVSLAM 결과 유무(읽기만) | 10-20 §0 |
 | [`chk_gateb.sh`](../../debug_log/2026-10-20/jobs/chk_gateb.sh) |  | 10-20 §9.7 |
@@ -1785,10 +1785,10 @@
 | [`chk_mem.sh`](../../debug_log/2026-10-20/jobs/chk_mem.sh) |  | — |
 | [`chk_udp.sh`](../../debug_log/2026-10-20/jobs/chk_udp.sh) |  | 10-20 §7.1 |
 | [`chk_udp_drops.sh`](../../debug_log/2026-10-20/jobs/chk_udp_drops.sh) | 소켓별 UDP 버림(drops) 10 s 증가 → inode → 프로세스. 읽기만 | — |
-| [`chk_udp_drops2.sh`](../../debug_log/2026-10-20/jobs/chk_udp_drops2.sh) |  | 10-20 §9.3 · 10-20 §11.2 |
+| [`chk_udp_drops2.sh`](../../debug_log/2026-10-20/jobs/chk_udp_drops2.sh) |  | 10-20 §11.2 · 10-20 §9.3 |
 | [`chk_udp_rate.sh`](../../debug_log/2026-10-20/jobs/chk_udp_rate.sh) | UDP 수신 버퍼 오류 증가율 — 그림자 구성(정지) 그대로 20 s, cuVSLAM 만 잠시 멈춘 20 s 비교 | 10-20 §7.1 |
 | [`chk_uid.sh`](../../debug_log/2026-10-20/jobs/chk_uid.sh) |  | — |
-| [`chk_vslam_live.py`](../../debug_log/2026-10-20/jobs/chk_vslam_live.py) | chk_vslam_live — (10-20 §6.1) 정지 중 cuVSLAM 그림자 구성 측정. 노드 1 개 + /proc. 인자: 초(기본 60) | 10-20 §6.1 · 10-20 §9.2 · 10-20 §11.2 |
+| [`chk_vslam_live.py`](../../debug_log/2026-10-20/jobs/chk_vslam_live.py) | chk_vslam_live — (10-20 §6.1) 정지 중 cuVSLAM 그림자 구성 측정. 노드 1 개 + /proc. 인자: 초(기본 60) | 10-20 §11.2 · 10-20 §6.1 · 10-20 §9.2 |
 | [`fig_box_static.py`](../../debug_log/2026-10-20/jobs/fig_box_static.py) | fig_box_static — B 시험(10-20 §2) 그림: 구성별 깊이 영상 한 장(160×120) + 마지막 nvblox 조각의 상자 근처 칸. 인자: 출력.png 이름=bag ... | 10-20 §2.1 |
 | [`fig_shm_day.py`](../../debug_log/2026-10-20/jobs/fig_shm_day.py) | fig_shm_day — 10-20 §7.5 · §9.3 · §9.5 수치(출력 원문에서 옮김)를 한 그림으로. 인자: 출력.png | 10-20 §10 |
 | [`fill_report_1020.py`](../../debug_log/2026-10-20/jobs/fill_report_1020.py) | 10-20 정리 페이지: 머리(10-19 스타일) + 본문 + 그림(data URI) → report_1020.html | 10-20 §10 |
@@ -1804,9 +1804,9 @@
 | [`run_box_depth_ab.sh`](../../debug_log/2026-10-20/jobs/run_box_depth_ab.sh) | (10-20 §2) B 시험: 프로젝터 켬(지금) vs 상시 끔 — 각 구성 prep → 20 s 안정 → 20 s 기록 → 마지막에 지금 구성으로 복귀. 로버 안 움직임 | 10-20 §2.1 |
 | [`run_decim_ab.sh`](../../debug_log/2026-10-20/jobs/run_decim_ab.sh) | (10-20 §8.2) 데시메이션 정지 A/B — D4 → D2 → D1 → D4. 각 prep → 20 s → 25 s 기록 + CPU · nvblox 깊이 Hz. 끝나면 D4 복귀. 로버 안 움직임 | 10-20 §8.2 · 10-20 §8.3 |
 | [`run_ekf_replay.sh`](../../debug_log/2026-10-20/jobs/run_ekf_replay.sh) | (10-20 §5) EKF 오프라인 재실행 — WSL(ROS Humble) 에서 입력 bag 재생 + EKF 변형 4 개 동시, 출력 bag 기록. Jetson · 로버 안 씀. | 10-20 §5.1 |
-| [`run_f2c.sh`](../../debug_log/2026-10-20/jobs/run_f2c.sh) | 10-07 §2: rf2o + G4 켠 F2 순회(10-02 f2b 와 같은 10 목표). 목표 문자열은 래퍼 안에(10-02 §6.2 wsl 인자 분리 실수). 인자: NAME NOTE GIT_HEAD [rest5] | 10-07 §2.1 · 10-07 §2.2 · 10-07 §2.4 · … +31 |
+| [`run_f2c.sh`](../../debug_log/2026-10-20/jobs/run_f2c.sh) | 10-07 §2: rf2o + G4 켠 F2 순회(10-02 f2b 와 같은 10 목표). 목표 문자열은 래퍼 안에(10-02 §6.2 wsl 인자 분리 실수). 인자: NAME NOTE GIT_HEAD [rest5] | 10-07 §11 · 10-07 §2.1 · 10-07 §2.2 · … +33 |
 | [`run_shm_restart.sh`](../../debug_log/2026-10-20/jobs/run_shm_restart.sh) | (10-20 §9.4) N-SHM S3 — S 구성 prep 10 회 + 사고 모사(-9). 건강은 로그로만. 마지막 회 구성 그대로 둠. 로버 안 움직임 | 10-20 §9.5 |
-| [`run_shm_static.sh`](../../debug_log/2026-10-20/jobs/run_shm_static.sh) | (10-20 §9.2) N-SHM S2 정지 A/B — U(UDP) → S(dds_shm) → U. 각 prep → 20 s → 60 s 측정 → 25 s 기록. 마지막은 S 로 둔다(다음 단계용). 로버 안 움직임 | 10-20 §9.3 · 10-20 §11.2 |
+| [`run_shm_static.sh`](../../debug_log/2026-10-20/jobs/run_shm_static.sh) | (10-20 §9.2) N-SHM S2 정지 A/B — U(UDP) → S(dds_shm) → U. 각 prep → 20 s → 60 s 측정 → 25 s 기록. 마지막은 S 로 둔다(다음 단계용). 로버 안 움직임 | 10-20 §11.2 · 10-20 §9.3 |
 | [`run_vslam_static.sh`](../../debug_log/2026-10-20/jobs/run_vslam_static.sh) | (10-20 §6.1) L0 정지 시험 — A: 프로젝터 상시 끔 / B: + vslam:=shadow. 각 prep → 20 s → 60 s 측정. B 상태로 둔다. 로버 안 움직임 | 10-20 §6.1 |
 | [`up_shm.sh`](../../debug_log/2026-10-20/jobs/up_shm.sh) | (10-20 §9.1) N-SHM S1 배포 + 빌드 — /tmp/vs_* 를 rover_bringup src 에(원본 날짜 백업), 새 config 파일이라 colcon 빌드. 로버 안 움직임 | — |
 | [`up_vslam.sh`](../../debug_log/2026-10-20/jobs/up_vslam.sh) | (10-20 §6) cuVSLAM 실시간 그림자 구성 배포 + 빌드 — /tmp/vs_* 를 rover_bringup src 에(바뀌는 원본은 날짜 붙여 백업), prep_fast 는 /tmp 판 교체. 로버 안 움직임 | — |
@@ -1818,7 +1818,7 @@
 | [`anal_birth_vs_slice.py`](../../debug_log/2026-10-21/jobs/anal_birth_vs_slice.py) | anal_birth_vs_slice — 전역 LETHAL 칸(저장 지도 밖)이 처음 생긴 그 순간, nvblox 슬라이스(바로 그때 받은 판)도 그 자리를 점유로 갖고 있었나. (2026-10-21 §13, PC) | 10-21 §13 · 10-21 §23 |
 | [`anal_cells_shift_xcorr.py`](../../debug_log/2026-10-21/jobs/anal_cells_shift_xcorr.py) | anal_cells_shift_xcorr — 두 시각의 전역 LETHAL 칸(저장 지도 칸 제외) 집합을 겹쳐, 가장 잘 겹치는 이동량을 찾는다. (2026-10-21 §13, PC) | 10-21 §13 · 10-21 §23 |
 | [`anal_cmd_dips.py`](../../debug_log/2026-10-21/jobs/anal_cmd_dips.py) | anal_cmd_dips — 주행 중 /cmd_vel 전진 명령이 0 근처(< 0.01 m/s)로 떨어진 '짧은 멈칫'을 묶어 세고, 바로 앞(≤ 1.5 s) nav2 사건과 맞춘다. (2026-10-21 §11, PC) | 10-21 §11.3 · 10-21 §23 |
-| [`anal_dip_events.py`](../../debug_log/2026-10-21/jobs/anal_dip_events.py) | anal_dip_events — /cmd_vel 전진 명령이 0 근처(< 0.01)로 떨어진 묶음마다, 0.01 s 시각 nav2 사건(앞 2 s ~ 뒤 0.5 s)과 명령값 흐름을 나란히. (2026-10-21 §12, PC) | 10-21 §12 · 10-21 §23 · 10-22 §4.2 · … +2 |
+| [`anal_dip_events.py`](../../debug_log/2026-10-21/jobs/anal_dip_events.py) | anal_dip_events — /cmd_vel 전진 명령이 0 근처(< 0.01)로 떨어진 묶음마다, 0.01 s 시각 nav2 사건(앞 2 s ~ 뒤 0.5 s)과 명령값 흐름을 나란히. (2026-10-21 §12, PC) | 10-21 §12 · 10-21 §23 · 10-22 §16 · … +2 |
 | [`anal_goal_block.py`](../../debug_log/2026-10-21/jobs/anal_goal_block.py) | anal_goal_block — 목표 주변이 왜 막혔나: 목표점 둘레의 전역 코스트맵 칸 · 라이다 점을 시각별로. (2026-10-21 §10, PC) | 10-21 §10 · 10-21 §23 |
 | [`anal_mx1.py`](../../debug_log/2026-10-21/jobs/anal_mx1.py) | anal_mx1 — 10-21 §19 번갈이 중 수동 노출 · 게인 시험(시험 컨테이너 안, 로버 안 움직임). | 10-21 §19 · 10-21 §23 |
 | [`anal_mx2_leak.py`](../../debug_log/2026-10-21/jobs/anal_mx2_leak.py) | 10-21 §19.3 끈 프레임 점 새어 듦 — 저장된 한 장씩(설정당 1 장, 참고값): 흰 점(top-hat 5×5 > 20) 연결 성분 수, 전체 · 아래 1/4 | 10-21 §23 |
@@ -1827,10 +1827,10 @@
 | [`anal_phantom_cells.py`](../../debug_log/2026-10-21/jobs/anal_phantom_cells.py) | anal_phantom_cells — 전역 코스트맵의 LETHAL(값 100) 칸을 근거별로 나눈다: 저장 지도(/map 점유)에 있음 · 지금 라이다 점 근처 · 둘 다 아님(= 카메라 층만, '유령' 후보). (2026-10-21 §13, PC) | 10-21 §13 · 10-21 §14 · 10-21 §15 · … +3 |
 | [`anal_phantom_shift.py`](../../debug_log/2026-10-21/jobs/anal_phantom_shift.py) | anal_phantom_shift — 가설 검사: '카메라 층만' LETHAL 칸은 nvblox 가 odom 좌표로 기억한 진짜 벽 · 상자가, 그 뒤 SLAM 의 map→odom 보정이 바뀌면서 | 10-21 §13 · 10-21 §23 |
 | [`anal_pr1.py`](../../debug_log/2026-10-21/jobs/anal_pr1.py) | anal_pr1 — 10-21 §21 깊이 프리셋 정지 시험(호스트, 로버 안 움직임). | 10-21 §21 · 10-21 §23 · 10-22 §14 |
-| [`anal_stops.py`](../../debug_log/2026-10-21/jobs/anal_stops.py) | anal_stops — 주행 중 '멈춤' 구간 찾기: EKF 속도(\|v\| < 0.01 m/s 이고 \|ω\| < 0.05 rad/s)가 1 s 넘게 이어진 구간. (2026-10-21 §11, PC) | 10-21 §11.3 · 10-21 §23 · 10-22 §4.2 · … +3 |
-| [`anal_topic_gaps.py`](../../debug_log/2026-10-21/jobs/anal_topic_gaps.py) | anal_topic_gaps — bag 안 토픽별 수신 시각(기록 시각) 기준 평균 Hz · 0.5 s 넘는 끊김 수 · 최대 간격. (2026-10-21 §7, PC) | 10-21 §7 · 10-21 §23 · 10-22 §20 |
+| [`anal_stops.py`](../../debug_log/2026-10-21/jobs/anal_stops.py) | anal_stops — 주행 중 '멈춤' 구간 찾기: EKF 속도(\|v\| < 0.01 m/s 이고 \|ω\| < 0.05 rad/s)가 1 s 넘게 이어진 구간. (2026-10-21 §11, PC) | 10-21 §11.3 · 10-21 §23 · 10-22 §16 · … +4 |
+| [`anal_topic_gaps.py`](../../debug_log/2026-10-21/jobs/anal_topic_gaps.py) | anal_topic_gaps — bag 안 토픽별 수신 시각(기록 시각) 기준 평균 Hz · 0.5 s 넘는 끊김 수 · 최대 간격. (2026-10-21 §7, PC) | 10-21 §23 · 10-21 §7 · 10-22 §20 |
 | [`anal_zone_ghosts.py`](../../debug_log/2026-10-21/jobs/anal_zone_ghosts.py) | anal_zone_ghosts — 지정 영역에서 주행 한 구간 동안 로컬 코스트맵 LETHAL 이 한 번이라도 된 칸(저장 지도 0.10 m 밖 · 그 순간 라이다 점 0.10 m 밖)을 모두 센다. (2026-10-21 §15, PC) | 10-21 §15 · 10-21 §21 · 10-21 §21.2 · … +5 |
-| [`chk_isaac_rs_prereq.sh`](../../debug_log/2026-10-21/jobs/chk_isaac_rs_prereq.sh) | 2번(컨테이너 RealSense 층 + realsense_splitter) 사전 조사 — 읽기만 (10-21 §17) | — |
+| [`chk_isaac_rs_prereq.sh`](../../debug_log/2026-10-21/jobs/chk_isaac_rs_prereq.sh) | 2번(컨테이너 RealSense 층 + realsense_splitter) 사전 조사 — 읽기만 (10-21 §17) | 10-21 §17 |
 | [`chk_isaac_rs_prereq2.sh`](../../debug_log/2026-10-21/jobs/chk_isaac_rs_prereq2.sh) |  | — |
 | [`chk_isaac_rs_prereq3.sh`](../../debug_log/2026-10-21/jobs/chk_isaac_rs_prereq3.sh) |  | — |
 | [`chk_isaac_rs_prereq4.sh`](../../debug_log/2026-10-21/jobs/chk_isaac_rs_prereq4.sh) |  | — |
@@ -1841,24 +1841,24 @@
 | [`chk_nv_probe.sh`](../../debug_log/2026-10-21/jobs/chk_nv_probe.sh) | nv1 실패 판별: (1) 시험 컨테이너 쓰기 층(apt 설치)을 이미지로 보존 (2) /dev 전체 마운트 빼고 옛 컨테이너와 같은 옵션으로 재생성 | — |
 | [`chk_rs_apt_sim.sh`](../../debug_log/2026-10-21/jobs/chk_rs_apt_sim.sh) | 시험 컨테이너 안 apt 모의 설치(-s, 실제 설치 안 함): 옛 컨테이너와 같은 판의 nvblox·cuVSLAM 을 넣으면 realsense 4.51.1 이 바뀌는가 | 10-21 §17.1 · 10-21 §23 |
 | [`chk_rs_build.sh`](../../debug_log/2026-10-21/jobs/chk_rs_build.sh) |  | — |
-| [`chk_rs_ws.sh`](../../debug_log/2026-10-21/jobs/chk_rs_ws.sh) | 왜 colcon 이 realsense_splitter 를 못 찾나 · nvblox_ros/cuVSLAM 은 어디 설치돼 있나 | 10-21 §17.1 |
+| [`chk_rs_ws.sh`](../../debug_log/2026-10-21/jobs/chk_rs_ws.sh) | 왜 colcon 이 realsense_splitter 를 못 찾나 · nvblox_ros/cuVSLAM 은 어디 설치돼 있나 | 10-21 §17.1 · 10-21 §23 |
 | [`chk_rs_ws2.sh`](../../debug_log/2026-10-21/jobs/chk_rs_ws2.sh) | 옛 컨테이너의 nvblox/cuVSLAM 출처(apt?) · 새 이미지에 있나 · 분리 노드 의존성 | 10-21 §17.1 |
 | [`chk_splitter_src.sh`](../../debug_log/2026-10-21/jobs/chk_splitter_src.sh) |  | — |
 | [`fig_day_summary_1021.py`](../../debug_log/2026-10-21/jobs/fig_day_summary_1021.py) | 10-21 하루 정리 페이지 생성기 — 본문 수치는 SUMMARY.md §0~§22 에서 옮김, 그림은 figures/ 의 PNG 를 그대로 넣음 | 10-21 §22 |
 | [`fig_mx2_page.py`](../../debug_log/2026-10-21/jobs/fig_mx2_page.py) | 10-21 §19.3 mx2 결과 정리 페이지 생성기 — 수치는 outputs/run_mx2.txt · anal_mx2_leak.txt 에서 옮김, 그림은 mx_img/*.png 를 그대로 넣음 | 10-21 §19.3 |
 | [`job550_f0run.py`](../../debug_log/2026-10-21/jobs/job550_f0run.py) | F0 코스 확장 러너 (2026-09-23): 상자 코스와 무관한 연속 목표 주행 + 왕복 복귀 오차 계측. | 09-23 16 · 09-28 §12 · 09-28 §16 · … +5 |
-| [`job551_f0drive.sh`](../../debug_log/2026-10-21/jobs/job551_f0drive.sh) | F0 주행 래퍼(Jetson, 2026-09-23): 일반 게이트(A 프로세스·B 보드·J nvblox·C SLAM·G2 출발 자세) → bag·tegrastats·top·RSS → job550 → 메타(job453). | 09-23 16 · 10-07 §2.2 · 10-12 §3.4 · … +8 |
+| [`job551_f0drive.sh`](../../debug_log/2026-10-21/jobs/job551_f0drive.sh) | F0 주행 래퍼(Jetson, 2026-09-23): 일반 게이트(A 프로세스·B 보드·J nvblox·C SLAM·G2 출발 자세) → bag·tegrastats·top·RSS → job550 → 메타(job453). | 09-23 16 · 10-07 §2.2 · 10-12 §3.4 · … +9 |
 | [`job613_pathyaw.py`](../../debug_log/2026-10-21/jobs/job613_pathyaw.py) | 경로 끝 방향 조회(단독 프로세스, 2026-09-28 §20): 현재 위치 → (GX, GY) 경로를 planner(GridBased)에서 받아 끝 0.3 m 구간 방향(rad)을 출력. | 09-28 §20 · 10-13 §4 · 10-21 §3 |
 | [`mx_cam.launch.py`](../../debug_log/2026-10-21/jobs/mx_cam.launch.py) | 10-21 §19 mx1 — 시험 컨테이너(isaac_rs_test, 드라이버 4.51.1 · librealsense 2.55.1 RSUSB) 안 카메라만. | 10-21 §19 · 10-21 §23 |
 | [`nv_static.launch.py`](../../debug_log/2026-10-21/jobs/nv_static.launch.py) | 10-21 §18 3번 정지 시험 nv1 — NVIDIA 권장 구성 그대로: RealSense 드라이버(4.51.1-isaac) + realsense_splitter + cuVSLAM 을 한 component container 에. | 10-21 §18 · 10-21 §18.2 · 10-21 §23 |
 | [`prep_back_1021.sh`](../../debug_log/2026-10-21/jobs/prep_back_1021.sh) | 시험 컨테이너 잔여 프로세스 정리 뒤 운용 구성 복귀 | — |
-| [`put_one.sh`](../../debug_log/2026-10-21/jobs/put_one.sh) | (PC·WSL) 스크래치패드의 파일을 Jetson /tmp 로 전송(CR 제거). 인자: 파일명 ... 비밀번호는 run_jn.sh 에서 읽는다(여기에 적지 않음). | 10-20 §2.1 · 10-21 §3 |
-| [`run_f0.sh`](../../debug_log/2026-10-21/jobs/run_f0.sh) | F0 PC 러너: Jetson 에 파일 전송(재시도 3) → job551 을 setsid nohup 으로 기동 → 로그 폴링(끊겨도 주행은 계속) → 끝나면 산출물 회수 | 09-23 16 · 09-23 §19 · 10-01 §7.2 · … +11 |
-| [`run_f2c.sh`](../../debug_log/2026-10-21/jobs/run_f2c.sh) | 10-07 §2: rf2o + G4 켠 F2 순회(10-02 f2b 와 같은 10 목표). 목표 문자열은 래퍼 안에(10-02 §6.2 wsl 인자 분리 실수). 인자: NAME NOTE GIT_HEAD [rest5] | 10-07 §2.1 · 10-07 §2.2 · 10-07 §2.4 · … +31 |
+| [`put_one.sh`](../../debug_log/2026-10-21/jobs/put_one.sh) | (PC·WSL) 스크래치패드의 파일을 Jetson /tmp 로 전송(CR 제거). 인자: 파일명 ... 비밀번호는 run_jn.sh 에서 읽는다(여기에 적지 않음). | 10-20 §2.1 · 10-21 §3 · 10-22 §0 |
+| [`run_f0.sh`](../../debug_log/2026-10-21/jobs/run_f0.sh) | F0 PC 러너: Jetson 에 파일 전송(재시도 3) → job551 을 setsid nohup 으로 기동 → 로그 폴링(끊겨도 주행은 계속) → 끝나면 산출물 회수 | 09-23 16 · 09-23 §19 · 10-01 §7.2 · … +13 |
+| [`run_f2c.sh`](../../debug_log/2026-10-21/jobs/run_f2c.sh) | 10-07 §2: rf2o + G4 켠 F2 순회(10-02 f2b 와 같은 10 목표). 목표 문자열은 래퍼 안에(10-02 §6.2 wsl 인자 분리 실수). 인자: NAME NOTE GIT_HEAD [rest5] | 10-07 §11 · 10-07 §2.1 · 10-07 §2.2 · … +33 |
 | [`run_mx1.sh`](../../debug_log/2026-10-21/jobs/run_mx1.sh) | 10-21 §19 mx1 — 로버 안 움직임. 주행 스택 내리고(base 유지) 시험 컨테이너 isaac_rs_test 에서 카메라만 띄워 | 10-21 §19 · 10-21 §23 |
 | [`run_mx2.sh`](../../debug_log/2026-10-21/jobs/run_mx2.sh) | 10-21 §19.2 mx2 — 로버 안 움직임. 주행 스택 내리고(base 유지) 시험 컨테이너에서 카메라만, P30 번갈이. | 10-21 §19.2 · 10-21 §23 |
 | [`run_nv_static.sh`](../../debug_log/2026-10-21/jobs/run_nv_static.sh) | 10-21 §18 3번 정지 시험 nv1 — 로버 안 움직임. 주행 스택을 내리고(base 유지) 새 이미지 컨테이너 isaac_rs_test 안에서 | 10-21 §18 · 10-21 §23 |
-| [`run_pr1.sh`](../../debug_log/2026-10-21/jobs/run_pr1.sh) | 10-21 §21 pr1 — 로버 안 움직임. (1) camera.launch.py 에 depth_preset 인자 배포(Jetson 사본이 저장소 HEAD 와 같을 때만) | 10-21 §21 · 10-21 §23 |
+| [`run_pr1.sh`](../../debug_log/2026-10-21/jobs/run_pr1.sh) | 10-21 §21 pr1 — 로버 안 움직임. (1) camera.launch.py 에 depth_preset 인자 배포(Jetson 사본이 저장소 HEAD 와 같을 때만) | 10-21 §21 · 10-21 §23 · 10-22 §14 |
 | [`up_rs_apt.sh`](../../debug_log/2026-10-21/jobs/up_rs_apt.sh) | 10-21 §17.1 2번 마무리(재): 시험 컨테이너에만 옛 컨테이너와 같은 판 nvblox 3.2.5 · cuVSLAM 3.2.6 · bringup 3.2.13 apt 설치(모의 결과 Inst 46 · Remv 0 · realsense 변경 없음) | 10-21 §23 |
 | [`up_rs_image_build.sh`](../../debug_log/2026-10-21/jobs/up_rs_image_build.sh) | 10-21 §17 — 새 이미지 isaac_ros_dev-aarch64-rs 빌드(지금 이미지 + NVIDIA Dockerfile.realsense). 백그라운드, 로그 ~/rs_build/build.log | — |
 | [`up_rs_splitter.sh`](../../debug_log/2026-10-21/jobs/up_rs_splitter.sh) | 10-21 §17 2번 마무리 — 새 이미지로 시험 컨테이너 isaac_rs_test 생성(지금 컨테이너와 같은 옵션 + /dev 마운트: 카메라 재열거 대비), | 10-21 §17.1 · 10-21 §18.2 · 10-21 §23 |
@@ -1867,21 +1867,21 @@
 
 | 파일 | 설명 | 언급 |
 |---|---|---|
-| [`anal_box_detect.py`](../../debug_log/2026-10-22/jobs/anal_box_detect.py) | anal_box_detect — 출발점 낮은 상자 감지 시각(2026-10-22 §2, PC). | 10-22 §2 · 10-22 §3 · 10-22 §5 |
-| [`anal_box_maps_series.py`](../../debug_log/2026-10-22/jobs/anal_box_maps_series.py) | anal_box_maps_series — 상자 영역(기록 상자 ±0.05 m) 칸 수를 세 지도에서 시간 묶음별로: nvblox 조각 · 로컬 코스트맵 LETHAL · 전역 코스트맵 LETHAL, 로버 위치 · 상자까지 거리 · 방위(2026-10-2 | 10-22 §13 · 10-22 §13.1 · 10-22 §15 |
+| [`anal_box_detect.py`](../../debug_log/2026-10-22/jobs/anal_box_detect.py) | anal_box_detect — 출발점 낮은 상자 감지 시각(2026-10-22 §2, PC). | 10-22 §14 · 10-22 §2 · 10-22 §3 · … +1 |
+| [`anal_box_maps_series.py`](../../debug_log/2026-10-22/jobs/anal_box_maps_series.py) | anal_box_maps_series — 상자 영역(기록 상자 ±0.05 m) 칸 수를 세 지도에서 시간 묶음별로: nvblox 조각 · 로컬 코스트맵 LETHAL · 전역 코스트맵 LETHAL, 로버 위치 · 상자까지 거리 · 방위(2026-10-2 | 10-22 §13 · 10-22 §13.1 · 10-22 §14 · … +1 |
 | [`anal_box_outside.py`](../../debug_log/2026-10-22/jobs/anal_box_outside.py) | anal_box_outside — 복귀 때 상자 칸 밖(테두리 밖)에 찍힌 nvblox 칸이 언제 · 어디서 본 것인지(2026-10-22 §11, PC). | 10-22 §11 · 10-22 §12 |
 | [`anal_box_series.py`](../../debug_log/2026-10-22/jobs/anal_box_series.py) | anal_box_series — 출발점 낮은 상자 영역(1.15~1.35, -0.20~0.05) 로컬 LETHAL 칸 수와 로버-상자 거리를 10 s 묶음으로(주행 전체). (2026-10-22 §3, PC) | 10-22 §3 |
-| [`anal_carve.py`](../../debug_log/2026-10-22/jobs/anal_carve.py) | anal_carve — 깊이 원시 화소로, 지정 칸 기둥(지도 x0~x1 · y0~y1 · 높이 z 0.06~0.30 = 조각 띠)에 대해 프레임마다 | 10-22 §11.3 · 10-22 §13 |
+| [`anal_carve.py`](../../debug_log/2026-10-22/jobs/anal_carve.py) | anal_carve — 깊이 원시 화소로, 지정 칸 기둥(지도 x0~x1 · y0~y1 · 높이 z 0.06~0.30 = 조각 띠)에 대해 프레임마다 | 10-22 §11.3 · 10-22 §13 · 10-22 §14 |
 | [`anal_cell_timeline.py`](../../debug_log/2026-10-22/jobs/anal_cell_timeline.py) | anal_cell_timeline — 지정 칸들이 nvblox 조각에서 장애물이었던 시간 구간과, 그 구간에 상자가 카메라에 보였는지(2026-10-22 §11.2, PC). | 10-22 §11.2 · 10-22 §14.2 · 10-22 §16 |
-| [`anal_contact.py`](../../debug_log/2026-10-22/jobs/anal_contact.py) | anal_contact — 차체 외곽(footprint)과 출발점 낮은 상자(기록 위치) 사이 최소 거리를 시간순으로, 가까울 때 그 순간 지도들이 상자를 갖고 있었는지(2026-10-22 §13, PC). | 10-22 §13 · 10-22 §15 · 10-23 §5 · … +4 |
+| [`anal_contact.py`](../../debug_log/2026-10-22/jobs/anal_contact.py) | anal_contact — 차체 외곽(footprint)과 출발점 낮은 상자(기록 위치) 사이 최소 거리를 시간순으로, 가까울 때 그 순간 지도들이 상자를 갖고 있었는지(2026-10-22 §13, PC). | 10-22 §13 · 10-22 §14 · 10-22 §15 · … +6 |
 | [`anal_cpu_nodes.py`](../../debug_log/2026-10-22/jobs/anal_cpu_nodes.py) | anal_cpu_nodes — 러너 proc 로그(시각 · pid · 누적 CPU 틱 · (comm))로 주행 동안 프로세스별 평균 CPU %(한 코어 = 100 %) (2026-10-22 §18, PC). | 10-22 §18 |
 | [`anal_door_pass.py`](../../debug_log/2026-10-22/jobs/anal_door_pass.py) | anal_door_pass — 전역 코스트맵에서 로버 → 목표로 '통과 가능한 칸'(값 < 99, 99 = INSCRIBED · 100 = LETHAL)만 밟아 닿는지(4-이웃 BFS), 문 줄(y 고정) 의 칸 값(2026-10-22 §6, PC). | 10-22 §6 · 10-22 §7 |
 | [`anal_memory_shift.py`](../../debug_log/2026-10-22/jobs/anal_memory_shift.py) | anal_memory_shift — 출발 때 본 상자를 nvblox 가 odom 좌표로 기억한다고 할 때, 그 뒤 map→odom 보정만으로 지도에서 얼마나 옮겨 보이는지(2026-10-22 §11, PC). | 10-15 24.1 · 10-22 §11 · 10-22 §11.3 · … +1 |
 | [`anal_mo_window.py`](../../debug_log/2026-10-22/jobs/anal_mo_window.py) | anal_mo_window — map→odom 이 W 초 창 안에서 얼마나 바뀌는지(= 그 창 동안 기억된 물체가 로버 기준으로 틀어지는 양)를 주행 앞 · 뒤 절반으로 나눠 (2026-10-22 §11.4, PC). | 10-22 §11.4 · 10-22 §12 |
-| [`anal_nav_ms.py`](../../debug_log/2026-10-22/jobs/anal_nav_ms.py) | anal_nav_ms — nav2.log(PC 사본) 사건을 0.01 s 시각(KST)으로 — 10-21 chk_nav_ms.sh 의 PC 판(2026-10-22 §4). | 10-22 §4 · 10-22 §6 · 10-22 §16 · … +1 |
+| [`anal_nav_ms.py`](../../debug_log/2026-10-22/jobs/anal_nav_ms.py) | anal_nav_ms — nav2.log(PC 사본) 사건을 0.01 s 시각(KST)으로 — 10-21 chk_nav_ms.sh 의 PC 판(2026-10-22 §4). | 10-22 §16 · 10-22 §4 · 10-22 §6 · … +1 |
 | [`anal_rec_effect.py`](../../debug_log/2026-10-22/jobs/anal_rec_effect.py) | anal_rec_effect — 깊이 기록이 nvblox 에 영향을 줬나(2026-10-22 §7, PC): 출발 뒤 T 초 동안 nvblox 조각 · 로컬 코스트맵 주기, 조각 지연(bag 수신 − header.stamp) 분포. | 10-22 §7 |
-| [`anal_slice_zones.py`](../../debug_log/2026-10-22/jobs/anal_slice_zones.py) | anal_slice_zones — nvblox 조각(실시간 또는 재생)으로 유령 · 상자 지표(2026-10-22 §9, PC). 기준 §5. | 10-22 §9.1 · 10-22 §14.2 |
-| [`anal_slip_segments.py`](../../debug_log/2026-10-22/jobs/anal_slip_segments.py) | anal_slip_segments — 주행을 시간 묶음으로 나눠 휠 · EKF · SLAM 의 회전 · 이동을 나란히(2026-10-22 §4, PC). | 10-22 §4.2 · 10-22 §12 |
+| [`anal_slice_zones.py`](../../debug_log/2026-10-22/jobs/anal_slice_zones.py) | anal_slice_zones — nvblox 조각(실시간 또는 재생)으로 유령 · 상자 지표(2026-10-22 §9, PC). 기준 §5. | 10-22 §14.2 · 10-22 §9.1 |
+| [`anal_slip_segments.py`](../../debug_log/2026-10-22/jobs/anal_slip_segments.py) | anal_slip_segments — 주행을 시간 묶음으로 나눠 휠 · EKF · SLAM 의 회전 · 이동을 나란히(2026-10-22 §4, PC). | 10-22 §12 · 10-22 §4.2 |
 | [`chk_abort_f2dr1.sh`](../../debug_log/2026-10-22/jobs/chk_abort_f2dr1.sh) | 10-22 §6 f2dr1 목표 1 ABORTED(29 s) — 13:50:20~13:51:00 nav2 사건(시각 KST) + 로그 원본을 ~/bags/logs_f2dr1 로 보관 | — |
 | [`chk_day_start_1022.sh`](../../debug_log/2026-10-22/jobs/chk_day_start_1022.sh) | 10-22 하루 시작 점검(읽기만): 신원 · 재부팅 · 주소 · prep 파일 · camera.launch 판 · 컨테이너 · 스택 · 디스크 · Wi-Fi 기록 | 10-22 §0 |
 | [`chk_f2sm3_logs.sh`](../../debug_log/2026-10-22/jobs/chk_f2sm3_logs.sh) | 10-22 §19 f2sm3 그림자 판정 보조: vslam_twist 10 s 통계(버림) · cuVSLAM 프레임 간격 경고 · nav_guard 로그 이상 — 로버 안 움직임 | 10-22 §20 |
@@ -1908,13 +1908,13 @@
 | [`rp_clr_1022.sh`](../../debug_log/2026-10-22/jobs/rp_clr_1022.sh) | 10-22 §11.3 상자 밖 칸이 안 지워지는 이유 재생 시험: f2dr2 깊이 bag → site 거리 1.0 vox · 통합 거리 2.0 m (기준 = mw01 재생). 로버 안 움직임 | 10-22 §11.3 |
 | [`rp_int2_1022.sh`](../../debug_log/2026-10-22/jobs/rp_int2_1022.sh) | 10-22 §14 단계 3: f2lp1 깊이 bag(프리셋 3) → 통합 거리 1.4(R0 기준) · 2.0 재생. 로버 안 움직임 | 10-22 §14.1 · 10-22 §14.2 |
 | [`rp_mw_1022.sh`](../../debug_log/2026-10-22/jobs/rp_mw_1022.sh) | 10-22 §9 min_weight 재생 A/B: f2dr2 깊이 bag → 컨테이너 두 번째 nvblox(ROS_DOMAIN_ID 42) — R0(기준 0.1) · mw1 · mw2. 로버 안 움직임 | 10-22 §9 |
-| [`run_f2c.sh`](../../debug_log/2026-10-22/jobs/run_f2c.sh) | 10-07 §2: rf2o + G4 켠 F2 순회(10-02 f2b 와 같은 10 목표). 목표 문자열은 래퍼 안에(10-02 §6.2 wsl 인자 분리 실수). 인자: NAME NOTE GIT_HEAD [rest5] | 10-07 §2.1 · 10-07 §2.2 · 10-07 §2.4 · … +31 |
+| [`run_f2c.sh`](../../debug_log/2026-10-22/jobs/run_f2c.sh) | 10-07 §2: rf2o + G4 켠 F2 순회(10-02 f2b 와 같은 10 목표). 목표 문자열은 래퍼 안에(10-02 §6.2 wsl 인자 분리 실수). 인자: NAME NOTE GIT_HEAD [rest5] | 10-07 §11 · 10-07 §2.1 · 10-07 §2.2 · … +33 |
 | [`run_pr2.sh`](../../debug_log/2026-10-22/jobs/run_pr2.sh) | 10-22 §14 pr2 — 로버 안 움직임. 깊이 프리셋 0 · 3 · 5(Medium Density) 정지 비교(10-21 pr1 과 같은 도구 anal_pr1.py, 같은 자리 · 같은 측정 20 s). | 10-22 §14 |
 | [`stop_now.sh`](../../debug_log/2026-10-22/jobs/stop_now.sh) | 10-22 §12 사용자 "그만 멈춰라" — 러너 · Nav2 주행 노드 종료 → 펌웨어 watchdog(cmd_vel 500 ms 무수신 정지) + 0 속도 발행 | 10-22 §12.1 |
 | [`up_cam_1022.sh`](../../debug_log/2026-10-22/jobs/up_cam_1022.sh) | 10-22 §10 camera.launch.py 배포: depth_preset 기본 -1 → 3 (사용자 결정). 이전 판 sha 확인 → /tmp 사본 → 교체 → sha 확인. 로버 안 움직임 | 10-22 §10 |
 | [`up_navguard_1022.sh`](../../debug_log/2026-10-22/jobs/up_navguard_1022.sh) | 10-22 §18 nav_guard.py 배포: 피드백 기록 0.2 s 간격 · 앞에서부터 버림(CPU 25 % 대책). 이전 sha 6b7381c5d260 확인 → /tmp 사본 → 교체(실행 권한 유지). 다음 prep 부터 적용. 로버 안 움직임 | 10-22 §18 |
 | [`up_nvy_1022.sh`](../../debug_log/2026-10-22/jobs/up_nvy_1022.sh) | 10-22 §15 nvblox_local.yaml 배포: 통합 거리 1.4 → 2.0 (사용자 결정). 이전 sha 확인(e86434bd8921 = Jetson 판 — 저장소 HEAD 와 머리 주석 3 줄(10-19 정정)만 다름, 값 같음) → /t | 10-22 §15 |
-| [`up_prep_1022.sh`](../../debug_log/2026-10-22/jobs/up_prep_1022.sh) | 10-22 재부팅 뒤 prep 스크립트 재전송 — 저장소 Docs/tools 의 prep_fast.sh · prep_patrol.sh · chk_prep.py 를 base64 로 붙여 /tmp 에 씀(생성은 PC, 본문 생략) | 10-22 §0 · 10-23 §5.1 · 10-23 §16 |
+| [`up_prep_1022.sh`](../../debug_log/2026-10-22/jobs/up_prep_1022.sh) | 10-22 재부팅 뒤 prep 스크립트 재전송 — 저장소 Docs/tools 의 prep_fast.sh · prep_patrol.sh · chk_prep.py 를 base64 로 붙여 /tmp 에 씀(생성은 PC, 본문 생략) | 10-22 §0 · 10-23 §16 · 10-23 §5.1 |
 
 ## 2026-10-23 (39)
 
@@ -1925,14 +1925,14 @@
 | [`anal_ctrl_rate.py`](../../debug_log/2026-10-23/jobs/anal_ctrl_rate.py) | anal_ctrl_rate — MPPI 컨트롤러가 10 Hz 를 실제로 내는가: nav2 로그 경고 수 + bag 의 지령 · 컨트롤러 발행 간격(2026-10-23, PC, 로버 안 움직임). | 10-23 §22.3 |
 | [`anal_ginfl_path.py`](../../debug_log/2026-10-23/jobs/anal_ginfl_path.py) | anal_ginfl_path — 전역 inflation 감쇠(cost_scaling_factor)를 바꾸면 복귀 경로가 실제 상자에서 얼마나 떨어지나(2026-10-23 §1, PC, 로버 안 움직임). | 10-23 §1.1 |
 | [`anal_motion_window.py`](../../debug_log/2026-10-23/jobs/anal_motion_window.py) | anal_motion_window — 지정 시각 앞 W 초 동안 이동량을 소스별로: 명령(/cmd_vel 적분) · 휠(/wheel_odom 적분) · 주 EKF(/odometry/filtered 자세 차) · | 10-23 §10.1 |
-| [`anal_mppi_stop.py`](../../debug_log/2026-10-23/jobs/anal_mppi_stop.py) | anal_mppi_stop — MPPI 가 스스로 0 근처를 고른 구간에서 무엇과 무엇이 맞섰나(2026-10-23 §7, PC, 로버 안 움직임). | 10-23 §7 · 10-23 §12 |
+| [`anal_mppi_stop.py`](../../debug_log/2026-10-23/jobs/anal_mppi_stop.py) | anal_mppi_stop — MPPI 가 스스로 0 근처를 고른 구간에서 무엇과 무엇이 맞섰나(2026-10-23 §7, PC, 로버 안 움직임). | 10-23 §12 · 10-23 §7 |
 | [`anal_pathalign_occ.py`](../../debug_log/2026-10-23/jobs/anal_pathalign_occ.py) | anal_pathalign_occ — 상자 옆에서 MPPI PathAlignCritic 이 꺼졌을까: 컨트롤러가 받은 경로(/transformed_global_plan)의 점 중 | 10-23 §3 |
 | [`anal_pba_replay.py`](../../debug_log/2026-10-23/jobs/anal_pba_replay.py) | anal_pba_replay — PathBlockedAhead 판정을 bag 으로 다시 돌려 only_new 전후를 비교(2026-10-23 §20.7, PC, 로버 안 움직임). | 10-23 §20.7 |
 | [`anal_pba_replay_extend.py`](../../debug_log/2026-10-23/jobs/anal_pba_replay_extend.py) | anal_pba_replay_extend — (10-23 §20.7) only_new 로 막힘을 안 셌다면 그 경로를 목표 도착까지 계속 썼을 것: f2rp3 경로 #3(14:47:09 서쪽 통로)을 | 10-23 §20.7 |
 | [`anal_pba_timing.sh`](../../debug_log/2026-10-23/jobs/anal_pba_timing.sh) | 10-23 §20.2 PathBlockedAhead '처음 막힘' 이 경로를 받은 뒤 몇 초에 나왔나(PC, 로버 안 움직임). | 10-23 §20.2 |
 | [`anal_plan_series.py`](../../debug_log/2026-10-23/jobs/anal_plan_series.py) | anal_plan_series — 복귀 중 다시 그려진 전역 경로(/plan · /plan_smoothed)마다 실제 상자까지의 여유를, 출발점(로버 자리) 근처를 빼고 (2026-10-23 §4, PC). | 10-23 §4 · 10-23 §5 |
 | [`anal_pose_at.py`](../../debug_log/2026-10-23/jobs/anal_pose_at.py) | anal_pose_at — 지정 시각(현지 HH:MM:SS.ss)들의 로버 지도 자세(map→odom ∘ odom→base_link) 출력(10-23 §20.3, PC). 인자: bag 시각... | 10-23 §20.3 |
-| [`anal_track_dev.py`](../../debug_log/2026-10-23/jobs/anal_track_dev.py) | anal_track_dev — 상자 옆을 지날 때 '계획 경로의 여유' 와 '실제로 지나간 여유' 의 차이: 로버가 경로에서 상자 쪽으로 얼마나 벗어났나(2026-10-23 §2, PC). | 10-23 §2 · 10-23 §5 · 10-23 §10 |
+| [`anal_track_dev.py`](../../debug_log/2026-10-23/jobs/anal_track_dev.py) | anal_track_dev — 상자 옆을 지날 때 '계획 경로의 여유' 와 '실제로 지나간 여유' 의 차이: 로버가 경로에서 상자 쪽으로 얼마나 벗어났나(2026-10-23 §2, PC). | 10-23 §10 · 10-23 §2 · 10-23 §5 |
 | [`anal_track_err.py`](../../debug_log/2026-10-23/jobs/anal_track_err.py) | anal_track_err — 컨트롤러 경로 추종 오차: 각 전역 경로(/plan_smoothed)가 쓰이는 동안(다음 경로가 올 때까지) 로버 중심이 그 경로 선에서 옆으로 얼마나 떨어졌나 | 10-23 §14 · 10-23 §17 |
 | [`chk_ctrl_gap.py`](../../debug_log/2026-10-23/jobs/chk_ctrl_gap.py) | chk_ctrl_gap — 컨트롤러 출력 토픽(/trajectories · /transformed_global_plan)이 정지 구간에 실제로 나왔나: 수신 간격 · header 시각(2026-10-23 §7, PC). | 10-23 §7 |
 | [`chk_day_start_1023.sh`](../../debug_log/2026-10-23/jobs/chk_day_start_1023.sh) | 10-23 하루 시작 점검(prep 무출력 뒤): 신원 · 가동 시간 · /tmp prep 파일 · 스택 프로세스 · 배터리 — 로버 안 움직임 | 10-23 §5.1 |
@@ -1956,7 +1956,7 @@
 | [`prep_op_1022.sh`](../../debug_log/2026-10-23/jobs/prep_op_1022.sh) | 10-22 §5 §10 운용 prep(인자에 depth_preset 없음) — camera.launch 기본값 3 이 적용되는지 확인 | 10-22 §10 · 10-22 §12 · 10-22 §15 · … +1 |
 | [`prep_rp_1023.sh`](../../debug_log/2026-10-23/jobs/prep_rp_1023.sh) | 10-23 §17 A 시험 prep — 운용 기본(prep_patrol: vslam on · 프로젝터 끔 · SHM) + 주기 재계획 끔(REPLAN_HZ 0.01 = 목표당 1 회, 막힘 · 목표 변경 때만 재계획) | 10-23 §17 · 10-23 §20 · 10-23 §20.4 · … +1 |
 | [`prep_von_1023.sh`](../../debug_log/2026-10-23/jobs/prep_von_1023.sh) | 10-23 §10 vslam:=on prep — 운용(프로젝터 상시 끔 · SHM · 프리셋 3 기본 · 통합 2.0)에서 주 EKF 의 odom1 을 rf2o 대신 cuVSLAM 병진 속도로(ekf.launch vslam:=on) | 10-23 §10 |
-| [`up_palign_1023.sh`](../../debug_log/2026-10-23/jobs/up_palign_1023.sh) | 10-23 §5 MPPI PathAlignCritic cost_weight 만 Jetson yaml(소스 · 설치본)에 반영(인자: 값, 기본 28). 실행 중 값은 안 바꿈 — 다음 prep 으로 적용(10-14 실행 중 변경 멈칫 교훈). 로버 안 | 10-23 §5 · 10-23 §10 |
+| [`up_palign_1023.sh`](../../debug_log/2026-10-23/jobs/up_palign_1023.sh) | 10-23 §5 MPPI PathAlignCritic cost_weight 만 Jetson yaml(소스 · 설치본)에 반영(인자: 값, 기본 28). 실행 중 값은 안 바꿈 — 다음 prep 으로 적용(10-14 실행 중 변경 멈칫 교훈). 로버 안 | 10-23 §10 · 10-23 §5 |
 | [`up_pba_onlynew_1023.sh`](../../debug_log/2026-10-23/jobs/up_pba_onlynew_1023.sh) | 10-23 §20.2 PathBlockedAhead only_new 배포: 저장소 cpp · BT xml 을 Jetson 소스에 두고 rover_navigation 만 빌드. 로버 안 움직임(실행 중 스택은 다음 prep 때 새 노드 · xml 을 읽 | 10-23 §20.2 |
 | [`up_prep_patrol_1023.sh`](../../debug_log/2026-10-23/jobs/up_prep_patrol_1023.sh) | 10-23 §16 /tmp/prep_patrol.sh 를 저장소 Docs/tools 판(vslam 기본 · REPLAN_HZ 환경)으로 교체. 로버 안 움직임 | 10-23 §16 |
 
@@ -1975,7 +1975,7 @@
 | [`chk_dev_frame_f2sh2.py`](../../debug_log/2026-10-26/jobs/chk_dev_frame_f2sh2.py) | chk_dev_frame_f2sh2 — f2sh2 복귀 굽은 곳(13:18:25~13:18:38) 경로 이탈이 컨트롤러 탓인지 위치 보정(map→odom) 탓인지 가름 (2026-10-26 §9, PC). | 10-26 §9 |
 | [`chk_smac_fail_cells.py`](../../debug_log/2026-10-26/jobs/chk_smac_fail_cells.py) | Smac 실패 · 성공 순간의 출발(로버) · 목표 자세가 전역 코스트맵에서 어떤 칸인가: 중심 칸 비용, 차체 직사각형(+패딩 0.01) 안 최대 비용 · 치명(100 = 비용 254) · 내접(99 = 253) 칸 수(OccupancyGrid 0~ | 10-26 §19 |
 | [`chk_w3_turn.py`](../../debug_log/2026-10-26/jobs/chk_w3_turn.py) | chk_w3_turn — W3 출발 직후 '전진 명령 0 근처' 구간에 회전 명령 · 실제 회전(EKF)이 있었나 (2026-10-26 §13, PC). 인자: bag 시작HH:MM:SS.s 끝HH:MM:SS.s | 10-26 §13 |
-| [`fig_box_compare.py`](../../debug_log/2026-10-26/jobs/fig_box_compare.py) | fig_box_compare — 복귀 길 상자 옆을 B0(NavFn) 주행과 Smac 주행으로 나란히: 지나간 길 · 차체 자국 · 그때 따른 전역 경로 · 실제 최소 여유 (2026-10-26 §8, PC). | 10-26 §8 · 10-26 §12 |
+| [`fig_box_compare.py`](../../debug_log/2026-10-26/jobs/fig_box_compare.py) | fig_box_compare — 복귀 길 상자 옆을 B0(NavFn) 주행과 Smac 주행으로 나란히: 지나간 길 · 차체 자국 · 그때 따른 전역 경로 · 실제 최소 여유 (2026-10-26 §8, PC). | 10-26 §12 · 10-26 §8 |
 | [`fig_goal_yaw.py`](../../debug_log/2026-10-26/jobs/fig_goal_yaw.py) | fig_goal_yaw — §20.1 목표 방향 시험 결과를 한 장으로: 순간(행) × 목표 방향 더하기(열), 칸 색 = Smac 성공 · 실패, 오른쪽 = 출발 자세 (2026-10-26, PC). | 10-26 §21 |
 | [`fig_real_tiles.py`](../../debug_log/2026-10-26/jobs/fig_real_tiles.py) | fig_real_tiles — 실제 촬영 작업본에서 지정 시각 장면을 뽑아 시각 글씨를 붙여 격자 한 장으로(토큰 절약: 6 장 = 그림 1 장) (2026-10-26 §16, PC). | 10-26 §16 |
 | [`fig_smac_expansion.py`](../../debug_log/2026-10-26/jobs/fig_smac_expansion.py) | fig_smac_expansion — Smac Hybrid 가 경로를 찾으며 '어디까지 뻗어 봤나'(방문 노드)를 그림 · 영상으로 (2026-10-26 §22, PC, 로버 안 움직임). | 10-26 §22 · 10-27 §2.1 |
@@ -2051,14 +2051,14 @@
 | [`get_logs_f2st1.sh`](../../debug_log/2026-10-27/jobs/get_logs_f2st1.sh) | (PC·WSL) 10-27 f2st1 nav2 · slam · sensors 로그 회수(prep 이 덮기 전) — 비밀번호는 run_jn.sh 에서 읽음(값 출력 안 함) | 10-27 §11 |
 | [`get_logs_f2tf1.sh`](../../debug_log/2026-10-27/jobs/get_logs_f2tf1.sh) | (PC·WSL) 10-27 f2tf1 nav2 · slam · sensors 로그 회수(prep 이 덮기 전) — 비밀번호는 run_jn.sh 에서 읽음(값 출력 안 함) | 10-27 §19 |
 | [`get_logs_f2tt1.sh`](../../debug_log/2026-10-27/jobs/get_logs_f2tt1.sh) | (PC·WSL) 10-27 f2tt1 nav2 · slam · sensors 로그 회수(prep 이 덮기 전) — 비밀번호는 run_jn.sh 에서 읽음(값 출력 안 함) | 10-27 §25 |
-| [`job551_f0drive.sh`](../../debug_log/2026-10-27/jobs/job551_f0drive.sh) | F0 주행 래퍼(Jetson, 2026-09-23): 일반 게이트(A 프로세스·B 보드·J nvblox·C SLAM·G2 출발 자세) → bag·tegrastats·top·RSS → job550 → 메타(job453). | 09-23 16 · 10-07 §2.2 · 10-12 §3.4 · … +8 |
+| [`job551_f0drive.sh`](../../debug_log/2026-10-27/jobs/job551_f0drive.sh) | F0 주행 래퍼(Jetson, 2026-09-23): 일반 게이트(A 프로세스·B 보드·J nvblox·C SLAM·G2 출발 자세) → bag·tegrastats·top·RSS → job550 → 메타(job453). | 09-23 16 · 10-07 §2.2 · 10-12 §3.4 · … +9 |
 | [`prep_nvlayer_tffix_1027.sh`](../../debug_log/2026-10-27/jobs/prep_nvlayer_tffix_1027.sh) | §17 결함 수정 (2026-10-27 §15~16): nvblox_nav2 층 slice 콜백 — lookupTransform 예외 때 경고만 찍고 계속 진행해 | 10-27 §17 |
 | [`prep_slam_dbg_1027.sh`](../../debug_log/2026-10-27/jobs/prep_slam_dbg_1027.sh) | §29 SLAM 포크 단계별 시간 계측 판(기록만, 동작 불변) — 운용 ~/slam_ws 는 건드리지 않고 사본 ~/slam_dbg_ws 에 넣어 빌드. 로버 안 움직임. | 10-27 §29 |
-| [`prep_smac_1027.sh`](../../debug_log/2026-10-27/jobs/prep_smac_1027.sh) | 10-27 §10 f2st1 prep(10-26 prep_smac_1026.sh + tolerance 확인) — 운용 기본(prep_patrol: vslam on · 프로젝터 끔 · SHM) + 재계획 0.01 + planner:=smac(Smac H | 10-27 §10 · 10-27 §24 |
+| [`prep_smac_1027.sh`](../../debug_log/2026-10-27/jobs/prep_smac_1027.sh) | 10-27 §10 f2st1 prep(10-26 prep_smac_1026.sh + tolerance 확인) — 운용 기본(prep_patrol: vslam on · 프로젝터 끔 · SHM) + 재계획 0.01 + planner:=smac(Smac H | 10-27 §10 · 10-27 §17 · 10-27 §24 |
 | [`prep_smac_1027b.sh`](../../debug_log/2026-10-27/jobs/prep_smac_1027b.sh) | 10-27 §24 prep — prep_smac_1027.sh 에서 `ros2 param get` 약 11 번을 뺀 판(같은 값은 chk_prep.py 가 한 노드로 조회해 출력). 구성은 그대로: | 10-27 §24 |
 | [`report_1027_body.html`](../../debug_log/2026-10-27/jobs/report_1027_body.html) |  | 10-27 §31 |
 | [`report_1027_head.html`](../../debug_log/2026-10-27/jobs/report_1027_head.html) |  | 10-27 §31 |
-| [`run_f0.sh`](../../debug_log/2026-10-27/jobs/run_f0.sh) | F0 PC 러너: Jetson 에 파일 전송(재시도 3) → job551 을 setsid nohup 으로 기동 → 로그 폴링(끊겨도 주행은 계속) → 끝나면 산출물 회수 | 09-23 16 · 09-23 §19 · 10-01 §7.2 · … +11 |
+| [`run_f0.sh`](../../debug_log/2026-10-27/jobs/run_f0.sh) | F0 PC 러너: Jetson 에 파일 전송(재시도 3) → job551 을 setsid nohup 으로 기동 → 로그 폴링(끊겨도 주행은 계속) → 끝나면 산출물 회수 | 09-23 16 · 09-23 §19 · 10-01 §7.2 · … +13 |
 | [`run_prep_full_1027.sh`](../../debug_log/2026-10-27/jobs/run_prep_full_1027.sh) | §24 prep 본체를 필터 없이(원인 확인). 로버 안 움직임 | 10-27 §24 |
 | [`run_prep_tt15_1027.sh`](../../debug_log/2026-10-27/jobs/run_prep_tt15_1027.sh) | §21 transform_timeout 1.5 반영 prep(f2tf1 과 같은 구성) + SLAM 파라미터 확인. 로버 안 움직임 | 10-27 §21.3 |
 | [`run_slamrep_batch_1027.sh`](../../debug_log/2026-10-27/jobs/run_slamrep_batch_1027.sh) | §26 SLAM 재생 A/B 묶음(Jetson, 도메인 42, 로버 안 움직임): f2tt1 첫 210 s, 변형마다 같은 입력. 본 스택 SLAM 생존을 앞뒤로 확인. | 10-27 §26.3 |
@@ -2091,7 +2091,7 @@
 | [`anal_gcm_vs_static.py`](../../debug_log/2026-10-28/jobs/anal_gcm_vs_static.py) | anal_gcm_vs_static — 전역 코스트맵 덤프의 치명(100) 칸을 정적 /map 점유(≥65)와 비교해 문자 격자로(10-28 §16, PC). | 10-28 §16.1 |
 | [`anal_leg_compare.py`](../../debug_log/2026-10-28/jobs/anal_leg_compare.py) | anal_leg_compare — 같은 구간(통로 북쪽 → 위 복도/C)을 place_server 주행(bag)과 no5 러너 주행(job550 csv)에서 비교 (2026-10-28 §12, PC). | 10-28 §12 · 10-28 판정 기준(주행 전 선언) |
 | [`anal_leg_env.py`](../../debug_log/2026-10-28/jobs/anal_leg_env.py) | anal_leg_env — 한 구간 동안 0.5 s 마다: 지령 v · 직전 1 s /cmd_vel 수(컨트롤러 주기) · 차체(0.52 × 0.35 직사각형)와 | 10-28 §12 · 10-28 판정 기준(주행 전 선언) |
-| [`anal_place_clear.py`](../../debug_log/2026-10-28/jobs/anal_place_clear.py) | anal_place_clear — place_server 목표 여유 검사가 왜 0 이 나왔나 (2026-10-28 §8, PC, 로버 안 움직임). | 10-28 §8.2 · 10-28 §9 · 10-28 §12 · … +3 |
+| [`anal_place_clear.py`](../../debug_log/2026-10-28/jobs/anal_place_clear.py) | anal_place_clear — place_server 목표 여유 검사가 왜 0 이 나왔나 (2026-10-28 §8, PC, 로버 안 움직임). | 10-28 §12 · 10-28 §13 · 10-28 §13.1 · … +3 |
 | [`anal_plan_x.py`](../../debug_log/2026-10-28/jobs/anal_plan_x.py) | anal_plan_x — 시간 창 안의 /plan 마다 y 값 몇 곳에서 경로의 x(통로 안 가로 위치)와 점 수 · 길이 (2026-10-28 §12, PC). | 10-28 §12 · 10-28 판정 기준(주행 전 선언) |
 | [`chk_clear_global_1028.sh`](../../debug_log/2026-10-28/jobs/chk_clear_global_1028.sh) | §13 전역 코스트맵 비우기 → 5 s · 20 s 뒤 로버 둘레 다시 보기(치명 띠가 nvblox 기억에서 되살아나는지). 로버 안 움직임 | 10-28 §13.1 |
 | [`chk_costmap_dump.py`](../../debug_log/2026-10-28/jobs/chk_costmap_dump.py) | chk_costmap_dump — 전역 코스트맵 · 정적 /map 한 판과 로버 자세를 /tmp/gcm_dump.npz 로 (10-28 §16, 로버 안 움직임) | 10-28 §16.1 |
@@ -2100,22 +2100,22 @@
 | [`chk_day_start_1028.sh`](../../debug_log/2026-10-28/jobs/chk_day_start_1028.sh) | 10-28 하루 시작 점검(읽기만): 가동 시간 · Wi-Fi · /tmp prep 스크립트 · 스택 프로세스 · SLAM transform_timeout · 수정 nvblox 층 · 디스크 | 10-28 §0 |
 | [`chk_nav_alive_1028.sh`](../../debug_log/2026-10-28/jobs/chk_nav_alive_1028.sh) | §13 dry_run 에서 경로 조회가 전부 '경로 없음(상태 6)' — 계획기 상태 확인(로버 안 움직임) | 10-28 §13.1 |
 | [`chk_place_dry_1028.sh`](../../debug_log/2026-10-28/jobs/chk_place_dry_1028.sh) | §7 F2.5 S1 정지 시험(dry_run — 목표를 Nav2 에 보내지 않음, 로버 안 움직임): src 에 올린 place_server 를 띄우고 명령 창구로 검사 | 10-28 §7 · 10-28 §8.1 |
-| [`chk_place_dry_1028c.sh`](../../debug_log/2026-10-28/jobs/chk_place_dry_1028c.sh) | §8 f2pl1 통로 북쪽 거절 재현 · §9 장소 6 곳 전부(dry_run(dry_run — 목표를 Nav2 에 보내지 않음, 로버 안 움직임): src 에 올린 place_server 를 띄우고 명령 창구로 검사 | 10-28 §8.2 · 10-28 §13.1 |
+| [`chk_place_dry_1028c.sh`](../../debug_log/2026-10-28/jobs/chk_place_dry_1028c.sh) | §8 f2pl1 통로 북쪽 거절 재현 · §9 장소 6 곳 전부(dry_run(dry_run — 목표를 Nav2 에 보내지 않음, 로버 안 움직임): src 에 올린 place_server 를 띄우고 명령 창구로 검사 | 10-28 §13.1 · 10-28 §8.2 |
 | [`chk_place_web_1028.sh`](../../debug_log/2026-10-28/jobs/chk_place_web_1028.sh) | §16 place_web 확인(dry_run place_server 와 함께 — 목표를 Nav2 에 보내지 않음, 로버 안 움직임). 키는 출력하지 않는다 | 10-28 §16 |
 | [`chk_scan_align.py`](../../debug_log/2026-10-28/jobs/chk_scan_align.py) | chk_scan_align — 지금 라이다 한 판을 정적 /map 에 맞춰 보고 yaw 를 얼마나 돌려야 가장 잘 맞는지(10-28 §16, 로버 안 움직임). | 10-28 §16.1 · 10-29 §2 |
 | [`chk_scan_band.py`](../../debug_log/2026-10-28/jobs/chk_scan_band.py) | chk_scan_band — 라이다 한 판을 map 으로 옮겨 로버 둘레 ±1.2 m 에 점을 찍는다(10-28 §13, 로버 안 움직임). | 10-28 §13.1 |
 | [`fig_gcm_reach.py`](../../debug_log/2026-10-28/jobs/fig_gcm_reach.py) | fig_gcm_reach — 전역 코스트맵 덤프(chk_costmap_dump.py)에서 로버 칸부터 지나갈 수 있는 칸(값 ≤ 98, 미지 포함)을 넓이 우선으로 칠해 | 10-28 §16.1 |
 | [`fill_report_1028.py`](../../debug_log/2026-10-28/jobs/fill_report_1028.py) | 10-28 정리 페이지: 머리(10-27 틀, 제목만) + 본문 + 그림(data URI, outputs/*.png) → figures/day_summary_1028.html (로컬 사본 = 게시 원본) | 10-28 §17 |
 | [`get_f2tt2.sh`](../../debug_log/2026-10-28/jobs/get_f2tt2.sh) | (PC·WSL) 10-28 f2tt2 산출물 · 로그 회수(PC 쪽 러너 폴링이 끊겨 자동 회수 안 됨) — 비밀번호는 run_jn.sh 에서 읽음(출력 안 함) | 10-28 §4 |
-| [`prep_smac_1028.sh`](../../debug_log/2026-10-28/jobs/prep_smac_1028.sh) | 10-28 prep — f2tt1 과 같은 구성(prep_patrol: vslam · 프로젝터 끔 · SHM + 재계획 0.01 + planner:=smac). 원문은 /tmp/prep_full_<n>.txt 로 남기고 요약만 출력(10-27 §24) | 10-28 §2 · 10-28 §14 |
+| [`prep_smac_1028.sh`](../../debug_log/2026-10-28/jobs/prep_smac_1028.sh) | 10-28 prep — f2tt1 과 같은 구성(prep_patrol: vslam · 프로젝터 끔 · SHM + 재계획 0.01 + planner:=smac). 원문은 /tmp/prep_full_<n>.txt 로 남기고 요약만 출력(10-27 §24) | 10-28 §14 · 10-28 §2 |
 | [`report_1028_body.html`](../../debug_log/2026-10-28/jobs/report_1028_body.html) |  | 10-28 §17 |
 | [`report_1028_head.html`](../../debug_log/2026-10-28/jobs/report_1028_head.html) |  | 10-28 §17 |
-| [`run_place_s1_1028.sh`](../../debug_log/2026-10-28/jobs/run_place_s1_1028.sh) | §7 F2.5 S1 실주행: 장소 이름 명령으로 no5 와 같은 순서 + W3 구간 정지 시험 + 돌아와. Jetson 에서 setsid nohup 으로 독립 실행(PC 끊겨도 계속, 10-28 §3.1). | 10-28 §7.1 · 10-28 §8.3 · 10-28 §13 · … +2 |
+| [`run_place_s1_1028.sh`](../../debug_log/2026-10-28/jobs/run_place_s1_1028.sh) | §7 F2.5 S1 실주행: 장소 이름 명령으로 no5 와 같은 순서 + W3 구간 정지 시험 + 돌아와. Jetson 에서 setsid nohup 으로 독립 실행(PC 끊겨도 계속, 10-28 §3.1). | 10-28 §13 · 10-28 §15 · 10-28 §7.1 · … +2 |
 | [`up_place_dry_1028.sh`](../../debug_log/2026-10-28/jobs/up_place_dry_1028.sh) | (PC·WSL) §7 F2.5 파일을 Jetson src 에 올리고 dry_run 정지 시험 — 비밀번호는 run_jn.sh 에서 읽음(출력 안 함). 로버 안 움직임 | 10-28 §7 |
 | [`up_place_dry_1028c.sh`](../../debug_log/2026-10-28/jobs/up_place_dry_1028c.sh) | (PC·WSL) §8 수정한 place_server(거절에 방향 기록)를 Jetson src 에 올리고 dry_run 정지 시험 — 비밀번호는 run_jn.sh 에서 읽음(출력 안 함). 로버 안 움직임 | 10-28 §8.2 |
 | [`up_place_s1_1028.sh`](../../debug_log/2026-10-28/jobs/up_place_s1_1028.sh) | (PC·WSL) §7 S1 파일 전송 · Jetson 에서 독립 실행 시작 · 끝날 때까지 로그 따라보기 · 회수. 비밀번호는 run_jn.sh 에서 읽음(출력 안 함) | 10-28 §7.1 |
 | [`up_place_web_1028.sh`](../../debug_log/2026-10-28/jobs/up_place_web_1028.sh) | (PC·WSL) §16 place_web 올리기 + Jetson 확인 실행 + PC(ALOPS)에서 8080 접속 확인. 비밀번호는 run_jn.sh 에서 읽음(출력 안 함) · 키도 출력 안 함. 로버 안 움직임 | 10-28 §16 |
-| [`up_prep_1028.sh`](../../debug_log/2026-10-28/jobs/up_prep_1028.sh) | (PC·WSL) 10-28 재부팅 뒤 prep 재전송 + prep. 인자: 회차번호. 비밀번호는 run_jn.sh 에서 읽음(출력 안 함). 로버 안 움직임 | 10-28 §2 · 10-28 §14 · 10-29 §2 |
+| [`up_prep_1028.sh`](../../debug_log/2026-10-28/jobs/up_prep_1028.sh) | (PC·WSL) 10-28 재부팅 뒤 prep 재전송 + prep. 인자: 회차번호. 비밀번호는 run_jn.sh 에서 읽음(출력 안 함). 로버 안 움직임 | 10-28 §14 · 10-28 §2 · 10-29 §2 |
 
 ## 2026-10-29 (9)
 
