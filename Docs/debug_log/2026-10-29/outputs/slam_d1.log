@@ -1,0 +1,34 @@
+[INFO] [launch]: All log files can be found below /home/jetson/.ros/log/2026-10-29-15-53-01-572615-jetson-desktop-98608
+[INFO] [launch]: Default logging verbosity is set to INFO
+[INFO] [launch.user]: [slam.launch] slam_toolbox = 포크 /home/jetson/slam_ws/install/slam_toolbox/lib/slam_toolbox/async_slam_toolbox_node
+[INFO] [launch.user]: [slam.launch] 위치 추정(지도 고정): /home/jetson/maps/office/office_v3 에서 시작 자세 (0.000, 0.000, 0.000)
+[INFO] [localization_slam_toolbox_node-1]: process started with pid [98614]
+[localization_slam_toolbox_node-1] [INFO] [1793256781.804472388] [slam_toolbox]: Node using stack size 40000000
+[localization_slam_toolbox_node-1] [INFO] [1793256782.127028795] [slam_toolbox]: Using solver plugin solver_plugins::CeresSolver
+[localization_slam_toolbox_node-1] [INFO] [1793256782.129985339] [slam_toolbox]: CeresSolver: Using SCHUR_JACOBI preconditioner.
+[localization_slam_toolbox_node-1] Load From File /home/jetson/maps/office/office_v3.posegraph 
+[localization_slam_toolbox_node-1] Mapper <- Module
+[localization_slam_toolbox_node-1] Mapper <- m_pSequentialScanMatcher
+[localization_slam_toolbox_node-1] Mapper <- m_pGraph
+[localization_slam_toolbox_node-1] MapperGraph <- Graph; Graph <- m_Edges; Graph <- m_Vertices
+[localization_slam_toolbox_node-1] MapperGraph <- m_pMapper; MapperGraph <- m_pLoopScanMatcher; MapperGraph <- m_pTraversal
+[localization_slam_toolbox_node-1] Mapper <- m_pMapperSensorManager
+[localization_slam_toolbox_node-1] MapperSensorManager <- m_ScanManagers; MapperSensorManager <- m_Scans
+[localization_slam_toolbox_node-1] Mapper <- m_Listeners
+[localization_slam_toolbox_node-1] **Finished serializing Mapper**
+[localization_slam_toolbox_node-1] Load From File
+[localization_slam_toolbox_node-1] **Serializing Dataset**
+[localization_slam_toolbox_node-1] Dataset <- m_SensorNameLookup
+[localization_slam_toolbox_node-1] Dataset <- m_Data
+[localization_slam_toolbox_node-1] Dataset <- m_Lasers
+[localization_slam_toolbox_node-1] Dataset <- m_pDatasetInfo
+[localization_slam_toolbox_node-1] **Finished serializing Dataset**
+[localization_slam_toolbox_node-1] Registering sensor: [Custom Described Lidar]
+[localization_slam_toolbox_node-1] WARNING: Logging before InitGoogleLogging() is written to STDERR
+[localization_slam_toolbox_node-1] W1029 15:53:08.230898 98614 preprocessor.cc:62] Specified options.num_threads: 50 exceeds maximum available from the threading model Ceres was compiled with: 6.  Bounding to maximum number available.
+[localization_slam_toolbox_node-1] [WARN] [1793256791.104556532] [slam_toolbox]: minimum laser range setting (0.0 m) exceeds the capabilities of the used Lidar (0.2 m)
+[localization_slam_toolbox_node-1] Registering sensor: [Custom Described Lidar]
+[localization_slam_toolbox_node-1] [INFO] [1793256805.320794508] [slam_toolbox]: Message Filter dropping message: frame 'lidar_link' at time 1793256805.299 for reason 'discarding message because the queue is full'
+[localization_slam_toolbox_node-1] [INFO] [1793256807.834597801] [slam_toolbox]: Message Filter dropping message: frame 'lidar_link' at time 1793256807.794 for reason 'discarding message because the queue is full'
+[localization_slam_toolbox_node-1] [INFO] [1793256863.681345064] [slam_toolbox]: Message Filter dropping message: frame 'lidar_link' at time 1793256863.577 for reason 'discarding message because the queue is full'
+[localization_slam_toolbox_node-1] [INFO] [1793256972.163094836] [slam_toolbox]: Message Filter dropping message: frame 'lidar_link' at time 1793256972.061 for reason 'discarding message because the queue is full'
