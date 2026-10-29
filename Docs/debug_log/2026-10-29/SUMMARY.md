@@ -76,3 +76,9 @@
 - d1 원문 `outputs/{anal_drift_d1,zupt_d1}.txt` · `sensors_d1.log` · `slam_d1.log` · `drift_d1.log`, bag `bags/bag_d1.tgz`(git 제외).
 - 다음: §4 d2(주행 뒤 정지 40 분 + ⓐ 실동작) — 선언은 그대로 유효. 결과에 따라 원인 쪽 대책(H1 이면 ZUPT 조건 · 바이어스 추적, H2 면 해당 입력).
 - Jetson 상태: 15:5x prep 스택이 그대로 떠 있음(로버 출발 테이프). d1 결과로 보면 주행하지 않으면 방향은 유지될 것이나(추정), 다음 세션에서는 가동 시간과 관계없이 prep 부터.
+
+## §6 기록 찾기 어려움 → 문제 대장 (사용자: "도구 · 결과 이름이 비슷하고 SUMMARY 도 요약본이라 오래된 것 이해가 힘들다. 해결방안은?" → 제안 → "그 순서로 진행하라")
+- 진단: 날짜 41 개 · SUMMARY 약 16,000 줄 · jobs 약 1,900 · outputs 약 2,600 — 날짜별로 쌓였는데 보고 싶은 것은 문제별 흐름. TOOLS.md 는 10-12 부터만.
+- 순서(사용자 확정): 자동 색인 → 최근 2 장으로 카드 형식 시범(정보가 다 있고 기억으로 검증 가능) → 확인 뒤 **오래된 것부터** 시기별. 처음 제안은 '최근부터 거꾸로' 였으나, 사용자가 이해하기 힘들다고 한 것이 오래된 기록이고 근본 원인이 앞쪽에 있어 바꿈.
+- 자동 색인 `Docs/tools/anal_record_index.py` → `Docs/issues/index/`: SECTIONS(제목 1,432) · RUNS(bag · drives 이름 123, 09-1x 이후만) · JOBS(1,887 + 상시 37; 설명 줄 없는 파일 약 600 은 빈칸).
+- 시범 카드: `Docs/issues/slam-stamp-freeze.md` · `Docs/issues/stationary-yaw-drift.md`, 첫 페이지 `Docs/issues/ISSUES.md`(형식 · 상태 정의 · 목록), `Docs/INDEX.md` 에 행 추가. **사용자 형식 확인 대기.**
