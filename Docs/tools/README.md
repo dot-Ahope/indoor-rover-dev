@@ -46,6 +46,7 @@
 | `fig_patrol_goals.py` | 순회 코스 목표 지점을 저장 지도(office_v3) 위에 순서 · 위치만/방향까지 구분으로 | (10-14 신규) |
 | `anal_traj_size.py` | bag → MPPI 궤적 메시지 크기 · 기록 주기 | `traj_size.py` |
 | `anal_reverse.py` | 러너 csv → 목표별 후진 거리 · 시간 | `rev_eval.py` |
+| `anal_record_index.py` | (PC) 실험 기록 자동 색인 → `Docs/issues/index/`(§ 제목 · 실험 이름 · 도구 사전), 2026-10-29 | — |
 | `up_tools.sh` | 위 Jetson 쪽 도구와 주행 보조 스크립트를 /tmp 로 전송 | `up950.sh` 등 |
 
 주행 러너(`run_f0.sh` · `run_f2c.sh` · `job551_f0drive.sh` · `job550_f0run.py`)와 범용 러너 `run_jn.sh` 는 접속 정보가 들어 있어 작업 폴더에 두고, 가린 사본을 날짜 폴더 `jobs/` 에 남긴다(이름은 다음 정리 때 `run_` 로 맞춘다).

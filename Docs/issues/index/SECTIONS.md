@@ -1,0 +1,1516 @@
+# SUMMARY 제목 색인 (자동 — `Docs/tools/anal_record_index.py`, 손으로 고치지 않음)
+
+날짜 40 개 · 제목 1432 개. 줄 번호는 생성 시점 기준.
+
+## 2026-08-26
+- [L5](../../debug_log/2026-08-26/SUMMARY.md) 한 일
+- [L12](../../debug_log/2026-08-26/SUMMARY.md) 결과 (수치)
+- [L24](../../debug_log/2026-08-26/SUMMARY.md) 판단·결정 (근거)
+- [L35](../../debug_log/2026-08-26/SUMMARY.md) 펌웨어 과제 목록 (보고만, 수정 안 함)
+- [L41](../../debug_log/2026-08-26/SUMMARY.md) 미해결·다음
+
+## 2026-08-27
+- [L5](../../debug_log/2026-08-27/SUMMARY.md) 한 일
+- [L16](../../debug_log/2026-08-27/SUMMARY.md) 결과 (수치)
+- [L30](../../debug_log/2026-08-27/SUMMARY.md) 판단·결정 (근거)
+- [L40](../../debug_log/2026-08-27/SUMMARY.md) W 트랙 (WT-600 확정 후속, 오후)
+- [L46](../../debug_log/2026-08-27/SUMMARY.md) 판단 — 캘리브레이션 정밀화 & rf2o (2026-08-27, 사용자 질의)
+- [L51](../../debug_log/2026-08-27/SUMMARY.md) 미해결·다음 (다음 세션)
+
+## 2026-08-28
+- [L5](../../debug_log/2026-08-28/SUMMARY.md) 한 일
+- [L9](../../debug_log/2026-08-28/SUMMARY.md) 결과 (수치)
+- [L15](../../debug_log/2026-08-28/SUMMARY.md) 판단·결정
+- [L20](../../debug_log/2026-08-28/SUMMARY.md) LiDAR yaw 최종 확정 (오후, 여러 차례 오락가락 후)
+- [L28](../../debug_log/2026-08-28/SUMMARY.md) 코드 위치 이전 (사용자 요청)
+- [L32](../../debug_log/2026-08-28/SUMMARY.md) ★ SLAM 첫 맵 완성 (Step 4 마무리)
+- [L38](../../debug_log/2026-08-28/SUMMARY.md) 스캔 포인트 끌림 진단·수정 (사용자 관찰)
+- [L45](../../debug_log/2026-08-28/SUMMARY.md) 미해결·다음
+
+## 2026-08-31
+- [L5](../../debug_log/2026-08-31/SUMMARY.md) 한 일
+- [L9](../../debug_log/2026-08-31/SUMMARY.md) 결과 (수치)
+- [L17](../../debug_log/2026-08-31/SUMMARY.md) 판단·결정
+- [L26](../../debug_log/2026-08-31/SUMMARY.md) 조이스틱 teleop + 병진 주행 맵핑 (저녁)
+- [L32](../../debug_log/2026-08-31/SUMMARY.md) 조이스틱 속도 상향 (마무리, 사용자 요청)
+- [L36](../../debug_log/2026-08-31/SUMMARY.md) 루프클로저/드리프트 재확인 (사용자 관찰)
+- [L44](../../debug_log/2026-08-31/SUMMARY.md) 미해결·다음
+- [L52](../../debug_log/2026-08-31/SUMMARY.md) (2026-09-01 연속 세션) 드리프트 정량화 + vx 보정 + Foxglove 4초 스냅 관찰
+  - [L56](../../debug_log/2026-08-31/SUMMARY.md) 한 일
+  - [L64](../../debug_log/2026-08-31/SUMMARY.md) 결과 (수치)
+  - [L70](../../debug_log/2026-08-31/SUMMARY.md) 판단 (근거·기각가설)
+  - [L76](../../debug_log/2026-08-31/SUMMARY.md) 다음 (★최우선 = 새 관찰)
+  - [L87](../../debug_log/2026-08-31/SUMMARY.md) ★ Foxglove 4초 스냅 — 원인 규명·해결 (2026-09-01 세션2, job16*)
+  - [L101](../../debug_log/2026-08-31/SUMMARY.md) CPU 최적화 + conditioner 결정 (2026-09-01 세션2 마무리, job17*)
+- [L121](../../debug_log/2026-08-31/SUMMARY.md) ★★ 중대 정정 — 휠 오도메트리 스케일 27.8% 과대 (2026-09-01 세션3)
+- [L143](../../debug_log/2026-08-31/SUMMARY.md) 다음 단계 (우선순위, 2026-09-02 이후)
+
+## 2026-09-02
+- [L6](../../debug_log/2026-09-02/SUMMARY.md) 한 일
+- [L10](../../debug_log/2026-09-02/SUMMARY.md) 결과 (수치)
+  - [L20](../../debug_log/2026-09-02/SUMMARY.md) 과대율 3회 독립 측정 (전부 일치)
+- [L29](../../debug_log/2026-09-02/SUMMARY.md) 판단
+- [L36](../../debug_log/2026-09-02/SUMMARY.md) 개선: 주행 가드를 경로방향 방식으로 변경
+- [L43](../../debug_log/2026-09-02/SUMMARY.md) 다음
+- [L52](../../debug_log/2026-09-02/SUMMARY.md) A항목 — 회전 포함 드리프트 재측정 (스케일 교정 후) ✅
+  - [L54](../../debug_log/2026-09-02/SUMMARY.md) 방법
+  - [L60](../../debug_log/2026-09-02/SUMMARY.md) 결과
+  - [L68](../../debug_log/2026-09-02/SUMMARY.md) 교정 전후 비교
+  - [L74](../../debug_log/2026-09-02/SUMMARY.md) 판단
+  - [L79](../../debug_log/2026-09-02/SUMMARY.md) 새 발견 — 간헐적 좌/우 트랙 속도 비대칭
+- [L87](../../debug_log/2026-09-02/SUMMARY.md) A-2 — 좌/우 트랙 비대칭 정량화
+  - [L89](../../debug_log/2026-09-02/SUMMARY.md) 배경
+  - [L92](../../debug_log/2026-09-02/SUMMARY.md) 측정 1 — 회전 없는 순수 직진 (0.9m × 4회, 전진/후진 교대)
+  - [L102](../../debug_log/2026-09-02/SUMMARY.md) 측정 2 — 관측조건 재현 ("90° 회전 → 직진" × 4)
+  - [L111](../../debug_log/2026-09-02/SUMMARY.md) 판단
+  - [L117](../../debug_log/2026-09-02/SUMMARY.md) ⚠ 진단 한계 — 휠별 텔레메트리 부재 (중요)
+  - [L123](../../debug_log/2026-09-02/SUMMARY.md) 결론
+- [L128](../../debug_log/2026-09-02/SUMMARY.md) Nav2 도입 — 첫 자율주행 성공 ✅
+  - [L130](../../debug_log/2026-09-02/SUMMARY.md) 구성
+  - [L135](../../debug_log/2026-09-02/SUMMARY.md) 로버 맞춤 파라미터 (근거)
+  - [L147](../../debug_log/2026-09-02/SUMMARY.md) 기동 검증
+  - [L152](../../debug_log/2026-09-02/SUMMARY.md) 첫 자율주행 (정면 0.5m 목표)
+  - [L162](../../debug_log/2026-09-02/SUMMARY.md) 관찰·다음 튜닝 후보
+- [L170](../../debug_log/2026-09-02/SUMMARY.md) B-1 — 회전이 필요한 목표 (180° 회전 후 0.5m) ✅
+  - [L172](../../debug_log/2026-09-02/SUMMARY.md) 1차 시도 — 실패: 100초간 정지 후 recovery만 동작
+  - [L177](../../debug_log/2026-09-02/SUMMARY.md) 원인 ①(부분) — progress checker 가 회전을 진행으로 안 봄
+  - [L182](../../debug_log/2026-09-02/SUMMARY.md) 원인 ②(핵심) — RPP 각가속 클램프 + 로버 기동 데드밴드 = 데드락 ⭐
+  - [L197](../../debug_log/2026-09-02/SUMMARY.md) 수정 후 결과 ✅
+  - [L209](../../debug_log/2026-09-02/SUMMARY.md) 일반화 가능한 교훈
+  - [L214](../../debug_log/2026-09-02/SUMMARY.md) 부수 조치
+- [L220](../../debug_log/2026-09-02/SUMMARY.md) B-2 — 장애물 회피 시도 (부분 성공 → 공간 부족으로 중단)
+  - [L222](../../debug_log/2026-09-02/SUMMARY.md) 설정
+  - [L226](../../debug_log/2026-09-02/SUMMARY.md) 결과: ABORTED (목표까지 104.9cm)
+  - [L236](../../debug_log/2026-09-02/SUMMARY.md) inflation_radius 축소 (0.35 → 0.20)
+  - [L241](../../debug_log/2026-09-02/SUMMARY.md) 좁은 구석 탈출 — 사용자 지적으로 확인 ⭐
+  - [L249](../../debug_log/2026-09-02/SUMMARY.md) 교훈
+- [L256](../../debug_log/2026-09-02/SUMMARY.md) 마무리 — 자율탐사 계획 수립
+- [L261](../../debug_log/2026-09-02/SUMMARY.md) N1 사전 작업 완료 (무주행)
+- [L270](../../debug_log/2026-09-02/SUMMARY.md) 다음 세션 시작점 (N1 벤치마크)
+- [L279](../../debug_log/2026-09-02/SUMMARY.md) N1 벤치마크 1차 (RPP vs MPPI) — 데드밴드가 차단 항목으로 확정
+  - [L281](../../debug_log/2026-09-02/SUMMARY.md) 코스
+  - [L284](../../debug_log/2026-09-02/SUMMARY.md) 결과
+  - [L291](../../debug_log/2026-09-02/SUMMARY.md) 판단
+  - [L298](../../debug_log/2026-09-02/SUMMARY.md) 펌웨어 수정 완료 (소스만, 플래시 대기) ⭐
+  - [L308](../../debug_log/2026-09-02/SUMMARY.md) ⚠ 안전 결함 발견 — 근접 회전 중 벽 접촉 (사용자 보고)
+- [L317](../../debug_log/2026-09-02/SUMMARY.md) 세션 종료 시점 상태 (2026-09-02 저녁)
+- [L326](../../debug_log/2026-09-02/SUMMARY.md) 한 일 → 결과
+- [L342](../../debug_log/2026-09-02/SUMMARY.md) 핵심 판단 (기각 가설 포함)
+- [L348](../../debug_log/2026-09-02/SUMMARY.md) 다음 세션 (플래시 후 — 사용자 통보 대기)
+
+## 2026-09-03
+- [L3](../../debug_log/2026-09-03/SUMMARY.md) 한 일
+- [L19](../../debug_log/2026-09-03/SUMMARY.md) 판단
+- [L25](../../debug_log/2026-09-03/SUMMARY.md) 부수 발견 (운영)
+- [L30](../../debug_log/2026-09-03/SUMMARY.md) 다음
+- [L37](../../debug_log/2026-09-03/SUMMARY.md) 오후 세션 — Nav2 재벤치마크 준비 중 발견: 스톨 보호 래치 × 데드밴드 승격 충돌 ⭐
+  - [L39](../../debug_log/2026-09-03/SUMMARY.md) 경과
+  - [L46](../../debug_log/2026-09-03/SUMMARY.md) 메커니즘 (설계 충돌)
+  - [L53](../../debug_log/2026-09-03/SUMMARY.md) 조치·계획
+  - [L61](../../debug_log/2026-09-03/SUMMARY.md) 벤치마크 재개 결과 (RESET·재배치 후, RPP + no-spin BT)
+  - [L69](../../debug_log/2026-09-03/SUMMARY.md) 펌웨어 수정 — 스톨 정책 (빌드 완료, 플래시 대기)
+  - [L76](../../debug_log/2026-09-03/SUMMARY.md) 플래시 + Jetson Wi-Fi 간헐 무응답 (18:30~18:45)
+- [L84](../../debug_log/2026-09-03/SUMMARY.md) 마무리 (18:48) — 내일 이어서
+  - [L88](../../debug_log/2026-09-03/SUMMARY.md) 내일 할 일 (순서)
+
+## 2026-09-07
+- [L3](../../debug_log/2026-09-07/SUMMARY.md) 준비
+- [L7](../../debug_log/2026-09-07/SUMMARY.md) 받침대 스톨 검증 (`jobs/job40a_stalltest.py`, 결과 `outputs/job40a_run{1,2,3}.txt`)
+- [L14](../../debug_log/2026-09-07/SUMMARY.md) 판단
+- [L21](../../debug_log/2026-09-07/SUMMARY.md) 부수 관찰
+- [L25](../../debug_log/2026-09-07/SUMMARY.md) 텔레메트리 펌웨어 + 서명 수집 (플래시 2회: values[] 추가 → 펄스폭 추가)
+  - [L37](../../debug_log/2026-09-07/SUMMARY.md) Run F 타임라인 (스톨 자동복구 첫 관측)
+- [L41](../../debug_log/2026-09-07/SUMMARY.md) 결론 (측정 기반)
+- [L48](../../debug_log/2026-09-07/SUMMARY.md) 설계 결정
+- [L53](../../debug_log/2026-09-07/SUMMARY.md) Run G `job41g` — 좌측 구속 0.05, 10s, 0.2s 기록 (사용자: 문제 시 전원 차단 대기)
+  - [L67](../../debug_log/2026-09-07/SUMMARY.md) 확정
+  - [L72](../../debug_log/2026-09-07/SUMMARY.md) 개선안 (즉시 적용 가능): MIN_WHEEL_SPEED_MPS 0.020 → 0.030
+- [L76](../../debug_log/2026-09-07/SUMMARY.md) Run H `job41h` — 좌측 구속, 지령 0.03, 10s (⚠ 플래시 실패로 **구 펌웨어 MIN 0.020** 상태: ST-Link "No STM32 target found")
+  - [L83](../../debug_log/2026-09-07/SUMMARY.md) 근본 해결 후보 (다음 펌웨어 작업)
+- [L88](../../debug_log/2026-09-07/SUMMARY.md) ★ 근본 원인: 모터 PWM 50Hz (이관 계획 T1 미적용) → 20kHz 전환
+  - [L92](../../debug_log/2026-09-07/SUMMARY.md) Run J `job42a` — 20kHz, 좌측 구속, 지령 0.02(→0.04), 10s
+  - [L99](../../debug_log/2026-09-07/SUMMARY.md) 20kHz 정착점 (받침대 무부하, 폐루프) `job42b` (구 FF) / `job42c` (재튜닝 FF)
+  - [L114](../../debug_log/2026-09-07/SUMMARY.md) 정정 (오늘 오전 결론)
+- [L119](../../debug_log/2026-09-07/SUMMARY.md) UART5 디버그 콘솔 — 현재 배선에서 동작하지 않음 (신규 확인)
+- [L130](../../debug_log/2026-09-07/SUMMARY.md) 데드밴드 스윕 `job44a_deadband` (3s dwell, 지령 5~30mm/s)
+- [L142](../../debug_log/2026-09-07/SUMMARY.md) ★ 직진 스케일 재캘리브레이션 `job45a/b/c` — 라이다 전방벽을 GT 로
+  - [L150](../../debug_log/2026-09-07/SUMMARY.md) 결론: 20kHz 로 바꿔도 28.7% 과대는 그대로 → **50Hz 아티팩트가 아니라 휠 상수 오류**
+  - [L155](../../debug_log/2026-09-07/SUMMARY.md) 적용 (펌웨어 빌드 완료, **플래시 대기** — ST-Link 분리 상태)
+- [L171](../../debug_log/2026-09-07/SUMMARY.md) 회전 캘리브레이션 `job46a/b/c` — 라이다 스캔 정합을 GT 로
+- [L185](../../debug_log/2026-09-07/SUMMARY.md) 배포 (플래시 + Jetson 동시)
+- [L191](../../debug_log/2026-09-07/SUMMARY.md) 오늘 남은 미해결·검증 대기
+- [L203](../../debug_log/2026-09-07/SUMMARY.md) ✅ 직진 검증 `job47a` — 오차 0.06%
+- [L212](../../debug_log/2026-09-07/SUMMARY.md) 회전 슬립 — 자이로 기준으로 재확립 `job48/job49`
+- [L224](../../debug_log/2026-09-07/SUMMARY.md) 남은 구조적 문제 — 지령 ω 가 실제의 60%
+- [L240](../../debug_log/2026-09-07/SUMMARY.md) 검증 `job50a/b/c`
+- [L248](../../debug_log/2026-09-07/SUMMARY.md) 유효 게이지의 속도 의존성 (전체 10회 재해석)
+- [L257](../../debug_log/2026-09-07/SUMMARY.md) ⚠ job50 계열 오염 신고 + 재측정 `job51`
+  - [L272](../../debug_log/2026-09-07/SUMMARY.md) 배포 완료
+- [L279](../../debug_log/2026-09-07/SUMMARY.md) B_eff 0.443 검증 `job52` (손으로 이동 → 세션 초기화 후, 다른 바닥 지점)
+  - [L293](../../debug_log/2026-09-07/SUMMARY.md) 결론: 캘리브레이션 여기서 종료
+- [L299](../../debug_log/2026-09-07/SUMMARY.md) 오늘 최종 상태
+- [L325](../../debug_log/2026-09-07/SUMMARY.md) 판정: **RPP 채택**
+- [L331](../../debug_log/2026-09-07/SUMMARY.md) ⚠ 사고: MPPI 주행 중 벽 접촉 (54e)
+- [L337](../../debug_log/2026-09-07/SUMMARY.md) 다음 작업 (우선순위)
+- [L345](../../debug_log/2026-09-07/SUMMARY.md) 증거
+- [L351](../../debug_log/2026-09-07/SUMMARY.md) 원인 (신뢰도 순)
+- [L359](../../debug_log/2026-09-07/SUMMARY.md) RPP 가 되는 이유
+- [L362](../../debug_log/2026-09-07/SUMMARY.md) 구현 (1·2번)
+- [L369](../../debug_log/2026-09-07/SUMMARY.md) 구현 검증 주행 `job55` (RPP + stuck_monitor shadow + local inflation 0.35)
+- [L379](../../debug_log/2026-09-07/SUMMARY.md) 마무리 (2026-09-07) — 하루 요약
+  - [L387](../../debug_log/2026-09-07/SUMMARY.md) 다음 세션 할 일 (순서)
+
+## 2026-09-08
+- [L3](../../debug_log/2026-09-08/SUMMARY.md) 준비
+- [L6](../../debug_log/2026-09-08/SUMMARY.md) stuck_monitor 정탐 검증 `job57` (로버 정지, /cmd_vel → /cmd_vel_test 리매핑)
+- [L17](../../debug_log/2026-09-08/SUMMARY.md) RPP 조향 진동 측정·튜닝 `job58` (계획 §5.y) — 20 Hz 트레이스(`job56_osc.py`), 파라미터는 `ros2 param set` 으로 런타임 변경
+  - [L30](../../debug_log/2026-09-08/SUMMARY.md) 원인 가림 결과
+  - [L37](../../debug_log/2026-09-08/SUMMARY.md) 채택값 (nav2_params.yaml 반영·배포)
+  - [L41](../../debug_log/2026-09-08/SUMMARY.md) 남은 후보 (다음)
+- [L46](../../debug_log/2026-09-08/SUMMARY.md) stuck_monitor 활성 전환
+- [L49](../../debug_log/2026-09-08/SUMMARY.md) N1.5 — D455f depth → 코스트맵 (`job59`)
+  - [L50](../../debug_log/2026-09-08/SUMMARY.md) 설계 선택
+  - [L56](../../debug_log/2026-09-08/SUMMARY.md) 결과 (정적, 주행 없음)
+  - [L61](../../debug_log/2026-09-08/SUMMARY.md) 부수 수정
+- [L67](../../debug_log/2026-09-08/SUMMARY.md) N1.5 재설계: 수평 띠(depthimage_to_laserscan) 철회 → 포인트클라우드 + VoxelLayer (`job60`)
+  - [L68](../../debug_log/2026-09-08/SUMMARY.md) 왜 철회했나 (상자 배치 후 실측 `job60a/b`)
+  - [L72](../../debug_log/2026-09-08/SUMMARY.md) 새 구성
+  - [L77](../../debug_log/2026-09-08/SUMMARY.md) 결과 (정적)
+- [L82](../../debug_log/2026-09-08/SUMMARY.md) 회피 주행 `job61` — depth 감지 OK, 정체 감시 정탐, 통로가 너무 좁아 미완주
+  - [L89](../../debug_log/2026-09-08/SUMMARY.md) 판정
+- [L97](../../debug_log/2026-09-08/SUMMARY.md) inflation 0.35 → 0.22 + 통로 재측정 `job62` — 실제 원인은 inflation 이 아니라 상자 폭
+  - [L102](../../debug_log/2026-09-08/SUMMARY.md) 코스트맵 부채꼴 스캔 → 통과 슬롯 없음 → 포인트클라우드로 상자 실측
+  - [L109](../../debug_log/2026-09-08/SUMMARY.md) 기하 결론 (로버 통과 폭 0.43m = 0.33 + 패딩 0.05×2)
+- [L119](../../debug_log/2026-09-08/SUMMARY.md) 정정·원복: inflation 은 통과 가능/불가를 정하지 않는다  ⚠ 아래 '원복' 결론은 다음 절에서 재정정됨
+- [L127](../../debug_log/2026-09-08/SUMMARY.md) 세션 종료 (충전)
+- [L130](../../debug_log/2026-09-08/SUMMARY.md) ⚠⚠ 재정정 (사용자 실측 제공 후) — 통로는 막히지 않았고, 원인은 inflation 0.35 의 '비용 포화'
+  - [L133](../../debug_log/2026-09-08/SUMMARY.md) 내 분석의 오류 2건
+  - [L137](../../debug_log/2026-09-08/SUMMARY.md) 정정된 기하 (상자 0.18m, 중심 y≈0 / 로버 통과폭 0.43m)
+  - [L144](../../debug_log/2026-09-08/SUMMARY.md) 진짜 원인: inflation 0.35 에서 슬롯 전체가 고비용
+  - [L156](../../debug_log/2026-09-08/SUMMARY.md) 다음 세션 절차 (충전 후)
+- [L164](../../debug_log/2026-09-08/SUMMARY.md) 세션 초기화 범위 판단
+- [L167](../../debug_log/2026-09-08/SUMMARY.md) 전역 플래너가 경로를 못 내던 문제 `job64`
+- [L176](../../debug_log/2026-09-08/SUMMARY.md) 회피 주행 `job66` — 결과는 SUCCEEDED, 그러나 **실제 경로가 상자를 관통**
+- [L191](../../debug_log/2026-09-08/SUMMARY.md) 원인 확정 (사용자 관찰) — 근접 시 깊이 소거로 상자가 코스트맵에서 지워짐
+  - [L201](../../debug_log/2026-09-08/SUMMARY.md) 대응 후보 (다음 세션에서 A/B)
+- [L209](../../debug_log/2026-09-08/SUMMARY.md) 시각화 제공
+- [L213](../../debug_log/2026-09-08/SUMMARY.md) 소프트웨어 기억 1차 시도 `job70` — 실패 (여전히 밀고 지나감)
+  - [L221](../../debug_log/2026-09-08/SUMMARY.md) 다음: 원인 확정 실험 `job71_watchbox.py` (Nav2 미사용)
+- [L231](../../debug_log/2026-09-08/SUMMARY.md) ★ 원인 확정 `job71` — 기억은 성공, **전역 코스트맵에 깊이가 마킹되지 않는 것**이 진짜 원인
+  - [L247](../../debug_log/2026-09-08/SUMMARY.md) 다음 후보 (전역에 깊이를 반영시키는 법)
+- [L253](../../debug_log/2026-09-08/SUMMARY.md) ⚠⚠ 정정 2건 — 코스트맵은 정상이었다 (`job74`, `job75`)
+  - [L254](../../debug_log/2026-09-08/SUMMARY.md) 정정 A: "전역에 depth 가 마킹되지 않는다"는 **내 좌표 처리 오류**
+  - [L259](../../debug_log/2026-09-08/SUMMARY.md) 정정 B: 소프트웨어 기억은 **양쪽 코스트맵 모두에서 작동**
+  - [L269](../../debug_log/2026-09-08/SUMMARY.md) 그래서 남은 용의자는 **컨트롤러(RPP)**
+- [L275](../../debug_log/2026-09-08/SUMMARY.md) ★ 진짜 원인 확정 `job76` — **충돌검사 지평이 0.12m 였다**
+  - [L283](../../debug_log/2026-09-08/SUMMARY.md) 결론
+  - [L292](../../debug_log/2026-09-08/SUMMARY.md) 반영
+- [L296](../../debug_log/2026-09-08/SUMMARY.md) ⚠ 소프트웨어 기억의 부작용 — 전역 코스트맵 유령 장애물 누적 (`job77`, `job79`)
+  - [L303](../../debug_log/2026-09-08/SUMMARY.md) 최종 설정 (기억은 로컬 전용)
+- [L311](../../debug_log/2026-09-08/SUMMARY.md) 오늘 얻은 것 / 남은 것
+- [L329](../../debug_log/2026-09-08/SUMMARY.md) 검토: 동적 장애물 vs 근접 기억의 충돌 (사용자 질문)
+  - [L332](../../debug_log/2026-09-08/SUMMARY.md) 충돌은 실재한다
+  - [L336](../../debug_log/2026-09-08/SUMMARY.md) 해소 원리: '지우지 않을 반경' 을 **물리적 사각과 일치**시킨다
+  - [L344](../../debug_log/2026-09-08/SUMMARY.md) 남는 한계와 업계 관행
+  - [L350](../../debug_log/2026-09-08/SUMMARY.md) 결론
+- [L353](../../debug_log/2026-09-08/SUMMARY.md) ★★ 상자 소실의 진짜 기전 — 거리에 따라 보이는 면이 바뀌어 복셀 수가 줄고, `mark_threshold` 가 걸러냄
+  - [L356](../../debug_log/2026-09-08/SUMMARY.md) 기전 (기하)
+  - [L368](../../debug_log/2026-09-08/SUMMARY.md) 조치 (local·global 동시)
+  - [L376](../../debug_log/2026-09-08/SUMMARY.md) 이번 주행 `job81` 기록 (조치 전)
+  - [L381](../../debug_log/2026-09-08/SUMMARY.md) 다음 검증 (상자 재배치 후)
+- [L386](../../debug_log/2026-09-08/SUMMARY.md) 마킹 지속 검증 성공 + 회피 재시도 (`job83`~`job89`)
+  - [L387](../../debug_log/2026-09-08/SUMMARY.md) ✅ `job83` 접근 시험 — mark_threshold 조치가 유효함을 직접 확인
+  - [L396](../../debug_log/2026-09-08/SUMMARY.md) 회피 시도 4회 — 밀고 지나가는 현상은 사라짐
+  - [L407](../../debug_log/2026-09-08/SUMMARY.md) 후진 의혹 해소 (사용자 관찰 "달달 떨리기만 했다")
+  - [L412](../../debug_log/2026-09-08/SUMMARY.md) 설정 변경
+- [L416](../../debug_log/2026-09-08/SUMMARY.md) ★ 마지막 발견 — 경로가 여유를 두고도 장애물에 붙는 이유 (`job89` 사용자 관측)
+  - [L420](../../debug_log/2026-09-08/SUMMARY.md) 원인: inflation 이 작으면 '멀리 돌 이유' 자체가 없다
+  - [L430](../../debug_log/2026-09-08/SUMMARY.md) 조치: 패딩은 작게, inflation 은 크게 (역할 분리)
+- [L440](../../debug_log/2026-09-08/SUMMARY.md) 다음 세션 첫 작업
+- [L450](../../debug_log/2026-09-08/SUMMARY.md) 오늘 확정된 인과 (모두 실험으로 확인)
+- [L461](../../debug_log/2026-09-08/SUMMARY.md) 최종 설정 (배포 완료, 검증 주행은 다음 세션)
+- [L474](../../debug_log/2026-09-08/SUMMARY.md) 내가 낸 오진 (기록 보존 — 재현 방지)
+
+## 2026-09-09
+- [L3](../../debug_log/2026-09-09/SUMMARY.md) 0. 이 날의 결론
+- [L16](../../debug_log/2026-09-09/SUMMARY.md) 1. 시작 상태와 오늘의 목표
+- [L27](../../debug_log/2026-09-09/SUMMARY.md) 2. 무주행 경로 질의 — 설정 변경 자체는 의도대로 동작 (job91)
+- [L57](../../debug_log/2026-09-09/SUMMARY.md) 3. 주행 실패 — EKF 가 8.5 m 발산 (job92)
+- [L82](../../debug_log/2026-09-09/SUMMARY.md) 4. 기각한 가설 4건
+  - [L91](../../debug_log/2026-09-09/SUMMARY.md) 내가 만든 오염 (기록 보존)
+- [L99](../../debug_log/2026-09-09/SUMMARY.md) 5. 링크 거동 관측 — 교대 점유 (job104, job105)
+- [L122](../../debug_log/2026-09-09/SUMMARY.md) 6. [정정됨 — §10 참조] 당시 세운 결론: 병목은 UART 가 아니라 USB (job106, job107)
+  - [L144](../../debug_log/2026-09-09/SUMMARY.md) 대역 수지
+  - [L161](../../debug_log/2026-09-09/SUMMARY.md) 방아쇠
+  - [L171](../../debug_log/2026-09-09/SUMMARY.md) 당시 그렸던 인과 연쇄 (§6.5 에서 무너짐)
+- [L183](../../debug_log/2026-09-09/SUMMARY.md) 6.5 대역 가설의 붕괴
+- [L208](../../debug_log/2026-09-09/SUMMARY.md) 7. 적용한 수정 — 펌웨어 대역 예산
+- [L230](../../debug_log/2026-09-09/SUMMARY.md) 8. 회피 주행 검증 — 완료 (job119 → job124)
+  - [L234](../../debug_log/2026-09-09/SUMMARY.md) job119 (lookahead 0.35) — 접촉 없이 중단
+  - [L253](../../debug_log/2026-09-09/SUMMARY.md) 조정 — 실제 손잡이는 lookahead_dist 가 아니었다
+  - [L264](../../debug_log/2026-09-09/SUMMARY.md) job124 (lookahead 0.25) — 완주
+- [L289](../../debug_log/2026-09-09/SUMMARY.md) 8.6 계측을 고치니 원인이 두 개 더 드러났다 (job125~job129)
+  - [L307](../../debug_log/2026-09-09/SUMMARY.md) 원인 A — 전역 경로의 좌우 양안정성 (job126)
+  - [L326](../../debug_log/2026-09-09/SUMMARY.md) 원인 B — 라이다가 자기가 볼 수 없는 것을 지운다 (job128)
+  - [L369](../../debug_log/2026-09-09/SUMMARY.md) 남은 위험과 STVL 검토
+- [L388](../../debug_log/2026-09-09/SUMMARY.md) 8.7 레이어 분리는 원인이 아니었다 (job134, job135) — 정정
+  - [L418](../../debug_log/2026-09-09/SUMMARY.md) 진짜 기전 — 카메라의 자기 소거
+- [L437](../../debug_log/2026-09-09/SUMMARY.md) 8.8 결정적 실험 — 기전은 '소거' 가 아니라 '마킹 중단' (job152, job155)
+  - [L439](../../debug_log/2026-09-09/SUMMARY.md) job152 — 오늘 처음 접촉 없이 완주
+  - [L461](../../debug_log/2026-09-09/SUMMARY.md) job155 — `clearing: false` 로 갈랐다
+  - [L475](../../debug_log/2026-09-09/SUMMARY.md) 이 실험 하나로 기각된 가설들
+  - [L487](../../debug_log/2026-09-09/SUMMARY.md) 해법의 방향이 바뀐다
+- [L496](../../debug_log/2026-09-09/SUMMARY.md) 8.9 DDS 공유메모리 사고 — 내가 만든 문제 (job144~151)
+- [L538](../../debug_log/2026-09-09/SUMMARY.md) 8.10 다음 수단 진단 — STVL 외 대안과 foxglove 경량화
+  - [L540](../../debug_log/2026-09-09/SUMMARY.md) 확인된 가용 수단
+  - [L560](../../debug_log/2026-09-09/SUMMARY.md) 순서를 하나 앞에 둬야 하는 이유 — 미해결 모순
+  - [L571](../../debug_log/2026-09-09/SUMMARY.md) foxglove 경량화
+- [L591](../../debug_log/2026-09-09/SUMMARY.md) 8.11 STVL 도입 (job160~166)
+  - [L596](../../debug_log/2026-09-09/SUMMARY.md) 설치
+  - [L607](../../debug_log/2026-09-09/SUMMARY.md) 구성 — 공식 실내 예제의 '마킹/소거 소스 분리' 패턴
+  - [L632](../../debug_log/2026-09-09/SUMMARY.md) 겪은 오류 1건 (기록)
+  - [L641](../../debug_log/2026-09-09/SUMMARY.md) 결과
+- [L651](../../debug_log/2026-09-09/SUMMARY.md) 8.12 foxglove 경량화 효과 확인
+- [L660](../../debug_log/2026-09-09/SUMMARY.md) 8.13 S1 — STVL 감쇠·절두체 확정 (job167, 169, 170)
+  - [L662](../../debug_log/2026-09-09/SUMMARY.md) job167 (voxel_decay 15, min_z 0.25) — 기능 확인
+  - [L675](../../debug_log/2026-09-09/SUMMARY.md) job169 (voxel_decay 30, min_z 0.25) — 오히려 5초 만에 소실
+  - [L688](../../debug_log/2026-09-09/SUMMARY.md) job170 (voxel_decay 30, min_z 0.55) — 전 구간 유지 ✅
+  - [L708](../../debug_log/2026-09-09/SUMMARY.md) 남은 문제 — 로버가 움직이지 않음 (배터리 의심)
+- [L724](../../debug_log/2026-09-09/SUMMARY.md) 8.14 "왜 후진하고 멈췄나" — 위치 추정 정지 (job170, 175)
+- [L748](../../debug_log/2026-09-09/SUMMARY.md) 8.15 DDS 공유메모리 — 2회차 재발과 원인 제거
+- [L772](../../debug_log/2026-09-09/SUMMARY.md) 8.16 그래도 재발한 정지 — 진짜 원인은 CPU 부족
+  - [L788](../../debug_log/2026-09-09/SUMMARY.md) 시도와 결과
+  - [L797](../../debug_log/2026-09-09/SUMMARY.md) 내가 낸 오류 2건 (기록)
+- [L805](../../debug_log/2026-09-09/SUMMARY.md) 8.5 미완 / 다음
+- [L809](../../debug_log/2026-09-09/SUMMARY.md) 10. 정정 — 이것은 용량 한계가 아니라 회귀다
+- [L845](../../debug_log/2026-09-09/SUMMARY.md) 9. 이 날 배운 것
+
+## 2026-09-10
+- [L3](../../debug_log/2026-09-10/SUMMARY.md) 0. 이 날의 결론
+- [L34](../../debug_log/2026-09-10/SUMMARY.md) 1. S6 기준선 — 깨끗한 부팅에서는 이미 충족
+- [L49](../../debug_log/2026-09-10/SUMMARY.md) 2. decay_acceleration — 장면 의존성을 없앴다 (job183 → job184)
+- [L74](../../debug_log/2026-09-10/SUMMARY.md) 3. stuck_monitor — Nav2 액션 상태는 전이 시점에만 발행된다
+- [L103](../../debug_log/2026-09-10/SUMMARY.md) 4. ★ 진짜 병목 — Foxglove 클라이언트 연결
+- [L133](../../debug_log/2026-09-10/SUMMARY.md) 5. job192 — S1 완주
+  - [L147](../../debug_log/2026-09-10/SUMMARY.md) S1 종료 조건 대비
+- [L157](../../debug_log/2026-09-10/SUMMARY.md) 6. job195 — 기록 주행 (S1 여유 기준 충족)
+  - [L188](../../debug_log/2026-09-10/SUMMARY.md) 겪은 오류 (기록)
+- [L193](../../debug_log/2026-09-10/SUMMARY.md) 7. 계측 결함과 수정 — 상자를 map 에 한 번만 고정하면 안 된다 (job196 → job198)
+  - [L195](../../debug_log/2026-09-10/SUMMARY.md) job196 — 지표가 통째로 무의미해졌다
+  - [L210](../../debug_log/2026-09-10/SUMMARY.md) 수정 — 보일 때마다 재고정
+  - [L217](../../debug_log/2026-09-10/SUMMARY.md) job198 — 지표는 좋았으나 **실제로는 접촉했다**
+  - [L251](../../debug_log/2026-09-10/SUMMARY.md) 주행 3회 요약
+- [L262](../../debug_log/2026-09-10/SUMMARY.md) 8. job205 — 감쇠 재설계 후 재주행 (S4 카운트는 §9 에서 취소됨)
+  - [L264](../../debug_log/2026-09-10/SUMMARY.md) 변경
+  - [L271](../../debug_log/2026-09-10/SUMMARY.md) 결과 — SUCCEEDED 38.1 s / 2.09 m, **육안 확인 접촉 없음**
+  - [L283](../../debug_log/2026-09-10/SUMMARY.md) 이 주행이 실제로 증명한 것
+  - [L294](../../debug_log/2026-09-10/SUMMARY.md) 남은 불확실성
+  - [L305](../../debug_log/2026-09-10/SUMMARY.md) 부수적으로 고친 것
+- [L318](../../debug_log/2026-09-10/SUMMARY.md) 9. ★ 계측이 벽을 상자로 보고 있었다 — ①②③⑤⑥ 전면 무효
+  - [L320](../../debug_log/2026-09-10/SUMMARY.md) 발단
+  - [L326](../../debug_log/2026-09-10/SUMMARY.md) 결정적 측정 — 로버를 세워 두고 60초 (job209)
+  - [L341](../../debug_log/2026-09-10/SUMMARY.md) 원인 — 클러스터링 없는 median (job125_avoid3.py detect_box)
+  - [L361](../../debug_log/2026-09-10/SUMMARY.md) 무너지는 결론 / 남는 결론
+  - [L375](../../debug_log/2026-09-10/SUMMARY.md) 고침
+  - [L380](../../debug_log/2026-09-10/SUMMARY.md) 고친 눈으로 다시 본 것 (job210, 재초기화 직후)
+  - [L389](../../debug_log/2026-09-10/SUMMARY.md) 그래서 복귀 때 왜 쳤나 (가설, 다음 주행에서 검증)
+- [L398](../../debug_log/2026-09-10/SUMMARY.md) 10. 삭제 정책 — 우리 선택과 업계 방향
+  - [L423](../../debug_log/2026-09-10/SUMMARY.md) 계획 조정 (사용자 승인)
+- [L429](../../debug_log/2026-09-10/SUMMARY.md) 11. job216 — 고친 계측으로 본 첫 주행. 두 가지가 확정됐다
+  - [L442](../../debug_log/2026-09-10/SUMMARY.md) 11.1 깊이 사각지대는 실재한다 — §9 의 "무효" 판정을 정정한다
+  - [L469](../../debug_log/2026-09-10/SUMMARY.md) 11.2 로컬 코스트맵이 깊이 소실 1.3초 만에 상자를 통째로 버린다
+  - [L492](../../debug_log/2026-09-10/SUMMARY.md) 11.3 결과 해석
+- [L498](../../debug_log/2026-09-10/SUMMARY.md) 12. 미완 / 다음
+
+## 2026-09-11
+- [L3](../../debug_log/2026-09-11/SUMMARY.md) 0. 이 날의 결론
+- [L22](../../debug_log/2026-09-11/SUMMARY.md) 1. 통제 실험 — 변수를 하나씩 줄여 가설을 지웠다
+- [L35](../../debug_log/2026-09-11/SUMMARY.md) 2. 재현과 확정 (job222)
+- [L49](../../debug_log/2026-09-11/SUMMARY.md) 3. 고침 — ClearEntireCostmap → ClearCostmapExceptRegion
+  - [L64](../../debug_log/2026-09-11/SUMMARY.md) 검증 (job231, 같은 코스)
+- [L77](../../debug_log/2026-09-11/SUMMARY.md) 4. 감쇠 되돌림 — 09-10 의 결정을 취소한다
+- [L90](../../debug_log/2026-09-11/SUMMARY.md) 5. 남은 문제 — 계획이 장애물에 붙는다
+  - [L111](../../debug_log/2026-09-11/SUMMARY.md) 5.1 파라미터를 건드리기 전에 — 통과 가능한 틈이 있는가 (job233)
+- [L150](../../debug_log/2026-09-11/SUMMARY.md) 5.2 reset_distance 1.2 m 는 부족했다 (job236)
+- [L171](../../debug_log/2026-09-11/SUMMARY.md) 5.3 주행할수록 코스트맵이 좁아진다 (job238/239)
+- [L196](../../debug_log/2026-09-11/SUMMARY.md) 5.4 job242 — 깨끗한 기동에서 첫 완주
+- [L230](../../debug_log/2026-09-11/SUMMARY.md) 5.5 조향 지표 정정 + 제자리 회전 밀림 (사용자 관찰)
+  - [L237](../../debug_log/2026-09-11/SUMMARY.md) 지표 오염 — 관찰이 맞았다
+  - [L263](../../debug_log/2026-09-11/SUMMARY.md) 밀림 측정은 실패했다 — 기준을 잘못 골랐다 (job243)
+- [L288](../../debug_log/2026-09-11/SUMMARY.md) 5.6 통과 폭 도구가 낙관적이었다 — 원형 근사의 함정 (job247)
+- [L324](../../debug_log/2026-09-11/SUMMARY.md) 5.7 micro-ROS 세션은 보드가 먼저 리셋되면 안 맺어진다
+- [L340](../../debug_log/2026-09-11/SUMMARY.md) 5.8 ★ 전면 재점검 — "차가 그렇게 크지 않은데 환각이 너무 심하다" (사용자)
+  - [L345](../../debug_log/2026-09-11/SUMMARY.md) 도구 오류 — 내접 반경을 두 번 셌다
+  - [L351](../../debug_log/2026-09-11/SUMMARY.md) 측정 (job248, 로버 정지)
+  - [L374](../../debug_log/2026-09-11/SUMMARY.md) job247 이 실패한 진짜 이유 — 09-09 의 보수적 값 셋이 서로 맞물려 있었다
+  - [L389](../../debug_log/2026-09-11/SUMMARY.md) 방향 판정
+- [L400](../../debug_log/2026-09-11/SUMMARY.md) 5.9 job251 — 충돌지평 5.0 → 1.5: 통로는 통과, 막힌 곳은 시험 기하
+  - [L429](../../debug_log/2026-09-11/SUMMARY.md) 중복 프로세스 (사용자 지적 "중첩된 프로세스가 있어 충돌이 일어나지 않게")
+- [L437](../../debug_log/2026-09-11/SUMMARY.md) 5.10 S4 반복 — 회전 억제(min_angle 1.0), 상자 상대 게이트, 회차 전 재기동
+  - [L454](../../debug_log/2026-09-11/SUMMARY.md) S4 종료 판정
+  - [L473](../../debug_log/2026-09-11/SUMMARY.md) 배운 것
+  - [L492](../../debug_log/2026-09-11/SUMMARY.md) 절차 (확정)
+- [L498](../../debug_log/2026-09-11/SUMMARY.md) 5.11 복귀 실패, 그리고 진단 도구의 프레임 오류 (저녁)
+- [L535](../../debug_log/2026-09-11/SUMMARY.md) 5.12 사용자 질문 ① "서로 다른 명령을 내리는 부분이 있는가" — 있다 (BackUp 첫 1 s)
+- [L566](../../debug_log/2026-09-11/SUMMARY.md) 5.13 사용자 질문 ② "nvblox 이전이 지금 단계에서 옳은가" — 아니다, 아직
+- [L592](../../debug_log/2026-09-11/SUMMARY.md) 5.14 다음 단계 검증 — behavior_server 프레임 버그 발견·수정, velocity_timeout A/B 확정
+  - [L597](../../debug_log/2026-09-11/SUMMARY.md) 발견: BackUp 이 양방향 모두 0.0 s 에 "Collision Ahead" 로 실패했다
+  - [L615](../../debug_log/2026-09-11/SUMMARY.md) velocity_timeout A/B (BackUp 이 살아난 뒤)
+  - [L627](../../debug_log/2026-09-11/SUMMARY.md) 오늘 마지막에 남는 것
+- [L635](../../debug_log/2026-09-11/SUMMARY.md) 5.15 코스 주행 + 복귀 (복구 동작이 살아난 뒤) — 복귀 실패는 목표 기하였다
+- [L659](../../debug_log/2026-09-11/SUMMARY.md) 5.16 손 배치 후 설정 검증 (v1/v2) — 설정은 설계대로, 남는 것은 "중앙 상자" 기하
+- [L682](../../debug_log/2026-09-11/SUMMARY.md) 5.17 footprint_padding 0.05 → 0.03 — "중앙 상자" 배치에서 출발 정체가 사라졌다
+- [L707](../../debug_log/2026-09-11/SUMMARY.md) 5.18 패딩 0.03 두 번째 시행(v5) — 실패. 0.03 은 "중앙 상자" 에서 1/2
+- [L734](../../debug_log/2026-09-11/SUMMARY.md) 5.19 "그다지 좁지도 않은데 왜 자꾸 실패하는가" — 통로는 1.2 m 가 아니라 0.6 m 였다 (bag_v5 사후 분석, 09-11 밤 → 09-14)
+  - [L743](../../debug_log/2026-09-11/SUMMARY.md) 정체 순간 (첫 "detected collision" T = bag +25.1 s)
+  - [L753](../../debug_log/2026-09-11/SUMMARY.md) 그 LETHAL 은 무엇인가 (job304 — 군집별 라이다 근거·출현 시각)
+  - [L761](../../debug_log/2026-09-11/SUMMARY.md) "유령" 인가 — 아니다 (job305, job306)
+  - [L771](../../debug_log/2026-09-11/SUMMARY.md) 도구 결함 10번째 — `job248` A) "물리 틈" 은 상자 x 구간의 점만 셌다
+  - [L776](../../debug_log/2026-09-11/SUMMARY.md) 실패 기전 (증거로 이어지는 순서)
+  - [L782](../../debug_log/2026-09-11/SUMMARY.md) 해결책 후보와 정지 A/B (job308, 09-14, 주행 없음)
+- [L804](../../debug_log/2026-09-11/SUMMARY.md) 6. 부수적으로 배운 것
+- [L818](../../debug_log/2026-09-11/SUMMARY.md) 7. 다음
+
+## 2026-09-14
+- [L7](../../debug_log/2026-09-14/SUMMARY.md) 0. 상태
+- [L15](../../debug_log/2026-09-14/SUMMARY.md) 1. 배치 — "상자 중앙" 은 ±7 cm 가 창 폭을 절반으로 바꾼다
+- [L25](../../debug_log/2026-09-14/SUMMARY.md) 2. inf1 — SUCCEEDED, 66.9 s, 접촉 없음(기하 최근접 11.8 cm), 입구에서 복구 3회
+  - [L41](../../debug_log/2026-09-14/SUMMARY.md) 입구 에피소드 (bag 사후, job303/304)
+  - [L52](../../debug_log/2026-09-14/SUMMARY.md) 새 증거 — 로컬 감쇠 30 s 는 입구 정체 한 번이면 소진된다
+- [L57](../../debug_log/2026-09-14/SUMMARY.md) 2.5 정면 바닥 근거리 아티팩트 — 정지 30 s 에 17 % 프레임, 카메라 0.36~0.38 m, z 0.10~0.12 (job311)
+- [L66](../../debug_log/2026-09-14/SUMMARY.md) 2.6 inf2 — SUCCEEDED 50.0 s, 복구 0회·정지 2회, 원인은 "코스트맵 상자가 실제보다 12 cm 넓다"
+  - [L87](../../debug_log/2026-09-14/SUMMARY.md) inflation 0.55/2.0 판정 — 중앙 상자 2/2 SUCCEEDED (v5 조건 0/1 → 2/2), 통로 구간 S 자 소멸
+- [L90](../../debug_log/2026-09-14/SUMMARY.md) 2.7 상자 가장자리 연장 셀의 출처 = 실루엣 비산점 (job312, 출발점 정지 20 s, 상자 전면 1.19·중심 −0.03)
+- [L106](../../debug_log/2026-09-14/SUMMARY.md) 2.8 사고 — Nav2 복귀 ABORTED 뒤 여유 검사 없는 제자리 회전으로 상자 접촉
+- [L115](../../debug_log/2026-09-14/SUMMARY.md) 2.9 `depth_relay.py` 배포·정지 검증 — 정면 아티팩트 0/454, 상자 비산점 소멸
+- [L132](../../debug_log/2026-09-14/SUMMARY.md) 2.10 inf3 (릴레이 + inflation 0.55) — SUCCEEDED 51.4 s, 코스트맵 상자 = 실물, 정지 2회(각 1 s)
+- [L154](../../debug_log/2026-09-14/SUMMARY.md) 2.11 inf4 (릴레이 + inflation 0.55 + 로컬 decay 60 s) — SUCCEEDED 74.8 s, 그러나 충돌감지 11·BackUp 실패 2
+- [L183](../../debug_log/2026-09-14/SUMMARY.md) 2.12 사용자 질문: "통로를 지날 때 속도가 매우 느리고 부드럽지 못하다 — 새 센서? 소프트웨어?" → 소프트웨어(컨트롤러 정책)
+- [L215](../../debug_log/2026-09-14/SUMMARY.md) 2.13 spd1 (cost_scaling_dist 0.25 · min_speed 0.05) — 속도는 0.080 유지, 입구에서 **ABORTED**
+- [L242](../../debug_log/2026-09-14/SUMMARY.md) 2.14 `min_obstacle_height` 0.06 → 0.08 시도 — 정지 측정으로 기각 (상자 폭은 0.22 m 였다)
+- [L260](../../debug_log/2026-09-14/SUMMARY.md) 2.15 spd2 (0.06 복원, 상자 −0.15 = v4 배치, 창 0.27 m) — ABORTED 32.6 s, 전진 0.5 m 에서
+- [L273](../../debug_log/2026-09-14/SUMMARY.md) 2.16 tc1 (충돌검사 0.75 s) — ABORTED, 그러나 배치가 창 0.15 m 였다 (판정 보류)
+- [L287](../../debug_log/2026-09-14/SUMMARY.md) 2.17 tc2 (충돌검사 0.75 s, 창 0.28 m) — 통로는 **0.080 으로 통과**, 목표 근처(끝 벽 0.3 m)에서 ABORTED
+- [L307](../../debug_log/2026-09-14/SUMMARY.md) 2.18 tc3 (D=1.8, 그러나 상자가 다시 정중앙) — ABORTED: 0.08 m/s 에서 창 0.23 m 는 안 된다
+- [L321](../../debug_log/2026-09-14/SUMMARY.md) 2.19 정지 계획 A/B — NavFn vs Smac Hybrid-A* (job317, 시작 pose 고정·use_start, 주행 없음)
+- [L346](../../debug_log/2026-09-14/SUMMARY.md) 2.20 "전역 코스트맵 흔들림" 의 정체 = 관찰자 (job318/319, 정지 3 분 × 2) — §2.19 의 SLAM 원인 추정 **철회**
+- [L364](../../debug_log/2026-09-14/SUMMARY.md) 2.21 "상자 앞 유령 셀" 의 출처 = 25 % 프레임에만 찍히는 바닥 한 점 → 릴레이 시간 지속성 필터
+- [L390](../../debug_log/2026-09-14/SUMMARY.md) 2.22 tc4 (지속성 릴레이, 코스트맵 깨끗, 관찰자 시야 밖) — ABORTED: 남은 것은 **계획의 코너 컷**
+- [L411](../../debug_log/2026-09-14/SUMMARY.md) 2.23 sm1 (BT planner_id → SmacHybrid, 목표 통로선 1.8/+0.35) — ABORTED, 같은 자리. 계획기 교체로는 안 풀린다
+- [L433](../../debug_log/2026-09-14/SUMMARY.md) 2.24 사용자 질문: "옆으로 돌아 지나갈 때 상자 크기가 커지는가" — 릴레이 전엔 그랬고, 지금은 한 셀(실물 폭)만
+- [L448](../../debug_log/2026-09-14/SUMMARY.md) 2.25 pd1 (패딩 0.01, Smac BT, 목표 1.8/+0.35, 관찰자 밖) — **SUCCEEDED 24.3 s, 충돌감지 0, 복구 0, 통로 v 0.080**
+- [L467](../../debug_log/2026-09-14/SUMMARY.md) 2.26 bk1 (사용자 요청: 목표를 상자 뒤 횡 0 으로) — SUCCEEDED 38.6 s, 정지 2회(충돌감지 6, BackUp 실패 1)
+  - [L485](../../debug_log/2026-09-14/SUMMARY.md) 상자를 지나 뒤로 갈 때 멈추거나 머뭇거린 원인 (bk1 bag 기준, 사용자 요청 정리)
+  - [L492](../../debug_log/2026-09-14/SUMMARY.md) 다음 (이 문제에 대해)
+- [L498](../../debug_log/2026-09-14/SUMMARY.md) 2.27 사용자 목표: "상자 뒤로 갈 때, 카메라에서 상자가 사라진 뒤에도 머뭇거리지 않고 자연스럽게" — 설계 노트 (다음 세션 실험 계획)
+- [L515](../../debug_log/2026-09-14/SUMMARY.md) 3. 라이다 "고정점" (사용자 관찰: 우측 전방, 로버 이동과 무관하게 같은 거리) — 주행 bag 판정
+- [L525](../../debug_log/2026-09-14/SUMMARY.md) 4. 오늘의 결산과 다음
+
+## 2026-09-15
+- [L6](../../debug_log/2026-09-15/SUMMARY.md) 0. 상태 (충전 후 재부팅)
+- [L11](../../debug_log/2026-09-15/SUMMARY.md) 1. Smac 스윕 (정지, 상자 뒤 목표 1.8/0, 상자 살아 있음, job317)
+- [L27](../../debug_log/2026-09-15/SUMMARY.md) 0.5 세션 누적 오차 점검 (사용자 우려, job321, 정지 30 s, Jetson 가동 3 h 19 min)
+- [L43](../../debug_log/2026-09-15/SUMMARY.md) 2. mp1 — MPPI 첫 주행 (Smac BT, 목표 상자 뒤 1.8/0, 패딩 0.01): ABORTED 48 s — 컨트롤러가 아니라 **계획기 재계획 실패**
+- [L62](../../debug_log/2026-09-15/SUMMARY.md) 3. mp2 시도 (NavFn + MPPI) — 게이트 통과 직후 **Jetson 네트워크 소실**, 주행 시작 여부 미확인
+  - [L74](../../debug_log/2026-09-15/SUMMARY.md) 3.1 (09-16 오전) 원인 규명 — Wi-Fi AP 가 Jetson 을 끊고 재인증을 거부했다
+
+## 2026-09-16
+- [L10](../../debug_log/2026-09-16/SUMMARY.md) 1. mp2 — 목표 상자 뒤 (1.80, 0.01), 상자 중심 y +0.074, 통과폭(중심 허용) 0.235 m → **TIMEOUT 90 s, 1.23 m, 충돌감지 0, 접촉 없음**
+  - [L12](../../debug_log/2026-09-16/SUMMARY.md) 1.1 사용자 관찰
+  - [L15](../../debug_log/2026-09-16/SUMMARY.md) 1.2 타임라인 (bag T0 = 1789520980.93, 목표 수신 t 4.7 s) — `outputs/job327_mp2why.txt`
+  - [L32](../../debug_log/2026-09-16/SUMMARY.md) 1.3 원인 — MPPI 지평 0.13 m 에서는 경로 크리틱이 켜지지 않는다 (검증된 것 / 추론한 것 구분)
+  - [L49](../../debug_log/2026-09-16/SUMMARY.md) 1.4 기각한 가설
+  - [L59](../../debug_log/2026-09-16/SUMMARY.md) 1.5 조치 — mp3 용 yaml 변경 3 개 (한 가설 "지평·index 불일치" 의 세 손잡이, 배포 완료·다음 재기동 반영)
+  - [L73](../../debug_log/2026-09-16/SUMMARY.md) 1.6 내 실수 — 정지 요청에 전체 종료 스크립트를 실행
+  - [L78](../../debug_log/2026-09-16/SUMMARY.md) 1.7 mp3 준비 — 게이트가 두 번 거부: 상자 셀 최대 y 가 0.169 ↔ 0.218 사이를 오간다
+  - [L86](../../debug_log/2026-09-16/SUMMARY.md) 1.8 문제 정의와 해결 — 상자 가장자리 셀 깜빡임의 출처와 STVL 월드 정렬 복셀 필터 (사용자 지시: "밝혀낸 문제를 정의하고, 해결한 후, 진행하라")
+  - [L101](../../debug_log/2026-09-16/SUMMARY.md) 1.9 mp3 — NavFn + MPPI(56 step, offset 3, angle 0.5) + 복셀 필터: **같은 자리 정체 42 s + CPU 과부하 + 기억 소실 후 상자 접촉(기하 0 cm)** → TIMEOUT 90 s
+  - [L119](../../debug_log/2026-09-16/SUMMARY.md) 1.10 재정의·재분석·다각도 해결책 (사용자 지시) → `Docs/PASSAGE_PROBLEM_ANALYSIS_2026-09-16.md`
+  - [L122](../../debug_log/2026-09-16/SUMMARY.md) 1.11 사용자 결정(MPPI 유지·A 진행·C 검토·D 위임) 에 따른 조치 — 전부 배포, 반영은 다음 재기동
+  - [L143](../../debug_log/2026-09-16/SUMMARY.md) 1.12 A 계획 정지 A/B (job340, 재기동 후 상자 1.085/−0.008, 목표 1.8/0, 주행 없음) → inflation 0.70 + SmoothPath 채택·배포
+  - [L156](../../debug_log/2026-09-16/SUMMARY.md) 1.13 mp4 — NavFn + inflation 0.70 + SmoothPath + MPPI(10 Hz, 32 step, decay 120): **부드러운 진입 후 같은 입구에서 정지, 18 s 에 stuck_monitor 가 취소** (접촉 없음, 최근접 17 cm)
+  - [L174](../../debug_log/2026-09-16/SUMMARY.md) 1.14 사용자 질문 "회피 로직과 추종 로직이 충돌하는가, 과한 값인가" — 크리틱 비용 재구성 + 오프라인 MPPI 시뮬레이션 (mp4 bag)
+  - [L202](../../debug_log/2026-09-16/SUMMARY.md) 1.15 mp5 — PathFollow 당근(10/20) 적용: **입구 통과 성공(정지 0), 상자 뒤 복귀 회전에서 정지** → TIMEOUT 90 s, 2.54 m, 접촉 없음(최근접 10.5 cm)
+- [L219](../../debug_log/2026-09-16/SUMMARY.md) 2. 다음 (09-16 마감 시점)
+
+## 2026-09-17
+- [L8](../../debug_log/2026-09-17/SUMMARY.md) 0. 기동
+- [L13](../../debug_log/2026-09-17/SUMMARY.md) 1. 상자 위치 오측정 — 감사 스크립트 결함 (내 실수로 사용자가 로버를 잘못 옮김)
+- [L28](../../debug_log/2026-09-17/SUMMARY.md) 2. mp6 — 목표 (2.2, 0), 파라미터 mp5 와 동일 (MPPI 10 Hz·PathFollow 10/20·inflation 0.70·SmoothPath) → TIMEOUT 90 s, 2.64 m
+- [L43](../../debug_log/2026-09-17/SUMMARY.md) 3. 조치 (파일 배포, 다음 nav2 기동 반영)
+- [L48](../../debug_log/2026-09-17/SUMMARY.md) 4. 다음
+- [L55](../../debug_log/2026-09-17/SUMMARY.md) 5. mp7 — 목표 (2.0, 0), BT 스무딩 fallback 반영: **27 s ABORTED (1.72 m, 통로 안, 접촉 없음 최근접 8 cm)** — 원인은 주행이 아니라 SLAM 굶주림 → 정지
+- [L86](../../debug_log/2026-09-17/SUMMARY.md) 6. 사용자 승인 두 건 실행: SLAM 역추적 → **Fast DDS 내부 데드락**, 전력 모드 25W → **CPU 가 오히려 느려져 15W 로 원복** (내 판단 오류)
+  - [L87](../../debug_log/2026-09-17/SUMMARY.md) 6.1 정지한 slam_toolbox 역추적 (`sudo gdb -p 12040 -batch "thread apply all bt 25"`, 읽기 전용, `outputs/slam_bt.txt`)
+  - [L102](../../debug_log/2026-09-17/SUMMARY.md) 6.2 전력 모드 — 25W 전환 후 즉시 15W 원복
+  - [L112](../../debug_log/2026-09-17/SUMMARY.md) 6.3 Fast DDS 2.6.12 적용 (사용자 승인 1번)
+- [L119](../../debug_log/2026-09-17/SUMMARY.md) 7. mp8 — 목표 (2.0, 0), 오늘 조치 전부 반영: **주행 품질은 최고, 목표 0.24 m 옆에서 정지** → TIMEOUT 90 s, 2.30 m
+  - [L129](../../debug_log/2026-09-17/SUMMARY.md) 7.1 목표 앞 정지의 원인 1 — **펌웨어 속도 문턱 불일치 (결함)**
+  - [L135](../../debug_log/2026-09-17/SUMMARY.md) 7.2 원인 2 — 목표 근처 크리틱 교대로 중심선 복귀가 끊김
+- [L147](../../debug_log/2026-09-17/SUMMARY.md) 8. 정지 문턱 0.010 의 출처·충돌 정리와 펌웨어 수정 (사용자 결정: 정지 문턱을 낮추고 파라미터를 한 곳으로)
+  - [L148](../../debug_log/2026-09-17/SUMMARY.md) 8.1 0.010 은 어디서 왔나
+  - [L152](../../debug_log/2026-09-17/SUMMARY.md) 8.2 0.008 은 새 모터 실측값인가 — **부분적으로만**
+  - [L157](../../debug_log/2026-09-17/SUMMARY.md) 8.3 수정 (소스·빌드 완료, **플래시 대기 — ST-Link 미연결**)
+  - [L164](../../debug_log/2026-09-17/SUMMARY.md) 8.4 플래시 후 실측 계획 (`jobs/job397_lowspeed.py`, 로버 이동 — 사용자 출발 지시 필요)
+  - [L168](../../debug_log/2026-09-17/SUMMARY.md) 8.5 플래시 (사용자가 ST-Link 연결, 리셋은 사용자가 직접)
+  - [L173](../../debug_log/2026-09-17/SUMMARY.md) 8.6 사고: 리셋 없이 플래시한 뒤 MCU 정지 상태에서 로버가 스스로 우회전 (리셋으로 멈춤)
+  - [L184](../../debug_log/2026-09-17/SUMMARY.md) 8.7 저속 실측 준비 중 Wi-Fi 재전환 → DDS 분리 → Jetson 재부팅(사용자)
+  - [L189](../../debug_log/2026-09-17/SUMMARY.md) 8.8 저속 정지 출발 실측 — 새 펌웨어에서 3~10 mm/s 결함 해소, MIN 0.008 실측 확정 (`outputs/j397_lowspeed.txt`)
+- [L207](../../debug_log/2026-09-17/SUMMARY.md) 9. mp9 — 목표 (2.0, 0), 새 펌웨어(정지 문턱 5 mm/s) + Nav2 목표 근처 설정(경로 크리틱 문턱 0.2·GoalCritic 10): **SUCCEEDED 33.7 s, 2.19 m** ★ 상자 뒤 목표 첫 MPPI 성공
+- [L236](../../debug_log/2026-09-17/SUMMARY.md) 10. mp10 — mp9 와 같은 구성 반복 #2: **SUCCEEDED 33.1 s, 2.21 m**
+- [L253](../../debug_log/2026-09-17/SUMMARY.md) 11. mp11 — 반복 #3: **SUCCEEDED 33.6 s, 2.22 m, 중단·복구 0** → 같은 구성 3 / 3 성공
+  - [L257](../../debug_log/2026-09-17/SUMMARY.md) 11.1 반복 3 회 요약 (구성 동일: 새 펌웨어 + MPPI 10 Hz·PathFollow 10/20·경로 크리틱 문턱 0.2·GoalCritic 10 + SmoothPath fallback + BT timeout 100 ms + Fast DDS 2.6.12)
+- [L271](../../debug_log/2026-09-17/SUMMARY.md) 12. 조향 흔들림 — 원인은 MPPI softmax 유효 표본 수 부족(temperature 0.15)이지 구동계 지연이 아니다 → temperature 0.3 (잠정, 실주행 반복 대기)
+  - [L274](../../debug_log/2026-09-17/SUMMARY.md) 12.1 실측: 어디서 흔들리고, 차체까지 가는가 (`jobs/job407_wobble.py`, `outputs/j407_wobble.txt`, mp9~11 bag)
+  - [L285](../../debug_log/2026-09-17/SUMMARY.md) 12.2 구동계 지연·이득 실측 (`jobs/job409_lag.py`, `outputs/j409_lag.txt`, 상호상관)
+  - [L293](../../debug_log/2026-09-17/SUMMARY.md) 12.3 시뮬레이터 확장 (`jobs/job410_mppi_sim_lag.py`, `job355_mppi_sim.py` 기반)
+  - [L299](../../debug_log/2026-09-17/SUMMARY.md) 12.4 기제 분리 (`jobs/job413_wobblecause.sh`, `outputs/j413_wobblecause.txt`) — 통로 장면 mp11 t=19 (0.77, 0.31) yaw +18°, 6 s, seed 1~3
+  - [L315](../../debug_log/2026-09-17/SUMMARY.md) 12.5 부작용 점검 (`jobs/job412_tempsim2.sh`, `outputs/j412_tempsim2.txt`, 실측 구동계)
+  - [L325](../../debug_log/2026-09-17/SUMMARY.md) 12.6 결정: `FollowPathMPPI.temperature` 0.15 → **0.3** (Nav2 기본값 복귀, `nav2_params.yaml` 주석에 근거)
+  - [L340](../../debug_log/2026-09-17/SUMMARY.md) 12.7 한계·남긴 것
+- [L344](../../debug_log/2026-09-17/SUMMARY.md) 13. mp12 — temperature 0.3 첫 실주행: **SUCCEEDED 31.9 s, 2.19 m** 이지만 **흔들림은 줄지 않았다**(§12.6 기준 불합격) + 상자 여유 지표 재점검
+  - [L345](../../debug_log/2026-09-17/SUMMARY.md) 13.1 준비: 상자가 옮겨져 있었다 → 로버를 9 cm 뒤로 (사용자)
+  - [L350](../../debug_log/2026-09-17/SUMMARY.md) 13.2 주행 (`outputs/drive_mp12.txt`, `outputs/drive_mp12_runner.txt`, `outputs/j379_mp12.txt`, `outputs/mp12.csv`, `bags/bag_mp12.tgz`)
+  - [L361](../../debug_log/2026-09-17/SUMMARY.md) 13.3 흔들림 판정 (`jobs/job417_compare.sh` → `outputs/j417_compare.txt`, job407 동일 방식)
+  - [L374](../../debug_log/2026-09-17/SUMMARY.md) 13.4 상자 여유 지표 재점검 — 주행 스크립트 "① 0.0 cm" 는 상자 모델 오류, 컨트롤러가 보는 여유는 모든 run 에서 ≈2 cm
+  - [L386](../../debug_log/2026-09-17/SUMMARY.md) 13.5 결정 대기
+- [L390](../../debug_log/2026-09-17/SUMMARY.md) 14. 흔들림 원인 재분석(사용자 결정: temperature 0.15 복귀 + 오프라인) — 시뮬레이터가 실제 Humble MPPI 와 네 가지가 달랐다 / 흔들림의 위치 영향은 0.1 mm 미만
+  - [L393](../../debug_log/2026-09-17/SUMMARY.md) 14.1 시뮬레이터 충실도 점검 — 설치된 nav2_mppi_controller **1.1.20** 헤더(`outputs/j418_mppisrc.txt`, `j418b_sgfilter.txt`, `j418c_motion.txt`) + 같은 태그 소스(github ros-navigatio
+  - [L402](../../debug_log/2026-09-17/SUMMARY.md) 14.2 Humble 모드 결과 (`jobs/job420_humblesim.sh` → `outputs/j420_humblesim.txt`; 통로 mp11·mp12 t=19, 실측 구동계 지연·이득·가속)
+  - [L406](../../debug_log/2026-09-17/SUMMARY.md) 14.3 입력 변화 재생 (`jobs/job421b_dynsim.sh` → `outputs/j421b_dynsim.txt`; `job421_dynsim.sh` 는 run() 이 전역 변수 T 를 덮어써 재생 변형이 temperature=19 로 돈 **무효 실행** — 재가지치기(R) 
+  - [L410](../../debug_log/2026-09-17/SUMMARY.md) 14.4 센서 잡음 (`jobs/job422_sensnoise.py` → `outputs/j422_sensnoise.txt`)
+  - [L414](../../debug_log/2026-09-17/SUMMARY.md) 14.5 고정 잡음 vs 매 반복 새 잡음 (`jobs/job423_regensim.sh` → `outputs/j423_regensim.txt`; mp11 seed 1~6, mp12 seed 1~3)
+  - [L424](../../debug_log/2026-09-17/SUMMARY.md) 14.6 흔들림이 실제로 주는 영향 (`jobs/job424_latwobble.py` → `outputs/j424_latwobble.txt`)
+  - [L435](../../debug_log/2026-09-17/SUMMARY.md) 14.7 정리·다음
+- [L440](../../debug_log/2026-09-17/SUMMARY.md) 15. 사용자 질문 "상자를 지날 때 크게 돌아가는 이유" — 코스 기하 + NavFn 비용 골짜기 + MPPI 선회전 + 코스트맵의 상자 부풀림/odom 드리프트가 층층이 쌓인다
+  - [L443](../../debug_log/2026-09-17/SUMMARY.md) 15.1 무엇이 넓게 도는가 — 경로가 먼저 넓고, 로버는 그보다 조금 더 왼쪽 (map, y 는 m)
+  - [L454](../../debug_log/2026-09-17/SUMMARY.md) 15.2 전역 코스트맵 단면 — 통로 전체가 비용 경사 위에 있다 (mp12 t=10, 비용 0~252, # LETHAL, o 내접 253)
+  - [L460](../../debug_log/2026-09-17/SUMMARY.md) 15.3 inflation 을 줄이면 상자에 붙는가 — 아니다 (근사)
+  - [L468](../../debug_log/2026-09-17/SUMMARY.md) 15.4 상자 옆 횡 위치 예산 — 물리 상자 가장자리부터 실제 궤적까지 (map, 상자 옆 x≈1.2)
+  - [L479](../../debug_log/2026-09-17/SUMMARY.md) 15.5 로컬(odom) 코스트맵의 상자는 전역(map)보다 로버 쪽으로 2~8 cm 와 있다
+  - [L488](../../debug_log/2026-09-17/SUMMARY.md) 15.6 결론과 손잡이 후보 (오늘은 바꾸지 않음)
+- [L494](../../debug_log/2026-09-17/SUMMARY.md) 16. 오늘 마무리 (2026-09-17)
+- [L500](../../debug_log/2026-09-17/SUMMARY.md) 17. Wi-Fi 분석 (사용자 요청, 09-16 부터 미뤄 둔 항목) — WEB_DEV_5G AP 가 Jetson 을 먼저 끊고 재인증을 거부한다, Jetson 쪽 원인 흔적은 없다
+  - [L503](../../debug_log/2026-09-17/SUMMARY.md) 17.1 사건의 모양 — 세 번 모두 같다
+  - [L512](../../debug_log/2026-09-17/SUMMARY.md) 17.2 전체 기간 집계 (2 월~9/17)
+  - [L520](../../debug_log/2026-09-17/SUMMARY.md) 17.3 Jetson 쪽 원인 후보 — 모두 증거 없음
+  - [L529](../../debug_log/2026-09-17/SUMMARY.md) 17.4 "새 IP 로 붙는 이유" — NetworkManager 정상 동작
+  - [L535](../../debug_log/2026-09-17/SUMMARY.md) 17.5 곁가지로 찾은 것
+  - [L540](../../debug_log/2026-09-17/SUMMARY.md) 17.6 제안 (모두 sudo·설정 변경 — 사용자 승인 필요, 오늘 적용 안 함)
+
+## 2026-09-18
+- [L5](../../debug_log/2026-09-18/SUMMARY.md) 0. 상태
+- [L9](../../debug_log/2026-09-18/SUMMARY.md) 1. 공유기 식별 (로그인 없이)
+- [L13](../../debug_log/2026-09-18/SUMMARY.md) 2. 공유기 로그 (사용자가 Chrome 에서 직접 로그인, Claude 는 읽기만)
+- [L29](../../debug_log/2026-09-18/SUMMARY.md) 3. 공유기 무선 설정 (조회 전용 API: `wireless/info`, `wireless/band/info\|show`, `wireless/bss/info\|show`, `wireless/mac/show`, `easymesh/info`; 비밀번호 필드는 가림)
+- [L40](../../debug_log/2026-09-18/SUMMARY.md) 4. Jetson 로그 재확인 (`jobs/job428_wifi_dfs.sh` 등 → `outputs/j428*.txt`)
+- [L45](../../debug_log/2026-09-18/SUMMARY.md) 5. 판단
+- [L53](../../debug_log/2026-09-18/SUMMARY.md) 6. 확정 방법 (모두 설정 변경 또는 sudo — 사용자 결정 필요)
+- [L61](../../debug_log/2026-09-18/SUMMARY.md) 7. A안 설치 — 다음 끊김 계측 (사용자 승인, sudo 사용, 네트워크 설정 변경 없음)
+  - [L62](../../debug_log/2026-09-18/SUMMARY.md) 7.1 사전 점검 (`jobs/job429_probe.sh`, `job429b_montest.sh`, `job429c_dbgrate.sh` → `outputs/j429*.txt`)
+  - [L68](../../debug_log/2026-09-18/SUMMARY.md) 7.2 설치물 (`jobs/wifi_mon.sh`, `jobs/job429d_install.sh`, `jobs/job429h_redeploy.sh`)
+  - [L77](../../debug_log/2026-09-18/SUMMARY.md) 7.3 다음 끊김 때 판정 기준 (미리 선언)
+- [L86](../../debug_log/2026-09-18/SUMMARY.md) 8. 로그·산출물 누적 조사 (사용자 요청, 읽기 전용 — 삭제 없음)
+  - [L89](../../debug_log/2026-09-18/SUMMARY.md) 8.1 Jetson (디스크 233 GB 중 28 GB 사용, 193 GB 여유 — 공간 문제 없음)
+  - [L102](../../debug_log/2026-09-18/SUMMARY.md) 8.2 PC
+  - [L112](../../debug_log/2026-09-18/SUMMARY.md) 8.3 판단
+  - [L115](../../debug_log/2026-09-18/SUMMARY.md) 8.4 결정 (사용자): **몇 GB 단위가 아니면 정리는 뒤로 미룬다**
+- [L120](../../debug_log/2026-09-18/SUMMARY.md) 9. 로컬 코스트맵 상자 드리프트의 원인 = 센서 데크 yaw −2.68° 장착 오차 (09-17 §15.5 후속)
+  - [L121](../../debug_log/2026-09-18/SUMMARY.md) 9.1 bag 분석 — 옆미끄럼 가설 기각 (`jobs/job431_odomdrift.py`, `job431b_crab.py` → `outputs/j431*.txt`, mp9~12)
+  - [L127](../../debug_log/2026-09-18/SUMMARY.md) 9.2 정지 측정 (`jobs/job432_wallyaw.py`, `job432_run.sh` → `outputs/j432_right*.txt`; 모터 경로 없음 — 에이전트 미기동)
+  - [L133](../../debug_log/2026-09-18/SUMMARY.md) 9.3 보정 (`ros2_ws/src/rover_description/urdf/rover.urdf`, `Docs/rover.urdf`, `rover.urdf.xacro`, `rover_bringup/scripts/stuck_monitor.py`)
+  - [L145](../../debug_log/2026-09-18/SUMMARY.md) 9.4 예상 효과와 주행 판정 기준(미리 선언)
+- [L149](../../debug_log/2026-09-18/SUMMARY.md) 10. dy1 — 데크 yaw 보정 후 첫 주행: **SUCCEEDED 32.3 s, 2.22 m**, 정지·최적화 실패·스무더 실패·TF 외삽·루프 미달 0
+- [L163](../../debug_log/2026-09-18/SUMMARY.md) 11. dy2 + 분석 도구 버그 수정 → 데크 보정 판정
+  - [L164](../../debug_log/2026-09-18/SUMMARY.md) 11.1 dy2 — **SUCCEEDED 33.4 s, 2.22 m**, 정지·실패·루프 미달 0 (`outputs/prep_dy2.txt`, `drive_dy2.txt`, `j379_dy2.txt`, `j435_dy2_verify.txt`, `bags/bag_dy2.tgz`)
+  - [L167](../../debug_log/2026-09-18/SUMMARY.md) 11.2 분석 도구 버그 (job431·job431b) — **이전 수치 정정**
+  - [L181](../../debug_log/2026-09-18/SUMMARY.md) 11.3 판정 (§9.4 기준 그대로)
+- [L193](../../debug_log/2026-09-18/SUMMARY.md) 12. 간헐 중단 확인 (사용자: "1번 간헐 중단 확인부터")
+  - [L194](../../debug_log/2026-09-18/SUMMARY.md) 12.1 같은 구성 6 회 집계 (nav2 로그 `outputs/j379_*.txt`)
+  - [L204](../../debug_log/2026-09-18/SUMMARY.md) 12.2 종류별 조건
+  - [L210](../../debug_log/2026-09-18/SUMMARY.md) 12.3 판정 계획 (미리 선언)
+- [L214](../../debug_log/2026-09-18/SUMMARY.md) 13. 간헐 중단 확인 결과 — 보정 후 6 회(dy1~dy6)
+  - [L217](../../debug_log/2026-09-18/SUMMARY.md) 13.1 주행별 집계
+  - [L229](../../debug_log/2026-09-18/SUMMARY.md) 13.2 dy3 — 출발 자리의 물체 (`jobs/job439_startcells.py`, `job441_rearscan.py`, `job441b_rearobj.py`, `job441c_rearshape.py` → `outputs/j439*.txt`, `j441*.txt`)
+  - [L234](../../debug_log/2026-09-18/SUMMARY.md) 13.3 게이트 수정 (주행 사이, 계획·주행 파라미터는 그대로)
+  - [L244](../../debug_log/2026-09-18/SUMMARY.md) 13.4 dy3 러너 ① '실제 최근접 0.0 cm(접촉)' — 계측 모델 결함으로 판단 (`jobs/job444_boxmodel.py`, `run_j444.sh` → `outputs/j444_boxmodel.txt`)
+  - [L251](../../debug_log/2026-09-18/SUMMARY.md) 13.5 dy4 복귀 회전 여유 4.1~4.6 cm — 드리프트가 아니라 지나간 선
+  - [L255](../../debug_log/2026-09-18/SUMMARY.md) 13.6 판정 (§12.3 사전 기준 그대로)
+  - [L265](../../debug_log/2026-09-18/SUMMARY.md) 13.7 덧붙여 관찰된 것 (해석 보류)
+- [L270](../../debug_log/2026-09-18/SUMMARY.md) 14. 결정과 다음 작업 순서 (사용자)
+- [L278](../../debug_log/2026-09-18/SUMMARY.md) 15. 여유 불합격(§13.6) 원인 분해 — 무엇을 고칠지 정하기 위한 측정 (로버 움직이지 않음)
+  - [L279](../../debug_log/2026-09-18/SUMMARY.md) 15.1 여유가 어디서 줄어드나: 원경로 → 스무딩 → 실제 (`jobs/job446_pathdecomp.py` → `outputs/j446_pathdecomp.txt`, bag dy1~dy6)
+  - [L289](../../debug_log/2026-09-18/SUMMARY.md) 15.2 원경로가 왜 회차마다 5~15 cm 로 다른가 (`jobs/job448_leftwall.py` → `outputs/j448_leftwall.txt`)
+  - [L301](../../debug_log/2026-09-18/SUMMARY.md) 15.3 컨트롤러가 왜 여유를 더 벌리지 않나 — ObstaclesCritic 은 17.5 cm 안에서 거리를 구분하지 못한다
+- [L309](../../debug_log/2026-09-18/SUMMARY.md) 16. ObstaclesCritic → CostCritic 교체 결정 근거 — 얻는 것·잃는 것 (사용자 질의, 실주행 전 정리)
+- [L332](../../debug_log/2026-09-18/SUMMARY.md) 17. CostCritic 교체 실행 — 사용자 결정(§16 승인) + 세 가지 질의 처리
+  - [L333](../../debug_log/2026-09-18/SUMMARY.md) 17.1 "기준선 연속성 손실"은 실질적으로 없다 (사용자 지적이 맞음)
+  - [L337](../../debug_log/2026-09-18/SUMMARY.md) 17.2 시뮬레이터 재작성 — CostCritic 추가 (`jobs/job452_mppi_sim_cc.py`, 실행 `jobs/job452_run.sh` → `outputs/j452_sim_cc.txt`, 표 `outputs/j452_sim_cc_table.txt`)
+  - [L349](../../debug_log/2026-09-18/SUMMARY.md) 17.3 bag 기록의 재현성 — 판단과 적용
+  - [L362](../../debug_log/2026-09-18/SUMMARY.md) 17.4 러너 1안 적용 (`jobs/job125_avoid3.py`, 백업 `.bak_0918b`)
+  - [L365](../../debug_log/2026-09-18/SUMMARY.md) 17.5 배포 (`jobs/run_deploy_cc.sh` → `outputs/j454_deploy_cc.txt`)
+- [L369](../../debug_log/2026-09-18/SUMMARY.md) 18. 마무리 (사용자)
+
+## 2026-09-21
+- [L5](../../debug_log/2026-09-21/SUMMARY.md) 0. 시작 상태
+- [L12](../../debug_log/2026-09-21/SUMMARY.md) 1. cc1 — CostCritic 첫 주행: **SUCCEEDED 31.1 s, 2.20 m**, 정지 0, 그러나 **루프 미달 18·EKF 위반 61**(기준 ≤ 1 불합격)
+- [L33](../../debug_log/2026-09-21/SUMMARY.md) 2. cc2 — **SUCCEEDED 31.9 s, 2.23 m**, 정지 0, **루프 미달 0**, EKF 위반 20 → cc1 의 미달은 메타 스냅샷 탓으로 판정
+- [L50](../../debug_log/2026-09-21/SUMMARY.md) 3. cc3 — **SUCCEEDED 31.3 s, 2.11 m**, 정지 0, 루프 미달 0, EKF 위반 23
+- [L62](../../debug_log/2026-09-21/SUMMARY.md) 4. 판정 — CostCritic 교체 (09-18 §16 사전 기준, 같은 코스 3 회)
+- [L76](../../debug_log/2026-09-21/SUMMARY.md) 5. S2 — 카메라 근거리 한계·디시메이션 측정 (로버 정지, `jobs/job458_nearrange.py`·`run_j458.sh`, 런타임 전환 `job459_setdec.sh`, 아티팩트 `job460_artifact.py` → `outputs/j458_*.txt`, `j459
+  - [L78](../../debug_log/2026-09-21/SUMMARY.md) 5.1 상자(18×14×11 cm, 골판지) — 디시메이션 4
+  - [L86](../../debug_log/2026-09-21/SUMMARY.md) 5.2 의자 다리(폭 2.5 cm, 바퀴 포함, 로버 중심선 위)
+  - [L96](../../debug_log/2026-09-21/SUMMARY.md) 5.3 CPU·주기
+  - [L102](../../debug_log/2026-09-21/SUMMARY.md) 5.4 근거리 아티팩트 재확인 (앞 0.45 m 안 비움, 30 s, dec 4)
+  - [L104](../../debug_log/2026-09-21/SUMMARY.md) 5.5 판정
+- [L110](../../debug_log/2026-09-21/SUMMARY.md) 6. 결정 — min_range A/B 보류, S5 기준선으로 (사용자 질의 "뭐가 더 나은가")
+- [L115](../../debug_log/2026-09-21/SUMMARY.md) 7. S5 기준선 완료 — cc4·cc5 + `BASELINE_STVL.md`
+- [L121](../../debug_log/2026-09-21/SUMMARY.md) 8. git — 사용자 결정(09-21): **main 은 건드리지 않는다**, 브랜치만 push
+- [L126](../../debug_log/2026-09-21/SUMMARY.md) 9. Phase N0 시작 (브랜치 `feature/nvblox-migration`, origin·personal 양쪽 push 완료 ba6f8ed)
+- [L146](../../debug_log/2026-09-21/SUMMARY.md) 10. N2~N3 — 호스트 Nav2 에 nvblox 코스트맵 층 연결, 정지 A/B 첫 관찰
+  - [L147](../../debug_log/2026-09-21/SUMMARY.md) 10.1 호스트 빌드 (`jobs/job484_hostbuild.sh` 실패 → `job485_hostbuild2.sh` 성공, `outputs/j484_hostbuild.txt`·`j485_hostbuild2.txt`·`j486_pluginchk.txt`)
+  - [L151](../../debug_log/2026-09-21/SUMMARY.md) 10.2 정지 A/B (같은 배치, 상자 물리 1.151~1.153/−0.085~−0.088; `jobs/job488_layer_ab.sh`·`job489_gridcmp.py` → `outputs/j488_layer_ab.txt`·`j489_nvblox_mode.txt`·`j489_st
+  - [L162](../../debug_log/2026-09-21/SUMMARY.md) 10.3 정지 A/B 시각화 — 셀 단위 차이 (`jobs/run_j490.sh`·`job489_gridcmp.py`(JSON 덤프 추가)·`job491_vizgen.py` → `outputs/j490_griddump.txt`, `grid_{stvl,nvblox}_costmap.json
+  - [L185](../../debug_log/2026-09-21/SUMMARY.md) 10.4 원인 분리 — 플러그인 소스 읽기 (`jobs/run_j492*.sh` → `outputs/j492_layersrc.txt`, 읽기 전용·DDS 참여 없음)
+  - [L192](../../debug_log/2026-09-21/SUMMARY.md) 10.5 결함 수정(round → floor) 후 재캡처 — 판정 기준을 먼저 선언
+
+## 2026-09-22
+- [L3](../../debug_log/2026-09-22/SUMMARY.md) 0. 시작 상태 (`jobs/job498_state.sh` → `outputs/j498_state.txt`)
+- [L11](../../debug_log/2026-09-22/SUMMARY.md) 1. 절단 거리 A/B — 판정 기준(측정 전 선언)
+  - [L16](../../debug_log/2026-09-22/SUMMARY.md) 1.1 결과 (10:43~10:51, `jobs/job501_trunc_ab.sh`(a: STVL+t4, b: t2+복귀)·`run_j501.sh` → `outputs/j501a_t4.txt`·`j501b_t2.txt`·감사 `j501_ab_t{4,2}.txt`·JSON `grid_{s
+- [L42](../../debug_log/2026-09-22/SUMMARY.md) 2. N4 주행 A/B — 설계·판정 기준(주행 전 선언). 사용자 결정(11:0x): "제안대로" = 팔 S(STVL) / N2(nvblox 절단 2.0), 나쁘면 N4(절단 4.0) 추가
+  - [L50](../../debug_log/2026-09-22/SUMMARY.md) 2.1 감쇠값 검토 — 사용자 질의 "감쇠값은 로버 속도에 맞춰 계산한 것인가" (답: **아니다**, 벤더 기본값)
+- [L57](../../debug_log/2026-09-22/SUMMARY.md) 3. N4 주행 회차 (러너 `run_drive_nohup.sh`, 회수 `run_post3.sh`, 분석 `jobs/run_j509_analyze.sh <이름> <goal epoch>`; 원문 `outputs/j507_<이름>_drive.txt`·`j509_<이름>_analysis.t
+  - [L160](../../debug_log/2026-09-22/SUMMARY.md) 3.1 N4 판정 (S 2 회 + N2 3 회, `BASELINE_STVL.md §4` 기준)
+- [L173](../../debug_log/2026-09-22/SUMMARY.md) 4. N6-0 bringup 통합 (사용자 "다음 세션 진행") — 설계·검증 기준(실행 전 선언)
+  - [L176](../../debug_log/2026-09-22/SUMMARY.md) 4.1 결과 (`jobs/run_j513_deploy.sh`·`job513_verify.sh` → `outputs/j513_verify_run{1,2,3}.txt`, 진단 `job514_trapdiag.sh` → `j514_trapdiag.txt`)
+  - [L181](../../debug_log/2026-09-22/SUMMARY.md) 4.2 V5·마무리 (`outputs/j515_v5_prep.txt`·`j516_v5chk.txt`·`j513_verify4.txt`)
+- [L187](../../debug_log/2026-09-22/SUMMARY.md) 5. N6-1 전역 코스트맵 이전 — 설계·판정 기준(실행 전 선언)
+  - [L191](../../debug_log/2026-09-22/SUMMARY.md) 5.1 정지 검증 G1·G2 (`jobs/run_j518.sh`·`job518_g1g2.sh` → `outputs/j520_n61_static.txt`, 격자 `grid_n61{N,S}{g,l}_costmap.json`, 비교 `j521_g1.txt`)
+  - [L197](../../debug_log/2026-09-22/SUMMARY.md) 5.2 유령 셀 대응 (`jobs/run_j523.sh` → `outputs/j523_intdist.txt`, `j523b_minheight.txt`)
+  - [L208](../../debug_log/2026-09-22/SUMMARY.md) 5.3 G3 주행 (모드 N 전역+로컬, 통합 1.4·슬라이스 0.06~0.30·절단 2.0·감쇠 0.99, depth_relay lazy)
+  - [L253](../../debug_log/2026-09-22/SUMMARY.md) 5.4 N6-1 G3 판정 (3 회, `BASELINE_STVL.md §4` + §5 선언 기준)
+  - [L266](../../debug_log/2026-09-22/SUMMARY.md) 5.5 조향 부호반전 지표 재검토 (사용자 질의, 러너 csv 8 회 재계산)
+- [L271](../../debug_log/2026-09-22/SUMMARY.md) 6. 마감 (2026-09-22)
+
+## 2026-09-23
+- [L3](../../debug_log/2026-09-23/SUMMARY.md) 0. 시작 상태 (`outputs/j498_state.txt`)
+- [L7](../../debug_log/2026-09-23/SUMMARY.md) 1. N6-2 계획·판정 기준(실행 전 선언)
+  - [L14](../../debug_log/2026-09-23/SUMMARY.md) 0.1 Wi-Fi 끊김 4 번째 — 오늘은 다른 양상 (사용자 요청 "백그라운드 로그 확인"; `jobs/job529_wifi_collect.sh`·`job530_wifi_boot.sh` → `outputs/j529_wifi.txt`·`j530_wifi_boot.txt`, 원본 `/va
+- [L21](../../debug_log/2026-09-23/SUMMARY.md) 2. 재부팅 복구 B1 (`outputs/j510_prep_a.txt`·`j531_b1_c1.txt`)
+- [L26](../../debug_log/2026-09-23/SUMMARY.md) 3. C1 점군 생성 끄기 정지 A/B (`jobs/job531_pcl_toggle.sh` → `outputs/j531c_pcl.txt`; 1·2 차 시도 `j531b` 는 파라미터 이름 오류)
+- [L31](../../debug_log/2026-09-23/SUMMARY.md) 4. H1 슬라이스 최소 높이 0.03 vs 0.06 정지 측정 (`jobs/job532_slice_h.sh` → `outputs/j532_slice_h.txt`, 통합 1.4 고정, 배치 1.147/−0.051)
+- [L39](../../debug_log/2026-09-23/SUMMARY.md) 5. 네트워크: 고정 IP(공유기 DHCP 예약) 방식으로 WEB_DEV_5G 복귀 + IP 충돌 감지 (사용자 지시 10:1x; `jobs/job535_net_fixed.sh`·`run_j535.sh` → `outputs/j535_net.txt`, 사전 확인 `j534_netprep.
+- [L45](../../debug_log/2026-09-23/SUMMARY.md) 6. IP 복귀 뒤 재기동·게이트 (`outputs/j510_prep_0923b.txt`·`j510_prep_0923c.txt`)
+- [L49](../../debug_log/2026-09-23/SUMMARY.md) 7. n62a 출발 거부 → 점군 끄기 철회 (`outputs/j507_n62a_gatefail.txt`)
+- [L53](../../debug_log/2026-09-23/SUMMARY.md) 8. C2 주행 (모드 N 전역+로컬, 점군 유지, 릴레이 lazy, 러너 REFIX_MAX 0.06) — N6 최종 판정용 3 회
+- [L69](../../debug_log/2026-09-23/SUMMARY.md) 9. n62b 준비 — 게이트 M 이 유령 셀을 잡음 (`outputs/j510_prep_n62b.txt`, `snap_n62b.jpg`)
+- [L74](../../debug_log/2026-09-23/SUMMARY.md) 10. 테이프 제거 검증 — 기전 확정 (`outputs/j538_tape_off.txt`, `snap_n62b2.jpg`·`snap_n62b3.jpg`)
+- [L81](../../debug_log/2026-09-23/SUMMARY.md) 11. 11:57~12:06 네트워크 끊김 (n62b 출발 시도 중 — 러너가 파일 전송 단계에서 실패, **로버는 움직이지 않음**) (`outputs/j539_drop.txt`·`j542_dropwin.txt`·`j543_mon.txt`)
+- [L88](../../debug_log/2026-09-23/SUMMARY.md) 12. n62b (12:24, 재시도 — 12:19 두 번째 끊김 뒤)
+  - [L104](../../debug_log/2026-09-23/SUMMARY.md) 12.1 n62b 끝의 좌회전 미끄러짐 검증 (사용자 관찰: "목적지에서 좌회전하려 오른쪽 트랙이 돌았지만 몸체는 못 돎"; `jobs/job545_slipyaw.py`·`job546_scanrot.py` → `outputs/j545_slipyaw.txt`·`j546_scanrot.tx
+- [L120](../../debug_log/2026-09-23/SUMMARY.md) 13. n62c + N6 최종 판정
+- [L137](../../debug_log/2026-09-23/SUMMARY.md) 14. 마감
+- [L142](../../debug_log/2026-09-23/SUMMARY.md) 15. sensor_conditioner 역할 점검 — 빼도 되는가 (사용자 질의; `jobs/job549_cond.sh`)
+- [L149](../../debug_log/2026-09-23/SUMMARY.md) 16. 사용자 결정·F0 착수
+- [L158](../../debug_log/2026-09-23/SUMMARY.md) §17 목표 도착 heading — "정면보다 살짝 오른쪽" 확인 (n62a~c bag)
+- [L177](../../debug_log/2026-09-23/SUMMARY.md) §18 F0-a 1 회차(f0a1) — 왕복 중 복귀 구간 중단
+  - [L191](../../debug_log/2026-09-23/SUMMARY.md) §18.1 정정 — "odom 고정 층이 6 cm 어긋났다" 가설 기각
+- [L201](../../debug_log/2026-09-23/SUMMARY.md) §19 f0a1 중단 원인 1·2 (bag 분석) · 제안 평가
+- [L225](../../debug_log/2026-09-23/SUMMARY.md) §20 원인 1 추정 검증 주행 f0a2 — 판정 기준 (주행 전 선언)
+  - [L237](../../debug_log/2026-09-23/SUMMARY.md) §20.1 f0a2 결과 — 판정 불가 (복귀 구간에 도달 못 함)
+  - [L247](../../debug_log/2026-09-23/SUMMARY.md) §20.2 정정 — SLAM 이 맞았다 (줄자 측정)
+  - [L261](../../debug_log/2026-09-23/SUMMARY.md) §20.3 옆 밀림의 원인 — 회전 슬립(사용자 판단)에 대한 검토
+  - [L273](../../debug_log/2026-09-23/SUMMARY.md) §20.4 슬립 오차를 SLAM 으로 보정하는 방안 검토 → 방향 D 채택(사용자, 검증 전 후보)
+  - [L290](../../debug_log/2026-09-23/SUMMARY.md) §20.5 결정(사용자 09-23): D 는 가변 공분산으로, rf2o 와 cuVSLAM 둘 다 적용
+  - [L303](../../debug_log/2026-09-23/SUMMARY.md) §20.6 다음 작업 순서 확정(사용자 09-23)
+
+## 2026-09-28
+- [L3](../../debug_log/2026-09-28/SUMMARY.md) §0 시작 상태
+- [L7](../../debug_log/2026-09-28/SUMMARY.md) §1 제자리 회전 시험 설계 (주행 전 선언)
+- [L23](../../debug_log/2026-09-28/SUMMARY.md) §2 prep 1 회차·주변 여유 (`outputs/j563_prep1.txt`, `outputs/j564_spinclear.txt`)
+- [L30](../../debug_log/2026-09-28/SUMMARY.md) §3 S1 (0.38 rad/s 시계 × 3) — 결과와 측정 방법 정정
+  - [L34](../../debug_log/2026-09-28/SUMMARY.md) 3.1 러너의 "SLAM" 값은 쓸 수 없다 — slam_toolbox 는 순수 회전에서 스캔을 추가하지 않는다
+  - [L39](../../debug_log/2026-09-28/SUMMARY.md) 3.2 스캔 직접 정합(`jobs/job567_scanmatch.py`)
+  - [L54](../../debug_log/2026-09-28/SUMMARY.md) 3.3 부수: 옛 작업 폴더 소실
+  - [L59](../../debug_log/2026-09-28/SUMMARY.md) 3.4 M1′ — 줄자 대조(S1 블록 누적)
+- [L69](../../debug_log/2026-09-28/SUMMARY.md) §4 S2 (0.38 rad/s 반시계) — 1 회 후 안전 중단
+  - [L81](../../debug_log/2026-09-28/SUMMARY.md) 4.1 M1′ 2 차 대조(S1+S2 누적) — 통과
+- [L84](../../debug_log/2026-09-28/SUMMARY.md) §5 남은 시험 재설계 (주행 전)
+  - [L90](../../debug_log/2026-09-28/SUMMARY.md) 5.1 정정 — 교대 회전은 상쇄가 아니라 누적 (R1 1 회 후 중단)
+- [L97](../../debug_log/2026-09-28/SUMMARY.md) §6 R1b·R2·R3 결과와 판정 (`outputs/j573_r1b.txt`, `j574_r2.txt`, `j576_r2b.txt`, `j578_r3.txt`, 통계 `j579_stats.txt`)
+- [L130](../../debug_log/2026-09-28/SUMMARY.md) §7 슬립 해결·보정 방안과 상호 충돌 검토 → 순서 확정(사용자 09-28)
+  - [L132](../../debug_log/2026-09-28/SUMMARY.md) 7.1 방안
+  - [L145](../../debug_log/2026-09-28/SUMMARY.md) 7.2 충돌 검토
+  - [L162](../../debug_log/2026-09-28/SUMMARY.md) 7.3 확정 순서 (§20.6 을 대체)
+- [L173](../../debug_log/2026-09-28/SUMMARY.md) §8 B1 오프라인 검증 — slam_toolbox 가 순수 회전 밀림을 잡는가 (주행 없음)
+- [L190](../../debug_log/2026-09-28/SUMMARY.md) §9 B1 (b) 소스 패치 — 빌드·버그·정정·문턱 비교
+  - [L194](../../debug_log/2026-09-28/SUMMARY.md) 9.1 첫 빌드의 버그(내 실수) — 단위
+  - [L199](../../debug_log/2026-09-28/SUMMARY.md) 9.2 결과(정답 = 스캔 직접 정합, `outputs/j591_b1_compare2.txt`)
+- [L214](../../debug_log/2026-09-28/SUMMARY.md) §10 컨디셔너 대체 패키지 검토 → 쓰지 않기로 결정(사용자 09-28)
+- [L229](../../debug_log/2026-09-28/SUMMARY.md) §11 컨디셔너 C++ 이식 — V1 출력 동일성·V2 CPU (§7.3 순서 4)
+- [L256](../../debug_log/2026-09-28/SUMMARY.md) §12 A1 — 러너에서 목표 자세 요구 제거 (§7.3 순서 2)
+- [L262](../../debug_log/2026-09-28/SUMMARY.md) §13 B1 라이브 적용(사용자 결정) + 검증 주행 f0a3 준비·판정 기준(주행 전 선언)
+- [L275](../../debug_log/2026-09-28/SUMMARY.md) §14 f0a3 결과 — 왕복 성공, 새 원인 확인(슬립 뒤 로컬 지도 어긋남)
+- [L290](../../debug_log/2026-09-28/SUMMARY.md) §15 f0a3 사용자 관찰 2 건 분석 + 줄자
+- [L312](../../debug_log/2026-09-28/SUMMARY.md) §16 A1 개선 — 경로 끝 방향 자동 yaw (`jobs/job550_f0run.py`, yaw 자리 `p`)
+- [L318](../../debug_log/2026-09-28/SUMMARY.md) §17 목표 부근 대응 — yaw_goal_tolerance 0.15 → 0.35 rad (사용자: "적절한 방법을 정해서 바꿔라")
+- [L331](../../debug_log/2026-09-28/SUMMARY.md) §18 f0a4 결과 — 목표 부근 진동 해소, 대신 복귀 정밀도가 xy 허용 끝(≈12 cm)으로
+- [L347](../../debug_log/2026-09-28/SUMMARY.md) §19 복귀 정밀도·원래 방향 복귀 설계 (사용자 요청: "정밀도 올리고, 도착 후 원래 바라보던 방향까지")
+  - [L356](../../debug_log/2026-09-28/SUMMARY.md) 19.1 f0a5 준비·판정 기준 (주행 전 선언)
+- [L367](../../debug_log/2026-09-28/SUMMARY.md) §20 f0a5 — 러너 멈춤(1 차), 재시도는 목표 2 에서 정체(xy 0.07)
+- [L380](../../debug_log/2026-09-28/SUMMARY.md) §21 결정(사용자): 원래 방향 복귀 제외, F0-a 절차 확정
+- [L386](../../debug_log/2026-09-28/SUMMARY.md) §22 f0a6 — 확정 구성(절차 v2.3 §7) 확인 주행: 통과
+- [L397](../../debug_log/2026-09-28/SUMMARY.md) §23 A2·A3 원인 점검 1 — 직진 전·후진 시험 설계 (주행 전 선언)
+- [L406](../../debug_log/2026-09-28/SUMMARY.md) §24 직진 전·후진 s_fb1 결과 (`outputs/j622_s_fb1.txt` 러너, `j623_s_fb1_bag.txt` bag 재분석)
+- [L426](../../debug_log/2026-09-28/SUMMARY.md) §25 S3 재시험 s_fb2 (주행 전 선언): 전진·후진 모두 0.06 m/s, 0.6 m × 2. 사용자가 로버를 출발 표시에 손으로 미세 조정(정밀 실측 목적) → prep 재실행.
+  - [L442](../../debug_log/2026-09-28/SUMMARY.md) 25.1 A2·A3 종결
+- [L453](../../debug_log/2026-09-28/SUMMARY.md) §26 B2 — 회전 데이터로 ICR(회전축 치우침) 식별 (분석 전 선언)
+- [L475](../../debug_log/2026-09-28/SUMMARY.md) §27 B2·B3 컨디셔너 구현 (기본 꺼짐)
+- [L482](../../debug_log/2026-09-28/SUMMARY.md) §28 보드 OLED 상태 표시 (사용자 요청)
+  - [L493](../../debug_log/2026-09-28/SUMMARY.md) §28.1 플래시·보드 쪽 확인
+  - [L499](../../debug_log/2026-09-28/SUMMARY.md) §28.2 화면 안 나옴 → 모듈 불량 확정
+
+## 2026-09-29
+- [L3](../../debug_log/2026-09-29/SUMMARY.md) §0 시작 상태
+- [L7](../../debug_log/2026-09-29/SUMMARY.md) §1 B2·B3 오프라인 A/B (주행 없음, 분석 전 선언)
+  - [L17](../../debug_log/2026-09-29/SUMMARY.md) §1.1 결과 (`outputs/j630_b2ab_all.txt` 재생 원문, `outputs/j632_b2ab_eval.txt` 판정, `jobs/job632_b2ab_eval.py`)
+- [L31](../../debug_log/2026-09-29/SUMMARY.md) §2 base 부팅 자동 기동 (사용자 요청: OLED 에 IP 가 안 나옴)
+- [L42](../../debug_log/2026-09-29/SUMMARY.md) §3 B2·B3 라이브 회전 시험 (주행 전 선언)
+  - [L53](../../debug_log/2026-09-29/SUMMARY.md) §3.1 결과 (`outputs/j636_spin_l1l2.txt` 러너, `j637_scan_l12.txt` 스캔 정합, `j638_l_eval.txt` 판정, `l1.csv`·`l2.csv`; bag 은 로컬 `spin_l1`·`spin_l2`)
+  - [L71](../../debug_log/2026-09-29/SUMMARY.md) §3.2 정정 — L2 안전 정지 원인은 오른쪽 물체가 아니라 왼쪽 뒤 의자 (`jobs/job639_nearest.py`, `outputs/j639_nearest.txt`)
+- [L80](../../debug_log/2026-09-29/SUMMARY.md) §4 F0-a 왕복 — B2·B3 켠 확인 주행 (주행 전 선언)
+  - [L87](../../debug_log/2026-09-29/SUMMARY.md) §4.1 f0a7 결과 (`outputs/j641_f0a7.txt` 러너, `f0a7_runner.csv`, 계산 `jobs/job640_f0csv.py` → `outputs/j640_f0csv.txt`; 09-28 j617 계산을 파일로 남기며 f0a6 도 재계산해 j617 과 일치 
+  - [L102](../../debug_log/2026-09-29/SUMMARY.md) §4.2 f0a7 줄자 (사용자)
+- [L112](../../debug_log/2026-09-29/SUMMARY.md) §5 f0a7 map→odom 2.2 배 원인 — B2 추가량 vs SLAM 보정 (주행 없음, `jobs/job642_b2_vs_slam.py`·`job643`, `outputs/j643_b2slam.txt`)
+- [L128](../../debug_log/2026-09-29/SUMMARY.md) §6 rf2o 야외 적합성 평가 (도입 계획 전, 사용자 요청)
+  - [L144](../../debug_log/2026-09-29/SUMMARY.md) §6.1 요구사항 추가(사용자, 09-29): 사람이 돌아다니는 상황에 대한 강건성
+- [L155](../../debug_log/2026-09-29/SUMMARY.md) §7 cuVSLAM 사람 제외 기능 확인과 순서(rf2o ↔ cuVSLAM) 검토 (사용자: "cuVSLAM 은 사람 특정이 가능하지 않나? 순서를 바꿀 생각 진행")
+- [L172](../../debug_log/2026-09-29/SUMMARY.md) §8 JetPack 6.2 적합성 확인과 NITROS 평가 (사용자 요청, `jobs/job644_platform.sh` → `outputs/j644_platform.txt`)
+- [L186](../../debug_log/2026-09-29/SUMMARY.md) §9 cuVSLAM 3.2 단독 실행 확인 (사용자: "먼저 진행", 주행 없음 — 판정 전 선언)
+  - [L196](../../debug_log/2026-09-29/SUMMARY.md) §9.1 V1 결과 (`outputs/j646_649_vslam_v1.txt` — 실시간 로그 원문)
+  - [L204](../../debug_log/2026-09-29/SUMMARY.md) §8.1 Orin Nano 의 JetPack 7 사용 가능 여부 (사용자 질문, 웹 확인)
+  - [L210](../../debug_log/2026-09-29/SUMMARY.md) §9.2 V1-d 사람 시험 (사용자가 로버 정지 상태에서 카메라 앞 0.5~2 m 를 35 s 걸음; 원문 `outputs/j646_649_vslam_v1.txt` 끝부분)
+- [L224](../../debug_log/2026-09-29/SUMMARY.md) §10 프로젝터 충돌 해결 방식 검토 (사용자 요청, 주행 없음 — 판정 전 선언)
+  - [L239](../../debug_log/2026-09-29/SUMMARY.md) §10.1 M1·M2 결과 (`outputs/j651_654_emitter.txt`, `jobs/job653_depth_emit.py`·`job654_emit_m12.sh`)
+- [L256](../../debug_log/2026-09-29/SUMMARY.md) §11 결정(사용자, 09-29): 기능 완성 우선 — Isaac 심화는 JetPack 7.2 이전 뒤로
+- [L263](../../debug_log/2026-09-29/SUMMARY.md) §12 F0 나머지(F0-b) 코스 후보 — f0a7 지도로 검토 (주행 없음, 사용자 확인 대기)
+  - [L269](../../debug_log/2026-09-29/SUMMARY.md) §12.1 F0-b 확정 (사용자 답, 주행 전 선언)
+  - [L280](../../debug_log/2026-09-29/SUMMARY.md) §12.2 f0b1 결과 (`outputs/j662_f0b1.txt` 러너, `f0b1_runner.csv`; 여유 `jobs/job660_clearance.py`, 출발 전 점검 `job657`·`job659`)
+  - [L293](../../debug_log/2026-09-29/SUMMARY.md) §12.3 W3 전선 밟기 영향 (사용자 관찰, `jobs/job663_cable.py` → `outputs/j664_cable.txt`)
+  - [L307](../../debug_log/2026-09-29/SUMMARY.md) §12.4 F0-b 2 회차(f0b2) 선언 — f0b1 과 같은 조건(사용자: "그냥 진행")
+  - [L311](../../debug_log/2026-09-29/SUMMARY.md) §12.5 f0b2 결과 (`outputs/j666_f0b2.txt` 러너, `f0b2_runner.csv`, 여유·전선 `j667_f0b2_anal.txt`)
+- [L327](../../debug_log/2026-09-29/SUMMARY.md) §13 ② 온보드 정지 수단 — 구체안 (계획, 주행 전 판정 선언)
+  - [L352](../../debug_log/2026-09-29/SUMMARY.md) §13.1 G3 — stuck_monitor 오판 전수 조사·원인·수정 (주행 없음)
+  - [L362](../../debug_log/2026-09-29/SUMMARY.md) §13.2 G3b 받침대 시험 — 참 정체 검출 (`jobs/job673_stand.py`·`job674`, `outputs/j674_stand.txt`)
+  - [L374](../../debug_log/2026-09-29/SUMMARY.md) §13.3 사용자 결정 2 건 + L2 nav_guard 구현
+  - [L380](../../debug_log/2026-09-29/SUMMARY.md) §13.4 시험 범위 조정 (사용자 결정)
+  - [L386](../../debug_log/2026-09-29/SUMMARY.md) §13.5 G1 — nav_guard 시간 한도 실동작 (`jobs/job677_g1.py`·`job678`, `outputs/j678_g1.txt`)
+  - [L397](../../debug_log/2026-09-29/SUMMARY.md) §13.6 G4 생략(사용자) · ② 종결
+- [L402](../../debug_log/2026-09-29/SUMMARY.md) §14 SLAM 포크 설명 문서화 (사용자 질문: "SLAM 에서 무엇을 고쳤길래 이동 중 오차를 감지한다고 했나")
+
+## 2026-09-30
+- [L3](../../debug_log/2026-09-30/SUMMARY.md) §0 시작 상태
+- [L6](../../debug_log/2026-09-30/SUMMARY.md) §1 F1 방향 논의 (사용자 질문 2 건, 결정 대기)
+- [L10](../../debug_log/2026-09-30/SUMMARY.md) §2 지도↔줄자 앞뒤 편차(+3.6/+5.5/+5.2 cm, 09-29 §12.5) 원인 확인 — 1 차
+- [L18](../../debug_log/2026-09-30/SUMMARY.md) §3 SLAM 앞뒤 치우침 시험 + footprint 실측 반영 (사용자 지시, 판정 전 선언)
+  - [L28](../../debug_log/2026-09-30/SUMMARY.md) §3.1 1 회차 결과 (`outputs/j682_slambias.txt`)
+  - [L39](../../debug_log/2026-09-30/SUMMARY.md) §3.2 2 회차(0.70 m 후진) 결과와 판정 (`outputs/j683_slambias_rev.txt`)
+- [L50](../../debug_log/2026-09-30/SUMMARY.md) §4 ③ F1 사무실 매핑 — 결정·준비·판정 (주행 전 선언)
+  - [L70](../../debug_log/2026-09-30/SUMMARY.md) §4.1 F1 prep·F1-0 결과
+  - [L75](../../debug_log/2026-09-30/SUMMARY.md) §4.2 F1 1 차 매핑 `office_v1` 저장 (`jobs/job692`·`job693`, `outputs/j693_f1_save.txt`)
+  - [L81](../../debug_log/2026-09-30/SUMMARY.md) §4.3 F1-1a·1b·5 판정 (사용자 확인)
+- [L87](../../debug_log/2026-09-30/SUMMARY.md) §5 매핑 중 Foxglove 에서 로버 위치가 멈췄다 점프 — 원인 확인 (사용자 질문)
+  - [L100](../../debug_log/2026-09-30/SUMMARY.md) §5.1 적용 (사용자: "적용하고 C 측정은 현상 재발 시")
+  - [L106](../../debug_log/2026-09-30/SUMMARY.md) §4.4 F1-2 복원 시험 — 통과 (`jobs/job697`·`job698`, `outputs/j698_f1_restore.txt`)
+- [L116](../../debug_log/2026-09-30/SUMMARY.md) §6 중단(사용자: 충전) — 다음 세션 이어 하기
+- [L121](../../debug_log/2026-09-30/SUMMARY.md) §7 F0-b 주행 영상화 (사용자 요청: 실제 촬영 영상과 나란히 보이게)
+  - [L127](../../debug_log/2026-09-30/SUMMARY.md) §7.1 실제 촬영 영상과 좌우 결합
+  - [L133](../../debug_log/2026-09-30/SUMMARY.md) §7.2 영상 v2 — 시각 다듬기 + 실제 속도·발행 주기 (사용자 요청)
+  - [L145](../../debug_log/2026-09-30/SUMMARY.md) §7.3 EKF 직진 속도가 /cmd_vel 보다 낮은 이유 (사용자 질문) — 데이터로 확인
+  - [L158](../../debug_log/2026-09-30/SUMMARY.md) §7.4 EKF 에 무엇이 융합되고, 점선(실제 속도)이 왜 흔들리나 (사용자 질문) + §7.3 정정
+- [L172](../../debug_log/2026-09-30/SUMMARY.md) §8 F1-3 지도 정확도 (판정 전 선언)
+  - [L181](../../debug_log/2026-09-30/SUMMARY.md) §8.1 F1-3 결과 — 통과(문 폭은 경계)
+- [L194](../../debug_log/2026-09-30/SUMMARY.md) §9 사용자 최종 목표 제시 + 금지 구역 마스크 연기
+- [L202](../../debug_log/2026-09-30/SUMMARY.md) §10 사무실 전체 이어 그리기 — 준비 (office_v1 → v2)
+- [L207](../../debug_log/2026-09-30/SUMMARY.md) §11 이어 그리기 중 지도 오류·위치 점프 → 원인 CPU 과부하(메모리 아님), 매핑 전용 모드
+  - [L216](../../debug_log/2026-09-30/SUMMARY.md) §7.5 영상 v3 (사용자: 실제 영상은 **f0b1** 과 결합, Foxglove 풍, 출발·도착 표시 축소)
+  - [L221](../../debug_log/2026-09-30/SUMMARY.md) §11.1 매핑 전용 모드 검증 — 과부하 해소
+- [L227](../../debug_log/2026-09-30/SUMMARY.md) §12 매핑 모드에서도 "회전하면 스캔만 돌고 로버는 안 움직임" (사용자) — Jetson TF 정상, 브리지 전달 문제로 판단
+- [L232](../../debug_log/2026-09-30/SUMMARY.md) §13 매핑 중 로버가 지도 위에서 갑자기 점프해 엉뚱한 자리로 감 (사용자, ≈17:10) — 루프 클로저 최적화 시점과 일치
+- [L243](../../debug_log/2026-09-30/SUMMARY.md) §14 §13 판정 확정 — SLAM 오정합(사용자 확인: "slam 이 틀리고 바퀴+자이로가 맞다") → 루프 탐색 창 8 → 3 m
+- [L253](../../debug_log/2026-09-30/SUMMARY.md) §15 조이스틱 매핑 프로필 = 펌웨어 상한 (사용자: "스틱 최대면 속도도 최대로, 지금 너무 느리다")
+- [L258](../../debug_log/2026-09-30/SUMMARY.md) §16 두 번째 매핑(17:24~17:37, 루프 창 3 m·조이스틱 최대속도)도 지도 깨짐 — bag 으로 순간 포착: 17:36:18 루프 클로저가 1.67 m·+33° 로 틀어버림
+- [L268](../../debug_log/2026-09-30/SUMMARY.md) §17 점프 전까지만 지도 되살리기 시도(사용자 요청) — 준비만 하고 중단(사용자 "멈추고 내일")
+
+## 2026-10-01
+- [L3](../../debug_log/2026-10-01/SUMMARY.md) §0 시작 상태
+- [L6](../../debug_log/2026-10-01/SUMMARY.md) §1 점프 전까지만 지도 되살리기 (09-30 §17 재개, 판정 전 선언)
+  - [L14](../../debug_log/2026-10-01/SUMMARY.md) §1.1 결과 — R1 통과, 지도는 office_v1 의 검증된 부분을 10 cm 틀어 놓음
+- [L23](../../debug_log/2026-10-01/SUMMARY.md) §2 같은 재생을 루프 클로저 끔(do_loop_closing false)으로 (판정 전 선언)
+  - [L27](../../debug_log/2026-10-01/SUMMARY.md) §2.1 결과 — 루프 클로저 끔은 office_v1 을 건드리지 않음(L1·L2 통과), 남쪽 벽은 v1 과 5~30 cm 다름 → 줄자로 판정
+  - [L39](../../debug_log/2026-10-01/SUMMARY.md) §2.2 남쪽 벽 판정 — 사용자 기준 "책상 구역 남쪽 벽은 일직선" → 후보 둘 다 불합격, office_v1 이 맞음
+- [L51](../../debug_log/2026-10-01/SUMMARY.md) §3 사용자 지시: 후보(루프 클로저 끔)의 책상 구역 남쪽 벽을 x ≥ 0 에서 office_v1 값으로 보정 — 격자 편집
+- [L60](../../debug_log/2026-10-01/SUMMARY.md) §4 사용자 질문 "포즈 그래프도 수정 불가한가, 해당 부분만 제거" → 휜 구간 스캔을 빼고 재생으로 다시 만듦(+590 s 에서 자름, 루프 클로저 끔)
+- [L75](../../debug_log/2026-10-01/SUMMARY.md) §5 office_v2 저장 (사용자 승인)
+- [L82](../../debug_log/2026-10-01/SUMMARY.md) §6 F1-2 복원 확인 — office_v2 (판정 전 선언)
+  - [L86](../../debug_log/2026-10-01/SUMMARY.md) §6.1 결과 — F1-2(office_v2) 통과
+- [L92](../../debug_log/2026-10-01/SUMMARY.md) §7 F1-4 위치 추정 방식 비교 — 준비 (사용자 승인)
+  - [L99](../../debug_log/2026-10-01/SUMMARY.md) §7.1 F1-4a 결과 — 두 후보 모두 기동·시작 자세 통과 (`jobs/job730_f14_deploy.sh`, `outputs/j730_f14a.txt`)
+  - [L107](../../debug_log/2026-10-01/SUMMARY.md) §7.2 F1-4b 주행 비교 — 선언(주행 전)
+  - [L118](../../debug_log/2026-10-01/SUMMARY.md) §7.3 F1-4 결정 (사용자): ② slam_toolbox 위치 추정 모드로 정함, 주행 확인은 F2 첫 주행에 합침
+- [L122](../../debug_log/2026-10-01/SUMMARY.md) §8 F2 웨이포인트 순회 — 코스 안 (사용자 확인 대기, 주행 전)
+  - [L136](../../debug_log/2026-10-01/SUMMARY.md) §8.1 F2 코스 확정 (사용자 답) — 주행 전 선언
+  - [L145](../../debug_log/2026-10-01/SUMMARY.md) §8.2 f2a1 결과 — 목표 1 에서 ABORTED(36 s), 원인 = 위치 추정 노드의 map→odom 이 늦어 컨트롤러가 로봇 자세를 map 으로 못 바꿈
+  - [L160](../../debug_log/2026-10-01/SUMMARY.md) §8.3 비교 — 매핑 모드(09-29 f0b1) bag 에서는 map→odom 지연이 없음
+- [L170](../../debug_log/2026-10-01/SUMMARY.md) §9 위치 추정 모드 부하 줄이기 (사용자 선택) — 재생 A/B 선언
+  - [L176](../../debug_log/2026-10-01/SUMMARY.md) §9.0 사용자 결정: AMCL 은 계획에서 제외
+  - [L181](../../debug_log/2026-10-01/SUMMARY.md) §9.1 A/B 결과 — 지연 재현됨, 노드 간격 4 배(t2)로 크게 줄었으나 기준 미달 (`outputs/j736_locreplay_base_t2.txt`)
+  - [L190](../../debug_log/2026-10-01/SUMMARY.md) §9.2 2 차 결과 — t3 가 가장 좋지만 기준 미달, 남은 0.6 s 멈춤은 루프 클로저 탓 아님 (`outputs/j736b_locreplay_t3_t2nolc.txt`)
+  - [L200](../../debug_log/2026-10-01/SUMMARY.md) §9.3 3 차 — t3m(t3 + 지도 다시 그리기 10 s) 기준 통과 → 위치 추정 모드 설정으로 채택 (`outputs/j736c_locreplay_t3m.txt`)
+  - [L210](../../debug_log/2026-10-01/SUMMARY.md) §8.4 F2 재주행(f2a2) — 위치 추정 모드 부하 설정(§9.3) 적용, 나머지는 §8.1 과 같음
+  - [L215](../../debug_log/2026-10-01/SUMMARY.md) §8.5 f2a2 결과 — B 도달(SUCCEEDED 51.2 s), 그러나 transformPose 오류 3 회·follow_path 중단 1 회(BT 재시도로 회복)
+  - [L230](../../debug_log/2026-10-01/SUMMARY.md) §8.6 F2 순회(f2a3) prep — transform_timeout 0.5 적용
+  - [L234](../../debug_log/2026-10-01/SUMMARY.md) §8.7 f2a3 결과 — 목표 1 ABORTED(24.4 s, map (1.59, 0.29) 문 앞), 원인 = 시스템 전체 CPU 포화(위치 추정 설정과 무관한 수준)
+  - [L248](../../debug_log/2026-10-01/SUMMARY.md) §8.8 Foxglove 가설 기각
+  - [L252](../../debug_log/2026-10-01/SUMMARY.md) §8.9 정지 부하 기준선 + 러너에 부하 게이트·전체 프로세스 기록 추가
+  - [L256](../../debug_log/2026-10-01/SUMMARY.md) §8.10 F2 순회 재시도(f2a4) prep
+  - [L259](../../debug_log/2026-10-01/SUMMARY.md) §8.11 f2a4 결과 — 목표 1(B) SUCCEEDED 55.6 s, 목표 2(C) 가는 중 12.9 s 에 **stuck_monitor 오판으로 취소**
+  - [L267](../../debug_log/2026-10-01/SUMMARY.md) §8.12 사용자 결정: F2 순회 동안 stuck_monitor 는 관찰만(shadow)
+  - [L272](../../debug_log/2026-10-01/SUMMARY.md) §8.13 f2a5 결과 — B SUCCEEDED 53.9 s, C 로 가다 34.3 s 에 **nav_guard 결함으로 취소**(로버는 정상 주행 중)
+  - [L283](../../debug_log/2026-10-01/SUMMARY.md) §8.14 f2a6 prep (사용자: nav_guard 켜 두고 진행)
+  - [L286](../../debug_log/2026-10-01/SUMMARY.md) §8.15 f2a6 결과 — B·C 도달(목표 2 개 처음 연속 성공), D 로 가다 **러너 시간 한도(167 s)로 취소** — 경로가 세 갈래 사이를 오감
+  - [L294](../../debug_log/2026-10-01/SUMMARY.md) §8.16 사용자 질문 분석 — 왜 D 로 서(x −2~−1)·가운데(x ≈ 0.9)·동(x 3~4) 통로를 끝내 못 갔나 (사용자: 세 곳 모두 실제 통과 가능, 서쪽은 넉넉)
+  - [L310](../../debug_log/2026-10-01/SUMMARY.md) §8.17 대책 ① 적용(사용자 선택): BT 재계획을 "경로가 무효이거나 목표가 바뀌었을 때만"으로
+  - [L316](../../debug_log/2026-10-01/SUMMARY.md) §8.18 사용자 제안: 현재 위치(f2a6 끝)에서 D → W3 → 출발 복귀 (f2a7)
+  - [L320](../../debug_log/2026-10-01/SUMMARY.md) §8.19 f2a7 결과 — **내 실수: 러너는 목표를 "출발 자세 기준"으로 해석** → D 대신 출발 방 북쪽으로 감, ABORTED
+  - [L326](../../debug_log/2026-10-01/SUMMARY.md) §8.20 f2a8 — 현재 자리(실측 약 (1.8, 0.6))에서 GOAL_FRAME=map 으로 D → W3 → 출발
+  - [L329](../../debug_log/2026-10-01/SUMMARY.md) §8.21 f2a8 결과 — 목표 좌표는 맞음, 그러나 **새 BT 에서도 복도에서 경로가 계속 바뀜**(사용자 관찰과 일치) → 러너 한도 203 s 로 취소
+  - [L342](../../debug_log/2026-10-01/SUMMARY.md) §8.22 사용자 요청: 주행 중 카메라 등이 통로를 어떻게 '막힘'으로 만들었나 — 시각화
+  - [L352](../../debug_log/2026-10-01/SUMMARY.md) §8.23 원인별 분리 — 사용자: 가운데 입구(+47 s)에 **아무것도 없었다** → 카메라(nvblox) 유령
+  - [L363](../../debug_log/2026-10-01/SUMMARY.md) §8.24 사용자 승인: 대책 1(전역에서 nvblox 층 제거) + A(재계획 = 목표 변경·주행 실패 때만) 적용
+  - [L369](../../debug_log/2026-10-01/SUMMARY.md) §8.25 f2a9 — 사용자 지시: 현재 위치에서 D 까지만(GOAL_FRAME=map). 뒤쪽 낮은 상자 회전 접촉 위험은 사용자에게 알림(낮은 물체는 뒤·옆 사각, 회전 반경 0.31 m).
+  - [L374](../../debug_log/2026-10-01/SUMMARY.md) §8.26 사용자 관찰: "중간에 바퀴 헛돔 — 케이블 가드를 넘어갈 토크가 부족, 그래서 발로 밀어 줬다"
+  - [L383](../../debug_log/2026-10-01/SUMMARY.md) §8.27 f2a10 — 사용자: 가드는 트랙 구조상 못 넘을 듯(나중에 조이스틱 시험), D 에서 서쪽 통로(x −2~−1, 가드 없음) 경유 → W3 → 출발 복귀
+  - [L391](../../debug_log/2026-10-01/SUMMARY.md) §8.28 사용자: 후진으로 경로를 따라감 → 정면을 보며 따라가야 함(낮은 장애물은 카메라로만 보임) → MPPI vx_min −0.06 → 0.0
+  - [L394](../../debug_log/2026-10-01/SUMMARY.md) §8.29 사용자: 제자리 회전은 밀림이 크다 → 전진·후진하며 호로 돌게(조이스틱에서 전진+조향 시 한쪽 트랙만 돌고 다른 쪽은 거의 멈춰 슬립 없이 균일한 호), 180° 는 전진·후진 반복으로 — 절충안(최소 회전 반경 + 짧은 후진만) 지시
+  - [L417](../../debug_log/2026-10-01/SUMMARY.md) §8.30 사용자 결정: 후진 허용(이전 방식) 유지, "우선 실내를 자유자재로 움직이는 것부터 완성"
+  - [L422](../../debug_log/2026-10-01/SUMMARY.md) §8.31 사용자 요청: f2a10 에서 서쪽 통로를 왜 못 지났나 — 시각화 (사용자는 로버를 출발 테이프로 옮김)
+  - [L429](../../debug_log/2026-10-01/SUMMARY.md) §8.32 사용자 질문 "nvblox 가 띄운 장애물인가?" → 아니다. 전역 정적 층이 저장 지도가 아니라 **위치 추정 노드가 주행 중 고쳐 그린 /map** 이었다
+  - [L435](../../debug_log/2026-10-01/SUMMARY.md) §8.33 사용자 승인: 전역 정적 층 = 저장 지도(map_server → /map_nav) 적용 + prep (사용자가 로버를 출발 테이프로 옮김)
+  - [L440](../../debug_log/2026-10-01/SUMMARY.md) §8.34 F2 순회 다시(f2a11) — 선언(주행 전)
+  - [L445](../../debug_log/2026-10-01/SUMMARY.md) §8.35 f2a11 결과와 대책 — 전역·로컬이 상자를 다르게 봄(사용자 관찰) → 전역에 카메라 점군 층
+  - [L451](../../debug_log/2026-10-01/SUMMARY.md) §8.36 출발 테이프 prep — 상자가 전역·로컬 모두에 표시됨
+  - [L454](../../debug_log/2026-10-01/SUMMARY.md) §8.37 f2a12 결과 — 목표 1~6 통과(서쪽 통로 남행·D 왕복 포함), 목표 7(서쪽 통로 북행) 무진행 취소
+  - [L465](../../debug_log/2026-10-01/SUMMARY.md) §8.38 사용자 확인: 목표 7 때 로버 앞에 **의자**(접촉 없음). 사용자 가설 "서쪽 벽에 세워 둔 보라색 대형 쓰레기봉투의 반사가 f2a10 때 통로를 막았다가 사라진 것" 검토
+  - [L473](../../debug_log/2026-10-01/SUMMARY.md) §8.39 사용자 정정·결정: 통로 쪽 물체는 건드리지 않았다(§8.38 의 "치워짐" 추정 틀림) · (a) 적용 = 앞 경로가 막히면 주행 중단 → 재계획
+  - [L483](../../debug_log/2026-10-01/SUMMARY.md) §8.40 사용자 요청: bag 시각화 — "그림 속 로버 위치가 실제와 좀 다른 느낌"
+  - [L488](../../debug_log/2026-10-01/SUMMARY.md) §8.41 사용자 관찰(영상 36 s): 로버 위치가 x ≈ 0.6 → −1.0 으로 점프, 실제로는 0.6 에 있었다 → **위치 추정 점프 확인. §8.37~8.40 의 목표 6·7 위치 해석 전부 무효**
+  - [L495](../../debug_log/2026-10-01/SUMMARY.md) §8.42 사용자 가설: 점프 원인 = 지도의 구멍 → 내일 bag 으로 그 부분 보완(사용자 결정)
+
+## 2026-10-02
+- [L5](../../debug_log/2026-10-02/SUMMARY.md) §1 지도 보완 — 선언(재생 전)
+  - [L15](../../debug_log/2026-10-02/SUMMARY.md) §1.1 결과 — 구멍은 메워짐, 옛 지도는 안 움직임. 단 H-2(재생 중 보정 0 건) 불합격, 남쪽 벽 안쪽 면이 일부 구간 1 칸(5 cm) 남쪽으로
+- [L26](../../debug_log/2026-10-02/SUMMARY.md) §2 위치 추정 재생 — 점프가 지도 보완으로 사라지는가 (선언, 사용자: 권장대로 진행)
+  - [L34](../../debug_log/2026-10-02/SUMMARY.md) §2.1 결과 — 기준선은 점프를 그대로 재현, 지도 보완·탐색 창 축소는 **둘 다 점프 없음**
+- [L47](../../debug_log/2026-10-02/SUMMARY.md) §3 사용자 결정: 위치 추정 탐색 창은 **3.0 유지**(ⓑ 기각) · 우선순위 = 지도에 박힌 의자 등 움직이는 물체를 지울 수 있게
+- [L51](../../debug_log/2026-10-02/SUMMARY.md) §4 office_v3 채택 (사용자 승인) · 다음 = 경로 계획용 격자에서 움직이는 물체 지우기
+- [L58](../../debug_log/2026-10-02/SUMMARY.md) §5 지울 후보 추출 (경로 계획용 격자, 자동으로 지우지 않음)
+- [L67](../../debug_log/2026-10-02/SUMMARY.md) §6 F2 순회 재시도(f2b1) — 선언(주행 전)
+  - [L77](../../debug_log/2026-10-02/SUMMARY.md) §6.1 prep 결과 — 통과 (`outputs/j811_prep.txt`·`j812_navchk.txt`)
+  - [L82](../../debug_log/2026-10-02/SUMMARY.md) §6.2 f2b1 — **내 실수로 목표 1 만 실행**, B SUCCEEDED 52.5 s
+  - [L87](../../debug_log/2026-10-02/SUMMARY.md) §6.3 f2b2 — B 에서 이어 가기, G2 불합격(출발 여유 0.067 m) → 사용자 지시로 G2 무시(f2b3)
+  - [L91](../../debug_log/2026-10-02/SUMMARY.md) §6.4 f2b3 결과 — 이어서 목표 4 개 더 성공(누적 5/10), 전체 목표 6(D → 남서) 은 도착 후 방향 맞추다 정체 → nav_guard 취소
+- [L98](../../debug_log/2026-10-02/SUMMARY.md) §7 f2b3 목표 6(D → 남서) 정체 원인 분석 (사용자: 주변 낮은 물체 없음, **로버가 의자 다리를 밀고 가길래 치워 줌**, 지금 앞엔 아무것도 없음)
+  - [L113](../../debug_log/2026-10-02/SUMMARY.md) §7.1 정정(사용자): 회전 중에는 아무것도 닿지 않았다 — 의자는 **그 전 전진 중에** 감지 못 하고 걸렸다
+  - [L119](../../debug_log/2026-10-02/SUMMARY.md) §7.2 사용자 관찰: "+36 s 에 x −1.8 이던 왼쪽 장애물이 회전하며 −1.73 까지 커진다 — 실제 여유는 10 cm 쯤, 이걸 고치는 게 낫다" → **측정으로 확인**
+- [L130](../../debug_log/2026-10-02/SUMMARY.md) §8 사용자 결정: 남은 순회 대신 **출발 위치로만 복귀**(f2b4) → 그다음 B2 검토("왜 껐는지 해결 방법도 판단")
+  - [L131](../../debug_log/2026-10-02/SUMMARY.md) §8.1 f2b4 결과 — 출발 복귀 SUCCEEDED 157.4 s
+  - [L135](../../debug_log/2026-10-02/SUMMARY.md) §8.2 B2 를 왜 껐나(09-29 §5)와 지금 데이터로 다시 본 결과 (`jobs/rot_models.py`, `outputs/rot_models.txt`)
+- [L141](../../debug_log/2026-10-02/SUMMARY.md) §9 사용자 관찰: f2b4 복귀 때 출발 방에서 **상자를 치며** 들어옴 → 상자를 인지했나
+  - [L150](../../debug_log/2026-10-02/SUMMARY.md) §9.1 사용자: 상자는 화각 안에 있었는지만 확인 (화각 문제는 '라이다가 못 보는 낮은 물체를 카메라로 피하기' 기능과 별개) — `jobs/box_fov.py`, `outputs/box_fov.txt`
+- [L154](../../debug_log/2026-10-02/SUMMARY.md) §10 회전 중 장애물 번짐 — 층 분리 시도 (f2b4 시작 회전, nvblox 포함) `jobs/job821_lviz.py`·`smear_layers.py`, `outputs/smear_layers_f2b4.txt`
+- [L159](../../debug_log/2026-10-02/SUMMARY.md) §11 통제 회전 시험 — 회전 중 장애물 번짐 측정 (선언, 사용자: 시험 진행)
+  - [L165](../../debug_log/2026-10-02/SUMMARY.md) §11.1 결과 — rot1 은 사람 접근으로 안전 정지, rot2 완료: **번짐은 작고(최대 2.6 cm), 대신 주행계가 회전 중 실제 미끄러짐 30 cm 를 0.3 cm 로 봄**
+- [L174](../../debug_log/2026-10-02/SUMMARY.md) §12 대책 1 A/B — 로컬 코스트맵을 map 좌표로 (선언, 사용자: 시험 진행, 로버를 rot2 시작 자리로 되돌려 놓음)
+  - [L179](../../debug_log/2026-10-02/SUMMARY.md) §12.1 결과 — **불합격, 채택 안 함**(로컬 코스트맵 odom 으로 되돌림)
+- [L190](../../debug_log/2026-10-02/SUMMARY.md) §13 사용자 결정: **rf2o 도입 작업 시작** · 사용자 진단 "미끄러짐은 트랙-바닥 마찰 문제 — 한쪽 트랙을 거의 세우고 반대쪽만 움직여 회전축을 트랙에 두는 방식(피벗 회전)을 써야 한다"
+  - [L195](../../debug_log/2026-10-02/SUMMARY.md) §13.1 R1 — rot2·rot3 bag 을 rf2o 에 재생(도메인 42·sim time, `jobs/job835_rf2o_replay.sh`, 비교 `jobs/rf2o_cmp.py`, `outputs/rf2o_cmp_rot23.txt`)
+  - [L206](../../debug_log/2026-10-02/SUMMARY.md) §13.2 줄자 실측(사용자) — rot3 동안 로버가 **뒤로 27.5 cm·오른쪽으로 24.5 cm**(0.368 m) 이동 → rf2o 가 맞고 SLAM 은 틀림
+- [L216](../../debug_log/2026-10-02/SUMMARY.md) §14 R2 오프라인 — rf2o 게이트 + EKF A/B 재생 (선언, 사용자: R2 오프라인 진행)
+  - [L228](../../debug_log/2026-10-02/SUMMARY.md) §14.1 R2 재생 1~4 차 — 결함 둘을 찾고 고침, 4 차에서 R2-a·b 통과
+  - [L241](../../debug_log/2026-10-02/SUMMARY.md) §14.2 R2 5 차(마지막) — G1 시각 맞춤·바닥 0.12: 사람 없는 bag 에서 오거부 0 %, R2-a·b 통과 유지, R2-c 는 **지표 자체의 바닥이 기준보다 높음**
+- [L251](../../debug_log/2026-10-02/SUMMARY.md) §15 하루 마무리 (사용자: 실험 과정 시각화 + 오늘 마무리·아티팩트)
+  - [L256](../../debug_log/2026-10-02/SUMMARY.md) §16 사용자 요청: rf2o 로 vx·vy 를 보정한 EKF 가 실제 미끄러짐을 잘 인식했는지 시각화 — `Docs/04_navigation/figures/2026-10-02_ekfB_slip.png`(`jobs/render_ekfB_slip.py`, R2 5 차 재생 결과)
+- [L261](../../debug_log/2026-10-02/SUMMARY.md) §17 사용자 제안(다음 시험 설계): **90° 마다 줄자로 실측**해 보정·rf2o 를 단계별로 실증
+  - [L271](../../debug_log/2026-10-02/SUMMARY.md) §18 사용자: rot3_paths 형식(시작 자세 기준 궤적)이 실제 움직임과 비교하기 좋다 · "로버가 rf2o 도식처럼(크게 출렁이며) 움직였던 것으로 인지"
+  - [L277](../../debug_log/2026-10-02/SUMMARY.md) §19 사용자 질의: `2026-10-02_f2b3_wall_AB.png` 에서 **EKF 곡선과 SLAM 곡선 사이의 차이(델타)를 벽 번짐으로 이해하면 되나** → 근사적으로 그렇다(SLAM 이 맞다는 전제)
+
+## 2026-10-06
+- [L5](../../debug_log/2026-10-06/SUMMARY.md) §1 R3 코드 (사용자: 1 번 진행)
+- [L11](../../debug_log/2026-10-06/SUMMARY.md) §2 R3 재생 검증 — 정식 launch 가 R2 오프라인 결과를 재현하나 (도메인 42, 로버 안 움직임)
+- [L26](../../debug_log/2026-10-06/SUMMARY.md) §3 R3 정지 기동 확인 (사용자: 로버를 출발 테이프 **45 cm 앞**에 둠 — 후방 공간 확보) — `outputs/j851_r3prep.txt`
+- [L31](../../debug_log/2026-10-06/SUMMARY.md) §4 단계별 회전 실측 — 선언(10-02 §17 사용자 제안)
+  - [L35](../../debug_log/2026-10-06/SUMMARY.md) §4.1 결과 — **EKF B 통과**: 줄자 대비 \|오차\| 평균 1.5 cm, 방향 원위치 단계(2·4·6)는 0.0 / +0.1 / +0.7 cm
+- [L53](../../debug_log/2026-10-06/SUMMARY.md) §5 게이트 CPU 줄이기 (사용자: 1 번 진행) — 진행 중
+- [L57](../../debug_log/2026-10-06/SUMMARY.md) §6 사용자 질의 정리: EKF 가 rf2o 를 어떤 신뢰도로 쓰나 · 공분산은 이산인가 연속인가
+- [L65](../../debug_log/2026-10-06/SUMMARY.md) §7 사용자 제기: 전선 같은 것을 밟았을 때 — 영향과 해결 (원리 추정 위주, 측정 표시)
+- [L77](../../debug_log/2026-10-06/SUMMARY.md) §8 갱신 계획(사용자: 기록·계획에 넣고 적절한지 평가)
+  - [L87](../../debug_log/2026-10-06/SUMMARY.md) §5.1 CPU 개선 검증 결과 — 정확도는 같음, **CPU 는 재생으로 판정 불가**, 그리고 내 실수로 라이브 스택이 꺼져 있음
+- [L93](../../debug_log/2026-10-06/SUMMARY.md) §9 ① CPU 판정 + ② 사람 시험 T1·T2 — 선언
+  - [L100](../../debug_log/2026-10-06/SUMMARY.md) §9.1 T1 결과 — **통과**: 정지 중 사람 발 움직임에 EKF B 이동 0.0 cm, rf2o 원 출력도 최대 0.6 cm/s
+  - [L106](../../debug_log/2026-10-06/SUMMARY.md) §9.2 T1b (사용자 제안: 줄자 잴 때처럼 몸으로 라이다 시야 ≈ 70 % 가림, 정지 90 s) — **통과**, 다만 rf2o 원 출력은 흔들렸고 막은 것은 휠의 가중
+- [L112](../../debug_log/2026-10-06/SUMMARY.md) §10 T2 합성(사용자 동의: bag 으로 — 2D 라이다라 거친 몸 모양 재현은 문제 아님) — 선언
+  - [L117](../../debug_log/2026-10-06/SUMMARY.md) §10.1 T2 합성 결과 — **가림 0~72 % 모두 EKF B 평균 오차 ≤ 2.8 cm(판정 통과)**, 단 몸이 '움직이지 않는' 조건이라 한계 있음
+- [L131](../../debug_log/2026-10-06/SUMMARY.md) §11 T2 합성 — 움직이는 몸 (사용자: 1 번 진행) — 선언
+  - [L140](../../debug_log/2026-10-06/SUMMARY.md) §11.1 움직이는 몸 결과 — **걸어 지나가는 다리(A·B)는 통과, 크게 가린 채 움직이는 몸(C·D·E)은 불합격**(평균 9.5~27.9 cm) → 연속·품질 σ(항목 C) 필요 근거 확보
+- [L153](../../debug_log/2026-10-06/SUMMARY.md) §12 항목 C — rf2o 품질 검사 (사용자: 진행)
+- [L165](../../debug_log/2026-10-06/SUMMARY.md) §13 G4 재생 중단 — 내일로 (사용자: "G4는 내일 하도록 하자. 오늘 일 마무리하고, 시각화도 시켜줘.")
+
+## 2026-10-07
+- [L5](../../debug_log/2026-10-07/SUMMARY.md) §1 G4 재생 A/B — 선언 (사용자: 다음 단계 진행)
+  - [L14](../../debug_log/2026-10-07/SUMMARY.md) §1.0 시작 점검
+  - [L19](../../debug_log/2026-10-07/SUMMARY.md) §1.1 G4 결과 — 판정 1 **불합격**(C·D·E 4.5 / 7.3 / 7.4 cm > 3), 판정 2 **통과**(깨끗 2.0·A 1.9). 오차는 3~4 배 줄었음
+- [L34](../../debug_log/2026-10-07/SUMMARY.md) §2 계획 ③ rf2o 켠 F2 순회 비교 — 선언(주행 전, 사용자: 다음 단계 진행)
+  - [L46](../../debug_log/2026-10-07/SUMMARY.md) §2.1 연결 끊김 → Jetson 이 예비 Wi-Fi(ALOPS 172.30.1.8)로 · prep 통과
+  - [L54](../../debug_log/2026-10-07/SUMMARY.md) §2.2 f2c1 — 목표 1~3 성공, **목표 4(남서) 방향 맞추기 정체 → nav_guard 취소**(f2b3 목표 6 과 같은 자리·같은 양상)
+  - [L68](../../debug_log/2026-10-07/SUMMARY.md) §2.3 사용자: "현재 위치에서 움직이지 못하고 움찔대기만 한다 — 충돌인지 분석" (`jobs/job910_g4cost.py`, `outputs/j910_g4cost.txt`)
+  - [L78](../../debug_log/2026-10-07/SUMMARY.md) §2.4 f2c2 — 목표 5~10 이어 가기(사용자: "시작"), 남서 구석 (−1.22, −5.55, +3°)에서 출발
+  - [L86](../../debug_log/2026-10-07/SUMMARY.md) §2.5 f2c2 결과 — 목표 5~10 **6/6 성공**(f2c 전체 9/10, 실패 = 남서 방향 맞추기 1)
+  - [L98](../../debug_log/2026-10-07/SUMMARY.md) §2.6 사용자 관찰: "마지막에 상자를 피해 경로를 세워 이동하다가, 상자 쪽으로 다시 몸을 틀어 출발 위치로 돌아왔다" — **맞다**(측정)
+- [L108](../../debug_log/2026-10-07/SUMMARY.md) §3 남은 분석(사용자: 진행) — `outputs/f2c_anal.txt`·`f2c_g4arc.txt`·`f2c2_w3cost.txt`·`f2c2_w3ahead.txt`, `outputs/j914_w3log.txt`
+  - [L109](../../debug_log/2026-10-07/SUMMARY.md) §3.1 rf2o 발행률 — prep 때 CLI 7.8 Hz 는 측정 한계: bag 기준 **9.6~9.7 Hz**, 게이트 출력 9.5~9.6 Hz.
+  - [L110](../../debug_log/2026-10-07/SUMMARY.md) §3.2 ③-c 게이트 비용 — 회전 표본 버림 **2.3 % (f2c1) · 4.2 % (f2c2)** ≤ 5 % 통과. 그러나 **G4 설계 결함 발견**:
+  - [L115](../../debug_log/2026-10-07/SUMMARY.md) §3.3 ③-b 번짐(EKF B·그림자 A 대 SLAM, 제자리 회전 구간) — **판정 불가에 가까움**
+  - [L121](../../debug_log/2026-10-07/SUMMARY.md) §3.4 map→odom 보정 0.42 m·−9.7° 는 이상치인가 — **아님**(비교): f2b3(rf2o 끔, 293 s) Δ(0.393, 0.137) m·−5.70°, f2c2(430 s) Δ(0.422, 0.265)·−9.65°. 보정 변화는 회전 중·그 밖 모두에서 쌓임(f2
+  - [L122](../../debug_log/2026-10-07/SUMMARY.md) §3.5 사용자 '전진하며 이상하게 움직임'(W3 통로, 러너 t 188~236 s) — 현상은 측정, 원인 미확정
+- [L128](../../debug_log/2026-10-07/SUMMARY.md) §4 G4 를 휠 잔차 기준으로 고치고 재생 확인 — 선언(사용자: 1 번 진행)
+  - [L136](../../debug_log/2026-10-07/SUMMARY.md) §4.1 결과 — B-1·B-2 통과, A 는 오프라인 동치 확인으로 대신(재생 생략 제안)
+- [L149](../../debug_log/2026-10-07/SUMMARY.md) §5 W3 떨림 — TF 지연 가설 확인(사용자: 1 번 진행) — `jobs/job917_tflag.py`·`job917_run.sh` → `outputs/j917_tflag.txt`, `jobs/f2c2_w3lat.py` → `outputs/f2c2_w3lat.txt`
+- [L161](../../debug_log/2026-10-07/SUMMARY.md) §6 F2 재주행 준비(사용자: 1 번 진행) — 바꾼 것 둘, 같은 코스로 비교
+  - [L167](../../debug_log/2026-10-07/SUMMARY.md) §6.1 prep 통과(사용자: 출발 위치·상자 원위치) — `outputs/j918_prep.txt`
+  - [L172](../../debug_log/2026-10-07/SUMMARY.md) §6.2 f2d1 — 목표 1~3 성공(51.2 / 52.9 / 28.3 s), **목표 4(남서) 또 방향 맞추기 정체 → nav_guard 취소 69.4 s**
+- [L176](../../debug_log/2026-10-07/SUMMARY.md) §7 남서 목표 '위치만(f)' 로 이어 가기(f2d2) — 선언
+  - [L182](../../debug_log/2026-10-07/SUMMARY.md) §7.1 f2d2 결과 — 5/6: 남서 **SUCCEEDED_XY 59.6 s**(위치만 모드 작동), 목표 10(출발 복귀) **상자 앞 정지 → nav_guard 취소 123.2 s**
+  - [L196](../../debug_log/2026-10-07/SUMMARY.md) §7.2 재계획 때 돌아갈 길이 있었나 — 전역 코스트맵 단면(x 1.0~1.6, 0~100)
+- [L202](../../debug_log/2026-10-07/SUMMARY.md) §8 낮은 물체 기억 — 사용자 조건: "화각 밖으로 나가도 기억하되, **카메라가 보고 있을 때는 갱신**(동적 물체를 계속 기억하면 갈 수 있는데 못 간다고 판단)"
+  - [L203](../../debug_log/2026-10-07/SUMMARY.md) §8.1 지금 구성이 왜 잊는가(설정 확인 + bag)
+  - [L209](../../debug_log/2026-10-07/SUMMARY.md) §8.2 구현 — `navigation.launch.py global_camera:=obstacle\|stvl`(기본 obstacle = 지금 그대로)
+  - [L213](../../debug_log/2026-10-07/SUMMARY.md) §8.3 실측 시험 — 선언(주행 아님: 짧은 직진·후진 0.5 m, 사용자가 상자 ② 를 치우고 놓음)
+  - [L221](../../debug_log/2026-10-07/SUMMARY.md) §8.4 첫 시도 중단 — 내 설정 결함(로버 안 움직임)
+  - [L224](../../debug_log/2026-10-07/SUMMARY.md) §8.5 실측 결과(재 prep 뒤, 녹화 `/tmp/bag_box1` 1.6 GB — 카메라 점군 포함) — **C1 통과, C2 불합격**
+- [L233](../../debug_log/2026-10-07/SUMMARY.md) §9 저장소 공개 준비(사용자: personal 공개 전환 전제, 장면은 영상 보고 선택, 한국어)
+  - [L239](../../debug_log/2026-10-07/SUMMARY.md) §9.1 사용자: "시각화는 RViz 같은 스타일로(회색 미지·흰 빈 공간·검은 벽, 코스트맵 청록/자홍), 쇼케이스 폴더에 넣지 말 것. 영상 전부를 bag 시각화와 융합 → 사용자가 보고 첫 페이지(README)에 올릴 것을 함께 정함"
+  - [L241](../../debug_log/2026-10-07/SUMMARY.md) §9.2 영상 6 개 전부 RViz 풍 융합 — `videos/fused/fused_<HHMMSS>.mp4`(git 제외)
+- [L245](../../debug_log/2026-10-07/SUMMARY.md) §10 사용자 검토: 첫 페이지 후보(131145 17~43 s, 130300 0~47 s) · "경로가 이미 그려져 있어 계획하는 모습이 안 보임" · "131646 에서 지도는 상자를 보는데 플래너가 경로를 못 고쳐 문제" 확인
+  - [L246](../../debug_log/2026-10-07/SUMMARY.md) §10.1 플래너가 상자를 반영 못 한 이유(측정, `jobs/plan_vs_box.py` → `outputs/plan_vs_box.txt`, fz_f2d2)
+  - [L251](../../debug_log/2026-10-07/SUMMARY.md) §10.2 시각화 보강(`jobs/render_rviz.py`)
+- [L256](../../debug_log/2026-10-07/SUMMARY.md) §11 사용자: "장기 주행에서만 /local_plan·MPPI 후보 궤적 기록, 클립에 목적지 깃발 빼기, 녹색 선과 파란 선은 무엇인가(녹색 선대로 안 움직이는 것 같다)"
+- [L262](../../debug_log/2026-10-07/SUMMARY.md) §12 첫 페이지(README) 영상 확정(사용자: cand_A_131145 17~43 s · cand_B_130300 0~47 s, 소리 제거, 포스터 → 클릭 재생)
+  - [L266](../../debug_log/2026-10-07/SUMMARY.md) §12.1 사용자: "README 가 장황하다 — nvblox 저장소처럼 구현한 기능과 작업 절차만, mp4 대신 가벼운 gif"
+- [L270](../../debug_log/2026-10-07/SUMMARY.md) §13 사용자: "PROJECT_OVERVIEW 의 개인 계획 이야기 — 공개 프로젝트엔 좋지 않다, 빼자" → 문구 수정 + CLAUDE.md 저장소에서 내림(사용자 선택), 이력 처리는 권장안 제시
+- [L275](../../debug_log/2026-10-07/SUMMARY.md) §14 저장소 운영 확정(사용자: "새 작업까지 이중 백업, public 에 안 올라가는 것(CLAUDE.md 등)도 올라가게")
+- [L280](../../debug_log/2026-10-07/SUMMARY.md) §15 하루 마무리(사용자: 공개 main 반영, 오늘 마무리)
+- [L292](../../debug_log/2026-10-07/SUMMARY.md) §16 사용자 질의(마감 직전): "nvblox 를 쓰고 있으면 STVL 을 빼도 되지 않나" — 내일로
+
+## 2026-10-08
+- [L5](../../debug_log/2026-10-08/SUMMARY.md) §1 nvblox 슬라이스로 C1·C2 확인 — 선언(사용자: 다음 단계 진행)
+  - [L15](../../debug_log/2026-10-08/SUMMARY.md) §1.1 결과 — nvblox 는 **치운 뒤 2~3 s 에 대부분 지움(STVL 은 1 분 30 s 넘게 못 지움)**, 가까이서도 유지. 다만 1~2 칸이 64 s 남음
+- [L28](../../debug_log/2026-10-08/SUMMARY.md) §2 '전역에 nvblox 를 넣었다면' 재계산 — 선언(사용자: 진행, Jetson 192.168.0.101 복귀)
+  - [L34](../../debug_log/2026-10-08/SUMMARY.md) §2.1 결과 — 카메라만 본 장애물이 통로 곳곳에 **많이** 있음(f2c2 묶음 35·f2d2 41, 지속 10 s 넘는 것 대부분). 실제 물체인지 사용자 확인 필요
+  - [L42](../../debug_log/2026-10-08/SUMMARY.md) §2.2 사용자 확인: "대부분 실제 물체였다. f2d2 (0.1, −5.8) 근처는 바닥의 에어캡 — 꽤 투명한 물체도 인식하고 피해 갔다"
+- [L45](../../debug_log/2026-10-08/SUMMARY.md) §3 전역 nvblox + 주기 재계획 A/B 주행 — 선언(주행 전)
+  - [L54](../../debug_log/2026-10-08/SUMMARY.md) §3.1 코스 변경(사용자: 목표 그림 `Docs/04_navigation/figures/2026-10-08_patrol_goals.png` 을 보고 "1·9·10 번만")
+  - [L57](../../debug_log/2026-10-08/SUMMARY.md) §3.2 B prep 통과(사용자: 출발 위치·상자 제자리) — `outputs/j934_prep.txt`, `jobs/job936_chk.sh`
+  - [L60](../../debug_log/2026-10-08/SUMMARY.md) §3.3 f2e1 결과 — 3/3 성공(53.8 · 48.3 · 122.7 s), **그러나 전역 nvblox 층 프레임 결함**으로 상자 ② 를 계획기가 엉뚱한 곳에 둠
+  - [L68](../../debug_log/2026-10-08/SUMMARY.md) §3.4 f2e1 동영상(사용자: "동영상으로 시각화, 보고 판단하고 싶다") — `videos/f2e1_global_debug.mp4`(git 제외, 240 s, 124 MB)
+  - [L72](../../debug_log/2026-10-08/SUMMARY.md) §3.5 사용자: "f2e1 복귀 때 상자에 닿았다. 왜 닿았나" — 두 겹(측정, `jobs/contact_eval.py` → `outputs/f2e1_contact.txt`)
+  - [L81](../../debug_log/2026-10-08/SUMMARY.md) §3.6 f2e2 — 선언(프레임 결함만 고친 B 구성으로 같은 코스 다시, 사용자: 출발 위치·상자 제자리)
+  - [L85](../../debug_log/2026-10-08/SUMMARY.md) §3.7 f2e2 결과 — 3/3 성공(52.1 · 49.1 · **108.5 s**), 전역·로컬 상자 위치 일치, 경로가 상자를 0.19~0.31 m 비켜 감
+  - [L93](../../debug_log/2026-10-08/SUMMARY.md) §3.8 f2e2 사용자 확인: 상자에 **닿지 않음** → f2e2 상자 판정 통과(§3.6 기준)
+- [L95](../../debug_log/2026-10-08/SUMMARY.md) §4 사용자 질문: "이전 bag 에서 회전 때 덜 미끄러졌다 — 어떻게 돌았나(회전축·바퀴 속도), 무게중심은 어디였나" (주행 없음, bag 분석)
+  - [L119](../../debug_log/2026-10-08/SUMMARY.md) §4.1 사용자 정정·결정: "바닥 재질은 다 같았다. 양쪽 바퀴 속도가 비슷하게 유지되며 도는 경우가 가장 크게 미끄러진다 → 이번 bag(f2e2 W3) 형식의 회전 방식을 원한다"
+  - [L126](../../debug_log/2026-10-08/SUMMARY.md) §4.2 정정 — §4.1 식의 부호와 b 의 의미(사용자 질문: "이 식은 어디서 왔나")
+- [L131](../../debug_log/2026-10-08/SUMMARY.md) §5 트랙 비율 통제 시험 — 선언(주행 전, 사용자: "비율 통제 시험 스크립트 준비하자")
+  - [L177](../../debug_log/2026-10-08/SUMMARY.md) §5.1 개정(주행 전) — 출발 방 통로에서 수행(사용자: "방 밖은 사람이 많아 어렵다", 로버는 출발 45 cm 앞)
+  - [L198](../../debug_log/2026-10-08/SUMMARY.md) §5.2 실행 1(rt1, 16:39) — 블록 3(피벗) 전 쓸기 검사로 **중단**(여유 0.015 m), 로버 정지·접촉 없음 (`outputs/rt1_run.txt`, `outputs/rt1_anal.txt`, `bags/bag_rt1.tgz`)
+  - [L210](../../debug_log/2026-10-08/SUMMARY.md) §5.3 러너 개정 — 중단 대신 '재배치 대기'(주행 전)
+  - [L218](../../debug_log/2026-10-08/SUMMARY.md) §5.4 사용자 관찰 "반피벗 느낌이 아니었다" → 회전축 확인(`jobs/rot2.py` 를 bag_rt1 에, 회전을 3 등분해 축 중앙값)
+  - [L230](../../debug_log/2026-10-08/SUMMARY.md) §5.5 순서 개정(주행 전, 사용자: "왼쪽 트랙과 오른쪽 트랙을 반복해야 하지 않을까")
+  - [L239](../../debug_log/2026-10-08/SUMMARY.md) §5.6 실행 2(rt2, 17:02~17:10) 결과와 판정 — 32 회 완료, 재배치·중단 없음 (`outputs/rt2_run.txt`, `outputs/rt12_anal.txt`, `outputs/rt12_pool.txt`, `jobs/ratio_pool.py`, `bags/ba
+  - [L272](../../debug_log/2026-10-08/SUMMARY.md) §5.7 사용자 가설: "트랙의 모양이 원인인 것 같다" — 데이터와 대조(추정 정리, 측정 추가 없음)
+  - [L286](../../debug_log/2026-10-08/SUMMARY.md) §5.8 사용자 질문: "회전해야 하면 무조건 앞으로 회전하는 방식은 어떤가" — 데이터 대조
+  - [L299](../../debug_log/2026-10-08/SUMMARY.md) §5.9 사용자 정보: 구동 스프로킷(모터) **뒤**, 트랙 돌기 = **앞을 향한 사다리꼴**(화살촉 끝이 잘린 모양, 짧은 면이 앞) → 기전 가설(추정)과 대조
+  - [L319](../../debug_log/2026-10-08/SUMMARY.md) §5.10 정정 — 사용자: "고무가 아니라 **메탈**, 설명한 방향은 **위에서 본 것**(바닥에 닿을 때는 반대일 것)" → §5.9 가설 A 철회
+  - [L332](../../debug_log/2026-10-08/SUMMARY.md) §5.11 사용자 확인: "옆으로 밀어봤는데 뒤로 밀리지 않았다" → '옆 미끄럼 자체의 방향성' 기각, **구동 중 견인 비대칭(C1)** 쪽
+- [L342](../../debug_log/2026-10-08/SUMMARY.md) §6 앞 회전 우선 MPPI(사용자: "1번 앞 회전 우선 MPPI 설정 진행하자") — 오프라인 시뮬 → 설정 변경(배포·주행 전)
+  - [L367](../../debug_log/2026-10-08/SUMMARY.md) §6.1 '뒤 밀림이 일정한가'(사용자 질문) — 데이터 정리(`outputs/slip_consistency.txt`)
+- [L376](../../debug_log/2026-10-08/SUMMARY.md) §7 마무리(사용자: "나머지는 다음에 하고 마무리하자")
+
+## 2026-10-12
+- [L5](../../debug_log/2026-10-12/SUMMARY.md) §1 f2f1 — 선언(주행 전, 사용자: "옮겼다. 진행하라" = 로버 출발 위치·상자 제자리)
+  - [L16](../../debug_log/2026-10-12/SUMMARY.md) §1.1 prep 통과(`outputs/j934c_prep.txt`, `jobs/job951_chk.sh`) — 로버 안 움직임
+  - [L22](../../debug_log/2026-10-12/SUMMARY.md) §1.2 f2f1 결과 — 3/3 성공(53.3 · 46.5 · 115.3 s), **W3 출발 후진 2.93 → 0.41 m** (`outputs/f0_f2f1_runner.log`, `jobs/rev_eval.py` → `outputs/f2f1_rev_eval.txt`, `outpu
+  - [L44](../../debug_log/2026-10-12/SUMMARY.md) §1.3 사용자 확인·판단
+- [L49](../../debug_log/2026-10-12/SUMMARY.md) §2 복귀 때 상자 ② 주변이 매끄럽지 못했던 원인(주행 없음, bag·로그 분석)
+- [L93](../../debug_log/2026-10-12/SUMMARY.md) §3 f2f2 재현 주행 — 선언(주행 전, 사용자: "재현부터 수행하자")
+  - [L104](../../debug_log/2026-10-12/SUMMARY.md) §3.1 prep 통과(사용자: 출발 테이프에 다시 놓음, `outputs/j934d_prep.txt`) — 로버 안 움직임
+  - [L108](../../debug_log/2026-10-12/SUMMARY.md) §3.2 f2f2 — **무효(주행 안 함)**: 목표 1 이 45 s 뒤 취소, 로버는 출발 자리에서 0.00 m (`outputs/f0_f2f2_runner.log`, `outputs/j954_why.txt`)
+  - [L127](../../debug_log/2026-10-12/SUMMARY.md) §3.3 f2f3 결과 — **재현됨(더 일찍, 더 심하게)**: 목표 1 62.2 s · 목표 2 70.9 s · **목표 3 ABORTED 100 s**(B 근처 (2.42, −1.46), 상자 구간 도달 전)
+  - [L163](../../debug_log/2026-10-12/SUMMARY.md) §3.4 사용자 요청: "프로세스가 꺼지지 않고 중복으로 실행되고 있는지 확인" (`jobs/job961_dup.sh`·`job962_dup2.sh` → `outputs/j961_dup.txt`, 로버 안 움직임)
+- [L177](../../debug_log/2026-10-12/SUMMARY.md) §4 f2g1 — 선언(주행 전, 사용자: "출발 테이프에 옮겼다. 후진 벌점 5 로 진행하라")
+  - [L187](../../debug_log/2026-10-12/SUMMARY.md) §4.1 prep(`jobs/job963_prep5.sh` → `outputs/j963_prep5.txt`) — 로버 안 움직임
+  - [L193](../../debug_log/2026-10-12/SUMMARY.md) §4.2 f2g1 결과(PreferForward 5) — 3/3 성공(50.5 · 47.5 · 111.3 s), **포화 발생하지 않음** (`outputs/f0_f2g1_runner.log`, `f2g1_tf.txt`, `f2g1_navlog.txt`, `nav2_f2g1.log.gz
+- [L214](../../debug_log/2026-10-12/SUMMARY.md) §5 f2g2 — 선언(주행 전, 사용자: "출발 위치로 옮겼다. 진행하자")
+  - [L221](../../debug_log/2026-10-12/SUMMARY.md) §5.1 prep(`jobs/job964_prep15.sh` → `outputs/j964_prep15.txt`) — 로버 안 움직임
+  - [L225](../../debug_log/2026-10-12/SUMMARY.md) §5.2 f2g2 결과(PreferForward 15, 새 prep) — 목표 1 51.3 s · 목표 2 72.9 s · **목표 3 ABORTED 54 s**((3.24, −1.63)), **포화 발생** (`outputs/f0_f2g2_runner.log`, `f2g2_tf_cpu
+- [L255](../../debug_log/2026-10-12/SUMMARY.md) §6 f2h1 — 선언(주행 전, 사용자: "2번으로 진행하자. 출발 위치로 옮겼다")
+  - [L267](../../debug_log/2026-10-12/SUMMARY.md) §6.1 prep 통과(`jobs/job966_prep_lean.sh` → `outputs/j966_prep.txt`) — 로버 안 움직임
+  - [L272](../../debug_log/2026-10-12/SUMMARY.md) §6.2 f2h1 결과(그림자 EKF·MPPI 궤적 발행 끔 + PreferForward 15) — **3/3 성공(51.3 · 45.9 · 101.0 s), 포화 없음** (`outputs/f0_f2h1_runner.log`, `f2h1_tf_cpu_box.txt`, `f2h1_nav
+  - [L301](../../debug_log/2026-10-12/SUMMARY.md) §6.3 사용자 확인·질문
+- [L308](../../debug_log/2026-10-12/SUMMARY.md) §7 f2h2 — 선언(주행 전, 사용자: "출발 위치로 옮겼다")
+  - [L313](../../debug_log/2026-10-12/SUMMARY.md) §7.1 prep 통과(`outputs/j966b_prep.txt`) — 로버 안 움직임
+  - [L318](../../debug_log/2026-10-12/SUMMARY.md) §7.2 선언 변경(주행 전, 사용자: "MPPI 는 기록하는 게 좋지 않을까?") → f2h2 대신 **f2i1**
+  - [L327](../../debug_log/2026-10-12/SUMMARY.md) §7.3 f2i1 결과(그림자 EKF 끔 + **궤적 발행 켬** + PreferForward 15) — 목표 1 60.6 s · 목표 2 75.8 s · **목표 3 ABORTED 89 s**((2.43, −1.35)), **포화 발생** (`outputs/f0_f2i1_runner.
+- [L351](../../debug_log/2026-10-12/SUMMARY.md) §8 사용자 의문 2 건 — 분석(주행 없음)
+  - [L354](../../debug_log/2026-10-12/SUMMARY.md) §8.1 ① 5 와 15 의 차이 — **아직 설명하지 못함**, 내 가설 하나는 기각
+  - [L370](../../debug_log/2026-10-12/SUMMARY.md) §8.2 ② 다른 프로세스와의 충돌 — **프로세스끼리의 논리적 충돌은 없음, 공유 자원(UDP 수신 버퍼) 경합의 정황은 있음**
+  - [L385](../../debug_log/2026-10-12/SUMMARY.md) §8.3 사용자 질문: "공유메모리 방식을 다시 사용하는 건 어떤가" — 검토(주행 없음, `jobs/job968_shm.sh` → `outputs/j968_shm.txt`)
+  - [L401](../../debug_log/2026-10-12/SUMMARY.md) §8.4 사용자 정정: "DDS 공유메모리가 아니라, **Jetson 보드 고유의 공유메모리**(CPU·GPU 통합 메모리)를 쓰면 더 낫지 않겠나" — 정리(주행·측정 없음, 지식 기반 설명)
+  - [L414](../../debug_log/2026-10-12/SUMMARY.md) §8.5 사용자 제안: "DDS 공유메모리 제로카피를 쓴다면, 영상·라이다 같은 대용량은 제로카피로, 문제가 생기는 부분은 UDP 로 나누면 어떤가" — 검토(주행·측정 없음, 지식 기반 + 오늘 확인한 사실)
+  - [L433](../../debug_log/2026-10-12/SUMMARY.md) §8.6 사용자 의견·질문: "DDS 로 공유메모리 통신이 되면 하는 게 맞다고 본다. micro-ROS 때문에 문제가 생기나?" — 답(주행 없음)
+- [L450](../../debug_log/2026-10-12/SUMMARY.md) §9 f2j1 계측 재현 주행 — 선언(주행 전, 사용자: "우선 중요한 것부터. 현재 문제의 원인 확정부터 진행")
+  - [L462](../../debug_log/2026-10-12/SUMMARY.md) §9.1 prep 통과(`jobs/job969_prep_j.sh` → `outputs/j969_prep.txt`, 14:53:44~14:58:32 = **4 분 48 초**) — 로버 안 움직임
+  - [L467](../../debug_log/2026-10-12/SUMMARY.md) §9.2 f2j1 결과 — 목표 1 53.0 s · 목표 2 47.3 s · **목표 3 ABORTED 92.5 s**((2.38, −1.24)), 포화 재현 + **UDP 손실 계측 성공** (`outputs/f0_f2j1_runner.log`, `net_f2j1.log.gz`, `f
+- [L505](../../debug_log/2026-10-12/SUMMARY.md) §10 사용자 요청: prep 과 prep→출발 시간을 줄일 방법(검토, 측정은 일부)
+- [L523](../../debug_log/2026-10-12/SUMMARY.md) §11 f2k1 — 선언(주행 전, 사용자: "대책 1번부터 시험하자. 출발 위치로 옮겼다")
+  - [L532](../../debug_log/2026-10-12/SUMMARY.md) §11.1 prep 통과(`outputs/j969b_prep.txt`, 15:16:48~15:21:29 = 4 분 41 초) — 로버 안 움직임
+  - [L537](../../debug_log/2026-10-12/SUMMARY.md) §11.2 f2k1 결과 — 목표 1 51.5 s · **목표 2 ABORTED 25.7 s**((2.73, −1.45)), **대책 1 효과 없음** (`outputs/f0_f2k1_runner.log`, `f2k1_net_anal.txt`, `net_f2k1.log.gz`, `nav
+- [L563](../../debug_log/2026-10-12/SUMMARY.md) §12 f2l1 — 선언(주행 전, 사용자: "1번 lite 로 진행하자. 출발 위치로 옮겼다")
+  - [L571](../../debug_log/2026-10-12/SUMMARY.md) §12.1 prep 통과(`jobs/job970_prep_lite.sh` → `outputs/j970_prep.txt`, 15:35:00~15:40:17 = 5 분 17 초, launch 배포·빌드 포함) — 로버 안 움직임
+  - [L575](../../debug_log/2026-10-12/SUMMARY.md) §12.2 f2l1 결과(`mppi_viz:=lite` + 그림자 끔 + PreferForward 15) — **3/3 성공(51.2 · 46.2 · 99.2 s), 포화 없음** (`outputs/f0_f2l1_runner.log`, `f2l1_net_anal.txt`, `net_f2
+  - [L598](../../debug_log/2026-10-12/SUMMARY.md) §12.3 사용자 확인: f2l1 "상자에 안 닿았다" → 접촉 없음.
+- [L600](../../debug_log/2026-10-12/SUMMARY.md) §13 빠른 prep(사용자 결정: 단축안 앞 2 가지) + f2l2 선언(주행 전, 사용자: "출발 위치로 옮겼다")
+  - [L616](../../debug_log/2026-10-12/SUMMARY.md) §13.1 f2l2 결과(lite 반복, 빠른 prep) — **3/3 성공(52.1 · 47.0 · 102.6 s), 포화 없음** (`outputs/f0_f2l2_runner.log`, `f2l2_net_anal.txt`, `net_f2l2.log.gz`, `nav2_f2l2.log
+- [L634](../../debug_log/2026-10-12/SUMMARY.md) §14 마무리(사용자: f2l2 "상자에 안 닿았다. 오늘 일 마무리하자")
+- [L666](../../debug_log/2026-10-12/SUMMARY.md) §15 시각화·보고서(사용자: "오늘 한 것 데이터 시각화하고, 아티팩트를 만들어 로컬에도 저장하고, 푸시하라")
+- [L676](../../debug_log/2026-10-12/SUMMARY.md) §16 도구 구분 문제와 규약(사용자: "어떤 상황에 썼고 어떤 값이 나왔고 어느 순간 어떤 추론을 했는지 보려는데, 도구를 구분하기가 너무 어렵다" → "다음 세션부터 적용하자")
+- [L684](../../debug_log/2026-10-12/SUMMARY.md) §17 사용자 질문·결정(마무리 뒤): "UDP 버퍼는 늘렸나? … 버퍼를 늘리면 CPU 에 문제가 생기지 않나? 메시지를 주고받는 문제는 DDS 공유메모리 기능을 이용하고 싶다"
+- [L704](../../debug_log/2026-10-12/SUMMARY.md) §18 사용자 질문: "DDS 는 zero-copy 를 지원하고 카메라 이미지·포인트 클라우드도 된다던데, 왜 한 번은 복사해야 한다고 했나" — 문서 확인(웹 검색)
+- [L721](../../debug_log/2026-10-12/SUMMARY.md) §19 사용자 질문: "현재 구성에서 크기 고정 타입으로 바꾸는 건 좋지 못한가" — 검토(측정 없음, 계산·지식 기반)
+- [L734](../../debug_log/2026-10-12/SUMMARY.md) §20 사용자 질문: "포화는 수신 쪽 버퍼에 데이터가 쌓이다가 생기는 문제인가? 수신 쪽은 무엇이며, 왜 쌓이는지 알고 있나" — 아는 것과 모르는 것 정리(새 측정 없음)
+- [L754](../../debug_log/2026-10-12/SUMMARY.md) §21 사용자 질문: "공유메모리 방식이었다면, BT 가 요청을 쏟아내는 것이 원인일 때 밝히기 어려웠을까" — 검토 + 기존 자료로 (나) 가설 재평가
+- [L772](../../debug_log/2026-10-12/SUMMARY.md) §22 사용자 결정: "캡처 한 번 하고 넘어가자"
+
+## 2026-10-13
+- [L5](../../debug_log/2026-10-13/SUMMARY.md) §0 시작 상태(사용자: "재부팅됐다")
+- [L11](../../debug_log/2026-10-13/SUMMARY.md) §1 f2m1 포화 재현 + 패킷 캡처 — 선언(주행 전)
+  - [L23](../../debug_log/2026-10-13/SUMMARY.md) §1.1 캡처 권한·prep(사용자: 방식 B — `sudo setcap cap_net_raw,cap_net_admin=eip /usr/bin/tcpdump` 실행, 로버 출발 위치) — 로버 안 움직임
+  - [L32](../../debug_log/2026-10-13/SUMMARY.md) §1.2 f2m1 결과 — 포화 재현됨, 정체는 `/tf` 의 HEARTBEAT 폭주, 가장 먼저 뒤처진 읽는 쪽은 기록기
+- [L78](../../debug_log/2026-10-13/SUMMARY.md) §2 f2n1 — 기록기가 `/tf` 를 best effort 로 구독하면 포화가 사라지는가(원인 확인용 시험) — 선언(주행 전)
+  - [L88](../../debug_log/2026-10-13/SUMMARY.md) §2.1 f2n1 결과 — 포화 없음(추정 지지), 3 목표 모두 성공
+- [L108](../../debug_log/2026-10-13/SUMMARY.md) §3 bag 수신 시각화 + PreferForward 5 대 15 의 데이터 양 비교(사용자 요청, 분석만 — 로버 안 움직임)
+- [L150](../../debug_log/2026-10-13/SUMMARY.md) §4 러너 수정 2 건(사용자: "5번, 6번 먼저 고치자") — 로버 안 움직임
+  - [L168](../../debug_log/2026-10-13/SUMMARY.md) §4.4 f2o1 결과 — 러너 수정 2 건은 통과, 주행은 목표 3 에서 중단(통신 아닌 주행 문제)
+  - [L181](../../debug_log/2026-10-13/SUMMARY.md) §4.5 f2o1 목표 3 정지 지점 — 코스트맵이 본 것과 라이다가 본 것(분석만)
+  - [L200](../../debug_log/2026-10-13/SUMMARY.md) §4.6 "붙어 갔나, 늦게 떴나" — bag 으로 가림(사용자: "bag으로 가려보자. 영상으로도 시각화")
+- [L230](../../debug_log/2026-10-13/SUMMARY.md) §5 대책 결정과 사전 평가(사용자: "1번 진행. 2번은 동적 물체도 오래 기억하게 돼 전역 경로에 문제가 생길 수 있다. 3번 4번은 영향 평가부터") — 분석만, 로버 안 움직임
+  - [L274](../../debug_log/2026-10-13/SUMMARY.md) §5.6 f2p1 결과 — 전역 감쇠 3.0 은 효과 없음(같은 자리에서 다시 정지). 실측 여유는 11 cm
+- [L296](../../debug_log/2026-10-13/SUMMARY.md) §6 전역 감쇠 되돌림 + 상자 끝 칸을 어느 층이 언제 채웠나(사용자: "1번 진행하라. 2번 수행하라") — 분석만, 로버 안 움직임
+- [L327](../../debug_log/2026-10-13/SUMMARY.md) §7 MPPI 오프라인 시뮬로 정지 재현 확인(사용자: "진행하라. 재현부터 확인하자") — 로버 안 움직임
+  - [L336](../../debug_log/2026-10-13/SUMMARY.md) §7.1 재현 결과 — 선언 기준으로는 **재현 안 됨**(가까이 붙는 것은 3 씨앗 중 1 개, 멈춤은 0 / 6)
+- [L350](../../debug_log/2026-10-13/SUMMARY.md) §8 시뮬에 Nav2 방식 둘레 검사를 넣고 다시 재현(사용자: "진행하라") — 계산만
+  - [L358](../../debug_log/2026-10-13/SUMMARY.md) §8.1 결과 — 칸 단위 검사를 넣자 **실제만큼 붙은 씨앗은 실제와 같은 자리·시각에 멈춘다**(추정 지지). 다만 그렇게 붙는 비율은 10 씨앗 중 1 개
+- [L374](../../debug_log/2026-10-13/SUMMARY.md) §9 3 번(MPPI 옆 여유 선호) 영향 평가 — CostCritic cost_weight 를 올리면(사용자: "진행하라") — 계산만, 선언(실행 전)
+- [L390](../../debug_log/2026-10-13/SUMMARY.md) §10 사용자 질문: "포화가 있던 주행은 상자를 피해 도착했는데, 연산에 무리가 생겨 오히려 피해 갈 수 있었던 것인가" — 기존 bag 비교(분석만, §9 시뮬이 도는 동안)
+  - [L412](../../debug_log/2026-10-13/SUMMARY.md) §9.1 결과 — cost_weight 를 올려도 선언한 "효과 있음"에 못 미친다. 3 배는 최악의 경우만 좋아지고 진행이 느려진다
+- [L440](../../debug_log/2026-10-13/SUMMARY.md) §11 풋프린트 패딩 0.01 → 0 의 사전 평가(사용자: "1번 진행하자") — 시뮬, 선언(실행 전)
+  - [L450](../../debug_log/2026-10-13/SUMMARY.md) §11.1 결과 — 패딩 0 이면 시뮬에서 멈춤이 없어진다(1 / 10 → 0 / 10). 대신 좁은 곳에서 1~2 cm 더 붙는다
+- [L473](../../debug_log/2026-10-13/SUMMARY.md) §12 f2q1 — MPPI CostCritic cost_weight 3 배(3.81 → 11.43) 실주행 — 선언(주행 전, 사용자: "1번 진행하자. 출발 위치로 옮겼다. 시작")
+  - [L483](../../debug_log/2026-10-13/SUMMARY.md) §12.1 f2q1 결과 — cost_weight 3 배는 **효과 없음 + 부작용**. 사용자 지시로 되돌림
+  - [L492](../../debug_log/2026-10-13/SUMMARY.md) §12.2 오늘 "상자 옆 정지"에 대해 시험한 대책 정리
+- [L503](../../debug_log/2026-10-13/SUMMARY.md) §13 사용자 질문: "상자를 기억하게 하는 것 말고, 다시 봤을 때 갱신되게 하는 건 안 되나" — 설정 확인(분석만)
+- [L511](../../debug_log/2026-10-13/SUMMARY.md) §14 사용자 지시 3 건: 통합 거리 2.0 복구 · stuck 때 파라미터 동적 조절 평가 · EKF 미끄러짐 인지 현황과 평가
+- [L563](../../debug_log/2026-10-13/SUMMARY.md) §15 오늘 마무리(사용자: "완료 후 오늘 일 마무리하라")
+
+## 2026-10-14
+- [L3](../../debug_log/2026-10-14/SUMMARY.md) §0 시작 상태
+- [L11](../../debug_log/2026-10-14/SUMMARY.md) §1 전역 지도의 카메라 장애물 금지 띠 — 오프라인 재계획(분석만)
+- [L33](../../debug_log/2026-10-14/SUMMARY.md) §2 '갇혔을 때만 패딩 0' 의 되돌림 — MPPI 시뮬, 선언(실행 전)
+  - [L42](../../debug_log/2026-10-14/SUMMARY.md) §2.1 결과 — 되돌려도 다시 갇히지 않는다. 되돌림 거리 0.15 m 로 충분(시뮬)
+- [L62](../../debug_log/2026-10-14/SUMMARY.md) §3 지금까지의 정리(시뮬 2 건) — 결정 대기
+- [L69](../../debug_log/2026-10-14/SUMMARY.md) §4 사용자 의견: "카메라 장애물이 1 칸 두꺼워지는 이유에 각도 문제도 있다고 본다. 1번은 진행하면 여러 부분에서 문제가 생길 것 같다"
+- [L89](../../debug_log/2026-10-14/SUMMARY.md) §5 사용자가 말한 '각도' 두 가지 — 비스듬히 볼 때 번짐 · 격자와 어긋난 계단(분석만)
+- [L131](../../debug_log/2026-10-14/SUMMARY.md) §6 nvblox 통합 거리 2.0 → 1.4 로 되돌림(사용자: "1.4로 되돌려라")
+- [L137](../../debug_log/2026-10-14/SUMMARY.md) §7 실행 중 footprint_padding 변경이 반영되는가 — 정지 확인(사용자: "갇혔을 때만 패딩 0 확인부터 진행하자"), 선언(실행 전)
+  - [L147](../../debug_log/2026-10-14/SUMMARY.md) §7.1 결과 — 실행 중 패딩 변경은 **반영된다**
+- [L162](../../debug_log/2026-10-14/SUMMARY.md) §8 '갇혔을 때만 패딩 0' 구현 — `pad_relief` 노드(사용자: "진행하자")
+  - [L181](../../debug_log/2026-10-14/SUMMARY.md) §8.3 정지 시험은 시작하지 못함 — Jetson 연결 끊김(10:27 무렵)
+  - [L188](../../debug_log/2026-10-14/SUMMARY.md) §8.4 연결 끊김의 원인 — 사용자가 찾음: **다른 서버 컴퓨터가 192.168.0.101 을 요청해 할당받음(IP 충돌)**
+  - [L194](../../debug_log/2026-10-14/SUMMARY.md) §8.5 사용자: "네트워크 문제는 넘어가고 다음 진행하자" — 그러나 연결이 계속 끊겨 정지 시험을 못 돌림
+  - [L204](../../debug_log/2026-10-14/SUMMARY.md) §8.6 네트워크 복구(사용자) → 정지 시험 **통과**(4 / 4)
+- [L219](../../debug_log/2026-10-14/SUMMARY.md) §9 주행 시험 f2r1 — 선언(주행 전)
+  - [L228](../../debug_log/2026-10-14/SUMMARY.md) §9.1 f2r1 결과 — 3 목표 성공, 그러나 `pad_relief` 는 **켜지지 않았다 → 판정 불가**
+  - [L242](../../debug_log/2026-10-14/SUMMARY.md) §9.2 사용자: "상자나 벽에 닿지 않았다. 이건 그냥 스스로 나온 건가?" — 그렇다. Nav2 의 재시도가 0.9 s 만에 통했다
+  - [L253](../../debug_log/2026-10-14/SUMMARY.md) §9.3 사용자 질문 "BT 를 수정하는 것으로는 해결하기 어려운가" 와 결정
+  - [L257](../../debug_log/2026-10-14/SUMMARY.md) §9.4 f2r2 — 선언(주행 전): §9 와 같은 구성·같은 판정(통과 / 판정 불가 / 실패). 사용자: "출발 위치로 옮겼다."
+  - [L259](../../debug_log/2026-10-14/SUMMARY.md) §9.5 f2r2 결과 — 3 목표 성공, 이번엔 컨트롤러 실패가 아예 없었다 → 다시 판정 불가
+- [L271](../../debug_log/2026-10-14/SUMMARY.md) §10 f2r2 영상과 '사람이 지나갔을 때' 확인(사용자 요청)
+- [L279](../../debug_log/2026-10-14/SUMMARY.md) §11 사용자 질문: 모터 최대 속도를 다 쓰고 있나(속도 비율을 더 올릴 수 있나) — 유지 결정
+- [L284](../../debug_log/2026-10-14/SUMMARY.md) §12 10 개 목표 순회 코스 그림(사용자: "목표 지점 어디 갈 것인지 그림으로 — 뺄 곳 제시하겠다")
+- [L287](../../debug_log/2026-10-14/SUMMARY.md) §13 8 목표 순회 f2s1 — 선언(주행 전, 사용자: "5번 빼고 진행하자")
+  - [L297](../../debug_log/2026-10-14/SUMMARY.md) §13.1 f2s1 결과 — 목표 1·2 성공, **목표 3(서쪽 통로)에서 위치는 맞췄는데 멈춤 → nav_guard 취소**(사용자: "현재 멈췄다. 확인해라")
+  - [L311](../../debug_log/2026-10-14/SUMMARY.md) §13.2 f2s2 — 남은 목표 이어 가기, 선언(주행 전, 사용자: "1번으로 진행하자. 시작")
+  - [L316](../../debug_log/2026-10-14/SUMMARY.md) §13.3 f2s2 결과 — 남은 5 목표 모두 성공, 접촉 없음
+  - [L326](../../debug_log/2026-10-14/SUMMARY.md) §13.4 서쪽 통로 정지의 판단 과정과 우회 — 영상(사용자 요청)
+  - [L333](../../debug_log/2026-10-14/SUMMARY.md) §13.5 사용자 관찰: "같은 위치인데 멈춤 영상에서는 모서리에 아주 가까운 빨간 치명 칸이 있었고, 두 번째 영상에서는 없다" — 맞다. 그 칸은 **카메라만 본 칸**이었고 6 분 사이 사라졌다
+- [L363](../../debug_log/2026-10-14/SUMMARY.md) §14 BT 결함 수정 — `CopyPath` 노드(사용자: "BT 결함 수정 및 전체 구성 재검토하자")
+- [L373](../../debug_log/2026-10-14/SUMMARY.md) §15 전체 구성 재검토(사용자 요청) — 지금 구성, 근거, 알려진 약점, 손댈 곳
+  - [L404](../../debug_log/2026-10-14/SUMMARY.md) §15.1 사용자 질문: "지금 고친 것(CopyPath)이 pad_relief 를 필요 없게 만들지 않나"
+- [L413](../../debug_log/2026-10-14/SUMMARY.md) §16 10-07 남서 구석 정체(f2c1 목표 4)도 같은 BT 결함이었나 — 재확인(주행 없음, 권고 2)
+- [L423](../../debug_log/2026-10-14/SUMMARY.md) §17 f2t1 — CopyPath 검증 주행(8 목표, 서쪽 통로 방향까지) 결과: **8 / 8 성공**, 접촉 없음
+- [L454](../../debug_log/2026-10-14/SUMMARY.md) §18 사용자 영상 3 개(`videos/1_3번_지점까지.mp4` · `2_서남부_통로_주행모습.mp4` · `3_넓은_공간_이상_움직임.mp4`, 휴대폰 촬영) — "서남부 통로에서 자꾸 상자 쪽으로 방향을 틀고, 넓은 공간에서 멈칫거리며 움직이며 이것이 출발점까지 이어진다"
+- [L486](../../debug_log/2026-10-14/SUMMARY.md) §19. pad_relief 관찰 모드 전환 · 사용자 휴대폰 영상과 bag 시각화 맞춰 붙이기 (15:45~16:00)
+  - [L488](../../debug_log/2026-10-14/SUMMARY.md) 19.1 pad_relief → shadow (사용자: "1번 진행")
+  - [L493](../../debug_log/2026-10-14/SUMMARY.md) 19.2 영상 시각 맞추기 — 방법과 확신도
+  - [L504](../../debug_log/2026-10-14/SUMMARY.md) 19.3 합친 영상 (`videos/`, git 제외)
+- [L509](../../debug_log/2026-10-14/SUMMARY.md) §20. 남서 통로에서 왜 상자 쪽으로 머리를 돌렸나 (사용자 요청, f2t1 목표 4·5 = 영상 2)
+  - [L514](../../debug_log/2026-10-14/SUMMARY.md) 20.1 무엇을 봤나 (측정)
+  - [L522](../../debug_log/2026-10-14/SUMMARY.md) 20.2 왜 (소스로 확인한 것 + 추론)
+- [L531](../../debug_log/2026-10-14/SUMMARY.md) §21. A/B 시험 — 멈칫거림이 실행 중 패딩 변경 탓인가 (사용자 지시, 판정 기준은 주행 전 선언)
+  - [L533](../../debug_log/2026-10-14/SUMMARY.md) 21.1 설계
+  - [L542](../../debug_log/2026-10-14/SUMMARY.md) 21.2 판정 기준 (주행 전 선언)
+  - [L549](../../debug_log/2026-10-14/SUMMARY.md) 21.3 A · B 결과 (16:17~16:31)
+- [L566](../../debug_log/2026-10-14/SUMMARY.md) §22. f2u2(B) 복귀 길 상자 옆 사건 (사용자: "상자 옆에서 문제가 생기고 빠져나왔던 것 같다")
+  - [L584](../../debug_log/2026-10-14/SUMMARY.md) 22.1 빠져나온 이유가 오늘 바꾼 것과 관계있나 (사용자 질문)
+  - [L595](../../debug_log/2026-10-14/SUMMARY.md) 21.4 A2 결과와 판정 (16:45~16:52)
+- [L611](../../debug_log/2026-10-14/SUMMARY.md) §22.2 A2 의 같은 상자 끝 통과 (사용자: "상자와 상당히 가까웠는데도 멈추지 않고 여유 공간으로 꺾은 다음 출발지로 돌아왔다")
+- [L617](../../debug_log/2026-10-14/SUMMARY.md) §23. 토글 뒤 무엇이 달라졌나 — 코드·데이터로 어디까지 가를 수 있나 (사용자 질문)
+- [L639](../../debug_log/2026-10-14/SUMMARY.md) §24. 복귀 길 상자 끝 — 계획기 경로가 언제 '상자를 가로질러' 나오나 (사용자: A2 는 상자 바로 옆에서 멈추지 않고 반대쪽으로 꺾어 통과, 머뭇거림 없음)
+- [L657](../../debug_log/2026-10-14/SUMMARY.md) §25. 사용자 결정(§24 제안에 대해) — 17:1x
+- [L663](../../debug_log/2026-10-14/SUMMARY.md) §26. 오늘 마무리 (17:3x, 사용자: "오늘 일 마무리하자")
+- [L670](../../debug_log/2026-10-14/SUMMARY.md) §27. 기준선 코스 결정 중 — no5 경로 그림 (사용자: "8 목표에서 2 번째 목표로 W3 를 가는 건 낭비 아닌가", "no5 가 어떤 경로인지 시각화")
+  - [L675](../../debug_log/2026-10-14/SUMMARY.md) 27.1 사용자 결정 — no5 그대로
+  - [L679](../../debug_log/2026-10-14/SUMMARY.md) 27.2 'W3' 이름이 겹친 이유 (사용자 질문) — 설계 이유 없음, 기록 과정의 이름 실수가 이어진 것
+  - [L686](../../debug_log/2026-10-14/SUMMARY.md) 27.3 이름 되돌림 (사용자: "우선 되돌리고 마무리하자")
+
+## 2026-10-15
+- [L3](../../debug_log/2026-10-15/SUMMARY.md) §0 시작 상태
+- [L8](../../debug_log/2026-10-15/SUMMARY.md) §1 재부팅 뒤 접속 확인 (주행 없음)
+  - [L13](../../debug_log/2026-10-15/SUMMARY.md) §1.1 사용자: "Jetson 다시 켰다. 192.168.0.110 으로 접속되도록 DHCP 서버에 기록해뒀다."
+- [L20](../../debug_log/2026-10-15/SUMMARY.md) §2 F2 순회 기준선 — 선언(주행 전)
+- [L28](../../debug_log/2026-10-15/SUMMARY.md) §3 기준선 f2v1(no5 1 회차) — **불합격: 목표 4 에서 Nav2 중단**
+- [L36](../../debug_log/2026-10-15/SUMMARY.md) §4 f2v1 멈춘 자리에서 복귀 주행 f2v1r (사용자: "지금 상황에서 빠져나와 출발선으로 도착할 수 있는가" → "시작")
+- [L43](../../debug_log/2026-10-15/SUMMARY.md) §5 복귀는 무엇이 달라서 성공했나 (사용자 요청, 서쪽 통로 남쪽)
+- [L55](../../debug_log/2026-10-15/SUMMARY.md) §6 정지 자리 시각화 (사용자: "해당 지점에서의 데이터를 시각화해달라")
+- [L63](../../debug_log/2026-10-15/SUMMARY.md) §7 카메라 가장자리 왜곡이 원인인가 (사용자 질문) — 데이터로는 아님
+- [L75](../../debug_log/2026-10-15/SUMMARY.md) §8 사용자 현장 확인 → 칸과 물체 대응, 대책 후보
+- [L85](../../debug_log/2026-10-15/SUMMARY.md) §9 대책 1 오프라인 확인 · (가) 전제 검증 (사용자: "1번 진행하고 (가) 오프라인 검증하자. (가)는 카메라가 물체 크기를 과대평가할 수는 있어도 과소평가하지는 못할 때 적절")
+  - [L86](../../debug_log/2026-10-15/SUMMARY.md) 9.1 대책 1(서쪽 통로 목표를 가운데로) — **효과 없음**
+  - [L90](../../debug_log/2026-10-15/SUMMARY.md) 9.2 (가) 전제 검증 — 카메라가 라이다 면보다 뒤에 찍거나 못 찍는 경우가 있는가
+  - [L102](../../debug_log/2026-10-15/SUMMARY.md) 9.3 정정 (사용자: "과소 문제일 경우 라이다로 해결 가능한 부분 아닌가?") — 맞음
+- [L108](../../debug_log/2026-10-15/SUMMARY.md) §10 저장 지도의 서쪽 벽 — 사용자: "굳이 바로잡을 필요가 있는지 모르겠다. 그 자리 물체는 무겁고 옮기지 않는 것만 있다"
+- [L116](../../debug_log/2026-10-15/SUMMARY.md) §11 저장 지도 서쪽 벽을 고친 사본으로 경로 재계산 (사용자: "진행하라") — 경로는 안 움직임
+- [L123](../../debug_log/2026-10-15/SUMMARY.md) §12 후보 3(깜빡이는 카메라 칸만 낮추기) 오프라인 검증 (사용자: "후보3 오프라인 검증 진행하라") — **불합격**, §7 정정
+- [L135](../../debug_log/2026-10-15/SUMMARY.md) §13 사용자 측정: 상자 앞면은 종이백보다 5.8~6.0 cm 앞 → 카메라 과장 약 7 cm, nvblox site 거리 설정 후보
+- [L141](../../debug_log/2026-10-15/SUMMARY.md) §14 기준선 f2v2(no5 2 회차) — 선언(주행 전, 사용자: "다시 주행하자. 출발 위치로 옮겼다")
+- [L144](../../debug_log/2026-10-15/SUMMARY.md) §15 f2v2 결과 — 8/8 도착, 그러나 판정 ⑥(좌우 틀기) 위반 → 선언 기준으로는 불합격
+- [L151](../../debug_log/2026-10-15/SUMMARY.md) §16 사용자 육안: "넓은 통로에서 멈칫 · 좌우 틀기가 보이지 않았다(어제 있을 때보다 빨랐다)" — 지표가 두 현상을 섞었다
+- [L160](../../debug_log/2026-10-15/SUMMARY.md) §17 기준 ⑥ 재정의(사용자: "동의한다. 기준 ⑥ 바꾸고 진행하자") · 지금까지 판정
+  - [L175](../../debug_log/2026-10-15/SUMMARY.md) 17.1 사용자: "f2v2 주행 중 닿은 경우는 없었다" → **f2v2 합격 확정**. 로버는 출발 위치. 서쪽 통로 관련 구성 변경 없음(목표 이동 · 지도 수정 · (가) · 후보 3 모두 기각 또는 미적용, nvblox site 1.0 은 검증 전) — f2v3 도 같은 구성.
+- [L177](../../debug_log/2026-10-15/SUMMARY.md) §18 기준선 f2v3(no5, f2v1 대체) — 선언(주행 전, 사용자: "시작")
+  - [L180](../../debug_log/2026-10-15/SUMMARY.md) 18.1 f2v3 결과 — **불합격: 목표 4 시작 자리에서 Nav2 중단**
+  - [L189](../../debug_log/2026-10-15/SUMMARY.md) 18.2 사용자 실측: f2v3 멈춘 자세에서 로버 왼쪽 앞끝 ↔ 상자(카메라만 보는) 대각선 최소 거리 **8~9 cm**
+  - [L195](../../debug_log/2026-10-15/SUMMARY.md) 18.3 f2v3 멈춘 자리에서 복귀 f2v3r (사용자: "시작") — 2/2 성공 136.5 s, 이유는 칸 감쇠
+- [L200](../../debug_log/2026-10-15/SUMMARY.md) §19 사용자: "복귀 시 상자 쪽으로 경로를 만들었다가 카메라로 인식 후 경로를 수정해 돌아온 것 같다" — 경로는 처음부터 북쪽
+- [L206](../../debug_log/2026-10-15/SUMMARY.md) §20 기준선 f2v4(b910) — 선언(주행 전, 사용자: "시작")
+  - [L209](../../debug_log/2026-10-15/SUMMARY.md) 20.1 f2v4 결과 — **불합격: 목표 3(출발점 복귀) 시험 상자 옆에서 Nav2 중단**
+- [L215](../../debug_log/2026-10-15/SUMMARY.md) §21 F2 기준선(현재 구성) 정리 — 6 회 중 3 회 합격
+- [L224](../../debug_log/2026-10-15/SUMMARY.md) §22 nvblox esdf_integrator_max_site_distance_vox 2.0 → 1.0 — 정지 A/B (사용자: "출발 위치로 옮겼다. 1번 진행하자")
+  - [L229](../../debug_log/2026-10-15/SUMMARY.md) 22.1 A · B 측정(정지, 출발 테이프, 정면 약 0.9 m) — ② 불합격, ① 실측 대기
+  - [L237](../../debug_log/2026-10-15/SUMMARY.md) 22.2 사용자 실측: 차체 앞끝 → 시험 상자 서쪽 면 **약 0.92 m** → site 1.0 효과 없음
+- [L243](../../debug_log/2026-10-15/SUMMARY.md) §23 두 조건 원자료 비교 시각화 (사용자: "시각화해서 두 경우의 데이터를 비교할 수 있게. 그리고 상자 관련 데이터는 가지고 있지 않는가")
+- [L252](../../debug_log/2026-10-15/SUMMARY.md) §24 상자 옆면을 앞 측면에서 관측 — 선언(측정 전, 사용자: "비스듬히보단, 로버 앞 측면에 거리를 두고 상자 측면을 관측하도록 하는 게 좋지 않겠는가")
+  - [L258](../../debug_log/2026-10-15/SUMMARY.md) 24.1 결과 — **③ 가설 기각**: 정지해서 옆면을 봐도 로버 쪽 과장 없음
+- [L267](../../debug_log/2026-10-15/SUMMARY.md) §25 '여유가 줄지 않는 곧은 이동'으로 교착에서 빠져나오기 — 오프라인 검증 선언 (사용자: "카메라로 물체를 자동으로 피해 가는 것은 중요하다 … 경유점을 늘리는 식보다는 상자 옆에서 멈추게 되었던, 가끔씩 발생하는 문제를 해결하고 싶다")
+  - [L272](../../debug_log/2026-10-15/SUMMARY.md) 25.1 결과 — **5 / 5 통과**(기준 4 이상) → 구현 제안
+- [L277](../../debug_log/2026-10-15/SUMMARY.md) §26 MonotoneEscape 구현 · 배포 (사용자: "구현하자. 그리고 방향 바꾸는 명령 때문에 좁은 길에서 방향 바꾸다가 생기는 문제는 어떻게 해결할 것인가?")
+- [L289](../../debug_log/2026-10-15/SUMMARY.md) §27 MonotoneEscape 실제 시험 — 선언(사용자: "평소 출발 위치로 배치시켰다. 시작하라")
+  - [L294](../../debug_log/2026-10-15/SUMMARY.md) §27.1 1 차 시도 — 교착 재현 안 됨(지도상 여유 8.6 cm), 탈출은 '이미 충분'으로 움직이지 않고 성공
+  - [L305](../../debug_log/2026-10-15/SUMMARY.md) §27.2 사용자 실측 — 이 자리 실제 간격 약 8.6 cm(지도와 일치)
+  - [L310](../../debug_log/2026-10-15/SUMMARY.md) §27.3 2 차 시도 선언 — 상자 옆에서 일부러 오른쪽 회전해 지도 여유 3.5 cm 로 (사용자: "상자 옆으로 주행하고, 일부러 회전해서, 해당 치명 셀에 닿게 만드는 건 어떠한가")
+  - [L317](../../debug_log/2026-10-15/SUMMARY.md) §27.4 선언 변경 — 기본 출발 위치에서 Nav2 로 상자 옆을 지나다 일부러 회전 (사용자: "출발 위치에서 25cm말고, 기본 출발 위치에서 상자옆을 지나갈 때, 의도적으로 회전시키는 것 어떠한가") — §27.3 대체
+  - [L324](../../debug_log/2026-10-15/SUMMARY.md) §27.5 §27.4 결과 — 지도 여유 4.3 cm(앞 모서리)까지 만들었으나 Nav2 가 그대로 출발 · 도착, 교착 재현 안 됨
+- [L336](../../debug_log/2026-10-15/SUMMARY.md) §28 멈춤에 '들어가는' 경로 — 오늘 실패 3 건 bag 분석 (사용자: "MPPI가 스스로 빠져나올 수 있다면 … 갑자기 멈춰서 움직이지 못하는 문제는 왜 발생하는가?" · "오늘도 남서쪽 통로에서나, 복귀시 상자 옆에서 한 번 멈추지 않았는가")
+  - [L353](../../debug_log/2026-10-15/SUMMARY.md) §28.1 용어 정리 (사용자: "지금까지 닿았던 셀이, 카메라가 감지한 치명칸은 아니고, 그 앞 띠였던 것인가?")
+- [L358](../../debug_log/2026-10-15/SUMMARY.md) §29 ClearanceBandCritic — 칸 판정 경계로 붙지 않게 하는 MPPI 크리틱 (사용자: "그렇게 하자")
+  - [L367](../../debug_log/2026-10-15/SUMMARY.md) §29.1 주행 시험 선언(주행 전)
+  - [L372](../../debug_log/2026-10-15/SUMMARY.md) §29.2 f2w1(b910, ClearanceBandCritic 첫 판) 결과 — 도착 3/3 · 경계 띠 진입 0 · 최소 4.8 cm, 그러나 제어 주기 놓침 167 회
+  - [L385](../../debug_log/2026-10-15/SUMMARY.md) §29.3 크리틱 계산 줄임 + 시간 기록
+  - [L390](../../debug_log/2026-10-15/SUMMARY.md) §29.4 기록 상자 위치 vs 센서가 찍은 상자 (사용자: "상자 옆 여유 상당히 많았고, 그리고도 또 더 회피해서 움직이는 모습을 보였다(복귀시) 상자 위치는 항상 동일하므로, 기록된 상자 위치와 센서가 인식한 상자 위치 비교.")
+  - [L406](../../debug_log/2026-10-15/SUMMARY.md) §29.5 남동쪽 덩어리 = 실제 물체 · 겹친 여유 정리 (사용자: "상자 남동쪽에는 창문틀이나, 혹은 창문틀 너머에 있는 드론이 존재한다. 현재 이중 여유가 존재하게 되버렸다고 하는데, 어떤 것들이 있는지 설명.")
+  - [L421](../../debug_log/2026-10-15/SUMMARY.md) §29.6 f2w2(no5, 가볍게 고친 크리틱) 결과 — 8/8 도착 · 경계 띠 진입 0, 그러나 계산 시간 불합격(놓침 428)
+  - [L428](../../debug_log/2026-10-15/SUMMARY.md) §29.7 사용자 제시 nvblox 번짐 대책 3 가지 검토 (사용자가 찾은 자료: 복셀 크기 줄이기 · 최대 통합 거리 제한 · 팽창 하향)
+- [L434](../../debug_log/2026-10-15/SUMMARY.md) §30 nvblox 최대 통합 거리 1.4 → 1.0 시험 — 선언(주행 전, 사용자: "진행하라")
+  - [L444](../../debug_log/2026-10-15/SUMMARY.md) §30.1 배터리 부족으로 주행 대신 bag 근사 — 근거 약함, 1.4 로 되돌림 (사용자: "배터리가 부족해, 시뮬레이션으로 해보고 마무리하자.")
+- [L458](../../debug_log/2026-10-15/SUMMARY.md) §31 하루 정리 (사용자: "오늘일 마무리 할 때는, 중요 부분 시각화해서 아티팩트로 정리해달라.")
+- [L463](../../debug_log/2026-10-15/SUMMARY.md) §32 서쪽 통로에서 상자 쪽으로 몸을 튼 것 — 연산 부담 탓인가 (사용자: "오늘 남서쪽 작은 통로를 이동할 때, 박스쪽으로 몸을 틀다가 빠져나왔는데, 이건 연산 비용이 컸나?")
+- [L472](../../debug_log/2026-10-15/SUMMARY.md) §33 마지막 주행 f2w2 서쪽 통로 남행 시각화 (사용자: "가장 마지막 bag의 해당 통로에서 움직임 및 장애물 시각화해달라.")
+- [L477](../../debug_log/2026-10-15/SUMMARY.md) §34 f2w2 가 서쪽 통로에서 멈추지 않은 이유 (사용자: "치명셀에 닿았다고 멈추지 않고 빠져나온 이유가 ClearanceBandCritic 때문이었나? 아니면 치명셀에 닿았다고 판단을 하지 않았기에 MPPI가 방향을 바꾸게 한 것인가? … 비슷한 정도로 상자에 가까이 갔는데, 멈
+
+## 2026-10-19
+- [L3](../../debug_log/2026-10-19/SUMMARY.md) §0 오늘 방향 (사용자: "ClearanceBandCritic가 꼭 필요한가? 다른 스택이 하는 일을 중복하여 하게 되는거 아닌가 고민." → "깊이 bag 기록 준비부터 진행하라.")
+- [L8](../../debug_log/2026-10-19/SUMMARY.md) §1 깊이 토픽 실측 — nvblox 입력은 160×120 (주석 정정)
+- [L14](../../debug_log/2026-10-19/SUMMARY.md) §2 nvblox 오프라인 재생 경로 — 동작 확인
+- [L18](../../debug_log/2026-10-19/SUMMARY.md) §3 러너에 깊이 기록 옵션
+- [L21](../../debug_log/2026-10-19/SUMMARY.md) §4 분석 도구 · 기준선 — 과장은 nvblox 출력에서 이미 생김
+- [L25](../../debug_log/2026-10-19/SUMMARY.md) §5 기록 주행 선언(주행 전)
+- [L30](../../debug_log/2026-10-19/SUMMARY.md) §6 기록 주행 f2x1(b910, BAG_DEPTH=1) · R0 · 설정 A/B (사용자: "시작")
+- [L43](../../debug_log/2026-10-19/SUMMARY.md) §7 nvblox 깊이 전처리 — 3.2.5 에서 켜면 중단
+- [L47](../../debug_log/2026-10-19/SUMMARY.md) §8 bag 단계 가장자리 화소 거르기 — 효과 없음
+- [L51](../../debug_log/2026-10-19/SUMMARY.md) §9 읽기 — 과장은 nvblox 설정도 깊이 잡음도 아닌 '기하' 쪽일 가능성
+- [L56](../../debug_log/2026-10-19/SUMMARY.md) §10 원시 깊이 점으로 상자 면 위치 (사용자: "진행하라")
+- [L61](../../debug_log/2026-10-19/SUMMARY.md) §11 기억 밀림 계산 (`jobs/anal_box_memory.py` → `outputs/anal_box_memory_f2x1.txt`)
+- [L65](../../debug_log/2026-10-19/SUMMARY.md) §12 nvblox global_frame=map 재생 — 나빠짐
+- [L68](../../debug_log/2026-10-19/SUMMARY.md) §13 회전 중 깊이 프레임 빼기 — 측정 척도로는 변화 없음
+- [L72](../../debug_log/2026-10-19/SUMMARY.md) §14 연속값 분해 — 관측 오차 + 기억 밀림 + 칸 반올림 (`outputs/anal_box_decomp_f2x1.txt`)
+- [L83](../../debug_log/2026-10-19/SUMMARY.md) §15 프로젝터 번갈이 분리 노드 (사용자: cuVSLAM 은 지금 시스템에도 적용 가능 → "분리 노드부터 진행하라")
+  - [L93](../../debug_log/2026-10-19/SUMMARY.md) §15.1 S1 결과 (`jobs/up_splitter.sh` · `run_split_s1.sh` · `anal_split_s1.py`, 원문 `outputs/run_split_s1_first.txt` · `run_split_s1.txt`)
+- [L113](../../debug_log/2026-10-19/SUMMARY.md) §16 IR bag 기록 준비 — 번갈이를 주행 스택에 넣기 (사용자: "켬/끔 비교 넣어서 IR bag 기록 준비 진행하라. 그리고 gpu는 넉넉한데, cpu는 문제가 생길 것 같다.")
+  - [L125](../../debug_log/2026-10-19/SUMMARY.md) §16.1 S2 결과 — 불합격, 기록 주행 안 함 (`jobs/chk_flash_s2.sh` · `prep_flash.sh`, 원문 `outputs/chk_flash_s2_*.txt`)
+- [L146](../../debug_log/2026-10-19/SUMMARY.md) §17 합성 + 프로세스 안 기록 (사용자: "1과 2 같이 진행하라.")
+  - [L151](../../debug_log/2026-10-19/SUMMARY.md) §17.1 S3 결과 (원문 `outputs/chk_flash_s3_comp.txt` · `chk_flash_s3_repeat.txt`)
+- [L169](../../debug_log/2026-10-19/SUMMARY.md) §18 큰 bag 처리 규칙 (사용자: "이렇게 큰 bag는 실험 후, 중요 정보 기록 및 시각화만 시킨 후, 삭제하는 것이 좋을 것 같다.")
+- [L175](../../debug_log/2026-10-19/SUMMARY.md) §19 IR 기록 주행 f2y1 선언(주행 전, 사용자: "평소 출발 방향으로 놓았다. 시작하라")
+  - [L180](../../debug_log/2026-10-19/SUMMARY.md) §19.1 f2y1 결과 (원문 `outputs/run_f2y1.txt`, `jobs/chk_f2y1.sh`)
+  - [L186](../../debug_log/2026-10-19/SUMMARY.md) §18.1 큰 bag 규칙 정정 (사용자: "바로 삭제하지 말고, 영상 등으로 시각화한 후, 내가 말하는 부분 등을 분석 후 bag 정리하는 방향은 어떠한가.")
+- [L189](../../debug_log/2026-10-19/SUMMARY.md) §20 f2y1 IR 영상 (사용자: "영상부터 만들어라.")
+- [L201](../../debug_log/2026-10-19/SUMMARY.md) §21 복귀 길 상자 번짐 — 영상에 상자 확대 판 추가 (사용자: "복귀 시 상자 근처에서 셀 번짐 문제가 있었는지 알수가 없다.")
+- [L211](../../debug_log/2026-10-19/SUMMARY.md) §22 복귀 때 상자 안에 칸이 없다 (사용자: "복귀 시 상자 범위 내에 셀이 없는 것 같은데?") — `jobs/anal_box_cells_in.py`, 원문 `outputs/anal_box_cells_in.txt`
+- [L223](../../debug_log/2026-10-19/SUMMARY.md) §23 오프라인 cuVSLAM 켬/끔 비교 선언(분석 전, 사용자: "오프라인 cuVSLAM 비교 진행하라.")
+  - [L232](../../debug_log/2026-10-19/SUMMARY.md) §23.1 결과 — 이 조건에선 cuVSLAM 이 이동을 못 따라감 (`jobs/run_vslam_offline.sh` · `vslam_run_in.sh` · `export_vslam.py` · `anal_vslam_cmp.py`, 원문 `outputs/anal_vslam_cmp_f2y
+- [L247](../../debug_log/2026-10-19/SUMMARY.md) §24 IR 노출 · 게인 고정 정지 시험 선언 (사용자: "진행해라" — §23.1 대책 ②)
+  - [L252](../../debug_log/2026-10-19/SUMMARY.md) §24.1 결과 — 번갈이 중에는 노출 · 게인을 못 바꾸고, 자동 노출을 끄면 번갈이가 깨짐 (원문 `outputs/run_ir_exposure.txt` · `chk_ir_exposure_diag.txt` · `chk_ir_gain_off.txt`)
+- [L260](../../debug_log/2026-10-19/SUMMARY.md) §25 프로젝터 상시 끔 IR 기록 주행 선언(주행 전, 사용자: "프로젝터 끔 확인부터 진행하라")
+  - [L267](../../debug_log/2026-10-19/SUMMARY.md) §25.1 f2z1 주행 결과 (원문 `outputs/run_f2z1.txt`)
+- [L271](../../debug_log/2026-10-19/SUMMARY.md) §26 마무리 (사용자: "우선 오늘 일 마무리하고, 아티팩트로 정리하자.")
+
+## 2026-10-20
+- [L3](../../debug_log/2026-10-20/SUMMARY.md) §0 시작 상태 (사용자: "오늘 할 일 뭐냐")
+- [L7](../../debug_log/2026-10-20/SUMMARY.md) §1 f2z1 cuVSLAM 판정 — 프로젝터 상시 끔이면 따라간다 (사용자: "f2z1 판정부터 진행하라")
+- [L24](../../debug_log/2026-10-20/SUMMARY.md) §2 B 시험 선언 — 프로젝터 상시 끔에서 nvblox 가 시험 상자 · 바닥을 얼마나 찍나 (사용자: "출발위치로 놓았다. B테스트해보자")
+  - [L29](../../debug_log/2026-10-20/SUMMARY.md) §2.1 B 정지 결과 — 통과 (`jobs/run_box_depth_ab.sh` · `anal_box_static.py` · `fig_box_static.py`, 원문 `outputs/run_box_depth_ab.txt` · `anal_box_static.txt`, 그림 `figur
+- [L41](../../debug_log/2026-10-20/SUMMARY.md) §3 프로젝터 상시 끔 · 상자 둔 주행 f2z2 선언(주행 전, 사용자: "상자 놓았다. 시작")
+  - [L45](../../debug_log/2026-10-20/SUMMARY.md) §3.1 f2z2 결과 (원문 `outputs/run_f2z2.txt` · `anal_box_cells_in_f2z.txt` · `anal_vslam_cmp_a20.txt` · `vslam_scale.txt`, 그림 `figures/vslam_cmp_f2z2*.png`)
+  - [L71](../../debug_log/2026-10-20/SUMMARY.md) §3.2 정정 — f2z1 도 상자를 둔 채 주행했다 (사용자 확인, 원문 `outputs/anal_slice_box_f2z.txt`)
+  - [L85](../../debug_log/2026-10-20/SUMMARY.md) §4 출발 SLAM 21° 틀림 · cuVSLAM 융합 효과 예상
+  - [L104](../../debug_log/2026-10-20/SUMMARY.md) §5 EKF 오프라인 재실행 — cuVSLAM 속도 융합 (선언, 실행 전)
+  - [L114](../../debug_log/2026-10-20/SUMMARY.md) §5.1 EKF 재실행 결과 (`jobs/mk_ekf_replay_bag.py` · `mk_ekf_replay_params.py` · `run_ekf_replay.sh` · `anal_ekf_replay.py`, 원문 `outputs/anal_ekf_replay_f2z1.txt` · `
+  - [L137](../../debug_log/2026-10-20/SUMMARY.md) §5.2 정정 — §5 · §5.1 의 V0 는 '지금 구성' 이 아니었다
+  - [L142](../../debug_log/2026-10-20/SUMMARY.md) §5.3 주행 구성(rf2o + B3)으로 다시 — 결과 (원문 `outputs/anal_ekf_replay_live.txt`, 그림 `figures/ekf_replay_live_f2z1.png` · `_f2z2.png`)
+- [L160](../../debug_log/2026-10-20/SUMMARY.md) §6 cuVSLAM 실시간 그림자 시험 (사용자: "1번으로 가자" — 회전 미끄러짐 목적)
+  - [L165](../../debug_log/2026-10-20/SUMMARY.md) §6.1 L0 정지 시험 선언 (로버 안 움직임)
+  - [L174](../../debug_log/2026-10-20/SUMMARY.md) §6.2 L0 결과 (원문 `outputs/run_vslam_static.txt`)
+  - [L188](../../debug_log/2026-10-20/SUMMARY.md) §6.3 L1 그림자 주행 f2v1 선언 (사용자 "시작" 뒤에만)
+  - [L195](../../debug_log/2026-10-20/SUMMARY.md) §6.4 f2v1 그림자 주행 결과 (원문 `outputs/run_f2v1.txt` · `chk_f2v1_logs.txt` · `anal_shadow_f2v1.txt`, 그림 `figures/shadow_f2v1.png`)
+- [L211](../../debug_log/2026-10-20/SUMMARY.md) §7 IR 전달 경로 — (a) 진행 (사용자: "(a) 진행하자")
+  - [L212](../../debug_log/2026-10-20/SUMMARY.md) §7.1 빠짐 원인 = UDP 소켓 수신 버퍼 넘침 (측정, `jobs/chk_udp.sh` · `chk_udp_rate.sh`)
+  - [L218](../../debug_log/2026-10-20/SUMMARY.md) §7.2 09-09 공유메모리(SHM) 끈 이유 재점검 (사용자: "실행 종료 방식이 문제인지, 통신 방식이 문제인지")
+  - [L228](../../debug_log/2026-10-20/SUMMARY.md) §7.3 SHM 재기동 시험 선언 (사용자: "공유 메모리 재기동 시험을 하라. 통과하면 nvblox 도 공유메모리로 갈 계획")
+  - [L237](../../debug_log/2026-10-20/SUMMARY.md) §7.3a SHM 재기동 시험 결과 (원문 `outputs/run_shm_test.txt`, 도구 `jobs/shm_test/`)
+  - [L249](../../debug_log/2026-10-20/SUMMARY.md) §7.3b–c SHM 경로 확인 (원문 `outputs/run_shm_test_shmonly.txt` · `chk_shm_path.txt`, 도구 `jobs/shm_test/run_shm_test_shmonly.sh` · `chk_shm_path.sh`)
+  - [L263](../../debug_log/2026-10-20/SUMMARY.md) §7.4 계획 — 카메라 ↔ 컨테이너(nvblox · cuVSLAM) 공유메모리 전송 (N-SHM)
+  - [L276](../../debug_log/2026-10-20/SUMMARY.md) §7.5 nvblox 가 깊이를 빠짐없이 받는 이유 검증 (사용자: "해상도를 낮춰서 udp 대역폭에 적절하기 때문인지 검증")
+- [L289](../../debug_log/2026-10-20/SUMMARY.md) §8 깊이 해상도를 올리면 상자 번짐이 줄까 (사용자: "깊이 해상도를 올리면, 현재 상자 셀 번짐 문제에 개선책이 될 지 검증")
+  - [L290](../../debug_log/2026-10-20/SUMMARY.md) §8.1 정지 bag 으로 번짐을 '점(센서) 몫' 과 '칸(지도) 몫' 으로 나눔 (`jobs/anal_box_face_points.py`, 원문 `outputs/anal_box_face_points.txt`, §2 bt_on/off bag — 로버 정지 · 출발 자세 · 깊이 160
+  - [L302](../../debug_log/2026-10-20/SUMMARY.md) §8.2 정지 A/B 선언 — 데시메이션 ×4 / ×2 / ×1 (로버 정지, 출발 자세에서 상자를 봄)
+  - [L310](../../debug_log/2026-10-20/SUMMARY.md) §8.3 데시메이션 정지 A/B 결과 (원문 `outputs/run_decim_ab.txt` · `anal_decim_points.txt` · `anal_decim_static.txt`, 도구 `jobs/run_decim_ab.sh` · `get_dc.sh`)
+  - [L326](../../debug_log/2026-10-20/SUMMARY.md) §8.4 prep 이 오래 걸리는 이유 (사용자 질문, `outputs/chk_prep_timing.txt` — 지금 구성 한 번 측정)
+- [L330](../../debug_log/2026-10-20/SUMMARY.md) §9 N-SHM 실행 (사용자: "2번 진행하자" — 카메라 ↔ cuVSLAM 공유메모리)
+  - [L331](../../debug_log/2026-10-20/SUMMARY.md) §9.1 S1 코드(기본값 모두 끔 — 지금 구성 그대로)
+  - [L336](../../debug_log/2026-10-20/SUMMARY.md) §9.2 S2 정지 A/B 선언 (로버 정지, 출발 자세)
+  - [L343](../../debug_log/2026-10-20/SUMMARY.md) §9.3 S2 결과 (원문 `outputs/run_shm_static.txt` · `anal_shm_static_box.txt` · `chk_udp_drops.txt`, 도구 `jobs/run_shm_static.sh` · `get_sh.sh` · `chk_udp_drops2.sh`)
+  - [L358](../../debug_log/2026-10-20/SUMMARY.md) §9.4 S3 실제 스택 재기동 견고성 선언 (로버 정지)
+  - [L362](../../debug_log/2026-10-20/SUMMARY.md) §9.5 S3 결과 — 10/10 통과 (원문 `outputs/run_shm_restart.txt`, 도구 `jobs/run_shm_restart.sh`)
+  - [L367](../../debug_log/2026-10-20/SUMMARY.md) §9.6 S4 그림자 주행 f2sm1 선언 (사용자 "시작" 뒤에만)
+  - [L374](../../debug_log/2026-10-20/SUMMARY.md) §9.7 S4 f2sm1 — 세 번 다 게이트에서 멈춤, 주행 안 함 (로버 한 번도 안 움직임)
+- [L382](../../debug_log/2026-10-20/SUMMARY.md) §10 하루 마무리 (사용자: "오늘 일 마무리하고, 시각화시켜서, 아티팩트로도 정리, push")
+- [L397](../../debug_log/2026-10-20/SUMMARY.md) §11 측정 실수 두 건의 경위 (사용자: 같은 실수를 다시 했을 때 알아볼 수 있게 — 본 것 · 추론 · 결론 · 알아보는 법)
+  - [L399](../../debug_log/2026-10-20/SUMMARY.md) §11.1 §7.3b — '공유메모리 전용' 시험 설계 결함
+  - [L415](../../debug_log/2026-10-20/SUMMARY.md) §11.2 §9.3 — 측정 노드가 버퍼 카운터를 오염시킨 측정 창
+  - [L425](../../debug_log/2026-10-20/SUMMARY.md) §11.3 공통
+
+## 2026-10-21
+- [L3](../../debug_log/2026-10-21/SUMMARY.md) §0 하루 시작
+- [L7](../../debug_log/2026-10-21/SUMMARY.md) §1 출발 위치 추정 검사 (prep 확인에 추가)
+- [L14](../../debug_log/2026-10-21/SUMMARY.md) §2 정지 부하 게이트(P) — 그림자 구성에서만 65 %
+- [L22](../../debug_log/2026-10-21/SUMMARY.md) §3 스크래치패드 러너 파일 소실과 복구
+- [L28](../../debug_log/2026-10-21/SUMMARY.md) §4 WEB_DEV_5G 소실 → Jetson 이 ALOPS 로 전환, 스택 통신 끊김(10:48)
+- [L37](../../debug_log/2026-10-21/SUMMARY.md) §5 ALOPS 재기동 1 회차 PREP_FAIL — 보드 토픽 0 Hz(에이전트도 옛 주소에 묶임)
+- [L45](../../debug_log/2026-10-21/SUMMARY.md) §6 보드 리셋 뒤 복구 — PREP_OK (ALOPS 172.30.1.8)
+- [L50](../../debug_log/2026-10-21/SUMMARY.md) §7 f2sm1 공유메모리 그림자 주행 결과 (판정 기준은 10-20 §9.6 에 주행 전 선언)
+- [L71](../../debug_log/2026-10-21/SUMMARY.md) §8 그림자 반복 f2sm2 · f2sm3 선언 (사용자 "1번 진행하자", 주행은 "시작" 뒤에만)
+- [L77](../../debug_log/2026-10-21/SUMMARY.md) §9 f2sm2 1 차 — 게이트 C 불합격(주행 안 함) · 스크래치패드 파일 또 소실
+- [L83](../../debug_log/2026-10-21/SUMMARY.md) §10 f2sm2 2 차 — 목표 2(W3) 중단 · **사람들이 일부러 길을 막음(사용자)** → 반복 비교에서 제외, 동적 물체 대응 근거로 사용
+- [L98](../../debug_log/2026-10-21/SUMMARY.md) §11 사용자 요청: 출발점 복귀(f2sm2h) · f2sm2 영상 · 복귀 중 멈춤 분석
+  - [L99](../../debug_log/2026-10-21/SUMMARY.md) §11.1 f2sm2 영상 (`Docs/tools/fig_run_video.py`, 2 배속, 로컬 `figures/f2sm2_people_block.mp4` — mp4 는 git 제외)
+  - [L102](../../debug_log/2026-10-21/SUMMARY.md) §11.2 복귀 주행 f2sm2h (`run_f2c.sh` 에 `home` = `0,0,p` 추가; 원문 `outputs/run_f2sm2h.txt`)
+  - [L104](../../debug_log/2026-10-21/SUMMARY.md) §11.3 복귀 중 '중간중간 멈춤' (사용자 관찰) — 원문 `outputs/anal_stops_f2sm2h.txt` · `anal_cmd_dips_f2sm2h.txt` · `nav_events_f2sm2h.txt` · `chk_bt_f2sm2h.txt`, 그림 `figures/sto
+- [L112](../../debug_log/2026-10-21/SUMMARY.md) §12 사용자 질문: ① f2sm2 가 W3 에서 중단되고 복귀하지 못한 이유 ② 복귀(f2sm2h) 중 짧은 멈칫 원인
+  - [L114](../../debug_log/2026-10-21/SUMMARY.md) §12.1 W3 중단 → 복귀 안 함
+  - [L122](../../debug_log/2026-10-21/SUMMARY.md) §12.2 복귀 중 짧은 멈칫 13 번(+ 정지 2 번)
+- [L133](../../debug_log/2026-10-21/SUMMARY.md) §13 사용자 관찰: 출발점에서 상자 뒤 · 문 가운데에 장애물 칸이 찍히는데 실제로는 없음
+  - [L135](../../debug_log/2026-10-21/SUMMARY.md) §13.1 본 것 — 출발점 둘레(x −1.5~3.5, y −2.5~1.5) '지도에도 없고 지금 라이다도 안 보는' LETHAL 칸
+  - [L145](../../debug_log/2026-10-21/SUMMARY.md) §13.2 가설 시험
+  - [L149](../../debug_log/2026-10-21/SUMMARY.md) §13.3 결론 · 미확인
+- [L153](../../debug_log/2026-10-21/SUMMARY.md) §14 사용자 지목 두 곳: f2sm2 영상 11 s 이후 '상자 뒤 · 문 지나기 전 (2, −0.2) 인근 점들', 22 s 쯤 '문 사이 점 1 개'
+- [L165](../../debug_log/2026-10-21/SUMMARY.md) §15 정정: '프로젝터 켬에서도 생긴다'(§13.3 · §14) → 상자 너머 맨바닥 · 문 사이 점은 **프로젝터 끔에서만** 생긴다
+- [L179](../../debug_log/2026-10-21/SUMMARY.md) §16 NVIDIA 권장 구성과 지금 구성 비교 (사용자: "nvidia 추천 구성은 어떠한가. 그것으로 가자." — 주행 없음, 문서 조사)
+- [L192](../../debug_log/2026-10-21/SUMMARY.md) §17 2번 — 컨테이너 RealSense 층 + realsense_splitter (사용자: "카메라 펌웨어 버전 낮출 필요는 없을 것 같다. 현재 시스템과 호환 문제 없는 것으로 판단. 2번 진행. 후 3번 진행.")
+  - [L202](../../debug_log/2026-10-21/SUMMARY.md) §17.1 2번 결과 — 합격(a~d), 단 방식 ②·(c) 의 전제가 틀려 두 번 고침 (`outputs/rs_image_build_end.txt` · `up_rs_splitter_try2.txt` · `up_rs_apt.txt`)
+- [L221](../../debug_log/2026-10-21/SUMMARY.md) §18 3번 정지 시험 nv1 선언(실행 전, 로버 안 움직임) — `jobs/run_nv_static.sh` · `nv_static.launch.py` · `anal_nv_static.py`
+  - [L231](../../debug_log/2026-10-21/SUMMARY.md) §18.1 nv1 결과 — **불합격**(기준 1 · 2 · 3). NVIDIA 구성(드라이버 4.51.1 · librealsense 2.55.1 · 분리 노드)에서도 10-19 와 같은 두 문제가 그대로 나온다 (`outputs/run_nv_static.txt`, 17:07~17:10
+  - [L249](../../debug_log/2026-10-21/SUMMARY.md) §18.2 nv1 첫 실행 무효 — 실수 기록 2 건
+- [L262](../../debug_log/2026-10-21/SUMMARY.md) §19 (나) 번갈이 중 수동 노출 · 게인 정지 시험 mx1 선언(실행 전, 사용자: "(나) 수동 노출 시험 진행", 로버 안 움직임) — `jobs/run_mx1.sh` · `mx_cam.launch.py` · `anal_mx1.py`
+  - [L274](../../debug_log/2026-10-21/SUMMARY.md) §19.1 mx1 결과 — 선언 기준으로 후보 없음, 단 핵심 지점(30 fps 번갈이 + 긴 노출)은 실행 중 설정이 거부돼 **못 잼** (`outputs/run_mx1.txt`, 17:17~17:20)
+- [L291](../../debug_log/2026-10-21/SUMMARY.md) §19.2 mx2 선언(실행 전, 로버 안 움직임) — 기동 파라미터로 노출 · 게인 고정(실행 중 쓰기 대신) `jobs/run_mx2.sh`
+  - [L296](../../debug_log/2026-10-21/SUMMARY.md) §19.3 mx2 결과 — 기동 파라미터로는 **모두 수락 · 번갈이 유지**, 선언 기준 3(켠 깊이 ≥ 90 %)은 전부 ✘ → 선언상 후보 없음. 단 24 ms × 248 이 '지금 운용(상시 끔)보다 나은' 절충점 (`outputs/run_mx2.txt` · `anal_mx2_l
+- [L314](../../debug_log/2026-10-21/SUMMARY.md) §20 결정: 프로젝터 상시 끔 유지 (사용자: "프로젝터를 끈 것을 유지하고, 유령 셀에 대한 대응책을 생각해보자.")
+- [L318](../../debug_log/2026-10-21/SUMMARY.md) §21 1번 깊이 프리셋 정지 시험 pr1 선언(실행 전, 사용자: "1과 2 진행. 1부터 진행 후 테스트하자." — 로버 안 움직임) — `jobs/run_pr1.sh` · `anal_pr1.py`
+  - [L331](../../debug_log/2026-10-21/SUMMARY.md) §21.1 pr1 결과 — 선언 기준 1 · 2 · 3 **통과**, 단 깊이 채움률이 0.317 → 0.045 로 7 배 줄어든다 (`outputs/run_pr1.txt`, 그림 `figures/pr1/`)
+- [L348](../../debug_log/2026-10-21/SUMMARY.md) §21.2 주행 f2pr1 선언(주행 전 — 사용자 "시작" 뒤에만)
+- [L357](../../debug_log/2026-10-21/SUMMARY.md) §22 마무리 (사용자: "남은건 내일 하도록 하자. 오늘일 마무리하고 아티팩트로도 저장해달라.")
+- [L366](../../debug_log/2026-10-21/SUMMARY.md) §23 추론별 데이터 위치 (사용자: "추론 정리할 때, 어떤 로그에 해당 추론에 사용된 데이터들이 저장되어 있는지도 적어달라." — 규약은 CLAUDE.md 기록 규약 '데이터 칸')
+
+## 2026-10-22
+- [L3](../../debug_log/2026-10-22/SUMMARY.md) §0 하루 시작 (사용자: "오늘 진행 뭘 해야 하는가." → 순서 0 점검 → 1 f2pr1 → 2 min_weight → "진행하라")
+- [L12](../../debug_log/2026-10-22/SUMMARY.md) §1 f2pr1 구성 prep — PREP_OK (`outputs/prep_pr_1022_1.txt`, 도구 `jobs/prep_pr_1022.sh`)
+- [L18](../../debug_log/2026-10-22/SUMMARY.md) §2 f2pr1 주행 시작 (사용자: "1. 시험 상자 제자리에 있다. 2. 사람들이 돌아다니고 있다. 문제 발생시 여부 확인. 시작.")
+- [L23](../../debug_log/2026-10-22/SUMMARY.md) §3 f2pr1 결과 — 기준 1 · 2 통과, **기준 3(낮은 상자 2 s 안 ≥ 8 칸) 미달** (주행 11:34~11:38)
+- [L43](../../debug_log/2026-10-22/SUMMARY.md) §4 사용자 관찰 확인: "사람 장애물 문제 없었음. 복귀 시 문을 넘으면서 멈칫. W3 에서 전선을 밟았는데 잘 작동했는지."
+  - [L46](../../debug_log/2026-10-22/SUMMARY.md) §4.1 복귀 중 문 근처 멈칫 — 원인 두 가지, 둘 다 10-21 §12.2 에서 본 것과 같은 서명
+  - [L52](../../debug_log/2026-10-22/SUMMARY.md) §4.2 W3 전선 — 위치 · 방향 추정은 정상, 휠 회전 수만 평소와 반대로 어긋남
+- [L62](../../debug_log/2026-10-22/SUMMARY.md) §5 깊이 기록 주행 f2dr1 선언 (사용자: "(가) 시작") — 결과 보기 전
+  - [L70](../../debug_log/2026-10-22/SUMMARY.md) §5.1 prep 1 회째 PREP_FAIL — 로버가 출발 자세가 아님 (`outputs/prep_dr_1022_1.txt`)
+  - [L75](../../debug_log/2026-10-22/SUMMARY.md) §5.2 prep 2 회째 통과 → 러너 기동 실패(Jetson 연결 끊김, 로버 안 움직임)
+  - [L82](../../debug_log/2026-10-22/SUMMARY.md) §5.3 prep 3 회째 PREP_FAIL — Nav2 수명 주기 활성화가 멈춤 (`outputs/prep_dr_1022_3.txt` · `chk_prep_fail_1022.txt`, 도구 `jobs/chk_prep_fail_1022.sh`)
+- [L87](../../debug_log/2026-10-22/SUMMARY.md) §6 f2dr1 결과 — 목표 1 ABORTED 29 s (사용자: "진행하다 중간에 멈췄다. 확인 필요.")
+- [L96](../../debug_log/2026-10-22/SUMMARY.md) §7 bag 기록이 영향을 줬나 (사용자: "아무것도 없다. bag 기록이 영향을 끼친 것 아닌지 설명. 처음 위치로 되돌리겠다.")
+- [L112](../../debug_log/2026-10-22/SUMMARY.md) §8 f2dr2 (사용자: 로버 출발 자세 복귀 뒤 "시작") — 기준은 §5 그대로, 이름만 f2dr2
+  - [L114](../../debug_log/2026-10-22/SUMMARY.md) §8.1 f2dr2 결과 — 3/3, 기록 기준 통과, 기준선 대표성 ✔
+- [L119](../../debug_log/2026-10-22/SUMMARY.md) §9 2번 min_weight 재생 A/B 실행 (기준 §5, 로버 안 움직임)
+  - [L123](../../debug_log/2026-10-22/SUMMARY.md) §9.1 결과 — R0 통과, min_weight 1 · 2 모두 §5 합격 기준 미달 (`outputs/anal_slice_zones_mw.txt` · `anal_slice_zones_pr1_sm1.txt`, 도구 `jobs/anal_slice_zones.py`)
+- [L138](../../debug_log/2026-10-22/SUMMARY.md) §10 3번 결정 — 깊이 프리셋 3 을 기본값으로 (사용자: "(가) 실행 후, 시각화도 해달라. 영상으로도 해주고, 어제 figure 의 pr1_top.png 처럼 상자 셀도 시각화해달라.")
+- [L150](../../debug_log/2026-10-22/SUMMARY.md) §11 프리셋 3 복귀 때 상자 밖 노란 칸 (사용자: "두 시각화 자료를 보니 프리셋 3 가 가장 정확하다. 아쉬운 것은, 복귀 시 상자칸 밖에 노란색 칸이 찍힌 것.")
+  - [L157](../../debug_log/2026-10-22/SUMMARY.md) §11.1 그 칸은 로버 기준으로 실제 상자 자리인가? (사용자 질문) — 아니다, 약 10 cm 틀린 자리
+  - [L163](../../debug_log/2026-10-22/SUMMARY.md) §11.2 정정 — 복귀 때의 상자 밖 칸은 출발 기억이 아니라 **복귀 중 다시 본 것** (사용자: "출발 시 기억하던 셀을 복귀 시 다시 찍은 것인가 그럼?")
+  - [L180](../../debug_log/2026-10-22/SUMMARY.md) §11.3 상자 밖 칸의 원인 · 다시 봐도 안 지워지는 이유 (사용자: "그럼 실제 상자 위치 밖의 셀은 무엇이 원인이라고 판단하는가. 그리고 해당 위치를 다시 보았을 때, 지워지지 않는 이유는 무엇인가.")
+  - [L201](../../debug_log/2026-10-22/SUMMARY.md) §11.4 주행이 길어지면 더 많아지나 (사용자: "그럼 주행이 장기화될 수록, 비슷한 문제가 더 많이 발생하는가?")
+- [L212](../../debug_log/2026-10-22/SUMMARY.md) §12 두 바퀴 주행 f2lp1 선언 (사용자: "1바퀴만 더 돌고 판단하자. 그런 다음 다음단계 제시.") — 결과 보기 전
+  - [L219](../../debug_log/2026-10-22/SUMMARY.md) §12.1 f2lp1 사용자 정지 (사용자: "그만 멈춰라. 방금 상자를 치고 돌아가서, 2번째 주행에는 상자가 안보인다.")
+- [L225](../../debug_log/2026-10-22/SUMMARY.md) §13 f2lp1 상자 접촉 원인 (사용자: "상자 제자리에 놓았다. 1번 분석 진행하라.") — 입력 Jetson `~/bags/bag_f2lp1`(470 MB, 깊이 포함; PC 스크래치패드 사본, 로그 `bags/logs_f2lp1/`, 회수 `jobs/get_bag_f2lp1.s
+  - [L246](../../debug_log/2026-10-22/SUMMARY.md) §13.1 접근 각도 비교 (사용자: "접근 각도 문제라고 판단된다.") — `jobs/anal_box_maps_series.py` 2.5 s 묶음 → `outputs/anal_approach_cmp.txt`
+- [L257](../../debug_log/2026-10-22/SUMMARY.md) §14 중간 프리셋 평가 → nvblox 통합 거리 2.0 m 와 비교 (사용자: "중간 프리셋 진행 후 평가. 그 후 nvblox 거리 2.0m와 비교 평가.") — 선언(결과 보기 전)
+  - [L264](../../debug_log/2026-10-22/SUMMARY.md) §14.1 단계 1 결과 — P5 정지: 유령 기준 통과, 상자 안정 복셀 기준 미달 (`outputs/run_pr2.txt`, 그림 `figures/pr2/pr2_top.png`(도구 `jobs/fig_pr2_top.py`) · `figures/pr2/*_depth.png · *_ir
+  - [L277](../../debug_log/2026-10-22/SUMMARY.md) §14.2 단계 3 결과 — f2lp1(프리셋 3) 통합 거리 2.0 m 재생: 복귀 상자 0 → 9 칸, 유령 A 0 → 2
+- [L292](../../debug_log/2026-10-22/SUMMARY.md) §15 통합 거리 2.0 배포 · 검증 주행 f2pi1 선언 (사용자: "1번 진행 후 2번 시작")
+- [L302](../../debug_log/2026-10-22/SUMMARY.md) §16 f2pi1 결과(프리셋 3 + 통합 거리 2.0) · 주행 중 멈칫 분석 (사용자: "주행 완료 후, 주행중에 멈칫멈칫하는 현상에 대해서도 분석 설명 해달라.")
+- [L322](../../debug_log/2026-10-22/SUMMARY.md) §17 복귀 상자 영상 — 어떤 값으로 알았고 왜 붙어 지나갔나 (사용자: "진행을 영상으로 시각화 해달라. 복귀 시 상자를 어떤 값으로 인식했고 왜 못 피해갔는지 알고자 한다. 다음 단계 전부 진행하자.")
+- [L327](../../debug_log/2026-10-22/SUMMARY.md) §18 CPU 노드별 (멈칫 A · B 배경) · nav_guard 대책
+- [L343](../../debug_log/2026-10-22/SUMMARY.md) §19 다음 주행 f2sm3 선언 — 그림자 cuVSLAM 반복(10-21 §8 의 3 번째 중 2 번째) + nav_guard 부하 확인 (결과 보기 전)
+- [L350](../../debug_log/2026-10-22/SUMMARY.md) §20 f2sm3 결과 — 그림자 판정 전부 통과(W3 −41 %), nav_guard 부하는 목표 미달 (사용자: "그리는 동안, 다음 것 하나 진행하고, 오늘 일 마무리하자." → 로버 출발 자세 · "시작")
+- [L369](../../debug_log/2026-10-22/SUMMARY.md) §21 오늘 마무리
+- [L385](../../debug_log/2026-10-22/SUMMARY.md) §22 사용자 제안 기록 — 상자 옆에선 주황(내접 근처)보다 노랑(낮은 비용) 칸을 따르게 (사용자: "f2pi1에서, 자홍칸이 적더라도, 주황칸보다 노랑칸을 더 추종하게 한다면 충분히 상자를 치고 가지 않았을 상황같다." → "계산은 내일 하도록 하고, 마무리하고 push하라.")
+
+## 2026-10-23
+- [L3](../../debug_log/2026-10-23/SUMMARY.md) §0 오늘 방향 (사용자: "진행하라" — 10-22 §22 의 '계산은 내일')
+- [L9](../../debug_log/2026-10-23/SUMMARY.md) §1 계산 선언 — 전역 감쇠를 바꾸면 복귀 경로가 상자에서 얼마나 떨어지나 (결과 보기 전)
+  - [L15](../../debug_log/2026-10-23/SUMMARY.md) §1.1 결과 — 전역 감쇠를 바꿔도 경로는 0~5 cm 만 멀어짐(선언 기준 '≥ 5 cm' 미달) · 기록된 전역 경로는 이미 상자에서 10~14 cm (`jobs/anal_ginfl_path.py` → `outputs/anal_ginfl_path_f2pi1.txt` · `_f2sm
+- [L28](../../debug_log/2026-10-23/SUMMARY.md) §2 그럼 1.1 cm 는 어디서 — 계획 경로 대 실제 지나간 길 (`jobs/anal_track_dev.py` → `outputs/anal_track_dev_f2pi1.txt` · `_f2sm3.txt` · `anal_track_dev_f2pi1_freeze.txt`)
+- [L39](../../debug_log/2026-10-23/SUMMARY.md) §3 가설 1 기각 — PathAlignCritic 은 상자 옆에서 꺼지지 않았다 (`jobs/anal_pathalign_occ.py` → `outputs/anal_pathalign_occ_f2pi1.txt` · `_f2sm3.txt`)
+- [L43](../../debug_log/2026-10-23/SUMMARY.md) §4 다시 그려진 경로들은 상자에서 11~16 cm — 붙은 것은 로버 (`jobs/anal_plan_series.py` → `outputs/anal_plan_series_f2pi1.txt` · `_f2sm3.txt`)
+- [L50](../../debug_log/2026-10-23/SUMMARY.md) §5 주행 f2pa1 선언 — MPPI PathAlignCritic 가중 14 → 28 (사용자: 로버 출발 자세 · "시작") — 결과 보기 전
+  - [L59](../../debug_log/2026-10-23/SUMMARY.md) §5.1 출발 전 — Jetson 재부팅 발견 · prep 재전송 (`outputs/prep_op_1023_1.txt` · `chk_day_start_1023.txt` · `up_prep_1023.txt` · `prep_op_1023_2.txt`)
+  - [L64](../../debug_log/2026-10-23/SUMMARY.md) §5.2 f2pa1 결과 — 판정 1 · 2 모두 통과: 상자 옆 실제 여유 최소 12.3 cm, 경로 선에서 상자 쪽 ≤ 5 cm, 부작용 없음
+- [L78](../../debug_log/2026-10-23/SUMMARY.md) §6 반복 f2pa2 (사용자: "(가) 로버 출발 자세로 놓았다. 시작.") — 기준은 §5 그대로, 구성 · 러너 인자 f2pa1 과 같음(이름만 f2pa2)
+  - [L81](../../debug_log/2026-10-23/SUMMARY.md) §6.1 f2pa2 결과 — 판정 1 미달(상자 쪽 6~8 cm · 여유 6.7 cm), 원인 모를 5.5 s 거의 정지 1 번 → **채택 보류**
+  - [L94](../../debug_log/2026-10-23/SUMMARY.md) §6.2 5.5 s 정지는 가중 28 탓인가 (사용자: "경로 정렬 가중치를 올려서, 이유없는 정지가 있었다고 보는 것인가?") — **아직 그렇게 말할 근거 없음**
+- [L101](../../debug_log/2026-10-23/SUMMARY.md) §7 f2pa2 5.5 s 정지 bag 분석 (사용자: "1번 bag 분석 진행하라") — 로버 안 움직임
+- [L114](../../debug_log/2026-10-23/SUMMARY.md) §8 f2pa2 정지 시각화 (사용자: "시각화해줄 수 있는가?")
+- [L118](../../debug_log/2026-10-23/SUMMARY.md) §9 다음 선택 정리 (사용자: "어떤 것을 하는게 좋을까.")
+- [L129](../../debug_log/2026-10-23/SUMMARY.md) §10 PathAlign 14 복귀 · vslam:=on 주행 f2von1 선언 (사용자: "14로 되돌리고 vslam on 시험 진행하라") — 결과 보기 전
+  - [L141](../../debug_log/2026-10-23/SUMMARY.md) §10.1 f2von1 결과 — 위치 추정은 확실히 좋아짐 · CPU 와 멈칫은 줄어듦 · 상자 옆 여유는 그대로(3.3 cm)
+- [L149](../../debug_log/2026-10-23/SUMMARY.md) §11 반복 f2von2 (사용자: "정방향 놓았다. 시작.") — 기준 §10 그대로, 구성 · 러너 인자 f2von1 과 같음(이름만 f2von2)
+  - [L152](../../debug_log/2026-10-23/SUMMARY.md) §11.1 f2von2 결과 — 판정 1 · 2 · 4 통과(오도메트리 · 멈칫 · CPU 이득 재현), 상자 옆 실제 여유 0.3 cm(거의 접촉)
+- [L160](../../debug_log/2026-10-23/SUMMARY.md) §12 f2von2 상자 옆 영상 · 읽기 (사용자: "영상으로 시각화해달라.")
+- [L168](../../debug_log/2026-10-23/SUMMARY.md) §13 대책 추천 (사용자: "어떤 대책이 좋을지 추천해라") — 결정 아님, 근거 정리
+- [L181](../../debug_log/2026-10-23/SUMMARY.md) §14 사용자 판단 — "문제는 planner 경로를 controller 가 추종하지 못하는 것, 장애물 인식이 아니다" → 추종 오차를 경로마다 잼
+- [L199](../../debug_log/2026-10-23/SUMMARY.md) §15 NavFn 을 직사각 로버에 맞추려 추가한 것 검토 (사용자: "우린 직사각형의 로버를 구동중이므로, Smac Hybrid를 쓰는게 좋겠다. 그런데 내 기억에, Navfn을 직사각형 로버에 사용하려고, 이것저것 추가한 것이 있는 것으로 아는데, 무엇이 있었는지 검토하라.")
+- [L209](../../debug_log/2026-10-23/SUMMARY.md) §16 vslam:=on 기본 채택 (사용자: "vslam on 기본으로 채택하고 A 시험 진행하라")
+- [L214](../../debug_log/2026-10-23/SUMMARY.md) §17 A 시험 f2rp1 선언 — 주기 재계획 끔(목표당 1 회 + 막힘 · 목표 변경 때만), NavFn 그대로 (결과 보기 전)
+  - [L223](../../debug_log/2026-10-23/SUMMARY.md) §17.1 f2rp1 결과 — 판정 1 · 2 · 3 통과: 상자 옆 실제 여유 최소 약 15 cm, 경로 선 위를 달림
+- [L235](../../debug_log/2026-10-23/SUMMARY.md) §18 반복 f2rp2 (사용자: "정방향 놓았다. 시작.") — 기준 §17 그대로, 구성 · 러너 인자 f2rp1 과 같음(이름만 f2rp2)
+  - [L238](../../debug_log/2026-10-23/SUMMARY.md) §18.1 f2rp2 결과 — 로버는 경로 선을 따랐으나(치우침 ≈ 0) 경로 자체가 상자에 더 가까워 실제 여유 5.5 cm(판정 1 의 '≥ 8 cm' 미달)
+- [L245](../../debug_log/2026-10-23/SUMMARY.md) §19 전역 경로 위에 장애물이 나오면 경로를 어떻게 고치나 — 지금 구성(재계획 0.01 Hz) 설명 · 영상 (사용자: "지금 기준 진행하기 전에, 글로벌 map에 목적지까지 경로를 만들었을 때, 경로 위에 장애물이 나올 경우 어떻게 경로를 수정하는 상황인지 설명. 그리고 영상으로 
+- [L256](../../debug_log/2026-10-23/SUMMARY.md) §20 좁은 통로 확인 f2rp3(no5) 선언 · 계획기 변경 계획 착수 (사용자: "1번까지 진행하고, 플래너 변경 계획 진행하자.") — 결과 보기 전
+  - [L266](../../debug_log/2026-10-23/SUMMARY.md) §20.1 f2rp3(no5) 결과 — 8/8 · 접촉 0, 그러나 서쪽 통로에서 '막힘' 오판이 되풀이돼 복구 Wait 2 회(판정 2 미달)
+  - [L276](../../debug_log/2026-10-23/SUMMARY.md) §20.2 서쪽 통로 왼쪽 덩어리 = 실물 상자(사용자) → 막힘 기준 99 → 100 안은 **내 오류**, 대신 `only_new` 로 고침(배포 · 빌드만, 주행 전)
+  - [L296](../../debug_log/2026-10-23/SUMMARY.md) §20.3 99 를 막힘으로 셌는데 어떻게 지나갔나 (사용자: "지금까지는 99를 막힘으로 세었는가? 그런데 어떻게 통과할 수 있었는가.")
+  - [L304](../../debug_log/2026-10-23/SUMMARY.md) §20.4 f2rp4(no5) 선언 — only_new 확인 (사용자: "정방향으로 놓았다. 시작.") — 결과 보기 전
+  - [L309](../../debug_log/2026-10-23/SUMMARY.md) §20.5 f2rp4(no5) 결과 — 8/8 · 접촉 0 · 막힘 중단 1(상자, 정상) · Wait 0, 그러나 **only_new 는 이번 주행에서 한 번도 작동하지 않음**(효과 미확인)
+  - [L319](../../debug_log/2026-10-23/SUMMARY.md) §20.6 영상 도구 화면 재설계 `Docs/tools/fig_drive_video.py` (사용자: "동영상 시각화에 사용한 파이썬 코드의 디자인이 별로" — 도구는 matplotlib 그대로)
+  - [L325](../../debug_log/2026-10-23/SUMMARY.md) §20.7 only_new 오프라인 시험 — bag 재생으로 막힘 판정 재현 (사용자: "f2rp3 bag 재생으로 오프라인 시험 진행하라")
+  - [L343](../../debug_log/2026-10-23/SUMMARY.md) §20.8 f2rp5(b910) 선언 — B0 확정 주행 (사용자: "다시 주행 후 확정하자.") — 결과 보기 전
+  - [L349](../../debug_log/2026-10-23/SUMMARY.md) §20.9 f2rp5(b910) 결과 — 3/3 · 접촉 0 · 상자 막힘 재계획 정상, 그러나 상자 옆 실제 여유 **3.1 cm** (사용자: "상자 부근 주행 확인 필요. 상자에 너무 가까웠음.")
+- [L360](../../debug_log/2026-10-23/SUMMARY.md) §21 B0 = NavFn '결함 기준선' 확정 · Phase P 착수 (사용자: "B0 결함 기준선으로 확정하고 Phase P 진행하자.")
+- [L365](../../debug_log/2026-10-23/SUMMARY.md) §22 Phase P §4 오프라인 계획기 비교(첫 판) · 컨트롤러 재평가 (사용자: "그 순서로 오프라인 비교 진행하자. 그리고 현재 컨트롤러의 문제는 없는 것인지 다시 한 번 평가.") — 브랜치 `feature/smac-hybrid`
+  - [L366](../../debug_log/2026-10-23/SUMMARY.md) §22.1 도구(P7, `Docs/tools/plan_offline/`)
+  - [L370](../../debug_log/2026-10-23/SUMMARY.md) §22.2 결과(`outputs/plan_offline/anal_plan_compare_1~3.txt`, 실행 원문 `run_planoff_1~3.txt`, 결과 `result_1~3.npz`, 그림 `figures/plan_offline{,_2,_3}/`)
+  - [L385](../../debug_log/2026-10-23/SUMMARY.md) §22.3 컨트롤러 재평가(보조 에이전트가 계산, 수치 원문 확인함)
+- [L390](../../debug_log/2026-10-23/SUMMARY.md) §23 하루 마무리 (사용자: "4륜 구동도 제자리 회전은 되는 것 아닌가? 우선 오늘 일 마무리하고, 아티팩트로도 정리해주고 푸시하라. 의사결정을 위해 smac planner 관련하여 봐야할 것들도 정리해달라.")
+- [L397](../../debug_log/2026-10-23/SUMMARY.md) §24 대화 정리 — Dubins · 전진 · 후진 원호 · FG 방향 부호 · 주말 공부 (사용자: "우선 정리하고 마무리하자. 아티팩트에도 반영하라. 주말동안 공부해야 할 것들도 제시해둬라")
+
+## 2026-10-26
+- [L3](../../debug_log/2026-10-26/SUMMARY.md) §0 하루 시작 (사용자: "재부팅했다. 진행하라. 푸시도 하라.")
+- [L8](../../debug_log/2026-10-26/SUMMARY.md) §1 D5 선언 — 전역 inflation 을 더 완만하게 하면 NavFn 경로가 상자 옆 틈 가운데로 가나 (결과 보기 전)
+  - [L14](../../debug_log/2026-10-26/SUMMARY.md) §1.1 D5 결과 — **반대로 나옴**: 비용을 완만하게 하면 경로가 상자에 더 붙음(판정 ① ✘) · 내 도구 실수 1 건
+  - [L20](../../debug_log/2026-10-26/SUMMARY.md) §1.2 D5b 선언 — 전역 풋프린트 패딩을 키우면(계획기가 못 들어가는 띠를 넓힘) (결과 보기 전)
+  - [L25](../../debug_log/2026-10-26/SUMMARY.md) §1.3 D5b 결과 — 패딩은 적용됐으나 경로가 안 바뀜(판정 ① ✘): 계획 경로는 이미 그 띠 밖
+- [L32](../../debug_log/2026-10-26/SUMMARY.md) §2 반전 순간 휠 부호 오차 (10-23 §24 '먼저 잴 것', 로버 안 움직임)
+- [L38](../../debug_log/2026-10-26/SUMMARY.md) §3 D1 선언 — Smac Lattice(차동구동 원형) 오프라인 (결과 보기 전)
+  - [L43](../../debug_log/2026-10-26/SUMMARY.md) §3.1 D1 결과 — Lattice 도 기준 미달 · 변형끼리 경로가 같음(해석 확장 추정)
+  - [L48](../../debug_log/2026-10-26/SUMMARY.md) §3.2 Lattice + 해석 확장 제한(0.5 · 1.0 m) — 작동은 함(Hybrid 와 달리 예외 없음), 그래도 기준 미달
+- [L54](../../debug_log/2026-10-26/SUMMARY.md) §4 Smac Hybrid 계속 (사용자: "Smac Hybrid는 진행하고 싶다.") — 오프라인으로 막힌 자리부터
+  - [L58](../../debug_log/2026-10-26/SUMMARY.md) §4.2 REEDS_SHEPP 결과 — 서쪽 통로는 여전히 실패, 상자는 'RS + 해석 확장 1.0 m' 가 지금까지 가장 나음(평균 +3.1, 나빠짐 0) · 도구 실수 1
+- [L65](../../debug_log/2026-10-26/SUMMARY.md) §5 Smac 포크 — Jazzy 의 해석 확장 비용 상한(analytic_expansion_max_cost)을 Humble 1.1.20 에 이식 (사용자: "2로 가자")
+  - [L71](../../debug_log/2026-10-26/SUMMARY.md) §5.1 · §5.2 포크 결과 — 이식은 실제로 실리고 결과도 재현되나, 상자 여유는 나아지지 않음
+- [L77](../../debug_log/2026-10-26/SUMMARY.md) §6 cost_penalty 가 왜 경로를 못 바꾸나 — 원인 찾기 (사용자: "1번으로 진행하라")
+  - [L81](../../debug_log/2026-10-26/SUMMARY.md) §6.1 가설 1(smoother) 기각 + **내 도구 결함 발견 — 한 서버에 Smac 변형 여럿을 올린 비교는 무효**
+  - [L96](../../debug_log/2026-10-26/SUMMARY.md) §6.2 다시 재기 선언 — 변형마다 프로세스 따로(설치판), 결과 보기 전
+  - [L99](../../debug_log/2026-10-26/SUMMARY.md) §6.3 다시 잰 결과(변형마다 프로세스 따로) — cp 는 경로를 바꾸지만 상자 여유를 꾸준히 올리진 않음 · 가장 나은 것은 설치판 REEDS_SHEPP + 해석 1.0 m
+- [L119](../../debug_log/2026-10-26/SUMMARY.md) §7 Smac Hybrid 주행 준비 (사용자: "A진행") — 브랜치 `feature/smac-hybrid`
+  - [L128](../../debug_log/2026-10-26/SUMMARY.md) §7.2 prep 첫 시도 실패 — 아침에 보낸 prep 스크립트가 CRLF 였음(내 실수)
+  - [L137](../../debug_log/2026-10-26/SUMMARY.md) §7.3 f2sh1(b910, planner:=smac) 결과 — 3/3 · **상자 옆 실제 최소 여유 18.4 cm**(B0 15.4 · 5.5 · 3.1)
+  - [L146](../../debug_log/2026-10-26/SUMMARY.md) §7.4 f2sh2(b910 반복) 결과 — 3/3 · 상자 옆 실제 최소 여유 **10.8 cm**(판정 ② 2 회 모두 ≥ 8 ✔) · 굽은 곳 안쪽 깎기가 남은 손실
+- [L152](../../debug_log/2026-10-26/SUMMARY.md) §8 시각화 (사용자: "서쪽 통로는 지금 사람들이 있어서 나중으로 미루자. 우선 이전 2번의 주행 시각화해달라.") — f2sh3(no5) 미룸
+- [L158](../../debug_log/2026-10-26/SUMMARY.md) §9 f2sh2 굽은 곳 이탈은 컨트롤러 탓인가 (사용자: "전역 경로가 상자를 인식하고 수정되었을 때, 로버가 그 수정된 경로보다 상자쪽으로 꺾어 움직이려고 한 움직임이 컨트롤러 부분 문제라는 것인가?")
+- [L163](../../debug_log/2026-10-26/SUMMARY.md) §10 MPPI 굽은 곳 안쪽 깎기 — 오프라인 시뮬 (사용자: "MPPI 굽은 곳 깎기 오프라인 분석 진행하라")
+  - [L168](../../debug_log/2026-10-26/SUMMARY.md) §10.1 · §10.2 첫 시뮬은 재현 실패 → 원인은 시뮬 구동계 · 실제는 **바깥 바퀴 포화**
+  - [L175](../../debug_log/2026-10-26/SUMMARY.md) §10.3 결과 — 기준 미달: 어느 변형도 안쪽 깎기를 크게 줄이지 못함 · 시뮬은 '씨앗 잡음' 이 변형 효과보다 큼
+  - [L192](../../debug_log/2026-10-26/SUMMARY.md) §10.4 선언(사용자: "A진행해봐라.") — 시작을 재계획 직후로, 해 잡음 줄이는 설정 포함, 씨앗 10 (결과 보기 전)
+  - [L198](../../debug_log/2026-10-26/SUMMARY.md) §10.5 결과 — 판정 ✘(평균 감소 ≥ 5 cm 없음) · PathAlign 28 + PathFollow 5 가 꼬리를 줄이는 경향(구분 불가 수준)
+  - [L215](../../debug_log/2026-10-26/SUMMARY.md) §10.6 선언(사용자: "A 진행하라") — PathAlign 28 + PathFollow 5 를 10-23 f2pa2 5.5 s 정지 장면에서 (결과 보기 전)
+  - [L220](../../debug_log/2026-10-26/SUMMARY.md) §10.7 결과 — 시뮬이 f2pa2 정지를 재현하지 못함 → 이 장면 시뮬로는 PathAlign 28 의 안전 판단 불가
+- [L226](../../debug_log/2026-10-26/SUMMARY.md) §11 실주행 A/B 선언 — Smac + PathAlign 28 · PathFollow 5 (사용자: "진행하자." — §10.7 의 1 번) — 결과 보기 전
+  - [L231](../../debug_log/2026-10-26/SUMMARY.md) §11.1 f2sa1(Smac + PathAlign 28 · PathFollow 5) 결과 — 3/3 · 정지 0 · 상자 옆 14.6 cm · **굽은 곳 안쪽 이탈 +4.6 cm**(같은 Smac 14 · 10 판 10.7 · 15.7)
+  - [L239](../../debug_log/2026-10-26/SUMMARY.md) §11.2 f2sa2 결과 · A/B 정리 — PathAlign 28 · PathFollow 5 가 굽은 곳 깎기를 줄임(2/2), 정지 없음
+- [L255](../../debug_log/2026-10-26/SUMMARY.md) §12 시각화 (사용자: "영상으로 시각화해달라.")
+- [L260](../../debug_log/2026-10-26/SUMMARY.md) §13 28 · 5 에서 '경로와 어긋나 멈췄다 다시 움직임' 이 있었나 (사용자: "MPPI 28/5에서, 중간중간 전역경로와의 괴리로, 멈췄다가 다시 움직이는 경우가 있었는가?")
+- [L268](../../debug_log/2026-10-26/SUMMARY.md) §14 MPPI 28 · 5 채택 · 서쪽 통로 주행 준비 (사용자: "28/5 채택하고 서쪽 통로 주행 준비하라")
+- [L274](../../debug_log/2026-10-26/SUMMARY.md) §15 f2sa3(no5) 결과 — 8/8 · 서쪽 통로 통과(NavFn 대체 5 회 작동), 그러나 통로 최소 여유 **0.8 cm** · 정지 5 회(15.3 s) · Wait 2 → 판정 ③ ✘
+- [L282](../../debug_log/2026-10-26/SUMMARY.md) §16 실제 촬영 영상 분석 · 시각화와 붙이기 (사용자: "오늘자 video 폴더에 20261026_160944.mp4 ... 실제 주행에서 무슨 일이 있었는지 분석하고, 이번 주행 시각화와 붙여서 보고 싶다 ... 토큰 문제 검증 후")
+- [L294](../../debug_log/2026-10-26/SUMMARY.md) §17 실제 촬영 + RViz 스타일 시각화 합본 (사용자: "닿지 않았다. 실촬영 영상과 시각화 데이터 합쳐달라. 시각화 영상은 rviz스타일로 해달라.")
+  - [L299](../../debug_log/2026-10-26/SUMMARY.md) §17.1 고화질 · 2 배속 판 (사용자: "실제 영상 구간 잘라놓은 것이, 해상도가 좋지 못해 보기 안좋다. 그리고 조금 배속을 걸어달라.")
+- [L304](../../debug_log/2026-10-26/SUMMARY.md) §18 폴더 정리 (사용자: "2026-10-26 폴더 구조가 너무 난잡하다. 분석 후 정리해달라.")
+  - [L310](../../debug_log/2026-10-26/SUMMARY.md) §18.1 영상 중간 파일 삭제 (사용자: "중간파일 지워라.")
+- [L314](../../debug_log/2026-10-26/SUMMARY.md) §19 서쪽 통로에서 Smac 은 왜 실패하고 NavFn 은 됐나 (사용자: "둘 다 planner 일 뿐이고 나오는 것은 컨트롤러가 하는 것인데 왜 플래너가 바뀌었다고 가능해진 것인가?" · "시각화된 영상을 보면, 둘 다 나갈 수 있는 경로를 준 것처럼 보여서")
+- [L334](../../debug_log/2026-10-26/SUMMARY.md) §20 목표 자세 방향 시험 선언 — 오프라인, 로버 안 움직임 (사용자: "목표 자세 방향 문제부터 오프라인으로 확인하라") — 결과 보기 전
+  - [L345](../../debug_log/2026-10-26/SUMMARY.md) §20.1 결과 — 가설 H 기각: 목표 방향을 13 가지로 바꿔도 결과는 '순간' 이 정함(실패 5 순간 65/65 실패 · 성공 1 순간 13/13 성공)
+- [L366](../../debug_log/2026-10-26/SUMMARY.md) §21 하루 정리 (사용자: "오늘은 정리하고, 아티팩트로도 만들어 로컬에도 저장해달라.")
+- [L371](../../debug_log/2026-10-26/SUMMARY.md) §22 Smac 탐색 과정 시각화 (사용자: "경로를 못내다가, 경로를 만드는 부분을 시각화해줄 수 있겠는가?") — 그림 1 차 · 영상은 내일
+
+## 2026-10-27
+- [L3](../../debug_log/2026-10-27/SUMMARY.md) §0 하루 시작
+- [L8](../../debug_log/2026-10-27/SUMMARY.md) §1 선언 — Smac 통로 실패 원인 가르기 (사용자: "1~3번 진행하자") — 결과 보기 전, 로버 안 움직임
+- [L16](../../debug_log/2026-10-27/SUMMARY.md) §2 결과 — ② 부모 사슬 · ③ 바꿔 끼우기: 실패를 정하는 것은 주로 **출발 · 목표 쪽**(9/10), 지도도 한 번 영향 · 16:11:56 은 좁은 곳을 **넘고도** 목표에서 실패
+  - [L36](../../debug_log/2026-10-27/SUMMARY.md) §2.1 ① 영상 — 완료
+- [L40](../../debug_log/2026-10-27/SUMMARY.md) §3 Smac 탐색 영상 다시 짬 — 같은 일끼리 (사용자: "실패 쪽은 … 실제로는 남쪽 끝까지 잘 가지 않았나?" · "오른쪽은 남쪽 끝에서 북쪽으로 빠져나올 때 경로 생성" · "그렇게 새로 만들어라")
+- [L57](../../debug_log/2026-10-27/SUMMARY.md) §4 그림 읽기 질의 — 점선 상자 · '코스트맵 때문에 목표로 못 가 여러 경로를 그렸나' (사용자)
+- [L63](../../debug_log/2026-10-27/SUMMARY.md) §5 선언 — 허용치 · cost_penalty 재질의 (사용자: "허용치와 cost_penalty 바꿔서 재질의 진행하라") — 결과 보기 전, 로버 안 움직임
+  - [L70](../../debug_log/2026-10-27/SUMMARY.md) §5.1 결과 — (b) 지지: 허용 0.35 m 면 16:11:56 남행이 성공(0.02 s), 경로는 NavFn 보다 통로 가운데 · cp 1.5 는 끝 방향이 틀어지고 북행 한 번은 14.5 m 우회
+- [L87](../../debug_log/2026-10-27/SUMMARY.md) §6 허용치 · cost_penalty 가 무엇이고 왜 §5.1 결과가 나왔나 (사용자 질문) — 소스 확인 + 추정 구분
+- [L93](../../debug_log/2026-10-27/SUMMARY.md) §7 탐색 영상 — 같은 순간에서 실패 대 성공 (사용자: "smac_expansion 영상으로 경로탐색하여 성공하는 시각화 영상 만들어 비교해달라")
+- [L99](../../debug_log/2026-10-27/SUMMARY.md) §8 선언 — 허용 0.35 m 가 상자 · 통로 장면을 나쁘게 하나 (사용자: "상자 장면 오프라인 확인 진행하라") — 결과 보기 전, 로버 안 움직임
+  - [L104](../../debug_log/2026-10-27/SUMMARY.md) §8.1 결과 — 판정 ② 통과: 상자 4 장면은 허용 0.25 · 0.35 가 **완전히 같음**, 10-23 통로 남행(g4)은 0.35 에서 새로 성공(치명까지 3.6 cm, NavFn 0.0)
+- [L120](../../debug_log/2026-10-27/SUMMARY.md) §9 주행 준비 (사용자: "1~3 진행하라") — prep 재전송 · tolerance 0.35 배포 · 판정 선언
+- [L132](../../debug_log/2026-10-27/SUMMARY.md) §10 f2st1 prep (사용자: "prep 진행하라")
+- [L137](../../debug_log/2026-10-27/SUMMARY.md) §11 f2st1(no5, Smac tolerance 0.35) 결과 — 8/8 · **통로 남행 Smac 성공(실패 0)** · 통로 남행 최소 여유 **4.1 cm**(f2sa3 0.8) · 1 s 넘는 정지 **1 번 4.7 s**(f2sa3 5 번 15.3 s)
+- [L146](../../debug_log/2026-10-27/SUMMARY.md) §12 f2st1 결과 시각화 (사용자: "결과 분석을 시각화해달라. 추가로 복귀 길 상자 앞 멈춤 상황도 시각화해달라. 영상으로")
+- [L153](../../debug_log/2026-10-27/SUMMARY.md) §13 영상 다시 — 밝은 스타일 · 경로 출처 색 (사용자: "rviz 스타일 … 보기 안좋다. smac_expansion 에 적용한 스타일이 눈이 편하다" · "오늘자 주행은 Smac 실패하여 NavFn 으로 주행한 것은 없는 것이지?")
+- [L159](../../debug_log/2026-10-27/SUMMARY.md) §14 막힘 판정 칸 (1.13, 0.14) 원자료 대조 (사용자: "막힘 판정 칸 원자료 대조 진행하라") — 로버 안 움직임
+  - [L165](../../debug_log/2026-10-27/SUMMARY.md) §14.1 본 것
+  - [L182](../../debug_log/2026-10-27/SUMMARY.md) §14.2 결론
+  - [L188](../../debug_log/2026-10-27/SUMMARY.md) §14.3 내 실수 · 정정 — §13 · 사용자 답의 '상자 북쪽 16 cm 의 작은 둥근 치명 덩어리'
+- [L201](../../debug_log/2026-10-27/SUMMARY.md) §15 상자 멈춤 영상 20 s · 31 s 의 전역 코스트맵 튐 (사용자: "20초 부근 문 공간이 막혔다 안 막힘 · 31초 상자가 벽 쪽으로 갔다 돌아옴 · 입구도 막힘 → 코스트맵이 2개 띄워져 있었는가?")
+  - [L205](../../debug_log/2026-10-27/SUMMARY.md) §15.1 판별 순서 · 본 것
+  - [L214](../../debug_log/2026-10-27/SUMMARY.md) §15.2 결론 · 영향
+- [L220](../../debug_log/2026-10-27/SUMMARY.md) §16 사용자: "수정한다고 해결되는가? 부하가 문제 아닌가?" — TF 실패와 부하의 관계
+- [L231](../../debug_log/2026-10-27/SUMMARY.md) §17 nvblox 층 TF 실패 처리 수정 · 빌드 · 정지 확인 (사용자: "진행하라") — 로버 안 움직임
+- [L240](../../debug_log/2026-10-27/SUMMARY.md) §18 주행 선언 f2tf1 (사용자: "실제 주행 해보자") — 결과 보기 전
+- [L248](../../debug_log/2026-10-27/SUMMARY.md) §19 f2tf1 결과 — 8/8 · **수정 확인 ✔(층 경고 28 번 · 틀어진 장 0)** · 그러나 **복귀 때 상자를 못 보고 기록 위치와 −1.0 cm(판정 ③ ✘)**
+- [L264](../../debug_log/2026-10-27/SUMMARY.md) §20 f2tf1 사용자 확인 · 복귀 장면 영상 (사용자: "1. 복귀 시 접촉 있었다. 2. 상자가 원래 자리에서 밀렸다. → 복귀 시 문 앞에서 몇 초 멈춰 있었는데, 복귀 장면 시각화해달라")
+- [L273](../../debug_log/2026-10-27/SUMMARY.md) §21 사용자: "1 번(상자 잊기)은 기능, 2 번(시야)은 센서 한계. 카메라가 상자만 못 봤나 아무것도 못 봤나만 확인. 3 번(부하 · TF 지연)은 해결할 문제"
+  - [L274](../../debug_log/2026-10-27/SUMMARY.md) §21.1 카메라 — 상자만 못 봄
+  - [L276](../../debug_log/2026-10-27/SUMMARY.md) §21.2 TF 지연의 정체 — CPU 포화가 아니라 SLAM map→odom stamp 정체
+  - [L282](../../debug_log/2026-10-27/SUMMARY.md) §21.3 조치 — 위치 추정 모드 transform_timeout 0.5 → 1.5
+- [L288](../../debug_log/2026-10-27/SUMMARY.md) §22 사용자: "slam stamp 정체가 노드 사이 UDP 통신 탓인지, DDS 공유메모리로 해결 가능한지 평가" — 결론: **통신 탓 아님 → 공유메모리로는 안 풀림(추정 근거 아래)**
+- [L305](../../debug_log/2026-10-27/SUMMARY.md) §23 사용자: "slam 시각 정체가 이전에도 계속 있었는지, 최근에 생긴 것인지 검증부터" — 결론: **최근 것 아님. 위치 추정 모드 순회(10-07~)부터 모든 주행에 같은 수준으로 있었음**
+- [L324](../../debug_log/2026-10-27/SUMMARY.md) §24 사용자: "테스트 주행 전 여러 검사 중 중복 · 불필요한 것 없애자" — 정리 · 확인
+- [L342](../../debug_log/2026-10-27/SUMMARY.md) §25 f2tt1 결과(no5 + SLAM transform_timeout 1.5 + nvblox 층 TF 수정 + 게이트 정리판 러너) — 8/8 · **TF 실패 0 · 정지 0**, §21 판정 전부 통과
+- [L352](../../debug_log/2026-10-27/SUMMARY.md) §26 사용자: "이번 주행에서 상자는 테이프 자리로 되돌린 상태였다. 실제 접촉 없었다. 더 중요한 문제부터 해결하자"
+  - [L355](../../debug_log/2026-10-27/SUMMARY.md) §26.1 정체는 무엇에 맞춰 나나 — 위치 추정 스캔 정합(이동 0.30 m · 회전 0.15 rad 마다) 때마다
+  - [L365](../../debug_log/2026-10-27/SUMMARY.md) §26.2 재생 A/B 도구
+  - [L369](../../debug_log/2026-10-27/SUMMARY.md) §26.3 재생 A/B 결과 — 채택 후보 없음, 무거운 부분은 탐색 범위 · 루프 탐색 · 버퍼가 아님
+- [L384](../../debug_log/2026-10-27/SUMMARY.md) §27 f2tt1 시각화 · Smac 탐색 영상 (사용자: "방금 전 주행 관련하여 시각화 해달라. smac_expansion도 만들어달라")
+- [L398](../../debug_log/2026-10-27/SUMMARY.md) §28 사용자: "f2tt1_corridor_light_x2 는 Smac 으로 계속 진행, smac_expansion_tt1 은 중간에 실패 — 어떻게 된 것인가?"
+- [L415](../../debug_log/2026-10-27/SUMMARY.md) §29 SLAM 포크 단계별 시간 계측 (사용자: "SLAM 포크에 처리 단계별 시간 계측(기록만, 동작 그대로)을 넣고 같은 재생으로 어느 단계가 0.3~0.5 s 를 쓰는지 직접 재라")
+- [L419](../../debug_log/2026-10-27/SUMMARY.md) §30 사용자: "결과 기다리는 동안, 현재 시스템 성능 어느 정도인지 평가" — 최근 no5 4 회(f2sa3 10-26 · f2st1 · f2tf1 · f2tt1) 기준
+  - [L437](../../debug_log/2026-10-27/SUMMARY.md) §29.1 계측 결과 — 처리 시간의 64 % 가 LinkNearChains(가까운 지도 스캔 사슬과의 재정합)
+  - [L451](../../debug_log/2026-10-27/SUMMARY.md) §29.2 link_scan_maximum_distance A/B(계측판, 같은 재생) — 줄지만 판정 기준(절반) 미달
+- [L463](../../debug_log/2026-10-27/SUMMARY.md) §31 하루 정리 (사용자: "오늘 일 마무리하고, 정리하고, 아티팩트로도 만들어서 로컬에 저장 후 push")
+
+## 2026-10-28
+- [L3](../../debug_log/2026-10-28/SUMMARY.md) §0 하루 시작 (사용자: "오늘 할 일 뭔가" → 제안: 시작 점검 → 확인 주행 1~2 회 → (SLAM A/B 한 회 더는 결과 보고) → F2.5 설계 착수; 사용자: "진행하라")
+- [L7](../../debug_log/2026-10-28/SUMMARY.md) §1 확인 주행 선언 — 결과 보기 전
+- [L12](../../debug_log/2026-10-28/SUMMARY.md) §2 prep 재전송 · prep
+- [L16](../../debug_log/2026-10-28/SUMMARY.md) §3 f2tt2 첫 시도 — PC WSL 기동 실패로 러너 미실행
+- [L20](../../debug_log/2026-10-28/SUMMARY.md) §4 f2tt2 결과(f2tt1 반복) — 8/8 · **TF 실패 0** · §1 판정 전부 통과 · §3 의 '러너 미실행' 은 틀림
+  - [L30](../../debug_log/2026-10-28/SUMMARY.md) §3.1 내 실수 · 정정 — '러너는 시작 안 됨, 로버 안 움직였을 것'
+- [L40](../../debug_log/2026-10-28/SUMMARY.md) §5 통로 남쪽 좁은 곳 반복 막힘 칸 원자료 대조 (사용자: "통로 반복 칸 원자료 대조 진행하라") — 결론: 유령 아님, **벽 · 물체 가장자리가 회전 중 한 칸(5 cm) 더 안쪽으로 찍혀** 96 이던 경로 점이 99 로 넘어감
+- [L57](../../debug_log/2026-10-28/SUMMARY.md) §6 F2.5 설계 착수 (사용자: "F2.5 설계로 넘어가자")
+- [L63](../../debug_log/2026-10-28/SUMMARY.md) §7 F2.5 S0 · S1 구현 · dry_run 정지 시험 (사용자: "우선 우리가 부르던 이름으로 수행하자")
+  - [L70](../../debug_log/2026-10-28/SUMMARY.md) §7.1 S1 실주행 선언(f2pl1) — 결과 보기 전
+- [L74](../../debug_log/2026-10-28/SUMMARY.md) §8 f2pl1 결과: B · 위 복도 도착 뒤 '통로 북쪽' 거절 → 로버 C 에서 멈춤(판정 ① 불합격) · 원인 · 수정
+  - [L79](../../debug_log/2026-10-28/SUMMARY.md) §8.1 내 실수: dry_run 에서 '통로 북쪽' 을 시험하지 않고 "이동 명령 5 개 모두 통과" 로 보고
+  - [L90](../../debug_log/2026-10-28/SUMMARY.md) §8.2 거절 원인 — 경로 끝 방향이 통로에 비스듬함(−51°) + 등록 좌표가 통로 동쪽 물체 쪽으로 치우침
+  - [L97](../../debug_log/2026-10-28/SUMMARY.md) §8.3 수정(place_server)
+  - [L103](../../debug_log/2026-10-28/SUMMARY.md) §8.4 다음 실주행 선언(f2pl2, PLAN fromC) — 결과 보기 전
+- [L107](../../debug_log/2026-10-28/SUMMARY.md) §9 f2pl2 결과: 통로 북쪽 · 남서 도착 뒤 **두 번째 통로 북쪽(남쪽에서) 거절** → 로버 남서 구석에서 멈춤 · 원인 · 좌표 옮김
+  - [L122](../../debug_log/2026-10-28/SUMMARY.md) §9.1 다음 실주행 선언(f2pl3, PLAN fromSW) — 결과 보기 전
+- [L126](../../debug_log/2026-10-28/SUMMARY.md) §10 f2pl3: 첫 'where' 응답 없음 → 명령 묶음 멈춤, 로버 안 움직임 · 창구 연결 확인 수정
+- [L134](../../debug_log/2026-10-28/SUMMARY.md) §11 f2pl4 결과: 명령 6 개 전부 기대대로(rc 0) — S1 장소 이름 이동 · 정지 · 복귀 실주행 첫 통과(접촉 확인 대기)
+- [L153](../../debug_log/2026-10-28/SUMMARY.md) §12 위 복도 구간이 no5 보다 7.5 s 느린 이유 — 기존 좌표 주행(job550)과 무엇이 달랐나 (사용자: "접촉 없었다. 위 복도 구간 궤적 분석 진행하라. … 뭐가 달랐기에")
+  - [L157](../../debug_log/2026-10-28/SUMMARY.md) §12.1 기존 러너와 이 구간에서 다른 것 · 같은 것(측정)
+  - [L172](../../debug_log/2026-10-28/SUMMARY.md) §12.2 읽기
+  - [L178](../../debug_log/2026-10-28/SUMMARY.md) §12.3 내 실수: 위 복도를 C 로 합친 것
+- [L188](../../debug_log/2026-10-28/SUMMARY.md) §13 판별 시험 f2pl5 선언: 위 복도를 no5 좌표 (−1.60, −2.10) 로 되돌리고 같은 구간 2 번 (사용자 "시작" — §12.2 에서 제안한 시험)
+  - [L194](../../debug_log/2026-10-28/SUMMARY.md) 판정 기준(주행 전 선언)
+  - [L202](../../debug_log/2026-10-28/SUMMARY.md) §13.1 주행 전 dry_run 에서 멈춤 — 출발점에서 계획기가 모든 목표에 '경로 없음' (로버 안 움직임, f2pl5 미실행)
+- [L213](../../debug_log/2026-10-28/SUMMARY.md) §14 prep 다시 · f2pl5 = W3 왕복 (사용자: "prep 진행하라. 그리고 이번에는 서쪽 통로 말고, W3만 찍고 오는 것으로. 그 후 어떤 명령들 및 어떤 결과 있었는지 시각화하자. 시작")
+  - [L218](../../debug_log/2026-10-28/SUMMARY.md) 판정 기준(주행 전 선언)
+  - [L228](../../debug_log/2026-10-28/SUMMARY.md) §14.1 f2pl5 결과 (15:29:05~15:32:20, rc 0)
+- [L240](../../debug_log/2026-10-28/SUMMARY.md) §15 사용자 질문 "온디바이스 모델이 어떤 출력을 냈는지" — 답: 아직 모델은 돌지 않았다
+- [L243](../../debug_log/2026-10-28/SUMMARY.md) §16 휴대폰 웹 창구 place_web (사용자: "휴대폰 웹 페이지도 만들자." — 설계 §8-3 결정)
+  - [L252](../../debug_log/2026-10-28/SUMMARY.md) §16.1 같은 dry_run 에서 경로 조회 다시 전부 실패 → **정지 중 로버 방향 추정이 돌아감**(측정)
+  - [L262](../../debug_log/2026-10-28/SUMMARY.md) §16.2 내 실수: §13.1 "남쪽 띠는 13:44 이후 생긴 칸"
+  - [L273](../../debug_log/2026-10-28/SUMMARY.md) §16.3 결정이 필요한 것(사용자)
+- [L276](../../debug_log/2026-10-28/SUMMARY.md) §17 하루 마무리 (사용자: "오늘 일 마무리하자.")
+
+## 2026-10-29
+- [L3](../../debug_log/2026-10-29/SUMMARY.md) §0 하루 시작 (사용자: "오늘 할 일" → 제안 4 단계 → "오늘은 드리프트 측정 및 해결을 진행하도록 하자.")
+- [L11](../../debug_log/2026-10-29/SUMMARY.md) §1 정지 드리프트 기록 d1 선언 — 결과 보기 전
+- [L24](../../debug_log/2026-10-29/SUMMARY.md) §2 d1 기록 중 측정 · 오프라인 분석 → 출발 전 위치 추정 검사(ⓐ) 구현
+- [L48](../../debug_log/2026-10-29/SUMMARY.md) §3 d1 결과 — prep 뒤 정지 30 분: **드리프트 재현 안 됨**(EKF 0.07°)
+- [L60](../../debug_log/2026-10-29/SUMMARY.md) §4 d2 선언 — 주행 뒤 정지 40 분 · ⓐ 실동작 확인 (결과 보기 전, 사용자 "시작" 대기)
+- [L74](../../debug_log/2026-10-29/SUMMARY.md) §5 하루 마무리 (사용자: "오늘은 여기까지하고 마무리하도록 하자.") — d2 는 실행 안 함
+
