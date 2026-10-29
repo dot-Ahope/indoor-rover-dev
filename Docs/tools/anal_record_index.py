@@ -33,7 +33,10 @@ for d in DATES:
             if len(t) >= 3: where[t].append((d, sec_short(cur), n))
 
 def mentions(name, limit=4):
-    L = where.get(name, [])
+    L = list(where.get(name, []))
+    stem = os.path.splitext(name)[0]   # 옛 기록은 확장자 없이 부름(job4y) — 이름 대장은 stem == name 이라 겹치지 않음
+    if stem != name and len(stem) >= 4: L += where.get(stem, [])
+    L.sort()
     seen, out = set(), []
     for d, s, n in L:
         if (d, s) in seen: continue
@@ -78,18 +81,25 @@ with open(OUT / 'RUNS.md', 'w', encoding='utf-8', newline='\n') as w:
 
 # ---- JOBS.md
 def desc(p):
-    try: t = p.read_text(encoding='utf-8', errors='replace').splitlines()[:25]
+    """첫 설명 줄: docstring 첫 줄 또는 앞 30 줄 안 첫 주석(셰뱅 · 인코딩 · 구분선 제외). 코드 줄이 먼저 와도 주석을 찾는다."""
+    try: t = p.read_text(encoding='utf-8', errors='replace').splitlines()[:30]
     except Exception: return ''
     for i, l in enumerate(t):
         s = l.strip()
-        if not s or s.startswith('#!') or s.startswith('# -*-') or re.match(r'(import|from|set |export )', s): continue
         if s.startswith(('"""', "'''")):
             s = s.strip('"\' ')
             if not s and i + 1 < len(t): s = t[i + 1].strip()
-            return s[:140]
-        if s.startswith(('#', '//', '%', 'REM', '::')): return s.lstrip('#/%: ').strip()[:140]
-        return ''
-    return ''
+            if s: return s[:140]
+        if s.startswith('#!') or s.startswith('# -*-'): continue
+        if s.startswith(('#', '//', 'REM ', '::')):
+            c = s.lstrip('#/: ').strip()
+            if len(c) >= 4 and not set(c) <= set('-=*#~ '): return c[:140]
+    # 주석이 없으면 셸 스크립트의 단계 제목(echo "===…===") 앞 3 개로 대신 — 표시 '(단계)'
+    try: full = p.read_text(encoding='utf-8', errors='replace')
+    except Exception: return ''
+    st = [x.strip(' =-:') for x in re.findall(r'echo\s+(?:-e\s+)?["\']?\s*={2,}\s*([^"\'=\n]{2,60}?)\s*={2,}', full)]
+    st = [x for x in st if x][:3]
+    return ('(단계) ' + ' · '.join(st))[:140] if st else ''
 rows = []
 for d in DATES:
     j = LOG / d / 'jobs'
