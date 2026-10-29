@@ -1,0 +1,12 @@
+[sensor_conditioner_node-6] [INFO] [1793168747.910179684] [sensor_conditioner]: gyro bias calibrated: (-0.00743, -0.00070, -0.00182) rad/s, std=(0.0027, 0.0022, 0.0018)
+[sensor_conditioner_node-6] [INFO] [1793168749.913107540] [sensor_conditioner]: ZUPT #1: bias y -0.000696 → -0.000722 (관측 -0.000951), 잔차 yaw rate +0.000229 rad/s = +0.79 °/분
+[sensor_conditioner_node-6] [INFO] [1793168771.912079899] [sensor_conditioner]: ZUPT #11: bias y -0.000735 → -0.000751 (관측 -0.000890), 잔차 yaw rate +0.000139 rad/s = +0.48 °/분
+[sensor_conditioner_node-6] [INFO] [1793168792.267035821] [sensor_conditioner]: ZUPT #21: bias y -0.000773 → -0.000775 (관측 -0.000798), 잔차 yaw rate +0.000023 rad/s = +0.08 °/분
+[sensor_conditioner_node-6] [INFO] [1793168812.297332386] [sensor_conditioner]: ZUPT #31: bias y -0.000792 → -0.000769 (관측 -0.000563), 잔차 yaw rate -0.000206 rad/s = -0.71 °/분
+[sensor_conditioner_node-6] [INFO] [1793168832.327632314] [sensor_conditioner]: ZUPT #41: bias y -0.000779 → -0.000763 (관측 -0.000615), 잔차 yaw rate -0.000147 rad/s = -0.51 °/분
+[sensor_conditioner_node-6] [INFO] [1793168853.049460456] [sensor_conditioner]: ZUPT #51: bias y -0.000766 → -0.000772 (관측 -0.000825), 잔차 yaw rate +0.000053 rad/s = +0.18 °/분
+[sensor_conditioner_node-6] [INFO] [1793168874.155350446] [sensor_conditioner]: ZUPT #61: bias y -0.000745 → -0.000734 (관측 -0.000628), 잔차 yaw rate -0.000105 rad/s = -0.36 °/분
+[sensor_conditioner_node-6] [INFO] [1793168894.496274910] [sensor_conditioner]: ZUPT #71: bias y -0.000777 → -0.000774 (관측 -0.000746), 잔차 yaw rate -0.000028 rad/s = -0.10 °/분
+[sensor_conditioner_node-6] [INFO] [1793168914.917374353] [sensor_conditioner]: ZUPT #81: bias y -0.000785 → -0.000782 (관측 -0.000759), 잔차 yaw rate -0.000023 rad/s = -0.08 °/분
+[sensor_conditioner_node-6] [INFO] [1793168936.190457055] [sensor_conditioner]: ZUPT #91: bias y -0.000798 → -0.000802 (관측 -0.000838), 잔차 yaw rate +0.000036 rad/s = +0.12 °/분
+[sensor_conditioner_node-6] [INFO] [1793169142.635808085] [sensor_conditioner]: ZUPT #98: bias y -0.000772 → -0.000788 (관측 -0.000938), 잔차 yaw rate +0.000150 rad/s = +0.51 °/분
