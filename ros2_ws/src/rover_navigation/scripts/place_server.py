@@ -16,7 +16,11 @@
     경로 조회는 **별도 상주 프로세스**(path_end_yaw.py --serve) — 같은 노드에서 compute_path_to_pose 를 부르면 뒤이은
     navigate_to_pose 응답이 오지 않던 사고(09-28 §20) 때문. 조회 실패 시 직선 방향.
   · 시간 · 무진행 한도는 nav_guard(Nav2 와 독립, Jetson 안)가 맡는다.
+  · 출발 전 위치 추정 검사(10-29 §2): 지금 라이다 한 판을 정적 /map 에 맞춰 점수(점유 칸 1 칸 안 점 비율)와 ±30° 훑은 최적 각을 본다.
+    점수 < loc_min_score 이거나, 최적 각이 loc_max_yaw 를 넘고 그 각에서 점수가 loc_min_gain 이상 오르면 rejected — 오래 세워 둔 로버의
+    방향 추정이 돌아간 채 출발하지 않게(10-28 §16.1: 0.140 · −32.5°, f2pl1 출발 직전 −7°). 고치지는 않는다(prep · 재위치는 사람).
 파라미터: places_file(기본 = 이 패키지 share/config/places.yaml) · min_clear(0.10) · xy_done(0.15) · dry_run(False: True 면 목표를 보내지 않고 검사까지만)
+          loc_check(True) · loc_min_score(0.40) · loc_max_yaw(4.0°) · loc_min_gain(0.03)
 """
 import json, math, os, select, subprocess, time
 import numpy as np
@@ -28,6 +32,8 @@ from rclpy.action import ActionClient
 from rclpy.qos import QoSProfile, DurabilityPolicy, ReliabilityPolicy
 from std_msgs.msg import String
 from nav_msgs.msg import OccupancyGrid
+from sensor_msgs.msg import LaserScan
+from rclpy.qos import qos_profile_sensor_data
 from nav2_msgs.action import NavigateToPose
 from action_msgs.srv import CancelGoal
 import tf2_ros
@@ -47,12 +53,17 @@ class PlaceServer(Node):
             dflt = os.path.join(get_package_share_directory('rover_navigation'), 'config', 'places.yaml')
         except Exception:
             dflt = ''
-        for k, v in (('places_file', dflt), ('min_clear', 0.10), ('xy_done', 0.15), ('dry_run', False), ('path_yaw_script', '')):
+        for k, v in (('places_file', dflt), ('min_clear', 0.10), ('xy_done', 0.15), ('dry_run', False), ('path_yaw_script', ''),
+                     ('loc_check', True), ('loc_min_score', 0.40), ('loc_max_yaw', 4.0), ('loc_min_gain', 0.03)):
             self.declare_parameter(k, v)
         self.reg = self.load_places()
         self.buf = tf2_ros.Buffer(); self.tl = tf2_ros.TransformListener(self.buf, self)
         self.gcm = None
         self.create_subscription(OccupancyGrid, '/global_costmap/costmap', lambda m: setattr(self, 'gcm', m),
+                                 QoSProfile(depth=1, durability=DurabilityPolicy.TRANSIENT_LOCAL, reliability=ReliabilityPolicy.RELIABLE))
+        self.scan, self.occ = None, None   # 위치 추정 검사용: 마지막 라이다 · 정적 지도 점유(1 칸 팽창)
+        self.create_subscription(LaserScan, '/scan', lambda m: setattr(self, 'scan', m), qos_profile_sensor_data)
+        self.create_subscription(OccupancyGrid, '/map', self.on_map,
                                  QoSProfile(depth=1, durability=DurabilityPolicy.TRANSIENT_LOCAL, reliability=ReliabilityPolicy.RELIABLE))
         self.pub = self.create_publisher(String, '/place/status', 10)
         self.create_subscription(String, '/place/command', self.on_command, 10)
@@ -131,6 +142,43 @@ class PlaceServer(Node):
         lx = X * math.cos(gth) + Y * math.sin(gth); ly = -X * math.sin(gth) + Y * math.cos(gth)
         return float(np.min(np.hypot(np.maximum(np.abs(lx) - HL, 0), np.maximum(np.abs(ly) - HW, 0))))
 
+    # ---------- 출발 전 위치 추정 검사(10-29 §2) ----------
+    def on_map(self, m):
+        from scipy.ndimage import binary_dilation
+        g = np.array(m.data, dtype=np.int16).reshape(m.info.height, m.info.width) >= 65
+        self.occ = (binary_dilation(g, iterations=1), m.info)
+
+    def loc_align(self):
+        """(s0, sb, db°) 또는 (None, 이유). s0 = 지금 TF 점수, sb · db = ±30° 0.5° 훑은 최고 점수와 그 각.
+        정의는 Docs/debug_log/2026-10-28/jobs/chk_scan_align.py · 2026-10-29/jobs/anal_scan_align_bag.py 와 같음(점 ≤ 6 m)."""
+        sc, oc = self.scan, self.occ
+        if sc is None or oc is None: return None, '라이다 또는 정적 지도 없음'
+        if time.time() - (sc.header.stamp.sec + sc.header.stamp.nanosec * 1e-9) > 2.0: return None, '라이다 2 s 넘게 끊김'
+        try: t = self.buf.lookup_transform('map', sc.header.frame_id, rclpy.time.Time()).transform
+        except Exception: return None, 'TF(map→라이다) 없음'
+        G, i = oc; lx, ly, la = t.translation.x, t.translation.y, yaw_of(t.rotation)
+        r = np.array(sc.ranges, np.float32); a = sc.angle_min + sc.angle_increment * np.arange(len(r))
+        ok = np.isfinite(r) & (r > sc.range_min) & (r < min(sc.range_max, 6.0)); r, a = r[ok], a[ok]
+        if len(r) < 50: return None, '라이다 점 %d 개뿐' % len(r)
+        def score(d):
+            x = lx + r * np.cos(la + d + a); y = ly + r * np.sin(la + d + a)
+            J = ((y - i.origin.position.y) / i.resolution).astype(int); I = ((x - i.origin.position.x) / i.resolution).astype(int)
+            v = (J >= 0) & (J < G.shape[0]) & (I >= 0) & (I < G.shape[1]); return float(G[J[v], I[v]].mean()) if v.any() else 0.0
+        D = np.arange(-30, 30.25, 0.5); S = np.array([score(math.radians(d)) for d in D]); k = int(np.argmax(S))
+        return (S[len(D) // 2], float(S[k]), float(D[k])), ''
+
+    def loc_ok(self):
+        """(통과?, 설명). 문턱 근거 10-29 §2: 위치 추정이 맞던 5 주행 570 판 — 점수 최소 0.594 · 주행 중 최적 각 ≤ 3.0° ·
+        출발점 prep 직후 0.92~0.93 / 틀린 상태: 10-28 16:15 0.140 · −32.5°, f2pl1 출발 직전 0.71 · −7°(최적 각에서 +0.10)."""
+        if not self.p('loc_check'): return True, '위치 검사 끔'
+        res, why = self.loc_align()
+        if res is None: return False, '위치 검사 못 함: ' + why
+        s0, sb, db = res; txt = '라이다↔지도 %.2f · 최적 각 %+.1f° (%.2f)' % (s0, db, sb)
+        if s0 < self.p('loc_min_score'): return False, txt + ' — 점수 낮음, 위치 추정이 틀렸을 수 있음(prep 필요)'
+        if abs(db) > self.p('loc_max_yaw') and sb - s0 >= self.p('loc_min_gain'):
+            return False, txt + ' — 방향 추정 약 %.0f° 틀림(prep 필요)' % -db
+        return True, txt
+
     # ---------- 명령 ----------
     def on_command(self, msg):
         s = msg.data.strip(); rid = ''
@@ -140,7 +188,8 @@ class PlaceServer(Node):
         if cmd == 'list':
             return self.say(rid, 'info', None, ' · '.join('%s(%s)' % (p['name'], ', '.join(p.get('aliases') or [])) for p in self.reg['places']))
         if cmd == 'where':
-            P = self.pose(); return self.say(rid, 'info', None, 'map (%.2f, %.2f, %.0f°)' % (P[0], P[1], math.degrees(P[2])) if P else 'TF 없음')
+            P = self.pose(); ok, lw = self.loc_ok()
+            return self.say(rid, 'info', None, ('map (%.2f, %.2f, %.0f°)' % (P[0], P[1], math.degrees(P[2])) if P else 'TF 없음') + ' · ' + lw)
         if cmd == 'return': arg, cmd = self.reg.get('home', ''), 'go_to'
         if cmd != 'go_to': return self.say(rid, 'rejected', None, '모르는 명령: %s' % s)
         if self.goal is not None:
@@ -152,6 +201,8 @@ class PlaceServer(Node):
     def do_go(self, rid, pl):
         P = self.pose()
         if P is None: return self.say(rid, 'rejected', pl['name'], 'TF(map→base_link) 없음')
+        lok, lw = self.loc_ok()
+        if not lok: return self.say(rid, 'rejected', pl['name'], lw)
         gx, gy = float(pl['x']), float(pl['y']); fb = math.atan2(gy - P[1], gx - P[0]); mode = str(pl.get('yaw_mode', 'p'))
         if math.hypot(gx - P[0], gy - P[1]) < self.p('xy_done'):
             return self.say(rid, 'arrived', pl['name'], '이미 그 자리(%.2f m)' % math.hypot(gx - P[0], gy - P[1]))
@@ -171,7 +222,7 @@ class PlaceServer(Node):
                 if cc >= mc:
                     why += ' → 여유 위해 %+.0f° 고침(원래 여유 %.3f)' % (math.degrees(ct - gth), c); c, gth = cc, math.atan2(math.sin(ct), math.cos(ct)); break
         if c < mc: return self.say(rid, 'rejected', pl['name'], '목표 여유 %.3f m < %.2f · 방향 %.0f° %s' % (c, mc, math.degrees(gth), why))   # 10-28 §8: 거절 때도 방향을 남김(f2pl1 은 방향 기록 없어 재현 필요했음)
-        info = '목표 (%.2f, %.2f, %.0f°) %s · 여유 %.2f m · 거리 %.2f m' % (gx, gy, math.degrees(gth), why, c, math.hypot(gx - P[0], gy - P[1]))
+        info = '목표 (%.2f, %.2f, %.0f°) %s · 여유 %.2f m · 거리 %.2f m · %s' % (gx, gy, math.degrees(gth), why, c, math.hypot(gx - P[0], gy - P[1]), lw)
         if self.p('dry_run'): return self.say(rid, 'checked', pl['name'], '[dry_run — 보내지 않음] ' + info)   # checked = 검사 통과 · 목표 안 보냄(끝 상태)
         if not self.ac.wait_for_server(timeout_sec=3): return self.say(rid, 'rejected', pl['name'], 'navigate_to_pose 서버 없음')
         g = NavigateToPose.Goal(); g.pose.header.frame_id = 'map'; g.pose.header.stamp = self.get_clock().now().to_msg()
