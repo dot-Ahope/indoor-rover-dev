@@ -2,7 +2,7 @@
 
 | 상태 | 기간 | 처음 본 곳 | 바꾼 파일 | 관련 문제 |
 |---|---|---|---|---|
-| **결정(RPP, 09-07) — 이후 뒤집힘**(09-15 ~ MPPI 재시험, 09-21 MPPI + CostCritic 채택) | 09-07 ~ 09-11 (이 카드 2 기), 이후 09-14 ~ | [09-07 「Nav2 컨트롤러 벤치마크 (스케일 교정 후 재측정) `job54`」(L313)](../debug_log/2026-09-07/SUMMARY.md) | `ros2_ws/src/rover_navigation/config/nav2_params.yaml`(RPP lookahead · `yaw_goal_tolerance` · `rotate_to_heading_min_angle` · `max_allowed_time_to_collision_up_to_carrot` · `velocity_smoother.velocity_timeout` · `behavior_server.global_frame`) · `config/nav_to_pose_mppi.xml`(09-07 신규, 커밋 `c851cb4c`) · `launch/navigation.launch.py`(stuck_monitor 포함) | 앞 시기 [Nav2 첫 구축](nav2-first-setup.md) · [기동 데드밴드](start-deadband.md) · [스톨 래치](stall-latch.md) · [라이다 근접 사각](near-wall-blindspot.md) · 같은 시기 [stuck_monitor](stuck-monitor.md) |
+| **결정(RPP, 09-07) — 이후 뒤집힘**(09-15 ~ MPPI 재시험, 09-16 §1.11 사용자 결정 'MPPI 유지', 09-17 mp9~11 3/3, 09-21 MPPI + CostCritic 채택 — §7.1 · [MPPI 통로 카드](mppi-passage-tuning.md)) | 09-07 ~ 09-11 (이 카드 2 기), 이후 09-14 ~ | [09-07 「Nav2 컨트롤러 벤치마크 (스케일 교정 후 재측정) `job54`」(L313)](../debug_log/2026-09-07/SUMMARY.md) | `ros2_ws/src/rover_navigation/config/nav2_params.yaml`(RPP lookahead · `yaw_goal_tolerance` · `rotate_to_heading_min_angle` · `max_allowed_time_to_collision_up_to_carrot` · `velocity_smoother.velocity_timeout` · `behavior_server.global_frame`) · `config/nav_to_pose_mppi.xml`(09-07 신규, 커밋 `c851cb4c`) · `launch/navigation.launch.py`(stuck_monitor 포함) | 앞 시기 [Nav2 첫 구축](nav2-first-setup.md) · [기동 데드밴드](start-deadband.md) · [스톨 래치](stall-latch.md) · [라이다 근접 사각](near-wall-blindspot.md) · 같은 시기 [stuck_monitor](stuck-monitor.md) |
 
 **한 줄**: 09-07 에 펌웨어 스케일(휠 둘레 · 유효 게이지)을 바로잡은 뒤 같은 코스로 다시 겨뤄 **RPP 3/3 성공 · MPPI 2/2 실패(+ 벽 접촉 1 건)** 로 RPP 를 채택했다. MPPI 실패 원인은 그날 6 항목으로 분석했지만(제자리 회전 없이 호로 U 턴 · 목표 0.4 m 안 크리틱 공백 등), **이 카드를 쓰며 원문과 그날 펌웨어를 대조해 보니 MPPI 가 목표 앞에서 '진동' 한 것이 아니라 6~7 mm/s 명령을 50 초 넘게 일정하게 냈고, 그 명령은 그날 펌웨어가 정지로 버리는 크기였다**(승격값 8 mm/s < 정지 문턱 10 mm/s, 09-17 §7 에서 같은 기제를 실측). 그 뒤 09-08 ~ 09-11 은 RPP 를 다듬었다 — 조향 진동(실효 lookahead 0.20 → 0.35 → 0.25), 목표 자세 허용 0.25 → 0.15 rad, 충돌 검사 지평 1.5 → 5.0 → 1.5 s, 제자리 회전 문턱 0.5 → 1.0 rad, BackUp 첫 1 s 의 명령 맞물림(velocity_timeout 1.0 → 0.3 s)과 behavior_server 프레임 버그(map → odom). 09-11 에 S4(회피 3 회 연속)를 3/3 으로 통과했지만, 복귀 · 좁은 곳 정지(RPP 의 '둘레 검사로 멈춤')는 남아 09-14 부터 MPPI 를 다시 시험한다.
 
@@ -173,7 +173,21 @@
 ## 7. 남은 것 (09-11 시점) · 이후
 - RPP 의 '둘레 검사로 멈춤 → 후진 → 재전진'(stop-and-go)과 복귀 실패 1/4(09-11 §5.11, 원인 미확정). SLAM yaw 점프 대응(d) 미실행. lookahead 0.30 중간값 미탐색.
 - MPPI 재평가 조건(09-07 「다음 작업」 3: batch · time_steps 축소, 크리틱 튜닝, 주기 실측)은 이 시기에 안 함.
-- **이후(09-14 ~)**: 09-14 §2.27 "상자 뒤로 갈 때 머뭇거리지 않고 자연스럽게"(사용자 목표) → RPP 는 둘레 검사로 멈추고 MPPI 는 비용으로 비켜 간다는 설계 노트 → [09-15 §2 mp1 — MPPI 첫 주행](../debug_log/2026-09-15/SUMMARY.md) → 09-17 §7 정지 문턱 수정(실수 ① 의 기제) · §9 mp9 MPPI 첫 성공 → [09-18 §16](../debug_log/2026-09-18/SUMMARY.md) ObstaclesCritic → CostCritic 근거 → [09-21 §4](../debug_log/2026-09-21/SUMMARY.md) CostCritic 3/3 채택(현 구성: MPPI 10 Hz · 32 × 0.1 s · batch 1000, CLAUDE.md §6). 다음 시기 카드에서 채움.
+- 이후는 아래 §7.1(09-14 ~ 09-17, 10-30 채움). 09-18 이후(ObstaclesCritic → CostCritic, 09-21 채택)는 다음 시기 카드에서 채움.
+
+### 7.1 이후(09-14 ~ 09-17): MPPI 로 돌아온 이유와 '유지' 결정 — 상세는 [MPPI 로 상자 옆 통로 지나기](mppi-passage-tuning.md)
+| 날짜 · § | 무엇 | 본 것 · 근거 | 결정 |
+|---|---|---|---|
+| 09-14 §2.26 bk1 | RPP + Smac, 상자 뒤 목표 (1.8, 0) | SUCCEEDED 38.6 s 이지만 상자 옆 구간 **정지 45 %** · 복귀 32 %, 충돌감지 6, BackUp 실패 1. 원인 분석: 계획이 x 1.15~1.45 에서 벌써 복귀선으로 꺾여 RPP 둘레 검사가 앞우 · 뒤우 모서리에 걸림, 상자 기억은 끝까지 유지(로컬 99/99) | 머뭇거림의 원인은 기억이 아니라 '계획 꺾임 × 둘레 검사 정지' |
+| 09-14 §2.27 | 사용자 목표 "상자 뒤로 갈 때, 카메라에서 상자가 사라진 뒤에도 머뭇거리지 않고 자연스럽게" | 설계 노트: RPP 는 LETHAL 이 둘레에 닿으면 멈춘다(stop-and-go 의 근원), MPPI 는 지평 안 샘플 궤적을 비용으로 골라 **몇 cm 비켜 지나가며 멈추지 않는다** — 이 문장은 그때 **기대**였다(측정 아님) | 순서: Smac 정지 A/B → 안 되면 MPPI A/B, '정지 0' 쪽 채택 |
+| 09-15 §1 | Smac `cost_penalty` × `minimum_turning_radius` 스윕(정지) | 어느 조합도 복귀를 상자 뒤로 못 미룸 | BT 컨트롤러 RPP → **MPPI**(커밋 `e63c872b`) |
+| 09-15 §2 mp1 | MPPI 첫 주행 | 정지 없이 부호반전 0, 실여유 0.20 m(RPP 주행 0.03~0.10). ABORTED 는 Smac 재계획 거부(계획기 문제) | MPPI 의 모양이 목표에 맞음 → 계획기만 NavFn 으로 |
+| 09-16 §1.9 mp3 | MPPI 56 step 이 같은 입구에서 정체 + CPU 과부하 | 사전 규칙 "mp3 가 다시 정체하면 RPP 복귀" | **RPP 로 되돌림**(커밋 `4b3512ff`) |
+| 09-16 §1.10 | 재정의 문서 `PASSAGE_PROBLEM_ANALYSIS_2026-09-16.md` | '컨트롤러 A vs B' 가 아니라 입구 기동 설계 + 기억 지속의 문제. 1 순위 권장 = **RPP** + 경로 수정(SmoothPath · inflation 0.70) + decay 연장 | 권장은 RPP |
+| 09-16 §1.11 | **사용자 결정: MPPI 유지 · A 진행 · C 검토 · D 위임** | Humble MPPI 는 CPU 전용(xtensor) → 10 Hz · model_dt 0.1 · 32 step(지평 0.26 m, 연산량 절반)으로 CPU 안에서 지평 확보, `visualize` 로 정체를 직접 보기 | BT → FollowPathMPPI(커밋 `a6c25149`). 이후 RPP 로 돌아가지 않음 |
+| 09-16 §1.14 ~ 09-17 §11 | 크리틱 재구성 · 오프라인 MPPI 로 원인 판별 → PathFollow 10/20 · 경로 크리틱 문턱 0.2 · GoalCritic 10, 펌웨어 정지 문턱 수정 | mp5 입구 통과, **mp9 · mp10 · mp11 SUCCEEDED 3/3**(33.1~33.7 s) | MPPI 체제 확정(09-21 CostCritic 채택으로 이어짐) |
+- 이 카드 §3.1 의 MPPI 실패 가설과의 연결: ②(목표 0.4 m 안 크리틱 공백)는 09-17 §7.2 시뮬과 문턱 0.2 뒤 mp9 성공으로 **일부 지지**, ⑦(펌웨어가 6~7 mm/s 를 버림)은 09-17 §7.1 에서 실측 · 수정됐다. ④(지평이 짧음)는 09-16 mp3 에서 '지평만 늘리는 것' 으로는 정체가 안 풀려 **기각 쪽**(지평 0.13 → 0.22 m, 같은 자리 정체). ①(제자리 회전 없는 호 U 턴)은 이 시기 코스(상자 옆 통과)에서 시험되지 않았다.
+- RPP 로 끝내 돌아가지 않았으므로, RPP 쪽 남은 문제(둘레 검사 stop-and-go · 복귀 실패 1/4 · SLAM yaw 점프 대응)는 **해결이 아니라 보류**로 남았다. `nav2_params.yaml` 의 `FollowPath`(RPP) 블록은 대조군으로 보존 — 그 블록 머리의 '★현재 FollowPath=RPP … MPPI 대기'(L90) · MPPI 블록 머리의 'N1 벤치마크 후보 · 20Hz · 이름 맞바꿔 재기동'(L197~199) 주석은 지금 상태(BT 가 FollowPathMPPI, 10 Hz)와 맞지 않는다(2026-10-30 저장소 확인, 동작 무관).
 
 ## 8. 실험 · 도구 색인
 | 이름 | 무엇 | 위치 |

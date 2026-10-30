@@ -47,6 +47,22 @@
 | [통과 폭 판단 도구와 '환각'](passage-width-analysis.md) | 조사 중 | 원형 근사 · 내접 반경 이중 계산 등 도구 결함 10 번까지. 통로는 1.2 m 가 아니라 0.6 m |
 | [behavior_server BackUp](behavior-server-backup.md) | 해결 | BackUp 이 map 프레임으로 충돌 검사해 0.0 s 에 실패 · 첫 1 s 엇갈린 지령 |
 
+### 3 기 09-14 ~ 09-18 (상자 옆 통로 · MPPI 복귀 · 데크 yaw) — 10-30 작성 · 앞 카드 13 장도 이어 채움
+| 카드 | 상태 | 한 줄 |
+|---|---|---|
+| [깊이 점군 아티팩트 · depth_relay](depth-relay-artifacts.md) | 해결 → 이후 대체 | 정면 바닥 근거리 · 상자 실루엣 비산점 · 25 % 프레임 바닥 한 점 → 릴레이 필터 · 시간 지속성. '전역 흔들림' 은 관찰자(사람) |
+| [전역 계획기 NavFn vs Smac](global-planner-choice.md) | 보류 → 이후 채택(10-27) | 09-14 정지 A/B · sm1 — 계획기 교체로는 같은 자리 정체가 안 풀림 |
+| [라이다 '고정점'](lidar-fixed-point.md) | 해결(없음) | 로버를 따라다니는 점은 bag 에 없음 |
+| [MPPI 상자 옆 통로 튜닝 mp1~mp11](mppi-passage-tuning.md) | 해결(이 코스 3/3) | 지평 0.13 m 에서 경로 크리틱 안 켜짐 · 복셀 필터 · inflation 0.70 + SmoothPath · PathFollow 당근 · 목표 옆 정지 = 펌웨어 문턱 |
+| [MPPI 조향 흔들림 · temperature](mppi-wobble-temperature.md) | 보류 | 'softmax 표본 부족' 가설로 0.3 을 냈으나 mp12 에서 안 줄어 0.15 복귀. 시뮬 구동계 모형이 틀렸을 가능성(바퀴 포화) |
+| [오프라인 MPPI 시뮬레이터](mppi-offline-simulator.md) | 도구 카드 | job355 → 410 → 419(Humble 1.1.20 동작) → 452(CostCritic) — 무엇을 흉내 내고 어디까지 믿을 수 있나 |
+| [ObstaclesCritic → CostCritic](obstacles-to-costcritic.md) | 해결(09-21 채택) | 상자를 크게 도는 이유 분해 · ObstaclesCritic 은 17.5 cm 안 여유를 구분 못 함 |
+| [플래시 안전](flash-safety.md) | 우회(절차) | 리셋 없이 플래시 → MCU 정지 상태에서 로버가 스스로 회전 |
+| [SLAM Fast DDS 데드락](slam-dds-deadlock.md) | 우회 + 수정판 | slam_toolbox 가 그래프에서 사라짐 — gdb 로 Fast DDS 2.6.11 락 순서 역전 → 2.6.12 |
+| [로그 · 산출물 정리 보류](storage-housekeeping.md) | 보류 | 'GB 단위가 아니면 정리 미룸' (bags 는 지금 약 4.4 GiB) |
+| [센서 데크 yaw −2.68°](sensor-deck-yaw.md) | 해결(라이다) | 로컬 코스트맵 상자가 다가오던 원인. 벽 옆면 정지 측정 → URDF 보정. 카메라 yaw 는 보정 뒤 미검증 |
+| [간헐 중단 dy1~dy6](intermittent-abort-dy.md) | 부분 해결 | 보정 뒤 6 회 — 출발 자리 물체 · 게이트 수정 · 여유 ≥ 5 cm 불합격 |
+
 ### 10 월 (형식 시범)
 | 카드 | 상태 | 한 줄 |
 |---|---|---|
