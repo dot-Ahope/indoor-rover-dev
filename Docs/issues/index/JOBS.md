@@ -15,7 +15,7 @@
 | [`anal_odom_drift.py`](../../tools/anal_odom_drift.py) | anal_odom_drift — 구간마다 '어느 오도메트리 재료가 SLAM 과 얼마나 어긋났나'를 견준다. (2026-10-13) | 10-13 §14 |
 | [`anal_plan_keepout.py`](../../tools/anal_plan_keepout.py) | anal_plan_keepout — 전역 지도에서 '카메라(nvblox)가 본 장애물' 둘레만 통과 금지 띠로 두껍게 했을 때 전역 경로가 어떻게 달라지는지 기록된 bag 으로 본다. (2026-10-14) | 10-14 §1 |
 | [`anal_proc_cpu.py`](../../tools/anal_proc_cpu.py) | 10-12 §3.3: 프로세스별 CPU(전 프로세스 틱 기록) 구간 비교. 인자: 이름=proc.log@시작epoch@끝epoch ...  (코어 1 개 = 100) | — |
-| [`anal_record_index.py`](../../tools/anal_record_index.py) | anal_record_index — 실험 기록 자동 색인 3 종 (2026-10-29, PC). 기록이 늘면 다시 돌려 덮어쓴다(손으로 고치지 않는다). | 10-29 §6 |
+| [`anal_record_index.py`](../../tools/anal_record_index.py) | anal_record_index — 실험 기록 자동 색인 3 종 (2026-10-29, PC). 기록이 늘면 다시 돌려 덮어쓴다(손으로 고치지 않는다). | 10-29 §6 · 10-29 §7 |
 | [`anal_recorder_cpu.py`](../../tools/anal_recorder_cpu.py) | anal_recorder_cpu — 주행별 bag 기록기(ros2 bag record)의 CPU 사용을 시간순으로, 다른 주요 프로세스·전체 부하와 함께 본다. (2026-10-13) | 10-13 §3 |
 | [`anal_reverse.py`](../../tools/anal_reverse.py) | 10-12 §1.2: 러너 csv 로 목표별 후진·제자리 회전 집계. 후진 거리 = 지령 v < −0.005 인 표본 사이 odom 이동 길이(EKF, 미끄러짐은 못 봄). | — |
 | [`anal_rtps_acklag.py`](../../tools/anal_rtps_acklag.py) | anal_rtps_acklag — 한 토픽의 쓰는 쪽이 보낸 HEARTBEAT(가진 표본 번호 범위)와 읽는 쪽들이 보낸 ACKNACK(어디까지 받았나)을 시간순으로 맞춰, | 10-13 §1.2 · 10-13 §2 |
@@ -107,7 +107,7 @@
 | [`job4v.sh`](../../debug_log/2026-08-27/jobs/job4v.sh) | USB 대역폭 테스트: 토폴로지 + (A) 카메라 풀스트림+LiDAR 동시 vs (B) 카메라 단독 비교 | 08-27 결과 (수치) |
 | [`job4w.sh`](../../debug_log/2026-08-27/jobs/job4w.sh) | 동시 부하 재측정: LiDAR 발행 확인 후 scan/depth/color/imu/odom 5개 동시 15s (window 100) | — |
 | [`job4x.sh`](../../debug_log/2026-08-27/jobs/job4x.sh) | 센서 통합 launch로 전환 + slam_toolbox 스모크 테스트 + foxglove | — |
-| [`job4y.sh`](../../debug_log/2026-08-27/jobs/job4y.sh) | LiDAR yaw 정렬 측정: 로버 정면(카메라 방향) 0.3m에 손/책을 5초간 두고 실행 → lidar_yaw 산출 | 08-27 미해결·다음 (다음 세션) · 08-27 한 일 |
+| [`job4y.sh`](../../debug_log/2026-08-27/jobs/job4y.sh) | LiDAR yaw 정렬 측정: 로버 정면(카메라 방향) 0.3m에 손/책을 5초간 두고 실행 → lidar_yaw 산출 | 08-27 미해결·다음 (다음 세션) · 08-27 한 일 · 10-29 §7 |
 | [`job4z.sh`](../../debug_log/2026-08-27/jobs/job4z.sh) | 회전 슬립 계수 정밀 캘리브레이션 (자이로 기준). 인자: 각속도 지령(기본 0.3), 지속 초(기본 4) | 08-27 한 일 |
 | [`job5a.sh`](../../debug_log/2026-08-27/jobs/job5a.sh) | W3: 확정 URDF 반영 → colcon → base.launch 재시작(agent 포함) → sensors.launch 재시작(컨디셔너 1.0) | — |
 | [`job5b.sh`](../../debug_log/2026-08-27/jobs/job5b.sh) | W4 슬립 재캘리브레이션 (자이로 기준, WT-600 게이지 0.245 반영 펌웨어). 접지 상태·사용자 입회. | — |
@@ -145,7 +145,7 @@
 | [`job7j.sh`](../../debug_log/2026-08-28/jobs/job7j.sh) | 회전 로그 확인 + 프로세스 생존 여부 + 현재 상태 | — |
 | [`job7k.sh`](../../debug_log/2026-08-28/jobs/job7k.sh) | 견고한 detach 회전 코어 — 로그에 진행상황 실시간 flush 기록. WiFi 무관하게 완주. | — |
 | [`job7k_launch.sh`](../../debug_log/2026-08-28/jobs/job7k_launch.sh) | 견고한 detach 실행 + 즉시 초기 확인 | — |
-| [`job7l.sh`](../../debug_log/2026-08-28/jobs/job7l.sh) | 맵 저장 + 통계 + PNG 렌더 + 현재 pose(360° 후 시작 부근 복귀 확인) | — |
+| [`job7l.sh`](../../debug_log/2026-08-28/jobs/job7l.sh) | 맵 저장 + 통계 + PNG 렌더 + 현재 pose(360° 후 시작 부근 복귀 확인) | 10-29 §7 |
 | [`job8a.sh`](../../debug_log/2026-08-28/jobs/job8a.sh) | 스캔/오도 타이밍 정합 정적 분석 (주행 불필요) — "포인트 끌림" 원인 특정 | — |
 | [`job8b.sh`](../../debug_log/2026-08-28/jobs/job8b.sh) | 재스탬프+slam튜닝 배포 → lidar/slam 재시작 → 스캔 지연 재측정(개선 확인) | — |
 
@@ -277,7 +277,7 @@
 | [`job53_bench.py`](../../debug_log/2026-09-07/jobs/job53_bench.py) | Nav2 컨트롤러 벤치마크 (2026-09-07, 스케일 교정 후 재측정). | — |
 | [`rover_cli.ps1`](../../debug_log/2026-09-07/jobs/rover_cli.ps1) | rover_cli.ps1 - F405 UART5 debug console (Windows) | 09-07 UART5 디버그 콘솔 — 현재 배선에서 동작하지 않음 (신규 확인) |
 | [`run_sig.sh`](../../debug_log/2026-09-07/jobs/run_sig.sh) | 사용: run_sig.sh <출력이름> <DUR> <VX> | — |
-| [`stuck_monitor.py`](../../debug_log/2026-09-07/jobs/stuck_monitor.py) | stuck_monitor — rover-level 정체/접촉 감시 (2026-09-07). | 09-07 구현 (1·2번) · 09-07 구현 검증 주행 `job55` (RPP + stuck_monitor sh · 09-07 다음 세션 할 일 (순서) · … +59 |
+| [`stuck_monitor.py`](../../debug_log/2026-09-07/jobs/stuck_monitor.py) | stuck_monitor — rover-level 정체/접촉 감시 (2026-09-07). | 09-07 구현 (1·2번) · 09-07 구현 검증 주행 `job55` (RPP + stuck_monitor sh · 09-07 다음 세션 할 일 (순서) · … +60 |
 
 ## 2026-09-08 (42)
 
@@ -324,7 +324,7 @@
 | [`run_osc.sh`](../../debug_log/2026-09-08/jobs/run_osc.sh) | 사용: run_osc.sh <csv이름> <x> <y> <yaw> <timeout> | — |
 | [`run_param.sh`](../../debug_log/2026-09-08/jobs/run_param.sh) | 사용: run_param.sh <node> <param=value> ...  (런타임 파라미터 변경 + 확인) | — |
 | [`run_smpos.sh`](../../debug_log/2026-09-08/jobs/run_smpos.sh) | stuck_monitor 정탐 검증 — /cmd_vel 을 /cmd_vel_test 로 리매핑해 로버는 정지한 채 "지령만" 흘림 | — |
-| [`stuck_monitor.py`](../../debug_log/2026-09-08/jobs/stuck_monitor.py) | stuck_monitor — rover-level 정체/접촉 감시 (2026-09-07). | 09-07 구현 (1·2번) · 09-07 구현 검증 주행 `job55` (RPP + stuck_monitor sh · 09-07 다음 세션 할 일 (순서) · … +59 |
+| [`stuck_monitor.py`](../../debug_log/2026-09-08/jobs/stuck_monitor.py) | stuck_monitor — rover-level 정체/접촉 감시 (2026-09-07). | 09-07 구현 (1·2번) · 09-07 구현 검증 주행 `job55` (RPP + stuck_monitor sh · 09-07 다음 세션 할 일 (순서) · … +60 |
 
 ## 2026-09-09 (78)
 

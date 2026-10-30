@@ -2,14 +2,16 @@
 
 | 상태 | 기간 | 처음 본 곳 | 바꾼 파일 | 관련 문제 |
 |---|---|---|---|---|
-| **우회**(운영 절차로 회피) · 펌웨어 재연결 로직 없음 — 이 시기 기준 | 08-26 ~ 09-03 (이후 09-07 · 09-09 · 09-11 계속) | [08-26 판단·결정 2](../debug_log/2026-08-26/SUMMARY.md) | `/etc/udev/rules.d/99-rover.rules`(Jetson, 08-26 `job0c.sh`) · `ros2_ws/src/rover_bringup/launch/base.launch.py`(Docker agent `-b 2000000` → 09-09 에 460800) | [자이로 소스 → D455f](gyro-source-d455f.md)(같은 날 시작) · micro-ROS 보드율 회귀(09-09, 카드 예정) |
+| **우회**(운영 절차로 회피) · 펌웨어 재연결 로직 없음(지금 펌웨어도 같음) · 09-11 에 순서 규칙('agent 먼저, 보드 리셋 나중')과 보드 연결 게이트(`job240_clean.sh`)로 정리 | 08-26 ~ 09-11 (1 기 08-26 ~ 09-03, 2 기 09-07 ~ 09-11) | [08-26 판단·결정 2](../debug_log/2026-08-26/SUMMARY.md) | `/etc/udev/rules.d/99-rover.rules`(Jetson, 08-26 `job0c.sh`) · `ros2_ws/src/rover_bringup/launch/base.launch.py`(Docker agent `-b 2000000` → 09-09 에 460800) · 09-11 `Docs/debug_log/2026-09-11/jobs/job240_clean.sh`(깨끗한 기동 + 보드 연결 게이트) | [자이로 소스 → D455f](gyro-source-d455f.md)(같은 날 시작) · [micro-ROS 보드율 회귀](microros-baud-regression.md)(09-09) · [DDS 공유메모리 사고](dds-shm-incident.md)(09-09 정리 스크립트가 agent 까지 지움 · 09-11 RSP 고아) · [CPU 부족 정지](cpu-load-stalls.md) |
 
-**한 줄**: Jetson 은 CH340(USB-시리얼)으로 보드와 붙고, 장치 이름이 드라이버마다 달라 udev 로 `/dev/rover` 를 고정했다. micro-ROS agent 는 apt 패키지가 없어 Docker 로 띄웠다(2 Mbps). 펌웨어는 **부팅 직후 agent 가 나타날 때까지 ping 하다가 한 번만 세션을 맺고**, 그 뒤 agent 가 바뀌어도 다시 맺지 않는다. 그래서 '보드가 이미 세션을 맺은 상태에서 agent 를 다시 띄우면' 토픽이 사라지고 보드 RESET(물리 버튼 또는 ST-Link `-rst`)이 필요했다. 이 시기에는 펌웨어를 고치지 않고(사용자 규칙: 펌웨어 수정 금지 → 과제로만 기록) **agent 를 건드리지 않는 재시작 스크립트**로 피했다. 원인 기전의 정식 설명은 09-11 §5.7 에서 나온다(이 카드 범위 밖).
+**한 줄**: Jetson 은 CH340(USB-시리얼)으로 보드와 붙고, 장치 이름이 드라이버마다 달라 udev 로 `/dev/rover` 를 고정했다. micro-ROS agent 는 apt 패키지가 없어 Docker 로 띄웠다(2 Mbps). 펌웨어는 **부팅 직후 agent 가 나타날 때까지 ping 하다가 한 번만 세션을 맺고**, 그 뒤 agent 가 바뀌어도 다시 맺지 않는다. 그래서 '보드가 이미 세션을 맺은 상태에서 agent 를 다시 띄우면' 토픽이 사라지고 보드 RESET(물리 버튼 또는 ST-Link `-rst`)이 필요했다. 이 시기에는 펌웨어를 고치지 않고(사용자 규칙: 펌웨어 수정 금지 → 과제로만 기록) **agent 를 건드리지 않는 재시작 스크립트**로 피했다. 2 기(09-07 ~ 09-11)에도 같은 규칙이 반복 확인됐다 — 09-09 하루 동안 진단 · SHM 정리 스크립트가 agent 컨테이너를 여러 번 지워 그때마다 RESET 이 필요했고, 09-11 에는 사용자가 보드를 먼저 리셋한 뒤 내가 agent 를 재시작해 세션이 안 맺어졌다(시리얼에는 3 초에 69 474 B 가 흐르는데 보드 노드 없음). 이를 'XRCE-DDS 세션은 클라이언트(보드)가 `CREATE_SESSION` 을 보내야 맺어지고, 보드는 이미 맺었다고 믿고 데이터만 보낸다' 로 설명하고(09-11 §5.7), 기동 절차 `job240_clean.sh` 에 **보드 연결 게이트**(무발행이면 시리얼 수신량으로 '리셋 순서 문제' 와 '보드 정지 · 배선' 을 갈라 안내하고 중단)를 넣었다.
 
 ## 1. 증상
 - agent(Docker 컨테이너)는 살아 있는데 `/wheel_odom` · `/battery` · `/rover/f5b_heartbeat` · `/imu/data_raw` 가 전부 `does not appear to be published yet`, 노드 목록에 `/rover_jupiter` 없음. [08-28 출력 `job7b_board_session.txt`](../debug_log/2026-08-28/outputs/job7b_board_session.txt) — agent `Up About an hour`.
 - 보드 RESET 버튼 뒤 같은 스크립트로 `/wheel_odom` 48.599 Hz · 배터리 11.96 V · `/imu/data_raw` 50.001 Hz 로 돌아옴. [`job7b_after_reset.txt`](../debug_log/2026-08-28/outputs/job7b_after_reset.txt)
 - 펌웨어 플래시 뒤에도 보드가 agent 에 붙지 않음(agent 가동 중이어도) → ST-Link `-rst` 로 해결. [09-03 '부수 발견 (운영)'](../debug_log/2026-09-03/SUMMARY.md)
+- (2 기) 09-11: 보드 노드가 아예 안 보이는데 시리얼에는 3 초에 69 474 B(`base_link` 문자열 포함)가 흐름 — 보드는 송신 중, agent 는 세션 없음. [09-11 §5.7](../debug_log/2026-09-11/SUMMARY.md)
+- (2 기) 09-10 · 09-11: 재부팅 뒤 base 를 빠뜨려 보드 토픽 전멸 — 겉으로는 'Nav2 활성화가 느리다' 로 보임. [09-11 §5.4](../debug_log/2026-09-11/SUMMARY.md)
 
 ## 2. 흐름 (시간순)
 | 날짜 · 제목 | 한 일 | 본 것(수치) | 그때 결론 | 데이터 |
@@ -33,7 +35,16 @@
 | 09-03 '부수 발견 (운영)' | 플래시 뒤 데드밴드 측정 | **플래시 후 보드가 agent 에 자동 재연결되지 않음**(agent 가동 중이어도) → ST-Link `-rst` 로 해결. 디버거 없으면 물리 RESET | 플래시 세션엔 디버거 연결 유지 | `job32c_min012.txt`('보드 재연결:' 칸이 빈 줄 — §5 참조) · `job32e_min016.txt`(agent `Up 5 minutes`, `/wheel_odom` 50.011, `/rover_jupiter` 있음) |
 | 09-03 오후 | 스톨 래치 → 사용자 보드 RESET → 세션 재수립 · 새 펌웨어 플래시 · `-rst` | `-rst` 뒤 `/rover/status` level 0, `/wheel_odom` 50 Hz, 배터리 11.99 V | — | 09-03 '플래시 + Jetson Wi-Fi 간헐 무응답' |
 | 09-03 '내일 할 일' | 다음 날 절차 확정 | — | agent 살아 있으면 `job33a_reset_noagent.sh`, 없으면 `job20a_boot.sh`(**보드 RESET 필요**) | `jobs/job33a_reset_noagent.sh` · [`outputs/job33a_reset.txt`](../debug_log/2026-09-03/outputs/job33a_reset.txt) |
-| **이후(09-04 ~)** | 다음 시기에서 채움 | 지시만: 09-07 'agent 재생성 때문에 세션 미수립 → 물리 RESET'(09-07 SUMMARY) · **09-09 2 Mbps 에서 `/wheel_odom` 소실 → 460800 우회**(09-09 SUMMARY · CLAUDE.md) · **09-11 §5.7 '세션은 보드가 먼저 리셋되면 안 맺어진다' — agent 먼저, 보드 리셋 나중 + `job240_clean.sh` 보드 연결 게이트** | — | — |
+| **2 기** 09-07 머리 | Jetson 재부팅(업타임 4 분) 뒤 `/tmp` 스크립트 14 개 재전송 → `job20a` 전체 기동 | '보드는 리셋 없이 접속(wheel_odom 50Hz)' | 새로 뜬 agent + (이미 기다리던) 보드 = 규칙과 일치(보드가 재부팅 중 ping 대기였는지는 **미확인**) | [09-07 SUMMARY](../debug_log/2026-09-07/SUMMARY.md) 머리말 |
+| 09-07 '교정 검증(플래시 후, 충전 완료 뒤 재기동)' | 펌웨어 플래시 · 충전 뒤 스택 재기동 | '보드는 **agent 재생성 때문에 세션 미수립** → 물리 RESET 후 정상' | 08-26 규칙 재확인. 플래시(= 보드 리셋)가 agent 재생성보다 먼저였다면 09-11 §5.7 순서 규칙과도 같은 사례(순서 기록 없음 — **미확인**) | [09-07 SUMMARY](../debug_log/2026-09-07/SUMMARY.md) 같은 제목 절 |
+| 09-09 §4 · §6.5 | 링크 진단 중 agent 를 직접 다시 띄움: `job110`(`-v6` agent) → '보드 RESET 버튼을 눌러 주세요' / `job115`(정상 agent 복귀) → '이제 보드 리셋 필요' / `job117`(`-b 460800` agent) + 460800 펌웨어 플래시 | 각 단계 뒤 RESET 으로 세션 재수립(SUMMARY: §6.5 의 `-v6` 집계는 RESET 뒤 60 s) | agent 를 바꿀 때마다 RESET 을 짝으로 — 규칙대로 운용. `job97` · `job123` 은 주석에 'agent · base 는 건드리지 않는다' 를 명시 | `2026-09-09/jobs/job110_v6.sh` · `job115_normalagent.sh` · `job117_baud.sh` · `job97_recover.sh` · `job123_reinit.sh`(출력 원문 없음 — 09-09 `outputs/` 비어 있음) |
+| 09-09 §8.9 · §8.11 · §8.15 | SHM 정리 · 스택 재기동 스크립트가 **agent 컨테이너까지 삭제**: `job150` · `job156` · `job164` · `job174`(`docker rm -f microros_agent` → base 재기동) | `job151`: '노드: 없음 — RESET 필요' · §8.11: 'STVL 기동 성공 … **주행 검증 미실행(보드 RESET 필요 상태)**' · `job174` 검증 줄 '보드: 없음 — RESET 필요' | 정리 범위에 base 계층을 넣으면 매번 사람 손(RESET)이 든다 → 09-11 job240 이 'base 계층은 정리하지 않는다' 로 바꿈 | `job150_recover.sh` · `job151_check.sh` · `job164_stvlup.sh` · `job174_dds.sh`([DDS 카드](dds-shm-incident.md)) |
+| 09-09 | 보드율 2 000 000 → 460 800(양쪽) | → [보드율 회귀 카드](microros-baud-regression.md) | 세션 문제와는 다른 문제(세션은 있는데 큰 메시지가 사라짐) | — |
+| 09-10 · 09-11(§5.4 회고) | 재부팅 뒤 기동에서 **base(micro-ROS agent)를 빠뜨림** | 보드 토픽 전멸 → 'Nav2 활성화가 느리다' 로 **오인**(두 번) | 기동 순서 base → sensors → slam → nav2 고정(뒤 단계가 앞 단계 TF · 토픽에 의존). §5.3 | [09-11 SUMMARY §5.4 · §6](../debug_log/2026-09-11/SUMMARY.md) |
+| 09-11 §5.7 | 사용자가 로버를 옮기고 **보드 리셋** → 그 뒤 내가 **agent 재시작** | 보드 노드 안 보임. 그런데 시리얼에 3 초 **69 474 B**(내용에 `base_link` 문자열) — 보드는 정상 송신 중 | '**XRCE-DDS 세션은 클라이언트(보드)가 `CREATE_SESSION` 을 보내야 맺어진다.** 보드는 리셋 직후 이미 맺었다고 믿고 데이터만 보내고, 새 agent 는 그 세션을 몰라 전부 무시' → **agent 먼저, 보드 리셋 나중**. 69 474 B / 3 s = 23.2 kB/s ≈ 보드 발행 예산 22.1 kB/s(계산 — 보드가 평소 양을 그대로 보내고 있었다는 뜻) | `2026-09-11/jobs/job240_clean.sh`(게이트 주석에 같은 서술), 출력 원문 없음 |
+| 09-11 §5.4 · §5.7 | `job240_clean.sh` 제정 → 2 차: base 계층 보존 + **보드 연결 게이트** | 무발행이면 시리얼 3 초 수신 바이트로 갈라 안내 · 중단(> 1000 B: '에이전트보다 보드 리셋이 먼저였다 → 보드 리셋 한 번 더' / 그 이하: '보드 정지 · 배선 · 전원') | 빈 값으로 조용히 지나가지 않게 — 1 기 §5.2(job32c) 결함의 해법 | `job240_clean.sh` §8.17 |
+| 09-11 §5.9 | nav2 만 재기동하며 전 스택 중복 감사 | `robot_state_publisher` 2 개(base.launch 의 고아 자식) | 고아 정리 → [DDS 카드](dds-shm-incident.md) | `job249_nav2only.sh` · `job252_fix_then_drive.sh` |
+| **이후(09-12 ~)** | 다음 시기에서 채움 | 지시만: 09-16 agent 컨테이너에도 UDP 프로파일 마운트(호스트만 루프백 화이트리스트로 묶자 `/wheel_odom` 0 — job359/360) · 10-20 §9.7 보드 USB 끊김 → 재연결(`/dev/ttyUSB0` 재생성) 뒤 재prep | — | — |
 
 ## 3. 가설과 판별
 | 가설 · 주장 | 판별 | 결과 | 판정 |
@@ -43,8 +54,10 @@
 | 60 s 주기 time resync(`rmw_uros_sync_session`)가 agent 재연결을 복구한다 | 08-26 펌웨어 소스 읽기(주석 'agent 재연결 복구') | resync 는 시각만 맞추고 엔티티(노드 · 발행자)를 다시 만들지 않음 | **기각**(08-26 판단 2) — 주석이 기능을 과장 |
 | 보드가 새로 부팅한 상태(전원 사이클)면 RESET 없이 붙는다 | 08-28 job6b · 08-31 job8d · 09-02 job20a · 09-01 job14a(부팅 뒤 agent 없음) | 모두 agent 기동 10~12 s 안에 `/wheel_odom` ≈ 50 Hz | **지지**(추정 기전: 보드가 부팅 직후 ping 루프에서 agent 를 기다리고 있었음. 각 경우 보드가 실제로 재부팅했는지는 08-31 · 09-02 만 SUMMARY 에 명시) |
 | 모순 1: 08-27 job5a 는 세션 중 agent 를 다시 띄웠는데 RESET 없이 49.997 Hz | job5a 직전에 사용자가 `WHEEL_BASE_M` 0.245 펌웨어를 플래시(08-27 W 트랙) | 보드가 플래시 뒤 아직 세션을 맺지 않은(ping 대기) 상태였을 수 있음 | **미확인**(추정만). 이 한 번이 '규칙 예외'로 남는다 |
-| 모순 2: 09-03 '플래시 후 자동 재연결 안 됨(agent 가동 중이어도)' — 위 '새로 부팅하면 붙는다' 와 반대 | 순서 기록: 플래시(`-rst` 포함) → `job32c` 가 **agent 를 지우고 다시 띄움** → '보드 재연결:' 빈칸 → 이후 `-rst` → `job32e` 에서 agent `Up 5 minutes` 와 함께 세션 정상 | 끊김이 플래시 때문인지, job32c 의 agent 재시작 때문인지(= 08-26 규칙) 구분 안 됨 | **미확인** — 09-11 §5.7 의 '보드 리셋 → agent 재시작 순서면 안 맺어짐' 이 같은 현상일 가능성(추정) |
+| 모순 2: 09-03 '플래시 후 자동 재연결 안 됨(agent 가동 중이어도)' — 위 '새로 부팅하면 붙는다' 와 반대 | 순서 기록: 플래시(`-rst` 포함) → `job32c` 가 **agent 를 지우고 다시 띄움** → '보드 재연결:' 빈칸 → 이후 `-rst` → `job32e` 에서 agent `Up 5 minutes` 와 함께 세션 정상 | 끊김이 플래시 때문인지, job32c 의 agent 재시작 때문인지(= 08-26 규칙) 구분 안 됨 | **미확인** — 09-11 §5.7 의 '보드 리셋 → agent 재시작 순서면 안 맺어짐' 이 같은 현상일 가능성(추정) · 2 기 대조: 순서(플래시 = 보드 리셋 → 그 뒤 job32c 가 agent 재시작)가 §5.7 사고와 **같다** → §5.7 규칙으로 설명된다(**지지 쪽**, 직접 재현은 없음) |
 | 09-03 오후 Jetson 재부팅 뒤 job34a 에서 RESET 없이 50.002 Hz | Jetson 재부팅이 보드도 재부팅시키는지 | 기록 없음 | **미확인** |
+| (2 기) '보드가 먼저 리셋되고 그 뒤 agent 가 새로 뜨면 세션이 안 맺어진다'(09-11 §5.7) | 사고 당시 시리얼 수신량(3 초 69 474 B, `base_link` 문자열) vs 보드 노드 없음 | 보드는 송신 중 · agent 는 세션 없음 | **지지**(관찰 1 회 + 규칙과 일치). 기전 서술 '보드는 이미 맺었다고 믿고' 는 펌웨어가 부팅 뒤 한 번만 세션을 맺는 구조(1 기 `microros_task.c` ping 루프)와 맞다 — 보드 리셋 때 **옛 agent 가 아직 살아 있어** 그 agent 와 세션을 맺은 뒤, 내가 agent 를 바꿨다는 순서로 읽힌다(**추정** — 시각 기록 없음). 즉 08-26 규칙('세션이 맺어진 뒤 agent 를 바꾸면 끊긴다')과 같은 현상을 다른 쪽에서 본 것 |
+| (2 기 대조) 모순 1(08-27 job5a: 플래시 뒤 agent 재시작인데 정상) | §5.7 규칙을 적용 | 규칙대로면 실패했어야 함 | 여전히 **미확인** — 플래시 순간 agent 가 꺼져 있었다면(보드가 ping 대기 상태로 남음) 설명되지만 기록 없음 |
 
 ## 4. 조치와 효과
 - **장치 이름 고정**: `/etc/udev/rules.d/99-rover.rules` — `SUBSYSTEM=="tty", ATTRS{idVendor}=="1a86", ATTRS{idProduct}=="7523", SYMLINK+="rover", GROUP="dialout", MODE="0660"`. 08-28 · 08-31 재부팅 뒤에도 유지 확인(`job6b` 출력 `/dev/rover -> ttyCH341USB0`, 08-31 '한 일').
@@ -52,6 +65,12 @@
 - **운영 절차**(이 시기 확정): ① 위치만 다시 잡을 때는 agent · `base.launch` 를 건드리지 않고 EKF · SLAM 만 재시작(`job18b` → `job21a` → `job25a` → `job33a`) ② agent 를 새로 띄워야 하면 보드 RESET 을 짝으로 ③ 플래시 뒤엔 ST-Link `-rst`(디버거 연결 유지).
 - 효과: 09-01 ~ 09-03 의 위치 재설정 재시작에서 보드 세션 유지(`job18b` · `job21a` · `job33a` 출력: `/wheel_odom` 49.955 Hz 등).
 - 한계: 펌웨어 재연결 로직이 없으므로 agent 가 죽으면(Jetson 재부팅 등) 사람 손이 필요. 원인 해결이 아니라 회피.
+- **2 기 추가(09-11)**:
+  - **순서 규칙**: agent 를 먼저 띄우고 그 다음 보드를 리셋한다(§5.7). 재부팅 뒤 기동 순서 base → sensors → slam → nav2(§5.4 · §6).
+  - **base 계층 보존**: `job240_clean.sh` 는 센서 · SLAM · Nav2 만 정리 · 재기동하고, agent 가 살아 있고 `/wheel_odom` 이 6 s 안에 Hz 를 내면 base 를 건드리지 않는다('세션 유지'). agent 가 없거나 무발행일 때만 base 를 띄운다.
+  - **보드 연결 게이트**: base 단계 뒤 `/wheel_odom` · `/rover/status` 를 각 8 s `hz` — 하나라도 비면 시리얼 3 초 수신 바이트로 원인을 갈라 안내하고 **exit 1**('보드 없이는 `/cmd_vel` 이 전달되지 않아 주행 불가'). 1 기 §5.2 · §5.1(빈 값 · 고정 문구) 결함을 측정 분기로 바꾼 것.
+  - 효과: 09-11 §5.4 이후 '깨끗한 기동' 에서 첫 완주(job242) 등 — 세션 문제로 잃은 주행 기록은 이 날 뒤로 SUMMARY 에 없다(이 카드 범위 09-11 까지).
+- 지금 펌웨어(`App/microros/microros_task.c`): 여전히 부팅 때 `rmw_uros_ping_agent` 루프(222 행) → 엔티티 생성 1 회, 60 s 주기 `rmw_uros_sync_session` 의 주석은 아직 '…+ agent 재연결 복구' 라고 적혀 있다(561 행 — 1 기 §3 에서 기각된 과장이 그대로 남음).
 
 ## 5. 내 실수 · 기록 결함
 ### 5.1 재시작 스크립트가 결과와 상관없이 'NEXT: 보드 RESET' 을 찍음
@@ -78,11 +97,36 @@
 | 다음에 알아보는 법 | 서명: 모든 지령에서 정확히 0 의 변화 + 상태 줄 빈칸. 판정 줄은 `PIPESTATUS` 나 결과 문자열 검사로 실패를 명시적으로 찍는다 |
 | 데이터 | [`2026-09-03/outputs/job32c_min012.txt`](../debug_log/2026-09-03/outputs/job32c_min012.txt) · `job32d_min012.txt` · `jobs/job32c_reagent.sh` |
 
-## 6. 남은 것 (이 시기 기준)
-- 펌웨어 재연결 로직(ping 실패 → 엔티티 재생성) — 08-26 펌웨어 과제 목록 1 번. 이후 시기에서 처리 여부 확인.
-- 모순 1(08-27 job5a) · 모순 2(09-03 플래시 뒤) 의 기전 — 09-11 §5.7 의 순서 규칙으로 설명되는지 다음 시기 카드에서 대조.
+### 5.3 base(agent)를 빠뜨리고 'Nav2 활성화가 느리다' 로 읽음 (09-10 · 09-11 두 번)
+| 칸 | 내용 |
+|---|---|
+| 하려 한 것 | Jetson 재부팅 뒤 스택 기동(sensors → slam → nav2) |
+| 본 것 | Nav2 lifecycle 이 active 로 안 넘어감 / 오래 걸림, 보드 토픽 없음 |
+| 처음 추론 | 'Nav2 활성화가 느리다'(부하 · 타임아웃 쪽) |
+| 의심한 이유 | 보드 토픽이 **전멸** — Nav2 가 아니라 그 앞 단계가 비어 있음. 사용자 지적 "너가 설정을 깔끔하게 초기화하지 못해서, 재부팅했다" |
+| 판별 | 기동 기록: 재부팅 뒤 base.launch(agent)를 안 띄웠다. EKF 는 `/wheel_odom` 을 못 받고, TF 가 비어 코스트맵 · 컨트롤러 활성화가 늦어진다(**추정** — Nav2 쪽 로그 원문 없음) |
+| 결론 | 기동 순서 base → sensors → slam → nav2 를 스크립트(`job240_clean.sh`)로 고정, base 단계 뒤 보드 연결 게이트 |
+| 다음에 알아보는 법 | 서명: '뒤 단계가 느리다' 처럼 보일 때 **보드 토픽(`/wheel_odom`)부터** 본다. 기동 스크립트는 각 단계 끝에 그 단계의 산출(토픽 Hz · TF)을 확인하고 비면 멈춘다 |
+| 데이터 | [09-11 SUMMARY §5.4 · §6](../debug_log/2026-09-11/SUMMARY.md), `2026-09-11/jobs/job240_clean.sh` 머리 주석. 09-10 · 09-11 해당 출력 원문 없음 |
+
+### 5.4 사용자 보드 리셋 뒤 내가 agent 를 재시작 — 세션 0 건 (09-11 §5.7)
+| 칸 | 내용 |
+|---|---|
+| 하려 한 것 | 로버를 옮긴 뒤 깨끗한 상태에서 다시 시작(사용자: 보드 리셋, 나: 그 뒤 기동 스크립트로 agent 포함 재시작) |
+| 본 것 | 보드 노드가 아예 안 보임, 토픽 무발행 |
+| 처음 추론 | (기록상 첫 추론은 없음) 보드가 멈췄거나 배선 문제일 수도 |
+| 의심한 이유 | 시리얼을 직접 3 초 읽으니 69 474 B, 내용에 `base_link` 문자열 — 보드는 평소처럼 보내고 있었다 |
+| 판별 | 순서: 보드 리셋(옛 agent 살아 있음) → agent 교체. XRCE-DDS 세션은 클라이언트가 `CREATE_SESSION` 을 보내야 맺어지는데, 보드는 부팅 때 한 번 맺은 뒤로는 다시 보내지 않는다 |
+| 결론 | agent 먼저 · 보드 리셋 나중. 기동 스크립트는 agent 가 살아 있으면 base 를 건드리지 않는다(job240 2 차) |
+| 다음에 알아보는 법 | 서명: **보드 노드 없음 + 시리얼에 데이터가 흐름**(> 1000 B / 3 s) = 세션 순서 문제 → 보드 리셋 한 번 더. **시리얼도 조용함** = 보드 정지 · 배선 · 전원. 이 판별을 `job240_clean.sh` 게이트가 자동으로 한다 |
+| 데이터 | 09-11 SUMMARY §5.7, `job240_clean.sh` 게이트 주석. 출력 원문 없음(`/tmp/ser.bin` 원천 소실) |
+
+## 6. 남은 것 (09-11 기준)
+- 펌웨어 재연결 로직(ping 실패 → 엔티티 재생성) — 08-26 펌웨어 과제 목록 1 번. **09-11 까지 미처리**(지금 펌웨어도 부팅 때 1 회). 이후 시기에서 처리 여부 확인.
+- 모순 1(08-27 job5a)은 09-11 순서 규칙으로도 설명 안 됨 — 미확인으로 남김. 모순 2(09-03 플래시 뒤)는 순서가 §5.7 사고와 같아 규칙으로 설명됨(재현 없음).
 - Jetson 재부팅이 보드를 재부팅시키는지(09-03 job34a) — 미확인.
-- 2 Mbps 설정은 08-26 · 08-27 에 50 Hz 두 토픽을 안정적으로 실었음(`job4x` `/wheel_odom` 49.995 Hz). 09-09 회귀는 다음 시기.
+- 2 Mbps 설정은 08-26 · 08-27 에 50 Hz 두 토픽을 안정적으로 실었음(`job4x` `/wheel_odom` 49.995 Hz). 09-09 회귀 · 460 800 우회는 [보드율 회귀 카드](microros-baud-regression.md).
+- `job240_clean.sh` 게이트의 한계(§8.17): 세션 수립 수를 `/tmp/base.log` 에서 세는데 base 를 유지한 경우 그 로그는 옛 것 · agent 상세도 옵션이 없어 'session established' 줄이 찍히는지 미확인 · 무발행 판정 때 agent 와 동시에 시리얼을 읽음.
 
 ## 7. 실험 · 도구 색인
 | 이름 | 무엇 | 위치 |
@@ -93,9 +137,13 @@
 | 전원 사이클 뒤 자동 수립 | job6b · job8d · job14a · job20a | 08-28 · 08-31 · 09-01 · 09-02 |
 | 플래시 뒤 미연결 | cycle.sh · job32c · chk_board | 09-03 `jobs/` · `outputs/job32c_min012.txt` · `job32e_min016.txt` |
 | agent 유지 재시작 | job18b · job21a · job25a · job33a | 08-31 · 09-02 · 09-03 |
+| (2 기) agent 를 바꾼 진단 | job110(`-v6`) · job115(정상 복귀) · job117(460800) — 매번 RESET | `2026-09-09/jobs/` |
+| (2 기) agent 까지 지운 정리 | job150 · 156 · 164 · 174 → 'RESET 필요' | `2026-09-09/jobs/` |
+| (2 기) agent 유지 재시작 | job97 · job123 · job154(주석 'agent/base 는 건드리지 않는다') | `2026-09-09/jobs/` |
+| (2 기) 깨끗한 기동 + 보드 연결 게이트 | job240_clean.sh(→ job249 nav2 만) | `2026-09-11/jobs/` |
 
 ## 8. 도구 해설
-도구 계보: `job0 → job0b → job0c`(장치) · `job1 → job1b → job1c`(agent · 토픽 확인) · `job1 → base.launch.py(job2c)` · `job2d → job2e`(재검증) · `job6b → job8d → job14a → job16a_init → job20a_boot`(전체 기동) · `job18b → job21a → job25a → job33a_reset_noagent`(agent 유지 재시작) · `job7b · chk_board`(세션 확인) · `cycle.sh → job32c_reagent`(플래시 뒤). 공통 실행 형태: PC(Windows) → WSL `sshpass` → Jetson 에서 `bash /tmp/<job>.sh`(스크립트를 `/tmp` 로 올려 실행 — `job34a_boot.txt` 머리의 '스크립트 재전송' 줄). 예외: `cycle.sh` · `stage_microros.sh` 는 PC.
+도구 계보: `job0 → job0b → job0c`(장치) · `job1 → job1b → job1c`(agent · 토픽 확인) · `job1 → base.launch.py(job2c)` · `job2d → job2e`(재검증) · `job6b → job8d → job14a → job16a_init → job20a_boot`(전체 기동) · `job18b → job21a → job25a → job33a_reset_noagent`(agent 유지 재시작) · `job7b · chk_board`(세션 확인) · `cycle.sh → job32c_reagent`(플래시 뒤). 2 기: `job20a_boot`(09-07 · 09-09 재부팅 뒤 그대로 사용) · `job33a 계열 → job97_recover · job123_reinit · job154_reinit`(agent 유지, 09-09) · `job150 · job164 · job174`(agent 까지 정리 — 되돌린 방향) → **`job240_clean.sh`**(09-11, base 보존 + 게이트) → `job249_nav2only.sh`(nav2 만) — 이후 `Docs/tools/prep_fast.sh` · `prep_patrol.sh`(10-12 ~)로 흡수. 공통 실행 형태: PC(Windows) → WSL `sshpass` → Jetson 에서 `bash /tmp/<job>.sh`(스크립트를 `/tmp` 로 올려 실행 — `job34a_boot.txt` 머리의 '스크립트 재전송' 줄). 예외: `cycle.sh` · `stage_microros.sh` 는 PC.
 
 ### 8.1 `job0.sh` — Step 0 장치 점검
 - 실행: Jetson, 인자 없음.
@@ -202,6 +250,33 @@
 | `job25a_fullreset.sh` | 09-02 | Nav2 종료 → EKF → SLAM → Nav2 재기동 · lifecycle · 방향별 여유 | 유지 | `job25a_fullreset.txt` |
 | `stage_microros.sh` | 09-03 WSL | WSL `~/microros_build/firmware/build` 의 `libmicroros.a` · include 를 `/mnt/c/temp_microros` 로 복사, `include/X/X/*` 평탄화, 헤더 수 출력 | — | 원문 없음. SUMMARY: 7.4 MB · 헤더 1765 재사용으로 30 분+ 절감, WSL 이 F: 를 못 봐 C: 경유 |
 
+### 8.17 `job240_clean.sh` — 깨끗한 기동 + 보드 연결 게이트 ★(09-11)
+- 실행: Jetson(`/tmp` 로 올려 `bash job240_clean.sh [클리어후대기초=15]`). 맨 위 `set +u`(주석: `set -u` 면 ROS `setup.bash` 가 미정의 변수를 참조해 즉시 죽는다).
+- 왜(머리 주석): 그날 혼선의 대부분이 '상태를 보장하지 못한 데서' — ① 재부팅 뒤 base 를 빠뜨려 보드 토픽 전멸을 'Nav2 활성화가 느리다' 로 오인(09-10 · 09-11 두 번) ② 코스트맵 클리어 6 s 뒤 옛 데이터를 읽어 '상자를 옮겼는데 통과 폭 그대로' 오판(job234) ③ 주행 반복으로 코스트맵 오염(통과 폭 0.30 → 0.15 m). → '기동 → 검증 → 클리어 → 충분한 재마킹 대기 → 통과 폭 측정' 을 한 절차로.
+- 하는 일(단계 번호는 스크립트 머리 그대로):
+  1. **정리** — 센서 · SLAM · Nav2 계열 21 개 패턴(`PATS`)을 `pkill -TERM` → `cnt()`(이름별 `pgrep -fc | head -1` 합계)가 0 이 될 때까지 최대 15 s → 남으면 `-9` → '정리 후: N · /dev/shm fastrtps 잔재: M' → 세 로그 비움. base 계층은 정리하지 않고 'agent N 개, robot_state_publisher N 개(각 1 이어야)' 만 표시.
+  2. **base** — `/dev/rover` 실장치 표시 → agent 컨테이너가 1 개이고 `/wheel_odom` 이 6 s 안에 Hz 를 내면 '세션 유지' 로 **생략**, 아니면 base.launch 종료 · 컨테이너 삭제 → base 기동(12 s, '기동 후 보드 리셋이 필요할 수 있다'). 이어서 **게이트**: `/wheel_odom` · `/rover/status` 각 `timeout 8 ros2 topic hz` — 하나라도 빈 값이면 `/tmp/base.log` 의 'session established' 건수 → `timeout 3 cat /dev/rover > /tmp/ser.bin` 바이트 수 → **> 1000 B** 면 '★ 보드는 송신 중인데 세션이 없다 = 에이전트보다 보드 리셋이 먼저였다 → 보드 리셋 버튼을 한 번 더', 아니면 '★ 시리얼에 데이터가 없다 = 보드가 멈췄거나 배선/전원' → '보드 없이는 /cmd_vel 이 전달되지 않아 주행 불가' 로 **exit 1**.
+  3. **sensors**(28 s, 자이로 캘리브 동안 정지 필수) → 'gyro bias' 로그 · `/odometry/filtered` hz.
+  4. **slam**(15 s) → map→odom.
+  5. **nav2**(30 s) → lifecycle 4 개.
+  6. **설정 검증** — 로컬 · 전역 `stvl_layer.voxel_decay` · `decay_model`, BT 파일의 `ClearCostmapExceptRegion` 수 · `<ClearEntireCostmap` 수 · `reset_distance` 값별 수, conditioner 소스의 ZUPT 줄 수 · 로그 건수.
+  7. **코스트맵 클리어 + 재마킹 대기**(기본 15 s).
+  8. **상태** — map→base_link · EKF 위반 · slam 폐기 · load.
+  9. **통과 가능성** — `/tmp/job248_audit.py`(물리 틈 · LETHAL 근거 · RPP 기준 폭, 다른 카드).
+- 출력: 원문 없음(09-11 `outputs/` 는 주행 CSV 만). 게이트가 실제로 막은 사례가 SUMMARY 에 있는지는 §5.7 서술(사고 → 게이트 추가) 외에 **미확인**.
+- 결함(코드 읽기, **추정** 포함): (a) 'session established' 는 `/tmp/base.log` 에서 센다 — base 를 생략한 회차엔 옛 로그, 또 launch 판 agent 는 상세도 옵션이 없어 그 줄이 찍히는지 미확인(1 기 §8.7). (b) `cat /dev/rover` 는 agent 와 같은 장치를 동시에 읽어 바이트를 나눠 가진다 — 무발행 판정 뒤에만 돌아 해는 작지만, 'DDS 발견이 늦어 hz 가 8 s 안에 빈 값' 인 경우엔 정상 세션의 프레임을 깨뜨릴 수 있다. (c) 1000 B 문턱은 근거 수치 없음(평소 23 kB/s 라 3 s 면 ≈ 69 kB — 여유는 큼). (d) SUMMARY §5.9 는 '정리 목록에 robot_state_publisher 이름을 추가' 라고 쓰지만 저장본 `PATS` 에는 없고 개수 표시만 있다([DDS 카드 §6 모순 3](dds-shm-incident.md)).
+- 계보: 1 기 `job33a_reset_noagent.sh`(agent 무접촉) · `job20a_boot.sh`(전체) → 09-09 `job154_reinit.sh`(SIGTERM) → **job240**(base 보존 판단 + 게이트 + 설정 검증 + 재마킹 대기) → `job249_nav2only.sh`(nav2 만 + 전 스택 중복 감사) → 이후 `Docs/tools/prep_fast.sh` · `prep_patrol.sh`(10-12 ~) · 러너 게이트 `chk_drive_gate.py`(10-27).
+- 지금: 그대로는 안 씀(STVL · RPP 시기 설정 검증 포함). 보드 게이트 논리(무발행 → 시리얼 바이트로 두 경우 구분)는 그대로 쓸 만하다.
+
+### 8.18 2 기(09-09)에 agent 를 건드린 스크립트들 — 간단 표
+| 도구 | agent 처리 | 그 뒤 | 출처 |
+|---|---|---|---|
+| `job97_recover.sh` · `job123_reinit.sh` · `job154_reinit.sh` | 건드리지 않음(주석으로 명시) | 세션 유지 · '보드 유지 확인' 줄 | 09-09 jobs |
+| `job110_v6.sh` | 삭제 → `-v6` 판으로 직접 `docker run`(RSP 는 `description.launch.py` 로 따로) | '보드 RESET 버튼을 눌러 주세요' | 09-09 §6.5 |
+| `job115_normalagent.sh` | `-v6` 판 삭제 → base.launch | '이제 보드 리셋 필요' | 같은 곳 |
+| `job117_baud.sh` | 설치본 base.launch 교체(`-b 460800`) → 재기동 | 보드는 460800 펌웨어 플래시로 리셋(agent 가 먼저 떠 있는 순서) | 같은 곳 |
+| `job150_recover.sh` · `job156_stop.sh` · `job164_stvlup.sh` · `job174_dds.sh` | SHM 정리 때 `docker rm -f microros_agent` | 'RESET 필요'(job151 · job174 검증 줄, §8.11) | [DDS 카드](dds-shm-incident.md) |
+
 ## 9. 용어
 - **CH340(N)**: USB↔UART 변환 칩(벤더 1a86, 제품 7523). USB Full-Speed(12 Mbps) 장치(`job4v` 토폴로지 `1-2.1 … speed=12M`).
 - **ttyUSB vs ttyCH341USB**: 같은 칩이라도 커널 기본 `ch341` 드라이버면 `ttyUSB*`, WCH 벤더 드라이버면 `ttyCH341USB*` 로 이름이 달라진다.
@@ -212,6 +287,9 @@
 - **ping 루프(`rmw_uros_ping_agent`)**: 펌웨어가 부팅 직후 1 s 간격으로 agent 존재를 확인하는 반복(08-26 판 `microros_task.c` 183 행). 성공하면 지나가서 다시 돌아오지 않는다.
 - **time resync(`rmw_uros_sync_session`)**: agent 시각과 보드 시각을 맞추는 호출. 60 s 마다 하지만 세션 · 엔티티 재생성은 하지 않는다.
 - **`--net host` · `--device`**: Docker 옵션. 컨테이너가 호스트 네트워크를 그대로 쓰게 함(DDS 탐색용) · 호스트 장치 파일을 컨테이너 안으로 넘김.
-- **보드율(baud) 2,000,000**: UART 속도. 이 시기 설정값. 09-09 에 460800 으로 낮춤(이후 시기).
+- **보드율(baud) 2,000,000**: UART 속도. 1 기 설정값. 09-09 에 460 800 으로 낮춤([보드율 회귀 카드](microros-baud-regression.md)).
+- **`CREATE_SESSION` · client_key**: XRCE-DDS 에서 클라이언트(보드)가 agent 에 보내는 세션 생성 요청과 그 세션을 가리키는 클라이언트 식별값. agent 로그의 `establish_session` · `create_client` 줄에 client_key 가 찍힌다(09-09 `job98` 이 이것으로 세션별 엔티티 수를 셌다). agent 는 자기가 받은 `CREATE_SESSION` 이 없으면 그 클라이언트의 데이터를 버린다.
+- **순서 규칙(09-11)**: agent 를 먼저 띄우고 보드를 나중에 리셋한다. 보드가 먼저 리셋되면 그때 살아 있던(곧 교체될) agent 와 세션을 맺어 버린다.
+- **보드 연결 게이트**: 기동 스크립트가 보드 토픽 무발행을 '빈 값' 으로 넘기지 않고 멈추게 하는 확인 단계. 무발행이면 시리얼 수신량으로 '세션 순서 문제' 와 '보드 정지 · 배선' 을 가른다(`job240_clean.sh`).
 - **ST-Link `-rst`**: STM32CubeProgrammer CLI 가 SWD 로 MCU 를 하드 리셋하는 옵션. 물리 RESET 버튼 대용.
 - **`ros2 topic hz` 와 '토픽이 목록에 있음'**: 목록은 구독자만 있어도 이름이 남는다. 발행 여부는 `hz`/`echo` 로 본다.

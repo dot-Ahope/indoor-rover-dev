@@ -90,3 +90,11 @@
 - 다시 읽으며 드러난 옛 판단의 약점(각 카드에 '내 실수' · '미확인' 으로): ① 08-28 '360° 후 0.2 cm 복귀 = 전 체인 증명' 은 EKF 값이라 증명 못 됨 ② 스캔 '밀림 1.27 → 0.68 → 0.12°' 는 지연 × 지령 0.22 rad/s 계산(실제 회전 0.076) · deskew 빔 시간 순서 미검증 ③ Foxglove 66 → 8.8 % 의 대부분은 재시작 효과 ④ 09-02 데드락에 펌웨어 정지 문턱 0.010 도 작용(기록에 없던 원인) ⑤ 09-02 'slam 회전 과대 보고' 는 다른 루프 값 비교 ⑥ '12.0 V 아래 데드밴드 증가' 는 측정 없음 ⑦ 에이전트 재시작 = 보드 리셋 필요 규칙에 예외 사례.
 - 지금 코드 · 문서에 남은 낡은 문구(고치지 않음, 사용자 확인): `firmware/rover_jupiter_fw/App/app/safety_monitor.c` 18 행 '드라이버 내장 3A 차단이 1차 방어' · CLAUDE.md §2 '스톨 감지 (200ms 윈도우…)' 줄(현재 600 ms 규칙과 모순).
 - 주석 정정(사용자: "주석은 고쳐라"): `safety_monitor.c` 18 행 3A 문구 → 출처 없는 값이었다는 정정 주석(동작 불변, 빌드 · 플래시 안 함) · CLAUDE.md §2 스톨 감지 줄 → 600 ms · duty 규칙. push(사용자: "오늘은 여기까지 하고 푸시하자").
+
+## §8 (10-30) 문제 대장 2 기(09-07 ~ 09-11) 진행 중 — 지금 구성의 빈틈 1 건 확인
+- 2 기 카드 작성 중(6 묶음 병렬) C 묶음이 찾고 내가 원본으로 확인: **stuck_monitor 의 09-29 '자이로 우선' 수정이 실주행에서 꺼져 있다.**
+  - `ros2_ws/src/rover_bringup/scripts/stuck_monitor.py` 85 행 `('use_gyro', False)`(09-08: 200 Hz IMU 구독 rclpy 역직렬화 CPU ~25 % → 기본 끔) · 102 행 `if use_gyro:` 일 때만 /imu/data 구독 → 없으면 창 안 자이로 표본 0 → 스캔 상관 회전으로 대체.
+  - `ros2_ws/src/rover_navigation/launch/navigation.launch.py` 221~223 행은 `shadow_mode` 만 넘김 — use_gyro 를 켜는 곳 없음(launch · Docs/tools/prep_*.sh grep).
+  - 09-29 §13.1 은 스캔 상관 회전이 문틀 · 잡동사니에서 과대(−17~−18° vs 자이로 −6~−10°)여서 오판한다고 보고 자이로 우선으로 고친 것 — 그 수정이 꺼져 있으면 09-29 오판 기전이 실주행에 그대로 남는다. CLAUDE.md §6 '09-29 자이로 우선 수정 뒤 작동 모드' 와 어긋남. 09-29 G3b 받침대 시험이 use_gyro 를 켜고 돌았는지는 미확인(job673 확인 필요).
+  - 고치지 않음(동작 변경 — 사용자 결정): 켜면 CPU 비용(09-08 기준 ~25 %, 지금은 C++ 컨디셔너 · 다른 부하 구성이라 다시 재야 함).
+- 2 기 완료: 새 카드 12 장(motor-pwm-50hz · controller-rpp-vs-mppi · stuck-monitor · depth-obstacle-costmap · inflation-padding-roles · microros-baud-regression · dds-shm-incident · cpu-load-stalls · avoid-run-metrics · costmap-clear-recovery · passage-width-analysis · behavior-server-backup) + 1 기 카드 6 장 이어 채움. 점검: 카드 31 장 약 7,000 줄 · 비밀번호 0 · 금지 문구 0 · 깨진 링크 0. 원본 대조: use_gyro(위) · 보드율 변경과 전송 링 버퍼화가 한 커밋 f1a76d86(효과 분리 불가) · job240 base 계층 미정리(의도). 2 기 다시 읽기로 드러난 것은 각 카드 '어긋남' · '내 실수' 칸(09-09 outputs 비어 있음 → 그날 수치 전부 SUMMARY 만 · 09-10 job216 에 BT 클리어 서명이 하루 먼저 있었음 · S4 여유는 15~43 s 묵은 상자 위치 외삽 등).

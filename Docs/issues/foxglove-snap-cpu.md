@@ -2,7 +2,7 @@
 
 | 상태 | 기간 | 처음 본 곳 | 바꾼 파일 | 관련 문제 |
 |---|---|---|---|---|
-| **우회**(브리지 재시작 + 토픽 화이트리스트로 증상 해소, 사용자 확인) · 기전('브리지가 /tf 를 늦게 · 뭉쳐 전달')은 **추정**으로 남음 · 이후 같은 증상 재발(09-09 · 09-30) | 09-01(08-31 폴더의 연속 세션) | [08-31 SUMMARY '(2026-09-01 연속 세션)' → '다음 (★최우선 = 새 관찰)'](../debug_log/2026-08-31/SUMMARY.md) | `ros2_ws/src/rover_bringup/launch/foxglove.launch.py`(topic_whitelist 신설) · `scripts/scan_deskew.py`(벡터화, 부수) | [회전 중 스캔 끌림](scan-drag-deskew.md) · [라이다 yaw](lidar-yaw-alignment.md)(fixed frame 혼선) · [SLAM map→odom 시각 정체](slam-stamp-freeze.md)(stamp 의 뜻) · 회전 미끄러짐 · SLAM 포크(09-28, 카드 예정) |
+| **우회**(브리지 재시작 + 토픽 화이트리스트로 증상 해소, 사용자 확인) · 기전('브리지가 /tf 를 늦게 · 뭉쳐 전달')은 **추정**으로 남음 · 2 기(09-09 ~ 09-10): 브리지 상시 88~95 % → `viz:=lean` 3 단계 · 스레드 · 큐 · 기능 축소, 그러나 **클라이언트가 붙으면 lean 이어도 69.6 %** → 운용 규칙 '측정 주행 중 Foxglove 끄기' · 이후 09-30 재발 | 09-01(08-31 폴더의 연속 세션) ~ 09-10(이후 09-30) | [08-31 SUMMARY '(2026-09-01 연속 세션)' → '다음 (★최우선 = 새 관찰)'](../debug_log/2026-08-31/SUMMARY.md) | `ros2_ws/src/rover_bringup/launch/foxglove.launch.py`(topic_whitelist 신설) · `scripts/scan_deskew.py`(벡터화, 부수) | [회전 중 스캔 끌림](scan-drag-deskew.md) · [라이다 yaw](lidar-yaw-alignment.md)(fixed frame 혼선) · [SLAM map→odom 시각 정체](slam-stamp-freeze.md)(stamp 의 뜻) · [CPU 부족 정지](cpu-load-stalls.md)(09-09 ~ 09-10, 클라이언트 연결이 EKF 를 굶김) · 회전 미끄러짐 · SLAM 포크(09-28, 카드 예정) |
 
 **한 줄**: Foxglove 에서 로버 모델은 멈춰 있고 스캔만 실시간으로 움직이다가 '약 4 초마다' 로버가 제자리로 점프하는 것을 사용자가 봤다. TF 주기 · stamp · 클럭 · SLAM 을 차례로 재서 ROS 안쪽은 건강함을 확인했고, 프로세스별 CPU 에서 foxglove_bridge 가 66 % 로 가장 큰 소비자였으며 브리지를 재시작하자 사용자가 '매끄러워졌다' 고 확인했다 → 시각화 아티팩트로 결론, 카메라 토픽을 빼는 화이트리스트로 브리지 8.8 %. 같은 조사에서 'deskew 가 CPU 35~45 %' 라고 적었던 것은 오인이었고 실제 최대 소비자는 `sensor_conditioner`(44 %)였다. conditioner 는 '없앨 임시 코드' 라는 이유로 최적화하지 않기로 했다(이후 09-28 C++ 이식).
 
@@ -57,7 +57,43 @@
 - 부수 관찰(해석 **미확인**): 같은 전후로 ekf_node 37.3 → 11.8 %, realsense 23.5 → 11.8 %. realsense 감소는 브리지가 영상(압축 전송 포함)을 구독하지 않게 된 효과일 수 있다(**추정**). EKF 감소의 기전은 모름.
 - **deskew 벡터화**: 9.0 → 7.8 %(조건 다른 두 1 초 표본) — 효과 미미, '대폭 절감' 은 측정 근거 없음.
 - **conditioner 최적화 안 함**(위 표 마지막 줄의 네 근거). 이후 09-02 Nav2 기동 시 conditioner 47 % · foxglove 27 %, foxglove 를 끄면 load 6.9 → 3.4([09-02 SUMMARY 'B-1' 부수 조치 · 첫 자율주행 '관찰·다음 튜닝 후보' 2](../debug_log/2026-09-02/SUMMARY.md)) → '자율주행 중에는 foxglove 끄기' 운영.
-- 이후(09-04 ~): 다음 시기에서 채움 — 09-09 브리지 상시 88~95 % → viz 3 단계(lean/full/cam) · num_threads 2 · max_qos_depth 1 (`foxglove.launch.py` 주석), 09-28 conditioner C++ 이식(CPU 42.2 → 7.1 %, 커밋 9c2984b4), 09-30 §12 **같은 증상**('스캔만 돌고 로버는 멈췄다 점프', Jetson TF 정상, j712) → 브리지 `max_qos_depth 1` 이 /tf 를 버린다는 다른 기전 추정 → map 세트 10.
+- 이후(09-09 ~ 09-10): 아래 §4b 에서 채움 — 브리지 상시 88~95 % → `viz:=lean`(기본) / `full` / `cam` 3 단계 · `num_threads 2` · `max_qos_depth 1` · `capabilities` 축소(09-09 §8.10), lean 뒤 top 에서 브리지 사라짐(§8.12, 클라이언트 연결 상태 미기록), 09-10 §4 **클라이언트가 붙자 lean 이어도 69.6 %** · 끊자 EKF 위반 86 → 0 → '측정 주행 중 Foxglove 끄기'.
+- 이후(09-28 ~, 다음 시기에서 채움): conditioner C++ 이식(CPU 42.2 → 7.1 %, 커밋 9c2984b4), 09-30 §5 매핑 중 lean 연결로 EKF 위반 12 회 / 30 s → `viz:=map` 세트, 09-30 §12 **같은 증상**('스캔만 돌고 로버는 멈췄다 점프', Jetson TF 정상, j712) → 브리지 `max_qos_depth 1` 이 /tf 를 버린다는 다른 기전 추정 → map 세트 10.
+
+## 4b. 2 기(09-09 ~ 09-10) — 경량화, 그리고 '클라이언트가 붙는 것' 이 병목
+### 흐름
+jobs 는 [2026-09-09/jobs/](../debug_log/2026-09-09/jobs/) · [2026-09-10/jobs/](../debug_log/2026-09-10/jobs/). 이 두 날의 해당 출력 원문은 없다(09-09 `outputs/` 비어 있음, 09-10 은 CSV 2 개뿐) — 수치는 SUMMARY 서술.
+
+| 곳 | 한 일 | 본 것(수치) | 그때 결론(틀렸으면 표시) | 도구 |
+|---|---|---|---|---|
+| 09-08(참고) | 코스트맵 · 경로 시각화를 위해 화이트리스트에 `/local_costmap/costmap(_updates)` · `/global_costmap/costmap(_updates)` · `/plan` · `/local_plan` 추가(커밋 `fe79f1c4`) | 주석: 로컬 60×60 = 3.6 k 칸 @ 2 Hz, 전역 167×98 = 16 k 칸 @ 1 Hz 로 '가볍다' | 사용자가 회피 실패를 직접 보려고 | `foxglove.launch.py` |
+| 09-09 §8.10 | 브리지가 상시 CPU **88~95 %**(≈ 1 코어)로 최대 소비자, 같은 시기 ekf_node `Failed to meet update rate! Took 0.14s` 반복 | 어느 도구의 top 인지 SUMMARY 미표기(job139 · 146 계열로 **추정**) | '비용은 코어 수가 아니라 **메시지 건수 × 직렬화**' | — |
+| §8.10 | 설치된 브리지의 선언 파라미터 이름을 바이너리 문자열에서 추출 · 버전 · sensors.launch 의 imu 리매핑 | `num_threads` · `max_qos_depth` · `send_buffer_limit` · `use_compression` · `capabilities` · `topic_whitelist` 전부 존재, **3.2.4** | 파라미터 이름을 추측하지 않고 설치본에서 확인 | `job157_fg.sh` |
+| §8.10 | 브리지 기본 capabilities 문자열 · (같은 job 에서 Nav2 · realsense 대안 확인) | `clientPublish` · `parameters` · `parametersSubscribe` · `services` · `connectionGraph` · `assets` | 폴링이 비싼 `connectionGraph` · `parametersSubscribe` · `assets` 를 뺄 수 있음 | `job158_alt.sh` B) |
+| §8.10 · 커밋 `585df0ea` | `foxglove.launch.py` 3 단계 화이트리스트 + 부하 억제 파라미터 + `sensors.launch.py` 에 `viz` 인자 전달 → 배포 · 단독 기동 시험 | 파라미터 거부 없음, 포트 8765, **유휴 0.7 %**. lean 합산 **약 60 msg/s** | 효과는 '다음 기동 때 부하 상태에서 측정' | `job159_fgdeploy.sh` |
+| 09-09 §8.12 | lean 적용 뒤 CPU 상위 | 이전: `foxglov+` **88.2 %** / ekf_node 41.2 / `async_s+` 38.2 / `bt_navi+` 31.4 → 이후: python3 **39.2** / `rplidar+` 19.6 / `control+` 15.7 / `realsen+` 14.7 / `planner+` 12.7 — **브리지가 상위에서 사라짐** | '경량화 효과 확인' — ⚠ 클라이언트 연결 여부 미기록(§5.6) | 도구 미표기(job176 의 top 상위 5 와 형식이 같음 — **추정**) |
+| 09-09 §8.16 | 같은 날 저녁 job175 정지 — EKF 위반 91 회 · load 9.01 | (Foxglove 언급 없음) | CPU 부족 → [CPU 카드](cpu-load-stalls.md) | `job177_env.sh` |
+| 09-10 §4 | stuck_monitor 수정 뒤 Nav2 재기동 실패(`planner_server/get_state service client: async_send_request failed`) | load **6.35**, EKF 위반 **86**, slam 폐기 **28**, **`foxglove_bridge` 69.6 %**('부팅 직후엔 상위권에 없던 것') | 설정 오류가 아니라 부하로 서비스 응답 타임아웃 | `job189_wait.sh` · `job190_err.sh` |
+| 09-10 §4 | 8765 포트 연결 → 브리지 TERM → 30 s 재측정 | `ESTAB 192.168.0.101:8765 ← 192.168.0.6:65351`(사용자 PC Foxglove Studio). 정지 뒤 EKF 위반 **0** · slam 폐기 **0** · Nav2 전 노드 active | **★ 진짜 병목 = 클라이언트 연결** — `viz:=lean` 으로 토픽을 줄여도 **붙으면** 1 코어 가까이. '관측 도구가 관측 대상을 망가뜨리고 있었다'(§0 1) | `job191_nofg.sh` |
+| 09-10 §0 · §6 | 운용 규칙 | — | 측정 주행 중 Foxglove Studio 창을 닫거나 브리지를 내린다. 경로 · 코스트맵은 rosbag 으로 남겨 **사후에** 본다(09-10 §6 job195 기록 주행부터) | `job194_bagdrive.sh`(이 카드 범위 밖) |
+
+### 가설과 판별(2 기)
+| 가설 | 판별 | 결과 | 판정 |
+|---|---|---|---|
+| 브리지 비용은 토픽 건수 × 직렬화 — 고주파 토픽을 빼면 준다 | lean(약 60 msg/s: `/imu/data` 200 Hz · `/scan_raw` · `/wheel_odom` · `*_updates` 제외) 배포 뒤 top | 유휴 0.7 %(job159, 클라이언트 없음), §8.12 상위에서 사라짐 | **지지(약함)** — 두 측정 모두 클라이언트 연결 상태를 적지 않았다 |
+| `*_updates` 토픽이 비용 | 코드 · 설정 | `always_send_full_costmap: true` 라 **애초에 발행되지 않음** | 비용원 아님(목록 정리만) |
+| 브리지 CPU 는 '광고하는 토픽 수' 로 정해진다 | 09-10 §4: lean 그대로, 클라이언트 연결 유무만 다름 | 연결 69.6 % · 끊으면 위반 0 | **기각** — 비용은 클라이언트가 **구독한** 토픽 · 패널에서 생긴다(**추정**: 어떤 패널 · 토픽을 열었는지는 기록 없음) |
+| 클라이언트 연결이 EKF 를 굶겨 TF · Nav2 를 망친다 | 같은 세션에서 브리지 정지 전후 | 86 → 0 · 28 → 0 · 기동 실패 → active | **지지**(09-10 당일). 09-09 주행 실패와의 인과는 **추정**(그날 연결 기록 없음 — [CPU 카드 §6 모순 2](cpu-load-stalls.md)) |
+
+### 조치와 효과(2 기)
+- **`foxglove.launch.py` 09-09 판**(커밋 `585df0ea`, `viz` 인자):
+  - `LEAN`(기본, 15 개): `/tf` · `/tf_static` · `/robot_description` · `/map` · `/map_metadata` · `/scan` · `/odometry/filtered` · `/rover/status` · `/battery` · `/rover/stuck` · `/cmd_vel` · `/local_costmap/costmap` · `/global_costmap/costmap` · `/plan` · `/local_plan`.
+  - `FULL` = LEAN + `/imu/data`(200 Hz — 'LEAN 에서 뺀 가장 큰 이유') · `/imu/data_raw` · `/imu/mag` · `/wheel_odom` · `/scan_raw` · `/joy`.
+  - `CAM` = FULL + color 영상 · camera_info · 깊이 영상 · 점군.
+  - 파라미터: `num_threads 2`(기본 0 = 코어 수 6, 다른 노드 몫을 남김) · `max_qos_depth 1`(밀리면 쌓지 말고 버림 — 시각화는 최신만 의미) · `send_buffer_limit 2000000` · `use_compression False`(압축은 CPU 를 더 씀) · `capabilities ['clientPublish','parameters','services']`.
+  - 효과: 유휴 0.7 %, §8.12 상위에서 사라짐. 그러나 클라이언트가 붙으면 69.6 %(09-10) — **경량화로는 부족**.
+- **운용 규칙**(09-10 §4): 측정 주행 중 Foxglove 를 닫는다(또는 브리지를 내린다). 이후 계획서 S6 에도 '클라이언트 접속 시 다시 오른다 — 측정 주행 중 끄기 검토' 로 반영.
+- 한계 · 이후: `max_qos_depth 1` 이 09-30 §12 에서 `/tf` 를 버리는 원인으로 다시 의심됨(map 세트만 10). 09-09 의 '1(버림)' 은 부하 억제용 선택이었고 `/tf` 처럼 여러 발행자가 한 토픽에 섞이는 경우의 영향은 그때 검토하지 않았다.
 
 ## 5. 내 실수
 ### 5.1 CPU 35~45 % 를 deskew 로 오인 — 칸 형식
@@ -78,14 +114,14 @@
 | 하려 한 것 | 벡터화 뒤 deskew CPU(17b AFTER · 17c 회전 중 · 17d 회전 중) |
 | 본 것 | pid 19811, 0.0 % 가 10 · 8 샘플 내내 |
 | 처음 추론 | SUMMARY 에는 0.0 % 를 쓰지 않고 'deskew ~8 %' 로 기록(17e 값). 코드 주석에는 '초당 ~1.6 만 Python 반복 제거 → deskew CPU 대폭 절감' |
-| 의심한 이유 | 17e 에서 `pgrep -f scan_deskew` 가 19811 · 19814 두 개 — `ros2 run` 으로 띄우면 `ros2` 감싸개 프로세스와 실제 python 프로세스가 둘 다 이름에 scan_deskew 를 가진다. 스크립트들은 `pgrep … | head -1` 로 첫 번째(감싸개)를 골랐다 |
+| 의심한 이유 | 17e 에서 `pgrep -f scan_deskew` 가 19811 · 19814 두 개 — `ros2 run` 으로 띄우면 `ros2` 감싸개 프로세스와 실제 python 프로세스가 둘 다 이름에 scan_deskew 를 가진다. 스크립트들은 `pgrep … \| head -1` 로 첫 번째(감싸개)를 골랐다 |
 | 판별 | 17e 의 cmdline: 19814 = `…/scan_deskew.py` 7.8 % |
 | 결론 | 17b~17d 의 deskew 0.0 % 는 무효. 벡터화 전후 비교는 9.0 %(14782, launch 로 띄운 실제 python) vs 7.8 %(19814) 뿐이고 조건(정지/회전 · 부하)이 달라 '대폭 절감' 은 근거 없음. 17e 의 '중복 인스턴스 2 개' 도 중복이 아니라 감싸개 + 본체(**추정**, 감싸개 cmdline 은 안 봄) |
 | 다음에 알아보는 법 | `pgrep -f` 결과가 2 개 이상이면 cmdline 확인. 0.0 % 가 계속 나오면 '아무 일도 안 하는 프로세스를 재고 있다' 를 먼저 의심 |
 | 데이터 | `job17b_optapply.txt` · `job17c_validate.txt` · `job17d_clean.txt` · `job17e_identify.txt`, 소스 `ros2_ws/src/rover_bringup/scripts/scan_deskew.py` 의 `np.minimum.at` 주석 |
 
 ### 5.3 '순수 회전 중 map→odom 고정 = 정상'
-- 그때 근거 '보정할 것 없음(heading 자이로 정확)' 은 heading 만 봤다. 제자리 회전 중 차체 옆 밀림(위치)이 있었고, map→odom 이 안 변한 진짜 이유는 apt slam_toolbox 가 이동 거리 문턱만 보고 회전 중 스캔을 버렸기 때문(09-28). 칸 형식 기록은 이후 시기 카드(회전 미끄러짐 · SLAM 포크)에서 — 이후(09-04 ~): 다음 시기에서 채움.
+- 그때 근거 '보정할 것 없음(heading 자이로 정확)' 은 heading 만 봤다. 제자리 회전 중 차체 옆 밀림(위치)이 있었고, map→odom 이 안 변한 진짜 이유는 apt slam_toolbox 가 이동 거리 문턱만 보고 회전 중 스캔을 버렸기 때문(09-28). 칸 형식 기록은 이후 시기 카드(회전 미끄러짐 · SLAM 포크)에서 — 이후(09-28 ~): 다음 시기에서 채움(09-04 ~ 09-10 기록에는 이 주제 없음).
 
 ### 5.4 'transform_publish_period 20 Hz 인데 실측 ~9 Hz(CPU 눌림)'
 - 16i · 16l 은 '버퍼에서 본 map→odom stamp 의 서로 다른 값 개수' 를 셌다. slam_toolbox 는 map→odom stamp 를 '마지막 스캔 시각 + transform_timeout' 으로 찍는다(10-01 §8.5 포크 소스 확인, [SLAM 시각 정체 카드](slam-stamp-freeze.md)). 그러면 서로 다른 stamp 수는 발행 주기(20 Hz)가 아니라 **스캔 수신 주기(최대 10 Hz)** 에 묶이므로 9 Hz 는 정상 쪽이다. 'CPU 눌림' 해석은 근거가 없다(**추정** — 이 시기 apt 판의 해당 코드는 직접 안 봄). 대신 16i(부하 6.2, foxglove 켬)의 **3 Hz** 는 스캔 처리 쪽이 밀렸다는 신호였을 수 있는데 그때는 읽지 않았다(**추정**).
@@ -93,11 +129,24 @@
 ### 5.5 기전을 '확정' 으로 적음
 - SUMMARY '결론' 은 'foxglove_bridge 가 /tf 를 클라이언트로 늦게(뭉쳐) 전달' 을 확정처럼 쓴다. 측정된 것은 (a) ROS 안쪽 TF 정상 (b) 브리지 CPU 66 % (c) 재시작 뒤 사용자 육안 해소 뿐이다. 클라이언트 쪽 도착 간격은 재지 않았고, 09-30 에는 같은 증상이 '브리지 큐 깊이 1 이 /tf 를 버림' 으로 다시 설명된다. 증상 해소 = 확인, 기전 = 추정으로 읽어야 한다.
 
+### 5.6 '경량화 효과 확인' — 클라이언트가 안 붙은 상태에서 잼 — 칸 형식
+| 칸 | 내용 |
+|---|---|
+| 하려 한 것 | `viz:=lean` 등 09-09 경량화의 효과 확인(09-09 §8.12, job159 단독 기동 시험) |
+| 본 것 | job159: 단독 기동 유휴 0.7 %. §8.12: 상위 목록에서 브리지가 사라짐(이전 1 위 88.2 %) |
+| 처음 추론 | 토픽 집합 · 스레드 · 큐 · 기능을 줄여 브리지 부하가 해결됐다 — '경량화 효과 확인' |
+| 의심한 이유 | 다음 날(09-10 §4) lean 그대로인데 브리지 69.6 % · EKF 위반 86 · Nav2 기동 실패 |
+| 판별 | `ss -tn \| grep :8765` → 사용자 PC 의 Foxglove Studio 연결(ESTAB) → 브리지를 내리자 위반 0 · active |
+| 결론 | 브리지 비용의 주인은 '광고한 토픽 수' 가 아니라 **연결된 클라이언트가 구독하는 것**. job159 · §8.12 는 연결이 없거나 가벼운 상태를 쟀을 가능성이 크다(연결 상태 미기록이라 **추정**). '효과 확인' 은 클라이언트 없음 조건에서만 유효 |
+| 다음에 알아보는 법 | 시각화 · 브리지 부하를 잴 때는 **클라이언트 연결 수(`ss -tn \| grep :8765`) · 열린 패널** 을 같은 줄에 적는다. 전후 비교는 같은 클라이언트 조건으로(09-30 의 '연결 vs 끊김' 측정이 그 형태) |
+| 데이터 | 09-09 SUMMARY §8.10 · §8.12, 09-10 SUMMARY §4, 도구 `2026-09-09/jobs/job159_fgdeploy.sh` · `2026-09-10/jobs/job191_nofg.sh`. 출력 원문 없음 |
+
 ## 6. 남은 것
-- 브리지 쪽 기전(늦게 전달 vs 큐에서 버림)을 가르는 측정: Foxglove 클라이언트가 받은 /tf 메시지 간격 기록 — 이후(09-04 ~): 09-30 §12 에서 채움.
+- 브리지 쪽 기전(늦게 전달 vs 큐에서 버림)을 가르는 측정: Foxglove 클라이언트가 받은 /tf 메시지 간격 기록 — 이후(09-30 ~): 09-30 §12 에서 채움.
+- 클라이언트 쪽 무엇이 브리지 1 코어를 만드는가(열린 패널 · 구독 토픽별 비용) — 09-10 은 '연결 유무' 만 갈랐다. 09-30 §5 에서 map 세트로 다시 측정(다음 시기).
 - job16c 의 '<no authority> 50.27 Hz' 와 'Max Delay 249 s' 의 뜻(정적 TF stamp 가 섞인 것으로 보임 — **추정**).
 - job16b 의 카메라 imu 140.243 Hz(같은 세션 conditioner 출력 `/imu/data` 는 199.989) — `ros2 topic hz` 가 부하 아래서 덜 센 것인지 실제 누락인지 미확인.
-- conditioner CPU: 이후(09-04 ~): 다음 시기에서 채움(09-28 C++ 이식).
+- conditioner CPU: 09-09 ~ 09-10 의 경과(35~37 %, 자이로 100 Hz 시도 실패, S6 신설 · 하향)는 [CPU 부족 정지 카드](cpu-load-stalls.md). 이후(09-28 ~): 다음 시기에서 채움(C++ 이식 42.2 → 7.1 %).
 
 ## 7. 실험 · 도구 색인
 | 이름 | 무엇 | 위치 |
@@ -109,7 +158,9 @@
 | job16i · 16l | slam 로그 · map→odom stamp 수 · 파라미터 | 같은 곳 |
 | job16j · 16k | 프로세스별 CPU · foxglove 끄고 회전 | 같은 곳 |
 | job17a ~ 17e | 카메라 토픽 · 최적화 배포 · 회전 중 CPU · pid 식별 | 같은 곳 |
-| `foxglove.launch.py` | topic_whitelist(09-01) → viz 단계(09-09) → map 세트(09-30) | `ros2_ws/src/rover_bringup/launch/` |
+| job157 · 158 · 159 | 브리지 파라미터 · capabilities 확인 · lean 배포 · 단독 기동(09-09) | `2026-09-09/jobs/`, 출력 원문 없음 |
+| job189 · 190 · 191 | Nav2 기동 실패 · lifecycle 오류 · 클라이언트 연결 확인 후 브리지 끄고 30 s(09-10) | `2026-09-10/jobs/`, 출력 원문 없음 |
+| `foxglove.launch.py` | topic_whitelist(09-01) → 코스트맵 · 경로 추가(09-08) → viz 단계(09-09) → map 세트(09-30) | `ros2_ws/src/rover_bringup/launch/` |
 
 ## 8. 도구 해설
 공통: 전부 **Jetson** 에서 실행(PC → WSL → ssh, 비밀번호 `<PW>`; 출력 첫 줄의 깨진 `wsl:` 경고 = WSL 의 localhostForwarding 안내문이 한글 코드페이지로 깨진 것). 인자 없음. CPU 수치는 `top -b -n 2 -d 1` 의 **두 번째 화면**(1 초 구간), 단위는 코어 1 개 = 100 %(6 코어 = 600 %). 1 초 표본 하나라 ±수 % 흔들린다. `top` 은 이름을 15 자로 자르고(`foxglov+` · `async_s+` · `realsen+`), Python 노드는 전부 `python3` 으로 보인다(§5.1).
@@ -120,6 +171,7 @@
 - 시각: job16d(파이썬 결함) → job16e(첫 메시지 stamp, 결함) → job16f(콜백 안 40 개 평균) — 08-28 job8a 의 측정식과 같음
 - SLAM: job16i(로그 · stamp 수 · 파라미터 · 부하) → job16l(period · stamp 수 재측정)
 - CPU: job16j(top) → job17a(+ 카메라 파라미터) → job17b(전후, pgrep 첫 pid) → job17c(회전 중 10 샘플) → job17d(이름별 pid) → job17e(cmdline 으로 정체) — 이후 `Docs/tools/anal_top.py` · `anal_proc_cpu.py`(10-12)로 고정 도구화
+- 2 기(09-09 ~ 09-10): job157(파라미터 이름) · job158 B)(capabilities) → job159(lean 배포 · 무클라이언트 기동 시험) → (09-10) job189 · 190(기동 실패 · 부하) → job191(클라이언트 연결 확인 → 브리지 끄고 30 s 차분). 09-10 의 30 s 창 CPU 는 이름별 평균 집계라 python3 가 희석된다([CPU 카드 §6 모순 1](cpu-load-stalls.md))
 
 ### job16a_init.sh — 세션 초기화
 - 하는 일: base · sensors · slam · joy_teleop launch, realsense · rplidar · scan_deskew · ekf · conditioner · foxglove · RSP · slam · joy_linux · teleop `pkill -9` → agent 컨테이너 제거 → base.launch(10 s) → `/wheel_odom` hz → sensors.launch(16 s, 자이로 바이어스 보정 동안 로버 정지) → 'gyro bias' 로그 → slam.launch(10 s) → 노드 목록 · filtered · scan hz · `tf2_echo map odom` · conditioner 소스의 `VX_SCALE =` 줄.
@@ -217,7 +269,34 @@
 ### foxglove.launch.py — topic_whitelist(09-01 판)
 - 실행: Jetson, `sensors.launch.py` 가 포함(17b 에서 단독 launch 로도).
 - 하는 일: `foxglove_bridge` 노드(port 8765, address 0.0.0.0)에 `topic_whitelist` = 위 §4 의 15 개 이름. 브리지는 각 항목을 **정규식 full-match** 로 토픽 이름과 맞춰 맞는 것만 클라이언트에 광고 · 서빙한다(주석). `/camera/*` 가 빠져 영상 · 깊이 · 압축 전송이 안 나간다.
-- 계보: 09-09 viz 3 단계(LEAN 은 `/imu/data` 200 Hz · `/scan_raw` · `/wheel_odom` 도 뺌 — 이 09-01 판에는 들어 있었다), num_threads 2, max_qos_depth 1, capabilities 축소 → 09-30 map 세트(max_qos_depth 10). 이후(09-04 ~): 다음 시기에서 채움.
+- 계보: 09-08 코스트맵 · 경로 6 개 추가(커밋 `fe79f1c4`, 합계 22 개 — 09-09 SUMMARY 는 '고정 21개' 로 적음, 하나 차이) → 09-09 viz 3 단계(LEAN 은 `/imu/data` 200 Hz · `/scan_raw` · `/wheel_odom` · `*_updates` 도 뺌 — 이 09-01 판에는 앞 셋이 들어 있었다), num_threads 2, max_qos_depth 1, capabilities 축소 → 09-30 map 세트(max_qos_depth 10). 09-09 판 상세는 아래 'foxglove.launch.py — 09-09 판'.
+
+### job157_fg.sh — 브리지 파라미터 이름 확인(09-09)
+- 실행: Jetson, 인자 없음.
+- 왜: 경량화 파라미터를 '추측하지 않고' 설치본에서 확인(09-09 §8.10 '확인된 가용 수단').
+- 하는 일: `/opt/ros/humble/lib/foxglove_bridge/` 목록 → 실행 파일 · `.so` 에 `strings` 를 걸어 port · address · tls · topic_whitelist · param_whitelist · service_whitelist · client_topic_whitelist · min/max_qos_depth · num_threads · send_buffer_limit · use_compression · capabilities · asset_uri_allowlist · include_hidden · disable_load_message · ignore_unresponsive_param_nodes 와 **정확히 같은 줄**만 → `package.xml` 버전 → 설치본 sensors.launch 의 imu · remap 줄.
+- 출력: 6 개 파라미터 존재 · 3.2.4(SUMMARY §8.10 블록). 원문 없음.
+- 결함: 문자열이 바이너리에 있다고 '선언된 파라미터' 라는 보장은 없다(로그 문구 등일 수 있음) — 실제 수용은 job159 의 기동 시험이 확인.
+- 지금: 같은 방법(설치본 문자열 · 예제 확인)은 STVL 파라미터 확인(§8.11)에도 쓰였다. 재사용 가능.
+
+### job158_alt.sh — 대안 가용성 확인(이 카드엔 B) 부분)
+- 하는 일: A) Nav2 코스트맵 라이브러리에서 `observation_persistence` · `expected_update_rate` · `observation_keep_time` · `min_obstacle_height` · `combination_method` 문자열 B) 브리지 실행 파일에서 `clientPublish|parameters|parametersSubscribe|services|connectionGraph|assets` C) realsense 라이브러리에서 `json_file_path` · `depth_module.*` · disparity shift D) 설치된 코스트맵 플러그인 class 이름.
+- 출력: B) 기본 capabilities 6 종 → 09-09 판에서 3 종으로 축소. A) · C) 는 STVL 외 대안 표(§8.10)의 근거(다른 카드).
+
+### job159_fgdeploy.sh — lean 배포 · 단독 기동 시험(09-09)
+- 하는 일: `/tmp` 의 `foxglove.launch.py` · `sensors.launch.py` CR 제거 → src · install 복사 → 두 파일을 `ast.parse` 로 문법 검사 → `viz` 기본값 grep → `foxglove.launch.py` 단독 기동 10 s → 프로세스 수 · 로그의 error|invalid|not declared|exception|Starting|listening 6 줄 · `ps %cpu` → TERM 정리 · 남은 수.
+- 출력: '파라미터 거부 없이 정상(3.2.4, 포트 8765, 유휴 0.7 %)'(§8.10). 원문 없음.
+- 결함: 유휴 · 무클라이언트 조건 — 효과의 근거로는 부족(§5.6). `ps %cpu` 는 기동 10 s 생애 평균.
+- 지금: 배포 · 문법 검사 형태는 유효.
+
+### job191_nofg.sh — 클라이언트 연결 확인 → 브리지 끄고 30 s(09-10) ★
+- [CPU 카드 §9.9](cpu-load-stalls.md) 에 상세. 이 카드에 쓰인 값: `ss -tn | grep :8765` 의 `ESTAB 192.168.0.101:8765 ← 192.168.0.6:65351`, 정지 뒤 30 s EKF 위반 0 · slam 폐기 0 · lifecycle active.
+- 결함: 브리지를 끄면 '클라이언트 연결' 과 '브리지 프로세스' 가 함께 사라져 둘을 가르지 않는다 — 결론('연결이 비용')은 job159 유휴 0.7 % 와의 대비로 읽은 것.
+
+### foxglove.launch.py — 09-09 판(커밋 `585df0ea`)
+- 실행: Jetson, `sensors.launch.py` 가 `viz` 인자를 넘겨 포함(단독 기동도 가능). `OpaqueFunction` 으로 실행 시점에 `viz` 값(lean · full · cam, 그 외는 lean)을 읽어 화이트리스트를 고른다.
+- 하는 일: 위 §4b '조치' 의 세트 · 파라미터. 주석 근거: 09-01(과부하 → 4 초 점프) · 09-09(88~95 %, EKF 위반 동반, 비용 = 건수 × 직렬화).
+- 계보: 09-30 `map` 세트(`/tf` · `/tf_static` · `/robot_description` · `/map` · `/map_metadata` · `/scan`, capabilities `clientPublish` 만, max_qos_depth 10) 추가. 지금도 계속 쓰는 파일.
 
 ## 9. 용어
 - **foxglove_bridge · topic_whitelist**: ROS 토픽을 웹소켓(ws://<jetson>:8765)으로 Foxglove 앱에 중계하는 노드. 클라이언트가 고른 토픽마다 구독 · 직렬화 · 전송을 하므로 고주파 · 대용량 토픽(영상 · 200 Hz IMU)이 많을수록 CPU 를 쓴다. whitelist 는 '광고 자체를 허용할 토픽' 정규식 목록.
@@ -230,3 +309,5 @@
 - **감싸개(wrapper) 프로세스**: `ros2 run` 이 띄우는 `ros2` 파이썬 프로세스가 실제 노드 프로세스를 자식으로 띄운다. 둘 다 명령줄에 노드 이름이 들어 있어 `pgrep -f` 가 둘 다 잡는다.
 - **sensor_conditioner**: D455f 카메라 IMU(200 Hz)의 바이어스 · covariance 를 다듬고 휠 오도 스케일(VX_SCALE)을 곱해 EKF 에 넘기던 Jetson 쪽 Python 노드(임시 shim). 이 시기 최대 CPU 소비자.
 - **queue full 드롭(slam)**: slam_toolbox 메시지 필터가 TF 를 기다리는 스캔을 둘 자리가 없어 버린 것. 이 세션에선 간헐(2 줄).
+- **브리지 파라미터(foxglove_bridge 3.2.4)**: `num_threads` = 웹소켓 처리 스레드 수(0 = 코어 수). `max_qos_depth` = 브리지가 각 토픽을 구독할 때 쓰는 큐 깊이 상한(1 이면 밀릴 때 최신 하나만 남기고 버림). `send_buffer_limit` = 클라이언트별 송신 버퍼 상한(바이트, 넘으면 메시지 버림). `use_compression` = 웹소켓 압축. `capabilities` = 클라이언트에 허용하는 기능(파라미터 조회 · 구독, 서비스 호출, 그래프 조회, 자산 전송, 클라이언트 발행 등) — 일부는 브리지가 주기적으로 ROS 그래프를 훑게 만든다.
+- **클라이언트 연결(ESTAB)**: `ss -tn` 에서 브리지 포트 8765 에 맺어진 TCP 연결. 연결된 Foxglove Studio 가 구독한 토픽만 실제로 직렬화 · 전송된다 — 광고 목록(화이트리스트)이 같아도 연결 · 열린 패널에 따라 브리지 비용이 달라진다(09-10 §4).
