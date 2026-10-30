@@ -16,7 +16,7 @@
 |---|---|---|
 | [보드 연결 · micro-ROS 세션](board-link-microros-session.md) | 우회 | CH340 → udev `/dev/rover`, Docker 에이전트. 세션은 보드 부팅 때만 맺어져 에이전트 재시작 · 플래시 뒤 보드 리셋 필요(예외 사례 있음 — 카드 참조) |
 | [자이로 소스: 보드 IMU → D455f](gyro-source-d455f.md) | 해결 | 보드 ICM-20948 자이로 무반응(손 회전 ≤ 0.041 rad/s) → 카메라 IMU. HID 커널 모듈 빌드 · EKF 가 *_config 를 센서 프레임으로 읽는 함정 |
-| [휠 오도 스케일 · 회전 슬립](wheel-odom-scale-slip.md) | 우회 | 줄자 ×1.022 는 측정 실수, 실제는 휠 27.8 % 과대 → VX_SCALE 0.783(3 회 ±0.25 %). '슬립 0.46' 의 대부분이 스케일 오류 |
+| [휠 오도 스케일 · 회전 슬립](wheel-odom-scale-slip.md) | 직진 해결 · 회전 보류(2 기) | 줄자 ×1.022 는 측정 실수, 실제는 휠 27.8 % 과대 → VX_SCALE 0.783(3 회 ±0.25 %). '슬립 0.46' 의 대부분이 스케일 오류 |
 | [좌/우 트랙 비대칭(간헐)](track-asymmetry.md) | 보류 | 평소 0.1~0.4 °/m · 6 회 중 1 회 1.9 °/m. 휠별 텔레메트리가 없어 원인 판별 불가 |
 | [스크립트 주행 안전 가드](script-drive-guards.md) | 부분 해결 | 전역 최소 여유 → 경로 밴드(직진) · 스윕 반경(회전) · 0.5 백분위로 진화 |
 | [라이다 방향(yaw)](lidar-yaw-alignment.md) | 해결 | yaw = π. 오락가락의 원인은 Foxglove fixed frame = map(SLAM 없음). 카메라 y 부호는 보류 |
@@ -25,11 +25,27 @@
 | [첫 SLAM 지도](first-slam-map.md) | 해결 | 360° 제자리 지도 · 조이스틱 주행 지도. '복귀 0.2 cm' 는 EKF 값이라 증명 못 됨(정정) |
 | [조이스틱 조작](joystick-teleop.md) | 우회 | joy_node 불인식 → joy_linux, 버튼 없음 → 데드맨 없음, 안전 게이트 시행착오 |
 | [Nav2 첫 구축](nav2-first-setup.md) | 해결(기동) | 진행 검사기가 회전을 못 봄 · inflation · 첫 벤치마크 RPP 0/1 · MPPI 0/2 |
-| [기동 데드밴드](start-deadband.md) | 우회 | RPP 각가속 클램프 × 정지마찰 데드락, 펌웨어 정지 문턱 0.010 도 원인 → 최소 휠 속도 0.020 승격 |
-| [스톨 보호 래치](stall-latch.md) | 조치(검증은 09-07) | 승격 0.020 이 스톨 판정에 걸려 로버 전체 잠김 → duty ≥ 0.60 판정 · 1.5 s 자동 복구 · 10 s 3 회 래치 |
+| [기동 데드밴드](start-deadband.md) | 우회 → 기계적 층 소멸(2 기, 20 kHz) | RPP 각가속 클램프 × 정지마찰 데드락, 펌웨어 정지 문턱 0.010 도 원인 → 최소 휠 속도 0.020 승격 |
+| [스톨 보호 래치](stall-latch.md) | 해결(2 기, 09-07 받침대) | 승격 0.020 이 스톨 판정에 걸려 로버 전체 잠김 → duty ≥ 0.60 판정 · 1.5 s 자동 복구 · 10 s 3 회 래치 |
 | [라이다 근접 사각 · 벽 접촉](near-wall-blindspot.md) | 우회(완화) | 최소 거리 0.2 m + 장착 위치 → 앞 약 10 cm 사각, 회전 중 접촉 → padding 0.05 |
 | [Jetson Wi-Fi](jetson-wifi-link.md) | 우회 | 회전 중 끊김 → 실행을 Jetson 안에서 분리(detach), 절전 끔. 원인 미확정(이후 재발) |
 | [배터리 · 전원 운용](battery-power-ops.md) | 보류 | 방전으로 Jetson 다운 반복, 운용 규칙으로 대응 |
+
+### 2 기 09-07 ~ 09-11 (모터 · 통신 · 첫 회피 주행 · 코스트맵) — 10-30 작성 · 1 기 카드 6 장도 이어 채움
+| 카드 | 상태 | 한 줄 |
+|---|---|---|
+| [모터 PWM 50 Hz 오적용](motor-pwm-50hz.md) | 해결 | 새 모터를 12 일 동안 구모터 주파수로 구동 — 회전자 떨림 펄스가 가짜 속도가 되어 스톨 감지 불가 → 20 kHz |
+| [컨트롤러 선택 RPP vs MPPI](controller-rpp-vs-mppi.md) | 결정 → 이후 뒤집힘 | 09-07 RPP 채택(MPPI 벽 접촉) · RPP 조향 다듬기. 09-07 'MPPI 진동' 은 실제론 6~7 mm/s 지령이 펌웨어에서 버려진 것 |
+| [정체 감시 stuck_monitor](stuck-monitor.md) | 작동 | 지령 대비 실제 이동. ⚠ 09-29 '자이로 우선' 수정은 use_gyro 기본 끔이라 실주행에서 꺼져 있음(10-29 §8) |
+| [카메라 깊이 장애물](depth-obstacle-costmap.md) | 우회 | 수평 띠 → VoxelLayer → STVL. 상자 소실 = 거리에 따라 보이는 면 · mark_threshold · '소거' 가 아니라 '마킹 중단' |
+| [inflation · padding · 충돌검사 지평](inflation-padding-roles.md) | 원리 정리 | padding = 통과 여부, inflation = 여유 선호. 상자 관통의 원인은 충돌검사 지평 0.12 m |
+| [micro-ROS 보드율 회귀](microros-baud-regression.md) | 우회 | 2 Mbps 에서 /wheel_odom 이 수십 초씩 사라져 EKF 8.5 m 발산 → 460 800. 08-27 엔 같은 설정이 됐으므로 회귀(원인 미확정) |
+| [DDS 공유메모리 사고](dds-shm-incident.md) | 우회 | 살아 있는 노드가 그래프에서 사라짐 → UDP 전용. 중첩 프로세스 |
+| ['후진하고 멈췄다' — CPU · 위치 추정 정지](cpu-load-stalls.md) | 우회 | 위치 추정 정지와 CPU 부족, 원인 판정 두 번 정정 |
+| [회피 주행 계측 결함](avoid-run-metrics.md) | 부분 해결 | 상자를 한 번만 고정 · 벽을 상자로 봄(클러스터링 없는 중앙값) 등 결함 6 건 |
+| [코스트맵이 상자를 지움 — 클리어 · 감쇠](costmap-clear-recovery.md) | 해결 | 원인 = 복구 BT 의 ClearEntireCostmap → ClearCostmapExceptRegion. 09-10 감쇠 결정 취소 |
+| [통과 폭 판단 도구와 '환각'](passage-width-analysis.md) | 조사 중 | 원형 근사 · 내접 반경 이중 계산 등 도구 결함 10 번까지. 통로는 1.2 m 가 아니라 0.6 m |
+| [behavior_server BackUp](behavior-server-backup.md) | 해결 | BackUp 이 map 프레임으로 충돌 검사해 0.0 s 에 실패 · 첫 1 s 엇갈린 지령 |
 
 ### 10 월 (형식 시범)
 | 카드 | 상태 | 한 줄 |

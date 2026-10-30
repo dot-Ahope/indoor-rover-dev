@@ -107,7 +107,7 @@
 | 데이터 | `2026-09-03/outputs/job34b_nav2_space.txt` · `job34c_nav2fix_space.txt`, 도구 `2026-09-02/jobs/job25e_nav2start.sh` · `2026-09-03/jobs/job34c_verify.sh` |
 
 ## 6. 남은 것 (09-03 시점)
-- 컨트롤러 결정(N1 게이트 5/5) — 스톨 정책 펌웨어 검증 뒤로 미룸. **이후(09-04 ~): 다음 시기에서 채움** — 09-07 RPP 채택(커밋 `c851cb4c` 제목 "RPP 채택 (MPPI 2전 2패)") → 이후 MPPI 로 돌아가 09-21 CostCritic 채택(CLAUDE.md §6).
+- 컨트롤러 결정(N1 게이트 5/5) — 스톨 정책 펌웨어 검증 뒤로 미룸. **이후(09-07 ~)**: [컨트롤러 선택: RPP 채택과 RPP 다듬기](controller-rpp-vs-mppi.md) — 09-07 RPP 채택(3:0, 단 MPPI 정지의 일부는 펌웨어 정지 문턱 탓 — 그 카드 실수 ①) → 09-08 ~ 09-11 RPP 튜닝 · S4 3/3 → 이후 MPPI 복귀 · 09-21 CostCritic. 벽 접촉(54e)에서 나온 Jetson 측 정체 감시는 [stuck_monitor](stuck-monitor.md).
 - MPPI Run 1 의 지속 좌회전(직선 목표에서 y 0.38 m 이탈) — 원인 추정만 있음.
 - RPP Run 2 래치 직전 t≈39~75 s: 지령 v 0.06~0.10 · w +0.03~+0.29(반시계)인데 위치는 약 9 cm 만 움직이고 heading 은 +176.6 → +157.7°(**시계 방향**) — 지령과 반대 방향 회전. 기록에 해석 없음, 휠별 텔레메트리가 없던 때라 판별 불가(**미확인**). `job35c_rpp_run2.txt`
 - BackUp 의 `Collision Ahead` 거부 이유(뒤 110 cm 여유) — **미확인**. `job35d_diag.txt`
