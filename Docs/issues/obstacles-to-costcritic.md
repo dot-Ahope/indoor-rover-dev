@@ -2,7 +2,7 @@
 
 | 상태 | 기간 | 처음 본 곳 | 바꾼 파일 | 관련 문제 |
 |---|---|---|---|---|
-| **해결(교체 채택)** — 09-21 cc1~3 판정 5 기준 합격 · 코스트맵 기준 여유 dy 2.5~5.1 → cc 8.4~10.8 cm. 넓게 도는 것 자체는 '코스 기하 + NavFn 골짜기' 로 설명되어 고치지 않음(설계상 정상) | 09-17 §15 · 09-18 §13.6 ~ §17.5 (이 카드), 이후 09-21 §1~§4 · BASELINE_STVL | [09-17 §15 사용자 질문 "상자를 지날 때 크게 돌아가는 이유"](../debug_log/2026-09-17/SUMMARY.md) · [09-18 §13.6 여유 불합격](../debug_log/2026-09-18/SUMMARY.md) | `ros2_ws/src/rover_navigation/config/nav2_params.yaml` `FollowPathMPPI.critics`(ObstaclesCritic → CostCritic) · `CostCritic: {…}` 한 줄(09-18 §17.5, md5 `2a91eb8a3f47`). 계측: `jobs/job125_avoid3.py`(러너 1안) · `job231_drive.sh` · `job451_paramsnap.py` · `job453_runmeta.sh`(09-18 §17.3~17.4) | [조향 흔들림 · temperature](mppi-wobble-temperature.md)(§13.4 여유 ≈2 cm 가 출발점) · [오프라인 MPPI 시뮬레이터](mppi-offline-simulator.md)(job452) · [센서 데크 yaw](sensor-deck-yaw.md)(09-17 §15.5 로컬 상자 드리프트의 진짜 원인) · [inflation · padding 역할](inflation-padding-roles.md) · [회피 주행 계측 결함](avoid-run-metrics.md)(러너 상자 모델) |
+| **해결(교체 채택)** — 09-21 cc1~3 판정 5 기준 합격 · 코스트맵 기준 여유 dy 2.5~5.1 → cc 8.4~10.8 cm. 넓게 도는 것 자체는 '코스 기하 + NavFn 골짜기' 로 설명되어 고치지 않음(설계상 정상) | 09-17 §15 · 09-18 §13.6 ~ §17.5 · 09-21 §0~§4 (이 카드), 이후 BASELINE_STVL([Phase S 기준선 카드](phase-s-baseline.md)) | [09-17 §15 사용자 질문 "상자를 지날 때 크게 돌아가는 이유"](../debug_log/2026-09-17/SUMMARY.md) · [09-18 §13.6 여유 불합격](../debug_log/2026-09-18/SUMMARY.md) | `ros2_ws/src/rover_navigation/config/nav2_params.yaml` `FollowPathMPPI.critics`(ObstaclesCritic → CostCritic) · `CostCritic: {…}` 한 줄(09-18 §17.5, md5 `2a91eb8a3f47`). 계측: `jobs/job125_avoid3.py`(러너 1안) · `job231_drive.sh` · `job451_paramsnap.py` · `job453_runmeta.sh`(09-18 §17.3~17.4) | [조향 흔들림 · temperature](mppi-wobble-temperature.md)(§13.4 여유 ≈2 cm 가 출발점) · [오프라인 MPPI 시뮬레이터](mppi-offline-simulator.md)(job452) · [센서 데크 yaw](sensor-deck-yaw.md)(09-17 §15.5 로컬 상자 드리프트의 진짜 원인) · [inflation · padding 역할](inflation-padding-roles.md) · [회피 주행 계측 결함](avoid-run-metrics.md)(러너 상자 모델) |
 
 **한 줄**: '상자를 크게 돈다' 는 질문을 층별로 나누니 측면 간격 13~15 cm 는 코스트맵 상자 부풀림 2~7 cm + 내접 여유 ≈4 cm + NavFn 비용 골짜기 1~9 cm + MPPI 2~4 cm 가 쌓인 것이었고, 큰 S 자는 상자가 출발-목표 직선 한가운데 있는 코스 탓이었다(09-17 §15). inflation 을 줄여도 경로는 상자 쪽으로 오지 않았다(NavFn 근사 재팽창). 다음 날 데크 보정 뒤 6 회(dy1~6)에서 여유 ≥ 5 cm 기준이 1 회(dy4 4.1 cm) 불합격하자(09-18 §13.6), 여유가 줄어드는 곳을 원경로 → 스무딩 → 실제로 분해했다: 스무더는 영향 0, 여유는 **원경로의 옆 위치**가 정하고, 컨트롤러는 평균 1~2.5 cm 더 붙는다. 컨트롤러가 여유를 벌리지 못하는 이유는 1.1.20 **ObstaclesCritic 이 consider_footprint 에서 옆 여유 17.5 cm 안을 모두 같은 비용으로 보고**, 거리 역산 파라미터도 YAML 누락으로 기본 10/0.55 로 돌고 있었기 때문(§15.3). 얻고 잃는 것을 표로 정리하고(§16), 시뮬(job452)로 막을 신호가 없음을 본 뒤 배포(§17), 09-21 실주행 3 회로 채택.
 
@@ -31,8 +31,26 @@
 | 09-18 §17.3 | bag 재현성 — 토픽 `/plan_smoothed` · `/unsmoothed_plan` 기본 추가 + `BAG_EXTRA`, 실행 파라미터 스냅샷 `params.txt`(job451, 12 노드 5.6 s), 주행 메타 `run_meta.txt`(job453) | 시험: 메타 9.1 s, 12 노드 전부 응답, 파일 해시 10 개. heredoc `\\n` 사고 → Edit 로 고치고 확장 결과 검증 | '유동적이지 않고 재현 정보 부족' → 적용 | [j453_metatest.txt](../debug_log/2026-09-18/outputs/j453_metatest.txt), `jobs/job231_drive.sh` · `run_drive_nohup.sh` · `job254_s4run.sh` · `run_post3.sh` |
 | 09-18 §17.4 | 러너 1안(`job125_avoid3.py`, 백업 `.bak_0918b`) | 재고정은 \|yaw − 출발 yaw\| ≤ 5° 일 때만, `/tmp/<이름>_refix.csv` 기록 | 첫 실주행에서 ① vs job416 일치 확인 예정 | — |
 | 09-18 §17.5 | 배포(`run_deploy_cc.sh`) | 주석 제외 diff = critics 목록 1 줄 + CostCritic 1 줄, md5 `2a91eb8a3f47`(src · install · 전송본 같음), 이전본 `~/ros2_ws/.bak_20260918/install_nav2_params_before_cc.yaml` | 실행 중 controller 는 옛 목록 — 다음 prep 반영 | [j454_deploy_cc.txt](../debug_log/2026-09-18/outputs/j454_deploy_cc.txt) |
-| 이후 09-21 §1~§4 | cc1~cc3(STAGE=cc) | 3/3 성공, 중단 · 1 s 정지 0, 모서리 Δ +2.8~+3.0 · +1.8~+1.9 · −1.8~+2.5, 복귀 회전 여유 9.3~10.0 · 8.4~8.5 · 10.7~10.8 cm, 도달 15.5 · 16.6 · 17.1 s, 직진 부호반전 5.2 · 2.0 · 1.05 /m, 루프 미달 **18** · 0 · 0(cc1 = 주행 직전 메타 스냅샷의 DDS 부하 — 스냅샷을 bag 종료 뒤로 옮겨 해소) | **CostCritic 채택**. ObstaclesCritic 블록은 YAML 에 남기고 목록에서 제외. 시뮬 예측(+0.9~1.5, 모서리 0)보다 실측이 큼 | [09-21 SUMMARY](../debug_log/2026-09-21/SUMMARY.md) |
-| 이후 09-21 BASELINE | cc2~cc5 기준선 | 4/4 성공 31.5 s, 코스트맵(로컬) 상자 최소 여유 8.4~12.9 cm, 복귀 회전 ≥ 8.1, 직진 부호반전 1~5.6 | Phase S 기준선 | [BASELINE_STVL.md](../debug_log/2026-09-21/BASELINE_STVL.md) |
+| 09-21 §0 | 아침 상태 점검(`run_j455_probe.sh`) | Jetson 재부팅 18 분, ROS 미기동, 설치본 `nav2_params.yaml` md5 `2a91eb8a3f47` = 09-18 배포본, critics 에 CostCritic → **첫 기동부터 CostCritic** | 판정 주행 준비 완료 | [j455_probe_0921.txt](../debug_log/2026-09-21/outputs/j455_probe_0921.txt) |
+| 09-21 §1 준비 | 재부팅 뒤 base 먼저(`run_j434.sh`) → prep → 실행 중 파라미터 확인(`run_j451b.sh`) → 상자를 사용자가 1.041 → 1.154 / −0.097 로 옮김 → 클리어 8 s 뒤 게이트만 시험 | `/wheel_odom` 24.98 Hz, 실행 중 `critics: [Constraint, **Cost**, Goal, GoalAngle, PathAlign, PathFollow, PathAngle, PreferForward]`, `CostCritic.cost_weight 3.81 · critical_cost 300 · near_goal_distance 0.5 · consider_footprint True`, temperature 0.15. 게이트: 창 0.267 m · 띠 셀 0 · 목표 여유 0.392 · 출발 자세 0.403/0.388 m | YAML 값 = 실행 값 | [j434_base_0921.txt](../debug_log/2026-09-21/outputs/j434_base_0921.txt) · [j451_cc1_critics.txt](../debug_log/2026-09-21/outputs/j451_cc1_critics.txt) · [prep_cc1.txt](../debug_log/2026-09-21/outputs/prep_cc1.txt) · [gate_cc1.txt](../debug_log/2026-09-21/outputs/gate_cc1.txt) |
+| 09-21 §1 cc1 | CostCritic 첫 주행(STAGE=cc, GIT_HEAD 75515a9, 09:37:22 출발) | **SUCCEEDED 31.1 s · 2.20 m**, 1 s 정지 0(csv \|v\| < 0.01 구간 없음, 0.08 m/s 유지). 그러나 **제어 주기 미달 18 회**(t 12.47~21.27 s, 상자 옆 구간) · BT `compute_path` 응답 대기 초과 1(14.94 s) · `follow_path` 응답 대기 초과 3(20.28~21.05 s) → 대기 목표 3 개 `Aborting handle` · 코스트맵 부분 클리어 5 건. 코스트맵 상자 최소 여유 **10.5 cm**(16.0 s), 복귀 회전 9.3~10.0, 러너 ① 12.8 / ② 11.0 cm, 직진 부호반전 5.2 /m | 여유는 §16 예상 방향, 크기는 더 큼(n = 1). 루프 미달 기준(≤ 1) **불합격** → 크리틱 CPU 가 아니라 '주행 직전 메타 스냅샷의 DDS 부하' 로 의심(→ [DDS 참여자 카드](pre-drive-dds-participants.md)) | [drive_cc1.txt](../debug_log/2026-09-21/outputs/drive_cc1.txt) · [drive_cc1_runner.txt](../debug_log/2026-09-21/outputs/drive_cc1_runner.txt) · [j379_cc1.txt](../debug_log/2026-09-21/outputs/j379_cc1.txt) · [nav2_cc1.log](../debug_log/2026-09-21/outputs/nav2_cc1.log) · [cc1.csv](../debug_log/2026-09-21/outputs/cc1.csv) · [j435_cc1_verify.txt](../debug_log/2026-09-21/outputs/j435_cc1_verify.txt) · [j446_cc1.txt](../debug_log/2026-09-21/outputs/j446_cc1.txt), bag `2026-09-21/bags/bag_cc1.tgz` · `bags/top_cc1.log` |
+| 09-21 §1 CPU | top 2 s 기록(`bags/top_cc1.log`) · 주행 뒤 CPU 상태(`run_j457.sh`) | controller 평균 41~43 / 최대 82 %(dy6 37/72) — 크리틱 몫 +4 %p 정도. 그런데 **ekf 42(dy6 12) · planner 23.6(11) · bt 28.5(15) · slam 43.2 · behavior 19.8 · smoother 18.3**, load 최대 9.3. 클럭 1497 MHz 최대 · 15 W · 49 °C · dmesg 이상 없음 | '크리틱과 무관한 노드가 함께 올랐다' → 열 · 클럭 문제 아님, 노드 전체 통신 부하 쪽 | [j379_cc1.txt](../debug_log/2026-09-21/outputs/j379_cc1.txt) top 절 · [j457_cpustate.txt](../debug_log/2026-09-21/outputs/j457_cpustate.txt) |
+| 09-21 §2 cc2 | 러너 `job231_drive.sh` 에서 메타 스냅샷(job453)을 **bag 종료 뒤**로 옮기고 prep 다시(상자 1.155 / **−0.050** — cc1 보다 진행선에 5 cm 가까움) | **SUCCEEDED 31.9 s · 2.23 m**, 미달 **0**, BT 응답 초과 0. CPU controller 34/68 · ekf 12 · planner 11 · bt 15(dy6 수준). 코스트맵 상자 최소 여유 8.4 cm(18.9 s), 복귀 회전 8.4~8.5, 원경로 여유(복귀 회전) 5.5~6.0 로 cc1 보다 붙었는데 컨트롤러가 밖으로 +0.7~+2.2 벌림. 직진 부호반전 2.0 /m | cc1 미달 원인 = 메타 스냅샷으로 판정. **CostCritic 의 CPU 증가는 없다**(n = 1) | [drive_cc2_runner.txt](../debug_log/2026-09-21/outputs/drive_cc2_runner.txt) · [j379_cc2.txt](../debug_log/2026-09-21/outputs/j379_cc2.txt) · [j435_cc2_verify.txt](../debug_log/2026-09-21/outputs/j435_cc2_verify.txt) · [j446_cc2.txt](../debug_log/2026-09-21/outputs/j446_cc2.txt) · [prep_cc2.txt](../debug_log/2026-09-21/outputs/prep_cc2.txt), bag `bag_cc2.tgz` |
+| 09-21 §3 cc3 | 같은 절차(상자 1.164 / −0.090). 출발 게이트에서 좌측 뒤 0.26 m 에 셀 1 개(관찰자 추정, 기준 0.10 통과) | **SUCCEEDED 31.3 s · 2.11 m**, 미달 0. 여유 **10.8 cm**(20.1 s), 복귀 회전 10.7~10.8, 모서리 Δ −1.8 · −1.2 · +2.5(x 1.35 · 1.45 · 1.55), 직진 부호반전 **1.05 /m**, CPU dy6 수준 | — | [drive_cc3_runner.txt](../debug_log/2026-09-21/outputs/drive_cc3_runner.txt) · [j379_cc3.txt](../debug_log/2026-09-21/outputs/j379_cc3.txt) · [j435_cc3_verify.txt](../debug_log/2026-09-21/outputs/j435_cc3_verify.txt) · [j446_cc3.txt](../debug_log/2026-09-21/outputs/j446_cc3.txt), bag `bag_cc3.tgz` |
+| 09-21 §4 판정 | 09-18 §16 사전 기준 6 줄로 cc1~cc3 표 | 아래 §2.1 표. 5 기준 합격, 루프 미달만 cc1 불합격 | **CostCritic 채택**. ObstaclesCritic 블록은 YAML 에 남기고 목록에서 제외. 시뮬 예측(+0.9~1.5, 모서리 0)보다 실측이 큼 — '시뮬은 재계획 없음 · 6 s 창이라 과소' 로 설명(추정) | [09-21 SUMMARY §4](../debug_log/2026-09-21/SUMMARY.md) |
+| 이후 09-21 §7 · BASELINE | cc4 · cc5 를 더해 cc2~cc5 기준선 | 4/4 성공 31.5 s, 코스트맵(로컬) 상자 최소 여유 8.4~12.9 cm, 복귀 회전 ≥ 8.1, 직진 부호반전 1~5.6 | Phase S 기준선 → [Phase S 기준선 카드](phase-s-baseline.md) | [BASELINE_STVL.md](../debug_log/2026-09-21/BASELINE_STVL.md) |
+| 이후 10-26 · 10-27 | 경로 크리틱 가중 PathAlign 28 · PathFollow 5, 계획 Smac Hybrid | CostCritic 블록은 09-18 값 그대로(현재 `nav2_params.yaml` 268 행 확인). 목록 끝에 우리 `ClearanceBandCritic` 이 붙었으나 `enabled: false`(275 행) | 그 시기 카드에서 | — |
+
+### 2.1 09-21 §4 판정표 (09-18 §16 에서 주행 전에 선언한 기준)
+| 기준(09-18 §16) | cc1 | cc2 | cc3 | 판정(09-21 §4) | 원문 대조 메모 |
+|---|---|---|---|---|---|
+| 중단 0 · 1 s 정지 0 | 0/0 | 0/0 | 0/0 | 합격 | `j379_ccN.txt` 에 Optimizer fail · TF 외삽 줄 없음 |
+| 상자 뒤 모서리 원경로 대비 Δ > −2.5 cm(dy 평균) | +2.8~+3.0 | +1.8~+1.9 | −1.8~+2.5 | 합격(안으로 붙는 버릇 소멸) | cc2 의 범위는 x 1.35 행 **−0.6** 을 빠뜨렸다([j446_cc2.txt](../debug_log/2026-09-21/outputs/j446_cc2.txt) L=3 행: −0.006 · +0.018 · +0.019). 어느 행도 −2.5 보다 작지 않아 판정은 그대로 |
+| 복귀 회전 자리 여유 ≥ 5 cm(참고 목표) | 9.3~10.0 | 8.4~8.5 | 10.7~10.8 | 3/3 ≥ 8.4 cm(dy 4.1~10.2) | 이 값은 **로컬 코스트맵**(job416, `j435_*` D 절) 기준. job446 의 같은 자리 '실제' 여유는 **전역** 코스트맵 기준이라 8.0 · 6.8 · 10.7 로 다르다(두 수치를 섞지 말 것) |
+| 복귀 회전 자리(x 1.10) 도달 ≤ 19.9 s(dy 16.7~18.9 + 1) | 15.5 | 16.6 | 17.1 | 합격(입구 지연 없음) | job446 '도착 t' 열 |
+| 직진 부호반전 ≤ 9 /m | 5.2 | 2.0 | 1.05 | 합격 | 러너 '조향' 줄 |
+| 루프 미달 ≤ 1 | **18** | 0 | 0 | cc1 불합격 — 원인은 절차(메타 스냅샷) | 판정 근거와 한계는 [DDS 참여자 카드](pre-drive-dds-participants.md) |
+- 원문 대조: cc1 '복귀 회전 Δ +1.6~+1.7' 은 x 1.10 · 1.15 두 행이고 1.20 · 1.25 행은 0.0 · −0.1 이다([j446_cc1.txt](../debug_log/2026-09-21/outputs/j446_cc1.txt)). job446 의 '컨트롤러 Δ' 열은 엄밀히는 **스무딩 → 실제**(원경로 → 스무딩 Δ −0.2~−0.7 이 따로 있음)라 SUMMARY 표 제목 '컨트롤러 − 원경로' 와 0.5 cm 안에서 다르다.
 
 ## 3. 가설과 판별
 | 가설 | 판별 | 결과 | 판정 |
@@ -44,6 +62,7 @@
 | 여유 불합격은 원경로가 회차마다 상자 쪽으로 치우친 탓 | job446 회차별 원경로 여유 · job448 통로 중앙 대비 | dy4 원경로 4.8~7.1, 중앙 대비 +5.6 cm(최대) · 통로 0.55(최소) | **지지** |
 | 컨트롤러가 여유를 못 벌리는 것은 ObstaclesCritic 이 17.5 cm 안 거리를 구분 못 하기 때문 | 1.1.20 소스 · 정적 비용 곡선(job449) · 실행 중 파라미터(job451) | 1~25 cm 에서 비용 일정, 파라미터 10/0.55 | **지지**(소스 · 계산). 실주행 효과는 09-21 cc 로 확인 |
 | CostCritic 기본 가중만으로 여유 불합격이 풀린다 | job449 정적: 기울기 0.08 /cm < 경로 0.24 /cm → 경로를 따름. job452: +0.9~1.5 cm | 정적 · 시뮬은 '못 푼다' 쪽 | 09-21 실측은 복귀 회전 3/3 ≥ 8.4 cm 로 **기대보다 큼**(원인 분리 안 됨 — cc 날 원경로 위치 · 상자 배치 차이와 섞임, §5) |
+| CostCritic 이 CPU 를 더 써서 제어 주기를 못 맞춘다(cc1 미달 18) | cc1 → cc2 에서 메타 스냅샷 위치만 바꾸고(+ 매 회 prep) controller CPU · 미달 비교 | controller 41 → 34 %(dy6 37), 미달 18 → 0 → 0, cc4 · cc5 도 0 | **기각**(n = 4, 같은 날). 미달의 원인 판정 자체의 한계는 [DDS 참여자 카드 §3](pre-drive-dds-participants.md) |
 | CostCritic 이 입구 차선 변경을 늦춘다(§16 위험 a) | job452 입구 −4 % · 09-21 도달 시각 | cc 15.5~17.1 s ≤ 19.9 | **기각**(실주행) |
 | 5 cm 셀 계단이 점수에 들어와 부호반전이 는다(§16 위험 b) | job452 모서리 반전 2.4 → 4.1 · 09-21 직진 부호반전 | cc 1.05~5.2 /m(dy 5~6) | **기각**(실주행, 시뮬 예측과 반대) |
 
@@ -62,6 +81,8 @@
 - **현재 YAML 의 ObstaclesCritic 블록**(265 행)은 'A/B 복귀용' 으로 남아 있지만 여전히 `cost_scaling_factor` · `inflation_radius` 가 없다. 목록에 다시 넣으면 09-18 이전과 같이 기본 10.0 / 0.55 로 돈다(1.1.20 README 'Humble only'). 현재 동작에는 영향 없음(목록에 없음).
 - 09-18 §16 '잃음: 시뮬 사전 검증 불가' 는 같은 날 §17.2 에서 job452 로 해소(모순 아님, 순서 기록).
 - 09-21 §4: 시뮬(job452)이 예측한 '모서리에서 반전 · RMS 소폭 증가' 와 달리 실주행 직진 부호반전은 줄었다 — 시뮬의 흔들림 크기는 믿지 않는다는 [시뮬 카드 §6](mppi-offline-simulator.md) 규칙과 같은 사례.
+- **09-21 SUMMARY 의 'EKF 위반 61 / 20 / 23' 은 주행 중 횟수가 아니라 `sensors.log` 누적값**(센서를 띄운 prep 이후 전부)이다. 러너가 주행 **전** 게이트에서 찍은 값과 주행 **뒤** 값을 빼면 주행 창 증분은 cc1 **+19**(42 → 61) · cc2 +1(19 → 20) · cc3 +1(22 → 23) · cc4 0(39 → 39) · cc5 0(19 → 19)([drive_ccN_runner.txt](../debug_log/2026-09-21/outputs/drive_cc1_runner.txt) 의 'EKF 위반' 두 줄). 결론 방향(cc1 만 튐)은 같지만 표의 수치를 '주행 중 위반' 으로 읽으면 안 된다. BASELINE 표의 '0 / 19~39' 도 같은 누적값([Phase S 기준선 카드 §5](phase-s-baseline.md)).
+- §2 판정표의 '모서리 Δ' · '복귀 회전 Δ' 범위는 일부 행만 적은 곳이 있다(§2.1 메모). 판정은 바뀌지 않는다.
 - job446 의 '중심 비용' 환산은 `round(v·252/98)` 로 costmap_2d 의 `1 + (v−1)·251/97` 과 1 단위 안팎 다르다(스무더 중단 조건 > 252 판정에는 99/100 → 253/254 가 따로 처리돼 영향 없음).
 - job425 의 NavFn 근사는 출발 (0, 0) · 목표 (2.0, 0) 를 코드에 고정했다(이 코스 전용).
 
@@ -105,6 +126,9 @@
 ### M4. 로컬 상자 2~8 cm 를 옆미끄럼으로 추정 (09-17 §15.5 → 09-18 §9)
 - 칸 형식 기록은 [센서 데크 yaw 카드](sensor-deck-yaw.md)(다른 카드). 요지: map→odom dy 가 통과 중 3~8 cm 자라는 것을 '차선변경 중 odom 이 횡이동을 덜 센다' 로 봤으나, 다음 날 bag 재분석으로 옆미끄럼을 기각하고 벽에 붙인 정지 측정으로 데크 −2.68° 를 찾음. 데이터 [j426_boxframes.txt](../debug_log/2026-09-17/outputs/j426_boxframes.txt).
 
+### M6. 메타 스냅샷을 주행 직전에 넣어 판정 주행 1 회를 흐림 (09-21 §1 → §2)
+- 칸 형식 기록은 [주행 직전 DDS 참여자 카드 §6](pre-drive-dds-participants.md). 이 카드에 미친 영향: cc1 이 루프 미달 기준에서 불합격으로 남았고, CostCritic 채택은 cc2 · cc3 와 'CPU 분해' 로 뒷받침했다. 기준선(cc2~cc5)에서는 cc1 을 뺐다.
+
 ### M5. heredoc 안 `\\n` 이 리터럴로 들어감 (09-18 §17.3, 도구 사고)
 | 칸 | 내용 |
 |---|---|
@@ -117,11 +141,12 @@
 ## 7. 남은 것
 - '넓게 도는 것' 자체는 고치지 않았다 — 코스(상자가 직선 위, 목표가 바로 뒤)가 원인이고 대표 코스 확장은 이후 F0~F2 로.
 - 원경로가 통로 중앙보다 상자 쪽으로 2~6 cm 치우치는 것(§15.2, 얕은 골 · S 자 안쪽이 짧음) — 09-18 §15.3 결론 '고칠 1 순위 = 계획' 은 이 시기에 손대지 않음. 10-27 Smac Hybrid 채택(CLAUDE.md §6)이 같은 질문의 후속인지는 그 시기 카드에서.
-- CostCritic 의 여유 증가 중 크리틱 몫 분리(§4 한계).
+- CostCritic 의 여유 증가 중 크리틱 몫 분리(§4 한계). 09-21 에는 같은 날 ObstaclesCritic 대조 주행이 없다 — '전'(dy1~6, 09-18) 과 '후'(cc1~3, 09-21)는 날 · 상자 배치(y −0.050~−0.097) · prep 이 모두 다르다.
 - ObstaclesCritic 블록의 누락 파라미터(§5) — 다시 켤 일이 있으면 먼저 채울 것.
 
 ## 8. 실험 · 도구 색인
 - 주행: 09-17 mp9 · mp11 · mp12(분석만), 09-18 dy1~dy6(분석만), 09-21 cc1~cc3(검증) · cc2~cc5(기준선).
+- 09-21 도구(PC WSL 감싸개 → Jetson): `run_j455_probe.sh`(아침 점검) · `run_j434.sh`(base 기동) · `run_j451b.sh`(실행 중 critics) · `run_mp9prep.sh`(prep, 출력 `prep_ccN.txt`) · `run_drive_nohup.sh` → `job254_s4run.sh` → `job231_drive.sh` → `job125_avoid3.py`(주행) · `run_post3.sh`(→ `job379_navevents.sh`, 회수) · `run_j435g~k.sh`(cc1~cc5 각각: job431b · job431 · job426 · job416 → `j435_ccN_verify.txt`) · `run_j446b~f.sh`(job446 → `j446_ccN.txt`) · `run_j457.sh`(CPU 상태). 결과 파일은 전부 `2026-09-21/outputs/`.
 - 도구: 09-17 `job425_detour.py` · `job426_boxframes.py`(감싸개 `run_j425.sh` · `run_j426.sh`), 09-18 `job445_lidarbox.py` · `job446_pathdecomp.py` · `job448_leftwall.py` · `job449_criticcurve.py` · `job451_paramsnap.py` · `job452_mppi_sim_cc.py` + `job452_run.sh` · `job453_runmeta.sh` · `run_deploy_cc.sh`(출력 이름 j454), 버전 확인 `run_j447.sh` → `j447_mppi_ver.txt`.
 
 ## 9. 도구 해설
@@ -172,6 +197,21 @@
 - 주의(메모리 'prep 이 설치본 링크 끊음'): 이 방식은 install 의 파일을 덮어 쓰므로 install 이 심볼릭 링크였다면 일반 파일이 된다 — 이 배포에서 링크 상태를 확인한 기록은 없음.
 
 ### job452_mppi_sim_cc.py — [시뮬 카드 §4.5](mppi-offline-simulator.md)
+
+### 09-21 판정 주행에 쓴 도구 (간단 표)
+공통: 감싸개 `run_*.sh` 는 PC WSL 에서 돌고, 이 세션의 스크래치패드(`21d4aa9f…`, 감싸개 안 `NSPS=` 경로)에서 파일을 CR 제거 뒤 `sshpass -p <PW> scp` 로 Jetson `/tmp` 에 올린다. 주행 러너 묶음(`run_drive_nohup.sh` · `run_post3.sh`)은 옛 세션 스크래치패드(`82ce61d4…`, `SPS=`)를 가리키는데 그 폴더는 09-28 자동 소실 → **저장소 `2026-09-21/jobs/` 판을 올려야 다시 쓸 수 있다**. Jetson 주소는 당시 192.168.0.101(지금 192.168.0.110, `JETSON_HOST` 로 덮음).
+
+| 도구 | 실행 위치 · 부른 형태 | 왜 · 하는 일 | 출력 | 계보 · 결함 · 지금 |
+|---|---|---|---|---|
+| `run_j455_probe.sh` | PC → Jetson, 인자 없음 | 주말 뒤 시작 점검. 192.168.0.101 → 172.30.1.8 순서로 ssh 도달 시험, uptime · load · Wi-Fi(nmcli · iw) · wifi-mon 이벤트 수 · syslog 재인증 거부 · 설치 YAML md5 와 `critics:` 줄 · `/tmp` 러너 · bag 개수 · 디스크 · ROS 프로세스 수 | [j455_probe_0921.txt](../debug_log/2026-09-21/outputs/j455_probe_0921.txt) → §0 | 읽기 전용. DDS 참여자 없음(셸 명령만). 후속 = `Docs/tools/chk_jetson_state.sh`(10-13, 세션 시작 점검). 지금 쓰려면 IP 목록 수정 |
+| `run_j434.sh` → `job434_base.sh` | PC → Jetson | 재부팅 직후 base(micro-ROS 에이전트 컨테이너 · robot_state_publisher)만 띄우고 `/wheel_odom` 주기 · 라이다 TF yaw 확인(09-18 §10 절차) | [j434_base_0921.txt](../debug_log/2026-09-21/outputs/j434_base_0921.txt)(에이전트 1 · rsp 1 · yaw 3.095 · 24.98 Hz) | `job434_base.sh` 원본은 09-18 폴더([데크 카드](sensor-deck-yaw.md)). 지금은 `Docs/tools/prep_fast.sh` 가 대신 |
+| `run_j451b.sh` | PC → Jetson, `job451_paramsnap.py /controller_server` 를 grep 으로 critics · CostCritic · ObstaclesCritic 역산 파라미터 · temperature 만 | 배포한 YAML 이 실제로 로드됐는지(게이트 H) | [j451_cc1_critics.txt](../debug_log/2026-09-21/outputs/j451_cc1_critics.txt) | ⚠ 이것도 DDS 참여자 1 개를 만든다 — prep 직후 · 주행 수 분 전에 써서 cc1 문제와는 시간이 떨어져 있음(추정) |
+| `run_mp9prep.sh` | PC → Jetson | 센서 · SLAM · Nav2 재기동 + readback + 상자 게이트(09-16~17 판, [MPPI 통로 카드](mppi-passage-tuning.md)) | `prep_ccN.txt` | 매 cc 회차 앞에 돌았다 — cc1 → cc2 사이에도 스택 재기동이 있었다는 뜻(→ DDS 카드 §3 혼입 변수) |
+| `run_drive_nohup.sh` → `job254_s4run.sh` → `job231_drive.sh` → `job125_avoid3.py` | PC → Jetson(nohup), `STAGE=cc NOTE=… GIT_HEAD=… run_drive_nohup.sh ccN 2.0 BX BY 0.06 0` | 게이트 D~G2 → 게이트 A~D → bag · top · (cc4~) tegrastats · RSS → 주행 → 메타 | `drive_ccN.txt`(PC 화면) · `drive_ccN_runner.txt`(Jetson 로그) · `ccN.csv` · `ccN_refix.csv` | 각 도구 해설: job254 · job248 · job315 · job377 · job440 → [MPPI 통로 카드](mppi-passage-tuning.md) · [간헐 중단 카드](intermittent-abort-dy.md), job125 → [회피 계측 카드](avoid-run-metrics.md), job231 의 09-21 수정 → [DDS 참여자 카드 §9](pre-drive-dds-participants.md) |
+| `run_post3.sh` → `job379_navevents.sh` | PC → Jetson, 인자 = 주행 이름 | nav2 로그 사건 · 1 s 드라이브 표 · SLAM 생존 · top 프로세스별 평균/최대 → bag · csv · nav2 구간 로그 · top · meta · params · refix · (09-21) tegra · rss 회수 | `j379_ccN.txt`, `nav2_ccN.log`, `meta_ccN.txt`, `params_ccN.txt`, `bags/top_ccN.log` | job379 해설 → [SLAM 데드락 카드](slam-dds-deadlock.md). ⚠ top 절의 python3 '평균 104.7 % 최대 56.7 %' 처럼 **평균이 최대보다 큰** 줄은 같은 이름의 여러 프로세스(컨디셔너 · 릴레이 · 러너 · stuck_monitor)를 평균에선 합치고 최대는 프로세스 하나로 잡는 집계 방식 탓 — 오류가 아니라 읽는 법 |
+| `run_j435g~k.sh` | PC → Jetson, bag 1 개씩(g = cc1, h~k = cc2~cc5) | `job431b_crab.py`(게걸음 각) · `job431_odomdrift.py`(SLAM 보정 분해) · `job426_boxframes.py`(로컬 vs 전역 상자) · `job416_boxclear.py`(**로컬** 코스트맵 상자 LETHAL ↔ 차체 최소, D 절은 t 14~29 s 행만 grep) | `j435_ccN_verify.txt` — '코스트맵 상자 최소 여유' · '복귀 회전 자리 여유' 의 출처 | 도구 해설은 [데크 카드](sensor-deck-yaw.md) · [흔들림 카드](mppi-wobble-temperature.md). 09-21 판은 목표 epoch 를 감싸개에 하드코딩 |
+| `run_j446b~f.sh` | PC → Jetson, `job446_pathdecomp.py ccN /tmp/bag_ccN <goal epoch>` | 위 §9 job446 그대로(전역 코스트맵 기준) | `j446_ccN.txt` — 'Δ' · '원경로 여유' · '도달 t' 의 출처 | 지금 다시 쓸 수 있음(bag 로컬 보관) |
+| `run_j457.sh` → `job457_cpustate.sh` | PC → Jetson, cc1 직후 | 'CPU 가 왜 높았나' 의 열 · 클럭 배제: nvpmodel, governor · 코어별 클럭, online CPU, load, 온도, idle top 8, sensors.log EKF 누적 · slam 폐기, 마지막 EKF 경고 3 줄, docker stats(에이전트), dmesg(thermal · throttle · USB) | [j457_cpustate.txt](../debug_log/2026-09-21/outputs/j457_cpustate.txt)(15 W · 1497 MHz × 6 · 49 °C · dmesg 이상 없음 · EKF 누적 62) | `sudo -n jetson_clocks` 는 '0 / sudo 불가' 로 찍혀 클럭 고정 여부는 못 봄. 같은 목적의 상설 도구는 없음(지금은 주행 래퍼가 tegrastats · /proc 틱을 상시 기록) — 다시 쓸 수 있음(읽기 전용, 참여자 없음) |
 
 ## 10. 용어
 - **ObstaclesCritic**(Nav2 MPPI 1.1.20): 궤적 각 점의 코스트맵 비용에서 '장애물까지 거리' 를 역산해(역산식에 크리틱 자기 `cost_scaling_factor` · `inflation_radius` 사용 — Humble 만), 거리 < `collision_margin_distance` 면 강한 벌점, 아니면 (inflation_radius − 거리) 반발을 더한다. `consider_footprint: true` 에서 중심 비용이 외접 비용 이상이면 차체 둘레 최대 비용을 쓰는데, 둘레가 장애물 내접 반경 안이면 그 값은 늘 253 이라 거리가 0.175 로 고정된다 → 옆 여유 17.5 cm 안을 구분 못 함.

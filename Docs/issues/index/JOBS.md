@@ -25,7 +25,7 @@
 | [`anal_top.py`](../../tools/anal_top.py) | 10-12 §2: top 기록(2 s 간격)에서 구간별 부하 — load average, 유휴 %, 프로세스별 CPU 평균. 인자: top.log HH:MM:SS HH:MM:SS [..구간 더] | — |
 | [`anal_traj_size.py`](../../tools/anal_traj_size.py) | 10-12 §7.3: /trajectories(MPPI 궤적 발행) 메시지의 크기·주기 추이 — 10 s 칸마다 메시지 수, 직렬화 크기(kB), 마커 수. 인자: bag... | — |
 | [`anal_udp_drops.py`](../../tools/anal_udp_drops.py) | 10-12 §9.2: UDP 손실 시간순 분석. 인자: net_<이름>.log 포화시작(HH:MM:SS) | 10-13 §1.2 · 10-13 §4.4 |
-| [`chk_drive_gate.py`](../../tools/chk_drive_gate.py) | chk_drive_gate — 주행 직전 게이트 B · C · G2 를 한 노드(DDS 참여자 1 개)로 (2026-10-27 §24, Jetson, 로버 안 움직임). | 10-27 §24 · 10-27 §31 · 10-28 §2 · … +1 |
+| [`chk_drive_gate.py`](../../tools/chk_drive_gate.py) | chk_drive_gate — 주행 직전 게이트 B · C · G2 를 한 노드(DDS 참여자 1 개)로 (2026-10-27 §24, Jetson, 로버 안 움직임). | 10-27 §24 · 10-27 §31 · 10-28 §2 · … +2 |
 | [`chk_jetson_state.sh`](../../tools/chk_jetson_state.sh) | 상태 확인(로버 안 움직임): 재부팅 여부·IP·스택·/tmp 스크립트·캡처 도구 권한. 10-13 세션 시작용 | 10-13 §0 |
 | [`chk_padding_dynamic.py`](../../tools/chk_padding_dynamic.py) | chk_padding_dynamic — 실행 중에 코스트맵 footprint_padding 을 바꾸면 실제로 반영되는지 본다. 로버는 움직이지 않는다(명령을 내지 않음). (2026-10-14) | 10-14 §7 · 10-14 §7.1 |
 | [`chk_prep.py`](../../tools/chk_prep.py) | prep 확인을 한 프로세스(DDS 참여자 1 개)로 (2026-10-12 §13). | 10-15 §1 · 10-15 §1.1 · 10-20 §7.4 · … +11 |
@@ -277,7 +277,7 @@
 | [`job53_bench.py`](../../debug_log/2026-09-07/jobs/job53_bench.py) | Nav2 컨트롤러 벤치마크 (2026-09-07, 스케일 교정 후 재측정). | — |
 | [`rover_cli.ps1`](../../debug_log/2026-09-07/jobs/rover_cli.ps1) | rover_cli.ps1 - F405 UART5 debug console (Windows) | 09-07 UART5 디버그 콘솔 — 현재 배선에서 동작하지 않음 (신규 확인) |
 | [`run_sig.sh`](../../debug_log/2026-09-07/jobs/run_sig.sh) | 사용: run_sig.sh <출력이름> <DUR> <VX> | — |
-| [`stuck_monitor.py`](../../debug_log/2026-09-07/jobs/stuck_monitor.py) | stuck_monitor — rover-level 정체/접촉 감시 (2026-09-07). | 09-07 구현 (1·2번) · 09-07 구현 검증 주행 `job55` (RPP + stuck_monitor sh · 09-07 다음 세션 할 일 (순서) · … +60 |
+| [`stuck_monitor.py`](../../debug_log/2026-09-07/jobs/stuck_monitor.py) | stuck_monitor — rover-level 정체/접촉 감시 (2026-09-07). | 09-07 구현 (1·2번) · 09-07 구현 검증 주행 `job55` (RPP + stuck_monitor sh · 09-07 다음 세션 할 일 (순서) · … +61 |
 
 ## 2026-09-08 (42)
 
@@ -324,7 +324,7 @@
 | [`run_osc.sh`](../../debug_log/2026-09-08/jobs/run_osc.sh) | 사용: run_osc.sh <csv이름> <x> <y> <yaw> <timeout> | — |
 | [`run_param.sh`](../../debug_log/2026-09-08/jobs/run_param.sh) | 사용: run_param.sh <node> <param=value> ...  (런타임 파라미터 변경 + 확인) | — |
 | [`run_smpos.sh`](../../debug_log/2026-09-08/jobs/run_smpos.sh) | stuck_monitor 정탐 검증 — /cmd_vel 을 /cmd_vel_test 로 리매핑해 로버는 정지한 채 "지령만" 흘림 | — |
-| [`stuck_monitor.py`](../../debug_log/2026-09-08/jobs/stuck_monitor.py) | stuck_monitor — rover-level 정체/접촉 감시 (2026-09-07). | 09-07 구현 (1·2번) · 09-07 구현 검증 주행 `job55` (RPP + stuck_monitor sh · 09-07 다음 세션 할 일 (순서) · … +60 |
+| [`stuck_monitor.py`](../../debug_log/2026-09-08/jobs/stuck_monitor.py) | stuck_monitor — rover-level 정체/접촉 감시 (2026-09-07). | 09-07 구현 (1·2번) · 09-07 구현 검증 주행 `job55` (RPP + stuck_monitor sh · 09-07 다음 세션 할 일 (순서) · … +61 |
 
 ## 2026-09-09 (78)
 
@@ -436,7 +436,7 @@
 | [`job218_approach.py`](../../debug_log/2026-09-11/jobs/job218_approach.py) | 접근 실험 — 로컬 코스트맵이 상자를 버리는 지점을 통제된 조건에서 잡는다 (2026-09-11). | 09-11 1 |
 | [`job218_back.py`](../../debug_log/2026-09-11/jobs/job218_back.py) | 접근 실험 후 같은 거리만큼 후진 복귀 — 다음 시행을 같은 조건에서 시작하기 위함. | 09-11 6 |
 | [`job220_rotate.py`](../../debug_log/2026-09-11/jobs/job220_rotate.py) | 회전 실험 — 로컬 코스트맵이 상자를 버리는 '방위'를 잡는다 (2026-09-11). | 09-11 1 |
-| [`job225_face.py`](../../debug_log/2026-09-11/jobs/job225_face.py) | 제자리 회전으로 map 기준 heading 을 맞춘다 (2026-09-11). | 09-11 6 · 09-14 2.13 · 09-14 2.6 · … +2 |
+| [`job225_face.py`](../../debug_log/2026-09-11/jobs/job225_face.py) | 제자리 회전으로 map 기준 heading 을 맞춘다 (2026-09-11). | 09-11 6 · 09-14 2.13 · 09-14 2.6 · … +3 |
 | [`job228_why.py`](../../debug_log/2026-09-11/jobs/job228_why.py) | RPP 가 무엇과 충돌한다고 보는지 찾는다 (2026-09-11). | — |
 | [`job230_map.py`](../../debug_log/2026-09-11/jobs/job230_map.py) | 로버 주변 로컬 코스트맵을 격자로 찍고, 같은 영역의 라이다·깊이 점을 겹쳐 본다 (2026-09-11). | 09-11 5 |
 | [`job233_pass.py`](../../debug_log/2026-09-11/jobs/job233_pass.py) | 통과 가능성 판정 — 이 배치에서 로버가 지나갈 틈이 있는가 (2026-09-11). | 09-11 5.1 · 09-11 5.6 · 09-11 7 |
@@ -501,7 +501,7 @@
 | 파일 | 설명 | 언급 |
 |---|---|---|
 | [`job125_avoid3.py`](../../debug_log/2026-09-14/jobs/job125_avoid3.py) | 회피 주행 계측판 (2026-09-09) — job92 의 여유 측정이 틀렸던 것을 고친다. | 09-09 순서를 하나 앞에 둬야 하는 이유 — 미해결 모순 · 09-10 원인 — 클러스터링 없는 median (job125_avoid3.py d · 09-11 지표 오염 — 관찰이 맞았다 · … +5 |
-| [`job225_face.py`](../../debug_log/2026-09-14/jobs/job225_face.py) | 제자리 회전으로 map 기준 heading 을 맞춘다 (2026-09-11). | 09-11 6 · 09-14 2.13 · 09-14 2.6 · … +2 |
+| [`job225_face.py`](../../debug_log/2026-09-14/jobs/job225_face.py) | 제자리 회전으로 map 기준 heading 을 맞춘다 (2026-09-11). | 09-11 6 · 09-14 2.13 · 09-14 2.6 · … +3 |
 | [`job240_clean.sh`](../../debug_log/2026-09-14/jobs/job240_clean.sh) | ── 깨끗한 기동 절차 (2026-09-11 제정) ─────────────────────────────────────── | 09-11 5.4 · 09-11 5.7 · 09-11 절차 (확정) · … +10 |
 | [`job249_nav2only.sh`](../../debug_log/2026-09-14/jobs/job249_nav2only.sh) | nav2 만 재기동 — 중복 프로세스 없이. base/sensors/slam 은 건드리지 않는다(보드 세션 유지). | 09-11 중복 프로세스 (사용자 지적 "중첩된 프로세스가 있어 충돌이 일어나지 않 · 09-14 0 · 09-16 1.8 |
 | [`job254_s4run.sh`](../../debug_log/2026-09-14/jobs/job254_s4run.sh) | S4 1회차 절차: 게이트(중복·보드·통과폭) → 주행 D=1.8 (bag+로그분석) | 09-11 배운 것 · 09-11 절차 (확정) · 09-14 2 · … +3 |
@@ -884,7 +884,7 @@
 | [`run_j453.sh`](../../debug_log/2026-09-18/jobs/run_j453.sh) |  | — |
 | [`run_post3.sh`](../../debug_log/2026-09-18/jobs/run_post3.sh) | 09-18: 주행 구간 nav2 로그 원본·top 기록도 회수(재부팅 시 /tmp 소실) | 09-18 12.2 · 09-18 17.3 · 09-21 6 · … +2 |
 | [`run_xfer_exist.sh`](../../debug_log/2026-09-18/jobs/run_xfer_exist.sh) |  | — |
-| [`wifi_mon.sh`](../../debug_log/2026-09-18/jobs/wifi_mon.sh) | Wi-Fi 계측 (2026-09-18 A안: WEB_DEV_5G 가 끊고 재인증을 거부하는 원인 — DFS(160 MHz) vs PMF/드라이버). | 09-18 7.2 · 09-18 7.3 · 09-23 0.1 · … +4 |
+| [`wifi_mon.sh`](../../debug_log/2026-09-18/jobs/wifi_mon.sh) | Wi-Fi 계측 (2026-09-18 A안: WEB_DEV_5G 가 끊고 재인증을 거부하는 원인 — DFS(160 MHz) vs PMF/드라이버). | 09-18 7.2 · 09-18 7.3 · 09-23 0.1 · … +5 |
 
 ## 2026-09-21 (94)
 
@@ -2117,7 +2117,7 @@
 | [`up_place_web_1028.sh`](../../debug_log/2026-10-28/jobs/up_place_web_1028.sh) | (PC·WSL) §16 place_web 올리기 + Jetson 확인 실행 + PC(ALOPS)에서 8080 접속 확인. 비밀번호는 run_jn.sh 에서 읽음(출력 안 함) · 키도 출력 안 함. 로버 안 움직임 | 10-28 §16 |
 | [`up_prep_1028.sh`](../../debug_log/2026-10-28/jobs/up_prep_1028.sh) | (PC·WSL) 10-28 재부팅 뒤 prep 재전송 + prep. 인자: 회차번호. 비밀번호는 run_jn.sh 에서 읽음(출력 안 함). 로버 안 움직임 | 10-28 §14 · 10-28 §2 · 10-29 §2 |
 
-## 2026-10-29 (9)
+## 2026-10-29 (10)
 
 | 파일 | 설명 | 언급 |
 |---|---|---|
@@ -2126,6 +2126,7 @@
 | [`anal_scan_align_sum.py`](../../debug_log/2026-10-29/jobs/anal_scan_align_sum.py) | anal_scan_align_sum — outputs/scan_align/*.txt(anal_scan_align_bag 출력) 분포 요약 (10-29 §2, PC) | 10-29 §2 |
 | [`chk_day_start_1029.sh`](../../debug_log/2026-10-29/jobs/chk_day_start_1029.sh) | 10-29 하루 시작 점검(읽기만): 가동 시간 · Wi-Fi · 스택 프로세스 · 컨디셔너 ZUPT 로그 | 10-29 §0 |
 | [`chk_drift_rec_1029.sh`](../../debug_log/2026-10-29/jobs/chk_drift_rec_1029.sh) | 10-29 정지 방향 드리프트 기록(Jetson, 로버 안 움직임 · 명령 없음). 인자: 이름 길이s(기본 1800) | 10-29 §1 · 10-29 §2 · 10-29 §4 |
+| [`chk_xacro_vs_urdf.py`](../../debug_log/2026-10-29/jobs/chk_xacro_vs_urdf.py) | chk_xacro_vs_urdf — rover.urdf.xacro 를 펼쳐(인자 기본값 · property · ${식} · 매크로) rover.urdf 와 관절(joint)별로 비교 (10-30, PC). | 10-29 §9 |
 | [`chk_yaw_drift.py`](../../debug_log/2026-10-29/jobs/chk_yaw_drift.py) | chk_yaw_drift — 정지 중 방향 드리프트 원천 측정 (2026-10-29, Jetson, 로버 안 움직임). | 10-29 §2 |
 | [`run_d2_1029.sh`](../../debug_log/2026-10-29/jobs/run_d2_1029.sh) | (PC·WSL) §4 d2: 주행(10-28 S1 러너 w3, 새 place_server 배포 포함) → 끝나자마자 d2s 정지 기록 40 분 시작. 로버는 주행 구간만 움직임 | — |
 | [`up_drift_rec_1029.sh`](../../debug_log/2026-10-29/jobs/up_drift_rec_1029.sh) | (PC·WSL) 10-29 정지 기록 스크립트 전송 + 시작. 인자: 이름 길이s. 비밀번호는 run_jn.sh 에서 읽음(출력 안 함) | 10-29 §2 |

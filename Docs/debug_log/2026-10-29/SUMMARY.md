@@ -109,3 +109,4 @@
   - 비교 도구 `jobs/chk_xacro_vs_urdf.py`(xacro 패키지 없이 인자 · property · ${식} · 매크로를 펼쳐 관절별 비교): 고치기 전 `outputs/chk_xacro_vs_urdf_before.txt` — 관절 6 개 다름(라이다 x 0 vs 0.152 · z 0.286 vs 0.185, 카메라 x 0.084 vs 0.234 · z 0.244 vs 0.143, 트랙 y ±0.095 vs ±0.1225, IMU, base_z 0.025 vs 0.02567), 링크 · 관절 집합도 다름(xacro 에 battery · computing_board, sensor_deck_link 없음).
   - 수정 `ros2_ws/src/rover_description/urdf/rover.urdf.xacro`: urdf 와 같은 링크 · 관절(sensor_deck_link 포함) · 값, 인자 deck_x/y/z · deck_yaw · lidar_yaw 의 기본 = urdf 확정값, 데크 메시는 sensor_deck_link 원점에. 고친 뒤 `outputs/chk_xacro_vs_urdf_after.txt`: **링크 8 · 관절 7 모두 같음, 최대 차 3.3e-06 m**.
   - 기본 실행은 여전히 urdf(`description.launch.py use_xacro:=false`) — 운용 영향 없음. 미확인: 메시(sensor_deck.stl)의 원점 · 축이 sensor_deck_link 정의와 맞는지(시각화만 영향, 화면 확인 안 함). Jetson 배포 · 실제 xacro 처리기로의 확인 안 함.
+- (10-30) 4 기 일부 완료 · 토큰 문제로 중단(사용자). 이어서 할 일 = `Docs/issues/ISSUES.md` 4 기 절 '이어서 할 일'.
