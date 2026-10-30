@@ -121,6 +121,21 @@
 | 다음에 알아보는 법 | 서명: **보드 노드 없음 + 시리얼에 데이터가 흐름**(> 1000 B / 3 s) = 세션 순서 문제 → 보드 리셋 한 번 더. **시리얼도 조용함** = 보드 정지 · 배선 · 전원. 이 판별을 `job240_clean.sh` 게이트가 자동으로 한다 |
 | 데이터 | 09-11 SUMMARY §5.7, `job240_clean.sh` 게이트 주석. 출력 원문 없음(`/tmp/ser.bin` 원천 소실) |
 
+### 5.5 '목표만 멈춰' 에 전체 종료 스크립트를 돌림 — agent 까지 지워 base 재기동 · 보드 리셋이 필요해짐 (09-16 §1.6)
+| 칸 | 내용 |
+|---|---|
+| 하려 한 것 | mp2 가 통로 입구에서 정체한 뒤(사용자 보고) 남은 Nav2 목표를 취소 |
+| 본 것 | (스크립트 실행 뒤) 센서 · SLAM · Nav2 프로세스 종료, `docker rm -f microros_agent` → 'agent 종료', `/dev/shm` fastrtps 잔재 삭제, '완료 — 충전 진행하셔도 됩니다' |
+| 처음 추론 | '`job156_stop.sh` = 정지' — 이름만 보고 목표 취소용으로 골랐다. 이 스크립트는 09-09 에 하루 마감(충전 전) **전체 종료**용으로 만든 것 |
+| 의심한 이유 | 출력에 'agent 종료' — 목표만 멈추려던 의도보다 훨씬 넓다. 로버는 이미 서 있었으므로 안전 문제는 없었지만, 이 카드의 순서 규칙상 agent 를 지우면 **다음 기동에 base 재기동 + 보드 리셋**(사람 손)이 필요 |
+| 판별 | 스크립트 읽기(아래 §8.19): `ros2 topic pub -1 /cmd_vel {}` 12 번 → `ros2 launch` + 노드 이름 18 패턴 SIGTERM → 15 s 대기 → agent 컨테이너 삭제 → ros2 daemon stop → `/dev/shm/fastrtps_*` 삭제. 게다가 맨 앞에서 `/tmp/nav2_params.yaml` 을 src · install 두 곳에 **복사**한다(09-09 '설정 되돌림' 용도의 잔재) |
+| 결론 | 목표 취소에는 NavigateToPose 액션 cancel(`job207_return.py` 의 `_cancel_goal_async`) 또는 `/cmd_vel` 0 발행을 쓴다. `job156` 은 하루 마감에만. 다음 기동(§1.7 `job240`)은 base 를 다시 띄우고 보드 리셋 1 회로 세션 복구(SUMMARY). 같은 날 §1.13 에서 `job156` 이 `ros2 topic pub -1` 에서 8 분 무한 대기한 일까지 겹쳐 → 정지 도구를 `job353_stop2.sh`(타임아웃 있음, 정지 명령 발행 없음)로 바꿈 |
+| 다음에 알아보는 법 | 사용자의 '멈춰' 는 **범위**(목표 · 주행만 / 스택 / 전원)를 먼저 정해 그에 맞는 도구를 고른다. 도구 이름이 아니라 그 도구가 **agent · 보드 세션을 건드리는지**를 본다(이 카드 §4 의 base 계층 보존 원칙). 서명: 출력에 'agent 종료' · `docker rm` 이 보이면 다음 기동은 보드 리셋 필요 |
+| 데이터 | [09-16 SUMMARY §1.6 · §1.7 · §1.13 · §2-4](../debug_log/2026-09-16/SUMMARY.md) · 도구 [`2026-09-16/jobs/job156_stop.sh`](../debug_log/2026-09-16/jobs/job156_stop.sh) · [`job353_stop2.sh`](../debug_log/2026-09-16/jobs/job353_stop2.sh). 그때 `job156` 출력 원문 없음(대화에만). 다음 기동 [`2026-09-16/outputs/prep_mp3.txt`](../debug_log/2026-09-16/outputs/prep_mp3.txt)(base 단계 줄은 감싸개가 걸러 안 남음) |
+
+- 기록 사이 어긋남(이 사례): 09-16 §1.7 은 다음 기동을 '재기동(job240, **에이전트 유지** · 보드 리셋 1 회)' 로 적었다. 그런데 직전 §1.6 의 `job156` 이 agent 컨테이너를 지웠으므로 '유지' 할 agent 가 없었다 — `job240` 이 base 를 새로 띄운 뒤 보드를 리셋한 것으로 **추정**(`prep_mp3.txt` 에 base 단계 줄이 없어 확인 불가). 또 `job156` 이 `/tmp/nav2_params.yaml` 을 설치본에 덮어쓴 부작용은 SUMMARY 에 없다 — `prep_mp3.txt` readback 이 §1.5 변경값(`time_steps 56` · `offset_from_furthest 3` · `max_angle_to_furthest 0.5`)을 보여 그때 `/tmp` 판이 최신이었던 것으로 보이며, 되돌림 피해는 없었다(정황).
+- 이후 같은 계열: 09-17 §8.6 '리셋 없이 플래시' 사고(보드 쪽 조작의 결과를 먼저 따지지 않음) → [플래시 안전 카드](flash-safety.md).
+
 ## 6. 남은 것 (09-11 기준)
 - 펌웨어 재연결 로직(ping 실패 → 엔티티 재생성) — 08-26 펌웨어 과제 목록 1 번. **09-11 까지 미처리**(지금 펌웨어도 부팅 때 1 회). 이후 시기에서 처리 여부 확인.
 - 모순 1(08-27 job5a)은 09-11 순서 규칙으로도 설명 안 됨 — 미확인으로 남김. 모순 2(09-03 플래시 뒤)는 순서가 §5.7 사고와 같아 규칙으로 설명됨(재현 없음).
@@ -276,6 +291,16 @@
 | `job115_normalagent.sh` | `-v6` 판 삭제 → base.launch | '이제 보드 리셋 필요' | 같은 곳 |
 | `job117_baud.sh` | 설치본 base.launch 교체(`-b 460800`) → 재기동 | 보드는 460800 펌웨어 플래시로 리셋(agent 가 먼저 떠 있는 순서) | 같은 곳 |
 | `job150_recover.sh` · `job156_stop.sh` · `job164_stvlup.sh` · `job174_dds.sh` | SHM 정리 때 `docker rm -f microros_agent` | 'RESET 필요'(job151 · job174 검증 줄, §8.11) | [DDS 카드](dds-shm-incident.md) |
+
+### 8.19 `job156_stop.sh`(09-16 판) → `job353_stop2.sh` — 하루 마감용 전체 종료 (§5.5 의 도구)
+- 실행 위치 · 형태: Jetson, 인자 없음(`run_j.sh job156_stop.sh`). 09-09 폴더 판과 09-16 폴더 판의 차이는 둘째 줄의 `FASTRTPS_DEFAULT_PROFILES_FILE`(UDP 전용 XML) export 하나(`diff` 확인). 경로가 `$HOME/…` 이라 Jetson 안에서 풀린다(러너 ssh 문자열 안이 아님 — 09-17 §0 의 `$HOME` 결함과 무관).
+- 왜(09-09): SHM 사고 뒤 '하루를 끝낼 때 깨끗이 내리고 충전' — 모터 정지 확인 · 잔재 없는 종료.
+- 하는 일: ① `/tmp/nav2_params.yaml` 의 CR 제거 → **src · install 두 곳에 복사**, 'clearing: true' 줄 수를 '설정 되돌림' 으로 출력(09-09 의 클리어 설정 복원 용도 잔재) ② 배터리 한 번 ③ `ros2 topic pub -1 /cmd_vel geometry_msgs/msg/Twist "{}"` × 12(모터 정지 — 펌웨어 watchdog 500 ms 와 별개로) ④ `pkill -TERM -f "ros2 launch"` + 노드 이름 18 패턴 SIGTERM(주석 'SIGKILL 금지') → 8 개 핵심 이름 `pgrep -fc` 가 0 이 될 때까지 최대 15 s → 잔존 수 ⑤ `docker rm -f microros_agent` ⑥ `ros2 daemon stop` → `rm -f /dev/shm/fastrtps_* /dev/shm/sem.fastrtps_*` → 잔재 수 · ROS 프로세스 수 · docker 수 · load → '완료 — 충전 진행하셔도 됩니다'.
+- 출력: 화면만 — 09-16 회차 원문 없음.
+- 알려진 결함: ① **이름이 '정지' 라 목표 취소용으로 오용됨**(§5.5). ② ③ 의 `ros2 topic pub -1` 은 구독자 매칭을 기다린다 — IP 가 바뀌어 옛 참가자와 매칭이 안 되면 **무한 대기**(09-16 §1.13 에서 8 분). ③ ① 의 설정 복사는 정지와 무관한 부작용 — `/tmp/nav2_params.yaml` 이 옛 판이면 설치본을 되돌린다. ④ `pgrep -fc … || echo 0` 형태는 0 일 때 두 줄을 내는 함정([CPU 카드 §5.3](cpu-load-stalls.md))과 같은 꼴. ⑤ `rm -f /dev/shm/fastrtps_*` 는 10-20 에 '살아 있는 참가자 파일 삭제' 위험으로 지목된 방식([DDS 카드](dds-shm-incident.md)).
+- 후속 `job353_stop2.sh`(09-16): ③ 을 빼고(주석 '옛 참가자 매칭 대기를 쓰지 않는다 — 로버는 정지 상태, 펌웨어 watchdog 500 ms') 설정 복사 ①도 없음, 패턴에 `depth_relay` 추가. agent 삭제 · SHM 잔재 삭제는 그대로 → **역시 하루 마감용**(다음 기동에 보드 리셋 필요).
+- 계보: 09-09 `job154_reinit.sh`(SIGTERM 정리) → `job156_stop.sh`(전체 종료) → 09-16 `job353_stop2.sh`(타임아웃 없는 단계 제거) → 이후 prep(`Docs/tools/prep_fast.sh`)의 정리 단계. 목표만 멈추는 도구는 `job207_return.py` 계열의 액션 cancel.
+- 지금 다시 쓸 수 있나: `job156` 은 아니오. `job353` 은 마감용 개념만 — `rm -f /dev/shm/fastrtps_*` 줄은 빼야 한다(10-20 판단).
 
 ## 9. 용어
 - **CH340(N)**: USB↔UART 변환 칩(벤더 1a86, 제품 7523). USB Full-Speed(12 Mbps) 장치(`job4v` 토폴로지 `1-2.1 … speed=12M`).
