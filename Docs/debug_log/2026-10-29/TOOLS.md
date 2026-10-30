@@ -9,3 +9,4 @@
 | 2 | 맞던 주행의 라이다↔지도 분포 | `jobs/anal_scan_align_bag.py` · `jobs/anal_scan_align_sum.py` | `outputs/scan_align/*` 최소 0.594 · 최대 3.0° · f2pl1 출발 −7° | ⓐ 문턱 0.40 · 4° · 0.03 | ？(실동작 전) |
 | 3 | d1 원천 가르기 | `jobs/anal_drift_bag.py` | `outputs/anal_drift_d1.txt` EKF 0.07° | 정지만으로는 재현 안 됨 | ✔ |
 | 4 | d2 실행기(미실행) | `jobs/run_d2_1029.sh` | — | — | — |
+| 9 | xacro ↔ urdf 관절 비교 | `jobs/chk_xacro_vs_urdf.py` | `outputs/chk_xacro_vs_urdf_{before,after}.txt` 6 다름 → 같음 | xacro 는 08-27 초안이 남은 것 | ✔ |

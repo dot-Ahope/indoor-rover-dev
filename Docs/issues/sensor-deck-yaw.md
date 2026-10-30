@@ -256,3 +256,5 @@
 - **RANSAC**: 무작위 두 점으로 직선 후보를 만들고 가까운 점(인라이어)이 가장 많은 후보를 고르는 방법. 벽 옆의 다른 물체 점을 버리는 데 쓴다.
 - **map→odom 이중 발행**: slam_toolbox 가 map→odom 을 20 Hz 로 보내되 stamp 는 10 Hz 로 갱신해, 같은 stamp 의 메시지가 둘이고 보정 순간엔 두 값이 다르다(옛 값 → 새 값). 분석은 같은 stamp 의 **마지막 수신값**만 쓴다(CLAUDE.md §6).
 - **로컬(odom) vs 전역(map) 코스트맵**: 로컬은 odom 좌표에 장애물을 찍어 두므로 odom 이 틀어지면 기억된 장애물이 로버에 대해 밀린다. 전역은 map 좌표라 SLAM 보정을 따라간다.
+
+- **10-30 xacro 정정**: `rover.urdf.xacro` 가 08-27 초안 값(데크 x 0 · 라이다 z 0.286 등)으로 남아 있던 것을 urdf 와 같은 값으로 다시 씀 — 링크 8 · 관절 7 일치(`../debug_log/2026-10-29/outputs/chk_xacro_vs_urdf_after.txt`, 도구 `../debug_log/2026-10-29/jobs/chk_xacro_vs_urdf.py`). 데크를 다시 재면 urdf 와 xacro 인자 기본값을 함께 고친다.
