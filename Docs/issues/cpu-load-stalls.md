@@ -2,7 +2,7 @@
 
 | 상태 | 기간 | 처음 본 곳 | 바꾼 파일 | 관련 문제 |
 |---|---|---|---|---|
-| **우회**(깨끗한 기동 · Foxglove 클라이언트 끊기 · 이후 컨디셔너 C++ 이식으로 증상 0) · 원인 판정은 두 번 바뀜: 09-09 '구조적 CPU 부족' → 09-10 §1 '긴 세션 열화' → 09-10 §4 'Foxglove 클라이언트 연결이 1 코어'. 각 판정의 몫은 나눠 재지 않음 | 09-09 오후 ~ 09-10 (이후 09-21 기준선 · 09-28 C++ 이식 · 09-30 · 10-27 같은 서명 재등장) | [09-09 §8.13 · §8.14](../debug_log/2026-09-09/SUMMARY.md) — `job170` '로버가 안 움직인다' | `ros2_ws/src/rover_bringup/launch/camera.launch.py`(`accel_fps` 200 → 100, `gyro_fps` 는 200 유지 + 주석) · `Docs/05_nvblox/NVBLOX_MIGRATION_PLAN.md`(S6 항목 신설) · 운용 규칙(측정 주행 중 Foxglove 끄기 — [Foxglove 카드](foxglove-snap-cpu.md)) | [DDS 공유메모리 사고](dds-shm-incident.md)(같은 '위치 고정' 서명의 다른 원인) · [Foxglove 4 초 스냅 · 브리지 부하](foxglove-snap-cpu.md) · [SLAM map→odom 시각 정체](slam-stamp-freeze.md)(10-27, 같은 '조회 실패' 를 다른 기전으로) · [micro-ROS 보드율 회귀](microros-baud-regression.md)(같은 날) · [배터리 · 전원 운용](battery-power-ops.md)(처음 오판한 원인) |
+| **우회**(깨끗한 기동 · Foxglove 클라이언트 끊기 · 이후 컨디셔너 C++ 이식으로 증상 0) · 원인 판정은 두 번 바뀜: 09-09 '구조적 CPU 부족' → 09-10 §1 '긴 세션 열화' → 09-10 §4 'Foxglove 클라이언트 연결이 1 코어'. 각 판정의 몫은 나눠 재지 않음 | 09-09 오후 ~ 09-10 (이후 09-21 기준선 · 09-28 C++ 이식 · 09-30 · 10-27 같은 서명 재등장) | [09-09 §8.13 · §8.14](../debug_log/2026-09-09/SUMMARY.md) — `job170` '로버가 안 움직인다' | `ros2_ws/src/rover_bringup/launch/camera.launch.py`(`accel_fps` 200 → 100, `gyro_fps` 는 200 유지 + 주석) · `Docs/05_nvblox/NVBLOX_MIGRATION_PLAN.md`(S6 항목 신설) · 운용 규칙(측정 주행 중 Foxglove 끄기 — [Foxglove 카드](foxglove-snap-cpu.md)) | [DDS 공유메모리 사고](dds-shm-incident.md)(같은 '위치 고정' 서명의 다른 원인) · [Foxglove 4 초 스냅 · 브리지 부하](foxglove-snap-cpu.md) · [SLAM map→odom 시각 정체](slam-stamp-freeze.md)(10-27, 같은 '조회 실패' 를 다른 기전으로) · [micro-ROS 보드율 회귀](microros-baud-regression.md)(같은 날) · [배터리 · 전원 운용](battery-power-ops.md)(처음 오판한 원인) · [SLAM 데드락(09-17)](slam-dds-deadlock.md)(전력 모드를 잘못 꺼낸 날의 실제 원인) |
 
 **한 줄**: 09-09 저녁 `job170`(STVL 검증 주행)에서 로버가 t = 5 s 부터 안 움직이는 것처럼 보였고, 나는 같은 '무이동' 이 12.0 V 부근에서만 났다는 이유로 **배터리**를 지목했다. 사용자가 "왜 후진하고 멈췄나" 를 묻자 CSV 를 전체 정밀도로 보니 위치가 9.90 s 동안 소수점 17 자리까지 똑같다가 조회가 실패했다 — tf2 버퍼 10 s 와 일치. 로버가 아니라 **`map→base_link` 갱신이 멈춘 것**이었다. 그 원인 하나(slam 의 SHM 고아 → [DDS 카드](dds-shm-incident.md))를 지운 뒤에도 `job175` 에서 같은 정지가 났고, 이번엔 EKF 가 30 Hz 주기를 91 번 놓치고(평균 0.055 s, 최대 0.197 s) slam 이 스캔을 한 번도 처리하지 못했다(load 9.01 / 6 코어). 'CPU 부족 → EKF 지연 → odom→base TF 지연 → slam 메시지 필터가 스캔 전량 폐기 → map→odom 미발행' 연쇄로 판정했다. 카메라 자이로를 100 Hz 로 낮추려다 D455 가 지원하지 않아 실패, CPU 절감 과제(S6)로 넘겼다. 다음 날 재부팅 직후엔 같은 스택이 EKF 위반 0 · load 2.10 이었고(§1 '열화' 로 정정), 같은 날 Foxglove Studio 클라이언트가 붙자 브리지 69.6 %, 끊자 EKF 위반 86 → 0 이 나왔다(§4 '진짜 병목'). 다만 그 '열화' 판정의 근거 한 줄(python3 14.7 %)은 이름별 평균이라 컨디셔너를 낮춰 보였을 가능성이 있다(§6 모순 1).
 
@@ -55,11 +55,26 @@ jobs 는 [2026-09-09/jobs/](../debug_log/2026-09-09/jobs/) · [2026-09-10/jobs/]
 - **운용 규칙**(09-10 §4): 측정 주행 중 Foxglove Studio 창을 닫거나 브리지를 내린다. 경로 · 코스트맵은 rosbag 으로 남겨 사후에 본다(09-10 §0 · §6).
 - **깨끗한 기동**: 09-10 §1 · §12 '측정 주행 전에는 스택을 깨끗이 재기동하고 Foxglove 를 끈다', 09-11 `job240_clean.sh`(→ [보드 카드](board-link-microros-session.md) · [DDS 카드](dds-shm-incident.md)).
 - 효과: 09-10 §4 이후 S1 완주(job192) 등 주행 재개. 정지 원인별 몫(열화 · Foxglove · conditioner)은 나눠 재지 않았다.
-- 이후(09-17): 전력 모드가 **nvpmodel 15 W**(ID 0, CPU 최대 1497 MHz; 하드웨어 최대 1728)임을 처음 기록. 25 W 는 CPU 1344 MHz 로 오히려 낮음, CPU 를 늘리는 모드는 MAXN_SUPER 뿐(전력 대가) — [09-17 SUMMARY](../debug_log/2026-09-17/SUMMARY.md). 09-09 job101 이 `nvpmodel -q` 를 찍었지만 값은 기록되지 않았다.
+- 이후(09-17): 전력 모드가 **nvpmodel 15 W**(ID 0, CPU 최대 1497 MHz; 하드웨어 최대 1728)임을 처음 기록. 사용자 승인으로 25 W 로 바꿨더니 CPU 상한이 **1344 MHz 로 오히려 낮아져** 같은 승인 범위에서 15 W 로 되돌렸다(내 추정 오류). CPU 를 늘리는 모드는 MAXN_SUPER 뿐(전력 대가) — 아래 §4.1 · §5.5 · [09-17 §5 · §6.2](../debug_log/2026-09-17/SUMMARY.md). 09-09 job101 이 `nvpmodel -q` 를 찍었지만 값은 기록되지 않았다.
 - 이후(09-21): Phase S 기준선 — CPU 합 ≈ 320 %, conditioner ≈ 43 %(`BASELINE_STVL.md` — python3 108~110 % 의 내역). 09-23 사용자 결정: 카메라 IMU 200 Hz 유지, 다운샘플 금지 · 로직만 C++ 이식.
 - 이후(09-28): conditioner C++ 이식 — **42.2 → 7.1 %**(−35 %p, [09-28 SUMMARY](../debug_log/2026-09-28/SUMMARY.md)).
 - 이후(09-30): 매핑 중 Foxglove(lean) 연결 시 EKF 위반 12 회 / 30 s · EKF CPU 49 % → 끊으면 0 회 · 12 % → `viz:=map` 세트([Foxglove 카드](foxglove-snap-cpu.md)).
 - 이후(10-27): 같은 'map→base 조회 실패 → 컨트롤러 중단' 서명이 이번엔 slam 위치 추정 정합(LinkNearChains) 동안 map→odom stamp 정체로 다시 나옴 → `transform_timeout 1.5`([SLAM 시각 정체 카드](slam-stamp-freeze.md)).
+
+### 4.1 09-17 — 'CPU 를 더 주자' 와 전력 모드 (09-17 §5 · §6.2)
+배경: 09-17 mp7 에서 SLAM 이 주행 중 수 초씩 멈추고 끝내 정지했다. 제어 루프 미달이 mp5 0 → mp6 9 → mp7 60+ 로 같은 설정에서 늘었고, slam.log 엔 기동부터 'queue is full' 28 회. 나는 처음에 'CPU 굶주림' 을 세우고 전력 모드를 손잡이로 봤다. 최종 정지는 Fast DDS 데드락으로 밝혀졌다(→ [SLAM 데드락 카드](slam-dds-deadlock.md)) — 이 절은 그 과정 중 전력 모드 부분만.
+
+| 날짜 · § | 한 일 | 본 것(수치) | 그때 결론(틀렸으면 표시) | 데이터 |
+|---|---|---|---|---|
+| 09-17 §5 | `job384_power.sh` · `job385_pmhist.sh`(로버 정지) | `nvpmodel -q` = **15 W(ID 0)**, CPU `scaling_max_freq` 1497 MHz, `cpuinfo_max_freq` **1728 MHz**. `/etc/nvpmodel.conf` 의 `PM_CONFIG DEFAULT` = 25 W. 상태 파일(`/var/lib/nvpmodel/status`)은 부팅 때 다시 쓰여 어제와 같았는지 확인 불가 | '15 W 로 돌고 있다 → 25 W 면 **CPU +15 %**'(계산 근거 없음) — **❌ 추정, §6.2 에서 틀림**. 사용자 결정 항목으로 올림('로버 배터리 · Jetson 전원 회로 허용 전력 확인 필요') | 두 출력 **원천 소실**(SUMMARY §5 서술) |
+| 09-17 §6.2(사용자 승인) | `run_pm25.sh` → `job388_pm25.sh`: `sudo nvpmodel -m 1` | 전 '15W · cpu0 max 1497 MHz' → 후 '**25W · cpu max 1344 ×6 MHz** · online 0-5', 온도 cpu 47 · gpu 47 °C, 배터리 12.12 V | CPU 상한이 **낮아졌다** — 승인 목적(CPU 여유)과 반대 | [`outputs/j388_pm25.txt`](../debug_log/2026-09-17/outputs/j388_pm25.txt) |
+| §6.2 | `job389_pmconf.sh`: conf 의 POWER_MODEL 블록 · 10 s 뒤 cur/max/min · 가능 주파수 · `nvpmodel -q --verbose` | (원문 없음) | 모드별 표를 만들기 위한 조회 | **원천 소실** |
+| §6.2 | `run_pmrevert.sh` → `job390_pmrevert.sh`: conf 의 모드별 CPU0 MAX · GPU MAX · EMC MAX 를 찍고 `sudo nvpmodel -m 0` | 15 W: CPU 1 497 600 kHz · GPU 612 MHz · EMC 2 133 MHz / 25 W: CPU **1 344 000** · GPU 918 MHz · EMC 3 199 MHz / MAXN_SUPER: 셋 다 −1(제한 없음). 원복 뒤 '15W · cpu max 1497 ×6' | **이 JetPack 의 25 W 는 전력 예산을 GPU · 메모리에 주고 CPU 를 낮춘다**. CPU 를 늘리는 유일한 모드는 MAXN_SUPER(무제한, 전력 최대) — 로버 전원 회로 허용 전력 확인 뒤 사용자 결정 | [`outputs/j390_pmrevert.txt`](../debug_log/2026-09-17/outputs/j390_pmrevert.txt) |
+| 09-17 §7 mp8(15 W 그대로) | 다른 조치(Fast DDS 2.6.12 · visualize off · BT 100 ms) 뒤 주행 + top 기록 | 루프 미달 **0**, BT 타임아웃 0. top 50 샘플 load 평균 8.5, controller 36 %(최대 70), python 노드 합 121 % | 전력 모드를 안 바꿔도 루프 미달이 사라짐 → mp7 의 악화는 CPU 상한 문제가 아니었다(시각화 · bag · 데드락 쪽, 몫은 안 나눔) | `j379_mp8_events.txt` · 09-17 §7 |
+| 이후(09-21) | Phase S 기준선 | 'Jetson Orin Nano **15 W**, 클럭 최대 1497 MHz' 를 운용점으로 명시 · nvblox 계획서에 'MAXN_SUPER 는 CPU 상한을 올리지만 배터리 · 열(기준선 6.6 W) 대가 — 별도 측정 항목' | 15 W 유지 | [`2026-09-21/BASELINE_STVL.md`](../debug_log/2026-09-21/BASELINE_STVL.md) L10 · `Docs/05_nvblox/NVBLOX_MIGRATION_PLAN.md` |
+
+- **지금(10-30 저장소 기준)**: 운용 모드를 15 W 에서 바꿨다는 기록은 없다. MAXN_SUPER 측정도 기록 없음(09-21 SUMMARY '필요 시 MAXN 비교' 로 남음). Jetson 의 실제 현재 모드는 이 카드 작성 중 확인하지 않았다(로봇 접속 안 함).
+- 사실 정리(측정 · conf 원문): 모드 0 = 15 W(CPU 1497.6 / GPU 612 / EMC 2133 MHz) · 모드 1 = 25 W(CPU **1344** / GPU 918 / EMC 3199) · 모드 2 = MAXN_SUPER(제한 없음, CPU 하드웨어 최대 1728). conf 에서 찍은 것은 코어 5 줄뿐이고 세 모드 다 `CPU_ONLINE CORE_5 1`, 25 W 전환 뒤 실측 `online 0-5`(6 코어) — 코어 수는 모드와 무관한 것으로 보인다(15 W · MAXN 의 0~4 번 줄은 안 찍음).
 
 ## 5. 내 실수
 ### 5.1 '배터리 때문에 안 움직였다' — 측정 도구의 정지를 로버의 정지로 읽음
@@ -110,12 +125,26 @@ jobs 는 [2026-09-09/jobs/](../debug_log/2026-09-09/jobs/) · [2026-09-10/jobs/]
 | 다음에 알아보는 법 | 판정을 뒤집는 표본이 하나면 그 표본의 측정 조건(재부팅 직후 · 클라이언트 없음 · 주행 없음)을 함께 적고, 뒤집기 전에 같은 조건 차이로 원래 표본을 재현해 본다. CPU 표는 이름이 아니라 pid → 명령줄 단위로([Foxglove 카드 §5.1](foxglove-snap-cpu.md) 와 같은 교훈) |
 | 데이터 | 09-10 SUMMARY §1 · §4, `2026-09-10/jobs/job182_s6base.sh`(awk 집계식), [`BASELINE_STVL.md`](../debug_log/2026-09-21/BASELINE_STVL.md) 37 행 |
 
+### 5.5 '25 W 면 CPU +15 %' — 모드 이름만 보고 효과를 추정해 사용자 승인까지 받음 (09-17 §5 → §6.2)
+| 칸 | 내용 |
+|---|---|
+| 하려 한 것 | mp7 의 SLAM 굶주림(그때의 가설)에 CPU 여유를 더 주기 |
+| 본 것 | `job384`: 15 W · CPU 상한 1497 MHz · 하드웨어 최대 1728 MHz. conf 기본은 25 W |
+| 처음 추론 | '15 W → 25 W 면 클럭이 올라간다 → **CPU +15 %**'. conf 의 25 W 블록을 열어 보지 않고 '전력이 크면 CPU 도 빠르다' 로 계산. 사용자 결정 항목으로 '배터리 · 전원 회로 허용 전력 확인 필요' 와 함께 올렸고 사용자가 승인 |
+| 의심한 이유 | 전환 직후 `job388` 이 찍은 `scaling_max_freq` 가 6 코어 모두 **1344** — 1497 보다 낮다 |
+| 판별 | `job390`: conf 원문의 모드별 상한 — 25 W 는 CPU 1344 · GPU 918 · EMC 3199(15 W 는 1497.6 · 612 · 2133) |
+| 결론 | 이 JetPack 의 25 W 는 CPU 가 아니라 GPU · 메모리 쪽에 예산을 준다. 승인 목적과 반대라 같은 승인 범위에서 즉시 15 W 로 원복(1497 MHz 확인). 그리고 그날 mp7 의 최종 정지는 CPU 가 아니라 Fast DDS 데드락이었다(→ [SLAM 데드락 카드 실수 ①](slam-dds-deadlock.md)) — 전력 모드는 애초에 틀린 손잡이였다 |
+| 다음에 알아보는 법 | 설정의 '효과' 는 이름이 아니라 **그 설정 파일의 수치**로 본다(`/etc/nvpmodel.conf` 의 `CPU_A78_0 MAX_FREQ` 등). 사용자에게 승인을 청하는 변경은 예상 효과의 출처(파일 · 측정)를 함께 적는다 — 출처 없는 수치는 쓰지 않는다(메모 '사양 수치 출처 의무' 와 같은 원칙). 바꾼 직후 같은 지표(여기선 `scaling_max_freq`)를 다시 읽는 확인을 스크립트에 넣는다(`job388` 이 그랬기 때문에 바로 잡혔다) |
+| 데이터 | [`2026-09-17/outputs/j388_pm25.txt`](../debug_log/2026-09-17/outputs/j388_pm25.txt) · [`j390_pmrevert.txt`](../debug_log/2026-09-17/outputs/j390_pmrevert.txt) · 도구 [`jobs/job384_power.sh`](../debug_log/2026-09-17/jobs/job384_power.sh) · `job385_pmhist.sh` · `job388_pm25.sh` · `job389_pmconf.sh` · `job390_pmrevert.sh`(`job384` · `job385` · `job389` 출력은 원천 소실) · [09-17 §5 · §6.2](../debug_log/2026-09-17/SUMMARY.md) |
+
 ## 6. 기록 사이 모순 (원문 대조)
 1. **09-10 §1 의 'python3 14.7 %' 는 이름별 평균.** `job182_s6base.sh` 는 `top -b -n 30 -d 1` 30 화면을 파일로 받아 `awk '/^ *[0-9]+ / {cpu[$12]+=$9; n[$12]++} END {… cpu[c]/n[c]}'` 로 **COMMAND 이름마다** 평균을 낸다. `top -b` 는 모든 프로세스를 찍으므로 python3 는 conditioner · deskew · stuck_monitor · 기타 python 노드 줄이 한 이름으로 묶여 '줄 하나당 평균' 이 된다 — conditioner 하나가 40 % 여도 0 % 근처 python 줄들이 있으면 크게 낮아진다. 같은 이유로 09-09 의 'python3 44 %'(job177 등의 1 초 top, 줄 하나)와 직접 비교할 수 없다. 09-21 기준선(pid 별): conditioner ≈ 43 %. → '09-09 python3 44 % 는 열화' 의 근거는 약하다(새 측정 없이 코드 · 기록 대조로 낸 판단, **추정**). 또 `top -b` 첫 화면은 직전 구간이 아닌 값이라 평균에 섞인다(작은 영향, **추정**).
 2. **'09-09 주행 중 Foxglove 로 경로를 보고 있던 것'**(09-10 §0 · §4): 09-09 SUMMARY 에는 job170 · 175 때 클라이언트 연결 기록이 없다. 같은 날 §8.12 는 lean 적용 뒤 top 에서 브리지가 '사라졌다' 고 쓴다 — 그때는 연결이 없었을 수 있다([Foxglove 카드](foxglove-snap-cpu.md)). 인과 포함은 **추정**.
 3. **§8.14 제목의 '(job170, 175)'**: 본문은 job170 만 다루고 job175 는 §8.16 에서 나온다. job170 정지의 원인은 SUMMARY 본문에 없고(§8.15 의 2 회차 SHM 과의 연결은 XML 주석 · 커밋에만), job175 는 SHM 0 · CPU. 같은 서명이 두 원인에서 나왔다는 점이 이 카드의 핵심이라 섞어 읽지 않도록 표에서 나눴다.
 4. **conditioner '35~37 %'(09-09 §8.16)와 '44 %'(09-10 §1 이 인용한 09-09 값)**: 09-09 SUMMARY 에서 python3 44 % 를 직접 적은 줄은 없다 — 가장 가까운 것은 §8.12 'lean 이후' 표의 1 위 `python3 39.2 %`(1 초 top 의 한 줄, 정체는 conditioner 로 **추정**)이고, 44.1 % 는 08-31 · 09-01 의 conditioner 값이다([Foxglove 카드](foxglove-snap-cpu.md)). 09-10 이 어느 측정을 인용했는지 **미확인**.
 5. **'TF/EKF 정상'(§8.13)**: job171 은 주행이 **끝난 뒤** 값이다. 정지 중(t ≈ 4~14)의 TF 상태가 아니므로 'DDS 이상 없음' 은 정지 시각의 근거가 못 된다 — 바로 다음 job173 이 slam 고아를 찾았다.
+6. **(09-17) '25W → CPU 가 오히려 느려져'**(§6 제목): 잰 것은 `scaling_max_freq`(**상한**) 1344 MHz 이고, 25 W 상태로 부하를 걸어 실제 처리 속도 · 루프 미달을 잰 적은 없다(전환 몇 분 만에 원복). '느려진다' 는 상한에서 낸 결론(타당한 추론이지만 측정은 아님). 또 §5 의 '하드웨어 최대 1728' 은 `cpuinfo_max_freq` 값으로 `job384` 출력이 없어(원천 소실) SUMMARY 서술이 유일하다.
+7. **(09-17) '루프 미달 mp5 0 → mp6 9 → mp7 60+'**: 같은 15 W 에서 늘었다 — 즉 전력 모드는 이 악화의 변수가 아니었다. mp8 에서 15 W 그대로 0 이 됐으므로 원인은 그 사이 바꾼 것(visualize off · bag `/trajectories` 제외 · BT 100 ms · Fast DDS 2.6.12) 쪽이다(**어느 것인지 미분리**).
 
 ## 7. 남은 것
 - 09-09 저녁 CPU 의 몫 나누기(conditioner 상시 · 고아/중복 프로세스 · Foxglove 연결) — 재현 시험 없음. 이후 conditioner C++ 이식(09-28)으로 가장 큰 몫은 사라졌다.
@@ -131,6 +160,8 @@ jobs 는 [2026-09-09/jobs/](../debug_log/2026-09-09/jobs/) · [2026-09-10/jobs/]
 | job178 · 179 · 180 · 181 | 카메라 IMU fps 시도 · 정리(오류) · 프로파일 확인 · 중복 정리 | 같은 곳 |
 | job182 | S6 기준선 30 s | `2026-09-10/jobs/` |
 | job189 · 190 · 191 | Nav2 기동 대기 · lifecycle 오류 · Foxglove 끄고 30 s | 같은 곳 |
+| (09-17) job384 · 385 | 전력 모드 · 클럭 · conf 기본값 조회 | `2026-09-17/jobs/`, 출력 원천 소실 |
+| (09-17) job388 · 389 · 390 (+ run_pm25 · run_pmrevert) | 25 W 전환 · conf 표 · 15 W 원복 | `2026-09-17/jobs/`, `j388_pm25.txt` · `j390_pmrevert.txt` |
 
 ## 9. 도구 해설
 **공통**: Jetson 실행(PC WSL → `run_j.sh`, [보드율 카드 §9](microros-baud-regression.md) 공통 항목). 출력 원문 없음(09-09 · 09-10 `outputs/` 에 해당 파일 없음 — 09-10 은 job205 · 216 CSV 만). 'EKF 위반' = `/tmp/sensors.log` 의 `Failed to meet update rate` 줄 수, 'slam 폐기' = `/tmp/slam.log` 의 `Message Filter dropping` 줄 수. 로그를 비우지 않으면 누계라 09-10 도구들은 측정 전후 차분을 쓴다.
@@ -140,6 +171,7 @@ jobs 는 [2026-09-09/jobs/](../debug_log/2026-09-09/jobs/) · [2026-09-10/jobs/]
 - 정지 진단: job171(주행 뒤 상태) → job172(정지 시각 로그 + EKF 버킷) → job173(slam · SHM) → job176(누가) → job177(EKF 위반 통계 · 프로파일)
 - 위반 · 폐기 측정: job177(누계) → job178 · 179 · 181(로그 비우고 재기동 뒤 누계) → 09-10 job182 · 191(30 s 창 차분) — 이후 `chk_prep.py` · `Docs/tools/anal_top.py` · `anal_proc_cpu.py`(10-12, pid 단위)
 - 정리: job179(두 줄 결함) → job181(`cnt()` 수정) → 09-11 job240 · 249
+- (09-17) 전력 모드: `job384_power.sh`(현재 모드 · 클럭 · 온도) → `job385_pmhist.sh`(상태 파일 · conf 기본 · 부팅 · syslog 이력) → (승인) `job388_pm25.sh`(전환 + 전후 상한) → `job389_pmconf.sh`(conf 블록 · 가능 주파수) → `job390_pmrevert.sh`(모드별 상한 표 + 원복). 이후 고정 도구 없음.
 
 ### 9.1 `job125_avoid3.py` — 회피 주행 계측판(이 카드에서는 '정지' 를 보여 준 도구)
 - 부른 형태: `python3 job125_avoid3.py [D=1.80] [timeout=90] [csv이름]` — job170 · 175 등은 이름 인자.
@@ -192,13 +224,45 @@ jobs 는 [2026-09-09/jobs/](../debug_log/2026-09-09/jobs/) · [2026-09-10/jobs/]
 - 결함: '정지 전' 창(86 · 28)은 job189 의 기동 이후 **누계**이고 '정지 뒤' 창(0 · 0)은 30 s **차분** — 창 길이가 달라 수치를 그대로 비교할 수 없다(방향은 분명, **추정** — job189 시점 누계 창 길이는 기동부터 약 50 s+). 브리지를 껐을 때 클라이언트 끊김과 브리지 자체 부하 제거가 함께 일어나 둘을 가르지 않음(09-30 측정은 '연결 vs 끊김' 으로 다시 함).
 - 지금: `ss -tn | grep :8765` 는 '누가 보고 있나' 를 확인하는 가장 싼 방법 — 계속 유효.
 
+### 9.10 (09-17) `job384_power.sh` — 지금 전력 모드 · 클럭 · 온도
+- 실행 위치 · 형태: Jetson, 인자 없음(sudo 불필요). 로버 안 움직임. 감싸개 `run_j.sh`(PC WSL, 스크래치패드 — 소실).
+- 왜: mp7 의 루프 미달 60+ 가 '클럭이 낮게 잡혀서' 인지 보려고.
+- 하는 일: `nvpmodel -q` → `/sys/devices/system/cpu/online` · cpu0 governor → 코어마다 `scaling_cur_freq/scaling_max_freq`(MHz) → `cpuinfo_max_freq`(하드웨어 상한) → `jetson-clocks` · `nvfancontrol` 서비스 활성 여부 → syslog 의 9/16 · 9/17 nvpmodel 줄 → thermal zone 온도 → cpufreq `time_in_state` 상위 3(있으면) → load · uptime.
+- 출력: **원천 소실**(대화에만). SUMMARY §5 에 '15W(ID 0), CPU 최대 1497 MHz, 하드웨어 최대 1728' 로 옮겨 적힘.
+- 결과가 쓰인 곳: §5 '사용자 결정 필요 — 15 W → 25 W' 제안(근거 수치는 이 도구가 아니라 내 추정).
+- 알려진 결함: 모드별 상한(conf)을 읽지 않는다 — 이것이 §5.5 실수의 빈칸이었다.
+- 지금 다시 쓸 수 있나: 예(읽기만).
+
+### 9.11 (09-17) `job385_pmhist.sh` — 모드 이력을 찾을 수 있나
+- 하는 일: `/var/lib/nvpmodel/status` 내용 · 수정 시각 → `/etc/nvpmodel.conf` 의 `PM_CONFIG DEFAULT` 줄 · `POWER_MODEL ID` 줄들 → `last -x reboot` 4 줄 → syslog(.1 포함)의 nvpmodel · Power Mode 줄 6 개 → `/var/log/nvpmodel*`.
+- 출력: **원천 소실**. SUMMARY §5: 'conf 기본은 25W', '상태 파일은 부팅 때 다시 쓰여 어제와 달라졌는지는 확인 불가'.
+- 읽는 법: conf 기본이 25 W 인데 운용은 15 W 였다 → 누군가(언제?) 15 W 로 바꿔 두었다는 뜻. 그 시점 · 이유는 **미확인**.
+- 지금 다시 쓸 수 있나: 예.
+
+### 9.12 (09-17) `job388_pm25.sh`(+ `run_pm25.sh`) — 15 W → 25 W 전환 (사용자 승인)
+- 실행 위치 · 형태: Jetson, sudo. 감싸개 `run_pm25.sh`(PC WSL)가 `__PW__` 를 `sed` 로 넣어 올리고 실행 뒤 원격 파일 삭제(저장소 사본은 `<PW>`).
+- 하는 일: ① DDS 패키지 5 종 설치 · 후보 버전(이 부분은 [SLAM 데드락 카드 §9.8](slam-dds-deadlock.md)) ② 전: `nvpmodel -q` 첫 줄 · cpu0 상한 → `nvpmodel -m 1` → 3 s → 후: 모드 · 6 코어 상한 · online → 온도 2 개 → 배터리 한 번.
+- 출력: [`outputs/j388_pm25.txt`](../debug_log/2026-09-17/outputs/j388_pm25.txt) — '전: NV Power Mode: 15W cpu0 max 1497 MHz' · '후: NV Power Mode: 25W cpu max: 1344 1344 1344 1344 1344 1344 MHz online 0-5' · 47 °C · 12.12 V.
+- 결과가 쓰인 곳: §6.2 '추정 오류' 판정 — 전후 상한을 같은 스크립트에서 찍은 덕에 바로 드러남.
+- 알려진 결함: 전환 전에 conf 의 25 W 블록을 보지 않았다(스크립트 순서상 '먼저 바꾸고 나중에 본다'). 실제 처리 속도는 재지 않음(§6 ⑥).
+- 지금 다시 쓸 수 있나: 모드 바꾸는 일은 사용자 결정 사항 — 쓰려면 conf 확인을 앞에 넣는다.
+
+### 9.13 (09-17) `job389_pmconf.sh` · `job390_pmrevert.sh`(+ `run_pmrevert.sh`) — conf 표와 원복
+- `job389`(sudo 불필요): conf 의 `POWER_MODEL ID=` 블록마다 CPU_ONLINE · FREQ · EMC · GPU_POWER · CPU_A78 줄(최대 60 줄) → 10 s 뒤 6 코어 cur/max/min → `scaling_available_frequencies` → `nvpmodel -q --verbose` 의 cpu · freq 줄. 출력 **원천 소실**.
+- `job390`(sudo): conf 에서 모드별 `CPU_A78_0 MAX_FREQ` · `GPU MAX_FREQ` · `EMC MAX_FREQ` · `CPU_ONLINE CORE_5` 를 'ID=… NAME=… :: 줄' 로 → `nvpmodel -m 0` → 3 s → 원복 뒤 모드 · 6 코어 상한.
+- 출력: [`outputs/j390_pmrevert.txt`](../debug_log/2026-09-17/outputs/j390_pmrevert.txt) — §4.1 의 모드별 표 원천(15W CPU 1497600 · GPU 612000000 · EMC 2133000000 / 25W 1344000 · 918000000 · 3199000000 / MAXN_SUPER −1 · −1 · −1, 원복 뒤 1497 ×6).
+- 단위 주의: conf 의 CPU 값은 kHz(1497600 = 1497.6 MHz), GPU · EMC 는 Hz.
+- 지금 다시 쓸 수 있나: `job390` 의 앞부분(모드별 상한 표)은 모드를 고민할 때 먼저 볼 표 — 그대로 유효.
+
 ## 10. 용어
 - **tf2 버퍼 · `Time()` 조회**: TF 리스너는 받은 변환을 시간순으로 보관(기본 10 s)한다. `lookup_transform(목표, 원천, Time())` 의 `Time()`(0)은 '가장 최근 것' 을 뜻한다 — 새 변환이 안 와도 보관 기간 동안은 낡은 값을 그대로 준다.
 - **EKF 주기 위반(`Failed to meet update rate`)**: robot_localization 이 설정 주기(30 Hz = 0.033 s) 안에 한 번의 예측 · 갱신을 못 끝냈다는 경고. 'Took 0.14s' 는 그 회차 소요.
 - **메시지 필터(message filter) 폐기**: slam_toolbox 는 스캔마다 '스캔 stamp 시각의 odom→base_link' 를 TF 에서 찾아야 한다. 그 시각의 변환이 아직 없으면 큐에 두고 기다리다, 큐가 차거나 시간이 지나면 `Message Filter dropping message` 로 버린다. odom TF 가 늦게 오면 전부 버려질 수 있다.
 - **load average**: 실행 중 + 실행 대기 작업 수의 1 · 5 · 15 분 평균. 코어 수(이 Jetson 6)를 넘으면 대기가 생긴다 — 9.01 / 6 은 포화.
 - **top %CPU · 이름별 집계**: %CPU 는 직전 구간 사용률(코어 1 개 = 100 %). `top -b` 는 모든 프로세스를 찍으므로 이름으로 묶어 평균하면 같은 이름 다수 프로세스(python3)가 희석된다.
-- **nvpmodel · 전력 모드**: Jetson 의 전력 · 클럭 상한 모드(`nvpmodel -q` 로 조회, `-m N` 으로 변경). 이 장비는 15 W(ID 0, CPU 최대 1497 MHz)가 운용점이었고(09-17 기록), 25 W 는 CPU 상한이 오히려 낮고, MAXN_SUPER 만 상한 없음.
+- **nvpmodel · 전력 모드**: Jetson 의 전력 · 클럭 상한 모드(`nvpmodel -q` 로 조회, `sudo nvpmodel -m N` 으로 변경, 정의는 `/etc/nvpmodel.conf` 의 `POWER_MODEL ID=N NAME=…` 블록). 이 장비는 15 W(ID 0, CPU 최대 1497 MHz)가 운용점이었고(09-17 기록), 25 W(ID 1)는 CPU 상한이 1344 MHz 로 **오히려 낮고** GPU 918 · 메모리(EMC) 3199 MHz 로 높으며, MAXN_SUPER(ID 2)만 상한 없음(CPU 하드웨어 최대 1728 MHz). 모드 이름의 W 는 전력 예산이지 CPU 속도가 아니다.
+- **`scaling_max_freq` · `cpuinfo_max_freq` · `scaling_cur_freq`**: 리눅스 cpufreq 의 '지금 허용된 최대 클럭'(nvpmodel 이 정함) · '하드웨어가 낼 수 있는 최대' · '지금 클럭'(kHz). 모드 효과를 볼 때는 `scaling_max_freq` 를 바꾸기 전 · 후로 읽는다.
+- **EMC**: Jetson 의 외부 메모리 컨트롤러(메모리 클럭). 모드마다 상한이 다르다.
 - **`unite_imu_method 1(copy)`**: realsense 드라이버가 자이로 · 가속도를 한 IMU 토픽으로 합칠 때, 자이로 샘플마다 가장 최근 가속도를 복사해 붙이는 방식. 토픽 주기는 자이로 주기를 따른다.
 - **S6(Phase S)**: `NVBLOX_MIGRATION_PLAN.md` 의 'CPU 여유 확보' 항목. 09-21 Phase S 종료 때 기준선 수치로 대체됐다.
 - **열화(이 카드에서)**: 긴 세션 · 재기동 반복 뒤 같은 스택이 재부팅 직후보다 무거워지는 현상에 09-10 이 붙인 이름. 무엇이 쌓이는지는 재지 않았다.

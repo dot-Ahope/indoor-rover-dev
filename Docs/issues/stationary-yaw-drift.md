@@ -21,6 +21,13 @@
 | 10-29 §3 | d1: prep 뒤 30 분 정지 기록 | EKF **+0.07°**(원시 적분 +73°) · ZUPT 30 분 내내 · map→odom 0 | 정지만으로는 재현 안 됨 | `2026-10-29/outputs/anal_drift_d1.txt` · `bags/bag_d1.tgz` |
 | 10-29 §4 | d2 선언: 주행 뒤 40 분 정지 + 검사 실동작 | (미실행) | | `2026-10-29/jobs/run_d2_1029.sh` |
 
+**앞선 관측(10-30 문제 대장 3 시기를 읽으며 추가 — 이 카드의 판정은 바꾸지 않음)**
+| 날짜 · § | 한 일 | 본 것(수치) | 그때 결론 | 데이터 |
+|---|---|---|---|---|
+| 09-15 §0.5 | 사용자 우려 '시간이 지나 세션에 오차가 쌓였나' → 정지 30 s 점검(Jetson 가동 3 h 19 min, 충전 뒤 재부팅 · 그날 첫 주행 mp1 **전**, 그 전엔 정지 상태의 Smac 스윕만) | 휠 odom 위치 0.0000 m · yaw 0.00 °/min · **EKF 위치 0.0000 m · yaw +0.05 °/min**(09-10 1.31 → ZUPT 뒤 0.02~0.05) · map→odom 변화 0 / 0 / 0.000° · odom→base yaw 변동 0.052° / 30 s · `/wheel_odom` 25.1 Hz · EKF 27.6 Hz · 카운터: EKF 위반 0 · nav2 ERROR 0 · slam 폐기 27 · 에이전트 세션 1 | '기반 계층에 누적 오차 없음, 손 배치로 낡은 것은 SLAM 자세뿐 → 재기동' | SUMMARY 표만(**출력 원문 없음**) · 도구 [`2026-09-15/jobs/job321_drift.py`](../debug_log/2026-09-15/jobs/job321_drift.py) · 러너 [`run_j321.sh`](../debug_log/2026-09-15/jobs/run_j321.sh) |
+- 이 카드와의 관계: 'prep(기동) 뒤 오래 켜 둔 정지' 조건이라 10-29 d1(30 분 +0.07°)과 같은 쪽이고, '주행 **뒤** 정지' 는 아니다 → 09-15 의 정상 판정은 H1 · H2 를 지지도 기각도 하지 않는다. 또 **창 30 s 가 너무 짧다**: +0.05 °/min 은 30 s 동안 0.025° 로 같은 창의 odom→base 잡음 변동(0.052°)보다 작아, 10-28 의 0.04~0.39 °/min 하단은 이 방법으로 구별되지 않는다(계산). map→odom 변화 0 은 '정지 중 SLAM 이 고치지 않음' 의 가장 이른 기록이다(그때는 정상 동작으로 해석 — 그 해석 자체는 맞다).
+- `job321_drift.py`(Jetson, `run_j321.sh` 가 올려 실행 — 그 러너는 앞에 Jetson uptime · 에이전트 컨테이너 상태 · `/tmp/sensors.log` 의 'violat' 줄 수 · slam.log 'dropping' · nav2.log 'ERROR' · 에이전트 'session established' 개수를 찍고, 뒤에 load · 릴레이 ms/프레임을 찍는다): `/wheel_odom` · `/odometry/filtered` · `/scan` · `/camera/depth/points_filtered` 를 센서 QoS 로 30 s 구독해 수신률과 stamp 지연(now − header.stamp)의 중앙 · 최대, 두 odom 의 처음 · 끝 위치 차와 yaw 차(°, ×2 = °/min), 2 s 마다 TF `map→odom` · `odom→base_link` 의 stamp 지연과 정지 중 x · y · yaw 범위(최대 − 최소). 판정 문턱은 코드에 없다(사람이 읽음). 결함: yaw 차를 `P[-1] − P[0]` 로 바로 빼 ±180° 넘김을 처리하지 않음(정지라 무해) · 처음 · 끝 두 점만 써 잡음에 민감. 계보 → 10-29 `chk_yaw_drift.py`(원천별 yaw rate, 1 분 창). 지금 다시: 쓸 수 있으나 창을 수 분 이상으로 늘려야 이 카드의 율을 본다.
+
 ## 3. 가설과 판별
 | 가설 | 판별 | 결과 | 판정 |
 |---|---|---|---|
