@@ -75,6 +75,20 @@
 | [주행 직전 DDS 참여자 금지 규칙](pre-drive-dds-participants.md) | 규칙(근거 약함) | cc1 루프 미달 18 = 주행 직전 메타 스냅숏 · 30 s 는 측정 근거 없음 |
 | [Phase S 기준선](phase-s-baseline.md) | 완료 | S1~S6 · cc4/cc5 · BASELINE_STVL(여유 8~13 cm · CPU 320 % · 6.6 W)과 측정 방법 |
 
+### 5 기 09-28 ~ 10-02 (회전 슬립 · SLAM 포크 · 컨디셔너 C++ · F0-b · F1 매핑 · F2 순회 · rf2o 시작) — 11-02 작성 · 앞 카드 8 장도 이어 채움
+| 카드 | 상태 | 한 줄 |
+|---|---|---|
+| [SLAM 포크 — 회전 중 스캔 처리](slam-fork-rotation.md) | 해결(지도 층) · 운용 | shouldProcessScan 을 '거리 또는 회전' 으로. ⚠ 위치 추정 모드 회전 문턱 0.15 rad(6.9°)에서의 효과는 미측정 |
+| [회전축 보정 B2 · 회전 분산 B3](icr-b2-b3.md) | B2 보류 · B3 자동 켜짐 | B2 는 f0a7 map→odom 2.2 배로 기본 끔. B3 는 vslam/rf2o 때 σ 0.3 으로 자동 켜짐(ekf.launch.py 39~40) |
+| [보드 OLED · base 자동 기동](board-oled-autostart.md) | 해결 | OLED 에 IP 표시 · rover-base 서비스 |
+| [Isaac · cuVSLAM 평가](isaac-cuvslam-evaluation.md) | 결정(기능 완성 우선) | rf2o 야외 · 사람 마스크 · JetPack 6.2/NITROS · cuVSLAM 단독 · 프로젝터 충돌 → JetPack 7.2 뒤로 |
+| [온보드 정지 수단 · nav_guard](onboard-stop-nav-guard.md) | 운용 | 목표 시간 · 무진행 한도로 Nav2 와 독립 취소. CPU 19.5 % 미해결 |
+| [F0-b 코스 — 문 통과 7 m 왕복](f0b-course.md) | 완료 | f0b1 · f0b2 통과 · 실제 영상 나란히 |
+| [F1 사무실 지도](f1-office-mapping.md) | 완료(office_v2) | 이어 그리기 오정합 2 회 → bag 재생 · 휜 구간 제거 → office_v2. 지금 지도는 office_v3 |
+| [F2 순회 · 위치 점프](f2-patrol-loc-jump.md) | 점프 해결 | 1.33 m 점프 = 저장 지도의 빈 곳 → office_v3. 의자 옆 정체 · 복귀 상자 접촉 |
+| [회전 중 장애물 번짐](rotation-obstacle-smear.md) | 조사 → rf2o | odom 좌표 코스트맵에 옛 표시가 남음 · 로컬 map 좌표 A/B |
+| [rf2o 도입(5 기 부분)](rf2o-introduction.md) | 진행 → 이후 cuVSLAM | 라이다 정합 속도로 회전 미끄러짐을 EKF 에. 부호 반대 보정 · R2 오프라인 |
+
 ### 10 월 (형식 시범)
 | 카드 | 상태 | 한 줄 |
 |---|---|---|

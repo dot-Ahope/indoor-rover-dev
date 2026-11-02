@@ -2,7 +2,7 @@
 
 | 상태 | 기간 | 처음 본 곳 | 바꾼 파일 | 관련 문제 |
 |---|---|---|---|---|
-| **우회**(브리지 재시작 + 토픽 화이트리스트로 증상 해소, 사용자 확인) · 기전('브리지가 /tf 를 늦게 · 뭉쳐 전달')은 **추정**으로 남음 · 2 기(09-09 ~ 09-10): 브리지 상시 88~95 % → `viz:=lean` 3 단계 · 스레드 · 큐 · 기능 축소, 그러나 **클라이언트가 붙으면 lean 이어도 69.6 %** → 운용 규칙 '측정 주행 중 Foxglove 끄기' · 이후 09-30 재발 | 09-01(08-31 폴더의 연속 세션) ~ 09-10(이후 09-30) | [08-31 SUMMARY '(2026-09-01 연속 세션)' → '다음 (★최우선 = 새 관찰)'](../debug_log/2026-08-31/SUMMARY.md) | `ros2_ws/src/rover_bringup/launch/foxglove.launch.py`(topic_whitelist 신설) · `scripts/scan_deskew.py`(벡터화, 부수) | [회전 중 스캔 끌림](scan-drag-deskew.md) · [라이다 yaw](lidar-yaw-alignment.md)(fixed frame 혼선) · [SLAM map→odom 시각 정체](slam-stamp-freeze.md)(stamp 의 뜻) · [CPU 부족 정지](cpu-load-stalls.md)(09-09 ~ 09-10, 클라이언트 연결이 EKF 를 굶김) · 회전 미끄러짐 · SLAM 포크(09-28, 카드 예정) |
+| **우회**(브리지 재시작 + 토픽 화이트리스트로 증상 해소, 사용자 확인) · 기전('브리지가 /tf 를 늦게 · 뭉쳐 전달')은 **추정**으로 남음 · 2 기(09-09 ~ 09-10): 브리지 상시 88~95 % → `viz:=lean` 3 단계 · 스레드 · 큐 · 기능 축소, 그러나 **클라이언트가 붙으면 lean 이어도 69.6 %** → 운용 규칙 · 3 기(09-30): 매핑 중 같은 증상 → `viz:=map` 세트 · 매핑 전용 모드 · map 세트 큐 깊이 10(§4c) '측정 주행 중 Foxglove 끄기' · 이후 09-30 재발 | 09-01(08-31 폴더의 연속 세션) ~ 09-10(이후 09-30) | [08-31 SUMMARY '(2026-09-01 연속 세션)' → '다음 (★최우선 = 새 관찰)'](../debug_log/2026-08-31/SUMMARY.md) | `ros2_ws/src/rover_bringup/launch/foxglove.launch.py`(topic_whitelist 신설) · `scripts/scan_deskew.py`(벡터화, 부수) | [회전 중 스캔 끌림](scan-drag-deskew.md) · [라이다 yaw](lidar-yaw-alignment.md)(fixed frame 혼선) · [SLAM map→odom 시각 정체](slam-stamp-freeze.md)(stamp 의 뜻) · [CPU 부족 정지](cpu-load-stalls.md)(09-09 ~ 09-10, 클라이언트 연결이 EKF 를 굶김) · 회전 미끄러짐 · SLAM 포크(09-28, 카드 예정) |
 
 **한 줄**: Foxglove 에서 로버 모델은 멈춰 있고 스캔만 실시간으로 움직이다가 '약 4 초마다' 로버가 제자리로 점프하는 것을 사용자가 봤다. TF 주기 · stamp · 클럭 · SLAM 을 차례로 재서 ROS 안쪽은 건강함을 확인했고, 프로세스별 CPU 에서 foxglove_bridge 가 66 % 로 가장 큰 소비자였으며 브리지를 재시작하자 사용자가 '매끄러워졌다' 고 확인했다 → 시각화 아티팩트로 결론, 카메라 토픽을 빼는 화이트리스트로 브리지 8.8 %. 같은 조사에서 'deskew 가 CPU 35~45 %' 라고 적었던 것은 오인이었고 실제 최대 소비자는 `sensor_conditioner`(44 %)였다. conditioner 는 '없앨 임시 코드' 라는 이유로 최적화하지 않기로 했다(이후 09-28 C++ 이식).
 
@@ -58,7 +58,8 @@
 - **deskew 벡터화**: 9.0 → 7.8 %(조건 다른 두 1 초 표본) — 효과 미미, '대폭 절감' 은 측정 근거 없음.
 - **conditioner 최적화 안 함**(위 표 마지막 줄의 네 근거). 이후 09-02 Nav2 기동 시 conditioner 47 % · foxglove 27 %, foxglove 를 끄면 load 6.9 → 3.4([09-02 SUMMARY 'B-1' 부수 조치 · 첫 자율주행 '관찰·다음 튜닝 후보' 2](../debug_log/2026-09-02/SUMMARY.md)) → '자율주행 중에는 foxglove 끄기' 운영.
 - 이후(09-09 ~ 09-10): 아래 §4b 에서 채움 — 브리지 상시 88~95 % → `viz:=lean`(기본) / `full` / `cam` 3 단계 · `num_threads 2` · `max_qos_depth 1` · `capabilities` 축소(09-09 §8.10), lean 뒤 top 에서 브리지 사라짐(§8.12, 클라이언트 연결 상태 미기록), 09-10 §4 **클라이언트가 붙자 lean 이어도 69.6 %** · 끊자 EKF 위반 86 → 0 → '측정 주행 중 Foxglove 끄기'.
-- 이후(09-28 ~, 다음 시기에서 채움): conditioner C++ 이식(CPU 42.2 → 7.1 %, 커밋 9c2984b4), 09-30 §5 매핑 중 lean 연결로 EKF 위반 12 회 / 30 s → `viz:=map` 세트, 09-30 §12 **같은 증상**('스캔만 돌고 로버는 멈췄다 점프', Jetson TF 정상, j712) → 브리지 `max_qos_depth 1` 이 /tf 를 버린다는 다른 기전 추정 → map 세트 10.
+- 이후(09-28 ~, 다음 시기에서 채움): conditioner C++ 이식(CPU 42.2 → 7.1 %, 커밋 9c2984b4).
+- 이후(09-30): 아래 §4c 에서 채움 — §5 매핑 중 '멈췄다 점프' = Foxglove 연결 A/B(EKF 미달 +12 vs +0, ekf 48.6 vs 12.1 %) → `viz:=map` 세트, §11 브리지를 줄여도 대기 Nav2 · nvblox 과부하로 재발 → 매핑 전용 모드, §12 '스캔만 돈다'(Jetson TF 정상) → map 세트만 `max_qos_depth` 10.
 
 ## 4b. 2 기(09-09 ~ 09-10) — 경량화, 그리고 '클라이언트가 붙는 것' 이 병목
 ### 흐름
@@ -94,6 +95,32 @@ jobs 는 [2026-09-09/jobs/](../debug_log/2026-09-09/jobs/) · [2026-09-10/jobs/]
   - 효과: 유휴 0.7 %, §8.12 상위에서 사라짐. 그러나 클라이언트가 붙으면 69.6 %(09-10) — **경량화로는 부족**.
 - **운용 규칙**(09-10 §4): 측정 주행 중 Foxglove 를 닫는다(또는 브리지를 내린다). 이후 계획서 S6 에도 '클라이언트 접속 시 다시 오른다 — 측정 주행 중 끄기 검토' 로 반영.
 - 한계 · 이후: `max_qos_depth 1` 이 09-30 §12 에서 `/tf` 를 버리는 원인으로 다시 의심됨(map 세트만 10). 09-09 의 '1(버림)' 은 부하 억제용 선택이었고 `/tf` 처럼 여러 발행자가 한 토픽에 섞이는 경우의 영향은 그때 검토하지 않았다.
+
+## 4c. 3 기(09-30) — F1 매핑 중 '로봇이 멈췄다 점프' · '스캔만 돈다'
+같은 날 F1 사무실 매핑의 일부 — 줄기 전체는 [F1 사무실 지도 카드](f1-office-mapping.md). jobs 는 [2026-09-30/jobs/](../debug_log/2026-09-30/jobs/), 출력은 [2026-09-30/outputs/](../debug_log/2026-09-30/outputs/).
+
+### 흐름
+| 곳 | 한 일 | 본 것(수치) | 그때 결론(틀렸으면 표시) | 데이터 |
+|---|---|---|---|---|
+| 09-30 §5 | 매핑 중 Foxglove 에서 로버 위치가 멈췄다 점프(사용자) — 로그 누적 · 부하 | prep 뒤 ≈ 40 분 누적: 부하 평균 **11.3**(6 코어; 평소 prep 직후 3~7), EKF 'Failed to meet update rate' **760**(40~46 ms > 33 ms), SLAM 'Message Filter dropping' **106**, 브리지 로그에 노드별 파라미터 조회 실패 연속 | 과부하 의심 → A/B | `outputs/j694_lagchk.txt`, `jobs/job694_lagchk.sh` |
+| 09-30 §5 | A/B 30 s(로버 정지, **클라이언트 수를 같은 줄에 기록**) | A 연결 1: EKF 미달 **+12** · load 10.09 · 브리지 62.4 · **ekf 48.6** · async_slam 53.4 · bt 28.9 · controller 23.3 · planner 20.5 · behavior 17.7 · smoother 17.6 % / B 연결 0: **+0** · load 5.55(하강 중) · **ekf 12.1** · 쉬는 Nav2 ≈ 10 % | Foxglove 연결이 브리지(62 %)뿐 아니라 **EKF(×4) · 대기 Nav2 CPU 를 끌어올려** EKF 가 주기를 놓침 → odom TF 지연 → SLAM 스캔 버림 → 지도 위 위치가 멈췄다 따라잡음(연결 인과 · 기전은 **추정**: ① 구독자 하나당 발행 쪽 UDP 직렬화 증가 ② 브리지 parameters 기능의 전 노드 서비스 요청) | `outputs/j695_load_A.txt` · `j695_load_B.txt`, `jobs/job695_loadab.sh` |
+| 09-30 §5.1 | `viz:=map` 세트 적용(사용자: "적용하고 C 측정은 현상 재발 시") | `/tf` · `/tf_static` · `/robot_description` · `/map` · `/map_metadata` · `/scan`, capabilities `['clientPublish']` 만(빈 목록은 ROS 파라미터 타입 문제로 피함). 지금 스택의 브리지만 교체 | 개선 측정 C(같은 30 s 에서 EKF 미달 0 · 부하 B 수준)는 **보류** | `jobs/job696_bridge_map.sh`(출력 원문 없음) |
+| 09-30 §11 | 이어 그리기 중 같은 증상 재발 — 이번엔 `viz:=map` | 부하 10.6~10.9, 24 s 에 EKF 미달 +25 · SLAM 버림 +4, 브리지 18.1 %(줄었음) · ekf 50.3 · 대기 Nav2 합 ≈ 130 % · nvblox 35.3 % | 브리지를 줄여도 대기 Nav2 · nvblox · 큰 그래프 SLAM 이 겹쳐 과부하 → **매핑 전용 모드**(F1 카드) | `outputs/j705_jumpchk.txt` · `j706_cputop.txt` |
+| 09-30 §11.1 | 매핑 전용 모드 + **Foxglove 1 연결** 30 s | 부하 **2.72** · EKF 미달 **0** · SLAM 버림 **0**, ekf 53.6 % · 브리지 28.7 % | 과부하 해소. 브리지 구독으로 ekf 는 여전히 높지만 여유가 생김 — 사실상 §5.1 의 C 측정에 해당하나 조건(Nav2 · nvblox 없음)이 달라 'map 세트 효과' 단독으로는 아님 | `outputs/j710_mapmode_teleop.txt` |
+| 09-30 §12 | 매핑 모드에서도 '회전하면 스캔만 돌고 로버는 안 움직임'(사용자) | 로버 쪽 15 s: odom→base_link yaw 가 1 s 마다 ≈ 14° 씩 매끄럽게, map→odom −2.7 ~ −5.0°, 휠 25 · 컨디셔너 25 · IMU ≈ 200 · EKF 30 Hz 끊김 없음, 휠 · 자이로 · EKF 회전 속도 일치 | **로버 쪽 TF 정상** → 원인(**추정**): 브리지 `max_qos_depth 1` — /tf 한 토픽에 EKF(30 Hz) · SLAM · 기타 발행자가 섞여 깊이 1 이면 odom→base_link 가 다른 /tf 에 밀려 버려지고 /scan 은 따로 계속 옴 → 오래된 로버 자세에 새 스캔을 그림. 조치: **map 세트만 `max_qos_depth` 10**(토픽 6 개라 감당), 나머지 세트 1 유지 | `outputs/j712_rotchk.txt`, `jobs/job711_rotchk.py` |
+
+### 가설과 판별(3 기)
+| 가설 | 판별 | 결과 | 판정 |
+|---|---|---|---|
+| 매핑 중 '멈췄다 점프' = 실제 위치 추정 문제 | 같은 시각 EKF · SLAM 로그 · 부하 | EKF 주기 미달 · SLAM 스캔 버림 동반 — 실제 TF 가 늦어진 것(표시만의 문제는 아님) | 일부 **지지**(점프가 지도 · 위치에 남았는지는 별도 — 17:10 의 큰 점프는 SLAM 오정합, F1 카드) |
+| Foxglove 연결이 EKF 를 굶긴다 | 연결 1 vs 0, 30 s 차분(§5) | +12 vs +0, ekf 48.6 vs 12.1 % | **지지**(09-10 §4 와 같은 결과를 클라이언트 수까지 기록해 재현) |
+| 토픽을 줄이면(map 세트) 충분하다 | §11 같은 증상 | 브리지 18 % 로 줄었으나 부하 10.9 · EKF 미달 +25 | **기각** — 부하의 주인이 대기 Nav2 · nvblox 로 옮겨 감 |
+| '스캔만 돈다' = 브리지 큐 깊이 1 이 /tf 를 버림 | Jetson 쪽 TF · 입력이 정상인지만 확인(§12) | 정상 | **미확인**(Foxglove 가 받은 /tf 간격은 안 잼, 깊이 10 뒤 사용자 재확인 결과도 기록 없음) |
+
+### 조치와 효과(3 기)
+- `foxglove.launch.py` 09-30 판: `MAP` 세트(위 6 토픽) · 세트별 `CAPS`(map 은 `clientPublish` 만, 나머지는 `clientPublish` · `parameters` · `services`) · `max_qos_depth: 10 if level == 'map' else 1`. 지금 파일도 그대로(49 · 54 · 73 줄).
+- 운용: 패드 매핑은 `SENSORS_ARGS="viz:=map"` + `MAPPING=1`, 주행 진단(코스트맵 · 경로 보기)이 필요할 때만 lean.
+- 한계: map 세트 단독 효과(C 측정)는 같은 조건으로 잰 적이 없다. 깊이 10 이 '스캔만 돈다' 를 고쳤는지는 기록 없음. 스캔 버림 사유 — SUMMARY §5 는 '스캔 시각의 odom TF 없음' 으로 풀었고 원문 로그 사유는 `discarding message because the queue is full`(j705 · j713; j694 는 잘려 사유 안 보임). tf2 MessageFilter 는 변환을 기다리는 스캔이 큐에 차면 이 사유로 버리므로 두 설명은 같은 현상의 다른 말로 보인다(**추정**).
 
 ## 5. 내 실수
 ### 5.1 CPU 35~45 % 를 deskew 로 오인 — 칸 형식
@@ -142,8 +169,8 @@ jobs 는 [2026-09-09/jobs/](../debug_log/2026-09-09/jobs/) · [2026-09-10/jobs/]
 | 데이터 | 09-09 SUMMARY §8.10 · §8.12, 09-10 SUMMARY §4, 도구 `2026-09-09/jobs/job159_fgdeploy.sh` · `2026-09-10/jobs/job191_nofg.sh`. 출력 원문 없음 |
 
 ## 6. 남은 것
-- 브리지 쪽 기전(늦게 전달 vs 큐에서 버림)을 가르는 측정: Foxglove 클라이언트가 받은 /tf 메시지 간격 기록 — 이후(09-30 ~): 09-30 §12 에서 채움.
-- 클라이언트 쪽 무엇이 브리지 1 코어를 만드는가(열린 패널 · 구독 토픽별 비용) — 09-10 은 '연결 유무' 만 갈랐다. 09-30 §5 에서 map 세트로 다시 측정(다음 시기).
+- 브리지 쪽 기전(늦게 전달 vs 큐에서 버림)을 가르는 측정: Foxglove 클라이언트가 받은 /tf 메시지 간격 기록 — 09-30 §12 는 Jetson 쪽이 정상임만 확인하고 '큐에서 버림' 을 **추정**으로 골라 map 세트 깊이 10 을 넣었다(§4c). 클라이언트 쪽 측정은 아직 없음.
+- 클라이언트 쪽 무엇이 브리지 1 코어를 만드는가(열린 패널 · 구독 토픽별 비용) — 09-10 은 '연결 유무' 만 갈랐고, 09-30 §5 도 연결 유무 A/B(§4c). map 세트 단독 효과(C)는 보류된 채.
 - job16c 의 '<no authority> 50.27 Hz' 와 'Max Delay 249 s' 의 뜻(정적 TF stamp 가 섞인 것으로 보임 — **추정**).
 - job16b 의 카메라 imu 140.243 Hz(같은 세션 conditioner 출력 `/imu/data` 는 199.989) — `ros2 topic hz` 가 부하 아래서 덜 센 것인지 실제 누락인지 미확인.
 - conditioner CPU: 09-09 ~ 09-10 의 경과(35~37 %, 자이로 100 Hz 시도 실패, S6 신설 · 하향)는 [CPU 부족 정지 카드](cpu-load-stalls.md). 이후(09-28 ~): 다음 시기에서 채움(C++ 이식 42.2 → 7.1 %).
@@ -160,6 +187,8 @@ jobs 는 [2026-09-09/jobs/](../debug_log/2026-09-09/jobs/) · [2026-09-10/jobs/]
 | job17a ~ 17e | 카메라 토픽 · 최적화 배포 · 회전 중 CPU · pid 식별 | 같은 곳 |
 | job157 · 158 · 159 | 브리지 파라미터 · capabilities 확인 · lean 배포 · 단독 기동(09-09) | `2026-09-09/jobs/`, 출력 원문 없음 |
 | job189 · 190 · 191 | Nav2 기동 실패 · lifecycle 오류 · 클라이언트 연결 확인 후 브리지 끄고 30 s(09-10) | `2026-09-10/jobs/`, 출력 원문 없음 |
+| job694 · 695 · 696 | 로그 누적 · 연결 A/B 30 s · 브리지만 map 세트로 교체(09-30) | `2026-09-30/jobs/` · `outputs/j694_lagchk.txt` · `j695_load_A.txt` · `j695_load_B.txt`(696 출력 원문 없음) |
+| job705 · 706 · 711 | 이어 그리기 중 재발 진단 · 회전 중 TF(09-30) — 해설은 [F1 카드](f1-office-mapping.md) | `2026-09-30/outputs/j705` · `j706` · `j712` |
 | `foxglove.launch.py` | topic_whitelist(09-01) → 코스트맵 · 경로 추가(09-08) → viz 단계(09-09) → map 세트(09-30) | `ros2_ws/src/rover_bringup/launch/` |
 
 ## 8. 도구 해설
@@ -172,6 +201,7 @@ jobs 는 [2026-09-09/jobs/](../debug_log/2026-09-09/jobs/) · [2026-09-10/jobs/]
 - SLAM: job16i(로그 · stamp 수 · 파라미터 · 부하) → job16l(period · stamp 수 재측정)
 - CPU: job16j(top) → job17a(+ 카메라 파라미터) → job17b(전후, pgrep 첫 pid) → job17c(회전 중 10 샘플) → job17d(이름별 pid) → job17e(cmdline 으로 정체) — 이후 `Docs/tools/anal_top.py` · `anal_proc_cpu.py`(10-12)로 고정 도구화
 - 2 기(09-09 ~ 09-10): job157(파라미터 이름) · job158 B)(capabilities) → job159(lean 배포 · 무클라이언트 기동 시험) → (09-10) job189 · 190(기동 실패 · 부하) → job191(클라이언트 연결 확인 → 브리지 끄고 30 s 차분). 09-10 의 30 s 창 CPU 는 이름별 평균 집계라 python3 가 희석된다([CPU 카드 §6 모순 1](cpu-load-stalls.md))
+- 3 기(09-30): job694(40 분 누계 · top 3 회) → job695(30 s 차분 + 클라이언트 수 — job191 의 '끄고 30 s' 를 라벨 A/B 로 일반화) → job696(브리지만 교체) → job705 · 706(이어 그리기 중 재발 · 메모리) → job711(회전 중 로버 쪽 TF — 표시 문제와 로버 문제 가르기, [F1 카드](f1-office-mapping.md))
 
 ### job16a_init.sh — 세션 초기화
 - 하는 일: base · sensors · slam · joy_teleop launch, realsense · rplidar · scan_deskew · ekf · conditioner · foxglove · RSP · slam · joy_linux · teleop `pkill -9` → agent 컨테이너 제거 → base.launch(10 s) → `/wheel_odom` hz → sensors.launch(16 s, 자이로 바이어스 보정 동안 로버 정지) → 'gyro bias' 로그 → slam.launch(10 s) → 노드 목록 · filtered · scan hz · `tf2_echo map odom` · conditioner 소스의 `VX_SCALE =` 줄.
@@ -297,6 +327,26 @@ jobs 는 [2026-09-09/jobs/](../debug_log/2026-09-09/jobs/) · [2026-09-10/jobs/]
 - 실행: Jetson, `sensors.launch.py` 가 `viz` 인자를 넘겨 포함(단독 기동도 가능). `OpaqueFunction` 으로 실행 시점에 `viz` 값(lean · full · cam, 그 외는 lean)을 읽어 화이트리스트를 고른다.
 - 하는 일: 위 §4b '조치' 의 세트 · 파라미터. 주석 근거: 09-01(과부하 → 4 초 점프) · 09-09(88~95 %, EKF 위반 동반, 비용 = 건수 × 직렬화).
 - 계보: 09-30 `map` 세트(`/tf` · `/tf_static` · `/robot_description` · `/map` · `/map_metadata` · `/scan`, capabilities `clientPublish` 만, max_qos_depth 10) 추가. 지금도 계속 쓰는 파일.
+
+### job694_lagchk.sh — 매핑 중 '멈췄다 점프' 로그 · 부하(09-30 §5)
+- 실행: Jetson, 인자 없음. prep 뒤 ≈ 40 분 매핑하던 스택 그대로.
+- 하는 일: sensors.log 의 foxglove 줄 중 warn · error · buffer · drop · limit · slow · connect 마지막 12 줄과 'send buffer limit' · 연결/해제 줄 수 → slam.log 'Message Filter dropping' 누계 · 마지막 5 줄(180 자로 자름) → sensors.log 'Failed to meet update rate' 누계 · 마지막 3 줄 → `top -b -n1` 3 회 이름별 %CPU 평균(> 5 %) → loadavg · Wi-Fi 신호.
+- 출력: `2026-09-30/outputs/j694_lagchk.txt`(EKF 760 · 버림 106 · 부하 11.3).
+- 결함: 버림 줄을 180 자로 잘라 사유('queue is full')가 안 보인다. 40 분 누계라 언제 몰렸는지는 모른다 → 그래서 30 s 차분 A/B(job695)로 넘어감.
+
+### job695_loadab.sh — 연결 유무 30 s 차분 A/B(09-30 §5 · §11.1) ★
+- 실행: Jetson, `bash /tmp/job695_loadab.sh <라벨>`(A_fox_on · B_fox_off · mapping_mode · mapping_mode2). 사용자가 A 뒤에 Foxglove 연결을 끊음.
+- 하는 일: 시작 시 EKF 미달 · SLAM 버림 누계 → 뒤에서 `top -b -n1` 6 회(5 s 간격, 상위 23 줄) → 30 s 뒤 누계 차 · loadavg(시작값 함께) → **브리지 클라이언트 연결 수**(`ss -tn state established '( sport = :8765 )'`) → 이름별 평균 %CPU(> 8 %) 상위 10.
+- 출력: `2026-09-30/outputs/j695_load_A.txt` · `j695_load_B.txt` · `j710_mapmode_teleop.txt`(mapping_mode2). `mapping_mode`(job707) 실행분은 prep 이 'Terminated' 로 끊겨 의미 없음.
+- 쓰인 곳: §5 판단 · §11.1 '과부하 해소'.
+- 의미: §5.6 의 '다음에 알아보는 법'(클라이언트 수를 같은 줄에) 을 처음 지킨 측정. 결함: top 은 이름 15 자 · Python 은 `python3` 로 뭉침, 상위 23 줄만 봐서 작은 프로세스는 빠진다.
+- 다시 쓸 수 있음 — 지금은 `Docs/tools/anal_proc_cpu.py`(10-12) 가 전 프로세스 틱 기록으로 대신.
+
+### job696_bridge_map.sh — 브리지만 map 세트로 교체(09-30 §5.1 · §12)
+- 실행: Jetson. `colcon build --packages-select rover_bringup` → 기존 브리지 SIGINT(3 s 뒤 −9) → `ros2 launch rover_bringup foxglove.launch.py viz:=map` 단독 기동 → 프로세스 수 · `capabilities` · `max_qos_depth` · `topic_whitelist` 파라미터 확인. 다른 노드는 그대로.
+- 출력 원문 없음(SUMMARY: 적용 확인 · §12 뒤 깊이 10 확인).
+- 결함: 'topic_whitelist:' 라벨 줄이 실제로는 `max_qos_depth` 를 찍고 다음 줄이 진짜 whitelist(라벨 오기).
+- 다시 쓸 수 있음 — 스택을 내리지 않고 시각화 세트만 바꿀 때.
 
 ## 9. 용어
 - **foxglove_bridge · topic_whitelist**: ROS 토픽을 웹소켓(ws://<jetson>:8765)으로 Foxglove 앱에 중계하는 노드. 클라이언트가 고른 토픽마다 구독 · 직렬화 · 전송을 하므로 고주파 · 대용량 토픽(영상 · 200 Hz IMU)이 많을수록 CPU 를 쓴다. whitelist 는 '광고 자체를 허용할 토픽' 정규식 목록.

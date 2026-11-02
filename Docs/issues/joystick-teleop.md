@@ -44,7 +44,16 @@
 | 09-01 14:48 | 재기동 | 노드 2 개, 축 0, `/cmd_vel` 0, load 2.62 | 주행 가능 | [`job16m_joy.sh`](../debug_log/2026-08-31/jobs/job16m_joy.sh) · [`job16m_joy.txt`](../debug_log/2026-08-31/outputs/job16m_joy.txt) |
 | 09-01 이후 | 스크립트 주행 전 'joy 정리(cmd_vel 단독화)' 를 앞머리에 | — | — | `job17c_validate.sh` · [`job18a_precheck.sh`](../debug_log/2026-08-31/jobs/job18a_precheck.sh) · 09-02 `job20a_boot` · `job31_shutdown` |
 
-이후(09-04 ~): 다음 시기에서 채움 — 펌웨어 최대 직진 0.085 m/s(09-07, yaml 주석에 반영), `profile:=mapping`(09-30 F1, 0.07 · 0.3 → §15 에서 0.085 · 0.38, launch 주석), 온보드 정지 수단(09-29 F0 '정지 수단').
+이후(09-04 ~): 펌웨어 최대 직진 0.085 m/s(09-07, yaml 주석에 반영) · 온보드 정지 수단(09-29 F0 '정지 수단')은 다음 시기에서 채움. 09-30 F1 매핑(줄기는 [F1 사무실 지도 카드](f1-office-mapping.md)):
+
+| 날짜 · § | 한 일 | 본 것(수치) | 그때 결론 | 데이터 |
+|---|---|---|---|---|
+| 09-30 §4 | `joy_teleop.launch.py profile:=mapping` 신설 = 직진 0.07 m/s · 회전 0.3 rad/s(기본 0.10 · 0.8) | — | 이유: 빠른 회전 = 트랙 밀림 ↑ → 지도 품질 ↓(09-28 180° 당 10~27 cm) | `2026-09-30/jobs/job685_f1_teleop.sh` · `job686_f1_deploy.sh` |
+| 09-30 §4 · §4.1 | 패드는 **무선**(동글이 Jetson 에, 사용자 정정) → F1-0 끊김 시험: 조종 출력을 `/cmd_vel_test` 로 돌리고 스틱을 민 채 패드 전원 끔 | 기록(30 s, 1 s 칸)엔 전진 유지 구간 · `/joy` 공백 둘 다 없음(869 · 866 개, axis1 ≈ 0) | **합격은 사용자 관찰**: 1 유지 중 전원 끔 → `/joy` 축이 0 으로(동글이 꺼진 패드를 중립으로 보고 `/joy` 는 계속 나옴). 그래서 'autorepeat 가 마지막 값을 계속 낸다' 는 걱정은 이 패드에선 해당 없음 | `2026-09-30/outputs/j691_joydrop.txt`, `2026-09-30/jobs/job687_f1_prep.sh` · `job690_joydrop.py` |
+| 09-30 §15 | 사용자 "스틱 최대면 속도도 최대로, 지금 너무 느리다" → mapping 0.07 · 0.3 → **0.085 · 0.38** | 직진 0.085 = 펌웨어 `MAX_LINEAR_SPEED_MPS`(받침대 duty 98 % 실측 0.091~0.093 에서 바닥 여유), 회전 0.38 ≈ 2 × 0.085 / 0.443(유효 게이지) | 더 줘도 펌웨어가 트랙 속도를 비례 축소 → 체감 향상 한계 직진 +21 % · 회전 +27 %. '빠른 회전 = 슬립 ↑' 은 사용자 판단으로 감수. 더 빠르려면 펌웨어 상한(여유 ≈ 0.09 까지, 무부하 이론 0.121 은 부하 시 미확인) | `2026-09-30/jobs/job716_joymax_deploy.sh`(출력 원문 없음) |
+
+- `job716_joymax_deploy.sh`(Jetson): `/tmp` 의 `joy_teleop.launch.py` · `joy_teleop.yaml` 을 src 로 복사 → `colcon build --packages-select rover_bringup` → 설치본 `_PROFILES` 줄 확인 → teleop 이 돌고 있으면 `ros2 param set /teleop_twist_joy_node scale_linear.x 0.085` · `scale_angular.yaw 0.38` 으로 **실행 중에도 즉시 반영**하고 다시 읽어 확인. 같이 yaml 의 옛 주석(0.100) 정정. 지금 파일: launch `_PROFILES = {'mapping': {'scale_linear.x': 0.085, 'scale_angular.yaw': 0.38}}`(19 줄), yaml 기본 `scale_linear.x 0.10`(펌웨어가 0.085 로 자른다는 주석).
+- 09-30 §13 · §14: 사람이 패드로 도는 동안 stuck_monitor 가 3 회 0 지령을 끼워 넣음(지령 27° 대 관측 1~4°) → 매핑 prep(`MAPPING=1`)에서 stuck_monitor 기본 **관찰 모드** — [정체 감시 카드](stuck-monitor.md).
 
 ## 3. 가설과 판별
 | 가설 | 판별 | 결과 | 판정 |
