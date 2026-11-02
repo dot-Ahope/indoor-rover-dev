@@ -12,7 +12,7 @@
 | [`06_planner/`](06_planner/) | 전역 계획기 전환 NavFn → Smac Hybrid-A*(Phase P) | [SMAC_HYBRID_PLAN.md](06_planner/SMAC_HYBRID_PLAN.md) | 2026-10~ |
 | [`07_language/`](07_language/) | F2.5 장소 이름 이동 + 온디바이스 LLM(텍스트) | [F25_PLACE_LLM_DESIGN.md](07_language/F25_PLACE_LLM_DESIGN.md) | 2026-10-28~ |
 | [`issues/`](issues/ISSUES.md) | **문제 대장** — 날짜별 기록을 문제별로 묶은 길잡이 + 자동 색인(§ 제목 · 실험 이름 · 도구) | [ISSUES.md](issues/ISSUES.md) | 2026-10-29~ |
-| [`debug_log/`](debug_log/) | 날짜별 실험 기록 `<날짜>/{SUMMARY.md, jobs/, outputs/, bags/(로컬)}` — 기준선 [2026-09-21/BASELINE_STVL.md](debug_log/2026-09-21/BASELINE_STVL.md) | — | 2026-08~ |
+| [`debug_log/`](debug_log/) | 날짜별 실험 기록 `<날짜>/{SUMMARY.md, TOOLS.md, jobs/, outputs/, bags/(로컬)}` — **작업 규약 원본 [debug_log/README.md](debug_log/README.md)** · 기준선 [2026-09-21/BASELINE_STVL.md](debug_log/2026-09-21/BASELINE_STVL.md) | — | 2026-08~ |
 | (루트) | [PROJECT_OVERVIEW.md](../PROJECT_OVERVIEW.md) 프로젝트 전반, [CLAUDE.md](../CLAUDE.md) 작업 지침 | | |
 
 ## 01_firmware — 펌웨어 개발 단계별 (F0 → F8)

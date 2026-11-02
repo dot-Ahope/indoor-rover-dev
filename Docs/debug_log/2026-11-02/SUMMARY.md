@@ -9,3 +9,16 @@
 - 새: slam-fork-rotation · icr-b2-b3 · board-oled-autostart · isaac-cuvslam-evaluation · onboard-stop-nav-guard · f0b-course · f1-office-mapping · f2-patrol-loc-jump · rotation-obstacle-smear · rf2o-introduction. 이어 채움: f0-rotation-side-slip · sensor-conditioner · foxglove-snap-cpu · joystick-teleop · slam-stamp-freeze · first-slam-map 등.
 - 원본 대조(내가 확인): ① `Docs/tools/prep_patrol.sh` 17 행 `STUCK_SHADOW=true`(prep_fast 기본도 true) → 순회 때 stuck_monitor 는 **관찰만**(use_gyro 끔과 함께 로그만 남김) ② `rf2o_gate.py` 35 · 101 · 104 행이 데크 yaw π−0.04677 · 라이다 x 0.152 를 직접 가짐 — 데크 재측정 시 CLAUDE.md 가 적은 stuck_monitor 말고 이것도 고쳐야 함.
 - 묶음 보고(대조 안 함, 결정 대기): SLAM 포크 회전 처리는 위치 추정 문턱 0.15 rad(6.9°)에서 효과 미측정 · `path_end_yaw.py` 는 GridBased(NavFn)에 묻고 실주행은 Smac 경로 · `conditioner:=py` + vslam 이면 B3 가 말없이 빠짐 · nav_guard CPU 19.5 % · 매핑 루프 창 3.0 m(09-30 부족) · nav2_params 264 행 '0.5×0.33' · localization.launch.py 예시 office_v2 등 주석.
+
+## §2 낡은 주석 정리 (사용자: "낡은 주석 업데이트 하라. 그리고 push 진행.") — 커밋 9f1adbf4, 동작 변경 없음
+- `nvblox_local.yaml` 머리말(미통합 · STVL 기본 → 09-23 통합, 슬라이스 0.03 → 0.06, 통합 거리 이력 → 지금 2.0) · 68 행 '거리(1.4 m)'.
+- `nav2_params.yaml` temperature 묶음 위에 "ESS 기제는 09-17 §13 실주행 미확인 — 이력" · 264 행 풋프린트 0.5×0.33 → 0.51×0.33(09-30 실측) · cost_penalty 옛 주석 정정(09-14 §2.19 시행 1 = R · cost · non_straight 동시 변경).
+- `safety_monitor.c` 승격값 0.020 · 초기 duty 0.37 → 지금 값 0.008 · 0.34 + 5.8×0.008 ≈ 0.39(계산, job397 실측 41 %) · `CTRL_HZ` 중복 정의 표시 + TODO(improve). 펌웨어 재플래시 불필요(주석만).
+- `localization.launch.py` 예시 지도 office_v2 → office_v3.
+- 남은 것: CLAUDE.md 'B2 · B3 기본 끔'(B3 는 자동 켜짐, §0) · stuck_monitor '작동 모드' 표현.
+
+## §3 규약 원본 정리 (사용자 질문: README 가 낡았는데 지금은 세션 컨텍스트를 따르는가 → "1번부터 진행하라")
+- 확인: `Docs/debug_log/README.md` 는 08-27 이후 미갱신(하루 끝 정리 · `jobNN` 이름 · 깨진 링크 `../JETSON_SETUP_BRIEF.md`). 실제 작업은 CLAUDE.md §1 과 세션 메모리 규칙 11 건을 따랐다 — 같은 규칙이 여러 곳에 있어 한 곳만 고치면 어긋남. 10 월 날짜 폴더 19 개 중 TOOLS.md 있는 곳 10 개.
+- 조치: README 를 **규약 원본**으로 재작성(§0 언제 무엇을 읽나 · SUMMARY · 도구 · Jetson 실행 · 주행 · 보관 · 정리 페이지/대장 · 비밀/push · 옛 기록 읽는 법 · 변경 이력). CLAUDE.md §1 의 규약 본문은 "작업 전 README 해당 절을 읽는다" 로 줄임. 세션 메모리의 규칙 본문은 결정 날짜 · 이유 + README 절 연결로 줄임.
+- 발견(고치지 않음): `Docs/tools/up_tools.sh` 기본 호스트가 옛 주소 `192.168.0.101`(지금은 `JETSON_HOST` 를 넘겨야 맞음).
+- 다음(사용자 결정 대기): ② `.claude/settings.json` deny(origin push · sudo) + 경고용 점검 스크립트 ③ 커밋 훅(비밀번호 보관 위치 결정 필요).
