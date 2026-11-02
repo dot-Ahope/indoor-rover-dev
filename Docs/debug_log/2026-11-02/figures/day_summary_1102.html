@@ -60,11 +60,15 @@ ul{margin:0;padding-left:20px;max-width:72ch} li{margin:2px 0}
 .pm .flow span:not(.k){max-width:none}
 </style>
 
+<style>
+.code{margin:0;font-family:var(--f-mono);font-size:12.5px;line-height:1.5;background:var(--bg);border:1px solid var(--line);padding:8px 10px;overflow-x:auto;white-space:pre;max-width:100%}
+.flow > span{min-width:0}
+</style>
 <div class="wrap">
 <header>
   <div class="eyebrow">Indoor Rover · 2026-11-02 · Docs/debug_log/2026-11-02 §0–§9 · 로버 주행 없음</div>
   <h1>11-02 규약 한 곳으로</h1>
-  <p class="lead">문제 대장 4 기를 마무리하고 5 기를 끝내 카드가 60 장이 됐습니다. 이어서 사용자가 "기록 규약 README 가 두 달째 낡았다" 고 짚어, 흩어진 규칙을 한 문서로 모으고 그중 기계로 볼 수 있는 부분에 점검 · 차단 장치를 달았습니다. 그 장치를 다른 세션이 평가하다가, 공개 저장소에 옛 비밀번호가 평문으로 남아 있던 것을 찾아냈습니다. 그 값은 공개 이력을 다시 써서 지웠습니다.</p>
+  <p class="lead">각 판단 옆에 그 판단에 쓴 <b>스크립트의 핵심 부분</b>과 <b>실제로 나온 결과</b>를 같이 붙였습니다(값은 비밀번호를 가린 원문). 문제 대장 4 기를 마무리하고 5 기를 끝내 카드가 60 장이 됐습니다. 이어서 사용자가 "기록 규약 README 가 두 달째 낡았다" 고 짚어, 흩어진 규칙을 한 문서로 모으고 그중 기계로 볼 수 있는 부분에 점검 · 차단 장치를 달았습니다. 그 장치를 다른 세션이 평가하다가, 공개 저장소에 옛 비밀번호가 평문으로 남아 있던 것을 찾아냈습니다. 그 값은 공개 이력을 다시 써서 지웠습니다.</p>
 </header>
 
 <section>
@@ -105,6 +109,26 @@ ul{margin:0;padding-left:20px;max-width:72ch} li{margin:2px 0}
     <tr><td><span class="mono">publish_public.sh</span> 점검</td><td>공개 전, 공개 이력 전체에서 비밀번호 파일의 모든 값</td><td><span class="pill no">멈춤</span></td><td>마른 실행 0</td></tr>
     <tr><td>허용 목록 정리</td><td>승인한 명령 63 줄 → 와일드카드 11 줄(읽기 · 빌드). 러너 · 플래시는 넣지 않음</td><td>—</td><td>정리 뒤 비밀번호 0</td></tr>
   </table></div>
+  <p>규약 점검 <span class="mono">chk_record_rules.py --all</span> 의 판정 부분과 실제 출력(10-13 이후 전체):</p>
+<pre class="code"># 앞머리 판정 — 옛 이름 사본(job&lt;숫자&gt;…)은 빼고, 6 개 앞머리가 아니면 경고
+PREFIX = (&#x27;prep_&#x27;, &#x27;chk_&#x27;, &#x27;anal_&#x27;, &#x27;fig_&#x27;, &#x27;up_&#x27;, &#x27;run_&#x27;)
+if not n.startswith(PREFIX) and not re.match(r&#x27;job\d&#x27;, n):
+    warn(&#x27;N&#x27;, f, &#x27;용도 앞머리(...) 없음&#x27;)
+# 적힌 경로 판정 — SUMMARY · TOOLS 의 `jobs/…` `outputs/…` 가 그 날짜 폴더에 실제로 있는지
+for m in PATH.findall(s):
+    if not (f.parent / t).exists(): warn(&#x27;P&#x27;, f, &#x27;적힌 경로가 없음 %s&#x27; % t)</pre>
+<pre class="code">[N] Docs/debug_log/2026-10-13/jobs/fetch_one.sh — 용도 앞머리(prep/chk/anal/fig/up/run) 없음
+[N] Docs/debug_log/2026-10-13/jobs/put_bin.sh — 용도 앞머리(prep/chk/anal/fig/up/run) 없음
+…
+[P] Docs/debug_log/2026-10-20/SUMMARY.md — 적힌 경로가 없음 jobs/anal_vslam_cmp.py
+[P] Docs/debug_log/2026-10-21/SUMMARY.md — 적힌 경로가 없음 outputs/chk_day_start_1021.txt
+[P] Docs/debug_log/2026-10-26/SUMMARY.md — 적힌 경로가 없음 outputs/plan_offline/scenes_1023.npz
+[P] Docs/debug_log/2026-10-26/SUMMARY.md — 적힌 경로가 없음 outputs/planner_offline/goal_yaw/exp/
+[T] Docs/debug_log/2026-10-21 — jobs/ 가 있는데 TOOLS.md 없음
+[T] Docs/debug_log/2026-10-22 — jobs/ 가 있는데 TOOLS.md 없음
+[T] Docs/debug_log/2026-10-23 — jobs/ 가 있는데 TOOLS.md 없음
+RULES_WARN 93</pre>
+  <p class="note">원문 <span class="mono">outputs/chk_record_rules_all.txt</span>. N 64 건 중 <span class="mono">get_</span> 29 · <span class="mono">fill_</span> 4 · <span class="mono">put_</span> 3 · <span class="mono">mk_</span> 3 — 이것을 보고 "실제 작업이 규약 앞머리 밖 이름을 계속 썼다" 고 읽었다.</p>
   <p class="note">비밀번호는 저장소 밖 파일에 한 줄씩 둡니다(첫 줄 = 지금 값, 다음 줄 = 감시할 옛 값). 값은 어느 도구도 출력하지 않습니다.</p>
 </section>
 
@@ -114,7 +138,26 @@ ul{margin:0;padding-left:20px;max-width:72ch} li{margin:2px 0}
     <span class="k">경로</span><span>승인 창에서 '다시 묻지 않음' 을 고르면 앱이 명령 문자열을 통째로 <span class="mono">.claude/settings.local.json</span> 에 저장한다 → 05 월에 비밀번호가 든 ssh 명령이 쌓였다 → 그 파일이 05-21 부터 git 에 추적됐다 → 공개 스크립트의 제외 목록에 없어 공개 dev · main 에 올라갔다.</span>
     <span class="k">왜 게이트를 통과했나</span><span>값이 지금 비밀번호와 달랐고, 게이트는 지금 값 하나만 찾았다.</span>
     <span class="k">범위</span><span><span class="mono">sshpass -p</span> 형식 1 종(38 줄) + <span class="mono">SSHPASS=</span> 형식 1 종(벤더 이미지 기본값으로 보임). 둘 다 이 파일에만 있었다.</span>
+      <span class="k">스크립트 핵심</span><span><pre class="code"># jobs/chk_leak_scan_1102.py — 값은 출력하지 않고 &#x27;지금 값과 같은지 · 길이 · 어디에 있는지&#x27; 만
+vals = set(re.findall(r&quot;sshpass -p (\S+) (?:ssh|scp) &quot;, s))      # settings.local.json 원문
+print(&#x27;서로 다른 값&#x27;, len(vals), [(&#x27;현재와 같음&#x27; if v == cur else &#x27;다름&#x27;, len(v)) for v in vals])
+for ref in [&#x27;public/dev&#x27;, &#x27;public/main&#x27;, &#x27;feature/nvblox-migration&#x27;]:
+    git log ref -S v          # 그 값을 넣거나 뺀 커밋 수
+    git grep -l -F v ref      # 지금 트리에서 그 값이 든 파일</pre></span>
+      <span class="k">나온 결과</span><span><pre class="code">서로 다른 값 1 [(&#x27;다름&#x27;, 7)]
+값0 public/dev  그 값을 넣거나 뺀 커밋 4 현재 트리 파일 [&#x27;.claude/settings.local.json&#x27;]
+값0 public/main 그 값을 넣거나 뺀 커밋 4 현재 트리 파일 [&#x27;.claude/settings.local.json&#x27;]</pre><span class="note">원문 <span class="mono">outputs/leak_scan_1102.txt</span></span></span>
     <span class="k">조치</span><span>추적 해제 · <span class="mono">.gitignore</span> → 공개 스크립트 제외 목록에 추가 → 마른 실행 0 확인 → dev · main 강제 push. 두 값 모두 사용자가 지금 쓰지 않음.</span>
+      <span class="k">스크립트 핵심</span><span><pre class="code"># private/publish_public.sh 에 더한 것
+git filter-repo ... --invert-paths --path .claude/settings.local.json ...   # 이력 전체에서 그 파일을 뺌
+n4=$(git log -p --all --format= | grep -cF -f &lt;(grep -v &#x27;^$&#x27; &quot;$PWF&quot;) || true)  # 비밀번호 파일 모든 줄을 공개 이력에서 검색
+[ &quot;$n1$n2$n3$n4&quot; = 0000 ] || exit 1                                           # 하나라도 있으면 push 전에 멈춤
+git push --force-with-lease=dev:public/dev public dev                         # --rewrite 때만</pre></span>
+      <span class="k">나온 결과</span><span><pre class="code">점검: 문구 0 · 옛 이메일 0 · 비공개 경로 0 · 비밀번호 0
+ + 7d8ed124...93c12242 dev -&gt; dev (forced update)
+ + eec6f67a...93c12242 dev -&gt; main (forced update)
+public/dev:  settings.local 커밋 0 · 비밀번호 0 · 벤더값 0
+public/main: settings.local 커밋 0 · 비밀번호 0 · 벤더값 0</pre><span class="note">원문 <span class="mono">outputs/publish_rewrite_1102.txt</span></span></span>
     <span class="k">남은 한계</span><span>GitHub 가 끊긴 옛 커밋을 해시로 한동안 보여 줄 수 있다. 비공개 저장소 이력은 그대로(사용자 결정).</span>
   </div>
   <p>사용자 질문 "main 갱신은 보안상 문제가 있는 커밋까지 수정한다는 의미인가?" 에 대한 답: 아니다. main 갱신은 main 을 dev 위치로 앞당길 뿐이라 옛 커밋은 남는다. 커밋에서 지우려면 이력을 다시 쓰고 강제 push 해야 해서 그쪽(B)을 택했다.</p>
@@ -129,6 +172,9 @@ ul{margin:0;padding-left:20px;max-width:72ch} li{margin:2px 0}
       <span class="k">본 것</span><span><span class="mono">settings.local.json</span> 이 추적 중이고 첫 화면에 옛 PC 경로 허용 규칙이 보임</span>
       <span class="k">처음 추론</span><span>"옛 허용 규칙" 이라 신경 쓸 것 없음 — 내용을 끝까지 안 봄</span>
       <span class="k">틀린 이유</span><span>그 안에 옛 비밀번호 명령 38 줄. 다른 세션 평가가 찾음. 게이트가 지금 값 하나만 본다는 한계도 못 짚었다</span>
+      <span class="k">스크립트 핵심</span><span><pre class="code">git ls-files .claude          # 추적 중인 설정 파일 목록 — 여기서 *.local.* 이 보였는데 내용을 안 열었다</pre></span>
+      <span class="k">나온 결과</span><span><pre class="code">.claude/settings.json
+.claude/settings.local.json     ← 열었다면: sshpass -p &lt;PW&gt; ssh … 38 줄(옛 주소 192.168.0.104)</pre><span class="note">원문 <span class="mono">outputs/leak_scan_1102.txt</span></span></span>
       <span class="k">다음에 알아보는 법</span><span>추적 파일 목록에 개인 설정(<span class="mono">*.local.*</span>)이 있으면 내용을 연다 · 비밀 게이트에는 옛 값도 넣는다</span>
       <span class="k">데이터</span><span><span class="mono">jobs/chk_leak_scan_1102.py</span> (값 출력 없음, 결과는 대화와 SUMMARY §6)</span>
     </div>
@@ -140,6 +186,16 @@ ul{margin:0;padding-left:20px;max-width:72ch} li{margin:2px 0}
       <span class="k">본 것</span><span>시험 출력이 깨진 글자 — 콘솔 기본 인코딩(cp949)으로 읽고 있었음</span>
       <span class="k">처음 추론</span><span>출력 표시만의 문제</span>
       <span class="k">의심한 이유</span><span>읽기도 같은 인코딩이면 한글이 든 JSON 이 깨지고, 깨진 JSON 은 '명령 없음' 으로 처리돼 검사 없이 통과한다</span>
+      <span class="k">스크립트 핵심</span><span><pre class="code"># 첫 판 — 콘솔 기본 인코딩으로 읽음. 한글이 든 JSON 이 깨지면 except 로 빠져 cmd = &#x27;&#x27; → &#x27;git commit 아님&#x27; → 통과
+try: cmd = (json.load(sys.stdin).get(&#x27;tool_input&#x27;) or {}).get(&#x27;command&#x27;, &#x27;&#x27;)
+except Exception: cmd = &#x27;&#x27;
+# 고친 판 — utf-8 로 읽고, 깨져도 원문 전체에서 git commit 을 찾는다
+raw = sys.stdin.buffer.read().decode(&#x27;utf-8&#x27;, errors=&#x27;replace&#x27;)
+try: cmd = (json.loads(raw).get(&#x27;tool_input&#x27;) or {}).get(&#x27;command&#x27;, &#x27;&#x27;)
+except Exception: cmd = raw</pre></span>
+      <span class="k">나온 결과</span><span><pre class="code">(첫 판) [stderr 한글이 전부 깨진 글자로 출력] ... leak.txt   ← 같은 인코딩 경로로 읽고 있다는 단서
+(고친 판) 본 저장소 한글 -&gt; 0
+(고친 판) 깨진 JSON+파일없음 -&gt; 2</pre><span class="note">원문 <span class="mono">outputs/gate_tests_1102.txt</span></span></span>
       <span class="k">결론</span><span>stdin 을 utf-8 로 읽고, JSON 이 깨져도 원문에서 git commit 을 찾게 고침 — 막아야 할 때 새지 않게</span>
       <span class="k">다음에 알아보는 법</span><span>막는 장치는 '입력을 못 읽으면 통과' 가 아닌지 먼저 본다</span>
       <span class="k">데이터</span><span><span class="mono">Docs/tools/chk_commit_gate.py</span> · <span class="mono">TOOLS.md</span> §5 줄</span>
@@ -150,6 +206,18 @@ ul{margin:0;padding-left:20px;max-width:72ch} li{margin:2px 0}
     <div class="flow">
       <span class="k">하려 한 것</span><span>커밋 대상에 비밀번호가 있으면 막기</span>
       <span class="k">본 것</span><span>staged 만 검사 → <span class="mono">-a</span> · <span class="mono">git commit &lt;파일&gt;</span> 은 훅이 끝난 뒤 작업 트리 내용을 담는다</span>
+      <span class="k">스크립트 핵심</span><span><pre class="code"># 첫 판: 지금 값 하나 · staged 만
+hits = git grep --cached -l -F pw
+# 고친 판: 비밀번호 파일의 모든 줄 × (staged, 작업 트리)
+for i, pw in enumerate(pws):
+    for where, cached in ((&#x27;staged&#x27;, True), (&#x27;작업 트리&#x27;, False)):
+        for f in grep(pw, cached): bad.add(&#x27;%s(%s, %s)&#x27; % (f, where, &#x27;지금 값&#x27; if i == 0 else &#x27;옛 값 %d&#x27; % i))</pre></span>
+      <span class="k">나온 결과</span><span><pre class="code"># 임시 저장소: 추적 파일 a.txt 에 값을 덧붙이고 stage 안 함
+a.txt(작업 트리, 지금 값)
+-a 미스테이지 -&gt; 2                      (Claude 훅 모드)
+a.txt(staged, 지금 값), a.txt(작업 트리, 지금 값)
+터미널 git commit -am -&gt; 1              (git pre-commit 모드)
+1                                       (커밋 수 그대로)</pre><span class="note">원문 <span class="mono">outputs/gate_tests_1102.txt</span></span></span>
       <span class="k">결론</span><span>staged + 추적 작업 트리를 모두 검사. 임시 저장소에서 두 경로 모두 막는 것 확인</span>
       <span class="k">다음에 알아보는 법</span><span>'커밋될 내용' 은 index 하나가 아니다 — 명령 옵션별로 무엇이 담기는지 따진다</span>
       <span class="k">데이터</span><span><span class="mono">TOOLS.md</span> §6 줄</span>
@@ -160,6 +228,12 @@ ul{margin:0;padding-left:20px;max-width:72ch} li{margin:2px 0}
     <div class="flow">
       <span class="k">하려 한 것</span><span>공개 이력에서 옛 비밀번호 찾기</span>
       <span class="k">본 것</span><span><span class="mono">sshpass -p</span> 형식만 검색 → 1 종. 허용 목록을 정리하다 <span class="mono">SSHPASS=</span> 형식 1 종을 더 봄</span>
+      <span class="k">스크립트 핵심</span><span><pre class="code"># §6 검색은 &#x27;sshpass -p &lt;값&gt;&#x27; 형식만 정규식으로 뽑았다
+re.findall(r&quot;sshpass -p (\S+) (?:ssh|scp) &quot;, s)
+# §7 정리 중 본 다른 형식: SSHPASS=&lt;값&gt; sshpass -e ssh …  → 위 정규식에 안 걸림</pre></span>
+      <span class="k">나온 결과</span><span><pre class="code">public/dev  현재트리: 0 파일, 이력: 2 커밋     (SSHPASS= 형식)
+public/main 현재트리: 1 파일, 이력: 1 커밋
+두 가지 모두 그 파일은 .claude/settings.local.json 하나</pre><span class="note">원문 <span class="mono">outputs/leak_scan_1102.txt</span></span></span>
       <span class="k">결론</span><span>§8 다시 쓰기는 파일 자체를 이력에서 빼서 두 값 모두 제거. 확인도 두 형식 모두로</span>
       <span class="k">다음에 알아보는 법</span><span>비밀 찾기는 값의 형식이 아니라 그 값을 담을 수 있는 파일(설정 · 러너)부터 본다</span>
       <span class="k">데이터</span><span><span class="mono">jobs/chk_pub_filtered_1102.sh</span> · SUMMARY §7 · §8</span>

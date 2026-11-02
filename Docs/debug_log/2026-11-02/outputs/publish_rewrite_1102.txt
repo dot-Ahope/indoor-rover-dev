@@ -1,0 +1,19 @@
+# 공개 이력 다시 쓰기 (11-02 §8, 대화 기록에서 옮김)
+## 마른 실행(publish_public.sh 를 'git remote add public' 줄에서 멈춘 판 + jobs/chk_pub_filtered_1102.sh)
+점검: 문구 0 · 옛 이메일 0 · 비공개 경로 0 · 비밀번호 0
+DRYRUN_STOP
+846          (필터된 커밋 수)
+0            (settings.local.json 을 건드린 커밋 수)
+      1 SSHPASS=<   (남은 1 건 = <PW> 자리표시)
+vendor_word_count: 0
+## 실행 bash private/publish_public.sh --push-main --rewrite
+점검: 문구 0 · 옛 이메일 0 · 비공개 경로 0 · 비밀번호 0
+ + 7d8ed124...93c12242 dev -> dev (forced update)
+ + eec6f67a...93c12242 dev -> main (forced update)
+공개 dev = 93c12242 (원본 e1dd4f24)
+## 확인(git ls-remote public · git log -p public/<가지> 에서 비밀번호 파일 전 줄 검색)
+93c12242	HEAD
+93c12242	refs/heads/dev
+93c12242	refs/heads/main
+public/dev: settings.local 커밋 0 · 비밀번호 0 · 벤더값 0
+public/main: settings.local 커밋 0 · 비밀번호 0 · 벤더값 0
