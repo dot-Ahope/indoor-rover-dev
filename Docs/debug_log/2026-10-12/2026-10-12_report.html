@@ -68,12 +68,18 @@ ul,ol{padding-left:22px;margin:8px 0} li{margin:4px 0}
 footer{margin-top:44px;padding-top:14px;border-top:1px solid var(--line);font-size:12.5px;color:var(--muted)}
 #tip{position:fixed;pointer-events:none;background:var(--ink);color:var(--bg);font-family:var(--mono);font-size:12px;padding:5px 8px;border-radius:3px;z-index:5}
 @media (max-width:520px){h1{font-size:24px}}
+.ex{margin-top:12px;border-left:3px solid var(--line);padding:2px 0 2px 12px;min-width:0;max-width:100%}
+.exh{font-size:13.5px;margin:4px 0;max-width:90ch}
+.exk{font-size:12px;color:var(--muted);margin:8px 0 4px}
+.code{margin:0;font-family:var(--mono);font-size:12.5px;line-height:1.5;color:var(--ink);background:var(--surface);border:1px solid var(--line);padding:8px 10px;overflow-x:auto;white-space:pre;max-width:100%}
+.note{font-size:12.5px;color:var(--muted);margin:6px 0 0;overflow-wrap:anywhere}
 </style>
 <div class="wrap">
 <header>
   <div class="eyebrow">Indoor Rover · debug_log/2026-10-12 · 원본 feature/nvblox-migration → 공개 indoor-rover-dev</div>
   <h1>10-12 기록: 앞 회전 우선 검증과 통신 포화 추적</h1>
   <div class="meta"><span>근거 <b class="mono">SUMMARY.md §1~§15</b></span><span>그림 <b class="mono">Docs/04_navigation/figures/2026-10-12_*</b></span><span>주행 <b>11 회</b>(무효 1 포함)</span></div>
+  <p class="note">2026-11-02 추가: 판단마다 그 수치를 낸 <b>스크립트 핵심</b>과 <b>나온 결과</b>를 원문 그대로 발췌하고, 결과 원문 · 스크립트 원문의 저장소 경로를 붙였습니다. 원문 파일이 없는 수치는 '원천 소실' 로 적었습니다.</p>
   <nav class="toc" aria-label="목차">
     <a href="#forward">앞 회전 우선</a><a href="#stall">상자 옆 멈칫거림</a><a href="#runs">주행 10 회</a><a href="#udp">통신 계측</a><a href="#config">운용 구성</a><a href="#prep">prep 단축</a><a href="#fix">정정</a><a href="#next">다음</a>
   </nav>
@@ -96,6 +102,27 @@ footer{margin-top:44px;padding-top:14px;border-top:1px solid var(--line);font-si
   <li>벌점 15 에서는 짧은 후진 호와 전진 호로 약 14 초에 172° 를 돌아서 전진했습니다. 제자리 회전은 0.2 초뿐이었습니다.</li>
   <li>대가로 목표 3 의 전진 거리가 3.2 m 에서 약 6.1 m 로 늘었습니다. 사용자 판단은 "슬립이 늘어나는 것보다 낫다" 였습니다.</li>
 </ul>
+<div class="ex">
+  <p class="exh">근거 — 러너 csv(10 Hz)에서 지령 v &lt; −0.005 인 표본 사이의 EKF 이동 길이를 후진 거리로 셌습니다(미끄러짐은 못 봄). 목표 3 후진 2.93 → 0.41 m, 전진 3.24 → 6.21 m, 제자리 회전 0.2 s.</p>
+  <div class="exk">스크립트 핵심 <span class="mono">Docs/debug_log/2026-10-12/jobs/rev_eval.py</span> 9~15 행</div>
+  <pre class="code">        for p, q in zip(G[:-1], G[1:]):
+            dt = q['t'] - p['t']; d = math.hypot(q['odom_x'] - p['odom_x'], q['odom_y'] - p['odom_y'])
+            if p['v'] &lt; -0.005: rev += d; revt += dt; run += dt; best = max(best, run)
+            else:
+                run = 0.0
+                if p['v'] &gt; 0.005: fwd += d
+            if abs(p['v']) &lt;= 0.01 and abs(p['w']) &gt;= 0.15: spin += dt</pre>
+  <div class="exk">나온 결과 <span class="mono">Docs/debug_log/2026-10-12/outputs/f2f1_rev_eval.txt</span></div>
+  <pre class="code">== f2e2_전진선호5
+  목표 1:  51.9 s | 후진 0.00 m · 0.0 s(가장 긴 연속 0.0 s) | 전진 3.64 m | 제자리 회전 0.0 s
+  목표 2:  49.1 s | 후진 0.02 m · 0.9 s(가장 긴 연속 0.9 s) | 전진 3.18 m | 제자리 회전 0.1 s
+  목표 3: 108.5 s | 후진 2.93 m · 53.7 s(가장 긴 연속 39.8 s) | 전진 3.24 m | 제자리 회전 0.7 s
+== f2f1_전진선호15
+  목표 1:  53.3 s | 후진 0.00 m · 0.0 s(가장 긴 연속 0.0 s) | 전진 3.70 m | 제자리 회전 0.0 s
+  목표 2:  46.4 s | 후진 0.01 m · 0.6 s(가장 긴 연속 0.6 s) | 전진 3.20 m | 제자리 회전 0.3 s
+  목표 3: 115.2 s | 후진 0.41 m · 10.5 s(가장 긴 연속 6.5 s) | 전진 6.21 m | 제자리 회전 0.2 s</pre>
+  <p class="note">결과 원문 <span class="mono">Docs/debug_log/2026-10-12/outputs/f2f1_rev_eval.txt</span> · 회전 경과 <span class="mono">Docs/debug_log/2026-10-12/outputs/f2f1_turn.txt</span> · 스크립트 원문 <span class="mono">Docs/debug_log/2026-10-12/jobs/rev_eval.py</span>(SUMMARY §1.2). 머리 카드의 '4 회 주행' 중 f2h1 0.24 · f2l1 0.23 · f2l2 0.20 m: 결과 원문 원천 소실(대화에만 있었음, SUMMARY §6.2 · §12.2 · §13.1 에 수치만).</p>
+</div>
 
 <h2 id="stall">상자 옆에서 매끄럽지 못했던 이유 <span class="sec">§2</span></h2>
 <figure>
@@ -112,6 +139,48 @@ footer{margin-top:44px;padding-top:14px;border-top:1px solid var(--line);font-si
     <li>원인은 경로나 코스트맵 판단이 아니라 시스템 쪽이었습니다.</li>
     <li>같은 구성으로 다시 주행하니 더 일찍, 더 심하게 재현됐습니다(목표 3 중단).</li>
   </ul></div>
+</div>
+<div class="ex">
+  <p class="exh">근거 ① 통로 여유 — 복귀 상자 구간(map x 2.6 → 0.4) 1 s 표의 요약. 치명 칸까지 최소는 두 주행 모두 0.06 m, 달라진 것은 시간 · 느린 시간 · 후진.</p>
+  <div class="exk">스크립트 핵심 <span class="mono">Docs/debug_log/2026-10-12/jobs/box_smooth.py</span> 2~3 행(정의)</div>
+  <pre class="code">#   1 s 표: 자세, 지령 v·w(1 s 평균·최소), 차체 외곽 ↔ 로컬 치명 칸 최소 거리, 차체 안 내접 칸 수, 그 1 s 안 새 경로 수와 경로의 옆 이동(로버 앞 0.3~1.0 m 구간).
+#   요약: 평균 속도, 느린 시간(v &lt; 0.04), 후진 시간, |w| &gt; 0.1 부호 반전 횟수, 경로 옆 이동 &gt; 0.10 m 횟수.</pre>
+  <div class="exk">나온 결과 <span class="mono">Docs/debug_log/2026-10-12/outputs/f2f1_box_smooth.txt</span></div>
+  <pre class="code">== f2f1  복귀 상자 구간 67 s (x 2.6 → 0.4), 시작 10:34:37
+   요약: 평균 v 0.062 m/s · 느린 시간(v&lt;0.04) 11 s · 후진 포함 4 s · w 부호 반전 28 회 · 경로 옆 이동&gt;0.10 m 2 회 · 치명까지 최소 0.06 m · 차체 안 내접 있던 시간 21 s
+== f2e2  복귀 상자 구간 44 s (x 2.6 → 0.4), 시작 14:39:27
+   요약: 평균 v 0.078 m/s · 느린 시간(v&lt;0.04) 1 s · 후진 포함 0 s · w 부호 반전 16 회 · 경로 옆 이동&gt;0.10 m 2 회 · 치명까지 최소 0.06 m · 차체 안 내접 있던 시간 15 s</pre>
+  <p class="note">결과 원문 <span class="mono">Docs/debug_log/2026-10-12/outputs/f2f1_box_smooth.txt</span> · 스크립트 원문 <span class="mono">Docs/debug_log/2026-10-12/jobs/box_smooth.py</span>(SUMMARY §2)</p>
+</div>
+<div class="ex">
+  <p class="exh">근거 ② 시스템 쪽 — 프로세스별 CPU 가 상자 구간에서 오르고(합계 400 → 508), bag 의 odom→base_link 수신 끊김이 f2f1 30 군데 · f2e2 0 군데, Nav2 로그에 컨트롤러 중단이 3 번입니다.</p>
+  <div class="exk">나온 결과 <span class="mono">Docs/debug_log/2026-10-12/outputs/f2f1_cpu.txt</span></div>
+  <pre class="code">['%Cpu(s): 58.6 us, 28.2 sy,  0.0 ni,  5.7 id,  0.0 wa,  2.3 hi,  5.2 si,  0.0 st', '%Cpu(s): 58.2 us, 28.2 sy,  0.0 ni,  6.4 id,  0.0 wa,  2.7 hi,  4.5 si,  0.0 st']
+프로세스별 CPU %(코어 1 개 = 100): 앞 구간(10:34:20~10:35:00) → 상자 구간(10:35:05~10:35:42), 증가 큰 순
+  (ekf_node)              21.1 →  53.3 (+32.2)
+  (localization_sl)       31.1 →  47.0 (+15.9)
+  (nvblox_node)           17.7 →  29.0 (+11.3)
+…
+  합계 400 → 508</pre>
+  <div class="exk">스크립트 핵심 <span class="mono">Docs/debug_log/2026-10-12/jobs/gap_eval.py</span> 6 · 24 행</div>
+  <pre class="code">ts = get_typestore(Stores.ROS2_HUMBLE); TH = float(sys.argv[2]) if len(sys.argv) &gt; 2 else 0.5
+    print('%-24s n %6d 수신 끊김 %d: %s' % (k, len(v), len(g), ' '.join('%s(%.1f s)' % (f(v[i, 0]), d[i]) for i in g[:12])))</pre>
+  <div class="exk">나온 결과 <span class="mono">Docs/debug_log/2026-10-12/outputs/f2f1_gaps.txt</span></div>
+  <pre class="code">/odometry/filtered       n   6654 중앙 간격 0.033 s | 끊김 4: 10:35:06.9(0.5 s) 10:35:08.0(0.5 s) 10:35:08.9(0.6 s) 10:35:30.4(0.5 s)
+tf odom→base_link        n   5631 수신 끊김 30: 10:32:40.1(1.8 s) 10:33:42.1(2.8 s) 10:34:15.2(2.6 s) 10:35:04.1(3.5 s) 10:35:07.8(2.0 s) 10:35:10.1(1.2 s) 10:35:11.3(0.8 s) …
+…
+---- f2e2(대조)
+/odometry/filtered       n   6643 중앙 간격 0.033 s | 끊김 0:
+tf odom→base_link        n   6658 수신 끊김 0:</pre>
+  <div class="exk">나온 결과 <span class="mono">Docs/debug_log/2026-10-12/outputs/f2f1_navlog.txt</span></div>
+  <pre class="code">주행 전체(10:31:56~10:36:15) 종류별: {'기타': 5, 'smoother 충돌': 7, 'smooth 중단/시간초과': 8, 'BT 틱 초과': 250, '전역 nvblox TF 미래': 24, '루프 미달': 89, 'transformPose 실패': 3, '경로 프레임 변환 실패': …
+…
+10:35:07 [controller_server-3] [WARN] [controller_server]: [follow_path] [ActionServer] Aborting handle.
+10:35:09 [bt_navigator-7] [WARN] [bt_navigator_navigate_to_pose_rclcpp_node]: PathBlockedAhead: 앞 경로 (1.18, 0.24) 비용 99 가 2.0 s 지속 → 주행 중단·재계획
+…
+10:35:28 [controller_server-3] [WARN] [controller_server]: [follow_path] [ActionServer] Aborting handle.
+10:35:29 [controller_server-3] [WARN] [controller_server]: [follow_path] [ActionServer] Aborting handle.</pre>
+  <p class="note">결과 원문 <span class="mono">Docs/debug_log/2026-10-12/outputs/f2f1_cpu.txt</span> · <span class="mono">Docs/debug_log/2026-10-12/outputs/f2f1_gaps.txt</span> · <span class="mono">Docs/debug_log/2026-10-12/outputs/f2f1_navlog.txt</span> · 스크립트 원문 <span class="mono">Docs/debug_log/2026-10-12/jobs/gap_eval.py</span> · <span class="mono">Docs/debug_log/2026-10-12/jobs/job953_navlog2.py</span>(Nav2 로그 발췌). f2f1_cpu.txt 의 표를 찍은 스크립트는 jobs/ 에서 찾지 못했습니다(<span class="mono">Docs/debug_log/2026-10-12/jobs/top_eval.py</span> 와 출력 형식이 다름). 전체 사용률 69 → 92 %(유휴 28 → 6 %) 집계 줄: 결과 원문 원천 소실(대화에만 있었음, SUMMARY §2 에 수치만).</p>
 </div>
 
 <h2 id="runs">원인을 좁힌 주행 10 회 <span class="sec">§3~§13</span></h2>
@@ -131,6 +200,34 @@ footer{margin-top:44px;padding-top:14px;border-top:1px solid var(--line);font-si
   <li>비교용 그림자 EKF 만 끈 주행(f2i1)에서는 포화가 그대로였습니다. 결정적인 것은 궤적 발행의 양이었습니다.</li>
   <li>기록기가 궤적을 손실 허용 방식으로 받게 한 주행(f2k1)도 포화됐습니다.</li>
 </ul>
+<div class="ex">
+  <p class="exh">근거 — 포화 판정 지표는 bag 의 /tf 수신 주기(10 s 칸, 정상 50 Hz). 벌점 5 의 f2g1 은 끝까지 50, 벌점 15 · 궤적 206 kB 의 f2i1 은 출발 약 40 s 뒤 50 → 8 Hz. 궤적 메시지 크기는 bag 의 /trajectories 직렬화 길이입니다.</p>
+  <div class="exk">스크립트 핵심 <span class="mono">Docs/debug_log/2026-10-12/jobs/tf_rate.py</span> 13~14 · 17 행</div>
+  <pre class="code">        t = t_ns * 1e-9; t0 = t0 or t; b = int((t - t0) // 10); H[b]['msg'] += 1
+        for x in r.deserialize(raw, c.msgtype).transforms: H[b]['%s→%s' % (x.header.frame_id, x.child_frame_id)] += 1
+for b in sorted(H): print(time.strftime('%H:%M:%S', time.localtime(t0 + 10 * b)) + ' ' + ' '.join('%18.1f' % (H[b][k] / 10) for k in keys))</pre>
+  <div class="exk">나온 결과 <span class="mono">Docs/debug_log/2026-10-12/outputs/f2g1_tf.txt</span> · <span class="mono">Docs/debug_log/2026-10-12/outputs/f2i1_tf_cpu_traj.txt</span></div>
+  <pre class="code">시각                    msg     odom→base_link           map→odom   (10 s 평균 Hz)
+11:55:30               46.0               26.0               20.0
+11:55:40               50.0               30.0               20.0
+…
+11:59:10               50.0               30.0               20.0
+13:52:44               48.5               28.4               20.1
+13:52:54               48.6               30.0               18.6
+13:53:04               43.6               25.1               18.5
+13:53:14               33.1               20.5               12.6
+13:53:24                8.2                4.1                4.1
+13:53:34               16.9               10.7                6.2</pre>
+  <div class="exk">스크립트 핵심 <span class="mono">Docs/debug_log/2026-10-12/jobs/traj_size.py</span> 12 · 17 행</div>
+  <pre class="code">            t = t_ns * 1e-9; t0 = t0 or t; H[int((t - t0) // 10)].append(len(raw))
+    print('   크기 kB 중앙 %.0f 최소 %.0f 최대 %.0f → 평균 %.2f MB/s' % (np.median(allb) / 1e3, min(allb) / 1e3, max(allb) / 1e3, sum(allb) / 1e6 / (10 * len(H))))</pre>
+  <div class="exk">나온 결과 궤적 크기(원래 · lite)</div>
+  <pre class="code">== bag_f2i1  메시지 1575 · 첫 메시지 마커 (832, Counter({'Candidate Trajectories': 800, 'Optimal Trajectory': 32}))
+   크기 kB 중앙 206 최소 206 최대 206 → 평균 1.35 MB/s
+== bag_f2l1  메시지 1940 · 첫 메시지 마커 (112, Counter({'Candidate Trajectories': 80, 'Optimal Trajectory': 32}))
+   크기 kB 중앙 28 최소 28 최대 28 → 평균 0.26 MB/s</pre>
+  <p class="note">결과 원문 <span class="mono">Docs/debug_log/2026-10-12/outputs/f2g1_tf.txt</span> · <span class="mono">Docs/debug_log/2026-10-12/outputs/f2i1_tf_cpu_traj.txt</span> · <span class="mono">Docs/debug_log/2026-10-12/outputs/f2l1_net_anal.txt</span>(다른 주행은 f2f3_tf · f2g2_tf_cpu · f2h1_tf_cpu_box · f2j1/f2k1/f2l2_net_anal) · 스크립트 원문 <span class="mono">Docs/debug_log/2026-10-12/jobs/tf_rate.py</span> · <span class="mono">Docs/debug_log/2026-10-12/jobs/traj_size.py</span>(SUMMARY §3.3 · §4.2 · §7.3 · §12.2)</p>
+</div>
 
 <h2 id="udp">포화의 실체: UDP 통신량 폭증 <span class="sec">§8, §9</span></h2>
 <figure>
@@ -153,6 +250,41 @@ footer{margin-top:44px;padding-top:14px;border-top:1px solid var(--line);font-si
     <li>후진 벌점 5 에서는 같은 발행량인데도 생기지 않은 이유.</li>
   </ul></div>
 </div>
+<div class="ex">
+  <p class="exh">근거 — 커널 UDP 누적 통계(/proc/net/snmp)를 2 s 마다 기록한 net_f2j1.log 에서 초당 수신 · 수신 버퍼 부족 손실(RcvbufErrors)과 소켓별 손실을 셌습니다. 수신 5,300 → 6~8 만 /s, 15:05:13~15 에 수신이 먼저 늘고 15:05:17 에 손실이 뜁니다. 버퍼는 rmem 212,992 B(= 208 kB) 고정.</p>
+  <div class="exk">스크립트 핵심 <span class="mono">Docs/debug_log/2026-10-12/jobs/net_anal.py</span> 10 · 13~18 행</div>
+  <pre class="code">    elif len(f) &gt; 3 and f[1] == 'SNMP': snmp.append((int(f[0]), int(f[3]), int(f[7])))     # t, InDatagrams, RcvbufErrors
+def rate(a, b, col):
+    k = (snmp[:, 0] &gt;= a) &amp; (snmp[:, 0] &lt;= b); s = snmp[k]
+    return (s[-1, col] - s[0, col]) / (s[-1, 0] - s[0, 0]) if len(s) &gt; 1 else float('nan')
+print('포화 시작 %s 기준 커널 UDP(초당): 수신 / 수신 버퍼 부족 손실 / 손실 비율' % sys.argv[2])
+for nm, a, b in (('시작~T−30 s', snmp[0, 0], T - 30), ('T−30~T', T - 30, T), ('T~T+30', T, T + 30), ('T+30~끝', T + 30, snmp[-1, 0])):
+    r1, r2 = rate(a, b, 1), rate(a, b, 2); print('  %-12s %8.0f / %7.0f / %5.1f %%' % (nm, r1, r2, 100 * r2 / max(r1 + r2, 1)))</pre>
+  <div class="exk">나온 결과 <span class="mono">Docs/debug_log/2026-10-12/outputs/f2j1_net_anal.txt</span></div>
+  <pre class="code">포화 시작 15:05:10 기준 커널 UDP(초당): 수신 / 수신 버퍼 부족 손실 / 손실 비율
+  시작~T−30 s        6777 /     237 /   3.4 %
+  T−30~T           9936 /     726 /   6.8 %
+  T~T+30          58355 /    1859 /   3.1 %
+  T+30~끝          66778 /    2652 /   3.8 %
+…
+  ros2               사용자 데이터             0.5 →    983.8
+  bt_navigator       사용자 데이터             0.0 →    522.6
+  controller_serv    사용자 데이터             0.0 →    203.3
+…
+시각      수신/s  손실/s | 사용자 데이터 소켓 손실/s: ros2 bt_navigat controller ekf_node planner_se localizati behavior_s nvblox_nod
+15:05:11    5286      0 |          0          0          0          0          0          0          0          0
+15:05:13    7224      2 |          2          0          0          0          0          0          0          0
+15:05:15   19626      2 |          2          0          0          0          0          0          0          0
+15:05:17   52608   2913 |       1020        990         75        191        308          0         42          0
+15:05:19   72941   2188 |       1025        647         50        117         78        254          0          0</pre>
+  <div class="exk">스크립트 핵심 <span class="mono">Docs/debug_log/2026-10-12/jobs/job967_net.sh</span> 3~4 행</div>
+  <pre class="code">echo "== 커널 소켓 버퍼: rmem_default $(cat /proc/sys/net/core/rmem_default) rmem_max $(cat /proc/sys/net/core/rmem_max) wmem_default $(cat /proc/sys/net/core/wmem_default) wmem_max $(cat /proc/sys/net/core …
+echo "== UDP 누적 통계(부팅 뒤): $(awk '/^Udp:/{if(h){for(i=2;i&lt;=NF;i++)printf "%s=%s ",hd[i],$i}else{for(i=1;i&lt;=NF;i++)hd[i]=$i;h=1}}' /proc/net/snmp)"</pre>
+  <div class="exk">나온 결과 <span class="mono">Docs/debug_log/2026-10-12/outputs/j967_net.txt</span></div>
+  <pre class="code">== 커널 소켓 버퍼: rmem_default 212992 rmem_max 212992 wmem_default 212992 wmem_max 212992 · lo MTU 65536
+== UDP 누적 통계(부팅 뒤): InDatagrams=133271653 NoPorts=159351 InErrors=8592442 OutDatagrams=133537934 RcvbufErrors=8592442 SndbufErrors=0 InCsumErrors=0 IgnoredMulti=90 MemErrors=0</pre>
+  <p class="note">결과 원문 <span class="mono">Docs/debug_log/2026-10-12/outputs/f2j1_net_anal.txt</span> · <span class="mono">Docs/debug_log/2026-10-12/outputs/net_f2j1.log.gz</span>(입력) · <span class="mono">Docs/debug_log/2026-10-12/outputs/j967_net.txt</span> · 스크립트 원문 <span class="mono">Docs/debug_log/2026-10-12/jobs/net_anal.py</span> · <span class="mono">Docs/debug_log/2026-10-12/jobs/job967_net.sh</span>(SUMMARY §8.2 · §9.2). 시각별 2 s 표를 찍은 코드는 net_anal.py(commit 270a1410)에 없고 jobs/ 에서도 찾지 못했습니다 — 결과는 같은 출력 파일에 있습니다.</p>
+</div>
 
 <h2 id="config">확정한 운용 구성 <span class="sec">§12, §13</span></h2>
 <div class="tbl"><table>
@@ -164,6 +296,15 @@ footer{margin-top:44px;padding-top:14px;border-top:1px solid var(--line);font-si
 <tr><td>전역 지도 · 재계획</td><td>nvblox 층(map 프레임) · 0.5 Hz</td><td>10-08 과 같음</td></tr>
 </tbody></table></div>
 <p class="prose">lite 에서는 최적 궤적 32 점이 그대로 남고, 후보 궤적은 50 개 × 16 점에서 10 개 × 8 점으로 줄어듭니다. 영상에서 MPPI 가 어디로 가려 했는지는 그대로 볼 수 있습니다.</p>
+<div class="ex">
+  <p class="exh">근거 — lite 두 주행의 UDP 2 s 칸: 수신 중앙 5,389 · 5,494 /s, 손실 중앙 0. 2 만 /s 넘는 칸은 목표 전환 직후뿐입니다.</p>
+  <div class="exk">나온 결과 <span class="mono">Docs/debug_log/2026-10-12/outputs/f2l1_net_anal.txt</span> · <span class="mono">Docs/debug_log/2026-10-12/outputs/f2l2_net_anal.txt</span></div>
+  <pre class="code">UDP 2 s 칸 98 개: 수신/s 중앙 5389 · 90 % 5850 · 최대 67504 | 손실/s 중앙 0 · 최대 7986 | 수신 2 만/s 넘는 칸 3 개: 15:43:06(25409, 손실 4834) 15:43:08(47949, 손실 7986) 15:43:57(67504, 손실 7820)
+주행 전체 손실 합계 41306 개 / 수신 1313744 개
+UDP 2 s 칸 99 개: 수신/s 중앙 5494 · 90 % 5610 · 최대 50092 | 손실/s 중앙 0 · 최대 7828 | 수신 2 만/s 넘는 칸 4 개: 15:55:29(46378, 손실 7828) 15:55:31(22545, 손실 1282) 15:56:19(50092, 손실 6514) …
+주행 전체 손실 합계 38298 개 / 수신 1327308 개</pre>
+  <p class="note">결과 원문 <span class="mono">Docs/debug_log/2026-10-12/outputs/f2l1_net_anal.txt</span> · <span class="mono">Docs/debug_log/2026-10-12/outputs/f2l2_net_anal.txt</span> · 스크립트 원문 <span class="mono">Docs/debug_log/2026-10-12/jobs/net_anal.py</span> · <span class="mono">Docs/debug_log/2026-10-12/jobs/traj_size.py</span>(SUMMARY §12.2 · §13.1). 이 요약 줄을 찍은 코드도 net_anal.py 에는 없습니다(위와 같음).</p>
+</div>
 
 <h2 id="prep">prep 단축과 그 밖에 고친 것 <span class="sec">§3.2, §3.4, §10, §13</span></h2>
 <ul class="prose">
@@ -171,6 +312,28 @@ footer{margin-top:44px;padding-top:14px;border-top:1px solid var(--line);font-si
   <li><b>지도 서버</b>: 기동 때 지도 서버가 미설정으로 남아 전역 지도가 없는 채 출발한 일이 있었습니다(목표 1 취소, 로버는 안 움직임). launch 에 20 초 뒤 상태를 확인해 직접 켜는 단계를 넣었습니다. 근본 원인은 모릅니다.</li>
   <li><b>주행 스크립트</b>: 부하 기록 루프가 주행 뒤에도 약 15 분 남던 결함을 고쳤습니다. UDP 손실을 2 초마다 기록하는 계측을 넣었습니다.</li>
 </ul>
+<div class="ex">
+  <p class="exh">근거 — 빠른 prep 첫 실행의 단계별 경과(Jetson 기준 61 s). 지도 서버는 관리 노드가 켜는 요청을 보냈는데 unconfigured 로 남고 /map_nav 발행자 0 이었습니다.</p>
+  <div class="exk">스크립트 핵심 <span class="mono">Docs/debug_log/2026-10-12/jobs/job972_prep_fast.sh</span> 3 · 8 행</div>
+  <pre class="code">#   ① ros2 조회 약 25 회 → 확인 노드 1 개(job971_prepchk.py)  ② 고정 대기(28·15·30 s 등) → '준비될 때까지' 폴링.
+T0=$(date +%s); st() { echo "  ⏱ +$(( $(date +%s) - T0 )) s $1"; }</pre>
+  <div class="exk">나온 결과 <span class="mono">Docs/debug_log/2026-10-12/outputs/j973_prep_fast.txt</span></div>
+  <pre class="code">  ⏱ +10 s 정리 끝
+  ⏱ +29 s 자이로 캘리브 끝
+  [ 13.8 s] 기다리는 것: 없음
+  준비까지 13.8 s | Nav2 controller=active planner=active bt_navigator=active behavior=active nav_map=active
+PREP_OK
+  ⏱ +61 s prep 끝 — PREP_OK</pre>
+  <div class="exk">스크립트 핵심 <span class="mono">Docs/debug_log/2026-10-12/jobs/job957_mapdiag.sh</span> 5 행</div>
+  <pre class="code">for n in /map_server /nav_map_server /map_server_nav; do r=$(timeout 8 ros2 lifecycle get $n 2&gt;&amp;1 | tail -1); echo "  $n: $r"; done</pre>
+  <div class="exk">나온 결과 <span class="mono">Docs/debug_log/2026-10-12/outputs/j957_mapdiag.txt</span> · <span class="mono">Docs/debug_log/2026-10-12/outputs/j955c_nav2re.txt</span>(고친 뒤)</div>
+  <pre class="code">  /map_server: Node not found
+  /nav_map_server: unconfigured [1]
+  /map_server_nav: Node not found
+Publisher count: 0 Subscription count: 1 Node name: global_costmap Node namespace: /global_costmap   Reliability: RELIABLE   Durability: TRANSIENT_LOCAL
+  전역 코스트맵 333×242 · 치명/내접 칸 25083 (31.1 %) → OK</pre>
+  <p class="note">결과 원문 <span class="mono">Docs/debug_log/2026-10-12/outputs/j973_prep_fast.txt</span> · <span class="mono">Docs/debug_log/2026-10-12/outputs/j957_mapdiag.txt</span> · <span class="mono">Docs/debug_log/2026-10-12/outputs/j955c_nav2re.txt</span> · 스크립트 원문 <span class="mono">Docs/debug_log/2026-10-12/jobs/job972_prep_fast.sh</span> · <span class="mono">Docs/debug_log/2026-10-12/jobs/job971_prepchk.py</span> · <span class="mono">Docs/debug_log/2026-10-12/jobs/job957_mapdiag.sh</span>(SUMMARY §3.2 · §13). PC 기준 70 s 와 옛 prep 4 분 41 초~5 분 17 초는 PC 쪽 시각에서 낸 값: 결과 원문 원천 소실(대화에만 있었음, 출력 파일엔 경과 시각 없음).</p>
+</div>
 
 <h2 id="fix">정정·실수 <span class="sec">지우지 않고 남김</span></h2>
 <ul class="prose">
@@ -181,6 +344,29 @@ footer{margin-top:44px;padding-top:14px;border-top:1px solid var(--line);font-si
   <li>계측 주행의 판정 구간이 현상의 시간 구조와 맞지 않아, 선언한 계산식으로는 '부분 확인' 만 나왔습니다.</li>
   <li>사용자의 Jetson 통합 메모리 질문을 DDS 공유메모리 전송으로 잘못 읽고 답했습니다.</li>
 </ul>
+<div class="ex">
+  <p class="exh">근거 — '회전이 늘어서': 포화 직전 20 s 는 네 주행 모두 v ≈ 0.075 직진이고, 포화 전 구간에서 도는 칸과 직진 칸의 부하가 비슷합니다. 'EKF 가 2 개라서': 그림자 EKF 를 끈 f2i1 에서도 ekf_node 가 11.8 → 38.6 % 로 올랐습니다.</p>
+  <div class="exk">스크립트 핵심 <span class="mono">Docs/debug_log/2026-10-12/jobs/onset_ctx.py</span> 22~25 행</div>
+  <pre class="code">        W = [r for r in R if ep(on) - 20 &lt;= r['e'] &lt; ep(on)]
+        v = np.array([r['v'] for r in W]); w = np.array([r['w'] for r in W])
+        print('  %s(벌점 %d) 시작 %s: 목표 %d · 평균 v %+.3f · |w| 평균 %.2f rad/s · |w|&gt;0.2 인 시간 %.0f %% · 후진 시간 %.0f %% · 위치 (%.2f, %.2f)' % (
+            nm, pf, on, W[-1]['goal'], v.mean(), np.abs(w).mean(), (np.abs(w) &gt; 0.2).mean() * 100, (v &lt; -0.005).mean() * 100, W[-1]['map_x'], W[-1]['map_y']))</pre>
+  <div class="exk">나온 결과 <span class="mono">Docs/debug_log/2026-10-12/outputs/onset_ctx.txt</span></div>
+  <pre class="code">(1) 포화 시작 직전 20 s (지령 기준)
+  f2f1(벌점 15) 시작 10:35:04: 목표 3 · 평균 v +0.074 · |w| 평균 0.12 rad/s · |w|&gt;0.2 인 시간 22 % · 후진 시간 0 % · 위치 (1.41, 0.25)
+  f2f3(벌점 15) 시작 11:30:53: 목표 1 · 평균 v +0.073 · |w| 평균 0.04 rad/s · |w|&gt;0.2 인 시간 0 % · 후진 시간 1 % · 위치 (2.32, -1.21)
+  f2g2(벌점 15) 시작 12:17:24: 목표 2 · 평균 v +0.075 · |w| 평균 0.07 rad/s · |w|&gt;0.2 인 시간 12 % · 후진 시간 0 % · 위치 (3.79, -1.77)
+  f2i1(벌점 15) 시작 13:53:24: 목표 1 · 평균 v +0.075 · |w| 평균 0.10 rad/s · |w|&gt;0.2 인 시간 11 % · 후진 시간 0 % · 위치 (2.19, -0.45)
+…
+  f2g1 포화 전 98 칸 | 도는 칸(|w|&gt;0.2) 11 · 직진 칸(|w|&lt;0.08) 62 | ekf_node 21→22 localiza 21→75 rf2o_las 4→3 nvblox_n 17→17 controll 32→29 planner_ 10→10 ros2 23→23 | 합계 363→422 …
+  f2h1 포화 전 92 칸 | 도는 칸(|w|&gt;0.2) 13 · 직진 칸(|w|&lt;0.08) 52 | ekf_node 12→12 localiza 25→22 rf2o_las 3→5 nvblox_n 19→20 controll 33→26 planner_ 10→11 ros2 30→29 | 합계 368→377 …</pre>
+  <div class="exk">나온 결과 <span class="mono">Docs/debug_log/2026-10-12/outputs/f2i1_tf_cpu_traj.txt</span>(프로세스 CPU, 포화 전/후)</div>
+  <pre class="code">프로세스                             f2i1앞        f2i1포화
+(localization_sl)                 17.2          50.6
+(ekf_node)                        11.8          38.6
+합계                                 458           490</pre>
+  <p class="note">결과 원문 <span class="mono">Docs/debug_log/2026-10-12/outputs/onset_ctx.txt</span> · <span class="mono">Docs/debug_log/2026-10-12/outputs/f2i1_tf_cpu_traj.txt</span> · 스크립트 원문 <span class="mono">Docs/debug_log/2026-10-12/jobs/onset_ctx.py</span> · <span class="mono">Docs/debug_log/2026-10-12/jobs/proc_cmp2.py</span>(SUMMARY §7.3 · §8.1). '기록기 재전송' 기각은 <span class="mono">Docs/debug_log/2026-10-12/outputs/f2k1_net_anal.txt</span>(§11.2).</p>
+</div>
 
 <h2 id="next">다음 <span class="sec">§14</span></h2>
 <ol class="prose">

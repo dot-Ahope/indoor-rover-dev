@@ -68,12 +68,18 @@ ul,ol{padding-left:22px;margin:8px 0} li{margin:4px 0}
 footer{margin-top:44px;padding-top:14px;border-top:1px solid var(--line);font-size:12.5px;color:var(--muted)}
 #tip{position:fixed;pointer-events:none;background:var(--ink);color:var(--bg);font-family:var(--mono);font-size:12px;padding:5px 8px;border-radius:3px;z-index:5}
 @media (max-width:520px){h1{font-size:24px}}
+.ex{margin-top:12px;border-left:3px solid var(--line);padding:2px 0 2px 12px;min-width:0;max-width:100%}
+.exh{font-size:13.5px;margin:4px 0;max-width:90ch}
+.exk{font-size:12px;color:var(--muted);margin:8px 0 4px}
+.code{margin:0;font-family:var(--mono);font-size:12.5px;line-height:1.5;color:var(--ink);background:var(--surface);border:1px solid var(--line);padding:8px 10px;overflow-x:auto;white-space:pre;max-width:100%}
+.note{font-size:12.5px;color:var(--muted);margin:6px 0 0;overflow-wrap:anywhere}
 </style>
 <div class="wrap">
 <header>
   <div class="eyebrow">Indoor Rover · debug_log/2026-10-08 · 원본 feature/nvblox-migration → 공개 indoor-rover-dev</div>
   <h1>10-08 기록: 전역 nvblox, 회전 미끄러짐 통제 시험, 앞 회전 우선</h1>
   <div class="meta"><span>근거 <b class="mono">SUMMARY.md §1~§7</b></span><span>그림 <b class="mono">Docs/04_navigation/figures/2026-10-08_*</b></span><span>bag <b class="mono">bags/</b>(git 제외)</span></div>
+  <p class="note">2026-11-02 추가: 판단마다 그 수치를 낸 <b>스크립트 핵심</b>과 <b>나온 결과</b>를 원문 그대로 발췌하고, 결과 원문 · 스크립트 원문의 저장소 경로를 붙였습니다. 원문 파일이 없는 수치는 '원천 소실' 로 적었습니다.</p>
   <nav class="toc" aria-label="목차">
     <a href="#nvblox">nvblox 기억·갱신</a><a href="#global">전역 nvblox 주행</a><a href="#contact">상자 접촉 원인</a><a href="#turns">회전 분석</a><a href="#ratio">비율 시험</a><a href="#cause">원인 가설</a><a href="#forward">앞 회전 우선</a><a href="#fix">정정</a><a href="#next">다음</a>
   </nav>
@@ -96,6 +102,35 @@ footer{margin-top:44px;padding-top:14px;border-top:1px solid var(--line);font-si
 <tr><td>치운 뒤 64 s</td><td class="n">0</td><td class="n">24</td></tr>
 </tbody></table></div>
 <p class="prose">nvblox 는 치운 칸의 75 % 를 3 s 안에 지웠고, STVL 은 1 분 30 s 넘게 하나도 지우지 못했습니다. 다만 기억 수명이 약 81 s(감쇠)이고 반경 3 m 밖은 지워서, '화각 밖에서 오래 기억' 하지는 못합니다.</p>
+<div class="ex">
+  <p class="exh">근거 — 10-07 녹화(bag_box1)의 nvblox 슬라이스에서 2 s 마다 상자 ② 자리 칸 중심 48 개를 odom 으로 옮겨 거리 ≤ 0.05 m 인 칸을 셌습니다. 치운 시각은 카메라 점 100 → 0 이 된 14:10:16 무렵(10-07 j929). 14:10:17 의 12 는 사람 몸입니다. STVL 열은 10-07 §8.5 의 전역 칸 수입니다.</p>
+  <div class="exk">스크립트 핵심 <span class="mono">Docs/debug_log/2026-10-08/jobs/nvslice_pc.py</span> 25~32 행</div>
+  <pre class="code">        for X in np.arange(1.075, 1.35, 0.05):
+            for Y in np.arange(-0.275, 0.10, 0.05):
+                dx, dy = X - mo[0], Y - mo[1]; qx, qy = c_ * dx + s_ * dy, -s_ * dx + c_ * dy
+                i, j = int((qx - m.origin.x) / res), int((qy - m.origin.y) / res)
+                if 0 &lt;= i &lt; m.width and 0 &lt;= j &lt; m.height:
+                    tot += 1; v = d[j, i]
+                    if v == m.unknown_value: unk += 1
+                    else: n += int(v &lt;= 0.05); dmin = min(dmin, v)</pre>
+  <div class="exk">나온 결과 <span class="mono">Docs/debug_log/2026-10-08/outputs/nvslice_box1.txt</span></div>
+  <pre class="code">13:59:50 로버 map (-0.01, -0.00) | 상자 ② 자리 nvblox 장애물  9 · 미지  0 / 48 · 최소 거리 -0.00 m
+…
+14:00:47 로버 map (0.50, -0.00) | 상자 ② 자리 nvblox 장애물 17 · 미지  0 / 48 · 최소 거리 -0.00 m
+…
+14:01:40 로버 map (0.50, -0.00) | 상자 ② 자리 nvblox 장애물 21 · 미지  0 / 48 · 최소 거리 -0.00 m
+…
+14:10:15 로버 map (-0.01, 0.00) | 상자 ② 자리 nvblox 장애물  8 · 미지  0 / 48 · 최소 거리 -0.00 m
+14:10:17 로버 map (-0.01, 0.00) | 상자 ② 자리 nvblox 장애물 12 · 미지  0 / 48 · 최소 거리 -0.00 m
+14:10:19 로버 map (-0.01, 0.00) | 상자 ② 자리 nvblox 장애물  3 · 미지  0 / 48 · 최소 거리 -0.00 m
+14:10:21 로버 map (-0.01, 0.00) | 상자 ② 자리 nvblox 장애물  2 · 미지  0 / 48 · 최소 거리 -0.00 m
+…
+14:10:35 로버 map (-0.01, 0.00) | 상자 ② 자리 nvblox 장애물  1 · 미지  0 / 48 · 최소 거리 -0.00 m
+…
+14:11:18 로버 map (-0.01, 0.00) | 상자 ② 자리 nvblox 장애물  1 · 미지  0 / 48 · 최소 거리 -0.00 m
+14:11:20 로버 map (-0.01, 0.00) | 상자 ② 자리 nvblox 장애물  0 · 미지  0 / 48 · 최소 거리 0.18 m</pre>
+  <p class="note">결과 원문 <span class="mono">Docs/debug_log/2026-10-08/outputs/nvslice_box1.txt</span> · 스크립트 원문 <span class="mono">Docs/debug_log/2026-10-08/jobs/nvslice_pc.py</span>(입력 <span class="mono">Docs/debug_log/2026-10-07/bags/bag_box1.tgz</span>, SUMMARY §1.1). STVL 열 원문 <span class="mono">Docs/debug_log/2026-10-07/outputs/j929_box_points.txt</span>. 75 % = 치우기 직전 8 칸 중 14:10:19 까지 6 칸이 지워진 비율.</p>
+</div>
 
 <h2 id="global">전역 지도에 nvblox 층 + 0.5 Hz 재계획 <span class="sec">§2, §3</span></h2>
 <figure>
@@ -116,6 +151,58 @@ footer{margin-top:44px;padding-top:14px;border-top:1px solid var(--line);font-si
 <tr><td>f2e1</td><td>3/3 성공</td><td><span class="pill p-bad">접촉</span></td><td>전역 nvblox 층이 odom 기준으로 그려져 상자가 0.3 m 북쪽에 찍힘</td></tr>
 <tr><td>f2e2(수정 뒤)</td><td>3/3 성공(52.1 · 49.1 · 108.5 s)</td><td><span class="pill p-ok">미접촉</span></td><td>경로가 상자를 0.19~0.31 m 비켜 감, 차체 최소 0.06 m</td></tr>
 </tbody></table></div>
+<div class="ex">
+  <p class="exh">근거 ① f2e1 — 같은 시각 같은 map 좌표에서 로컬은 상자 자리 (x 1.1~1.3, y −0.1~0.0) 가 99~100 인데 전역의 같은 칸 y −0.0 줄은 73~84(통과 가능)이고, 전역 99 는 y +0.3 줄에 있습니다(≈ 0.3 m 북쪽). 전역 nvblox 층의 실행 중 프레임 값(odom)은 <span class="mono">Docs/debug_log/2026-10-08/jobs/job937_src.sh</span> 로 확인했으나 그 출력 파일은 없습니다.</p>
+  <div class="exk">스크립트 핵심 <span class="mono">Docs/debug_log/2026-10-08/jobs/f2e_gcm.py</span> 24~29 행</div>
+  <pre class="code">            for x in np.arange(1.0, 1.55, 0.1):
+                X, Y = x, y
+                if m.header.frame_id == 'odom':
+                    c_, s_ = math.cos(mo[2]), math.sin(mo[2]); dx, dy = x - mo[0], y - mo[1]; X, Y = c_ * dx + s_ * dy, -s_ * dx + c_ * dy
+                i, j = int((X - m.info.origin.position.x) / res), int((Y - m.info.origin.position.y) / res)
+                row.append('%4d' % g[j, i] if 0 &lt;= i &lt; g.shape[1] and 0 &lt;= j &lt; g.shape[0] else '   .')</pre>
+  <div class="exk">나온 결과 <span class="mono">Docs/debug_log/2026-10-08/outputs/f2e1_costmaps.txt</span> (13:36:05~06)</div>
+  <pre class="code">13:36:05 /local_costmap/costmap (odom 프레임) — 행 y, 열 x 1.00~1.50 (0.1 간격), 값 0~100(99 내접·100 치명)
+   y +0.3   74   86   91   91   77   68
+   y +0.2   86   99   99   99   96   80
+   y +0.1   91   99  100  100   99   90
+   y -0.0   99   99  100   99   99   80
+   y -0.1   99   99  100   99   99   80
+   y -0.2   96   99   99   99   96   86
+   y -0.3   90   99   99  100   99   99
+13:36:06 /global_costmap/costmap (map 프레임) — 행 y, 열 x 1.00~1.50 (0.1 간격), 값 0~100(99 내접·100 치명)
+   y +0.3   83   90   99   99   99   96
+   y +0.2   73   79   88   92   91   84
+   y +0.1   63   67   73   76   75   70
+   y -0.0   73   80   84   84   80   73
+   y -0.1   84   96   99   99   96   84
+   y -0.2   91   99   99   99   99   91
+   y -0.3   96   99   99  100   99   92</pre>
+  <p class="note">결과 원문 <span class="mono">Docs/debug_log/2026-10-08/outputs/f2e1_costmaps.txt</span> · 스크립트 원문 <span class="mono">Docs/debug_log/2026-10-08/jobs/f2e_gcm.py</span>(SUMMARY §3.3). job937 출력(프레임 = odom): 원천 소실(대화에만 있었음).</p>
+</div>
+<div class="ex">
+  <p class="exh">근거 ② f2e2 — 복귀 중 2 s 마다 로컬 · 전역 지도의 상자 ② 치명 칸 중심, 남은 경로 ↔ 로컬 상자 칸, 차체 외곽 ↔ 로컬 상자 칸. 중심 차 ≤ 0.04 m, 경로 0.19~0.31 m(14:39:40 의 0.03 m 는 전역 칸 0 인 빈 프레임), 차체 최소 0.06 m.</p>
+  <div class="exk">스크립트 핵심 <span class="mono">Docs/debug_log/2026-10-08/jobs/box_align.py</span> 8~10 · 18~20 행</div>
+  <pre class="code">    g = G.astype(np.int16) &amp; 0xFF; r, ox, oy = meta; iy, ix = np.nonzero((g &gt;= vmin) &amp; (g &lt;= 100)); wx, wy = ox + (ix + .5) * r, oy + (iy + .5) * r
+    if frame_odom: mx, my, mth = at(mo, t); c, s = math.cos(mth), math.sin(mth); wx, wy = mx + c * wx - s * wy, my + s * wx + c * wy
+    sel = (wx &gt; 0.95) &amp; (wx &lt; 1.45) &amp; (wy &gt; -0.15) &amp; (wy &lt; 0.25); return np.c_[wx[sel], wy[sel]]   # 상자 ② 자리(상자 ① 은 y &lt; −0.25 라 뺌)
+        return np.hypot(np.where(bx &gt; XF, bx - XF, np.where(bx &lt; XB, XB - bx, 0)), np.maximum(np.abs(by) - HW, 0)).min()
+    i = np.searchsorted(pt, t) - 1; P = pxy[off[i]:off[i + 1]]; j = np.argmin(np.hypot(P[:, 0] - x, P[:, 1] - y)); Pa = P[j:]
+    pl = np.hypot(Pa[:, None, 0] - L[None, :, 0], Pa[:, None, 1] - L[None, :, 1]).min() if len(L) else float('nan')</pre>
+  <div class="exk">나온 결과 <span class="mono">Docs/debug_log/2026-10-08/outputs/f2e2_box_align.txt</span></div>
+  <pre class="code">14:39:28 로버 (2.58,-0.97) | 상자 ② 치명 칸: 로컬  9 중심(1.25,-0.06) · 전역  1 중심(1.34,-0.13) | 경로↔로컬 상자 0.21 m | 차체↔로컬 상자 1.26 m
+14:39:30 로버 (2.48,-0.91) | 상자 ② 치명 칸: 로컬 11 중심(1.23,-0.07) · 전역  9 중심(1.24,-0.04) | 경로↔로컬 상자 0.27 m | 차체↔로컬 상자 1.17 m
+…
+14:39:40 로버 (2.18,-0.39) | 상자 ② 치명 칸: 로컬 13 중심(1.20,-0.05) · 전역  0  | 경로↔로컬 상자 0.03 m | 차체↔로컬 상자 0.66 m
+…
+14:39:56 로버 (1.43,0.23) | 상자 ② 치명 칸: 로컬 12 중심(1.20,-0.04) · 전역 12 중심(1.22,-0.03) | 경로↔로컬 상자 0.23 m | 차체↔로컬 상자 0.06 m
+14:39:58 로버 (1.32,0.27) | 상자 ② 치명 칸: 로컬 12 중심(1.20,-0.04) · 전역 12 중심(1.22,-0.03) | 경로↔로컬 상자 0.19 m | 차체↔로컬 상자 0.06 m
+…
+14:40:04 로버 (0.92,0.26) | 상자 ② 치명 칸: 로컬 12 중심(1.18,-0.04) · 전역 12 중심(1.17,-0.03) | 경로↔로컬 상자 0.31 m | 차체↔로컬 상자 0.09 m</pre>
+  <div class="exk">나온 결과 러너 로그(목표별 시간)</div>
+  <pre class="code">결과: 1 SUCCEEDED 53.8s / 2 SUCCEEDED 48.3s / 3 SUCCEEDED 122.7s | 총 237.6 s
+결과: 1 SUCCEEDED 52.1s / 2 SUCCEEDED 49.1s / 3 SUCCEEDED 108.5s | 총 220.3 s</pre>
+  <p class="note">결과 원문 <span class="mono">Docs/debug_log/2026-10-08/outputs/f2e2_box_align.txt</span> · <span class="mono">Docs/debug_log/2026-10-08/outputs/f0_f2e1_runner.log</span> · <span class="mono">Docs/debug_log/2026-10-08/outputs/f0_f2e2_runner.log</span> · 스크립트 원문 <span class="mono">Docs/debug_log/2026-10-08/jobs/box_align.py</span>(SUMMARY §3.7). 상자 미접촉 판정은 사용자 확인(§3.8).</p>
+</div>
 
 <h2 id="contact">f2e1 에서 상자에 닿은 이유 <span class="sec">§3.3, §3.5</span></h2>
 <div class="look">
@@ -130,6 +217,28 @@ footer{margin-top:44px;padding-top:14px;border-top:1px solid var(--line);font-si
     <li>가까이서 강등되는 문제는 아직 대책이 없습니다(다음 과제).</li>
   </ul></div>
 </div>
+<div class="ex">
+  <p class="exh">근거 — f2e1 복귀 0.5 s 마다 로컬 코스트맵 상자 자리의 치명(100) · 내접(99) 칸과 차체 외곽 안 칸. 다가갈수록 치명 12~18 → 2, 통과할 때 차체 안에는 내접 6~12 · 치명 0 입니다. 'MPPI 는 치명만 충돌로 본다' 는 CostCritic 설정(critical_cost)에서 온 설명입니다.</p>
+  <div class="exk">스크립트 핵심 <span class="mono">Docs/debug_log/2026-10-08/jobs/contact_eval.py</span> 9~14 행</div>
+  <pre class="code">    iy, ix = np.nonzero((g &gt;= 99) &amp; (g &lt;= 100)); wx, wy = ox + (ix + .5) * r, oy + (iy + .5) * r; X, Y = mx + c * wx - s * wy, my + s * wx + c * wy; v = g[iy, ix]
+    box = (X &gt; 0.95) &amp; (X &lt; 1.45) &amp; (Y &gt; -0.30) &amp; (Y &lt; 0.20)
+    x, y, th = at(tr, t); cc, ss = math.cos(th), math.sin(th); bx = cc * (X - x) + ss * (Y - y); by = -ss * (X - x) + cc * (Y - y)
+    inside = (bx &gt; XB) &amp; (bx &lt; XF) &amp; (np.abs(by) &lt; HW)
+    gap = np.hypot(np.where(bx &gt; XF, bx - XF, np.where(bx &lt; XB, XB - bx, 0)), np.maximum(np.abs(by) - HW, 0))
+    lb = box &amp; (v == 100)</pre>
+  <div class="exk">나온 결과 <span class="mono">Docs/debug_log/2026-10-08/outputs/f2e1_contact.txt</span></div>
+  <pre class="code">13:36:05.1 로버 (2.19,-0.39,+106°) v +0.058 w +0.01 | 상자 자리 치명 12 · 내접 76 | 차체 안 치명 0 · 내접 0 | 상자 치명 칸까지 0.703 m
+13:36:14.0 로버 (1.79,-0.08,+167°) v +0.065 w +0.03 | 상자 자리 치명 18 · 내접 74 | 차체 안 치명 0 · 내접 0 | 상자 치명 칸까지 0.273 m
+…
+13:36:18.2 로버 (1.66,-0.07,+149°) v +0.084 w -0.03 | 상자 자리 치명  7 · 내접 64 | 차체 안 치명 0 · 내접 0 | 상자 치명 칸까지 0.154 m
+13:36:20.0 로버 (1.60,-0.03,+165°) v -0.009 w +0.19 | 상자 자리 치명  3 · 내접 56 | 차체 안 치명 0 · 내접 2 | 상자 치명 칸까지 0.115 m
+13:36:20.6 로버 (1.60,-0.04,+169°) v +0.063 w +0.21 | 상자 자리 치명  2 · 내접 48 | 차체 안 치명 0 · 내접 0 | 상자 치명 칸까지 0.169 m
+…
+13:36:23.7 로버 (1.47,-0.01,+160°) v +0.080 w -0.08 | 상자 자리 치명  2 · 내접 48 | 차체 안 치명 0 · 내접 6 | 상자 치명 칸까지 0.053 m
+…
+13:36:31.0 로버 (1.09,0.08,-168°) v +0.080 w +0.20 | 상자 자리 치명  2 · 내접 47 | 차체 안 치명 0 · 내접 12 | 상자 치명 칸까지 0.055 m</pre>
+  <p class="note">결과 원문 <span class="mono">Docs/debug_log/2026-10-08/outputs/f2e1_contact.txt</span> · 스크립트 원문 <span class="mono">Docs/debug_log/2026-10-08/jobs/contact_eval.py</span>(입력 fz_f2e1.npz = bag 추출, SUMMARY §3.5)</p>
+</div>
 
 <h2 id="turns">주행 bag 의 회전 22 번 다시 재기 <span class="sec">§4</span></h2>
 <figure>
@@ -140,6 +249,29 @@ footer{margin-top:44px;padding-top:14px;border-top:1px solid var(--line);font-si
   <li>사용자가 덜 미끄러졌다고 본 회전(f2e2 W3 출발)은 22 번 중 가장 작았습니다(90°당 2.1 cm). 빠른 트랙은 뒤로, 느린 트랙은 앞으로 천천히 도는 반피벗이었고, 회전축은 왼쪽 7 cm 였습니다.</li>
   <li>회전축은 거의 항상 트랙 중점보다 뒤에 있었습니다(중앙 −2.7 cm). 무게중심이 뒤에 있다는 추정과 맞지만, 무게중심 자체는 재지 않았습니다.</li>
 </ul>
+<div class="ex">
+  <p class="exh">근거 — ≥45° 회전마다 스캔 직접 정합으로 잰 실제 이동 − 휠 추측항법 = 미끄러짐, 회전 종류는 트랙 속도로 나눔. f2e2 163 s 가 22 개 중 가장 작고(90°당 2.1 cm), 축 왼 +7.0 cm, 회전축 앞뒤 중앙 −2.7 cm.</p>
+  <div class="exk">스크립트 핵심 <span class="mono">Docs/debug_log/2026-10-08/jobs/rot2_stats.py</span> 8~14 행</div>
+  <pre class="code">    vl, vr = d['vl'], d['vr']; vw = (vl + vr) / 2; D = np.zeros(2)
+    for k in range(len(T) - 1):
+        h = (X[k, 2] + X[k + 1, 2]) / 2; D += vw[k] * (T[k + 1] - T[k]) * np.array([math.cos(h), math.sin(h)])
+    E = X[-1, :2] - D; L, Rr = vl.mean(), vr.mean(); lo = min(abs(L), abs(Rr))
+    kind = 'spin' if (L * Rr &lt; 0 and lo &gt;= 0.035) else ('pivot' if lo &lt;= 0.02 else 'mid')
+    back = (Rr &lt; 0 if abs(Rr) &gt; abs(L) else L &lt; 0)   # 빠른 트랙이 뒤로 구름
+    icr = d['icr']; ix, iy = np.nanmedian(icr[:, 0]), np.nanmedian(icr[:, 1])</pre>
+  <div class="exk">나온 결과 <span class="mono">Docs/debug_log/2026-10-08/outputs/rot2_stats.txt</span></div>
+  <pre class="code">bag   s    종류   회전°  L      R      | 축 앞 왼 cm | 미끄러짐 cm | 90°당 | 빠른 트랙 후진
+f2e2   163 mid     -61 +0.026 -0.065 |  -0.0  +7.0 |   1.4 |   2.1 | O
+f2d1   185 mid     +83 -0.020 +0.063 |  -1.0  +7.1 |   2.6 |   2.8 | -
+…
+f2e1   238 pivot   +60 -0.000 +0.080 |  +7.3 +12.9 |  16.2 |  24.3 | -  (제외: 접촉)
+…
+spin  n= 6  90°당 중앙 9.8 cm (범위 5.2~16.2)
+mid   n= 3  90°당 중앙 2.8 cm (범위 2.1~12.9)
+pivot n=13  90°당 중앙 7.6 cm (범위 3.1~13.7)
+회전축 앞뒤 위치(전체 ≥45° 회전) 중앙 -2.7 cm, 사분위 -4.1~-0.8</pre>
+  <p class="note">결과 원문 <span class="mono">Docs/debug_log/2026-10-08/outputs/rot2_stats.txt</span> · <span class="mono">Docs/debug_log/2026-10-08/outputs/rot2_turns.txt</span> · 스크립트 원문 <span class="mono">Docs/debug_log/2026-10-08/jobs/rot2_stats.py</span> · <span class="mono">Docs/debug_log/2026-10-08/jobs/rot2.py</span>(정합 · 회전축, SUMMARY §4)</p>
+</div>
 
 <h2 id="ratio">트랙 속도 비율 통제 시험 <span class="sec">§5</span></h2>
 <p class="prose">빠른 트랙을 0.08 m/s 로 고정하고 느린 트랙의 비율 r 만 바꿔 90° 씩 40 번 돌았습니다. 판정 기준은 주행 전에 정했습니다: 가장 좋은 비율의 중앙값이 제자리 회전의 절반 이하이고, 8 회 중 6 회 이상이 제자리 회전의 중앙값보다 작을 것.</p>
@@ -158,6 +290,40 @@ footer{margin-top:44px;padding-top:14px;border-top:1px solid var(--line);font-si
   <li>사용자 관찰("반피벗 느낌이 아니었다")은 맞았습니다. 같은 트랙 비인데도 빠른 트랙이 앞으로 구른 2 번은 회전축이 중심 쪽으로 무너져 제자리 회전처럼 돌았습니다. 다만 32 회 전체에서는 앞/뒤 차이가 없었습니다(빠른 왼쪽 앞 7.4 · 뒤 8.1, 오른쪽 앞 10.7 · 뒤 8.9 cm).</li>
   <li>사용자 제안으로 실행 2 는 빠른 트랙이 왼쪽인 블록과 오른쪽인 블록을 번갈아 돌았습니다.</li>
 </ul>
+<div class="ex">
+  <p class="exh">근거 — 실행 1·2 회전 40 개(정합 rms ≤ 0.03, 잡음 ≤ 1 cm)를 r 별로 묶어 Q1(중앙 ≤ 제자리 중앙의 절반 그리고 제자리 중앙보다 작은 회전 ≥ 6/8)을 판정했습니다. 시간순 값에서 앞 12 회와 뒤 20 회가 갈립니다.</p>
+  <div class="exk">스크립트 핵심 <span class="mono">Docs/debug_log/2026-10-08/jobs/ratio_pool.py</span> 8 · 13 · 24~26 · 31~33 행</div>
+  <pre class="code">ok = [o for o in R if o['rms'] &lt;= 0.03 and o['noise'] &lt;= 0.01]
+spin = [o['slip90'] * 100 for o in ok if o['r'] &lt;= -0.95]; ms = med(spin)
+    if r &gt; -0.95:
+        below = sum(x &lt; ms for x in vv); q1 = med(vv) &lt;= 0.5 * ms and below &gt;= 6
+        print('       Q1: 중앙 %.1f ≤ 0.5×%.1f=%.1f? %s · r −1 중앙보다 작은 회전 %d/%d → %s' % (med(vv), ms, 0.5 * ms, med(vv) &lt;= 0.5 * ms, below, len(vv), '충족' if q1 else '불충족'))
+    a = [o['slip90'] * 100 for o in ok if o['r'] &gt; -0.95 and side(o) == s_ and roll(o) == '앞']
+    b = [o['slip90'] * 100 for o in ok if o['r'] &gt; -0.95 and side(o) == s_ and roll(o) == '뒤']
+    print('  빠른 %s 트랙: 앞 %.1f (n %d) · 뒤 %.1f (n %d) → %s' % (s_, med(a), len(a), med(b), len(b), '뒤가 절반 이하' if med(b) &lt;= 0.5 * med(a) else ('앞이 절반 이하' if med(a) &lt;= 0.5 * med(b) else '큰 차이 없음')))</pre>
+  <div class="exk">나온 결과 <span class="mono">Docs/debug_log/2026-10-08/outputs/rt12_pool.txt</span></div>
+  <pre class="code">Q0: r −1 n 8 중앙 6.2 cm/90° [3.1~18.1] (09-28 범위 5~13.5)
+ r    | 전체 중앙 [범위] n | 빠른 왼·앞 | 왼·뒤 | 오·앞 | 오·뒤   (90°당 cm, 각 값 나열)
+ -1.0 |  6.2 [ 3.1~18.1] n  8 | - | - | - | -
+ -0.6 | 13.5 [ 7.9~18.8] n  8 | 7.9 14.3 | 12.7 17.1 | 8.6 18.6 | 18.8 11.9
+       Q1: 중앙 13.5 ≤ 0.5×6.2=3.1? False · r −1 중앙보다 작은 회전 0/8 → 불충족
+ -0.4 |  6.9 [ 2.2~14.2] n  8 | 9.4 8.0 | 2.2 2.8 | 10.8 14.2 | 5.8 5.4
+       Q1: 중앙 6.9 ≤ 0.5×6.2=3.1? False · r −1 중앙보다 작은 회전 4/8 → 불충족
+ -0.2 | 10.6 [ 6.0~15.7] n  8 | 6.0 6.9 | 14.6 15.7 | 11.9 7.8 | 10.3 10.9
+       Q1: 중앙 10.6 ≤ 0.5×6.2=3.1? False · r −1 중앙보다 작은 회전 1/8 → 불충족
+ +0.0 |  4.0 [ 1.5~10.5] n  8 | 4.5 2.3 | 3.4 2.6 | 10.5 1.5 | 6.0 7.5
+       Q1: 중앙 4.0 ≤ 0.5×6.2=3.1? False · r −1 중앙보다 작은 회전 6/8 → 불충족
+…
+Q3 앞으로 구를 때 vs 뒤로 구를 때(빠른 트랙별, r −0.6~0 합침):
+  빠른 왼 트랙: 앞 7.4 (n 8) · 뒤 8.1 (n 8) → 큰 차이 없음
+  빠른 오 트랙: 앞 10.7 (n 8) · 뒤 8.9 (n 8) → 큰 차이 없음
+미끄러짐 성분(40 회): 앞뒤 중앙 -7.2 cm (음수 38/40) · 옆 중앙 +0.3 cm (|옆| 중앙 1.7)
+크기 중 앞뒤 성분 비율 중앙 96 %
+rt1 시간순 90°당: 7 5 3 3 11 6 14 5
+rt2 시간순 90°당: 9 2 8 3 10 6 1 8 4 3 2 3 9 19 19 12 8 13 14 17 12 10 8 11 6 15 7 16 15 3 18 15
+r −0.4 빠른 트랙 뒤로(f2e2 W3 형) n 4: 5.8 5.4 2.2 2.8 → 중앙 4.1</pre>
+  <p class="note">결과 원문 <span class="mono">Docs/debug_log/2026-10-08/outputs/rt12_pool.txt</span> · 스크립트 원문 <span class="mono">Docs/debug_log/2026-10-08/jobs/ratio_pool.py</span>(입력 csv 는 <span class="mono">Docs/debug_log/2026-10-08/jobs/ratio_anal.py</span>, SUMMARY §5.6). 발췌 끝 다섯 줄(성분 · 시간순 · r −0.4 후진형)을 찍은 코드는 ratio_pool.py 에 없고 jobs/ 에서도 찾지 못했습니다 — 결과는 같은 출력 파일에 있습니다.</p>
+</div>
 
 <h2 id="cause">뒤로 밀리는 원인 <span class="sec">§5.6~§5.11, §6.1</span></h2>
 <div class="look">
@@ -173,6 +339,22 @@ footer{margin-top:44px;padding-top:14px;border-top:1px solid var(--line);font-si
     <li>회전량 비례 보정(1 rad 당 5 cm)은 오프라인에서 오차를 7.9 → 5.8 cm/90° 로 줄입니다. 바닥·하중이 바뀌면 과보정 위험이 있어 고정값으로는 넣지 않습니다.</li>
   </ul></div>
 </div>
+<div class="ex">
+  <p class="exh">근거 — 방향 일관성(38/40, 21/22)과 변동계수는 대화 중 계산이라 스크립트가 남아 있지 않고 결과만 저장돼 있습니다. 보정 모델은 한 개 빼고 검증(LOO).</p>
+  <div class="exk">나온 결과 <span class="mono">Docs/debug_log/2026-10-08/outputs/slip_consistency.txt</span></div>
+  <pre class="code">주행 중 회전(10-07·08 bag 6 개, ≥45°, 접촉 1 제외) n 22: 앞뒤 음수 21 · 90°당 앞뒤 중앙 -5.9 [-13.6~+1.0] · 옆 중앙 +1.6 · 변동계수 76 %
+통제 시험(10-08 실행 1·2) n 40: 앞뒤 음수 38 · 90°당 앞뒤 중앙 -7.3 [-18.6~+1.1] · 변동계수 66 %</pre>
+  <div class="exk">스크립트 핵심 <span class="mono">Docs/debug_log/2026-10-08/jobs/slip_model.py</span> 3~4 · 9 · 14 행</div>
+  <pre class="code">#   M1: ex = −k·|Δθ|            (회전량 비례)
+#   M2: ex = −k·|Δθ| + c·wx      (회전량 + 휠 전진 거리 비례 — 앞 회전 0.30·뒤 1.66 반영)
+def err(pred): return np.hypot(ex - pred, ey) * 100 * 90 / np.degrees(th)   # 90°당 남는 오차 cm
+        m = np.arange(len(R)) != i; coef, *_ = np.linalg.lstsq(A[m], ex[m], rcond=None); p[i] = A[i] @ coef</pre>
+  <div class="exk">나온 결과 <span class="mono">Docs/debug_log/2026-10-08/outputs/slip_model.txt</span></div>
+  <pre class="code">M0 보정 없음: 90°당 오차 중앙 7.9 · 평균 9.0 cm
+M1 계수 [0.05] → LOO 90°당 오차 중앙 5.8 · 평균 5.9 cm (최대 13.4)
+M2 계수 [0.05  0.102] → LOO 90°당 오차 중앙 5.3 · 평균 5.9 cm (최대 13.7)</pre>
+  <p class="note">결과 원문 <span class="mono">Docs/debug_log/2026-10-08/outputs/slip_consistency.txt</span>(스크립트 원문 없음 — 결과가 전부) · <span class="mono">Docs/debug_log/2026-10-08/outputs/slip_model.txt</span> · 스크립트 원문 <span class="mono">Docs/debug_log/2026-10-08/jobs/slip_model.py</span>(SUMMARY §6.1 · §5.11). 실제/휠 거리비 앞 0.30 · 뒤 1.66: 결과 원문 원천 소실(대화에만 있었음, SUMMARY §5.9 에 수치만). 손으로 옆으로 민 시험은 사용자 관찰(§5.11).</p>
+</div>
 
 <h2 id="forward">앞 회전 우선 MPPI <span class="sec">§6</span></h2>
 <p class="prose">W3 에서 출발로 돌아갈 때 로버가 51 s 동안 후진했습니다. 후진은 막지 않고 후진 벌점 가중치만 바꿔, 실측 구동계 모델과 bag 재생으로 시뮬레이션했습니다.</p>
@@ -185,6 +367,28 @@ footer{margin-top:44px;padding-top:14px;border-top:1px solid var(--line);font-si
 <tr><td>60</td><td class="n">0.01 m</td><td>샘플 쏠림</td><td class="n">0.038 m</td></tr>
 </tbody></table></div>
 <p class="prose">설정 파일에만 반영했고 Jetson 배포와 검증 주행은 다음 세션입니다. 판정 기준: W3 후진 0.5 m 이하, 목표 3/3 성공, 상자 접촉 없음.</p>
+<div class="ex">
+  <p class="exh">근거 — 실측 구동계 모델 MPPI 시뮬(job776)을 두 장면 × 다섯 설정으로 20 s 씩. 후진 거리와 LETHAL 최소 여유는 seed 1 값입니다(표의 첫 값).</p>
+  <div class="exk">스크립트 핵심 <span class="mono">Docs/debug_log/2026-10-08/jobs/job944_fwdsim.sh</span> 15~16 행</div>
+  <pre class="code">  for v in "F5 vx_min=-0.06 fwd_w=5" "F15 vx_min=-0.06 fwd_w=15" "F30 vx_min=-0.06 fwd_w=30" "F60 vx_min=-0.06 fwd_w=60" "V03 vx_min=-0.03 fwd_w=5"; do set -- $v; L=$1; shift
+    python3 /tmp/job776_mppi_sim_ack.py /tmp/$B 0 label=${L}_$NM t_abs=$TA $COM "$@" 2&gt;&amp;1 | grep -av 'Opened database' | grep -aE "^[A-Z0-9]+_|→|후진 거리|LETHAL 여유|목표\(|Traceback|Error"</pre>
+  <div class="exk">나온 결과 <span class="mono">Docs/debug_log/2026-10-08/outputs/j944_fwdsim.txt</span></div>
+  <pre class="code">######## W3출발 (bag_f2e2 t_abs 1791437906.27)
+     후진 거리 1.000 m · 제자리 회전 시간 1.1 s · 경로 끝 도달 None 주기
+  → 200 주기(20.0 s) 후: 전진 -0.918 횡 +0.301 회전 -108.5°, 최종 cmd v -0.003 w -0.380
+     후진 거리 0.322 m · 제자리 회전 시간 0.9 s · 경로 끝 도달 None 주기
+  → 200 주기(20.0 s) 후: 전진 -0.886 횡 +0.172 회전 +147.6°, 최종 cmd v +0.080 w +0.093
+     후진 거리 0.113 m · 제자리 회전 시간 1.1 s · 경로 끝 도달 None 주기
+     후진 거리 0.014 m · 제자리 회전 시간 0.9 s · 경로 끝 도달 None 주기
+  → 200 주기(20.0 s) 후: 전진 -0.510 횡 -0.067 회전 +152.3°, 최종 cmd v +0.080 w +0.160
+…
+######## 서쪽통로입구 (bag_f2a10 t_abs 1790837321.212368)
+     LETHAL 여유(차체 외곽↔1 m 안 LETHAL 셀, 반셀 뺌): 최소 0.029 @19.9 s, 평균 0.109, 끝 0.029 m
+     LETHAL 여유(차체 외곽↔1 m 안 LETHAL 셀, 반셀 뺌): 최소 0.045 @16.0 s, 평균 0.112, 끝 0.048 m
+     LETHAL 여유(차체 외곽↔1 m 안 LETHAL 셀, 반셀 뺌): 최소 -0.025 @12.4 s, 평균 0.072, 끝 -0.025 m
+     LETHAL 여유(차체 외곽↔1 m 안 LETHAL 셀, 반셀 뺌): 최소 0.038 @17.4 s, 평균 0.108, 끝 0.051 m</pre>
+  <p class="note">결과 원문 <span class="mono">Docs/debug_log/2026-10-08/outputs/j944_fwdsim.txt</span> · 스크립트 원문 <span class="mono">Docs/debug_log/2026-10-08/jobs/job944_fwdsim.sh</span>(SUMMARY §6). seed 2 · 3 값(표의 둘째 · 셋째, <span class="mono">Docs/debug_log/2026-10-08/jobs/job946_fwdseed.sh</span>): 결과 원문 원천 소실(대화에만 있었음, SUMMARY §6 표에 수치만).</p>
+</div>
 
 <h2 id="fix">정정·실수 <span class="sec">지우지 않고 남김</span></h2>
 <ul class="prose">

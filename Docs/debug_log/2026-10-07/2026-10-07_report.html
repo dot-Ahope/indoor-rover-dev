@@ -68,6 +68,11 @@ ul,ol{padding-left:22px;margin:8px 0} li{margin:4px 0}
 footer{margin-top:44px;padding-top:14px;border-top:1px solid var(--line);font-size:12.5px;color:var(--muted)}
 #tip{position:fixed;pointer-events:none;background:var(--ink);color:var(--bg);font-family:var(--mono);font-size:12px;padding:5px 8px;border-radius:3px;z-index:5}
 @media (max-width:520px){h1{font-size:24px}}
+.ex{margin-top:12px;border-left:3px solid var(--line);padding:2px 0 2px 12px;min-width:0;max-width:100%}
+.exh{font-size:13.5px;margin:4px 0;max-width:90ch}
+.exk{font-size:12px;color:var(--muted);margin:8px 0 4px}
+.code{margin:0;font-family:var(--mono);font-size:12.5px;line-height:1.5;color:var(--ink);background:var(--surface);border:1px solid var(--line);padding:8px 10px;overflow-x:auto;white-space:pre;max-width:100%}
+.note{font-size:12.5px;color:var(--muted);margin:6px 0 0;overflow-wrap:anywhere}
 </style>
 
 <div class="wrap">
@@ -75,6 +80,7 @@ footer{margin-top:44px;padding-top:14px;border-top:1px solid var(--line);font-si
   <div class="eyebrow">Indoor Rover · debug_log/2026-10-07 · 원본 feature/nvblox-migration → 공개 indoor-rover-dev</div>
   <h1>10-07 기록: G4 수정, 순회 주행, 계획기와 MPPI 의 지도 불일치</h1>
   <div class="meta"><span>근거 <b class="mono">SUMMARY.md §1~§15</b></span><span>그림 <b class="mono">Docs/04_navigation/figures/2026-10-07_*</b></span><span>bag <b class="mono">bags/</b>(git 제외)</span></div>
+  <p class="note">2026-11-02 추가: 판단마다 그 수치를 낸 <b>스크립트 핵심</b>과 <b>나온 결과</b>를 원문 그대로 발췌하고, 결과 원문 · 스크립트 원문의 저장소 경로를 붙였습니다. 원문 파일이 없는 수치는 '원천 소실' 로 적었습니다.</p>
   <nav class="toc" aria-label="목차">
     <a href="#g4">G4 수정</a><a href="#patrol">순회 주행</a><a href="#corner">남서 구석</a><a href="#mismatch">지도 불일치</a><a href="#memory">카메라 기억 시험</a><a href="#viz">시각화·공개</a><a href="#fix">정정</a><a href="#next">다음</a>
   </nav>
@@ -96,6 +102,26 @@ footer{margin-top:44px;padding-top:14px;border-top:1px solid var(--line);font-si
 <tr><td>재생, 예전 판정</td><td class="n">12 %</td><td class="n">35 %</td><td class="n">최대 1.3 cm</td></tr>
 <tr><td>재생, 휠 잔차</td><td class="n">6 %</td><td class="n"><b>2 %</b></td><td class="n">최대 1.9 cm</td></tr>
 </tbody></table></div>
+<div class="ex">
+  <p class="exh">근거 — 표의 비율은 게이트 csv 의 회전 표본(|ω| &gt; 0.15)을 휠 속도로 제자리 · 곡선으로 나눠, σ 키움(통과인데 판정량 &gt; 0.05)과 버림(g4)을 센 것입니다. '라이브' 행은 라이브 게이트 출력의 같은 집계(f2c2: 11 % + 1 % = 12 %, 43 % + 6 % = 49 %)입니다.</p>
+  <div class="exk">스크립트 핵심 <span class="mono">Docs/debug_log/2026-10-07/jobs/rp_eval.py</span> 7~11 행</div>
+  <pre class="code">    res = np.array([r['res'] for r in R]); vb = np.hypot(bx - vw, by) if ref == 'wheel' else np.hypot(bx, by)
+    rot = np.abs(w) &gt; 0.15
+    for lab, sel in (('제자리(|v_휠|&lt;0.03)', rot &amp; (np.abs(vw) &lt; 0.03)), ('곡선(|v_휠|≥0.03)', rot &amp; (np.abs(vw) &gt;= 0.03))):
+        k = sel.sum(); soft = (sel &amp; (res == 'pass') &amp; (vb &gt; 0.05)).sum(); rej = (sel &amp; (res == 'g4')).sum()
+        print('%-5s %-18s 표본 %3d | 판정량 중앙 %.3f · 90 %% %.3f m/s | σ 키움 %3d (%.0f %%) · 버림 %2d (%.0f %%) | 합 %.0f %%' % (ref, lab, k, np.median(vb[sel]), np.percentile(vb[sel], 90), soft, 100 * soft / k, rej, 100 * rej / k, 100 * (soft + rej) / k))</pre>
+  <div class="exk">나온 결과 <span class="mono">Docs/debug_log/2026-10-07/outputs/rp_eval.txt</span></div>
+  <pre class="code">abs   제자리(|v_휠|&lt;0.03)    표본 164 | 판정량 중앙 0.026 · 90 % 0.052 m/s | σ 키움  18 (11 %) · 버림  1 (1 %) | 합 12 %
+abs   곡선(|v_휠|≥0.03)     표본 433 | 판정량 중앙 0.044 · 90 % 0.068 m/s | σ 키움 147 (34 %) · 버림  5 (1 %) | 합 35 %
+abs   재생 B − 라이브 B 위치 차: 끝 0.6 · 최대 1.3 · 중앙 0.6 cm (같은 bag — 진실 아님)
+wheel 제자리(|v_휠|&lt;0.03)    표본 156 | 판정량 중앙 0.021 · 90 % 0.042 m/s | σ 키움  10 (6 %) · 버림  0 (0 %) | 합 6 %
+wheel 곡선(|v_휠|≥0.03)     표본 431 | 판정량 중앙 0.012 · 90 % 0.042 m/s | σ 키움   8 (2 %) · 버림  1 (0 %) | 합 2 %
+wheel 재생 B − 라이브 B 위치 차: 끝 1.7 · 최대 1.9 · 중앙 1.2 cm (같은 bag — 진실 아님)</pre>
+  <div class="exk">나온 결과 <span class="mono">Docs/debug_log/2026-10-07/outputs/f2c_g4arc.txt</span> (라이브, 예전 판정)</div>
+  <pre class="code">f2c2 제자리(|v_B|&lt;0.03)    표본 139 | rf2o |v| 중앙 0.018 m/s · EKF v 중앙 0.024 | σ 키움  15 (11 %) · 버림  1 (1 %)
+f2c2 곡선(|v_B|≥0.03)     표본 505 | rf2o |v| 중앙 0.047 m/s · EKF v 중앙 0.042 | σ 키움 217 (43 %) · 버림 30 (6 %)</pre>
+  <p class="note">결과 원문 <span class="mono">Docs/debug_log/2026-10-07/outputs/rp_eval.txt</span> · <span class="mono">Docs/debug_log/2026-10-07/outputs/f2c_g4arc.txt</span> · 스크립트 원문 <span class="mono">Docs/debug_log/2026-10-07/jobs/rp_eval.py</span> · <span class="mono">Docs/debug_log/2026-10-07/jobs/f2c_g4arc.py</span> (SUMMARY §3.2 · §4.1). 판정량은 abs = |(bx, by)|, wheel = |(bx − v_휠, by)| 입니다(7 행).</p>
+</div>
 
 <h2 id="patrol">rf2o 를 켠 F2 순회 <span class="sec">§2, §6</span></h2>
 <div class="runs"><span class="pill p-ok">f2c1 3/4</span><span class="pill p-ok">f2c2 6/6</span><span class="pill p-warn">f2d1 3/4</span><span class="pill p-ok">f2d2 5/6</span><span class="pill p-bad">상자 접촉 1</span></div>
@@ -108,9 +134,49 @@ footer{margin-top:44px;padding-top:14px;border-top:1px solid var(--line);font-si
   <li>11:12 의 주행 중단은 SLAM 의 map→odom 시각이 1.49 s 멈춰 미래 여유 0.5 s 를 넘긴 것입니다. MPPI 변환 허용을 0.2 → 0.5 s 로 늘렸습니다.</li>
   <li>W3 통로의 저속 떨림은 TF 지연과 무관했습니다(떨림 구간과 정상 구간의 지연이 같음). 원인은 아직 모릅니다.</li>
 </ul>
+<div class="ex">
+  <p class="exh">근거 — 6 s 창마다 bag 수신 시각 − header stamp(지연)와 stamp 간격 최대를 셌습니다. 떨림 구간(러너 t 188~236)과 매끄러운 구간(240~300)의 지연이 같고, map→odom stamp 간격만 234~240 창에서 1.49 s 로 튑니다(중단 시각 t ≈ 235).</p>
+  <div class="exk">스크립트 핵심 <span class="mono">Docs/debug_log/2026-10-07/jobs/job917_tflag.py</span> 27~31 행</div>
+  <pre class="code">        X = np.array(D[k]); s = (X[:, 0] - T0 &gt;= a) &amp; (X[:, 0] - T0 &lt; a + 6); lag = X[s, 0] - X[s, 1]
+        row.append('%.2f/%.2f' % (np.median(lag), lag.max()) if s.any() else '-')
+        X = np.array(D[k]); s = (X[:, 0] - T0 &gt;= a) &amp; (X[:, 0] - T0 &lt; a + 6); u = np.unique(X[s, 1]); gaps.append('%.2f' % np.diff(u).max() if len(u) &gt; 1 else '-')</pre>
+  <div class="exk">나온 결과 <span class="mono">Docs/debug_log/2026-10-07/outputs/j917_tflag.txt</span></div>
+  <pre class="code">창(러너 s) | 지연 = 수신 − stamp 중앙/최대 (s): map→odom | odom→base | /odometry | /scan | 로컬 코스트맵 || stamp 간격 최대: map→odom | odom→base | cmd_vel 수신 간격 최대
+…
+180~186 | -0.38/0.18 | 0.01/0.14 | 0.01/0.14 | 0.01/0.14 | 0.00/0.01 || 0.61 | 0.07 | 0.06
+186~192 | -0.41/-0.07 | 0.01/0.03 | 0.01/0.03 | 0.01/0.02 | 0.00/0.00 || 0.40 | 0.05 | 0.06
+…
+228~234 | -0.43/-0.36 | 0.01/0.02 | 0.01/0.02 | 0.00/0.02 | 0.00/0.00 || 0.12 | 0.04 | 0.06
+234~240 | -0.41/1.03 | 0.01/0.02 | 0.01/0.02 | 0.00/0.02 | 0.00/0.00 || 1.49 | 0.04 | 0.06
+240~246 | -0.41/-0.05 | 0.01/0.02 | 0.01/0.02 | 0.01/0.04 | 0.00/0.01 || 0.40 | 0.04 | 0.06
+…
+[ERROR] [1791339129.331844627] [controller_server]: Exception in transformPose: Lookup would require extrapolation into the future.  Requested time 1791339129.089612 but the latest data is at time 1791339129.08 …
+[ERROR] [1791339129.332093627] [controller_server]: Unable to transform robot pose into global plan's frame
+[WARN] [1791339129.332281024] [controller_server]: [follow_path] [ActionServer] Aborting handle.</pre>
+  <p class="note">결과 원문 <span class="mono">Docs/debug_log/2026-10-07/outputs/j917_tflag.txt</span> · 스크립트 원문 <span class="mono">Docs/debug_log/2026-10-07/jobs/job917_tflag.py</span>(실행 <span class="mono">Docs/debug_log/2026-10-07/jobs/job917_run.sh</span>, SUMMARY §5). 경로 대비 옆 오차는 <span class="mono">Docs/debug_log/2026-10-07/outputs/f2c2_w3lat.txt</span>. 출력 첫 줄의 WSL 경고(깨진 글자)는 발췌에서 뺐습니다.</p>
+</div>
 
 <h2 id="corner">남서 구석의 방향 맞춤 정체 <span class="sec">§2.3, §6.2, §7</span></h2>
 <p class="prose">목표 근처에 도착한 뒤 목표 방향과 반대로 돌며 뒤로 물러나 벽에 붙고, 이후 ±0.01 m/s 수준의 지령만 반복했습니다. 라이다 기준 접촉은 없었고(12 cm), 뒤 4.5 cm 의 치명 칸 때문에 회전도 전진도 고르지 못한 상태였습니다. 세 번 시도해 세 번 재현되어 주행 러너에 '위치만 판정' 모드(목표 0.15 m 안이면 도착 처리)를 넣었고 f2d2 에서 통과했습니다.</p>
+<div class="ex">
+  <p class="exh">근거 — f2c1 목표 4 bag 을 1 s 마다: 차체 외곽(x −0.248~+0.262, y ±0.165) ↔ 가장 가까운 치명 칸, 라이다 최근접, 지령 범위. 자세가 굳은 +45 s 뒤 치명 칸은 뒤 4.5 cm, 라이다는 12.2 cm 이고 지령은 ±0.01 m/s 수준입니다. 같은 구석의 재현은 러너 로그(f2c1 · f2d1 CANCELED, f2d2 위치만 SUCCEEDED_XY).</p>
+  <div class="exk">스크립트 핵심 <span class="mono">Docs/debug_log/2026-10-07/jobs/job910_g4cost.py</span> 14~15 · 31 · 37 행</div>
+  <pre class="code">def gap(px, py):   # 차체 좌표 점 → 외곽까지 거리(안이면 0)
+    dx = np.where(px &gt; XF, px - XF, np.where(px &lt; XB, XB - px, 0)); dy = np.maximum(np.abs(py) - HW, 0); return np.hypot(dx, dy)
+        bx = c * (wx - x) + s * (wy - y); by = -s * (wx - x) + c * (wy - y); d = gap(bx, by); leth = g[iy, ix] &gt;= 100   # OccupancyGrid 0~100 척도: 100 = 치명(254), 99 = 내접(253) — 첫 판은 253 으로 잘못 셈
+            j = np.argmin(np.where(leth, d, 9)); side = '%s%s' % ('앞' if bx[j] &gt; XF else '뒤' if bx[j] &lt; XB else '', '왼' if by[j] &gt; HW else '오' if by[j] &lt; -HW else '')</pre>
+  <div class="exk">나온 결과 <span class="mono">Docs/debug_log/2026-10-07/outputs/j910_g4cost.txt</span></div>
+  <pre class="code"> +39.0 s  odom(-1.20,-5.52, -63°) | 외곽 안 치명 0·내접 5 | 치명 최근접 0.083(오, 차체 -0.23,-0.25) | 라이다 최근접 0.137(차체 -0.30,-0.29) | cmd 20개 v +0.051~+0.075 w +0.38~+0.38 | B−A 2.9 cm
+ +43.0 s  odom(-1.20,-5.55,  -2°) | 외곽 안 치명 0·내접 7 | 치명 최근접 0.086(뒤, 차체 -0.33,+0.12) | 라이다 최근접 0.143(차체 -0.39,-0.18) | cmd 20개 v -0.037~-0.023 w +0.15~+0.38 | B−A 2.7 cm
+ +45.0 s  odom(-1.22,-5.55,  +3°) | 외곽 안 치명 0·내접 11 | 치명 최근접 0.046(뒤, 차체 -0.29,+0.14) | 라이다 최근접 0.125(차체 -0.37,-0.11) | cmd 20개 v -0.013~-0.003 w -0.00~+0.03 | B−A 2.6 cm
+…
+ +79.0 s  odom(-1.22,-5.55,  +3°) | 외곽 안 치명 0·내접 11 | 치명 최근접 0.046(뒤, 차체 -0.29,+0.14) | 라이다 최근접 0.123(차체 -0.37,-0.12) | cmd 29개 v -0.005~+0.003 w +0.00~+0.01 | B−A 2.6 cm</pre>
+  <div class="exk">나온 결과 러너 로그</div>
+  <pre class="code">  목표 4 CANCELED 71.2 s | 도착 map (-1.475, -5.392, -0.3°) 목표 대비 0.165 m, 109.0°
+  목표 4 CANCELED 69.4 s | 도착 map (-1.483, -5.341, 0.5°) 목표 대비 0.197 m, 108.7°
+  목표 2 SUCCEEDED_XY 59.6 s | 도착 map (-1.457, -5.541, 133.4°) 목표 대비 0.148 m, -19.3°</pre>
+  <p class="note">결과 원문 <span class="mono">Docs/debug_log/2026-10-07/outputs/j910_g4cost.txt</span> · <span class="mono">Docs/debug_log/2026-10-07/outputs/f0_f2c1_runner.log</span> · <span class="mono">Docs/debug_log/2026-10-07/outputs/f0_f2d1_runner.log</span> · <span class="mono">Docs/debug_log/2026-10-07/outputs/f0_f2d2_runner.log</span> · 스크립트 원문 <span class="mono">Docs/debug_log/2026-10-07/jobs/job910_g4cost.py</span> · <span class="mono">Docs/debug_log/2026-10-07/jobs/job550_f0run.py</span>(러너, SUMMARY §2.3 · §6.2 · §7.1)</p>
+</div>
 
 <h2 id="mismatch">계획기와 MPPI 가 다른 지도를 본다 <span class="sec">§2.6, §7.2, §8.1, §10</span></h2>
 <figure>
@@ -128,6 +194,42 @@ footer{margin-top:44px;padding-top:14px;border-top:1px solid var(--line);font-si
     <li>f2d2: 상자 앞에서 45 s 무진행 후 취소.</li>
   </ul></div>
 </div>
+<div class="ex">
+  <p class="exh">근거 ① — 전역 지도의 상자 ② 칸: f2c2 내내 0, f2d2 는 +76.6 s 에 3 칸뿐이고 로버가 0.41 m 앞에 선 동안 0 입니다. '라이다 빔이 카메라 표시를 지운다' 는 설정(같은 2D 격자의 scan clearing)에서 낸 해석이고, 소거 순간을 직접 본 것은 아닙니다(SUMMARY §8.1).</p>
+  <div class="exk">스크립트 핵심 <span class="mono">Docs/debug_log/2026-10-07/jobs/box_vis.py</span> 9~10 · 14 행</div>
+  <pre class="code">        ix0, ix1 = int((1.1 - ox) / res), int((1.3 - ox) / res); iy0, iy1 = int((-0.1 - oy) / res), int((0.1 - oy) / res)
+        box = g[iy0:iy1 + 1, ix0:ix1 + 1]; n100 = int((box &gt;= 100).sum())
+        cam = abs(bear) &lt; 43 and 0.45 &lt; d - 0.26 &lt; 1.2</pre>
+  <div class="exk">나온 결과 <span class="mono">Docs/debug_log/2026-10-07/outputs/box_vis.txt</span></div>
+  <pre class="code">==== f2d2 (목표 10 시작 뒤 s)
+   +60.6 s 상자② 치명 칸  0 | 로버 (2.19,-1.00,+101°) 상자까지 1.40 m · 방위  +34° | 카메라 표시 조건 예
+   +76.6 s 상자② 치명 칸  3 | 로버 (2.02,-0.29,+139°) 상자까지 0.87 m · 방위  +22° | 카메라 표시 조건 예
+   +92.6 s 상자② 치명 칸  0 | 로버 (1.58,-0.12,+165°) 상자까지 0.40 m · 방위   -3° | 카메라 표시 조건 아니오
+  +120.6 s 상자② 치명 칸  0 | 로버 (1.59,-0.11,+166°) 상자까지 0.41 m · 방위   -2° | 카메라 표시 조건 아니오</pre>
+  <p class="note">결과 원문 <span class="mono">Docs/debug_log/2026-10-07/outputs/box_vis.txt</span> · 스크립트 원문 <span class="mono">Docs/debug_log/2026-10-07/jobs/box_vis.py</span></p>
+</div>
+<div class="ex">
+  <p class="exh">근거 ② — 로컬은 13:17:25 부터 상자 근처 치명 칸을 세는데 계획은 13:16:44 것 그대로(33 s), 13:17:39 부터 그 칸에서 0.01~0.02 m. 재계획(13:17:58) 경로는 전역에선 &lt; 99 인 7 칸에서 0.02 m 로 지나갑니다.</p>
+  <div class="exk">스크립트 핵심 <span class="mono">Docs/debug_log/2026-10-07/jobs/plan_vs_box.py</span> 12~15 · 26 행</div>
+  <pre class="code">    box = (LX_ &gt; 1.0) &amp; (LX_ &lt; 1.8) &amp; (LY_ &gt; -0.6) &amp; (LY_ &lt; 0.25)       # 상자 ①·② 근처 로컬 치명 칸
+    i = np.searchsorted(pt, t) - 1; P = pxy[off[i]:off[i + 1]]; x, y, th = at(tr, t)
+    j = np.argmin(np.hypot(P[:, 0] - x, P[:, 1] - y)); Pa = P[j:]                     # 로버 앞쪽 남은 경로
+    dmin = np.hypot(Pa[:, None, 0] - LX_[box][None], Pa[:, None, 1] - LY_[box][None]).min() if box.any() and len(Pa) else np.nan
+for lab, m in (('전역 치명(100)', sel &amp; (gv &gt;= 100)), ('전역 내접(99)', sel &amp; (gv == 99)), ('전역 &lt; 99(계획기는 통과 가능)', sel &amp; (gv &lt; 99))):</pre>
+  <div class="exk">나온 결과 <span class="mono">Docs/debug_log/2026-10-07/outputs/plan_vs_box.txt</span></div>
+  <pre class="code">계획 발행 시각: 13:11:43 13:11:44 13:11:57 13:12:35 13:12:35 13:13:11 13:13:40 13:13:41 13:14:16 13:14:17 13:15:04 13:15:05 13:16:43 13:16:44 13:17:58
+…
+13:17:25 로버 (2.95,-1.65) | 로컬 상자 근처 치명   4 | 남은 경로 ↔ 그 칸 최소 0.38 m (차체 반폭 0.165) | 같은 칸 전역 값: 치명 3 · 내접 1 · &lt;99 0 | 계획 13:16:44
+13:17:39 로버 (2.20,-1.08) | 로컬 상자 근처 치명  60 | 남은 경로 ↔ 그 칸 최소 0.01 m (차체 반폭 0.165) | 같은 칸 전역 값: 치명 11 · 내접 36 · &lt;99 13 | 계획 13:16:44
+…
+13:17:59 로버 (2.00,-0.27) | 로컬 상자 근처 치명  61 | 남은 경로 ↔ 그 칸 최소 0.01 m (차체 반폭 0.165) | 같은 칸 전역 값: 치명 8 · 내접 41 · &lt;99 12 | 계획 13:17:58
+…
+전역 치명(100) 8 칸: x 1.04~1.77 · y -0.60~-0.02 | 새 경로(13:17:58)까지 최소 0.27 m
+전역 내접(99) 48 칸: x 0.90~1.73 · y -0.56~0.10 | 새 경로(13:17:58)까지 최소 0.11 m
+전역 &lt; 99(계획기는 통과 가능) 7 칸: x 1.29~1.45 · y -0.41~-0.31 | 새 경로(13:17:58)까지 최소 0.02 m
+새 경로가 x 0.9~1.8 에서 지나는 y: -0.31 ~ -0.20</pre>
+  <p class="note">결과 원문 <span class="mono">Docs/debug_log/2026-10-07/outputs/plan_vs_box.txt</span> · 스크립트 원문 <span class="mono">Docs/debug_log/2026-10-07/jobs/plan_vs_box.py</span>(입력 fz_f2d2.npz = bag 추출, SUMMARY §10.1)</p>
+</div>
 
 <h2 id="memory">전역 카메라 층 분리 시험 <span class="sec">§8.2~§8.5</span></h2>
 <p class="prose">사용자 조건은 "화각 밖에서는 기억하되, 카메라가 그 자리를 볼 때는 갱신" 입니다. 전역 지도의 카메라 표시를 라이다와 다른 3D 층(STVL)으로 떼고, 기억 600 s · 절두체 근경계 0.8 m 로 시험했습니다.</p>
@@ -138,6 +240,29 @@ footer{margin-top:44px;padding-top:14px;border-top:1px solid var(--line);font-si
 <tr><td>0.35 m 앞까지 접근, 30 s</td><td class="n">25</td><td><span class="pill p-ok">C1 기억 통과</span></td></tr>
 <tr><td>사용자가 상자를 치움(카메라 점 100 → 0 개)</td><td class="n">1 분 30 s 넘게 24</td><td><span class="pill p-bad">C2 갱신 불합격</span></td></tr>
 </tbody></table></div>
+<div class="ex">
+  <p class="exh">근거 — 단계마다 전역 코스트맵의 상자 ② 자리(x 1.1~1.3, y −0.1~+0.1) ≥ 99 칸 수. 치운 순간은 녹화의 카메라 점(상자 높이 0.06~0.40 m)이 100 → 0 이 된 14:10:17~19 이고, 그 뒤 14:11:51 까지(약 95 s) 전역 칸은 24~25 그대로입니다.</p>
+  <div class="exk">스크립트 핵심 <span class="mono">Docs/debug_log/2026-10-07/jobs/box_step.py</span> 23 · 27 행</div>
+  <pre class="code">    a = g[int((y0 - oy) / r):int((y1 - oy) / r) + 1, int((x0 - ox) / r):int((x1 - ox) / r) + 1]; return int((a &gt;= 99).sum())
+    b2, b1 = count(1.1, 1.3, -0.1, 0.1), count(1.3, 1.6, -0.45, -0.3); allc = count(0.3, 2.0, -0.3, 0.4)</pre>
+  <div class="exk">나온 결과 <span class="mono">Docs/debug_log/2026-10-07/outputs/j924_box_steps.txt</span> (C1 단계)</div>
+  <pre class="code">  3.5 s 로버 (-0.01,-0.00,+0°) | 상자② 25 · 상자① 15 · 출발 방 고비용 69
+fwd 0.50 m 끝(이동 0.510 m, 10.9 s)
+  3.5 s 로버 (0.50,-0.00,-0°) | 상자② 25 · 상자① 10 · 출발 방 고비용 74
+…
+ 13.2 s 로버 (0.50,-0.00,-0°) | 상자② 25 · 상자① 10 · 출발 방 고비용 74</pre>
+  <div class="exk">스크립트 핵심 <span class="mono">Docs/debug_log/2026-10-07/jobs/job929_bagpts.py</span> 26~27 행</div>
+  <pre class="code">    W = P @ R.T + T; b = (W[:, 0] &gt; 1.05) &amp; (W[:, 0] &lt; 1.35) &amp; (W[:, 1] &gt; -0.30) &amp; (W[:, 1] &lt; 0.10)
+    rows.append((tt, int((b &amp; (W[:, 2] &gt; 0.06) &amp; (W[:, 2] &lt; 0.40)).sum()), int((b &amp; (W[:, 2] &lt;= 0.06)).sum()), gc))</pre>
+  <div class="exk">나온 결과 <span class="mono">Docs/debug_log/2026-10-07/outputs/j929_box_points.txt</span> (C2, 치우기 전후)</div>
+  <pre class="code">14:10:13 상자 높이 점   97 · 바닥 점  284 · 전역 상자② 칸 24
+14:10:15 상자 높이 점   98 · 바닥 점  283 · 전역 상자② 칸 24
+14:10:17 상자 높이 점  218 · 바닥 점  116 · 전역 상자② 칸 24
+14:10:19 상자 높이 점    0 · 바닥 점  152 · 전역 상자② 칸 25
+…
+14:11:51 상자 높이 점    0 · 바닥 점  140 · 전역 상자② 칸 24</pre>
+  <p class="note">결과 원문 <span class="mono">Docs/debug_log/2026-10-07/outputs/j924_box_steps.txt</span> · <span class="mono">Docs/debug_log/2026-10-07/outputs/j929_box_points.txt</span> · 스크립트 원문 <span class="mono">Docs/debug_log/2026-10-07/jobs/box_step.py</span> · <span class="mono">Docs/debug_log/2026-10-07/jobs/job929_bagpts.py</span>(입력 녹화 <span class="mono">Docs/debug_log/2026-10-07/bags/bag_box1.tgz</span>, SUMMARY §8.5)</p>
+</div>
 <div class="warnbox"><b>내 설정 결함</b>: 첫 시도에서 재사용한 STVL 블록의 <code>track_unknown_space: true</code> 가 아직 못 본 곳을 미지로 덮어 출발 방 대부분이 −1 이 됐습니다. false 로 고치고 다시 시험했습니다(로버는 움직이지 않음).</div>
 
 <h2 id="viz">시각화와 공개 저장소 <span class="sec">§9~§14</span></h2>
@@ -154,6 +279,15 @@ footer{margin-top:44px;padding-top:14px;border-top:1px solid var(--line);font-si
   <li>코스트맵 메시지 척도(0~100)를 0~255 로 보고 치명 칸을 못 센 적이 있습니다. 게이트 출력 짝짓기를 시각 반올림으로 해서 '버림 90 %' 로 잘못 센 적도 있습니다.</li>
   <li>공개용 영상의 제목을 62 s 판 그대로 두었다가 고쳤습니다.</li>
 </ul>
+<div class="ex">
+  <p class="exh">근거 — '목표 D 4 분 째 결과 없음' 은 러너 출력이 늦게 넘어온 것을 읽은 것이고, 러너 로그에는 41.3 s 성공으로 남아 있습니다. 코스트맵 척도(0~100) 정정은 위 남서 구석 발췌의 job910 31 행 주석이 그 흔적입니다. '버림 90 %' 를 낸 첫 계산의 결과는 남아 있지 않습니다.</p>
+  <div class="exk">스크립트 핵심 <span class="mono">Docs/debug_log/2026-10-07/jobs/job550_f0run.py</span> 141 행</div>
+  <pre class="code">        if M: print('  목표 %d %s %.1f s | 도착 map (%.3f, %.3f, %.1f°) 목표 대비 %.3f m, %.1f°' % (i + 1, name, time.time() - tg, M[0], M[1], math.degrees(M[2]), math.hypot(M[0] - gx, M[1] - gy), math.degrees(uw(M[2] - gyaw))), flush=Tru …</pre>
+  <div class="exk">나온 결과 <span class="mono">Docs/debug_log/2026-10-07/outputs/f0_f2c2_runner.log</span></div>
+  <pre class="code">  목표 1 SUCCEEDED 41.3 s | 도착 map (1.458, -5.563, 0.8°) 목표 대비 0.143 m, -1.4°
+결과: 1 SUCCEEDED 41.3s / 2 SUCCEEDED 58.5s / 3 SUCCEEDED 33.9s / 4 SUCCEEDED 22.9s / 5 SUCCEEDED 126.7s / 6 SUCCEEDED 120.0s | 총 427.9 s</pre>
+  <p class="note">결과 원문 <span class="mono">Docs/debug_log/2026-10-07/outputs/f0_f2c2_runner.log</span> · 스크립트 원문 <span class="mono">Docs/debug_log/2026-10-07/jobs/job550_f0run.py</span>(SUMMARY §2.4 정정). '버림 90 %' 첫 계산 결과 원문: 원천 소실(대화에만 있었음).</p>
+</div>
 
 <h2 id="next">다음 <span class="sec">§15</span></h2>
 <ol class="prose">

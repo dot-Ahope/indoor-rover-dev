@@ -67,6 +67,11 @@ ul{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:4px}
 footer{border-top:1px solid var(--rule);padding-top:12px;font-size:13px;color:var(--muted)}
 a{color:var(--accent)}
 :focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.code{margin:0;font-family:var(--f-mono);font-size:12.5px;line-height:1.5;background:var(--bg);color:var(--ink);border:1px solid var(--rule);padding:8px 10px;overflow-x:auto;white-space:pre;max-width:100%}
+.ev{display:flex;flex-direction:column;gap:4px;min-width:0;max-width:100%}
+.ev .evk,.ev .evh{font-size:12px;color:var(--ink2);font-weight:500}
+.ev .evh{color:var(--ink)}
+.srcnote{font-size:12.5px;color:var(--ink2);margin:2px 0 0;max-width:none;overflow-wrap:anywhere}
 </style>
 
 <div class="wrap">
@@ -74,6 +79,7 @@ a{color:var(--accent)}
   <div class="eyebrow">Indoor Rover · debug_log 2026-10-14 · 브랜치 feature/nvblox-migration</div>
   <h1>10월 14일 — 순회 결함 하나를 고치고, 멈칫거림의 원인을 시험으로 확정한 날</h1>
   <p class="lede">Jetson Orin Nano + Nav2(MPPI, NavFn) + nvblox 로버의 F2 웨이포인트 순회 작업. 주행 8 번, 커밋 38 개. 모든 수치는 같은 폴더의 <code>SUMMARY.md</code> 절 번호(§)에 원자료가 있다.</p>
+  <p class="lede">2026-11-02 에 판정마다 그 값을 낸 스크립트 핵심 · 나온 결과 발췌와 원문 경로를 붙였다(원문 파일이 없는 수치는 '원천 소실').</p>
 </header>
 
 <div class="stats">
@@ -89,6 +95,16 @@ a{color:var(--accent)}
     <p><b>1. BT 결함을 고쳤다(측정으로 확인).</b> 경로 다듬기가 실패하면 원경로를 넘기던 <code>TruncatePath</code> 가 경로 끝 방향을 0° 로 덮어써, 좁은 곳 목표에서 엉뚱한 회전을 요구했다(서쪽 통로 정지, f2s1). 우리 BT 노드 <code>CopyPath</code> 로 바꾼 뒤 f2t1 은 8 목표 모두 성공했고, 목표 1 m 안에서 컨트롤러 끝 방향 = 목표 방향(차 0.0°)이었다. §13~§17</p>
     <p><b>2. 사용자 영상의 멈칫거림 원인을 확정했다.</b> 실행 중 로컬 코스트맵 <code>footprint_padding</code> 을 한 번 바꿨다 되돌리면 그 뒤 주행 끝까지 MPPI 가 흔들린다. 주행 전 선언한 A/B 기준을 모두 충족. 그래서 <code>pad_relief</code> 는 쓰지 않는다(기본 off, prep 은 관찰 모드). §18 · §21</p>
   </div>
+<div class="ev">
+<div class="evh">판정 근거 — 결론 1 (CopyPath)</div>
+<div class="evk">스크립트 핵심</div><pre class="code"># jobs/anal_path_endyaw.py — 계획기 /plan 끝 방향과 컨트롤러가 받은 /transformed_global_plan 끝 방향(지도 좌표로 맞춤)의 차를 4 s 마다
+    p = last(pl, t); q = last(tp, t); o = last(ob, t); m = last(mo, t)
+    cyaw = q[3] + m[3]; ryaw = o[3] + m[3]; c, s = math.cos(m[3]), math.sin(m[3]); rx = m[1] + c * o[1] - s * o[2]; ry = m[2] + s * o[1] + c * o[2]</pre>
+<div class="evk">나온 결과</div><pre class="code">목표 3 SUCCEEDED 27.9 s | 도착 map (-1.670, -3.666, -65.1°) 목표 대비 0.040 m, -20.1°
+목표 5 SUCCEEDED 41.2 s | 도착 map (-1.683, -3.827, 70.8°) 목표 대비 0.131 m, 2.1°
+결과: 1 SUCCEEDED 52.7s / 2 SUCCEEDED 55.5s / 3 SUCCEEDED 27.9s / 4 SUCCEEDED_XY 65.0s / 5 SUCCEEDED 41.2s / 6 SUCCEEDED 33.2s / 7 SUCCEEDED 180.9s / 8 SUCCEEDED 148.4s | 총 605.5 s</pre>
+<p class="srcnote">결과 원문 <span class="mono">Docs/debug_log/2026-10-14/outputs/run_f2t1.txt</span>(8 목표 결과) · 스크립트 원문 <span class="mono">Docs/debug_log/2026-10-14/jobs/anal_path_endyaw.py</span>(커밋 <span class="mono">24ad8f2d</span>). 끝 방향 차 0.0°(목표 3: −45.0° = −45.0°, 목표 5: +68.6° = +68.6°)는 이 스크립트 출력인데 파일로 남기지 않았다 — 결과 원문: 원천 소실(대화에만 있었음), 수치는 SUMMARY §17 에만.</p>
+</div>
   <div class="verdict warn">
     <p><b>모르는 것.</b> 패딩 변경이 MPPI 의 어디에 상태를 남기는지(장애물 비용 쪽은 기각 — 비용 0 인 빈 곳에서도 흔들림, §23). 출발점 상자 끝에서 한 번 나온, NavFn 이 정상적으로는 낼 수 없는 경로(§24). 둘 다 지금 운용에는 막히지 않아 보류.</p>
   </div>
@@ -140,6 +156,26 @@ a{color:var(--accent)}
     </svg>
     </div>
     <p class="small">판정(§21.2 에서 주행 전 선언): A·A2 ≤ 45 /분 ✔, B ≥ 60 /분 ✔, B ≥ 2 × max(A, A2) ✔ → 원인 확정. 제어 주기 50 ms · 지도 갱신 0.6 s · 컨트롤러 CPU 303~317 % · 파라미터 · 코스트맵 값 분포는 세 주행이 같았다(§23). 오른쪽 묶음: 장애물 비용이 아무 일도 하지 않는 빈 곳에서도 B 만 흔들림 → 장애물 비용 쪽 가설 기각.</p>
+<div class="ev">
+<div class="evh">판정 근거 — 결론 2 (패딩 토글 A/B)</div>
+<div class="evk">스크립트 핵심</div><pre class="code"># jobs/anal_hesitation.py — 멈칫 = 명령 v 가 순항(≥0.06)에서 0.03 아래로, 좌우 틀기 = |ω| &gt; 0.05 인 표본의 부호 바뀜
+        if x &gt;= 0.06: cruise = True
+        elif x &lt; 0.03 and cruise: dips += 1; cruise = False
+    ws = np.sign(np.where(np.abs(w) &gt; 0.05, w, 0)); ws = ws[ws != 0]; flips = int((ws[1:] != ws[:-1]).sum())</pre>
+<div class="evk">스크립트 핵심</div><pre class="code"># jobs/anal_free_wobble.py — 로버 중심 R m 안 로컬 코스트맵 최대값이 0 인 순간('빈 곳')만 골라 좌우 틀기를 따로 셈
+                d = np.hypot(lc[0] - ob[0], lc[1] - ob[1]) &lt;= R; S.append((t / 1e9, m.angular.z, int(lc[2][d].max()) == 0))</pre>
+<div class="evk">나온 결과</div><pre class="code">R = 0.4 m
+구간     빈 곳 시간   빈 곳 좌우 틀기 /분   빈 곳 아닌 곳 시간   그곳 좌우 틀기 /분
+A           35 s         5.1                 112 s              8.5
+B           41 s        84.1                 122 s             72.6
+A2          42 s        18.7                 109 s             15.9</pre>
+<div class="evk">나온 결과</div><pre class="code">구간      cmd_vel 간격 ms(중앙/95%/최대, &gt;100ms %)   궤적 간격 ms(중앙/95%)   로컬지도 간격 s(중앙)   경로 점수 변화(중앙)   controller CPU % (중앙/90%)
+A           50 /    53 /   550,  0.1%                        100 /   126               0.60                   0.0                   nan /   nan  (0 표본)
+B           50 /    52 /  4951,  0.1%                        100 /   124               0.60                   0.0                   nan /   nan  (0 표본)
+A2          50 /    54 /    79,  0.0%                        100 /   126               0.60                   0.0                   nan /   nan  (0 표본)</pre>
+<p class="srcnote">결과 원문 <span class="mono">Docs/debug_log/2026-10-14/outputs/anal_free_wobble_f2u.txt</span> · <span class="mono">Docs/debug_log/2026-10-14/outputs/anal_ctrl_timing_f2u.txt</span> · 스크립트 원문 <span class="mono">Docs/debug_log/2026-10-14/jobs/anal_hesitation.py</span>(커밋 <span class="mono">2fa622a2</span>) · <span class="mono">Docs/debug_log/2026-10-14/jobs/anal_free_wobble.py</span> · <span class="mono">Docs/debug_log/2026-10-14/jobs/anal_ctrl_timing.py</span>(커밋 <span class="mono">a637877b</span>). 막대그래프의 목표 2 · 3 값(10.0 · 98.4 · 14.7 / 9.1 · 64.1 · 19.6 /분)은 <span class="mono">anal_hesitation.py</span> 로 낸 값인데 A · B · A2 출력은 파일로 남기지 않았다 — 결과 원문: 원천 소실(대화에만 있었음), 수치는 SUMMARY §21.3 · §21.4 에만(<span class="mono">Docs/debug_log/2026-10-14/outputs/hesitation.txt</span> 에는 f2s2 · f2t1 · f2r1 구간만 있음). 컨트롤러 CPU 317 · 303 · 309 % 는 proc 기록에서 따로 센 값으로 위 표에는 없다(nan) — 결과 원문: 원천 소실(대화에만 있었음), SUMMARY §23.</p>
+</div>
+
   </div>
 </section>
 
@@ -161,7 +197,28 @@ a{color:var(--accent)}
     </tbody>
   </table>
   </div>
-  <p class="small">사용자 판단: 좁은 여유형은 지금 시스템으로 어느 정도 된다 — 기록과 맞음(오늘 이 자리를 지난 주행 모두 접촉 없이 도착, 멈춘 두 번도 사람 개입 없이 복구). 그래서 이 자리는 바꾸지 않는다(§25).</p>
+  <div class="ev">
+<div class="evh">판정 근거 — 상자 끝 정지 두 종류</div>
+<div class="evk">스크립트 핵심</div><pre class="code"># jobs/anal_sw_turn.py — 0.5 s 칸마다 로컬 코스트맵 치명 칸(100)까지 차체 왼쪽 · 오른쪽 여유(표의 '상자 쪽 최소 여유' = 왼여유 열의 최소)
+print('시각      로버°  경로°  경로오차°  옆거리cm  v      ω      최적끝°  왼여유cm 오른여유cm  판정')</pre>
+<div class="evk">나온 결과</div><pre class="code"># 왼여유 열이 가장 작던 줄 — anal_box_f2u1 / f2u2 / f2u3
+16:23:20.5   +172   +179    +6.6     -2.6   +0.079 +0.03      +6      6.9     29.4
+16:30:05.0   +176   +178    +2.3     -1.7   +0.065 -0.04      -1      4.7     27.1
+16:51:07.0   -177   +174    -8.3     -1.6   +0.049 -0.16      -3      4.2     32.2    반대쪽·경로도
+# f2r1 — f2r1_selfrecover.txt(fig_stop_costmap, 치명 칸 중심까지)
+11:26:38.4       99          0.292 (0.33, -0.45)                        0.049 (0.20, 0.21)</pre>
+<div class="evk">스크립트 핵심</div><pre class="code"># jobs/anal_navfn_replay.py — 전역 코스트맵을 NavFn 비용으로 바꿔(253 이상 = 장애물) 8-연결 다익스트라로 다시 구해 /plan 과 견줌
+raw = np.where(g == 0, 0, np.where(g == 99, 253, np.where(g == 100, 254, np.where(g &lt; 0, 255, 1 + (g - 1) * 251.0 / 97))))
+cost = np.where(raw &gt;= 253, np.inf, 50 + 0.8 * raw); cost = np.where(raw == 255, 253.0, cost)</pre>
+<div class="evk">나온 결과</div><pre class="code">== B
+다익스트라(내접 회피) 길이 1.52 m · 0.3 m 앞 방향 +180° · 지나는 칸 원가 최대 216
+bag /plan          길이 1.41 m · 0.3 m 앞 방향 -146° · 지나는 칸 원가 최대 253 · 253 이상 점 20/55
+== A2
+다익스트라(내접 회피) 길이 1.50 m · 0.3 m 앞 방향 +180° · 지나는 칸 원가 최대 216
+bag /plan          길이 1.42 m · 0.3 m 앞 방향 +175° · 지나는 칸 원가 최대 216 · 253 이상 점 0/56</pre>
+<p class="srcnote">결과 원문 <span class="mono">Docs/debug_log/2026-10-14/outputs/anal_box_f2u1.txt</span> · <span class="mono">Docs/debug_log/2026-10-14/outputs/anal_box_f2u2.txt</span> · <span class="mono">Docs/debug_log/2026-10-14/outputs/anal_box_f2u3.txt</span> · <span class="mono">Docs/debug_log/2026-10-14/outputs/f2r1_selfrecover.txt</span> · <span class="mono">Docs/debug_log/2026-10-14/outputs/anal_navfn_replay_f2u.txt</span> · 스크립트 원문 <span class="mono">Docs/debug_log/2026-10-14/jobs/anal_sw_turn.py</span>(커밋 <span class="mono">a57707c5</span>) · <span class="mono">Docs/debug_log/2026-10-14/jobs/anal_navfn_replay.py</span>(커밋 <span class="mono">fbe6c234</span>) · <span class="mono">Docs/tools/fig_stop_costmap.py</span>. f2r1 의 4.9 cm 는 치명 칸 <b>중심</b>까지(f2u 세 줄은 같은 정의인지 SUMMARY 에 명시 없음 — 미확인).</p>
+</div>
+<p class="small">사용자 판단: 좁은 여유형은 지금 시스템으로 어느 정도 된다 — 기록과 맞음(오늘 이 자리를 지난 주행 모두 접촉 없이 도착, 멈춘 두 번도 사람 개입 없이 복구). 그래서 이 자리는 바꾸지 않는다(§25).</p>
 </section>
 
 <section>

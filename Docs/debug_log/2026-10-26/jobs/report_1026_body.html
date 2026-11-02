@@ -1,9 +1,13 @@
 
+<style>
+.code{margin:0;font-family:var(--f-mono);font-size:12.5px;line-height:1.5;background:var(--bg);border:1px solid var(--line);padding:8px 10px;overflow-x:auto;white-space:pre;max-width:100%}
+.flow > span{min-width:0}
+</style>
 <div class="wrap">
 <header>
   <div class="eyebrow">Indoor Rover · 2026-10-26 · Docs/debug_log/2026-10-26 §0–§20</div>
   <h1>10-26 Smac Hybrid 실주행</h1>
-  <p class="lead">상자 옆 여유를 늘리려고 계획기 쪽 손잡이(전역 비용장, Smac Lattice · Hybrid, Jazzy 포크)를 오프라인으로 시험했고, 가장 나은 Smac Hybrid 판을 실제로 달렸습니다. 남은 손실이 컨트롤러의 굽은 곳 깎기라는 것을 확인해 MPPI 경로 가중치를 바꿨고(28 · 5), 서쪽 통로 주행은 통과했지만 여유가 0.8 cm 였습니다. 끝으로 통로에서 Smac 이 실패한 이유를 가렸습니다.</p>
+  <p class="lead">상자 옆 여유를 늘리려고 계획기 쪽 손잡이(전역 비용장, Smac Lattice · Hybrid, Jazzy 포크)를 오프라인으로 시험했고, 가장 나은 Smac Hybrid 판을 실제로 달렸습니다. 남은 손실이 컨트롤러의 굽은 곳 깎기라는 것을 확인해 MPPI 경로 가중치를 바꿨고(28 · 5), 서쪽 통로 주행은 통과했지만 여유가 0.8 cm 였습니다. 끝으로 통로에서 Smac 이 실패한 이유를 가렸습니다. 2026-11-02 에 판단마다 그 값을 낸 스크립트의 핵심 부분과 실제 출력 발췌, 두 원문 파일 경로를 덧붙였습니다.</p>
 </header>
 
 <section>
@@ -30,11 +34,41 @@
     <tr><td>Lattice cp 2 회전 5</td><td class="n">14.0</td><td class="n">8.2</td><td class="n">16.0</td><td class="n">8.1</td><td class="n">+1.7</td><td class="n">1</td></tr>
   </table></div>
   <p class="note">단위 cm(차체 ↔ 상자). 원문 <span class="mono">outputs/planner_offline/sep/anal_all.txt</span>. 서쪽 통로는 Hybrid 전부 실패, Lattice 는 북행만 성공. Jazzy 의 해석 확장 비용 상한을 이식한 포크(<span class="mono">Docs/06_planner/smac_fork/</span>)는 이 장면들에서 이득 없음(<span class="mono">planner_offline/sep_fork/</span>). 기준은 못 넘었지만 나빠진 장면이 없는 'RS + 해석 1.0 m' 를 실주행 후보로 골랐습니다.</p>
+  <pre class="code"># anal_plan_compare.py — 상자 여유(차체) = 경로 자세마다 차체 직사각형(패딩 없음)과 기록 상자 사각형 사이 최소 거리
+BOX = (1.151, 1.261, -0.20, -0.02)
+def body_dist(p, yaw, Q):   # 차체 직사각형 ↔ 점들 최소 거리(점이 차체 안이면 0)
+    ...; dx = np.maximum(np.maximum(-0.248 - bx, bx - 0.262), 0); dy = np.maximum(np.maximum(-0.165 - by, by - 0.165), 0); return float(np.hypot(dx, dy).min())
+bclr = min(body_dist(P[i], Y[i], BP) for i in range(len(P)))
+# run_variants.sh — 변형마다 planner_server 를 따로 띄움(Smac static 상태 공유 회피)
+for v in &quot;$@&quot;; do ... run_jn.sh up_planoff_v.sh GridBased,$v ... &gt; &quot;$O/run_$v.txt&quot;; ... anal_plan_compare.py ... &gt; &quot;$O/anal_$v.txt&quot;; done</pre><pre class="code">장면 · 계획기 | 점 · 길이 m | 상자 여유 차체 · 중심(cm) | 치명까지 차체(cm) | 최대 꺾임 0.3 m(°) | 계획 s
+b910_rp1_replan  GridBased     |  113 ·  2.86 |   13.3 ·   13.3 |   14.5 |    82 | 0.002
+b910_rp2_replan  GridBased     |  121 ·  3.09 |    8.0 ·   10.2 |    7.9 |    90 | 0.002
+b910_rp5_replan  GridBased     |  114 ·  2.92 |    9.1 ·    9.1 |   11.9 |    90 | 0.002
+b910_rp1_replan  Smac_R10_C30_A10_RS |   41 ·  2.87 |   13.6 ·   13.7 |   12.3 |    32 | 0.005
+b910_rp2_replan  Smac_R10_C30_A10_RS |   43 ·  3.09 |   14.4 ·   14.6 |    1.6 |    34 | 0.006
+b910_rp5_full    Smac_R10_C30_A10_RS |   94 ·  6.77 |   11.4 ·   11.5 |   17.8 |   140 | 0.019
+b910_rp5_replan  Smac_R10_C30_A10_RS |   41 ·  2.89 |   12.3 ·   12.4 |   16.3 |    32 | 0.006
+west_rp3_g4      Smac_R10_C30_A10_RS | 실패
+west_rp3_g5      Smac_R10_C30_A10_RS | 실패</pre><p class="note">결과 원문 <span class="mono">Docs/debug_log/2026-10-26/outputs/planner_offline/sep/anal_all.txt</span> · 스크립트 원문 <span class="mono">Docs/tools/plan_offline/anal_plan_compare.py</span>(커밋 21fbe269) · <span class="mono">Docs/tools/plan_offline/run_variants.sh</span>(커밋 c5df6dad). 표의 'Hybrid RS cp 3.0 해석 1.0 m' = 변형 이름 <span class="mono">Smac_R10_C30_A10_RS</span>. 평균 차 · 나빠진 장면 수는 이 표에서 셈</p>
 </section>
 
 <section>
   <h2>Smac 실주행과 MPPI 굽은 곳 깎기<span class="sec">§7 · §9 · §10 · §11</span></h2>
   <p>Smac 경로는 상자에서 멀어졌지만, 로버는 굽은 곳에서 받은 경로보다 상자 쪽으로 파고들었습니다. 컨트롤러 자기 좌표(odom)에서 재도 +15.7 cm 였고 위치 보정 몫은 5 cm 이하라, MPPI 가 경로 안쪽을 깎은 것입니다. 오프라인 시뮬이 처음엔 이것을 재현하지 못했는데, 실제 로버는 바깥 바퀴가 펌웨어 한계 0.085 m/s 에 걸려 두 바퀴가 같은 비율로 느려지고 있었습니다(시뮬 구동계 정정 뒤 재현).</p>
+  <p>바깥 바퀴 포화(위 문단)의 근거 — 명령 대 실제 움직임 0.5 s 평균과 펌웨어 축소 식:</p><pre class="code"># 2026-10-26/jobs/chk_cmd_vs_motion_f2sh2.py — /cmd_vel 대 /wheel_odom · /odometry/filtered · /vslam/odom · 자이로(base_link), 0.5 s 평균
+# firmware/rover_jupiter_fw/App/microros/microros_task.c cmdvel_callback
+float v_l = v_lin - w_ang * HALF_WHEEL_BASE;
+float v_r = v_lin + w_ang * HALF_WHEEL_BASE;
+/* 회전 명령으로 한쪽이 최대 초과 시 둘 다 비례 스케일 다운 — 회전 방향 보존. */
+float peak = fmaxf(fabsf(v_l), fabsf(v_r));
+if (peak &gt; V_MAX_MPS) { const float scale = V_MAX_MPS / peak; v_l *= scale; v_r *= scale; }
+# firmware/rover_jupiter_fw/App/app/rover_platform.h:82
+#define MAX_LINEAR_SPEED_MPS      0.085f</pre><pre class="code"> 시각     | 명령 v   ω    | 휠 v   ω     | EKF v  vy   ω   | vslam vx vy | 자이로 ω | ω 실제/명령
+ 13:18:24.0 | +0.080 +0.192 | +0.058 +0.118 | +0.060 -0.001 +0.134 | +0.060 -0.005 | +0.131 | 0.68
+ 13:18:24.5 | +0.080 +0.196 | +0.056 +0.128 | +0.055 +0.001 +0.121 | +0.056 +0.002 | +0.118 | 0.60
+ 13:18:25.0 | +0.080 +0.170 | +0.058 +0.120 | +0.055 +0.002 +0.112 | +0.054 +0.004 | +0.113 | 0.66
+ 13:18:26.0 | +0.084 +0.170 | +0.061 +0.106 | +0.062 -0.000 +0.076 | +0.063 +0.000 | +0.076 | 0.45
+ 13:18:27.0 | +0.081 +0.197 | +0.056 +0.131 | +0.055 +0.000 +0.108 | +0.054 -0.000 | +0.109 | 0.55</pre><p class="note">결과 원문 <span class="mono">Docs/debug_log/2026-10-26/outputs/drives/f2sh2/chk_cmd_vs_motion_f2sh2.txt</span> · 스크립트 원문 <span class="mono">Docs/debug_log/2026-10-26/jobs/chk_cmd_vs_motion_f2sh2.py</span> · 펌웨어 <span class="mono">firmware/rover_jupiter_fw/App/microros/microros_task.c</span> · <span class="mono">App/app/rover_platform.h</span>. 바깥 바퀴 = 휠 v + ω × 0.2215 ≈ 0.058 + 0.125 × 0.2215 ≈ 0.086 m/s 는 이 표에서 계산(SUMMARY §10.2). microros_task.c 의 V_MAX_MPS 옆 주석 '0.100' 은 옛 값이고 실제 정의는 rover_platform.h 의 0.085</p>
   <div class="tbl"><table>
     <tr><th>주행</th><th>MPPI PathAlign · PathFollow</th><th>상자 옆 실제 최소(복귀)</th><th>굽은 곳 안쪽 이탈 최대</th><th>1 s 넘는 정지</th><th>총 시간</th></tr>
     <tr><td>f2sh1</td><td>14 · 10</td><td class="n">18.4 cm</td><td class="n">+10.7 cm</td><td class="n">0</td><td class="n">205.8 s</td></tr>
@@ -42,8 +76,31 @@
     <tr class="hl"><td>f2sa1</td><td>28 · 5</td><td class="n">14.6 cm</td><td class="n">+4.6 cm</td><td class="n">0</td><td class="n">205.8 s</td></tr>
     <tr class="hl"><td>f2sa2</td><td>28 · 5</td><td class="n">14.9 cm</td><td class="n">+1.6 cm</td><td class="n">0</td><td class="n">199.1 s</td></tr>
   </table></div>
+  <p>상자 옆 실제 최소(표 3 열)와 굽은 곳 안쪽 이탈(표 4 열)을 낸 두 도구의 판정 부분과 출력:</p><pre class="code"># 2026-10-22/jobs/anal_contact.py — map 기준 차체 사각형 ↔ 기록 상자 사각형 거리, 0 이하 = 겹침
+BOX = (1.151, 1.261, -0.20, -0.02)
+FP = np.array([[0.262, 0.165], [0.262, -0.165], [-0.248, -0.165], [-0.248, 0.165]])
+p = comp(at(MO, MOt, tt)[1], ob); ... poly = 차체 네 꼭짓점(map)
+d = min(seg_rect(poly[i], poly[(i + 1) % 4]) for i in range(4))
+if d &lt; 1e-6 and inside_any(poly): d = -0.01
+# 2026-10-26/jobs/anal_bend_dev_odom.py — odom 좌표 로버 ↔ /transformed_global_plan 옆 거리, 경로가 휘는 쪽(±0.5 m 방향 변화 ≥ 15°)을 +
+return float(&#x27;nan&#x27;) if abs(turn) &lt; math.radians(15) else d * side * np.sign(turn)</pre><pre class="code"># anal_contact_&lt;주행&gt;_d30.txt — 복귀(둘째 구간) 줄
+f2sh1  12:50:15.76~12:50:33.56 (t 187.9~205.7 s) 최소 +0.184 m @ 12:50:26.36 t 198.5 · 로버 (1.06, 0.32, -172°)
+f2sh2  13:18:29.43~13:18:49.90 (t 184.1~204.6 s) 최소 +0.108 m @ 13:18:32.90 t 187.6 · 로버 (1.63, 0.09, 152°)
+f2sa1  15:14:40.72~15:14:59.68 (t 190.1~209.1 s) 최소 +0.146 m @ 15:14:53.11 t 202.5 · 로버 (1.05, 0.30, -181°)
+f2sa2  15:36:47.61~15:37:06.48 (t 182.4~201.3 s) 최소 +0.149 m @ 15:36:54.61 t 189.4 · 로버 (1.42, 0.27, 172°)
+# anal_bend_dev_odom_*.txt
+f2sh1 · 복귀 상자 둘레 12:49:55~12:50:34 · 굽은 곳 안쪽 이탈(odom) 최대 +10.7 cm @ 12:50:11 · 95 % +10.3 · 중앙 +1.3 cm · 같은 창 map→odom 변화 x 4.9 · y 3.6 cm
+f2sh2 · 복귀 상자 둘레 13:18:16~13:18:50 · 굽은 곳 안쪽 이탈(odom) 최대 +15.7 cm @ 13:18:30 · 95 % +15.4 · 중앙 +9.0 cm · 같은 창 map→odom 변화 x 5.8 · y 5.4 cm
+f2sa1 · 복귀 상자 둘레 15:14:26~15:15:00 · 굽은 곳 안쪽 이탈(odom) 최대 +4.6 cm @ 15:14:40 · 95 % +4.3 · 중앙 +0.9 cm · 같은 창 map→odom 변화 x 7.0 · y 5.6 cm
+f2sa2 · 복귀 상자 둘레 15:36:31~15:37:07 · 굽은 곳 안쪽 이탈(odom) 최대 +1.6 cm @ 15:36:47 · 95 % +0.9 · 중앙 -0.5 cm · 같은 창 map→odom 변화 x 5.0 · y 4.8 cm</pre><p class="note">결과 원문 <span class="mono">Docs/debug_log/2026-10-26/outputs/drives/&lt;주행&gt;/anal_contact_&lt;주행&gt;_d30.txt</span> · <span class="mono">Docs/debug_log/2026-10-26/outputs/drives/f2sa1/anal_bend_dev_odom_sa1.txt</span>(f2sh1 · f2sh2 · f2sa1 줄) · <span class="mono">Docs/debug_log/2026-10-26/outputs/drives/f2sa2/anal_bend_dev_odom_sa2.txt</span> · 스크립트 원문 <span class="mono">Docs/debug_log/2026-10-22/jobs/anal_contact.py</span>(커밋 54efa089) · <span class="mono">Docs/debug_log/2026-10-26/jobs/anal_bend_dev_odom.py</span>. 입력 <span class="mono">Docs/debug_log/2026-10-26/bags/bag_&lt;주행&gt;.tgz</span>(git 제외) /tf · /transformed_global_plan. 1 s 넘는 정지 · 총 시간은 같은 폴더 <span class="mono">anal_stops_&lt;주행&gt;.txt</span> · <span class="mono">run_&lt;주행&gt;.txt</span></p>
   <figure><img src="{{img:box}}" alt="B0 와 Smac 주행의 상자 옆 궤적 비교"><figcaption>복귀 길 상자(빨강) 옆. 왼쪽 B0(NavFn), 오른쪽 Smac 4 주행. 실선 = 지나간 길, 점선 = 가장 가까운 순간에 따르던 전역 경로, 칠한 차체 = 상자와 가장 가까운 순간. f2sh2 는 상자 동쪽 대각선에서 경로 안쪽으로 깎았고, 28 · 5 두 주행은 경로 바깥 호를 따랐습니다. 도구 <span class="mono">jobs/fig_box_compare.py</span>.</figcaption></figure>
   <p class="note">시뮬(씨앗 10)에서 28 · 5 는 깎기 최악 19.8 → 11.2 cm 였지만 평균 차는 표준오차 안이라 '구분 불가' 로 기록했고, 실주행 A/B 2 회로 판단했습니다(<span class="mono">outputs/mppi_sim/sim_corner_1026d_summary.txt</span>). 28 · 5 주행의 멈칫은 W3 돌아서기와 TF 중단뿐, 10-23 f2pa2 같은 '이유 없는' 정지는 없었습니다(§13).</p>
+  <pre class="code"># 2026-10-26/jobs/anal_sim_corner_summary.py — 씨앗 10 판의 안쪽 최대 평균 · 표준편차 · 최악, base 대비 평균 차 / 표준오차
+se = np.sqrt(x.var(ddof=1) / len(x) + b.var(ddof=1) / len(b))
+... 100 * x.mean(), 100 * x.std(ddof=1), 100 * x.max(), ..., 100 * (x.mean() - b.mean()), 100 * se</pre><pre class="code">변형 | n | 안쪽 최대 평균 ± 표준편차 · 최악 (cm) | 95% 평균 | 중앙 평균 | 정지 합 s | 평균 속도 | 실패 | base 대비 평균 차 / 표준오차
+base    | 10 |   7.9 ±  5.2 ·  19.8 |   6.9 |   3.7 | 0.0 | 0.079 | 0 |  +0.0 / 2.3
+A28     | 10 |   6.1 ±  3.9 ·  15.7 |   5.0 |   2.3 | 0.0 | 0.079 | 0 |  -1.8 / 2.1
+A28Fw5  | 10 |   5.5 ±  2.1 ·  11.2 |   4.6 |   1.9 | 0.0 | 0.080 | 0 |  -2.4 / 1.8</pre><p class="note">결과 원문 <span class="mono">Docs/debug_log/2026-10-26/outputs/mppi_sim/sim_corner_1026d_summary.txt</span> · 스크립트 원문 <span class="mono">Docs/debug_log/2026-10-26/jobs/anal_sim_corner_summary.py</span>(시뮬 본체 <span class="mono">Docs/tools/anal_mppi_sim.py</span>). 차 −2.4 가 표준오차 1.8 보다 크지 않아(1.3 배) '구분 불가' 로 읽었다</p>
 </section>
 
 <section>
@@ -58,14 +115,61 @@
   </table></div>
   <figure><img src="{{img:corr}}" alt="실제 촬영과 RViz 스타일 시각화 합본의 한 장면"><figcaption>16:12:17 — 왼쪽 실제 촬영, 오른쪽 RViz 스타일 시각화(초록 = BT 경로 · 차체, 노랑 = 로컬 치명, 빨간 점 = 라이다). 로버가 빨간 쇼핑백과 날개가 열린 상자 사이에 비스듬히 끼어 있습니다. 합본 영상 <span class="mono">videos/f2sa3_real_rviz_corridor_hd_x2.mp4</span>(git 제외), 도구 <span class="mono">Docs/tools/fig_rviz_video.py</span>.</figcaption></figure>
   <p>읽기(추정, 각 1 회): 상자 구간(Smac 경로)에선 경로를 바짝 따르는 것이 이득이었고, 통로(벽 쪽으로 붙는 NavFn 경로)에선 같은 가중치가 MPPI 가 가운데로 비켜 갈 여지를 줄였습니다.</p>
+  <pre class="code"># 2026-10-15/jobs/anal_band_run.py — 차체(패딩 포함 XF 0.272 · XR −0.258 · HW 0.175) ↔ 로컬 치명(≥ 100) 칸 중심 최소 거리
+iy, ix = np.nonzero(a &gt;= 100)
+d = np.hypot(np.maximum(np.maximum(XR - bx, bx - XF), 0), np.maximum(np.abs(by) - HW, 0)); k = int(np.argmin(d))
+# 2026-10-26/jobs/anal_corridor_track.py — 통로(map x −2.3~−0.9, y −5.7~−3.4) 안 틱의 |로버 ↔ 컨트롤러 경로| 중앙 · 95 %
+print(&#x27;... |경로 이탈| 중앙 %.1f · 95 %% %.1f cm ...&#x27; % (..., 100 * np.median(E), 100 * np.percentile(E, 95), ...))
+# 2026-10-21/jobs/anal_stops.py — EKF |v| &lt; 0.01 m/s 이고 |ω| &lt; 0.05 rad/s 가 MIN_STOP(1.0 s) 넘게
+mv = (np.abs(OD[:, 1]) &gt;= 0.01) | (np.abs(OD[:, 2]) &gt;= 0.05)</pre><pre class="code"># anal_band_run_f2sa3.txt
+  최소 정확 여유 0.8 cm · 16:12:15.7 · 자세 odom (-1.438, -4.672, -57.0°) · 칸 몸체 (-0.266, -0.049) · 그때 fp 99
+# anal_corridor_track.txt
+f2rp4_B0_14x10 · 통로 안 347 틱 · |경로 이탈| 중앙 4.1 · 95 % 13.9 cm · 로버 중심 로컬 비용 중앙 71 · 95 % 80 · ≥ 99 비율 0 %
+f2sa3_28x5 · 통로 안 488 틱 · |경로 이탈| 중앙 1.0 · 95 % 10.4 cm · 로버 중심 로컬 비용 중앙 71 · 95 % 80 · ≥ 99 비율 0 %
+# anal_corridor_gap.txt (f2sa3)
+  y -4.7: 치명 사이 0.50 m (x -1.85 ~ -1.30) · 99 미만 폭 0.20 m · 가운데 칸 값 96
+  y -4.8: 치명 사이 0.50 m (x -1.80 ~ -1.25) · 99 미만 폭 -0.05 m · 가운데 칸 값 99
+# anal_stops_f2sa3.txt
+주행 16:09:41 ~ 16:17:09 (448.1 s) · 멈춤(1.0 s 넘게 정지) 5 번 · 합 15.3 s</pre><p class="note">결과 원문 <span class="mono">Docs/debug_log/2026-10-26/outputs/drives/f2sa3/anal_band_run_f2sa3.txt</span> · <span class="mono">anal_corridor_track.txt</span> · <span class="mono">anal_corridor_gap.txt</span> · <span class="mono">anal_stops_f2sa3.txt</span>(모두 같은 폴더) · 스크립트 원문 <span class="mono">Docs/debug_log/2026-10-15/jobs/anal_band_run.py</span>(커밋 ffa806e7) · <span class="mono">Docs/debug_log/2026-10-26/jobs/anal_corridor_track.py</span> · <span class="mono">Docs/debug_log/2026-10-26/jobs/anal_corridor_gap.py</span> · <span class="mono">Docs/debug_log/2026-10-21/jobs/anal_stops.py</span>(커밋 30581757). B0 f2rp4 통로 여유 2.9 cm 는 10-23 기록 값</p>
 </section>
 
 <section>
   <h2>통로에서 Smac 은 왜 실패했나<span class="sec">§19 · §20</span></h2>
   <p>영상에서는 두 계획기가 모두 통로를 지나는 경로를 낸 것처럼 보였습니다. 경로 메시지를 점 간격으로 나눠 보니(NavFn 0.025 m, Smac 0.07 m) 16:13:08 전까지 통로의 초록 선은 전부 NavFn 이었고, 16:13:08 에는 Smac 도 가장 좁은 곳을 지나는 경로를 냈습니다. 통로 자체가 Smac 에게 불가능한 것은 아닙니다.</p>
+  <pre class="code"># 2026-10-26/jobs/chk_corr_paths.py — 통로 창의 /plan · /plan_smoothed 메시지마다 점 수 · 점 간격 중앙(출처 판별: NavFn 0.025, Smac ≈ 0.07)
+P = np.array([[p.pose.position.x, p.pose.position.y] for p in m.poses]); d = np.hypot(*np.diff(P, axis=0).T)
+print(&#x27;... 점 %4d 간격 %.3f 길이 %.2f ...&#x27; % (..., len(P), np.median(d), d.sum(), ...))</pre><pre class="code">16:12:35.22 /plan           점   67 간격 0.025 길이 1.80  (-1.54,-5.41)-&gt;(-1.65,-3.70)
+16:12:59.58 /plan           점   64 간격 0.025 길이 1.63  (-1.49,-5.26)-&gt;(-1.70,-3.70)
+16:13:08.65 /plan           점   18 간격 0.074 길이 1.26  (-1.51,-4.94)-&gt;(-1.66,-3.68)
+16:13:24.97 /plan           점   26 간격 0.072 길이 1.76  (-1.66,-3.83)-&gt;(-1.61,-2.08)</pre><p class="note">결과 원문 <span class="mono">Docs/debug_log/2026-10-26/outputs/drives/f2sa3/chk_corr_paths.txt</span> · 스크립트 원문 <span class="mono">Docs/debug_log/2026-10-26/jobs/chk_corr_paths.py</span>. 입력 <span class="mono">Docs/debug_log/2026-10-26/bags/bag_f2sa3.tgz</span>(git 제외)</p>
   <p>그래서 Smac 에 물은 6 순간(실패 5 · 성공 1)을 오프라인으로 꺼내, 목표 방향만 13 가지로 바꿔 실주행과 같은 설정(시간 상한 2.0 s)으로 물었습니다. 원래 방향의 결과는 실주행과 6/6 같았습니다.</p>
   <figure><img src="{{img:yaw}}" alt="순간별 목표 방향 시험 결과 격자"><figcaption>행 = Smac 에 물은 순간과 그때 로버 자세, 열 = 목표 방향 더하기. 초록 = 성공, 빨강 = 실패. 칸 숫자는 §19 에서 쓴 내 지표(목표 자세 차체 아래 치명 칸 수)로, 결과와 무관했습니다. 원문 <span class="mono">outputs/planner_offline/goal_yaw/anal_goal_yaw.txt</span>.</figcaption></figure>
   <p>실패 순간은 모든 방향에서 실패, 성공 순간은 모든 방향에서 성공했습니다. 실패는 모두 시간 상한 전에 났고, 세 순간은 0.01~0.05 s 만에 실패했습니다. 시간이 모자란 것이 아니라 탐색할 칸이 바닥난 모양입니다. 남은 후보는 출발 자세(통로 안 · 남쪽 끝에서 출발하면 첫 원호를 못 뻗음, 추정)와 그 순간의 지도입니다.</p>
+  <pre class="code"># 2026-10-26/jobs/anal_goal_yaw.py — 순간 × 목표 방향 13 가지, Smac(Smac_R10_C30_A10_RS, 시간 상한 2.0 s) 성공 여부와 목표 차체 아래 치명 칸 수
+LIVE = {&#x27;115653&#x27;: &#x27;실패&#x27;, &#x27;121553&#x27;: &#x27;실패&#x27;, &#x27;122202&#x27;: &#x27;실패&#x27;, &#x27;123521&#x27;: &#x27;실패&#x27;, &#x27;125954&#x27;: &#x27;실패&#x27;, &#x27;130865&#x27;: &#x27;성공&#x27;}
+print(&#x27;① 재현(+0): &#x27; + ...)        # 원래 방향 오프라인 결과 = 실주행 결과인가
+print(&#x27;② (a) 목표 치명 &gt; 0 인데 Smac 성공: %d 건 %s&#x27; % (len(A_bad), A_bad[:10]))
+print(&#x27;   목표 치명 %s: Smac 성공 %d / %d&#x27; % (&#x27;&gt; 0&#x27; if blocked else &#x27;= 0&#x27;, sum(sel), len(sel)))</pre><pre class="code">== 판정
+① 재현(+0): 115653 실주행 실패 / 오프라인 실패 · 121553 실주행 실패 / 오프라인 실패 · 122202 실주행 실패 / 오프라인 실패 · 123521 실주행 실패 / 오프라인 실패 · 125954 실주행 실패 / 오프라인 실패 · 130865 실주행 성공 / 오프라인 성공
+② (a) 목표 치명 &gt; 0 인데 Smac 성공: 6 건 [(&#x27;130865&#x27;, -45, 5), (&#x27;130865&#x27;, -60, 3), (&#x27;130865&#x27;, 60, 3), (&#x27;130865&#x27;, -90, 2), (&#x27;130865&#x27;, 90, 2), (&#x27;130865&#x27;, 135, 2)]
+   123521: 목표 치명 0 방향 [0, -15, 15, -30, 30, 45, 180] · 그중 Smac 성공 []
+   목표 치명 &gt; 0: Smac 성공 6 / 61
+   목표 치명 = 0: Smac 성공 7 / 17</pre><p class="note">결과 원문 <span class="mono">Docs/debug_log/2026-10-26/outputs/planner_offline/goal_yaw/anal_goal_yaw.txt</span>(실패까지 왕복 시간은 <span class="mono">run_goal_yaw.txt</span> 의 '왕복 … s') · 스크립트 원문 <span class="mono">Docs/debug_log/2026-10-26/jobs/anal_goal_yaw.py</span> · 실행 <span class="mono">Docs/debug_log/2026-10-26/jobs/run_goal_yaw_1026.sh</span>. 순간 이름 = 분 · 초 숫자(121553 = 16:12:15.53 순간 등). 7/17 의 7 은 성공 순간의 치명 0 방향, 실패 순간의 치명 0 방향 10 개는 모두 실패</p>
+</section>
+
+<section>
+  <h2>바퀴 반전 순간 부호 오차<span class="sec">§2</span></h2>
+  <p>FG 펄스에는 방향이 없어 펌웨어가 '마지막 지령 부호' 를 붙입니다. 반전 순간 바퀴가 관성으로 옛 방향으로 더 돌면 그 거리가 반대로 세어집니다. 10-23 의 9 주행에서 그 크기를 쟀습니다(판정 카드 마지막 줄).</p>
+  <pre class="code"># 2026-10-26/jobs/anal_rev_sign.py — 바퀴별 v = v ∓ ω·B/2 (B 0.443), 기준 = /vslam/odom vx + 카메라 자이로를 /tf_static 으로 base_link 에 돌린 z
+HB = 0.443 / 2
+# 사건: 바퀴 지령이 |v| ≥ 0.01 m/s 에서 반대 부호로 바뀐 순간(사이 0 은 0.6 s 까지), 창 = −0.2 ~ +1.5 s
+if last_sign and sg != last_sign and t - last_t &lt;= 0.6: ev.append(i)
+both = (np.abs(whl[a:b]) &gt; 0.01) &amp; (np.abs(ref[a:b]) &gt; 0.01); mis = both &amp; (np.sign(whl[a:b]) != np.sign(ref[a:b]))
+# 부호 어긋남 시간 = 0.01 * mis.sum(),  어긋남 거리 = 0.01 * |휠 − 기준| 의 mis 구간 합</pre><pre class="code">9 주행 합계(10-23 f2pa1~f2rp5): 바퀴 반전 159 번
+부호 어긋남 거리 중앙 0.0 · 95% 1.2 · 최대 3.1 mm, 어긋남 시간 최대 0.11 s
+반전 앞뒤 지령 바퀴 속도(큰 쪽) 중앙 0.019 · 최대 0.091 m/s
+반전 창(−0.2~+1.5 s) |∫(휠−기준)| 중앙 3.8 · 95% 18.6 mm (반전 없는 창 중앙 2.5~3.8 mm)</pre>
+  <p class="note">결과 원문 <span class="mono">Docs/debug_log/2026-10-26/outputs/rev_sign/anal_rev_sign_summary.txt</span> · 주행별 <span class="mono">Docs/debug_log/2026-10-26/outputs/rev_sign/anal_rev_sign.txt</span> · 스크립트 원문 <span class="mono">Docs/debug_log/2026-10-26/jobs/anal_rev_sign.py</span>(커밋 ed510a90). 입력 <span class="mono">Docs/debug_log/2026-10-23/bags/</span> 9 주행 bag(git 제외). 무효 판 <span class="mono">anal_rev_sign_v1_imuaxis.txt</span> · <span class="mono">anal_rev_sign_v2_ekfyaw.txt</span> 은 같은 폴더</p>
 </section>
 
 <section>
@@ -79,6 +183,16 @@
       <span class="k">처음 추론</span><span>1.1.20 의 해석 확장이 비용을 무시해서(§3.1 · §4), 다음엔 후처리 smoother 때문(§6.1)이라고 봄.</span>
       <span class="k">의심한 이유</span><span>같은 설정 · 같은 장면인데 '함께 올린 다른 변형' 에 따라 결과가 바뀜. 같은 구성 재실행은 결정적이었으니 무작위도 아님.</span>
       <span class="k">판별</span><span>소스: <span class="mono">node_hybrid.hpp:446</span> 의 <span class="mono">static HybridMotionTable motion_table</span>, Lattice 도 <span class="mono">node_lattice.hpp:417</span> static, 초기화는 <span class="mono">a_star.cpp:115</span> 에서 지도 크기가 바뀔 때만. 변형마다 프로세스를 따로 띄우는 <span class="mono">Docs/tools/plan_offline/run_variants.sh</span> 로 다시 잼(<span class="mono">planner_offline/sep/</span>).</span>
+      <span class="k">스크립트 핵심</span><span><pre class="code"># Docs/tools/plan_offline/run_variants.sh 머리 — 판별 뒤 만든 도구
+#   nav2_smac_planner 1.1.20 의 NodeHybrid · NodeLattice 는 motion_table(cost_penalty · 회전반경 · 운동 모델) · 휴리스틱 표가
+#   static 이라 한 프로세스에 Smac 플러그인을 여럿 올리면 서로 설정을 덮음(src/a_star.cpp:115 은 지도 크기가 바뀔 때만 다시 초기화).
+for v in &quot;$@&quot;; do  # 변형마다 planner_server 하나 = GridBased + 그 변형 하나만
+  ... run_jn.sh up_planoff_v.sh GridBased,$v ...</pre></span>
+      <span class="k">나온 결과</span><span><pre class="code"># 같은 설정 Smac_R10_C30_A10_RS, 같은 장면 b910_rp2_replan — 함께 올린 변형만 다름(상자 여유 차체 · 중심 cm)
+hyb/anal_rs.txt    Smac_R10_C30_A10_RS    |   43 ·  3.09 |   14.4 ·   14.6 | ...
+cause/anal_ns.txt  Smac_R10_C30_A10_RS    |   45 ·  3.15 |    8.6 ·    9.8 | ...
+cause/anal_ns.txt  Smac_R10_C12_A10_RS    |   45 ·  3.15 |    8.6 ·    9.8 | ...   ← cost_penalty 1.2 와 3.0 이 같은 경로
+sep/anal_all.txt   Smac_R10_C30_A10_RS    |   43 ·  3.09 |   14.4 ·   14.6 | ...   ← 단독 프로세스</pre><span class="note">결과 원문 <span class="mono">Docs/debug_log/2026-10-26/outputs/planner_offline/hyb/anal_rs.txt</span> · <span class="mono">cause/anal_ns.txt</span> · <span class="mono">sep/anal_all.txt</span>(같은 폴더 아래) · 스크립트 원문 <span class="mono">Docs/tools/plan_offline/run_variants.sh</span>(커밋 c5df6dad) · 표는 <span class="mono">anal_plan_compare.py</span>(커밋 21fbe269). static 선언 자체는 설치된 nav2_smac_planner 소스(저장소 밖) — 발췌 없음</span></span>
       <span class="k">결론</span><span>한 프로세스의 Smac 인스턴스들이 한 설정을 공유. 여러 변형을 한 서버에서 비교한 결과는 무효이고, 'cost_penalty 가 효과 없음 · 해석 확장 탓' 이라는 읽기도 근거 없음으로 되돌림. 실주행(Smac 하나)은 해당 없음.</span>
       <span class="k">알아보는 법</span><span>같은 프로세스에 같은 플러그인을 여럿 올리는 비교는 static 상태 공유부터 의심. 같은 설정의 결과가 이웃 변형에 따라 바뀌면 그 신호.</span>
     </div>
@@ -92,6 +206,18 @@
       <span class="k">처음 추론</span><span>목표 방향에 차체가 들어가지 않아서 실패했다(3/5).</span>
       <span class="k">의심한 이유</span><span>표본이 6 순간뿐이고, 내가 만든 칸 지표가 Smac 의 충돌 판정과 같은지 확인하지 않았음. 그보다 앞서 대화에서 "통로가 Smac 에게 불가능" 이라고 답한 것도 영상과 맞지 않았음(사용자 지적).</span>
       <span class="k">판별</span><span>같은 순간에서 목표 방향만 13 가지로 바꿔 질의(<span class="mono">jobs/run_goal_yaw_1026.sh</span> → <span class="mono">planner_offline/goal_yaw/</span>). 치명 칸이 있는 방향도 성공(성공 순간), 치명 0 인 방향도 실패(실패 순간).</span>
+      <span class="k">스크립트 핵심</span><span><pre class="code"># 2026-10-26/jobs/chk_smac_fail_cells.py — 차체(+패딩 0.01) 직사각형 안을 칸 절반 간격으로 표본, 100(치명) · 99(내접) 칸 수
+FP = (0.262 + 0.01, -0.248 - 0.01, 0.165 + 0.01)
+for u in np.arange(FP[1], FP[0] + 1e-9, r / 2):
+    for w in np.arange(-FP[2], FP[2] + 1e-9, r / 2):
+        vals.append(k(x + c * u - s * w, y + s * u + c * w))
+v = np.array(vals); return k(x, y), v.max(), int((v == 100).sum()), int((v == 99).sum())</pre></span>
+      <span class="k">나온 결과</span><span><pre class="code">16:11:56.85 실패        ... | 목표 (-1.60,-5.50,-100°) 중심  92 · 차체 최대  99 · 치명  0 · 내접 117 | 지도 3.3 s 전
+16:12:15.53 실패        ... | 목표 (-1.60,-5.50,-100°) 중심  99 · 차체 최대 100 · 치명 18 · 내접 137 | 지도 0.0 s 전
+16:12:22.02 실패        ... | 목표 (-1.60,-5.50,-100°) 중심  99 · 차체 최대 100 · 치명 22 · 내접 137 | 지도 1.5 s 전
+16:12:35.21 실패        ... | 목표 (-1.65,-3.70,  82°) 중심  76 · 차체 최대  99 · 치명  0 · 내접 40 | 지도 1.7 s 전
+16:12:59.54 실패(출발 치명) ... | 목표 (-1.65,-3.70,  82°) 중심  91 · 차체 최대 100 · 치명  2 · 내접 80 | 지도 0.0 s 전
+16:13:08.65 성공        ... | 목표 (-1.65,-3.70,  82°) 중심  76 · 차체 최대  99 · 치명  0 · 내접 26 | 지도 0.1 s 전</pre><span class="note">결과 원문 <span class="mono">Docs/debug_log/2026-10-26/outputs/drives/f2sa3/chk_smac_fail_cells.txt</span> · 스크립트 원문 <span class="mono">Docs/debug_log/2026-10-26/jobs/chk_smac_fail_cells.py</span>. 판별 결과는 위 '통로에서 Smac 은 왜 실패했나' 절의 <span class="mono">anal_goal_yaw.txt</span> 발췌</span></span>
       <span class="k">결론</span><span>내 칸 지표와 Smac 결과는 무관. 목표 방향 가설 기각. Smac 의 실제 충돌 판정 방식은 소스로 확인하지 않음(미확인).</span>
       <span class="k">알아보는 법</span><span>상관 하나로 원인을 말하기 전에 그 변수만 바꾸는 판별 시험을 먼저. 내가 만든 충돌 지표는 계획기 판정과 같은지 확인된 것만 원인 설명에 씀.</span>
     </div>
@@ -101,6 +227,14 @@
     <h3>그 밖의 정정(같은 순서로 짧게)</h3>
     <div class="flow">
       <span class="k">§1.1 · §7.2</span><span><b>본 것</b> D5 다섯 판 모두 재구성 일치 1.0000 인데 NavFn 실패 다수, 아침 prep 은 노드가 하나도 안 뜸 → <b>판별</b> 실행 원문의 <span class="mono">$'\r': command not found</span>, 주말 체크아웃으로 스크립트가 CRLF, 해시도 CRLF 사본끼리 비교 → <b>결론</b> planner_server 20 개가 쌓여 첫 D5 결과 무효(<span class="mono">planner_offline/d5/invalid_crlf/</span>) → <b>알아보기</b> Jetson 으로 보내는 텍스트는 항상 <span class="mono">tr -d '\r'</span>, 해시는 <span class="mono">git show HEAD:</span> 기준.</span>
+      <span class="k">§1.1 스크립트 핵심</span><span><pre class="code"># Docs/tools/plan_offline/up_bundle.sh — 고친 뒤: 텍스트 파일은 CR 을 빼고 담음
+echo &quot;base64 -d &gt; /tmp/planoff/planner_offline.yaml &lt;&lt;&#x27;B64&#x27;&quot;; tr -d &#x27;\r&#x27; &lt; &quot;$1&quot; | base64 -w0; echo; echo B64
+for f in query_planners.py run_planner_offline.sh; do ... tr -d &#x27;\r&#x27; &lt; &quot;$H/$f&quot; | base64 -w0; ... done</pre></span>
+      <span class="k">§1.1 나온 결과</span><span><pre class="code"># 고치기 전 실행 원문(무효 판)
+/tmp/planoff/run_planner_offline.sh: line 6: /opt/ros/humble/setup.bash: No such file or directory
+/tmp/planoff/run_planner_offline.sh: line 8: $&#x27;\r&#x27;: command not found
+/tmp/planoff/run_planner_offline.sh: line 9: $&#x27;\r&#x27;: command not found
+sleep: invalid time interval ‘6\r’</pre><span class="note">결과 원문 <span class="mono">Docs/debug_log/2026-10-26/outputs/planner_offline/d5/invalid_crlf/run_r0.70_k0.5.txt</span> · 스크립트 원문 <span class="mono">Docs/tools/plan_offline/up_bundle.sh</span>(CR 제거는 커밋 ed510a90 에서 넣음, 지금 판은 f63e2bda)</span></span>
       <span class="k">§2</span><span><b>본 것</b> 교차상관 지연이 탐색 끝 +480~500 ms 에 붙음 → <b>판별</b> 기준 회전이 카메라 IMU 축 그대로(v1), 다음엔 휠을 융합한 EKF yaw(v2) → <b>결론</b> IMU 를 tf_static 으로 base_link 에 돌려 씀(<span class="mono">outputs/rev_sign/</span>) → <b>알아보기</b> 지연이 탐색 끝에 붙으면 축 · 좌표부터, 기준 신호가 비교 대상을 융합했는지 설정에서 확인.</span>
       <span class="k">§4.2</span><span>REEDS_SHEPP 서버가 조회표 계산으로 30 s 넘게 기동해 질의가 빈손, 결과 파일은 앞 실행 것을 읽음 → 대기 180 s(<span class="mono">planner_offline/hyb/invalid_wait30/</span>). 결과 표의 계획기 이름이 요청과 같은지 먼저 본다.</span>
       <span class="k">§10.2</span><span>시뮬 구동계 <span class="mono">w_gain 0.7</span>(회전만 줄임)이 곡률을 바꿔 깎기를 가림 → 실제 로그로 바깥 바퀴 포화(0.086 m/s)를 확인하고 펌웨어와 같은 비례 축소 <span class="mono">wheel_max</span> 로(<span class="mono">outputs/drives/f2sh2/chk_cmd_vs_motion_f2sh2.txt</span>).</span>

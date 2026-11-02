@@ -69,13 +69,17 @@ body.boost img.ir{filter:brightness(2.6)}
 .flow p{margin:0;max-width:72ch}
 @media (max-width:520px){.flow div{grid-template-columns:1fr;gap:2px}}
 code{font:.85em var(--mono)}
-.src{color:var(--mute);font-size:.8rem}
+.src{color:var(--mute);font-size:.8rem}.code{margin:0;font-family:var(--mono);font-size:12.5px;line-height:1.5;background:var(--bg);border:1px solid var(--rule);padding:8px 10px;overflow-x:auto;white-space:pre;max-width:100%}
+.ev{display:grid;gap:6px;min-width:0;margin-top:10px}
+.mono{font-family:var(--mono);font-size:.86em}
+.flow div p{min-width:0}
+
 </style>
 <div class="wrap">
 <header>
   <p class="eyebrow">2026-10-21 · SUMMARY §19.2–19.3 · 시험 mx2 · 로버 정지</p>
   <h1>프로젝터 번갈이 중 노출 · 게인을 고정하면 끈 IR 이 살아나는가</h1>
-  <p class="lede">D455f 프로젝터를 30 fps 로 켰다 끄며(번갈이), 켠 프레임은 깊이(nvblox)에 끈 프레임은 IR 영상(cuVSLAM)에 쓰는 구성입니다. 자동 노출은 켠 프레임에 맞춰져 끈 IR 이 어둡습니다. 노출 · 게인을 카메라 기동 때 고정해 네 가지 값을 재고, 지금 운용 방식(프로젝터 상시 끔)과 비교했습니다. 장치: 드라이버 realsense-ros 4.51.1 · librealsense 2.55.1 · 펌웨어 5.15.0.2. 설정마다 6 초, 같은 자세.</p>
+  <p class="lede">D455f 프로젝터를 30 fps 로 켰다 끄며(번갈이), 켠 프레임은 깊이(nvblox)에 끈 프레임은 IR 영상(cuVSLAM)에 쓰는 구성입니다. 자동 노출은 켠 프레임에 맞춰져 끈 IR 이 어둡습니다. 노출 · 게인을 카메라 기동 때 고정해 네 가지 값을 재고, 지금 운용 방식(프로젝터 상시 끔)과 비교했습니다. 장치: 드라이버 realsense-ros 4.51.1 · librealsense 2.55.1 · 펌웨어 5.15.0.2. 설정마다 6 초, 같은 자세. 2026-11-02 에 각 판정 옆에 그 수치를 낸 스크립트의 핵심 부분과 실제로 나온 결과(원문 발췌)를 붙이고, 둘 다 저장소의 원문 파일 경로를 달았습니다.</p>
 </header>
 
 <section class="verdict" aria-label="판정">
@@ -92,6 +96,33 @@ code{font:.85em var(--mono)}
     <tbody><tr><th scope="row">자동 노출<small>지금 NVIDIA 기본 · 노출 32.0 ms · 게인 16</small></th><td>0.668</td><td>0.531</td><td>17.9</td><td>1</td><td>205</td><td>0.65</td><td>0</td></tr><tr class="hl"><th scope="row">A 24 ms × 248<small>수동 고정 · 기동 파라미터</small></th><td>0.533</td><td>0.312</td><td>39.9</td><td>27</td><td>378</td><td>3.38</td><td>0</td></tr><tr><th scope="row">B 28 ms × 248<small>수동 고정 · 기동 파라미터</small></th><td>0.529</td><td>0.308</td><td>44.2</td><td>92</td><td>693</td><td>3.77</td><td>74</td></tr><tr><th scope="row">C 32 ms × 248<small>수동 고정 · 기동 파라미터</small></th><td>0.526</td><td>0.306</td><td>47.6</td><td>233</td><td>1014</td><td>4.15</td><td>209</td></tr><tr><th scope="row">D 32 ms × 128<small>수동 고정 · 기동 파라미터</small></th><td>0.562</td><td>0.346</td><td>32.5</td><td>221</td><td>498</td><td>2.74</td><td>221</td></tr><tr><th scope="row">대조 · 상시 끔<small>지금 운용 방식 · 자동 노출 32.0 ms · 게인 246</small></th><td>0.193</td><td>0.141</td><td>46.0</td><td>46</td><td>564</td><td>3.70</td><td>0</td></tr></tbody>
   </table></div>
   <p class="src">깊이 유효 = 0 이 아닌 화소 비율(중앙값). 밝기 · FAST · 라플라시안은 끈 IR1 프레임 중앙값. 점 새어 듦 = 저장된 끈 IR 한 장의 흰 점 수(top-hat 5×5 &gt; 20) — 설정당 한 장이라 참고값. 대조 행은 번갈이가 없어 "켠 깊이" 가 곧 상시 끔 깊이. 원문 <code>outputs/run_mx2.txt</code> · <code>anal_mx2_leak.txt</code>.</p>
+  <div class="ev"><p class="src"><b>스크립트 핵심 · 나온 결과</b> — 설정마다 카메라를 기동 파라미터로 다시 띄우고 6 초 동안 메타 모드별로 깊이 유효 · 끈 IR 지표 · 실제 노출 · 게인의 중앙값을 냅니다. 표의 각 행이 아래 줄들이고, '드라이버 오류 0건' 과 메타 노출 · 게인 = 요청값이 '설정 수락' 판정의 근거입니다.</p>
+<pre class="code">def lap(a):
+    a = a.astype(np.int16); return float(np.abs(4 * a[1:-1, 1:-1] - a[:-2, 1:-1] - a[2:, 1:-1] - a[1:-1, :-2] - a[1:-1, 2:]).mean())
+…
+        self.ir.append((ns(m.header), float(a.mean()), len(F20.detect(a)), len(F5.detect(a)), lap(a)))
+…
+    onk = max(keys, key=lambda k: np.median([x[0] for x in g[k][&#x27;d&#x27;]])) if keys else None
+…
+        print(&#x27;  모드 %s(%s): 깊이 n %d 유효 %.3f 아래 %.3f · IR n %d 밝기 %.1f FAST20 %.0f FAST5 %.0f |lap| %.2f · 노출 %s 게인 %s&#x27; % (
+            k, tag, len(d), np.median(d[:, 0]) if len(d) else -1, np.median(d[:, 1]) if len(d) else -1, len(i),
+            np.median(i[:, 0]) if len(i) else -1, np.median(i[:, 1]) if len(i) else -1, np.median(i[:, 2]) if len(i) else -1, np.median(i[:, 3]) if len(i) else -1,
+            int(np.median(ex)) if ex else &#x27;-&#x27;, int(np.median(ga)) if ga else &#x27;-&#x27;))</pre>
+<pre class="code">  모드 0(켬): 깊이 n 88 유효 0.668 아래 0.531 · IR n 90 밝기 27.9 FAST20 2388 FAST5 3116 |lap| 8.96 · 노출 31979 게인 16
+  모드 1(끔): 깊이 n 90 유효 0.251 아래 0.184 · IR n 90 밝기 17.9 FAST20 1 FAST5 205 |lap| 0.65 · 노출 31979 게인 16
+…
+  모드 0(켬): 깊이 n 90 유효 0.533 아래 0.312 · IR n 90 밝기 95.7 FAST20 5509 FAST5 9275 |lap| 23.36 · 노출 24000 게인 248
+  모드 1(끔): 깊이 n 88 유효 0.191 아래 0.138 · IR n 90 밝기 39.9 FAST20 27 FAST5 378 |lap| 3.38 · 노출 24000 게인 248
+  드라이버 오류: 0건 —
+…
+  모드 1(끔): 깊이 n 87 유효 0.194 아래 0.144 · IR n 90 밝기 44.2 FAST20 92 FAST5 693 |lap| 3.77 · 노출 28000 게인 248
+…
+  모드 1(끔): 깊이 n 87 유효 0.197 아래 0.153 · IR n 90 밝기 47.6 FAST20 233 FAST5 1014 |lap| 4.15 · 노출 32000 게인 248
+…
+  모드 1(끔): 깊이 n 89 유효 0.231 아래 0.163 · IR n 90 밝기 32.5 FAST20 221 FAST5 498 |lap| 2.74 · 노출 32000 게인 128
+…
+  모드 0(켬): 깊이 n 180 유효 0.193 아래 0.141 · IR n 180 밝기 46.0 FAST20 46 FAST5 564 |lap| 3.70 · 노출 31979 게인 246</pre>
+<p class="src">결과 원문 <span class="mono">Docs/debug_log/2026-10-21/outputs/run_mx2.txt</span> · 스크립트 원문 <span class="mono">Docs/debug_log/2026-10-21/jobs/anal_mx1.py</span> · <span class="mono">Docs/debug_log/2026-10-21/jobs/run_mx2.sh</span></p></div>
 </section>
 
 <section class="charts" aria-label="막대 그림">
@@ -141,6 +172,17 @@ code{font:.85em var(--mono)}
     <div><b>처음 추론</b><p>32 ms × 248 이 대조(상시 끔, 31979 µs · 246)와 노출 · 게인이 같으니 끈 IR 도 같아야 하고, FAST20 233 은 대조(46)보다 특징이 많은 좋은 결과.</p></div>
     <div><b>의심한 이유</b><p>노출 · 게인 · 밝기가 대조와 같은데 특징 수만 5 배 — 장면이 바뀌지 않았으니 특징이 늘 이유가 없음.</p></div>
     <div><b>판별</b><p>저장한 끈 IR 프레임을 직접 봄 → 아래 바닥에 프로젝터 점 무늬. 흰 점 수(아래 1/4): 24 ms 0 · 28 ms 74 · 32 ms 209~221 · 대조 0.</p></div>
+    <div><b>스크립트 핵심</b><p><pre class="code">for n in [&#x27;Auto_IR_m1&#x27;, &#x27;A24k248_IR_m1&#x27;, &#x27;B28k248_IR_m1&#x27;, &#x27;C32k248_IR_m1&#x27;, &#x27;D32k128_IR_m1&#x27;, &#x27;Ctl_IR_m0&#x27;, &#x27;Auto_IR_m0&#x27;]:
+    a = cv2.imread(&#x27;%s/%s.png&#x27; % (d, n), 0)
+    th = cv2.morphologyEx(a, cv2.MORPH_TOPHAT, np.ones((5, 5), np.uint8)) &gt; 20
+    c = lambda m: cv2.connectedComponents(m.astype(np.uint8))[0] - 1
+    print(&#x27;%-15s 흰 점 전체 %5d · 아래 1/4 %5d · 밝기 %.1f&#x27; % (n, c(th), c(th[360:]), a.mean()))</pre></p></div>
+    <div><b>나온 결과</b><p><pre class="code">Auto_IR_m1      흰 점 전체     3 · 아래 1/4     0 · 밝기 17.9
+A24k248_IR_m1   흰 점 전체    38 · 아래 1/4     0 · 밝기 40.3
+B28k248_IR_m1   흰 점 전체   114 · 아래 1/4    74 · 밝기 44.0
+C32k248_IR_m1   흰 점 전체   260 · 아래 1/4   209 · 밝기 47.6
+D32k128_IR_m1   흰 점 전체   245 · 아래 1/4   221 · 밝기 32.5
+Ctl_IR_m0       흰 점 전체    50 · 아래 1/4     0 · 밝기 46.9</pre><span class="src">결과 원문 <span class="mono">Docs/debug_log/2026-10-21/outputs/anal_mx2_leak.txt</span> · 스크립트 원문 <span class="mono">Docs/debug_log/2026-10-21/jobs/anal_mx2_leak.py</span></span></p></div>
     <div><b>결론</b><p>노출이 프레임 주기(33.3 ms)에 가까워지면 켠 구간 빛이 끈 프레임에 섞임(기전 추정 · 미확인). FAST 증가는 가짜 특징이므로 28 ms 이상은 cuVSLAM 입력으로 부적합. 남는 것은 24 ms.</p></div>
     <div><b>다음에 알아보는 법</b><p>끈 IR 의 특징 수가 같은 노출의 대조보다 크면 먼저 프레임을 본다. 점 새어 듦은 아래 바닥(가까운 면)부터 나타난다.</p></div>
     <div><b>데이터</b><p>경로는 <code>Docs/debug_log/2026-10-21/</code> 아래. 지표 <code>outputs/run_mx2.txt</code>(메타 노출 · 게인, 밝기 · FAST, 깊이 유효) · 흰 점 수 <code>outputs/anal_mx2_leak.txt</code>(도구 <code>jobs/anal_mx2_leak.py</code>) · 측정 도구 <code>jobs/anal_mx1.py</code> · <code>run_mx2.sh</code> · 판별에 본 프레임 <code>figures/mx2/*.png</code>. 실행 중 쓰기 거부(mx1)는 <code>outputs/run_mx1.txt</code>. 라이브 측정이라 bag 없음, 드라이버 로그는 Jetson <code>/tmp/mx2_*.log</code>(휘발).</p></div>
