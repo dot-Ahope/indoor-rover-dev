@@ -231,6 +231,7 @@ controller_server:
       #   MPPI 경로 변환이 6.6 ms 차로 실패 → follow_path 중단·wait 5 s(f2c2 t 235, 같은 오류 7 회). 10-01 f2a1·f2a2 와 같은 기제.
       #   대가: 최대 0.5 s 묵은 map→odom 으로 경로를 odom 에 옮길 수 있으나 map→odom 은 느리게 변하는 보정값이라 영향 작음(추정).
       transform_tolerance: 0.5
+      # (지금 값 0.15. 아래 09-17 §12 의 ESS 기제 · 시뮬 예측은 §13 실주행에서 확인되지 않아 근거가 아니다 — 이력으로만 둠. 2026-11-02 주석 정리)
       # ★ 2026-09-17 §12: 0.15 → 0.3 (Nav2 기본값으로 복귀). 0.15 는 09-16 mp4 에서 네 손잡이 중 하나로 함께 바꿨을 뿐
       #   단독 효과는 검증되지 않았다(당시 시뮬레이션에서 입구 정지를 푼 것은 PathFollow 10/20).
       #   조향 흔들림(통로 명령 ω 부호반전 10~15 /m, 고주파 RMS 0.06~0.08 rad/s)의 기제 = softmax 유효 표본 수(ESS)
@@ -261,7 +262,7 @@ controller_server:
       # 10-08 §6: 5.0 → 15.0 — 앞 회전 우선(사용자). 오프라인 시뮬(job944/946, seed 3): W3 출발 후진 0.36~1.19 → 0.22~0.45 m, 세 번 모두 돌아서 전진.
       #   좁은 서쪽 통로 입구 LETHAL 최소 여유 0.029~0.057 → 0.023~0.045 m 로 동등. 30 은 좁은 곳에서 여유 −0.025(충돌)라 기각. 후진 한도(vx_min −0.06)는 그대로.
       PreferForwardCritic: {enabled: true, cost_power: 1, cost_weight: 15.0, threshold_to_consider: 0.4}
-      # consider_footprint: 직사각 풋프린트(0.5×0.33) 정확 반영 — CPU 비용 있으나 좁은 공간 정확성에 필수
+      # consider_footprint: 직사각 풋프린트 정확 반영(09-30 실측 0.51×0.33, 코스트맵 footprint 참조 — 옛 주석 0.5×0.33) — CPU 비용 있으나 좁은 공간 정확성에 필수
       ObstaclesCritic: {enabled: true, cost_power: 1, repulsion_weight: 1.5, critical_weight: 20.0, consider_footprint: true, collision_cost: 10000.0, collision_margin_distance: 0.05, near_goal_distance: 0.5}   # 09-18: 목록에서 빠짐(A/B 복귀용으로 둠)
       # CostCritic (09-18): 기본값 그대로(README 예시와 같음). near_goal_distance 는 0.5 유지 — README 예시 1.0 이면 상자 뒤 모서리(x 1.25~1.35, 목표에서 0.65~0.75 m)
       #   에서 선호 항이 꺼진다. critical_cost 300 = 중심이 내접(옆 여유 < 1 cm) 안에 들어가는 궤적 점 벌점. cost_weight 3.81/254 × 평균 중심 비용(0~252) → 최대 ≈3.8.
@@ -753,7 +754,7 @@ planner_server:
       reverse_penalty: 2.0
       change_penalty: 0.0
       non_straight_penalty: 1.05
-      cost_penalty: 3.0                      # 10-26 §7: 1.2 → 3.0(변형별 오프라인 최선 판의 값). 옛 주석(09-14, DUBIN · 해석 3 m 판): 2.0 이면 좌측 물체 옆(0.215)으로 붙어 루프
+      cost_penalty: 3.0                      # 10-26 §7: 1.2 → 3.0(변형별 오프라인 최선 판의 값). 옛 주석(09-14, DUBIN · 해석 3 m 판): 2.0 이면 좌측 물체 옆(0.215)으로 붙어 루프 — 정정: 그 결과는 R 0.20 · cost 2.0 · non_straight 1.2 를 함께 쓴 시행(09-14 §2.19 시행 1)이라 cost 2.0 단독 효과가 아님
       retrospective_penalty: 0.015
       analytic_expansion_ratio: 3.5
       analytic_expansion_max_length: 1.0     # 10-26 §6.3: 1.1.20 기본 3.0 m 는 목표 3 m 안에서 곧바로 곡선 연결(비용 안 봄) — 1.0 m 가 상자 장면 최선

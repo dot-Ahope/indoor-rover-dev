@@ -1,7 +1,7 @@
 # AMCL 위치 추정 — F1-4 후보 ③ (2026-10-01)
 #   map_server(격자 지도 pgm/yaml) + amcl + lifecycle_manager_localization.
 #   slam.launch.py 대신 띄운다(둘 다 map→odom 을 내면 안 됨). 나머지(base·sensors·navigation)는 그대로.
-# 실행: ros2 launch rover_navigation localization.launch.py map:=/home/jetson/maps/office/office_v2.yaml
+# 실행: ros2 launch rover_navigation localization.launch.py map:=/home/jetson/maps/office/office_v3.yaml   (10-02 부터 office_v3 — 옛 예시 office_v2)
 # 근거·비교: Docs/debug_log/2026-10-01/SUMMARY.md §7
 import os
 from ament_index_python.packages import get_package_share_directory
