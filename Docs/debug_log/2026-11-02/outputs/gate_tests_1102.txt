@@ -1,0 +1,25 @@
+# Docs/tools/chk_commit_gate.py 시험 출력 (11-02 §5 · §6, 대화 기록에서 옮김). 비밀번호 값은 어디에도 없음.
+## §5 첫 판(staged 만, 지금 값 하나) — 임시 저장소에 비밀번호 파일 사본 leak.txt 를 stage
+[깨진 글자 — stderr 를 cp949 로 출력] ... leak.txt
+누출 -> exit 2
+commit 아님 -> exit 0
+[깨진 글자] ... nonexist ...
+파일 없음 -> exit 2
+본 저장소 -> exit 0
+## §5 utf-8 로 고친 뒤
+본 저장소 한글 -> 0
+커밋 게이트: 비밀번호 파일 X:\ 이 없거나 비어 있음 — 게이트를 손으로 돌리고 사용자에게 알릴 것(README §8)
+깨진 JSON+파일없음 -> 2
+## §5 실세션: 비밀번호 파일을 잠시 치우고 echo "git commit 훅 실시간 시험"
+PreToolUse:Bash hook error: [python "$CLAUDE_PROJECT_DIR/Docs/tools/chk_commit_gate.py"]: 커밋 게이트: 비밀번호 파일 C:\Users\magma\.config\rover_jetson\pw 이 없거나 비어 있음 — 게이트를 손으로 돌리고 사용자에게 알릴 것(README §8)
+## §6 둘째 판(지금 · 옛 값, staged + 작업 트리) — 추적 해제 전 본 저장소, 모의 'git commit -am x' (명령 문자열 때문에 실제 Claude 훅이 먼저 막음)
+PreToolUse:Bash hook error: ... 커밋 게이트: Jetson 비밀번호가 커밋될 수 있는 곳에 있다 — 커밋 금지, <PW> 로 가리거나 추적에서 뺀 뒤 다시: .claude/settings.local.json(staged, 옛 값 1), .claude/settings.local.json(작업 트리, 옛 값 1)
+## §6 추적 해제 뒤
+Claude 훅 -> 0
+git 훅 모드 -> 0
+## §6 임시 저장소: 추적 파일 a.txt 에 지금 값을 덧붙이고 stage 안 함
+커밋 게이트: Jetson 비밀번호가 커밋될 수 있는 곳에 있다 — 커밋 금지, <PW> 로 가리거나 추적에서 뺀 뒤 다시: a.txt(작업 트리, 지금 값)
+-a 미스테이지 -> 2
+커밋 게이트: Jetson 비밀번호가 커밋될 수 있는 곳에 있다 — 커밋 금지, <PW> 로 가리거나 추적에서 뺀 뒤 다시: a.txt(staged, 지금 값), a.txt(작업 트리, 지금 값)
+터미널 git commit -am -> 1
+1        (← 커밋 수: init 하나 그대로)
