@@ -2,7 +2,7 @@
 
 | 상태 | 기간 | 처음 본 곳 | 바꾼 파일 | 관련 문제 |
 |---|---|---|---|---|
-| **우회**(증상 차단) · 근본 미해결 | 10-01 ~ 10-28 | [10-01 §8.5](../debug_log/2026-10-01/SUMMARY.md) f2a2 | `ros2_ws/src/rover_bringup/launch/slam.launch.py`(transform_timeout 0.2 → 0.5 → **1.5**) | nvblox 전역 층 TF 실패 처리(같은 방아쇠, 카드 예정) · [정지 중 방향 드리프트](stationary-yaw-drift.md) |
+| **우회**(증상 차단) · 근본 미해결 | 10-01 ~ 10-28 | [10-01 §8.5](../debug_log/2026-10-01/SUMMARY.md) f2a2 | `ros2_ws/src/rover_bringup/launch/slam.launch.py`(transform_timeout 0.2 → 0.5 → **1.5**) | nvblox 전역 층 TF 실패 처리(같은 방아쇠, 카드 예정) · [정지 중 방향 드리프트](stationary-yaw-drift.md) · [남서 구석 정체](southwest-orient-stall.md) · [W3 떨림 · TF 지연](tf-lag-w3-wobble.md) (6 기) |
 
 **한 줄**: SLAM 위치 추정이 스캔 정합에 0.3~1.3 s 를 쓰는 동안 map→odom 의 시각(stamp)이 멈추고, 그 멈춤이 미래 여유(transform_timeout)를 넘으면 nav2 가 '지금' 변환을 못 찾아 컨트롤러가 멈추거나 전역 코스트맵이 틀어진다. 여유를 1.5 s 로 늘려 실패는 0 이 됐고(2 주행), 정합이 느린 원인(LinkNearChains)은 찾았지만 줄이는 설정은 아직 못 찾았다.
 

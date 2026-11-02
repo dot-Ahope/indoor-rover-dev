@@ -2,7 +2,7 @@
 
 | 상태 | 기간 | 처음 본 곳 | 바꾼 파일 | 관련 문제 |
 |---|---|---|---|---|
-| **우회**(깨끗한 기동 · Foxglove 클라이언트 끊기 · 이후 컨디셔너 C++ 이식으로 증상 0) · 원인 판정은 두 번 바뀜: 09-09 '구조적 CPU 부족' → 09-10 §1 '긴 세션 열화' → 09-10 §4 'Foxglove 클라이언트 연결이 1 코어'. 각 판정의 몫은 나눠 재지 않음 | 09-09 오후 ~ 09-10 (이후 09-21 기준선 · 09-28 C++ 이식 · 09-30 · 10-27 같은 서명 재등장) | [09-09 §8.13 · §8.14](../debug_log/2026-09-09/SUMMARY.md) — `job170` '로버가 안 움직인다' | `ros2_ws/src/rover_bringup/launch/camera.launch.py`(`accel_fps` 200 → 100, `gyro_fps` 는 200 유지 + 주석) · `Docs/05_nvblox/NVBLOX_MIGRATION_PLAN.md`(S6 항목 신설) · 운용 규칙(측정 주행 중 Foxglove 끄기 — [Foxglove 카드](foxglove-snap-cpu.md)) | [DDS 공유메모리 사고](dds-shm-incident.md)(같은 '위치 고정' 서명의 다른 원인) · [Foxglove 4 초 스냅 · 브리지 부하](foxglove-snap-cpu.md) · [SLAM map→odom 시각 정체](slam-stamp-freeze.md)(10-27, 같은 '조회 실패' 를 다른 기전으로) · [micro-ROS 보드율 회귀](microros-baud-regression.md)(같은 날) · [배터리 · 전원 운용](battery-power-ops.md)(처음 오판한 원인) · [SLAM 데드락(09-17)](slam-dds-deadlock.md)(전력 모드를 잘못 꺼낸 날의 실제 원인) |
+| **우회**(깨끗한 기동 · Foxglove 클라이언트 끊기 · 이후 컨디셔너 C++ 이식으로 증상 0) · 원인 판정은 두 번 바뀜: 09-09 '구조적 CPU 부족' → 09-10 §1 '긴 세션 열화' → 09-10 §4 'Foxglove 클라이언트 연결이 1 코어'. 각 판정의 몫은 나눠 재지 않음 | 09-09 오후 ~ 09-10 (이후 09-21 기준선 · 09-28 C++ 이식 · 09-30 · **10-06 rf2o 게이트 CPU(6 기)** · 10-27 같은 서명 재등장) | [09-09 §8.13 · §8.14](../debug_log/2026-09-09/SUMMARY.md) — `job170` '로버가 안 움직인다' | `ros2_ws/src/rover_bringup/launch/camera.launch.py`(`accel_fps` 200 → 100, `gyro_fps` 는 200 유지 + 주석) · `Docs/05_nvblox/NVBLOX_MIGRATION_PLAN.md`(S6 항목 신설) · 운용 규칙(측정 주행 중 Foxglove 끄기 — [Foxglove 카드](foxglove-snap-cpu.md)) · (10-06) `ros2_ws/src/rover_bringup/scripts/rf2o_gate.py`(`gyro_source` 기본 ekf, 커밋 `10a93fa4`) · `ekf.launch.py`(`gate_src` 인자) | [DDS 공유메모리 사고](dds-shm-incident.md)(같은 '위치 고정' 서명의 다른 원인) · [Foxglove 4 초 스냅 · 브리지 부하](foxglove-snap-cpu.md) · [SLAM map→odom 시각 정체](slam-stamp-freeze.md)(10-27, 같은 '조회 실패' 를 다른 기전으로) · [micro-ROS 보드율 회귀](microros-baud-regression.md)(같은 날) · [배터리 · 전원 운용](battery-power-ops.md)(처음 오판한 원인) · [SLAM 데드락(09-17)](slam-dds-deadlock.md)(전력 모드를 잘못 꺼낸 날의 실제 원인) · [rf2o 도입](rf2o-introduction.md)(10-06 게이트 CPU 의 대상) · [W3 떨림 · TF 지연](tf-lag-w3-wobble.md)(10-07, 같은 TF 조회 실패의 다음 판) |
 
 **한 줄**: 09-09 저녁 `job170`(STVL 검증 주행)에서 로버가 t = 5 s 부터 안 움직이는 것처럼 보였고, 나는 같은 '무이동' 이 12.0 V 부근에서만 났다는 이유로 **배터리**를 지목했다. 사용자가 "왜 후진하고 멈췄나" 를 묻자 CSV 를 전체 정밀도로 보니 위치가 9.90 s 동안 소수점 17 자리까지 똑같다가 조회가 실패했다 — tf2 버퍼 10 s 와 일치. 로버가 아니라 **`map→base_link` 갱신이 멈춘 것**이었다. 그 원인 하나(slam 의 SHM 고아 → [DDS 카드](dds-shm-incident.md))를 지운 뒤에도 `job175` 에서 같은 정지가 났고, 이번엔 EKF 가 30 Hz 주기를 91 번 놓치고(평균 0.055 s, 최대 0.197 s) slam 이 스캔을 한 번도 처리하지 못했다(load 9.01 / 6 코어). 'CPU 부족 → EKF 지연 → odom→base TF 지연 → slam 메시지 필터가 스캔 전량 폐기 → map→odom 미발행' 연쇄로 판정했다. 카메라 자이로를 100 Hz 로 낮추려다 D455 가 지원하지 않아 실패, CPU 절감 과제(S6)로 넘겼다. 다음 날 재부팅 직후엔 같은 스택이 EKF 위반 0 · load 2.10 이었고(§1 '열화' 로 정정), 같은 날 Foxglove Studio 클라이언트가 붙자 브리지 69.6 %, 끊자 EKF 위반 86 → 0 이 나왔다(§4 '진짜 병목'). 다만 그 '열화' 판정의 근거 한 줄(python3 14.7 %)은 이름별 평균이라 컨디셔너를 낮춰 보였을 가능성이 있다(§6 모순 1).
 
@@ -34,6 +34,11 @@ jobs 는 [2026-09-09/jobs/](../debug_log/2026-09-09/jobs/) · [2026-09-10/jobs/]
 | 09-10 §1 | Jetson 재부팅 직후 Nav2 포함 30 s S6 기준선 | EKF 위반 **0 회 / 30 s** · slam 폐기 **0 회** · load **2.10**. CPU rplidar 19.5 / realsense 15.3 / controller 14.8 / python3 14.7 / ekf 12.7 | **'09-09 의 CPU 부족이 구조적이라는 결론은 틀렸다'** — load 8~9 · 위반 91 · python3 44 % 는 재기동 수십 번이 쌓인 **열화**. S6 우선순위 하향 | `job182_s6base.sh`(⚠ python3 값은 이름별 평균, §6 모순 1) |
 | 09-10 §4 | stuck_monitor 수정 뒤 Nav2 재기동 → **기동 실패** | `lifecycle_manager: Failed to change state for node: planner_server … async_send_request failed` — 설정은 성공했는데 부하로 서비스 응답 타임아웃. load **6.35**, EKF 위반 **86**, slam 폐기 **28**. top 에 `foxglove_bridge` **69.6 %** | — | `job189_wait.sh` · `job190_err.sh` |
 | 09-10 §4 | 8765 포트 연결 확인 → 브리지 정지 → 30 s 재측정 | `ESTAB 192.168.0.101:8765 ← 192.168.0.6:65351`(사용자 PC Foxglove Studio). 정지 뒤 EKF 위반 **0**(직전 86) · slam 폐기 **0**(직전 28) · Nav2 전 노드 active | **★ 진짜 병목 = Foxglove 클라이언트 연결**(`viz:=lean` 이어도 붙으면 1 코어 가까이). '09-09 주행 중 Foxglove 로 경로를 보던 것이 EKF 를 굶겨 TF 를 끊었다' — 09-09 쪽은 **추정**(그날 연결 기록 없음) | `job191_nofg.sh` |
+| 10-06 §2 (6 기) | rf2o R3 정식 launch 재생 검증(도메인 42, f2b3 bag) | 게이트 CPU 누적 **85 s / 재생 297 s ≈ 코어 하나의 29 %**(Python 200 Hz 자이로 + csv 기록, 재생 100 Hz 클록 부담도 섞임 — SUMMARY 서술) | '라이브에서 csv 끄고 다시 잼, 크면 C++ 이식(TODO(improve))' | `r3_replay.sh`(커밋 `4fdeeaaf`) → [`j850_r3_replay.txt`](../debug_log/2026-10-06/outputs/j850_r3_replay.txt)(`게이트 CPU 누적:       85 s` 줄만, 재생 길이 297 s 는 SUMMARY) |
+| 10-06 §3 | rf2o · 그림자 EKF 켠 prep 뒤 정지 10 s CPU | rf2o 4 % · **게이트 39 %**(csv 끔) · 그림자 EKF A 11 %. load 11.95(prep 끝) → 10.14(확인 끝), prep 누계 EKF 위반 41 · slam 폐기 8 | '게이트 = Python 200 Hz 자이로 구독 부담(추정)' → 대책 후보: EKF 회전 속도(30 Hz)로 | `job852_prep_rf2o.sh` · `job851_r3chk.sh` → [`j851_r3prep.txt`](../debug_log/2026-10-06/outputs/j851_r3prep.txt) |
+| 10-06 §5 | `rf2o_gate.py` `gyro_source`(기본 ekf): 회전 속도 기준 `/imu/data` 200 Hz → `/odometry/filtered` ω 30 Hz, 비교 창 0.1 → 0.15 s, 이력 버퍼 400 → 100 | — | 순환 없음(EKF ω 는 자이로 σ 0.02 가 지배, rf2o 는 odom1 에 vx · vy 만) · 되돌리기 `ekf.launch.py gate_src:=imu` | 커밋 `10a93fa4` |
+| 10-06 §5.1 | 재생 A/B — 정확도 · CPU | 정확도: bag_step1(2021 s) 재생, ekf 기준 EKF B vs 라이브 EKF B(imu 기준) 최대 0.7 · 끝 0.2 cm, 끝 이동 18.7 vs 18.5 cm. CPU: 재생 수치 ekf 2100 s/300 s · imu 198 s/300 s | 정확도 같음(단계별 줄자 1.5 cm 결과 유지) · **CPU 는 재생으로 판정 불가** — 재생 정리의 이름 `pkill` 이 라이브 스택을 죽였고 `pgrep` 이 다른 프로세스를 잡음(**내 실수** → §5.6) | 정확도 · CPU 수치의 출력 파일 없음 → **원천 소실**(SUMMARY §5.1 · 하루 페이지 서술뿐) · `r3_replay.sh`(`4fdeeaaf` → `3e71a37d`) |
+| 10-06 §9 ① | prep 직후 라이브 정지 10 s, §3 과 같은 방식 | **게이트 39 → 16 %** · rf2o 4 % · 그림자 A 11 %. load 10.37 → 9.57, prep 누계 EKF 위반 25 · slam 폐기 9, G1 거부 64 | '통과(절반 이하)'. G1 64 = 사람이 앞에 있던 구간(추정) — 기준 '절반 이하' 는 결과와 같은 줄에 처음 나옴(§6-9) | [`j859_prep_people.txt`](../debug_log/2026-10-06/outputs/j859_prep_people.txt)(출력 형식이 `job851_r3chk.sh` 와 같음 — 부른 래퍼 원문 없음) |
 
 ## 3. 가설과 판별
 | 가설 | 판별 | 결과 | 판정 |
@@ -48,6 +53,8 @@ jobs 는 [2026-09-09/jobs/](../debug_log/2026-09-09/jobs/) · [2026-09-10/jobs/]
 | CPU 부족이 스택 구조상 상시 | 09-10 재부팅 직후 30 s | 위반 0 · load 2.10 | **기각**(09-10 §1) — 단 근거 줄 하나가 약함(§6 모순 1) |
 | 긴 세션 · 재기동 반복의 '열화' | 09-10 §1 의 대비 | 재부팅 직후 정상 vs 09-09 저녁 비정상 | **추정** — 무엇이 쌓였는지(고아 프로세스 · 잔재 · 카메라 스트림 열화 등)는 재지 않음 |
 | Foxglove 클라이언트 연결이 1 코어를 먹어 EKF 를 굶김 | 09-10 §4 연결 확인 → 브리지 정지 → 같은 30 s 창 | 86 → 0, 28 → 0 | **지지**(09-10 당일). 09-09 job175 시점에도 연결돼 있었는지는 **미확인** |
+| (10-06) rf2o 게이트의 CPU 39 % 는 Python 200 Hz 자이로 콜백 부담 | 회전 기준을 30 Hz EKF ω 로 바꾸고 같은 10 s 측정 | 39 → 16 %(rf2o · 그림자 A 는 4 · 11 % 그대로) | **지지**(표본 각 1 회, 다른 prep 세션 · 다른 조건 — §6-8). 콜백 수는 1/6.7 로 줄었는데 CPU 는 1/2.4(계산) — 남은 16 % 의 몫(rf2o 10 Hz · 휠 25 Hz 콜백 · 판정 계산)은 나눠 재지 않음 |
+| (10-06) 재생으로 CPU 를 A/B 할 수 있다 | `r3_replay.sh` 첫 판 | 정리 단계가 라이브 프로세스를 죽이고 측정 대상도 틀림 | **실행 실패**(측정 무효) — 고친 판으로 재생 CPU 를 다시 재지는 않았다 |
 
 ## 4. 조치와 효과
 - **`camera.launch.py`**: `accel_fps` 100(적용됨), `gyro_fps` 200(되돌림), 주석에 'D455 자이로 100 미지원 · `unite_imu_method 1` 이라 IMU 토픽은 자이로 속도' · '되돌릴 땐 conditioner CPU 와 EKF 위반 수를 함께'. CPU 효과 측정치는 없다.
@@ -59,6 +66,7 @@ jobs 는 [2026-09-09/jobs/](../debug_log/2026-09-09/jobs/) · [2026-09-10/jobs/]
 - 이후(09-21): Phase S 기준선 — CPU 합 ≈ 320 %, conditioner ≈ 43 %(`BASELINE_STVL.md` — python3 108~110 % 의 내역). 09-23 사용자 결정: 카메라 IMU 200 Hz 유지, 다운샘플 금지 · 로직만 C++ 이식.
 - 이후(09-28): conditioner C++ 이식 — **42.2 → 7.1 %**(−35 %p, [09-28 SUMMARY](../debug_log/2026-09-28/SUMMARY.md)).
 - 이후(09-30): 매핑 중 Foxglove(lean) 연결 시 EKF 위반 12 회 / 30 s · EKF CPU 49 % → 끊으면 0 회 · 12 % → `viz:=map` 세트([Foxglove 카드](foxglove-snap-cpu.md)).
+- 이후(10-06, 6 기): rf2o 게이트(`rf2o_gate.py`, Python)의 CPU — 라이브 정지 10 s 에서 **39 → 16 %**(회전 기준 `/imu/data` 200 Hz → `/odometry/filtered` 30 Hz, `gyro_source` 기본 ekf). 정확도는 재생에서 같음(최대 0.7 cm, 출력 원천 소실). 재생 CPU 비교는 내 정리 실수로 무효(§5.6). 이 시기 prep 출력에는 기동 직후 누계 EKF 위반 41 · 25 회, load 10~12 가 함께 찍혀 있다(주행 중 값 아님 — §7). 지금 코드: `ros2_ws/src/rover_bringup/scripts/rf2o_gate.py:41~42`(`gyro_source` 기본 `'ekf'` · 창 0.15) · `ros2_ws/src/rover_bringup/launch/ekf.launch.py:102`(`gate_src` 기본 `ekf`). 다만 지금 기본 오도메트리는 cuVSLAM(`Docs/tools/prep_patrol.sh:10` `ODOM` 기본 `vslam`)이라 게이트는 `ODOM=rf2o` 때만 뜬다.
 - 이후(10-27): 같은 'map→base 조회 실패 → 컨트롤러 중단' 서명이 이번엔 slam 위치 추정 정합(LinkNearChains) 동안 map→odom stamp 정체로 다시 나옴 → `transform_timeout 1.5`([SLAM 시각 정체 카드](slam-stamp-freeze.md)).
 
 ### 4.1 09-17 — 'CPU 를 더 주자' 와 전력 모드 (09-17 §5 · §6.2)
@@ -137,6 +145,20 @@ jobs 는 [2026-09-09/jobs/](../debug_log/2026-09-09/jobs/) · [2026-09-10/jobs/]
 | 다음에 알아보는 법 | 설정의 '효과' 는 이름이 아니라 **그 설정 파일의 수치**로 본다(`/etc/nvpmodel.conf` 의 `CPU_A78_0 MAX_FREQ` 등). 사용자에게 승인을 청하는 변경은 예상 효과의 출처(파일 · 측정)를 함께 적는다 — 출처 없는 수치는 쓰지 않는다(메모 '사양 수치 출처 의무' 와 같은 원칙). 바꾼 직후 같은 지표(여기선 `scaling_max_freq`)를 다시 읽는 확인을 스크립트에 넣는다(`job388` 이 그랬기 때문에 바로 잡혔다) |
 | 데이터 | [`2026-09-17/outputs/j388_pm25.txt`](../debug_log/2026-09-17/outputs/j388_pm25.txt) · [`j390_pmrevert.txt`](../debug_log/2026-09-17/outputs/j390_pmrevert.txt) · 도구 [`jobs/job384_power.sh`](../debug_log/2026-09-17/jobs/job384_power.sh) · `job385_pmhist.sh` · `job388_pm25.sh` · `job389_pmconf.sh` · `job390_pmrevert.sh`(`job384` · `job385` · `job389` 출력은 원천 소실) · [09-17 §5 · §6.2](../debug_log/2026-09-17/SUMMARY.md) |
 
+### 5.6 (10-06) 재생 정리가 이름으로 `pkill` — 라이브 스택을 죽이고 CPU 를 틀린 프로세스로 잼 (10-06 §5.1)
+| 칸 | 내용 |
+|---|---|
+| 하려 한 것 | 게이트 `gyro_source` ekf vs imu 의 정확도 · CPU 를 bag 재생(도메인 42)으로 비교 — `jobs/r3_replay.sh` 첫 판(커밋 `4fdeeaaf`) |
+| 본 것 | 재생 CPU 'ekf 2100 s/300 s, imu 198 s/300 s'. 재생 뒤 Jetson 에 EKF · 게이트 프로세스 없음 |
+| 처음 추론 | 기록상 이 수치를 결론에 쓰지 않았다 — SUMMARY 는 곧바로 '무효' 로 적음. (2100 s/300 s 는 코어 7 개 분량이라 한 프로세스 값일 수 없다 — 이 카드의 계산) |
+| 의심한 이유 | 수치가 물리적으로 맞지 않음 · 라이브 스택 프로세스가 사라짐 |
+| 판별 시험 | 스크립트 정리 줄 확인: 도메인과 상관없이 **이름**으로 죽임. CPU 도 `pgrep -f "rf2o_gate.py" \| head -1` — 라이브 · 재생 어느 쪽 pid 든 첫 줄 |
+| 결론 | 정리 단계가 라이브(도메인 0) 스택의 EKF · 컨디셔너 · rf2o · 게이트까지 껐고, CPU 측정은 다른 프로세스를 잡았다 → 재생 CPU 수치 **무효**, '주행 전 prep 필수'. 고친 판(`3e71a37d`)은 재생 launch 를 `setsid` 로 띄워 그 pid(`LPID`)의 프로세스 그룹만 측정 · 정리 |
+| 다음에 알아보는 법 | 같은 이름의 노드가 두 벌(라이브 · 재생) 떠 있을 수 있는 작업에서는 `pkill -f 이름` · `pgrep -f 이름 \| head -1` 을 쓰지 않는다 — 띄운 쪽의 pid · 프로세스 그룹(`pgrep -g`, `kill -- -PGID`)으로만. 재생 뒤엔 라이브 스택 프로세스 수를 확인. 같은 날 ssh 명령 안의 `pkill` 이 자기 자신을 죽인 일도 있었다(하루 페이지 '정정 · 실수') — [DDS 공유메모리 카드](dds-shm-incident.md)의 '정리를 확실히 하려다' 와 같은 계열 |
+| 스크립트 핵심 | 첫 판 12 · 14 행: `P=$(pgrep -f "rf2o_gate.py" \| head -1); echo "  게이트 CPU 누적: $(ps -o times= -p $P 2>/dev/null) s"` · `pkill -f "ekf.launch.py"; sleep 2; pkill -f rf2o_laser_odometry_node; pkill -f rf2o_gate.py; pkill -f ekf_node; pkill -f sensor_conditioner` → 고친 판 8 · 13 · 15 행: `LPID=$!` · `P=$(pgrep -g $LPID -f "rf2o_gate.py" \| head -1)` · `kill -INT -- -$LPID 2>/dev/null; sleep 3; kill -9 -- -$LPID 2>/dev/null` |
+| 나온 결과 | 원천 소실(무효 수치는 대화에만 있었음 — SUMMARY §5.1 · 하루 페이지에 'ekf 2100 s/300 s 등' 으로만) |
+| 데이터 | 스크립트 [`2026-10-06/jobs/r3_replay.sh`](../debug_log/2026-10-06/jobs/r3_replay.sh)(지금 파일 = 고친 판; 첫 판은 `git show 4fdeeaaf:Docs/debug_log/2026-10-06/jobs/r3_replay.sh`) · [10-06 하루 페이지](../debug_log/2026-10-06/2026-10-06_report.html) '근거 발췌 — 재생 정리가 라이브 스택을 끈 실수' |
+
 ## 6. 기록 사이 모순 (원문 대조)
 1. **09-10 §1 의 'python3 14.7 %' 는 이름별 평균.** `job182_s6base.sh` 는 `top -b -n 30 -d 1` 30 화면을 파일로 받아 `awk '/^ *[0-9]+ / {cpu[$12]+=$9; n[$12]++} END {… cpu[c]/n[c]}'` 로 **COMMAND 이름마다** 평균을 낸다. `top -b` 는 모든 프로세스를 찍으므로 python3 는 conditioner · deskew · stuck_monitor · 기타 python 노드 줄이 한 이름으로 묶여 '줄 하나당 평균' 이 된다 — conditioner 하나가 40 % 여도 0 % 근처 python 줄들이 있으면 크게 낮아진다. 같은 이유로 09-09 의 'python3 44 %'(job177 등의 1 초 top, 줄 하나)와 직접 비교할 수 없다. 09-21 기준선(pid 별): conditioner ≈ 43 %. → '09-09 python3 44 % 는 열화' 의 근거는 약하다(새 측정 없이 코드 · 기록 대조로 낸 판단, **추정**). 또 `top -b` 첫 화면은 직전 구간이 아닌 값이라 평균에 섞인다(작은 영향, **추정**).
 2. **'09-09 주행 중 Foxglove 로 경로를 보고 있던 것'**(09-10 §0 · §4): 09-09 SUMMARY 에는 job170 · 175 때 클라이언트 연결 기록이 없다. 같은 날 §8.12 는 lean 적용 뒤 top 에서 브리지가 '사라졌다' 고 쓴다 — 그때는 연결이 없었을 수 있다([Foxglove 카드](foxglove-snap-cpu.md)). 인과 포함은 **추정**.
@@ -145,11 +167,17 @@ jobs 는 [2026-09-09/jobs/](../debug_log/2026-09-09/jobs/) · [2026-09-10/jobs/]
 5. **'TF/EKF 정상'(§8.13)**: job171 은 주행이 **끝난 뒤** 값이다. 정지 중(t ≈ 4~14)의 TF 상태가 아니므로 'DDS 이상 없음' 은 정지 시각의 근거가 못 된다 — 바로 다음 job173 이 slam 고아를 찾았다.
 6. **(09-17) '25W → CPU 가 오히려 느려져'**(§6 제목): 잰 것은 `scaling_max_freq`(**상한**) 1344 MHz 이고, 25 W 상태로 부하를 걸어 실제 처리 속도 · 루프 미달을 잰 적은 없다(전환 몇 분 만에 원복). '느려진다' 는 상한에서 낸 결론(타당한 추론이지만 측정은 아님). 또 §5 의 '하드웨어 최대 1728' 은 `cpuinfo_max_freq` 값으로 `job384` 출력이 없어(원천 소실) SUMMARY 서술이 유일하다.
 7. **(09-17) '루프 미달 mp5 0 → mp6 9 → mp7 60+'**: 같은 15 W 에서 늘었다 — 즉 전력 모드는 이 악화의 변수가 아니었다. mp8 에서 15 W 그대로 0 이 됐으므로 원인은 그 사이 바꾼 것(visualize off · bag `/trajectories` 제외 · BT 100 ms · Fast DDS 2.6.12) 쪽이다(**어느 것인지 미분리**).
+8. **(10-06) 39 % 와 16 % 는 같은 조건의 A/B 가 아니다**: 둘 다 10 s 한 번씩, 다른 prep 세션이다. §3(39 %)은 로버가 출발 테이프 45 cm 앞 · 사람 없음 · load 10.14, §9(16 %)는 로버가 사용자를 보도록 다른 방향 · 사용자가 앞에 있음(G1 거부 64) · load 9.57. 차이가 반 이하로 커서 결론('콜백 부담이 컸다')은 바뀌지 않겠지만, 16 % 가 평소 조건 값인지는 한 번 더 잰 적이 없다.
+9. **(10-06) '절반 이하' 기준의 선언 시점**: §5.1 은 'CPU 판정은 다음 prep 직후 라이브 정지 10 s 측정(§3 과 같은 방식, 기준선 39 %)' 까지만 적었고, '통과(절반 이하)' 라는 합격선은 §9 의 결과 줄에 처음 나온다 — 판정 기준을 측정 전에 선언하는 규약과 어긋남.
+10. **(10-06) '재생 297 s ≈ 29 %'(§2)**: `j850_r3_replay.txt` 에는 `게이트 CPU 누적:       85 s` 만 있고 재생 길이는 없다(그날 첫 판 스크립트가 길이를 찍지 않음 — 고친 판은 `/ 재생 ${D} s` 를 함께 찍는다). 29 % 의 분모는 SUMMARY 서술. 또 이 85 s 도 첫 판의 `pgrep -f … \| head -1` 로 잡은 pid 라 §5.6 과 같은 이유로 대상이 맞았는지 원문으로는 확인할 수 없다(그때 라이브 스택에 게이트가 없었다면 맞았을 것 — 미확인).
 
 ## 7. 남은 것
 - 09-09 저녁 CPU 의 몫 나누기(conditioner 상시 · 고아/중복 프로세스 · Foxglove 연결) — 재현 시험 없음. 이후 conditioner C++ 이식(09-28)으로 가장 큰 몫은 사라졌다.
 - '긴 세션 열화' 의 정체(무엇이 쌓이나) — 09-10 §1 은 이름만 붙였다. 09-11 §5.4 의 '깨끗한 기동' 절차가 운용 대책.
 - 러너가 '갱신 정지' 를 스스로 표시하는 기능 — 이후 시기 러너(`job125_avoid3.py` 후속 · `stuck_monitor` · `nav_guard`) 카드에서 확인.
+- (10-06) prep 출력의 'EKF 위반 41 · 25 회 · load 10~12' 는 `job240_clean.sh` 가 로그를 비운 뒤 기동 구간을 포함한 누계(157 행 `grep -ac 'Failed to meet update rate' /tmp/sensors.log`)라 주행 중 CPU 여유를 말해 주지 않는다. rf2o · 그림자 EKF 를 켠 구성의 **주행 중** EKF 위반 · load 는 이 시기에 재지 않았다.
+- (10-06) 게이트를 C++ 로 옮길지(`rf2o_gate.py` 의 TODO(improve)) — 16 % 에서 멈춤. 이후 기본 오도메트리가 cuVSLAM 으로 바뀌어(10-23) 게이트는 `ODOM=rf2o` 때만 쓴다.
+- **이후(10-12 ~): 다음 시기에서 채움** — 10-12 MPPI 궤적 발행 포화 · 10-13 bag 기록기 HEARTBEAT(→ [W3 떨림 · TF 지연 카드](tf-lag-w3-wobble.md) '이후'), `Docs/tools/anal_top.py` · `anal_proc_cpu.py`(pid 단위 CPU).
 
 ## 8. 실험 · 도구 색인
 | 이름 | 무엇 | 위치 |
@@ -162,6 +190,8 @@ jobs 는 [2026-09-09/jobs/](../debug_log/2026-09-09/jobs/) · [2026-09-10/jobs/]
 | job189 · 190 · 191 | Nav2 기동 대기 · lifecycle 오류 · Foxglove 끄고 30 s | 같은 곳 |
 | (09-17) job384 · 385 | 전력 모드 · 클럭 · conf 기본값 조회 | `2026-09-17/jobs/`, 출력 원천 소실 |
 | (09-17) job388 · 389 · 390 (+ run_pm25 · run_pmrevert) | 25 W 전환 · conf 표 · 15 W 원복 | `2026-09-17/jobs/`, `j388_pm25.txt` · `j390_pmrevert.txt` |
+| (10-06) r3 재생(f2b3 · bag_step1) | 게이트 CPU 누적 · 정확도(gyro_source ekf vs imu) | `2026-10-06/jobs/r3_replay.sh` · `r3_rec.py` · `r3_eval.py`, → `j850_r3_replay.txt` · `r3_eval.txt`(bag_step1 정확도 · CPU 는 원천 소실) |
+| (10-06) job852 · job851 · (j859) | rf2o 켠 prep · 정지 10 s CPU(39 → 16 %) | `2026-10-06/jobs/job852_prep_rf2o.sh` · `job851_r3chk.sh`, → `j851_r3prep.txt` · `j859_prep_people.txt` |
 
 ## 9. 도구 해설
 **공통**: Jetson 실행(PC WSL → `run_j.sh`, [보드율 카드 §9](microros-baud-regression.md) 공통 항목). 출력 원문 없음(09-09 · 09-10 `outputs/` 에 해당 파일 없음 — 09-10 은 job205 · 216 CSV 만). 'EKF 위반' = `/tmp/sensors.log` 의 `Failed to meet update rate` 줄 수, 'slam 폐기' = `/tmp/slam.log` 의 `Message Filter dropping` 줄 수. 로그를 비우지 않으면 누계라 09-10 도구들은 측정 전후 차분을 쓴다.
@@ -254,6 +284,28 @@ jobs 는 [2026-09-09/jobs/](../debug_log/2026-09-09/jobs/) · [2026-09-10/jobs/]
 - 단위 주의: conf 의 CPU 값은 kHz(1497600 = 1497.6 MHz), GPU · EMC 는 Hz.
 - 지금 다시 쓸 수 있나: `job390` 의 앞부분(모드별 상한 표)은 모드를 고민할 때 먼저 볼 표 — 그대로 유효.
 
+### 9.14 (10-06) `job851_r3chk.sh` — rf2o 구성 정지 확인 · 10 s CPU(Jetson)
+- 부른 형태: PC `run_x851.sh` 가 prep(`job852_prep_rf2o.sh` → Jetson `/tmp/job780_prep_navmap.sh` → `job726_prep_map.sh` → `job240_clean.sh`, `EXTRA_SENSORS="rf2o:=true shadow:=true"`) 다음에 `run_jn.sh job851_r3chk.sh`. §9 의 `j859` 는 같은 출력 형식(부른 래퍼 원문 없음). `job780` 의 Jetson 판은 저장소의 10-01 판과 다를 수 있음(미확인).
+- 왜: rf2o 게이트 · 그림자 EKF 를 켠 정지 기동이 정상인지 + 새 노드들의 CPU.
+- 하는 일: 프로세스 수(`pgrep -fc` rf2o · 게이트 · ekf · 컨디셔너) → 5 토픽 `ros2 topic hz`(6 s) → 컨디셔너 `rot_cov_enable` · `rot_vx_var`, EKF `odom1` → 로그의 마지막 '게이트 통과' 줄 → **CPU**:
+  ```bash
+  for p in rf2o_laser_odometry_node rf2o_gate.py ekf_shadow_a; do P=$(pgrep -f "$p" | head -1); [ -n "$P" ] && a=$(awk '{print $14+$15}' /proc/$P/stat); declare "c_$P=$a"; done
+  sleep 10
+  for p in …; do …; b=$(awk '{print $14+$15}' /proc/$P/stat); v=c_$P; echo "  CPU $p: $(( (b - ${!v}) * 100 / 1000 )) %"; done
+  ```
+  (`/proc/<pid>/stat` 14 · 15 번째 = utime · stime, 단위 clock tick. 10 s 차이 × 100 / 1000 은 tick 이 100 Hz 라는 가정에서 '코어 하나 대비 %') → map→base_link 위치 → load.
+- 출력: [`j851_r3prep.txt`](../debug_log/2026-10-06/outputs/j851_r3prep.txt) 59~63 행(`CPU rf2o_gate.py: 39 %`) · [`j859_prep_people.txt`](../debug_log/2026-10-06/outputs/j859_prep_people.txt) 59~63 행(`CPU rf2o_gate.py: 16 %`). 앞쪽 줄(EKF 위반 · load)은 prep(`job240_clean.sh` 157 행) 출력.
+- 결함: `pgrep -f … | head -1` — 같은 이름이 둘이면(래퍼 · 재생) 엉뚱한 pid(§5.6 과 같은 함정, 이 측정 때는 재생이 없어 괜찮았을 것). 정수 나눗셈(소수 버림). CLK_TCK 100 가정. 10 s 한 표본.
+- 지금: pid 단위 CPU 는 10-12 부터 `Docs/tools/anal_proc_cpu.py` 쪽(→ 이후).
+
+### 9.15 (10-06) `r3_replay.sh` — 정식 ekf.launch 재생 검증(Jetson, 도메인 42)
+- 부른 형태: `bash r3_replay.sh BAG OUT [ekf|imu]`(셋째 인자 = `gate_src`, 고친 판에서 추가).
+- 하는 일(고친 판 `3e71a37d`): UDP 전용 Fast DDS 프로파일 · `ROS_DOMAIN_ID=42` → bag 길이 + 3 s → `setsid ros2 launch rover_bringup ekf.launch.py rf2o:=true shadow:=true use_sim_time:=true gate_csv:=… gate_src:=$SRC` 를 띄우고 `LPID` 저장 → `r3_rec.py` 기록 → `ros2 bag play $BAG --clock 100 --topics /scan /tf_static /imu/data /wheel_odom` → 게이트 CPU 누적(`ps -o times=`, 그 프로세스 그룹 안의 `rf2o_gate.py`) / 재생 길이 → '게이트 통과' 줄 → 프로세스 그룹 INT → 3 s → KILL → 오류 줄 5 개.
+- 첫 판(`4fdeeaaf`)과 차이: 측정 pid 를 전체에서 `pgrep -f` 첫 줄로, 정리를 이름 `pkill -f` 5 개로(§5.6). `gate_src` 인자 없음. 재생 길이를 찍지 않음.
+- 출력: [`j850_r3_replay.txt`](../debug_log/2026-10-06/outputs/j850_r3_replay.txt)(R3 재현 · 게이트 CPU 누적 85 s), 평가 `r3_eval.py` → [`r3_eval.txt`](../debug_log/2026-10-06/outputs/r3_eval.txt). §5.1 의 bag_step1 재생 결과는 출력 파일 없음(원천 소실).
+- 결함: 재생 CPU 는 `--clock 100`(시뮬 시계 발행) · 재생기 부담이 섞여 라이브 CPU 를 대표하지 않는다(10-06 §2 가 스스로 적은 한계). 그래서 CPU 판정은 라이브 측정으로 넘어갔다.
+- 지금 다시 쓸 수 있나: 정리 방식(프로세스 그룹)은 그대로 본보기. 이후 재생 A/B 의 고정 도구는 `Docs/tools/run_slam_replay.sh`(10-27, SLAM 쪽).
+
 ## 10. 용어
 - **tf2 버퍼 · `Time()` 조회**: TF 리스너는 받은 변환을 시간순으로 보관(기본 10 s)한다. `lookup_transform(목표, 원천, Time())` 의 `Time()`(0)은 '가장 최근 것' 을 뜻한다 — 새 변환이 안 와도 보관 기간 동안은 낡은 값을 그대로 준다.
 - **EKF 주기 위반(`Failed to meet update rate`)**: robot_localization 이 설정 주기(30 Hz = 0.033 s) 안에 한 번의 예측 · 갱신을 못 끝냈다는 경고. 'Took 0.14s' 는 그 회차 소요.
@@ -266,3 +318,6 @@ jobs 는 [2026-09-09/jobs/](../debug_log/2026-09-09/jobs/) · [2026-09-10/jobs/]
 - **`unite_imu_method 1(copy)`**: realsense 드라이버가 자이로 · 가속도를 한 IMU 토픽으로 합칠 때, 자이로 샘플마다 가장 최근 가속도를 복사해 붙이는 방식. 토픽 주기는 자이로 주기를 따른다.
 - **S6(Phase S)**: `NVBLOX_MIGRATION_PLAN.md` 의 'CPU 여유 확보' 항목. 09-21 Phase S 종료 때 기준선 수치로 대체됐다.
 - **열화(이 카드에서)**: 긴 세션 · 재기동 반복 뒤 같은 스택이 재부팅 직후보다 무거워지는 현상에 09-10 이 붙인 이름. 무엇이 쌓이는지는 재지 않았다.
+- **(10-06) `/proc/<pid>/stat` utime · stime**: 프로세스가 사용자 · 커널 모드에서 쓴 CPU 시간(14 · 15 번째 칸, clock tick). 두 시점 차이 / 경과 시간 = 코어 하나 대비 사용률.
+- **(10-06) 프로세스 그룹 정리**: `setsid` 로 띄운 launch 는 자기 프로세스 그룹을 가진다. `kill -- -PGID` 는 그 그룹(그 launch 가 띄운 노드들)만 죽인다 — 이름으로 죽이는 `pkill -f` 와 달리 같은 이름의 다른 스택을 건드리지 않는다.
+- **(10-06) `gyro_source`(rf2o 게이트)**: 게이트 G1(rf2o 회전 vs 자이로 회전 일치)의 기준 회전 속도를 어디서 받나 — `imu`(컨디셔너 `/imu/data` 200 Hz, 광학 프레임이라 −ω_y) 또는 `ekf`(`/odometry/filtered` ω 30 Hz, 기본).

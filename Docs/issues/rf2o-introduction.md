@@ -1,10 +1,10 @@
-# rf2o 도입 — 라이다 스캔 정합 속도로 회전 중 미끄러짐을 EKF 에 (5 기 부분: 10-02 §13~§18)
+# rf2o 도입 — 라이다 스캔 정합 속도로 회전 중 미끄러짐을 EKF 에 (5 기 10-02 §13~§18 · 6 기 10-06 ~ 10-08)
 
 | 상태 | 기간 | 처음 본 곳 | 바꾼 파일 · 설정 | 관련 문제 |
 |---|---|---|---|---|
-| 10-02 시점 **오프라인 통과(R2)** — rf2o 게이트 + '순수 회전 중 휠 병진 σ 0.3' 의 EKF B 가 통제 회전 rot3 을 줄자 대비 **4.3 cm**(지금 EKF 36.9 cm)로 따라가고 직진 축척 **0.998** 유지(재생 **측정**). 구석 기동 지표 R2-c 는 선언 기준 불합격(지표 설계 실수). 라이브 미적용. 이후: 10-06 R3 라이브 · 단계별 줄자 평균 1.5 cm, 10-07 G4 → **10-23 주 EKF 병진 = cuVSLAM 으로 결정, rf2o 는 기본으로 안 띄움**(지금 `ekf.launch.py rf2o` 기본 false · prep 기본 `ODOM=vslam`) | 10-02 (이 카드는 10-02 §13~§18 을 채움, '이후' 는 포인터) | [10-02 §13](../debug_log/2026-10-02/SUMMARY.md) — §12.1 에서 로컬 map 좌표 대책이 불합격한 뒤 사용자 결정 | (10-02) Jetson `~/rf2o_ws`(MAPIRlab `rf2o_laser_odometry` ros2 브랜치 b38c68e) 소스 빌드 · 오프라인 원형 `r2_gate.py`. (지금, 10-06 이후) [`rf2o_gate.py`](../../ros2_ws/src/rover_bringup/scripts/rf2o_gate.py) · [`rf2o.yaml`](../../ros2_ws/src/rover_bringup/config/rf2o.yaml) · [`ekf.launch.py`](../../ros2_ws/src/rover_bringup/launch/ekf.launch.py) `rf2o:=` · `shadow:=` · `gate_*:=` 인자(기본 끔) · `Docs/tools/prep_patrol.sh ODOM=rf2o` | [회전 중 장애물 번짐](rotation-obstacle-smear.md)(동기) · [제자리 회전 옆 밀림 F0-a](f0-rotation-side-slip.md)(대책 방향 D 의 출발점) · [휠 오도 스케일 · 회전 슬립](wheel-odom-scale-slip.md) · [센서 컨디셔너](sensor-conditioner.md)(B3 공분산) · [센서 데크 yaw −2.68°](sensor-deck-yaw.md)(라이다 yaw 상수) · [slam-fork-rotation.md](slam-fork-rotation.md) · [F2 순회와 위치 점프](f2-patrol-loc-jump.md) |
+| 10-02 시점 **오프라인 통과(R2)** — rf2o 게이트 + '순수 회전 중 휠 병진 σ 0.3' 의 EKF B 가 통제 회전 rot3 을 줄자 대비 **4.3 cm**(지금 EKF 36.9 cm)로 따라가고 직진 축척 **0.998** 유지(재생 **측정**). 구석 기동 지표 R2-c 는 선언 기준 불합격(지표 설계 실수). 라이브 미적용. **10-08 시점 라이브 통과(통제 회전)** — 정식 노드(R3)로 제자리 ±90° × 3 을 한 단계씩 돌며 줄자: EKF B \|오차\| 평균 **1.5 cm**, 방향 원위치 단계 0.0 / +0.1 / +0.7 cm(그림자 EKF A 7.8 cm · 원위치 −10.0 → −15.5 → −17.0 cm 누적) **측정**. 순회(f2c · f2d, 사람 없음)에서는 제자리 회전 구간 번짐 B < A 4/4 이지만 차 0.4~1.5 cm · 최대 10.3 cm 로 **판정 불가에 가까움**, 기본값 결정은 안 함(기본 끔 유지). 사람 · 가림 · 게이트 G1~G4 는 [게이트 · 사람 시험 카드](rf2o-gates-people.md). 이후: **10-23 주 EKF 병진 = cuVSLAM 으로 결정, rf2o 는 기본으로 안 띄움**(지금 `ekf.launch.py rf2o` 기본 false · prep 기본 `ODOM=vslam`) | 10-02 · 10-06 ~ 10-08 (이 카드는 10-02 §13~§18 · 10-06 §1~§4 · §8 · 10-07 §2~§3 · §6 · §15 · 10-08 §3 · §5 · §6.1 의 rf2o 부분을 채움. 10-06 §5~§13 · 10-07 §1 · §3.1 · §3.2 · §4 의 게이트 · 사람 시험은 [별도 카드](rf2o-gates-people.md), 10-12 ~ 는 포인터) | [10-02 §13](../debug_log/2026-10-02/SUMMARY.md) — §12.1 에서 로컬 map 좌표 대책이 불합격한 뒤 사용자 결정 | (10-02) Jetson `~/rf2o_ws`(MAPIRlab `rf2o_laser_odometry` ros2 브랜치 b38c68e) 소스 빌드 · 오프라인 원형 `r2_gate.py`. (지금, 10-06 이후) [`rf2o_gate.py`](../../ros2_ws/src/rover_bringup/scripts/rf2o_gate.py) · [`rf2o.yaml`](../../ros2_ws/src/rover_bringup/config/rf2o.yaml) · [`ekf.launch.py`](../../ros2_ws/src/rover_bringup/launch/ekf.launch.py) `rf2o:=` · `shadow:=` · `gate_*:=` 인자(기본 끔) · `Docs/tools/prep_patrol.sh ODOM=rf2o` | [회전 중 장애물 번짐](rotation-obstacle-smear.md)(동기) · [제자리 회전 옆 밀림 F0-a](f0-rotation-side-slip.md)(대책 방향 D 의 출발점) · [휠 오도 스케일 · 회전 슬립](wheel-odom-scale-slip.md) · [센서 컨디셔너](sensor-conditioner.md)(B3 공분산) · [센서 데크 yaw −2.68°](sensor-deck-yaw.md)(라이다 yaw 상수) · [slam-fork-rotation.md](slam-fork-rotation.md) · [F2 순회와 위치 점프](f2-patrol-loc-jump.md) · [rf2o 게이트 G1~G4 · 사람 시험](rf2o-gates-people.md)(6 기 갈래) · [회전축 보정 B2 · 회전 분산 B3](icr-b2-b3.md)(B3 = rf2o 의 짝) · [회전 방식 · 트랙 비율](rotation-method-track-ratio.md)(10-08 피벗 시험) · [남서 구석 방향 맞춤 정체](southwest-orient-stall.md)(f2c1 · f2d1 실패) · [낮은 상자 기억](low-box-global-memory.md)(f2c2 상자 접촉) · [전선 밟기](cable-step-over.md) (6 기) |
 
-**한 줄**: 회전 중 미끄러짐 30 cm 를 EKF 가 0.3 cm 로 보고(rot2), 회전 모델 B2 와 로컬 map 좌표 둘 다 대책이 못 되자 사용자가 rf2o(연속 라이다 스캔 정합으로 차체 속도를 내는 오도메트리) 도입을 시작했다. 같은 회전 bag 을 rf2o 에 다시 먹이니 rf2o 의 순 이동은 두 시험 모두 0.35 · 0.37 m 로 일관됐고(SLAM 0.322 · 0.114, EKF 0.003), 사용자 줄자(rot3 뒤 27.5 · 오른쪽 24.5 cm)는 rf2o 의 **크기 · 성분과 맞고 부호만 두 축 다 반대**였다 — 라이다가 yaw π − 2.68° 로 뒤집혀 달려 병진이 라이다 좌표로 나온 것이라 차체 속도 = R(π − 0.04677) · v_rf2o 로 고쳤다. 게이트(G1 자이로 일치 · G2 정지 검사 · 가변 σ)를 거쳐 병진 vx · vy 만 EKF 에 넣는 B 를 오프라인 재생 5 차례로 다듬었는데(자이로 없는 bag · QoS 불일치 · 휠이 rf2o 를 누름 · G1 오거부), 마지막 판은 rot3 끝을 줄자 4.3 cm 안으로 잡고 직진 축척을 유지했다. 사용자는 다음 시험을 '90° 마다 줄자' 로 설계했다(→ 10-06 실행).
+**한 줄**: 회전 중 미끄러짐 30 cm 를 EKF 가 0.3 cm 로 보고(rot2), 회전 모델 B2 와 로컬 map 좌표 둘 다 대책이 못 되자 사용자가 rf2o(연속 라이다 스캔 정합으로 차체 속도를 내는 오도메트리) 도입을 시작했다. 같은 회전 bag 을 rf2o 에 다시 먹이니 rf2o 의 순 이동은 두 시험 모두 0.35 · 0.37 m 로 일관됐고(SLAM 0.322 · 0.114, EKF 0.003), 사용자 줄자(rot3 뒤 27.5 · 오른쪽 24.5 cm)는 rf2o 의 **크기 · 성분과 맞고 부호만 두 축 다 반대**였다 — 라이다가 yaw π − 2.68° 로 뒤집혀 달려 병진이 라이다 좌표로 나온 것이라 차체 속도 = R(π − 0.04677) · v_rf2o 로 고쳤다. 게이트(G1 자이로 일치 · G2 정지 검사 · 가변 σ)를 거쳐 병진 vx · vy 만 EKF 에 넣는 B 를 오프라인 재생 5 차례로 다듬었는데(자이로 없는 bag · QoS 불일치 · 휠이 rf2o 를 누름 · G1 오거부), 마지막 판은 rot3 끝을 줄자 4.3 cm 안으로 잡고 직진 축척을 유지했다. 사용자는 다음 시험을 '90° 마다 줄자' 로 설계했다(→ 10-06 실행). **6 기(10-06 ~ 10-08)**: 게이트를 정식 노드 · `ekf.launch.py rf2o:=` 인자(기본 끔)로 옮겨 라이브로 그 시험을 하니 EKF B 가 줄자를 평균 1.5 cm 로 따라갔고(그림자 EKF A 는 원위치 단계마다 미끄러짐을 0 으로 봐 17 cm 까지 쌓임), rf2o 를 켠 채 F2 순회(f2c 9/10)도 했지만 순회 중 제자리 회전이 4 번뿐이고 기준 SLAM 자체가 수 cm 틀려 번짐 개선을 수치로 보이지 못했다. 직진 드리프트(map→odom 누적 보정 0.42 m)는 rf2o 로 줄지 않았다(직진 몫 2~4 %). 10-08 회전 방식 시험은 미끄러짐이 거의 항상 '차체 뒤로'(38/40)이지만 크기가 회마다 달라(90°당 −18.6~+1.1 cm) 고정 보정 모형(90°당 오차 7.9 → 5.8 cm)이 rf2o 같은 외부 관측을 대신하지 못한다고 정리했다.
 
 ## 1. 증상 (도입 동기)
 - 통제 회전 rot2(±90° × 3, ω 0.38 rad/s): 누적 이동 **SLAM 0.322 m vs EKF 0.003 m**, 라이다 외곽 최근접 0.397 → 0.212 m([`smear_rot2.txt`](../debug_log/2026-10-02/outputs/smear_rot2.txt), 10-02 §11.1). 로컬 코스트맵 옛 칸 4 → 95.
@@ -29,6 +29,41 @@
 | 10-02 §16 | 사용자 요청: EKF B 가 실제 미끄러짐을 잘 인식했나 | rot3 끝 B (−0.295, −0.207) vs 줄자 (−0.275, −0.245) → **4.3 cm**(A 36.9). 누적 이동이 회전 구간마다 계단식으로 늘어 끝 35.9 cm(줄자 36.8). 독립 검사(정적 구조물을 각 EKF 자세로 odom 에 놓아 첫 스캔과의 어긋남 중앙): rot3 A 22.1 · **B 3.2 cm**, rot2 A 23.1 · **B 2.5 cm**. B 는 회전 중 2~6 cm 까지 올랐다 내려옴 | B 가 미끄러짐을 따라감. 회전 중 일시 상승은 rf2o 10 Hz 지연 · σ 로 **추정**. rf2o 단독 자세는 회전 중 0.3 m 안팎 출렁(병진 속도는 정상) — '라이다 위치라서' | [`render_ekfB_slip.py`](../debug_log/2026-10-02/jobs/render_ekfB_slip.py) · 그림 [`2026-10-02_ekfB_slip.png`](../04_navigation/figures/2026-10-02_ekfB_slip.png) · 수치는 화면 출력뿐(**출력 원문 없음**) |
 | 10-02 §17 | **사용자 제안(다음 시험 설계): 90° 마다 줄자** — 회색 = 좌 · 우 90° 구간, 그래프는 시작점에서 멀어진 거리 | 절차: 오른쪽 앞끝(차체 (+0.262, −0.165)) 바닥 표시 → 회전 스크립트 **한 단계(90°)씩** → 사용자가 표시 ↔ 오른쪽 앞끝 대각 거리 → 다음. ±90° × 3 = 6 측정. 각 정지 시점 EKF A · B · rf2o 단독 · SLAM 자세로 같은 모서리 예측 → **예측 − 줄자** 오차(회전만으로도 모서리는 약 0.44 m 움직이므로 거리 자체가 아니라 오차로). 짝(±90°)이 끝난 시점은 순수 미끄러짐만 | 지표: 단계별 오차 · 단계 사이 증분 — rf2o 가 매 밀림을 따라가면 B 의 오차가 쌓이지 않아야 함. 준비: 회전 스크립트 단계 모드 · R3 게이트 라이브 또는 재생 · 기록 토픽에 `/imu/data` | (이후 10-06 §4 에서 실행) |
 | 10-02 §18 | 사용자 'rot3_paths 형식(시작 자세 기준 궤적)이 비교하기 좋다 · 로버가 rf2o 도식처럼 크게 출렁이며 움직였다고 인지' → 확인 | rf2o 원 자세(부호 보정)를 **라이다 위치**(중심 앞 0.152 m)로 보고 지렛대를 빼 중심으로: 경로 1.89 → **0.73 m**(EKF B 0.61 m), 끝 (−0.274, −0.252) = **줄자와 0.7 cm**(EKF B 4.3 cm) | 사용자가 본 출렁임 = 차체 앞부분(라이다 · 데크)의 실제 움직임. rf2o 원 자세가 틀린 게 아니라 '어느 점의 궤적인가' 의 차이. 추가: 중심 환산 rf2o 끝이 EKF B 보다 줄자에 가까움 → B 는 σ 가중으로 rf2o 를 일부만 반영 → R3 비교 후보 '회전 중 rf2o σ 더 작게 / rf2o 자세 증분 직접'. 다음 도식: 중심 + 오른쪽 앞끝 궤적을 A · B · rf2o · SLAM 별로, 90° 마다 줄자 점 | [`rf2o_lever.py`](../debug_log/2026-10-02/jobs/rf2o_lever.py) · 그림 [`2026-10-02_rf2o_lever.png`](../04_navigation/figures/2026-10-02_rf2o_lever.png) · 수치 화면 출력(**출력 원문 없음**) |
+| 10-06 §1~§3 | R3 — `rf2o_gate.py` 정식 노드 · `ekf.launch.py rf2o:=true shadow:=true`(그림자 EKF A `/odometry/ekf_a` = rf2o 이전 구성, TF 없음), 재생 검증 → 라이브 정지 기동(출발 테이프 45 cm 앞) | 재생: f2b4 직진 축척 B 0.998 · f2b3 안쪽 면 A 0.196 / B 0.096 / SLAM 0.084 m(R2 원형과 0.2~0.3 cm 차). 라이브: /odom_rf2o 10.0 · gated 10.0 · EKF B 30 · A 29 Hz, B3 `rot_vx_var 0.09`, 게이트 CPU 39 % | 정식판 = 원형. 회전 bag rot2 · rot3 는 재부팅으로 소실 → R2-a(줄자) 재현은 새 실측으로(실수 5). 세부 · CPU 대책은 [게이트 카드](rf2o-gates-people.md) | [`r3_eval.txt`](../debug_log/2026-10-06/outputs/r3_eval.txt) · [`j851_r3prep.txt`](../debug_log/2026-10-06/outputs/j851_r3prep.txt) |
+| 10-06 §4 선언 | **단계별 회전 실측(10-02 §17 실행)** — 한 번 = 제자리 90°(ω 0.38, 외곽 0.08 m 안이면 중단) → 정지 → EKF B · 그림자 A · rf2o 중심 환산 · SLAM 으로 오른쪽 앞끝(+0.262, −0.165)의 예측 대각 거리 → 사용자 줄자. +90 · −90 × 3 = 6 단계, bag `bag_step1`(`/imu/data` 포함, 끝나면 즉시 PC 회수) | — | 판정(실행 전): **EKF B 평균 ≤ 3 cm 이고 6 단계 ≤ 5 cm(쌓이지 않음)**. A · SLAM · rf2o 는 기록(A 는 쌓일 것으로 예상). 짝수 단계(방향 원위치) = 순수 미끄러짐 | [`step_rot.py`](../debug_log/2026-10-06/jobs/step_rot.py) · [`job853_step_init.sh`](../debug_log/2026-10-06/jobs/job853_step_init.sh) · [`run_step.sh`](../debug_log/2026-10-06/jobs/run_step.sh) |
+| 10-06 §4.1 | 실행(스크립트 오류 2 회 · Wi-Fi 끊김 2 회는 모두 회전 전 · 로버 안 움직임 확인 뒤 재실행 — 실수 7) | 줄자 44.8 · 10.8 · 43.3 · 16.1 · 43.5 · 17.6 cm. 예측 − 줄자(cm): **B −2.9 / 0.0 / −2.8 / +0.1 / −2.3 / +0.7(평균 1.5)** · A +0.3 / −10.0 / +2.1 / −15.5 / +1.9 / −17.0(7.8) · SLAM +0.8 / −4.8 / 0.0 / −1.2 / +1.8 / −6.2(2.5). B 단계 2 끝 (−0.088, −0.063) = 사용자가 본 '뒤 · 오른쪽'. EKF 각도는 단계마다 +93~94° · 0.4~1.4° | **통과**(평균 1.5 ≤ 3, 6 단계 0.7 ≤ 5, 쌓이지 않음). A 는 미끄러짐을 거의 0 으로 봐 원위치 오차가 쌓임(예상대로). SLAM 은 회전 중 기준으로 부족(6 cm 까지 틀림). B 의 홀수 단계 −2.3~−2.9 cm 같은 쪽 치우침은 **원인 미분리**(후보: 회전 중간 각도 민감 1° ≈ 0.5 cm · 줄자 측정점 — 모순 5). rf2o 단독 누적 자세는 단계 3 부터 각도 59°(실제 94°)로 무너져 비교에서 뺌 — B 는 rf2o **속도만** 써서 무관 | [`step_tape.csv`](../debug_log/2026-10-06/outputs/step_tape.csv)(줄자) · [`step_state_1.json`](../debug_log/2026-10-06/outputs/step_state_1.json)(단계별 네 추정 자세) · [`render_step1.py`](../debug_log/2026-10-06/jobs/render_step1.py) · 그림 [`2026-10-06_step_rot1.png`](../04_navigation/figures/2026-10-06_step_rot1.png) · bag `2026-10-06/bags/bag_step1.tgz`(로컬). 오차 줄의 원 출력은 **원천 소실**이나 입력 · 스크립트가 남아 11-02 에 같은 식으로 다시 계산해 SUMMARY 표와 일치 확인(아래 §2.1) |
+| 10-06 §8 | 갱신 계획 — 사용자 결정 순서 ① CPU → ② 사람 T1 · T2 → **③ rf2o 켠 F2 순회 비교(+T3) → 기본값 결정** → ④ 피벗 회전 → ⑤ 전선 시험 | — | 내 평가: 목표('rf2o 켠 순회가 나아지나')를 앞당기고, 피벗 회전은 원인 제거라 그 다음 | [10-06 §8](../debug_log/2026-10-06/SUMMARY.md) · ①② 는 [게이트 카드](rf2o-gates-people.md) |
+| 10-07 §2 선언 | ③ rf2o 켠 F2 순회 — 10-02 f2b 와 같은 구성 · 10 목표, 바뀐 것은 `rf2o:=true gate_v:=on shadow:=true`(TF = EKF B, 그림자 A = 대조군), 사람 없이 | 비교 기준 f2b1~4: 시도 7 · 성공 6 · 실패 1 · 측면 접촉 2 · 위치 점프 최대 0.184 m, 벽 번짐 f2b3 실측 A 15 cm | 판정: ③-a 10 목표 성공 · 접촉 0 · 복귀 줄자 ≤ 5 cm, **③-b(핵심) 제자리 회전 구간마다 B − SLAM 이 A 보다 작고 최대 ≤ 5 cm**, ③-c 게이트 비용 ≤ 5 %, ③-d 부하 기록. ③-a 가 f2b 보다 나쁘지 않고 ③-b 통과면 `rf2o:=true gate_v:=on` 기본 제안 | [`run_f2c.sh`](../debug_log/2026-10-07/jobs/run_f2c.sh) · [`job903_prep_rf2o_g4.sh`](../debug_log/2026-10-07/jobs/job903_prep_rf2o_g4.sh) |
+| 10-07 §2.2~§2.6 | f2c1(목표 1~4) · f2c2(남서 구석에서 5~10) | f2c1 3 성공 · **목표 4 남서 방향 맞춤 정체 → nav_guard 취소 71.2 s**, f2c2 6/6(목표 6 은 방향 130° 차로 위치만 성공). 합 **9/10**. 사용자: 복귀 때 **상자를 밀며 옴**(뒤끝은 출발 선) | ③-a **불합격**(실패 1 · 접촉 1). 남서 정체는 f2b3 와 같은 자리 · 같은 양상 → rf2o 와 무관한 '구석 · 목표 자세' 문제로 **추정**, 상자 접촉은 카메라만 보는 낮은 상자 ② 를 계획기가 잊은 것(10-07 §7 · §8 재해석) — 둘 다 [F2 순회 카드](f2-patrol-loc-jump.md) 이후 칸 | [`f0_f2c1_runner.log`](../debug_log/2026-10-07/outputs/f0_f2c1_runner.log) · [`f0_f2c2_runner.log`](../debug_log/2026-10-07/outputs/f0_f2c2_runner.log) · bag `2026-10-07/bags/bag_f2c1.tgz` · `bag_f2c2.tgz`(로컬) |
+| 10-07 §3.3 | ③-b — 제자리 회전 구간(EKF B \|ω\| > 0.15 · \|v\| < 0.03 이 1.5 s 넘게)의 SLAM 이동 대비 B · A 이동 차 | f2c1 2 구간(−24° · +51°): SLAM 3.3 · 2.1 / **B − SLAM 4.2 · 3.8** / A − SLAM 4.6 · 4.3 cm. f2c2 2 구간(−35° · −28°): 8.9 · 5.7 / **10.3 · 6.6** / 11.8 · 7.3 cm | B < A **4/4** 이지만 차 0.4~1.5 cm, 최대 10.3 > 5 → 선언 기준 **불합격**. 그러나 ① 제자리 회전이 4 번뿐(순회 회전은 대부분 곡선) ② 기준 SLAM 이 회전 직후 보정이라 그 자체 오차 수 cm ③ G4 가 이 구간 rf2o 를 줄인 몫 섞임 → **이 데이터로 rf2o 효과를 말하기 어렵다**, 10-06 줄자 시험이 더 직접적 근거(모순 6) | [`f2c_anal.txt`](../debug_log/2026-10-07/outputs/f2c_anal.txt) · [`f2c_anal.py`](../debug_log/2026-10-07/jobs/f2c_anal.py) · [`job913_extract.py`](../debug_log/2026-10-07/jobs/job913_extract.py) |
+| 10-07 §3.4 | map→odom 누적 보정 0.42 m · −9.7° 는 rf2o 탓 이상치인가 | f2b3(rf2o 끔, 293 s) Δ(0.393, 0.137) m · −5.70° vs f2c2(430 s) Δ(0.422, 0.265) · −9.65°. f2c2 보정 크기 합 회전 중 1.163 · 그 밖 1.505 m, yaw 8.56 · 17.49°, 한 번 5 cm 넘는 보정 15 회 | **이상치 아님**. rf2o 는 직진 드리프트를 못 줄임(직진 몫 2~4 %, 예상대로) | [`f2c_anal.txt`](../debug_log/2026-10-07/outputs/f2c_anal.txt)(f2c2 쪽) · f2b3 쪽 Δ 는 SUMMARY §3.4 에만(이 출력엔 없음) |
+| 10-07 §3.1 · §3.2 · §4 | rf2o 발행률 9.6~9.7 Hz(bag), ③-c 버림 2.3 · 4.2 % 통과 · G4 곡선 오판 → 휠 잔차 | — | [게이트 카드](rf2o-gates-people.md) §2 | — |
+| 10-07 §6 · §7 | f2d1 · f2d2 — rf2o + G4 휠 잔차 + MPPI transform_tolerance 0.5 | f2d1 목표 4 남서 정체 재현(3/3) · f2d2 남서 '위치만(f)' SUCCEEDED_XY · 목표 10 상자 앞 정지 | rf2o 구성은 그대로 유지, 실패 원인은 rf2o 밖(남서 구석 · 계획기와 MPPI 지도 불일치) | [F2 순회 카드](f2-patrol-loc-jump.md) 이후 칸 · [`f0_f2d1_runner.log`](../debug_log/2026-10-07/outputs/f0_f2d1_runner.log) · [`f0_f2d2_runner.log`](../debug_log/2026-10-07/outputs/f0_f2d2_runner.log) |
+| 10-07 §15 | 하루 마무리 결론 | rf2o 기본값에 대한 문장 없음 | ③ 의 '기본값 결정' 은 **내려지지 않음** — ③-a 불합격(원인은 rf2o 밖), ③-b 판정 불가, ③-d 미측정. rf2o 는 prep 인자로만 켜는 상태 유지 | [10-07 §15](../debug_log/2026-10-07/SUMMARY.md) |
+| 10-08 §3 | 전역 nvblox + 주기 재계획 B 구성 주행(f2e1 · f2e2) | 'rf2o · G4 잔차 · 그림자 A 그대로' | rf2o 를 켠 채 다른 문제(전역 카메라 기억)를 시험 — rf2o 쪽 새 수치 없음 | [10-08 §3](../debug_log/2026-10-08/SUMMARY.md) · `job934_prep.sh` |
+| 10-08 §5 · §5.6 | ④ 피벗 회전(사용자 진단의 시험) — 트랙 비율 통제 시험 rt1 · rt2(빠른/느린 트랙 비 r −1 제자리 ~ 0 피벗, 40 회) | 90°당 미끄러짐 중앙 제자리 6.2 · r −0.6 13.5 · −0.4 6.9 · −0.2 10.6 · **0 피벗 4.0** cm. 40 회 중 38 회가 **차체 뒤로**, 시간이 갈수록 커짐(앞 12 회 중앙 3.2 · 뒤 20 회 12.0) | 판정 Q1(제자리의 절반 이하인 r) **모두 불충족**. r 효과와 순서 효과가 섞임(설계 결함: 블록 단위로 r 을 묶음) — 피벗 회전으로 미끄러짐을 확실히 줄인다는 근거 없음 | [10-08 §5.6](../debug_log/2026-10-08/SUMMARY.md) · [`rt12_anal.txt`](../debug_log/2026-10-08/outputs/rt12_anal.txt) · [`rt12_pool.txt`](../debug_log/2026-10-08/outputs/rt12_pool.txt) |
+| 10-08 §5.11 · §6.1 | 사용자 질문 '뒤 밀림이 일정한가' · 고정 보정 모형 적합 | 방향 일정: 통제 38/40 · 주행 중 회전 21/22 뒤로. 크기 불안정: 90°당 앞뒤 중앙 통제 −7.3 [−18.6~+1.1] · 주행 −5.9 [−13.6~+1.0] cm, 변동계수 66~76 %. 모형 M1(회전량 비례 뒤로, k 0.05 m/rad) 한 개 빼고 검증: 90°당 오차 중앙 **7.9 → 5.8 cm**(M2 5.3) | 평균 치우침은 모형으로 일부 줄지만 회마다 편차가 커 **rf2o 같은 외부 관측을 대신하지 못함** → 다음 세션 '뒤 밀림은 고정 보정 대신 rf2o · 가변 σ 쪽으로'(10-08 §7 ③) | [`slip_consistency.txt`](../debug_log/2026-10-08/outputs/slip_consistency.txt) · [`slip_model.txt`](../debug_log/2026-10-08/outputs/slip_model.txt) |
+
+### 2.1 근거 발췌 — 단계별 줄자 시험(10-06 §4.1)
+```python
+# Docs/debug_log/2026-10-06/jobs/render_step1.py 5~15 행 — 시작 자세 기준 상대 자세 → 오른쪽 앞끝의 이동 → 대각 거리 − 줄자
+S = json.load(open('step1/step_state_1.json')); TAPE = [44.8, 10.8, 43.3, 16.1, 43.5, 17.6]
+CR = np.array([0.262, -0.165])
+def rel(p, p0): c0, s0 = math.cos(p0[2]), math.sin(p0[2]); dx, dy = p[0] - p0[0], p[1] - p0[1]; return [c0 * dx + s0 * dy, -s0 * dx + c0 * dy, p[2] - p0[2]]
+def corner(p): c, s = math.cos(p[2]), math.sin(p[2]); return np.array([p[0] + c * CR[0] - s * CR[1], p[1] + s * CR[0] + c * CR[1]]) - CR
+for st in S['steps']:
+    for k in 'BAS': d = corner(rel(st['pose'][k], S['s0'][k])); pred[k].append(np.hypot(*d) * 100)
+err = {k: np.array(pred[k]) - np.array(TAPE) for k in 'BAS'}
+```
+```
+# 11-02 같은 식으로 다시 계산(입력 outputs/step_state_1.json · TAPE — 화면 출력, 파일로 남기지 않음)
+B -2.9 -0.0 -2.8 +0.1 -2.3 +0.7 | mean 1.5
+A +0.3 -10.0 +2.1 -15.5 +1.9 -17.0 | mean 7.8
+S +0.8 -4.8 -0.0 -1.2 +1.8 -6.2 | mean 2.5
+# step_state_1.json 의 단계별 회전 판정 각(EKF B 누적) · B yaw · 외곽 최근접
+1 +90 91.2° B yaw 93.4° gap 0.358 m … 6 -90 90.6° B yaw 0.4° gap 0.344 m
+```
+- 회전은 `step_rot.py` 48~51 행: EKF B yaw 증분을 지령 중에만 누적해 90° 가 되면 정지 지령(10 회) — 감속 중 더 돈 몫(약 2~3°)이 B yaw 93~94° 로 남는다(위 출력). 오차는 시작 대비 '자세' 로 계산하므로 이 초과 회전은 예측에 그대로 들어간다(오차 원인이 아님).
 
 ## 3. 가설과 판별
 | 가설 | 판별 | 결과 | 판정 |
@@ -42,11 +77,19 @@
 | G1(자이로 일치) 최신 표본 비교 · 문턱 0.05 가 사람 없는 bag 을 통과시킨다 | 4 차 거부율 | f2b3 37 % 거부 | **기각** → 0.1 s 평균 · 바닥 0.12 → 1~2 ‰ |
 | EKF B 가 구석 기동 번짐을 절반 이하로 | R2-c 중심 흔들림 | B 0.112 vs A 0.131(SLAM 0.079) | 선언 기준 **불합격** · 지표가 SLAM 바닥보다 엄격 → 안쪽 면 지표 B 0.099 vs A 0.198(단 라이브 0.130 — §5 모순 3) |
 | 직진 vx 는 휠이 rf2o 보다 정확 | 직진 창 축척 | rf2o 0.91~0.93, 휠 · SLAM 1.000 | **지지** → 직진 rf2o vx σ 0.10 |
+| (6 기) 라이브에서도 EKF B 가 회전 미끄러짐을 매 단계 따라간다 | 10-06 §4 단계별 줄자(선언 기준 평균 ≤ 3 · 6 단계 ≤ 5 cm) | 평균 1.5 · 원위치 0.0 / 0.1 / 0.7 cm, A 는 −10 → −17 누적 | **지지(측정)** — 오프라인 4.3 cm 보다 좋음. n = 6 단계 · 한 자리 · 사람 없음 |
+| (6 기) 위치 추정 SLAM 은 회전 중 미끄러짐 기준으로 쓸 만하다 | 같은 시험 SLAM 열 | 원위치 −4.8 · −1.2 · −6.2 cm | **기각**(10-02 와 같음) — 순회 ③-b 의 기준으로도 약함 |
+| (6 기) rf2o 를 켜면 순회의 회전 뒤 번짐이 줄어든다 | 10-07 ③-b, 제자리 회전 구간 B − SLAM vs A − SLAM | B < A 4/4, 차 0.4~1.5 cm, 최대 10.3 | **미확인** — 표본 4 · 기준(SLAM) 오차 · G4 몫 섞임 |
+| (6 기) rf2o 가 직진 드리프트(map→odom 누적 보정)를 줄인다 | f2b3(끔) vs f2c2(켬) 누적 보정 | Δ(0.393, 0.137) vs (0.422, 0.265) m | **기각**(예상대로 — 직진 몫 2~4 %). 다만 주행 길이 293 vs 430 s 로 다름 |
+| (6 기) 회전 미끄러짐은 고정 모형으로 보정할 수 있다 | 10-08 M1 · M2 한 개 빼고 검증 | 90°당 7.9 → 5.8 · 5.3 cm, 최대 13.4 · 13.7 | 평균만 일부 — **외부 관측 대체 기각** |
+| (6 기) 피벗 회전(r 0)이 미끄러짐을 절반 이하로 | 10-08 rt1 · rt2 | 피벗 중앙 4.0 vs 제자리 6.2(절반 3.1 미달), 순서 효과 섞임 | **미확인**(설계 결함으로 판별 불가) |
 
 ## 4. 조치와 효과
 - **10-02 에 바뀐 것**: Jetson `~/rf2o_ws` 빌드(라이브 스택 미연결) · 오프라인 원형 `r2_gate.py`. 스택 기본값은 그대로.
 - **효과(재생)**: rot3 끝 오차 0.369 → **0.043 m**, 직진 축척 0.998, 구석 기동 벽 안쪽 면 범위 0.198 → 0.099 m(SLAM 0.084), §19 '기동 뒤 남은 차' A −15.2 → B −4.9 cm([회전 중 장애물 번짐](rotation-obstacle-smear.md) §2).
 - **한계**: 같은 bag 4 개로 5 차례 조정(과적합 위험을 알고 멈춤). 사람 섞인 오염을 G1 이 잡는지는 미검증(T1~T3 몫). 라이브 CPU 미측정.
+- **10-06 ~ 10-08 에 바뀐 것**: 정식 게이트 노드 · `ekf.launch.py rf2o:=` · `shadow:=` · `gate_*:=`(전부 기본 끔, 커밋 4fdeeaaf → 1e3819e6 — [게이트 카드](rf2o-gates-people.md) §4), prep 은 `EXTRA_SENSORS` 로만 켬(10-06 `job852` · 10-07 `job903` · `job918` · 10-08 `job934`). **기본값 전환은 하지 않음**(10-07 §15 에 결정 없음).
+- **효과(6 기)**: 라이브 통제 회전 줄자 대비 EKF B 1.5 cm(A 7.8 cm), 원위치 단계 미끄러짐을 0.0~0.7 cm 로 따라감. 순회 번짐 · 직진 드리프트 개선은 **보이지 못함**(§2 10-07 §3.3 · §3.4).
 - **지금 코드**(10-06 R3 이후 정식): `ekf.launch.py rf2o:=true` 면 `rf2o_laser_odometry_node`(`rf2o.yaml`: `/scan` → `/odom_rf2o`, `publish_tf false`, `init_pose_from_topic ""`, 10 Hz) + `rf2o_gate.py` → `/odom_rf2o/gated` 를 주 EKF `odom1`(vx · vy 만)으로, 컨디셔너 B3 를 σ 0.3 으로(39~40 · 53~62 행). `conditioner:=py` 와는 같이 못 씀(48 행). **기본은 꺼짐**이고 prep 기본은 `ODOM=vslam`(cuVSLAM) — rf2o 구성은 `ODOM=rf2o`(→ `rf2o:=true shadow:=false gate_v:=on gate_vref:=wheel`, `prep_patrol.sh` 12 행).
 
 ### 게이트가 하는 일 — 지금 [`rf2o_gate.py`](../../ros2_ws/src/rover_bringup/scripts/rf2o_gate.py) (10-02 R2 원형 → 10-06 정식 노드 → 10-06 §5 · §12 · 10-07 §4 수정)
@@ -99,11 +142,28 @@
 | 다음에 알아보는 법 | 새 지표는 **정답 자세(SLAM 또는 줄자)로 먼저 계산해 바닥값**을 보고 문턱을 정한다 |
 | 데이터 | [`r2_eval_run5.txt`](../debug_log/2026-10-02/outputs/r2_eval_run5.txt) · [`r2_eval.py`](../debug_log/2026-10-02/jobs/r2_eval.py) · 입력 `r2_f2b3.npz`(스크래치패드, **원천 소실**) |
 
+**실수 5 — 회전 시험 bag 을 Jetson `/tmp` 에만 둠(10-06 §2)**
+| 칸 | 내용 |
+|---|---|
+| 하려 한 것 | R3 정식 launch 가 R2-a(rot3 줄자 4.3 cm)를 재현하는지 같은 bag 으로 재생 |
+| 본 것 | `/tmp/bag_rot2` · `bag_rot3` 없음 — Jetson 재부팅으로 `/tmp` 와 함께 소실 |
+| 판별 | PC 스크래치패드 · 저장소 `bags/` 어디에도 사본 없음 |
+| 결론 | R2-a 재현 불가 → 10-06 §4 단계별 실측이 그 자리를 대신함. 규칙: **시험 bag 은 끝나는 즉시 PC 로 회수**(같은 날 `job856_end.sh` · `run_x856.sh` 가 bag_step1 을 tgz 로 묶어 바로 회수 — 그 형식) |
+| 다음에 알아보는 법 | 시험 직후 '그날 `bags/` 에 tgz 가 있나' 를 확인 항목으로. Jetson `/tmp` 는 prep · 재부팅이 지운다 |
+| 데이터 | 원천 소실(rot2 · rot3 bag) · [10-06 §2](../debug_log/2026-10-06/SUMMARY.md) |
+
+**실수 6 — WSL 에서 F: 경로가 안 보여 배포 파일이 안 올라감(10-06 §2 첫 시도)**: 재생 검증 첫 시도가 무효 → 스크래치패드를 거쳐 다시([`run_x850.sh`](../debug_log/2026-10-06/jobs/run_x850.sh) 4~7 행: 스크래치패드 사본에서 `\r` 를 지워 `/tmp/r3up` 에 모은 뒤 scp). SUMMARY 가 '전에도 겪음' 이라 적은 같은 함정. 알아보는 법: WSL 러너는 Windows 드라이브 경로를 직접 쓰지 말고 스크래치패드(`/mnt/c/…`) 사본을 보낸다. 데이터: 첫 시도 출력 원천 소실.
+
+**실수 7 — 단계별 시험 스크립트 오류 2 회(10-06 §4.1)**: ① 단계 2 첫 시도 `KeyError` — DDS 발견 지연으로 첫 메시지 전에 계산 → [`step_rot.py`](../debug_log/2026-10-06/jobs/step_rot.py) 46 행 '세 토픽이 다 올 때까지 최대 8 s 대기' ② 단계 3 첫 시도 — 유효 점 없는 스캔에서 최근접 계산 실패 → 21 행 `if not ok.any(): return`. 둘 다 회전 전에 멈춰 로버 안 움직임(SUMMARY). 알아보는 법: 단계 실행 스크립트는 입력 토픽 · 빈 메시지를 먼저 확인하고 나서 지령을 낸다. 데이터: 오류 화면 원천 소실, 고친 코드는 커밋 ca37d9f4 판.
+
 **모순 · 원문 대조(이 카드를 쓰며 찾은 것)**
 1. §13.2 '직진 bag(f2b4) 재생에서도 rf2o vx / EKF vx = **−0.94**' · 'SLAM/EKF 1.000, rf2o/SLAM **0.932**(창 16 개)': 원문 [`rf2o_fix.txt`](../debug_log/2026-10-02/outputs/rf2o_fix.txt) 는 보정 전 vx 비 **−0.912**, 보정 후 **0.911**(EKF 기준, 표본 683). 0.932 · 1.000 · 16 개는 원문 출력이 없다(별도 계산 — 원천 미상). 결론(직진은 rf2o 가 7~9 % 작게 봄 → 휠 우선)은 어느 값이든 같다.
 2. 지렛대 판단: §13.2 는 'ω × r 보정은 경로 0.54 → 1.65 m 로 나빠짐 = rf2o 가 이미 반영' 이라 했는데, 같은 원문에서 끝점은 보정 c (−0.308, −0.187) 가 줄자에 **6.7 cm**, 보정 안 한 b (−0.340, −0.197) 가 **8.1 cm** 로 c 가 더 가깝다. 또 §18 은 'rf2o 원 **자세**는 라이다 위치의 궤적' 이라 지렛대를 빼야 중심이 된다고 했다(끝 0.7 cm). '속도는 이미 반영' 과 '자세는 라이다 위치' 가 rf2o 안에서 어떻게 함께 성립하는지는 **미확인**(코드 미검토). 지금 게이트는 지렛대를 빼지 않는다(b 방식).
 3. §14.1 '3 차: A = 라이브와 일치(검증)': R2-a 에선 맞지만(A · 라이브 둘 다 0.369) [`r2_eval_run5.txt`](../debug_log/2026-10-02/outputs/r2_eval_run5.txt) R2-c 안쪽 면 범위는 **A 0.198 vs 라이브 0.130**(중심 흔들림은 0.131 vs 0.128 로 비슷)으로 다르다. 같은 설정이어야 할 두 EKF 가 구석 기동에서 갈라진 이유는 **미확인**(10-06 §2 R3 도 '그림자 A 가 라이브와 일치' 라고만 적음). 그래서 'B 가 A 의 절반' 은 재생 A 기준이고, 라이브 기준이면 0.130 → 0.099(약 24 % 감소)다.
 4. §14.2 G1 거부 'f2b3 2': 5 차 csv [`r2_f2b3_gate.csv`](../debug_log/2026-10-02/outputs/r2_f2b3_gate.csv) 는 g1 **3** · g2 **4**. 다른 bag 도 G2 거부가 2~5 건씩 있는데(rot3 5 · rot2 4 · f2b4 3) SUMMARY 는 G1 만 적었다. 정지 검사가 사람 없는 bag 에서 몇 건 걸리는 것은 기록할 가치가 있음(원인 미확인).
+5. (6 기) 10-06 §4.1 B 홀수 단계(+90°) −2.3~−2.9 cm 치우침의 원인: SUMMARY 는 '회전 중간이라 모서리 위치가 각도에 민감(1° ≈ 0.5 cm), EKF 각도 +93~94°, 줄자 측정점 잡기 차이' 를 후보로 두고 '원인 미분리' 라 했는데, 정리 페이지 [`2026-10-06_report.html`](../debug_log/2026-10-06/2026-10-06_report.html) 은 '직진 축척 0.93 또는 오른쪽 앞끝 위치 오차로 추정' 이라 다른 후보를 적었다. 제자리 회전에는 직진 구간이 없고 회전 중 rf2o σ 는 0.03(축척 0.93 은 직진 창에서 잰 값)이라 '직진 축척' 후보는 근거가 약하다. 어느 쪽도 측정되지 않았다 — **미확인**.
+6. (6 기) 10-07 §2 ③-b 의 선언(제자리 회전 구간마다 B − SLAM 최대 ≤ 5 cm): 10-06 §4.1 · 10-02 §13.2 가 이미 '회전 중 SLAM 은 기준으로 부족(6 cm 까지 틀림)' 이라 적었는데 그 SLAM 을 기준으로 5 cm 문턱을 둬 판정이 '불가에 가까움' 으로 끝났다 — 지표 설계 때 기준 자체의 오차를 먼저 보지 않은 것(10-02 실수 4 와 같은 종류). 순회 중 제자리 회전 표본 수(4)도 미리 세지 않았다.
+7. (6 기) 10-07 §2 선언 ③-d(주행 중 게이트 + rf2o + 그림자 CPU 기록)는 §3 분석에 결과가 없다 — 미측정. 정지 기준값(게이트 16.5 · rf2o 4.4 · EKF 13.3 / 10.8 %)도 `job907_postchk.sh` 화면 출력뿐이라 원천 소실.
 
 ## 6. 남은 것 (10-02 시점)
 - R3: 게이트를 정식 노드로 · ekf.launch 인자(기본 끔) · 라이브 CPU.
@@ -113,14 +173,17 @@
 - 피벗 회전(사용자 진단)의 미끄러짐 비교 — 미시험.
 - rf2o 부호 반대의 코드 기전 · 지렛대 반영 여부 — 미확인.
 
-## 7. 이후 (10-06 ~) — 포인터
-- **10-06 §1~§3 R3**: `rf2o_gate.py` 정식 노드 · `ekf.launch.py rf2o:=` · `shadow:=`(그림자 EKF A) — 재생으로 R2 결과 재현(f2b4 축척 0.998, f2b3 안쪽 면 A 0.196 / B 0.096 / SLAM 0.084), **rot2 · rot3 bag 은 Jetson 재부팅으로 소실**(PC 회수 안 한 내 실수, 10-06 §2) — [10-06 SUMMARY](../debug_log/2026-10-06/SUMMARY.md).
-- **10-06 §4.1 단계별 90° 줄자(§17 실행)**: EKF B **줄자 대비 |오차| 평균 1.5 cm**, 방향 원위치 단계(2 · 4 · 6) 0.0 / +0.1 / +0.7 cm(EKF A 단계 2 −10.0 cm) — 메모리 '회전 미끄러짐 · rf2o' 의 '라이브 1.5 cm'.
-- 10-06 §5: 게이트 회전 기준 `/imu/data`(200 Hz) → EKF ω(30 Hz, `gyro_source ekf` 기본) — 라이브 정지 기동에서 게이트 CPU 39 %(코어 하나).
-- 10-06 §9~§11 사람 시험: T1 · T1b 통과, T2 합성 정지 몸 ≤ 2.8 cm 통과, **움직이는 큰 가림(C · D · E) 불합격 9.5~27.9 cm** → §12 **G3(스캔 겹침) 기각** → §12.1 G4(회전 중 병진 타당성).
-- 10-07 §1.1 G4: C · D · E 4.5 / 7.3 / 7.4 cm(> 3 불합격) · 깨끗 2.0 — 오차 3~4 배 감소. §3.2 G4 설계 결함(곡선 회전의 정상 전진을 오염으로) → **§4 휠 잔차 기준**(곡선 σ 키움 · 버림 35 → 2 %) — [10-07 SUMMARY](../debug_log/2026-10-07/SUMMARY.md). 10-07 §2 rf2o 켠 순회 f2c1 · f2c2 9/10(남서 방향 맞춤 실패는 [F2 순회와 위치 점프](f2-patrol-loc-jump.md) 이후 칸).
-- 10-08 회전 방식 시험(사용자 피벗 진단의 시험 — 비율 시험 Q1 전부 미달, 메모리 '회전 방식 시험').
-- 10-20 cuVSLAM 병진 속도 융합(재실행 V4: 회전 미끄러짐 창 −12~29 %, rf2o 와 같이 써도 같음) → **10-23 §16 사용자 결정: 주 EKF 병진 = cuVSLAM**(`vslam:=on`, rf2o 안 띄움 — W3 회전 창 13.2~16.8 cm vs rf2o 21.5~30.7 · 멈칫 5 vs 12~14 · CPU 70 vs 75~76 %) — [10-23 SUMMARY](../debug_log/2026-10-23/SUMMARY.md). rf2o 구성은 `ODOM=rf2o` 로 남음.
+### 남은 것 (10-08 시점)
+- 기본값 결정(10-06 §8 ③) — 순회 비교가 판정 불가로 끝나 미결. 순회에서 rf2o 효과를 보일 지표(기준 오차가 작은 것, 예: 줄자 · 정적 벽 일관성)부터 다시 설계해야 함.
+- 사람 섞인 환경(T2 실제 · T3)과 움직이는 큰 가림 — [게이트 카드](rf2o-gates-people.md) §6.
+- 회전 중 rf2o σ 0.03 을 더 작게 / rf2o 자세 증분 직접(10-02 §18 후보) — 미시험(단계별 1.5 cm 로 필요성 약해짐).
+- 홀수 단계 −2.3~−2.9 cm 치우침의 원인 — 미분리(모순 5).
+- 회전 미끄러짐 자체: 뒤로 끌림의 원인(10-08 §5.6 후보: 외력 · 트랙 장력 · 온도 · 회전 중심) · ABAB 교대 재시험 — 미실행.
+- 직진 드리프트(map→odom 누적 0.4 m 대)는 rf2o 로 안 줄어 — 다른 수단 과제.
+
+## 7. 이후 (10-12 ~): 다음 시기에서 채움
+- 10-06 ~ 10-08 은 위 §2 · §3 · §5 와 [게이트 · 사람 시험 카드](rf2o-gates-people.md)로 채움.
+- 포인터(앞서 적어 둔 것, 다음 시기에서 확인): 10-20 cuVSLAM 병진 속도 융합(재실행 V4: 회전 미끄러짐 창 −12~29 %, rf2o 와 같이 써도 같음) → **10-23 §16 사용자 결정: 주 EKF 병진 = cuVSLAM**(`vslam:=on`, rf2o 안 띄움 — W3 회전 창 13.2~16.8 cm vs rf2o 21.5~30.7 · 멈칫 5 vs 12~14 · CPU 70 vs 75~76 %) — [10-23 SUMMARY](../debug_log/2026-10-23/SUMMARY.md). rf2o 구성은 `ODOM=rf2o` 로 남음(지금 [`prep_patrol.sh`](../tools/prep_patrol.sh) 10 · 12 행).
 
 ## 8. 실험 · 도구 색인
 | 이름 | 무엇 | 위치 |
@@ -132,10 +195,17 @@
 | R2 1~5 차 | 게이트 + EKF A/B 재생 | 5 차 `r2_eval_run5.txt` · `r2_{rot2,rot3,f2b3,f2b4}_gate.csv` (1~4 차 원문 없음) |
 | 그림 | 궤적 · 미끄러짐 · 지렛대 · 회차별 | `Docs/04_navigation/figures/2026-10-02_rot3_paths.png` · `_ekfB_slip.png` · `_rf2o_lever.png` · `_r2_runs.png` · 정리 페이지 `2026-10-02/2026-10-02_report.html` |
 | 도구 | `job833` · `job834` · `job835_rf2o_replay.sh` · `job835_rf2o_rec.py` · `rf2o_cmp.py` · `rf2o_fix.py` · `r2_run.sh` · `r2_gate.py` · `r2_rec.py` · `r2_eval.py` · `job841_imuaxis.py` · `job842_stamp.py` · `job843_dbg.sh` · `render_ekfB_slip.py` · `rf2o_lever.py` · `render_day1002.py` | `2026-10-02/jobs/` |
+| (6 기) R3 재생 · 라이브 정지 | 정식 launch 재현 · 발행률 · CPU | `2026-10-06/outputs/r3_eval.txt` · `j850_r3_replay.txt` · `j851_r3prep.txt`(세부는 [게이트 카드](rf2o-gates-people.md)) |
+| (6 기) step1 | 단계별 90° 줄자 6 단계 | `2026-10-06/outputs/step_tape.csv` · `step_state_1.json` · 그림 `Docs/04_navigation/figures/2026-10-06_step_rot1.png` · bag `2026-10-06/bags/bag_step1.tgz`(로컬, git 제외) |
+| (6 기) f2c1 · f2c2 | rf2o + G4 켠 순회 9/10 · ③-b · ③-c · map→odom | `2026-10-07/outputs/f0_f2c1_runner.log` · `f0_f2c2_runner.log` · `f2c_anal.txt` · `f2c_g4arc.txt` · bag `2026-10-07/bags/bag_f2c1.tgz` · `bag_f2c2.tgz`(로컬) |
+| (6 기) f2d1 · f2d2 · f2e1 · f2e2 | rf2o 켠 채 다른 문제 시험 | [F2 순회 카드](f2-patrol-loc-jump.md) 이후 칸 |
+| (6 기) rt1 · rt2 | 트랙 비율 통제 시험(피벗 회전) | `2026-10-08/outputs/rt12_anal.txt` · `rt12_pool.txt` · `slip_model.txt` · `slip_consistency.txt` |
+| (6 기) 도구 | `step_rot.py` · `job853_step_init.sh` · `job854_step.sh` · `job856_end.sh` · `run_step.sh` · `run_x856.sh` · `render_step1.py` · `run_x850.sh` | `2026-10-06/jobs/` |
+| (6 기) 도구 | `job903_prep_rf2o_g4.sh` · `job907_postchk.sh` · `run_f2c.sh` · `job913_extract.py` · `job913_run.sh` · `f2c_anal.py` | `2026-10-07/jobs/` |
 | 지금 코드 | 게이트 · 설정 · launch | `ros2_ws/src/rover_bringup/scripts/rf2o_gate.py` · `config/rf2o.yaml` · `launch/ekf.launch.py` |
 
 ## 9. 도구 해설
-공통: Jetson 재생은 **도메인 42 · sim time · `fastdds_udp_only.xml`**, `ros2 bag play --clock 100`(100 Hz 시계). npz 는 `/tmp` → PC 스크래치패드(`…\scratchpad\f2a6\…`)로 옮겨 분석했고 **지금은 소실**. rot2 · rot3 bag 도 소실(10-06 §2) — 이 카드의 R1 · R2 결과는 다시 만들 수 없다(f2b3 · f2b4 bag 은 10-06 재생에 쓰였으나 PC 사본 위치 미확인).
+공통: Jetson 재생은 **도메인 42 · sim time · `fastdds_udp_only.xml`**, `ros2 bag play --clock 100`(100 Hz 시계). npz 는 `/tmp` → PC 스크래치패드(`…\scratchpad\f2a6\…`)로 옮겨 분석했고 **지금은 소실**. rot2 · rot3 bag 도 소실(10-06 §2) — 이 카드의 R1 · R2 결과는 다시 만들 수 없다(f2b3 · f2b4 bag 은 10-06 재생에 쓰였으나 PC 사본 위치 미확인). → (11-02 추가) 10-06 [`run_x850.sh`](../debug_log/2026-10-06/jobs/run_x850.sh) 6 행이 PC 스크래치패드 `f0_f2b3/bag_f2b3.tgz` · `f0_f2b4/bag_f2b4.tgz` 에서 올렸다 — 지금 스크래치패드에도, 저장소 `2026-10-02/` 에도(bags 폴더 없음) 없어 **원천 소실**.
 도구 계보: `job835_rf2o_replay.sh`(rf2o 만) → `r2_run.sh`(rf2o + 게이트 + EKF A/B, 1~5 차) → 10-06 `r3_replay.sh`(정식 `ekf.launch.py rf2o:=true shadow:=true`) → 상시 도구 없음(10-23 이후 rf2o 비활성). 게이트: `r2_gate.py`(오프라인 원형, 휠 중계 겸함) → 10-06 `rf2o_gate.py`(정식, 휠 중계는 shadow 때만) → 10-06 §5 `gyro_source ekf` · §12 G3 · §12.1 G4 → 10-07 §4 `v_ref wheel`.
 
 ### job833_rf2o_src.sh · job834_rf2o_build.sh — R0 (Jetson, bash)
@@ -199,6 +269,28 @@
 ### render_day1002.py — 하루 그림 (PC)
 - 해설은 [회전 중 장애물 번짐 §9](rotation-obstacle-smear.md). 이 카드 관련: ① `rot3_paths.png`(줄자 대비 A · B · SLAM · rf2o 궤적) ④ `r2_runs.png`(R2 회차별 R2-a · b · c).
 
+### (6 기) step_rot.py · job853_step_init.sh · job854_step.sh · job856_end.sh · run_step.sh — 단계별 90° 줄자 시험 (Jetson rclpy · PC 래퍼, **로버 회전**)
+- 부른 형태(PC): `bash run_step.sh init` → `+90` → (사용자 줄자) → `-90` → … 6 단계 → `run_x856.sh`(끝). `run_step.sh` 는 `init` 때 스크립트 3 개를 `\r` 제거해 Jetson `/tmp` 로 보내고, 매 단계 `run_jn.sh`(JX_WHY · JX_TIMEOUT 60)로 `job854_step.sh "+90"` 을 부름 — 실행 투명성 규칙(`/tmp/live/current.log`).
+- 853(init): 이전 기록기를 끄고 `ros2 bag record -o /tmp/bag_step1 /scan /tf /tf_static /imu/data /wheel_odom /cmd_vel /odom_rf2o /odom_rf2o/gated /odometry/filtered /odometry/ekf_a /local_costmap/costmap /map` → 4 s 뒤 `step_rot.py init`.
+- step_rot.py: 구독 `/odometry/filtered`(B) · `/odometry/ekf_a`(A) · `/odom_rf2o`(R) 자세, `/scan` → 차체 외곽(x −0.248~+0.262 · y ±0.165) 최근접 거리, TF map→base_link(SLAM). `init` = 3 s 뒤 네 자세를 `/tmp/step_state.json` 의 `s0` 로. 단계 = 세 토픽 대기(최대 8 s) → **ω = ±0.38 rad/s 를 20 Hz 로 지령하며 EKF B yaw 증분 누적, 90° 가 되거나 10 s 지나면 멈춤, 외곽 최근접 < 0.08 m 면 즉시 중단** → 정지 지령 10 회 → 1.5 s + 1 s 기다린 뒤 네 자세 스냅샷 → 단계 기록 → 각 추정의 중심 · 오른쪽 앞끝 이동 · 예측 대각 거리 출력. rf2o 는 '라이다 위치 · 병진 부호 반대' 로 보고 시작 기준 이동을 반전 · 지렛대 0.152 를 빼 중심으로(33~37 행, 10-02 §18 식).
+- 856: 기록기 INT → tgz → `step_state.json` 을 `step_state_1.json` 으로. `run_x856.sh` 가 PC 로 회수(스크래치패드 `step1/`) → 저장소 `outputs/step_state_1.json` · `bags/bag_step1.tgz`.
+- 출력: 화면(단계별 네 추정 줄)은 **원천 소실**, 상태 파일 [`step_state_1.json`](../debug_log/2026-10-06/outputs/step_state_1.json)(단계마다 `deg` · `gap` · `abort` · 네 자세)이 남음. 줄자는 사용자가 대화로 알려 준 값을 [`step_tape.csv`](../debug_log/2026-10-06/outputs/step_tape.csv) 로.
+- 결함: rf2o 누적 자세(R)는 단계 3 부터 각도가 무너져(59° vs 94°) 비교에서 뺐다(원인 미확인). 상수(라이다 yaw · x · 외곽)를 하드코딩. 계보: 10-02 §17 사용자 설계 → 이 스크립트 → 10-08 `job940_ratio.py`(비율 시험, Nav2 거치지 않고 `/cmd_vel`). 지금 다시: rf2o 구성에서 그대로 쓸 수 있음(그림자 A 가 없으면 46 행 대기가 8 s 뒤 풀리고 A 는 '없음' 으로 찍힘 — 57~58 행, 회전 판정은 B 만 씀).
+
+### (6 기) render_step1.py — 단계별 시험 그림 (PC, matplotlib)
+- 하는 일: §2.1 의 식으로 B · A · SLAM 의 예측 대각 거리 − 줄자 막대(±3 cm 띠) + 짝수 단계의 오른쪽 앞끝 예측 위치와 줄자 원. 화면에 세 줄(추정별 오차 · 평균) — 원천 소실, 11-02 재계산은 §2.1.
+- 출력: 그림 [`2026-10-06_step_rot1.png`](../04_navigation/figures/2026-10-06_step_rot1.png). 입력 경로 `step1/step_state_1.json` 은 스크래치패드 기준 — 지금은 저장소 `outputs/` 사본을 가리키게 고쳐야 다시 돈다.
+
+### (6 기) f2c_anal.py · job913_extract.py — 순회 ③-b 번짐 · map→odom (Jetson 추출 · PC 분석)
+- 913(Jetson): bag 의 `/tf` map→odom · odom→base · `/odometry/ekf_a` 자세 · `/odometry/filtered` 속도 · `/odom_rf2o` · `/odom_rf2o/gated`(+ 공분산) · `/cmd_vel` · `/plan` 을 수신 시각으로 npz(`x913_f2c{1,2}.npz` — **원천 소실**). `job913_run.sh` 가 f2c1 · f2c2 를 차례로.
+- f2c_anal ③-b: EKF B 속도에서 \|ω\| > 0.15 · \|v\| < 0.03 이 1.5 s 넘는 구간 = 제자리 회전. 구간 시작 · 끝의 SLAM 자세(map→odom ∘ odom→base, 끝은 map→odom 을 **끝 + 2 s** 값으로 — 회전 직후 SLAM 보정을 기다린 것), B(odom→base) · A 이동을 시작 map 방향으로 돌려 \|dB − dS\| · \|dA − dS\|(cm). map→odom 부분: 연속 map→odom 변화 크기 합을 회전 중(\|ω\| > 0.15) · 그 밖으로, 끝 − 처음 Δ, 한 번 > 5 cm 보정 목록(앞 12 개만 출력 — f2c2 는 15 회 중 12 개 표시). ③-c 부분은 [게이트 카드](rf2o-gates-people.md) §9.
+- 출력 [`f2c_anal.txt`](../debug_log/2026-10-07/outputs/f2c_anal.txt). 결함: 기준이 SLAM(회전 중 수 cm 틀림, 모순 6) · '+2 s' 는 근거 없는 고정값 · 회전량 표시 줄의 각도 펼침이 임시식(24 행).
+
+### (6 기) job903_prep_rf2o_g4.sh · job907_postchk.sh · run_f2c.sh — rf2o 켠 순회 준비 · 러너 (Jetson · PC)
+- 903: `EXTRA_SENSORS="rf2o:=true shadow:=true gate_v:=on"` 로 그때 prep(`job780_prep_navmap.sh`) → sensors 인자 · `/rf2o_gate v_mode` 매개 확인. 출력 [`j903_prep.txt`](../debug_log/2026-10-07/outputs/j903_prep.txt).
+- 907(읽기만): Nav2 3 노드 lifecycle · `/odom_rf2o` · gated · `/odometry/ekf_a` 6 s hz · `top -b -n2 -d5` 둘째 화면에서 rf2o_gate · rf2o_laser · ekf_node %CPU · EKF 위반 줄 · uptime. 출력 **원천 소실**(SUMMARY §2.1 의 7.8 Hz · 16.5 % 에만).
+- run_f2c.sh: f2b 와 같은 10 목표 문자열을 파일 안에 둔 순회 래퍼(STAGE=F2c, `rest5` · 이후 `fullf` 인자) — 해설은 [F2 순회 카드](f2-patrol-loc-jump.md) 이후 칸에서.
+
 ## 10. 용어
 - **rf2o(Range Flow-based 2D Odometry)**: 연속 두 라이다 스캔의 거리 변화(range flow)로 센서의 평면 운동(vx · vy · ω)을 추정하는 라이다 오도메트리. 지도 없이 프레임 간 정합만 하므로 미끄러짐을 바로 보지만, 움직이는 물체 · 특징 없는 복도에 약하다.
 - **게이트(gate)**: 다른 센서와 어긋나는 측정을 EKF 에 넣기 전에 걸러 내거나 믿음(σ)을 낮추는 노드. 여기선 G1 자이로 일치 · G2 정지 검사 · (이후) G3 스캔 겹침 · G4 병진 타당성.
@@ -207,3 +299,7 @@
 - **지렛대(lever arm)**: 센서가 회전 중심에서 떨어져 있으면(라이다 x 0.152 m) 회전만으로도 센서는 원을 그리며 움직인다(v = ω × r). 센서 속도 · 자세를 차체 중심으로 바꿀 때 이 몫을 빼야 한다.
 - **sim time · 도메인 42 재생**: bag 의 `/clock` 으로 노드 시계를 돌리고(sim time), 라이브 스택과 다른 DDS 도메인에서 돌려 서로 간섭하지 않게 하는 이 프로젝트의 재생 관례.
 - **피벗 회전(사용자 제안)**: 한쪽 트랙을 거의 세우고 반대쪽만 움직여 회전축을 그 트랙에 두는 회전. 제자리 회전(양 트랙 반대 방향)보다 바닥을 덜 긁을 것이라는 진단.
+- **(6 기) 그림자 EKF A**: rf2o 를 넣기 전 구성(휠 + 자이로)을 같은 입력으로 함께 돌리는 비교용 EKF(`/odometry/ekf_a`, TF 를 안 냄). 같은 주행 · 같은 시각에서 rf2o 의 효과만 떼어 보기 위한 대조군.
+- **(6 기) 단계별 줄자 시험**: 제자리 90° 를 한 번씩 돌고 멈출 때마다 차체 모서리와 바닥 표시 사이 거리를 줄자로 재 각 추정의 예측과 비교하는 방식. 방향이 처음으로 돌아온 단계는 회전 효과가 빠져 순수 미끄러짐만 남는다.
+- **(6 기) map→odom 누적 보정**: 위치 추정 SLAM 이 odom(EKF) 자세를 지도에 맞추려 더한 보정의 총량. 오도메트리가 드리프트할수록 커진다.
+- **(6 기) 트랙 비 r**: 회전할 때 느린 트랙 속도 / 빠른 트랙 속도(부호 포함). r −1 = 제자리 회전, r 0 = 한쪽 트랙 정지(피벗).

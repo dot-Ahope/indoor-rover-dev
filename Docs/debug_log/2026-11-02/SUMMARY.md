@@ -96,3 +96,10 @@
 ## §13 주제 폴더 페이지를 날짜 폴더에도 (사용자: "날짜별 디버깅 로그에 있던 아티팩트들이, 각 프로젝트별 figure 안으로 옮겨졌음이 확인됬다. 아티팩트들은 날짜별 디버깅 로그 폴더 내에도 같이 저장하는게 좋겠다.")
 - 확인: 옮겨진 것은 아니다 — `git log --follow` 로 11 장 모두 처음 커밋부터 `Docs/04_navigation/figures/`(6) · `Docs/05_nvblox/figures/`(5)에 있었고 이름 바뀜 이력 없음(09-21 ~ 09-29, 날짜 폴더 저장이 굳은 10-07 이전).
 - 조치: 11 장을 같은 이름으로 `Docs/debug_log/<날짜>/figures/` 에 복사(약 1.9 MB) · README §7.1 에 '주제 폴더 사본은 날짜 폴더에도 같은 판' · 점검 `chk_record_rules.py` 에 C(사본 없음 · 내용 다름) 추가.
+
+## §14 문제 대장 6 기(10-06 ~ 10-08) (사용자: "10월 끝나면, 먼저 마무리할 수 있어 보이는 문제 대장을 진행하자.")
+- 묶음 6 개(카드마다 담당 하나), 각 묶음이 §12 에서 발췌를 붙인 그날 페이지를 길잡이로 쓰고 SUMMARY · 원문으로 다시 확인.
+- 새 카드 7: `rf2o-gates-people` · `southwest-orient-stall` · `low-box-global-memory` · `rotation-method-track-ratio` · `tf-lag-w3-wobble` · `cable-step-over` · `repo-public-ops`. 이어 채움 7: rf2o-introduction · f2-patrol-loc-jump · onboard-stop-nav-guard · f0-rotation-side-slip · rotation-obstacle-smear · track-asymmetry · cpu-load-stalls. 묶음 보고의 '다른 카드에 넣을 링크' 는 머리 표 '관련 문제' 칸에 덧붙임(카드 22 장). ISSUES.md 6 기 표 · 색인 다시 생성.
+- 카드 수 정정: `Docs/issues/*.md` 는 ISSUES.md 를 빼고 지금 66 장(5 기까지 59 장 — 앞서 '60 장' 이라 한 것은 ISSUES.md 를 함께 센 것).
+- 내 대조(원본 직접 확인): `nav2_params.yaml:115` yaw_goal_tolerance 0.35 · 10-07 판 BT(64aa041)는 TruncatePath, 지금은 CopyPath(남서 카드 해석의 전제) · `navigation.launch.py:97` 전역 nvblox 프레임 = map, `nav2_params.yaml:563` 주석은 그 전제를 안 적음(낡은 주석) · `rf2o_gate.py:8~11` 머리 주석 '/imu/data · 0.1 s' ↔ 실제 기본 ekf · 0.15 s(41~42) · 10-07 §9 '471 커밋 비밀번호 0 건'(지금 값만 찾은 점검 — 11-02 §6 과 이어짐).
+- 지금 코드에 걸린 것(결정 대기, 바꾸지 않음): 낡은 주석 2(`nav2_params.yaml:563`, `rf2o_gate.py:8~11`) · CLAUDE.md 데크 재측정 문장에 `rf2o_gate.py` 빠짐 · 휠(0.02/0.10) · 게이트(EKF ω 0.15) 회전 문턱 불일치(ODOM=rf2o 때만) · 남서 '위치만(f)' 를 일반 모드로 되돌릴 수 있는지 재시험 · PreferForward 15 의 지금 구성 효과 미측정 · `chk_drive_gate.py` C 는 주행 중 stamp 정체를 못 봄 · `index/JOBS.md` 가 `rot2.py` 와 실험 이름 rot2 를 섞음.

@@ -89,6 +89,18 @@
 | [회전 중 장애물 번짐](rotation-obstacle-smear.md) | 조사 → rf2o | odom 좌표 코스트맵에 옛 표시가 남음 · 로컬 map 좌표 A/B |
 | [rf2o 도입(5 기 부분)](rf2o-introduction.md) | 진행 → 이후 cuVSLAM | 라이다 정합 속도로 회전 미끄러짐을 EKF 에. 부호 반대 보정 · R2 오프라인 |
 
+### 6 기 10-06 ~ 10-08 (rf2o 라이브 · 사람 시험 · 남서 정체 · 낮은 상자 기억 · 회전 방식 · TF 지연 · 저장소 공개) — 11-02 작성 · 앞 카드 9 장도 이어 채움
+| 카드 | 상태 | 한 줄 |
+|---|---|---|
+| [rf2o 게이트 G1~G4 · 사람 시험](rf2o-gates-people.md) | 보류(부분 해결) | 게이트 CPU 39 → 16 %. 정지 중 사람 · 다리 · 정지한 몸 통과, 크게 가린 채 움직이는 몸은 G4 로도 4.5~7.4 cm(목표 3). G3 기각, G4 판정량을 휠 잔차로 바꿔 곡선 오판 35 → 2 % |
+| [남서 구석 방향 맞춤 정체](southwest-orient-stall.md) | 우회 | 도착 직전 '움찔' → nav_guard 취소 3/3 → 러너 '위치만(f)' 로 통과. 당시 해석('뒤 치명 칸')은 판별 없는 추정 — BT 가 끝 방향을 0° 로 덮어쓴 정황(10-14 CopyPath 로 고침), 일반 모드 재시험은 미실시 |
+| [낮은 상자 기억 · 전역 nvblox](low-box-global-memory.md) | 우회(10-08) | 라이다 아래 상자를 계획기가 잊음: 라이다 소거가 카메라 표시를 지움(추정) + 재계획 0.01 Hz(측정). 전역 STVL 기각, 전역 nvblox(map) + 재계획 0.5 Hz 로 f2e2 3/3 · 미접촉. f2e1 접촉 = 층 프레임 기본값 odom(내 결함, 09-22 판에도 프레임 줄 없었음) |
+| [회전 방식 · 트랙 비율 · 앞 회전 우선](rotation-method-track-ratio.md) | 보류 · 설정 반영(미검증) | 미끄러짐 방향 일정(뒤로) · 크기 불안정. 비율로 절반 이하 줄인 경우 없음(블록 설계라 확정 아님). PreferForward 5 → 15 — 지금 PathAlign · PathFollow(10-26 변경)에서의 효과는 미측정 |
+| [W3 저속 떨림 · TF 지연](tf-lag-w3-wobble.md) | 조사 중 | ω 부호 6 s 에 21~34 번. TF 지연 가설 기각, t 235 중단은 map→odom stamp 1.49 s 멈춤 → MPPI transform_tolerance 0.5 로 우회. 떨림 원인 미확정 |
+| [바닥 전선 · 케이블 가드 밟기](cable-step-over.md) | 보류 | 09-29 기울기 흔들림 2.6~3.3 배 · 10-01 가드 위 헛돎으로 SLAM 15 · 21 cm 되돌림. 10-06 영향 표는 대부분 원리 추정, 시험 미실시 |
+| [저장소 공개 운영](repo-public-ops.md) | 해결(공개 이력) · 보류(비공개 이력 · GitHub 캐시) | 영상으로 첫 페이지 · 개인 계획 표현 정리 · 원본 → 공개 두 줄. 10-07 '이력 비밀번호 0' 점검이 놓친 옛 값은 11-02 게이트 강화 · 공개 이력 다시 쓰기로 0 |
+| 이어 채움 | — | [rf2o 도입](rf2o-introduction.md)(라이브 줄자 B 1.5 cm · f2c 9/10) · [F2 순회 · 위치 점프](f2-patrol-loc-jump.md) · [nav_guard](onboard-stop-nav-guard.md) · [제자리 회전 미끄러짐](f0-rotation-side-slip.md)(10-06 단계별 90°) · [회전 중 번짐](rotation-obstacle-smear.md) · [트랙 비대칭](track-asymmetry.md) · [CPU 부하](cpu-load-stalls.md) |
+
 ### 10 월 (형식 시범)
 | 카드 | 상태 | 한 줄 |
 |---|---|---|

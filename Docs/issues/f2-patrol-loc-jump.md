@@ -1,8 +1,8 @@
-# F2 순회와 위치 추정 점프 — 지도 구멍이 만든 1.33 m (5 기: 10-01 §8 · 10-02 §1~§9)
+# F2 순회와 위치 추정 점프 — 지도 구멍이 만든 1.33 m (5 기: 10-01 §8 · 10-02 §1~§9 · 6 기: 10-07 · 10-08 순회)
 
 | 상태 | 기간 | 처음 본 곳 | 바꾼 파일 · 설정 | 관련 문제 |
 |---|---|---|---|---|
-| **점프: 해결**(원인 = 저장 지도의 빈 곳 — 재생으로 재현 · 보완 지도에서 소멸 **측정**, 실주행 f2b3 에서 같은 자리 점프 0 **1 회 확인**). **순회: 10-02 시점 진짜 성공 6 · 실패 1 · 접촉 2**(의자 다리 · 상자). 남서 구석 방향 맞춤 정체는 이후 10-07 에 3/3 재현 → 러너 '위치만(f)' 으로 **우회**(아래 '이후') | 10-01 ~ 10-02 (이 카드는 10-01 §8 의 코스 · 점프 부분과 10-02 §1~§9 를 채움) | [10-01 §8.41](../debug_log/2026-10-01/SUMMARY.md) — 영상 36 s 에서 사용자가 '로버가 x 0.6 → −1.0 으로 뛰었다' 고 봄 | 지도 **office_v3**(Jetson `~/maps/office/office_v3.*`, 저장소 [`office_v3.pgm`](../04_navigation/maps/office_v3.pgm) · [`.yaml`](../04_navigation/maps/office_v3.yaml)) — prep 기본 지도(지금도 `Docs/tools/prep_fast.sh` `MAP=office_v3`). 러너 `job551_f0drive.sh` 에 `G2_SKIP` · 래퍼 `run_f2b2.sh`(목표 문자열을 파일 안에). 위치 추정 탐색 창은 **바꾸지 않음**(3.0 유지, 지금 [`slam.yaml`](../../ros2_ws/src/rover_bringup/config/slam.yaml) 45 · 57 행) | [회전 중 장애물 번짐](rotation-obstacle-smear.md)(§7.2 에서 갈라짐) · [rf2o 도입](rf2o-introduction.md) · [제자리 회전 옆 밀림 F0-a](f0-rotation-side-slip.md) · [SLAM map→odom 시각 정체](slam-stamp-freeze.md)(위치 추정 모드의 다른 결함) · [라이다 근접 사각](near-wall-blindspot.md)(낮은 물체 · 옆 사각) · [첫 SLAM 지도](first-slam-map.md)(office_v1 · v2 계보) |
+| **점프: 해결**(원인 = 저장 지도의 빈 곳 — 재생으로 재현 · 보완 지도에서 소멸 **측정**, 실주행 f2b3 에서 같은 자리 점프 0 **1 회 확인**). **순회: 10-02 시점 진짜 성공 6 · 실패 1 · 접촉 2**(의자 다리 · 상자). 남서 구석 방향 맞춤 정체는 10-07 에 3/3 재현 → 러너 '위치만(f)' 으로 **우회** → [남서 구석 방향 맞춤 정체](southwest-orient-stall.md). **6 기(10-07 · 10-08)**: 순회 f2c 9/10 · f2d 8/10 · f2e 3/3 × 2, 점프 보고 없음(측정은 f2c 두 주행만, §7) | 10-01 ~ 10-02 (이 카드는 10-01 §8 의 코스 · 점프 부분과 10-02 §1~§9 를 채움) · 6 기 10-06 ~ 10-08 은 §7 | [10-01 §8.41](../debug_log/2026-10-01/SUMMARY.md) — 영상 36 s 에서 사용자가 '로버가 x 0.6 → −1.0 으로 뛰었다' 고 봄 | 지도 **office_v3**(Jetson `~/maps/office/office_v3.*`, 저장소 [`office_v3.pgm`](../04_navigation/maps/office_v3.pgm) · [`.yaml`](../04_navigation/maps/office_v3.yaml)) — prep 기본 지도(지금도 `Docs/tools/prep_fast.sh` `MAP=office_v3`). 러너 `job551_f0drive.sh` 에 `G2_SKIP` · 래퍼 `run_f2b2.sh`(목표 문자열을 파일 안에). 위치 추정 탐색 창은 **바꾸지 않음**(3.0 유지, 지금 [`slam.yaml`](../../ros2_ws/src/rover_bringup/config/slam.yaml) 45 · 57 행) | [회전 중 장애물 번짐](rotation-obstacle-smear.md)(§7.2 에서 갈라짐) · [rf2o 도입](rf2o-introduction.md) · [제자리 회전 옆 밀림 F0-a](f0-rotation-side-slip.md) · [SLAM map→odom 시각 정체](slam-stamp-freeze.md)(위치 추정 모드의 다른 결함) · [라이다 근접 사각](near-wall-blindspot.md)(낮은 물체 · 옆 사각) · [첫 SLAM 지도](first-slam-map.md)(office_v1 · v2 계보) · [낮은 상자 기억](low-box-global-memory.md) · [전선 밟기](cable-step-over.md) · [회전 방식 · 트랙 비율](rotation-method-track-ratio.md) (6 기) |
 
 **한 줄**: F2(저장 지도 위 웨이포인트 순회)를 처음 돌린 10-01, 열두 번째 주행 f2a12 의 목표 6 시작에서 위치 추정 노드가 map→odom x 를 **한 번에 −1.33 m** 옮겨, Nav2 는 가짜 '도착' 을 하고 다음 목표에서 엉뚱한 자리의 의자 앞에서 떨었다. 사용자는 '지도의 빈 곳' 을 원인으로 짚었고, 다음 날 같은 bag 을 위치 추정 노드에 다시 먹이니 점프가 **같은 시각 · 같은 크기로 재현**됐다(라이브와 x 차 ≤ 0.03 m). 구멍을 메운 지도(②)와 탐색 창을 1.0 으로 줄인 설정(③)은 **각각 단독으로** 점프를 없앴다. 사용자는 탐색 창은 3.0 그대로 두고(넓은 창 = 실제 큰 오차 회복력) 구멍 메운 지도를 **office_v3** 로 채택했고, 이어진 f2b 순회에서 같은 자리 점프는 없었다(최대 한 번 0.184 m). 순회 자체는 6 성공 · 1 실패(D → 남서 구석 방향 맞추기 정체) · 접촉 2(전진 중 의자 다리, 복귀 때 출발 방 상자 — 둘 다 라이다 아래 · 카메라 화각 밖)로 끝났고, 남서 구석 정체를 파다가 '회전 중 벽이 odom 좌표에서 12 cm 두꺼워진다' 는 별도 줄기([회전 중 장애물 번짐](rotation-obstacle-smear.md))가 나왔다.
 
@@ -119,21 +119,50 @@
 2. [`j802_extend.txt`](../debug_log/2026-10-02/outputs/j802_extend.txt) 끝에 '**Ceres(루프 클로저) 흔적: 1 건**' — do_loop_closing False 확인과 함께 찍혔는데 SUMMARY §1.1 은 언급 없음. 흔적이 기동 때 한 번인지 실제 최적화인지 **미확인**(H-3 이동 0 이라 결과엔 영향 없어 보임).
 3. [`f0_f2b3_runner.log`](../debug_log/2026-10-02/outputs/f0_f2b3_runner.log) 목표 3(남서) 'SUCCEEDED … 목표 대비 0.146 m, **89.4°**' — yaw 허용(0.35 rad ≈ 20°)보다 큰 차로 성공 표시. 러너의 비교 yaw 가 출발 때 계산한 `p` 초기값이고 실제 보낸 목표 yaw 와 다를 수 있음 — **미확인**. 같은 줄의 'stuck 진단 1 회' 도 SUMMARY 에 없음.
 4. §1.1 H-4 의 v1 값 −6.205/−6.154/−6.200(3 자리)은 원문(2 자리 −6.21/−6.15/−6.20)에 없음 — 별도 계산의 출력 원문 없음(차 −0.036/−0.044/−0.048 도 같음).
+5. (6 기 작성 중, 11-02) 위 3 번 판별: 10-01 판 러너([`2026-10-01/jobs/job550_f0run.py`](../debug_log/2026-10-01/jobs/job550_f0run.py))도 루프 안에서 `gyaw = path_end_yaw(...)` 로 **바꾼 뒤** 결과 줄을 찍으므로 89.4° 는 보낸 방향(−107°) 기준이다 → '`p` 초기값' 가설 기각. Nav2 `yaw_goal_tolerance` 0.35 rad 인데 SUCCEEDED 라면 **컨트롤러가 비교한 목표 방향이 보낸 방향과 달랐다**(도착 −18.0° 는 0° 기준 20° 안 — BT `TruncatePath` 의 끝 방향 0° 와 맞음, 정황). 목표 6 에서 '시계 방향 113° → 54°' 로 돈 것도 0° 쪽이다. 10-07 에도 같은 서명 2 건 → [남서 구석 방향 맞춤 정체 §3](southwest-orient-stall.md).
+6. (6 기 작성 중) '한 번에 최대 0.184 m'(§6.4) · 10-07 '한 번에 5 cm 넘는 보정' 은 **map→odom 변환의 병진 변화**다. 로버 위치의 변화와 같지 않다 — 원점에서 r 만큼 떨어진 곳에서 yaw 보정 Δθ 는 변환 병진을 ≈ r·Δθ 만큼 바꾼다(남서 구석 r ≈ 5.6 m 면 1° 에 ≈ 10 cm, 정의상 계산). 10-01 점프(x −1.33 · yaw +0.1°)처럼 병진이 지배적이면 같지만, 수 cm~십수 cm 의 '한 번 보정' 은 yaw 몫을 빼고 봐야 한다. 지금까지 그렇게 나눠 본 기록 없음.
+7. (6 기 작성 중) 목표 이름 'W3' 이중 사용 — 10-02 §6 코스 줄 'W3 (−1.6, −2.0) … W3 (5.5, −2.2)'. 앞의 것은 10-01 §8.1 · `places.yaml` 의 **C**. 이 카드 §2 의 'f2b3 W3 53.7 s' 는 C(−1.6, −2.0) 이다. 10-07 §2 · §2.2 표도 같은 이름을 이어 씀.
 
 ## 6. 남은 것 (10-02 시점)
 - 점프 감시(map→odom 계단 감지 → 취소)는 없다. 다른 빈 곳 · 반복 구조에서 같은 일이 생기면 막을 장치가 지도 품질뿐.
 - 탐색 창 3.0 의 대가(반복 구조 오정합)는 재생 ③ 으로만 확인 — 다른 자리에서의 위험은 미측정.
 - office_v3 남쪽 벽 한 칸 이동 — 줄자 미확인.
 - `/map_nav` 움직이는 물체 지우기 — 사용자 손 수정 대기(저장소엔 아직 없음).
-- 남서 구석 방향 맞춤 정체 — 대책 미결정(§7.1 A · B), 기전 중 '시계 방향으로 크게 돈 이유' 미확인.
+- 남서 구석 방향 맞춤 정체 — 대책 미결정(§7.1 A · B), 기전 중 '시계 방향으로 크게 돈 이유' 미확인. → 6 기 [남서 구석 방향 맞춤 정체](southwest-orient-stall.md)(시계 방향 = 0° 쪽, 아래 모순 5).
 - 옆 · 뒤 낮은 물체(의자 다리 · 상자) 사각 — 센서 범위 문제로 별도 과제.
 - 위치 정확도 F2-d(복귀 줄자 ≤ 5 cm) — 10-02 에는 재지 않음.
 
-## 7. 이후 (10-06 ~) — 포인터
-- **10-07 §2.2 · §6.2 · §7**: rf2o 켠 f2c1, f2d1 에서도 남서 구석 방향 맞춤 정체 → '**3/3 재현**'(f2b3 목표 6 · f2c1 · f2d1, 바꾼 G4 · tolerance 와 무관). 러너 `job550_f0run.py` 에 yaw 모드 **`f`**(map 위치가 0.15 m 안이면 러너가 취소하고 SUCCEEDED_XY) → f2d2 남서 SUCCEEDED_XY 59.6 s — [10-07 SUMMARY](../debug_log/2026-10-07/SUMMARY.md) §7 · §7.1. 같은 날 목표 10 은 상자 앞 정지(→ 메모리 '상자 옆 정지').
-- 10-07 §3.4: f2c2 map→odom 누적 0.42 m · −9.7° 는 이상치 아님(f2b3 0.393 · 0.137 · −5.70° 와 비교).
-- 위치 추정 모드의 다른 결함: 10-27 정합 중 map→odom stamp 정체 → transform_timeout 1.5 — [SLAM map→odom 시각 정체](slam-stamp-freeze.md). 10-28 오래 세워 둔 스택의 odom yaw 드리프트 — [세워 둔 로버의 방향 드리프트](stationary-yaw-drift.md).
-- 회전 중 벽 두꺼워짐 → [회전 중 장애물 번짐](rotation-obstacle-smear.md) · [rf2o 도입](rf2o-introduction.md).
+## 7. 6 기 (10-06 ~ 10-08) — rf2o 켠 순회 f2c · f2d, 전역 nvblox 순회 f2e
+이 시기의 순회는 목적이 '위치 점프' 가 아니라 rf2o(10-07)와 전역 nvblox(10-08)의 비교였다. 이 카드에는 **순회 결과 · map→odom 보정 · 점프 여부**만 남기고, 남서 정체는 [남서 구석 방향 맞춤 정체](southwest-orient-stall.md), rf2o 판정(③-b · ③-c · G4)은 [rf2o 도입](rf2o-introduction.md), 상자 ② · 전역 nvblox 층 프레임 결함은 상자 줄기(카드 미작성 — 10-07 §2.6 · §7.1~§8, 10-08 §1~§3)로 간다.
+
+### 7.1 흐름
+| 날짜 · § | 한 일 | 본 것(수치) | 그때 결론(틀렸으면 표시) | 데이터 |
+|---|---|---|---|---|
+| 10-06 §2 | 순회 주행 없음. f2b3 · f2b4 bag 을 rf2o 정식 launch 로 재생(도메인 42) | f2b3 남서 구석 벽 안쪽 면 범위 A 0.196 / B 0.096 / SLAM 0.084 m, 기동 뒤 남은 차 A−SLAM −15.1 / B−SLAM −4.7 cm(정식 launch 열) | rf2o 가 10-02 남서 구석의 odom 번짐을 재생에서 줄임 → [rf2o 도입](rf2o-introduction.md) | [10-06 SUMMARY §2](../debug_log/2026-10-06/SUMMARY.md) · [`j850_r3_replay.txt`](../debug_log/2026-10-06/outputs/j850_r3_replay.txt) |
+| 10-07 §2 선언 | 같은 office_v3 · 같은 10 목표 · rf2o + G4 + 그림자 EKF A. 비교 기준 = 10-02 f2b(시도 7 · 성공 6 · 실패 1 · 접촉 2 · 점프 최대 0.184 m) | — | ③-a 10 목표 · 접촉 0 · 복귀 줄자, ③-b 번짐, ③-c G4 비용, ③-d 부하 | [10-07 SUMMARY §2](../debug_log/2026-10-07/SUMMARY.md) |
+| 10-07 §2.2 · §2.5 | f2c1(목표 1~4) · f2c2(5~10) | f2c1 3/4(남서 CANCELED 71.2 s), f2c2 **6/6** → **9/10**. 도착 오차 0.122~0.165 m(f2c2 목표 6 남서만 0.242 m). map→odom 누적 f2c1 Δ(0.032, 0.094) m · −3.66° · f2c2 Δ(0.422, 0.265) m · −9.65° | 실패 1 = 남서 방향 맞춤(→ 남서 카드). 사용자: 복귀 때 상자를 밀며 옴 → 접촉 1 | [`f0_f2c1_runner.log`](../debug_log/2026-10-07/outputs/f0_f2c1_runner.log) · [`f0_f2c2_runner.log`](../debug_log/2026-10-07/outputs/f0_f2c2_runner.log) |
+| 10-07 §3.4 | map→odom 0.42 m · −9.7° 가 이상치인가(f2b3 와 비교) + 어디서 쌓였나 | f2b3(rf2o 끔, 293 s) Δ(0.393, 0.137) · −5.70° vs f2c2(430 s) Δ(0.422, 0.265) · −9.65°. 변화 합: f2c1 위치 회전 중 0.493 · 밖 0.379 m / yaw 4.98 · 6.57°, f2c2 1.163 · 1.505 m / 8.56 · 17.49°. **한 번에 5 cm 넘는 변화** f2c1 2 회(181 s 8.1 · 191 s 14.4 cm — 둘 다 남서 접근 중), f2c2 15 회(출력된 12 개 중 최대 103 s 11.9 cm) | **이상치 아님** · rf2o 는 직진 드리프트를 줄이지 못함(직진 몫 2~4 %, 예상대로). 0.30 m 넘는 한 번 변화 없음 = **점프 없음**(f2c 두 주행, 측정 — 단 아래 §5 6 번 · 7.2 의 한계) | [`f2c_anal.txt`](../debug_log/2026-10-07/outputs/f2c_anal.txt) · [`f2c_anal.py`](../debug_log/2026-10-07/jobs/f2c_anal.py) 27~31 행 · [`job913_extract.py`](../debug_log/2026-10-07/jobs/job913_extract.py) · 입력 `x913_f2c{1,2}.npz` **원천 소실**(bag `2026-10-07/bags/bag_f2c{1,2}.tgz` 로 재생성 가능) |
+| 10-07 §6.2 · §7.1 | f2d1(같은 10 목표, G4 휠 잔차 · MPPI tol 0.5) · f2d2(5~10, 남서 `f`) | f2d1 3/4(남서 CANCELED 69.4 s), f2d2 5/6(남서 SUCCEEDED_XY 59.6 s · 목표 10 상자 ② 앞 정지 → nav_guard 123.2 s) → **8/10**. map→odom 누적 f2d1 Δ(0.051, 0.170) · −3.66° · f2d2 Δ(0.380, 0.230) · −8.82° | 남서 3/3 재현 → 러너 '위치만(f)'. 상자 ② 는 실제 낮은 상자(사용자). 한 번 보정 크기는 **미측정**(f2c_anal 을 f2d 엔 안 돌림) | [`f0_f2d1_runner.log`](../debug_log/2026-10-07/outputs/f0_f2d1_runner.log) · [`f0_f2d2_runner.log`](../debug_log/2026-10-07/outputs/f0_f2d2_runner.log) · [`j921_f2d2_g10.txt`](../debug_log/2026-10-07/outputs/j921_f2d2_g10.txt) |
+| 10-08 §2 | '전역에 nvblox 를 넣었다면' — f2c2 · f2d2 bag 재계산 | 카메라만 본 장애물 묶음 f2c2 35 · f2d2 41, 대부분 10 s 넘게 지속, 거의 모두 통로 안. 사용자: "대부분 실제 물체 · (0.1, −5.8) 근처는 바닥 에어캡" | 상자 ② 첫 표시는 두 주행 모두 그 목표의 첫 경로 **뒤** → 전역 nvblox + 주기 재계획 A/B 로 | [`whatif_f2c2_f2d2.txt`](../debug_log/2026-10-08/outputs/whatif_f2c2_f2d2.txt) · [`nv_global_whatif.py`](../debug_log/2026-10-08/jobs/nv_global_whatif.py) · 그림 [`2026-10-08_nvblox_global_whatif.png`](../04_navigation/figures/2026-10-08_nvblox_global_whatif.png) |
+| 10-08 §3 · §3.1 | 전역 nvblox(`global_camera:=nvblox`) + `replan_hz:=0.5` + `mppi_viz:=true` 선언 — 10 목표(남서 `f`)였으나 사용자가 **B → W3 (5.5, −2.2) → 출발** 3 목표로 줄임 | — | ③-a 3 목표 · 접촉 0 · nav_guard 0, ③-b 상자 ② 첫 표시 ≤ 3 s 안 회피 경로 | [10-08 SUMMARY §3](../debug_log/2026-10-08/SUMMARY.md) · 그림 [`2026-10-08_patrol_goals.png`](../04_navigation/figures/2026-10-08_patrol_goals.png) |
+| 10-08 §3.3 · §3.5 | f2e1 | 3/3 SUCCEEDED 53.8 · 48.3 · 122.7 s, map→odom 누적 Δ(0.062, 0.312) · −7.34°. 사용자: 복귀 때 상자에 닿음 | 전역 nvblox 층 `nav2_costmap_global_frame = odom`(기본값) → map→odom 보정(끝 Δy 0.31 m)만큼 상자가 ≈ 0.3 m 밀려 찍힘 = **위치 추정 보정이 전역 지도 좌표로 새어 든 결함**(측정) → map 으로 고침 | [`f0_f2e1_runner.log`](../debug_log/2026-10-08/outputs/f0_f2e1_runner.log) · [`f2e1_box_replan.txt`](../debug_log/2026-10-08/outputs/f2e1_box_replan.txt) · [`f2e1_costmaps.txt`](../debug_log/2026-10-08/outputs/f2e1_costmaps.txt) · [`f2e1_contact.txt`](../debug_log/2026-10-08/outputs/f2e1_contact.txt) · [`job937_src.sh`](../debug_log/2026-10-08/jobs/job937_src.sh) |
+| 10-08 §3.7 · §3.8 | f2e2(프레임만 고친 같은 구성) | 3/3 SUCCEEDED 52.1 · 49.1 · 108.5 s, map→odom 누적 Δ(−0.056, 0.375) · −5.28°. 전역 · 로컬 상자 칸 중심 차 ≤ 0.04 m. 사용자: 상자에 **닿지 않음** | 프레임 수정 확인. 점프 검사는 **미측정** | [`f0_f2e2_runner.log`](../debug_log/2026-10-08/outputs/f0_f2e2_runner.log) · [`f2e2_box_align.txt`](../debug_log/2026-10-08/outputs/f2e2_box_align.txt) · [`box_align.py`](../debug_log/2026-10-08/jobs/box_align.py) |
+
+### 7.2 6 기 누적 · 판정
+| 주행 | 코스 | 성공 / 시도 | 실패 · 정지 | 접촉(사용자) | map→odom 끝 − 처음 |
+|---|---|---|---|---|---|
+| f2c1 + f2c2 | 10 목표(rf2o) | 9 / 10 | 남서 방향 맞춤 1 | 1(복귀 상자 ②) | (0.032, 0.094) · −3.66° / (0.422, 0.265) · −9.65° |
+| f2d1 + f2d2 | 10 목표(G4 잔차 · tol 0.5, f2d2 남서 `f`) | 8 / 10 | 남서 1 · 상자 ② 앞 정지 1 | 0(멈춤) | (0.051, 0.170) · −3.66° / (0.380, 0.230) · −8.82° |
+| f2e1 | B → W3 → 출발(전역 nvblox, 프레임 결함) | 3 / 3 | — | 1(상자 ②) | (0.062, 0.312) · −7.34° |
+| f2e2 | 같은 코스(프레임 고침) | 3 / 3 | — | 0 | (−0.056, 0.375) · −5.28° |
+
+(전부 러너 로그 원문 — 위 표 데이터 칸.)
+- **위치 점프**: 6 기에 10-01 식의 점프(한 번에 ≥ 0.30 m)를 보고한 기록은 없다. 측정한 것은 f2c1 · f2c2 뿐(최대 14.4 cm, f2c2 는 출력된 12 개 중 11.9 cm — `f2c_anal.py` 31 행이 앞 12 개만 찍음). f2d · f2e 는 계산하지 않음. 남서 접근 중 f2c1 의 8.1 · 14.4 cm 가 남서 정체와 관계있는지는 미확인(→ 남서 카드 §3).
+- **map→odom 누적**: 10 목표 순회 끝에서 0.4~0.5 m · −9° 수준(f2b3 · f2c2 · f2d2), 3 목표(약 15 m)에서 0.31~0.38 m(f2e). rf2o 로도 줄지 않음(10-07 §3.4). 이 보정이 odom 좌표로 그린 층에 새면 장애물이 그만큼 밀린다는 것이 10-08 f2e1 에서 실제로 드러났다(전역 nvblox 층).
+- 판정(10-08 시점): office_v3 위에서 점프 재발 0 은 '측정한 두 주행에서' 만 확인. 점프 감시 장치는 여전히 없다(§6 그대로).
+
+### 7.3 이후 (10-12 ~): 다음 시기에서 채움
+- 포인터만: 위치 추정 모드의 다른 결함 — 10-27 정합 중 map→odom stamp 정체 → transform_timeout 1.5([SLAM map→odom 시각 정체](slam-stamp-freeze.md)), 10-28 오래 세워 둔 스택의 odom yaw 드리프트([세워 둔 로버의 방향 드리프트](stationary-yaw-drift.md)). 회전 중 벽 두꺼워짐 → [회전 중 장애물 번짐](rotation-obstacle-smear.md) · [rf2o 도입](rf2o-introduction.md). 남서 정체의 재해석(10-14 §16) → [남서 구석 방향 맞춤 정체](southwest-orient-stall.md).
 
 ## 8. 실험 · 도구 색인
 | 이름 | 무엇 | 위치 |
@@ -148,6 +177,9 @@
 | `job805_evid.*` · `clear_cand.py` · `render_cand_clear.py` · `render_cand_label.py` | 지울 후보 | `2026-10-02/jobs/` |
 | `run_f0.sh` · `job551_f0drive.sh` · `job550_f0run.py` · `run_f2b2.sh` · `wait819.sh` | 러너 | `2026-10-02/jobs/`(job550 은 Jetson `/tmp` 판) |
 | `job814_nearcells.py` · `job816_g5log.sh` · `job817_lviz.py` · `render_corner.py` · `job820_lviz/gviz.py` · `render_box.py` · `box_fov.py` | f2b 분석 | `2026-10-02/jobs/` |
+| f2c1 · f2c2 · f2d1 · f2d2(6 기) | 10-07 rf2o 켠 순회 · 남서 `f` | `2026-10-07/outputs/f0_f2{c1,c2,d1,d2}_runner.log` · `f2c_anal.txt` · bag `2026-10-07/bags/bag_f2*.tgz` → 남서 카드 |
+| f2e1 · f2e2(6 기) | 10-08 전역 nvblox 순회 3 목표 | `2026-10-08/outputs/f0_f2e{1,2}_runner.log` · `f2e1_*.txt` · `f2e2_box_align.txt` · bag `2026-10-08/bags/bag_f2e*.tgz` |
+| `job913_extract.py` · `f2c_anal.py`(6 기) | map→odom 보정 합 · 한 번 보정 | `2026-10-07/jobs/` — 해설은 [남서 카드 §9](southwest-orient-stall.md) |
 
 ## 9. 도구 해설
 공통: Jetson 쪽 도구는 PC(WSL) 에서 `sshpass -p <PW> ssh jetson@192.168.0.101`(10-02 당시 주소, 지금은 192.168.0.110)로 스크래치패드 → `/tmp` 에 올려 돌렸다. 재생 도구는 **도메인 42 · sim time · `fastdds_udp_only.xml`** 로 라이브 스택과 분리. 분석 결과 npz 는 대부분 PC 스크래치패드(`…\scratchpad\f2a6\…`)에 있었고 **지금은 소실**(자동 삭제) — 출력 txt 만 `outputs/` 에 남았다.
