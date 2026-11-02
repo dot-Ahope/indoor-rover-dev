@@ -36,7 +36,7 @@
 | 08-31 (밤) | 라이브 드리프트 진단 시도(`job13`) | `NO_MAP`, 파라미터 전부 빈 값 | 배터리 완전 방전으로 Jetson 다운 → 스택 없음 | [`job13_drift_diag.txt`](../debug_log/2026-08-31/outputs/job13_drift_diag.txt)(스크립트 원천 소실) |
 | 09-01 '★★ 중대 정정' | 줄자 재측정 | 휠 원시 / 줄자 = 1.277 · 1.278 | 휠 오도 27.8 % 과대 → VX_SCALE 0.783(09-02 검증 +0.47 %) — 08-31 병진 지도의 벽 번짐 1 순위 원인이 이것(**추정**, 같은 경로 재매핑으로 확인한 기록 없음) | 휠 오도 스케일 카드(예정) |
 
-이후(09-04 ~): 다음 시기에서 채움 — F1 매핑(09-30 ~ 10-02, `office_v2` · `office_v3`, 루프 오정합으로 `loop_search_space_dimension` 8 → 3, [09-30 §14](../debug_log/2026-09-30/SUMMARY.md)), 회전 중 스캔 처리 포크([`Docs/04_navigation/SLAM_FORK_ROTATION.md`](../04_navigation/SLAM_FORK_ROTATION.md)), 위치 추정 모드의 stamp 정체([SLAM map→odom 시각 정체](slam-stamp-freeze.md)).
+이후(09-30 ~): **[F1 사무실 지도 카드](f1-office-mapping.md)** 로 이어짐 — office_v1(09-30) → 이어 그리기 오정합 2 회(루프 창 8 → 3 m) → bag 재생으로 office_v2(10-01) → office_v3(10-02, 다음 시기). 그 밖: 회전 중 스캔 처리 포크([`Docs/04_navigation/SLAM_FORK_ROTATION.md`](../04_navigation/SLAM_FORK_ROTATION.md)), 위치 추정 모드의 stamp 정체([SLAM map→odom 시각 정체](slam-stamp-freeze.md)).
 
 ## 3. 가설과 판별
 | 가설 | 판별 | 결과 | 판정 |
