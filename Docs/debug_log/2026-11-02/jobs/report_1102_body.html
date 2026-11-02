@@ -1,0 +1,119 @@
+
+<div class="wrap">
+<header>
+  <div class="eyebrow">Indoor Rover · 2026-11-02 · Docs/debug_log/2026-11-02 §0–§9 · 로버 주행 없음</div>
+  <h1>11-02 규약 한 곳으로</h1>
+  <p class="lead">문제 대장 4 기를 마무리하고 5 기를 끝내 카드가 60 장이 됐습니다. 이어서 사용자가 "기록 규약 README 가 두 달째 낡았다" 고 짚어, 흩어진 규칙을 한 문서로 모으고 그중 기계로 볼 수 있는 부분에 점검 · 차단 장치를 달았습니다. 그 장치를 다른 세션이 평가하다가, 공개 저장소에 옛 비밀번호가 평문으로 남아 있던 것을 찾아냈습니다. 그 값은 공개 이력을 다시 써서 지웠습니다.</p>
+</header>
+
+<section>
+  <h2>오늘의 판정</h2>
+  <div class="verdicts">
+    <div class="v ok"><b>문제 대장 1~5 기 완료</b><span>08-26 ~ 10-02 · 카드 60 장 · 형식 점검(비밀번호 0 · 금지 문구 0 · 깨진 링크 0) 통과 (§0 · §1)</span></div>
+    <div class="v ok"><b>규약 원본 = README 하나</b><span>CLAUDE.md 는 '언제 무엇을 읽나' 표 사본과 요지만, 메모리는 결정 이유만. 두 표가 같은지 점검 도구가 비교 (§3 · §6)</span></div>
+    <div class="v ok"><b>커밋 게이트 자동화</b><span>Claude 커밋 · 터미널 커밋 둘 다, 지금 값 · 옛 값, staged + 작업 트리. 시험 5 가지 모두 의도대로 (§5 · §6)</span></div>
+    <div class="v ok"><b>공개 이력에서 옛 비밀번호 제거</b><span>dev · main 강제 push 1 회 → 둘 다 같은 커밋, 공개 이력 비밀번호 0 (§8)</span></div>
+    <div class="v wait"><b>규약 경고 93 건 남음</b><span>대부분 10 월 옛 이름(앞머리 없음 64). 옛 파일은 바꾸지 않는 규칙이라 그대로. 적힌 경로가 없는 4 건은 원천 확인 전 (§4)</span></div>
+    <div class="v wait"><b>비공개 이력은 그대로</b><span>옛 비밀번호가 남지만 비공개라 다시 쓰지 않기로 결정(사용자) (§9)</span></div>
+  </div>
+</section>
+
+<section>
+  <h2>규칙은 어디에 있었나<span class="sec">§3</span></h2>
+  <p>사용자 질문: "README 가 오래됐는데 업데이트가 안 되고 있다. 지금은 세션 컨텍스트를 따르는 것 같은데 맞는가?" 답은 '맞다' 였습니다. README 는 08-27 판 그대로였고, 실제 작업은 세션마다 자동으로 읽히는 CLAUDE.md 와 메모리를 따랐습니다.</p>
+  <div class="tbl"><table>
+    <tr><th>08-27 README</th><th>실제로 하던 것</th><th>그 규칙이 있던 곳</th></tr>
+    <tr><td>SUMMARY 는 하루 끝에 한 일 / 결과 / 판단 / 다음</td><td>작업하면서 § 시간순, 판정 기준은 주행 전에, 정정은 새 §</td><td>CLAUDE.md</td></tr>
+    <tr><td><span class="mono">jobNN_요지</span> 번호 이름</td><td>용도 앞머리 6 개, 계속 쓰는 도구는 <span class="mono">Docs/tools/</span></td><td>CLAUDE.md · tools/README</td></tr>
+    <tr><td>(없음)</td><td>TOOLS.md · bags/ · run_meta · 실수 칸 형식 · 데이터 칸</td><td>CLAUDE.md · 메모리 3 건</td></tr>
+    <tr><td>(없음)</td><td>러너 실시간 로그 · GB 급 bag 삭제 순서 · 주행 전 검사 정리</td><td>메모리에만</td></tr>
+    <tr class="bad"><td><span class="mono">../JETSON_SETUP_BRIEF.md</span></td><td>09-21 재구성으로 옮겨져 깨진 링크</td><td>—</td></tr>
+  </table></div>
+  <p>문제는 같은 규칙이 여러 곳에 복사돼 한 곳만 고치면 어긋난다는 것이었습니다. 그래서 원본을 README 한 곳으로 모으고, 자동으로 읽히는 CLAUDE.md 에는 '언제 무엇을 읽을지' 만 두었습니다.</p>
+</section>
+
+<section>
+  <h2>무엇을 기계로 지키게 했나<span class="sec">§4 · §5 · §6 · §7</span></h2>
+  <p>막는 것은 되돌릴 수 없는 일만 골랐고, 형식 문제는 경고로 충분하다고 판단했습니다. 기록의 내용이 좋은지는 기계가 판단할 수 없습니다.</p>
+  <div class="tbl"><table>
+    <tr><th>장치</th><th>하는 일</th><th>막나</th><th>시험</th></tr>
+    <tr><td><span class="mono">.claude/settings.json</span> deny</td><td>origin push · 공개 저장소 직접 push · sudo</td><td><span class="pill no">막음</span></td><td>origin 마른 push → 도구가 거부</td></tr>
+    <tr><td><span class="mono">chk_commit_gate.py</span> (Claude 훅)</td><td>git commit 직전, staged + 작업 트리에서 비밀번호(지금 · 옛 값)</td><td><span class="pill no">막음</span></td><td>누출 · 파일 없음 → 막음, 한글 메시지 → 통과</td></tr>
+    <tr><td>같은 도구 (<span class="mono">.git/hooks/pre-commit</span>)</td><td>터미널에서 직접 하는 커밋</td><td><span class="pill no">막음</span></td><td>임시 저장소 <span class="mono">git commit -am</span> → 막음, 커밋 수 그대로</td></tr>
+    <tr><td><span class="mono">chk_record_rules.py</span></td><td>TOOLS.md 누락 · 앞머리 · 설명 주석 · 깨진 링크 · 적힌 경로 · 두 규약 표 비교</td><td><span class="pill wait">경고</span></td><td>10-13 이후 전체 93 건</td></tr>
+    <tr><td><span class="mono">publish_public.sh</span> 점검</td><td>공개 전, 공개 이력 전체에서 비밀번호 파일의 모든 값</td><td><span class="pill no">멈춤</span></td><td>마른 실행 0</td></tr>
+    <tr><td>허용 목록 정리</td><td>승인한 명령 63 줄 → 와일드카드 11 줄(읽기 · 빌드). 러너 · 플래시는 넣지 않음</td><td>—</td><td>정리 뒤 비밀번호 0</td></tr>
+  </table></div>
+  <p class="note">비밀번호는 저장소 밖 파일에 한 줄씩 둡니다(첫 줄 = 지금 값, 다음 줄 = 감시할 옛 값). 값은 어느 도구도 출력하지 않습니다.</p>
+</section>
+
+<section>
+  <h2>옛 비밀번호는 어떻게 공개 저장소에 있었나<span class="sec">§6 · §7 · §8</span></h2>
+  <div class="flow">
+    <span class="k">경로</span><span>승인 창에서 '다시 묻지 않음' 을 고르면 앱이 명령 문자열을 통째로 <span class="mono">.claude/settings.local.json</span> 에 저장한다 → 05 월에 비밀번호가 든 ssh 명령이 쌓였다 → 그 파일이 05-21 부터 git 에 추적됐다 → 공개 스크립트의 제외 목록에 없어 공개 dev · main 에 올라갔다.</span>
+    <span class="k">왜 게이트를 통과했나</span><span>값이 지금 비밀번호와 달랐고, 게이트는 지금 값 하나만 찾았다.</span>
+    <span class="k">범위</span><span><span class="mono">sshpass -p</span> 형식 1 종(38 줄) + <span class="mono">SSHPASS=</span> 형식 1 종(벤더 이미지 기본값으로 보임). 둘 다 이 파일에만 있었다.</span>
+    <span class="k">조치</span><span>추적 해제 · <span class="mono">.gitignore</span> → 공개 스크립트 제외 목록에 추가 → 마른 실행 0 확인 → dev · main 강제 push. 두 값 모두 사용자가 지금 쓰지 않음.</span>
+    <span class="k">남은 한계</span><span>GitHub 가 끊긴 옛 커밋을 해시로 한동안 보여 줄 수 있다. 비공개 저장소 이력은 그대로(사용자 결정).</span>
+  </div>
+  <p>사용자 질문 "main 갱신은 보안상 문제가 있는 커밋까지 수정한다는 의미인가?" 에 대한 답: 아니다. main 갱신은 main 을 dev 위치로 앞당길 뿐이라 옛 커밋은 남는다. 커밋에서 지우려면 이력을 다시 쓰고 강제 push 해야 해서 그쪽(B)을 택했다.</p>
+</section>
+
+<section>
+  <h2>바로잡은 내 오류</h2>
+  <div class="pm">
+    <h3>추적 중인 개인 설정 파일을 열어 보지 않음 (§4 → §6)</h3>
+    <div class="flow">
+      <span class="k">하려 한 것</span><span>deny 규칙을 넣으려고 <span class="mono">.claude/</span> 의 설정 파일을 확인</span>
+      <span class="k">본 것</span><span><span class="mono">settings.local.json</span> 이 추적 중이고 첫 화면에 옛 PC 경로 허용 규칙이 보임</span>
+      <span class="k">처음 추론</span><span>"옛 허용 규칙" 이라 신경 쓸 것 없음 — 내용을 끝까지 안 봄</span>
+      <span class="k">틀린 이유</span><span>그 안에 옛 비밀번호 명령 38 줄. 다른 세션 평가가 찾음. 게이트가 지금 값 하나만 본다는 한계도 못 짚었다</span>
+      <span class="k">다음에 알아보는 법</span><span>추적 파일 목록에 개인 설정(<span class="mono">*.local.*</span>)이 있으면 내용을 연다 · 비밀 게이트에는 옛 값도 넣는다</span>
+      <span class="k">데이터</span><span><span class="mono">jobs/chk_leak_scan_1102.py</span> (값 출력 없음, 결과는 대화와 SUMMARY §6)</span>
+    </div>
+  </div>
+  <div class="pm">
+    <h3>훅 첫 판이 한글 커밋 메시지에서 그냥 통과 (§5)</h3>
+    <div class="flow">
+      <span class="k">하려 한 것</span><span>훅이 stdin 으로 받은 JSON 에서 <span class="mono">git commit</span> 명령을 찾기</span>
+      <span class="k">본 것</span><span>시험 출력이 깨진 글자 — 콘솔 기본 인코딩(cp949)으로 읽고 있었음</span>
+      <span class="k">처음 추론</span><span>출력 표시만의 문제</span>
+      <span class="k">의심한 이유</span><span>읽기도 같은 인코딩이면 한글이 든 JSON 이 깨지고, 깨진 JSON 은 '명령 없음' 으로 처리돼 검사 없이 통과한다</span>
+      <span class="k">결론</span><span>stdin 을 utf-8 로 읽고, JSON 이 깨져도 원문에서 git commit 을 찾게 고침 — 막아야 할 때 새지 않게</span>
+      <span class="k">다음에 알아보는 법</span><span>막는 장치는 '입력을 못 읽으면 통과' 가 아닌지 먼저 본다</span>
+      <span class="k">데이터</span><span><span class="mono">Docs/tools/chk_commit_gate.py</span> · <span class="mono">TOOLS.md</span> §5 줄</span>
+    </div>
+  </div>
+  <div class="pm">
+    <h3>훅이 <span class="mono">git commit -a</span> 를 못 봄 (§5 → §6, 다른 세션 지적)</h3>
+    <div class="flow">
+      <span class="k">하려 한 것</span><span>커밋 대상에 비밀번호가 있으면 막기</span>
+      <span class="k">본 것</span><span>staged 만 검사 → <span class="mono">-a</span> · <span class="mono">git commit &lt;파일&gt;</span> 은 훅이 끝난 뒤 작업 트리 내용을 담는다</span>
+      <span class="k">결론</span><span>staged + 추적 작업 트리를 모두 검사. 임시 저장소에서 두 경로 모두 막는 것 확인</span>
+      <span class="k">다음에 알아보는 법</span><span>'커밋될 내용' 은 index 하나가 아니다 — 명령 옵션별로 무엇이 담기는지 따진다</span>
+      <span class="k">데이터</span><span><span class="mono">TOOLS.md</span> §6 줄</span>
+    </div>
+  </div>
+  <div class="pm">
+    <h3>노출 검색이 한 형식만 봄 (§6 → §7)</h3>
+    <div class="flow">
+      <span class="k">하려 한 것</span><span>공개 이력에서 옛 비밀번호 찾기</span>
+      <span class="k">본 것</span><span><span class="mono">sshpass -p</span> 형식만 검색 → 1 종. 허용 목록을 정리하다 <span class="mono">SSHPASS=</span> 형식 1 종을 더 봄</span>
+      <span class="k">결론</span><span>§8 다시 쓰기는 파일 자체를 이력에서 빼서 두 값 모두 제거. 확인도 두 형식 모두로</span>
+      <span class="k">다음에 알아보는 법</span><span>비밀 찾기는 값의 형식이 아니라 그 값을 담을 수 있는 파일(설정 · 러너)부터 본다</span>
+      <span class="k">데이터</span><span><span class="mono">jobs/chk_pub_filtered_1102.sh</span> · SUMMARY §7 · §8</span>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>다음 후보</h2>
+  <ul>
+    <li>문제 대장 6 기(10-06 ~: rf2o 라이브 · G3/G4 · 남서 정체 · 회전 방식 · MPPI 궤적 발행 포화)</li>
+    <li>CLAUDE.md 낡은 줄 두 곳: 'B2 · B3 기본 끔'(B3 는 자동 켜짐) · stuck_monitor '작동 모드'</li>
+    <li>드리프트: 출발 전 위치 정합 검사 배포 · d2 측정 (10-29 §4)</li>
+    <li>F2.5: 휴대폰 창구 실접속 시험</li>
+    <li>기록 정리: 적혔지만 없는 파일 4 건 · TOOLS.md 빠진 날 3 개(10-21 ~ 10-23)</li>
+  </ul>
+</section>
+</div>
