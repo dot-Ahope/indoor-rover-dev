@@ -22,3 +22,9 @@
 - 조치: README 를 **규약 원본**으로 재작성(§0 언제 무엇을 읽나 · SUMMARY · 도구 · Jetson 실행 · 주행 · 보관 · 정리 페이지/대장 · 비밀/push · 옛 기록 읽는 법 · 변경 이력). CLAUDE.md §1 의 규약 본문은 "작업 전 README 해당 절을 읽는다" 로 줄임. 세션 메모리의 규칙 본문은 결정 날짜 · 이유 + README 절 연결로 줄임.
 - 발견(고치지 않음): `Docs/tools/up_tools.sh` 기본 호스트가 옛 주소 `192.168.0.101`(지금은 `JETSON_HOST` 를 넘겨야 맞음).
 - 다음(사용자 결정 대기): ② `.claude/settings.json` deny(origin push · sudo) + 경고용 점검 스크립트 ③ 커밋 훅(비밀번호 보관 위치 결정 필요).
+
+## §4 규약 기계 장치 (사용자: "2번 진행하라")
+- `.claude/settings.json` deny: `git push origin …` · `git push public …`(공개는 점검 있는 `private/publish_public.sh` 로만) · `sudo …` (Bash · PowerShell). 확인: `git push --dry-run origin no-such-branch-xyz` → 도구가 거부. 한계: ssh 문자열 안 `sudo` 같은 간접 실행은 못 잡음.
+- 점검 도구 `Docs/tools/chk_record_rules.py`(경고만, README §8): 기본 = git 에서 바뀐 파일 · 그 날짜 폴더 → `RULES_OK`. `--all`(10-13 이후 전부) 결과 `outputs/chk_record_rules_all.txt`: 경고 93 = 앞머리 없음 N 64 · 설명 주석 없음 H 22 · 적힌 경로 없음 P 4 · TOOLS.md 없음 T 3(10-21 · 10-22 · 10-23).
+- 읽은 것: N 64 중 `get_` 29 · `fill_` 4 · `put_` 3 · `mk_` 3 등 — 실제 작업이 규약 앞머리 6 개 밖의 이름을 계속 썼다(가져오기 `get_` 가 가장 많음). 규약을 넓힐지(예: `get_` = 가져오기) 이름을 지킬지는 사용자 결정. P 4 건: `2026-10-20/jobs/anal_vslam_cmp.py` · `2026-10-21/outputs/chk_day_start_1021.txt` · `2026-10-26/outputs/plan_offline/scenes_1023.npz` · `2026-10-26/outputs/planner_offline/goal_yaw/exp/` — 기록에 적혔으나 저장소에 없음(원천 확인 전, 고치지 않음).
+- 비밀번호 게이트는 `ROVER_RUNNER=<run_jn.sh>` 를 줄 때만 돈다(값 출력 없음) — 커밋 훅(3 번)은 비밀번호 보관 위치 결정 대기.

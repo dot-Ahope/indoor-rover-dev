@@ -15,7 +15,7 @@
 | 로버를 움직이는 주행 · 재생 | §4 · §5 (코스 · 게이트는 `Docs/04_navigation/TEST_COURSE_AND_GATES.md`) |
 | 내 실수 · 정정 기록, 정리 페이지(아티팩트) | §2.3 · §7 |
 | bag · 로그 보관, 삭제 | §6 |
-| 커밋 · push | §8 |
+| 커밋 · push | §8 (커밋 전 `python Docs/tools/chk_record_rules.py`) |
 | 옛 기록(10-11 이전) 읽기 | §9 · 문제 대장 `Docs/issues/ISSUES.md` |
 
 ## 1. 폴더 구조
@@ -144,6 +144,9 @@ Docs/issues/                문제 대장 — 문제별 카드 + 자동 색인 (
   3. `bash private/publish_public.sh` (공개 `dev`; `--push-main` 은 사용자 결정 때만)
   - `origin` 에는 올리지 않는다.
 - 커밋 메시지 끝에 세션 지침이 주는 공동 작성자 줄을 붙인다.
+- **커밋 전 점검** `python Docs/tools/chk_record_rules.py` (경고만; `--all` = 10-13 이후 전부, `--strict` = 경고 시 종료 코드 1).
+  보는 것: TOOLS.md 누락 · 도구 앞머리 · 스크립트 설명 주석 · 깨진 링크 · SUMMARY/TOOLS 에 적힌 `jobs/` `outputs/` 경로 존재 · (`ROVER_RUNNER=<run_jn.sh 경로>` 면) 비밀번호 게이트. 경고는 고치거나, 고치지 않을 이유를 그날 SUMMARY 에 적는다.
+- **기계적 차단**(`.claude/settings.json` deny): `git push origin …` · `git push public …`(공개는 점검이 있는 `publish_public.sh` 로만) · `sudo …`. 막히면 우회하지 말고 사용자에게 묻는다. 한계: ssh 문자열 안의 `sudo` 같은 간접 실행은 못 잡는다.
 
 ## 9. 옛 기록 읽는 법 (이 규약 전 기록이 다른 이유)
 
@@ -171,3 +174,4 @@ Docs/issues/                문제 대장 — 문제별 카드 + 자동 색인 (
 | 2026-10-27 | 주행 전 검사 중복 제거(게이트 한 노드) | 10-27 SUMMARY §24 |
 | 2026-10-29 | 문제 대장 `Docs/issues/` · 자동 색인 | 사용자 |
 | 2026-11-02 | 이 문서를 규약 원본으로 재작성(흩어진 규칙 모음 · 하루 끝 정리 폐기 · 깨진 링크 제거) | 사용자, 11-02 SUMMARY §3 |
+| 2026-11-02 | 커밋 전 점검 `chk_record_rules.py`(경고) · settings.json deny(origin · public 직접 push · sudo) | 사용자, 11-02 SUMMARY §4 |
