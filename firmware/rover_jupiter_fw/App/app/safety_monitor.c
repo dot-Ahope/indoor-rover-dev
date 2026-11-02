@@ -12,7 +12,7 @@
 #include "speed_controller.h"
 #include "rover_platform.h"   /* STALL_TARGET_THRESH_MPS (= 정지 문턱, 2026-09-17 한 곳으로) */
 
-#define CTRL_HZ            100u
+#define CTRL_HZ            100u   /* speed_controller.c 와 중복 정의 — 바꿀 땐 둘 다(TODO(improve): rover_platform.h 로 모으기) */
 /* 1:90 모터 재튜닝(2026-08-26): 기동이 느려(정지→20mm/s 에 300ms+) 200ms 창에서
  * 고속 지령 시 오탐 발생했음(b 100 즉시 FAULT). 창 600ms 로 확장.
  * (당시 '드라이버 내장 3A 차단이 1차 방어 → 600ms 지연 허용' 이라 적었으나 3A 는 출처 없는 값 —
@@ -27,8 +27,10 @@
  *   "마찰 못 이김"이 아니라 진짜 구속이다. 즉 duty 는 지령보다 구속 여부를 잘 구분한다.
  *   지령 문턱만 올리는 안(0.040)은 그 미만 지령의 진짜 구속을 무한 방치 — 모터 드라이버의 과전류
  *   보호 사양은 확인된 것이 없어(CHR-GM37-BLDC3650, 출처 불명 '3A' 삭제) 펌웨어가 반드시 잡아야 함.
- * STALL_DUTY_THRESH 0.60 근거: 승격값 0.020 의 초기 duty ≈ dz 0.13 + KV 12×0.02 = 0.37 이며 이 값으로
- *   바닥 기동이 실측 확인됨. 0.60 에서도 무이동이면 정상 부하 범위 밖. (튜닝 가능값) */
+ * STALL_DUTY_THRESH 0.60 근거(09-03 당시): 승격값 0.020 의 초기 duty ≈ dz 0.13 + KV 12×0.02 = 0.37 이며 이 값으로
+ *   바닥 기동이 실측 확인됨. 0.60 에서도 무이동이면 정상 부하 범위 밖. (튜닝 가능값)
+ *   지금 값(2026-11-02 주석 갱신): 승격 MIN_WHEEL_SPEED 0.008 · DEADZONE 0.34 · KV 5.8 → 초기 duty ≈ 0.34 + 5.8×0.008 ≈ 0.39
+ *   (계산; job397 실측 41 %). 0.60 과의 여유는 그대로. 위 '데드밴드 승격(0.020)' 도 당시 값 — 지금 0.008. */
 /* 정지 지령 제외 문턱은 rover_platform.h STALL_TARGET_THRESH_MPS (= SPEED_CTRL_STOP_THRESH_MPS). 2026-09-17: 0.010 → 0.005 */
 #define STALL_DUTY_THRESH  0.60f  /* |duty| 이상 인가 중 무이동이면 stall 의심 */
 
