@@ -71,3 +71,8 @@
   - 드리프트: 위치 확인 ⓐ 배포 · d2(10-29 §4 선언).
   - F2.5: place_web 휴대폰 시험 · §8-4~6.
   - 기록에 적혔으나 없는 파일 4 건(§4) · TOOLS.md 빠진 날 3 개(10-21~23).
+
+## §10 정리 페이지 · 규약의 아티팩트 항목 (사용자: "아티팩트로도 정리해주고, 로컬에도 저장 후 push하라. 그리고 현재 규약에 아티팩트 관련 내용도 있는지 확인")
+- 정리 페이지(아티팩트 https://claude.ai/artifact/9oVgtwC3JSKStBX82JnbAe): `figures/day_summary_1102.html`(머리 = `2026-10-28/jobs/report_1028_head.html` 제목만 바꿈 + 본문 `jobs/report_1102_body.html`, 조립 `jobs/fig_report_1102.py`, 그림 없음). 원천 = 이 SUMMARY §0 ~ §9 · `TOOLS.md`.
+- 규약 확인: README §7.1 에는 **형식**(본 것 → 추론 → 결론 · 실수 `.pm` 칸)만 있었고, 만드는 때 · 로컬 사본 위치 · SUMMARY 에 남길 것 · 공개 저장소 주의는 없었다(10-20 ~ 10-28 실제 방식은 SUMMARY 에만). → §7.1 에 네 항목 추가, 변경 이력 한 줄.
+- 오늘 쓴 일회성 스크립트를 스크래치패드에서 `jobs/` 로 옮김(`chk_leak_scan_1102.py` · `up_pw_old_1102.py` · `chk_pub_filtered_1102.sh`, 값 출력 없음 · 벤더 기본값 검색어는 공개 파일이라 뺌) · `TOOLS.md` 작성(그날 끝에 몰아 씀 — 규약 §3.3 위반, 사후 표시).
