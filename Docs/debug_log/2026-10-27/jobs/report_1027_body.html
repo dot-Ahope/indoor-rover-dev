@@ -1,9 +1,13 @@
 
+<style>
+.code{margin:0;font-family:var(--f-mono);font-size:12.5px;line-height:1.5;background:var(--bg);border:1px solid var(--line);padding:8px 10px;overflow-x:auto;white-space:pre;max-width:100%}
+.flow > span{min-width:0}
+</style>
 <div class="wrap">
 <header>
   <div class="eyebrow">Indoor Rover · 2026-10-27 · Docs/debug_log/2026-10-27 §0–§31</div>
   <h1>10-27 TF 지연 추적</h1>
-  <p class="lead">서쪽 통로 Smac 실패를 허용치 0.35 로 고친 주행(f2st1)에서 출발해, 영상에서 보인 이상 두 가지(상자 앞 막힘, 전역 코스트맵 튐)를 원자료로 따라갔습니다. 막힘은 상자 자체였고, 튐은 nvblox 층의 결함이었으며, 그 결함을 일으킨 TF 지연은 SLAM 의 map→odom 시각 정체였습니다. 결함을 고치고 SLAM 미래 여유를 1.5 s 로 올린 f2tt1 은 TF 실패 0 · 정지 0 으로 완주했습니다. 정체의 근본 원인은 계측으로 LinkNearChains 단계까지 좁혔습니다.</p>
+  <p class="lead">서쪽 통로 Smac 실패를 허용치 0.35 로 고친 주행(f2st1)에서 출발해, 영상에서 보인 이상 두 가지(상자 앞 막힘, 전역 코스트맵 튐)를 원자료로 따라갔습니다. 막힘은 상자 자체였고, 튐은 nvblox 층의 결함이었으며, 그 결함을 일으킨 TF 지연은 SLAM 의 map→odom 시각 정체였습니다. 결함을 고치고 SLAM 미래 여유를 1.5 s 로 올린 f2tt1 은 TF 실패 0 · 정지 0 으로 완주했습니다. 정체의 근본 원인은 계측으로 LinkNearChains 단계까지 좁혔습니다. 2026-11-02 에 판단마다 그 값을 낸 스크립트의 핵심 부분과 실제 출력 발췌, 두 원문 파일 경로를 덧붙였습니다.</p>
 </header>
 
 <section>
@@ -33,6 +37,26 @@
     <tr class="bad"><td>출발 상자 복귀 최소</td><td class="n">16.3 cm</td><td class="n">−1.0 cm(접촉)</td><td class="n">14.4 cm</td></tr>
     <tr><td>통로 북행 계획</td><td>Smac 실패 3 → NavFn</td><td>Smac</td><td>Smac 2 번</td></tr>
   </table></div>
+  <p>표의 '틀어진 전역 장' · 정지 · 여유 · 상자 줄을 낸 판정 부분과 출력:</p><pre class="code"># 2026-10-27/jobs/anal_tffix_sig.py — 새 치명 칸 A 를 슬라이스(odom)를 (가) 단위 변환 · (나) 실제 map→odom 으로 옮긴 칸과 비교
+a, b = len(A &amp; key(S)), len(A &amp; key(R))          # S = 단위 변환, R = 실제 변환
+if a &gt;= 0.5 * len(A) and a &gt; b: sig.append((ts, len(A), a, b))   # 서명 = A ≥ 50 칸 · 단위 겹침 ≥ 절반 · 단위 &gt; 실제
+# 2026-10-21/jobs/anal_stops.py — EKF |v| &lt; 0.01 · |ω| &lt; 0.05 가 1.0 s 넘게
+# 2026-10-15/jobs/anal_band_run.py — 차체(패딩 포함) ↔ 로컬 치명 칸 정확 여유 · 2026-10-22/jobs/anal_contact.py — 차체 ↔ 기록 상자(map), 0 이하 = 겹침</pre><pre class="code"># anal_tffix_sig_&lt;주행&gt;.txt
+f2st1: 전역 메시지 275 · 새 칸 ≥ 50 인 장 211 · **§15 서명 장 3** · 층 경고 22 번 · Control loop missed 70 번
+f2tf1: 전역 메시지 264 · 새 칸 ≥ 50 인 장 195 · **§15 서명 장 0** · 층 경고 28 번 · Control loop missed 84 번
+f2tt1: 전역 메시지 274 · 새 칸 ≥ 50 인 장 207 · **§15 서명 장 0** · 층 경고 0 번 · Control loop missed 43 번
+# anal_stops_&lt;주행&gt;.txt
+f2st1: 주행 11:18:23 ~ 11:25:30 (427.3 s) · 멈춤(1.0 s 넘게 정지) 1 번 · 합 4.7 s
+f2tf1: 주행 15:00:09 ~ 15:07:02 (412.9 s) · 멈춤(1.0 s 넘게 정지) 1 번 · 합 5.1 s
+f2tt1: 주행 15:55:28 ~ 16:02:20 (412.2 s) · 멈춤(1.0 s 넘게 정지) 0 번 · 합 0.0 s
+# anal_band_run_&lt;주행&gt;.txt
+f2st1:  최소 정확 여유 2.9 cm · 11:21:13.2 · 자세 odom (-1.340, -5.382, +128.2°)
+f2tf1:  최소 정확 여유 3.8 cm · 15:03:15.4 · 자세 odom (-1.686, -4.442, +94.8°)
+f2tt1:  최소 정확 여유 3.1 cm · 15:58:09.5 · 자세 odom (-1.342, -5.347, -145.7°)
+# anal_contact_&lt;주행&gt;_d30.txt — 복귀 구간
+f2st1:  11:25:04.10~11:25:23.10 최소 +0.163 m @ 11:25:15.63 · 로버 (1.16, 0.32, -185°)
+f2tf1:  15:06:37.49~15:06:55.36 최소 -0.010 m @ 15:06:44.70 · 로버 (1.42, 0.13, -184°)
+f2tt1:  16:01:53.57~16:02:13.64 최소 +0.144 m @ 16:02:01.37 · 로버 (1.38, 0.27, 170°)</pre><p class="note">결과 원문 <span class="mono">Docs/debug_log/2026-10-27/outputs/tffix/anal_tffix_sig_&lt;주행&gt;.txt</span> · <span class="mono">Docs/debug_log/2026-10-27/outputs/drives/&lt;주행&gt;/anal_stops_* · anal_band_run_* · anal_contact_*_d30.txt</span> · 스크립트 원문 <span class="mono">Docs/debug_log/2026-10-27/jobs/anal_tffix_sig.py</span> · <span class="mono">Docs/debug_log/2026-10-21/jobs/anal_stops.py</span> · <span class="mono">Docs/debug_log/2026-10-15/jobs/anal_band_run.py</span> · <span class="mono">Docs/debug_log/2026-10-22/jobs/anal_contact.py</span>. nav2 조회 실패 수는 아래 TF 절의 <span class="mono">anal_slam_freeze_*.txt</span> 발췌. 총 시간 · 계획기 줄은 <span class="mono">run_&lt;주행&gt;.txt</span> · <span class="mono">chk_corr_paths_&lt;주행&gt;.txt</span></p>
   <figure><img src="{{img:tt1}}" alt="SLAM 미래 여유 시간선과 세 주행 지표 표"><figcaption>위: SLAM map→odom '지금 조회 여유'(받은 최신 stamp − 지금). f2tf1(여유 0.5 s)은 0 아래로 자주 떨어지고 그때마다 nav2 조회가 실패(▼ 33). f2tt1(1.5 s)은 한 번도 0 아래로 안 떨어짐. 톱니가 내려가는 정체 자체는 두 주행에 같이 있음. 도구 <span class="mono">jobs/fig_f2tt1_summary.py</span>.</figcaption></figure>
 </section>
 
@@ -43,6 +67,13 @@
     <span class="k">원자료</span><span>그 점은 출발 때부터 99 였음(상자 칸까지 14~18 cm, 내접 0.175 m 안). 로버가 2.4 m 멀어지자 nvblox · 전역에서 상자가 4 s 만에 사라짐 → 11:23:41.7 복귀 경로를 상자 없는 지도로 계획(그 점 41) → 11:24:32 카메라가 상자 모서리 칸 2 개를 다시 찍음 → 99. 라이다는 그동안 0 점.</span>
     <span class="k">결론</span><span>막힘 노드는 맞게 동작. 덩어리는 상자 모서리 칸 1~2 개 둘레의 내접 원. 원인은 멀어지면 낮은 상자를 잊는 전역 지도.</span>
   </div>
+  <pre class="code"># 2026-10-27/jobs/anal_block_cell.py — 막힘 칸 P = (1.13, 0.14) 을 0.5 s 마다 원자료와 대조
+#   PathBlockedAhead 는 전역 코스트맵(map) OccupancyGrid 값 ≥ 99(내접 253)를 본다(path_blocked_ahead_condition.cpp).
+#   · 전역 · 로컬: P 값, 가장 가까운 치명(100) 칸 위치 · 거리, 0.4 m 안 치명 수  · nvblox: 거리 ≤ 0 칸  · 라이다: 0.4 m 안 점 수</pre><pre class="code">11:18:10.0 | 로버 (0.00, 0.00, +0°) · P 1.14 m · +7° | map 값 99 · 치명 (1.19, -0.03) 18 cm · 7(밖 0) | ... | 라이다 0 · -
+11:23:41.5 | 로버 (5.36, -2.15, -7°) · P 4.81 m · +158° | map 값 41 · 치명 없음 | odom 값 None · 치명 없음 | nv nan · 장애 없음 | 라이다 0 · -
+11:24:32.5 | 로버 (2.59, -1.39, +166°) · P 2.11 m · -32° | map 값 41 · 치명 없음 | ... | nv 미지 · (1.08, -0.06) 20 cm · 2(밖 1) | 라이다 0 · -
+11:24:33.0 | 로버 (2.57, -1.38, +161°) · P 2.09 m · -27° | map 값 99 · 치명 (1.09, -0.03) 18 cm · 2(밖 1) | ... | 라이다 0 · -
+11:24:46.0 | 로버 (2.18, -0.69, +97°) · P 1.34 m · +45° | map 값 99 · 치명 (1.09, -0.03) 18 cm · 2(밖 1) | odom 값 99 · 치명 (1.11, -0.02) 16 cm · 2(밖 0) | ... | 라이다 0 · -</pre><p class="note">결과 원문 <span class="mono">Docs/debug_log/2026-10-27/outputs/block_cell/anal_block_cell_f2st1.txt</span> · 스크립트 원문 <span class="mono">Docs/debug_log/2026-10-27/jobs/anal_block_cell.py</span>. 입력 <span class="mono">Docs/debug_log/2026-10-27/bags/bag_f2st1</span>(git 제외). 상자 기록 사각형 x 1.151~1.261 · y −0.20~−0.02 이라 치명 (1.09~1.19, −0.03) 은 상자 모서리 칸</p>
   <figure><img src="{{img:block}}" alt="막힘 판정 점 주변 전역 코스트맵 값과 원자료 개수 시간선, 칸 위치"><figcaption>왼쪽: 그 점의 전역 값(99 = 막힘 기준)과 0.4 m 안 전역 치명 · nvblox · 라이다 수. 오른쪽: 갈 때(파랑) · 복귀(주황) 카메라 칸 위치와 기록 상자. 도구 <span class="mono">jobs/fig_block_cell.py</span>.</figcaption></figure>
 </section>
 
@@ -54,6 +85,22 @@
     <span class="k">원인</span><span>상위 <span class="mono">nvblox_costmap_layer.cpp</span> 가 TF 조회 예외 때 경고만 찍고 return 하지 않아, 기본 생성 변환(단위)으로 그 슬라이스를 map 에 적음. 경고 시각 11:24:43.60 · 54.51 이 틀어진 장 직전.</span>
     <span class="k">수정</span><span>catch 에 return 한 줄 · 빌드 · 정지 확인(일치율 1.000). 실주행 f2tf1 에서 경고 28 번 · 틀어진 장 0(같은 검출기로 f2st1 은 3 장). 패치 <span class="mono">Docs/05_nvblox/nvblox_nav2_rover.patch</span>.</span>
   </div>
+  <pre class="code"># 2026-10-27/jobs/chk_gcm_fit.py — 슬라이스 장애 칸을 (yaw, tx, ty) 로 옮겨 &#x27;새로 생긴 칸&#x27; 과 겹침이 최대인 변환을 찾음
+for yd in np.arange(yc - 12, yc + 12.01, 0.5):
+    for tx in np.arange(xc0 - 0.8, xc0 + 0.81, 0.05):
+        for ty in np.arange(yc0 - 0.8, yc0 + 0.81, 0.05):
+            n = len(target &amp; key(R + [tx, ty]))
+            if n &gt; best[0]: best = (n, yd, tx, ty)
+# Docs/05_nvblox/nvblox_nav2_rover.patch — nvblox_costmap_layer.cpp sliceCallback 의 catch 에 더한 한 줄
+         &quot;[NvbloxCostmapLayer] Can&#x27;t transform: &quot;
+           &lt;&lt; nav2_costmap_global_frame_ &lt;&lt; &quot; to &quot; &lt;&lt; slice_frame
+           &lt;&lt; &quot;. Error: &quot; &lt;&lt; e.what());
++      return;  // 2026-10-27 수정: 조회 실패 시 이 슬라이스를 버림(직전 slice_ · T_G_S_ 유지).</pre><pre class="code">11:24:43.89 전역 · 슬라이스 장애 256 칸 · 실제 map→odom (0.427, 0.346, -7.50°)
+   새로 생긴 276 칸 최적: 겹침 186 · yaw 0.0° t (-0.02, -0.00)
+   직전과 같은 칸 최적: 겹침 151 · yaw -5.5° t (0.38, 0.30)
+11:24:54.89 전역 · 슬라이스 장애 276 칸 · 실제 map→odom (0.455, 0.385, -8.12°)
+   새로 생긴 268 칸 최적: 겹침 206 · yaw 0.4° t (0.00, -0.01)
+   직전과 같은 칸 최적: 겹침 165 · yaw -5.6° t (0.45, 0.29)</pre><p class="note">결과 원문 <span class="mono">Docs/debug_log/2026-10-27/outputs/block_cell/chk_gcm_fit_f2st1.txt</span> · 수정 뒤 확인은 위 표의 <span class="mono">anal_tffix_sig_f2tf1.txt</span> · 스크립트 원문 <span class="mono">Docs/debug_log/2026-10-27/jobs/chk_gcm_fit.py</span> · 패치 <span class="mono">Docs/05_nvblox/nvblox_nav2_rover.patch</span>(커밋 8e5ec16a). 처음 본 틀어진 장은 이 두 장(§15). 같은 서명을 주행 전체에 돌린 검출기는 f2st1 에서 11:24:37.91 을 더해 3 장을 셈(표의 3)</p>
   <figure><img src="{{img:gcm}}" alt="전역 코스트맵 연속 네 장, 두 번째 장이 틀어짐"><figcaption>f2st1 11:24:53.89 → 54.89(틀어진 장) → 56.89 → 58.89. 위 = 전역, 아래 = 같은 시각 로컬 치명 칸. 54.89 장만 벽 · 상자 · 문틀이 어긋남. 도구 <span class="mono">jobs/fig_gcm_frames.py</span>.</figcaption></figure>
 </section>
 
@@ -65,6 +112,29 @@
     <span class="k">이력</span><span>저장 bag 112 개: 매핑 모드(9 월)는 정체 거의 0, 위치 추정 순회(10-07~)는 모든 주행에 1 m 당 1~4 번 · 최대 약 1.2 s. 최근 회귀가 아님.</span>
     <span class="k">조치</span><span>위치 추정 transform_timeout 0.5 → 1.5 s. 대가: 보정 반영이 최대 1.5 s 늦음(이 주행 보정량 기준 1~2 mm 추정).</span>
   </div>
+  <pre class="code"># 2026-10-27/jobs/anal_slam_freeze.py — 각 stamp 가 유효한 마지막 시각 = 다음 stamp 수신 직전; 그동안 지금 − stamp &gt; 0 이면 &#x27;현재 시각 조회 실패&#x27; 창
+for k in range(len(seg) - 1):
+    st = seg[k][2]; nxt = seg[k + 1][0]
+    if nxt &gt; st: fail.append((st, nxt, nxt - st, seg[k + 1][2] - st))
+print(&#x27;nav2 odom→map 외삽 실패 %d 번 중 위 창 안 %d 번 · SLAM 스캔 버림 %d 번(주행 창)&#x27; % (len(fails), inside, len(drops)))
+# 2026-10-27/jobs/anal_slam_freeze_cause.py — 정체(새 stamp 간격 &gt; 0.4 s) 구간 vs 같은 길이 기준선 200 구간
+fz = [... if MO[NI[i + 1], 1] - MO[NI[i], 1] &gt; 0.4]</pre><pre class="code"># anal_slam_freeze_f2tf1.txt (transform_timeout 0.5)
+stamp 새로 바뀌는 간격: 중앙 0.096 · 99% 0.497 · 최대 1.296 s · &gt; 0.5 s 36 번 · &gt; 0.4 s 56 번
+새 stamp 가 처음 올 때의 미래 여유(stamp − 수신): 중앙 0.442 · 최소 -0.313 s
+현재 시각 조회가 실패하는 창(여유 소진) 63 번 · 합 12.99 s:
+nav2 odom→map 외삽 실패 33 번 중 위 창 안 33 번 · SLAM 스캔 버림 51 번(주행 창)
+# anal_slam_freeze_f2tt1.txt (transform_timeout 1.5)
+새 stamp 가 처음 올 때의 미래 여유(stamp − 수신): 중앙 1.451 · 최소 1.139 s
+현재 시각 조회가 실패하는 창(여유 소진) 0 번 · 합 0.00 s:
+nav2 odom→map 외삽 실패 0 번 중 위 창 안 0 번 · SLAM 스캔 버림 44 번(주행 창)
+# anal_slam_freeze_cause_f2tf1.txt
+  SLAM %CPU(최대, 1 s top)           정체: 중앙 72.650 · 90% 103.850 | 기준선: 중앙 45.100 · 90% 89.500
+  정체 중 /scan 간격 &gt; 0.2 s 인 구간 0/56 · odom→base_link 간격 &gt; 0.2 s 0/56 · SLAM CPU ≥ 90 % 15/56 · 스캔 버림 ≥ 1 37/56
+# anal_slam_freeze_hist.tsv (열: bag 시작 길이s 이동m … gt0.4 gt0.5 gt0.5_per_m 여유중앙 mode transform_timeout)
+bag_cc2   09-21 09:58  43  2.1 … 0  0  0.00 0.160 mapping       0.2
+bag_cc3   09-21 10:13  40  2.1 … 0  0  0.00 0.151 mapping       0.2
+bag_f2rp4 10-23 15:32 427 28.0 … 67 34 1.22 0.446 localization 0.5
+bag_f2tf1 10-27 15:00 419 27.9 … 56 36 1.29 0.442 localization 0.5</pre><p class="note">결과 원문 <span class="mono">Docs/debug_log/2026-10-27/outputs/load/anal_slam_freeze_f2tf1.txt</span> · <span class="mono">anal_slam_freeze_f2tt1.txt</span> · <span class="mono">anal_slam_freeze_cause_f2tf1.txt</span> · <span class="mono">anal_slam_freeze_hist.tsv</span>(모두 <span class="mono">outputs/load/</span>) · 스크립트 원문 <span class="mono">Docs/debug_log/2026-10-27/jobs/anal_slam_freeze.py</span> · <span class="mono">Docs/debug_log/2026-10-27/jobs/anal_slam_freeze_cause.py</span> · <span class="mono">Docs/debug_log/2026-10-27/jobs/anal_slam_freeze_hist.py</span>. CPU 68.5 % 는 <span class="mono">anal_load_f2tf1.txt</span>. 이력 표(시기별 1 m 당 정체)는 이 tsv 112 줄을 SUMMARY §23 에서 묶은 것. 대가 '1~2 mm' 는 추정(출력 없음)</p>
 </section>
 
 <section>
@@ -84,6 +154,23 @@
     <tr class="hl"><td>0.75 m</td><td class="n">28</td><td class="n">5</td><td class="n">4</td><td class="n">1.0 · 9.9 cm</td></tr>
   </table></div>
   <p class="note">앞선 A/B(루프 탐색 끔 · 정합 범위 0.3 m · 버퍼 10)는 기준 두 번의 차보다 효과가 작았고, 루프 탐색을 끄면 위치 차 중앙이 0.4 → 3.6 cm 로 나빠졌습니다. 0.75 m 는 긴 처리를 뚜렷이 줄였지만 미리 정한 기준(절반 이하)에 못 미쳐 운용은 그대로 둡니다. 남은 비용은 사슬 하나와의 정합 1 회(≈ 70 ms)입니다.</p>
+  <pre class="code"># 2026-10-27/jobs/anal_slam_timing.py — 계측판 SLAM 로그의 단계별 시간(ms), 처리 &gt; 300 ms 스캔만 따로
+keys = [&#x27;CB.add&#x27;, &#x27;AS.proc&#x27;, &#x27;PL.total&#x27;, &#x27;PL.match&#x27;, &#x27;PL.vertex&#x27;, &#x27;PL.edges&#x27;, &#x27;AE.chain&#x27;, &#x27;AE.near&#x27;, &#x27;PL.loop&#x27;, &#x27;PL.buffer&#x27;, &#x27;CB.odom&#x27;]
+big = [r for r in rows if r.get(&#x27;CB.add&#x27;, 0) &gt; 300]
+# 2026-10-27/jobs/anal_slam_replay.py — 재생 변형마다 새 stamp 간격 · &gt; 0.4 · &gt; 0.5 s 수 · 원래 SLAM 대비 위치 차</pre><pre class="code"># anal_slam_timing_T0dbg.txt (반경 1.5 m)
+처리한 스캔 101 개 (단위 ms)
+단계               중앙      90%       최대     합(s)       몫%  설명
+CB.add        167.7    534.4   1138.0    21.63     100   addScan 전체
+PL.match       70.8     94.2    100.9     3.40      16   순차 정합
+AE.near       260.6    449.6    615.5    13.82      64    └ LinkNearChains
+PL.loop         4.3    104.0    364.0     1.61       7   TryCloseLoop
+addScan &gt; 300 ms 인 스캔 34 개 — 그 스캔들의 단계 평균(ms):
+# anal_slam_replay_link.txt
+변형 | MO 수 | 새 stamp 간격 중앙 · 99% · 최대 | &gt;0.4 · &gt;0.5 s | 여유(stamp−수신) 최소 · 중앙 | SLAM CPU 평균 % | 원래 SLAM 대비 위치 차 중앙 · 최대 cm · yaw 차 최대 °
+V0a | 4205 | 0.096 · 0.400 · 1.008 | 19 · 8 | 0.967 · 1.458 | 23 | 0.4 · 11.2 · 1.25
+T0dbg | 4204 | 0.096 · 0.401 · 1.088 | 23 · 10 | 1.294 · 1.455 | 23 | 0.4 · 11.2 · 1.25
+L10 | 4204 | 0.096 · 0.400 · 1.008 | 18 · 4 | 1.337 · 1.458 | 21 | 0.9 · 11.8 · 1.30
+L075 | 4205 | 0.096 · 0.316 · 0.800 | 13 · 4 | 0.799 · 1.453 | 21 | 1.0 · 9.9 · 1.12</pre><p class="note">결과 원문 <span class="mono">Docs/debug_log/2026-10-27/outputs/slamproc/anal_slam_timing_T0dbg.txt</span> · <span class="mono">anal_slam_timing_link.txt</span> · <span class="mono">anal_slam_replay_link.txt</span>(모두 <span class="mono">outputs/slamproc/</span>) · 스크립트 원문 <span class="mono">Docs/debug_log/2026-10-27/jobs/anal_slam_timing.py</span> · <span class="mono">Docs/debug_log/2026-10-27/jobs/anal_slam_replay.py</span> · 재생 <span class="mono">Docs/tools/run_slam_replay.sh</span>. 두 번째 표의 '&gt; 300 ms · &gt; 500 ms 스캔' 열 중 1.0 · 0.75 m 의 값(28 · 9, 28 · 5)과 기준의 &gt; 500 ms 15 는 SUMMARY §29.2 표에만 있고 저장된 출력 파일에는 없음 — 결과 원문: 원천 소실(대화에만 있었음)</p>
 </section>
 
 <section>
@@ -94,11 +181,38 @@
     <li>prep 의 <span class="mono">ros2 param get</span> 11 번을 <span class="mono">chk_prep.py</span> 한 노드 조회로. 대화 쪽 별도 30 s 대기 · top 은 하지 않음.</li>
     <li>f2tt1: 게이트 시작 → 출발 40 s(f2tf1 77 s).</li>
   </ul>
+  <pre class="code"># Docs/tools/chk_drive_gate.py — B · C · G2 를 한 노드(DDS 참여자 1 개)로
+rclpy.init(); n = Node(&#x27;drive_gate&#x27;); buf = tf2_ros.Buffer(); tl = tf2_ros.TransformListener(buf, n)
+B = &#x27;OK&#x27; if bhz &gt;= 1.0 else &#x27;FAIL&#x27;; print(&#x27;  B /wheel_odom %.1f Hz&#x27; % bhz)
+# 출력 마지막 줄: &#x27;GATE B=&lt;OK|FAIL&gt; C=&lt;OK|FAIL&gt; G2=&lt;m|nan&gt;&#x27; — 러너가 읽는다(G2 문턱 0.10 은 러너 쪽)</pre><pre class="code">옛 B: average rate: 25.032 · 12.34 s
+옛 C: map-&gt;odom 101 개/5 s, 최대 간격 0.06 s, 최대 stamp 지연 0.38 s
+옛 C: OK
+   7.018 s
+옛 G2: 0.397
+   4.216 s
+  B /wheel_odom 25.0 Hz
+  C map-&gt;odom 100 개/5 s, 최대 간격 0.06 s, 최대 stamp 지연 1.14 s
+  G2 로컬 코스트맵 LETHAL ↔ 차체 외곽 최소 0.397 m @ 차체 (-0.14, -0.56)
+GATE B=OK C=FAIL G2=0.397
+새 게이트 전체 6.730 s</pre><p class="note">결과 원문 <span class="mono">Docs/debug_log/2026-10-27/outputs/gate/cmp_gate_1027.txt</span> · 스크립트 원문 <span class="mono">Docs/tools/chk_drive_gate.py</span>(커밋 a813ac8a) · 비교 <span class="mono">Docs/debug_log/2026-10-27/jobs/cmp_gate_1027.sh</span>. 같은 값은 B · G2 이고, C 는 그 순간 새 노드만 FAIL(stamp 지연 1.14 s) — SUMMARY §24 는 위치 추정이 틀린 상태의 SLAM 정체로 봄(추정), 바로 뒤 20 s 관찰 <span class="mono">Docs/debug_log/2026-10-27/outputs/gate/chk_slam_idle_1027.txt</span> 은 OK</p>
 </section>
 
 <section>
   <h2>서쪽 통로 Smac<span class="sec">§1 ~ §8 · §27 · §28</span></h2>
   <p>오전에 남행 실패를 오프라인으로 풀었습니다. Smac 은 목표 칸 · 방향이 정확히 맞거나 휴리스틱이 허용치 아래일 때만 끝나는데, 남행 목표가 내접 띠에 붙어 있어 수락에 실패했습니다. 허용치 0.35 로 남행이 살았고 상자 장면은 그대로였습니다. 저녁 f2tt1 은 북행도 두 번 Smac 이었습니다.</p>
+  <pre class="code"># 2026-10-27/jobs/anal_tolcp.py — 순간 × 변형(tolerance · cost_penalty) 재질의: 성공/실패 · 왕복 s · 길이 · 끝↔목표 · 끝 방향 차
+# outputs/tolcp/planner_V1.yaml
+      tolerance: 0.35</pre><pre class="code">순간(실주행) | V0 tol 0.25 cp 3.0 | V1 tol 0.35 cp 3.0 | V2 tol 0.50 cp 3.0 | V3 tol 0.25 cp 1.5 | V4 tol 0.35 cp 1.5
+16:11:56.85 남행(실패) | 실패 1.09 | 성공 0.02 · 1.99 m · 10.7 cm · +15° | 성공 0.02 · 1.99 m · 10.7 cm · +15° | 성공 0.02 · 2.06 m · 12.9 cm · +105° | 성공 0.02 · 2.06 m · 12.9 cm · +105°
+16:12:15.53 남행(실패) | 실패 0.01 | 실패 0.00 | 실패 0.00 | 실패 0.00 | 실패 0.00
+16:13:08.65 북행(성공) | 성공 0.01 · 1.26 m · 2.1 cm · -2° | (다섯 변형 모두 같음)
+# tol_box/anal_W0.txt(tol 0.25) 와 anal_W1.txt(tol 0.35) — 상자 장면 Smac 줄은 상자 여유가 같음
+b910_rp1_replan  Smac_R10_C30_A10_RS |   41 ·  2.87 |   13.6 ·   13.7 | ...   (W0 · W1 같음)
+b910_rp2_replan  Smac_R10_C30_A10_RS |   43 ·  3.09 |   14.4 ·   14.6 | ...   (W0 · W1 같음)
+west_rp3_g4      Smac_R10_C30_A10_RS | 실패                                    (W0)
+west_rp3_g4      Smac_R10_C30_A10_RS |   27 ·  1.91 |  420.5 ·  457.3 | ...   (W1)
+# drives/f2st1/anal_band_run_f2st1.txt — 남행 좁은 곳
+    &lt; 6 cm 구간 11:20:44.4 ~ 11:20:54.6 (18 프레임) 최소 4.1 cm @ 11:20:45.6 칸 몸체 (+0.111, +0.216) 자세 (-1.51, -4.22, -77°) fp 최대 99</pre><p class="note">결과 원문 <span class="mono">Docs/debug_log/2026-10-27/outputs/tolcp/anal_tolcp.txt</span> · <span class="mono">Docs/debug_log/2026-10-27/outputs/tol_box/anal_W0.txt</span> · <span class="mono">anal_W1.txt</span> · <span class="mono">Docs/debug_log/2026-10-27/outputs/drives/f2st1/anal_band_run_f2st1.txt</span> · 스크립트 원문 <span class="mono">Docs/debug_log/2026-10-27/jobs/anal_tolcp.py</span> · <span class="mono">Docs/debug_log/2026-10-27/jobs/run_tol_box_1027.sh</span> · 표 <span class="mono">Docs/tools/plan_offline/anal_plan_compare.py</span>. '(다섯 변형 모두 같음)' · '(W0 · W1 같음)' 은 두 파일을 줄끼리 맞대 본 내 요약. 남행 실패 대비 0.8 cm 는 10-26 f2sa3</p>
   <figure><img src="{{img:exp}}" alt="f2tt1 통로 세 순간의 Smac 오프라인 재질의 탐색"><figcaption>f2tt1 세 순간을 오프라인으로 다시 질의한 Smac 탐색(점 = 방문 노드, 초록 = 경로). 남행 1 148 · 북행 146 노드로 성공. 세 번째(북행 재계획)는 실주행에선 성공했지만 재질의는 실패 — 재질의가 쓴 2 초 전 지도엔 막힘 덩어리가 남아 있었고, 같은 시각 지도로는 벽 3 cm 거리의 출발 칸이 경계에 걸림(§28).</figcaption></figure>
 </section>
 
@@ -113,6 +227,8 @@
     <tr><td>계산 · 전력</td><td class="n">CPU 67 % · GPU 5 % · RAM 3.2/7.6 GB · 7.3 W · 최고 52 °C</td></tr>
   </table></div>
   <p class="note">정해진 실내 코스를 개입 없이 반복 완주하는 수준. 약점은 좁은 곳 cm 단위 여유 · 라이다 아래 낮은 물체 · SLAM 정합 비용 · NavFn 대체. 위치 정답과의 오차, 많은 회차, 움직이는 사람, 배터리 시간은 아직 안 잼.</p>
+  <pre class="code"># 2026-10-27/jobs/anal_sys_perf.py — tegrastats(CPU · GPU · RAM · 전력 · 온도) 주행 구간 통계</pre><pre class="code">f2tt1: 417 s · CPU 코어 평균 중앙 67 %(90 % 76) · GPU 중앙 5 %(90 % 56) · RAM 3209/7607 MB · 전력 VDD_IN 평균 7.29 W(최대 8.30) · tj 최대 52.4 °C
+f2tf1: 416 s · CPU 코어 평균 중앙 67 %(90 % 76) · GPU 중앙 5 %(90 % 64) · RAM 3141/7607 MB · 전력 VDD_IN 평균 7.33 W(최대 8.26) · tj 최대 52.3 °C</pre><p class="note">결과 원문 <span class="mono">Docs/debug_log/2026-10-27/outputs/load/anal_sys_perf.txt</span> · 스크립트 원문 <span class="mono">Docs/debug_log/2026-10-27/jobs/anal_sys_perf.py</span>. 계산 · 전력 줄만 이 출력에서 옴. 도착 오차는 러너 기록 <span class="mono">Docs/debug_log/2026-10-27/outputs/drives/&lt;주행&gt;/run_&lt;주행&gt;.txt</span>, 오도메트리 드리프트(0.48~0.62 m)는 SUMMARY §30 표에만 있음 — 결과 원문: 원천 소실(대화에만 있었음)</p>
 </section>
 
 <section>
@@ -125,6 +241,10 @@
       <span class="k">처음 추론</span><span>X = 치명 칸, 상자와 떨어진 밀림 또는 유령</span>
       <span class="k">의심한 이유</span><span>막힘 기준이 99(내접)이지 100(치명)이 아님 · 덩어리 안 검정 칸이 1~2 개뿐</span>
       <span class="k">판별</span><span>원자료 대조: 가장 가까운 치명 칸은 13~18 cm 떨어진 상자 모서리, 그 점은 출발 때부터 99</span>
+      <span class="k">스크립트 핵심</span><span><pre class="code"># anal_block_cell.py — P 의 전역 값과 가장 가까운 치명 칸 거리를 함께 출력(막힘 기준은 값 ≥ 99)
+#   · 전역 · 로컬 코스트맵: P 의 값, P 에서 가장 가까운 치명(100) 칸 위치 · 거리, P 0.4 m 안 치명 칸 수(그중 상자 사각형 ±5 cm 밖 수)</pre></span>
+      <span class="k">나온 결과</span><span><pre class="code">11:18:10.0 | 로버 (0.00, 0.00, +0°) · P 1.14 m · +7° | map 값 99 · 치명 (1.19, -0.03) 18 cm · 7(밖 0) | odom 값 99 · 치명 (1.17, -0.03) 17 cm · 7(밖 0) | ...
+11:24:46.0 | 로버 (2.18, -0.69, +97°) · P 1.34 m · +45° | map 값 99 · 치명 (1.09, -0.03) 18 cm · 2(밖 1) | ...</pre><span class="note">결과 원문 <span class="mono">Docs/debug_log/2026-10-27/outputs/block_cell/anal_block_cell_f2st1.txt</span> · 스크립트 원문 <span class="mono">Docs/debug_log/2026-10-27/jobs/anal_block_cell.py</span></span></span>
       <span class="k">다음에 알아보는 법</span><span>PathBlockedAhead 좌표는 막힌 칸이 아니라 '경로 점에서 본 비용'. 99 면 0.175 m 안 치명 칸을 찾아 그것을 장애물로 말한다</span>
     </div>
   </div>
@@ -135,6 +255,13 @@
       <span class="k">본 것</span><span>경고 20/22 가 Control loop missed 와 ±0.5 s 안에 겹침(무작위 11 %)</span>
       <span class="k">처음 추론</span><span>순간 부하로 코스트맵 쪽 처리가 밀려 TF 를 늦게 받음</span>
       <span class="k">의심한 이유</span><span>주행 CPU 68 % 로 포화가 아님 · 실패가 전부 odom→map 한 가지</span>
+      <span class="k">스크립트 핵심</span><span><pre class="code"># 2026-10-27/jobs/chk_tf_lag.py — 경고 시각 ±0.5 s 안에 &#x27;Control loop missed&#x27; 가 있는지 · 무작위 시각 기준과 비교
+print(&#x27;주행 창 경고 %d 번 · Control loop missed %d 번(창 %.0f s) · 경고 ±0.5 s 안에 missed 있음 %d/%d&#x27; % (...))
+rs = np.random.default_rng(0).uniform(t0, t1, 2000); p = np.mean([np.abs(Cw - r).min() &lt;= 0.5 for r in rs])</pre></span>
+      <span class="k">나온 결과</span><span><pre class="code">map→odom 8727 개 · 수신 간격 중앙 0.050 s · 95% 0.053 · 최대 0.187 s · stamp 간격 0 인 것(같은 stamp 재발행) 4711
+  stamp 새로 바뀌는 간격: 중앙 0.096 · 95% 0.114 · 최대 0.913 s
+주행 창 경고 22 번 · Control loop missed 70 번(창 436 s) · 경고 ±0.5 s 안에 missed 있음 20/22
+  우연 기준(무작위 시각 ±0.5 s 안 missed 확률) 11 %</pre><span class="note">결과 원문 <span class="mono">Docs/debug_log/2026-10-27/outputs/block_cell/chk_tf_lag_f2st1.txt</span> · 판별은 위 TF 절의 <span class="mono">anal_slam_freeze_f2tf1.txt</span> · 스크립트 원문 <span class="mono">Docs/debug_log/2026-10-27/jobs/chk_tf_lag.py</span>. 같은 출력 둘째 줄의 stamp 간격 최대 0.913 s 가 이미 정체를 보이고 있었음</span></span>
       <span class="k">판별</span><span>map→odom stamp 를 직접 보니 발행은 20 Hz 그대로, stamp 만 0.6~1.3 s 멈춤 · 실패 33/33 이 그 창 안</span>
       <span class="k">다음에 알아보는 법</span><span>'extrapolation into the future' 는 먼저 그 변환의 stamp 진행(발행 간격과 따로)을 본다. 두 증상이 함께 나면 공통 원인(여기선 SLAM 계산 몰림)을 의심한다</span>
     </div>
@@ -145,6 +272,11 @@
       <span class="k">하려 한 것</span><span>f2tt1 통로 세 순간의 Smac 탐색 영상(<span class="mono">fig_smac_expansion_tt1.py</span>)</span>
       <span class="k">본 것</span><span>세 번째 재질의가 실패</span>
       <span class="k">문제</span><span>제목만 보면 실주행 실패로 읽혀 통로 영상(실주행 Smac 성공)과 모순으로 보임(사용자 지적)</span>
+      <span class="k">스크립트 핵심</span><span><pre class="code"># 2026-10-27/jobs/chk_replan_maps.py — 전역 코스트맵 발행본마다 출발 자세 칸 값 · 실주행 Smac 경로가 지나는 99 · 100 칸 수
+pv = np.array([v(x, y) for x, y in PP]); k99 = np.nonzero(pv &gt;= 99)[0]</pre></span>
+      <span class="k">나온 결과</span><span><pre class="code">출발 자세(15:58:11.40) map (-1.518, -5.360, -168.4°) · 실주행 Smac 경로 15:58:11.40 점 26
+15:58:09.40 판 | 출발 중심 76 · 차체 외곽 최대 100 | 실주행 경로 위 99 칸 4 · 100 칸 0 (처음 0.88 m 지점 (-1.59, -4.63) 값 99) | (-1.60,-4.70) 값 99
+15:58:11.40 판 | 출발 중심 76 · 차체 외곽 최대 100 | 실주행 경로 위 99 칸 0 · 100 칸 0 (없음) | (-1.60,-4.70) 값 84</pre><span class="note">결과 원문 <span class="mono">Docs/debug_log/2026-10-27/outputs/tt1_exp/chk_replan_maps.txt</span> · 스크립트 원문 <span class="mono">Docs/debug_log/2026-10-27/jobs/chk_replan_maps.py</span></span></span>
       <span class="k">판별</span><span>지도 판 비교: 재질의 지도(15:58:09)엔 경로 위 내접 칸 4 개, 계획 시각 지도(15:58:11.40)엔 0</span>
       <span class="k">다음에 알아보는 법</span><span>재질의 · 재생 결과는 상태 글자에 출처(실주행 / 재질의)를 붙인다. 재질의가 실주행과 다르면 먼저 지도 판 · 출발 자세 차이를 본다</span>
     </div>

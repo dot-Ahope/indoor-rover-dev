@@ -68,6 +68,11 @@ ul,ol{padding-left:22px;margin:8px 0} li{margin:4px 0}
 footer{margin-top:44px;padding-top:14px;border-top:1px solid var(--line);font-size:12.5px;color:var(--muted)}
 #tip{position:fixed;pointer-events:none;background:var(--ink);color:var(--bg);font-family:var(--mono);font-size:12px;padding:5px 8px;border-radius:3px;z-index:5}
 @media (max-width:520px){h1{font-size:24px}}
+.code{margin:0;font-family:var(--mono);font-size:12.5px;line-height:1.5;background:var(--bg);color:var(--ink);border:1px solid var(--line);padding:8px 10px;overflow-x:auto;white-space:pre;max-width:100%}
+.xsrc{margin-top:12px;display:grid;gap:6px;min-width:0;max-width:100%}
+.xsrc .xh{margin:0;font-size:13px;font-weight:500;color:var(--ink)}
+.xsrc .xk{font-size:12px;color:var(--muted);letter-spacing:.04em}
+.note{font-size:12.5px;color:var(--muted);margin:2px 0 0;overflow-wrap:anywhere}
 </style>
 
 <div class="wrap">
@@ -78,6 +83,7 @@ footer{margin-top:44px;padding-top:14px;border-top:1px solid var(--line);font-si
   <nav class="toc" aria-label="목차">
     <a href="#step">단계별 회전 실측</a><a href="#cpu">게이트 CPU</a><a href="#cov">EKF 신뢰도</a><a href="#t1">정지 + 사람</a><a href="#t2">회전 + 가림 합성</a><a href="#gate">품질 검사 G3·G4</a><a href="#fix">정정</a><a href="#next">내일</a>
   </nav>
+<p class="prose note">2026-11-02: 측정에 기댄 판정마다 그 수치를 낸 <b>스크립트 핵심</b>과 <b>나온 결과</b>를 원문 그대로 발췌해 붙이고, 결과 원문 · 스크립트 원문 경로를 달았다. 원문 파일이 남지 않은 수치는 '원천 소실' 로 적었다.</p>
 </header>
 
 <div class="status">
@@ -98,10 +104,60 @@ footer{margin-top:44px;padding-top:14px;border-top:1px solid var(--line);font-si
   <div><h4>결론</h4><ul><li>오프라인 R2 결과(4.3 cm)가 라이브에서도 재현됐고 더 좋았다(1.5 cm).</li><li>EKF A 가 휠·자이로만으로는 미끄러짐을 못 본다는 10-02 결론을 같은 시각 비교로 다시 확인했다.</li></ul></div>
 </div>
 
+<div class="xsrc">
+<p class="xh">근거 발췌 — 단계별 예측 대각 거리 − 줄자</p>
+<div class="xk">스크립트 핵심</div><pre class="code">S = json.load(open('step1/step_state_1.json')); TAPE = [44.8, 10.8, 43.3, 16.1, 43.5, 17.6]
+CR = np.array([0.262, -0.165])
+def rel(p, p0):
+    c0, s0 = math.cos(p0[2]), math.sin(p0[2]); dx, dy = p[0] - p0[0], p[1] - p0[1]; return [c0 * dx + s0 * dy, -s0 * dx + c0 * dy, p[2] - p0[2]]
+def corner(p): c, s = math.cos(p[2]), math.sin(p[2]); return np.array([p[0] + c * CR[0] - s * CR[1], p[1] + s * CR[0] + c * CR[1]]) - CR
+pred = {k: [] for k in 'BAS'}; pts = {k: [] for k in 'BAS'}
+for st in S['steps']:
+    for k in 'BAS':
+        d = corner(rel(st['pose'][k], S['s0'][k])); pts[k].append(d); pred[k].append(np.hypot(*d) * 100)
+err = {k: np.array(pred[k]) - np.array(TAPE) for k in 'BAS'}</pre>
+<div class="xk">나온 결과</div><pre class="code"># step_tape.csv (사용자 줄자, cm)
+1,+90,44.8
+2,-90,10.8,뒤·오른쪽
+3,+90,43.3
+4,-90,16.1,뒤·오른쪽
+5,+90,43.5
+6,-90,17.6
+# step_state_1.json (단계별 네 추정 자세, 앞부분)
+{"s0": {"A": [0.0, 0.0, 0.004606971600291664], "R": [-0.8393243846309965, 2.7467373072016277, -0.023113413917599034], "B": [0.0001497301395962273, -2.4344204590378438e-05, 0.005468908827324093], "S": [0.44410347042350273, -0.008069204355378869, -0.0112555943 …</pre>
+<p class="note">결과 원문 <span class="mono">Docs/debug_log/2026-10-06/outputs/step_tape.csv</span> · <span class="mono">Docs/debug_log/2026-10-06/outputs/step_state_1.json</span>(입력: 줄자 · 단계별 자세). 이 입력으로 계산한 오차 줄(B 1.5 · A 7.8 · SLAM 2.5 cm)의 출력은 원천 소실(대화에만 있었음) — SUMMARY §4.1 표에만 남음 · 스크립트 원문 <span class="mono">Docs/debug_log/2026-10-06/jobs/render_step1.py</span>(계산·그림), <span class="mono">Docs/debug_log/2026-10-06/jobs/step_rot.py</span>(회전·자세 기록)</p>
+</div>
 <h2 id="cpu">게이트 CPU 줄이기 <span class="sec">§5, §9</span></h2>
 <p class="prose">게이트가 자이로를 200 Hz 로 받느라 CPU 를 39 % 썼다. 회전 속도 기준을 EKF 출력 ω(30 Hz, 비교 창 0.15 s)로 바꿨다. EKF 의 ω 는 자이로가 결정하고 rf2o 는 ω 를 넣지 않으므로 순환 의존은 없다. bag 재생에서 정확도 차이는 최대 0.7 cm 였고, 라이브 정지 10 s 측정에서 <b>16 %</b> 였다.</p>
+<div class="xsrc">
+<p class="xh">근거 발췌 — 게이트 CPU 39 % → 16 %</p>
+<div class="xk">스크립트 핵심</div><pre class="code">for p in rf2o_laser_odometry_node rf2o_gate.py ekf_shadow_a; do P=$(pgrep -f "$p" | head -1); [ -n "$P" ] &amp;&amp; a=$(awk '{print $14+$15}' /proc/$P/stat); declare "c_$P=$a"; done
+sleep 10
+for p in rf2o_laser_odometry_node rf2o_gate.py ekf_shadow_a; do P=$(pgrep -f "$p" | head -1); [ -z "$P" ] &amp;&amp; continue; b=$(awk '{print $14+$15}' /proc/$P/stat); v=c_$P; echo "  CPU $p: $(( (b - ${!v}) * 100 / 1000 )) %"; done
+# 회전 속도 기준 바꿈 — rf2o_gate.py (커밋 10a93fa4)
+        self.src = str(self.declare_parameter('gyro_source', 'ekf').value)   # ekf(30 Hz, 기본) | imu(200 Hz)
+        self.win = 0.1 if self.src == 'imu' else 0.15   # ekf 는 30 Hz 라 0.1 s 에 표본 3 개 → 0.15 s</pre>
+<div class="xk">나온 결과</div><pre class="code"># j851_r3prep.txt (자이로 200 Hz 기준)
+  CPU rf2o_laser_odometry_node: 4 %
+  CPU rf2o_gate.py: 39 %
+  CPU ekf_shadow_a: 11 %
+# j859_prep_people.txt (EKF ω 30 Hz 기준)
+  CPU rf2o_laser_odometry_node: 4 %
+  CPU rf2o_gate.py: 16 %
+  CPU ekf_shadow_a: 11 %</pre>
+<p class="note">결과 원문 <span class="mono">Docs/debug_log/2026-10-06/outputs/j851_r3prep.txt</span> · <span class="mono">Docs/debug_log/2026-10-06/outputs/j859_prep_people.txt</span> · 스크립트 원문 <span class="mono">Docs/debug_log/2026-10-06/jobs/job851_r3chk.sh</span>(정지 10 s CPU 틱), <span class="mono">ros2_ws/src/rover_bringup/scripts/rf2o_gate.py</span>(커밋 10a93fa4 판). 재생 정확도 차 최대 0.7 cm 는 출력 파일이 없음 — 원천 소실(대화에만 있었음), SUMMARY §5.1</p>
+</div>
 <div class="warnbox"><b>내 실수</b>: 첫 재생 검증의 정리 단계가 <code>pkill -f ekf_node</code> 처럼 이름으로 프로세스를 죽였다. 그래서 라이브 스택의 EKF·rf2o·게이트까지 꺼졌고, 그때 잰 CPU 수치는 무효다. 지금은 재생 launch 의 프로세스 그룹만 PID 로 정리한다.</div>
 
+<div class="xsrc">
+<p class="xh">근거 발췌 — 재생 정리가 라이브 스택을 끈 실수</p>
+<div class="xk">스크립트 핵심</div><pre class="code"># 첫 판(커밋 4fdeeaaf) — 정리를 이름으로
+pkill -f "ekf.launch.py"; sleep 2; pkill -f rf2o_laser_odometry_node; pkill -f rf2o_gate.py; pkill -f ekf_node; pkill -f sensor_conditioner
+# 고친 판(커밋 3e71a37d) — 이 launch 의 프로세스 그룹만
+LPID=$!   # 10-06 §5: 정리는 이 launch 의 프로세스 그룹만 — 이름으로 pkill 하면 라이브(도메인 0) 스택까지 죽였다(내 실수)
+kill -INT -- -$LPID 2&gt;/dev/null; sleep 3; kill -9 -- -$LPID 2&gt;/dev/null</pre>
+<p class="note">나온 결과: 원천 소실(대화에만 있었음) — 무효로 버린 재생 CPU 수치(ekf 2100 s/300 s 등)는 SUMMARY §5.1 에만 · 스크립트 원문 <span class="mono">Docs/debug_log/2026-10-06/jobs/r3_replay.sh</span>(커밋 4fdeeaaf → 3e71a37d)</p>
+</div>
 <h2 id="cov">EKF 는 rf2o 를 얼마나 믿나 (사용자 질의) <span class="sec">§6~§8</span></h2>
 <div class="tbl"><table>
 <thead><tr><th>상황</th><th>휠 σ (vx · vy)</th><th>rf2o σ (vx · vy)</th><th>rf2o 실효 몫 (근사)</th></tr></thead>
@@ -111,6 +167,17 @@ footer{margin-top:44px;padding-top:14px;border-top:1px solid var(--line);font-si
 </tbody></table></div>
 <p class="prose">근사는 1/σ² × 발행 주기(휠 25 Hz, rf2o 10 Hz)로 계산했고, 과정 잡음은 무시했다. σ 는 지금 <b>두 단계 이산값</b>이다. 그래서 |ω| 경계에서 가중이 뛰고, 휠(0.10)과 rf2o(0.15)의 판정 문턱이 달라 틈이 있다. 연속 σ·품질 σ 는 계획 ⑥에 넣었다. 사용자가 제기한 전선 밟기는 영향 표(라이다 평면 기울어짐, rf2o 가짜 병진, nvblox 유령)와 전선 시험 항목 W 로 정리했다. 계획 순서는 사용자가 확정했다: CPU → 사람 T1·T2 → rf2o 켠 F2 순회 비교 → 피벗 회전 → 전선.</p>
 
+<div class="xsrc">
+<p class="xh">근거 발췌 — 표의 rf2o σ 가 정해지는 곳</p>
+<div class="xk">스크립트 핵심</div><pre class="code"># rf2o_gate.py (커밋 4fdeeaaf) — 게이트가 붙이는 rf2o σ
+        self.sd_rot = float(self.declare_parameter('sd_rot', 0.03).value)
+        self.sd_vx = float(self.declare_parameter('sd_vx', 0.10).value)
+        self.sd_vy = float(self.declare_parameter('sd_vy', 0.03).value)
+…
+        rot = abs(wgm) &gt; self.rot_w; cv = [0.0] * 36
+        cv[0] = (self.sd_rot if rot else self.sd_vx) ** 2; cv[7] = (self.sd_rot if rot else self.sd_vy) ** 2; cv[35] = 1e3</pre>
+<p class="note">나온 결과: 계산 출력 없음 — 실효 몫(2 % · 4 % · 98 %)은 1/σ² × 발행 주기로 대화에서 손으로 근사한 값(SUMMARY §6), 원천 소실 · 휠 σ(0.02 · 0.01 / 회전 중 0.3)는 컨디셔너 B3 설정 · 스크립트 원문 <span class="mono">ros2_ws/src/rover_bringup/scripts/rf2o_gate.py</span>(커밋 4fdeeaaf 판)</p>
+</div>
 <h2 id="t1">정지 중 사람: T1 · T1b <span class="sec">§9.1~§9.2</span></h2>
 <div class="tbl"><table>
 <thead><tr><th>시험</th><th>사람</th><th>EKF B 최대 이동</th><th>rf2o 원 자세 최대</th><th>rf2o 원 속도 최대</th><th>판정 (≤ 2 cm)</th></tr></thead>
@@ -120,6 +187,27 @@ footer{margin-top:44px;padding-top:14px;border-top:1px solid var(--line);font-si
 </tbody></table></div>
 <p class="prose">T1b 는 사용자의 지적("줄자 잴 때 라이다 70 % 를 몸으로 가렸다")을 확인하려고 했다. rf2o 자체는 1.8 cm 흔들렸다. EKF 가 움직이지 않은 이유는 정지 중에는 휠 가중(rf2o 몫 2~4 %)과 G2 정지 검사가 막기 때문이다. 같은 흔들림이 <b>회전 중</b>에 생기면 rf2o 를 98 % 믿으므로 그대로 들어간다. 그래서 다음 시험은 회전 중 가림이 됐다.</p>
 
+<div class="xsrc">
+<p class="xh">근거 발췌 — 정지 중 EKF B 최대 이동</p>
+<div class="xk">스크립트 핵심</div><pre class="code">P0 = dict(P); D = {k: 0.0 for k in P0}; t0 = time.time(); nxt = 10
+while time.time() - t0 &lt; SEC:
+    rclpy.spin_once(n, timeout_sec=0.05)
+    for k in P0: D[k] = max(D[k], math.hypot(P[k][0] - P0[k][0], P[k][1] - P0[k][1]))
+def cbr(m):
+    v = math.hypot(m.twist.twist.linear.x, m.twist.twist.linear.y); F['vmax'] = max(F.get('vmax', 0.0), v); F['over2'] = F.get('over2', 0) + (v &gt; 0.02); F['n'] = F.get('n', 0) + 1
+# job863_t1bscan.py — 사람이 스캔에 실제로 보였나(첫 스캔과 5 cm 넘게 다른 2 m 안 점)
+    near = ((rr &gt; 0.2) &amp; (rr &lt; 2.0)) | ((R0 &gt; 0.2) &amp; (R0 &lt; 2.0)); ch = near &amp; (np.abs(rr - R0) &gt; 0.05)</pre>
+<div class="xk">나온 결과</div><pre class="code"># j860_t1.txt (T1 60 s)
+T1 결과 60 s: 끝 이동 B 0.000 · A 0.000 · rf2o 원 0.001 m | 최대 B 0.000 · A 0.000 · rf2o 원 0.002 m
+  rf2o 원 속도: 표본 595, 최대 0.006 m/s, 0.02 넘음 0 | 게이트 통과분: 표본 592, 최대 0.006 m/s, 0.02 넘음 0
+  게이트 누계 전: 통과 3613 · G1 거부 64 · G2 거부 11 → 후: 통과 4484 · G1 거부 64 · G2 거부 11
+# j863_t1b.txt (T1b 90 s)
+T1 결과 90 s: 끝 이동 B 0.000 · A 0.000 · rf2o 원 0.010 m | 최대 B 0.000 · A 0.000 · rf2o 원 0.018 m
+  rf2o 원 속도: 표본 889, 최대 0.025 m/s, 0.02 넘음 1 | 게이트 통과분: 표본 878, 최대 0.016 m/s, 0.02 넘음 0
+  게이트 누계 전: 통과 5924 · G1 거부 64 · G2 거부 11 → 후: 통과 7080 · G1 거부 64 · G2 거부 12
+스캔 1263 개, 2 m 안 바뀐 점: 중앙 253 · 90% 477 · 최대 975</pre>
+<p class="note">결과 원문 <span class="mono">Docs/debug_log/2026-10-06/outputs/j860_t1.txt</span> · <span class="mono">Docs/debug_log/2026-10-06/outputs/j863_t1b.txt</span> · 스크립트 원문 <span class="mono">Docs/debug_log/2026-10-06/jobs/t1_still.py</span>, <span class="mono">Docs/debug_log/2026-10-06/jobs/job863_t1bscan.py</span></p>
+</div>
 <h2 id="t2">회전 중 가림: bag 에 몸을 그려 넣은 합성 <span class="sec">§10~§11</span></h2>
 <p class="prose">실제 사람이 같은 동작을 반복하기는 어렵다. 그래서 단계별 실측 bag 의 라이다 스캔에 원기둥 모양의 몸을 그려 넣고, rf2o·게이트·EKF 를 새로 띄워 재생했다. 2D 라이다라 몸의 거친 모양은 문제되지 않는다는 데 사용자도 동의했다. 줄자 값이 있으므로 같은 기준(평균 |예측 − 줄자| ≤ 3 cm)으로 판정했다. 방법 확인: 가림 0 % 재생이 라이브 결과(1.5 cm)를 1.6 cm 로 재현했다.</p>
 <figure>
@@ -131,6 +219,28 @@ footer{margin-top:44px;padding-top:14px;border-top:1px solid var(--line);font-si
   <div><h4>한계</h4><ul><li>진실 대용값은 bag 의 라이브 EKF B 다(줄자 대비 1.5 cm).</li><li>합성 몸은 원기둥이고 움직임은 사인파다. 실제 사람의 움직임과 같다는 근거는 없다.</li><li>정지한 몸 72 % 가 오히려 좋은 것은 rf2o 가 고정된 몸 자체를 정합 특징으로 쓴 결과로 추정한다.</li></ul></div>
 </div>
 
+<div class="xsrc">
+<p class="xh">근거 발췌 — 합성 가림 조건별 EKF B − 줄자</p>
+<div class="xk">스크립트 핵심</div><pre class="code"># occ_scan.py on_scan — 몸(원기둥)에 먼저 닿는 빔은 그 거리로 바꿈
+                fx, fy = cx - ox, cy - oy; b = dx * fx + dy * fy; d2 = fx * fx + fy * fy - b * b
+                ok = (b &gt; 0) &amp; (d2 &lt; self.br ** 2); t = b - np.sqrt(np.maximum(self.br ** 2 - d2, 0)); hit = np.where(ok &amp; (t &lt; hit), t, hit)
+            valid = np.isfinite(r) &amp; (r &gt; 0); occl = np.isfinite(hit) &amp; (~valid | (hit &lt; r))
+# occ_eval.py — 정지 구간 끝마다 오른쪽 앞끝 예측 대각 거리 − 줄자
+    eB = [corner_d(at(B, s[1] - 0.5), at(B, t0)) - TAPE[k] for k, s in enumerate(keep[1:])]</pre>
+<div class="xk">나온 결과</div><pre class="code"># occ_eval.txt (정지한 몸)
+가림  0.0: 단계 6 | EKF B −줄자 -3.1 +0.0 -3.3 -0.0 -2.8 +0.2 | 평균 |오차| 1.6 · 원위치(2·4·6) +0.0 -0.0 +0.2 | (진실 대용 라이브 B 평균 1.5)
+가림 0.15: 단계 6 | EKF B −줄자 -3.2 +0.3 -3.4 +0.9 -3.3 +2.1 | 평균 |오차| 2.2 · 원위치(2·4·6) +0.3 +0.9 +2.1 | (진실 대용 라이브 B 평균 1.5)
+가림  0.3: 단계 6 | EKF B −줄자 -3.6 +0.6 -3.9 +2.0 -3.0 +3.6 | 평균 |오차| 2.8 · 원위치(2·4·6) +0.6 +2.0 +3.6 | (진실 대용 라이브 B 평균 1.5)
+가림  0.5: 단계 6 | EKF B −줄자 -3.9 +0.5 -3.6 +1.9 -3.2 +3.5 | 평균 |오차| 2.8 · 원위치(2·4·6) +0.5 +1.9 +3.5 | (진실 대용 라이브 B 평균 1.5)
+가림  0.7: 단계 6 | EKF B −줄자 -3.6 -0.7 -1.2 -0.8 -1.9 +0.8 | 평균 |오차| 1.5 · 원위치(2·4·6) -0.7 -0.8 +0.8 | (진실 대용 라이브 B 평균 1.5)
+# occm_eval.txt (움직이는 몸)
+가림 A_walk08: 단계 6 | EKF B −줄자 -3.4 +0.6 -3.3 +0.5 -2.9 +1.9 | 평균 |오차| 2.1 · 원위치(2·4·6) +0.6 +0.5 +1.9 | (진실 대용 라이브 B 평균 1.5)
+가림 B_walk05: 단계 6 | EKF B −줄자 -3.0 +1.0 -3.0 +1.3 -1.9 +2.1 | 평균 |오차| 2.1 · 원위치(2·4·6) +1.0 +1.3 +2.1 | (진실 대용 라이브 B 평균 1.5)
+가림 C_arc50_sway: 단계 6 | EKF B −줄자 +7.6 +3.9 +22.2 +6.5 +15.4 -1.4 | 평균 |오차| 9.5 · 원위치(2·4·6) +3.9 +6.5 -1.4 | (진실 대용 라이브 B 평균 1.5)
+가림 D_arc30_inout: 단계 6 | EKF B −줄자 -8.5 +11.7 -26.5 +21.6 -40.1 +17.4 | 평균 |오차| 21.0 · 원위치(2·4·6) +11.7 +21.6 +17.4 | (진실 대용 라이브 B 평균 1.5)
+가림 E_arc50_fast: 단계 6 | EKF B −줄자 -19.0 +15.0 -4.2 +47.7 +29.6 +51.7 | 평균 |오차| 27.9 · 원위치(2·4·6) +15.0 +47.7 +51.7 | (진실 대용 라이브 B 평균 1.5)</pre>
+<p class="note">결과 원문 <span class="mono">Docs/debug_log/2026-10-06/outputs/occ_eval.txt</span> · <span class="mono">Docs/debug_log/2026-10-06/outputs/occm_eval.txt</span> · 스크립트 원문 <span class="mono">Docs/debug_log/2026-10-06/jobs/occ_scan.py</span>(정지 몸 커밋 a8b61aa1, 움직이는 몸 9c5c03be — 빔 가림 계산은 같음), <span class="mono">Docs/debug_log/2026-10-06/jobs/occ_eval.py</span>, <span class="mono">Docs/debug_log/2026-10-06/jobs/occm_eval.py</span>. 움직이는 몸의 G1 · G2 거부 수와 회전 중 · 정지 중 어긋남 경로(1.6~4.2 m)는 출력 파일이 없음 — 원천 소실(대화에만 있었음)</p>
+</div>
 <h2 id="gate">rf2o 품질 검사: G3 기각, G4 설계 <span class="sec">§12~§13</span></h2>
 <p class="prose">G3 는 직전 스캔을 rf2o 가 추정한 움직임으로 옮겨 이번 스캔과 겹쳐 보고, 5 cm 넘게 어긋난 점의 비율 q 를 재는 방식이다. q 만 기록하는 보정 재생을 먼저 돌려 조건별 분포를 봤다.</p>
 <figure>
@@ -139,6 +249,19 @@ footer{margin-top:44px;padding-top:14px;border-top:1px solid var(--line);font-si
 </figure>
 <div class="fix">G4 는 <code>rf2o_gate.py v_mode</code> / <code>ekf.launch.py gate_v:=on</code> 으로 구현했다(기본 끔). 5 조건 재생 A/B 를 돌리던 중 사용자 요청으로 <b>중단</b>했고 결과는 없다. 부분 결과도 판정에 쓰지 않는다. 예상 비용도 있다: rf2o 를 버리는 순간에는 실제 미끄러짐도 못 본다. 그래서 깨끗한 조건이 나빠지는지가 판정의 핵심이다.</div>
 
+<div class="xsrc">
+<p class="xh">근거 발췌 — G3 q 와 회전 중 |v| 분포</p>
+<div class="xk">스크립트 핵심</div><pre class="code"># rf2o_gate.py quality() (커밋 404f81fe) — 직전 스캔을 후보 움직임으로 옮겨 이번 스캔과 비교
+        dth = w * dt; c, s = math.cos(dth), math.sin(dth); qx, qy = px - bx * dt, py - by * dt
+…
+        rc = r2[k]; valid = np.isfinite(rc) &amp; (rc &gt; 0.2)
+        if valid.sum() &lt; 100: return None
+        return float(np.mean(np.abs(rc[valid] - rp[valid]) &gt; self.q_tol))
+# render_day1006.py — 회전 중(|ω| &gt; 0.15) 표본의 rf2o 병진 |v| 와 q 분포
+    R = list(csv.DictReader(open('qcal/qcal_%s_gate.csv' % c))); A = np.array([[float(r[k]) for k in ('w_gyro', 'bx', 'by', 'q')] for r in R])
+    rot = np.abs(A[:, 0]) &gt; 0.15; D[lab] = (np.hypot(A[rot, 1], A[rot, 2]), A[rot, 3][A[rot, 3] &gt;= 0])</pre>
+<p class="note">나온 결과: 원천 소실 — 분포의 입력 <span class="mono">qcal_*_gate.csv</span> 는 PC 스크래치패드(jobs 기준 qcal/)에만 있었고 저장소로 옮기지 않았다. 표의 중앙 · 90 % 값은 SUMMARY §12 에만 · G4 재생은 중단해 결과 없음 · 스크립트 원문 <span class="mono">ros2_ws/src/rover_bringup/scripts/rf2o_gate.py</span>(커밋 404f81fe 판), <span class="mono">Docs/debug_log/2026-10-06/jobs/render_day1006.py</span>, <span class="mono">Docs/debug_log/2026-10-06/jobs/job871_qcal.sh</span></p>
+</div>
 <h2 id="fix">정정·실수 <span class="sec">기록 원칙: 지우지 않고 남김</span></h2>
 <ul class="prose">
   <li>재생 정리 스크립트가 이름 기반 <code>pkill</code> 로 라이브 스택을 죽였다. 그때의 CPU 수치는 무효이고, 지금은 PID·프로세스 그룹으로만 정리한다. 같은 이유로 ssh 명령 안의 <code>pkill</code> 이 자기 자신을 죽인 일도 있었다.</li>

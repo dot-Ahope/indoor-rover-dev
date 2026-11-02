@@ -1,9 +1,13 @@
 
+<style>
+.code{margin:0;font-family:var(--f-mono);font-size:12.5px;line-height:1.5;background:var(--bg);border:1px solid var(--line);padding:8px 10px;overflow-x:auto;white-space:pre;max-width:100%}
+.flow > span{min-width:0}
+</style>
 <div class="wrap">
 <header>
   <div class="eyebrow">Indoor Rover · 2026-10-28 · Docs/debug_log/2026-10-28 §0–§17</div>
   <h1>10-28 장소 이름 이동</h1>
-  <p class="lead">어제 넣은 두 변경을 한 번 더 주행해 운용으로 확정한 뒤, F2.5 의 첫 두 단계(장소 등록부와 이름으로 보내는 서버)를 만들어 실주행까지 했습니다. 다섯 번 중 두 번이 통과했고, 나머지 세 번은 모두 '거절 · 멈춤' 쪽으로 끝나 위험한 동작은 없었습니다. 휴대폰 창구를 시험하다가, 오래 세워 둔 로버의 방향 추정이 돌아가 경로가 전부 막히는 문제를 찾았습니다. 온디바이스 LLM 은 아직 돌리지 않았습니다.</p>
+  <p class="lead">어제 넣은 두 변경을 한 번 더 주행해 운용으로 확정한 뒤, F2.5 의 첫 두 단계(장소 등록부와 이름으로 보내는 서버)를 만들어 실주행까지 했습니다. 다섯 번 중 두 번이 통과했고, 나머지 세 번은 모두 '거절 · 멈춤' 쪽으로 끝나 위험한 동작은 없었습니다. 휴대폰 창구를 시험하다가, 오래 세워 둔 로버의 방향 추정이 돌아가 경로가 전부 막히는 문제를 찾았습니다. 온디바이스 LLM 은 아직 돌리지 않았습니다. 2026-11-02 에 판단마다 그 값을 낸 스크립트의 핵심 부분과 실제 출력 발췌, 두 원문 파일 경로를 덧붙였습니다.</p>
 </header>
 
 <section>
@@ -16,6 +20,47 @@
     <div class="v no"><b>정지 중 방향 추정 드리프트</b><span>43 분 정지에 odom yaw +16.6°, SLAM 은 안 고침 → 돌아간 벽이 출발 방 출구를 막아 경로 전부 실패 (§16.1)</span></div>
     <div class="v wait"><b>온디바이스 LLM</b><span>아직 미실행. 오늘 명령은 러너에 적은 고정 문자열 — 다음은 S2(한국어 문장 묶음 + 규칙 기준선) (§15)</span></div>
   </div>
+</section>
+
+<section>
+  <h2>판정 카드의 근거<span class="sec">§1~§4 · §11 · §14.1 · §16</span></h2>
+  <p>위 카드 가운데 측정으로 내린 네 개(10-27 변경 확정 · 정지 지연 · W3 왕복 · 휴대폰 창구)를 낸 출력입니다.</p>
+  <pre class="code"># 2026-10-27/jobs/anal_slam_freeze.py · anal_tffix_sig.py 를 f2tt2 에 그대로 — 판정식은 10-27 페이지 발췌와 같음
+print(&#x27;nav2 odom→map 외삽 실패 %d 번 중 위 창 안 %d 번 · SLAM 스캔 버림 %d 번(주행 창)&#x27; % (len(fails), inside, len(drops)))
+if a &gt;= 0.5 * len(A) and a &gt; b: sig.append((ts, len(A), a, b))   # §15 서명</pre><pre class="code"># drives/f2tt2/f0_f2tt2/f0_f2tt2.log (Jetson 러너)
+결과: 1 SUCCEEDED 53.7s / 2 SUCCEEDED 55.9s / 3 SUCCEEDED 27.9s / 4 SUCCEEDED 24.1s / 5 SUCCEEDED 31.5s / 6 SUCCEEDED 23.8s / 7 SUCCEEDED 94.0s / 8 SUCCEEDED 102.5s | 총 413.7 s
+# drives/f2tt2/anal_slam_freeze_f2tt2.txt
+새 stamp 가 처음 올 때의 미래 여유(stamp − 수신): 중앙 1.452 · 최소 1.003 s
+nav2 odom→map 외삽 실패 0 번 중 위 창 안 0 번 · SLAM 스캔 버림 53 번(주행 창)
+# drives/f2tt2/anal_tffix_sig_f2tt2.txt
+전역 메시지 268 · 새 칸 ≥ 50 인 장 202 · **§15 서명 장 0**
+bag 창 10:22:23.36~10:29:24.80: 층 경고 0 번 · Control loop missed 70 번
+# drives/f2tt2/anal_stops_f2tt2.txt · anal_contact_f2tt2_d30.txt
+주행 10:22:31 ~ 10:29:25 (413.9 s) · 멈춤(1.0 s 넘게 정지) 1 번 · 합 4.9 s
+ 10:28:53.82~10:29:18.29 (t 391.2~415.6 s) 최소 +0.140 m @ 10:29:15.42 t 412.8 · 로버 (0.79, 0.18, -163°)</pre>
+  <p class="note">결과 원문 <span class="mono">Docs/debug_log/2026-10-28/outputs/drives/f2tt2/</span> 아래 <span class="mono">f0_f2tt2/f0_f2tt2.log</span> · <span class="mono">anal_slam_freeze_f2tt2.txt</span> · <span class="mono">anal_tffix_sig_f2tt2.txt</span> · <span class="mono">anal_stops_f2tt2.txt</span> · <span class="mono">anal_contact_f2tt2_d30.txt</span> · 스크립트 원문 <span class="mono">Docs/debug_log/2026-10-27/jobs/anal_slam_freeze.py</span> · <span class="mono">Docs/debug_log/2026-10-27/jobs/anal_tffix_sig.py</span> · <span class="mono">Docs/debug_log/2026-10-21/jobs/anal_stops.py</span> · <span class="mono">Docs/debug_log/2026-10-22/jobs/anal_contact.py</span>. 4.9 s 정지는 복귀 끝 PathBlockedAhead → Wait(같은 파일). §1 기준 ①~⑤ 대조는 SUMMARY §4</p>
+  <pre class="code"># f2pl4 stop 지연 — 대화 안 인라인 rosbags(/place/command · /cmd_vel · /odometry/filtered), stop 명령 시각 = 0
+ +0.24 s /cmd_vel             v +0.006  w +0.000
+ +0.27 s /odometry/filtered   v +0.049  w +0.010
+ +0.29 s /cmd_vel             v +0.000  w +0.000
+ +0.41 s /odometry/filtered   v +0.013  w -0.001
+# drives/f2pl4/place_s1.log · drives/f2pl5/place_s1.log
+&lt;&lt; go_to W3 → canceled (기대대로) 20.1 s
+&lt;&lt; go_to W3 → arrived (기대대로) 91.7 s
+&lt;&lt; return → arrived (기대대로) 100.2 s</pre>
+  <p class="note">결과 원문 <span class="mono">Docs/debug_log/2026-10-28/outputs/stop_cmdvel_f2pl4.txt</span> · <span class="mono">Docs/debug_log/2026-10-28/outputs/drives/f2pl4/place_s1.log</span> · <span class="mono">Docs/debug_log/2026-10-28/outputs/drives/f2pl5/place_s1.log</span> · 스크립트 원문 정지 지연은 원문 없음(대화 안 인라인 rosbags — 위 출력이 전부) · 명령 러너 <span class="mono">Docs/debug_log/2026-10-28/jobs/run_place_s1_1028.sh</span>. 접촉 0 은 사용자 확인</p>
+  <pre class="code"># 2026-10-28/jobs/chk_place_web_1028.sh — 키 없이 · 키 있음 · 명령 5 개
+echo &quot;키 없이 / → $(curl -s -o /dev/null -w %{http_code} $U/)&quot;
+for c in &quot;where&quot; &quot;go_to W3&quot; &quot;go_to 위 복도&quot; &quot;go_to 없는곳&quot; &quot;stop&quot;; do
+  echo &quot;POST &#x27;$c&#x27; → $(curl -s -H &quot;X-Rover-Key: $K&quot; -H &#x27;Content-Type: application/json&#x27; -d &quot;{\&quot;text\&quot;:\&quot;$c\&quot;}&quot; $U/api/cmd)&quot;; sleep 2.5; done</pre><pre class="code">키 없이 / → 403
+키 있음 / → 200 · 5693 B · title &lt;title&gt;로버 명령
+  1 info None map (-0.01, 0.08, -147°)
+  2 checked W3 [dry_run — 보내지 않음] 목표 (5.50, -2.20, -22°) FAIL 경로 없음(상태 6) → 직선 방향 · 여유 0.40 m · 거리 5.96 m
+  3 rejected 위 복도 목표 여유 0.000 m &lt; 0.10 · 방향 -126° FAIL 경로 없음(상태 6) → 직선 방향
+  4 rejected 없는곳 등록되지 않은 장소
+  5 canceled None 정지 요청 — Nav2 목표 전부 취소
+== PC(WSL)→Jetson:8080 키 있음 → 200 0.015355s</pre>
+  <p class="note">결과 원문 <span class="mono">Docs/debug_log/2026-10-28/outputs/place_web_chk1.txt</span> · 스크립트 원문 <span class="mono">Docs/debug_log/2026-10-28/jobs/chk_place_web_1028.sh</span>. 키 값은 출력하지 않음(파일 권한 · 길이만). 2 · 3 번의 '경로 없음' 이 바로 아래 '세워 둔 로버' 절의 증상</p>
 </section>
 
 <section>
@@ -40,12 +85,43 @@
     <tr class="hl"><td class="n">f2pl4</td><td><span class="pill ok">6/6 기대대로</span></td><td>통로 북쪽 · 위 복도 · W3 @stop20(취소) · W3 · 복귀. 위 복도 구간만 no5 보다 +31~38 % 느림 → §12 분석</td></tr>
     <tr class="hl"><td class="n">f2pl5</td><td><span class="pill ok">2/2 도착</span></td><td>W3 왕복(사용자 지정). 복귀 중 막힘 → 재계획 1 회, 이어서 도착</td></tr>
   </table></div>
+  <pre class="code"># ros2_ws/src/rover_navigation/scripts/place_server.py (커밋 e0bcbcce, 10-28 판)
+c = self.clearance(gx, gy, gth)
+mc = float(pl[&#x27;min_clear&#x27;]) if &#x27;min_clear&#x27; in pl else self.p(&#x27;min_clear&#x27;)   # 장소별 기준 — 기본 0.10
+    # → 경로 끝 방향에서 가장 가까운, 여유 기준을 넘는 방향으로 고쳐 보낸다(±45° 안, 5° 간격). 못 찾으면 거절.
+    cand = [(self.clearance(gx, gy, gth + s * math.radians(5 * k)), gth + s * math.radians(5 * k)) for s in (-1, 1)]
+if c &lt; mc: return self.say(rid, &#x27;rejected&#x27;, pl[&#x27;name&#x27;], &#x27;목표 여유 %.3f m &lt; %.2f · 방향 %.0f° %s&#x27; % (c, mc, math.degrees(gth), why))
+# 2026-10-28/jobs/anal_place_clear.py — 거절 순간 직전 전역 판으로 place_server.clearance() 와 같은 식(반길이 0.26 · 반폭 0.175)을 방향별로 다시 계산</pre><pre class="code"># drives/f2pl1/place_s1.log
+   0.0 s  rejected  통로 북쪽  목표 여유 0.000 m &lt; 0.10
+# place_clear_f2pl1.txt — 사건 13:14:09.74 · 목표 (-1.65, -3.70)
+  방향  -90° : 여유 0.110 m · 가장 가까운 치명 칸 (-1.365, -3.785) · 그 칸 /map 값 0 · 차체 안 치명 칸 0
+  방향  -45° : 여유 0.002 m · 가장 가까운 치명 칸 (-1.365, -3.785) · 그 칸 /map 값 0 · 차체 안 치명 칸 0
+# place_clear_f2pl2.txt — 사건 13:23:31.25 · 같은 목표, 동쪽 칸이 x -1.465 로 다가옴
+  방향  +60° : 여유 0.000 m · 가장 가까운 치명 칸 (-1.465, -3.685) · 그 칸 /map 값 0 · 차체 안 치명 칸 1
+  방향  +90° : 여유 0.010 m · 가장 가까운 치명 칸 (-1.465, -3.735) · 그 칸 /map 값 0 · 차체 안 치명 칸 0
+  방향 +120° : 여유 0.000 m · 가장 가까운 치명 칸 (-1.465, -3.735) · 그 칸 /map 값 0 · 차체 안 치명 칸 2</pre><p class="note">결과 원문 <span class="mono">Docs/debug_log/2026-10-28/outputs/drives/f2pl1/place_s1.log</span> · <span class="mono">Docs/debug_log/2026-10-28/outputs/place_clear_f2pl1.txt</span> · <span class="mono">Docs/debug_log/2026-10-28/outputs/place_clear_f2pl2.txt</span> · 옮길 자리 <span class="mono">Docs/debug_log/2026-10-28/outputs/place_clear_center.txt</span> · 스크립트 원문 <span class="mono">ros2_ws/src/rover_navigation/scripts/place_server.py</span>(이 날 판 = 커밋 e0bcbcce; 10-29 b359fbc7 에서 출발 전 스캔 맞춤 검사가 더해짐) · <span class="mono">Docs/debug_log/2026-10-28/jobs/anal_place_clear.py</span>. −51° 는 f2pl1 거절 순간의 경로 끝 방향(SUMMARY §8.2). f2pl3 의 '첫 where 유실' 은 bag 의 /place/* 개수를 대화 안 인라인으로 셈 — 결과 원문: 원천 소실(대화에만 있었음)</p>
   <figure><img src="{{img:run}}" alt="f2pl5 명령별 궤적, 명령 목록과 결과, 명령 흐름 시간축, cmd_vel"><figcaption>f2pl5 한 장 요약. 지도 위 명령별 궤적(★ 도착, 화살표 = 끝 방향) · 명령과 서버 설명 · 상태 흐름 시간축(→ 막힘 재계획) · 지령 속도. 도구 <span class="mono">Docs/tools/fig_place_run.py</span> (새 상시 도구, f2pl4 bag 으로도 그려짐).</figcaption></figure>
 </section>
 
 <section>
   <h2>위 복도 구간은 왜 느렸나<span class="sec">§12</span></h2>
   <p>같은 구간을 기존 좌표 러너(no5)와 비교하니 컨트롤러 주기 · BT 사건 · 끝 방향은 같고, 다른 것은 셋이었습니다. 목표가 10 cm 북쪽(제가 위 복도를 C 로 합침) → Smac 경로가 4 cm 동쪽, 통로 동쪽 가장자리가 한 칸 안쪽, 그래서 오른쪽 라이다 여유가 4~8 cm 적었습니다. MPPI 가 스스로 속도를 낮춘 것과 맞는 방향이지만, 구간 앞쪽 감속은 이것으로 설명되지 않아 미확인입니다. 위 복도를 원래 좌표로 되돌렸고, 판별 시험(upB)은 보류 중입니다.</p>
+  <pre class="code"># 2026-10-28/jobs/anal_leg_compare.py — 같은 구간을 10 Hz map 자세 · 지령으로: 소요 · 국면(전진 |v|≥0.02 · 제자리 회전 · 정지) · 평균 전진 속도
+# 2026-10-28/jobs/anal_leg_env.py — 0.5 s 마다 지령 v · 직전 1 s /cmd_vel 수 · 차체 ↔ 로컬 치명 · 차체 ↔ 라이다 최소 거리
+# 2026-10-28/jobs/anal_plan_x.py — 시간 창 안 /plan 마다 y 몇 곳에서 경로 x</pre><pre class="code"># leg_compare_C.txt
+== f2pl4_C : 소요 31.3 s · 이동 1.78 m · ... · 목표 (-1.60, -2.00) 끝 거리 0.136 m
+   국면: 전진 29.5 s · 제자리 회전 1.3 s · 정지 0.5 s | 평균 전진 속도 0.060 m/s
+== f2tt2_g6 : 소요 23.8 s · 이동 1.67 m · ... · 목표 (-1.60, -2.10) 끝 거리 0.139 m
+== f2tt1_g6 : 소요 23.7 s · ...
+== f2tf1_g6 : 소요 22.5 s · ...
+# plan_x_C.txt (Smac 경로 = 점 25~26 개 쪽)
+f2pl4 C   26 점 1.87 m ... | y -3.2: x -1.796 · y -2.9: x -1.793 · y -2.6: x -1.742
+f2tt2 g6  25 점 1.79 m ... | y -3.2: x -1.836 · y -2.9: x -1.837 · y -2.6: x -1.780
+# leg_env_C.txt — 차체 ↔ 라이다 (t s | v | cmd 수/1 s | 로컬 치명 | 라이다)
+f2pl4_C   18.0 | +0.080 | 20 | 0.000 @ -152° | 0.071 @  -60°
+f2pl4_C   19.5 | +0.039 | 20 | 0.000 @ -150° | 0.062 @  -74°
+f2tt2_g6  18.0 | +0.080 | 20 | 0.000 @ -149° | 0.107 @ -125°
+f2tt2_g6  19.0 | +0.080 | 20 | 0.000 @ -143° | 0.126 @ -124°</pre><p class="note">결과 원문 <span class="mono">Docs/debug_log/2026-10-28/outputs/leg_compare_C.txt</span> · <span class="mono">Docs/debug_log/2026-10-28/outputs/plan_x_C.txt</span> · <span class="mono">Docs/debug_log/2026-10-28/outputs/leg_env_C.txt</span> · 스크립트 원문 <span class="mono">Docs/debug_log/2026-10-28/jobs/anal_leg_compare.py</span> · <span class="mono">Docs/debug_log/2026-10-28/jobs/anal_plan_x.py</span> · <span class="mono">Docs/debug_log/2026-10-28/jobs/anal_leg_env.py</span>. 줄 앞 주행 이름은 읽기 쉽게 내가 붙임(원문은 절 머리에 이름). 표의 0.11–0.15 · 0.06–0.07 m 는 이 열의 구간 범위</p>
   <div class="tbl"><table>
     <tr><th>항목</th><th>no5</th><th>f2pl4</th></tr>
     <tr><td>목표</td><td class="n">(−1.60, −2.10)</td><td class="n">(−1.60, −2.00)</td></tr>
@@ -68,6 +144,30 @@
   </table></div>
   <figure><img src="{{img:reach}}" alt="16:10 전역 코스트맵에서 로버가 닿을 수 있는 영역"><figcaption>16:10 전역 코스트맵에서 로버 칸부터 넓이 우선으로 닿는 칸(비용 ≤ 98). 출발 방이 치명 선으로 닫혀 있음. 도구 <span class="mono">jobs/chk_costmap_dump.py</span> → <span class="mono">jobs/fig_gcm_reach.py</span>.</figcaption></figure>
   <p><b>읽기</b>: 정지 중 EKF odom 방향이 돌았고(측정, ≈ 0.39 °/min), SLAM 위치 추정은 로버가 움직이지 않으면 스캔을 처리하지 않아 고치지 않았습니다(map→odom 불변은 측정, 기전은 추정). 그래서 라이다 · 카메라가 실제 벽을 돌아간 자리에 칠했습니다. <b>미확인</b>: 돌린 것이 카메라 IMU 자이로 잔여 바이어스인지 cuVSLAM 인지, 스캔 맞춤 30° 와 odom 16.6° 의 차이.</p>
+  <pre class="code"># 2026-10-28/jobs/fig_gcm_reach.py — 로버 칸부터 값 ≤ 98(미지 포함) 칸을 넓이 우선으로 칠함(NavFn 이 99 · 100 을 못 지난다는 근사)
+# 2026-10-28/jobs/anal_gcm_vs_static.py — # = 치명이고 정적 지도에도 점유 · N = 치명인데 정적 지도는 빈 칸 · + = 내접 99 · ~ 닿는 칸
+# 2026-10-28/jobs/chk_scan_align.py — 점수 = 라이다 점 중 정적 점유 칸에 드는 비율, yaw 를 −40~+40° 0.5° 간격으로 돌려 봄
+def score(d):
+    x = lx + r * np.cos(la + d + a); y = ly + r * np.sin(la + d + a)
+    ...; return float(g[J[v], I[v]].mean())
+res = [(score(math.radians(d)), d) for d in np.arange(-40, 40.5, 0.5)]</pre><pre class="code"># gcm_reach_1610.txt
+로버 칸 84 · 닿는 칸 514 (1.3 m²)
+  W3 (5.50, -2.20) 칸 36 · 닿음 False
+  B (2.25, -1.60) 칸 0 · 닿음 False
+  C (-1.60, -2.00) 칸 73 · 닿음 False
+  통로북쪽 (-1.78, -3.70) 칸 64 · 닿음 False
+# gcm_vs_static_1610.txt (아래 몇 줄)
+  +0.55 NN++NNN++++++~~~~~~~~~~~~~+++~++++N+++++++.......................
+  +0.50 NNNNN++##+++~~~~~~~~~~~~~~~~~~~+++NN++++.........................
+창 안 치명 · 정적 지도엔 빈 칸(N) 185 칸
+# scan_align_1615.txt
+ map→odom: (0.019, 0.041, -2.1°)
+odom→base_link: (-0.030, 0.037, -144.8°)
+라이다 점 1699 · 지금 TF(0°) 점수 0.140
+  yaw -32.5° → 0.295
+# odom_yaw_end_f2pl5.txt (bag 끝, 정지 뒤)
+  map→odom 15:32:20 (0.019, 0.041, -2.1°)
+  odom→base_link 15:32:20 (0.085, 0.019, -161.4°)</pre><p class="note">결과 원문 <span class="mono">Docs/debug_log/2026-10-28/outputs/gcm_reach_1610.txt</span> · <span class="mono">Docs/debug_log/2026-10-28/outputs/gcm_vs_static_1610.txt</span> · <span class="mono">Docs/debug_log/2026-10-28/outputs/scan_align_1615.txt</span> · <span class="mono">Docs/debug_log/2026-10-28/outputs/odom_yaw_end_f2pl5.txt</span>(앞 두 파일 · 마지막 파일은 cp949 로 저장됨) · 스크립트 원문 <span class="mono">Docs/debug_log/2026-10-28/jobs/fig_gcm_reach.py</span> · <span class="mono">Docs/debug_log/2026-10-28/jobs/anal_gcm_vs_static.py</span> · <span class="mono">Docs/debug_log/2026-10-28/jobs/chk_scan_align.py</span>(셋 다 커밋 be17666e) · 덤프 <span class="mono">Docs/debug_log/2026-10-28/jobs/chk_costmap_dump.py</span>. +16.6° = −144.8° − (−161.4°), 0.39 °/min = 16.6° ÷ 43 분(계산). odom_yaw_end 의 '끝 8 s ω 평균 10.95 °/min' 줄은 bag 끝 8 s 의 값이라 정지 중 비율과 다름. 이 파일은 bag 끝 TF 를 대화 안 인라인으로 뽑은 것이라 스크립트 원문 없음</p>
   <p><b>안전 의미</b>: 휴대폰으로 아무 때나 명령을 넣게 되면 오래 서 있던 로버가 틀린 방향 추정으로 출발할 수 있습니다. 이번엔 경로가 아예 안 나와 멈췄지만, 오차가 작으면 경로가 나올 수 있습니다.</p>
 </section>
 
@@ -80,6 +180,12 @@
       <span class="k">본 것</span><span>PC 쪽 출력 0 B · 'No medium found' · 이어 WSL E_FAIL</span>
       <span class="k">처음 추론</span><span>WSL 이 안 떠서 러너 미실행 → 로버 안 움직임</span>
       <span class="k">틀린 이유</span><span>Jetson 러너는 setsid nohup 으로 독립 실행되어 끝까지 주행. PC 쪽 폴링 · 회수만 죽음</span>
+      <span class="k">스크립트 핵심</span><span><pre class="code"># 2026-10-27/jobs/run_f0.sh 머리(10-28 도 같은 러너)
+# F0 PC 러너: Jetson 에 파일 전송(재시도 3) → job551 을 setsid nohup 으로 기동 → 로그 폴링(끊겨도 주행은 계속) → 끝나면 산출물 회수</pre></span>
+      <span class="k">나온 결과</span><span><pre class="code"># PC 쪽 회수 파일 outputs/drives/f2tt2/run_f2tt2.txt — 0 B
+# Jetson 쪽 로그 outputs/drives/f2tt2/f0_f2tt2/f0_f2tt2.log 끝
+결과: 1 SUCCEEDED 53.7s / ... / 8 SUCCEEDED 102.5s | 총 413.7 s
+=== 끝 10:29:49 bag 66636698 B ===</pre><span class="note">결과 원문 <span class="mono">Docs/debug_log/2026-10-28/outputs/drives/f2tt2/run_f2tt2.txt</span>(0 B) · <span class="mono">Docs/debug_log/2026-10-28/outputs/drives/f2tt2/f0_f2tt2/f0_f2tt2.log</span>. 'No medium found' · E_FAIL 문구는 SUMMARY §3.1 에만 — 원천 소실(대화에만 있었음) · 스크립트 원문 <span class="mono">Docs/debug_log/2026-10-27/jobs/run_f0.sh</span></span></span>
       <span class="k">다음에 알아보는 법</span><span>'안 움직였다' 고 말하기 전에 Jetson <span class="mono">/tmp/f0_&lt;이름&gt;.log</span> · <span class="mono">pgrep job551</span> 을 본다. 못 보면 '모름' 이라 하고 현장 확인을 요청</span>
     </div>
   </div>
@@ -90,6 +196,18 @@
       <span class="k">본 것</span><span>checked 5 — 명령 목록에 통로 북쪽이 없었음</span>
       <span class="k">처음 추론</span><span>'이동 명령 5 개' 라 수가 맞아 보여 등록부 전부 통과로 봄</span>
       <span class="k">의심한 이유</span><span>f2pl1 이 바로 그 장소에서 거절</span>
+      <span class="k">스크립트 핵심</span><span><pre class="code"># 2026-10-28/jobs/chk_place_dry_1028.sh — dry_run 서버를 띄우고 명령 목록을 차례로 보냄(목록에 통로 북쪽이 없었음)
+setsid nohup python3 $SRC/scripts/place_server.py --ros-args -p places_file:=$SRC/config/places.yaml -p dry_run:=true &gt; /tmp/place_server_dry.log 2&gt;&amp;1 &amp;</pre></span>
+      <span class="k">나온 결과</span><span><pre class="code">## go_to B
+0.1 s  checked  B  [dry_run — 보내지 않음] 목표 (2.25, -1.60, -80°) ...
+## go_to 위 복도
+0.8 s  checked  C  [dry_run — 보내지 않음] 목표 (-1.60, -2.00, -172°) ...
+## go_to 남서
+0.1 s  checked  남서  [dry_run — 보내지 않음] 목표 (-1.60, -5.50, 154°) ...
+## go_to W3
+0.1 s  checked  W3  [dry_run — 보내지 않음] 목표 (5.50, -2.20, 9°) ...
+## return
+0.0 s  checked  출발점  [dry_run — 보내지 않음] 목표 (0.00, 0.00, 18°) ...</pre><span class="note">결과 원문 <span class="mono">Docs/debug_log/2026-10-28/outputs/chk_place_dry_1028b.txt</span>(첫 판 <span class="mono">chk_place_dry_1028.txt</span> 은 25 s 안 끝 상태 없음) · 스크립트 원문 <span class="mono">Docs/debug_log/2026-10-28/jobs/chk_place_dry_1028.sh</span></span></span>
       <span class="k">다음에 알아보는 법</span><span>dry run 은 등록부를 읽어 모든 장소를 돌고, 결과 수 = 장소 수를 확인. 출발 자리가 바뀌는 검사는 그 자리에서 다시 본다</span>
     </div>
   </div>
@@ -100,6 +218,11 @@
       <span class="k">본 것</span><span>그 구간 31.3 s(no5 22.6~23.9 s), 경로 4 cm 동쪽</span>
       <span class="k">처음 추론</span><span>도착 허용 0.15 m 안이라 같은 자리</span>
       <span class="k">의심한 이유</span><span>도착점이 같아도 좁은 통로 안 경로 선은 목표에 따라 바뀜</span>
+      <span class="k">스크립트 핵심</span><span><pre class="code"># 2026-10-28/jobs/anal_leg_compare.py · anal_plan_x.py — 위 &#x27;위 복도 구간&#x27; 절 발췌와 같은 도구</pre></span>
+      <span class="k">나온 결과</span><span><pre class="code">== f2pl4_C : 소요 31.3 s · 이동 1.78 m · ... · 목표 (-1.60, -2.00)
+== f2tt2_g6 : 소요 23.8 s · 이동 1.67 m · ... · 목표 (-1.60, -2.10)
+f2pl4 C   26 점 ... | y -3.2: x -1.796 · y -2.9: x -1.793 · y -2.6: x -1.742
+f2tt2 g6  25 점 ... | y -3.2: x -1.836 · y -2.9: x -1.837 · y -2.6: x -1.780</pre><span class="note">결과 원문 <span class="mono">Docs/debug_log/2026-10-28/outputs/leg_compare_C.txt</span> · <span class="mono">Docs/debug_log/2026-10-28/outputs/plan_x_C.txt</span> · 스크립트 원문 <span class="mono">Docs/debug_log/2026-10-28/jobs/anal_leg_compare.py</span> · <span class="mono">Docs/debug_log/2026-10-28/jobs/anal_plan_x.py</span></span></span>
       <span class="k">다음에 알아보는 법</span><span>검증된 목표를 합치거나 옮길 때는 그 경로가 좁은 곳을 지나는지 먼저 보고, 지나면 오프라인 계획으로 경로 차를 잰다</span>
     </div>
   </div>
@@ -110,6 +233,14 @@
       <span class="k">본 것</span><span>15:19 격자에 y −0.57~−0.62 치명 띠, f2pl4 끝 격자엔 없음</span>
       <span class="k">처음 추론</span><span>새로 생긴 띠 → nvblox 기억</span>
       <span class="k">의심한 이유</span><span>정적 지도와 겹치니 그 띠는 원래 벽. f2pl4 끝 격자는 ±0.5 m 만 그려 그 자리를 못 봤음(범위가 다른 두 격자 비교)</span>
+      <span class="k">스크립트 핵심</span><span><pre class="code"># 2026-10-28/jobs/chk_costmap_robot.py — 로버 자리 둘레 ±1.2 m 문자 격자
+# 2026-10-28/jobs/anal_place_clear.py — 목표 둘레 1 m(±0.5 m)만 문자 격자로(# 치명 · + 99 · . 그 밖, @ 목표)</pre></span>
+      <span class="k">나온 결과</span><span><pre class="code"># costmap_robot_1519b.txt — 로버 map (0.16, 0.13), 격자 y +1.33 ~ -1.07
+  -0.57 ##########################+######################
+  -0.62 ####+++++++######################################
+# costmap_start_f2pl4_end.txt — 목표 (0.15, 0.13) 둘레, 격자 첫 줄 y +0.63 · 마지막 줄 y -0.32
+  +0.63 #++#+++++++::::::+++
+  -0.32 ....................</pre><span class="note">결과 원문 <span class="mono">Docs/debug_log/2026-10-28/outputs/costmap_robot_1519b.txt</span> · <span class="mono">Docs/debug_log/2026-10-28/outputs/costmap_start_f2pl4_end.txt</span>(머리 줄 글자가 저장 때 깨져 격자 줄만 옮김) · 정정 근거 <span class="mono">Docs/debug_log/2026-10-28/outputs/gcm_vs_static_1610.txt</span> · 스크립트 원문 <span class="mono">Docs/debug_log/2026-10-28/jobs/chk_costmap_robot.py</span> · <span class="mono">Docs/debug_log/2026-10-28/jobs/anal_place_clear.py</span></span></span>
       <span class="k">결론</span><span>막은 것은 동쪽 출구의 '돌아간 벽'. §13.1 시점도 같은 기전일 가능성이 크나 그때 TF · 스캔을 남기지 않아 미확인(원천 소실)</span>
       <span class="k">다음에 알아보는 법</span><span>두 판은 같은 창 크기로 비교 · 치명 칸은 먼저 정적 지도와 겹쳐 나눔 · 정지 중 생긴 치명이면 TF yaw 이력과 스캔-지도 맞춤부터</span>
     </div>

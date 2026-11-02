@@ -1,9 +1,15 @@
+<style>
+.code{margin:0;font-family:var(--f-mono);font-size:12.5px;line-height:1.5;background:var(--bg);border:1px solid var(--line);padding:8px 10px;overflow-x:auto;white-space:pre;max-width:100%}
+.ev{display:flex;flex-direction:column;gap:6px;min-width:0}
+.flow > span{min-width:0}
+.pm .flow{grid-template-columns:auto minmax(0,1fr)}
+</style>
 
 <div class="wrap">
 <header>
   <div class="eyebrow">Indoor Rover · 2026-10-20 · Docs/debug_log/2026-10-20 §0–§10</div>
   <h1>10-20 cuVSLAM 융합과 공유메모리</h1>
-  <p class="lead">프로젝터를 끈 구성에서 cuVSLAM 이 방향을 꾸준히 잘 맞추는 것을 두 번째 주행으로 재현했습니다. 그것을 EKF 에 넣으면 무엇이 좋아지는지 bag 재실행과 실시간 그림자 주행으로 쟀고, 주행 중 cuVSLAM 영상이 빠지는 원인을 UDP 소켓 버퍼로 찾아 카메라와 cuVSLAM 사이를 공유메모리로 바꿨습니다. 깊이 해상도가 상자 번짐에 듣는지도 확인했습니다.</p>
+  <p class="lead">프로젝터를 끈 구성에서 cuVSLAM 이 방향을 꾸준히 잘 맞추는 것을 두 번째 주행으로 재현했습니다. 그것을 EKF 에 넣으면 무엇이 좋아지는지 bag 재실행과 실시간 그림자 주행으로 쟀고, 주행 중 cuVSLAM 영상이 빠지는 원인을 UDP 소켓 버퍼로 찾아 카메라와 cuVSLAM 사이를 공유메모리로 바꿨습니다. 깊이 해상도가 상자 번짐에 듣는지도 확인했습니다. 2026-11-02 에 각 판정 옆에 그 수치를 낸 스크립트의 핵심 부분과 실제로 나온 결과(원문 발췌)를 붙이고, 둘 다 저장소의 원문 파일 경로를 달았습니다.</p>
 </header>
 
 <section>
@@ -31,6 +37,28 @@
     <tr><td>f2z2</td><td>EKF</td><td class="n">13.2 cm</td><td class="n">3.3°</td></tr>
   </table></div>
   <figure><img src="{{img:vslam}}" alt="f2z2 궤적과 위치 오차 시간축"><figcaption>f2z2: camera_link 궤적(왼쪽)과 SLAM 대비 위치 오차(오른쪽). IMU 융합을 켠 cuVSLAM 은 불안정(방향 7.8°)해서 쓰지 않습니다.</figcaption></figure>
+  <div class="ev"><p class="note"><b>스크립트 핵심 · 나온 결과</b> — 정렬 시각 인자(20 s)를 주면 각 추정을 그 시각의 SLAM 자세로 한 번 맞추고, 이후 위치 오차와 방향 오차 절댓값의 95 % 값을 셉니다. 표의 cuVSLAM 은 <span class="mono">false_vs_off</span>(IMU 융합 끔 · 끈 IR), <span class="mono">true_vs_off</span> 가 IMU 융합 켬입니다.</p>
+<pre class="code">T_ALIGN = float(sys.argv[4]) if len(sys.argv) &gt; 4 else None   # 10-20 §3: 정렬 시각(주행 bag s) — f2z2 는 시작 때 SLAM 위치가 21° 틀렸다가 t≈12 s 에 고쳐짐
+…
+    k0 = 0 if T_ALIGN is None else int(np.searchsorted(R[:, 0], t0 + T_ALIGN))
+    R = R[k0:]; ts = R[:, 0]; A0 = slam(ts[0])
+…
+    Gi = np.array([pl(slam(t)) for t in ts]); err = np.hypot(E[:, 0] - Gi[:, 0], E[:, 1] - Gi[:, 1]) * 100
+…
+    print(&#x27;  %-14s yaw 오차 |95 %%| %.1f° · |최대| %.1f° · 구간 변화 %s&#x27; % (&#x27;&#x27;, np.percentile(np.abs(yerr), 95), np.abs(yerr).max(), &#x27; · &#x27;.join(ys)))</pre>
+<pre class="code">#### f2z1 (정렬 t=20 s)
+  false_vs_off   추적 성공 100.0 % · 위치 오차 끝   3.6 · 95 %  27.6 · 최대  31.6 cm · yaw 오차 끝  -0.8° · 구간 증가 t60~80 +3.7 cm · t160~210 +-4.4 cm · 출력 2872 (15.0 Hz)
+                 yaw 오차 |95 %| 0.8° · |최대| 1.5° · 구간 변화 t60~80 -0.4° · t160~210 -0.2°
+…
+  EKF            추적 성공   nan % · 위치 오차 끝  58.9 · 95 %  57.5 · 최대  60.1 cm · yaw 오차 끝  +3.6° · 구간 증가 t60~80 +4.4 cm · t160~210 +15.8 cm · 출력 2872 (15.0 Hz)
+                 yaw 오차 |95 %| 4.3° · |최대| 4.4° · 구간 변화 t60~80 -0.1° · t160~210 +0.2°
+#### f2z2 (정렬 t=20 s)
+  false_vs_off   추적 성공 100.0 % · 위치 오차 끝   9.0 · 95 %  31.3 · 최대  36.2 cm · yaw 오차 끝  -1.2° · 구간 증가 t60~80 +7.5 cm · t160~210 +-3.8 cm · 출력 2883 (15.0 Hz)
+                 yaw 오차 |95 %| 1.1° · |최대| 1.5° · 구간 변화 t60~80 +0.0° · t160~210 -0.3°
+…
+  EKF            추적 성공   nan % · 위치 오차 끝  14.2 · 95 %  13.2 · 최대  14.2 cm · yaw 오차 끝  +2.5° · 구간 증가 t60~80 +-3.8 cm · t160~210 +2.0 cm · 출력 2883 (15.0 Hz)
+                 yaw 오차 |95 %| 3.3° · |최대| 3.6° · 구간 변화 t60~80 -0.3° · t160~210 +0.5°</pre>
+<p class="note">결과 원문 <span class="mono">Docs/debug_log/2026-10-20/outputs/anal_vslam_cmp_a20.txt</span> · 스크립트 원문 <span class="mono">Docs/debug_log/2026-10-19/jobs/anal_vslam_cmp.py</span>. 스크립트는 10-19 폴더에 있고, 이 결과를 낸 판은 커밋 3e3d2803(정렬 시각 인자 추가)</p></div>
 </section>
 
 <section>
@@ -44,6 +72,29 @@
   </table></div>
   <figure><img src="{{img:replay}}" alt="f2z1 재실행 변형 비교"><figcaption>f2z1 재실행. 위: 10 초 창 위치 오차(빨강 = W3 되돌아 회전, 초록 = 상자 옆). 아래: t = 20 s 로 맞춘 절대 위치 오차. 기록 EKF(점선)와 V0 가 겹치므로 재실행이 실제를 재현합니다.</figcaption></figure>
   <p class="note">처음 재실행에서는 기준 EKF 에 rf2o 와 회전 중 휠 공분산(B3)을 빠뜨려 효과를 30~35 % 로 과대 보고했고, 주행 구성으로 다시 돌려 정정했습니다(§5.2).</p>
+  <div class="ev"><p class="note"><b>스크립트 핵심 · 나온 결과</b> — 1 s 간격으로 10 s 창을 밀며, 그 창 동안 SLAM 이 본 상대 이동과 각 EKF 의 상대 이동 차이(위치 cm)를 셉니다. W3 회전은 t 105~125 창의 최댓값, 상자 옆은 95 % 값입니다. 첫 줄(주행 기록)과 V0 가 같아야 재실행이 실제를 재현한 것입니다.</p>
+<pre class="code">    tend = min(Lt[-1], OBt[-1]); ws = np.arange(t0 + 20, tend - D, 1.0); O = []
+    for a in ws:
+        G = np.linalg.inv(slam(a)) @ slam(a + D); E = np.linalg.inv(est(a)) @ est(a + D); X = np.linalg.inv(G) @ E
+        O.append((a - t0, 100 * math.hypot(X[0, 3], X[1, 3]), abs(math.degrees(math.atan2(X[1, 0], X[0, 0])))))
+…
+        k = (O[:, 0] + D &gt; s0) &amp; (O[:, 0] &lt; s1); v = O[k, 1].max() if q == &#x27;max&#x27; else np.percentile(O[k, 1], q); seg.append(&#x27;%s %s %.1f&#x27; % (sn, &#x27;최대&#x27; if q == &#x27;max&#x27; else &#x27;9 …</pre>
+<pre class="code">#### f2z1
+기준 = SLAM camera_link · 창 10 s · 정렬 t=20 s
+  EKF(주행 기록)       전 구간 위치 95% 17.1 · 최대 26.6 cm · yaw 95% 1.01° | W3 회전 t105~125 최대 26.6 · 상자 옆 출발 t18~36 95% 3.2 · 상자 옆 복귀 t180~200 95% 2.4 cm | 절대: 위치 95% 57.9 · 끝 58.9 cm · yaw |95%| 4.3°
+  재실행 V0           전 구간 위치 95% 17.0 · 최대 26.5 cm · yaw 95% 1.03° | W3 회전 t105~125 최대 26.5 · 상자 옆 출발 t18~36 95% 3.1 · 상자 옆 복귀 t180~200 95% 2.4 cm | 절대: 위치 95% 57.9 · 끝 58.9 cm · yaw |95%| 4.2°
+  재실행 V2           전 구간 위치 95% 11.0 · 최대 18.7 cm · yaw 95% 0.98° | W3 회전 t105~125 최대 18.7 · 상자 옆 출발 t18~36 95% 3.0 · 상자 옆 복귀 t180~200 95% 3.4 cm | 절대: 위치 95% 34.3 · 끝 34.5 cm · yaw |95%| 4.0°
+…
+  재실행 V3           전 구간 위치 95% 11.1 · 최대 18.7 cm · yaw 95% 1.01° | W3 회전 t105~125 최대 18.7 · 상자 옆 출발 t18~36 95% 3.0 · 상자 옆 복귀 t180~200 95% 3.3 cm | 절대: 위치 95% 35.6 · 끝 36.0 cm · yaw |95%| 4.3°
+…
+  cuVSLAM(IMU 끔)   전 구간 위치 95%  8.1 · 최대 12.2 cm · yaw 95% 1.06° | W3 회전 t105~125 최대 12.2 · 상자 옆 출발 t18~36 95% 4.5 · 상자 옆 복귀 t180~200 95% 5.2 cm | 절대: 위치 95% 27.6 · 끝  4.1 cm · yaw |95%| 0.9°
+그림 figures/ekf_replay_live_f2z1.png
+#### f2z2
+…
+  재실행 V3           전 구간 위치 95%  7.0 · 최대 10.7 cm · yaw 95% 0.77° | W3 회전 t105~125 최대 10.7 · 상자 옆 출발 t18~36 95% 5.8 · 상자 옆 복귀 t180~200 95% 2.9 cm | 절대: 위치 95% 15.1 · 끝 12.2 cm · yaw |95%| 3.3°
+…
+  재실행 V2           전 구간 위치 95%  7.0 · 최대 10.7 cm · yaw 95% 0.74° | W3 회전 t105~125 최대 10.7 · 상자 옆 출발 t18~36 95% 5.8 · 상자 옆 복귀 t180~200 95% 2.9 cm | 절대: 위치 95% 15.3 · 끝  9.6 cm · yaw |95%| 2.8°</pre>
+<p class="note">결과 원문 <span class="mono">Docs/debug_log/2026-10-20/outputs/anal_ekf_replay_live.txt</span> · 스크립트 원문 <span class="mono">Docs/debug_log/2026-10-20/jobs/anal_ekf_replay.py</span>. 이 결과는 커밋 35e4381a 판(§5.3). 출력 줄에는 그 판의 print 에 있는 '10 s 창:' 머리말이 없음 — 저장 과정에서 빠진 이유는 미확인</p></div>
 </section>
 
 <section>
@@ -53,6 +104,16 @@
     <figure><img src="{{img:shadow}}" alt="f2v1 그림자 EKF 비교"><figcaption>그림자 EKF 의 W3 회전 최대 창 27.5 → 22.1 cm(−20 %). 상자 옆은 그대로.</figcaption></figure>
     <div class="v wait" style="align-self:start"><b>주행 중 cuVSLAM 입력이 빠졌다</b><span>정지 13 Hz → 주행 약 10 Hz, 0.5 s 넘는 끊김 38 번. 빠진 동안은 휠 · 자이로로만 적분돼 cuVSLAM 단독(13 cm)만큼 내려가지 못한 것으로 추정합니다. 아래 공유메모리 작업의 출발점입니다.</span></div>
   </div>
+  <div class="ev"><p class="note"><b>스크립트 핵심 · 나온 결과</b> — 같은 10 s 창 지표를 주행 bag 에 기록된 그림자 EKF(<span class="mono">/odometry/ekf_vslam</span>)에 그대로 적용했습니다. W3 최대 27.5 → 22.1 cm.</p>
+<pre class="code">    tend = min(Lt[-1], OBt[-1]); ws = np.arange(t0 + 20, tend - D, 1.0); O = []
+    for a in ws:
+        G = np.linalg.inv(slam(a)) @ slam(a + D); E = np.linalg.inv(est(a)) @ est(a + D); X = np.linalg.inv(G) @ E
+        O.append((a - t0, 100 * math.hypot(X[0, 3], X[1, 3]), abs(math.degrees(math.atan2(X[1, 0], X[0, 0])))))</pre>
+<pre class="code">기준 = SLAM camera_link · 창 10 s · 정렬 t=20 s
+  EKF(주행 기록)       전 구간 위치 95% 19.0 · 최대 27.5 cm · yaw 95% 1.00° | W3 회전 t105~125 최대 27.5 · 상자 옆 출발 t18~36 95% 3.7 · 상자 옆 복귀 t180~200 95% 3.2 cm | 절대: 위치 95% 55.8 · 끝 59.3 cm · yaw |95%| 4.4°
+  재실행 EKF_VSLAM    전 구간 위치 95% 12.4 · 최대 22.1 cm · yaw 95% 1.01° | W3 회전 t105~125 최대 22.1 · 상자 옆 출발 t18~36 95% 4.0 · 상자 옆 복귀 t180~200 95% 3.1 cm | 절대: 위치 95% 42.2 · 끝 44.9 cm · yaw |95%| 4.4°
+  cuVSLAM(IMU 끔)   전 구간 위치 95%  8.8 · 최대 13.1 cm · yaw 95% 1.69° | W3 회전 t105~125 최대 13.1 · 상자 옆 출발 t18~36 95% 7.6 · 상자 옆 복귀 t180~200 95% 4.8 cm | 절대: 위치 95% 40.4 · 끝 12.6 cm · yaw |95%| 2.0°</pre>
+<p class="note">결과 원문 <span class="mono">Docs/debug_log/2026-10-20/outputs/anal_shadow_f2v1.txt</span> · 스크립트 원문 <span class="mono">Docs/debug_log/2026-10-20/jobs/anal_ekf_replay.py</span>. 커밋 3aa97d75 판(그림자 토픽 읽기 추가)</p></div>
 </section>
 
 <section>
@@ -64,6 +125,84 @@
     <li>그래서 카메라와 cuVSLAM 두 프로세스만 공유메모리 + UDP 로 바꿨습니다(<span class="mono">dds_shm:=true</span>, 기본 끔). 나머지는 UDP 그대로입니다.</li>
   </ul>
   <figure><img src="{{img:shm}}" alt="UDP 크기별 빠짐, 공유메모리 A/B, 재기동 10회"><figcaption>(a) UDP 에서 메시지 크기별 수신 Hz. (b) 정지 A/B, 공유메모리에서 15.0 Hz · 간격 경고 1. (c) 실제 스택 재기동 10 회(사고 모사 강제 종료 6 회 포함) 모두 15 Hz 로 복귀. 세로축은 12 Hz 부터 시작합니다.</figcaption></figure>
+  <div class="ev"><p class="note"><b>스크립트 핵심 · 나온 결과</b> — <span class="mono">/proc/net/snmp</span> 의 시스템 전체 <span class="mono">RcvbufErrors</span> 를 20 s 간격으로 두 번 읽은 차이입니다. cuVSLAM 을 SIGSTOP 으로 멈춘 창과 비교해 cuVSLAM 소켓 몫을 가렸습니다.</p>
+<pre class="code">e() { awk &#x27;/^Udp:/{n++} n==2 &amp;&amp; /^Udp:/{print $6; exit}&#x27; /proc/net/snmp; }
+a=$(e); sleep 20; b=$(e); echo &quot;그림자 구성(정지) 20 s: 수신 버퍼 오류 +$((b-a)) (초당 $(( (b-a)/20 )))&quot;
+CN=isaac_ros_dev-aarch64-container
+P=$(docker exec $CN bash -c &quot;pgrep -f &#x27;__node:=cuvslam_[c]ontainer&#x27;&quot; | head -1); docker exec $CN kill -STOP $P</pre>
+<p class="note">결과 원문: 원천 소실(대화에만 있었음 — 초당 39 · 432 는 SUMMARY §7.1 에만 남음) · 스크립트 원문 <span class="mono">Docs/debug_log/2026-10-20/jobs/chk_udp_rate.sh</span></p></div>
+  <div class="ev"><p class="note"><b>스크립트 핵심 · 나온 결과</b> — UDP 전용으로 크기만 바꾼 영상을 15 Hz 로 호스트에서 발행하고 컨테이너에서 20 s 받아 수신 Hz 와 같은 창의 버퍼 버림을 셉니다(두 번 번갈아).</p>
+<pre class="code">  sleep 5; a=($(cat $D/cont 2&gt;/dev/null || echo &quot;0 0 0&quot;)); e0=$(rb); sleep 20; b=($(cat $D/cont 2&gt;/dev/null || echo &quot;0 0 0&quot;)); e1=$(rb)
+  printf &quot;  %-34s 수신 %5.1f / %5.1f Hz · 수신버퍼 버림 %4d/s\n&quot; &quot;$1&quot; $(echo &quot;(${b[1]}-${a[1]})/20&quot; | bc -l) $(echo &quot;(${b[2]}-${a[2]})/20&quot; | bc -l) $(( (e1-e0)/20 ))
+…
+for r in 1 2; do
+  echo &quot;##### 반복 $r&quot;
+  one &quot;발행 없음(기준)&quot; none
+  one &quot;C1 160×120×2B ×1 (38 kB, 지금 깊이)&quot; 160 120 2 1
+  one &quot;C4 640×480×1B ×1 (307 kB, IR 한 줄)&quot; 640 480 1 1
+  one &quot;C2 640×480×1B ×2 (307 kB ×2, IR 좌우)&quot; 640 480 1 2
+  one &quot;C3 640×480×2B ×1 (614 kB, 깊이 원본)&quot; 640 480 2 1</pre>
+<pre class="code">##### 반복 1
+  발행 없음(기준)              수신   0.0 /   0.0 Hz · 수신버퍼 버림    7/s
+  C1 160×120×2B ×1 (38 kB, 지금 깊이) 수신  15.0 /   0.0 Hz · 수신버퍼 버림    9/s
+  C4 640×480×1B ×1 (307 kB, IR 한 줄) 수신  14.8 /   0.0 Hz · 수신버퍼 버림   10/s
+  C2 640×480×1B ×2 (307 kB ×2, IR 좌우) 수신  14.8 /  14.2 Hz · 수신버퍼 버림   15/s
+  C3 640×480×2B ×1 (614 kB, 깊이 원본) 수신  14.1 /   0.0 Hz · 수신버퍼 버림   19/s
+##### 반복 2
+  발행 없음(기준)              수신   0.0 /   0.0 Hz · 수신버퍼 버림   13/s
+  C1 160×120×2B ×1 (38 kB, 지금 깊이) 수신  15.0 /   0.0 Hz · 수신버퍼 버림   11/s
+  C4 640×480×1B ×1 (307 kB, IR 한 줄) 수신  14.8 /   0.0 Hz · 수신버퍼 버림   10/s
+  C2 640×480×1B ×2 (307 kB ×2, IR 좌우) 수신  14.2 /  12.8 Hz · 수신버퍼 버림   16/s
+  C3 640×480×2B ×1 (614 kB, 깊이 원본) 수신  13.3 /   0.0 Hz · 수신버퍼 버림   19/s</pre>
+<p class="note">결과 원문 <span class="mono">Docs/debug_log/2026-10-20/outputs/chk_udp_size.txt</span> · 스크립트 원문 <span class="mono">Docs/debug_log/2026-10-20/jobs/shm_test/chk_udp_size.sh</span> · <span class="mono">Docs/debug_log/2026-10-20/jobs/shm_test/size_talker.py</span>. 깊이 메시지 실제 크기 38 472 B(f2z1 bag 실측)는 결과 원문: 원천 소실(대화에만 있었음)</p></div>
+  <div class="ev"><p class="note"><b>스크립트 핵심 · 나온 결과</b> — U → S(공유메모리) → U 순으로 prep 하고 20 s 뒤 60 s 동안 cuVSLAM 출력 Hz 와 cuVSLAM 로그의 'Delta between'(프레임 간격 경고) 증가를 셉니다.</p>
+<pre class="code">  V0=$(grep -ac &#x27;Failed to meet update rate&#x27; /tmp/sensors.log); G0=$(grep -ac &#x27;Delta between&#x27; /tmp/cuvslam.log); E0=$(rb)
+  python3 -u /tmp/chk_vslam_live.py 60 2&gt;&amp;1 | grep -av &quot;^\[INFO\]&quot;
+  V1=$(grep -ac &#x27;Failed to meet update rate&#x27; /tmp/sensors.log); G1=$(grep -ac &#x27;Delta between&#x27; /tmp/cuvslam.log); E1=$(rb)
+  echo &quot;  EKF 위반 +$((V1-V0)) · cuVSLAM 프레임 간격 경고 +$((G1-G0)) · 수신 버퍼 버림 $(( (E1-E0)/60 ))/s · SHM 오류 $(cat /tmp/sensors.log /tmp/cuvslam.log 2&gt;/dev/null | grep -acE &#x27;open_and_lock_file|RTPS_TRANSPORT_ …</pre>
+<pre class="code">########## u1 (emitter_off:=true vslam:=shadow) ##########
+…
+측정 60 s · 전체 CPU 54.6 % (6 코어 = 100)
+  /visual_slam/tracking/odometry    13.2 Hz · 처음→끝 이동 0.35 cm
+…
+  EKF 위반 +2 · cuVSLAM 프레임 간격 경고 +101 · 수신 버퍼 버림 386/s · SHM 오류 0
+…
+########## s (emitter_off:=true vslam:=shadow dds_shm:=true) ##########
+…
+측정 60 s · 전체 CPU 54.0 % (6 코어 = 100)
+  /visual_slam/tracking/odometry    15.0 Hz · 처음→끝 이동 0.30 cm
+…
+  EKF 위반 +2 · cuVSLAM 프레임 간격 경고 +1 · 수신 버퍼 버림 520/s · SHM 오류 0
+…
+########## u2 (emitter_off:=true vslam:=shadow) ##########
+…
+측정 60 s · 전체 CPU 55.0 % (6 코어 = 100)
+  /visual_slam/tracking/odometry    13.0 Hz · 처음→끝 이동 0.57 cm
+…
+  EKF 위반 +7 · cuVSLAM 프레임 간격 경고 +115 · 수신 버퍼 버림 519/s · SHM 오류 0</pre>
+<p class="note">결과 원문 <span class="mono">Docs/debug_log/2026-10-20/outputs/run_shm_static.txt</span> · 스크립트 원문 <span class="mono">Docs/debug_log/2026-10-20/jobs/run_shm_static.sh</span> · <span class="mono">Docs/debug_log/2026-10-20/jobs/chk_vslam_live.py</span></p></div>
+  <div class="ev"><p class="note"><b>스크립트 핵심 · 나온 결과</b> — 공유메모리 구성으로 prep 을 10 번 하되 3 · 6 · 9 회째 뒤에는 카메라 등을 <span class="mono">kill -9</span> 로 죽여(사고 모사) 다음 prep 이 살아나는지, 로그만으로 건강을 봅니다.</p>
+<pre class="code">for i in $(seq 1 $N); do
+  P=$(SENSORS_ADD=&quot;$SA&quot; bash /tmp/prep_patrol.sh lite 2&gt;&amp;1); OK=$(echo &quot;$P&quot; | grep -ac PREP_OK); CL=$(echo &quot;$P&quot; | grep -a &quot;SHM 고아&quot; | sed &#x27;s/^ *//&#x27; | cut -c1-70)
+  sleep 25
+  VT=$(grep -a &quot;vslam_twist\]: 출력&quot; /tmp/sensors.log | tail -1 | grep -o &quot;출력 [0-9]* · 버림 [0-9]*&quot;)
+  L=/tmp/nvblox_node.log; n=$(grep -an &quot;NVBlox Rates&quot; $L | tail -1 | cut -d: -f1); NV=$(sed -n &quot;$((n+4)),$((n+6))p&quot; $L | grep -a depth_image_callback | awk &#x27;{print $NF}&#x27;)
+  YW=$(timeout 8 ros2 run tf2_ros tf2_echo map odom 2&gt;&amp;1 | grep -a &quot;RPY (degree&quot; | tail -1 | grep -o &quot;\[.*\]&quot; | awk -F&#x27;, &#x27; &#x27;{print $3}&#x27; | tr -d &#x27;]&#x27;)
+  printf &quot;%02d PREP_OK %s · %s · vslam_twist[%s] · nvblox 깊이 %s Hz · map→odom yaw %s° · SHM 오류 %d&quot; $i $OK &quot;$CL&quot; &quot;$VT&quot; &quot;$NV&quot; &quot;$YW&quot; $(err)
+  case $i in
+    3|6|9) pkill -9 -f &#x27;realsense2_camera_[c]ontainer&#x27;; K=&quot;카메라 -9&quot;;;</pre>
+<pre class="code">01 PREP_OK 2 · SHM 고아 정리: 1 zombie segments cleaned · 남은 fastrtps 12 · vslam_twist[출력 149 · 버림 0] · nvblox 깊이 15.1 Hz · map→odom yaw 0.577° · SHM 오류 0
+02 PREP_OK 2 · SHM 고아 정리: 2 zombie segments cleaned · 남은 fastrtps 12 · vslam_twist[출력 150 · 버림 0] · nvblox 깊이 15.1 Hz · map→odom yaw 0.520° · SHM 오류 0
+03 PREP_OK 2 · SHM 고아 정리: 2 zombie segments cleaned · 남은 fastrtps 12 · vslam_twist[출력 150 · 버림 0] · nvblox 깊이 15.1 Hz · map→odom yaw 0.655° · SHM 오류 0 | 카메라 -9 → 10 s 뒤: …
+04 PREP_OK 2 · SHM 고아 정리: 1 zombie segments cleaned · 남은 fastrtps 12 · vslam_twist[출력 150 · 버림 0] · nvblox 깊이 15.1 Hz · map→odom yaw 0.336° · SHM 오류 0 | nvblox -9 → 10 s …
+05 PREP_OK 2 · SHM 고아 정리: 2 zombie segments cleaned · 남은 fastrtps 12 · vslam_twist[출력 150 · 버림 0] · nvblox 깊이 15.1 Hz · map→odom yaw 0.343° · SHM 오류 0
+06 PREP_OK 2 · SHM 고아 정리: 2 zombie segments cleaned · 남은 fastrtps 12 · vslam_twist[출력 150 · 버림 0] · nvblox 깊이 15.1 Hz · map→odom yaw 0.666° · SHM 오류 0 | 카메라 -9 → 10 s 뒤: …
+07 PREP_OK 2 · SHM 고아 정리: 1 zombie segments cleaned · 남은 fastrtps 12 · vslam_twist[출력 150 · 버림 0] · nvblox 깊이 15.1 Hz · map→odom yaw 0.067° · SHM 오류 0 | cuVSLAM -9 → 10 s …
+08 PREP_OK 2 · SHM 고아 정리: 2 zombie segments cleaned · 남은 fastrtps 10 · vslam_twist[출력 150 · 버림 0] · nvblox 깊이 15.1 Hz · map→odom yaw -0.023° · SHM 오류 0 | nvblox -9 → 10 s …
+09 PREP_OK 2 · SHM 고아 정리: 2 zombie segments cleaned · 남은 fastrtps 12 · vslam_twist[출력 149 · 버림 0] · nvblox 깊이 15.1 Hz · map→odom yaw 0.486° · SHM 오류 0 | 카메라 -9 → 10 s 뒤: …
+10 PREP_OK 2 · SHM 고아 정리: 1 zombie segments cleaned · 남은 fastrtps 12 · vslam_twist[출력 149 · 버림 0] · nvblox 깊이 15.1 Hz · map→odom yaw 1.005° · SHM 오류 0
+끝: /dev/shm fastrtps 28</pre>
+<p class="note">결과 원문 <span class="mono">Docs/debug_log/2026-10-20/outputs/run_shm_restart.txt</span> · 스크립트 원문 <span class="mono">Docs/debug_log/2026-10-20/jobs/run_shm_restart.sh</span></p></div>
 </section>
 
 <section>
@@ -76,6 +215,35 @@
     <tr class="bad"><td>끔</td><td class="n">640×480</td><td class="n">10</td><td class="n">+2.0 · +2.9 cm</td><td class="n">56.7 %</td><td class="n">14.4 Hz</td></tr>
   </table></div>
   <p class="note">차이는 5 cm 칸의 1/7 이하입니다. 같은 설정도 세션마다 ±3 cm 흔들려(배치 · 위치 추정 방향) 해상도 효과보다 큽니다. ×4 반복 측정 한 번은 SLAM 이 출발 위치를 −41° 틀려 쓰지 못했습니다.</p>
+  <div class="ev"><p class="note"><b>스크립트 핵심 · 나온 결과</b> — 마지막 5 s 의 nvblox 조각에서 상자 칸 수와 북 · 서 면 위치(칸 가장자리 − 실제 상자 면)를 셉니다. d4b 는 SLAM 이 출발 위치를 −41° 틀려 상자 칸 0 — 비교에서 뺐습니다.</p>
+<pre class="code">BOX = (1.151, 1.261, -0.20, -0.02); BOXV = (1.10, 1.32, -0.25, 0.03, 0.02, 0.17); BOXC = (1.10, 1.31, -0.25, 0.03); FLOOR = (0.40, 1.05, -0.45, 0.45)
+…
+        nb.append(int(((G[0] &gt; BOXV[0]) &amp; (G[0] &lt; BOXV[1]) &amp; (G[1] &gt; BOXV[2]) &amp; (G[1] &lt; BOXV[3]) &amp; (G[2] &gt; BOXV[4]) &amp; (G[2] &lt; BOXV[5])).sum()))
+…
+        inb = occ &amp; (gx &gt; BOXC[0]) &amp; (gx &lt; BOXC[1]) &amp; (gy &gt; BOXC[2]) &amp; (gy &lt; BOXC[3])
+        fl = (gx &gt; FLOOR[0]) &amp; (gx &lt; FLOOR[1]) &amp; (gy &gt; FLOOR[2]) &amp; (gy &lt; FLOOR[3])
+        reg = occ &amp; (gx &gt; 0.95) &amp; (gx &lt; 1.50) &amp; (gy &gt; -0.25) &amp; (gy &lt; 0.25)
+        north = 100 * (gy[reg].max() + r / 2 - BOX[3]) if reg.any() else np.nan; west = 100 * (BOX[0] - (gx[reg].min() - r / 2)) if reg.any() else np.nan
+        rows.append((int(inb.sum()), north, west, int((occ &amp; fl).sum()), (unk &amp; fl).sum() / max(fl.sum(), 1)))</pre>
+<pre class="code">== d4a: 깊이 331 장 · 유효 전체 0.739 · 아래 절반 0.615 · 상자 부피 점 중앙 200 (범위 194~209) | 조각(마지막 5 s, 48 개) 상자 칸 9 · 북 +2.3 · 서 +3.1 cm · 빈 바닥 유령 칸 0 · 빈 바닥 미지 17 %
+== d2: 깊이 364 장 · 유효 전체 0.660 · 아래 절반 0.493 · 상자 부피 점 중앙 719 (범위 684~752) | 조각(마지막 5 s, 48 개) 상자 칸 9 · 북 +2.2 · 서 +2.4 cm · 빈 바닥 유령 칸 1 · 빈 바닥 미지 20 %
+== d1: 깊이 282 장 · 유효 전체 0.604 · 아래 절반 0.407 · 상자 부피 점 중앙 2632 (범위 2556~2750) | 조각(마지막 5 s, 47 개) 상자 칸 10 · 북 +2.0 · 서 +2.9 cm · 빈 바닥 유령 칸 0 · 빈 바닥 미지 17 %
+== d4b: 깊이 349 장 · 유효 전체 0.737 · 아래 절반 0.610 · 상자 부피 점 중앙 0 (범위 0~0) | 조각(마지막 5 s, 48 개) 상자 칸 0 · 북 +nan · 서 +nan cm · 빈 바닥 유령 칸 0 · 빈 바닥 미지 28 %</pre>
+<pre class="code">########## d4a (decimation 4) ##########
+…
+  CPU(기록 창) 48.3 % · EKF 위반 누적 16
+  nvblox ros/depth_image_callback 100 15.1|ros/update_esdf 100 9.5|
+…
+########## d2 (decimation 2) ##########
+…
+  CPU(기록 창) 48.9 % · EKF 위반 누적 26
+  nvblox ros/depth_image_callback 100 15.1|ros/update_esdf 100 9.6|
+…
+########## d1 (decimation 1) ##########
+…
+  CPU(기록 창) 56.7 % · EKF 위반 누적 20
+  nvblox ros/depth_image_callback 100 14.4|ros/update_esdf 100 9.5|</pre>
+<p class="note">결과 원문 <span class="mono">Docs/debug_log/2026-10-20/outputs/anal_decim_static.txt</span> · <span class="mono">Docs/debug_log/2026-10-20/outputs/run_decim_ab.txt</span> · 스크립트 원문 <span class="mono">Docs/debug_log/2026-10-20/jobs/anal_box_static.py</span> · <span class="mono">Docs/debug_log/2026-10-20/jobs/run_decim_ab.sh</span></p></div>
 </section>
 
 <section>
@@ -90,6 +258,20 @@
       <span class="k">처음 추론</span><span>"호스트 → 컨테이너 공유메모리가 안 통한다" 로 읽을 뻔함. 그러면 §7.3a 통과는 전부 UDP 였다는 뜻이 되어 계획이 무너짐.</span>
       <span class="k">의심한 이유</span><span>수신 0 인데 <b>오류도 0</b>. 전송 경로 고장이면 세그먼트 · 포트 오류가 남는데 없음. '받을 게 있는데 못 받음' 이 아니라 '상대를 모름'(발견 실패)의 서명.</span>
       <span class="k">판별</span><span><span class="mono">chk_shm_path.sh</span> 두 변형. V1 발행 · 구독 <b>모두</b> 공유메모리 전용 → 컨테이너 150 수신(UDP 가 없으니 공유메모리로 온 것). V2 발행만 SHM+UDP, 구독은 전용 → 같은 호스트의 구독자까지 0.</span>
+      <span class="k">스크립트 핵심</span><span><pre class="code"># (10-20 §7.3b) 컨테이너 구독을 SHM 전용 프로파일로 — 받으면 SHM 경로 확정
+CPROF=/tmp/fastdds_shm_only.xml bash /tmp/run_shm_test.sh 0 30
+
+O=/tmp/fastdds_shm_only.xml; U=/tmp/fastdds_shm_udp.xml
+run &quot;V1 전부 SHM 전용&quot; $O $O $O
+run &quot;V2 발행 SHM+UDP · 호스트 구독 SHM 전용 · 컨테이너 SHM 전용&quot; $U $O $O</pre></span>
+      <span class="k">나온 결과</span><span><pre class="code">시작 전 /dev/shm fastrtps 2 개 · 컨테이너 구독 프로파일 /tmp/fastdds_shm_only.xml
+########## 팔 A: 정리 없음 ##########
+########## 팔 B: 매 기동 전 fastdds shm clean ##########
+B01 INT          정리[0 zombie segments cleaned] 기준 UDP 5117/s | 구독 컨테이너·호스트 Hz·UDP/s: 0.0 0.0 15.0 15.0 5126 | SHM오류 0 | 끝 /dev/shm 2
+B02 TERM         정리[0 zombie segments cleaned] 기준 UDP 5094/s | 구독 컨테이너·호스트 Hz·UDP/s: 0.0 0.0 15.0 15.0 5126 | SHM오류 0 | 끝 /dev/shm 2
+
+V1 전부 SHM 전용: 호스트 구독 [1792478394.844 163 163] · 컨테이너 구독 [1792478394.277 150 150] (시각 n1 n2, 약 6~10 s 분량)
+V2 발행 SHM+UDP · 호스트 구독 SHM 전용 · 컨테이너 SHM 전용: 호스트 구독 [1792478410.426 0 0] · 컨테이너 구독 [1792478409.901 0 0] (시각 n1 n2, 약 6~10 s 분량)</pre><span class="note">결과 원문 <span class="mono">Docs/debug_log/2026-10-20/outputs/run_shm_test_shmonly.txt</span> · <span class="mono">Docs/debug_log/2026-10-20/outputs/chk_shm_path.txt</span> · 스크립트 원문 <span class="mono">Docs/debug_log/2026-10-20/jobs/shm_test/run_shm_test_shmonly.sh</span> · <span class="mono">Docs/debug_log/2026-10-20/jobs/shm_test/chk_shm_path.sh</span></span></span>
       <span class="k">결론</span><span>통신 설정 집합이 다른 참가자끼리는 서로를 못 찾는다. 0 Hz 는 시험 설계 탓이고 공유메모리 자체는 통한다. 왜 못 찾는지(발견 트래픽이 어느 경로로 가나)는 <b>미확인</b>.</span>
       <span class="k">알아보는 법</span><span>① 수신 0 + 오류 0 이면 먼저 발견 문제를 의심(<span class="mono">ros2 topic info -v</span> 로 상대 엔드포인트가 보이나). ② 경로를 가르는 시험은 한쪽만 바꾸지 말고 <b>모든 참가자를 같은 단일 설정</b>으로. ③ 한쪽만 바꾼 시험은 1 주기 연기 확인에서 Hz 가 나오는지 보고 30 주기로.</span>
     </div>
@@ -103,6 +285,22 @@
       <span class="k">본 것</span><span><span class="mono">outputs/run_shm_static.txt</span>: UDP 386/s · <b>공유메모리 520/s</b> · UDP 519/s. 같은 창에서 공유메모리 쪽 cuVSLAM 은 15.0 Hz · 프레임 간격 경고 1(UDP 는 101 · 115).</span>
       <span class="k">의심한 이유</span><span>두 독립 측정과 모순. ① 오전 §7.1 조용한 창은 39/s, cuVSLAM 을 멈춰 소켓을 아무도 안 읽어도 432/s 였는데 그보다 큰 520/s. ② 영상이 초당 520 개씩 버려지면 15.0 Hz · 경고 1 일 수 없음.</span>
       <span class="k">추적</span><span><span class="mono">chk_udp_drops2.sh</span>: <span class="mono">/proc/net/udp</span> 소켓별 drops. 버림이 몰린 소켓은 포트 7410 · 7412 · 7422 · 7458 · 7468 — DDS <b>발견(metatraffic) 포트 대역</b>. 새 접속이 없는 조용한 10 s 는 증가 0.</span>
+      <span class="k">스크립트 핵심</span><span><pre class="code">rb() { awk &#x27;/^Udp:/{n++} n==2 &amp;&amp; /^Udp:/{print $6; exit}&#x27; /proc/net/snmp; }
+…
+  V0=$(grep -ac &#x27;Failed to meet update rate&#x27; /tmp/sensors.log); G0=$(grep -ac &#x27;Delta between&#x27; /tmp/cuvslam.log); E0=$(rb)
+  python3 -u /tmp/chk_vslam_live.py 60 2&gt;&amp;1 | grep -av &quot;^\[INFO\]&quot;
+  V1=$(grep -ac &#x27;Failed to meet update rate&#x27; /tmp/sensors.log); G1=$(grep -ac &#x27;Delta between&#x27; /tmp/cuvslam.log); E1=$(rb)
+  echo &quot;  EKF 위반 +$((V1-V0)) · cuVSLAM 프레임 간격 경고 +$((G1-G0)) · 수신 버퍼 버림 $(( (E1-E0)/60 ))/s · SHM 오류 $(cat /tmp/sensors.log /tmp/cuvslam.log 2&gt;/dev/null | grep -acE &#x27;open_and_lock_file|RTPS_TRANSPORT_ …
+
+e() { awk &#x27;/^Udp:/{n++} n==2 &amp;&amp; /^Udp:/{print $6; exit}&#x27; /proc/net/snmp; }
+a=$(e); awk &#x27;NR&gt;1 {s+=$NF} END {print s}&#x27; /proc/net/udp &gt; /tmp/sd0; sleep 10; b=$(e); awk &#x27;NR&gt;1 {s+=$NF} END {print s}&#x27; /proc/net/udp &gt; /tmp/sd1
+echo &quot;10 s: RcvbufErrors +$((b-a)) · 소켓 drops 합 $(cat /tmp/sd0) → $(cat /tmp/sd1)&quot;
+awk &#x27;NR&gt;1 &amp;&amp; $NF&gt;0 {print $NF, $2, $10}&#x27; /proc/net/udp | sort -rn | head -5</pre></span>
+      <span class="k">나온 결과</span><span><pre class="code">  EKF 위반 +2 · cuVSLAM 프레임 간격 경고 +101 · 수신 버퍼 버림 386/s · SHM 오류 0
+…
+  EKF 위반 +2 · cuVSLAM 프레임 간격 경고 +1 · 수신 버퍼 버림 520/s · SHM 오류 0
+…
+  EKF 위반 +7 · cuVSLAM 프레임 간격 경고 +115 · 수신 버퍼 버림 519/s · SHM 오류 0</pre><span class="note">결과 원문 <span class="mono">Docs/debug_log/2026-10-20/outputs/run_shm_static.txt</span> · 스크립트 원문 <span class="mono">Docs/debug_log/2026-10-20/jobs/run_shm_static.sh</span> · <span class="mono">Docs/debug_log/2026-10-20/jobs/chk_udp_drops2.sh</span>. 소켓별 drops(포트 7410 · 7412 · 7422 · 7458 · 7468)의 출력은 결과 원문: 원천 소실(대화에만 있었음) — <span class="mono">outputs/chk_udp_drops.txt</span> 에는 전체 증가 한 줄만 남음</span></span>
       <span class="k">결론</span><span>측정 노드가 새 참가자로 붙는 순간 기존 26 개 프로세스가 한꺼번에 발견 데이터를 보내 그 소켓(같은 208 kB 버퍼)이 넘쳤고, 전체 카운터가 그것을 셌다. 측정하려고 만든 노드가 측정값을 만든 것. 기준 2 는 판정 불가, 15.0 Hz 결과만 근거로. §7.3a 의 기준선 튐(B16 · B24)도 같은 기전으로 <b>추정</b>(미확인).</span>
       <span class="k">알아보는 법</span><span>① 시스템 전체 카운터는 <b>창 안에서 참가자를 만들지 않을 때만</b> — 측정 노드를 먼저 띄우고 10 s 뒤 창을 연다. ② 가능하면 소비자 <b>소켓 하나</b>의 drops 를 본다. ③ 결과가 독립 지표 둘과 모순되면 결과보다 측정을 먼저 의심. ④ 로그로만 건강을 본 §9.4 방식이 이 함정을 피한 예.</span>
     </div>
@@ -115,6 +313,19 @@
       <span class="k">§7.5</span><span><b>본 것</b> "깊이 614 kB" 는 640×480×2 B 를 머리로 계산한 값 → <b>판별</b> f2z1 bag 의 메시지 직렬화 크기 실측 38 472 B(데시메이션 ×4 = 160×120) → <b>결론</b> nvblox 가 안 빠지는 이유는 크기 → <b>알아보기</b> 메시지 크기는 계산하지 말고 bag 에서 잰다.</span>
       <span class="k">§8.1→8.3</span><span><b>본 것</b> 오전 정지 bag 북 면 깊이 점 +6.2 cm → <b>추론</b> 번짐 대부분이 센서 몫 → <b>판별</b> 같은 설정 오후 재측정 −5.3 cm, nvblox 북 면 +5.5 → +2.3 → <b>결론</b> 세션 간 ±3 cm 흔들림(배치 · 위치 추정 yaw)이 해상도 효과보다 큼, 주장 철회 → <b>알아보기</b> 한 세션 한 번 측정으로 '몫' 을 나누지 않는다, 같은 설정을 다른 세션에 반복해 흔들림부터 잰다.</span>
       <span class="k">§6.4 · §9.7</span><span>주행 이름 f2v1 이 10-15 와 겹침(10-15 부속 파일이 덮임) → 이름은 날짜 안이 아니라 전체 기록에서 검색해 정한다. 백그라운드 명령 안에 <span class="mono">&amp;</span> 를 또 넣어 감시 셸이 2 s 만에 끝남 → Jetson 러너는 setsid 라 계속 돌았고 결과는 따로 회수.</span>
+      <span class="k">스크립트 핵심</span><span><pre class="code">    tend = min(Lt[-1], OBt[-1]); ws = np.arange(t0 + 20, tend - D, 1.0); O = []
+    for a in ws:
+        G = np.linalg.inv(slam(a)) @ slam(a + D); E = np.linalg.inv(est(a)) @ est(a + D); X = np.linalg.inv(G) @ E
+        O.append((a - t0, 100 * math.hypot(X[0, 3], X[1, 3]), abs(math.degrees(math.atan2(X[1, 0], X[0, 0])))))</pre></span>
+      <span class="k">나온 결과</span><span><pre class="code">  EKF(주행 기록)       전 구간 위치 95% 17.1 · 최대 26.6 cm · yaw 95% 1.01° | W3 회전 t105~125 최대 26.6 · 상자 옆 출발 t18~36 95% 3.2 · 상자 옆 복귀 t180~200 95% 2.4 cm | 절대: 위치 95% 57.9 · 끝 58.9 cm · yaw |95%| 4.3°
+  재실행 V0           전 구간 위치 95% 17.0 · 최대 26.5 cm · yaw 95% 1.03° | W3 회전 t105~125 최대 26.5 · 상자 옆 출발 t18~36 95% 3.1 · 상자 옆 복귀 t180~200 95% 2.4 cm | 절대: 위치 95% 57.9 · 끝 58.9 cm · yaw |95%| 4.2°
+
+##### 반복 1
+…
+  C1 160×120×2B ×1 (38 kB, 지금 깊이) 수신  15.0 /   0.0 Hz · 수신버퍼 버림    9/s
+…
+  C2 640×480×1B ×2 (307 kB ×2, IR 좌우) 수신  14.8 /  14.2 Hz · 수신버퍼 버림   15/s</pre><span class="note">결과 원문 <span class="mono">Docs/debug_log/2026-10-20/outputs/anal_ekf_replay_live.txt</span> · <span class="mono">Docs/debug_log/2026-10-20/outputs/chk_udp_size.txt</span> · 스크립트 원문 <span class="mono">Docs/debug_log/2026-10-20/jobs/anal_ekf_replay.py(35e4381a 판)</span> · <span class="mono">Docs/debug_log/2026-10-20/jobs/shm_test/chk_udp_size.sh</span>. §5.2 = 주행 구성(rf2o · B3)으로 다시 돌린 뒤의 기록 EKF · V0 두 줄(끝 58.9 / 58.9 cm). §7.5 의 깊이 메시지 크기 38 472 B 실측은 결과 원문: 원천 소실(대화에만 있었음) — 크기별 수신 Hz 만 <span class="mono">outputs/chk_udp_size.txt</span> 에 남음</span></span>
+      
     </div>
   </div>
 </section>
