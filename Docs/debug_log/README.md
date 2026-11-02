@@ -146,6 +146,8 @@ Docs/issues/                문제 대장 — 문제별 카드 + 자동 색인 (
 exec python "$(git rev-parse --show-toplevel)/Docs/tools/chk_commit_gate.py" --git-hook
 ' > .git/hooks/pre-commit && chmod +x .git/hooks/pre-commit`
 - `.claude/settings.local.json`(앱이 승인한 명령이 쌓이는 개인 파일)은 **추적하지 않는다**(`.gitignore`). 05-21 ~ 11-02 추적되어 옛 비밀번호가 공개 이력에 남음 — 11-02 SUMMARY §6.
+  - **명령 문자열에 비밀번호를 넣지 않는다** — 도구는 비밀번호를 파일(러너 · `~/.config/rover_jetson/pw`)에서 읽는다. 승인 창의 '다시 묻지 않음' 은 명령 문자열을 통째로 저장하기 때문.
+  - 승인 창: 한 번 쓰는 명령은 **'이번만'**. 반복할 명령은 '다시 묻지 않음' 대신 와일드카드 규칙 한 줄을 `settings.local.json` 에 넣는다. 로버를 움직이거나 Jetson 에 쓰는 명령(러너 · 플래시)은 넣지 않는다(매번 확인).
 - 웹 창구 키 `~/.config/rover_web/key`: 출력 · 커밋 금지.
 - 공개 저장소에 나가면 안 되는 문구 목록은 비공개 쪽(`private/`)에 있다 — 공개되는 파일(이 파일 포함)에는 개인 계획 표현을 쓰지 않는다. 공개 스크립트가 점검하고 걸리면 멈춘다.
 - **push 는 사용자 지시가 있을 때만**:

@@ -42,3 +42,9 @@
   - 하지 않은 것(사용자 결정): 공개 · 비공개 이력 다시 쓰기(1b · 1c). 옛 값이 다른 기기 · 계정에서 아직 쓰이면 바꾸는 것은 사용자 몫(1d).
 - 조치: ① `git rm --cached .claude/settings.local.json` + `.gitignore`(로컬 파일 유지) ② 비밀번호 파일을 여러 줄로(첫 줄 지금 값, 둘째 줄 옛 값) ③ 게이트가 staged + 추적 작업 트리를 모두 검사 ④ git 자체 `.git/hooks/pre-commit` 설치(터미널 커밋) ⑤ `up_tools.sh` 기본 주소 192.168.0.110 ⑥ README §0 표를 CLAUDE.md 에 사본으로 두고 `chk_record_rules.py` 가 두 표를 비교(D).
 - 시험: ⓐ 추적 해제 전 이 저장소에서 `git commit -am` 모의 → 옛 값으로 막음(실제로는 그 명령 문자열 때문에 Claude 훅이 먼저 막았다) ⓑ 해제 뒤 → 통과 ⓒ 임시 저장소: 추적 파일에 지금 값을 넣고 stage 안 함 → Claude 훅 모드 막음(exit 2) · 실제 `git commit -am` → git 훅이 막음(exit 1, 커밋 수 그대로).
+
+## §7 승인 명령 누적 정리 (사용자: "한번만 쓴 명령이 쌓이고 있는 것 같은데, 해결방안은?" → "진행하라.")
+- 원인: 승인 창의 '다시 묻지 않음' 이 명령 문자열을 통째로 `.claude/settings.local.json` allow 에 저장 → 63 줄(PowerShell 53 · Bash 8 · Read 2, 200 자 넘는 한 번짜리 35), 대부분 05 월 다른 PC 경로 · 옛 WSL 명령. §6 의 비밀번호 노출도 같은 경로.
+- 조치(로컬 파일, 추적 안 함): 원본을 저장소 밖 `~/.config/rover_jetson/settings.local.backup_1102.json` 에 백업 → allow 를 읽기 전용 · 빌드 와일드카드 11 줄로 교체(git status/log/diff/show · 규약 점검 · 색인 생성 · 펌웨어 make · gcc 버전). 러너 · 플래시 · Jetson 명령은 넣지 않음(매번 확인). deny 2 줄 유지. 정리 뒤 파일에 비밀번호 0.
+- README §8 에 두 줄: 명령 문자열에 비밀번호 금지 · 한 번짜리는 '이번만', 반복은 와일드카드 한 줄.
+- 추가 발견: 지운 줄 중 하나가 `SSHPASS=<값>` 형식(벤더 이미지 기본 비밀번호로 보임, §6 검색은 `sshpass -p` 형식만 봐서 놓침)이었고 공개 `main` 현재 트리 · 이력 1 커밋, `dev` 이력 2 커밋에 있다. 흔한 단어라 게이트 감시 값에는 넣지 않음(오탐). 쓰는 곳이 있는지는 사용자 확인.
