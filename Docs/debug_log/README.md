@@ -7,6 +7,7 @@
 
 ## 0. 언제 무엇을 읽나
 
+<!-- RULES_TABLE_BEGIN (CLAUDE.md 에 같은 표 — 고치면 둘 다, chk_record_rules.py 가 비교) -->
 | 하려는 일 | 읽을 절 |
 |---|---|
 | 그날 작업 시작(날짜 폴더 만들기) | §1 · §2 · §3 |
@@ -17,6 +18,7 @@
 | bag · 로그 보관, 삭제 | §6 |
 | 커밋 · push | §8 (커밋 전 `python Docs/tools/chk_record_rules.py`) |
 | 옛 기록(10-11 이전) 읽기 | §9 · 문제 대장 `Docs/issues/ISSUES.md` |
+<!-- RULES_TABLE_END -->
 
 ## 1. 폴더 구조
 
@@ -135,9 +137,15 @@ Docs/issues/                문제 대장 — 문제별 카드 + 자동 색인 (
 ## 8. 비밀 · 공개 · 커밋 · push
 
 - **Jetson SSH 비밀번호**: 커밋 파일 · 출력 · 대화에 쓰지 않는다. 사본에는 `<PW>`.
-  - 보관 = **저장소 밖 `~/.config/rover_jetson/pw`**(PC, 11-02 사용자 결정). 러너가 사라졌을 때 복구 원천도 이 파일.
+  - 보관 = **저장소 밖 `~/.config/rover_jetson/pw`**(PC, 11-02 사용자 결정). **한 줄에 하나 — 첫 줄 = 지금 값**(러너 복구 원천), 다음 줄부터 = 감시할 옛 값(게이트가 전부 검사). 비밀번호를 바꾸면 새 값을 첫 줄에 넣고 옛 값은 아래로 내린다.
   - 커밋 전 게이트 `git grep --cached -l "<비밀번호>" | wc -l` = **0 필수**(`git diff | grep` 은 삭제 줄까지 세므로 쓰지 않음).
-  - 훅 `Docs/tools/chk_commit_gate.py`(`.claude/settings.json` PreToolUse)가 `git commit` 직전에 이 게이트를 돌려 걸리면 **막는다**. 파일이 없어도 막는다(손으로 돌리고 사용자에게 알림).
+  - 게이트 `Docs/tools/chk_commit_gate.py` 는 staged **와 추적 중인 작업 트리**를 본다(`git commit -a` · `git commit <파일>` 대비). 걸리거나 비밀번호 파일이 없으면 **막는다**.
+    - Claude 커밋: `.claude/settings.json` PreToolUse 훅이 자동으로 부른다.
+    - 터미널 커밋: git 자체 훅 `.git/hooks/pre-commit`(이 PC 만, 커밋 안 됨). 새로 clone 하거나 지워졌으면 다시 설치:
+      `printf '#!/bin/sh
+exec python "$(git rev-parse --show-toplevel)/Docs/tools/chk_commit_gate.py" --git-hook
+' > .git/hooks/pre-commit && chmod +x .git/hooks/pre-commit`
+- `.claude/settings.local.json`(앱이 승인한 명령이 쌓이는 개인 파일)은 **추적하지 않는다**(`.gitignore`). 05-21 ~ 11-02 추적되어 옛 비밀번호가 공개 이력에 남음 — 11-02 SUMMARY §6.
 - 웹 창구 키 `~/.config/rover_web/key`: 출력 · 커밋 금지.
 - 공개 저장소에 나가면 안 되는 문구 목록은 비공개 쪽(`private/`)에 있다 — 공개되는 파일(이 파일 포함)에는 개인 계획 표현을 쓰지 않는다. 공개 스크립트가 점검하고 걸리면 멈춘다.
 - **push 는 사용자 지시가 있을 때만**:
@@ -178,3 +186,4 @@ Docs/issues/                문제 대장 — 문제별 카드 + 자동 색인 (
 | 2026-11-02 | 이 문서를 규약 원본으로 재작성(흩어진 규칙 모음 · 하루 끝 정리 폐기 · 깨진 링크 제거) | 사용자, 11-02 SUMMARY §3 |
 | 2026-11-02 | 커밋 전 점검 `chk_record_rules.py`(경고) · settings.json deny(origin · public 직접 push · sudo) | 사용자, 11-02 SUMMARY §4 |
 | 2026-11-02 | 앞머리 6 개 유지(`up_` 양방향) · 비밀번호 저장소 밖 파일 · 커밋 훅이 게이트 실패 시 막음 | 사용자, 11-02 SUMMARY §5 |
+| 2026-11-02 | 게이트가 옛 값 · 작업 트리까지 · git pre-commit 훅 · settings.local.json 추적 해제 · §0 표를 CLAUDE.md 에 사본(점검 D) | 다른 세션 평가 → 사용자, 11-02 SUMMARY §6 |
