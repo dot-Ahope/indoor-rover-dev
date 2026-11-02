@@ -189,3 +189,4 @@ exec python "$(git rev-parse --show-toplevel)/Docs/tools/chk_commit_gate.py" --g
 | 2026-11-02 | 커밋 전 점검 `chk_record_rules.py`(경고) · settings.json deny(origin · public 직접 push · sudo) | 사용자, 11-02 SUMMARY §4 |
 | 2026-11-02 | 앞머리 6 개 유지(`up_` 양방향) · 비밀번호 저장소 밖 파일 · 커밋 훅이 게이트 실패 시 막음 | 사용자, 11-02 SUMMARY §5 |
 | 2026-11-02 | 게이트가 옛 값 · 작업 트리까지 · git pre-commit 훅 · settings.local.json 추적 해제 · §0 표를 CLAUDE.md 에 사본(점검 D) | 다른 세션 평가 → 사용자, 11-02 SUMMARY §6 |
+| 2026-11-02 | 명령 문자열에 비밀번호 금지 · 승인은 '이번만' / 와일드카드 · 공개 이력에서 settings.local.json 제거(강제 push 1 회) · 공개 점검에 비밀번호 검색 | 사용자, 11-02 SUMMARY §7 · §8 |
