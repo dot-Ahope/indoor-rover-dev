@@ -6,7 +6,7 @@
     H  스크립트 첫 10 줄에 설명 주석이 없음                            (§3.2)
     L  md 의 상대 링크 [..](경로) 가 가리키는 파일이 없음               (깨진 링크)
     P  SUMMARY · TOOLS 에 적힌 jobs/ · outputs/ · figures/ 경로가 없음   (§2.3 데이터 칸; bags/ 는 git 제외라 안 봄)
-    S  커밋 대상(staged)에 Jetson 비밀번호가 있음                       (§8; ROVER_RUNNER=<run_jn.sh 경로> 일 때만, 값은 출력 안 함)
+    S  커밋 대상(staged)에 Jetson 비밀번호가 있음                       (§8; 저장소 밖 ~/.config/rover_jetson/pw 또는 ROVER_PW_FILE, 값은 출력 안 함)
   대상: 기본 = git 에서 바뀐 파일(staged + unstaged + 새 파일)과 그 날짜 폴더. --all = 10-13 이후 날짜 폴더 전부.
   인자: [--all] [--strict(경고가 있으면 종료 코드 1)]
   출력: 표준 출력에 '[분류] 경로 — 내용' 한 줄씩, 마지막 줄 'RULES_OK' 또는 'RULES_WARN <개수>'."""
@@ -73,13 +73,12 @@ def check_day(d):
         warn('T', d, 'jobs/ 가 있는데 TOOLS.md 없음')
 
 def check_secret():
-    rn = os.environ.get('ROVER_RUNNER')
-    if not rn: return
-    try: m = re.search(r'sshpass -p (\S+)', Path(rn).read_text(encoding='utf-8', errors='replace'))
-    except OSError: m = None
-    if not m:
-        warn('S', rn, '러너에서 비밀번호를 못 읽음 — 게이트를 손으로 돌릴 것'); return
-    hit = git('grep', '--cached', '-l', '-F', m.group(1)).split()
+    pf = Path(os.environ.get('ROVER_PW_FILE') or Path.home() / '.config/rover_jetson/pw')
+    try: pw = pf.read_text(encoding='utf-8').strip()
+    except OSError: pw = ''
+    if not pw:
+        warn('S', str(pf), '비밀번호 파일 없음 — 게이트를 손으로 돌릴 것'); return
+    hit = git('grep', '--cached', '-l', '-F', pw).split()
     for h in hit: warn('S', h, '커밋 대상에 비밀번호 있음 — 커밋 금지')
 
 if '--all' in ARGS:

@@ -68,7 +68,7 @@ Docs/issues/                문제 대장 — 문제별 카드 + 자동 색인 (
 ## 3. 도구(스크립트)
 
 ### 3.1 이름 (10-12 결정 · 10-13 부터 적용)
-용도 앞머리로 짓는다. 번호 이름(`job9xx_…`)은 새로 만들지 않는다. **기존 파일 이름은 바꾸지 않는다**(SUMMARY 가 참조).
+용도 앞머리로 짓는다 — **아래 6 개만**(11-02 사용자 확인: 10 월에 쓴 `get_` · `fill_` · `mk_` · `put_` 등은 규약에 넣지 않음, 보고서 채우기 · 재생 자료 만들기는 `anal_` · `fig_` 중 맞는 쪽). 번호 이름(`job9xx_…`)은 새로 만들지 않는다. **기존 파일 이름은 바꾸지 않는다**(SUMMARY 가 참조).
 
 | 앞머리 | 뜻 | 로버 움직임 |
 |---|---|---|
@@ -77,7 +77,7 @@ Docs/issues/                문제 대장 — 문제별 카드 + 자동 색인 (
 | `run_` | 주행 · 재생 | **있음(주행)** |
 | `anal_` | 기록 분석 | 없음 |
 | `fig_` | 그림 · 영상 | 없음 |
-| `up_` | 파일 전송 | 없음 |
+| `up_` | 파일 전송 — **양방향**(Jetson → PC 가져오기도 `up_`; `get_` · `put_` 쓰지 않음) | 없음 |
 
 ### 3.2 위치 · 머리말
 - 계속 쓰는 도구 = `Docs/tools/` 고정 이름. 옮길 때 새 이름으로 복사하고 옛 이름 → 새 이름을 `Docs/tools/README.md` 표에 남긴다.
@@ -135,7 +135,9 @@ Docs/issues/                문제 대장 — 문제별 카드 + 자동 색인 (
 ## 8. 비밀 · 공개 · 커밋 · push
 
 - **Jetson SSH 비밀번호**: 커밋 파일 · 출력 · 대화에 쓰지 않는다. 사본에는 `<PW>`.
-  커밋 전 게이트 `git grep --cached -l "<비밀번호>" | wc -l` = **0 필수**(`git diff | grep` 은 삭제 줄까지 세므로 쓰지 않음).
+  - 보관 = **저장소 밖 `~/.config/rover_jetson/pw`**(PC, 11-02 사용자 결정). 러너가 사라졌을 때 복구 원천도 이 파일.
+  - 커밋 전 게이트 `git grep --cached -l "<비밀번호>" | wc -l` = **0 필수**(`git diff | grep` 은 삭제 줄까지 세므로 쓰지 않음).
+  - 훅 `Docs/tools/chk_commit_gate.py`(`.claude/settings.json` PreToolUse)가 `git commit` 직전에 이 게이트를 돌려 걸리면 **막는다**. 파일이 없어도 막는다(손으로 돌리고 사용자에게 알림).
 - 웹 창구 키 `~/.config/rover_web/key`: 출력 · 커밋 금지.
 - 공개 저장소에 나가면 안 되는 문구 목록은 비공개 쪽(`private/`)에 있다 — 공개되는 파일(이 파일 포함)에는 개인 계획 표현을 쓰지 않는다. 공개 스크립트가 점검하고 걸리면 멈춘다.
 - **push 는 사용자 지시가 있을 때만**:
@@ -144,8 +146,8 @@ Docs/issues/                문제 대장 — 문제별 카드 + 자동 색인 (
   3. `bash private/publish_public.sh` (공개 `dev`; `--push-main` 은 사용자 결정 때만)
   - `origin` 에는 올리지 않는다.
 - 커밋 메시지 끝에 세션 지침이 주는 공동 작성자 줄을 붙인다.
-- **커밋 전 점검** `python Docs/tools/chk_record_rules.py` (경고만; `--all` = 10-13 이후 전부, `--strict` = 경고 시 종료 코드 1).
-  보는 것: TOOLS.md 누락 · 도구 앞머리 · 스크립트 설명 주석 · 깨진 링크 · SUMMARY/TOOLS 에 적힌 `jobs/` `outputs/` 경로 존재 · (`ROVER_RUNNER=<run_jn.sh 경로>` 면) 비밀번호 게이트. 경고는 고치거나, 고치지 않을 이유를 그날 SUMMARY 에 적는다.
+- **커밋 전 점검** `python Docs/tools/chk_record_rules.py` (경고만 — 훅이 커밋 때 개수를 알림; `--all` = 10-13 이후 전부, `--strict` = 경고 시 종료 코드 1).
+  보는 것: TOOLS.md 누락 · 도구 앞머리 · 스크립트 설명 주석 · 깨진 링크 · SUMMARY/TOOLS 에 적힌 `jobs/` `outputs/` 경로 존재 · 비밀번호 게이트. 경고는 고치거나, 고치지 않을 이유를 그날 SUMMARY 에 적는다.
 - **기계적 차단**(`.claude/settings.json` deny): `git push origin …` · `git push public …`(공개는 점검이 있는 `publish_public.sh` 로만) · `sudo …`. 막히면 우회하지 말고 사용자에게 묻는다. 한계: ssh 문자열 안의 `sudo` 같은 간접 실행은 못 잡는다.
 
 ## 9. 옛 기록 읽는 법 (이 규약 전 기록이 다른 이유)
@@ -175,3 +177,4 @@ Docs/issues/                문제 대장 — 문제별 카드 + 자동 색인 (
 | 2026-10-29 | 문제 대장 `Docs/issues/` · 자동 색인 | 사용자 |
 | 2026-11-02 | 이 문서를 규약 원본으로 재작성(흩어진 규칙 모음 · 하루 끝 정리 폐기 · 깨진 링크 제거) | 사용자, 11-02 SUMMARY §3 |
 | 2026-11-02 | 커밋 전 점검 `chk_record_rules.py`(경고) · settings.json deny(origin · public 직접 push · sudo) | 사용자, 11-02 SUMMARY §4 |
+| 2026-11-02 | 앞머리 6 개 유지(`up_` 양방향) · 비밀번호 저장소 밖 파일 · 커밋 훅이 게이트 실패 시 막음 | 사용자, 11-02 SUMMARY §5 |
