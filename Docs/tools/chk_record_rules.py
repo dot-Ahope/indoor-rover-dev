@@ -6,7 +6,8 @@
     H  스크립트 첫 10 줄에 설명 주석이 없음                            (§3.2)
     L  md 의 상대 링크 [..](경로) 가 가리키는 파일이 없음               (깨진 링크)
     P  SUMMARY · TOOLS 에 적힌 jobs/ · outputs/ · figures/ 경로가 없음   (§2.3 데이터 칸; bags/ 는 git 제외라 안 봄)
-    S  커밋 대상(staged)에 Jetson 비밀번호가 있음                       (§8; 저장소 밖 ~/.config/rover_jetson/pw 또는 ROVER_PW_FILE, 값은 출력 안 함)
+    S  staged · 추적 작업 트리에 Jetson 비밀번호(지금 값 · 옛 값)가 있음  (§8; 저장소 밖 ~/.config/rover_jetson/pw 또는 ROVER_PW_FILE, 값은 출력 안 함)
+    D  README §0 표와 CLAUDE.md 의 사본 표가 다름                       (11-02; 표지 RULES_TABLE_BEGIN/END)
   대상: 기본 = git 에서 바뀐 파일(staged + unstaged + 새 파일)과 그 날짜 폴더. --all = 10-13 이후 날짜 폴더 전부.
   인자: [--all] [--strict(경고가 있으면 종료 코드 1)]
   출력: 표준 출력에 '[분류] 경로 — 내용' 한 줄씩, 마지막 줄 'RULES_OK' 또는 'RULES_WARN <개수>'."""
@@ -74,12 +75,13 @@ def check_day(d):
 
 def check_secret():
     pf = Path(os.environ.get('ROVER_PW_FILE') or Path.home() / '.config/rover_jetson/pw')
-    try: pw = pf.read_text(encoding='utf-8').strip()
-    except OSError: pw = ''
-    if not pw:
+    try: pws = [l.strip() for l in pf.read_text(encoding='utf-8').splitlines() if l.strip()]   # 첫 줄 지금 값, 다음 줄 옛 값
+    except OSError: pws = []
+    if not pws:
         warn('S', str(pf), '비밀번호 파일 없음 — 게이트를 손으로 돌릴 것'); return
-    hit = git('grep', '--cached', '-l', '-F', pw).split()
-    for h in hit: warn('S', h, '커밋 대상에 비밀번호 있음 — 커밋 금지')
+    for pw in pws:
+        for h in set(git('grep', '--cached', '-l', '-F', pw).split() + git('grep', '-l', '-F', pw).split()):
+            warn('S', h, '커밋될 수 있는 곳(staged · 추적 작업 트리)에 비밀번호 있음 — 커밋 금지')
 
 if '--all' in ARGS:
     files = [p for d in date_dirs() for p in d.rglob('*') if p.is_file() and 'bags' not in p.parts]
@@ -97,6 +99,15 @@ for f in files:
     if f.suffix == '.md' and rel.startswith('Docs/'):
         check_md(f)
 for d in days: check_day(d)
+
+def table(p):   # RULES_TABLE_BEGIN ~ END 사이 표 줄
+    try: s = p.read_text(encoding='utf-8')
+    except OSError: return None
+    m = re.search(r'RULES_TABLE_BEGIN[^\n]*\n(.*?)\n<!-- RULES_TABLE_END', s, re.S)
+    return m.group(1).strip() if m else None
+ta, tb = table(DL / 'README.md'), table(ROOT / 'CLAUDE.md')
+if ta is None or tb is None: warn('D', 'CLAUDE.md', '규약 표 표지(RULES_TABLE_BEGIN/END)를 못 찾음')
+elif ta != tb: warn('D', 'CLAUDE.md', 'README §0 표와 CLAUDE.md 사본이 다름 — 둘을 맞출 것')
 check_secret()
 
 for w in warns: print(w)
