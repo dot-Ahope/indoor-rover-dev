@@ -2,7 +2,7 @@
 
 | 상태 | 기간 | 처음 본 곳 | 바꾼 파일 · 설정 | 관련 문제 |
 |---|---|---|---|---|
-| 10-02 시점 **원인 확인 · 대책 미적용** — 번짐의 근원은 '어느 층' 이 아니라 **주행계(EKF)가 제자리 회전 중 실제 미끄러짐을 거의 못 보는 것**(통제 회전 rot2: SLAM 0.322 m vs EKF 0.003 m, 라이다 최근접 18.5 cm 감소 — **측정**). 대책 두 가지는 **기각**: B2 회전축 모델(짧은 회전에서 지금보다 나쁨 — 단 기준이 위치 추정 SLAM 이라 약함, §5) · 로컬 코스트맵 map 좌표(rot3 번짐 최대 9.2 cm, 불합격). 남은 길 = rf2o(→ [rf2o 도입](rf2o-introduction.md)) · 회전 줄이기. 이후 10-23 주 EKF 병진 = cuVSLAM | 10-02 (이 카드는 10-02 를 채움) | [10-02 §7.2](../debug_log/2026-10-02/SUMMARY.md) — f2b3 남서 구석에서 사용자 '+36 s 에 x −1.8 이던 왼쪽 장애물이 회전하며 −1.73 까지 커진다' | [`navigation.launch.py`](../../ros2_ws/src/rover_navigation/launch/navigation.launch.py) 인자 **`local_frame:=odom|map`**(기본 odom — 61~68 행, 211 행 선언, 지금도 남아 있음). 스택 기본값은 바꾸지 않음. 러너 `run_f2b2.sh` 에 `BAG_PROFILE=nvblox` | [F2 순회와 위치 점프](f2-patrol-loc-jump.md)(§7 에서 갈라져 나옴) · [제자리 회전 옆 밀림 F0-a](f0-rotation-side-slip.md)(같은 미끄러짐의 첫 줄자) · [slam-fork-rotation.md](slam-fork-rotation.md)(회전 중 스캔 처리 포크 — 09-28) · [센서 컨디셔너](sensor-conditioner.md)(B2 · B3) · [rf2o 도입](rf2o-introduction.md) · [카메라 깊이 장애물](depth-obstacle-costmap.md)(nvblox 기억) · [nvblox 층 셀 인덱스 round → floor](nvblox-layer-round-floor.md) |
+| 10-02 시점 **원인 확인 · 대책 미적용** — 번짐의 근원은 '어느 층' 이 아니라 **주행계(EKF)가 제자리 회전 중 실제 미끄러짐을 거의 못 보는 것**(통제 회전 rot2: SLAM 0.322 m vs EKF 0.003 m, 라이다 최근접 18.5 cm 감소 — **측정**). 대책 두 가지는 **기각**: B2 회전축 모델(짧은 회전에서 지금보다 나쁨 — 단 기준이 위치 추정 SLAM 이라 약함, §5) · 로컬 코스트맵 map 좌표(rot3 번짐 최대 9.2 cm, 불합격). 남은 길 = rf2o(→ [rf2o 도입](rf2o-introduction.md)) · 회전 줄이기. 이후 10-23 주 EKF 병진 = cuVSLAM | 10-02 (이 카드는 10-02 를 채우고, 6 시기 10-06 ~ 10-08 은 §7 에 흐름만 이어 채움) | [10-02 §7.2](../debug_log/2026-10-02/SUMMARY.md) — f2b3 남서 구석에서 사용자 '+36 s 에 x −1.8 이던 왼쪽 장애물이 회전하며 −1.73 까지 커진다' | [`navigation.launch.py`](../../ros2_ws/src/rover_navigation/launch/navigation.launch.py) 인자 **`local_frame:=odom|map`**(기본 odom — 61~68 행, 211 행 선언, 지금도 남아 있음). 스택 기본값은 바꾸지 않음. 러너 `run_f2b2.sh` 에 `BAG_PROFILE=nvblox` | [F2 순회와 위치 점프](f2-patrol-loc-jump.md)(§7 에서 갈라져 나옴) · [제자리 회전 옆 밀림 F0-a](f0-rotation-side-slip.md)(같은 미끄러짐의 첫 줄자) · [slam-fork-rotation.md](slam-fork-rotation.md)(회전 중 스캔 처리 포크 — 09-28) · [센서 컨디셔너](sensor-conditioner.md)(B2 · B3) · [rf2o 도입](rf2o-introduction.md) · [카메라 깊이 장애물](depth-obstacle-costmap.md)(nvblox 기억) · [nvblox 층 셀 인덱스 round → floor](nvblox-layer-round-floor.md) · [회전 방식 · 트랙 속도 비율 · 앞 회전 우선](rotation-method-track-ratio.md)(10-08 밀림 방향) · [남서 구석 정체](southwest-orient-stall.md) (6 기) |
 
 **한 줄**: f2b3 남서 구석에서 로버가 방향을 맞추려 후진 · 회전하는 동안, map 좌표의 실제 벽은 그대로인데 odom 좌표에선 같은 벽이 12 cm 움직였고 로컬 코스트맵(odom 좌표)에 옛 표시가 남아 벽이 로버 쪽으로 두꺼워져 MPPI 가 '모든 궤적 충돌' 로 멈췄다. 층을 가르려 f2b4 출발 회전(nvblox 포함)을 봤지만 그 회전은 작아 번짐도 작았고(라이다 obstacle 층 몫), 출발 테이프 자리에서 ±90° × 3 통제 회전(rot2)을 하니 **번짐은 2.6 cm 로 작았지만 로버가 회전만으로 32 cm 미끄러졌고 EKF 는 0.3 cm 로 봤다** — 근원은 층이 아니라 주행계였다. 회전축 모델 B2 는 Nav2 의 짧은 회전에서 지금보다 나빴고(중앙 4.7 vs 3.1 cm), 로컬 코스트맵을 map 좌표로 그리는 A/B(rot3)는 위치 추정이 회전 중 미끄러짐을 일정하게 따라가지 못해(0.322 vs 0.114 m) 번짐이 오히려 9.2 cm 로 커져 불합격 → 사용자가 rf2o 도입을 결정했다. 실주행에서 번짐을 읽는 법은 '같은 벽을 EKF 좌표와 SLAM 좌표로 놓았을 때의 차이(오간 폭)' 로 정했다(§19).
 
@@ -72,10 +72,24 @@
 - 회전 자체 줄이기(중간 목표 방향 무시) — 결정 대기.
 - 피벗 회전(한 트랙 정지 회전, 사용자 §13)이 미끄러짐을 줄이는지 — 미시험.
 
-## 7. 이후 (10-06 ~) — 포인터
-- 10-06 R3 라이브 rf2o + 단계별 90° 줄자: EKF B 평균 1.5 cm — [rf2o 도입](rf2o-introduction.md) 이후 칸.
-- 10-07 §3.3: rf2o 켠 순회에서 번짐(EKF B · 그림자 A 대 SLAM, 제자리 회전 구간) '**판정 불가에 가까움**' — [10-07 SUMMARY](../debug_log/2026-10-07/SUMMARY.md).
-- 10-08 회전 방식 시험(반쪽 피벗 · 비율 — 메모리 '회전 방식 시험'), 10-12 PreferForward 15(앞 회전 우선, 후진 2.93 → 0.2~0.4 m).
+## 7. 6 시기 (10-06 ~ 10-08) — 이 카드에 닿는 것 (10-06 · 10-07 · 10-08 기록에서)
+이 시기에 '번짐' 자체(로컬 코스트맵의 옛 칸)를 다시 잰 시험은 없다. 근원(주행계가 회전 중 미끄러짐을 못 봄)에 대한 측정과, 순회 중 번짐 판정 시도 하나가 있다.
+
+| 날짜 · § | 한 일 | 본 것(수치) | 그때 결론(틀렸으면 표시) | 데이터 |
+|---|---|---|---|---|
+| 10-06 §4.1 | 근원 대책(rf2o 속도를 EKF 에)의 라이브 측정 — 단계별 90° × 6, 줄자 | EKF B(rf2o) 줄자 대비 평균 **1.5 cm**, 원위치 단계 0.0 · 0.1 · 0.7. 그림자 A(지금까지 구성) 원위치 단계 −10.0 · −15.5 · −17.0 cm 누적 | odom(EKF B)이 회전 중 밀림을 따라감 → odom 좌표 로컬 코스트맵에 옛 표시가 남는 근원이 줄어들 것(**추정** — 코스트맵 번짐은 이 시험에서 재지 않음. bag 에 `/local_costmap/costmap` 은 기록됨) | [F0-a 카드 §7.9](f0-rotation-side-slip.md) · [`step_state_1.json`](../debug_log/2026-10-06/outputs/step_state_1.json) · [`step_tape.csv`](../debug_log/2026-10-06/outputs/step_tape.csv) · bag `2026-10-06/bags/bag_step1.tgz`(PC 로컬) |
+| 10-07 §2 선언 | rf2o 켠 F2 순회(f2c) 판정 ③-b '번짐(핵심)': 제자리 회전 구간마다 **EKF B − SLAM 위치 차(오간 폭)** 가 그림자 A 보다 작고 최대 ≤ 5 cm. 비교 기준 10-02 f2b3 실측 A 15 cm · 재생 추정 B 5 cm | — | §19 읽는 법을 판정에 씀 | [10-07 SUMMARY](../debug_log/2026-10-07/SUMMARY.md) §2 |
+| 10-07 §3.3 | f2c1 · f2c2 의 제자리 회전 구간(\|ω\| > 0.15 · \|v\| < 0.03 이 1.5 s 넘게) | f2c1 2 구간(−24° · +51°): SLAM 이동 3.3 · 2.1, B − SLAM 4.2 · 3.8, A − SLAM 4.6 · 4.3 cm. f2c2 2 구간(−35° · −28°): 8.9 · 5.7 / **10.3** · 6.6 / 11.8 · 7.3 cm. B < A 4/4(차 0.4~1.5 cm) | **판정 불가에 가까움** — 최대 10.3 > 5 로 선언 기준은 불합격이지만 ① 제자리 회전이 4 번뿐(순회 회전은 대부분 곡선) ② 기준 SLAM 이 회전 직후 보정이라 그 자체 오차가 수 cm ③ G4 가 이 구간 rf2o 를 줄인 몫이 섞임. 10-06 줄자 시험이 더 직접적 근거 | [`f2c_anal.py`](../debug_log/2026-10-07/jobs/f2c_anal.py) · [`f2c_anal.txt`](../debug_log/2026-10-07/outputs/f2c_anal.txt) · 입력 `x913_f2c*.npz`(스크래치패드, **원천 소실** — bag `2026-10-07/bags/bag_f2c1 · f2c2.tgz` 는 PC 로컬) |
+| 10-07 §3.2 | 같은 순회의 rf2o 게이트 G4 | 곡선 회전에서 σ 키움 43~58 %(정상 전진 속도가 문턱 0.05 에 걸림) | G4 설계 결함 → 10-07 §4 휠 잔차 기준으로 수정([rf2o 도입](rf2o-introduction.md) 이후 칸) | `f2c_anal.txt` · [`f2c_g4arc.txt`](../debug_log/2026-10-07/outputs/f2c_g4arc.txt) |
+| 10-08 §4 | 순회 bag 6 개(f2c1~f2e2)의 ≥ 45° 회전 22 개를 스캔 직접 정합으로 — **실제** 미끄러짐(EKF 오차가 아님) | 90°당 중앙 제자리 9.8 · 피벗형 7.6 · 중간 2.8 cm, 범위 2.1~16.2. 앞뒤 성분이 21/22 회 **차체 뒤쪽** | 순회 회전에서도 번짐을 만들 만큼(수 cm~16 cm) 미끄러진다 — 그 밀림이 주로 '뒤' 라는 방향 정보가 새로 생김. 이 회전들에서 EKF B 가 얼마나 따라갔는지는 **재지 않음** | [회전 방식 카드](rotation-method-track-ratio.md) · [`rot2_stats.txt`](../debug_log/2026-10-08/outputs/rot2_stats.txt) · [`slip_consistency.txt`](../debug_log/2026-10-08/outputs/slip_consistency.txt) |
+| 10-08 §5.6 · §6.1 · §7 | 통제 회전 40 회(트랙 비율 시험) | 방향 일정(38/40 뒤), 크기 변동계수 66 %, 시간에 따라 커짐 | 회전 방식으로 밀림(=번짐의 근원)을 줄인다는 근거 없음. 고정 보정 대신 rf2o · 가변 σ(§7 ③) | 같은 카드 |
+
+**어긋남(원문 대조, 11-02)**
+1. **10-07 §2 의 '오간 폭'** 과 §3.3 을 낸 계산이 다르다. `f2c_anal.py` 는 회전 구간 시작 · 끝 두 시각의 **변위 차의 크기** `np.linalg.norm(dB - dS)` 를 낸다(18~23 행) — 10-02 §19 의 '오간 폭'(기동 중 차이가 오간 범위)이 아니고, 벽 면 자체도 보지 않는다. 또 SLAM 끝 자세는 `comp(at(mo, te + 2.0), at(ob, te))` — map→odom 은 끝 + 2 s, odom 은 끝 시각을 섞는다(회전 직후 SLAM 보정을 기다리려는 의도로 보임, 주석 없음).
+2. 같은 표에서 f2c1 −24° 구간은 **B − SLAM 4.2 cm 가 SLAM 이 본 이동 3.3 cm 보다 크다** — 두 추정이 다른 방향으로 갔거나 SLAM 이 덜 본 것. 어느 쪽인지 **미확인**(정답 없음).
+
+**이후(10-12 ~) — 포인터(다음 시기에서 채움)**
+- 10-12 PreferForward 15(앞 회전 우선, 후진 2.93 → 0.2~0.4 m) — [회전 방식 카드](rotation-method-track-ratio.md) 이후 칸.
 - 10-13 · 10-15 상자 옆 정지: nvblox 가 odom 좌표라 기억된 상자가 4~5 cm 밀림 + 5 cm 칸 판정 — 같은 'odom 좌표 기억' 계열(메모리 '상자 옆 정지', [10-13 SUMMARY](../debug_log/2026-10-13/SUMMARY.md) §12.2 · §15).
 - 10-20 cuVSLAM 병진 속도 융합(W3 회전 창 −12~29 %) → **10-23 §16 주 EKF 병진 = cuVSLAM**(`ekf.launch vslam:=on`, prep 기본) — [10-23 SUMMARY](../debug_log/2026-10-23/SUMMARY.md). '상자 옆 근접은 이것으로 안 풀림' 도 같은 §.
 
@@ -90,6 +104,7 @@
 | 회전 구간 24 개 | B2 · 병진 0 · 지금 EKF 비교 | `rot_models.txt` |
 | 그림 | 번짐 · 옛 칸 시계열, 구석 벽 A/B | `Docs/04_navigation/figures/2026-10-02_smear_rot23.png` · `_f2b3_wall_AB.png` · `_ekfB_slip.png` |
 | 도구 | `job821_lviz.py` · `smear_layers.py` · `job823_wallgap.py` · `job825_rot.py` · `job825.sh` · `job827_gapchk.py` · `job828/831_lviz.py` · `smear_rot.py` · `job830_localmap.sh` · `job832_revert.sh` · `rot_models.py` · `render_day1002.py` | `2026-10-02/jobs/` |
+| **6 시기** step1(10-06) · f2c1 · f2c2(10-07) · 주행 회전 22 개(10-08) | 근원 대책 줄자 확인 · 순회 번짐 판정 시도 · 실제 미끄러짐 방향 | [F0-a 카드 §7.9](f0-rotation-side-slip.md) · `2026-10-07/outputs/f2c_anal.txt` · [회전 방식 카드](rotation-method-track-ratio.md) |
 
 ## 9. 도구 해설
 공통: bag 장면 추출은 `job8xx_lviz.py` 한 본문(해설은 [F2 순회와 위치 점프 §9](f2-patrol-loc-jump.md) 의 job817_lviz). 추출 npz · 러너 csv 는 PC 스크래치패드에 있었고 **지금은 소실** — 분석 출력 txt 만 남았다. 차체 외곽은 앞 0.262 · 뒤 0.248 · 옆 0.165 m, 라이다는 차체 x 0.152 · yaw π − 0.04677(데크 보정)로 모든 도구가 같은 상수를 직접 박아 넣었다(URDF 를 읽지 않음 — 데크를 다시 재면 이 도구들도 고쳐야 함).
@@ -137,6 +152,12 @@
 
 ### render_day1002.py — 하루 그림 4 장 (PC, matplotlib)
 - ① `rot3_paths.png`(줄자 대비 A · B · SLAM · rf2o 궤적 — rf2o 카드) ② `smear_rot23.png`(`smear_rot.py` 를 exec 해 줄을 정규식으로 읽음 — 번짐 · 옛 칸 시계열) ③ `f2b3_wall_AB.png`(`r2_f2b3.npz` 의 스캔 중 서쪽 구조물 점을 EKF A · B · SLAM 자세로 놓은 x 95 백분위, 13:25:30 +20~55 s, 시작 대비 cm, 범례에 범위) ④ `r2_runs.png`(R2 회차별). 화면 출력은 'ok' 뿐 — 수치는 그림 범례로만 남음.
+
+### f2c_anal.py — 10-07 순회 번짐 판정 ③-b (PC, Python) — 6 시기
+- 부른 형태: `python f2c_anal.py`(스크래치패드의 `x913_f2c1.npz` · `x913_f2c2.npz` — bag 추출물, 지금 **소실**).
+- 하는 일(③-b 부분, 13~25 행): 제자리 회전 구간 = EKF B 의 `|ω| > 0.15 · |v| < 0.03` 이 1.5 s 넘게 → 시작 ts · 끝 te 에서 SLAM 자세 = map→odom ∘ EKF B(끝은 map→odom 을 **te + 2.0 s** 로), B · A 변위를 시작 map→odom yaw 로 map 방향에 맞춤 → `eB = |dB − dS|`, `eA = |dA − dS|`(cm) → 구간별 표 + 평균 · 최대 · B < A 개수. 같은 파일이 ③-c 게이트 비용 · rf2o 발행률 · map→odom 보정 누적도 낸다(→ [rf2o 도입](rf2o-introduction.md)).
+- 출력: [`f2c_anal.txt`](../debug_log/2026-10-07/outputs/f2c_anal.txt) — 나온 결과 발췌: `100.7~ 103.2 s   -35° |   8.9 |  10.3 |  11.8` · `→ 회전 2 구간: B − SLAM 평균 8.5 · 최대 10.3 cm | A − SLAM 평균 9.5 · 최대 11.8 cm | B < A 인 구간 2/2`.
+- 알려진 결함: 선언(10-07 §2)의 '오간 폭' 이 아니라 시작 · 끝 변위 차(§7 어긋남 1). 정답이 위치 추정 SLAM(§5 실수 1 과 같은 약점). 지금 다시: npz 를 bag 에서 다시 만들어야 함(추출 스크립트 `job913_extract.py` — 10-07 jobs).
 
 ## 10. 용어
 - **번짐(smear)**: 장애물 표시가 실제보다 두껍게(특히 로버 쪽으로) 남는 것. 여기서는 odom 좌표 로컬 코스트맵에서, 주행계가 놓친 이동만큼 같은 벽의 '옛 자리' 표시와 '새 자리' 표시가 겹쳐 생긴다.
