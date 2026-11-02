@@ -3,6 +3,28 @@
     "allow": [
       "Bash(ls \"c:/Workspace/Code/sandbox/icm20948\" 2>&1 | head -40)",
       "Read(//c/Workspace/Code/sandbox/icm20948/**)"
+    ],
+    "deny": [
+      "Bash(git push origin)",
+      "Bash(git push origin *)",
+      "Bash(git push * origin)",
+      "Bash(git push * origin *)",
+      "Bash(git push public)",
+      "Bash(git push public *)",
+      "Bash(git push * public)",
+      "Bash(git push * public *)",
+      "Bash(sudo)",
+      "Bash(sudo *)",
+      "PowerShell(git push origin)",
+      "PowerShell(git push origin *)",
+      "PowerShell(git push * origin)",
+      "PowerShell(git push * origin *)",
+      "PowerShell(git push public)",
+      "PowerShell(git push public *)",
+      "PowerShell(git push * public)",
+      "PowerShell(git push * public *)",
+      "PowerShell(sudo)",
+      "PowerShell(sudo *)"
     ]
   }
 }

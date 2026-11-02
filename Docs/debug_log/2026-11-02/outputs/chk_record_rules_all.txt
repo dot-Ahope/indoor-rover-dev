@@ -1,0 +1,94 @@
+[N] Docs/debug_log/2026-10-13/jobs/fetch_one.sh — 용도 앞머리(prep/chk/anal/fig/up/run) 없음
+[N] Docs/debug_log/2026-10-13/jobs/put_bin.sh — 용도 앞머리(prep/chk/anal/fig/up/run) 없음
+[N] Docs/debug_log/2026-10-13/jobs/put_one.sh — 용도 앞머리(prep/chk/anal/fig/up/run) 없음
+[N] Docs/debug_log/2026-10-15/jobs/cat_nvyaml.sh — 용도 앞머리(prep/chk/anal/fig/up/run) 없음
+[N] Docs/debug_log/2026-10-19/jobs/depth_edge_filter.py — 용도 앞머리(prep/chk/anal/fig/up/run) 없음
+[N] Docs/debug_log/2026-10-19/jobs/depth_turn_filter.py — 용도 앞머리(prep/chk/anal/fig/up/run) 없음
+[N] Docs/debug_log/2026-10-19/jobs/export_vslam.py — 용도 앞머리(prep/chk/anal/fig/up/run) 없음
+[N] Docs/debug_log/2026-10-19/jobs/get_f2z1.sh — 용도 앞머리(prep/chk/anal/fig/up/run) 없음
+[H] Docs/debug_log/2026-10-19/jobs/get_f2z1.sh — 첫 10 줄에 설명 주석 없음(무엇을 · 왜 · 로버 움직임 · 인자 · 출력)
+[N] Docs/debug_log/2026-10-19/jobs/get_replays.sh — 용도 앞머리(prep/chk/anal/fig/up/run) 없음
+[N] Docs/debug_log/2026-10-19/jobs/get_vso.sh — 용도 앞머리(prep/chk/anal/fig/up/run) 없음
+[H] Docs/debug_log/2026-10-19/jobs/get_vso.sh — 첫 10 줄에 설명 주석 없음(무엇을 · 왜 · 로버 움직임 · 인자 · 출력)
+[N] Docs/debug_log/2026-10-19/jobs/mk_vslam_bag.py — 용도 앞머리(prep/chk/anal/fig/up/run) 없음
+[N] Docs/debug_log/2026-10-19/jobs/pack_replay.sh — 용도 앞머리(prep/chk/anal/fig/up/run) 없음
+[N] Docs/debug_log/2026-10-19/jobs/rec_depth_test.sh — 용도 앞머리(prep/chk/anal/fig/up/run) 없음
+[N] Docs/debug_log/2026-10-19/jobs/rm_s2_flash.sh — 용도 앞머리(prep/chk/anal/fig/up/run) 없음
+[H] Docs/debug_log/2026-10-19/jobs/run_vso.sh — 첫 10 줄에 설명 주석 없음(무엇을 · 왜 · 로버 움직임 · 인자 · 출력)
+[N] Docs/debug_log/2026-10-19/jobs/vslam_offline.launch.py — 용도 앞머리(prep/chk/anal/fig/up/run) 없음
+[N] Docs/debug_log/2026-10-19/jobs/vslam_run_in.sh — 용도 앞머리(prep/chk/anal/fig/up/run) 없음
+[N] Docs/debug_log/2026-10-19/jobs/vso_export.sh — 용도 앞머리(prep/chk/anal/fig/up/run) 없음
+[N] Docs/debug_log/2026-10-19/jobs/watch_f0.sh — 용도 앞머리(prep/chk/anal/fig/up/run) 없음
+[P] Docs/debug_log/2026-10-20/SUMMARY.md — 적힌 경로가 없음 jobs/anal_vslam_cmp.py
+[H] Docs/debug_log/2026-10-20/jobs/chk_gateb.sh — 첫 10 줄에 설명 주석 없음(무엇을 · 왜 · 로버 움직임 · 인자 · 출력)
+[H] Docs/debug_log/2026-10-20/jobs/chk_hz_time.sh — 첫 10 줄에 설명 주석 없음(무엇을 · 왜 · 로버 움직임 · 인자 · 출력)
+[H] Docs/debug_log/2026-10-20/jobs/chk_mem.sh — 첫 10 줄에 설명 주석 없음(무엇을 · 왜 · 로버 움직임 · 인자 · 출력)
+[H] Docs/debug_log/2026-10-20/jobs/chk_udp.sh — 첫 10 줄에 설명 주석 없음(무엇을 · 왜 · 로버 움직임 · 인자 · 출력)
+[H] Docs/debug_log/2026-10-20/jobs/chk_udp_drops2.sh — 첫 10 줄에 설명 주석 없음(무엇을 · 왜 · 로버 움직임 · 인자 · 출력)
+[H] Docs/debug_log/2026-10-20/jobs/chk_uid.sh — 첫 10 줄에 설명 주석 없음(무엇을 · 왜 · 로버 움직임 · 인자 · 출력)
+[N] Docs/debug_log/2026-10-20/jobs/fill_report_1020.py — 용도 앞머리(prep/chk/anal/fig/up/run) 없음
+[N] Docs/debug_log/2026-10-20/jobs/get_bt.sh — 용도 앞머리(prep/chk/anal/fig/up/run) 없음
+[H] Docs/debug_log/2026-10-20/jobs/get_bt.sh — 첫 10 줄에 설명 주석 없음(무엇을 · 왜 · 로버 움직임 · 인자 · 출력)
+[N] Docs/debug_log/2026-10-20/jobs/get_dc.sh — 용도 앞머리(prep/chk/anal/fig/up/run) 없음
+[H] Docs/debug_log/2026-10-20/jobs/get_dc.sh — 첫 10 줄에 설명 주석 없음(무엇을 · 왜 · 로버 움직임 · 인자 · 출력)
+[N] Docs/debug_log/2026-10-20/jobs/get_sh.sh — 용도 앞머리(prep/chk/anal/fig/up/run) 없음
+[H] Docs/debug_log/2026-10-20/jobs/get_sh.sh — 첫 10 줄에 설명 주석 없음(무엇을 · 왜 · 로버 움직임 · 인자 · 출력)
+[N] Docs/debug_log/2026-10-20/jobs/get_vso_f2z1.sh — 용도 앞머리(prep/chk/anal/fig/up/run) 없음
+[H] Docs/debug_log/2026-10-20/jobs/get_vso_f2z1.sh — 첫 10 줄에 설명 주석 없음(무엇을 · 왜 · 로버 움직임 · 인자 · 출력)
+[N] Docs/debug_log/2026-10-20/jobs/mk_ekf_replay_bag.py — 용도 앞머리(prep/chk/anal/fig/up/run) 없음
+[N] Docs/debug_log/2026-10-20/jobs/mk_ekf_replay_params.py — 용도 앞머리(prep/chk/anal/fig/up/run) 없음
+[N] Docs/debug_log/2026-10-20/jobs/shm_test/shm_idle.py — 용도 앞머리(prep/chk/anal/fig/up/run) 없음
+[N] Docs/debug_log/2026-10-20/jobs/shm_test/shm_listener.py — 용도 앞머리(prep/chk/anal/fig/up/run) 없음
+[N] Docs/debug_log/2026-10-20/jobs/shm_test/shm_talker.py — 용도 앞머리(prep/chk/anal/fig/up/run) 없음
+[N] Docs/debug_log/2026-10-20/jobs/shm_test/size_talker.py — 용도 앞머리(prep/chk/anal/fig/up/run) 없음
+[P] Docs/debug_log/2026-10-21/SUMMARY.md — 적힌 경로가 없음 outputs/chk_day_start_1021.txt
+[H] Docs/debug_log/2026-10-21/jobs/chk_isaac_rs_prereq2.sh — 첫 10 줄에 설명 주석 없음(무엇을 · 왜 · 로버 움직임 · 인자 · 출력)
+[H] Docs/debug_log/2026-10-21/jobs/chk_isaac_rs_prereq3.sh — 첫 10 줄에 설명 주석 없음(무엇을 · 왜 · 로버 움직임 · 인자 · 출력)
+[H] Docs/debug_log/2026-10-21/jobs/chk_isaac_rs_prereq4.sh — 첫 10 줄에 설명 주석 없음(무엇을 · 왜 · 로버 움직임 · 인자 · 출력)
+[H] Docs/debug_log/2026-10-21/jobs/chk_nav_f2sm2h.sh — 첫 10 줄에 설명 주석 없음(무엇을 · 왜 · 로버 움직임 · 인자 · 출력)
+[H] Docs/debug_log/2026-10-21/jobs/chk_rs_build.sh — 첫 10 줄에 설명 주석 없음(무엇을 · 왜 · 로버 움직임 · 인자 · 출력)
+[H] Docs/debug_log/2026-10-21/jobs/chk_splitter_src.sh — 첫 10 줄에 설명 주석 없음(무엇을 · 왜 · 로버 움직임 · 인자 · 출력)
+[N] Docs/debug_log/2026-10-21/jobs/mx_cam.launch.py — 용도 앞머리(prep/chk/anal/fig/up/run) 없음
+[N] Docs/debug_log/2026-10-21/jobs/nv_static.launch.py — 용도 앞머리(prep/chk/anal/fig/up/run) 없음
+[N] Docs/debug_log/2026-10-21/jobs/put_one.sh — 용도 앞머리(prep/chk/anal/fig/up/run) 없음
+[H] Docs/debug_log/2026-10-22/jobs/chk_preset_1022.sh — 첫 10 줄에 설명 주석 없음(무엇을 · 왜 · 로버 움직임 · 인자 · 출력)
+[N] Docs/debug_log/2026-10-22/jobs/get_bag_f2lp1.sh — 용도 앞머리(prep/chk/anal/fig/up/run) 없음
+[N] Docs/debug_log/2026-10-22/jobs/get_logs_f2pi1.sh — 용도 앞머리(prep/chk/anal/fig/up/run) 없음
+[N] Docs/debug_log/2026-10-22/jobs/get_logs_f2sm3.sh — 용도 앞머리(prep/chk/anal/fig/up/run) 없음
+[N] Docs/debug_log/2026-10-22/jobs/get_rp_1022.sh — 용도 앞머리(prep/chk/anal/fig/up/run) 없음
+[N] Docs/debug_log/2026-10-22/jobs/rp_clr_1022.sh — 용도 앞머리(prep/chk/anal/fig/up/run) 없음
+[N] Docs/debug_log/2026-10-22/jobs/rp_int2_1022.sh — 용도 앞머리(prep/chk/anal/fig/up/run) 없음
+[N] Docs/debug_log/2026-10-22/jobs/rp_mw_1022.sh — 용도 앞머리(prep/chk/anal/fig/up/run) 없음
+[N] Docs/debug_log/2026-10-22/jobs/stop_now.sh — 용도 앞머리(prep/chk/anal/fig/up/run) 없음
+[N] Docs/debug_log/2026-10-23/jobs/get_logs_f2pa1.sh — 용도 앞머리(prep/chk/anal/fig/up/run) 없음
+[N] Docs/debug_log/2026-10-23/jobs/get_logs_f2pa2.sh — 용도 앞머리(prep/chk/anal/fig/up/run) 없음
+[N] Docs/debug_log/2026-10-23/jobs/get_logs_f2rp1.sh — 용도 앞머리(prep/chk/anal/fig/up/run) 없음
+[N] Docs/debug_log/2026-10-23/jobs/get_logs_f2rp2.sh — 용도 앞머리(prep/chk/anal/fig/up/run) 없음
+[N] Docs/debug_log/2026-10-23/jobs/get_logs_f2rp3.sh — 용도 앞머리(prep/chk/anal/fig/up/run) 없음
+[N] Docs/debug_log/2026-10-23/jobs/get_logs_f2rp4.sh — 용도 앞머리(prep/chk/anal/fig/up/run) 없음
+[N] Docs/debug_log/2026-10-23/jobs/get_logs_f2rp5.sh — 용도 앞머리(prep/chk/anal/fig/up/run) 없음
+[N] Docs/debug_log/2026-10-23/jobs/get_logs_f2von1.sh — 용도 앞머리(prep/chk/anal/fig/up/run) 없음
+[N] Docs/debug_log/2026-10-23/jobs/get_logs_f2von2.sh — 용도 앞머리(prep/chk/anal/fig/up/run) 없음
+[P] Docs/debug_log/2026-10-26/SUMMARY.md — 적힌 경로가 없음 outputs/plan_offline/scenes_1023.npz
+[P] Docs/debug_log/2026-10-26/SUMMARY.md — 적힌 경로가 없음 outputs/planner_offline/goal_yaw/exp/
+[N] Docs/debug_log/2026-10-26/jobs/fill_report_1026.py — 용도 앞머리(prep/chk/anal/fig/up/run) 없음
+[N] Docs/debug_log/2026-10-26/jobs/get_logs_f2sa1.sh — 용도 앞머리(prep/chk/anal/fig/up/run) 없음
+[N] Docs/debug_log/2026-10-26/jobs/get_logs_f2sa2.sh — 용도 앞머리(prep/chk/anal/fig/up/run) 없음
+[N] Docs/debug_log/2026-10-26/jobs/get_logs_f2sa3.sh — 용도 앞머리(prep/chk/anal/fig/up/run) 없음
+[N] Docs/debug_log/2026-10-26/jobs/get_logs_f2sh1.sh — 용도 앞머리(prep/chk/anal/fig/up/run) 없음
+[N] Docs/debug_log/2026-10-26/jobs/get_logs_f2sh2.sh — 용도 앞머리(prep/chk/anal/fig/up/run) 없음
+[N] Docs/debug_log/2026-10-27/jobs/apply_slam_tt15_1027.sh — 용도 앞머리(prep/chk/anal/fig/up/run) 없음
+[H] Docs/debug_log/2026-10-27/jobs/chk_day_start_1027.sh — 첫 10 줄에 설명 주석 없음(무엇을 · 왜 · 로버 움직임 · 인자 · 출력)
+[N] Docs/debug_log/2026-10-27/jobs/cmp_gate_1027.sh — 용도 앞머리(prep/chk/anal/fig/up/run) 없음
+[N] Docs/debug_log/2026-10-27/jobs/fill_report_1027.py — 용도 앞머리(prep/chk/anal/fig/up/run) 없음
+[N] Docs/debug_log/2026-10-27/jobs/get_logs_f2st1.sh — 용도 앞머리(prep/chk/anal/fig/up/run) 없음
+[N] Docs/debug_log/2026-10-27/jobs/get_logs_f2tf1.sh — 용도 앞머리(prep/chk/anal/fig/up/run) 없음
+[N] Docs/debug_log/2026-10-27/jobs/get_logs_f2tt1.sh — 용도 앞머리(prep/chk/anal/fig/up/run) 없음
+[H] Docs/debug_log/2026-10-28/jobs/chk_costmap_robot_1028.sh — 첫 10 줄에 설명 주석 없음(무엇을 · 왜 · 로버 움직임 · 인자 · 출력)
+[N] Docs/debug_log/2026-10-28/jobs/fill_report_1028.py — 용도 앞머리(prep/chk/anal/fig/up/run) 없음
+[N] Docs/debug_log/2026-10-28/jobs/get_f2tt2.sh — 용도 앞머리(prep/chk/anal/fig/up/run) 없음
+[N] Docs/tools/slam_replay_feed.py — 용도 앞머리(prep/chk/anal/fig/up/run) 없음
+[T] Docs/debug_log/2026-10-21 — jobs/ 가 있는데 TOOLS.md 없음
+[T] Docs/debug_log/2026-10-22 — jobs/ 가 있는데 TOOLS.md 없음
+[T] Docs/debug_log/2026-10-23 — jobs/ 가 있는데 TOOLS.md 없음
+RULES_WARN 93
