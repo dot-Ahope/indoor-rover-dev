@@ -28,3 +28,10 @@
 - 점검 도구 `Docs/tools/chk_record_rules.py`(경고만, README §8): 기본 = git 에서 바뀐 파일 · 그 날짜 폴더 → `RULES_OK`. `--all`(10-13 이후 전부) 결과 `outputs/chk_record_rules_all.txt`: 경고 93 = 앞머리 없음 N 64 · 설명 주석 없음 H 22 · 적힌 경로 없음 P 4 · TOOLS.md 없음 T 3(10-21 · 10-22 · 10-23).
 - 읽은 것: N 64 중 `get_` 29 · `fill_` 4 · `put_` 3 · `mk_` 3 등 — 실제 작업이 규약 앞머리 6 개 밖의 이름을 계속 썼다(가져오기 `get_` 가 가장 많음). 규약을 넓힐지(예: `get_` = 가져오기) 이름을 지킬지는 사용자 결정. P 4 건: `2026-10-20/jobs/anal_vslam_cmp.py` · `2026-10-21/outputs/chk_day_start_1021.txt` · `2026-10-26/outputs/plan_offline/scenes_1023.npz` · `2026-10-26/outputs/planner_offline/goal_yaw/exp/` — 기록에 적혔으나 저장소에 없음(원천 확인 전, 고치지 않음).
 - 비밀번호 게이트는 `ROVER_RUNNER=<run_jn.sh>` 를 줄 때만 돈다(값 출력 없음) — 커밋 훅(3 번)은 비밀번호 보관 위치 결정 대기.
+
+## §5 앞머리 6 개 유지 · 비밀번호 저장소 밖 · 커밋 훅 (사용자: "지금 6개 지키기. 비밀번호를 저장소 밖 파일에 두어라. push하라.")
+- 앞머리: 6 개(`prep_` `chk_` `run_` `anal_` `fig_` `up_`)만. Jetson → PC 가져오기는 `up_`(전송, 양방향)로 쓰고 `get_` · `put_` 은 새로 만들지 않음 — README §3.1. 옛 파일 이름은 그대로(§4 의 N 64 건은 옛 기록이라 안 고침).
+- 비밀번호: PC `~/.config/rover_jetson/pw`(저장소 밖)에 러너 값을 옮김(출력 없음). ⚠ PC 홈 폴더 자체가 커밋 없는 git 저장소(원격 없음)라 그 저장소의 `.git/info/exclude` 에 `.config/rover_jetson/` 를 더함(로컬 설정, 커밋 아님).
+- 훅 `Docs/tools/chk_commit_gate.py` 를 `.claude/settings.json` PreToolUse(Bash · PowerShell)에 등록: 명령에 `git commit` 이 있으면 staged 에서 비밀번호를 찾아 있으면 막고(exit 2), 파일이 없어도 막음. 통과 때 규약 경고 개수를 알림.
+- 시험: ① 임시 저장소에 비밀번호 파일 staged → 막음(파일 이름만 표시) ② commit 아닌 명령 → 통과 ③ 비밀번호 파일 없음 → 막음 ④ 한글 커밋 메시지 → 통과(처음 판은 stdin 을 콘솔 기본 인코딩으로 읽어 JSON 이 깨지면 그냥 통과하는 결함 — utf-8 로 읽고, 깨져도 원문에서 git commit 을 찾게 고침) ⑤ 실제 세션: 비밀번호 파일을 잠시 치우고 `echo "git commit …"` → 훅이 막음, 되돌림.
+- `chk_record_rules.py` 의 비밀번호 점검도 같은 파일을 기본으로 읽음.

@@ -26,5 +26,29 @@
       "PowerShell(sudo)",
       "PowerShell(sudo *)"
     ]
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python \"$CLAUDE_PROJECT_DIR/Docs/tools/chk_commit_gate.py\"",
+            "timeout": 60
+          }
+        ]
+      },
+      {
+        "matcher": "PowerShell",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python \"$CLAUDE_PROJECT_DIR/Docs/tools/chk_commit_gate.py\"",
+            "timeout": 60
+          }
+        ]
+      }
+    ]
   }
 }
