@@ -19,6 +19,7 @@
 | `prep_fast.sh` | 정리 → 센서 → SLAM(위치 추정) → Nav2 기동, 준비될 때까지 확인. 환경 변수로 구성을 받는다. 약 60~70 s. 10-14: 비우기 전 직전 nav2·slam·sensors 기록을 `/tmp/logkeep/<시각>_*.log` 로 보관(최근 8 벌) | `job972_prep_fast.sh` |
 | `prep_patrol.sh` | 순회 구성(그림자 EKF 끔 · 전역 nvblox · 재계획 0.5 Hz)으로 `prep_fast.sh` 를 부른다. 인자: 궤적 발행 `lite`/`true`/`off`, 후진 벌점 | `job973_prep_lite_fast.sh` 등 |
 | `chk_prep.py` | prep 확인 노드 1 개: Nav2 상태 · 좌표 변환 · 보드/EKF 주기 · 전역 지도 · 실행 중 설정값 · 배터리. 마지막 줄 `PREP_OK`/`PREP_FAIL` | `job971_prepchk.py` |
+| `chk_commit_gate.py` | (PC) Claude Code 커밋 훅 — staged 에 Jetson 비밀번호(저장소 밖 `~/.config/rover_jetson/pw`)가 있거나 파일이 없으면 `git commit` 을 막음, 규약 경고 개수 알림 | (11-02 신규) |
 | `chk_record_rules.py` | (PC) 작업 규약 점검 — TOOLS.md 누락 · 도구 앞머리 · 설명 주석 · 깨진 링크 · 적힌 출력 경로 · 비밀번호(선택). 경고만, `--all` · `--strict` | (11-02 신규) |
 | `chk_jetson_state.sh` | 재부팅 여부 · IP · /tmp 스크립트 · 캡처 권한 · 수신 버퍼 | `job947_state.sh` |
 | `chk_padding_dynamic.py` | 실행 중 코스트맵 footprint_padding 을 0 으로 내렸다 되돌리며 발행 풋프린트 · 코스트맵 칸 수 확인(로버 안 움직임) | (10-14 신규) |
