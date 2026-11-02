@@ -8,6 +8,7 @@
     P  SUMMARY · TOOLS 에 적힌 jobs/ · outputs/ · figures/ 경로가 없음   (§2.3 데이터 칸; bags/ 는 git 제외라 안 봄)
     S  staged · 추적 작업 트리에 Jetson 비밀번호(지금 값 · 옛 값)가 있음  (§8; 저장소 밖 ~/.config/rover_jetson/pw 또는 ROVER_PW_FILE, 값은 출력 안 함)
     D  README §0 표와 CLAUDE.md 의 사본 표가 다름                       (11-02; 표지 RULES_TABLE_BEGIN/END)
+    C  주제 폴더 Docs/0*/figures/<날짜>_*.html 의 날짜 폴더 사본이 없거나 다름 (§7.1)
   대상: 기본 = git 에서 바뀐 파일(staged + unstaged + 새 파일)과 그 날짜 폴더. --all = 10-13 이후 날짜 폴더 전부.
   인자: [--all] [--strict(경고가 있으면 종료 코드 1)]
   출력: 표준 출력에 '[분류] 경로 — 내용' 한 줄씩, 마지막 줄 'RULES_OK' 또는 'RULES_WARN <개수>'."""
@@ -108,6 +109,12 @@ def table(p):   # RULES_TABLE_BEGIN ~ END 사이 표 줄
 ta, tb = table(DL / 'README.md'), table(ROOT / 'CLAUDE.md')
 if ta is None or tb is None: warn('D', 'CLAUDE.md', '규약 표 표지(RULES_TABLE_BEGIN/END)를 못 찾음')
 elif ta != tb: warn('D', 'CLAUDE.md', 'README §0 표와 CLAUDE.md 사본이 다름 — 둘을 맞출 것')
+
+# 주제 폴더(Docs/0*/figures/)의 날짜 이름 정리 페이지는 날짜 폴더 figures/ 에도 같은 사본이 있어야 한다(README §7.1)
+for fp in sorted(ROOT.glob('Docs/0*/figures/20??-??-??_*.html')):
+    cp = DL / fp.name[:10] / 'figures' / fp.name
+    if not cp.exists(): warn('C', fp, '날짜 폴더 사본 없음 → %s' % cp.relative_to(ROOT).as_posix())
+    elif cp.read_bytes() != fp.read_bytes(): warn('C', fp, '날짜 폴더 사본과 내용이 다름 — 같은 판으로 맞출 것')
 check_secret()
 
 for w in warns: print(w)
