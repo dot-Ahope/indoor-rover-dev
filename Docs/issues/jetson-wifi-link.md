@@ -2,7 +2,7 @@
 
 | 상태 | 기간 | 처음 본 곳 | 바꾼 파일 · 설정 | 관련 문제 |
 |---|---|---|---|---|
-| **우회**(실행을 네트워크와 분리 · 절전 끔) · 원인 미확정 · 3 시기: 'AP 가 먼저 끊고 재인증을 거부' 3 회(09-15 · 16 · 17) → 계측 서비스 설치, **원인 미확정**(후보 DFS · PMF) · 이후 양상이 다른 사건이 이어짐 | 08-28 ~ (이 카드는 09-18 까지 채움) | [08-28 '★ SLAM 첫 맵 완성'](../debug_log/2026-08-28/SUMMARY.md) "detach 실행 → WiFi 무관" | 저장소 파일 없음(계측 스크립트 사본만 [`2026-09-18/jobs/wifi_mon.sh`](../debug_log/2026-09-18/jobs/wifi_mon.sh)). Jetson 설정: ① 09-03 `wlP1p1s0` power_save off(런타임) + NM `802-11-wireless.powersave 2`(**WEB_DEV_5G 프로파일에만**) ② 09-16 `mavlink-router` disable · NM 자동연결 우선순위 WEB_DEV_5G 20 > ALOPS_ROBOTICS_5G 5 ③ 09-18 `wifi-mon.service`(enabled) + `/usr/local/sbin/wifi_mon.sh` + `/etc/rsyslog.d/25-wifi-mon.conf` + wpa_supplicant 로그 수준 DEBUG 유지 | [첫 SLAM 지도](first-slam-map.md)(detach 실행이 생긴 곳) · [DDS 공유메모리 사고](dds-shm-incident.md)(09-16 IP 변경 뒤 DDS 분리 · 루프백 화이트리스트) · [저장 공간 · 로그 누적](storage-housekeeping.md)(09-18 같은 날 조사, syslog 무회전) · 이후 IP 충돌(10-14) |
+| **우회**(실행을 네트워크와 분리 · 절전 끔) · 원인 미확정 · 3 시기: 'AP 가 먼저 끊고 재인증을 거부' 3 회(09-15 · 16 · 17) → 계측 서비스 설치, **원인 미확정**(후보 DFS · PMF) · 이후 양상이 다른 사건이 이어짐 | 08-28 ~ (이 카드는 09-23 까지 채움 — 4 시기 09-23: 결합 · 인증 성공 뒤 DHCP 무응답 · 공유기 DHCP 예약 · 같은 날 끊김 4 번 더, §2.2) | [08-28 '★ SLAM 첫 맵 완성'](../debug_log/2026-08-28/SUMMARY.md) "detach 실행 → WiFi 무관" | 저장소 파일 없음(계측 스크립트 사본만 [`2026-09-18/jobs/wifi_mon.sh`](../debug_log/2026-09-18/jobs/wifi_mon.sh)). Jetson 설정: ① 09-03 `wlP1p1s0` power_save off(런타임) + NM `802-11-wireless.powersave 2`(**WEB_DEV_5G 프로파일에만**) ② 09-16 `mavlink-router` disable · NM 자동연결 우선순위 WEB_DEV_5G 20 > ALOPS_ROBOTICS_5G 5 ③ 09-18 `wifi-mon.service`(enabled) + `/usr/local/sbin/wifi_mon.sh` + `/etc/rsyslog.d/25-wifi-mon.conf` + wpa_supplicant 로그 수준 DEBUG 유지 | [첫 SLAM 지도](first-slam-map.md)(detach 실행이 생긴 곳) · [DDS 공유메모리 사고](dds-shm-incident.md)(09-16 IP 변경 뒤 DDS 분리 · 루프백 화이트리스트) · [저장 공간 · 로그 누적](storage-housekeeping.md)(09-18 같은 날 조사, syslog 무회전) · 이후 IP 충돌(10-14) |
 
 **한 줄**: PC 에서 Wi-Fi 너머 Jetson 으로 SSH 를 걸어 로버를 움직이는데, 그 연결이 가끔 몇 분씩 끊긴다. 08-28 에는 회전 스크립트가 SSH 와 함께 죽어 '재부팅이 아님' 을 확인(`job7g`)한 뒤 **스크립트를 Jetson 안에서 독립 실행(detach)** 하게 바꿔 우회했다. 09-03 저녁에는 플래시 직후 PC → Jetson ping 100 % 손실이 수 분씩 반복돼 Jetson 쪽을 진단(링크 유지 · 신호 −53 dBm · 끊김 로그 없음 · **절전 켜짐**)하고 절전을 껐다. 그 뒤 60 회 중 57 회 응답(5 % 손실) — 쓸 만하지만 완전하지 않았고, 절전이 원인인지는 확정하지 못했다(끈 직후에도 83 % 손실, 회복은 약 2 분 뒤).
 
@@ -85,7 +85,7 @@
 - 10-07 DHCP 무응답 재발 → ALOPS 로 작업: [10-07 §2.1](../debug_log/2026-10-07/SUMMARY.md).
 - 10-14 사용자가 찾은 원인 — 다른 서버가 192.168.0.101 을 받아 IP 충돌: [10-14 §8.3~§8.6](../debug_log/2026-10-14/SUMMARY.md).
 - 10-15 부터 192.168.0.110(DHCP 예약): [10-15 §1.1](../debug_log/2026-10-15/SUMMARY.md). 10-21 SSID 송출 중단: [10-21 §4](../debug_log/2026-10-21/SUMMARY.md).
-- **wifi-mon 은 지금도 돈다**: 10-27 · 10-28 주행 기록의 프로세스 목록에 `wifi_mon.sh` 가 있다(예: [`2026-10-28/outputs/drives/f2tt2/f0_f2tt2/proc_f2tt2.log`](../debug_log/2026-10-28/outputs/drives/f2tt2/f0_f2tt2/proc_f2tt2.log)). 10-22 `chk_wifi_1022.sh` 가 `/var/log/wifi_mon/*.log` 를 읽었다. ⚠ 스크립트 안의 감시 대상 AP 는 09-18 의 WEB_DEV_5G BSSID(`…:1b:4c`) · 주파수 5180 으로 **고정**되어 있다 — 공유기 · SSID 가 바뀌었으면(10-21 송출 중단) BEACON 줄 대신 10 분마다 전체 스캔만 남는다(코드 기준 추론, 현재 Jetson 설치본은 09-23 패치판이라 미확인). §7.3 기준으로 09-15~17 형 끊김을 판정한 기록은 이 카드 범위(09-18 까지)에서는 없다.
+- **wifi-mon 은 지금도 돈다**: 10-27 · 10-28 주행 기록의 프로세스 목록에 `wifi_mon.sh` 가 있다(예: [`2026-10-28/outputs/drives/f2tt2/f0_f2tt2/proc_f2tt2.log`](../debug_log/2026-10-28/outputs/drives/f2tt2/f0_f2tt2/proc_f2tt2.log)). 10-22 `chk_wifi_1022.sh` 가 `/var/log/wifi_mon/*.log` 를 읽었다. ⚠ 스크립트 안의 감시 대상 AP 는 09-18 의 WEB_DEV_5G BSSID(`…:1b:4c`) · 주파수 5180 으로 **고정**되어 있다 — 공유기 · SSID 가 바뀌었으면(10-21 송출 중단) BEACON 줄 대신 10 분마다 전체 스캔만 남는다(코드 기준 추론, 현재 Jetson 설치본은 09-23 패치판이라 미확인). §7.3 기준으로 09-15~17 형 끊김을 판정한 기록은 이 카드 범위(09-23 까지)에서는 없다 — 09-23 12:05 사건도 DFS · PMF 둘 다 **미판정**(§3.2, 직전 BEACON 6 분 공백 · 4-way 줄 미회수 · 스냅샷 0).
 
 ## 3. 가설과 판별 (09-03 까지)
 | 가설 | 판별 | 결과 | 판정 |
@@ -234,6 +234,15 @@
 - `/var/log/syslog` 무회전(logrotate 미설치) — 분석 때마다 144 MB 를 훑음([저장 공간 카드](storage-housekeeping.md) 보류 ①).
 - 위 §5.1 모순 1 · 3(시각) — NTP 전 시각을 판정에 쓰지 않도록 `uptime` · NTP 동기 줄과 대조하는 절차가 필요(09-21 §0 에서 같은 주의를 다시 적음).
 
+### 6.2 남은 것 (09-23 시점)
+- 양상 ⓒ(결합 · 4-way 성공 뒤 DHCP 45 s 무응답)의 원인 — **미확인**. 공유기 DHCP 임대 표 확인(§0.1 제안 ③)은 기록이 없다. 같은 날 12:05 사건 안에서도 ⓒ 가 다시 나왔다(§5.2 모순 13).
+- IP 충돌 가설 — 09-23 에는 **판별 안 됨**: `arping -D` 검사가 실행 중 서비스에 걸리지 않았다(§5.2 실수 3). 서비스 재시작 · 새 블록 동작 확인이 남음. (이후 10-14 사용자가 다른 서버의 .101 사용을 찾음 — §2 이후 목록.)
+- 양상 ⓓ(링크 유지 중 PC 와의 트래픽만 ≈ 8 분 끊김) — 'AP 가 전달을 멈췄다' 는 **추정**. 그 창의 Jetson → 공유기 핑이 없었다(트레이스는 12:06 부터). wifi-mon 에 게이트웨이 핑 상시화는 제안만(sudo · 사용자 결정).
+- 양상 ⓔ(12:19, 14:13, 14:25~14:36) — PC → PC 쪽 공유기(NAT, WAN .6) → WEB_DEV AP → Jetson 경로 중 어느 구간인지 **미확인**. 게이트웨이 핑 대상 192.168.0.1 이 WEB_DEV AP 자신이라 'AP ↔ .6' 구간을 못 가른다(§5.2 모순 17). PC 쪽 핑 기록은 저장 안 됨(모순 16).
+- AP 격리 추정(§14, PC 를 WEB_DEV 에 직접 붙이면 Jetson ARP 불가) — 해제는 사무실 공유 공유기라 사용자 결정 대기.
+- 끊김 · 재연결 뒤 DDS 부하(n62b CPU 422 %) — 규칙(재연결 뒤 스택 재기동)만 있고, 게이트에 'NM 재연결 0' 검사는 미구현(제안).
+- wifi-mon 이 15 s 보다 짧은 bssid 변화를 못 잡는 설계(모순 15) — 그대로.
+
 ## 7. 실험 · 도구 색인
 | 이름 | 무엇 | 위치 |
 |---|---|---|
@@ -249,6 +258,12 @@
 | `job427_wifi.sh` · `job427b` · `job427c` · `job427d` (+ `run_j427*.sh`) | 읽기 전용 Wi-Fi 분석 4 종 | `2026-09-17/jobs/` → `outputs/j427*_wifi.txt` |
 | `job428_wifi_dfs.sh` · `job428b_now.sh` · `job428c_bss.sh` · `job428d_pmf.sh` (+ `run_j428b/c/d.sh`) | DFS · 비콘 · PMF 확인 | `2026-09-18/jobs/` → `outputs/j428*.txt` |
 | `job429_probe.sh` · `job429b` ~ `job429j` (+ `run_j429*.sh`) · `wifi_mon.sh` | A 안 사전 점검 · 설치 · 고장 추적 · 재배포 · 스냅샷 시험 | `2026-09-18/jobs/` → `outputs/j429*.txt` |
+| `run_jx.sh` · `run_xfer_all_h.sh` | 09-23 범용 러너(두 IP 자동 선택) · 재부팅 뒤 `/tmp` 재전송(호스트 변수판) | `2026-09-23/jobs/` |
+| `job529_wifi_collect.sh` · `job530_wifi_boot.sh` | 09-23 아침 끊김(ⓒ) 회수 — wifi-mon · syslog · 부팅 블록 | `2026-09-23/jobs/` → `outputs/j529_wifi.txt` · `j530_wifi_boot.txt` |
+| `job534_netprep.sh` · `job535_net_fixed.sh` + `run_j535.sh` · `job536_moncheck.sh` | 고정 IP(예약) 복귀 사전 확인 · 적용(arping · DAD · wifi-mon 패치 · WEB_DEV 전환) · 적용 확인 | → `j534_netprep.txt` · `j535_net.txt` · `j536_moncheck.txt` |
+| `job539_dropchk.sh` · `job540_trace.sh` + `run_j540.sh` · `job541_fetch.sh` | 11:57 끊김 직후 요약 · 온보드 30 분 트레이스 · 회수 | → `j539_drop.txt`(뒷부분이 `job541` 출력) · 트레이스 원본 `/tmp/j540_trace.txt`(원천 소실, 발췌는 `j539` · `j544`) |
+| `job542_dropwin.sh` · `job543_mon.sh` · `job544_drop2.sh` | 11:55~12:07 창 전체 · 그 창 mon.log · 12:19 두 번째 끊김 | → `j542_dropwin.txt` · `j543_mon.txt` · `j544_drop2.txt` |
+| n62b | 끊김 뒤 이미 떠 있던 스택으로 돈 주행(CPU 422 %) | `outputs/j507_n62b_drive.txt` · `bags/bag_n62b.tgz` |
 
 ## 8. 도구 해설
 공통: Jetson 에서 실행, PC → WSL → sshpass 러너(원본 소실, 후손 [`2026-10-08/jobs/run_jn.sh`](../debug_log/2026-10-08/jobs/run_jn.sh)). 09-03 도구는 이름이 번호(job)가 아닌 용도 이름인 첫 예(도구 이름 규약이 정식으로 생긴 것은 10-12).
@@ -395,6 +410,67 @@
 - `job429i`: 설치본에서 `snapshot()` 함수를 떼어 'TEST' 로 한 번 실행 → 새 `event_*` 를 `test_` 접두로 바꿈 → 크기 · 절 머리 · 'psk= · passphrase= · password' 개수 · wpa debug 발췌. 결과 41,158 B · 7 절 모두 · 검사 1. 출력 [`j429i_snaptest.txt`](../debug_log/2026-09-18/outputs/j429i_snaptest.txt). 결함: 줄 수 0 은 권한(§5.1 모순 8).
 - `job429j`: 그 1 건을 값 가림(`<MASK>`) 처리해 보여 주고 `wpa_debug.log` 전체의 psk= · passphrase= 줄 수. 출력 **원문 없음** — 'WPS Device Password ID 뿐' 판정은 SUMMARY 문장만(§5.1 모순 9).
 
+### 8.2 4 시기 도구 (09-23)
+공통: PC(WSL) → `run_jx.sh`(또는 전용 `run_j5xx.sh`)가 스크래치패드의 스크립트를 CR 제거 뒤 Jetson `/tmp` 로 scp → ssh 로 `bash /tmp/<파일>`. 모두 **읽기 전용**이고, `job535` · `job536` 만 sudo(비밀번호는 저장소 사본에서 `<PW>`). 시각 범위(11:5x · 12:17~12:21 등)를 코드에 박아 넣어 **다른 날엔 그대로 못 쓴다**.
+
+#### run_jx.sh — 범용 러너 (09-22 작성 · 09-23 IP 자동 선택 추가, PC/WSL)
+- 부른 형태: `[JETSON_HOST=…] [JX_TIMEOUT=300] bash run_jx.sh <job파일> [인자…]`.
+- 왜: 아침에 Jetson 이 ALOPS(172.30.1.8)로 넘어가 있어 러너마다 주소를 손으로 바꿔야 했다(§0.1 제안 ②).
+- 하는 일: `JETSON_HOST` 가 비었으면 192.168.0.101 → 172.30.1.8 순으로 `ping -c1 -W1` 해 처음 응답하는 쪽 → `tr -d '\r'` → scp(실패면 종료) → `.py` 면 `python3`, 아니면 `bash` 로 원격 실행(UDP 전용 Fast DDS 프로파일 · humble · 워크스페이스 source), 전체 `timeout 300`.
+- 출력: 원격 화면 그대로. 결함: 두 주소 다 무응답이면 .101 로 시도해 실패. 핑 응답이 Jetson 인지 확인하지 않는다 — 10-14 처럼 다른 기기가 .101 을 쓰면 엉뚱한 기기에 접속을 시도한다(그때는 SSH 신원 확인 끔(`StrictHostKeyChecking=no`)이라 경고도 없음). 계보: → `run_jn.sh`(10-08, `JX_WHY` · 실시간 로그) · 지금은 `JETSON_HOST=192.168.0.110` 고정 관례.
+
+#### run_xfer_all_h.sh — 재부팅 뒤 `/tmp` 스크립트 재전송 (PC/WSL)
+- 하는 일: 옛 스크래치패드(82ce61d4…)의 job 35 개를 `JETSON_HOST`(기본 .101)로 scp(3 회 재시도) → 원격에서 CR 제거 · `chmod` · `py_compile`. 09-10 판 `run_xfer_all.sh` 의 IP 고정만 변수로 바꾼 것. 결함: 옛 스크래치패드는 09-28 에 사라져 지금은 못 쓴다.
+
+#### job529_wifi_collect.sh — 아침 끊김 회수 (09-23 09:45, Jetson, 읽기 전용)
+- 왜: 사용자 요청 '백그라운드 로그 확인' — 09-18 에 설치한 wifi-mon 이 무엇을 남겼나.
+- 하는 일: 지금 시각 · `uptime -s` · 활성 연결 → 두 프로파일 autoconnect · 우선순위 · 절전 → `nmcli dev wifi list` 의 두 SSID → `/var/log/wifi_mon/` 목록 · 서비스 상태 → `mon.log` 마지막 40 줄 → 최근 event 스냅샷 2 개 머리 25 줄 → `wpa_debug.log` 의 deauth · reason · CTRL-EVENT 줄(09-22 16:00 이후, 60 줄) → syslog NM · wpa 줄(80 줄).
+- 출력: [`j529_wifi.txt`](../debug_log/2026-09-23/outputs/j529_wifi.txt). 쓰인 곳: §0.1 전날 갱신 · EVENT 쌍 · BEACON 160 MHz, §5.2 실수 3 판별(패치 전 LINK 간격 15.29 s).
+- 결함: 부팅 블록 줄은 `Jan  1 09:0x`(1970) 표기라 'Sep 2[23]' 거르개에 안 걸림 → `job530` 을 따로 만듦.
+
+#### job530_wifi_boot.sh — 부팅 직후 블록 (09-23, Jetson, 읽기 전용)
+- 하는 일: `mon.log` 의 마지막 1970 블록 + 첫 2026 줄(awk) → `wpa_debug.log` · syslog 의 `Jan  1 09:0x` 줄 중 결합 · 인증 · NM 활성화 줄(각 `tail` 50~60) → `nmcli dev wifi rescan` 4 s 뒤 목록 → `journalctl -b -u NetworkManager` WEB_DEV 관련 30 줄.
+- 출력: [`j530_wifi_boot.txt`](../debug_log/2026-09-23/outputs/j530_wifi_boot.txt). 쓰인 곳: §0.1 '4-way 완료 → DHCP 45 s → ip-config-unavailable → reason 3 locally_generated → ALOPS'.
+- 결함: `tail -50` 이라 **세 번째 시도만** 원문에 남았다(§5.2 모순 11). 1970 시각을 실제 시각으로 바꾸지 않는다(모순 10).
+
+#### job534_netprep.sh — 고정 IP 복귀 사전 확인 (09-23 10:0x, Jetson, 읽기 전용)
+- 하는 일: `arping` · `tcpdump` 유무, `sudo -n true`(NOPASSWD 여부) → 두 프로파일 `ipv4.method` · `dad-timeout` · `dhcp-client-id` · `autoconnect-retries` · `ipv4.addresses` → `/usr/local/sbin/wifi_mon.sh` 줄 수와 LINK · sleep · snapshot 줄 → (네트워크와 무관) 카메라 점군 파라미터 · Hz.
+- 출력: [`j534_netprep.txt`](../debug_log/2026-09-23/outputs/j534_netprep.txt) — arping · tcpdump 없음 · NOPASSWD no · 두 프로파일 auto · dad −1 · 89 줄. 쓰인 곳: `job535` 의 패치 위치(LINK 줄) · 설치 목록을 정함.
+
+#### job535_net_fixed.sh + run_j535.sh — 적용 · 전환 (09-23 10:14, Jetson sudo · PC, 사용자 지시)
+- 부른 형태: `bash run_j535.sh`(PC) — **172.30.1.8 로** 올려 실행(전환 전 주소), 그 뒤 PC 가 두 IP 를 3 s 마다 최대 120 s 핑, .101 이 응답하면 거기로(60 s 넘으면 아무 쪽이나) 붙어 활성 연결 · IP · `/tmp/net_switch.log` · NM 3 분 로그 · mon.log 꼬리.
+- 하는 일(`job535`): `S()` = 표준입력으로 sudo 비밀번호를 주고 출력에서 `[sudo]` 줄을 거름. ① `apt-get install iputils-arping tcpdump`(timeout 90 — 머리 문구는 '60 s 한도') ② 두 프로파일 `nmcli con modify … ipv4.dad-timeout 3000` 뒤 값 확인 ③ `wifi_mon.sh` 에 ARP_DUP 가 없으면 python 으로 LINK `log` 줄 바로 뒤에 블록 삽입한 `/tmp/wifi_mon.new` 생성(`assert old in s`) → `bash -n && S cp && S systemctl restart wifi-mon && sleep 2 && echo 확인` ④ 3 s 뒤 `nmcli con up WEB_DEV_5G` 를 `nohup sudo` 백그라운드(이 세션은 끊김을 전제).
+- 삽입 블록: IPv4 가 있고 arping 이 있으면 `timeout 5 arping -D -c 2 -w 2 -I $IF <내 IP>` 출력에서 'Unicast reply' 첫 줄 → 있으면 `ARP_DUP ip=… <줄>` 기록, 직전 스냅샷이 300 s 보다 오래면 `snapshot "arp dup …"`.
+- 출력: [`j535_net.txt`](../debug_log/2026-09-23/outputs/j535_net.txt) — 설치 · dad 3000 × 2 · **'패치 생성' 뒤 확인 줄 없음** · 요청 10:14:30 · PC 4 s 뒤 .101 · NM 10:14:33.21 DHCP 시작 → 10:14:35.35 임대.
+- 쓰인 곳: §5 결과(임대 2 s · 아침 무응답 재현 안 됨). 결함: **`S cp` 가 출력이 없어 파이프 끝 `grep -v` 가 종료 코드 1 → `&&` 사슬이 끊겨 서비스 재시작이 안 됨**(§5.2 실수 3). 같은 `S()` 형태는 09-18 도구들에도 있었다(그때는 출력이 있는 명령이라 드러나지 않음 — 추정, 09-18 도구는 이 기준으로 다시 보지 않음). 지금 다시: 쓰지 않음 — 패턴 경고용.
+
+#### job536_moncheck.sh — 패치 적용 확인 (09-23 10:2x, Jetson sudo)
+- 하는 일: 파일에 ARP_DUP 가 **없을 때만** 적용 · 재시작 → 파일 안 ARP_DUP 줄 수 · 서비스 상태 · mon.log 꼬리 2 줄 · mon.log 의 ARP_DUP 기록 수 · 수동 `arping -D -c 2 -w 2 … 192.168.0.101` 끝 줄 · 두 프로파일 DAD.
+- 출력: [`j536_moncheck.txt`](../debug_log/2026-09-23/outputs/j536_moncheck.txt) — 줄 2 · active · 기록 0 · 'Received 0 response(s)' · 3000/3000.
+- 결함: '파일에 있음' 과 '실행 중인 루프에 있음' 을 구분하지 않는다 — 서비스의 시작 시각(`ActiveEnterTimestamp`)이나 `START pid` 줄을 안 봄. 그래서 '적용됨' 으로 잘못 확인(실수 3). 수동 arping 1 회는 그 순간 충돌이 없다는 것만 보인다.
+
+#### job539_dropchk.sh — 끊김 직후 요약 (09-23 12:06, Jetson, 읽기 전용)
+- 부른 형태: `job540` 이 먼저 `bash /tmp/job539.sh > /tmp/j539.txt` 로 실행(PC 가 직접 부르지 않음 — 끊김 중이라 온보드로).
+- 하는 일: 지금 연결 · IP → mon.log 11:45~11:59 중 **평범한 WEB_DEV LINK 줄을 정규식으로 뺀** 나머지 20 줄(변화 · EVENT · ARP_DUP 만) → ARP_DUP 누적 → wpa CTRL-EVENT · deauth 11:45~11:59 → NM `journalctl --since 11:40` 의 duplicate · dad · dhcp4 · state change → 커널 무선 줄 → 스택 프로세스 수.
+- 출력: [`j539_drop.txt`](../debug_log/2026-09-23/outputs/j539_drop.txt) 앞부분. 결함: wpa 범위가 11:59 까지라 12:05 deauth 는 NM 절에서만 보인다. 거르개가 신호 `-5[0-9]` 만 '평범' 으로 보므로 −60 아래로 떨어진 줄만 남는다 — 비트레이트 변화(6.0 Mbit/s)는 정규식에 걸려 빠진다(`rx=[0-9.]+_MBit/s` 가 6.0 도 맞음) → `job543` 으로 다시 뽑음.
+
+#### job540_trace.sh + run_j540.sh — 온보드 30 분 트레이스 (09-23 12:06:17 ~, Jetson · PC)
+- 부른 형태: `run_j540.sh`(PC) 가 2 s 마다 최대 90 번 두 IP 를 핑해 붙는 즉시 `job539_unix.sh` · `job540_unix.sh`(CR 제거판)를 올리고 `setsid nohup bash /tmp/job540.sh &`.
+- 왜: 다음 끊김에서 'Jetson → 공유기 핑도 죽는가(AP 전달 정지)' 를 가리려고(§11 계측 보강).
+- 하는 일: 1 800 s 동안 2 s 마다 한 줄 — 시각 · `ip -4` 주소 · `iw link` 의 BSSID · 신호 · `ping -c1 -W1 192.168.0.1` 성공 ok/X · `ip neigh show 192.168.0.1` 의 MAC · 상태 → `/tmp/j540_trace.txt`.
+- 출력: Jetson `/tmp/j540_trace.txt`(**원천 소실** — 발췌만 `j539` 뒷부분 · `j544`). 쓰인 곳: §12 'gw=ok 133/133'. 결함: 게이트웨이 = WEB_DEV AP 자신이라 AP 까지만 보증(모순 17). 30 분 뒤 끝나므로 14:13 · 14:25 끊김은 못 봄.
+
+#### job541_fetch.sh — 트레이스 회수 (09-23 12:08 무렵, Jetson)
+- 하는 일: `/tmp/j539.txt` 전문 → 트레이스에서 (IP, gw) 쌍이 바뀐 줄만 마지막 15 → 줄 수 · gw=X 횟수. 출력: `j539_drop.txt` 뒷부분('줄 수 74, gw=X 횟수 0' — 시작 직후 ≈ 2.5 분치).
+
+#### job542_dropwin.sh · job543_mon.sh — 11:55~12:07 창 (09-23, Jetson, 읽기 전용)
+- `job542`: mon.log(BEACON 제외 · 상태 변화 줄만) · wpa CTRL-EVENT · reason · SA Query · NM 의 `reason '…'` · dhcp4 줄 · 커널 줄. 출력 [`j542_dropwin.txt`](../debug_log/2026-09-23/outputs/j542_dropwin.txt). 결함: mon.log 절이 날짜를 안 걸러 다른 날 같은 시각 줄로 채워짐(모순 14). wpa 절도 `12:0[0-7]:|11:5[5-9]:` 만 보고 날짜를 안 거르지만, 이번 출력의 줄은 모두 `Sep 23` 이었다(원문 확인) — 다른 날 같은 시각 사건이 있었으면 섞였을 결함.
+- `job543`: 날짜까지 붙여 `^2026-09-23 (11:5x|12:0[0-7])` mon.log 전체(BEACON 제외) + LINK 줄 수. 출력 [`j543_mon.txt`](../debug_log/2026-09-23/outputs/j543_mon.txt) — §11 LINK · rx 비트레이트 표, §5.2 실수 3 판별(패치 뒤 LINK 간격 15.19 s).
+
+#### job544_drop2.sh — 12:19 두 번째 끊김 (09-23 12:2x, Jetson, 읽기 전용)
+- 하는 일: 트레이스 12:17:00~12:21:30 전 줄 → wpa · NM · 커널 같은 창 → `journalctl -u ssh` 같은 창 → ARP_DUP 수.
+- 출력: [`j544_drop2.txt`](../debug_log/2026-09-23/outputs/j544_drop2.txt) — gw=ok 133 · gw=X 0 · wpa/NM '-- No entries --' · sshd 12:21:59 `from 192.168.0.6`. 쓰인 곳: §12 '끊긴 것은 PC 쪽 NAT 경로'.
+
 ## 9. 용어
 - **Wi-Fi power save(절전)**: 무선 카드가 쉬는 동안 AP 에게 '잠든다' 고 알리고 비콘 몇 번에 한 번만 깨어나 쌓인 패킷을 받는 방식. 전력은 줄지만 바깥에서 오는 패킷(ARP 질문 · ping)에 수백 ms 늦게 답하거나 놓칠 수 있다. `iw dev <IF> get power_save` 로 상태를 본다.
 - **NetworkManager(NM)**: Ubuntu 의 네트워크 관리 데몬. 저장된 '연결 프로파일'(SSID · 비밀번호 · IP 방식 · 절전 · 자동연결 우선순위)을 들고 있다가 자동으로 붙는다. `nmcli` 가 명령줄 도구. `802-11-wireless.powersave` 값: 0 = 기본(전역 따름) · 2 = 끔 · 3 = 켬. 연결 중인 망이 끊기면 다음 우선순위 프로파일로 옮겨 가며, 이때 IP 가 바뀐다.
@@ -413,4 +489,10 @@
 - **DHCP 임대(lease)**: 공유기가 단말 MAC 에 IP 를 일정 시간 빌려주는 것. 임대 시간의 절반쯤마다 갱신한다(여기 ALOPS 는 30 분마다 'new lease' 줄). 공유기는 보통 같은 MAC 에 같은 주소를 다시 준다(ALOPS → 172.30.1.8). 'DHCP 예약(고정 할당)' 은 그 대응을 공유기에 못 박는 것(09-23 · 10-15).
 - **NTP 전 시각**: Jetson 은 부팅 직후 네트워크 시간 동기(NTP) 전까지 마지막으로 저장한 시각에서 시계를 이어 간다(추정 — 이 보드의 RTC 동작 확인 안 함). 그 사이 찍힌 syslog · wifi-mon 줄은 실제보다 이르다. 차이는 일정하지 않다(09-17 ≈40 분, 09-18 ≈17.6 h). 판정에 쓸 땐 `uptime -s` · NTP 동기 줄과 대조.
 - **rsyslog · severity 7**: 프로그램이 syslog 로 보내는 줄에는 심각도(0 긴급 ~ 7 DEBUG)가 붙는다. `25-wifi-mon.conf` 는 wpa_supplicant 의 7 만 별도 파일로 보내고 `stop` 으로 syslog 에서 뺀다.
+- **DHCP 예약 vs 정적 IP**: 예약 = 공유기 DHCP 서버가 그 MAC 에 늘 같은 주소를 주는 것(단말은 여전히 DHCP), 정적 = 단말 쪽에 주소를 박는 것. 09-23 사용자는 예약을 택했다. 예약은 **다른 기기가 그 주소를 스스로 쓰는 것**(정적 설정 · 다른 DHCP 서버)은 막지 못한다 — 10-14 의 충돌.
+- **`ip-config-unavailable` · DHCP 45 s**: NM 은 무선 결합 · 인증 뒤 DHCP 요청을 보내고 45 s 안에 임대가 없으면 그 활성화를 실패로 접는다(`ip-config -> failed (reason 'ip-config-unavailable')`), 그 뒤 스스로 끊고(`reason 3 locally_generated`) 다음 프로파일로 간다. 즉 '무선은 붙었는데 IP 를 못 받음' 의 서명.
+- **DAD(Duplicate Address Detection) · `ipv4.dad-timeout`**: 주소를 쓰기 전에 'IP 가 이 주소인 사람?' 을 ARP 로 물어(보내는 쪽 주소 0.0.0.0 — RFC 5227 방식) 응답이 있으면 충돌로 보고 쓰지 않는 검사. NM 값 −1 = 기본(이 Jetson 에서 실제로 몇 ms 인지 미확인), 3000 = 3 s 기다림.
+- **`arping -D`**: 같은 DAD 질문을 명령줄에서 보내는 도구(iputils). 응답(`Unicast reply from <IP> [<MAC>]`)이 오면 그 주소를 다른 장치가 쓰고 있다는 뜻, 'Received 0 response(s)' 면 그 순간엔 없음. AP 가 이 단말의 프레임을 전달하지 않는 중이면 응답도 안 오므로 '0' 이 곧 '충돌 없음' 은 아니다.
+- **AP 격리(client isolation)**: 같은 AP 에 붙은 무선 단말끼리 직접 통신을 막는 공유기 기능. 09-23 §14 에 PC 를 WEB_DEV 에 붙였을 때 Jetson ARP 가 안 된 것을 이것으로 **추정**했다(공유기 설정은 확인 안 함).
+- **rx 비트레이트 · MCS**: `iw link` 의 `rx bitrate` 는 마지막으로 받은 프레임의 전송 속도. 6.0 Mbit/s 는 관리 · 기본 속도(비콘 등)라 데이터가 없을 때도 나오고, 175.6(MCS 2) · 390~780 은 데이터 프레임 속도. 그래서 '6.0 = 데이터 끊김' 은 단독으로는 약한 근거(§3.2).
 - **USB 장치 모드 주소(192.168.55.1)**: Jetson 개발 키트를 USB 로 PC 에 꽂으면 생기는 가상 이더넷의 Jetson 쪽 주소. Wi-Fi 와 무관한 비상 접속로.

@@ -63,24 +63,17 @@
 | [센서 데크 yaw −2.68°](sensor-deck-yaw.md) | 해결(라이다) | 로컬 코스트맵 상자가 다가오던 원인. 벽 옆면 정지 측정 → URDF 보정. 카메라 yaw 는 보정 뒤 미검증 |
 | [간헐 중단 dy1~dy6](intermittent-abort-dy.md) | 부분 해결 | 보정 뒤 6 회 — 출발 자리 물체 · 게이트 수정 · 여유 ≥ 5 cm 불합격 |
 
-### 4 기 09-21 ~ 09-23 (Phase S 기준선 · Phase N nvblox · F0 시작) — 10-30 작성 중(토큰 문제로 중단, 아래 '이어서 할 일')
+### 4 기 09-21 ~ 09-23 (Phase S 기준선 · Phase N nvblox · F0 시작) — 10-30 · 11-02 작성
 | 카드 | 상태 | 한 줄 |
 |---|---|---|
 | [Phase N 전반 N0~N4](nvblox-migration-n0-n4.md) | 완료 | 호스트 층 빌드 · 정지 A/B · 절단 거리 4 → 2 · 주행 A/B(STVL vs nvblox) |
 | [nvblox 층 셀 인덱스 round → floor](nvblox-layer-round-floor.md) | 완료 | 호스트 nvblox_nav2 층이 칸 경계에서 반 칸 어긋남 → floor 수정(패치) |
 | [Phase N 후반 N6 · 유령 셀](nvblox-n6-global-ghosts.md) | 완료 | bringup 통합 · 전역 이전 · 유령 셀(통합 거리 · 반사 테이프) · 최종 판정 |
-| [제자리 회전 옆 밀림 F0-a](f0-rotation-side-slip.md) | **작성 중**(§5.2 내 실수 · 어긋남 앞에서 멈춤) | f0a1/f0a2 — SLAM 이 맞고 EKF 가 회전 중 옆 밀림을 못 봄 → 방향 D |
-| [sensor_conditioner 역할](sensor-conditioner.md) | **작성 중**(중간에 멈춤) | 바이어스 · ZUPT · 공분산 — 빼면 안 되는 이유 |
+| [제자리 회전 옆 밀림 F0-a](f0-rotation-side-slip.md) | 완료 | f0a1/f0a2 — SLAM 이 맞고 EKF 가 회전 중 옆 밀림을 못 봄 → 방향 D |
+| [sensor_conditioner 역할](sensor-conditioner.md) | 완료 | 바이어스 · ZUPT · 공분산 — 빼면 안 되는 이유 |
 
-#### 이어서 할 일(다른 세션용, 10-30 중단 시점)
-- 4 기 남은 것:
-  - `obstacles-to-costcritic.md` — cc1~cc3 · 09-21 판정은 들어감, **09-21 도구 해설(§9) 미작성**.
-  - 새 카드 `pre-drive-dds-participants.md`(cc1 루프 미달 = 주행 직전 메타 스냅숏의 DDS 참여자 → 30 s 규칙) · `phase-s-baseline.md`(S1~S6 · cc4/cc5 · BASELINE_STVL) — **없음**.
-  - `depth-obstacle-costmap.md` 에 09-21 §5~§6(S2 카메라 근거리 · 디시메이션, job458) — **안 함**.
-  - `f0-rotation-side-slip.md` §5.2 이후 · `sensor-conditioner.md` 나머지 · `jetson-wifi-link.md` 09-23(§0.1 · §5 · §11) 확인.
-- 작업 방법(1~4 기와 같음): 시기 § 제목은 `index/SECTIONS.md` 로 먼저 나누고, 카드마다 담당 한 곳(같은 카드 동시 편집 금지). 카드 형식은 위 '카드 형식'(도구 해설 · 용어 포함). 끝나면 비밀번호 · 공개 금지 문구 · 깨진 링크 점검, 지금 코드에 걸린다는 주장은 저장소로 직접 확인, 이 목록 갱신, `python Docs/tools/anal_record_index.py`.
-- 다음 시기: 5 기 09-28 ~ 10-02(컨디셔너 C++ · F0-b · F1 매핑 · F2 순회 · rf2o) — `index/SECTIONS.md` 에서 범위 확인.
-- 주석만 낡은 곳(동작 무관, 사용자 결정 전 안 고침): `ros2_ws/src/rover_navigation/config/nvblox_local.yaml` 머리말('bringup 미통합 · STVL 기본 · 슬라이스 최소 0.03' — 실제 nvblox 기본 · 0.06, 68 행 '1.4 m' — 지금 2.0) 외 3 기 목록(`Docs/debug_log/2026-10-29/SUMMARY.md` §8).
+| [주행 직전 DDS 참여자 금지 규칙](pre-drive-dds-participants.md) | 규칙(근거 약함) | cc1 루프 미달 18 = 주행 직전 메타 스냅숏 · 30 s 는 측정 근거 없음 |
+| [Phase S 기준선](phase-s-baseline.md) | 완료 | S1~S6 · cc4/cc5 · BASELINE_STVL(여유 8~13 cm · CPU 320 % · 6.6 W)과 측정 방법 |
 
 ### 10 월 (형식 시범)
 | 카드 | 상태 | 한 줄 |
