@@ -96,10 +96,22 @@
 | [남서 구석 방향 맞춤 정체](southwest-orient-stall.md) | 우회 | 도착 직전 '움찔' → nav_guard 취소 3/3 → 러너 '위치만(f)' 로 통과. 당시 해석('뒤 치명 칸')은 판별 없는 추정 — BT 가 끝 방향을 0° 로 덮어쓴 정황(10-14 CopyPath 로 고침), 일반 모드 재시험은 미실시 |
 | [낮은 상자 기억 · 전역 nvblox](low-box-global-memory.md) | 우회(10-08) | 라이다 아래 상자를 계획기가 잊음: 라이다 소거가 카메라 표시를 지움(추정) + 재계획 0.01 Hz(측정). 전역 STVL 기각, 전역 nvblox(map) + 재계획 0.5 Hz 로 f2e2 3/3 · 미접촉. f2e1 접촉 = 층 프레임 기본값 odom(내 결함, 09-22 판에도 프레임 줄 없었음) |
 | [회전 방식 · 트랙 비율 · 앞 회전 우선](rotation-method-track-ratio.md) | 보류 · 설정 반영(미검증) | 미끄러짐 방향 일정(뒤로) · 크기 불안정. 비율로 절반 이하 줄인 경우 없음(블록 설계라 확정 아님). PreferForward 5 → 15 — 지금 PathAlign · PathFollow(10-26 변경)에서의 효과는 미측정 |
-| [W3 저속 떨림 · TF 지연](tf-lag-w3-wobble.md) | 조사 중 | ω 부호 6 s 에 21~34 번. TF 지연 가설 기각, t 235 중단은 map→odom stamp 1.49 s 멈춤 → MPPI transform_tolerance 0.5 로 우회. 떨림 원인 미확정 |
+| [W3 저속 떨림 · TF 지연](tf-lag-w3-wobble.md)(· 7 기 채움) | 조사 중 | ω 부호 6 s 에 21~34 번. TF 지연 가설 기각, t 235 중단은 map→odom stamp 1.49 s 멈춤 → MPPI transform_tolerance 0.5 로 우회. 떨림 원인 미확정 |
 | [바닥 전선 · 케이블 가드 밟기](cable-step-over.md) | 보류 | 09-29 기울기 흔들림 2.6~3.3 배 · 10-01 가드 위 헛돎으로 SLAM 15 · 21 cm 되돌림. 10-06 영향 표는 대부분 원리 추정, 시험 미실시 |
 | [저장소 공개 운영](repo-public-ops.md) | 해결(공개 이력) · 보류(비공개 이력 · GitHub 캐시) | 영상으로 첫 페이지 · 개인 계획 표현 정리 · 원본 → 공개 두 줄. 10-07 '이력 비밀번호 0' 점검이 놓친 옛 값은 11-02 게이트 강화 · 공개 이력 다시 쓰기로 0 |
 | 이어 채움 | — | [rf2o 도입](rf2o-introduction.md)(라이브 줄자 B 1.5 cm · f2c 9/10) · [F2 순회 · 위치 점프](f2-patrol-loc-jump.md) · [nav_guard](onboard-stop-nav-guard.md) · [제자리 회전 미끄러짐](f0-rotation-side-slip.md)(10-06 단계별 90°) · [회전 중 번짐](rotation-obstacle-smear.md) · [트랙 비대칭](track-asymmetry.md) · [CPU 부하](cpu-load-stalls.md) |
+
+### 7 기 10-12 ~ 10-15 (통신 포화 · 빠른 prep · 상자 옆 정지 · pad_relief · BT 끝 방향 · F2 기준선) — 11-03 작성 · 앞 카드 6 장도 이어 채움
+| 카드 | 상태 | 한 줄 |
+|---|---|---|
+| [통신 포화 — MPPI 궤적 발행 · reliable /tf 기록기](network-saturation-mppi-viz.md) | 우회 | 궤적 발행 206 kB + PreferForward 15 에서 6/6 포화. UDP 10 배, 그 79 % 가 /tf HEARTBEAT, 먼저 뒤처진 것은 bag 기록기(캡처 측정). 대책 lite(28 kB) + 기록기 /tf best effort. ⚠ 러너에서 /tf 재정의가 BAG_BE_TRAJ 조건 안에 있음. 5 대 15 차이는 미확정 |
+| [빠른 prep](prep-fast-startup.md) | 해결(단축) · sed -i 우회 | ros2 조회 ≈ 25 회 → 확인 노드 1 개, 고정 대기 → 폴링: 4 분 41 초~5 분 17 초(PC) → Jetson 61 s, 이후 9 회 55~61 s. ⚠ prep_fast.sh 12 행 sed -i 가 설치본 링크를 끊는 결함 남음 |
+| [상자 옆 정지 — 기전](box-side-stall-cause.md) | 조사 중(기전 확인 · 과장 원인 미확정) | MPPI 가 정확 여유 2.7~4.4 cm 까지 붙으면 Nav2 칸 검사가 서 있는 자세를 99 → 100 으로 뒤집어 후보 · 후진이 모두 막힘(실패 3 건 + 시뮬). 카메라 칸은 주행 중 +5~10 cm 나와 있고 정지하면 0~3 cm. '여유' 정의가 도구마다 셋 |
+| [상자 옆 정지 — 시험한 대책](box-side-stall-remedies.md) | 조사 중 | 대책 19 개 중 17 개 효과 없음 · 부작용 · 기각 · 판정 없음. MonotoneEscape 켬(오프라인 5/5, 실제 미검증, 풋프린트 손 입력값), ClearanceBandCritic 띠 진입 0 · 2/2 지만 제어 주기 놓침으로 끔 |
+| [갇힘 해제 pad_relief · 실행 중 패딩 변경 멈칫](pad-relief-runtime-padding.md) | 보류(쓰지 않음) | 시뮬 5/5 · 정지 4/4 · f2t1 실제 작동해 빠져나옴, 그 순간부터 좌우 틀기 지속, 정지 토글만으로 재현(10 · 9 → 98 · 64 → 15 · 20 /분). 토글은 잔떨림의 충분 조건이지 유일한 원인 아님(10-15 정정). 지금 표준 prep 은 노드를 띄우지 않음 |
+| [BT 끝 방향 0° · CopyPath](bt-copypath-end-yaw.md) | 해결 | 스무딩 실패 때 TruncatePath 가 끝 방향을 0° 로 덮어씀 → 서쪽 통로 위치 2.9 cm 인데 정지(f2s1). 09-17 TODO 를 27 일 묵힘. CopyPath 뒤 f2t1 8/8 · 서쪽 통로 6/6. 남서 목표도 같은 결함이었음을 bag 재분석으로 직접 확인(11-03) |
+| [F2 기준선 no5 · b910](f2-baseline-no5.md) | 완료(3/6) · 문서 · 태그 미작성 | 새 스택마다 6 회 중 3 회 합격, 실패 3 건 모두 상자 옆 기전. ⚠ 기준 ⑥ 은 결과를 본 뒤 재정의(옛 ⑥ 이면 2/6) |
+| 이어 채움 | — | [W3 떨림 · TF 지연](tf-lag-w3-wobble.md)(10-07 stamp 정체 ≠ 10-12 수신 붕괴) · [DDS 공유메모리](dds-shm-incident.md)(10-12 검토만) · [회전 방식 · 앞 회전 우선](rotation-method-track-ratio.md)(PreferForward 15 검증 통과) · [낮은 상자 기억](low-box-global-memory.md)(전역 망각 = 지우기 반경 3.0) · [남서 구석 정체](southwest-orient-stall.md)(원인 해결 · f 우회 유지, p 재시험 없음) · [Jetson Wi-Fi](jetson-wifi-link.md)(10-14 IP 충돌 → .110 예약) |
 
 ### 10 월 (형식 시범)
 | 카드 | 상태 | 한 줄 |

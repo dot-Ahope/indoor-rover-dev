@@ -26,7 +26,7 @@
 | [`anal_traj_size.py`](../../tools/anal_traj_size.py) | 10-12 §7.3: /trajectories(MPPI 궤적 발행) 메시지의 크기·주기 추이 — 10 s 칸마다 메시지 수, 직렬화 크기(kB), 마커 수. 인자: bag... | — |
 | [`anal_udp_drops.py`](../../tools/anal_udp_drops.py) | 10-12 §9.2: UDP 손실 시간순 분석. 인자: net_<이름>.log 포화시작(HH:MM:SS) | 10-13 §1.2 · 10-13 §4.4 |
 | [`chk_commit_gate.py`](../../tools/chk_commit_gate.py) | chk_commit_gate — 커밋 직전 비밀번호 게이트: 커밋될 수 있는 내용에 Jetson 비밀번호(지금 값 · 옛 값)가 있으면 **막는다** (2026-11-02, PC, 로버 안 움직임). | 11-02 §5 · 11-02 §9 |
-| [`chk_drive_gate.py`](../../tools/chk_drive_gate.py) | chk_drive_gate — 주행 직전 게이트 B · C · G2 를 한 노드(DDS 참여자 1 개)로 (2026-10-27 §24, Jetson, 로버 안 움직임). | 10-27 §24 · 10-27 §31 · 10-28 §2 · … +2 |
+| [`chk_drive_gate.py`](../../tools/chk_drive_gate.py) | chk_drive_gate — 주행 직전 게이트 B · C · G2 를 한 노드(DDS 참여자 1 개)로 (2026-10-27 §24, Jetson, 로버 안 움직임). | 10-27 §24 · 10-27 §31 · 10-28 §2 · … +3 |
 | [`chk_jetson_state.sh`](../../tools/chk_jetson_state.sh) | 상태 확인(로버 안 움직임): 재부팅 여부·IP·스택·/tmp 스크립트·캡처 도구 권한. 10-13 세션 시작용 | 10-13 §0 |
 | [`chk_padding_dynamic.py`](../../tools/chk_padding_dynamic.py) | chk_padding_dynamic — 실행 중에 코스트맵 footprint_padding 을 바꾸면 실제로 반영되는지 본다. 로버는 움직이지 않는다(명령을 내지 않음). (2026-10-14) | 10-14 §7 · 10-14 §7.1 |
 | [`chk_prep.py`](../../tools/chk_prep.py) | prep 확인을 한 프로세스(DDS 참여자 1 개)로 (2026-10-12 §13). | 10-15 §1 · 10-15 §1.1 · 10-20 §7.4 · … +11 |
@@ -1510,7 +1510,7 @@
 | [`render_goals.py`](../../debug_log/2026-10-08/jobs/render_goals.py) | 10-08 §3: 이번 순회 목표 10 개(저장 지도 office_v3 위) — 순서·이름·판정 방식, 지난 순회(10-07 f2c1+f2c2) 실제 궤적, 상자 위치 | — |
 | [`render_rviz.py`](../../debug_log/2026-10-08/jobs/render_rviz.py) | 10-07 §9.2 RViz 풍 bag 시각화(사용자 지정 스타일) — 720×720, 10 fps(실제 속도), 로버 진행 방향이 위(RViz 고정 프레임 base_link 처럼). | 10-07 §10.2 · 10-07 §11 · 10-07 §9.2 · … +1 |
 | [`render_whatif.py`](../../debug_log/2026-10-08/jobs/render_whatif.py) | 10-08 §2: 카메라만 본 장애물 묶음(전역 nvblox 였다면 계획기에 들어갔을 칸)을 저장 지도 위에 번호로 — 사용자가 실제 물체인지 확인 | 10-08 §2.1 |
-| [`rot2.py`](../../debug_log/2026-10-08/jobs/rot2.py) | 10-08 §4: 주행 중 '도는' 구간 전부(제자리·피벗·호) — 회전축 위치, 트랙 속도, 미끄러짐을 같은 잣대로 비교. | 10-02 §11.1 · 10-02 §12 · 10-02 §12.1 · … +10 |
+| [`rot2.py`](../../debug_log/2026-10-08/jobs/rot2.py) | 10-08 §4: 주행 중 '도는' 구간 전부(제자리·피벗·호) — 회전축 위치, 트랙 속도, 미끄러짐을 같은 잣대로 비교. | 10-02 §11.1 · 10-02 §12 · 10-02 §12.1 · … +11 |
 | [`rot2_stats.py`](../../debug_log/2026-10-08/jobs/rot2_stats.py) | 10-08 §4: rot2.py 결과(≥45° 회전)를 회전 종류별로 묶음. 종류는 트랙 속도로 정함(회전축 추정과 독립): | 10-08 §4 |
 | [`rot_fig.py`](../../debug_log/2026-10-08/jobs/rot_fig.py) | 10-08 §4 그림: 회전축 위치(차체 좌표)와 90°당 미끄러짐, 회전 종류별 | — |
 | [`run_f2c.sh`](../../debug_log/2026-10-08/jobs/run_f2c.sh) | 10-07 §2: rf2o + G4 켠 F2 순회(10-02 f2b 와 같은 10 목표). 목표 문자열은 래퍼 안에(10-02 §6.2 wsl 인자 분리 실수). 인자: NAME NOTE GIT_HEAD [rest5] | 10-07 §11 · 10-07 §2.1 · 10-07 §2.2 · … +33 |

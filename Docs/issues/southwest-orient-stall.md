@@ -1,8 +1,8 @@
-# 남서 구석 방향 맞춤 정체 — 도착 직전 '움찔' 과 nav_guard 취소 (6 기: 10-07 §2 · §2.1~§2.6 · §3.3~§3.5 · §6~§7.2)
+# 남서 구석 방향 맞춤 정체 — 도착 직전 '움찔' 과 nav_guard 취소 (6 기: 10-07 §2 · §2.1~§2.6 · §3.3~§3.5 · §6~§7.2 · 7 기: 10-14 §13.1 · §13.3 · §16 · §17)
 
 | 상태 | 기간 | 처음 본 곳 | 바꾼 파일 · 설정 | 관련 문제 |
 |---|---|---|---|---|
-| **우회**(10-07 §7: 러너 yaw 모드 `f` '위치만' — map 위치가 0.15 m 안이면 러너가 취소하고 SUCCEEDED_XY. f2d2 남서 **SUCCEEDED_XY 59.6 s, 1 회 확인**). 원인: 10-07 의 해석('뒤 4.5 cm 치명 칸 때문에 −109° 로 못 돎')은 **판별 없이 남은 추정**이고, 같은 날 기록만으로도 '컨트롤러가 받은 목표 방향이 보낸 방향이 아니었다(≈ 0°)' 는 정황이 있다(§3 · §5 실수 6 — 11-02 카드 작성 중 기록 대조, 같은 추론을 10-14 §16 이 먼저 함 → '이후') | 10-07 (앞: 10-02 f2b3 목표 6) | [10-02 §6.4](../debug_log/2026-10-02/SUMMARY.md)(f2b3 목표 6 — [F2 순회와 위치 점프](f2-patrol-loc-jump.md)) → [10-07 §2.2](../debug_log/2026-10-07/SUMMARY.md) 재현 | 러너 `job550_f0run.py` yaw 모드 `f`(커밋 `0bbd8326`, 사본 [`2026-10-07/jobs/job550_f0run.py`](../debug_log/2026-10-07/jobs/job550_f0run.py) 10 · 34 · 134~135 행) · 래퍼 [`run_f2c.sh`](../debug_log/2026-10-07/jobs/run_f2c.sh) `REST5F`. 그 밖 이날 바꾼 것(이 문제와 무관 판정): G4 휠 잔차 · MPPI `transform_tolerance` 0.2 → 0.5(§6). **지금**: [`places.yaml`](../../ros2_ws/src/rover_navigation/config/places.yaml) 46 행 남서 `yaw_mode: f`(47 행 `min_clear: 0.0`) · [`place_server.py`](../../ros2_ws/src/rover_navigation/scripts/place_server.py) 251~254 행 | [F2 순회와 위치 점프](f2-patrol-loc-jump.md)(같은 순회 · 10-02 첫 사례) · [회전 중 장애물 번짐](rotation-obstacle-smear.md)(10-02 f2b3 정체의 기전 후보) · [온보드 정지 수단 · nav_guard](onboard-stop-nav-guard.md)(취소 주체) · [rf2o 도입](rf2o-introduction.md)(이날 주행 구성) · [Jetson Wi-Fi](jetson-wifi-link.md)(§2.1) · [제자리 회전 옆 밀림 F0-a](f0-rotation-side-slip.md)(5 cm 격자 풋프린트 판정 전례) · [MPPI 상자 옆 통로 튜닝](mppi-passage-tuning.md)(GoalCritic 10 근거) · [정체 감시 stuck_monitor](stuck-monitor.md)(관찰 모드 진단) |
+| **우회**(10-07 §7: 러너 yaw 모드 `f` '위치만' — map 위치가 0.15 m 안이면 러너가 취소하고 SUCCEEDED_XY. f2d2 남서 **SUCCEEDED_XY 59.6 s, 1 회 확인**). 원인: 10-07 의 해석('뒤 4.5 cm 치명 칸 때문에 −109° 로 못 돎')은 **판별 없이 남은 추정**이고, 같은 날 기록만으로도 '컨트롤러가 받은 목표 방향이 보낸 방향이 아니었다(≈ 0°)' 는 정황이 있다(§3 · §5 실수 6 — 11-02 카드 작성 중 기록 대조, 같은 추론을 10-14 §16 이 먼저 함). **7 기(10-14) — 원인 거의 확정 · 결함은 고침**: TruncatePath 시절 남서 'f' 목표의 컨트롤러 끝 방향이 목표 0.26 m 앞까지 **0.0°**(계획기 −101.3°, f2s2 bag 11-03 재실행 — §7), CopyPath 뒤엔 0.87 m 안부터 −107.8 = −107.8°(f2t1). 남서 도착 방향도 고치기 전 −0.3 · +0.5 · −1.6° → 고친 뒤 −110.6 · −106.6 · −108.9°. `f` 우회는 그대로이고 `p` 재시험은 안 함(§7.2) | 10-07 (앞: 10-02 f2b3 목표 6) | [10-02 §6.4](../debug_log/2026-10-02/SUMMARY.md)(f2b3 목표 6 — [F2 순회와 위치 점프](f2-patrol-loc-jump.md)) → [10-07 §2.2](../debug_log/2026-10-07/SUMMARY.md) 재현 | 러너 `job550_f0run.py` yaw 모드 `f`(커밋 `0bbd8326`, 사본 [`2026-10-07/jobs/job550_f0run.py`](../debug_log/2026-10-07/jobs/job550_f0run.py) 10 · 34 · 134~135 행) · 래퍼 [`run_f2c.sh`](../debug_log/2026-10-07/jobs/run_f2c.sh) `REST5F`. 그 밖 이날 바꾼 것(이 문제와 무관 판정): G4 휠 잔차 · MPPI `transform_tolerance` 0.2 → 0.5(§6). **지금**: [`places.yaml`](../../ros2_ws/src/rover_navigation/config/places.yaml) 46 행 남서 `yaw_mode: f`(47 행 `min_clear: 0.0`) · [`place_server.py`](../../ros2_ws/src/rover_navigation/scripts/place_server.py) 251~254 행 | [F2 순회와 위치 점프](f2-patrol-loc-jump.md)(같은 순회 · 10-02 첫 사례) · [회전 중 장애물 번짐](rotation-obstacle-smear.md)(10-02 f2b3 정체의 기전 후보) · [온보드 정지 수단 · nav_guard](onboard-stop-nav-guard.md)(취소 주체) · [rf2o 도입](rf2o-introduction.md)(이날 주행 구성) · [Jetson Wi-Fi](jetson-wifi-link.md)(§2.1) · [제자리 회전 옆 밀림 F0-a](f0-rotation-side-slip.md)(5 cm 격자 풋프린트 판정 전례) · [MPPI 상자 옆 통로 튜닝](mppi-passage-tuning.md)(GoalCritic 10 근거) · [정체 감시 stuck_monitor](stuck-monitor.md)(관찰 모드 진단) · [BT 끝 방향 0° 결함 · CopyPath](bt-copypath-end-yaw.md)(7 기 — 원인과 수정) · [F2 기준선 no5](f2-baseline-no5.md)(남서 = 기준선 코스 목표 4) · [상자 옆 정지 기전](box-side-stall-cause.md) (7 기) |
 
 **한 줄**: rf2o 를 켠 F2 순회 비교(f2c1)에서 목표 4 = 남서 구석 (−1.6, −5.5) 에 0.165 m 까지 온 로버가 목표 방향(−109°)과 **반대쪽으로** 돌며 물러나 동쪽(+3°)을 보고 선 뒤, 33 s 동안 ±0.01 m/s 수준의 지령만 냈다(사용자: "움찔대기만 한다"). 라이다 기준 접촉은 없었고(12.2 cm), Nav2 진행 검사 실패 뒤 11 s 만에 nav_guard 가 '45 s 동안 0.24 m' 로 취소했다. 10-02 f2b3 · 10-07 f2c1 · f2d1 로 **3/3 재현**, G4 · transform_tolerance 를 바꿔도 같아 사용자 지시("방향을 크게 바꾸라는 명령 제거")로 러너에 '위치만(f)' 을 넣었고 f2d2 에서 남서를 59.6 s 에 넘겼다. 그날 해석은 '뒤 4.5 cm 치명 칸 + 5 cm 격자로 회전을 못 고름' 이었지만, 세 번 모두 로버가 **0° 쪽으로** 돌았고 방향 차 63 · 130° 로 Nav2 가 'SUCCEEDED' 를 낸 목표가 같은 날 두 번(10-02 f2b3 남서 89° 까지 세 번) 있어 — 컨트롤러가 비교한 목표 방향이 러너가 보낸 방향과 달랐다는 것은 설정상 거의 확실하고, 그것이 BT `TruncatePath` 의 끝 방향 0° 였다는 것은 정황이다(§3).
 
@@ -98,14 +98,48 @@
 10. §2.1 '`up904.sh` 호스트 인자화' — 저장 사본 [`up904.sh`](../debug_log/2026-10-07/jobs/up904.sh) 는 `192.168.0.101` 하드코딩(인자화 전 판이 남았거나 서술이 틀림 — 미확인).
 11. 저장된 [`run_f2c.sh`](../debug_log/2026-10-07/jobs/run_f2c.sh) 는 하루 끝 판(커밋 `e3e1fe88` — `LONG_REC` 기본 1 · `REST5F`). f2c1 · f2c2 · f2d1 때 판은 커밋돼 있지 않다(첫 커밋 `0cd25aa1` 의 판은 `git show` 로 볼 수 있음). bag `bag_topics` 에 `/trajectories` 가 없는 것이 그때 `LONG_REC` 가 없었다는 증거.
 
-## 6. 남은 것 (10-08 시점)
+## 6. 남은 것 (10-08 시점 — 7 기 결과는 §7)
 - 원인 확정 안 됨: 컨트롤러 목표 방향을 직접 본 기록이 없다(§3). 확인 방법 = 같은 남서 목표를 `/transformed_global_plan` 기록과 함께 `p` 로.
 - 일반 해결책(§7 · §7.2 ⓒ) 미결정 — `f` 는 러너 한 곳의 우회.
 - 남서 접근 중 map→odom 보정 2 회(8.1 · 14.4 cm)의 의미 · f2c1 · f2d1 이 0.15 m 안을 지났는지 — 미확인.
 - 목표 좌표 자체가 벽에 가까움(10-02 §7.1 (B) '경유점 (−1.35, −5.55)' 제안) — 시험 안 함.
 
-## 7. 이후 (10-12 ~): 다음 시기에서 채움
-- 포인터만: 10-14 §13.1(f2s1 서쪽 통로, 끝 방향 문제) · §14 `CopyPath` · **§16 '10-07 남서 구석 정체도 같은 BT 결함이었나'**(f2c1 멈춘 방향 −0.3° ≈ 0° 로 재해석, f2b3 은 bag 없어 미확인) · §17 f2t1 검증. 10-28 `places.yaml` 남서 `f` · `min_clear 0.0`(F2.5).
+## 7. 7 기 (10-12 ~ 10-15) — BT 끝 방향 0° 결함으로 다시 읽기
+10-14 에 서쪽 통로(f2s1)에서 같은 모양의 정지가 나와 직접 측정으로 원인을 찾았고([BT 끝 방향 0° 결함 · CopyPath](bt-copypath-end-yaw.md)), 남서 정체를 그 관점으로 다시 봤다.
+
+| 날짜 · § | 한 일 | 본 것(수치) | 그때 결론(틀렸으면 표시) | 데이터 |
+|---|---|---|---|---|
+| 10-14 §13.1 | f2s1 서쪽 통로 목표 3 정지 분석 | 스무딩이 목표 자세에서 매번 실패, 컨트롤러 끝 방향 odom +4.5~+5.2°(지도 +0.0°) vs 계획기 −56.2° | `TruncatePath` 가 끝 방향 0° 로 덮음(측정). '10-02 · 10-07 남서 구석 정체도 같은 원인이었을 수 있다(그때 로그를 이 관점으로 다시 보지는 않았다)' | [`2026-10-14/outputs/navlog_f2s1.txt`](../debug_log/2026-10-14/outputs/navlog_f2s1.txt) · bag `2026-10-14/bags/bag_f2s1.tgz` |
+| 10-14 §13.3 | f2s2 이어 가기 — 남서 `f` 포함, 아직 TruncatePath | 남서 **Nav2 SUCCEEDED 36.7 s** · 도착 (−1.499, −5.374, **−1.6°**) · 목표 대비 0.161 m · 99.8°(보낸 방향 −101°) | SUMMARY 는 '남서 SUCCEEDED 36.7 s' 만 적음. 이 카드(11-03): 러너 `f` 취소(≤ 0.15 m)가 아니라 Nav2 자체 성공 — 방향 차 99.8° 로 성공 = 컨트롤러 목표 방향이 −101° 가 아니었다는 서명(§3 의 f2c2 · f2d2 와 같은 모양) | [`2026-10-14/outputs/run_f2s2.txt`](../debug_log/2026-10-14/outputs/run_f2s2.txt) 14~15 행 |
+| 10-14 §16 | 10-07 f2c1 재확인(주행 없음, §15 권고 2) | bag 에 `/transformed_global_plan` 없음 → `anal_path_endyaw.py` 실패. Nav2 로그: 목표 시작 직후 스무딩 실패 1 회(재계획 목표당 1 회 시절 — 그 경로가 목표 내내). 멈춘 방향 −0.3° · 0.165 m | '같은 결함일 가능성 높음(추정, 측정과 맞음)' — 10-07 '−109° 로 못 돎' 해석은 재검토. 10-02 f2b3 은 bag 이 PC 에 없어 미확인. 남서도 p 로 되돌려 볼 수 있다(제안) | [`2026-10-07/outputs/j908_g4log.txt`](../debug_log/2026-10-07/outputs/j908_g4log.txt) · [`f0_f2c1_runner.log`](../debug_log/2026-10-07/outputs/f0_f2c1_runner.log) |
+| 10-14 §17 | f2t1(CopyPath 뒤) — 남서 `f` | 남서 SUCCEEDED_XY 65.0 s(러너 0.143 m 취소) · 도착 −110.6°(보낸 −108°). 출발 직후 갇힘 → pad_relief 첫 작동(서쪽 통로 남쪽 출구 — 남서 구석 자체가 아님) | CopyPath 검증 통과(서쪽 통로). 남서는 여전히 `f` | [`2026-10-14/outputs/run_f2t1.txt`](../debug_log/2026-10-14/outputs/run_f2t1.txt) · [`navlog_f2t1.txt`](../debug_log/2026-10-14/outputs/navlog_f2t1.txt) |
+| 10-15 §15 · §29.6 | f2v2 · f2w2(같은 BT) — 남서 `f` | f2v2 **Nav2 SUCCEEDED 28.8 s** · −106.6°(보낸 −107°, 차 0.6°) · f2w2 SUCCEEDED_XY 28.8 s · −108.9°(보낸 −109°). f2v1 · f2v3 은 남서 전에 서쪽 통로 남쪽에서 중단(다른 기전 — [F2 기준선](f2-baseline-no5.md)) | 남서 정체 재발 0(2/2 도착). 도착 방향 = 보낸 방향 | [`2026-10-15/outputs/run_f2v2.txt`](../debug_log/2026-10-15/outputs/run_f2v2.txt) · [`run_f2w2.txt`](../debug_log/2026-10-15/outputs/run_f2w2.txt) |
+
+### 7.1 직접 증거 — 남서 목표에서 컨트롤러가 받은 끝 방향(11-03 재실행)
+10-14 bag 은 `LONG_REC=1` 이라 `/transformed_global_plan` 이 있다. 10-14 에 쓰인 [`anal_path_endyaw.py`](../debug_log/2026-10-14/jobs/anal_path_endyaw.py) 를 같은 bag 의 **남서 구간**에 다시 돌렸다(그날은 서쪽 통로 구간만 봄). 결과 원문 파일 없음 — 발췌가 전부.
+```python
+# anal_path_endyaw.py — 4 s 마다: /plan 끝 방향 · /transformed_global_plan 끝 방향(odom 값 + map→odom yaw) · 차이 · 로버 방향 · 로버→목표
+cyaw = q[3] + m[3]
+```
+```
+f2s2 목표 1 남서(TruncatePath, 10-14 13:54)      계획기   컨트롤러(지도로)   차이     로버     로버→목표
+13:54:26                                       -101.3°   +0.0°           +101.3°   -62.4°   0.94 m
+13:54:34                                       -101.3°   +0.0°           +101.3°   -82.5°   0.44 m
+13:54:38                                       -101.3°   +0.0°           +101.3°   -86.5°   0.26 m
+f2t1 목표 4 남서(CopyPath, 10-14 15:24)
+15:24:06                                       -107.8°   -0.0°           +107.8°   -74.6°   0.95 m   ← 창 밖: 끝 = 중간 점
+15:24:10                                       -107.8°  -107.8°            -0.0°   -77.9°   0.87 m
+15:24:22                                       -107.8°  -107.8°            +0.0°   -87.5°   0.43 m
+```
+- 읽기(측정): TruncatePath 시절엔 목표가 컨트롤러 창 안(0.26~0.94 m)에 들어온 뒤에도 끝 방향이 0° 였다 → 남서 목표에서도 컨트롤러는 0° 를 목표 방향으로 받았다. f2s2 에서 로버가 0° 쪽(−1.6°)으로 서서 Nav2 가 'SUCCEEDED'(0° 기준 20° 안)를 낸 것과 맞다. CopyPath 뒤엔 창 안에서 끝 = 목표 방향.
+- 10-07 f2c1 · f2d1 · f2c2 와 10-02 f2b3 의 컨트롤러 끝 방향은 기록이 없어 **여전히 직접 증거 없음** — 다만 같은 BT · 같은 남서 목표 · 같은 '0° 쪽으로 돌아 섬 / 큰 방향 차로 SUCCEEDED' 서명이라, §3 의 '그 방향은 TruncatePath 의 0°' 는 **정황 → 같은 자리 직접 측정 1 건으로 강화**(10-07 당일 값은 미측정).
+- 남는 물음(§3 마지막 줄 · §6): 0° 로 돌 공간이 있으면 SUCCEEDED(f2b3 목표 3 · f2c2 · f2s2), 없으면 정체(f2b3 목표 6 · f2c1 · f2d1) — 접근 방향에 따라 갈렸다는 것은 추정 그대로.
+
+### 7.2 '위치만(f)' 모드가 아직 필요한가 — 열린 항목
+- 지금: [`places.yaml`](../../ros2_ws/src/rover_navigation/config/places.yaml) 46 행 남서 `yaw_mode: f` · 47 행 `min_clear: 0.0`, [`place_server.py`](../../ros2_ws/src/rover_navigation/scripts/place_server.py) 206~214 · 251~254 행(`f` 면 xy < `xy_done` 0.15 에서 취소 → arrived_xy), 러너 `no5` 문자열의 남서 `f`([`2026-10-15/jobs/run_f2c.sh`](../debug_log/2026-10-15/jobs/run_f2c.sh) 8 행).
+- `f` 를 만든 이유(방향 0° 요구)는 10-14 CopyPath 로 사라졌다. 고친 뒤 남서는 3/3 도착(f2t1 · f2v2 · f2w2)했지만 **세 번 모두 `f` 였다** — `p` 로 되돌린 시험(10-14 §16 제안)은 10-15 까지 없다. f2v2 는 Nav2 가 스스로 방향까지 맞춰 성공(0.6°)했으므로 `p` 로도 될 가능성이 있다(1 회, 추정).
+- `f` 를 없애면 생길 수 있는 것(추정): 남서 구석은 등록 좌표에서 차체가 벽 칸에 닿는 자리(`places.yaml` 47 행 주석 '여유 0.000 m') — 방향을 맞추려 제자리 회전하면 칸 검사에 걸릴 수 있다. 즉 `f` 의 지금 이유는 'BT 결함' 이 아니라 '좁은 구석에서의 불필요한 방향 맞춤 회피' 로 바뀌었다. 결정은 `p` 시험 뒤(사용자).
+- 이후(10-19 ~): 다음 시기에서 채움 — 10-28 F2.5 `places.yaml` 남서 `f` · `min_clear 0.0`(f2tf1 · f2tt1 · f2tt2 도착 xy 0.18~0.23 m).
 
 ## 8. 실험 · 도구 색인
 | 이름 | 무엇 | 위치 |
@@ -117,6 +151,8 @@
 | `job908_g4log.sh` · `job909_cmdnow.sh` · `job910_g4cost.py` · `job910_run.sh` · `job911_navtail.sh` | 남서 정체 분석 | `2026-10-07/jobs/` |
 | `job550_f0run.py` · `job551_f0drive.sh` · `run_f2c.sh` · `run_f0.sh` · `job613_pathyaw.py`(09-28) | 러너 | `2026-10-07/jobs/` · `2026-09-28/jobs/` |
 | `job906_net.sh` · `up904.sh` · `job903_prep_rf2o_g4.sh` · `job907_postchk.sh` · `job918_prep.sh` · `job919/920_chk.sh` | 네트워크 · prep · 확인 | `2026-10-07/jobs/` |
+| f2s2 · f2t1(10-14) · f2v2 · f2w2(10-15) | 7 기 남서 도착 — 고치기 전 1 · 고친 뒤 3 | `2026-10-14/outputs/run_f2s2.txt` · `run_f2t1.txt` · `2026-10-15/outputs/run_f2v2.txt` · `run_f2w2.txt` · bag `2026-10-14/bags/bag_f2s2.tgz` · `bag_f2t1.tgz` |
+| `anal_path_endyaw.py`(10-14) | 계획기 끝 vs 컨트롤러 끝 방향 — 11-03 남서 구간 재실행(§7.1) | `2026-10-14/jobs/` · 해설 [BT 끝 방향 카드 §9](bt-copypath-end-yaw.md) |
 | `job913_extract.py` · `f2c_anal.py` · `job921_run.sh` · `job912_extract.py` · `render_f2d2_box2.py` | 보정량 · f2d2 추출 · 그림 | `2026-10-07/jobs/` |
 
 ## 9. 도구 해설

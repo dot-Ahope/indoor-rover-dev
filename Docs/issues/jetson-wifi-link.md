@@ -1,8 +1,8 @@
-# Jetson Wi-Fi 간헐 무응답 (1 시기: 08-28 · 09-03, 3 시기: 09-15 ~ 09-18, 4 시기: 09-23)
+# Jetson Wi-Fi 간헐 무응답 (1 시기: 08-28 · 09-03, 3 시기: 09-15 ~ 09-18, 4 시기: 09-23, 7 기: 10-14 · 10-15)
 
 | 상태 | 기간 | 처음 본 곳 | 바꾼 파일 · 설정 | 관련 문제 |
 |---|---|---|---|---|
-| **우회**(실행을 네트워크와 분리 · 절전 끔) · 원인 미확정 · 3 시기: 'AP 가 먼저 끊고 재인증을 거부' 3 회(09-15 · 16 · 17) → 계측 서비스 설치, **원인 미확정**(후보 DFS · PMF) · 이후 양상이 다른 사건이 이어짐 | 08-28 ~ (이 카드는 09-23 까지 채움 — 4 시기 09-23: 결합 · 인증 성공 뒤 DHCP 무응답 · 공유기 DHCP 예약 · 같은 날 끊김 4 번 더, §2.2) | [08-28 '★ SLAM 첫 맵 완성'](../debug_log/2026-08-28/SUMMARY.md) "detach 실행 → WiFi 무관" | 저장소 파일 없음(계측 스크립트 사본만 [`2026-09-18/jobs/wifi_mon.sh`](../debug_log/2026-09-18/jobs/wifi_mon.sh)). Jetson 설정: ① 09-03 `wlP1p1s0` power_save off(런타임) + NM `802-11-wireless.powersave 2`(**WEB_DEV_5G 프로파일에만**) ② 09-16 `mavlink-router` disable · NM 자동연결 우선순위 WEB_DEV_5G 20 > ALOPS_ROBOTICS_5G 5 ③ 09-18 `wifi-mon.service`(enabled) + `/usr/local/sbin/wifi_mon.sh` + `/etc/rsyslog.d/25-wifi-mon.conf` + wpa_supplicant 로그 수준 DEBUG 유지 | [첫 SLAM 지도](first-slam-map.md)(detach 실행이 생긴 곳) · [DDS 공유메모리 사고](dds-shm-incident.md)(09-16 IP 변경 뒤 DDS 분리 · 루프백 화이트리스트) · [저장 공간 · 로그 누적](storage-housekeeping.md)(09-18 같은 날 조사, syslog 무회전) · 이후 IP 충돌(10-14) · [남서 구석 정체](southwest-orient-stall.md) (6 기) |
+| **우회**(실행을 네트워크와 분리 · 절전 끔) · 원인 미확정 · 3 시기: 'AP 가 먼저 끊고 재인증을 거부' 3 회(09-15 · 16 · 17) → 계측 서비스 설치, **원인 미확정**(후보 DFS · PMF) · 이후 양상이 다른 사건이 이어짐 · **7 기(10-14 · 10-15): 원인 하나를 사용자가 찾음 — 다른 서버가 192.168.0.101 을 받아 IP 충돌**(§2.3) → 사용자가 DHCP 서버의 .101 항목 제거 · 10-15 부터 **192.168.0.110 예약**. 09-15~17 형(AP deauth · 재인증 거부)과 같은 원인인지는 미확인 | 08-28 ~ (이 카드는 09-23 · 10-14 · 10-15 까지 채움 — 4 시기 09-23: 결합 · 인증 성공 뒤 DHCP 무응답 · 공유기 DHCP 예약 · 같은 날 끊김 4 번 더, §2.2) | [08-28 '★ SLAM 첫 맵 완성'](../debug_log/2026-08-28/SUMMARY.md) "detach 실행 → WiFi 무관" | 저장소 파일 없음(계측 스크립트 사본만 [`2026-09-18/jobs/wifi_mon.sh`](../debug_log/2026-09-18/jobs/wifi_mon.sh)). Jetson 설정: ① 09-03 `wlP1p1s0` power_save off(런타임) + NM `802-11-wireless.powersave 2`(**WEB_DEV_5G 프로파일에만**) ② 09-16 `mavlink-router` disable · NM 자동연결 우선순위 WEB_DEV_5G 20 > ALOPS_ROBOTICS_5G 5 ③ 09-18 `wifi-mon.service`(enabled) + `/usr/local/sbin/wifi_mon.sh` + `/etc/rsyslog.d/25-wifi-mon.conf` + wpa_supplicant 로그 수준 DEBUG 유지 | [첫 SLAM 지도](first-slam-map.md)(detach 실행이 생긴 곳) · [DDS 공유메모리 사고](dds-shm-incident.md)(09-16 IP 변경 뒤 DDS 분리 · 루프백 화이트리스트) · [저장 공간 · 로그 누적](storage-housekeeping.md)(09-18 같은 날 조사, syslog 무회전) · IP 충돌(10-14, §2.3) · [남서 구석 정체](southwest-orient-stall.md) (6 기) · [pad_relief · 실행 중 패딩](pad-relief-runtime-padding.md)(10-14 끊김으로 정지 시험이 밀림) · [F2 기준선 no5](f2-baseline-no5.md)(10-15 재부팅 · 새 주소 뒤 기준선) |
 
 **한 줄**: PC 에서 Wi-Fi 너머 Jetson 으로 SSH 를 걸어 로버를 움직이는데, 그 연결이 가끔 몇 분씩 끊긴다. 08-28 에는 회전 스크립트가 SSH 와 함께 죽어 '재부팅이 아님' 을 확인(`job7g`)한 뒤 **스크립트를 Jetson 안에서 독립 실행(detach)** 하게 바꿔 우회했다. 09-03 저녁에는 플래시 직후 PC → Jetson ping 100 % 손실이 수 분씩 반복돼 Jetson 쪽을 진단(링크 유지 · 신호 −53 dBm · 끊김 로그 없음 · **절전 켜짐**)하고 절전을 껐다. 그 뒤 60 회 중 57 회 응답(5 % 손실) — 쓸 만하지만 완전하지 않았고, 절전이 원인인지는 확정하지 못했다(끈 직후에도 83 % 손실, 회복은 약 2 분 뒤).
 
@@ -79,12 +79,30 @@
 | 09-23 §14 | PC 를 WEB_DEV_5G 에 직접 붙여 봄(NAT 경로 빼기) | PC 에서 Jetson ARP 불가 | **AP 격리(무선 클라이언트끼리 통신 차단) 추정** → PC 는 ALOPS 로 복귀. 다음: 사용자 결정(AP 격리 해제) | 출력 원문 없음 |
 | 09-23 §18 (14:13 · 14:25~14:36) | f0a1 prep 중 끊김 → prep 1 회 재실행 | Jetson 쪽 링크 유지, PC → ALOPS → WEB_DEV 경로만 끊김(SUMMARY 문장) | 12:19 와 같은 양상으로 봄. 주행은 `run_f0.sh`(setsid nohup, 끊겨도 계속) | 출력 원문 없음 · [제자리 회전 중 옆 밀림](f0-rotation-side-slip.md) |
 
+### 2.3 7 기 (10-14 · 10-15) — 주소 192.168.0.101 충돌 · 새 예약 주소 192.168.0.110
+| 날짜 · § | 한 일 | 본 것(수치) | 그때 결론(틀렸으면 표시) | 데이터 |
+|---|---|---|---|---|
+| 10-14 §8.3 (10:27 무렵) | pad_relief 정지 시험을 위해 `pad_relief.py` 전송(`put_one.sh`) | scp "lost connection" → 약 3 분 동안 **192.168.0.101 · 172.30.1.8 둘 다 ping 무응답**. PC 쪽 정상(ALOPS_ROBOTICS_5G 신호 87 % · 공유기 172.30.1.254 · 8.8.8.8 응답). 스택은 10:13 prep 뒤 가동 중, 로버 정지, `pad_relief` 는 실행된 적 없음. 배터리 10:13 12.38 V | 원인 모름. 후보 = Jetson Wi-Fi 끊김(09-15~23 에 4 회 — 보통 예비 망으로 넘어가는데 이번엔 둘 다 무응답) · 전원 · 재부팅. 사용자 확인 대기 | SUMMARY §8.3 · TOOLS 10:27 줄(ping 출력 원문 없음) |
+| 10-14 §8.4 (10:5x) | 사용자가 원인을 찾음 | 사용자: "현재 다른 서버 컴퓨터 하나가 101 주소를 요청하고 할당받고, 내 IP 가 끊기는 문제가 발생한 것이다." 10:53: .101 은 ping 응답 · 172.30.1.8 무응답. 그 주소의 SSH 서버 판 · 호스트 키를 인증 없이 읽음 | **지금 .101 에서 답하는 것이 Jetson 인지 가릴 수 없다** — 비교할 Jetson 호스트 키를 저장해 둔 적이 없다. 우리 스크립트는 호스트 키 검사를 끄고 비밀번호를 보내므로, 주소를 빼앗긴 상태에서 실행하면 **Jetson 비밀번호를 다른 컴퓨터로 보내게 된다** → 사용자 확인 전 접속 안 함. 과거 관계(추정): 09-23 · 10-07 의 '결합 OK · DHCP 무응답' 은 주소 충돌로 설명될 수 있음, 09-15~17 은 양상이 달라 모름. `wifi_mon` 의 `ARP_DUP` 기록으로 확인 가능하다고 적음(확인은 안 함) | SUMMARY §8.4(호스트 키 값은 이 카드에 옮기지 않음 — 다른 기기의 식별 정보) |
+| 10-14 §8.5 | 사용자 "네트워크 문제는 넘어가고 다음 진행하자" → 자격 정보 없이 신원 확인 → 전송 재시도 | 101 의 8765(foxglove) 포트 연결 4/4, 호스트 키 4 회 중 2 회 응답(같은 키) → Jetson 으로 보고 진행. 그 뒤 전송이 계속 "lost connection"(1 + 재시도 8), 자격 정보 없는 SSH 는 **"No route to host"**. ping 10 회 전부 실패 직후 포트 연결은 성공 | 주소가 수 초~수십 초 단위로 붙었다 떨어짐. TCP 연결이 안 되면 인증 단계에 안 가므로 비밀번호가 다른 컴퓨터로 간 것은 아닌 것으로 봄 — **재시도 사이 잠깐 붙었을 가능성은 배제 못 함**. 8765 성공이 WSL 쪽 착시였을 가능성도(같은 시각 ping 전부 실패). 연결 없이 한 일: `pad_relief.py` SIGHUP 때도 패딩 복귀 · `jobs/run_detached.sh`(재시도 전송 + `setsid nohup`) · launch `pad_relief:=off\|on\|shadow`(기본 off) | [`run_detached.sh`](../debug_log/2026-10-14/jobs/run_detached.sh)(커밋 `c08f43c3`) · TOOLS 11:0x 줄 2 개(출력 원문 없음) |
+| 10-14 §8.6 (11:15) | 사용자 조치: ipTIME DHCP 서버에서 192.168.0.101 연결 항목 제거 · Jetson 재부팅 | Jetson 은 **172.30.1.8**(ALOPS)로 붙음. ping 3/3, 도구 재전송(`up_tools.sh`, `JETSON_HOST=172.30.1.8`), prep 57 s PREP_OK. 이어 pad_relief 정지 시험 4/4 통과 | 이후 10-14 작업은 172.30.1.8. §15 구성표 '네트워크' 줄: '101 로 돌아갈지 미정' | [`chk_pad_relief.txt`](../debug_log/2026-10-14/outputs/chk_pad_relief.txt) · [10-14 SUMMARY §15](../debug_log/2026-10-14/SUMMARY.md) |
+| 10-15 §1 | 재부팅 뒤(사용자 "재부팅했다") 접속 | PC Wi-Fi 172.30.1.89(ALOPS). Jetson 172.30.1.8 ping 무응답 2 분(13 회), ALOPS ARP 표에도 .8 없음 | 부팅 중이거나 다른 망(WEB_DEV_5G)에 붙었을 가능성(추정). .101 은 충돌이 있던 주소라 **신원 확인 없이 접속 안 함** | SUMMARY §1 · TOOLS 아침 줄(`chk_after_reboot.sh` 는 접속 실패로 미실행) |
+| 10-15 §1.1 | 사용자 "Jetson 다시 켰다. 192.168.0.110 으로 접속되도록 DHCP 서버에 기록해뒀다." | .110 ping 응답(PC 는 ALOPS 그대로 — NAT 경로). `chk_after_reboot.sh`: 호스트 jetson-desktop · L4T R36.5.0 · `~/ros2_ws/src/rover_navigation` 있음 · `office_v3.posegraph` 있음 · SSID WEB_DEV_5G · 부팅 09:48:52 | **이 로버의 Jetson 맞음**. `/tmp` 기동 스크립트 6 개 모두 없음 → 5 개 저장소 판으로 재전송. 반영: 러너 `run_f2c.sh` 기본 `JETSON_HOST=192.168.0.110` · CLAUDE.md 네트워크 줄. ⚠ SUMMARY 는 이 확인을 '접속 전 신원 확인' 이라 적었지만 스크립트는 Jetson 위에서 돈다 — **로그인(비밀번호 전송) 뒤의 확인**(§5.3 어긋남 1) | [`chk_after_reboot.sh`](../debug_log/2026-10-15/jobs/chk_after_reboot.sh)(출력 **원천 소실**) · [`2026-10-15/jobs/run_f2c.sh`](../debug_log/2026-10-15/jobs/run_f2c.sh) 12 행 |
+
+가설과 판별(7 기):
+| 가설 | 판별 | 결과 | 판정 |
+|---|---|---|---|
+| 10-14 끊김 = 192.168.0.101 주소 충돌(다른 서버가 같은 주소를 받음) | 사용자 확인(공유기 쪽) · DHCP 항목 제거 + 재부팅 뒤 회복 | 사용자가 공유기에서 찾음, 항목 제거 뒤 Jetson 172.30.1.8 로 안정(그날 이후 작업 계속) | **지지(사용자 확인 + 조치 효과)**. 공유기 화면 · 임대 표 원문은 기록 없음 |
+| 09-23 · 10-07 의 '결합 · 인증 OK → DHCP 45 s 무응답'(ⓒ) 도 같은 충돌 | `wifi_mon` `ARP_DUP` 기록 · 그날 공유기 임대 표 | 확인 안 함. 09-23 엔 ARP 검사가 실제로 안 돌았음(§5.2 실수 3) | **미확인**(10-14 §8.4 의 '설명될 수 있다' 는 추정) |
+| 09-15~17 'AP 가 먼저 끊고(reason 2) 재인증 거부(reason 23)' 도 같은 충돌 | 양상 비교 | 충돌은 IP 층(ARP) 문제, 그 사건은 무선 인증 층 — 양상이 다름 | **미확인**(같은 원인이라는 근거 없음) |
+| 10-14 §8.5 의 '재시도 중 비밀번호가 다른 컴퓨터로 가지 않았다' | 자격 정보 없는 SSH 시도 결과 · ping | "No route to host"(TCP 불성립 → 인증 단계 전) · 다만 재시도 사이 잠깐 붙었는지는 모름 | **대체로 지지 · 완전 배제 못 함** |
+
 이후(09-21 · 10 월): 다음 시기에서 채움. 기록 위치만 적어 둔다.
 - 09-21 §0: wifi-mon 첫 스냅샷 `event_20260918_174003.txt` 는 **부팅 직후 첫 결합**(사건 아님, 시각은 NTP 전 시계) — 주말 사이 끊김 없음: [09-21 §0](../debug_log/2026-09-21/SUMMARY.md).
 - 09-23: 위 §2.2 · §3.2 · §4.2 · §5.2 · §8.2 로 채움.
 - 10-07 DHCP 무응답 재발 → ALOPS 로 작업: [10-07 §2.1](../debug_log/2026-10-07/SUMMARY.md).
-- 10-14 사용자가 찾은 원인 — 다른 서버가 192.168.0.101 을 받아 IP 충돌: [10-14 §8.3~§8.6](../debug_log/2026-10-14/SUMMARY.md).
-- 10-15 부터 192.168.0.110(DHCP 예약): [10-15 §1.1](../debug_log/2026-10-15/SUMMARY.md). 10-21 SSID 송출 중단: [10-21 §4](../debug_log/2026-10-21/SUMMARY.md).
+- 10-14 사용자가 찾은 원인 — 다른 서버가 192.168.0.101 을 받아 IP 충돌: [10-14 §8.3~§8.6](../debug_log/2026-10-14/SUMMARY.md) → 위 §2.3 으로 채움.
+- 10-15 부터 192.168.0.110(DHCP 예약): [10-15 §1.1](../debug_log/2026-10-15/SUMMARY.md) → 위 §2.3. 이후(10-19 ~): 다음 시기에서 채움 — 10-21 SSID 송출 중단: [10-21 §4](../debug_log/2026-10-21/SUMMARY.md).
 - **wifi-mon 은 지금도 돈다**: 10-27 · 10-28 주행 기록의 프로세스 목록에 `wifi_mon.sh` 가 있다(예: [`2026-10-28/outputs/drives/f2tt2/f0_f2tt2/proc_f2tt2.log`](../debug_log/2026-10-28/outputs/drives/f2tt2/f0_f2tt2/proc_f2tt2.log)). 10-22 `chk_wifi_1022.sh` 가 `/var/log/wifi_mon/*.log` 를 읽었다. ⚠ 스크립트 안의 감시 대상 AP 는 09-18 의 WEB_DEV_5G BSSID(`…:1b:4c`) · 주파수 5180 으로 **고정**되어 있다 — 공유기 · SSID 가 바뀌었으면(10-21 송출 중단) BEACON 줄 대신 10 분마다 전체 스캔만 남는다(코드 기준 추론, 현재 Jetson 설치본은 09-23 패치판이라 미확인). §7.3 기준으로 09-15~17 형 끊김을 판정한 기록은 이 카드 범위(09-23 까지)에서는 없다 — 09-23 12:05 사건도 DFS · PMF 둘 다 **미판정**(§3.2, 직전 BEACON 6 분 공백 · 4-way 줄 미회수 · 스냅샷 0).
 
 ## 3. 가설과 판별 (09-03 까지)
@@ -222,6 +240,11 @@
 16. **PC 쪽 수치 원문 없음**: §11 '11:57 부터 무응답 · 11:59:29 · 12:01:25 잠깐 응답 · 12:06:12 안정', §12 '≈ 15 s', §18 '14:13 · 14:25~14:36' 은 PC 쪽 핑 기록이 저장되지 않았다. 또 11:57 에 172.30.1.8 을 같이 핑한 것은 그때 Jetson 이 WEB_DEV(.101)에 있었으므로 판별력이 없다(응답했다면 다른 기기).
 17. **§12 의 '같은 시각 Jetson 은 게이트웨이 핑 성공 → PC 쪽 경로'**: 게이트웨이 192.168.0.1 은 WEB_DEV AP 자신(ARP 항목 MAC = AP BSSID)이다. 따라서 이 시험은 'Jetson ↔ AP' 구간만 보증하고, 'AP ↔ PC 쪽 공유기 WAN(.6)' 구간과 'PC 쪽 공유기 내부' 구간은 가르지 못한다.
 
+### 5.3 7 기 (10-14 · 10-15) — 내 실수 · 기록 어긋남
+1. **'접속 전 신원 확인' 이라 적은 것은 로그인 뒤 확인**(10-15 §1.1) — 하려 한 것: 새 주소 .110 이 이 Jetson 인지 확인 · 본 것: `chk_after_reboot.sh` 결과(호스트 이름 · L4T · 작업 폴더 · 지도 파일) · 처음 추론(SUMMARY): '접속 전 신원 확인' · 의심한 이유(11-03 카드 작성): 스크립트 본문이 `hostname` · `/etc/nv_tegra_release` · `~/ros2_ws` 를 **원격 쪽에서** 읽는다 — 실행하려면 이미 비밀번호로 로그인해야 한다 · 결론: 10-14 §8.4 가 걱정한 '주소를 빼앗긴 채 비밀번호 전송' 을 이 확인은 막지 못한다. 그날은 사용자가 방금 .110 을 예약했다고 알려 위험이 낮았을 뿐 · 다음에 알아보는 법: 인증 없이 할 수 있는 것은 호스트 키 비교뿐 — Jetson 호스트 키를 한 번 저장해 두고(`ssh-keyscan` 결과) 접속 전에 같은지 본다(10-14 §8.4 '비교할 키를 저장해 둔 적이 없다' — 11-03 까지 저장 기록 없음) · 스크립트 핵심(`2026-10-15/jobs/chk_after_reboot.sh` 3 행): `echo "호스트 $(hostname) · $(head -1 /etc/nv_tegra_release …) · ros2_ws $( [ -d ~/ros2_ws/src/rover_navigation ] && echo 있음 …)"` · 나온 결과: 원천 소실(SUMMARY §1.1 서술뿐) · 데이터: 위 스크립트 · TOOLS 10:1x 줄.
+2. **10-14 §8.5 의 신원 판단 근거가 약했다** — 포트 8765 연결 4/4 · 호스트 키 2/4(같은 키)를 'Jetson' 근거로 삼았지만, 비교할 Jetson 키가 없으니 '같은 키' 는 '그 주소에서 같은 기계가 두 번 답했다' 일 뿐이다. 그 직후 ping 은 전부 실패해 포트 성공이 WSL 쪽 착시였을 가능성도 SUMMARY 가 적음. 결과적으로 전송은 TCP 단계에서 실패(No route to host). 데이터: SUMMARY §8.5 · TOOLS 11:0x(출력 원문 없음).
+3. **출력 원문 없음** — §8.3 ping · §8.5 포트 · 호스트 키 · SSH 시도 · 10-15 §1 ping/ARP · `chk_after_reboot.sh` 출력이 모두 대화에만 있었다(SUMMARY · TOOLS 서술이 전부). README §2.3 의 `| tee` 규칙 전(11-02) 기록.
+
 ## 6. 남은 것 (09-03 시점)
 - 원인 — 절전 · 공유기 ARP · 드라이버 중 무엇인지 미확정. 이후 양상이 다른 사건들이 이어짐(§2 이후 목록).
 - 절전 설정이 프로파일별이라는 점(다른 SSID 로 붙으면 다시 켜짐).
@@ -242,6 +265,13 @@
 - AP 격리 추정(§14, PC 를 WEB_DEV 에 직접 붙이면 Jetson ARP 불가) — 해제는 사무실 공유 공유기라 사용자 결정 대기.
 - 끊김 · 재연결 뒤 DDS 부하(n62b CPU 422 %) — 규칙(재연결 뒤 스택 재기동)만 있고, 게이트에 'NM 재연결 0' 검사는 미구현(제안).
 - wifi-mon 이 15 s 보다 짧은 bssid 변화를 못 잡는 설계(모순 15) — 그대로.
+
+### 6.3 남은 것 (10-15 시점)
+- 09-23 · 10-07 의 'DHCP 무응답'(ⓒ)이 같은 주소 충돌이었는지 — `wifi_mon` `ARP_DUP` 기록 확인 안 함(10-14 §8.4 가 방법만 적음).
+- 09-15~17 형(AP deauth · 재인증 거부)의 원인 — 그대로 미확정.
+- Jetson 호스트 키 저장 · 접속 전 비교 — 안 함(§5.3 실수 1). 지금 스크립트들은 여전히 `StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null` 로 비밀번호를 보냄(예: [`2026-10-14/jobs/run_detached.sh`](../debug_log/2026-10-14/jobs/run_detached.sh) 6 행).
+- 예약 주소(.110)도 다른 기기가 스스로 같은 주소를 쓰면 막지 못한다(§9 'DHCP 예약 vs 정적 IP') — 10-14 와 같은 충돌이 다시 날 수 있음.
+- **옛 주소 기본값이 남은 곳(11-03 확인)**: `Docs/tools/` 에는 없음 — [`up_tools.sh`](../tools/up_tools.sh) 3 행 `H=${JETSON_HOST:-192.168.0.110}`(11-02 수정). `ros2_ws/` 는 주석만(`rover_bringup/config/fastdds_udp_only.xml` 37 행 · `rover_bringup/scripts/display_info_pub.py` 4 행 — 예시 문자열). 날짜 사본: `2026-10-14/jobs/run_detached.sh` 4 행 · `2026-10-21/jobs/put_one.sh` · `2026-10-21/jobs/run_f0.sh` · `2026-10-27/jobs/run_f0.sh` 의 `${JETSON_HOST:-192.168.0.101}`. **PC 스크래치패드의 실행본 `run_f0.sh` 4 행도 `192.168.0.101`** — `run_f2c.sh`(12 행 `.110` export)를 거치면 문제없지만, `run_f0.sh` 를 직접 부르면 옛 주소(지금은 다른 기기일 수 있는 주소)로 비밀번호를 보낸다.
 
 ## 7. 실험 · 도구 색인
 | 이름 | 무엇 | 위치 |
@@ -264,6 +294,10 @@
 | `job539_dropchk.sh` · `job540_trace.sh` + `run_j540.sh` · `job541_fetch.sh` | 11:57 끊김 직후 요약 · 온보드 30 분 트레이스 · 회수 | → `j539_drop.txt`(뒷부분이 `job541` 출력) · 트레이스 원본 `/tmp/j540_trace.txt`(원천 소실, 발췌는 `j539` · `j544`) |
 | `job542_dropwin.sh` · `job543_mon.sh` · `job544_drop2.sh` | 11:55~12:07 창 전체 · 그 창 mon.log · 12:19 두 번째 끊김 | → `j542_dropwin.txt` · `j543_mon.txt` · `j544_drop2.txt` |
 | n62b | 끊김 뒤 이미 떠 있던 스택으로 돈 주행(CPU 422 %) | `outputs/j507_n62b_drive.txt` · `bags/bag_n62b.tgz` |
+| `put_one.sh` · `run_detached.sh`(10-14) | 끊기는 동안 한 파일 전송 · 재시도 전송 + `setsid nohup` 실행 + 재시도 회수 | PC 스크래치패드(저장 사본 `2026-10-21/jobs/put_one.sh` · `2026-10-14/jobs/run_detached.sh`) |
+| 포트 8765 연결 · `ssh-keyscan`(10-14 §8.5) | 자격 정보 없는 신원 확인 | 명령만(스크립트 · 출력 원문 없음) |
+| `up_tools.sh`(10-14 §8.6) | 재부팅 · 복구 뒤 도구 일괄 전송 | `Docs/tools/up_tools.sh` |
+| `chk_after_reboot.sh`(10-15 §1.1) | 재부팅 뒤 신원 · `/tmp` · 컨테이너 · 망 확인 | `2026-10-15/jobs/`(출력 원천 소실) |
 
 ## 8. 도구 해설
 공통: Jetson 에서 실행, PC → WSL → sshpass 러너(원본 소실, 후손 [`2026-10-08/jobs/run_jn.sh`](../debug_log/2026-10-08/jobs/run_jn.sh)). 09-03 도구는 이름이 번호(job)가 아닌 용도 이름인 첫 예(도구 이름 규약이 정식으로 생긴 것은 10-12).
@@ -471,6 +505,25 @@
 - 하는 일: 트레이스 12:17:00~12:21:30 전 줄 → wpa · NM · 커널 같은 창 → `journalctl -u ssh` 같은 창 → ARP_DUP 수.
 - 출력: [`j544_drop2.txt`](../debug_log/2026-09-23/outputs/j544_drop2.txt) — gw=ok 133 · gw=X 0 · wpa/NM '-- No entries --' · sshd 12:21:59 `from 192.168.0.6`. 쓰인 곳: §12 '끊긴 것은 PC 쪽 NAT 경로'.
 
+### 8.3 7 기 도구 (10-14 · 10-15)
+#### run_detached.sh — 끊기는 연결에서 실행 (10-14 §8.5, PC/WSL, bash)
+- 부른 형태: `bash run_detached.sh 스크립트 [함께 보낼 파일 …]`, 환경 `JX_WAIT`(기본 120 s) · `JETSON_HOST`(기본 **192.168.0.101** — 4 행). 비밀번호는 `run_jn.sh` 에서 읽음(이 파일엔 없음).
+- 왜: §8.5 에서 주소가 수 초~수십 초 단위로 붙었다 떨어져 `scp` 한 번이 계속 실패 — 끊겨도 Jetson 쪽 실행은 끝까지 가게.
+- 하는 일: 보낼 파일의 `
+` 제거 → `try()`(4 s 간격 최대 8 회)로 `scp` → `try` 로 원격 `setsid nohup bash -c 'bash /tmp/X > /tmp/X.out 2>&1; touch /tmp/X.done'` → 5 s 마다 `.done` 확인(최대 `JX_WAIT`) → `try` 로 `.out` 읽기('[끝남]' 또는 '[아직 도는 중 또는 확인 실패]').
+  ```bash
+  try() { for i in 1 2 3 4 5 6 7 8; do "$@" && return 0; sleep 4; done; return 1; }
+  ```
+- 출력: 화면만. 쓰인 곳: §8.6 정지 시험(`chk_pad_relief.sh` → [`chk_pad_relief.txt`](../debug_log/2026-10-14/outputs/chk_pad_relief.txt)). 결함: 호스트 키 검사 끔(6 행 `StrictHostKeyChecking=no`) + 재시도 8 회 — **주소 충돌 중이면 같은 비밀번호를 여러 번 남의 기계로 보낼 수 있는 구조**(§8.4 의 우려와 정면으로 겹침). 기본 주소 .101(§6.3). 계보: 08-28 detach 실행 → 09 월 `run_detached` 류 → 10 월 `run_jn.sh`(JX_WHY · `/tmp/live/current.log`).
+
+#### chk_after_reboot.sh — 재부팅 뒤 확인 (10-15 §1.1, Jetson, bash, 로버 안 움직임)
+- 하는 일: 호스트 이름 · `/etc/nv_tegra_release` 첫 줄 · `~/ros2_ws/src/rover_navigation` · `~/maps/office/office_v3.posegraph` 수 · `uptime -p` · `uptime -s` · `/tmp` 의 `prep_fast.sh prep_patrol.sh prep_patrol_pad.sh pad_relief.py chk_prep.py job551_f0drive.sh` 유무 · `docker ps -a` · `wlan0` 주소 · `iwgetid -r`(SSID).
+- 출력: 원천 소실(SUMMARY §1.1: jetson-desktop · R36.5.0 · 있음 · 1 · WEB_DEV_5G · 부팅 09:48:52 · 6 개 모두 없음 · microros_agent 실행 · isaac_ros_dev 정지). 한계: 로그인 뒤 확인(§5.3 실수 1). 재사용: 가능(재부팅 뒤 `/tmp` 점검용으로는 유효).
+
+#### up_tools.sh — 도구 일괄 전송 (10-14 §8.6 · 재부팅 뒤, PC/WSL, `Docs/tools/`)
+- 스크래치패드 `tools/` 의 `prep_fast.sh chk_prep.py prep_patrol.sh anal_rtps_*.py` 와 `up950/`(없으면 스크래치패드 뿌리)의 `job240_clean.sh job386_slamalive.py job440_startclear.py job451_paramsnap.py job453_runmeta.sh job956_gcmchk.py` 를 `
+` 제거 뒤 Jetson `/tmp` 로 한 번에 `scp`, 끝에 `/tmp` 스크립트 수. 10-14 엔 `JETSON_HOST=172.30.1.8` 로 부름. 기본 주소는 11-02 에 .110 으로 고침(커밋 `9b3dca22`). 출력: 화면 한 줄(원문 없음).
+
 ## 9. 용어
 - **Wi-Fi power save(절전)**: 무선 카드가 쉬는 동안 AP 에게 '잠든다' 고 알리고 비콘 몇 번에 한 번만 깨어나 쌓인 패킷을 받는 방식. 전력은 줄지만 바깥에서 오는 패킷(ARP 질문 · ping)에 수백 ms 늦게 답하거나 놓칠 수 있다. `iw dev <IF> get power_save` 로 상태를 본다.
 - **NetworkManager(NM)**: Ubuntu 의 네트워크 관리 데몬. 저장된 '연결 프로파일'(SSID · 비밀번호 · IP 방식 · 절전 · 자동연결 우선순위)을 들고 있다가 자동으로 붙는다. `nmcli` 가 명령줄 도구. `802-11-wireless.powersave` 값: 0 = 기본(전역 따름) · 2 = 끔 · 3 = 켬. 연결 중인 망이 끊기면 다음 우선순위 프로파일로 옮겨 가며, 이때 IP 가 바뀐다.
@@ -495,4 +548,6 @@
 - **`arping -D`**: 같은 DAD 질문을 명령줄에서 보내는 도구(iputils). 응답(`Unicast reply from <IP> [<MAC>]`)이 오면 그 주소를 다른 장치가 쓰고 있다는 뜻, 'Received 0 response(s)' 면 그 순간엔 없음. AP 가 이 단말의 프레임을 전달하지 않는 중이면 응답도 안 오므로 '0' 이 곧 '충돌 없음' 은 아니다.
 - **AP 격리(client isolation)**: 같은 AP 에 붙은 무선 단말끼리 직접 통신을 막는 공유기 기능. 09-23 §14 에 PC 를 WEB_DEV 에 붙였을 때 Jetson ARP 가 안 된 것을 이것으로 **추정**했다(공유기 설정은 확인 안 함).
 - **rx 비트레이트 · MCS**: `iw link` 의 `rx bitrate` 는 마지막으로 받은 프레임의 전송 속도. 6.0 Mbit/s 는 관리 · 기본 속도(비콘 등)라 데이터가 없을 때도 나오고, 175.6(MCS 2) · 390~780 은 데이터 프레임 속도. 그래서 '6.0 = 데이터 끊김' 은 단독으로는 약한 근거(§3.2).
+- **IP 주소 충돌(7 기)**: 같은 망에서 두 기기가 같은 IPv4 주소를 쓰는 상태. 공유기 · 다른 기기는 ARP 답이 엇갈려 패킷을 한쪽으로만(또는 번갈아) 보낸다 — 10-14 §8.5 의 '수 초~수십 초 단위로 붙었다 떨어짐' 과 맞는 모양. 10-14 엔 다른 서버가 DHCP 로 .101 을 요청해 받았다(사용자).
+- **SSH 호스트 키**: SSH 서버가 자기 신원을 증명하는 공개 키. 인증(비밀번호) 전에 받으므로, 저장해 둔 키와 비교하면 '이 주소에서 답하는 기계가 그 기계인가' 를 비밀번호를 보내기 전에 가릴 수 있다. 우리 스크립트는 `StrictHostKeyChecking=no` · `UserKnownHostsFile=/dev/null` 로 이 비교를 끈다.
 - **USB 장치 모드 주소(192.168.55.1)**: Jetson 개발 키트를 USB 로 PC 에 꽂으면 생기는 가상 이더넷의 Jetson 쪽 주소. Wi-Fi 와 무관한 비상 접속로.

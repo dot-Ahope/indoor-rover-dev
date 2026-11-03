@@ -2,7 +2,7 @@
 
 | 상태 | 기간 | 처음 본 곳 | 바꾼 파일 | 관련 문제 |
 |---|---|---|---|---|
-| **우회(10-08 시점)** — 계획기가 라이다 아래 낮은 상자를 '잊는' 원인을 전역 obstacle 층의 한 격자(라이다 2D 소거)로 좁혔고(설정 근거 + bag 정황, 소거 순간은 직접 못 봄), STVL 전역 층은 갱신(C2) 불합격으로 기각, **전역 nvblox 층(map 프레임) + 주기 재계획 0.5 Hz(B 구성)** 으로 f2e2 3/3 · 상자 미접촉 1 회. 기본값 전환은 그날 미결정(→ 이후 prep 기본으로, 10-12). 남은 것: 근접 정면 상자의 로컬 치명 → 내접 강등(f2e1), 상자 옆 여유 | 10-07 §2.6 · §7.1 ~ §7.2 · §8 ~ §8.5 · §10 ~ §10.1 · §16, 10-08 §1 ~ §3.8 · §7 (이 카드), 이후 10-12 ~ | [10-07 §2.6](../debug_log/2026-10-07/SUMMARY.md)(사용자: "상자를 피해 경로를 세워 이동하다가 상자 쪽으로 다시 몸을 틀어…" · 주행 뒤 "상자를 밀면서 왔다") | `ros2_ws/src/rover_navigation/launch/navigation.launch.py`(`global_camera:=obstacle\|stvl\|nvblox` · `replan_hz` — 커밋 `de2a9a8e` · `b6e93383`(10-07) · `453813f1` · `eb27aba4`(10-08)) · prep `jobs/job922_prep.sh`(10-07) · `jobs/job934_prep.sh`(10-08) · 러너 래퍼 `2026-10-08/jobs/run_f2c.sh`(`b910`) | [Phase N 후반 · 유령 셀](nvblox-n6-global-ghosts.md)(09-22 전역 nvblox 첫 도입 — 같은 프레임 미지정) · [카메라 깊이 장애물](depth-obstacle-costmap.md)(STVL 절두체 · 근평면 이력) · [nvblox 층 round → floor](nvblox-layer-round-floor.md)(같은 층 · 프레임 변환 결함 10-27) · [전역 계획기 NavFn vs Smac](global-planner-choice.md) · [F2 순회 위치 점프](f2-patrol-loc-jump.md)(10-01 §8.24 전역 nvblox 제거 · §8.35 전역 카메라 점군 층) · [inflation · padding 역할](inflation-padding-roles.md) · [ObstaclesCritic → CostCritic](obstacles-to-costcritic.md)(critical_cost) · [저장소 공개 운영](repo-public-ops.md) (6 기) |
+| **우회(10-08 시점)** — 계획기가 라이다 아래 낮은 상자를 '잊는' 원인을 전역 obstacle 층의 한 격자(라이다 2D 소거)로 좁혔고(설정 근거 + bag 정황, 소거 순간은 직접 못 봄), STVL 전역 층은 갱신(C2) 불합격으로 기각, **전역 nvblox 층(map 프레임) + 주기 재계획 0.5 Hz(B 구성)** 으로 f2e2 3/3 · 상자 미접촉 1 회. 기본값 전환은 그날 미결정(→ 이후 prep 기본으로, 10-12). 남은 것: 근접 정면 상자의 로컬 치명 → 내접 강등(f2e1), 상자 옆 여유 | 10-07 §2.6 · §7.1 ~ §7.2 · §8 ~ §8.5 · §10 ~ §10.1 · §16, 10-08 §1 ~ §3.8 · §7 (이 카드), 10-12 §1, 10-13 §4.6 · §5.1 · §6.2 · §13 · §14.1, 10-14 §1 · §6 · §24 · §25, 10-15 §18.3 (7 기 이어 채움 — 상자 옆 정지 쪽은 [기전 카드](box-side-stall-cause.md)), 이후 10-19 ~ | [10-07 §2.6](../debug_log/2026-10-07/SUMMARY.md)(사용자: "상자를 피해 경로를 세워 이동하다가 상자 쪽으로 다시 몸을 틀어…" · 주행 뒤 "상자를 밀면서 왔다") | `ros2_ws/src/rover_navigation/launch/navigation.launch.py`(`global_camera:=obstacle\|stvl\|nvblox` · `replan_hz` — 커밋 `de2a9a8e` · `b6e93383`(10-07) · `453813f1` · `eb27aba4`(10-08)) · prep `jobs/job922_prep.sh`(10-07) · `jobs/job934_prep.sh`(10-08) · 러너 래퍼 `2026-10-08/jobs/run_f2c.sh`(`b910`) | [Phase N 후반 · 유령 셀](nvblox-n6-global-ghosts.md)(09-22 전역 nvblox 첫 도입 — 같은 프레임 미지정) · [카메라 깊이 장애물](depth-obstacle-costmap.md)(STVL 절두체 · 근평면 이력) · [nvblox 층 round → floor](nvblox-layer-round-floor.md)(같은 층 · 프레임 변환 결함 10-27) · [전역 계획기 NavFn vs Smac](global-planner-choice.md) · [F2 순회 위치 점프](f2-patrol-loc-jump.md)(10-01 §8.24 전역 nvblox 제거 · §8.35 전역 카메라 점군 층) · [inflation · padding 역할](inflation-padding-roles.md) · [ObstaclesCritic → CostCritic](obstacles-to-costcritic.md)(critical_cost) · [저장소 공개 운영](repo-public-ops.md) (6 기) · [빠른 prep](prep-fast-startup.md) · [BT 끝 방향 CopyPath](bt-copypath-end-yaw.md) (7 기) |
 
 **한 줄**: 출발 방 통로의 **라이다(높이 0.185 m)보다 낮은 상자 ②** 를 로컬(nvblox)은 보는데 전역(계획기)은 거의 못 봐서, f2c2 는 상자를 밀고 지나갔고 f2d2 는 상자 앞에서 45 s 무진행 취소됐다(10-07 §2.6 · §7.1). 원인은 두 겹 — ① 전역 obstacle 층이 라이다와 카메라 점군을 **한 2D 격자**에 두어 라이다 소거가 카메라 표시를 지우는 것으로 **추정**(설정 + bag 에서 전역 상자 칸 거의 0), ② BT 가 목표당 1 회만 계획(재계획 0.01 Hz)이라 상자가 보인 뒤 33 s 동안 옛 경로 유지(**측정**, 10-07 §10.1). 전역 카메라를 STVL 로 떼면 가까이서 기억(C1)은 됐지만 치운 상자를 1 분 30 s 넘게 못 지워(C2) 기각(10-07 §8.5). 같은 녹화의 nvblox 슬라이스는 치운 칸 대부분을 수 초 안에 지웠고(10-08 §1.1), 순회 bag 재계산에서 카메라만 본 묶음은 사용자 확인으로 대부분 실제 물체였다(§2.2). 그래서 **전역 nvblox + 재계획 0.5 Hz** 를 주행했는데 f2e1 은 **전역 nvblox 층 프레임이 기본값 odom**(내 결함)이라 상자가 ≈ 0.3 m 밀려 찍혀 접촉, 고친 f2e2 는 3/3 · 미접촉(§3.3 ~ §3.8).
 
@@ -42,7 +42,15 @@
 | 10-08 §3.5 | 접촉 원인(`contact_eval.py`) | 다가갈수록 로컬 상자 치명 12~18 → 2 칸, 통과 때 차체 안 내접 6~12 · 치명 0 | 두 겹: ① 프레임 결함 ② 근접 **치명 → 내접 강등** + CostCritic 은 치명만 충돌(강등 기전은 추정) | [`f2e1_contact.txt`](../debug_log/2026-10-08/outputs/f2e1_contact.txt) |
 | 10-08 §3.6 · §3.7 · §3.8 | 프레임만 고친 B 로 f2e2 | 3/3(52.1 · 49.1 · 108.5 s), 상자 ② 중심 로컬 · 전역 차 ≤ 0.04 m, 경로 ↔ 상자 0.19~0.31 m, 차체 ↔ 상자 최소 0.06 m, 경로 발행 105 회 · 0.3 m 넘는 변화 2 회 · 계획기 CPU 10.9 % | ③-a · ③-b · ③-c 통과, **사용자: 닿지 않음** | [`j934b_prep.txt`](../debug_log/2026-10-08/outputs/j934b_prep.txt) · [`f2e2_box_align.txt`](../debug_log/2026-10-08/outputs/f2e2_box_align.txt) · [`f0_f2e2_runner.log`](../debug_log/2026-10-08/outputs/f0_f2e2_runner.log) · bag `2026-10-08/bags/bag_f2e2.tgz`(로컬) |
 | 10-08 §7 | 마무리 | — | B 구성 기본값 전환 · STVL 정리 미결정, 근접 정면 상자 강등 대책은 다음 | 10-08 §7 |
-| 이후(10-12 ~) | 다음 시기에서 채움 | — | — | — |
+| 10-12 §1 · §1.1 | B 구성을 그대로 순회에 씀(f2f1 부터, PreferForward 15 만 바꿈) | prep 출력 `전역 plugins: … ['static_layer', 'nvblox_layer', 'obstacle_layer', 'inflation_layer']` · `RateController hz="0.5"` · `전역 nvblox 프레임 String value is: map` | 10-08 미결이던 기본값 전환이 사실상 이날부터(→ 10-12 운용 확정, CLAUDE.md §6). f2f1 복귀 상자 ② 옆 멈칫은 CPU 포화 탓(§2) | [`j934c_prep.txt`](../debug_log/2026-10-12/outputs/j934c_prep.txt) 29 · 31 · 34 행 · [상자 옆 정지 기전](box-side-stall-cause.md) |
+| 10-13 §4.6 | f2o1 목표 3 — 전역이 상자 끝을 언제 알았나(`Docs/tools/anal_box_history.py`) | 로버가 3.3~4.7 m 떨어져 있던 13:31:43~13:32:55 전역 상자 끝 **0/4** → 목표 3 첫 경로가 약 50 s 동안 상자 끝을 지나감(0.00~0.02 m). 13:33:02(1.41 m) 3/4 와 함께 경로가 0.26 m 로 비킴 | 전역은 멀어지면 잊고 1.4~1.7 m 에서 다시 안다. 재계획 0.5 Hz 덕에 다시 본 뒤 2 s 안에 경로가 바뀜(측정). 그러나 정지의 원인은 '잊음' 이 아니라 다시 그린 경로가 0.22~0.29 m 로 가까운 것 → [기전 카드](box-side-stall-cause.md) | [`f2o1_box_history.txt`](../debug_log/2026-10-13/outputs/f2o1_box_history.txt) 52~73 행 |
+| 10-13 §5.1 | 전역이 상자를 오래 기억하게 하는 안 | — | **보류(사용자)**: 지나간 사람 같은 동적 물체도 남아 경로가 막힘. 지금 구조엔 정적 · 동적을 가를 수단 없음(사람 마스크는 JetPack 7.2 Phase) | 10-13 §5.1 |
+| 10-13 §6.2 · §13 | 잊는 까닭 · 다시 보는 거리 확인(`Docs/tools/anal_box_layers.py` + 설정) | nvblox 슬라이스 좌표계 odom, 상자 끝 첫 값 1.51 m. f2o1 전역 0/4 가 된 13:31:43 에 로버 ↔ 상자 3.25 m | 멀리서 잊는 원인은 감쇠(0.99, 약 81 s)가 아니라 **`map_clearing_radius_m: 3.0`**, 다시 보는 1.5 m 는 **통합 거리 1.4**(설정 근거). '다시 보면 갱신' 은 이미 됨 — 사용자 질문 "기억 말고 다시 봤을 때 갱신" 의 답 | [`f2o1_box_layers.txt`](../debug_log/2026-10-13/outputs/f2o1_box_layers.txt) 2 행 `nvblox 슬라이스: 좌표계 odom, 칸 0.050 m …` · `config/nvblox_local.yaml` 42 행(지금도 같음) |
+| 10-13 §14.1 → 10-14 §6 | 통합 거리 1.4 → 2.0(사용자 "2.0 으로 복구") → 다음 날 1.4(사용자 "1.4 로 되돌려라") | 2.0 으로는 한 번도 안 띄움(재부팅 뒤 prep 전 되돌림) | 되돌린 근거: 멀리서 처음 볼 때 한 줄 두껍게(10-14 §5.1) · 각 오차가 거리에 비례(§4.2). 이후 10-22 에 다시 2.0 | `config/nvblox_local.yaml` 50~57 행 이력 주석 |
+| 10-14 §1 · §4.1 | 전역에서 카메라 칸 둘레만 통과 금지 띠 D(`Docs/tools/anal_plan_keepout.py`, 3 주행 71 계획) | D 0.30 까지 경로 없음 0/71 · 상자 끝 +5~10 cm, D 0.35 에서 10/71 이 그 상자 옆 '통로 막힘' | 여유 한 칸 → 사용자 기각("여러 부분에서 문제"). 설정 안 바꿈 | [`keepout_all.txt`](../debug_log/2026-10-14/outputs/keepout_all.txt) |
+| 10-14 §24 · §25 | 계획기 경로가 낮은 상자를 가로지른 한 번(f2u2 16:30:06.6) · 사용자 결정 | /plan 이 전역 253 칸 20/55 점 — 같은 지도의 NavFn 흉내는 내접을 피함. 출발점 상자 = **라이다 아래 물체 감지 시험용으로 일부러 둔 물체**(사용자) | 전역 nvblox 가 상자를 알아도 이상 경로 1 회(원인 미확인). 이 자리 여유 · 정지는 낮은 물체 회피 성능의 측정값으로 읽음 | [`anal_navfn_replay_f2u.txt`](../debug_log/2026-10-14/outputs/anal_navfn_replay_f2u.txt) · 10-14 §25 |
+| 10-15 §18.3 | f2v3 멈춘 뒤 9 분 서 있다가 복귀(서쪽 통로 상자) | 출발 순간 최근접 17.5 cm(라이다 종이백), 상자 모서리 카메라 칸 **사라짐** | 라이다 아래 물체는 시야 밖 감쇠 뒤 로컬 · 전역에서 없어짐 — 오래 서 있으면 실제 상자가 지도에 없다(측정). '대기 늘리기' 대책이 위험한 근거 | [`anal_motion_probe_f2v3r.txt`](../debug_log/2026-10-15/outputs/anal_motion_probe_f2v3r.txt) |
+| 이후(10-19 ~) | 다음 시기에서 채움 | — | — | — |
 
 ## 3. 가설과 판별
 | 가설 | 판별 | 결과 | 판정 |
@@ -55,6 +63,7 @@
 | 전역 nvblox 가 있으면 계획기가 상자를 미리 안다 | 같은 도구, 상자 ② 첫 표시 vs 목표 첫 경로 | 둘 다 첫 경로 뒤(nvblox 반경 3 m · 통합 1.4 m) | **기각** → 주기 재계획 필요 |
 | f2e1 접촉 = 전역 층 프레임 밀림 | 실행 중 파라미터(`job937`) + 같은 시각 전역 · 로컬 단면(`f2e_gcm.py`) + 고친 뒤 f2e2 위치 비교 | odom(원천 소실) · 전역 99 가 ≈ 0.3 m 북쪽 · f2e2 차 ≤ 0.04 m | **지지(측정)** |
 | 근접 정면 상자의 로컬 치명 칸이 내접으로 강등돼 MPPI 가 밀고 지나감 | `contact_eval.py` | 치명 12~18 → 2, 차체 안 내접 6~12 · 치명 0 | 현상 **측정**, 기전(카메라 근거리 한계 + nvblox 거리값 약화)은 **추정 · 미검증** |
+| (10-13) 전역이 멀리서 상자를 잊는 것은 감쇠(81 s) 탓 | f2o1 전역 상자 끝이 0/4 가 된 시각의 로버 ↔ 상자 거리 + `nvblox_local.yaml` | 13:31:43 에 3.25 m(관측 끊긴 지 81 s 안) | **기각** → `map_clearing_radius_m: 3.0`(3 m 밖 지움)이 원인(설정 + 시각 일치, 10-13 §13) |
 | 09-22 N6-1 전역 nvblox 도 같은 프레임 결함이었다 | (이번 확인) 커밋 `384c1eb6` ~ `1d50bd00^` 의 `navigation.launch.py` · `nav2_params.yaml` 에 `nav2_costmap_global_frame` 줄 없음 | 설정 없음 = 기본값으로 돌았음(코드) | **설정은 지지(코드)** · 그 결함이 10-01 §8.24 유령에 얼마나 섞였는지는 **미확인**(10-08 §3.3 도 추정으로 적음) |
 
 ## 4. 조치와 효과
@@ -92,6 +101,7 @@
 | 전역 nvblox_layer 블록 | 이진 코스트맵, `max_obstacle_distance 0.40` · `inflation_distance 0.175`, **프레임 줄 없음**(launch 가 넣음) | `config/nav2_params.yaml` 565~572 행 |
 | ⚠ 낡은 주석 | "슬라이스는 odom 프레임, 전역은 map 프레임 → 플러그인이 TF 로 변환(09-21 §10.4 코드)" — 실제로는 `nav2_costmap_global_frame` 을 지정해야 map 으로 변환되며, 지정 안 하면 odom 기본이라 10-08 f2e1 처럼 밀린다 | `config/nav2_params.yaml` 563 행 |
 | 층 TF 조회 실패 처리 | 조회 실패 시 슬라이스를 버림(이후 10-27 패치 — 이 시기엔 없음) | `Docs/05_nvblox/nvblox_nav2_rover.patch` 7~9 행 |
+| nvblox 지우기 반경 · 통합 거리(11-03 확인) | `map_clearing_radius_m: 3.0`(전역이 멀리서 잊는 원인, 10-13 §13) · `projective_integrator_max_integration_distance_m: 2.0`(이 시기 끝 1.4 → 10-22 에 2.0) | `config/nvblox_local.yaml` 42 · 57 행 |
 | CostCritic | `critical_cost: 300.0` · `collision_cost: 1000000.0` · `consider_footprint: true`(지금 값; 10-08 §3.5 '치명만 충돌' 설명의 근거 설정) | `config/nav2_params.yaml` 269 행 |
 
 ## 5. 내 실수
@@ -174,7 +184,13 @@
 - 라이다 2D 소거 가설은 정황뿐 — 카메라 소스 자체 소거 · 근거리 컷과 가르지 않음.
 - §2 선언 규칙('실제 물체가 아닌 묶음이 통로에 10 s 넘게 남으면 보류')의 적용이 "대부분 실제" 라는 사용자 답에 기댐 — 실제가 아닌 묶음의 목록은 없음.
 - 전역 nvblox 는 반경 3 m · 감쇠 81 s 기억이라 '화각 밖에서 오래 기억' 은 못 함(10-08 §1.1 한계).
-- **이후(10-12 ~): 다음 시기에서 채움** — 알려진 포인터만: 10-12 순회 운용 = `global_camera:=nvblox replan_hz:=0.5 mppi_viz:=lite`(CLAUDE.md §6, `Docs/tools/prep_patrol.sh` 17 행) · 10-13 복귀 길 상자 끝 옆 여유 2~5 cm(nvblox 가 odom 좌표라 기억된 상자 밀림 · 칸 단위 판정) · 10-22 통합 거리 2.0 · 10-27 층 TF 조회 실패 시 슬라이스 버림 패치([nvblox 층 카드 §7](nvblox-layer-round-floor.md)).
+- **10-12 ~ 10-15 에서 더해진 것**(7 기, 흐름 표 10-12 ~ 10-15 줄):
+  - B 구성(전역 nvblox map 프레임 + 재계획 0.5 Hz)이 10-12 부터 순회 운용 기본(`global_camera:=nvblox replan_hz:=0.5 mppi_viz:=lite`, CLAUDE.md §6 · `Docs/tools/prep_patrol.sh` 17 행). 이 시기에 B 구성의 상자 접촉은 기록상 없음 — 대신 같은 상자 옆에서 **닿지 않고 멈추는** 문제가 주가 됨 → [상자 옆 정지 기전](box-side-stall-cause.md) · [대책](box-side-stall-remedies.md).
+  - 전역은 여전히 **3 m 밖에서 잊는다**(`map_clearing_radius_m: 3.0`, 10-13 §13). 다시 보면 2 s 안 경로가 바뀌므로 '다시 봤을 때 갱신' 은 되고, 오래 기억하게 하는 안은 동적 물체 때문에 보류(사용자, 10-13 §5.1).
+  - 화각 밖 기억은 서 있으면 약 80 s 뒤 사라져 실제 상자가 지도에서 없어진다(10-15 §18.3) — 이 카드 §7 의 '화각 밖에서 오래 기억은 못 함' 이 정지 상황에서도 확인됨.
+  - 전역 카메라 칸 금지 띠(10-14 §1)는 0.35 m 에서 통로가 막혀 기각. 계획기 경로가 낮은 상자를 가로지른 이상 1 회(10-14 §24)는 원인 미확인.
+  - 남은 것 '근접 정면 상자의 치명 → 내접 강등'(10-08 §3.5)은 이 시기에 다시 재지 않음.
+- **이후(10-19 ~): 다음 시기에서 채움** — 알려진 포인터만: 10-22 깊이 프리셋 3 + 통합 거리 2.0(f2lp1 복귀에서 1.4 m 안 낮은 상자를 못 보고 접촉 → 2.0 재생에서 상자 칸 회복, `config/nvblox_local.yaml` 54~57 행 주석) · 10-27 층 TF 조회 실패 시 슬라이스 버림 패치([nvblox 층 카드 §7](nvblox-layer-round-floor.md)) · 10-27 Smac Hybrid 계획기.
 
 ## 8. 실험 · 도구 색인
 | 이름 | 무엇 | 위치 |
