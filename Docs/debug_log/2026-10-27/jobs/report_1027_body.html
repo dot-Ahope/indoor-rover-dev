@@ -2,12 +2,14 @@
 <style>
 .code{margin:0;font-family:var(--f-mono);font-size:12.5px;line-height:1.5;background:var(--bg);border:1px solid var(--line);padding:8px 10px;overflow-x:auto;white-space:pre;max-width:100%}
 .flow > span{min-width:0}
+.c1103{font-weight:600;color:var(--ink);background:var(--tint-warn);border-left:3px solid var(--warn);padding:0 5px;margin-left:3px;border-radius:2px;white-space:normal;font-size:.92em}
 </style>
 <div class="wrap">
 <header>
   <div class="eyebrow">Indoor Rover · 2026-10-27 · Docs/debug_log/2026-10-27 §0–§31</div>
   <h1>10-27 TF 지연 추적</h1>
   <p class="lead">서쪽 통로 Smac 실패를 허용치 0.35 로 고친 주행(f2st1)에서 출발해, 영상에서 보인 이상 두 가지(상자 앞 막힘, 전역 코스트맵 튐)를 원자료로 따라갔습니다. 막힘은 상자 자체였고, 튐은 nvblox 층의 결함이었으며, 그 결함을 일으킨 TF 지연은 SLAM 의 map→odom 시각 정체였습니다. 결함을 고치고 SLAM 미래 여유를 1.5 s 로 올린 f2tt1 은 TF 실패 0 · 정지 0 으로 완주했습니다. 정체의 근본 원인은 계측으로 LinkNearChains 단계까지 좁혔습니다. 2026-11-02 에 판단마다 그 값을 낸 스크립트의 핵심 부분과 실제 출력 발췌, 두 원문 파일 경로를 덧붙였습니다.</p>
+  <p class="lead"><span class="c1103">11-03 에 원문과 어긋난 곳 1 건을 정정 표시했다(본문 문장은 그대로).</span></p>
 </header>
 
 <section>
@@ -79,7 +81,7 @@ f2tt1:  16:01:53.57~16:02:13.64 최소 +0.144 m @ 16:02:01.37 · 로버 (1.38, 0
 
 <section>
   <h2>전역 코스트맵이 순간 틀어진 이유<span class="sec">§15 · §16 · §17 · §19</span></h2>
-  <p>사용자가 영상 20 s · 31 s 에서 문이 막혔다 풀리고 상자가 벽 쪽으로 갔다 돌아오는 것을 짚었습니다. 코스트맵은 하나였고(발행자 1), 틀어진 메시지는 두 장뿐이었습니다.</p>
+  <p>사용자가 영상 20 s · 31 s 에서 문이 막혔다 풀리고 상자가 벽 쪽으로 갔다 돌아오는 것을 짚었습니다. 코스트맵은 하나였고(발행자 1), 틀어진 메시지는 두 장뿐이었습니다.<span class="c1103">(11-03 정정: f2st1 에서 틀어진 장은 3 장 — 아래 표와 Docs/debug_log/2026-10-27/outputs/tffix/anal_tffix_sig_f2st1.txt(서명 장 3). '두 장' 은 처음 손으로 센 수)</span></p>
   <div class="flow">
     <span class="k">판별</span><span>틀어진 장의 새 치명 칸은 라이다 · SLAM 지도와 안 겹침. 슬라이스 원본은 멀쩡. 새 칸에 맞는 slice→map 변환을 찾으면 회전 0° · 이동 0(겹침 186/276) — 실제 map→odom 은 (0.43, 0.35) m · −7.5°.</span>
     <span class="k">원인</span><span>상위 <span class="mono">nvblox_costmap_layer.cpp</span> 가 TF 조회 예외 때 경고만 찍고 return 하지 않아, 기본 생성 변환(단위)으로 그 슬라이스를 map 에 적음. 경고 시각 11:24:43.60 · 54.51 이 틀어진 장 직전.</span>
