@@ -1,0 +1,188 @@
+<title>11-03 문제 대장 8 기까지</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* 배치: 실험 노트 — 좁은 본문 열(65자) + 넓게 펼치는 그림 · 표, 판정은 왼쪽 띠 색으로(10-20 판과 같은 틀) */
+:root{
+  --bg:#f3f4f6; --paper:#ffffff; --ink:#1b1f24; --muted:#5b6470; --line:#d9dde3;
+  --ir:#b3263e;      /* 프로젝터 켬 · 실패 쪽 */
+  --cool:#1f7a72;    /* 프로젝터 끔 · 통과 쪽 */
+  --warn:#a86a00;
+  --tint-ir:#f8e8eb; --tint-cool:#e4f2f0; --tint-warn:#fbf1df;
+  --f-body:"IBM Plex Sans KR","Malgun Gothic","Apple SD Gothic Neo",sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#111418; --paper:#181c21; --ink:#e6e9ed; --muted:#9aa4b0; --line:#2c333b;
+  --ir:#ef6b80; --cool:#5cc4b8; --warn:#e0a640;
+  --tint-ir:#2b1b1f; --tint-cool:#15292a; --tint-warn:#2a2316; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#111418; --paper:#181c21; --ink:#e6e9ed; --muted:#9aa4b0; --line:#2c333b;
+  --ir:#ef6b80; --cool:#5cc4b8; --warn:#e0a640;
+  --tint-ir:#2b1b1f; --tint-cool:#15292a; --tint-warn:#2a2316; color-scheme:dark}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.65;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:28px 64px}
+.wrap{max-width:980px;margin:0 auto;display:flex;flex-direction:column;gap:34px}
+header{display:flex;flex-direction:column;gap:6px;border-bottom:2px solid var(--ink);padding-bottom:14px}
+.eyebrow{font-family:var(--f-mono);font-size:12px;letter-spacing:.08em;color:var(--muted);text-transform:uppercase}
+h1{font-size:30px;line-height:1.25;margin:0;font-weight:700;text-wrap:balance}
+h2{font-size:20px;margin:0 0 4px;font-weight:700;text-wrap:balance}
+h2 .sec{font-family:var(--f-mono);font-size:13px;color:var(--muted);font-weight:400;margin-left:8px}
+p{margin:0;max-width:68ch}
+section{display:flex;flex-direction:column;gap:12px}
+.lead{color:var(--muted);max-width:72ch}
+.verdicts{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
+.v{background:var(--paper);border:1px solid var(--line);border-left:5px solid var(--muted);padding:12px 14px;display:flex;flex-direction:column;gap:4px;min-width:0}
+.v.ok{border-left-color:var(--cool)} .v.no{border-left-color:var(--ir)} .v.wait{border-left-color:var(--warn)}
+.v b{font-size:15px} .v span{color:var(--muted);font-size:13.5px}
+.pill{display:inline-block;font-family:var(--f-mono);font-size:11.5px;padding:1px 8px;border-radius:999px;white-space:nowrap}
+.pill.ok{background:var(--tint-cool);color:var(--cool)} .pill.no{background:var(--tint-ir);color:var(--ir)} .pill.wait{background:var(--tint-warn);color:var(--warn)}
+.tbl{overflow-x:auto;background:var(--paper);border:1px solid var(--line)}
+table{border-collapse:collapse;width:100%;font-size:13.5px;font-variant-numeric:tabular-nums}
+th,td{padding:7px 10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{font-weight:500;color:var(--muted);font-size:12.5px;white-space:nowrap}
+td.n{font-family:var(--f-mono);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr.hl td{background:var(--tint-cool)} tr.bad td{background:var(--tint-ir)}
+figure{margin:0;background:var(--paper);border:1px solid var(--line);padding:10px;display:flex;flex-direction:column;gap:8px}
+figure img{width:100%;height:auto;display:block}
+figcaption{font-size:13px;color:var(--muted)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media (max-width:720px){.two{grid-template-columns:1fr}}
+ul{margin:0;padding-left:20px;max-width:72ch} li{margin:2px 0}
+.mono{font-family:var(--f-mono);font-size:13px}
+.flow{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;font-size:14px}
+.flow .k{font-family:var(--f-mono);color:var(--muted);font-size:12.5px;padding-top:2px;white-space:nowrap}
+.note{font-size:13px;color:var(--muted)}
+.pm{background:var(--paper);border:1px solid var(--line);padding:12px 14px;display:flex;flex-direction:column;gap:8px}
+.pm h3{font-size:15.5px;margin:0;font-weight:700}
+.pm .flow{grid-template-columns:auto 1fr;gap:6px 14px}
+.pm .flow span:not(.k){max-width:none}
+</style>
+
+<style>
+.code{margin:0;font-family:var(--f-mono);font-size:12.5px;line-height:1.5;background:var(--bg);border:1px solid var(--line);padding:8px 10px;overflow-x:auto;white-space:pre;max-width:100%}
+.flow > span{min-width:0}
+</style>
+<div class="wrap">
+<header>
+  <div class="eyebrow">Indoor Rover · 2026-11-03 · Docs/debug_log/2026-11-03 §0–§11 · 로버 주행 없음</div>
+  <h1>11-03 문제 대장 8 기까지</h1>
+  <p class="lead">이 날은 기록 정리만 했고 로버는 움직이지 않았습니다. 문제 대장 7 기(10-12 ~ 10-15)와 8 기(10-19 ~ 10-23)를 채워 카드가 59 장에서 83 장이 됐습니다. 7 기를 쓰며 나온 기록 어긋남 23 건은 원문을 지우지 않고 정정 표시만 붙였고, 이때 드러난 코드 결함 몇 곳도 함께 고쳤습니다. 마지막에는 사용자 질문에 따라, 보드 장치 이름이 <span class="mono">ttyUSB0</span> 에서 <span class="mono">ttyCH341USB0</span> 으로 바뀐 경위를 옛 기록과 맞춰 봤습니다. 판단마다 스크립트의 핵심 부분 · 실제 출력 · 저장소 원문 경로를 붙였습니다(비밀번호는 가린 원문).</p>
+</header>
+
+<section>
+  <h2>오늘의 판정</h2>
+  <div class="verdicts">
+    <div class="v ok"><b>문제 대장 1~8 기 완료</b><span>08-26 ~ 10-23 · 카드 83 장 · 7 기 새 7 + 8 기 새 10, 이어 채움 6 + 26 · 규칙 검사 통과(§0 · §1 · §9)</span></div>
+    <div class="v ok"><b>어긋남 23 건 정정 표시</b><span>원본 기록 6 건 표시 · 1 건 철회, 정리 페이지 10 장 25 곳 + 10-23 페이지 2 곳, 같은 주소로 다시 게시(§2 · §6 · §8)</span></div>
+    <div class="v ok"><b>코드 결함 3 개 고침</b><span>러너 /tf QoS 조건 분리 · prep 의 PreferForward 편집이 설치본 링크를 안 끊게 · pad_relief 기본 off. 오프라인으로 확인, Jetson 실주행은 아직(§3)</span></div>
+    <div class="v ok"><b>CLAUDE.md 낡은 줄 정정</b><span>8 곳 + 붙여 주신 평가 4 건 대조(Smac 은 기본 아님 · F2.5 노드는 launch 밖 · rover_msgs 없음)(§4 · §7)</span></div>
+    <div class="v no"><b>내 실수: 비밀번호를 대화에 출력</b><span>러너 파일을 가림 없이 grep 했다. 저장소 · 공개물에는 없음. 비밀번호는 바꾸지 않기로 결정(사용자)(§5 · §9)</span></div>
+    <div class="v wait"><b>보드 드라이버 출처 확인 못 함</b><span>확인 스크립트는 만들었지만, 15:42 Jetson 이 두 주소 모두 핑 100 % 손실이라 못 돌렸다(§11)</span></div>
+  </div>
+</section>
+
+<section>
+  <h2>문제 대장 7 기 · 8 기<span class="sec">§1 · §9</span></h2>
+  <p>시기마다 주제별 묶음을 나눠 병렬로 썼고, 카드마다 맡는 묶음은 하나뿐입니다(같은 카드를 두 묶음이 동시에 고치지 않게). 묶음 결과는 원본 파일에서 직접 다시 확인했습니다.</p>
+  <div class="tbl"><table>
+    <tr><th>시기</th><th>새 카드</th><th>상태</th></tr>
+    <tr><td>7 기 10-12 ~ 15</td><td>통신 포화 · 빠른 prep · 상자 옆 정지 기전 · 시험한 대책 · pad_relief · BT 끝 방향 CopyPath · F2 기준선 no5</td><td>우회 2 · 조사 중 2 · 보류 1 · 해결 1 · 완료 1</td></tr>
+    <tr><td>8 기 10-19 ~ 23</td><td>상자 칸 과장의 근원 · 복귀 길 상자 칸 · 프로젝터 번갈이 · cuVSLAM 속도 융합 · 카메라 ↔ 컨테이너 공유메모리 · 유령 칸 · 깊이 프리셋 · 경로 추종 · B0 · PathBlockedAhead only_new · 주행 전 검사 · 운용 · 기록 규칙의 진화</td><td>조사 중 4 · 우회 4 · 부분 해결 1 · 해결 1</td></tr>
+  </table></div>
+  <div class="flow">
+    <span class="k">대조한 것(8 기)</span><span><pre class="code">git ls-files | grep mp4         → 2026-10-19/figures/f2y1_ir_drive.mp4
+                                  2026-10-21/figures/f2sm2_people_block.mp4   ('git 제외' 라던 서술과 다름)
+path_blocked_ahead_condition.cpp 21 행: "… 목표 5 에 52 s"    (10-23 §20.7 이 고치겠다던 주석이 그대로)
+fastdds_shm_udp.xml 23 행: &lt;segment_size&gt;8388608&lt;/segment_size&gt;   (계획서의 4 MB 가 아님)
+2026-10-21/outputs/nav_events_ms.txt 309~313 행:
+  12:31:55.23 [monotone_escape] 시작 최근접 4.6 cm · 목표 5.0 cm
+  12:32:04.94 [monotone_escape] 성공: 최근접 5.1 cm          (실주행 첫 작동)</pre><span class="note">카드 목록 <span class="mono">Docs/issues/ISSUES.md</span> · 링크 스크립트 <span class="mono">Docs/debug_log/2026-11-03/jobs/up_issue_links_p8.py</span> · 표 스크립트 <span class="mono">jobs/up_issues_table_p8.py</span></span></span>
+    <span class="k">결론</span><span>묶음 보고의 핵심 주장 5 개가 원본과 맞았다. 묶음들이 찾은 기록 어긋남(낡은 주석 7 곳, 기록 간 어긋남, 운용 결함)은 카드에 경로와 함께 적었다. 원본 SUMMARY · 코드는 아직 안 고쳤다(결정 대기)</span>
+  </div>
+</section>
+
+<section>
+  <h2>prep 이 설치본 링크를 끊던 결함<span class="sec">§3</span></h2>
+  <p>10-15 에 찾은 결함입니다. prep 이 PreferForward 값을 <span class="mono">sed -i</span> 로 고칠 때마다 설치본 <span class="mono">nav2_params.yaml</span> 이 src 를 가리키는 링크에서 일반 파일로 바뀌었고, 그 뒤로는 src 를 고쳐도 설치본에 반영되지 않았습니다. 그래서 값이 이미 같으면 손대지 않고, 다를 때만 링크를 살린 채 고치게 바꿨습니다.</p>
+  <div class="flow">
+    <span class="k">스크립트</span><span><pre class="code">FWD=${FWD:-15.0}
+[ -L $Y ] || echo "  ⚠ 설치본 nav2_params.yaml 이 링크가 아님 …"
+if ! grep -q "PreferForwardCritic: {enabled: true, cost_power: 1, cost_weight: ${FWD}[,}]" $Y; then
+  sed -i --follow-symlinks "s/\(PreferForwardCritic: … cost_weight: \)[0-9.]*/\1${FWD}/" $Y
+  echo "  ⚠ PreferForward 를 ${FWD} 로 바꿈(…)"
+fi</pre><span class="note">원문 <span class="mono">Docs/tools/prep_fast.sh</span> 14~19 행</span></span>
+    <span class="k">나온 결과</span><span><pre class="code">FWD=15.0 -&gt; src cost_weight: 15.0 · link 유지
+  ⚠ PreferForward 를 5.0 로 바꿈(링크 대상 /tmp/…/src.yaml — 저장소 값과 달라짐)
+FWD=5.0 -&gt; src cost_weight: 5.0 · link 유지
+FWD=5.0 -&gt; src cost_weight: 5.0 · link 유지</pre><span class="note">결과 원문 <span class="mono">Docs/debug_log/2026-11-03/outputs/chk_prep_sed_1103.txt</span> · 시험 스크립트 <span class="mono">jobs/chk_prep_sed_1103.sh</span>(WSL 에서 임시 링크로)</span></span>
+    <span class="k">한계</span><span>WSL 에서만 확인했다. Jetson <span class="mono">/tmp</span> 에 있는 prep 은 아직 옛 판이라, 다음 prep 전에 새 판을 올려야 한다</span>
+  </div>
+  <div class="tbl"><table>
+    <tr><th>같이 고친 것</th><th>바꾼 내용</th><th>파일</th></tr>
+    <tr><td>러너 /tf QoS</td><td>/tf · 깊이 best effort 재정의가 <span class="mono">BAG_BE_TRAJ</span> 조건 안에 있어, 궤적 옵션을 끄면 /tf 대책도 같이 꺼졌다 → 조건 분리</td><td class="mono">jobs/job551_f0drive.sh</td></tr>
+    <tr><td>pad_relief 기본값</td><td>노드 기본 mode 'on' → 'off' + 경고(launch 기본은 원래 off)</td><td class="mono">rover_bringup/scripts/pad_relief.py</td></tr>
+    <tr><td>낡은 주석</td><td>nvblox 전역 프레임 전제 · MonotoneEscape 풋프린트가 손 입력값이라는 경고 · rf2o_gate 머리말 · '4/4' → 6/6 · BT ForceSuccess → CopyPath · V_MAX 0.085 등</td><td>nav2_params · rf2o_gate · navigation.launch · BT xml · microros_task.c</td></tr>
+  </table></div>
+</section>
+
+<section>
+  <h2>내 실수 — 대화에 Jetson 비밀번호를 출력함<span class="sec">§5</span></h2>
+  <div class="flow">
+    <span class="k">하려 한 것</span><span>러너가 어느 job551 을 올리는지 보려고 <span class="mono">grep -n "job551" run_f0.sh run_f2c.sh</span></span>
+    <span class="k">본 것</span><span><span class="mono">run_f0.sh</span> 10 행 전체가 출력되며 <span class="mono">sshpass -p</span> 뒤 값이 그대로 나왔다</span>
+    <span class="k">왜 생겼나</span><span>러너 파일은 비밀번호를 평문으로 가진다. 같은 세션 앞쪽에서는 가렸는데, 이번 명령에는 가림을 빠뜨렸다</span>
+    <span class="k">영향</span><span>저장소 · 공개물에는 없다. 대화 기록에만 남았다. 사용자 결정: 비밀번호는 바꾸지 않음</span>
+    <span class="k">다음에 알아보는 법</span><span><pre class="code">… | sed 's/sshpass -p [^ ]*/sshpass -p &lt;PW&gt;/g'     # 러너 · 비밀번호 파일을 읽을 땐 항상
+grep -c …  /  grep -n … | cut -d: -f1                   # 또는 줄 번호 · 개수만</pre></span>
+    <span class="k">데이터</span><span>SUMMARY §5 · §9</span>
+  </div>
+</section>
+
+<section>
+  <h2>보드 장치 이름 ttyUSB0 → ttyCH341USB0<span class="sec">§11</span></h2>
+  <p>사용자 질문: "예전에 드라이버를 설치하고 보드를 연결했을 때는 ttyUSB0, ttyUSB1 로 잡혔는데, 지금은 ttyCH341USB0 이다. 왜인가?" 기억하신 것이 맞습니다. 장치 이름은 udev 가 아니라 <b>보드에 붙는 커널 드라이버</b>가 정합니다. udev 규칙은 이미 정해진 이름에 <span class="mono">/dev/rover</span> 같은 별칭만 붙입니다.</p>
+  <div class="tbl"><table>
+    <tr><th>시점</th><th>커널</th><th>보드(CH340 1a86:7523)</th><th>근거</th></tr>
+    <tr><td>08-04</td><td>5.15.148-tegra</td><td>— · 홈에 <span class="mono">~/ch341_build</span>(드라이버 소스 빌드)</td><td>이전 프로젝트 <span class="mono">docs/handheld/H104_STATE.md</span> 12 · 56 행</td></tr>
+    <tr><td>08-21</td><td>5.15.148-tegra</td><td><span class="mono">ttyUSB0</span> · Driver=ch341 · 옛 별칭 <span class="mono">/dev/rover_ctrl</span>. RTK 수신기 = ttyUSB1</td><td>이전 프로젝트 <span class="mono">docs/rtk2/reports/RTK2_USBCHECK.txt</span></td></tr>
+    <tr><td>08-26</td><td>L4T R36.5.0</td><td><span class="mono">ttyCH341USB0</span> · 'WCH 벤더 드라이버 ch341 V1.9'</td><td class="mono">2026-08-26/SUMMARY.md 6 · 15 행</td></tr>
+    <tr><td>08-27 ~ 09-30</td><td>—</td><td><span class="mono">/dev/rover -&gt; ttyCH341USB0</span> · 라이다 <span class="mono">/dev/rplidar -&gt; ttyUSB0</span></td><td class="mono">2026-08-27/outputs/job6b_restart.txt · 09-28 ~ 30 prep 출력</td></tr>
+  </table></div>
+  <div class="flow">
+    <span class="k">옛 기록 원문</span><span><pre class="code">/dev/ttyUSB0  VENDOR_ID=1a86 MODEL_ID=7523 PATH=platform-3610000.usb-usb-0:2.2:1.0
+/dev/ttyUSB1  VENDOR_ID=0403 MODEL_ID=6015 …
+lrwxrwxrwx 1 root root 7 … /dev/rover_ctrl -&gt; ttyUSB0           (08-21, RTK2_USBCHECK.txt 43~46 행)
+
+# CH340이 ttyUSB로 안 잡히는 원인 조사: 커널 로그 + brltty 여부      (08-26, jobs/job0b.sh 2 행 — 출력은 소실)
+
+lrwxrwxrwx 1 root root 12 Aug 27 17:48 /dev/rover -&gt; ttyCH341USB0
+lrwxrwxrwx 1 root root  7 Aug 27 17:48 /dev/rplidar -&gt; ttyUSB0  (08-27, outputs/job6b_restart.txt 5~6 행)</pre><span class="note">이전 프로젝트 파일은 저장소 밖 <span class="mono">C:\Users\magma\Documents\Claude\Projects\Rover\</span>(읽기 전용 참조)</span></span>
+    <span class="k">원인(추정)</span><span>08-21 ~ 08-26 사이에 커널(L4T)이 갱신됐고, 그 뒤 WCH 벤더 드라이버가 같은 모듈 이름 <span class="mono">ch341.ko</span> 로 커널 기본 드라이버 자리를 대신했다. 기본 드라이버는 USB 시리얼 공용 틀이라 <span class="mono">ttyUSB*</span>, 벤더 드라이버는 자기 tty 드라이버라 <span class="mono">ttyCH341USB*</span> 를 쓴다. 누가 언제 설치했는지, <span class="mono">~/ch341_build</span> 가 그 소스인지는 기록이 없다</span>
+    <span class="k">확인하려 한 것</span><span><pre class="code">uname -r ; ls -l /dev/rover /dev/rplidar ; lsmod | grep -iE 'ch34|cp210'
+modinfo ch341 | grep -iE '^(filename|version|author|description|vermagic)'
+find /lib/modules/$(uname -r) -name 'ch34*.ko*' ; dpkg -S …/usb/serial/ch341.ko
+grep -rIl ttyCH341USB ~/ch341_build</pre><span class="note">원문 <span class="mono">Docs/debug_log/2026-11-03/jobs/chk_serial_driver_1103.sh</span>(읽기만 · sudo 없음) — 15:42 Jetson 192.168.0.110 · 172.30.1.8 모두 핑 100 % 손실, 파일 전송 'lost connection' 으로 <b>미실행</b></span></span>
+    <span class="k">함께 찾은 오독</span><span>09-18 · 09-21 <span class="mono">j434_base*.txt</span> 의 '보드 장치: /dev/rover /dev/ttyUSB0' 는 두 파일이 있다는 <span class="mono">ls</span> 출력일 뿐이다. 10-20 §9.7 '<span class="mono">ttyUSB0</span> 다시 생김 = 보드 USB 끊김' 에서 다시 생긴 것은 라이다 장치다. 내 세션 메모리의 '보드는 ttyUSB0 로 보여야 한다'(09-16)도 틀려서 고쳤다</span>
+    <span class="k">영향</span><span>동작에는 영향 없다(코드는 별칭만 씀: <span class="mono">base.launch.py</span> 22 행 realpath, <span class="mono">lidar.launch.py</span> 11 행). micro-ROS 2 Mbps 회귀의 'ch341 드라이버' 후보와는 시점이 맞지 않는다(08-26 이미 벤더 드라이버, 08-27 2 Mbps 정상)</span>
+  </div>
+</section>
+
+<section>
+  <h2>결정 대기</h2>
+  <ul>
+    <li><b>push</b> — 11-02 마지막 push 뒤 로컬 커밋이 쌓여 있음</li>
+    <li>8 기 기록 어긋남 · 낡은 주석 7 곳 정정(<span class="mono">nvblox_local.yaml</span> · <span class="mono">camera.launch.py</span> · <span class="mono">fastdds_udp_only.xml</span> · <span class="mono">path_blocked_ahead_condition.cpp</span> 등)</li>
+    <li>MAC 가림 범위 — MAC 모양 문자열이 있는 추적 파일 73 개(일부는 MAC 이 아닐 수 있음)</li>
+    <li>git 에 들어간 mp4 2 개(약 50 MB)를 뺄지</li>
+    <li>문제 대장 9 기(10-26 ~ 29: Smac · nvblox 층 TF · SLAM stamp · F2.5)</li>
+    <li>그림 63 개 날짜 폴더 복사 · 8 · 9 월 날짜별 정리 페이지</li>
+  </ul>
+  <h2>다음 접속 때</h2>
+  <ul>
+    <li><span class="mono">chk_serial_driver_1103.sh</span> 결과를 <span class="mono">outputs/chk_serial_driver_1103.txt</span> 로 저장</li>
+    <li>새 <span class="mono">prep_fast.sh</span> 를 Jetson 에 올리기 · <span class="mono">up_tools.sh</span> 전송 경로 고치기(읽는 스크래치패드 <span class="mono">tools/</span> 폴더가 없음)</li>
+  </ul>
+</section>
+</div>

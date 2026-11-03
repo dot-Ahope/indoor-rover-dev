@@ -98,3 +98,4 @@
 - Jetson 확인: `jobs/chk_serial_driver_1103.sh`(읽기만 — uname · ls 별칭 · lsmod · modinfo ch341 · 모듈 파일 위치 · dpkg 소유 · sysfs 드라이버 · ~/ch341_build · dmesg) — **실행 못 함**: 11-03 15:42 192.168.0.110 · 172.30.1.8 모두 핑 100 % 손실, scp 'lost connection'(Jetson 꺼짐 또는 망 끊김 추정). 다음 접속 때 이 스크립트 결과를 `outputs/chk_serial_driver_1103.txt` 로 남길 것.
 - 기록 어긋남(정정 표시는 다음에): 09-18 · 09-21 `j434_base*.txt` '보드 장치: /dev/rover /dev/ttyUSB0' 는 `ls` 존재 출력일 뿐(`job434_base.sh` 11 행) · 10-20 §9.7 '`/dev/ttyUSB0` 다시 생김 = 보드 USB 끊김' 은 라이다 장치 · 09-09 `job106_baud.sh` 21 행 `udevadm info -n /dev/ttyUSB0` 는 보드 USB 속도를 보려다 라이다를 봤을 수 있음(미확인) · 세션 메모리 jetson-access 의 '제어보드 CH340 은 /dev/ttyUSB0 로 보여야 base 가 뜬다'(09-16) — 틀림, 메모리 고침.
 - 영향: 동작 영향 없음(별칭 사용). micro-ROS 2 Mbps 회귀 후보 'ch341 드라이버' 와는 시점이 안 맞음(08-26 벤더 드라이버 · 08-27 2 Mbps 정상) — 약한 후보.
+- 정리 페이지: `jobs/report_1103_body.html` + `jobs/fig_report_1103.py` → `figures/day_summary_1103.html`, 게시 https://claude.ai/artifact/9nLJdFNuUQ7ikZJKaY3NSz (1 판).
