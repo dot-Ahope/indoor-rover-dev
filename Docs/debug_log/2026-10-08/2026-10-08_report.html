@@ -74,12 +74,14 @@ footer{margin-top:44px;padding-top:14px;border-top:1px solid var(--line);font-si
 .code{margin:0;font-family:var(--mono);font-size:12.5px;line-height:1.5;color:var(--ink);background:var(--surface);border:1px solid var(--line);padding:8px 10px;overflow-x:auto;white-space:pre;max-width:100%}
 .note{font-size:12.5px;color:var(--muted);margin:6px 0 0;overflow-wrap:anywhere}
 </style>
+<style>.c1103{font-weight:600;color:var(--ink);background:var(--warnbg);border-left:3px solid var(--warn);padding:0 5px;margin-left:3px;border-radius:2px;white-space:normal;font-size:.92em}</style>
 <div class="wrap">
 <header>
   <div class="eyebrow">Indoor Rover · debug_log/2026-10-08 · 원본 feature/nvblox-migration → 공개 indoor-rover-dev</div>
   <h1>10-08 기록: 전역 nvblox, 회전 미끄러짐 통제 시험, 앞 회전 우선</h1>
   <div class="meta"><span>근거 <b class="mono">SUMMARY.md §1~§7</b></span><span>그림 <b class="mono">Docs/04_navigation/figures/2026-10-08_*</b></span><span>bag <b class="mono">bags/</b>(git 제외)</span></div>
   <p class="note">2026-11-02 추가: 판단마다 그 수치를 낸 <b>스크립트 핵심</b>과 <b>나온 결과</b>를 원문 그대로 발췌하고, 결과 원문 · 스크립트 원문의 저장소 경로를 붙였습니다. 원문 파일이 없는 수치는 '원천 소실' 로 적었습니다.</p>
+<p class="note"><span class="c1103">11-03 에 원문과 어긋난 곳 5 건을 정정 표시했다(본문 문장은 그대로).</span></p>
   <nav class="toc" aria-label="목차">
     <a href="#nvblox">nvblox 기억·갱신</a><a href="#global">전역 nvblox 주행</a><a href="#contact">상자 접촉 원인</a><a href="#turns">회전 분석</a><a href="#ratio">비율 시험</a><a href="#cause">원인 가설</a><a href="#forward">앞 회전 우선</a><a href="#fix">정정</a><a href="#next">다음</a>
   </nav>
@@ -98,10 +100,10 @@ footer{margin-top:44px;padding-top:14px;border-top:1px solid var(--line);font-si
 <thead><tr><th>구간</th><th>nvblox 칸(48 중)</th><th>STVL(어제)</th></tr></thead>
 <tbody>
 <tr><td>0.35 m 앞까지 접근, 30 s</td><td class="n">17~21</td><td class="n">25</td></tr>
-<tr><td>상자를 치운 뒤 2~5 s</td><td class="n"><b>3 → 2</b></td><td class="n">24 그대로</td></tr>
+<tr><td>상자를 치운 뒤 2~5 s<span class="c1103">(11-03 정정: 3~5 s — 14:10:19 → 14:10:21, 근거 Docs/debug_log/2026-10-08/outputs/nvslice_box1.txt)</span></td><td class="n"><b>3 → 2</b></td><td class="n">24 그대로</td></tr>
 <tr><td>치운 뒤 64 s</td><td class="n">0</td><td class="n">24</td></tr>
 </tbody></table></div>
-<p class="prose">nvblox 는 치운 칸의 75 % 를 3 s 안에 지웠고, STVL 은 1 분 30 s 넘게 하나도 지우지 못했습니다. 다만 기억 수명이 약 81 s(감쇠)이고 반경 3 m 밖은 지워서, '화각 밖에서 오래 기억' 하지는 못합니다.</p>
+<p class="prose">nvblox 는 치운 칸의 75 % 를 3 s 안에 지웠고,<span class="c1103">(11-03 정정: 3 s(14:10:19)에는 8 칸 중 3 칸이 남아 지운 비율은 62.5 % 다. 75 %(2 칸 남음)는 5 s(14:10:21) 값 — 근거 outputs/nvslice_box1.txt)</span> STVL 은 1 분 30 s 넘게 하나도 지우지 못했습니다. 다만 기억 수명이 약 81 s(감쇠)이고 반경 3 m 밖은 지워서, '화각 밖에서 오래 기억' 하지는 못합니다.</p>
 <div class="ex">
   <p class="exh">근거 — 10-07 녹화(bag_box1)의 nvblox 슬라이스에서 2 s 마다 상자 ② 자리 칸 중심 48 개를 odom 으로 옮겨 거리 ≤ 0.05 m 인 칸을 셌습니다. 치운 시각은 카메라 점 100 → 0 이 된 14:10:16 무렵(10-07 j929). 14:10:17 의 12 는 사람 몸입니다. STVL 열은 10-07 §8.5 의 전역 칸 수입니다.</p>
   <div class="exk">스크립트 핵심 <span class="mono">Docs/debug_log/2026-10-08/jobs/nvslice_pc.py</span> 25~32 행</div>
@@ -129,7 +131,7 @@ footer{margin-top:44px;padding-top:14px;border-top:1px solid var(--line);font-si
 …
 14:11:18 로버 map (-0.01, 0.00) | 상자 ② 자리 nvblox 장애물  1 · 미지  0 / 48 · 최소 거리 -0.00 m
 14:11:20 로버 map (-0.01, 0.00) | 상자 ② 자리 nvblox 장애물  0 · 미지  0 / 48 · 최소 거리 0.18 m</pre>
-  <p class="note">결과 원문 <span class="mono">Docs/debug_log/2026-10-08/outputs/nvslice_box1.txt</span> · 스크립트 원문 <span class="mono">Docs/debug_log/2026-10-08/jobs/nvslice_pc.py</span>(입력 <span class="mono">Docs/debug_log/2026-10-07/bags/bag_box1.tgz</span>, SUMMARY §1.1). STVL 열 원문 <span class="mono">Docs/debug_log/2026-10-07/outputs/j929_box_points.txt</span>. 75 % = 치우기 직전 8 칸 중 14:10:19 까지 6 칸이 지워진 비율.</p>
+  <p class="note">결과 원문 <span class="mono">Docs/debug_log/2026-10-08/outputs/nvslice_box1.txt</span> · 스크립트 원문 <span class="mono">Docs/debug_log/2026-10-08/jobs/nvslice_pc.py</span>(입력 <span class="mono">Docs/debug_log/2026-10-07/bags/bag_box1.tgz</span>, SUMMARY §1.1). STVL 열 원문 <span class="mono">Docs/debug_log/2026-10-07/outputs/j929_box_points.txt</span>. 75 % = 치우기 직전 8 칸 중 14:10:19 까지 6 칸이 지워진 비율.<span class="c1103">(11-03 정정: 14:10:19 에는 3 칸이 남아 지운 것은 5 칸(62.5 %). 6 칸(75 %)이 지워진 것은 14:10:21 — 같은 파일)</span></p>
 </div>
 
 <h2 id="global">전역 지도에 nvblox 층 + 0.5 Hz 재계획 <span class="sec">§2, §3</span></h2>
@@ -361,8 +363,8 @@ M2 계수 [0.05  0.102] → LOO 90°당 오차 중앙 5.3 · 평균 5.9 cm (최�
 <div class="tbl"><table>
 <thead><tr><th>후진 벌점</th><th>W3 후진 거리(seed 1/2/3)</th><th>W3 20 s 뒤</th><th>좁은 통로 입구 벽 여유</th></tr></thead>
 <tbody>
-<tr><td>5(지금)</td><td class="n">1.00 / 1.19 / 0.36 m</td><td>3 번 중 2 번 계속 후진</td><td class="n">0.029~0.057 m</td></tr>
-<tr><td><b>15(채택)</b></td><td class="n"><b>0.32 / 0.45 / 0.22 m</b></td><td><b>3 번 모두 돌아서 전진</b></td><td class="n">0.023~0.045 m</td></tr>
+<tr><td>5(지금)</td><td class="n">1.00 / 1.19 / 0.36 m</td><td>3 번 중 2 번 계속 후진</td><td class="n">0.029~0.057 m<span class="c1103">(11-03 정정: 원문 파일에 있는 것은 seed 1 값 0.029 m 뿐(outputs/j944_fwdsim.txt). seed 2 · 3 값은 원천 소실 — SUMMARY §6 표에 수치만)</span></td></tr>
+<tr><td><b>15(채택)</b></td><td class="n"><b>0.32 / 0.45 / 0.22 m</b></td><td><b>3 번 모두 돌아서 전진</b></td><td class="n">0.023~0.045 m<span class="c1103">(11-03 정정: 원문 파일에 있는 것은 seed 1 값 0.045 m 뿐(같은 파일). seed 2 · 3 값은 원천 소실)</span></td></tr>
 <tr><td>30</td><td class="n">0.11 m</td><td>돌아서 전진</td><td class="n"><b>−0.025 m(충돌)</b></td></tr>
 <tr><td>60</td><td class="n">0.01 m</td><td>샘플 쏠림</td><td class="n">0.038 m</td></tr>
 </tbody></table></div>
