@@ -2,7 +2,7 @@
 
 | 상태 | 기간 | 처음 본 곳 | 바꾼 파일 | 관련 문제 |
 |---|---|---|---|---|
-| **조사 중** — 떨림(저속 · ω 부호 잦은 바뀜) 원인 미확정. 같은 창의 follow_path 중단은 TF(map→odom stamp 1.49 s 멈춤)로 판정 → MPPI `transform_tolerance` 0.2 → 0.5 로 **우회**(이 시기 효과 미측정) | 10-07 (6 기) · 이후(10-12 ~) 통신 포화 · /tf 지연 계열로 이어짐 | [10-07 §2.4](../debug_log/2026-10-07/SUMMARY.md) 사용자 "지금도 전진하면서 이상하게 움직이고 있다"(f2c2, PC 11:12 무렵) | `ros2_ws/src/rover_navigation/config/nav2_params.yaml`(`FollowPathMPPI.transform_tolerance` 0.2 → 0.5, 커밋 `a096f227`) · `navigation.launch.py`(`mppi_viz` 인자 신설, 커밋 `e3e1fe88` — 이 카드 문제의 조치는 아니지만 10-12 포화의 출발점) | [SLAM map→odom 시각 정체](slam-stamp-freeze.md)(같은 중단 기제의 10-01 · 10-27 판) · ['후진하고 멈췄다' — CPU · 위치 추정 정지](cpu-load-stalls.md)(같은 'TF 조회 실패' 서명의 09-09 판) · [주행 직전 DDS 참여자 금지](pre-drive-dds-participants.md)(통신 부하 계열) · [DDS 공유메모리 사고](dds-shm-incident.md) · [MPPI 조향 흔들림 · temperature](mppi-wobble-temperature.md)(떨림 후보 ② 의 ESS 기제) · [rf2o 도입](rf2o-introduction.md)(f2c 주행의 목적) |
+| **조사 중** — 떨림(저속 · ω 부호 잦은 바뀜) 원인 미확정. 같은 창의 follow_path 중단은 TF(map→odom stamp 1.49 s 멈춤)로 판정 → MPPI `transform_tolerance` 0.2 → 0.5 로 **우회**(이 시기 효과 미측정) | 10-07 (6 기) · 10-12 ~ 10-13 (7 기 — 같은 오류 서명의 통신 포화는 [별도 카드](network-saturation-mppi-viz.md), §7.1) · 이후(10-19 ~) | [10-07 §2.4](../debug_log/2026-10-07/SUMMARY.md) 사용자 "지금도 전진하면서 이상하게 움직이고 있다"(f2c2, PC 11:12 무렵) | `ros2_ws/src/rover_navigation/config/nav2_params.yaml`(`FollowPathMPPI.transform_tolerance` 0.2 → 0.5, 커밋 `a096f227`) · `navigation.launch.py`(`mppi_viz` 인자 신설, 커밋 `e3e1fe88` — 이 카드 문제의 조치는 아니지만 10-12 포화의 출발점) | [SLAM map→odom 시각 정체](slam-stamp-freeze.md)(같은 중단 기제의 10-01 · 10-27 판) · [통신 포화 — MPPI 궤적 발행 · reliable `/tf` 기록기](network-saturation-mppi-viz.md)(10-12 ~ 13, 같은 '미래 시각 TF' 오류를 내는 다른 기전) · ['후진하고 멈췄다' — CPU · 위치 추정 정지](cpu-load-stalls.md)(같은 'TF 조회 실패' 서명의 09-09 판) · [주행 직전 DDS 참여자 금지](pre-drive-dds-participants.md)(통신 부하 계열) · [DDS 공유메모리 사고](dds-shm-incident.md) · [MPPI 조향 흔들림 · temperature](mppi-wobble-temperature.md)(떨림 후보 ② 의 ESS 기제) · [rf2o 도입](rf2o-introduction.md)(f2c 주행의 목적) · [pad_relief · 실행 중 패딩](pad-relief-runtime-padding.md) (7 기) |
 
 **한 줄**: 10-07 rf2o 켠 F2 순회 f2c2 의 W3 통로(직선 1.7 m)에서 로버가 0.035 m/s 로 느리게 가며 ω 부호를 6 s 에 21~34 번 바꿨다(좌우 떨림). 떨림이 끝난 경계 t ≈ 235 에 컨트롤러가 `Exception in transformPose: Lookup would require extrapolation into the future` 로 중단돼, 'TF 가 늦어 MPPI 가 묵은 자세로 떤다' 는 가설을 세우고 bag 의 수신 − stamp 지연을 6 s 창으로 쟀다(`job917`). 떨림 구간과 매끄러운 구간의 지연이 같아 **떨림에 대한 TF 가설은 기각**, 다만 t 234~240 창에서만 map→odom stamp 간격이 **1.49 s** 로 벌어져 t 235 중단의 원인은 TF(SLAM stamp 정체가 미래 여유 0.5 s 를 넘김)로 판정했다. MPPI `transform_tolerance` 를 0.5 로 올렸지만 다음 주행(f2d1 · f2d2)에서 효과도, 떨림 재발 여부도 보고하지 않았다. 떨림 원인 후보(오래된 계획 유지 · MPPI 표본 분포)는 미검증.
 
@@ -76,7 +76,7 @@ jobs 는 [2026-10-07/jobs/](../debug_log/2026-10-07/jobs/), 출력은 [2026-10-0
 | 코스트맵 쪽 | `:403` · `:606` 의 0.2 는 `stvl_layer` 안 값, `:822` 는 `wait` 행동 — 로컬 · 전역 코스트맵 블록에는 `transform_tolerance` 키가 없음(상류 기본값 사용, 값은 확인 안 함) | §6-6 |
 | SLAM 미래 여유 | `'transform_timeout': 1.5` — `ros2_ws/src/rover_bringup/launch/slam.launch.py:77`(10-01 0.2 → 0.5, 10-27 §21 → 1.5, 주석 67~76 행) | 이 카드의 t 235 정체(1.49 s)는 지금 여유 1.5 s 면 덮였을 크기(계산 — 1.49 < 1.5, 재생으로 확인 안 함) |
 | 주행 전 게이트 C | `Docs/tools/chk_drive_gate.py:6`(설명) · `:47~48`: `gap = max(수신 간격)` · `lag = max(수신 − stamp)` → `C = 'OK' if (gap < 0.5 and lag < 1.0)`, 관찰 5 s(`SEC` 기본 5.0, 19 행) | 주행 **전** 5 s 만 본다 — 주행 중 정체(t 235 같은)는 못 잡음. 또 `gap` 은 **수신** 간격이라 §3.5 처럼 stamp 정체를 놓친다(SLAM 이 같은 stamp 를 계속 다시 보냄). `lag` 문턱 1.0 은 stamp 가 미래(지금 +1.5 s)로 찍히므로 stamp 가 약 2.5 s 넘게 멈춰야 걸린다(계산). 판정 기준의 출처는 09-17 `job386_slamalive.py`(정상 SLAM 지연 −0.08~+0.55 s, 고장 때 간격 5.1 · 지연 4.8 s) |
-| MPPI 궤적 발행 | `navigation.launch.py:205`(`mppi_viz` 기본 `'false'`) · `:136~140`(`true` → `trajectory_step 20 · time_step 2`, `lite` → `100 · 4`) · 주석 `:130~135`(10-12 §7.3: true 206 kB × 10 Hz, PreferForward 15 와 함께 4/4 포화) | 10-07 §11 신설 → 10-12 포화(이후) |
+| MPPI 궤적 발행 | `navigation.launch.py:205`(`mppi_viz` 기본 `'false'`) · `:136~140`(`true` → `trajectory_step 20 · time_step 2`, `lite` → `100 · 4`) · 주석 `:130~135`(10-12 §7.3: true 206 kB × 10 Hz, PreferForward 15 와 함께 4/4 포화) | 10-07 §11 신설 → 10-12 포화([통신 포화 카드](network-saturation-mppi-viz.md) — 지금 순회 prep 기본 `lite`, `Docs/tools/prep_patrol.sh:8`) |
 | prep 파라미터 확인 | `Docs/tools/chk_prep.py:31~33` — `FollowPathMPPI.*`(PreferForward · vx_min · visualize · TrajectoryVisualizer · PathAlign · PathFollow)는 보지만 `transform_tolerance` 는 목록에 없음 | §5.2 의 같은 실수는 지금 도구에서는 안 생기지만, 이 값의 반영 확인도 하지 않는다 |
 
 ## 5. 내 실수
@@ -123,8 +123,27 @@ jobs 는 [2026-10-07/jobs/](../debug_log/2026-10-07/jobs/), 출력은 [2026-10-0
 - 떨림 원인: 후보 ① 오래된 계획(재계획 없는 58 s) ② MPPI 표본 분포 — `bags/bag_f2c2.tgz` 로 오프라인 MPPI 재현, 같은 계획을 오래 쓴 다른 구간과 비교.
 - 떨림 수치(속도 · ω 부호 바뀜) 재계산 — 지금은 원천 소실. 같은 기준으로 f2d2 W3(96.3 s) 구간도 세어 §6 의 재발 관찰을 채울 것.
 - `transform_tolerance` 의 상류 쓰임(대기 시간인가 허용 오차인가) 확인 — 10-21 §12 의 '0.5 인데 0.004 s 차를 못 덮음' 과 같은 질문.
-- 기록기 수신 시각을 컨트롤러의 시각 대용으로 쓴 판정의 타당성 — 10-13 에 bag 기록기 자체가 reliable `/tf` 를 못 따라간 일이 있다(→ 이후).
-- **이후(10-12 ~): 다음 시기에서 채움** — 예고만: 10-12 §7.3 `mppi_viz:=true`(206 kB × 10 Hz) + PreferForward 15 → UDP 폭증 · /tf 지연 · Nav2 중단(`navigation.launch.py:130~135` 주석), 10-13 bag 기록기 HEARTBEAT 폭주(기록기 `/tf` best effort), 10-21 §12 transformPose 예외 50 회, 10-27 §21 SLAM `transform_timeout` 1.5.
+- 기록기 수신 시각을 컨트롤러의 시각 대용으로 쓴 판정의 타당성 — 10-13 에 bag 기록기 자체가 reliable `/tf` 를 못 따라간 일이 있다 → §7.1 ③ 에서 f2c2 에 대해 다시 읽음(포화 서명은 없었음, 대용의 한계는 남음).
+### 7.1 이후(10-12 ~ 10-15) — 통신 포화와의 관계 (11-03 채움)
+10-12 · 10-13 의 통신 포화([통신 포화 카드](network-saturation-mppi-viz.md))는 이 카드 t 235 와 **같은 컨트롤러 오류**(`Exception in transformPose: Lookup would require extrapolation into the future` → follow_path 중단)를 냈지만, 자료로 보면 **다른 기전**이다.
+
+| | 10-07 f2c2 t 235(이 카드) | 10-12 ~ 13 포화(f2f1 · f2f3 · f2g2 · f2i1 · f2j1 · f2k1 · f2m1) |
+|---|---|---|
+| 구성 | PreferForward **5**, `mppi_viz` 없음(10-07 §11 의 `mppi_viz` · `LONG_REC` 는 f2c2 뒤 16:06 커밋 `e3e1fe88` — f2d1 · f2d2 prep `job918` 에도 그 전엔 없었음), 기록기 `/tf` reliable | PreferForward **15** + `mppi_viz:=true`(206 kB × 10 Hz) + 기록기 `/tf` reliable |
+| bag `/tf` 수신 | map→odom 수신 간격 0.05 s 일정(10-07 §3.5, 원천 소실 — §6-2) | 50 → 5~20 Hz 로 무너져 끝까지(10-12 §3.3 `f2f3_tf.txt`, `anal_tf_rate.py`) |
+| stamp | map→odom stamp 간격 **1.49 s**(t 234~240 창만, `j917_tflag.txt`) | 측정의 중심이 아님 — 발행은 계속됐고(10-13 §1.2 캡처: `/tf` DATA 는 오히려 증가) 읽는 쪽이 못 받음 |
+| 컨트롤러가 모자란 시간 | 6.6 ms(요청 …129.089612 vs 최신 …129.083021) | 요청 − 최신 중앙 0.071 s · 최대 0.829 s(f2f3, 22 회) |
+| 지속 | 한 창(수 s) | 포화 시작부터 주행 끝까지(정지하면 풀림, 10-12 §5.2 `j965_state.txt`) |
+| 원인 | SLAM 이 같은 stamp 를 다시 실음(정체) → 미래 여유 초과 | 기록기가 reliable `/tf` 읽는 쪽으로 뒤처짐 → `/tf` 쓰는 쪽 HEARTBEAT 폭주(79 %) → UDP 10 배 · 모든 소켓 손실(10-13 §1.2, 지지) |
+| 조치 | MPPI `transform_tolerance` 0.5(→ 10-27 SLAM `transform_timeout` 1.5) | `mppi_viz:=lite` · 기록기 `/tf` best effort · 경로 조회기 상주 |
+
+이 시기 자료로 이 카드에 더해지는 것:
+1. **'순간 TF 지연 · 중단은 정상 주행에도 있다'** — 포화가 없던 f2g1(PF 5, 10-12 §4.2)에도 "미래 시각 TF" 로 follow_path 중단 **6 회**(11:56:14 1 회, 11:58:10 ~ 38 5 회)가 있었다(`f2g1_navlog.txt`). 같은 날 미래 시각 TF 줄 수: f2g1 12 · f2g2 18 · f2h1 **0**(10-12 §6.2), f2l1 · f2l2 **0**(§12.2 · §13.1), 10-13 f2o1 은 같은 종류인지 불분명한 `Can't transform map→odom … extrapolation into the future` **경고** 16 회(§4.4 — 그날 '포화 때의 수백 회와 다른 수준', 평상 대비는 비교 안 함). 즉 이 카드 계열(stamp 정체 · 순간 지연)의 중단은 포화와 별개로 0 ~ 수 회 남고, lite 구성에서 0 이 나온 주행도 있다 — **원인별로 갈라 센 적은 없다**(그날 `navlog_pc.py` 는 `transformPose` 와 `Unable to transform robot pose` 를 한 종류로 묶음).
+2. **'TF 지연 → 컨트롤러 중단 → 멈춤이 멈춤을 부르는 고리'**(10-12 §2, 추정) — 포화 주행에서 중단 뒤 BT 재계획 · 경로 다듬기 · 응답 시간 초과가 이어졌고(f2f3 서버 시간 초과 15, BT 틱 초과 767), 이 카드의 t 235 이후 'wait 5 s' 와 같은 계열의 복구가 반복된 것이다. 고리가 포화를 유지했는지, 포화가 고리를 만들었는지는 10-13 캡처(통신량이 손실 · 중단보다 먼저, 10-12 §9.2)로 보면 **포화가 먼저**다.
+3. **기록기 수신 시각을 대용으로 쓴 판정(§7 넷째 항목)** — 10-13 은 기록기가 포화 때 **가장 먼저 뒤처지는 읽는 쪽**임을 보였다(`cap_f2m1_acklag.txt`). 그러니 bag 기반 TF 지연은 포화 구간에서는 컨트롤러의 상태를 과장할 수 있다. f2c2 는 포화 서명(`/tf` 수신 붕괴)이 없고 수신 − stamp 지연이 떨림 · 매끄러운 구간에서 같았으므로 §3 의 '떨림에 대한 TF 가설 기각' 이 이것으로 뒤집히지는 않는다(추론). 다만 '컨트롤러가 본 시각' 을 직접 잰 적은 여전히 없다.
+4. 떨림 자체(저속 · ω 부호 잦은 바뀜)에 대해서는 이 시기에 새 자료가 없다. 10-12 PreferForward 15 주행들의 W3 통로 구간을 같은 기준(cmd v 평균 < 0.05 · 6 s 에 ω 부호 바뀜 ≥ 20)으로 센 적도 없다.
+
+- **이후(10-19 ~): 다음 시기에서 채움** — 포인터만: 10-21 §12 transformPose 예외 50 회(tolerance 0.5 인데 요청이 최신보다 0.004 ~ 0.088 s 앞섬), 10-27 §21 SLAM `transform_timeout` 1.5(§21.2 'TF 지연의 정체 = CPU 포화가 아니라 SLAM map→odom stamp 정체') · §22 '통신 탓 아님 → 공유메모리로는 안 풀림'.
 
 ## 8. 실험 · 도구 색인
 | 이름 | 무엇 | 위치 |

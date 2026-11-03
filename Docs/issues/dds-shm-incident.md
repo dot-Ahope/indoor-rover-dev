@@ -2,9 +2,9 @@
 
 | 상태 | 기간 | 처음 본 곳 | 바꾼 파일 | 관련 문제 |
 |---|---|---|---|---|
-| **우회 → 견고성 선택으로 유지**(09-09 SHM 을 끄고 UDP 전용, 재발 0) · 원인 판정은 **10-20 에 일부 정정**(SHM '자체' 가 원인이라는 것은 과한 일반화 — 확인된 것은 '비정상 종료 · 잔재 강제 삭제가 있으면 깨진다' 까지) · 10-20 시험 뒤 카메라 ↔ cuVSLAM 만 SHM 재사용(10-23 운용 기본) | 09-09 (1 회차 · 2 회차) · 09-11(중첩 프로세스) · 이후 10-20 재점검 · 10-23 | [09-09 §8.9](../debug_log/2026-09-09/SUMMARY.md) — 사용자 보고 "지도를 벗어나 이상하게 움직인다" | `ros2_ws/src/rover_bringup/config/fastdds_udp_only.xml`(신규, 커밋 `2a4092b2`) · `base` · `sensors` · `slam` · `navigation` launch 의 `SetEnvironmentVariable('FASTRTPS_DEFAULT_PROFILES_FILE', …)` · 정리 스크립트(SIGTERM 우선) · 09-11 `job240_clean.sh` 중복 감사 | [micro-ROS 보드율 회귀](microros-baud-regression.md)(같은 날 오전, `pkill` 오염의 시작) · [CPU 부족 정지](cpu-load-stalls.md)(같은 서명의 다른 원인 — 2 회차 판정과 섞임) · [보드 연결 · 세션](board-link-microros-session.md)(정리 스크립트가 agent 까지 지워 RESET 반복) · [W3 떨림 · TF 지연](tf-lag-w3-wobble.md) (6 기) |
+| **우회 → 견고성 선택으로 유지**(09-09 SHM 을 끄고 UDP 전용, 재발 0) · 원인 판정은 **10-20 에 일부 정정**(SHM '자체' 가 원인이라는 것은 과한 일반화 — 확인된 것은 '비정상 종료 · 잔재 강제 삭제가 있으면 깨진다' 까지) · 10-20 시험 뒤 카메라 ↔ cuVSLAM 만 SHM 재사용(10-23 운용 기본) | 09-09 (1 회차 · 2 회차) · 09-11(중첩 프로세스) · 10-12 재사용 검토(§8.3~§8.6 · §17~§19 · §21 — 결정 · 설명만, 바꾼 파일 없음) · 이후 10-20 재점검 · 10-23 | [09-09 §8.9](../debug_log/2026-09-09/SUMMARY.md) — 사용자 보고 "지도를 벗어나 이상하게 움직인다" | `ros2_ws/src/rover_bringup/config/fastdds_udp_only.xml`(신규, 커밋 `2a4092b2`) · `base` · `sensors` · `slam` · `navigation` launch 의 `SetEnvironmentVariable('FASTRTPS_DEFAULT_PROFILES_FILE', …)` · 정리 스크립트(SIGTERM 우선) · 09-11 `job240_clean.sh` 중복 감사 | [micro-ROS 보드율 회귀](microros-baud-regression.md)(같은 날 오전, `pkill` 오염의 시작) · [CPU 부족 정지](cpu-load-stalls.md)(같은 서명의 다른 원인 — 2 회차 판정과 섞임) · [보드 연결 · 세션](board-link-microros-session.md)(정리 스크립트가 agent 까지 지워 RESET 반복) · [W3 떨림 · TF 지연](tf-lag-w3-wobble.md) (6 기) · [통신 포화 · MPPI 궤적 발행](network-saturation-mppi-viz.md)(7 기 — 10-12 SHM 재검토의 출발점) · [빠른 prep](prep-fast-startup.md)(정리 단계 · `fastdds shm clean`) |
 
-**한 줄**: 09-09 저녁, EKF 프로세스는 CPU 20 % 로 살아 있고 입력도 정상인데 `/odometry/filtered` 퍼블리셔가 **0** 이 됐다. FastDDS 로그에 `open_and_lock_file failed`, `/dev/shm` 에는 본체 없이 잠금 파일(`_el`)만 남은 고아가 있었다. 그날 내가 정리를 '확실히' 하려고 13 개 스크립트에서 `pkill -9` 를 썼고, SIGKILL 은 FastDDS 가 SHM 파일을 치우지 못하게 한다. SIGTERM + 잔재 삭제로 복구했으나 몇 시간 뒤 `slam_toolbox` 에 같은 서명이 다시 나왔고, 'SIGTERM 으로 바꿨는데도 재발 → SHM 을 쓰는 것 자체가 문제' 로 보고 SHM 을 끈 UDP 전용 프로파일을 모든 launch 에 넣었다(재발 0). 10-20 에 사용자 요청으로 다시 보니 2 회차 전 스크립트들이 **살아 있는 참가자의 SHM 파일까지 `rm -f`** 했고 launch 의 SIGKILL 단계도 확인 안 됐으며 같은 날 CPU 정지와 섞여 있었다 → 'SHM 자체' 는 근거가 약했다. 정리 없이 −9 를 섞은 재기동 시험(FastDDS 2.6.12)이 15/15 · 30/30 통과해, 10-23 부터 카메라 ↔ cuVSLAM 경로만 SHM 을 쓴다. 09-11 에는 다른 형태의 '중첩' — launch 를 죽여도 자식 `robot_state_publisher` 가 고아로 남아 같은 이름 노드가 둘 — 을 사용자 지적으로 찾아 기동 절차에 중복 감사를 넣었다.
+**한 줄**: 09-09 저녁, EKF 프로세스는 CPU 20 % 로 살아 있고 입력도 정상인데 `/odometry/filtered` 퍼블리셔가 **0** 이 됐다. FastDDS 로그에 `open_and_lock_file failed`, `/dev/shm` 에는 본체 없이 잠금 파일(`_el`)만 남은 고아가 있었다. 그날 내가 정리를 '확실히' 하려고 13 개 스크립트에서 `pkill -9` 를 썼고, SIGKILL 은 FastDDS 가 SHM 파일을 치우지 못하게 한다. SIGTERM + 잔재 삭제로 복구했으나 몇 시간 뒤 `slam_toolbox` 에 같은 서명이 다시 나왔고, 'SIGTERM 으로 바꿨는데도 재발 → SHM 을 쓰는 것 자체가 문제' 로 보고 SHM 을 끈 UDP 전용 프로파일을 모든 launch 에 넣었다(재발 0). 10-20 에 사용자 요청으로 다시 보니 2 회차 전 스크립트들이 **살아 있는 참가자의 SHM 파일까지 `rm -f`** 했고 launch 의 SIGKILL 단계도 확인 안 됐으며 같은 날 CPU 정지와 섞여 있었다 → 'SHM 자체' 는 근거가 약했다. 정리 없이 −9 를 섞은 재기동 시험(FastDDS 2.6.12)이 15/15 · 30/30 통과해, 10-23 부터 카메라 ↔ cuVSLAM 경로만 SHM 을 쓴다. 09-11 에는 다른 형태의 '중첩' — launch 를 죽여도 자식 `robot_state_publisher` 가 고아로 남아 같은 이름 노드가 둘 — 을 사용자 지적으로 찾아 기동 절차에 중복 감사를 넣었다. **10-12(7 기)** 에는 통신 포화(UDP 수신 버퍼 208 kB 넘침이 의심됨) 대책으로 사용자가 SHM 재사용을 물었다. 나는 처음에 질문을 DDS SHM 으로 읽고 '지금은 바꾸지 않는다'(원인 미확정 · 고아 위험)로 답했는데(§8.3), 사용자가 물은 것은 Jetson 의 CPU·GPU 통합 메모리였다(§8.4 — 내 오독). 이어서 전송은 프로세스 단위로 섞을 수 있다(§8.5), micro-ROS 는 SHM 을 막지 않는다(§8.6), 가변 길이 표준 메시지(Image · PointCloud2)는 zero-copy 대상이 아니다(§18 · §19)를 정리했고, 사용자는 '프로세스 간 전달은 DDS SHM 으로' 를 결정했다(§17). 그러나 10-13 캡처가 포화의 시작을 bag 기록기의 reliable `/tf` 로 좁혀 기록기 QoS 로 막았고([통신 포화 카드](network-saturation-mppi-viz.md)), SHM 도입은 10-15 까지 실행되지 않았다(보류한다는 문장도 없음). 실제 도입은 10-20 의 카메라 ↔ cuVSLAM 경로 하나. 10-12 설명 가운데 '깊이 영상 614 kB' 는 틀린 계산값이었다(실제 38 kB, 10-20 §7.5 — §5.6).
 
 ## 1. 증상
 - 1 회차(09-09 §8.9): 사용자 "지도를 벗어나 이상하게 움직인다". `/odometry/filtered` **Publisher count: 0**, `ekf_node` 살아 있음(CPU 20 %, 상태 `Sl`), 입력 정상(`/wheel_odom/conditioned` 25 Hz · `/imu/data` 199.7 Hz), 타임스탬프 오프셋 −0.002~−0.032 s · 역행 0. 로그 `[RTPS_TRANSPORT_SHM Error] Failed init_port fastrtps_port7423: open_and_lock_file failed`, `/dev/shm/fastrtps_port7423` **없음** · `fastrtps_port7423_el` **있음**.
@@ -42,6 +42,19 @@ jobs 는 [2026-09-09/jobs/](../debug_log/2026-09-09/jobs/) · [2026-09-11/jobs/]
 | 09-11 §5.9 | 사용자 "중첩된 프로세스가 있어 충돌이 일어나지 않게" → nav2 만 재기동하며 전 스택 중복 감사 | **`robot_state_publisher` 2 개**(3054 / 5769) | 이전 기동의 자식이 launch 종료 때 안 죽고 고아로 남음 | `job249_nav2only.sh` |
 | | RSP 프로세스 · 그래프 이름 수 · `/tf_static` 발행자 GID → 1 개일 때만 주행 | (프로세스 수 미기록) | 스크립트 문구: '그래프 중복은 DDS 잔상(UDP 참가자 lease 만료 대기)으로 판단' — 프로세스 2 개였다면 이 경로는 중단으로 끝남 | `job250_rsp_then_drive.sh` |
 | | 현재 `base.launch` 의 자식 PID 를 `/tmp/base.log` 에서 찾고 나머지 RSP 를 TERM → 3 s → KILL → 1 개 확인 → 전 스택 재감사 → 주행 job251 | 1 개 확인 후 주행 | 고아 제거, `job240_clean.sh` 에 반영(§6 모순 3) | `job252_fix_then_drive.sh` |
+| 10-12 §8.2 | (통신 포화 조사의 일부 — 본문은 [통신 포화 카드](network-saturation-mppi-viz.md)) 커널 UDP 통계 · 소켓별 손실 | `rmem_default 212992 rmem_max 212992`, 부팅 뒤 `InDatagrams=133271653` 중 `RcvbufErrors=8592442`(6.4 %), `/trajectories` 1 개 206 kB ≈ 버퍼 한 개 | 'UDP 전용(09-09 결정)이라 큰 메시지가 같은 소켓의 `/tf` 를 밀어낸다'(**추정**) — SHM 재검토의 계기 | [`j967_net.txt`](../debug_log/2026-10-12/outputs/j967_net.txt) · [`job967_net.sh`](../debug_log/2026-10-12/jobs/job967_net.sh) |
+| 10-12 §8.3 | 사용자 "공유메모리 방식을 다시 사용하는 건 어떤가" → 사실 확인 | nvblox 컨테이너 `ipc host · net host`, 에이전트 `ipc private · net host`, 호스트 Fast DDS `2.6.12-1jammy…`, 컨테이너 안 프로파일 '없음', 호스트 `/dev/shm` 3.8G 중 84K · fastrtps 잔류 0 | **'지금은 바꾸지 않는다'**: ① 수신 버퍼 원인은 추정 ② 같은 가설을 더 작은 변경(rmem 상향 · `lite`)으로 시험 가능 ③ SHM 은 그 뒤 단계, 그때 `fastdds shm clean` + 발행자 존재 게이트. ✘ 질문을 DDS SHM 으로 오독(§8.4, §5.5) | [`j968_shm.txt`](../debug_log/2026-10-12/outputs/j968_shm.txt) · [`job968_shm.sh`](../debug_log/2026-10-12/jobs/job968_shm.sh)(§9.16) |
+| 10-12 §8.4 | 사용자 정정 "DDS 공유메모리가 아니라 **Jetson 보드 고유의 공유메모리**(CPU·GPU 통합 메모리)" | (측정 없음) | 통합 메모리는 **한 프로세스 안**의 CPU↔GPU 복사를 줄인다 — 오늘 병목(프로세스 사이 DDS 전달)에는 직접 안 닿음. 프로세스 사이에 같은 취지 = 노드 합치기(composition, Nav2 `use_composition`) · DDS SHM. nvblox 3.2.5 가 깊이를 NITROS 로 받는지 **미확인**. 중기 후보 'Nav2 합치기' 기록 | SUMMARY 문장(지식 기반) |
+| 10-12 §8.5 | 사용자 제안 "영상·라이다 같은 대용량은 SHM 제로카피로, 문제 생기는 부분은 UDP 로" | (측정 없음) | Fast DDS 전송은 토픽별이 아니라 **프로세스(참여자)별** → '프로세스를 골라' 섞기는 가능. 가변 길이 표준 메시지(Image · PointCloud2 · LaserScan)는 Humble 대여(loan) 대상이 아니라 SHM 이면 'UDP 경로(커널 버퍼 · 64 kB 조각)를 건너뜀' 까지. 후보 = realsense(와 depth_relay)만 SHM, 재기동 잦은 Nav2 · 09-09 에 죽었던 ekf · slam 은 UDP. 게이트 J(nvblox 깊이 ≥ 10 Hz)가 조용한 실패를 잡음. 판단: 구조는 타당, 원인 확정 뒤 '카메라 → nvblox 만 SHM' A/B. ⚠ '깊이 약 614 kB × 15 Hz ≈ 9 MB/s(계산값)' 와 그로부터의 '크기만의 문제가 아닐 수 있다' 는 **틀린 전제**(§5.6) | SUMMARY 문장 |
+| 10-12 §8.6 | 사용자 "DDS 로 공유메모리 통신이 되면 하는 게 맞다. micro-ROS 때문에 문제가 생기나?" | (측정 없음) | **micro-ROS 는 원인 아님**: 에이전트는 `MICROROS_DISABLE_SHM=1` · `ipc private` → SHM+UDP 프로세스와도 UDP 로 만남, 09-09 두 사고에서 보드 토픽만 멀쩡. 에이전트는 계속 SHM 끔. 진행안 ① SHM + UDP 프로파일('루프백 고정 유지' — ✘ 지금 UDP 프로파일엔 루프백 고정이 없음, §6 모순 5) ② `fastdds shm clean` · 기동 로그 `Failed init_port` · `RTPS_TRANSPORT_SHM Error` 면 prep 불합격 · 발행자 확인 ③ 정지 시험(Nav2 재시작 5 회 고아 재발) ④ 주행 A/B | SUMMARY 문장 |
+| 10-12 §17 | 마무리 뒤 사용자 "UDP 버퍼는 늘렸나? 늘리면 CPU 문제? 메시지 전달은 DDS SHM 을 이용하고 싶다" | 수신 버퍼 **안 늘림**(208 kB 그대로) — 그날 해결은 궤적을 206 → 28 kB(`lite`)로 줄여 피한 것 | (지식 기반, 측정 아님) 버퍼 크기 자체는 CPU 를 안 씀, 받는 쪽이 계속 느리면 버려질 것이 줄 서서 늦게 처리될 뿐(좌표 변환엔 '늦은 옛 값' 이 더 나쁠 수 있음), UDP 소켓 ≈ 180 개(참여자 ≈ 45 × 4 — **추정**)라 26 MB 면 최악 수 GB → 넣더라도 4~8 MB. **사용자 결정: 프로세스 간 전달은 DDS SHM** — §8.6 진행안을 다음 세션 첫 작업으로, 세그먼트 크기 지정(궤적 206 kB · 깊이 614 kB ✘ §5.6) | SUMMARY 문장 |
+| 10-12 §18 | 사용자 "DDS 는 zero-copy 를 지원하고 이미지·점군도 된다던데 왜 한 번은 복사해야 한다고 했나" → 웹 문서 확인 | Fast DDS zero-copy = 데이터 공유 전달 + loan, 조건 **plain · 크기 고정 타입**(eProsima 문서 15.8). `sensor_msgs/Image` · `PointCloud2` 는 `data` 가 가변 길이라 대상 아님(ROS Discourse · ros2_shm_msgs 안내) | 앞 표현 정정: 표준 타입을 SHM 으로 보내면 **보내는 쪽 직렬화 1 + 받는 쪽 역직렬화 1** 이 남음. 이미지·점군 zero-copy 가 되는 경우 = ① 고정 타입 + loan API ② 같은 프로세스 ③ NITROS. Humble 에서 `borrow_loaned_message()` 시험 안 함 | SUMMARY §18 출처 4 개(URL) |
+| 10-12 §19 | 사용자 "현재 구성에서 크기 고정 타입으로 바꾸는 건 좋지 못한가" | 계산: 깊이 640×480×16 bit = 614 kB × 15 Hz ≈ 9 MB/s → 없앨 복사 ≈ 18 MB/s ≈ CPU 1 % 미만(**추정**). ✘ 입력값 틀림 — 실제 발행 깊이 38 kB(§5.6), 이득은 더 작음 | 본 경로엔 **권하지 않음**: ① 포화를 낸 `MarkerArray` · `TFMessage` 는 고정 타입이 될 수 없음 ② realsense · nvblox · Nav2 포크 필요, 변환 노드는 복사 2 번 ③ 이득 작음 ④ bag · Foxglove · RViz 호환 상실 ⑤ Humble loan 덮어쓰기 사용자 보고(미검증). 따로 떨어진 벤치마크로는 가능 | SUMMARY 문장(계산 · 지식 기반) |
+| 10-12 §21 | 사용자 "공유메모리 방식이었다면, BT 가 요청을 쏟아내는 것이 원인일 때 밝히기 어려웠을까" | f2g2 Nav2 로그 포화 전 → 후(분당): smoother 'Received a path to smooth' 27.6 → 17.6 · 'Passing new path' 25.1 → 14.1 · 'Received a goal' 2.4 → 6.2 · 코스트맵 비우기 0 → 4.4 · 4.0 · 서버 응답 시간 초과 0 → 7.5. 계산 스크립트 · 출력 **원천 소실** — 카드 작성 중 재계산(§9.17): 같은 경향, 값은 창 · 패턴 차이로 다름 | 통신 쪽 관찰(커널 UDP 통계 · 소켓 손실 · 캡처)은 SHM 에서 어려워짐 — SHM 대기열 넘침은 커널 통계에 안 잡힘. 'BT 요청 수' 자체는 전송과 무관하게 Nav2 로그로 셀 수 있음. 요청은 분당 수십이라 초당 5 만 증가를 설명 못 함 → (나) 'BT 요청 폭주' **약함**, 늘어난 것은 DDS 아래 층(재전송 · 확인 · 생존 신호)일 가능성(**추정**) | [`nav2_f2g2.log.gz`](../debug_log/2026-10-12/outputs/nav2_f2g2.log.gz) · [`f2g2_navlog.txt`](../debug_log/2026-10-12/outputs/f2g2_navlog.txt) |
+| 10-12 §22 | 사용자 "캡처 한 번 하고 넘어가자" | — | 다음 세션 순서: ① 포화 재현 + 루프백 캡처 → ② DDS SHM 도입(§17 진행안) → 나머지 | SUMMARY 문장 |
+| 10-13 §1.2 · §2 · §15 | (통신 포화 카드) 캡처 → `/tf` 쓰는 쪽 HEARTBEAT 폭주, 가장 먼저 뒤처진 읽는 쪽 = bag 기록기 → 기록기 `/tf` best effort 에서 포화 없음(1 회) | 수치는 [통신 포화 카드](network-saturation-mppi-viz.md) | §1.2 '공유메모리 도입에 주는 뜻': 소켓 넘침으로 `/tf` 가 버려지는 것은 없어지나(**추정**) '느린 reliable 구독자 하나가 쓰는 쪽 보관함을 붙잡는' 구조는 전송 방식과 무관 → 도입 뒤 검증은 HEARTBEAT 수 · 읽는 쪽 뒤처짐으로. §15 '다음에 할 것' 에 SHM 도입 **없음**, 보류 결정 문장도 없음 | [10-13 SUMMARY](../debug_log/2026-10-13/SUMMARY.md) |
+| 10-13 §0 · 10-14 · 10-15 | — | `rmem_max 212,992`(10-13 §0 `chk_jetson_state.sh`). 10-14 · 10-15 SUMMARY 에 SHM · 수신 버퍼 작업 기록 없음(카드 작성 중 grep) | 수신 버퍼는 끝까지 안 늘림 · SHM 은 7 기에 미실행 | [`chk_jetson_state.sh`](../tools/chk_jetson_state.sh) 8 행 |
+| 이후(10-19 ~) | **다음 시기에서 채움** — 아래 10-20 · 10-23 행은 카드 첫 판(2 기)에서 미리 적은 요약이다. 메모리 '10-20 재점검: SHM 자체가 원인이라는 것은 과한 일반화' 를 그 시기 원문(10-20 §7.1~§7.5 · §9.5, 10-23 §16)과 대조해 다시 채운다 | — | — | — |
 | 10-20 §7.2 | 사용자 질문 "실행 종료 방식이 문제인지, 통신 방식이 문제인지" → 09-09 기록 · jobs 재독 | 1 회차 = 종료 방식(pkill −9) 맞음. 2 회차 전 job156 · 164 · 174 가 **살아 있을 수 있는 참가자 파일까지 `rm -f`**, launch 의 SIGKILL 단계 미확인, CPU 정지와 섞임 | **'SHM 자체' 는 과한 일반화** — 확인된 것은 '비정상 종료 · 잔재 강제 삭제 시 깨진다' 까지 | [10-20 SUMMARY §7.2](../debug_log/2026-10-20/SUMMARY.md) |
 | 10-20 §7.3a~c | SHM+UDP 프로파일, 호스트 발행 → 컨테이너 구독 640×480 15 Hz, 종료를 INT · TERM · KILL 돌림 | 팔 A(정리 없음) **15/15**, 팔 B(`fastdds shm clean` 뒤) **30/30**, SHM 오류 0. 호스트 ↔ 컨테이너 SHM 통함(SHM 전용 V1) | 09-09 실패는 이 버전 · 규모에선 재현 안 됨 — `rm -f` 가 더 유력(**추정**) | 10-20 `outputs/run_shm_test.txt` · `run_shm_test_shmonly.txt` · `chk_shm_path.txt` |
 | 10-20 §9.5 | 실제 스택(카메라 ↔ cuVSLAM 만 SHM) prep 10 회 + 카메라 · nvblox · cuVSLAM −9 섞음 | **10/10**: `/vslam/odom` 15 Hz · nvblox 깊이 15.1 Hz · SHM 오류 0 · −9 뒤 다음 prep 에서 정상 복귀 | 합격 | 10-20 `outputs/run_shm_restart.txt` |
@@ -61,6 +74,10 @@ jobs 는 [2026-09-09/jobs/](../debug_log/2026-09-09/jobs/) · [2026-09-11/jobs/]
 | UDP 전용 뒤의 정지도 SHM 탓 | job175 · job177 | SHM 오류 0, EKF 위반 91 회 | **기각** → CPU([CPU 카드](cpu-load-stalls.md)) |
 | slam_toolbox 가 중복 실행 중 | job180 `/tf --verbose` 노드 목록 | 발행자 + 구독자 함께 나열한 것 | **기각**(오독, §5.3) |
 | `robot_state_publisher` 그래프 중복 = DDS 잔상(lease 만료 대기) | job250 의 판단 문구 → job252 프로세스 PID 비교 | 실제 프로세스 2 개(고아) | 잔상 가설 **기각**(09-11 §5.9) |
+| (10-12) 통신 포화의 원인 = UDP 수신 버퍼(208 kB) → SHM 이면 사라진다 | §8.2 누적 손실 · 메시지 크기, 10-13 캡처 · f2n1 | 10-13: 시작점은 기록기의 reliable `/tf` 뒤처짐 → HEARTBEAT 폭주. 버퍼 넘침은 유지 기전의 일부. 기록기 QoS 만 바꿔 포화 0/1 | **부분 지지 · 미시험** — SHM 으로는 시험하지 않음(7 기 미실행). '느린 구독자' 구조는 SHM 에서도 남음(10-13 §1.2, 추정) |
+| (10-12 §8.6) micro-ROS 에이전트 때문에 호스트가 SHM 을 못 쓴다 | 에이전트 설정 · 09-09 기록 | 에이전트 `MICROROS_DISABLE_SHM=1` · `ipc private`, SHM+UDP 와 UDP 전용 참가자는 UDP 로 만남, 09-09 두 사고에서 보드 토픽만 정상 | **기각**(설정 · 문서 근거. 10-20 혼합 운용에서 보드 토픽 정상은 그 시기 카드에서 확인) |
+| (10-12 §8.5 · §18) SHM 이면 이미지 · 점군도 zero-copy | 문서 확인(§18) | 가변 길이 `data` → loan 대상 아님. SHM 전송은 직렬화 · 역직렬화 각 1 회가 남고 UDP 경로만 건너뜀 | **기각**(문서 근거, Humble 직접 시험 없음) |
+| (10-12 §20 (나)) 포화 = BT 의 액션 · 서비스 요청 폭주 | f2g2 Nav2 로그 분당 줄 수(§21) | 요청은 분당 수십, 일부는 포화 뒤 줄어듦. 초당 5 만 증가와 자릿수가 안 맞음 | **약함**(§21). 10-13 캡처가 `/tf` HEARTBEAT 으로 확정 쪽 근거(통신 포화 카드) |
 
 ## 4. 조치와 효과
 - **정리 규칙**(09-09 §8.9): `pkill -TERM` → 최대 15 s 대기 → 남은 것만 `-9`. `job154` · `job156` · `job174` · `job178` 부터 적용. ⚠ 같은 스크립트들이 끝에 `rm -f /dev/shm/fastrtps_*` 를 함께 했다 — 10-20 이 지목한 '잔재 강제 삭제'(지금은 금지: 10-20 이후 prep 은 `fastdds shm clean`, 아무도 안 잡은 고아만).
@@ -69,6 +86,7 @@ jobs 는 [2026-09-09/jobs/](../debug_log/2026-09-09/jobs/) · [2026-09-11/jobs/]
   - 한계(메모리 · 10-20): ssh 로 띄운 진단 스크립트 · `ros2` CLI 는 이 환경변수가 없어 여전히 SHM 참가자를 만든다(통신은 UDP 로 협상돼 문제 없음). 10-20 §7.2 측정: 그날도 `/dev/shm` 에 FastDDS 파일 16 개가 생겨 있었다(프로파일 없이 뜬 무언가의 잔재 **추정**).
 - **중복 감사**(09-11 §5.9): `job249_nav2only.sh` · `job252_fix_then_drive.sh` 가 14 개 이름 각각 `pgrep -fc` = 1 인지, `ros2 node list | sort | uniq -d`, `/tf` 발행 노드별 수를 찍고 하나라도 아니면 '주행 금지' 로 끝낸다. `job240_clean.sh` 는 기동 전 정리 + `robot_state_publisher` 개수 표시.
 - 이후(09-16): Wi-Fi 전환으로 IP 가 바뀌면 이미 뜬 참가자가 옛 IP 를 광고하는 문제로 XML 에 루프백 화이트리스트를 넣었다가, agent 컨테이너가 같은 화이트리스트를 안 써 `/wheel_odom` 0 이 되어 되돌림(job359/360). agent 에도 같은 XML 을 마운트(`base.launch.py` `-v … -e FASTRTPS_DEFAULT_PROFILES_FILE=…`). 상세는 Wi-Fi · DDS 카드(예정) — [Jetson Wi-Fi](jetson-wifi-link.md).
+- **10-12 결정과 그 뒤**(7 기): 바꾼 파일 없음. §8.3 '지금은 안 바꿈' → §17 사용자 결정 'DDS SHM 으로'(다음 세션 첫 작업) → §22 '캡처 먼저' → 10-13 캡처 · 기록기 `/tf` best effort 로 포화가 막히자 SHM 은 '다음에 할 것' 에서 빠짐(10-13 §15) → 10-15 까지 미실행. 수신 버퍼(`net.core.rmem_max`)도 sudo 필요 · 사용자 결정 사항으로 남은 채 **안 늘림** — 저장소에 sysctl 설정 파일은 없고 `Docs/tools/chk_jetson_state.sh` 8 행이 값을 찍기만 한다(카드 작성 중 확인). 10-20 의 SHM+UDP 프로파일 주석(`fastdds_shm_udp.xml` 5~7 행)은 'rmem_max 상향(sudo) 대신 이 길을 택함' 이라 적는다.
 - 이후(10-20 · 10-23): SHM+UDP 프로파일 `fastdds_shm_udp.xml`(세그먼트: 카메라 8 MB, cuVSLAM 4 MB)을 **카메라 프로세스 · cuVSLAM 컨테이너에만**(`camera.launch.py dds_shm:=`, `ekf.launch.py dds_shm:=` → `cuvslam_up.sh`) — 나머지는 UDP 그대로. 근거: 깊이(데시메이션 ×4 = 38 kB)는 UDP 로 15 Hz 문제없고, IR 307 kB × 2 가 소켓 버퍼(212 992 B)보다 커서 UDP 에서 빠짐(10-20 §7.5). 10-23 부터 prep 기본.
 
 ## 5. 내 실수
@@ -120,16 +138,68 @@ jobs 는 [2026-09-09/jobs/](../debug_log/2026-09-09/jobs/) · [2026-09-11/jobs/]
 | 다음에 알아보는 법 | '고쳤는데 재발' 이라고 쓰기 전에 **그 사이에 다른 개입(파일 삭제 · 강제 종료 단계)이 있었는지** 스크립트를 다시 읽는다. 원인 판정은 '그 조건만 바꾼 재현 시험' 으로 — 이 경우 −9 를 섞은 재기동 반복 |
 | 데이터 | [10-20 §7.2 · §7.3a~c · §9.5](../debug_log/2026-10-20/SUMMARY.md), 10-20 `outputs/run_shm_test.txt` · `run_shm_restart.txt`, 09-09 `jobs/job156_stop.sh` · `job164_stvlup.sh` · `job174_dds.sh` |
 
+### 5.5 '공유메모리' 질문을 DDS SHM 으로 오독(10-12 §8.3 → §8.4)
+| 칸 | 내용 |
+|---|---|
+| 하려 한 것 | 사용자 질문 "공유메모리 방식을 다시 사용하는 건 어떤가" 에 답하기(`job968_shm.sh` 로 컨테이너 ipc · Fast DDS 판 확인) |
+| 본 것 | 그날 맥락이 'UDP 수신 버퍼 손실'(§8.2)이고, 09-09 에 끈 것이 DDS SHM 이었다 |
+| 처음 추론 | '공유메모리' = 09-09 에 끈 FastDDS SHM 전송 → 고아 위험 · 원인 미확정을 들어 '지금은 바꾸지 않는다' |
+| 의심한 이유 | 사용자 정정(§8.4): "DDS 공유메모리가 아니라, Jetson 보드 고유의 공유메모리(CPU·GPU 통합 메모리)" |
+| 판별 시험 | (없음 — 질문의 뜻 확인) |
+| 결론 | 내 오독. §8.3 내용은 DDS SHM 주제로는 유효. 통합 메모리는 프로세스 안 CPU↔GPU 복사 문제라 그날 병목(프로세스 사이)엔 직접 안 닿음(§8.4, 지식 기반). SUMMARY §14 '기각 · 정정한 내 판단' 에 '공유메모리 질문 오독(§8.3)' 로 기록 |
+| 다음에 알아보는 법 | 같은 낱말이 두 층(DDS 전송 · 하드웨어 메모리)에 있으면 답하기 전에 어느 층인지 되묻거나 둘 다 짧게 구분해 답한다 |
+| 스크립트 핵심 | `docker inspect --format '{{.HostConfig.IpcMode}}' $c` · `dpkg -l \| grep -a 'ros-humble-fastrtps '` · `docker exec … 'echo ${FASTRTPS_DEFAULT_PROFILES_FILE:-없음}; ls /dev/shm \| wc -l'` ([`job968_shm.sh`](../debug_log/2026-10-12/jobs/job968_shm.sh)) |
+| 나온 결과 | `isaac_ros_dev-aarch64-container: ipc host · net host` · `microros_agent: ipc private · net host` · `호스트 Fast DDS: 2.6.12-1jammy.20260725.060440` · `컨테이너 안 프로파일: 없음 43` · `호스트 /dev/shm: 3.8G 중 84K 사용 · fastrtps 잔류 파일 0` ([`j968_shm.txt`](../debug_log/2026-10-12/outputs/j968_shm.txt)) |
+| 데이터 | 10-12 SUMMARY §8.3 · §8.4 · §14 |
+
+### 5.6 '깊이 영상 614 kB × 15 Hz ≈ 9 MB/s' — 해상도를 확인하지 않은 계산값(10-12 §8.5 · §17 · §19, 10-20 §7.5 정정)
+| 칸 | 내용 |
+|---|---|
+| 하려 한 것 | SHM 으로 옮길 대용량 흐름과 크기 고정 타입의 이득을 어림(§8.5 · §19), 세그먼트 크기 정하기(§17) |
+| 본 것 | (측정 없음) 카메라 깊이 해상도를 640×480 으로 놓고 640×480×2 B = 614 kB 로 계산 |
+| 처음 추론 | §8.5 '깊이 9 MB/s 가 이미 같은 UDP 로 문제없이 15 Hz 로 들어가는 점은 크기만의 문제가 아닐 수 있음' · §17 세그먼트 '깊이 영상 614 kB' · §19 '없앨 복사 18 MB/s ≈ CPU 1 % 미만' |
+| 의심한 이유 | (7 기에는 의심 안 함) 10-20 §7.5 사용자 질문 "해상도를 낮춰서 UDP 대역폭에 적절하기 때문인지 검증" 으로 bag 을 재 봄 |
+| 판별 시험 | 10-20 §7.5: f2z1 bag 실측 — 깊이는 데시메이션 ×4(09-08 N1.5 `decimation_filter.filter_magnitude: 4`)로 **160×120 16UC1, 직렬화 38 472 B** |
+| 결론 | 614 kB 는 틀림. §8.5 의 '크기만의 문제가 아닐 수 있다' 는 정반대 — 깊이가 빠지지 않은 이유가 바로 작은 크기(10-20 §7.5: 307 kB 1 % · 614 kB 6~11 % 빠짐). §19 의 '이득 작음' 결론은 입력이 더 작아지므로 그대로 성립 |
+| 다음에 알아보는 법 | 메시지 크기는 계산하지 말고 bag `metadata.yaml`(크기/개수)이나 `ros2 topic bw` · `camera_info` 의 width · height 로 먼저 잰다. 카메라 설정에 데시메이션 · 정렬이 끼어 있는지 launch 인자를 본다 |
+| 스크립트 핵심 | (계산은 SUMMARY 문장뿐 — 원문 없음 — 발췌가 전부) §19 '깊이 영상 640×480×16 bit = 614 kB, 15 Hz → 약 9 MB/s' |
+| 나온 결과 | 10-20 §7.5: '실제 발행 깊이는 데시메이션 ×4 로 160×120 16UC1, 직렬화 38 472 B(f2z1 bag 실측; camera_info 도 160×120, fx 98.3)' |
+| 데이터 | 10-12 SUMMARY §8.5 · §17 · §19, [10-20 SUMMARY §7.5](../debug_log/2026-10-20/SUMMARY.md)(정정의 원문 · 표는 그 시기 카드에서) |
+
+### 5.7 뭉뚱그린 설명 두 건 — 스스로 정정(10-12 §18 · §21)
+| 칸 | 내용 |
+|---|---|
+| 하려 한 것 | ① zero-copy 설명(§8.5 '복사가 한 번 남는다') ② 포화 계기 후보 정리(§20 (가) · (나) · (다)) |
+| 본 것 | ① 사용자 "DDS 는 zero-copy 를 지원하고 이미지·점군도 된다던데" ② 사용자 "SHM 이었다면 BT 요청 폭주를 밝히기 어려웠을까" |
+| 처음 추론 | ① '한 번은 복사' ② (나) BT 요청 폭주를 (가) 재전송 되먹임과 같은 무게로 |
+| 의심한 이유 | ① 사용자 반문 → 문서 확인 ② (나)를 이미 가진 로그 수치와 대조하지 않았음 |
+| 판별 시험 | ① eProsima 15.8 · ROS 문서 · 커뮤니티 글 ② f2g2 Nav2 로그 포화 전 → 후 분당 줄 수 |
+| 결론 | ① 표준 타입 SHM = 직렬화 + 역직렬화 각 1 회, zero-copy 는 고정 타입 · 같은 프로세스 · NITROS 에서만 ② 요청은 분당 수십 → (나) 약함 |
+| 다음에 알아보는 법 | 가설 목록을 쓸 때 이미 가진 기록으로 자릿수부터 맞춰 본다(분당 수십 vs 초당 5 만). '복사 n 번' 같은 말은 어느 단계(직렬화 · 커널 · 조각)인지 적는다 |
+| 스크립트 핵심 | ② §9.17 재계산(SUMMARY 의 계산 원문은 없음) |
+| 나온 결과 | ② SUMMARY 표: smoother 27.6 → 17.6 · Passing new path 25.1 → 14.1 · Received a goal 2.4 → 6.2 · 비우기 0 → 4.4 · 4.0 · 응답 시간 초과 0 → 7.5 /분 |
+| 데이터 | 10-12 SUMMARY §18 · §20 · §21, [`nav2_f2g2.log.gz`](../debug_log/2026-10-12/outputs/nav2_f2g2.log.gz) |
+
 ## 6. 기록 사이 모순 (원문 대조)
 1. **2 회차와 job170 의 연결.** SUMMARY §8.14 는 job170 정지를 'map→base_link 갱신 정지' 로만 쓰고 원인을 말하지 않으며, §8.15 는 2 회차를 job 이름 없이 쓴다. `fastdds_udp_only.xml` 주석은 '2회차: slam_toolbox … → job170 주행 실패(위치가 9.90 초간 동일)' 로, 커밋 `2a4092b2` 도 같은 흐름으로 묶는다. 순서(job170 → job171 · 172 · 173 고아 발견 → job174 UDP)로 보면 맞지만, job170 의 t ≈ 4.0 정지 시각에 slam 이 이미 그래프에서 빠져 있었다는 직접 증거는 원문이 없다(**미확인**). 같은 서명(위치 고정 → 10 s 뒤 실패)이 SHM 0 인 job175 에서 CPU 로 다시 나왔으므로, job170 도 CPU 몫이 섞였을 수 있다(10-20 §7.2 의 셋째 근거).
 2. **'4 개 launch'**: SUMMARY · job174 는 base · sensors · slam · navigation 4 개. 같은 커밋이 `camera.launch.py` 도 고쳤지만(gyro/accel_fps) 프로파일 설정은 sensors.launch 가 감싸서 적용된다 — 모순은 아님. 단 09-09 시점 base.launch 의 `SetEnvironmentVariable` 은 launch 자식(RSP)에만 닿고 **docker agent 컨테이너에는 안 들어간다**(agent 는 원래 `MICROROS_DISABLE_SHM=1`). 09-16 에 agent 에도 같은 XML 을 마운트.
 3. **'job240_clean.sh 정리 목록에 이름을 추가'**(09-11 §5.9) vs 저장본: 저장된 `job240_clean.sh` 의 정리 패턴 `PATS` 에는 `robot_state_publisher` 가 **없다**. base 계층은 일부러 정리하지 않고('★ 2차: base 계층은 정리하지 않는다') 기동 전에 '각 1 이어야' 로 **개수만 표시**한다. SUMMARY 문장대로라면 이름이 정리 목록에 있어야 하는데, 저장본은 표시만 한다 — 저장 뒤 고친 판이 있었는지 **미확인**.
 4. **'15 개' 삭제**: job150 은 정리 전 · 후 파일 수를 찍지만 원문이 없다. SUMMARY 의 '15개' 가 그 출력값으로 보인다(**추정**).
 
+5. **'루프백 고정 유지'(10-12 §8.6 ① · §17 ①)**: 진행안이 'SHM + UDP(루프백 고정 유지 — 09-16 IP 변화 대책)' 이라 적었으나, 저장소 `fastdds_udp_only.xml` 에는 루프백 화이트리스트가 **없다** — 09-16 저녁에 agent 통신이 끊겨 되돌리고 주석만 남겼다(36~44 행, 이 카드 §4 '이후(09-16)'). 10-20 의 `fastdds_shm_udp.xml` 도 UDP 쪽에 화이트리스트가 없다(25~28 행). 10-12 문장이 옛 상태를 기억으로 적은 것(**내 기록 오류**).
+6. **10-13 SUMMARY 제목 '포화 패킷 캡처 → DDS 공유메모리 도입'** vs 본문: 그날 SHM 도입 작업은 없다(본문 '공유메모리' 는 §1.2 '도입에 주는 뜻' 과 머리말뿐, §15 마무리 '다음에 할 것' 에도 없음). 제목은 10-12 §22 계획대로 붙였고 계획이 바뀐 뒤 고치지 않은 것으로 보인다(**추정**).
+7. **10-12 §8.3 'nvblox 컨테이너는 공유메모리 가능 상태'**: 근거는 `ipc host` + 컨테이너 안 프로파일 없음(= 기본 SHM + UDP)이라는 설정 읽기다. 실제 호스트 ↔ 컨테이너 SHM 통과는 10-20 §7.3b~c 에서 처음 확인했다. `j968_shm.txt` 의 '컨테이너 안 프로파일: 없음 **43**' 의 43 은 컨테이너 안 `ls /dev/shm | wc -l`(항목 수, 이름 미확인)인데 SUMMARY 는 이 수를 언급하지 않는다 — 호스트 쪽 'fastrtps 잔류 0' 과 같은 `/dev/shm` 인지(ipc host 면 같아야 함)는 확인 안 됨.
+8. **10-12 §21 표의 수치 재현**: 계산 스크립트 · 출력이 없다(**원천 소실**). 카드 작성 중 같은 로그로 다시 세면 포화 전(12:16:03~12:17:24) smoother 25.2 · Passing new path 23.0 · Received a goal 2.2 /분, 포화 뒤(12:17:24~12:19:15 주행 끝) 20.0 · 15.7 · 7.0 /분, 비우기 local 4.3 · global 5.9, 'Timed out while waiting · timed out while executing' 8.1 /분(§9.17). SUMMARY 값과 다르지만(창 끝 · 정규식이 다른 것으로 보임 — **추정**) '분당 수십 이하, 일부는 줄어듦' 이라는 결론은 같다.
+
 ## 7. 남은 것
 - 09-09 2 회차의 실제 기전(잔재 삭제 vs launch SIGKILL vs CPU 섞임) — 10-20 은 '이 버전 · 규모에선 재현 안 됨' 까지. 그날 로그가 없어 소급 판별 불가.
 - 중복 감사의 `/tf --verbose` 집계(§5.3 함정)가 09-11 job249 에도 남아 있음 — 이후 고정 도구(`Docs/tools/chk_prep.py` · `chk_drive_gate.py`, 10-27)에서 어떻게 세는지는 그 시기 카드에서 확인.
 - launch 를 죽였을 때 자식이 고아로 남는 기전(09-11 RSP) — '이전 기동의 자식' 이라는 것만 PID · ppid 로 확인, 왜 안 죽었는지는 **미확인**.
+
+- (7 기) 10-12 §17 사용자 결정('프로세스 간 전달은 DDS SHM')의 범위 — 7 기에 미실행, 10-20 은 카메라 ↔ cuVSLAM 하나로 줄였다. 나머지 경로(Nav2 · 기록기 등)를 SHM 으로 옮길지는 그 시기 카드에서.
+- (7 기) 수신 버퍼 상향 — 시험 안 함(sudo · 사용자 결정). 10-12 §17 의 'CPU 무관 · 지연 증가 · 4~8 MB' 는 지식 기반 설명이라 이 장비 측정 없음.
+- (7 기) 'Nav2 합치기(composition)'(§8.4 중기 후보) · 크기 고정 타입 벤치마크(§19) — 기록만, 착수 안 함.
+- (7 기) SHM 구간의 관찰 수단(§21: Fast DDS 통계 기능을 Humble 배포본에서 켤 수 있는지) — 미확인.
 
 ## 8. 실험 · 도구 색인
 | 이름 | 무엇 | 위치 |
@@ -144,6 +214,8 @@ jobs 는 [2026-09-09/jobs/](../debug_log/2026-09-09/jobs/) · [2026-09-11/jobs/]
 | job240 · 249 · 250 · 252 | 깨끗한 기동 · nav2 만 재기동 + 중복 감사 · RSP 판정 · 고아 정리 | `2026-09-11/jobs/` |
 | run_shm_test · run_shm_restart | SHM 재기동 견고성(15/15 · 30/30 · 10/10) | `2026-10-20/jobs/shm_test/` · `jobs/run_shm_restart.sh`, `outputs/` 같은 이름 |
 | `fastdds_udp_only.xml` | UDP 전용 프로파일 | `ros2_ws/src/rover_bringup/config/` |
+| job968 | (10-12 §8.3) SHM 재사용 검토용 사실 — 컨테이너 ipc · Fast DDS 판 · `/dev/shm` | [`2026-10-12/jobs/job968_shm.sh`](../debug_log/2026-10-12/jobs/job968_shm.sh) → [`j968_shm.txt`](../debug_log/2026-10-12/outputs/j968_shm.txt) |
+| job967 · f2g2 Nav2 로그 | (10-12 §8.2 · §21) 커널 UDP 통계 · BT 요청 분당 수 | [`j967_net.txt`](../debug_log/2026-10-12/outputs/j967_net.txt) · [`nav2_f2g2.log.gz`](../debug_log/2026-10-12/outputs/nav2_f2g2.log.gz) — 해설은 통신 포화 카드 |
 
 ## 9. 도구 해설
 **공통**: 전부 Jetson 에서 실행(PC WSL → `run_j.sh`, [보드율 카드 §9](microros-baud-regression.md) 공통 항목과 같음 — 출력은 마지막 60 줄만, 비밀번호 `<PW>`, 출력 원문 없음). 09-11 스크립트는 맨 위에 `set +u`(주석: `set -u` 면 ROS `setup.bash` 가 미정의 변수를 참조해 즉시 죽는다).
@@ -235,6 +307,31 @@ jobs 는 [2026-09-09/jobs/](../debug_log/2026-09-09/jobs/) · [2026-09-11/jobs/]
 - ⚠ 주석에 'ROS_LOCALHOST_ONLY 는 rmw 가 SHM 을 다시 켜므로 쓰지 않는다'(09-16).
 - 지금: 계속 쓰는 파일.
 
+### 9.16 `job968_shm.sh` — SHM 재사용 검토용 사실 확인(10-12 §8.3)
+- 실행: Jetson(PC WSL → `run_j.sh`), 인자 없음, 로버 안 움직임.
+- 왜: 사용자 'SHM 을 다시 쓰면?' 에 답하려면 컨테이너 둘(nvblox · micro-ROS 에이전트)이 호스트와 SHM 을 나눌 수 있는 상태인지, 호스트 Fast DDS 판, `/dev/shm` 잔재를 알아야 했다.
+- 하는 일(5 줄): ① 컨테이너 둘마다 `docker inspect` 로 `HostConfig.IpcMode` · `NetworkMode` · `/dev/shm` 마운트 ② `dpkg -l | grep -a 'ros-humble-fastrtps '` 판 · `RMW_IMPLEMENTATION`(없으면 '기본(fastrtps)') ③ nvblox 컨테이너 안 `FASTRTPS_DEFAULT_PROFILES_FILE`(없으면 '없음')과 `ls /dev/shm | wc -l` ④ 호스트 `df -h /dev/shm` · `fastrtps` 이름 파일 수. 판정 문턱 없음(읽기만).
+- 출력: §5.5 '나온 결과' 그대로. 원문 [`j968_shm.txt`](../debug_log/2026-10-12/outputs/j968_shm.txt).
+- 쓰인 곳: §8.3 '사실' · §8.5 'nvblox 컨테이너는 이미 SHM 가능 상태'.
+- 결함: ① `/dev/shm 공유` 칸이 둘 다 빈 값 — `ipc host` 는 마운트가 아니라 IPC 이름공간 공유라 `Mounts` 에 안 나온다(코드 읽기, 그래서 이 칸은 아무것도 판별 못 함) ② 컨테이너 안 수 43 이 무엇인지(이름) 안 찍음(§6 모순 7) ③ 에이전트 컨테이너의 `MICROROS_DISABLE_SHM` 은 확인하지 않음(§8.6 은 기억 · 09-09 주석 근거).
+- 계보 · 지금: 일회용. 10-20 의 SHM 경로 확인(`chk_shm_path.sh`)이 실제 통과를 잰다(그 시기 카드).
+
+### 9.17 (카드 작성 중) 10-12 §21 표 재계산 — f2g2 Nav2 로그 분당 줄 수
+- 실행: PC(카드 작성 중, 스크래치 — 파일은 남기지 않음, 아래 발췌가 전부). 입력 [`nav2_f2g2.log.gz`](../debug_log/2026-10-12/outputs/nav2_f2g2.log.gz), 창 = 주행 시작 12:16:03(`f0_f2g2_runner.log` 출발 · 게이트 뒤 SUMMARY §5.2) · 포화 시작 12:17:24(§5.2) · 주행 끝 12:19:15(시작 + 총 192.5 s, 러너 '결과' 줄).
+- 핵심: 줄의 `[1791…]` epoch 를 KST 로, 정규식 `Received a path to smooth` · `Passing new path` · `controller_server.*Received a goal` · `clear.*local_costmap|local_costmap.*clear` · 같은 global · `Timed out while waiting|timed out while executing` 을 전 · 후로 세어 분으로 나눔.
+- 나온 결과:
+```
+창: 시작 12:16:03 포화 12:17:24 끝 12:19:15
+전 1.35 분 · 후 1.85 분
+smoother Received a path to smooth     전  34 (25.2/분) → 후  37 (20.0/분)
+controller Passing new path            전  31 (23.0/분) → 후  29 (15.7/분)
+controller Received a goal             전   3 (2.2/분) → 후  13 (7.0/분)
+clear local                            전   0 (0.0/분) → 후   8 (4.3/분)
+clear global                           전   0 (0.0/분) → 후  11 (5.9/분)
+timeout ack                            전   0 (0.0/분) → 후  15 (8.1/분)
+```
+- 읽는 법: SUMMARY 의 값과 자릿수 · 방향(경로 관련 감소, 목표 · 비우기 · 시간 초과 증가)이 같다. 끝을 로그 끝(12:23:15)까지 넓히면 smoother 6.8 /분처럼 크게 달라지므로, SUMMARY 의 창 끝은 주행 끝 근처였을 것(**추정**).
+
 ## 10. 용어
 - **DDS · FastDDS(Fast RTPS)**: ROS 2 의 통신 계층 표준(DDS)과 그 구현 하나(eProsima). Humble 기본 rmw 가 FastDDS. 로그 접두어 `RTPS_` 는 그 내부 모듈.
 - **participant(참가자)**: DDS 에서 '통신에 참여하는 주체' 단위. ROS 2 노드(정확히는 프로세스의 컨텍스트)마다 하나. 참가자끼리 서로를 **발견(discovery)** 해야 토픽이 이어진다. `ros2` CLI 명령 하나도 실행되는 동안 참가자다.
@@ -246,3 +343,9 @@ jobs 는 [2026-09-09/jobs/](../debug_log/2026-09-09/jobs/) · [2026-09-11/jobs/]
 - **Publisher count · `--verbose`**: `ros2 topic info` 가 내는 발행자 수. `--verbose` 는 발행자 블록 다음에 구독자 블록까지 노드 이름을 나열한다(§5.3).
 - **고아(orphan) 프로세스**: 부모(launch)가 죽었는데 안 죽고 남은 자식. 09-11 RSP 처럼 같은 이름 노드가 그래프에 둘이 된다.
 - **`MICROROS_DISABLE_SHM=1`**: micro-ROS agent 이미지의 환경변수 — agent 의 DDS 참가자가 SHM 을 안 쓰게 한다. 09-09 두 사고에서 보드 토픽만 멀쩡했던 이유.
+- **통합 메모리(Jetson unified memory)**: Jetson 은 CPU 와 GPU 가 같은 물리 RAM 을 쓴다 → 한 프로세스 안에서 CPU↔GPU 사이 큰 데이터를 복사 없이 넘길 수 있음(CUDA 통합 · 고정 메모리). 프로세스 사이 ROS 메시지 전달과는 다른 층(10-12 §8.4).
+- **NITROS**: Isaac ROS 가 노드 사이에 GPU 버퍼를 직렬화 없이 넘기는 방식(같은 프로세스 · 지원 노드끼리).
+- **노드 합치기(composition)**: 여러 ROS 노드를 한 프로세스(컴포넌트 컨테이너)에 올려 그 사이 메시지를 포인터로 넘기는 것. Nav2 `use_composition`.
+- **zero-copy · 대여 메시지(loan)**: 발행자가 미들웨어 버퍼를 빌려 그 안에 바로 쓰고 구독자가 그 버퍼를 그대로 읽는 것. Fast DDS 에선 plain · 크기 고정 타입에서만(가변 길이 배열 · 문자열이 없어야). `sensor_msgs/Image` · `PointCloud2` · `MarkerArray` · `TFMessage` 는 해당 안 됨(10-12 §18 · §19).
+- **`net.core.rmem_max` · `rmem_default`**: 리눅스 소켓 수신 버퍼의 최댓값 · 기본값(이 Jetson 212 992 B). 바꾸려면 sudo(sysctl). UDP 메시지 하나가 이보다 크거나 몰려 오면 커널이 버린다(`RcvbufErrors`).
+- **SHM `segment_size`**: Fast DDS SHM 전송에서 참가자마다 `/dev/shm` 에 만드는 쓰는 쪽 버퍼 크기. 큰 메시지 여러 장이 들어가야 함(10-20 `fastdds_shm_udp.xml` 8 MB).
