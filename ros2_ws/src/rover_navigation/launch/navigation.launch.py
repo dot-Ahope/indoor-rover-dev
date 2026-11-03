@@ -131,7 +131,7 @@ def _make_active_params(context):
     #   왜: 경로를 '계획하는 모습' 을 시각화하려면 매 주기 예측이 필요. 평소엔 끔 — 09-17 mp7: 기본 간격이면 ≈5 MB/s 기록·15 W CPU 압박.
     #   간격을 넓혀 부담을 줄임: 후보 1000 개 중 20 개마다 1 개(50 개), 시간 2 스텝마다.
     #   2026-10-12 §7.3: 'true'(후보 50 개 × 16 점 + 최적 32 점 = 마커 832 개)는 메시지 206 kB × 10 Hz ≈ 2 MB/s —
-    #   PreferForward 15 와 함께 쓰면 4/4 주행에서 부하 포화(/tf 지연 → 컨트롤러 중단 반복). 'lite' = 후보 10 개 × 8 점 + 최적 32 점
+    #   PreferForward 15 와 함께 쓰면 부하 포화(/tf 지연 → 컨트롤러 중단 반복 — 10-12 끝까지 6/6, 11-03 정정: 옛 주석 4/4). 'lite' = 후보 10 개 × 8 점 + 최적 32 점
     #   = 마커 112 개(계산상 ≈ 28 kB, 1/7). 영상에는 최적 궤적과 후보의 퍼짐 정도만 남는다.
     viz = LaunchConfiguration('mppi_viz').perform(context).strip().lower()
     if viz in ('1', 'true', 'yes', 'lite'):
@@ -227,7 +227,7 @@ def generate_launch_description():
         Node(package='rover_bringup', executable='nav_guard.py', name='nav_guard', output='screen',
              condition=IfCondition(LaunchConfiguration('nav_guard'))),
         # 갇혔을 때만 로컬 패딩을 잠깐 0 으로 (2026-10-14, Docs/debug_log/2026-10-14/SUMMARY.md §8): 컨트롤러가 '후보 전부 충돌'을 반복하면
-        # footprint_padding 0.01 → 0, 0.15 m 이동 또는 15 s 뒤 복귀. 기본 off — 정지 시험·주행 검증 전이다. shadow = 판정·로그만.
+        # footprint_padding 0.01 → 0, 0.15 m 이동 또는 15 s 뒤 복귀. 기본 off — 쓰지 않는다(10-14 §21 A/B: 실행 중 패딩 토글 뒤 잔떨림 증가, 11-03 주석 정정; 옛 주석 '정지 시험·주행 검증 전'). shadow = 판정·로그만.
         DeclareLaunchArgument('pad_relief', default_value='off', description='갇힘 해제용 패딩 내리기: off | on | shadow'),
         Node(package='rover_bringup', executable='pad_relief.py', name='pad_relief', output='screen',
              parameters=[{'mode': LaunchConfiguration('pad_relief')}],

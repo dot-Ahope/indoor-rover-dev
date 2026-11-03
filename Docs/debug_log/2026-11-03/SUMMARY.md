@@ -19,3 +19,38 @@
   - 낡은 주석: `navigation.launch.py` 229~230(pad_relief off 이유) · 133~134('4/4' → 6/6) · BT 74 행 · 러너의 기각된 '재전송 씨앗' 근거.
   - CLAUDE.md: 'prep 기본 shadow'(지금 안 띄움) · '4~5 cm 밀림'(출발점 상자만) · TEST_COURSE 'v2.2'(파일은 v2.3) · 'A/B 확정' 범위.
   - 남서 목표 `p` 재시험(BT 결함은 해소, 고친 뒤 3 회 모두 f) · F2 기준선 문서 `BASELINE_F2.md` · 태그 없음 · ClearanceBand 를 목록에서 뺄지.
+
+## §2 어긋남 23 건 정정 (사용자: "어긋남 23건 및 코드,문서 수정 진행.") — 원문은 지우지 않음(README §2.1)
+- 페이지 17 건(11-02 §12 목록): 정리 페이지마다 해당 문장 옆에 '11-03 정정' 표시를 덧붙여 같은 주소로 다시 게시 — 묶음 하나가 게시본을 읽고 근거를 다시 확인한 뒤 진행(결과는 §5).
+- 원본 기록 6 건 — 틀린 줄 끝에 '→ 2026-11-03 §2 정정' 만 덧붙임:
+
+  | 원본 | 적힌 것 | 원문 | 처리 |
+  |---|---|---|---|
+  | 2026-10-07 SUMMARY 229 행(§8.5) | '출발 방 그 밖 고비용' 49 → 86 | `2026-10-07/outputs/j924_box_steps.txt` 69 · 74 … (65~76 → 107~184, 11-02 묶음 보고) | 표시 |
+  | 2026-10-12 TOOLS.md 123 행 | f2k1 '포화 전 기록기 손실 원래 0~2' | 출력 42.5 /s 는 T−60 s 창이 15:25:19 폭증 표본을 포함, 2 s 표는 0~2 — 둘 다 맞음 | 표시(✔ 는 10-13 결과로 낡음) |
+  | 2026-10-26 TOOLS.md 40 행 | `anal_contact` 가 10-23 jobs 계열 | 실제 `2026-10-22/jobs/anal_contact.py` | 표시 |
+  | 2026-10-26 SUMMARY 137 · 150 행 | B0 15.4 | `2026-10-26/outputs/compare/fig_box_compare.txt` 15.2(같은 SUMMARY 153 행도 15.2) | 표시 |
+  | `Docs/tools/plan_offline/up_bundle.sh` 7 행 주석 | planner_server 5 개 | 10-26 SUMMARY 18 행 '정리 전 20 개 프로세스' | 주석 고침(계속 쓰는 도구라 기록 아님) |
+  | `firmware/.../microros_task.c` 72 행 주석 | V_MAX '0.100' | `rover_platform.h` 82 행 0.085(09-07 스케일 정정) | 주석 고침(펌웨어 재플래시 불필요) |
+- 10-27 §24 '같은 값' 은 다시 보니 원문(337 행)이 새 C 의 FAIL(stamp 지연 1.14 s)을 이미 적고 있어 어긋남이 아님 — 정정 안 함(23 건 중 1 건 철회).
+
+## §3 코드 · 주석 수정
+- **러너 `job551_f0drive.sh`**(실행본 = PC 스크래치패드, 오늘 판 사본 `jobs/job551_f0drive.sh`): `/tf` · 깊이 QoS 재정의를 `BAG_BE_TRAJ` 조건 밖으로 — 항목마다 따로 켜고, 파일이 비지 않았을 때만 `--qos-profile-overrides-path`. 확인: 그 블록만 떼어 `BAG_BE_TRAJ=1 · 0` 으로 돌려 둘 다 `/tf:` 1 줄(전엔 0 이면 없음). 실주행 확인은 다음 주행.
+- **`Docs/tools/prep_fast.sh`**: PreferForward `sed -i` 를 '값이 같으면 손대지 않음 · 다르면 `--follow-symlinks`(링크 유지, 알림)' 로 + 설치본이 링크가 아니면 경고. 확인 `jobs/chk_prep_sed_1103.sh` → `outputs/chk_prep_sed_1103.txt`(WSL 리눅스, 임시 링크 파일: 15.0 → 안 건드림 · 링크 유지, 5.0 → 바꿈 · 링크 유지). Jetson 실 prep 은 미검증 — ⚠ Jetson 의 `/tmp/prep_fast.sh` 는 옛 판이므로 다음 prep 전에 올려야 함. `Docs/tools/up_tools.sh` 는 스크래치패드 `tools/` 폴더를 읽는데 그 폴더가 지금 없음(전송 경로 정리 필요).
+- **`pad_relief.py`**: `mode` 기본 'on' → 'off' + 머리말에 '쓰지 않는다' 경고. `navigation.launch.py` 의 pad_relief off 이유 주석 정정.
+- **`chk_padding_dynamic.py`** · `Docs/tools/README.md`: '돌린 뒤 주행 전 prep 재기동' 경고.
+- 주석: `nav2_params.yaml` 전역 nvblox 층 프레임 전제(563 행 부근) · `monotone_escape` footprint 손 입력값 경고 · `rf2o_gate.py` 머리말(회전 속도 원천 ekf · 0.15 s, 데크 상수) · `navigation.launch.py` 궤적 발행 '4/4' → 6/6 · BT XML ForceSuccess → CopyPath · 러너의 '재전송 씨앗' 근거(10-13 으로 /tf 였음).
+- 바꾸지 않은 것: MonotoneEscape 가 코스트맵 풋프린트를 직접 읽게 하는 C++ 수정(빌드 · 실험 필요 — 경고 주석과 CLAUDE.md 목록으로 대신), ClearanceBandCritic 을 목록에서 빼기(enabled false 라 동작 영향 없음), 남서 `p` 재시험 · F2 기준선 문서(주행 · 결정 필요).
+
+## §4 CLAUDE.md 정정
+- B3 는 vslam/rf2o 때 자동 켜짐(옛 'B2 · B3 기본 끔') · stuck_monitor 는 표준 prep 에서 관찰만 · 데크 재측정 때 함께 고칠 곳(`rf2o_gate.py`, `monotone_escape` footprint) · pad_relief 'prep 기본 shadow' 정정 · A/B 범위 · '4~5 cm 밀림' 은 출발점 상자 기준 · TEST_COURSE v2.3.
+
+## §5 내 실수 — 대화에 Jetson 비밀번호를 출력함
+| 칸 | 내용 |
+|---|---|
+| 하려 한 것 | 러너가 어느 job551 을 올리는지 보려고 `grep -n "job551" run_f0.sh run_f2c.sh` |
+| 본 것 | `run_f0.sh` 10 행 전체가 출력되며 `sshpass -p` 뒤 값이 그대로 나옴 |
+| 왜 생겼나 | 러너 파일은 비밀번호를 평문으로 가진다(README §4). 같은 세션 앞쪽에서는 `sed 's/sshpass -p [^ ]*/…/'` 로 가렸는데 이번 명령은 가림 없이 grep 했다 |
+| 영향 | 값은 저장소 · 공개물에는 없음(이 기록에도 안 씀). 대화 기록(로컬 transcript 와 모델 요청)에 남았다 |
+| 다음에 알아보는 법 | 러너(`run_*.sh`) · 비밀번호 파일을 읽는 명령은 **항상** `sed 's/sshpass -p [^ ]*/sshpass -p <PW>/g'` 를 붙이거나 줄 번호만 찍는다(`grep -c`, `grep -n … | cut -d: -f1`) |
+| 조치 | 사용자에게 알리고 Jetson 비밀번호 변경 여부를 묻는다. 바꾸면 `~/.config/rover_jetson/pw` 첫 줄 · 러너 2 개를 새 값으로, 옛 값은 둘째 줄 이하로 |

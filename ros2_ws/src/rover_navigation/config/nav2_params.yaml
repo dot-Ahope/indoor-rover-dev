@@ -560,7 +560,7 @@ global_costmap:
                           #   inflation local 0.40 / global 0.35 은 둘 다 0.215 이상이라 조건 충족.
       plugins: ["static_layer", "stvl_layer", "obstacle_layer", "inflation_layer"]
       # 2026-09-22 N6-1: 전역 카메라 층도 nvblox — navigation.launch.py 의 camera_layer 인자가 plugins 줄을 바꾼다
-      #   (nvblox: ["static_layer", "nvblox_layer", "obstacle_layer", "inflation_layer"] / stvl: 위 원래 줄). 슬라이스는 odom 프레임, 전역은 map 프레임 → 플러그인이 TF 로 변환(09-21 §10.4 코드).
+      #   (nvblox: ["static_layer", "nvblox_layer", "obstacle_layer", "inflation_layer"] / stvl: 위 원래 줄). 슬라이스는 odom 프레임, 전역은 map 프레임 → 플러그인이 TF 로 변환(09-21 §10.4 코드). ⚠ 단, 층의 기준 프레임 파라미터를 지정해야 map 으로 바뀐다 — 지정 안 하면 기본 odom 이라 map→odom 보정만큼 밀림(10-08 §3.3 f2e1 0.3 m; 09-22 판에도 지정 없었음). 지금은 navigation.launch.py 가 nav2_costmap_global_frame 을 넣는다(11-03 주석 보강).
       #   nvblox 는 base_link 반경 3 m 안만 채우고 감쇠 0.99(≈81 s) — 넓은 영역·긴 기억은 static(SLAM)+라이다가 맡는다.
       nvblox_layer:
         plugin: "nvblox::nav2::NvbloxCostmapLayer"
@@ -801,7 +801,7 @@ behavior_server:
       linear_speed: 0.03         # m/s
       angular_speed: 0.15        # rad/s
       decrease_tolerance: 0.003  # 실행 중 거리 감소 허용 m(코스트맵 갱신 · 자세 잡음)
-      footprint_front: 0.272     # 패딩 포함 차체(발행 풋프린트 0.53 × 0.35 와 같음)
+      footprint_front: 0.272     # 패딩 포함 차체(발행 풋프린트 0.53 × 0.35 와 같음) — ⚠ 손 입력값: 위 코스트맵 footprint · footprint_padding 을 바꾸면 여기(와 cpp 기본값)도 같이 고친다(11-03)
       footprint_rear: -0.258
       footprint_half_width: 0.175
       search_radius: 1.0
