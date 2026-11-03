@@ -4,6 +4,7 @@
   보는 것(단계마다): ① 설정 요청이 받아들여졌나·걸린 시간 ② 발행 풋프린트(published_footprint)의 앞·옆 치수 — 패딩만큼 줄어야 한다
                     ③ 코스트맵(costmap_raw)의 내접(253)·치명(254) 칸 수 — 내접 반경이 다시 계산되면 253 칸 수가 달라진다 ④ 실행 중 파라미터 값.
   순서: 처음 값 → 0.0 → 처음 값으로 복귀. 끝날 때 반드시 처음 값으로 되돌린다(중간에 실패해도).
+  ⚠ 이 도구를 돌린 뒤에는 주행 전에 prep 으로 스택을 다시 띄운다 — 값을 되돌려도 실행 중 패딩 변경 뒤엔 MPPI 잔떨림이 남았다(10-14 §21, 11-03 경고 추가).
   사용: chk_padding_dynamic.py [local|global|both] (기본 local)"""
 import sys, time, rclpy
 from rclpy.node import Node

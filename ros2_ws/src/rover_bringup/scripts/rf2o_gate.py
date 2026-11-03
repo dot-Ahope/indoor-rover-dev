@@ -5,7 +5,8 @@
     odom 좌표 로컬 코스트맵에 옛 표시가 어긋나 쌓여 벽이 두꺼워진다(f2b3 구석 12 cm → MPPI 실패).
     rf2o 를 이 게이트로 넣은 EKF 는 오프라인 재생에서 줄자 대비 4.3 cm, 직진 축척 0.998(Docs/debug_log/2026-10-02 §13~§16).
 
-입력: /odom_rf2o(rf2o_laser_odometry, 10 Hz) · /imu/data(컨디셔너 출력, 광학 프레임 → 로봇 yaw = −ω_y) · /wheel_odom(정지 판정)
+입력: /odom_rf2o(rf2o_laser_odometry, 10 Hz) · 회전 속도 = /odometry/filtered 의 ω(30 Hz, 기본 gyro_source ekf · 창 0.15 s — 10-06 §5) 또는 /imu/data(gyro_source:=imu, 200 Hz · 0.1 s) · /wheel_odom(정지 판정)
+  (11-03 주석 정정: 옛 머리말은 /imu/data · 0.1 s 만 적었다. ⚠ 라이다 yaw π−0.04677 · x 0.152 를 아래 상수로 가짐 — 데크 재측정 때 같이 고침)
 출력: /odom_rf2o/gated — 차체 속도 vx·vy 만(회전은 자이로가 담당), 아래 가변 σ
   좌표: 차체 속도 = R(π − 0.04677)·v_rf2o — 라이다가 yaw π−2.68° 로 뒤집혀 달려 rf2o 병진이 라이다 좌표로 나온다(10-02 §13.2 줄자 검증)
   G1 자이로 일치: rf2o ω 와 직전 0.1 s 자이로 평균의 차가 max(g1_floor, 0.3·|ω|) 넘으면 버림

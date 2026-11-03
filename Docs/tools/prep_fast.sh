@@ -2,14 +2,21 @@
 # prep_fast — 순회용 빠른 기동(정리 → 센서 → SLAM 위치 추정 → Nav2 → 준비 확인). 로버 안 움직임. 옛 이름 job972_prep_fast.sh(10-12 §13)
 #   ① ros2 조회 약 25 회 → 확인 노드 1 개(job971_prepchk.py)  ② 고정 대기(28·15·30 s 등) → '준비될 때까지' 폴링.
 #   기동 순서·정리 방식·인자는 그대로(base 유지 → sensors → slam(위치 추정) → nav2). 빠진 것: 통과 폭 감사(job248)·지도 복원 확인(job697) — 순회에는 안 씀.
-#   환경: MAP(기본 office_v3) EXTRA_SENSORS EXTRA_NAV STUCK_SHADOW(기본 true) FWD(설치본 PreferForward 값, 기본 15.0) WAIT(재마킹 대기, 기본 15)
+#   환경: MAP(기본 office_v3) EXTRA_SENSORS EXTRA_NAV STUCK_SHADOW(기본 true) FWD(설치본 PreferForward 값, 기본 15.0 — 같으면 안 건드림, 11-03) WAIT(재마킹 대기, 기본 15)
 #   단계마다 시각을 찍는다(다음 단축 근거).
 set +u
 T0=$(date +%s); st() { echo "  ⏱ +$(( $(date +%s) - T0 )) s $1"; }
 MAP=${MAP:-office_v3}; D=/home/jetson/maps/office; WAIT=${WAIT:-15}
 [ -e $D/$MAP.posegraph ] || { echo "지도 없음: $MAP"; exit 1; }
 Y=/home/jetson/ros2_ws/install/rover_navigation/share/rover_navigation/config/nav2_params.yaml
-sed -i "s/\(PreferForwardCritic: {enabled: true, cost_power: 1, cost_weight: \)[0-9.]*/\1${FWD:-15.0}/" $Y
+# 11-03 §3: 예전엔 늘 sed -i 로 고쳐 설치본 링크(→ src)를 일반 파일로 바꿨다(10-15 §30 발견: 그 뒤 src 수정이 설치본에 안 따라옴).
+#   값이 이미 같으면 손대지 않고, 다를 때만 --follow-symlinks 로 링크를 살린 채 고친다(그러면 Jetson src 사본 값이 바뀐다 — 알림을 찍음).
+FWD=${FWD:-15.0}
+[ -L $Y ] || echo "  ⚠ 설치본 nav2_params.yaml 이 링크가 아님(옛 sed -i 흔적) — src 수정이 반영 안 됨: rm 후 ln -s 로 복구할 것"
+if ! grep -q "PreferForwardCritic: {enabled: true, cost_power: 1, cost_weight: ${FWD}[,}]" $Y; then
+  sed -i --follow-symlinks "s/\(PreferForwardCritic: {enabled: true, cost_power: 1, cost_weight: \)[0-9.]*/\1${FWD}/" $Y
+  echo "  ⚠ PreferForward 를 ${FWD} 로 바꿈(링크 대상 $(readlink -f $Y) — 저장소 값과 달라짐)"
+fi
 set +u      # ⚠ set -u 금지 — ROS setup.bash 가 미정의 변수를 참조해 즉시 죽는다
 export FASTRTPS_DEFAULT_PROFILES_FILE=$HOME/ros2_ws/install/rover_bringup/share/rover_bringup/config/fastdds_udp_only.xml; source /opt/ros/humble/setup.bash
 source ~/ros2_ws/install/setup.bash
