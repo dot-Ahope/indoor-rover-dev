@@ -75,6 +75,7 @@ footer{margin-top:44px;padding-top:14px;border-top:1px solid var(--line);font-si
 .note{font-size:12.5px;color:var(--muted);margin:2px 0 0;overflow-wrap:anywhere}
 </style>
 
+<style>.c1103{font-weight:600;color:var(--ink);background:var(--warnbg);border-left:3px solid var(--warn);padding:0 5px;margin-left:3px;border-radius:2px;white-space:normal;font-size:.92em}</style>
 <div class="wrap">
 <header>
   <div class="eyebrow">Indoor Rover · debug_log/2026-10-06 · branch feature/nvblox-migration</div>
@@ -84,6 +85,7 @@ footer{margin-top:44px;padding-top:14px;border-top:1px solid var(--line);font-si
     <a href="#step">단계별 회전 실측</a><a href="#cpu">게이트 CPU</a><a href="#cov">EKF 신뢰도</a><a href="#t1">정지 + 사람</a><a href="#t2">회전 + 가림 합성</a><a href="#gate">품질 검사 G3·G4</a><a href="#fix">정정</a><a href="#next">내일</a>
   </nav>
 <p class="prose note">2026-11-02: 측정에 기댄 판정마다 그 수치를 낸 <b>스크립트 핵심</b>과 <b>나온 결과</b>를 원문 그대로 발췌해 붙이고, 결과 원문 · 스크립트 원문 경로를 달았다. 원문 파일이 남지 않은 수치는 '원천 소실' 로 적었다.</p>
+<p class="prose note"><span class="c1103">11-03 에 원문과 어긋난 곳 1 건을 정정 표시했다(본문 문장은 그대로).</span></p>
 </header>
 
 <div class="status">
@@ -100,7 +102,7 @@ footer{margin-top:44px;padding-top:14px;border-top:1px solid var(--line);font-si
   <figcaption><b>왼쪽</b>은 단계마다 예측 대각 거리에서 줄자 값을 뺀 오차다. 초록 EKF B(rf2o 융합)는 여섯 단계 모두 ±3 cm 띠 안에 있다. 주황 EKF A 는 방향이 처음으로 돌아오는 짝수 단계에서 10~17 cm 를 놓친다. 짝수 단계에서 줄자가 재는 것은 순수 미끄러짐이다. <b>오른쪽</b>은 짝수 단계의 오른쪽 앞끝 예측 위치이고, 점선 원이 줄자 거리다. A 는 출발 표시에 머물러 있다. 즉 미끄러짐을 전혀 못 본다. B 와 SLAM 은 사용자가 본 방향(뒤·오른쪽)으로 원 위에 놓인다.</figcaption>
 </figure>
 <div class="look">
-  <div><h4>무엇을 보면 되나</h4><ul><li>짝수 단계에서 EKF B 오차 0.0 / 0.1 / 0.7 cm. 미끄러짐을 거의 그대로 따라간다.</li><li>홀수 단계에서 B 가 −2.3~−2.9 cm 로 일정하게 치우친다. 원인은 확인하지 않았다(직진 축척 0.93 또는 오른쪽 앞끝 위치 오차로 추정).</li></ul></div>
+  <div><h4>무엇을 보면 되나</h4><ul><li>짝수 단계에서 EKF B 오차 0.0 / 0.1 / 0.7 cm. 미끄러짐을 거의 그대로 따라간다.</li><li>홀수 단계에서 B 가 −2.3~−2.9 cm 로 일정하게 치우친다. 원인은 확인하지 않았다(직진 축척 0.93 또는 오른쪽 앞끝 위치 오차로 추정).<span class="c1103">(11-03 정정: '직진 축척 0.93' 은 10-06 SUMMARY §4.1 에 없는 후보다. 0.93 은 10-02 의 rf2o/SLAM 직진 축척(f2b4 직진 창)이라 제자리 회전 단계에는 해당하지 않는다. §4.1 이 든 것은 각도 민감도(EKF 각 +93~94°, 1° = 모서리 약 0.5 cm)와 줄자 측정점 잡기 차이 — 근거 Docs/debug_log/2026-10-06/SUMMARY.md §4.1 · Docs/debug_log/2026-10-02/SUMMARY.md)</span></li></ul></div>
   <div><h4>결론</h4><ul><li>오프라인 R2 결과(4.3 cm)가 라이브에서도 재현됐고 더 좋았다(1.5 cm).</li><li>EKF A 가 휠·자이로만으로는 미끄러짐을 못 본다는 10-02 결론을 같은 시각 비교로 다시 확인했다.</li></ul></div>
 </div>
 

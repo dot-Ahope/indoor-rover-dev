@@ -59,11 +59,13 @@ ul{margin:0;padding-left:20px;max-width:72ch} li{margin:2px 0}
 .flow > span{min-width:0}
 </style>
 
+<style>.c1103{font-weight:600;color:var(--ink);background:var(--tint-warn);border-left:3px solid var(--warn);padding:0 5px;margin-left:3px;border-radius:2px;white-space:normal;font-size:.92em}</style>
 <div class="wrap">
 <header>
   <div class="eyebrow">Indoor Rover · 2026-10-19 · Docs/debug_log/2026-10-19 §0–§25</div>
   <h1>10-19 cuVSLAM 시험</h1>
   <p class="lead">오전에는 출발점 시험 상자가 복귀 때 로버 쪽으로 부풀어 찍히는 원인을 원시 깊이 점으로 나눴고, 오후에는 그 원인인 오도메트리 밀림을 잡으려고 cuVSLAM 을 지금 플랫폼에 붙이는 첫 단계(프로젝터 번갈이 · 분리 노드 · IR 기록)를 만들고 주행 두 번으로 시험했습니다. 2026-11-02 에 각 판정 옆에 그 수치를 낸 스크립트의 핵심 부분과 실제로 나온 결과(원문 발췌)를 붙이고, 둘 다 저장소의 원문 파일 경로를 달았습니다.</p>
+  <p class="lead"><span class="c1103">11-03 에 원문과 어긋난 곳 3 건을 정정 표시했다(본문 문장은 그대로).</span></p>
 </header>
 
 <section>
@@ -73,7 +75,7 @@ ul{margin:0;padding-left:20px;max-width:72ch} li{margin:2px 0}
     <div class="v ok"><b>분리 노드 · 프로세스 안 기록 동작</b><span>드라이버와 한 컨테이너로 합성해 IR 30 Hz 그대로 기록, CPU 54~56 % (평소 45~49 %) (§15–17)</span></div>
     <div class="v no"><b>번갈이 구성의 cuVSLAM 은 실패</b><span>4 변형 모두 SLAM 대비 1.4~11 m 오차, EKF 는 0.4 m. 켠 IR 은 점 무늬에 붙잡혀 이동 0, 끈 IR 은 너무 어두움 (§23)</span></div>
     <div class="v no"><b>번갈이 중 노출 · 게인 고정 불가</b><span>드라이버가 수동 설정을 거부, 자동 노출을 끄면 번갈이가 깨져 두 프레임 모두 점 무늬 (§24)</span></div>
-    <div class="v wait"><b>프로젝터 상시 끔(f2z1) 확인</b><span>주행 3/3 성공, 시험 상자 치움. 오프라인 cuVSLAM 비교는 내일 (§25)</span></div>
+    <div class="v wait"><b>프로젝터 상시 끔(f2z1) 확인</b><span>주행 3/3 성공, 시험 상자 치움.<span class="c1103">(11-03 정정: f2z1 은 시험 상자를 둔 채 달렸다(사용자 확인) — 근거 Docs/debug_log/2026-10-20/SUMMARY.md §3.2)</span> 오프라인 cuVSLAM 비교는 내일 (§25)</span></div>
   </div>
 </section>
 
@@ -88,7 +90,7 @@ ul{margin:0;padding-left:20px;max-width:72ch} li{margin:2px 0}
     <span class="k">§19–22</span><span>IR 기록 주행 f2y1(3/3), 영상 · 상자 확대 — 복귀 때 상자 안 칸이 비고 남쪽에 흩어짐</span>
     <span class="k">§23</span><span>오프라인 cuVSLAM 켬/끔 × IMU 융합 — 전부 실패</span>
     <span class="k">§24</span><span>IR 노출 · 게인 정지 시험 — 번갈이 중 불가, 끈 IR 어두움의 원인은 자동 노출</span>
-    <span class="k">§25</span><span>프로젝터 상시 끔 기록 주행 f2z1(3/3, 시험 상자 치움) → 오프라인 cuVSLAM</span>
+    <span class="k">§25</span><span>프로젝터 상시 끔 기록 주행 f2z1(3/3, 시험 상자 치움)<span class="c1103">(11-03 정정: f2z1 은 시험 상자를 둔 채 달렸다(사용자 확인) — 근거 Docs/debug_log/2026-10-20/SUMMARY.md §3.2)</span> → 오프라인 cuVSLAM</span>
   </div>
 </section>
 
@@ -291,7 +293,7 @@ Setting parameter failed: xioctl(VIDIOC_S_CTRL) failed on option Gain, value=128
 
 <section>
   <h2>프로젝터 상시 끔 주행 f2z1<span class="sec">§25</span></h2>
-  <p>프로젝터를 계속 끄고(자동 노출 65 ms · 게인 169) 같은 b910 코스를 달렸습니다. 깊이가 수동 스테레오라 카메라만 보는 시험 상자는 치웠습니다.</p>
+  <p>프로젝터를 계속 끄고(자동 노출 65 ms · 게인 169) 같은 b910 코스를 달렸습니다. 깊이가 수동 스테레오라 카메라만 보는 시험 상자는 치웠습니다.<span class="c1103">(11-03 정정: f2z1 은 시험 상자를 둔 채 달렸다(사용자 확인) — 근거 Docs/debug_log/2026-10-20/SUMMARY.md §3.2)</span></p>
   <div class="tbl"><table>
     <tr><th>항목</th><th>값</th></tr>
     <tr><td>목표</td><td class="n">3/3 SUCCEEDED · 50.3 · 50.5 · 102.3 s</td></tr>
