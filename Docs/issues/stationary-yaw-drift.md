@@ -2,7 +2,7 @@
 
 | 상태 | 기간 | 처음 본 곳 | 바꾼 파일 | 관련 문제 |
 |---|---|---|---|---|
-| **조사 중** · 증상 차단 구현(미배포) | 10-28 ~ | [10-28 §13.1](../debug_log/2026-10-28/SUMMARY.md)(그때는 원인 오판) · [§16.1](../debug_log/2026-10-28/SUMMARY.md) | `ros2_ws/src/rover_navigation/scripts/place_server.py`(출발 전 위치 추정 검사, 10-29) | [SLAM 시각 정체](slam-stamp-freeze.md)(SLAM 이 언제 스캔을 처리하나) · 자이로 바이어스 · ZUPT(09-23 · 09-28, 카드 예정) |
+| **조사 중** · 증상 차단 구현(미배포) | 10-28 ~ | [10-28 §13.1](../debug_log/2026-10-28/SUMMARY.md)(그때는 원인 오판) · [§16.1](../debug_log/2026-10-28/SUMMARY.md) | `ros2_ws/src/rover_navigation/scripts/place_server.py`(출발 전 위치 추정 검사, 10-29) | [SLAM 시각 정체](slam-stamp-freeze.md)(SLAM 이 언제 스캔을 처리하나) · 자이로 바이어스 · ZUPT(09-23 · 09-28, 카드 예정) · [cuVSLAM 속도 융합](cuvslam-velocity-fusion.md) · [주행 전 검사 · 운용(8 기)](drive-ops-1019-1023.md) (8 기) |
 
 **한 줄**: 주행한 뒤 세워 둔 로버는 odom 방향 추정이 분당 0.04~0.39° 돌고, SLAM 위치 추정은 로버가 움직이지 않으면 스캔을 처리하지 않아 고치지 않는다. 그래서 실제 벽이 돌아간 자리에 칠해져 출구가 막히거나(경로 없음), 틀린 방향으로 출발한다(f2pl1, 7°). prep 직후 정지에서는 생기지 않는다(30 분 0.07°). 원인은 아직 모른다.
 
