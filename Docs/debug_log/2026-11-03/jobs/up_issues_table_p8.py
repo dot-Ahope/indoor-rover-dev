@@ -1,3 +1,4 @@
+# ISSUES.md 에 8 기 카드 표를 '### 10 월 (형식 시범)' 앞에 넣는다(11-03 §9). PC 에서 한 번 실행 · 로버 안 움직임 · 인자 없음 · 출력 'ok'(이미 8 기 표가 있으면 assert 로 멈춤)
 import sys
 sys.stdout.reconfigure(encoding='utf-8')
 p = 'F:/6_Indoor_Rover/Rover/Docs/issues/ISSUES.md'
