@@ -2,7 +2,7 @@
 
 | 상태 | 기간 | 처음 본 곳 | 바꾼 파일 · 설정 | 관련 문제 |
 |---|---|---|---|---|
-| 09-29 시점 **보류**(사용자 결정 §11 — 기능 완성 우선, Isaac 심화는 JetPack 7.2 이전 뒤). 측정으로 확인한 것: cuVSLAM 3.2.6 이 JetPack 6.2.2 에서 동작 · 정지 드리프트 0.44 cm · CPU 22.8 %(사람 있으면 88.1 %), 프로젝터 번갈이 60 Hz 실현 가능. 이후: 10-19 사용자가 '7.2 뒤로' 는 일정 결정이었다며 재개 → 10-21 프로젝터 **상시 끔**(09-29 에 기각한 O2)으로 결정 → **10-23 주 EKF 병진 = cuVSLAM**(아래 §7) | 09-29 | [09-29 §6](../debug_log/2026-09-29/SUMMARY.md) (rf2o 도입 계획 전 사용자 요청) | 09-29 에 스택 설정은 안 바꿈. 시험용만: [`vslam_standalone.launch.py`](../debug_log/2026-09-29/jobs/vslam_standalone.launch.py) · `job644`~`job654`(전부 [`2026-09-29/jobs/`](../debug_log/2026-09-29/jobs/)). 문서: `Docs/04_navigation/NAV2_EXPLORATION_PLAN.md §7.4`, CLAUDE.md §6 상태 줄(§11 반영) | [제자리 회전 옆 밀림 F0-a](f0-rotation-side-slip.md)(왜 병진 관측이 필요한가 — 방향 D) · [센서 컨디셔너](sensor-conditioner.md)(B2 · B3) · [휠 오도 스케일 · 회전 슬립](wheel-odom-scale-slip.md)(rf2o 이후 칸) · [Phase N 후반 N6 · 유령 셀](nvblox-n6-global-ghosts.md)(nvblox 가 쓰는 깊이) · [깊이 점군 아티팩트 · depth_relay](depth-relay-artifacts.md) · [DDS 공유메모리 사고](dds-shm-incident.md)(호스트 → 컨테이너 영상 전달) |
+| 09-29 시점 **보류**(사용자 결정 §11 — 기능 완성 우선, Isaac 심화는 JetPack 7.2 이전 뒤). 측정으로 확인한 것: cuVSLAM 3.2.6 이 JetPack 6.2.2 에서 동작 · 정지 드리프트 0.44 cm · CPU 22.8 %(사람 있으면 88.1 %), 프로젝터 번갈이 60 Hz 실현 가능. 이후: 10-19 사용자가 '7.2 뒤로' 는 일정 결정이었다며 재개 → 10-21 프로젝터 **상시 끔**(09-29 에 기각한 O2)으로 결정 → **10-23 주 EKF 병진 = cuVSLAM**(아래 §7) | 09-29 | [09-29 §6](../debug_log/2026-09-29/SUMMARY.md) (rf2o 도입 계획 전 사용자 요청) | 09-29 에 스택 설정은 안 바꿈. 시험용만: [`vslam_standalone.launch.py`](../debug_log/2026-09-29/jobs/vslam_standalone.launch.py) · `job644`~`job654`(전부 [`2026-09-29/jobs/`](../debug_log/2026-09-29/jobs/)). 문서: `Docs/04_navigation/NAV2_EXPLORATION_PLAN.md §7.4`, CLAUDE.md §6 상태 줄(§11 반영) | [제자리 회전 옆 밀림 F0-a](f0-rotation-side-slip.md)(왜 병진 관측이 필요한가 — 방향 D) · [센서 컨디셔너](sensor-conditioner.md)(B2 · B3) · [휠 오도 스케일 · 회전 슬립](wheel-odom-scale-slip.md)(rf2o 이후 칸) · [Phase N 후반 N6 · 유령 셀](nvblox-n6-global-ghosts.md)(nvblox 가 쓰는 깊이) · [깊이 점군 아티팩트 · depth_relay](depth-relay-artifacts.md) · [DDS 공유메모리 사고](dds-shm-incident.md)(호스트 → 컨테이너 영상 전달) · [프로젝터 번갈이 · IR](projector-ir-alternation.md)(8 기 — O1 을 실제로 해 보고 O2 로 돌아간 경위) · [cuVSLAM 속도 융합](cuvslam-velocity-fusion.md)(8 기 — 10-23 기본 채택) · [카메라 ↔ 컨테이너 공유메모리](camera-container-shm.md) (8 기) |
 
 **한 줄**: 09-23 에 정한 방향 D(라이다 · 영상 오도메트리의 속도를 odom EKF 에)를 실행하기 전에 사용자가 순서와 강건성을 물었다. rf2o 는 실내 구조에 맞고 야외 · 사람에는 약하다(원리 추정) → 사람 강건성을 rf2o 도입의 필수 조건으로 넣음(§6 · §6.1). cuVSLAM 의 사람 마스크는 Isaac ROS 5.0(JetPack 7.2 · Jazzy)에서만 쓸 수 있어 지금 플랫폼(JetPack 6.2.2 · Humble · Isaac 3.2)에선 불가(웹 확인, §7 · §8.1). 그래도 컨테이너에 이미 깔린 cuVSLAM 3.2.6 을 **단독으로 돌려 보니 동작했고**(정지 0.44 cm · 사람 걸어도 1.10 cm, §9), 남은 장애물은 같은 카메라를 nvblox(프로젝터 켬)와 cuVSLAM(프로젝터 끔)이 나눠 써야 하는 충돌이었다 → 측정으로 '상시 끔'(O2)을 기각하고 '번갈이'(O1)를 골랐다(§10.1). 사용자는 여기서 Isaac 심화를 미루고 기능 완성을 먼저 하기로 했다(§11).
 
@@ -33,8 +33,8 @@
 | 순서를 바꾸면(cuVSLAM 먼저) 사람 강건성이 생긴다 | 버전 · 플랫폼 조사(§7 · §8.1) | 마스크는 Isaac 5.0 = JetPack 7.2 · Jazzy 뿐 | 기각 — 순서와 무관하게 플랫폼 이전이 필요(웹 출처) |
 | cuVSLAM 3.2.6 은 JetPack 6.2.2 에서 동작한다 | V1(§9 선언) | V1-a · b 통과 | **지지**(측정, 정지만) |
 | 마스크 없이도 사람에 버틴다 | V1-d | 정지 로버 1.10 cm · 끊김 0 | 지지(정지 상태 한정). 움직이는 로버 + 사람(T2 · T3)은 미시험 |
-| 프로젝터 상시 끔(O2)으로 충분하다 | M1 | 아래 절반 유효 비율 켬의 45 % | 기각(측정, 선언 기준) — **이후 10-21 에 사용자 결정으로 채택**(§7) |
-| 번갈이(O1)는 이 카메라 · 드라이버로 실현된다 | M2 | 60 Hz · 메타 교대 · CPU 9.8 % | 지지(측정, 분리 노드는 아직 없음) |
+| 프로젝터 상시 끔(O2)으로 충분하다 | M1 | 아래 절반 유효 비율 켬의 45 % | 기각(측정, 선언 기준) — **이후 10-21 §20 에 사용자 결정으로 채택**: O1 을 실제로 해 보니 번갈이 끈 IR 이 어두워(자동 노출이 켠 프레임에 맞춰짐, 10-19 §24.1) cuVSLAM 이 이동을 못 따라갔고(f2y1 위치 95 % 469~483 cm, 10-19 §23.1) 상시 끔이면 따라감(f2z1 25.7 cm · yaw 0.8°, 10-20 §1). 09-29 기준(아래 유효 ≥ 켬 90 %)은 10-20 §2.1 에서도 미달(59 %) — 기준을 바꾼 게 아니라 O1 쪽이 막혀서 대가를 받아들인 결정 → [프로젝터 번갈이 · IR](projector-ir-alternation.md) |
+| 번갈이(O1)는 이 카메라 · 드라이버로 실현된다 | M2 | 60 Hz · 메타 교대 · CPU 9.8 % | 지지(측정, 분리 노드는 아직 없음). 이후 10-19 S1: 교대 · 분리는 되지만 메타 값이 거꾸로(1 = 실제 끔) — M2 는 어느 값이 켬인지 안 쟀다. 쓸 만한 끈 IR 은 못 얻음(위 줄) → [프로젝터 번갈이 · IR](projector-ir-alternation.md) §3 |
 | 사람이 있으면 cuVSLAM CPU 가 오르는 이유 | — | 후보 ① 이상치 제거 · 재검출 부담 ② 호스트 → 컨테이너 영상 누락이 CPU 경합으로 커짐 | 미확인 |
 
 ## 4. 조치와 효과
@@ -60,17 +60,18 @@
 
 ## 6. 남은 것 (09-29 시점)
 - 움직이는 로버 + 사람(T2 · T3), 움직임 정확도(회전 시험 스캔 정합 대비) — 프로젝터 충돌 해결 뒤.
-- O1 남은 일: 분리 노드(호스트 빠른 확인 a / 컨테이너 합성 b), 분리 뒤 30 Hz 깊이로 nvblox 품질 재확인, 스택 CPU 예산(≈ 320 % + cuVSLAM 23~88 %).
+- O1 남은 일: 분리 노드(호스트 빠른 확인 a / 컨테이너 합성 b), 분리 뒤 30 Hz 깊이로 nvblox 품질 재확인, 스택 CPU 예산(≈ 320 % + cuVSLAM 23~88 %). → 8 기에 a · b 모두 해 봄(10-19 호스트 노드 + 드라이버 합성, 10-21 NVIDIA 컨테이너 구성), 끈 IR 이 어두워 O1 은 보류 · 상시 끔 결정([프로젝터 번갈이 · IR](projector-ir-alternation.md)).
 - 사람 있을 때 CPU 4 배 · 프레임 누락 원인 — 미확인.
 - rf2o ROS 2 포트가 공분산을 채우는지 — 미확인(§6, 소스로 확인 예정).
 - Isaac 5.0 의 기본 ROS 배포판(Jazzy/Lyrical) — 확정 못 함(§8.1).
 
 ## 7. 이후 (09-30 ~) — 포인터
 - **10-02 ~ 10-07 rf2o**(§11 의 ⑤ 를 앞당긴 셈): 라이다 yaw π 로 병진 부호 반대 보정, 정지 사람 통과, 회전 중 큰 가림 실패(G3 기각), G4 휠 잔차 — 메모리 '회전 미끄러짐 · rf2o', [휠 오도 스케일 · 회전 슬립](wheel-odom-scale-slip.md) 이후 칸.
-- **10-19 §15**: 사용자 — 09-29 §11 '7.2 뒤로' 는 일정 결정이지 기술 제약이 아니었다, "분리 노드부터" → 호스트 C++ `emitter_splitter_node`(지금 저장소 `ros2_ws/src/rover_bringup/src/emitter_splitter.cpp`, `camera.launch.py emitter_flash:=` 로만 쓰임). 10-19 §23.1: 번갈이 조건에선 cuVSLAM 이 이동을 못 따라감(끔 · IMU 끔 위치 오차 끝 204 cm). §24.1: 번갈이 중 노출 · 게인을 못 바꿈 — [10-19 SUMMARY](../debug_log/2026-10-19/SUMMARY.md).
-- **10-20 §1**: 프로젝터 **상시 끔**이면 따라간다(f2z1, IMU 융합 끔 위치 끝 1.5 cm · yaw 0.8°) — [10-20 SUMMARY](../debug_log/2026-10-20/SUMMARY.md). §6~§9 그림자 융합 · 카메라 ↔ cuVSLAM 공유메모리(N-SHM — §8 '한 프로세스 합성' 의 다른 해법).
-- **10-21 §20 사용자 결정: 프로젝터 상시 끔 유지**(= 09-29 에 기각한 O2). 09-29 M1 이 예고한 대가(바닥 깊이 구멍)는 맨바닥 **유령 칸**으로 나타남 → 10-22 깊이 프리셋 3 · nvblox 통합 거리 2.0 m — [10-21 SUMMARY](../debug_log/2026-10-21/SUMMARY.md) · [10-22 SUMMARY](../debug_log/2026-10-22/SUMMARY.md) · 메모리 '유령 칸 · 프로젝터 끔 유지'.
-- **10-23 §16 사용자 결정: 주 EKF 병진 속도 = cuVSLAM**(`ekf.launch vslam:=on`, `Docs/tools/prep_patrol.sh` 기본 `ODOM=vslam` = `emitter_off:=true vslam:=on dds_shm:=true` — 지금 코드 확인). 근거 f2von1 · f2von2: W3 회전 창 13.2~16.8 cm(rf2o 21.5~30.7) · CPU 70 % — [10-23 SUMMARY](../debug_log/2026-10-23/SUMMARY.md).
+- **10-19 §15**: 사용자 — 09-29 §11 '7.2 뒤로' 는 일정 결정이지 기술 제약이 아니었다, "분리 노드부터" → 호스트 C++ `emitter_splitter_node`(지금 저장소 `ros2_ws/src/rover_bringup/src/emitter_splitter.cpp`). ⚠ 정정(11-03, [프로젝터 번갈이 카드](projector-ir-alternation.md) §5 기록 어긋남 7): 처음 이 줄에 '`camera.launch.py emitter_flash:=` 로만 쓰임' 이라 적었으나, `camera.launch.py` 97~107 행은 `emitter_off:=true`(지금 `prep_patrol.sh` 11 행 기본)에서도 분리 노드를 기록 전용(`out_ns /camera/split_unused`)으로 함께 올린다. 10-19 §23.1: 번갈이 조건에선 cuVSLAM 이 이동을 못 따라감(끔 · IMU 끔 위치 오차 끝 204 cm). §24.1: 번갈이 중 노출 · 게인을 못 바꿈 — [10-19 SUMMARY](../debug_log/2026-10-19/SUMMARY.md). 8 기 전체 흐름(S1 메타 뒤집힘 · S2 전달 손실 · S3 합성 · f2y1 · 노출 시험) → [프로젝터 번갈이 · IR](projector-ir-alternation.md) §2.
+- **10-20 §1**: 프로젝터 **상시 끔**이면 따라간다(f2z1, IMU 융합 끔: 위치 오차 끝 1.5 · 95 % 25.7 cm · yaw |95 %| 0.8° vs EKF 57.2 cm · 5.0° — [`anal_vslam_cmp_f2z1.txt`](../debug_log/2026-10-20/outputs/anal_vslam_cmp_f2z1.txt)). §2.1 B 정지 시험: 상시 끔에서도 nvblox 상자 칸 · 빈 바닥 유령은 켬과 같음(깊이 아래 절반 유효는 켬의 59 %) — [프로젝터 번갈이 · IR](projector-ir-alternation.md). §6~§9 그림자 융합 · 카메라 ↔ cuVSLAM 공유메모리(N-SHM — §8 '한 프로세스 합성' 의 다른 해법) → [cuVSLAM 속도 융합](cuvslam-velocity-fusion.md) · [카메라 ↔ 컨테이너 SHM](camera-container-shm.md).
+- **10-21 §16 ~ §19**: 사용자 "NVIDIA 추천 구성으로" — 컨테이너에 librealsense 2.55.1 · realsense-ros 4.51.1-isaac 층 + `realsense_splitter`(§8 '컨테이너 한 component container 합성' 권고를 실제로 해 본 것)를 세워 정지 시험 nv1: 메타 뒤집힘 · 끈 IR 어두움이 **그대로 재현**(불합격). 번갈이 중 수동 노출은 기동 파라미터로만 들어가고 켠 깊이를 약 20 % 잃음(mx1 · mx2) — [프로젝터 번갈이 · IR](projector-ir-alternation.md) §2 · §3.
+- **10-21 §20 사용자 결정: 프로젝터 상시 끔 유지**(= 09-29 에 기각한 O2, 위 §3 표 정정 줄). 09-29 M1 이 예고한 대가(바닥 깊이 구멍)는 맨바닥 **유령 칸**으로 나타남(켬 주행 0~3 칸 vs 끔 주행 28~99 칸, 10-21 §15) → 10-22 깊이 프리셋 3 · nvblox 통합 거리 2.0 m — [유령 칸 · 깊이 프리셋](ghost-cells-depth-preset.md) · [10-21 SUMMARY](../debug_log/2026-10-21/SUMMARY.md) · [10-22 SUMMARY](../debug_log/2026-10-22/SUMMARY.md).
+- **10-23 §16 사용자 결정: 주 EKF 병진 속도 = cuVSLAM**(`ekf.launch vslam:=on`, `Docs/tools/prep_patrol.sh` 기본 `ODOM=vslam` = `emitter_off:=true vslam:=on dds_shm:=true` — 지금 코드 확인). 근거 f2von1 · f2von2: W3 회전 창 13.2~16.8 cm(rf2o 21.5~30.7) · CPU 70 % — [10-23 SUMMARY](../debug_log/2026-10-23/SUMMARY.md) → [cuVSLAM 속도 융합](cuvslam-velocity-fusion.md).
 - 사람 마스크 · JetPack 7.2 이전은 지금도 미실행(CLAUDE.md §6 상태 줄의 마지막 Phase).
 
 ## 8. 실험 · 도구 색인

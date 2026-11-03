@@ -70,3 +70,14 @@
 - 판정 카드 B0 15.4: 출처는 `2026-10-23/outputs/anal_track_dev_f2rp1.txt` 의 1 s 간격 표본(205.0 행) — 틀린 값이 아니라 표본 간격 차이. 0.1 s 간격 복귀 구간 최소는 15.2(`2026-10-26/outputs/compare/fig_box_compare.txt`) → 그 차이를 적은 정정 표시.
 - '상자 58~59 s' 판별 줄: f2von2(재계획 0.5 Hz)의 상자 옆 막힘 (1.34, 0.05) 은 경로 받고 0.03 s 뒤(`2026-10-23/outputs/anal_pba_timing.txt`, 10-23 SUMMARY §20.2) → 정정 표시 추가. 머리 안내 5 → 7 건.
 - 같은 주소 다시 게시(5 판). 검사 0.
+
+## §9 문제 대장 8 기(10-19 ~ 10-23) (사용자: "jetson 비밀번호안바꿔도 된다. 8기 진행하라.")
+- 사용자 결정: Jetson 비밀번호는 바꾸지 않음(§5 의 노출은 이 대화 안에서만).
+- 7 묶음 병렬 작성(카드마다 담당 하나): 새 카드 10 장 — `box-exaggeration-source` · `box-return-cells` · `projector-ir-alternation` · `cuvslam-velocity-fusion` · `camera-container-shm` · `ghost-cells-depth-preset` · `path-tracking-replan-b0` · `pathblocked-only-new` · `drive-ops-1019-1023` · `record-conventions-evolution`. 이어 채움 26 장. 카드 합계 83 장(ISSUES.md 제외).
+- 머리 표 '관련 문제' 링크 34 장(스크립트, 이미 있으면 건너뜀) · ISSUES.md 8 기 표 · 색인 재생성(SECTIONS 1460 · RUNS 123 · JOBS 1895) · `chk_record_rules.py` RULES_OK.
+- 대조(원본에서 직접 확인): mp4 2 개 git 추적 중(`git ls-files`) · `path_blocked_ahead_condition.cpp` 21 행 '목표 5 에 52 s' 그대로 · `fastdds_shm_udp.xml` 23 행 8 MB · `2026-10-20/outputs/anal_ekf_replay_live.txt` 13 행 W3 최대 12.1 · `2026-10-21/outputs/nav_events_ms.txt` 309~313 행 MonotoneEscape 4.6 → 5.1 cm.
+- 묶음이 찾은 기록 어긋남(카드 '내 실수 · 기록 어긋남' 칸에 경로와 함께 적음 — 원본 SUMMARY · 코드는 아직 안 고침, 결정 대기):
+  - 코드 주석: `nvblox_local.yaml` 57 · 62~64 행(1.4 근거 · '먼 비스듬한 첫 관측' 설명 낡음) · `camera.launch.py` 26~27 행(`emitter_off` 를 '오프라인 확인용') · 62~63 행(데시메이션 '확인 중') · `fastdds_udp_only.xml` 19~21 행(SHM '원인 제거') · `path_blocked_ahead_condition.cpp` 21 행 · `2026-10-27/jobs/job551_f0drive.sh` 40 행(BAG_IR 조건).
+  - 기록: 10-19 §23.1 '근적외선 없음' 원인에 §24 정정 표시 없음 · 10-19 §22 '남쪽 15.7 cm' 는 북쪽 면 값 · 10-20 §7.3a 열 값 · 10-20 §9.7 'ttyUSB0 = 보드' 는 라이다 · 10-22 §21 '두 검증' 중 f2sm3 은 지표 없음 · '맨바닥 A' 지표 둘 · 10-23 §22.2 Smac 비교에 10-26 §6.1 무효 표시 없음 · B0 15.4 가 SUMMARY §17.1 · §21 · `SMAC_HYBRID_PLAN.md` 에 남음 · mp4 'git 제외' 서술.
+  - 운용: `prep_fast.sh` 70 행 SHM 오류 검사가 cuvslam · nvblox 로그를 안 봄 · only_new(기본 true)와 표준 prep 0.5 Hz 조합 미시험 · `up_tools.sh` 가 스크래치패드 `tools/` 를 읽음(소실) · 10-22 13:42 172.30.1.8 에 정체 모를 기기 응답(그 주소 쓰기 전 신원 확인).
+- MAC: 10-21 SUMMARY 31 행 · `2026-10-22/outputs/chk_wifi_1022.txt` 에 MAC/BSSID 가 가려지지 않음. 저장소 전체로는 MAC 모양 문자열이 있는 추적 파일 73 개(08-31 ~, 일부는 오탐 가능) — README §4 '가린다' 규칙 이전 기록 포함. 가림 여부는 사용자 결정.
