@@ -87,3 +87,14 @@
 - 내 실수 1 건(§5 비밀번호 출력) — 사용자: 비밀번호 교체 불필요(§9).
 - 결정 대기: push(11-02 마지막 push 뒤 로컬 커밋 13 개) · §9 어긋남 · 주석 고치기 · MAC 가림 범위(추적 파일 73 개) · mp4 2 개 git 제외 여부 · 9 기(10-26 ~ 29) · 63 개 그림 날짜 폴더 복사 · 8 · 9 월 날짜별 페이지.
 - 다음 주행 전에 할 것: 새 `prep_fast.sh` 를 Jetson 에 배포(지금 Jetson `/tmp` 판은 옛 판) · `up_tools.sh` 전송 경로(스크래치패드 `tools/` 없음) 고치기.
+
+## §11 보드 장치 이름 ttyUSB0 → ttyCH341USB0 (사용자: "예전에 내가 드라이버를 설치하고, 보드를 연결했을 때는, ttyUSB0,ttyUSB1로 잡혔었는데, 지금은 ttyCH341USB0 … 원인 알려줘." → "Jetson에서 확인 명령 실행하고 기록 남겨")
+- 이름은 udev 가 아니라 **붙는 커널 드라이버**가 정한다: 커널 기본 `ch341`(usb-serial 틀) → `ttyUSB*`, WCH 벤더 드라이버 CH341SER(자체 tty 드라이버) → `ttyCH341USB*`(벤더 소스 구조 — 내 지식, Jetson 소스로는 미확인). udev 는 별칭만: `99-rover.rules` 1a86:7523 → `/dev/rover`(`2026-08-26/jobs/job0c.sh`), `99-rplidar.rules` 10c4:ea60 → `/dev/rplidar`(`2026-08-27/jobs/job4e.sh`). 코드는 별칭만 씀(`base.launch.py` 22 행 realpath, `lidar.launch.py` 11 행).
+- 기록으로 본 전후(측정 기록):
+  - 08-04 · 08-21 이전 프로젝트(`C:\Users\magma\Documents\Claude\Projects\Rover`, 저장소 밖): 커널 5.15.148-tegra, 홈에 `~/ch341_build`(H104_STATE.md 56 행), CH340 = `/dev/ttyUSB0` · Driver=ch341 · 옛 별칭 `/dev/rover_ctrl -> ttyUSB0`, RTK FTDI = `ttyUSB1`(`docs/rtk2/reports/RTK2_USBCHECK.txt` 2 · 31 · 43~47 행) — 사용자 기억과 일치.
+  - 08-26: L4T R36.5.0, `/dev/ttyCH341USB0` 'WCH 벤더 드라이버 ch341 V1.9'(`2026-08-26/SUMMARY.md` 6 · 15 행). 같은 날 `job0b.sh` 2 행 'CH340이 ttyUSB로 안 잡히는 원인 조사' — 출력 캡처 없음(원천 소실).
+  - 08-27 ~ 09-30: `/dev/rover -> ttyCH341USB0` · `/dev/rplidar -> ttyUSB0`(`2026-08-27/outputs/job6b_restart.txt`, 09-28 ~ 30 prep 출력 10 개). 10 월 기록에는 찍힌 것 없음.
+- 원인(추정): 08-21 ~ 08-26 사이 L4T(커널) 갱신 뒤 벤더 드라이버가 새 커널용으로 설치돼 같은 이름 `ch341.ko` 로 기본 모듈 자리를 대신함. 누가 · 언제 설치했는지 · `~/ch341_build` 가 그 소스인지는 기록 없음.
+- Jetson 확인: `jobs/chk_serial_driver_1103.sh`(읽기만 — uname · ls 별칭 · lsmod · modinfo ch341 · 모듈 파일 위치 · dpkg 소유 · sysfs 드라이버 · ~/ch341_build · dmesg) — **실행 못 함**: 11-03 15:42 192.168.0.110 · 172.30.1.8 모두 핑 100 % 손실, scp 'lost connection'(Jetson 꺼짐 또는 망 끊김 추정). 다음 접속 때 이 스크립트 결과를 `outputs/chk_serial_driver_1103.txt` 로 남길 것.
+- 기록 어긋남(정정 표시는 다음에): 09-18 · 09-21 `j434_base*.txt` '보드 장치: /dev/rover /dev/ttyUSB0' 는 `ls` 존재 출력일 뿐(`job434_base.sh` 11 행) · 10-20 §9.7 '`/dev/ttyUSB0` 다시 생김 = 보드 USB 끊김' 은 라이다 장치 · 09-09 `job106_baud.sh` 21 행 `udevadm info -n /dev/ttyUSB0` 는 보드 USB 속도를 보려다 라이다를 봤을 수 있음(미확인) · 세션 메모리 jetson-access 의 '제어보드 CH340 은 /dev/ttyUSB0 로 보여야 base 가 뜬다'(09-16) — 틀림, 메모리 고침.
+- 영향: 동작 영향 없음(별칭 사용). micro-ROS 2 Mbps 회귀 후보 'ch341 드라이버' 와는 시점이 안 맞음(08-26 벤더 드라이버 · 08-27 2 Mbps 정상) — 약한 후보.
