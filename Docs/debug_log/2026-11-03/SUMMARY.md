@@ -65,3 +65,8 @@
 - ② 'B2 · B3 기본 끔' — 맞음, §4(커밋 ce1a0bee)에서 이미 고침(B3 는 vslam/rf2o 때 자동 켜짐).
 - ③ `place_server` · `place_web` 은 어떤 launch 에도 없음 — 맞음(`ros2_ws/src/*/launch/` 검색 0) → F2.5 줄에 시험 단계라고 적음.
 - ④ `rover_msgs` 없음 — 맞음(`ros2_ws/src/` 에 rover_bringup · rover_description · rover_navigation 뿐) → 디렉토리 표에 '지금은 없음'.
+
+## §8 10-23 페이지 남은 2 건 (사용자: "10-23 남은 2건 고치라.")
+- 판정 카드 B0 15.4: 출처는 `2026-10-23/outputs/anal_track_dev_f2rp1.txt` 의 1 s 간격 표본(205.0 행) — 틀린 값이 아니라 표본 간격 차이. 0.1 s 간격 복귀 구간 최소는 15.2(`2026-10-26/outputs/compare/fig_box_compare.txt`) → 그 차이를 적은 정정 표시.
+- '상자 58~59 s' 판별 줄: f2von2(재계획 0.5 Hz)의 상자 옆 막힘 (1.34, 0.05) 은 경로 받고 0.03 s 뒤(`2026-10-23/outputs/anal_pba_timing.txt`, 10-23 SUMMARY §20.2) → 정정 표시 추가. 머리 안내 5 → 7 건.
+- 같은 주소 다시 게시(5 판). 검사 0.
