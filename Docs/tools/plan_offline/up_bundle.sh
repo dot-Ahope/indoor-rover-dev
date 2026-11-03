@@ -4,7 +4,7 @@
 H=$(cd "$(dirname "$0")" && pwd)
 { echo '#!/bin/bash'; echo "mkdir -p /tmp/planoff"
   # 텍스트 파일은 CR 을 빼고 담음 — 2026-10-26: git(core.autocrlf=true)이 체크아웃 때 CRLF 로 바꿔 Jetson bash 가 깨졌고('\r': command not found)
-  #   정리 단계가 안 돌아 planner_server 5 개가 도메인 42 에 쌓임 → 그날 D5 첫 결과 무효(SUMMARY 2026-10-26 §1.1)
+  #   정리 단계가 안 돌아 planner_server 가 도메인 42 에 쌓임(정리 전 20 개 프로세스 — 2026-11-03 정정, 옛 주석은 5 개) → 그날 D5 첫 결과 무효(SUMMARY 2026-10-26 §1.1)
   echo "base64 -d > /tmp/planoff/planner_offline.yaml <<'B64'"; tr -d '\r' < "$1" | base64 -w0; echo; echo B64
   for f in query_planners.py run_planner_offline.sh; do echo "base64 -d > /tmp/planoff/$f <<'B64'"; tr -d '\r' < "$H/$f" | base64 -w0; echo; echo B64; done
   echo "base64 -d > /tmp/planoff/scenes.npz <<'B64'"; base64 -w0 "$2"; echo; echo B64

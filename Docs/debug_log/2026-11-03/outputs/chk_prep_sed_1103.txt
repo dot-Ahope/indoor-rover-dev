@@ -1,0 +1,4 @@
+FWD=15.0 -> src cost_weight: 15.0 · link 유지
+  ⚠ PreferForward 를 5.0 로 바꿈(링크 대상 /tmp/tmp.Ol2CoWrGbC/src.yaml — 저장소 값과 달라짐)
+FWD=5.0 -> src cost_weight: 5.0 · link 유지
+FWD=5.0 -> src cost_weight: 5.0 · link 유지

@@ -69,7 +69,7 @@ extern size_t cubemx_transport_write(struct uxrCustomTransport *transport, const
 extern size_t cubemx_transport_read(struct uxrCustomTransport *transport, uint8_t *buf, size_t len, int timeout, uint8_t *err);
 
 #define HALF_WHEEL_BASE  (WHEEL_BASE_M * 0.5f)   /* = 0.2215 m (유효 게이지 0.443 — 스크럽 반영, 2026-09-07) */
-#define V_MAX_MPS        MAX_LINEAR_SPEED_MPS    /* 0.100 (1:90 모터, duty 98%→115mm/s 실측) — 명령 saturation */
+#define V_MAX_MPS        MAX_LINEAR_SPEED_MPS    /* = 0.085 m/s(rover_platform.h, 2026-09-07 스케일 정정 뒤; 옛 주석 0.100 · duty 98%→115mm/s 는 09-07 스케일 정정 전 값) — 명령 saturation */
 
 /* F8.5 배터리 전압 변환(분압 4.05 실측)은 2026-09-28 App/drivers/battery_adc.c 로 옮김(OLED 태스크와 ADC 공유). */
 

@@ -134,7 +134,7 @@
 | 결론 | CR 을 빼고 재전송(`up_prep_1026b.txt`: 세 파일 CR 0, 해시 = git HEAD blob). prep 재시도 PREP_OK(`prep_smac_1026_3.txt`: 0.003 m · 12.22 V, BT 사본 PlanSmacOrNavFn 1 · step 1, SmacHybrid REEDS_SHEPP · cp 3.0 · 해석 1.0 · 2.0 s) |
 | 다음에 알아보는 법 | Jetson 으로 보내는 텍스트는 항상 `tr -d '\r'`, 해시 비교는 `git show HEAD:<경로>` 기준 |
 
-### §7.3 f2sh1(b910, planner:=smac) 결과 — 3/3 · **상자 옆 실제 최소 여유 18.4 cm**(B0 15.4 · 5.5 · 3.1)
+### §7.3 f2sh1(b910, planner:=smac) 결과 — 3/3 · **상자 옆 실제 최소 여유 18.4 cm**(B0 15.4 · 5.5 · 3.1) (→ 2026-11-03 §2 정정: B0 첫 값은 `outputs/compare/fig_box_compare.txt` 로 15.2)
 - 러너 `outputs/drives/f2sh1/run_f2sh1.txt`: 3/3 · 51.4 · 47.9 · 104.6 s(총 205.8 s; f2rp5 202.8). bag `bags/bag_f2sh1.tgz`, 로그 `bags/logs_f2sh1/` → `outputs/drives/f2sh1/nav2_f2sh1.log` · `nav_events_ms_f2sh1.txt`.
 - Smac 사용: nav2 로그에 SimpleSmoother 호출('Received a path to smooth') **0** = BT 경로 전부 Smac(NavFn 대체 0). 막힘 중단 1(상자 (1.36, −0.11), 경로 받고 새로 99) → Smac 재계획.
 - 상자 옆(`outputs/drives/f2sh1/anal_contact_f2sh1_d30.txt` · `anal_plan_series_f2sh1.txt` · `anal_track_dev_f2sh1.txt` · `anal_band_run_f2sh1.txt`, 상자 = 기록 위치):
@@ -147,7 +147,7 @@
 - 러너 `outputs/drives/f2sh2/run_f2sh2.txt`: 3/3 · 52.0 · 48.4 · 101.1 s(총 201.7 s). prep `outputs/setup/prep_smac_1026_4.txt`(0.006 m · 12.19 V). bag `bags/bag_f2sh2.tgz`, 로그 → `outputs/drives/f2sh2/nav2_f2sh2.log` · `nav_events_ms_f2sh2.txt`.
 - Smac: SimpleSmoother 호출 0(NavFn 대체 0). 막힘 중단 0. 복귀 재계획 1 회 = 13:18:09 TF 외삽으로 컨트롤러 중단 → 로버 (2.39, −1.23) 에서 Smac 재계획, 그 경로 상자 여유 **17.1 cm**(`outputs/drives/f2sh2/anal_plan_series_f2sh2.txt`).
 - 실제 여유(`outputs/drives/f2sh2/anal_contact_f2sh2_d30.txt` · `anal_track_dev_f2sh2.txt`): 갈 때 19.0 cm, 복귀 **10.8 cm**(13:18:32.9, 로버 (1.63, 0.09, 152°) = 상자 동쪽 끝에 비스듬히 다가가는 굽은 곳). 그때 로버는 경로보다 상자 쪽 **+13~15.6 cm**(t 183~188) — MPPI 굽은 곳 안쪽 깎기(10-23 §22.3). 상자 옆 직선(t 194~197)은 +0.7~2.6 cm 로 경로 위. 로컬 코스트맵 정확 여유 최소 14.2 cm(< 6 cm 0 프레임).
-- b910 두 번 종합(Smac): 18.4 · 10.8 cm(B0 NavFn 15.4 · 5.5 · 3.1). 계획 경로 여유 17.1~18.5 cm(NavFn 8.9~13.3). 남은 손실은 컨트롤러 굽은 곳 깎기(f2sh2 에서 −6 cm).
+- b910 두 번 종합(Smac): 18.4 · 10.8 cm(B0 NavFn 15.4 · 5.5 · 3.1). 계획 경로 여유 17.1~18.5 cm(NavFn 8.9~13.3). 남은 손실은 컨트롤러 굽은 곳 깎기(f2sh2 에서 −6 cm). (→ 2026-11-03 §2 정정: 15.2)
 
 ## §8 시각화 (사용자: "서쪽 통로는 지금 사람들이 있어서 나중으로 미루자. 우선 이전 2번의 주행 시각화해달라.") — f2sh3(no5) 미룸
 - 비교 그림 `figures/compare/box_compare_b0_smac.png`(도구 `jobs/fig_box_compare.py` → `outputs/compare/fig_box_compare.txt`; 입력 10-23 `bag_f2rp1 · f2rp2 · f2rp5`, 10-26 `bag_f2sh1 · f2sh2`): 왼쪽 B0(NavFn) · 오른쪽 Smac, 실선 = 지나간 길, 점선 = 가장 가까운 순간에 따르던 BT 경로, 칠한 차체 = 최소 여유 순간. 최소 여유 B0 15.2 · 5.5 · 3.1 / Smac 18.4 · 10.8 cm.

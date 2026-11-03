@@ -71,7 +71,7 @@
             <!-- 2026-09-15 (09-15 §2): SmacHybrid → GridBased 로 되돌림. MPPI 가 좌측으로 치우쳐(+0.40) 패딩 footprint 가 좌측 가구 LETHAL 에 닿자
                  Smac 은 시작 footprint 충돌로 재계획을 15회 거부해 ABORT. NavFn 은 시작 셀만 보므로 inflation 띠 안에서도 재계획된다. 곡률 완화는 MPPI 몫. -->
             <!-- 2026-09-16 A 계획: SmoothPath(simple_smoother) 연결. 정지 A/B(job340)에서 inflation 0.70 과 함께 0.1 m 창 최대 꺾임 78° → 16.6°.
-                 실패(충돌 검사 등) 시 ForceSuccess 로 원 경로를 그대로 쓴다 — RecoveryNode 의 클리어를 유발하지 않기 위해. -->
+                 실패(충돌 검사 등) 시 원 경로를 그대로 쓴다 — RecoveryNode 의 클리어를 유발하지 않기 위해. (11-03 정정: 지금 구조는 ForceSuccess 가 아니라 아래 Fallback 의 CopyPath) -->
             <Sequence name="PlanAndSmooth">
               <!-- mp4(09-16 §1.13): {path} 를 두 번(원경로→스무딩) 쓰면 FollowPath 가 1 s 마다 목표를 두 번 보내 대기 목표가
                    "Aborting handle" 로 매초 폐기됐다. 원경로는 {raw_path}, 컨트롤러는 스무딩 결과 {path} 만 본다.

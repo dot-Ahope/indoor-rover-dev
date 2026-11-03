@@ -37,7 +37,7 @@
 | §5 | Jazzy 비용 상한 이식 | `jobs/up_smac_fork_1026.sh` + 패치 `Docs/06_planner/smac_fork/` | 이득 없음(`planner_offline/fork/`) | ✔ 이식은 작동 · 여유는 안 늚 |
 | §6 | cost_penalty 가 왜 안 먹나 | `Docs/tools/plan_offline/run_variants.sh`(변형마다 프로세스) | `planner_offline/sep/anal_all.txt` | ✔ 원인 = 도구(Smac static 상태 공유). 유효 결과는 sep · sep_fork 만 |
 | §7 | planner:=smac 배포 · prep | `jobs/up_smac_nav_1026.sh` · `jobs/prep_smac_1026.sh` | PREP_OK(`setup/prep_smac_1026_3.txt`) | ✔ 첫 배포 heredoc '\n' 깨짐 → Edit 로 고침 |
-| §7.3 · §7.4 | b910 실제 상자 여유 | `Docs/debug_log/2026-10-23/jobs` 계열 anal_contact · anal_plan_series · anal_track_dev | 18.4 · 10.8 cm(`drives/f2sh1` · `f2sh2`) | ✔ 계획 경로는 멀어짐, 남은 손실 = 굽은 곳 깎기 |
+| §7.3 · §7.4 | b910 실제 상자 여유 | `Docs/debug_log/2026-10-23/jobs` 계열 anal_contact · anal_plan_series · anal_track_dev | 18.4 · 10.8 cm(`drives/f2sh1` · `f2sh2`) | ✔ 계획 경로는 멀어짐, 남은 손실 = 굽은 곳 깎기 | (→ 2026-11-03 §2 정정: `anal_contact.py` 실제 위치는 `Docs/debug_log/2026-10-22/jobs/`)
 | §8 · §12 | B0 대 Smac 상자 옆 비교 | `jobs/fig_box_compare.py` | `figures/compare/box_compare_b0_smac*.png` | ✔ 첫 판 점선이 막힘 전 경로였음 → 고침 |
 | §9 | 깎기가 컨트롤러 탓인가 | `jobs/chk_dev_frame_f2sh2.py` | odom 좌표 이탈 +15.7 cm(`drives/f2sh2/`) | ✔ MPPI 가 받은 경로 안쪽을 깎음 |
 | §10.1 | 시뮬이 왜 재현 안 되나 | `jobs/chk_cmd_vs_motion_f2sh2.py` | 바깥 바퀴 0.086 = 한계 0.085(`drives/f2sh2/`) | ✔ 펌웨어 비례 축소 → 시뮬 `wheel_max` 추가 |

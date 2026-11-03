@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 """pad_relief — 컨트롤러가 '후보 궤적 전부 충돌'로 갇혔을 때만 로컬 코스트맵 footprint_padding 을 잠깐 0 으로 내렸다가 되돌린다.
 (2026-10-14, Docs/debug_log/2026-10-14/SUMMARY.md §8. 근거 10-13 §5.4·§8·§14.2, 10-14 §2·§7)
+⚠ 쓰지 않는다(10-14 §21 A/B): 실행 중 패딩을 한 번 바꿨다 되돌리면 주행 끝까지 잔떨림 · 좌우 틀기가 늘었다(기전 모름, 10-15 §15 · §16 범위 정정).
+  그래서 mode 기본값을 off 로 둔다(11-03 — 전엔 'on' 이라 인자 없이 띄우면 실제로 패딩을 바꿨다). 근거 카드 Docs/issues/pad-relief-runtime-padding.md
 
 왜 필요한가
   Nav2 의 풋프린트 충돌 검사는 칸(5 cm) 단위라, 코스트맵상 여유가 한 칸 안으로 줄면 '현재 자세부터 충돌'로 본다.
@@ -32,7 +34,7 @@ from diagnostic_msgs.msg import DiagnosticArray, DiagnosticStatus, KeyValue
 class PadRelief(Node):
     def __init__(self):
         super().__init__('pad_relief')
-        for k, v in (('mode', 'on'), ('costmap_node', '/local_costmap/local_costmap'), ('relief', 0.0), ('trig_n', 3), ('trig_win', 3.0),
+        for k, v in (('mode', 'off'), ('costmap_node', '/local_costmap/local_costmap'), ('relief', 0.0), ('trig_n', 3), ('trig_win', 3.0),
                      ('restore_dist', 0.15), ('max_hold', 15.0), ('cooldown', 3.0), ('max_per_min', 4),
                      ('fail_text', 'fail to compute path'), ('fail_node', 'controller_server'), ('log_path', '/tmp/pad_relief.log')):
             self.declare_parameter(k, v, ParameterDescriptor(dynamic_typing=True) if k == 'mode' else ParameterDescriptor())
