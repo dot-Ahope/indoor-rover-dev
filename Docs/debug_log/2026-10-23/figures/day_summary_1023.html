@@ -56,7 +56,7 @@ figcaption{color:var(--mute);font-size:.82rem;margin-top:5px;max-width:80ch}
   <p class="eyebrow">Indoor Rover · 2026-10-23 · Docs/debug_log/2026-10-23 §0–§23 · 주행 9 번</p>
   <h1>10-23 상자 옆 여유와 계획기</h1>
   <p class="lead">복귀 길 상자 옆을 너무 가깝게 지나는 문제를 하루 종일 쫓았습니다. 오도메트리를 cuVSLAM 으로 바꿔 위치 추정은 확실히 좋아졌지만(<b>vslam:=on 기본 채택</b>) 상자 옆 여유는 그대로였고, 원인은 두 가지가 겹친 것으로 좁혀졌습니다: <b>계획 경로 자체가 꺾임 안쪽(상자 쪽)으로 짧게 돎</b> + <b>컨트롤러가 그 경로에서 안쪽을 더 깎음</b>. 주기 재계획을 끄고 막힘 판정을 고쳐 <b>NavFn 결함 기준선(B0)</b> 을 확정했고, Smac Hybrid-A* 를 실제 계획기로 오프라인 비교한 결과는 <b>기준 미달</b>이었습니다. 다음 후보는 차체 모양과 제자리 회전을 함께 다루는 Smac Lattice 입니다. 2026-11-02 에 판정마다 그 값을 낸 스크립트 핵심 · 나온 결과 발췌와 원문 경로를 덧붙였습니다.</p>
-  <p class="lead"><span class="c1103">11-03 에 원문과 어긋난 곳 5 건을 정정 표시했다(본문 문장은 그대로).</span></p>
+  <p class="lead"><span class="c1103">11-03 에 원문과 어긋난 곳 7 건을 정정 표시했다(본문 문장은 그대로).</span></p>
 </header>
 
 <section>
@@ -67,7 +67,7 @@ figcaption{color:var(--mute);font-size:.82rem;margin-top:5px;max-width:80ch}
     <div class="v ok"><b>결정: vslam:=on 기본(오도메트리 = cuVSLAM)</b><span>W3 회전 창 13.2~16.8 cm(이전 21.5~30.7) · 멈칫 5(12~14) · CPU 70 %(75~76) (§10 · §11 · §16)</span></div>
     <div class="v ok"><b>결정: 재계획 = 목표당 1 회 + 막힘 때</b><span>0.5 Hz 재계획이 로버 자리부터 다시 그려 치우침을 쌓던 것을 끊음 (§14 · §17)</span></div>
     <div class="v ok"><b>막힘 판정 only_new</b><span>경로를 받을 때 이미 99 였던 칸은 세지 않음. 재생 시험에서 실제 막힘 9 개 재현(±0.03 s), 서쪽 통로 헛막힘 4 개만 빠짐 (§20.2 · §20.7)</span></div>
-    <div class="v ok"><b>B0 = NavFn 결함 기준선 확정</b><span>태그 navfn-baseline-20261023. b910 상자 옆 15.4 · 5.5 · 3.1 cm (§21)</span></div>
+    <div class="v ok"><b>B0 = NavFn 결함 기준선 확정</b><span>태그 navfn-baseline-20261023. b910 상자 옆 15.4 · 5.5 · 3.1 cm<span class="c1103">(11-03 정정: 첫 값 15.4 는 anal_track_dev 1 s 간격 시간열 값(outputs/anal_track_dev_f2rp1.txt). 0.1 s 간격 복귀 구간 최소로 다시 잰 값은 15.2 cm — 근거 Docs/debug_log/2026-10-26/outputs/compare/fig_box_compare.txt)</span> (§21)</span></div>
     <div class="v no"><b>Smac Hybrid-A* 오프라인: 기준 미달</b><span>상자 여유 −7.1~+3.2 cm(기준 +5), 서쪽 통로 계획 실패 (§22.2)</span></div>
     <div class="v wait"><b>컨트롤러: 굽은 곳 안쪽 깎기</b><span>5 주행 모두 69~91 %, 복귀 상자 쪽 +7~11 cm. 제어 주기는 9.7~9.8 Hz 로 주원인 아님 (§22.3)</span></div>
   </div>
@@ -288,7 +288,7 @@ west_rp3_g5      Smac_R10_C30_A05_B144 |   46 ·  2.34 |  420.5 ·  434.6 |    3
   <div class="pm"><h3>'막힘 기준 99 → 100 이 가장 단순하다' (§20.1 → §20.2)</h3><div class="flow">
     <div class="k">처음 추론</div><div>상자가 경로를 막으면 경로점이 상자 칸(100)에 들어가니 100 으로 올려도 잡힐 것 — '추정' 으로 적고 확인 안 함.</div>
     <div class="k">의심한 이유</div><div>바꾸기 전에 쓸모 있던 막힘들의 실제 값을 세어 봄.</div>
-    <div class="k">판별</div><div>오늘 막힘은 상자 포함 전부 99. 둘을 가르는 것은 값이 아니라 '경로를 받고 몇 초 뒤' — 서쪽 통로 0.02 s, 상자 58~59 s.<span class="c1103">(11-03 정정: f2rp1 의 두 번째 상자 막힘은 경로 받고 62.99 s 뒤 — 근거 Docs/debug_log/2026-10-23/outputs/anal_pba_timing.txt)</span></div>
+    <div class="k">판별</div><div>오늘 막힘은 상자 포함 전부 99. 둘을 가르는 것은 값이 아니라 '경로를 받고 몇 초 뒤' — 서쪽 통로 0.02 s, 상자 58~59 s.<span class="c1103">(11-03 정정: f2rp1 의 두 번째 상자 막힘은 경로 받고 62.99 s 뒤 — 근거 Docs/debug_log/2026-10-23/outputs/anal_pba_timing.txt)</span><span class="c1103">(11-03 정정: 상자 막힘이 모두 58~59 s 뒤인 것은 아님 — 0.5 Hz 재계획 주행 f2von2 의 상자 옆 막힘 (1.34, 0.05) 은 경로 받고 0.03 s 뒤 — 근거 Docs/debug_log/2026-10-23/outputs/anal_pba_timing.txt · SUMMARY §20.2)</span></div>
     <div class="k">스크립트 핵심</div><div><pre class="code"># jobs/anal_pba_timing.sh — nav2 로그에서 &#x27;Received a path to smooth&#x27; 시각과 PathBlockedAhead 첫 줄 시각의 차
        /Received a path to smooth/{p=t}
        /PathBlockedAhead: 앞 경로/ &amp;&amp; /지속되면 재계획/ { match($0,/\(([^)]*)\) 비용 ([0-9]+)/,q); printf &quot;  처음 막힘 (%s) 비용 %s · 경로 받고 %.2f s 뒤\n&quot;, q[1], q[2], t-p }&#x27; &quot;$f&quot;</pre></div>
