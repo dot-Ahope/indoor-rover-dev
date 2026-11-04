@@ -6,6 +6,7 @@
 > - 사용자 지시가 이 문서보다 우선한다. 지시가 규칙을 바꾸면 그날 이 문서에 반영한다.
 
 ## 0. 언제 무엇을 읽나
+(11-04) 같은 안내를 Claude Code Skill 6 개(`.claude/skills/rover-*/SKILL.md` — day-record · tools · jetson-run · drive · record-pages · commit-push)로도 둔다. Skill 은 해당 작업 때 자동으로 불려 이 README 의 절을 열게 하는 **안내만** 하고 본문은 복사하지 않는다(절 제목을 바꾸면 Skill 도 — 점검 K).
 
 <!-- RULES_TABLE_BEGIN (CLAUDE.md 에 같은 표 — 고치면 둘 다, chk_record_rules.py 가 비교) -->
 | 하려는 일 | 읽을 절 |
@@ -209,3 +210,4 @@ exec python "$(git rev-parse --show-toplevel)/Docs/tools/chk_commit_gate.py" --g
 
 | 2026-11-04 | 기록 규칙 새 경고는 커밋 차단(기준선 110 건 · `--new-only` · 두 훅) | 사용자 "1번부터 순서대로", 11-04 SUMMARY §12 |
 | 2026-11-04 | 비밀 읽기 차단 훅 chk_secret_read(4 도구) | 사용자 "1번부터 순서대로"(②), 11-04 SUMMARY §13 · 11-03 §5 실수 |
+| 2026-11-04 | Skill 6 개(README 절 안내만) · 점검 K(Skill 이 가리키는 절 제목) | 사용자 "1번부터 순서대로"(③), 11-04 SUMMARY §14 |
