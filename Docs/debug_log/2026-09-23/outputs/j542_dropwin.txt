@@ -1,40 +1,40 @@
 ## mon.log (BEACON 제외)
-2026-09-18 11:55:06 LINK bssid=b0:38:6c:37:1b:4c ssid=WEB_DEV_5G freq=5180 sig=-53 rx=702.0_MBit/s_VHT-MCS_8_80MHz_VHT-NSS_2 tx=468.0_MBit/s_VHT-MCS_5
-2026-09-18 11:55:36 LINK bssid=b0:38:6c:37:1b:4c ssid=WEB_DEV_5G freq=5180 sig=-54 rx=702.0_MBit/s_VHT-MCS_8_80MHz_VHT-NSS_2 tx=526.6_MBit/s_VHT-MCS_6
-2026-09-18 11:56:51 LINK bssid=b0:38:6c:37:1b:4c ssid=WEB_DEV_5G freq=5180 sig=-54 rx=585.0_MBit/s_VHT-MCS_7_80MHz_VHT-NSS_2 tx=585.0_MBit/s_VHT-MCS_7
-2026-09-18 11:57:06 LINK bssid=b0:38:6c:37:1b:4c ssid=WEB_DEV_5G freq=5180 sig=-54 rx=702.0_MBit/s_VHT-MCS_8_80MHz_VHT-NSS_2 tx=650.0_MBit/s_VHT-MCS_7
-2026-09-18 11:58:22 LINK bssid=b0:38:6c:37:1b:4c ssid=WEB_DEV_5G freq=5180 sig=-54 rx=702.0_MBit/s_VHT-MCS_8_80MHz_VHT-NSS_2 tx=702.0_MBit/s_VHT-MCS_8
-2026-09-18 11:58:37 LINK bssid=b0:38:6c:37:1b:4c ssid=WEB_DEV_5G freq=5180 sig=-54 rx=702.0_MBit/s_VHT-MCS_8_80MHz_VHT-NSS_2 tx=650.0_MBit/s_VHT-MCS_7
-2026-09-18 11:59:07 LINK bssid=b0:38:6c:37:1b:4c ssid=WEB_DEV_5G freq=5180 sig=-54 rx=702.0_MBit/s_VHT-MCS_8_80MHz_VHT-NSS_2 tx=780.0_MBit/s_VHT-MCS_8
-2026-09-18 11:59:22 LINK bssid=b0:38:6c:37:1b:4c ssid=WEB_DEV_5G freq=5180 sig=-54 rx=780.0_MBit/s_VHT-MCS_9_80MHz_VHT-NSS_2 tx=702.0_MBit/s_VHT-MCS_8
-2026-09-18 11:59:37 LINK bssid=b0:38:6c:37:1b:4c ssid=WEB_DEV_5G freq=5180 sig=-53 rx=780.0_MBit/s_VHT-MCS_9_80MHz_VHT-NSS_2 tx=650.0_MBit/s_VHT-MCS_7
-2026-09-18 12:00:07 LINK bssid=b0:38:6c:37:1b:4c ssid=WEB_DEV_5G freq=5180 sig=-55 rx=702.0_MBit/s_VHT-MCS_8_80MHz_VHT-NSS_2 tx=702.0_MBit/s_VHT-MCS_8
-2026-09-18 12:00:22 LINK bssid=b0:38:6c:37:1b:4c ssid=WEB_DEV_5G freq=5180 sig=-54 rx=702.0_MBit/s_VHT-MCS_8_80MHz_VHT-NSS_2 tx=650.0_MBit/s_VHT-MCS_7
-2026-09-18 12:00:52 LINK bssid=b0:38:6c:37:1b:4c ssid=WEB_DEV_5G freq=5180 sig=-53 rx=702.0_MBit/s_VHT-MCS_8_80MHz_VHT-NSS_2 tx=780.0_MBit/s_VHT-MCS_8
-2026-09-18 12:01:07 LINK bssid=b0:38:6c:37:1b:4c ssid=WEB_DEV_5G freq=5180 sig=-53 rx=780.0_MBit/s_VHT-MCS_9_80MHz_VHT-NSS_2 tx=526.6_MBit/s_VHT-MCS_6
-2026-09-18 12:01:38 LINK bssid=b0:38:6c:37:1b:4c ssid=WEB_DEV_5G freq=5180 sig=-53 rx=780.0_MBit/s_VHT-MCS_9_80MHz_VHT-NSS_2 tx=585.0_MBit/s_VHT-MCS_7
-2026-09-18 12:01:53 LINK bssid=b0:38:6c:37:1b:4c ssid=WEB_DEV_5G freq=5180 sig=-52 rx=780.0_MBit/s_VHT-MCS_9_80MHz_VHT-NSS_2 tx=526.6_MBit/s_VHT-MCS_6
-2026-09-18 12:02:23 LINK bssid=b0:38:6c:37:1b:4c ssid=WEB_DEV_5G freq=5180 sig=-54 rx=780.0_MBit/s_VHT-MCS_9_80MHz_VHT-NSS_2 tx=468.0_MBit/s_VHT-MCS_5
-2026-09-18 12:02:38 LINK bssid=b0:38:6c:37:1b:4c ssid=WEB_DEV_5G freq=5180 sig=-53 rx=780.0_MBit/s_VHT-MCS_9_80MHz_VHT-NSS_2 tx=390.0_MBit/s_VHT-MCS_9
-2026-09-18 12:03:08 LINK bssid=b0:38:6c:37:1b:4c ssid=WEB_DEV_5G freq=5180 sig=-53 rx=780.0_MBit/s_VHT-MCS_9_80MHz_VHT-NSS_2 tx=351.0_MBit/s_VHT-MCS_4
-2026-09-18 12:03:23 LINK bssid=b0:38:6c:37:1b:4c ssid=WEB_DEV_5G freq=5180 sig=-53 rx=702.0_MBit/s_VHT-MCS_8_80MHz_VHT-NSS_2 tx=292.5_MBit/s_VHT-MCS_7
-2026-09-18 12:03:53 LINK bssid=b0:38:6c:37:1b:4c ssid=WEB_DEV_5G freq=5180 sig=-52 rx=780.0_MBit/s_VHT-MCS_9_80MHz_VHT-NSS_2 tx=263.3_MBit/s_VHT-MCS_6
-2026-09-18 12:04:38 LINK bssid=b0:38:6c:37:1b:4c ssid=WEB_DEV_5G freq=5180 sig=-51 rx=780.0_MBit/s_VHT-MCS_9_80MHz_VHT-NSS_2 tx=351.0_MBit/s_VHT-MCS_4
-2026-09-18 12:05:09 LINK bssid=b0:38:6c:37:1b:4c ssid=WEB_DEV_5G freq=5180 sig=-51 rx=780.0_MBit/s_VHT-MCS_9_80MHz_VHT-NSS_2 tx=468.0_MBit/s_VHT-MCS_5
-2026-09-18 12:06:24 LINK bssid=b0:38:6c:37:1b:4c ssid=WEB_DEV_5G freq=5180 sig=-52 rx=780.0_MBit/s_VHT-MCS_9_80MHz_VHT-NSS_2 tx=526.6_MBit/s_VHT-MCS_6
-2026-09-18 12:06:39 LINK bssid=b0:38:6c:37:1b:4c ssid=WEB_DEV_5G freq=5180 sig=-52 rx=780.0_MBit/s_VHT-MCS_9_80MHz_VHT-NSS_2 tx=650.0_MBit/s_VHT-MCS_7
-2026-09-18 12:07:09 LINK bssid=b0:38:6c:37:1b:4c ssid=WEB_DEV_5G freq=5180 sig=-52 rx=780.0_MBit/s_VHT-MCS_9_80MHz_VHT-NSS_2 tx=702.0_MBit/s_VHT-MCS_8
-2026-09-18 12:07:24 LINK bssid=b0:38:6c:37:1b:4c ssid=WEB_DEV_5G freq=5180 sig=-52 rx=780.0_MBit/s_VHT-MCS_9_80MHz_VHT-NSS_2 tx=650.0_MBit/s_VHT-MCS_7
-2026-09-18 12:07:54 LINK bssid=b0:38:6c:37:1b:4c ssid=WEB_DEV_5G freq=5180 sig=-52 rx=780.0_MBit/s_VHT-MCS_9_80MHz_VHT-NSS_2 tx=780.0_MBit/s_VHT-MCS_8
-2026-09-21 11:55:03 LINK bssid=b0:38:6c:37:1b:4c ssid=WEB_DEV_5G freq=5180 sig=-51 rx=780.0_MBit/s_VHT-MCS_9_80MHz_VHT-NSS_2 tx=650.0_MBit/s_VHT-MCS_7
-2026-09-21 11:55:18 LINK bssid=b0:38:6c:37:1b:4c ssid=WEB_DEV_5G freq=5180 sig=-51 rx=780.0_MBit/s_VHT-MCS_9_80MHz_VHT-NSS_2 tx=526.6_MBit/s_VHT-MCS_6
-2026-09-21 11:55:33 LINK bssid=b0:38:6c:37:1b:4c ssid=WEB_DEV_5G freq=5180 sig=-51 rx=780.0_MBit/s_VHT-MCS_9_80MHz_VHT-NSS_2 tx=585.0_MBit/s_VHT-MCS_7
+2026-09-18 11:55:06 LINK bssid=b0:38:6c:XX:XX:XX ssid=WEB_DEV_5G freq=5180 sig=-53 rx=702.0_MBit/s_VHT-MCS_8_80MHz_VHT-NSS_2 tx=468.0_MBit/s_VHT-MCS_5
+2026-09-18 11:55:36 LINK bssid=b0:38:6c:XX:XX:XX ssid=WEB_DEV_5G freq=5180 sig=-54 rx=702.0_MBit/s_VHT-MCS_8_80MHz_VHT-NSS_2 tx=526.6_MBit/s_VHT-MCS_6
+2026-09-18 11:56:51 LINK bssid=b0:38:6c:XX:XX:XX ssid=WEB_DEV_5G freq=5180 sig=-54 rx=585.0_MBit/s_VHT-MCS_7_80MHz_VHT-NSS_2 tx=585.0_MBit/s_VHT-MCS_7
+2026-09-18 11:57:06 LINK bssid=b0:38:6c:XX:XX:XX ssid=WEB_DEV_5G freq=5180 sig=-54 rx=702.0_MBit/s_VHT-MCS_8_80MHz_VHT-NSS_2 tx=650.0_MBit/s_VHT-MCS_7
+2026-09-18 11:58:22 LINK bssid=b0:38:6c:XX:XX:XX ssid=WEB_DEV_5G freq=5180 sig=-54 rx=702.0_MBit/s_VHT-MCS_8_80MHz_VHT-NSS_2 tx=702.0_MBit/s_VHT-MCS_8
+2026-09-18 11:58:37 LINK bssid=b0:38:6c:XX:XX:XX ssid=WEB_DEV_5G freq=5180 sig=-54 rx=702.0_MBit/s_VHT-MCS_8_80MHz_VHT-NSS_2 tx=650.0_MBit/s_VHT-MCS_7
+2026-09-18 11:59:07 LINK bssid=b0:38:6c:XX:XX:XX ssid=WEB_DEV_5G freq=5180 sig=-54 rx=702.0_MBit/s_VHT-MCS_8_80MHz_VHT-NSS_2 tx=780.0_MBit/s_VHT-MCS_8
+2026-09-18 11:59:22 LINK bssid=b0:38:6c:XX:XX:XX ssid=WEB_DEV_5G freq=5180 sig=-54 rx=780.0_MBit/s_VHT-MCS_9_80MHz_VHT-NSS_2 tx=702.0_MBit/s_VHT-MCS_8
+2026-09-18 11:59:37 LINK bssid=b0:38:6c:XX:XX:XX ssid=WEB_DEV_5G freq=5180 sig=-53 rx=780.0_MBit/s_VHT-MCS_9_80MHz_VHT-NSS_2 tx=650.0_MBit/s_VHT-MCS_7
+2026-09-18 12:00:07 LINK bssid=b0:38:6c:XX:XX:XX ssid=WEB_DEV_5G freq=5180 sig=-55 rx=702.0_MBit/s_VHT-MCS_8_80MHz_VHT-NSS_2 tx=702.0_MBit/s_VHT-MCS_8
+2026-09-18 12:00:22 LINK bssid=b0:38:6c:XX:XX:XX ssid=WEB_DEV_5G freq=5180 sig=-54 rx=702.0_MBit/s_VHT-MCS_8_80MHz_VHT-NSS_2 tx=650.0_MBit/s_VHT-MCS_7
+2026-09-18 12:00:52 LINK bssid=b0:38:6c:XX:XX:XX ssid=WEB_DEV_5G freq=5180 sig=-53 rx=702.0_MBit/s_VHT-MCS_8_80MHz_VHT-NSS_2 tx=780.0_MBit/s_VHT-MCS_8
+2026-09-18 12:01:07 LINK bssid=b0:38:6c:XX:XX:XX ssid=WEB_DEV_5G freq=5180 sig=-53 rx=780.0_MBit/s_VHT-MCS_9_80MHz_VHT-NSS_2 tx=526.6_MBit/s_VHT-MCS_6
+2026-09-18 12:01:38 LINK bssid=b0:38:6c:XX:XX:XX ssid=WEB_DEV_5G freq=5180 sig=-53 rx=780.0_MBit/s_VHT-MCS_9_80MHz_VHT-NSS_2 tx=585.0_MBit/s_VHT-MCS_7
+2026-09-18 12:01:53 LINK bssid=b0:38:6c:XX:XX:XX ssid=WEB_DEV_5G freq=5180 sig=-52 rx=780.0_MBit/s_VHT-MCS_9_80MHz_VHT-NSS_2 tx=526.6_MBit/s_VHT-MCS_6
+2026-09-18 12:02:23 LINK bssid=b0:38:6c:XX:XX:XX ssid=WEB_DEV_5G freq=5180 sig=-54 rx=780.0_MBit/s_VHT-MCS_9_80MHz_VHT-NSS_2 tx=468.0_MBit/s_VHT-MCS_5
+2026-09-18 12:02:38 LINK bssid=b0:38:6c:XX:XX:XX ssid=WEB_DEV_5G freq=5180 sig=-53 rx=780.0_MBit/s_VHT-MCS_9_80MHz_VHT-NSS_2 tx=390.0_MBit/s_VHT-MCS_9
+2026-09-18 12:03:08 LINK bssid=b0:38:6c:XX:XX:XX ssid=WEB_DEV_5G freq=5180 sig=-53 rx=780.0_MBit/s_VHT-MCS_9_80MHz_VHT-NSS_2 tx=351.0_MBit/s_VHT-MCS_4
+2026-09-18 12:03:23 LINK bssid=b0:38:6c:XX:XX:XX ssid=WEB_DEV_5G freq=5180 sig=-53 rx=702.0_MBit/s_VHT-MCS_8_80MHz_VHT-NSS_2 tx=292.5_MBit/s_VHT-MCS_7
+2026-09-18 12:03:53 LINK bssid=b0:38:6c:XX:XX:XX ssid=WEB_DEV_5G freq=5180 sig=-52 rx=780.0_MBit/s_VHT-MCS_9_80MHz_VHT-NSS_2 tx=263.3_MBit/s_VHT-MCS_6
+2026-09-18 12:04:38 LINK bssid=b0:38:6c:XX:XX:XX ssid=WEB_DEV_5G freq=5180 sig=-51 rx=780.0_MBit/s_VHT-MCS_9_80MHz_VHT-NSS_2 tx=351.0_MBit/s_VHT-MCS_4
+2026-09-18 12:05:09 LINK bssid=b0:38:6c:XX:XX:XX ssid=WEB_DEV_5G freq=5180 sig=-51 rx=780.0_MBit/s_VHT-MCS_9_80MHz_VHT-NSS_2 tx=468.0_MBit/s_VHT-MCS_5
+2026-09-18 12:06:24 LINK bssid=b0:38:6c:XX:XX:XX ssid=WEB_DEV_5G freq=5180 sig=-52 rx=780.0_MBit/s_VHT-MCS_9_80MHz_VHT-NSS_2 tx=526.6_MBit/s_VHT-MCS_6
+2026-09-18 12:06:39 LINK bssid=b0:38:6c:XX:XX:XX ssid=WEB_DEV_5G freq=5180 sig=-52 rx=780.0_MBit/s_VHT-MCS_9_80MHz_VHT-NSS_2 tx=650.0_MBit/s_VHT-MCS_7
+2026-09-18 12:07:09 LINK bssid=b0:38:6c:XX:XX:XX ssid=WEB_DEV_5G freq=5180 sig=-52 rx=780.0_MBit/s_VHT-MCS_9_80MHz_VHT-NSS_2 tx=702.0_MBit/s_VHT-MCS_8
+2026-09-18 12:07:24 LINK bssid=b0:38:6c:XX:XX:XX ssid=WEB_DEV_5G freq=5180 sig=-52 rx=780.0_MBit/s_VHT-MCS_9_80MHz_VHT-NSS_2 tx=650.0_MBit/s_VHT-MCS_7
+2026-09-18 12:07:54 LINK bssid=b0:38:6c:XX:XX:XX ssid=WEB_DEV_5G freq=5180 sig=-52 rx=780.0_MBit/s_VHT-MCS_9_80MHz_VHT-NSS_2 tx=780.0_MBit/s_VHT-MCS_8
+2026-09-21 11:55:03 LINK bssid=b0:38:6c:XX:XX:XX ssid=WEB_DEV_5G freq=5180 sig=-51 rx=780.0_MBit/s_VHT-MCS_9_80MHz_VHT-NSS_2 tx=650.0_MBit/s_VHT-MCS_7
+2026-09-21 11:55:18 LINK bssid=b0:38:6c:XX:XX:XX ssid=WEB_DEV_5G freq=5180 sig=-51 rx=780.0_MBit/s_VHT-MCS_9_80MHz_VHT-NSS_2 tx=526.6_MBit/s_VHT-MCS_6
+2026-09-21 11:55:33 LINK bssid=b0:38:6c:XX:XX:XX ssid=WEB_DEV_5G freq=5180 sig=-51 rx=780.0_MBit/s_VHT-MCS_9_80MHz_VHT-NSS_2 tx=585.0_MBit/s_VHT-MCS_7
 ## wpa (CTRL-EVENT·reason·SA Query)
 Sep 23 12:05:03 jetson-desktop wpa_supplicant[878]: wlP1p1s0:  * reason 2 (PREV_AUTH_NOT_VALID)
 Sep 23 12:05:03 jetson-desktop wpa_supplicant[878]: TDLS: Remove peers on disassociation
 Sep 23 12:05:11 jetson-desktop wpa_supplicant[878]: wlP1p1s0:  * reason 23 (IEEE_802_1X_AUTH_FAILED)
 Sep 23 12:05:11 jetson-desktop wpa_supplicant[878]: TDLS: Remove peers on disassociation
-Sep 23 12:06:09 jetson-desktop wpa_supplicant[878]: wlP1p1s0: Request to deauthenticate - bssid=b0:38:6c:37:1b:4c pending_bssid=00:00:00:00:00:00 reason=3 (DEAUTH_LEAVING
+Sep 23 12:06:09 jetson-desktop wpa_supplicant[878]: wlP1p1s0: Request to deauthenticate - bssid=b0:38:6c:XX:XX:XX pending_bssid=00:00:00:00:00:00 reason=3 (DEAUTH_LEAVING
 Sep 23 12:06:09 jetson-desktop wpa_supplicant[878]: wpa_driver_nl80211_disconnect(reason_code=3)
 Sep 23 12:06:09 jetson-desktop wpa_supplicant[878]: wlP1p1s0:  * reason 3 (DEAUTH_LEAVING) locally_generated=1
 Sep 23 12:06:09 jetson-desktop wpa_supplicant[878]: TDLS: Remove peers on disassociation

@@ -50,6 +50,8 @@ research_notes/
 Docs/debug_log/*/bags/
 # 주행 영상(mp4, 수십 MB) — 로컬 보관, git 제외(2026-09-30). 만드는 스크립트는 jobs/ 에 있음.
 Docs/debug_log/*/videos/
+# 11-04: figures/ 안 mp4 도 같은 규칙(10-19 · 10-21 두 개가 실수로 추적됐었음 — 로컬엔 남김)
+Docs/debug_log/*/figures/*.mp4
 
 
 # Claude Code 개인 허용 규칙 — 앱이 승인한 명령(옛 비밀번호 포함)이 쌓임, 추적 금지(2026-11-02)

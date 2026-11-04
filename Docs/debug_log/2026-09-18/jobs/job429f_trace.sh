@@ -5,7 +5,7 @@ for p in $(pgrep -f /usr/local/sbin/wifi_mon.sh); do echo "== $p: wchan=$(cat /p
 echo "== scan_ap 함수만 떼어 bash -x 로 20 s"
 sed -n '/^scan_ap() {/,/^}/p' /usr/local/sbin/wifi_mon.sh > /tmp/scan_ap_fn.sh
 cat > /tmp/scan_ap_test.sh <<'T'
-IF=wlP1p1s0; AP=b0:38:6c:37:1b:4c
+IF=wlP1p1s0; AP=b0:38:6c:XX:XX:XX
 source /tmp/scan_ap_fn.sh
 scan_ap 5180
 T

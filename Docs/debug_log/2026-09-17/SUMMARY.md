@@ -503,7 +503,7 @@ NavFn 근사(8-이웃 Dijkstra, 같은 비용 변환)가 실제 /plan 의 상자
 ### 17.1 사건의 모양 — 세 번 모두 같다
 | 날짜 | ① AP 가 끊음 | ② 재접속 | ③ NetworkManager | ④ 결과 |
 |---|---|---|---|---|
-| 09-15 | 14:03:13 `DISCONNECTED bssid=b0:38:6c:37:1b:4c reason=2` | 8 s 뒤부터 연결 시도마다 **AP 가** `reason=23` 로 끊음(연결 4 s 만에), `SSID-TEMP-DISABLED reason=AUTH_FAILED` 반복 | 14:04:47 `failed (reason 'no-secrets')` | 14:04:51 **ALOPS_ROBOTICS_5G → DHCP 172.30.1.8** |
+| 09-15 | 14:03:13 `DISCONNECTED bssid=b0:38:6c:XX:XX:XX reason=2` | 8 s 뒤부터 연결 시도마다 **AP 가** `reason=23` 로 끊음(연결 4 s 만에), `SSID-TEMP-DISABLED reason=AUTH_FAILED` 반복 | 14:04:47 `failed (reason 'no-secrets')` | 14:04:51 **ALOPS_ROBOTICS_5G → DHCP 172.30.1.8** |
 | 09-16 | 15:57:34 reason=2 | 5 회 reason=23, 15:58:53 `4-Way Handshake failed - pre-shared key may be incorrect`·`WRONG_KEY` | 16:00:53 no-secrets | 16:00:57 ALOPS 172.30.1.8 |
 | 09-17 | 13:38:42 reason=2 (재연결 시 채널 5180 MHz·80 MHz 로 정상 결합 뒤 4 s 만에 거부) | 5 회 reason=23 | 13:40:16 no-secrets | 13:40:20 ALOPS 172.30.1.8. **재부팅(≈13:45) 뒤 WEB_DEV_5G 5 회 재시도도 전부 reason=23** → ALOPS |
 - `locally_generated=1` 이 없으므로 reason 2(이전 인증 무효)와 reason 23 은 **AP 가 보낸 deauth** 다. 4-way handshake 중 AP 가 거부하면 wpa_supplicant 가 "PSK 가 틀렸을 수 있다" 로 추정해 표시한다.
@@ -512,8 +512,8 @@ NavFn 근사(8-이웃 Dijkstra, 같은 비용 변환)가 실제 /plan 의 상자
 ### 17.2 전체 기간 집계 (2 월~9/17)
 | AP | 연결 성공 | AP 가 보낸 끊김 | 로컬 끊김(우리 전환) |
 |---|---|---|---|
-| WEB_DEV_5G (b0:38:6c:37:1b:4c, ch36 5180 MHz) | Jan 6·Aug 14·Sep 10 | **reason 2: 3 회(09-15·16·17 하루 1 회)**, reason 23: 24 회(Aug 25 1·Sep 1 3 — 접속 순간 잠깐, 나머지 20 은 위 세 사건), reason 6305 1(Aug 25) | reason 3: 4 |
-| ALOPS_ROBOTICS_5G (38:f4:5e:27:87:46, ch153 5765 MHz) | Jan–Sep 64 | **0** | reason 3: 7 |
+| WEB_DEV_5G (b0:38:6c:XX:XX:XX, ch36 5180 MHz) | Jan 6·Aug 14·Sep 10 | **reason 2: 3 회(09-15·16·17 하루 1 회)**, reason 23: 24 회(Aug 25 1·Sep 1 3 — 접속 순간 잠깐, 나머지 20 은 위 세 사건), reason 6305 1(Aug 25) | reason 3: 4 |
+| ALOPS_ROBOTICS_5G (38:f4:5e:XX:XX:XX, ch153 5765 MHz) | Jan–Sep 64 | **0** | reason 3: 7 |
 - ALOPS 는 부팅 첫 시도에 `ASSOC-REJECT status_code=8` 이 자주 찍히지만 4 s 뒤 항상 붙는다(무해).
 - AP 가 먼저 끊은 것은 **09-15 이전에는 한 번도 없었다**. 연결 유지 시간은 6 h 21 m(09-16) / 19 h 45 m(09-17) 로 일정하지 않아 세션 타이머도 아니다. DHCP 갱신 시각과도 맞지 않는다(90 s·58 min·8 min 뒤).
 

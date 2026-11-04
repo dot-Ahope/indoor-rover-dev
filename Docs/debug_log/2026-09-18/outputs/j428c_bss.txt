@@ -1,4 +1,4 @@
-BSS b0:38:6c:37:1b:4c(on wlP1p1s0) -- associated
+BSS b0:38:6c:XX:XX:XX(on wlP1p1s0) -- associated
 	freq: 5180
 	signal: -55.00 dBm
 	last seen: 1684296 ms ago

@@ -12,5 +12,5 @@ for ts in "Sep 15 14:03" "Sep 16 15:57" "Sep 17 13:38"; do
 done
 echo "  (비교: 끊김 없던 날의 가장 바쁜 10 분 — A 표의 최대값)"
 echo "######## C. 끊김 당일 WEB_DEV_5G 연결 유지 시간 (연결 → reason=2)"
-grep -aE 'CTRL-EVENT-CONNECTED - Connection to b0:38:6c:37:1b:4c|CTRL-EVENT-DISCONNECTED bssid=b0:38:6c:37:1b:4c reason=2$' $L | grep -aE '^(Sep 1[4-7]) ' | awk '{print "  ", $1, $2, $3, ($0 ~ /CONNECTED -/ ? "연결" : "AP 끊김 reason=2")}'
+grep -aE 'CTRL-EVENT-CONNECTED - Connection to b0:38:6c:XX:XX:XX|CTRL-EVENT-DISCONNECTED bssid=b0:38:6c:XX:XX:XX reason=2$' $L | grep -aE '^(Sep 1[4-7]) ' | awk '{print "  ", $1, $2, $3, ($0 ~ /CONNECTED -/ ? "연결" : "AP 끊김 reason=2")}'
 echo "######## 끝"

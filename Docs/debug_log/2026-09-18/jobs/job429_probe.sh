@@ -16,5 +16,5 @@ echo "  <수준> 분포: $(grep -aoE '^<[0-9]>' /tmp/wpamon_test.txt | sort | un
 echo "== 단일 채널 스캔(5180) 소요 시간·AP 폭"
 t0=$(date +%s%N); S iw dev wlP1p1s0 scan freq 5180 > /tmp/scan5180.txt 2>&1; t1=$(date +%s%N)
 echo "  $(( (t1-t0)/1000000 )) ms, 결과 BSS $(grep -c '^BSS ' /tmp/scan5180.txt) 개"
-awk '/^BSS b0:38:6c:37:1b:4c/{p=1} /^BSS / && !/b0:38:6c:37:1b:4c/{p=0} p' /tmp/scan5180.txt | grep -aE 'BSS |signal|last seen|channel width|center freq|secondary channel offset|Channel Switch|Country' | sed 's/^/    /'
+awk '/^BSS b0:38:6c:XX:XX:XX/{p=1} /^BSS / && !/b0:38:6c:XX:XX:XX/{p=0} p' /tmp/scan5180.txt | grep -aE 'BSS |signal|last seen|channel width|center freq|secondary channel offset|Channel Switch|Country' | sed 's/^/    /'
 rm -f /tmp/wpamon_test.txt /tmp/scan5180.txt

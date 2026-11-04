@@ -3,7 +3,7 @@
 S() { echo "$SPW" | sudo -S -p '' "$@"; }
 S true
 cat > /tmp/snaptest.sh <<'T'
-IF=wlP1p1s0; AP=b0:38:6c:37:1b:4c; D=/var/log/wifi_mon; M=/tmp/snaptest_mon.log
+IF=wlP1p1s0; AP=b0:38:6c:XX:XX:XX; D=/var/log/wifi_mon; M=/tmp/snaptest_mon.log
 log() { echo "$(date '+%F %T') $*" >> $M; }
 T
 sed -n '/^snapshot() {/,/^}/p' /usr/local/sbin/wifi_mon.sh >> /tmp/snaptest.sh

@@ -16,7 +16,7 @@ for ts in "Sep 15 14:03:13" "Sep 16 15:57:34" "Sep 17 13:38:42"; do
   grep -aE "^${ts:0:6} " $L | awk -v e=$e -v y=2026 '{
       cmd = "date -d \"" $1 " " $2 " " y " " $3 "\" +%s"; cmd | getline s; close(cmd);
       d = s - e; if (d >= -90 && d <= 90) print d, $0 }' 2>/dev/null | \
-    grep -avE 'dhcp4 .*new lease|CTRL-EVENT-SSID-TEMP-DISABLED|CTRL-EVENT-DISCONNECTED bssid=b0:38:6c:37:1b:4c reason=23|gnome-shell|tracker-miner|org.gnome|pulseaudio|rtkit|gsd-|dbus-daemon.*activating|systemd-resolved.*Using degraded' | \
+    grep -avE 'dhcp4 .*new lease|CTRL-EVENT-SSID-TEMP-DISABLED|CTRL-EVENT-DISCONNECTED bssid=b0:38:6c:XX:XX:XX reason=23|gnome-shell|tracker-miner|org.gnome|pulseaudio|rtkit|gsd-|dbus-daemon.*activating|systemd-resolved.*Using degraded' | \
     sed -E 's/jetson-desktop //' | cut -c1-200 | head -40 | sed 's/^/    /'
 done
 echo "######## C. 로버 스택 기동 시각 vs AP 끊김 — 같은 날 docker 에이전트·launch 사건"

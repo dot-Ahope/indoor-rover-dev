@@ -28,7 +28,7 @@
 ## §4 WEB_DEV_5G 소실 → Jetson 이 ALOPS 로 전환, 스택 통신 끊김(10:48)
 - 사용자 알림: 내부망 분배기 문제로 192.168.0.110 핑 무응답, 보드 화면엔 `192.168.0.110?`.
 - 본 것:
-  - PC 에서 192.168.0.110 핑 100 % 손실, 172.30.1.8 응답. ARP MAC `58-02-05-bd-d5-35` = Jetson 무선 MAC(09-17 `j427_wifi.txt` 와 같음) → 다른 기기 아님.
+  - PC 에서 192.168.0.110 핑 100 % 손실, 172.30.1.8 응답. ARP MAC `58-02-05-XX-XX-XX` = Jetson 무선 MAC(09-17 `j427_wifi.txt` 와 같음) → 다른 기기 아님.
   - Jetson 기록: 10:48:27 연결 끊김 → 스캔 두 번에 `WEB_DEV_5G` 가 안 보여 `ssid-not-found` 로 실패(10:48:42) → 10:48:45 `ALOPS_ROBOTICS_5G` 172.30.1.8 연결. 지금 스캔에도 `WEB_DEV`·`WEB_DEV_2G` 는 보이고 `WEB_DEV_5G` 만 없다 → AP 쪽 5 GHz 송출이 멈춘 것(사용자 설명과 맞음). 09-15~17 의 deauth·PSK 거부와는 다른 유형.
   - 스택 프로세스(agent · display_info_pub · EKF 2 · slam · controller · realsense · cuVSLAM · vslam_twist)는 모두 살아 있지만, 새 참여자로 보면 `/rover/display_info` · `/wheel_odom` · `/vslam/odom` · `/odometry/filtered` 가 하나도 안 보인다.
 - 추론: 보드 화면의 `?` 는 펌웨어가 15 s 넘게 `/rover/display_info` 를 못 받았다는 뜻(`display_info_pub.py` 머리 주석). 발행 노드는 살아 있으므로 Jetson 안의 DDS 통신 자체가 끊긴 것 — 주소가 바뀐 뒤 기존 참여자가 옛 주소 기준으로 묶여 있는 것으로 추정(기전 미확인). CLAUDE.md "Wi-Fi 재연결 뒤엔 스택 재기동" 과 같은 상황.

@@ -2,40 +2,40 @@
 1970-01-01 09:00:33 LINK bssid=none ssid= freq= sig= rx= tx= ip= 
 1970-01-01 09:00:35 BEACON_ALL scan_err=command_failed:_Device_or_resource_busy_(-16)
 1970-01-01 09:00:50 LOGLEVEL DEBUG
-1970-01-01 09:00:50 LINK bssid=b0:38:6c:37:1b:4c ssid=WEB_DEV_5G freq=5180 sig=-50 rx=390.0_MBit/s_VHT-MCS_9_80MHz_VHT-NSS_1 tx=650.0_MBit/s_VHT-MCS_7_80MHz_short_GI_VHT-
-1970-01-01 09:00:50 EVENT bssid none -> b0:38:6c:37:1b:4c
+1970-01-01 09:00:50 LINK bssid=b0:38:6c:XX:XX:XX ssid=WEB_DEV_5G freq=5180 sig=-50 rx=390.0_MBit/s_VHT-MCS_9_80MHz_VHT-NSS_1 tx=650.0_MBit/s_VHT-MCS_7_80MHz_short_GI_VHT-
+1970-01-01 09:00:50 EVENT bssid none -> b0:38:6c:XX:XX:XX
 1970-01-01 09:01:00 SNAPSHOT /var/log/wifi_mon/event_19700101_090050.txt
 1970-01-01 09:00:33 LINK bssid=none ssid= freq= sig= rx= tx= ip= 
 1970-01-01 09:00:35 BEACON_ALL scan_err=command_failed:_Device_or_resource_busy_(-16)
 1970-01-01 09:00:50 LOGLEVEL DEBUG
-1970-01-01 09:00:50 LINK bssid=b0:38:6c:37:1b:4c ssid=WEB_DEV_5G freq=5180 sig=-54 rx=468.0_MBit/s_VHT-MCS_5_80MHz_VHT-NSS_2 tx=468.0_MBit/s_VHT-MCS_5_80MHz_VHT-NSS_2 ip=
-1970-01-01 09:00:50 EVENT bssid none -> b0:38:6c:37:1b:4c
+1970-01-01 09:00:50 LINK bssid=b0:38:6c:XX:XX:XX ssid=WEB_DEV_5G freq=5180 sig=-54 rx=468.0_MBit/s_VHT-MCS_5_80MHz_VHT-NSS_2 tx=468.0_MBit/s_VHT-MCS_5_80MHz_VHT-NSS_2 ip=
+1970-01-01 09:00:50 EVENT bssid none -> b0:38:6c:XX:XX:XX
 1970-01-01 09:01:11 SNAPSHOT /var/log/wifi_mon/event_19700101_090050.txt
 1970-01-01 09:01:26 LINK bssid=none ssid= freq= sig= rx= tx= ip= wpa_state=SCANNING 
-1970-01-01 09:01:26 EVENT bssid b0:38:6c:37:1b:4c -> none
+1970-01-01 09:01:26 EVENT bssid b0:38:6c:XX:XX:XX -> none
 1970-01-01 09:01:26 SNAPSHOT /var/log/wifi_mon/event_19700101_090126.txt
-1970-01-01 09:01:41 LINK bssid=b0:38:6c:37:1b:4c ssid=WEB_DEV_5G freq=5180 sig=-53 rx=351.0_MBit/s_VHT-MCS_4_80MHz_VHT-NSS_2 tx=390.0_MBit/s_VHT-MCS_9_80MHz_VHT-NSS_1 ip=
-1970-01-01 09:01:41 EVENT bssid none -> b0:38:6c:37:1b:4c
+1970-01-01 09:01:41 LINK bssid=b0:38:6c:XX:XX:XX ssid=WEB_DEV_5G freq=5180 sig=-53 rx=351.0_MBit/s_VHT-MCS_4_80MHz_VHT-NSS_2 tx=390.0_MBit/s_VHT-MCS_9_80MHz_VHT-NSS_1 ip=
+1970-01-01 09:01:41 EVENT bssid none -> b0:38:6c:XX:XX:XX
 1970-01-01 09:01:50 SNAPSHOT /var/log/wifi_mon/event_19700101_090141.txt
-1970-01-01 09:02:06 LINK bssid=b0:38:6c:37:1b:4c ssid=WEB_DEV_5G freq=5180 sig=-54 rx=117.0_MBit/s_VHT-MCS_1_80MHz_VHT-NSS_2 tx=468.0_MBit/s_VHT-MCS_5_80MHz_VHT-NSS_2 ip=
+1970-01-01 09:02:06 LINK bssid=b0:38:6c:XX:XX:XX ssid=WEB_DEV_5G freq=5180 sig=-54 rx=117.0_MBit/s_VHT-MCS_1_80MHz_VHT-NSS_2 tx=468.0_MBit/s_VHT-MCS_5_80MHz_VHT-NSS_2 ip=
 1970-01-01 09:02:06 BEACON ap_freq=5180 ap_sig=-54.00 vht_w=1 seg1=42 seg2=50 ht2=above csa=0 quiet=0
-1970-01-01 09:02:21 LINK bssid=b0:38:6c:37:1b:4c ssid=WEB_DEV_5G freq=5180 sig=-53 rx=6.0_MBit/s tx=468.0_MBit/s_VHT-MCS_5_80MHz_VHT-NSS_2 ip= key_mgmt=WPA2-PSK pmf=1 wpa
-1970-01-01 09:02:36 LINK bssid=b0:38:6c:37:1b:4c ssid=WEB_DEV_5G freq=5180 sig=-53 rx=468.0_MBit/s_VHT-MCS_5_80MHz_VHT-NSS_2 tx=526.6_MBit/s_VHT-MCS_6_80MHz_VHT-NSS_2 ip=
-1970-01-01 09:02:51 LINK bssid=b0:38:6c:37:1b:4c ssid=WEB_DEV_5G freq=5180 sig=-53 rx=390.0_MBit/s_VHT-MCS_9_80MHz_VHT-NSS_1 tx=585.0_MBit/s_VHT-MCS_7_80MHz_VHT-NSS_2 ip=
+1970-01-01 09:02:21 LINK bssid=b0:38:6c:XX:XX:XX ssid=WEB_DEV_5G freq=5180 sig=-53 rx=6.0_MBit/s tx=468.0_MBit/s_VHT-MCS_5_80MHz_VHT-NSS_2 ip= key_mgmt=WPA2-PSK pmf=1 wpa
+1970-01-01 09:02:36 LINK bssid=b0:38:6c:XX:XX:XX ssid=WEB_DEV_5G freq=5180 sig=-53 rx=468.0_MBit/s_VHT-MCS_5_80MHz_VHT-NSS_2 tx=526.6_MBit/s_VHT-MCS_6_80MHz_VHT-NSS_2 ip=
+1970-01-01 09:02:51 LINK bssid=b0:38:6c:XX:XX:XX ssid=WEB_DEV_5G freq=5180 sig=-53 rx=390.0_MBit/s_VHT-MCS_9_80MHz_VHT-NSS_1 tx=585.0_MBit/s_VHT-MCS_7_80MHz_VHT-NSS_2 ip=
 1970-01-01 09:03:06 LINK bssid=none ssid= freq= sig= rx= tx= ip= wpa_state=SCANNING 
-1970-01-01 09:03:06 EVENT bssid b0:38:6c:37:1b:4c -> none
+1970-01-01 09:03:06 EVENT bssid b0:38:6c:XX:XX:XX -> none
 1970-01-01 09:03:06 SNAPSHOT /var/log/wifi_mon/event_19700101_090306.txt
-1970-01-01 09:03:21 LINK bssid=b0:38:6c:37:1b:4c ssid=WEB_DEV_5G freq=5180 sig=-54 rx=12.0_MBit/s tx=526.6_MBit/s_VHT-MCS_6_80MHz_VHT-NSS_2 ip= key_mgmt=WPA2-PSK pmf=1 wp
-1970-01-01 09:03:21 EVENT bssid none -> b0:38:6c:37:1b:4c
+1970-01-01 09:03:21 LINK bssid=b0:38:6c:XX:XX:XX ssid=WEB_DEV_5G freq=5180 sig=-54 rx=12.0_MBit/s tx=526.6_MBit/s_VHT-MCS_6_80MHz_VHT-NSS_2 ip= key_mgmt=WPA2-PSK pmf=1 wp
+1970-01-01 09:03:21 EVENT bssid none -> b0:38:6c:XX:XX:XX
 1970-01-01 09:03:31 SNAPSHOT /var/log/wifi_mon/event_19700101_090321.txt
-1970-01-01 09:03:46 LINK bssid=b0:38:6c:37:1b:4c ssid=WEB_DEV_5G freq=5180 sig=-54 rx=6.0_MBit/s tx=585.0_MBit/s_VHT-MCS_7_80MHz_VHT-NSS_2 ip= key_mgmt=WPA2-PSK pmf=1 wpa
-1970-01-01 09:04:01 LINK bssid=38:f4:5e:27:87:46 ssid=ALOPS_ROBOTICS_5G freq=5765 sig=-55 rx=351.0_MBit/s_VHT-MCS_4_80MHz_VHT-NSS_2 tx=263.3_MBit/s_VHT-MCS_6_80MHz_VHT-NS
-1970-01-01 09:04:01 EVENT bssid b0:38:6c:37:1b:4c -> 38:f4:5e:27:87:46
+1970-01-01 09:03:46 LINK bssid=b0:38:6c:XX:XX:XX ssid=WEB_DEV_5G freq=5180 sig=-54 rx=6.0_MBit/s tx=585.0_MBit/s_VHT-MCS_7_80MHz_VHT-NSS_2 ip= key_mgmt=WPA2-PSK pmf=1 wpa
+1970-01-01 09:04:01 LINK bssid=38:f4:5e:XX:XX:XX ssid=ALOPS_ROBOTICS_5G freq=5765 sig=-55 rx=351.0_MBit/s_VHT-MCS_4_80MHz_VHT-NSS_2 tx=263.3_MBit/s_VHT-MCS_6_80MHz_VHT-NS
+1970-01-01 09:04:01 EVENT bssid b0:38:6c:XX:XX:XX -> 38:f4:5e:XX:XX:XX
 --- 첫 2026 줄:
 2026-09-23 09:00:56 SNAPSHOT /var/log/wifi_mon/event_19700101_090401.txt
 ## wpa_debug.log: 오늘 부팅 블록의 이벤트(Jan  1 09:0x)
 Jan  1 09:03:46 jetson-desktop wpa_supplicant[878]: EAPOL: EAP Session-Id not available
-Jan  1 09:03:53 jetson-desktop wpa_supplicant[878]: wlP1p1s0: Request to deauthenticate - bssid=b0:38:6c:37:1b:4c pending_bssid=00:00:00:00:00:00 reason=3 (DEAUTH_LEAVING) sta
+Jan  1 09:03:53 jetson-desktop wpa_supplicant[878]: wlP1p1s0: Request to deauthenticate - bssid=b0:38:6c:XX:XX:XX pending_bssid=00:00:00:00:00:00 reason=3 (DEAUTH_LEAVING) sta
 Jan  1 09:03:53 jetson-desktop wpa_supplicant[878]: wpa_driver_nl80211_disconnect(reason_code=3)
 Jan  1 09:03:53 jetson-desktop wpa_supplicant[878]: wlP1p1s0:  * reason 3 (DEAUTH_LEAVING) locally_generated=1
 Jan  1 09:03:53 jetson-desktop wpa_supplicant[878]: TDLS: Remove peers on disassociation
@@ -52,8 +52,8 @@ Jan  1 09:03:54 jetson-desktop wpa_supplicant[878]: wlP1p1s0: State: DISCONNECTE
 Jan  1 09:03:54 jetson-desktop wpa_supplicant[878]: EAPOL: External notification - EAP success=0
 Jan  1 09:03:54 jetson-desktop wpa_supplicant[878]: EAPOL: External notification - EAP fail=0
 Jan  1 09:03:54 jetson-desktop wpa_supplicant[878]: EAPOL: External notification - portControl=Auto
-Jan  1 09:03:58 jetson-desktop wpa_supplicant[878]: nl80211: Associated with 38:f4:5e:27:87:46
-Jan  1 09:03:58 jetson-desktop wpa_supplicant[878]: nl80211: Associated with 38:f4:5e:27:87:46
+Jan  1 09:03:58 jetson-desktop wpa_supplicant[878]: nl80211: Associated with 38:f4:5e:XX:XX:XX
+Jan  1 09:03:58 jetson-desktop wpa_supplicant[878]: nl80211: Associated with 38:f4:5e:XX:XX:XX
 Jan  1 09:03:58 jetson-desktop wpa_supplicant[878]: wlP1p1s0: Event ASSOC (0) received
 Jan  1 09:03:58 jetson-desktop wpa_supplicant[878]: wlP1p1s0: State: ASSOCIATING -> ASSOCIATED
 Jan  1 09:03:58 jetson-desktop wpa_supplicant[878]: EAPOL: External notification - portEnabled=0
@@ -63,23 +63,23 @@ Jan  1 09:03:58 jetson-desktop wpa_supplicant[878]: EAPOL: External notification
 Jan  1 09:03:58 jetson-desktop wpa_supplicant[878]: EAPOL: SUPP_PAE entering state CONNECTING
 Jan  1 09:03:58 jetson-desktop wpa_supplicant[878]: EAPOL: enable timer tick
 Jan  1 09:03:58 jetson-desktop wpa_supplicant[878]: EAPOL: SUPP_BE entering state IDLE
-Jan  1 09:03:58 jetson-desktop wpa_supplicant[878]: wlP1p1s0: RX EAPOL from 38:f4:5e:27:87:46
+Jan  1 09:03:58 jetson-desktop wpa_supplicant[878]: wlP1p1s0: RX EAPOL from 38:f4:5e:XX:XX:XX
 Jan  1 09:03:58 jetson-desktop wpa_supplicant[878]: wlP1p1s0:   EAPOL-Key type=2
 Jan  1 09:03:58 jetson-desktop wpa_supplicant[878]: wlP1p1s0: State: ASSOCIATED -> 4WAY_HANDSHAKE
-Jan  1 09:03:58 jetson-desktop wpa_supplicant[878]: wlP1p1s0: WPA: RX message 1 of 4-Way Handshake from 38:f4:5e:27:87:46 (ver=2)
+Jan  1 09:03:58 jetson-desktop wpa_supplicant[878]: wlP1p1s0: WPA: RX message 1 of 4-Way Handshake from 38:f4:5e:XX:XX:XX (ver=2)
 Jan  1 09:03:58 jetson-desktop wpa_supplicant[878]: wlP1p1s0: WPA: Sending EAPOL-Key 2/4
-Jan  1 09:03:58 jetson-desktop wpa_supplicant[878]: WPA: Send EAPOL-Key frame to 38:f4:5e:27:87:46 ver=2 mic_len=16 key_mgmt=0x2
+Jan  1 09:03:58 jetson-desktop wpa_supplicant[878]: WPA: Send EAPOL-Key frame to 38:f4:5e:XX:XX:XX ver=2 mic_len=16 key_mgmt=0x2
 Jan  1 09:03:58 jetson-desktop wpa_supplicant[878]: WPA: EAPOL-Key MIC using HMAC-SHA1
-Jan  1 09:03:58 jetson-desktop wpa_supplicant[878]: wlP1p1s0: RX EAPOL from 38:f4:5e:27:87:46
+Jan  1 09:03:58 jetson-desktop wpa_supplicant[878]: wlP1p1s0: RX EAPOL from 38:f4:5e:XX:XX:XX
 Jan  1 09:03:58 jetson-desktop wpa_supplicant[878]: wlP1p1s0:   EAPOL-Key type=2
 Jan  1 09:03:58 jetson-desktop wpa_supplicant[878]: WPA: EAPOL-Key MIC using HMAC-SHA1
 Jan  1 09:03:58 jetson-desktop wpa_supplicant[878]: WPA: decrypted EAPOL-Key key data - hexdump(len=72): [REMOVED]
-Jan  1 09:03:58 jetson-desktop wpa_supplicant[878]: wlP1p1s0: WPA: RX message 3 of 4-Way Handshake from 38:f4:5e:27:87:46 (ver=2)
+Jan  1 09:03:58 jetson-desktop wpa_supplicant[878]: wlP1p1s0: WPA: RX message 3 of 4-Way Handshake from 38:f4:5e:XX:XX:XX (ver=2)
 Jan  1 09:03:58 jetson-desktop wpa_supplicant[878]: WPA: RSN IE in EAPOL-Key - hexdump(len=22): 30 14 01 00 00 0f ac 04 01 00 00 0f ac 04 01 00 00 0f ac 02 0c 00
 Jan  1 09:03:58 jetson-desktop wpa_supplicant[878]: WPA: WPA IE in EAPOL-Key - hexdump(len=24): dd 16 00 50 f2 01 01 00 00 50 f2 04 01 00 00 50 f2 04 01 00 00 50 f2 02
 Jan  1 09:03:58 jetson-desktop wpa_supplicant[878]: WPA: GTK in EAPOL-Key - hexdump(len=24): [REMOVED]
 Jan  1 09:03:58 jetson-desktop wpa_supplicant[878]: wlP1p1s0: WPA: Sending EAPOL-Key 4/4
-Jan  1 09:03:58 jetson-desktop wpa_supplicant[878]: WPA: Send EAPOL-Key frame to 38:f4:5e:27:87:46 ver=2 mic_len=16 key_mgmt=0x2
+Jan  1 09:03:58 jetson-desktop wpa_supplicant[878]: WPA: Send EAPOL-Key frame to 38:f4:5e:XX:XX:XX ver=2 mic_len=16 key_mgmt=0x2
 Jan  1 09:03:58 jetson-desktop wpa_supplicant[878]: WPA: EAPOL-Key MIC using HMAC-SHA1
 Jan  1 09:03:58 jetson-desktop wpa_supplicant[878]: EAPOL: External notification - portValid=1
 Jan  1 09:03:58 jetson-desktop wpa_supplicant[878]: EAPOL: External notification - portValid=1
@@ -103,7 +103,7 @@ Jan  1 09:03:04 jetson-desktop NetworkManager[830]: <info>  [184.3959] device (p
 Jan  1 09:03:08 jetson-desktop NetworkManager[830]: <info>  [188.2445] device (wlP1p1s0): supplicant interface state: scanning -> associating
 Jan  1 09:03:08 jetson-desktop NetworkManager[830]: <info>  [188.2446] device (p2p-dev-wlP1p1s0): supplicant management interface state: scanning -> associating
 Jan  1 09:03:08 jetson-desktop wpa_supplicant[878]: wlP1p1s0: Trying to associate with SSID 'WEB_DEV_5G'
-Jan  1 09:03:08 jetson-desktop wpa_supplicant[878]: wlP1p1s0: Associated with b0:38:6c:37:1b:4c
+Jan  1 09:03:08 jetson-desktop wpa_supplicant[878]: wlP1p1s0: Associated with b0:38:6c:XX:XX:XX
 Jan  1 09:03:08 jetson-desktop NetworkManager[830]: <info>  [188.3628] device (wlP1p1s0): supplicant interface state: associating -> 4way_handshake
 Jan  1 09:03:08 jetson-desktop NetworkManager[830]: <info>  [188.3628] device (p2p-dev-wlP1p1s0): supplicant management interface state: associating -> 4way_handshake
 Jan  1 09:03:08 jetson-desktop NetworkManager[830]: <info>  [188.3689] device (wlP1p1s0): supplicant interface state: 4way_handshake -> completed
@@ -115,7 +115,7 @@ Jan  1 09:03:53 jetson-desktop NetworkManager[830]: <info>  [233.8219] device (w
 Jan  1 09:03:53 jetson-desktop NetworkManager[830]: <warn>  [233.8245] device (wlP1p1s0): Activation: failed for connection 'WEB_DEV_5G'
 Jan  1 09:03:53 jetson-desktop NetworkManager[830]: <info>  [233.8250] device (wlP1p1s0): state change: failed -> disconnected (reason 'none', sys-iface-state: 'managed')
 Jan  1 09:03:53 jetson-desktop dbus-daemon[829]: [system] Activating via systemd: service name='org.freedesktop.nm_dispatcher' unit='dbus-org.freedesktop.nm-dispatcher.service' requested by 
-Jan  1 09:03:53 jetson-desktop wpa_supplicant[878]: wlP1p1s0: CTRL-EVENT-DISCONNECTED bssid=b0:38:6c:37:1b:4c reason=3 locally_generated=1
+Jan  1 09:03:53 jetson-desktop wpa_supplicant[878]: wlP1p1s0: CTRL-EVENT-DISCONNECTED bssid=b0:38:6c:XX:XX:XX reason=3 locally_generated=1
 Jan  1 09:03:53 jetson-desktop NetworkManager[830]: <info>  [233.9493] device (wlP1p1s0): supplicant interface state: completed -> disconnected
 Jan  1 09:03:53 jetson-desktop NetworkManager[830]: <info>  [233.9494] device (p2p-dev-wlP1p1s0): supplicant management interface state: completed -> disconnected
 Jan  1 09:03:54 jetson-desktop NetworkManager[830]: <info>  [234.3642] policy: auto-activating connection 'ALOPS_ROBOTICS_5G' (03131df3-82d3-4a56-a1c4-701724c4def8)
@@ -132,7 +132,7 @@ Jan  1 09:03:54 jetson-desktop NetworkManager[830]: <info>  [234.3725] Config: a
 Jan  1 09:03:54 jetson-desktop wpa_supplicant[878]: wlP1p1s0: Trying to associate with SSID 'ALOPS_ROBOTICS_5G'
 Jan  1 09:03:54 jetson-desktop NetworkManager[830]: <info>  [234.4074] device (wlP1p1s0): supplicant interface state: disconnected -> associating
 Jan  1 09:03:54 jetson-desktop NetworkManager[830]: <info>  [234.4075] device (p2p-dev-wlP1p1s0): supplicant management interface state: disconnected -> associating
-Jan  1 09:03:58 jetson-desktop wpa_supplicant[878]: wlP1p1s0: Associated with 38:f4:5e:27:87:46
+Jan  1 09:03:58 jetson-desktop wpa_supplicant[878]: wlP1p1s0: Associated with 38:f4:5e:XX:XX:XX
 Jan  1 09:03:58 jetson-desktop NetworkManager[830]: <info>  [238.3653] device (wlP1p1s0): supplicant interface state: associating -> associated
 Jan  1 09:03:58 jetson-desktop NetworkManager[830]: <info>  [238.3654] device (p2p-dev-wlP1p1s0): supplicant management interface state: associating -> associated
 Jan  1 09:03:58 jetson-desktop NetworkManager[830]: <info>  [238.3788] device (wlP1p1s0): supplicant interface state: associated -> completed

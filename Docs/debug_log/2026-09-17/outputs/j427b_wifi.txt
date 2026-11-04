@@ -12,11 +12,11 @@
   Sep  1 16:23:11 NM: dhcp4 (wlP1p1s0): state changed new lease, address=192.168.0.101
   Sep  1 17:23:11 NM: dhcp4 (wlP1p1s0): state changed new lease, address=192.168.0.101
   Sep  1 17:21:51 NM: device (wlP1p1s0): Activation: starting connection 'WEB_DEV_5G' (63c99fd8-f853-4a29-8ff5-0af1b5be2842)
-  Sep  1 17:21:55 wpa: CTRL-EVENT-DISCONNECTED bssid=b0:38:6c:37:1b:4c reason=23
+  Sep  1 17:21:55 wpa: CTRL-EVENT-DISCONNECTED bssid=b0:38:6c:XX:XX:XX reason=23
   Sep  1 17:21:55 wpa: CTRL-EVENT-SSID-TEMP-DISABLED id=0 ssid="WEB_DEV_5G" auth_failures=1 duration=10 reason=AUTH_FAILED
-  Sep  1 17:22:14 wpa: CTRL-EVENT-DISCONNECTED bssid=b0:38:6c:37:1b:4c reason=23
+  Sep  1 17:22:14 wpa: CTRL-EVENT-DISCONNECTED bssid=b0:38:6c:XX:XX:XX reason=23
   Sep  1 17:22:14 wpa: CTRL-EVENT-SSID-TEMP-DISABLED id=0 ssid="WEB_DEV_5G" auth_failures=2 duration=20 reason=AUTH_FAILED
-  Sep  1 17:22:22 wpa: CTRL-EVENT-DISCONNECTED bssid=b0:38:6c:37:1b:4c reason=23
+  Sep  1 17:22:22 wpa: CTRL-EVENT-DISCONNECTED bssid=b0:38:6c:XX:XX:XX reason=23
   Sep  1 17:22:22 wpa: CTRL-EVENT-SSID-TEMP-DISABLED id=0 ssid="WEB_DEV_5G" auth_failures=1 duration=10 reason=AUTH_FAILED
   Sep  1 17:22:47 NM: dhcp4 (wlP1p1s0): state changed new lease, address=192.168.0.101
   Sep  2 10:25:34 NM: dhcp4 (wlP1p1s0): state changed new lease, address=192.168.0.101
@@ -88,22 +88,22 @@
   Sep 15 10:55:20 NM: dhcp4 (wlP1p1s0): state changed new lease, address=192.168.0.101
   Sep 15 11:55:20 NM: dhcp4 (wlP1p1s0): state changed new lease, address=192.168.0.101
   Sep 15 12:55:20 NM: dhcp4 (wlP1p1s0): state changed new lease, address=192.168.0.101
-  Sep 15 14:03:13 wpa: CTRL-EVENT-DISCONNECTED bssid=b0:38:6c:37:1b:4c reason=2
-  Sep 15 14:03:21 wpa: CTRL-EVENT-DISCONNECTED bssid=b0:38:6c:37:1b:4c reason=23
+  Sep 15 14:03:13 wpa: CTRL-EVENT-DISCONNECTED bssid=b0:38:6c:XX:XX:XX reason=2
+  Sep 15 14:03:21 wpa: CTRL-EVENT-DISCONNECTED bssid=b0:38:6c:XX:XX:XX reason=23
   Sep 15 14:03:21 wpa: CTRL-EVENT-SSID-TEMP-DISABLED id=0 ssid="WEB_DEV_5G" auth_failures=1 duration=10 reason=AUTH_FAILED
   Sep 15 14:03:28 NM: device (wlP1p1s0): state change: activated -> failed (reason 'supplicant-timeout', sys-iface-state: 'managed')
   Sep 15 14:03:28 NM: device (wlP1p1s0): Activation: failed for connection 'WEB_DEV_5G'
   Sep 15 14:03:28 NM: device (wlP1p1s0): state change: failed -> disconnected (reason 'none', sys-iface-state: 'managed')
   Sep 15 14:03:32 NM: device (wlP1p1s0): Activation: starting connection 'WEB_DEV_5G' (63c99fd8-f853-4a29-8ff5-0af1b5be2842)
-  Sep 15 14:03:36 wpa: CTRL-EVENT-DISCONNECTED bssid=b0:38:6c:37:1b:4c reason=23
+  Sep 15 14:03:36 wpa: CTRL-EVENT-DISCONNECTED bssid=b0:38:6c:XX:XX:XX reason=23
   Sep 15 14:03:36 wpa: CTRL-EVENT-SSID-TEMP-DISABLED id=0 ssid="WEB_DEV_5G" auth_failures=1 duration=10 reason=AUTH_FAILED
-  Sep 15 14:03:55 wpa: CTRL-EVENT-DISCONNECTED bssid=b0:38:6c:37:1b:4c reason=23
+  Sep 15 14:03:55 wpa: CTRL-EVENT-DISCONNECTED bssid=b0:38:6c:XX:XX:XX reason=23
   Sep 15 14:03:55 wpa: CTRL-EVENT-SSID-TEMP-DISABLED id=0 ssid="WEB_DEV_5G" auth_failures=2 duration=20 reason=AUTH_FAILED
   Sep 15 14:03:55 wpa: CTRL-EVENT-SSID-TEMP-DISABLED id=0 ssid="WEB_DEV_5G" auth_failures=3 duration=30 reason=CONN_FAILED
-  Sep 15 14:04:03 wpa: CTRL-EVENT-DISCONNECTED bssid=b0:38:6c:37:1b:4c reason=23
+  Sep 15 14:04:03 wpa: CTRL-EVENT-DISCONNECTED bssid=b0:38:6c:XX:XX:XX reason=23
   Sep 15 14:04:03 wpa: CTRL-EVENT-SSID-TEMP-DISABLED id=0 ssid="WEB_DEV_5G" auth_failures=1 duration=10 reason=AUTH_FAILED
   Sep 15 14:04:03 wpa: CTRL-EVENT-SSID-TEMP-DISABLED id=0 ssid="WEB_DEV_5G" auth_failures=2 duration=20 reason=CONN_FAILED
-  Sep 15 14:04:30 wpa: CTRL-EVENT-DISCONNECTED bssid=b0:38:6c:37:1b:4c reason=23
+  Sep 15 14:04:30 wpa: CTRL-EVENT-DISCONNECTED bssid=b0:38:6c:XX:XX:XX reason=23
   Sep 15 14:04:30 wpa: CTRL-EVENT-SSID-TEMP-DISABLED id=0 ssid="WEB_DEV_5G" auth_failures=1 duration=10 reason=AUTH_FAILED
   Sep 15 14:04:30 wpa: CTRL-EVENT-SSID-TEMP-DISABLED id=0 ssid="WEB_DEV_5G" auth_failures=2 duration=20 reason=CONN_FAILED
   Sep 15 14:04:47 NM: device (wlP1p1s0): state change: config -> failed (reason 'no-secrets', sys-iface-state: 'managed')
@@ -134,7 +134,7 @@
   Sep 16 09:09:34 wpa: CTRL-EVENT-ASSOC-REJECT status_code=8
   Sep 16 09:09:38 NM: dhcp4 (wlP1p1s0): state changed new lease, address=172.30.1.8
   Sep 16 09:36:09 NM: device (wlP1p1s0): state change: activated -> deactivating (reason 'new-activation', sys-iface-state: 'managed')
-  Sep 16 09:36:09 wpa: CTRL-EVENT-DISCONNECTED bssid=38:f4:5e:27:87:46 reason=3 locally_generated=1
+  Sep 16 09:36:09 wpa: CTRL-EVENT-DISCONNECTED bssid=38:f4:5e:XX:XX:XX reason=3 locally_generated=1
   Sep 16 09:36:09 NM: device (wlP1p1s0): Activation: starting connection 'WEB_DEV_5G' (63c99fd8-f853-4a29-8ff5-0af1b5be2842)
   Sep 16 09:36:11 NM: dhcp4 (wlP1p1s0): state changed new lease, address=192.168.0.101
   Sep 16 09:28:32 NM: device (wlP1p1s0): Activation: starting connection 'WEB_DEV_5G' (63c99fd8-f853-4a29-8ff5-0af1b5be2842)
@@ -145,22 +145,22 @@
   Sep 16 13:56:04 NM: dhcp4 (wlP1p1s0): state changed new lease, address=192.168.0.101
   Sep 16 14:56:04 NM: dhcp4 (wlP1p1s0): state changed new lease, address=192.168.0.101
   Sep 16 15:56:04 NM: dhcp4 (wlP1p1s0): state changed new lease, address=192.168.0.101
-  Sep 16 15:57:34 wpa: CTRL-EVENT-DISCONNECTED bssid=b0:38:6c:37:1b:4c reason=2
-  Sep 16 15:57:42 wpa: CTRL-EVENT-DISCONNECTED bssid=b0:38:6c:37:1b:4c reason=23
+  Sep 16 15:57:34 wpa: CTRL-EVENT-DISCONNECTED bssid=b0:38:6c:XX:XX:XX reason=2
+  Sep 16 15:57:42 wpa: CTRL-EVENT-DISCONNECTED bssid=b0:38:6c:XX:XX:XX reason=23
   Sep 16 15:57:42 wpa: CTRL-EVENT-SSID-TEMP-DISABLED id=0 ssid="WEB_DEV_5G" auth_failures=1 duration=10 reason=AUTH_FAILED
   Sep 16 15:57:49 NM: device (wlP1p1s0): state change: activated -> failed (reason 'supplicant-timeout', sys-iface-state: 'managed')
   Sep 16 15:57:49 NM: device (wlP1p1s0): Activation: failed for connection 'WEB_DEV_5G'
   Sep 16 15:57:49 NM: device (wlP1p1s0): state change: failed -> disconnected (reason 'none', sys-iface-state: 'managed')
   Sep 16 15:57:53 NM: device (wlP1p1s0): Activation: starting connection 'WEB_DEV_5G' (63c99fd8-f853-4a29-8ff5-0af1b5be2842)
-  Sep 16 15:57:58 wpa: CTRL-EVENT-DISCONNECTED bssid=b0:38:6c:37:1b:4c reason=23
+  Sep 16 15:57:58 wpa: CTRL-EVENT-DISCONNECTED bssid=b0:38:6c:XX:XX:XX reason=23
   Sep 16 15:57:58 wpa: CTRL-EVENT-SSID-TEMP-DISABLED id=0 ssid="WEB_DEV_5G" auth_failures=1 duration=10 reason=AUTH_FAILED
-  Sep 16 15:58:16 wpa: CTRL-EVENT-DISCONNECTED bssid=b0:38:6c:37:1b:4c reason=23
+  Sep 16 15:58:16 wpa: CTRL-EVENT-DISCONNECTED bssid=b0:38:6c:XX:XX:XX reason=23
   Sep 16 15:58:16 wpa: CTRL-EVENT-SSID-TEMP-DISABLED id=0 ssid="WEB_DEV_5G" auth_failures=2 duration=20 reason=AUTH_FAILED
   Sep 16 15:58:16 wpa: CTRL-EVENT-SSID-TEMP-DISABLED id=0 ssid="WEB_DEV_5G" auth_failures=3 duration=30 reason=CONN_FAILED
-  Sep 16 15:58:24 wpa: CTRL-EVENT-DISCONNECTED bssid=b0:38:6c:37:1b:4c reason=23
+  Sep 16 15:58:24 wpa: CTRL-EVENT-DISCONNECTED bssid=b0:38:6c:XX:XX:XX reason=23
   Sep 16 15:58:24 wpa: CTRL-EVENT-SSID-TEMP-DISABLED id=0 ssid="WEB_DEV_5G" auth_failures=1 duration=10 reason=AUTH_FAILED
   Sep 16 15:58:24 wpa: CTRL-EVENT-SSID-TEMP-DISABLED id=0 ssid="WEB_DEV_5G" auth_failures=2 duration=20 reason=CONN_FAILED
-  Sep 16 15:58:53 wpa: CTRL-EVENT-DISCONNECTED bssid=b0:38:6c:37:1b:4c reason=23
+  Sep 16 15:58:53 wpa: CTRL-EVENT-DISCONNECTED bssid=b0:38:6c:XX:XX:XX reason=23
   Sep 16 15:58:53 wpa: CTRL-EVENT-SSID-TEMP-DISABLED id=0 ssid="WEB_DEV_5G" auth_failures=1 duration=10 reason=AUTH_FAILED
   Sep 16 15:58:53 wpa: WPA: 4-Way Handshake failed - pre-shared key may be incorrect
   Sep 16 15:58:53 wpa: CTRL-EVENT-SSID-TEMP-DISABLED id=0 ssid="WEB_DEV_5G" auth_failures=2 duration=20 reason=WRONG_KEY
@@ -179,22 +179,22 @@
   Sep 17 10:40:25 NM: dhcp4 (wlP1p1s0): state changed new lease, address=192.168.0.101
   Sep 17 11:40:25 NM: dhcp4 (wlP1p1s0): state changed new lease, address=192.168.0.101
   Sep 17 12:40:25 NM: dhcp4 (wlP1p1s0): state changed new lease, address=192.168.0.101
-  Sep 17 13:38:42 wpa: CTRL-EVENT-DISCONNECTED bssid=b0:38:6c:37:1b:4c reason=2
-  Sep 17 13:38:50 wpa: CTRL-EVENT-DISCONNECTED bssid=b0:38:6c:37:1b:4c reason=23
+  Sep 17 13:38:42 wpa: CTRL-EVENT-DISCONNECTED bssid=b0:38:6c:XX:XX:XX reason=2
+  Sep 17 13:38:50 wpa: CTRL-EVENT-DISCONNECTED bssid=b0:38:6c:XX:XX:XX reason=23
   Sep 17 13:38:50 wpa: CTRL-EVENT-SSID-TEMP-DISABLED id=0 ssid="WEB_DEV_5G" auth_failures=1 duration=10 reason=AUTH_FAILED
   Sep 17 13:38:57 NM: device (wlP1p1s0): state change: activated -> failed (reason 'supplicant-timeout', sys-iface-state: 'managed')
   Sep 17 13:38:57 NM: device (wlP1p1s0): Activation: failed for connection 'WEB_DEV_5G'
   Sep 17 13:38:57 NM: device (wlP1p1s0): state change: failed -> disconnected (reason 'none', sys-iface-state: 'managed')
   Sep 17 13:39:01 NM: device (wlP1p1s0): Activation: starting connection 'WEB_DEV_5G' (63c99fd8-f853-4a29-8ff5-0af1b5be2842)
-  Sep 17 13:39:05 wpa: CTRL-EVENT-DISCONNECTED bssid=b0:38:6c:37:1b:4c reason=23
+  Sep 17 13:39:05 wpa: CTRL-EVENT-DISCONNECTED bssid=b0:38:6c:XX:XX:XX reason=23
   Sep 17 13:39:05 wpa: CTRL-EVENT-SSID-TEMP-DISABLED id=0 ssid="WEB_DEV_5G" auth_failures=1 duration=10 reason=AUTH_FAILED
-  Sep 17 13:39:23 wpa: CTRL-EVENT-DISCONNECTED bssid=b0:38:6c:37:1b:4c reason=23
+  Sep 17 13:39:23 wpa: CTRL-EVENT-DISCONNECTED bssid=b0:38:6c:XX:XX:XX reason=23
   Sep 17 13:39:23 wpa: CTRL-EVENT-SSID-TEMP-DISABLED id=0 ssid="WEB_DEV_5G" auth_failures=2 duration=20 reason=AUTH_FAILED
   Sep 17 13:39:23 wpa: CTRL-EVENT-SSID-TEMP-DISABLED id=0 ssid="WEB_DEV_5G" auth_failures=3 duration=30 reason=CONN_FAILED
-  Sep 17 13:39:32 wpa: CTRL-EVENT-DISCONNECTED bssid=b0:38:6c:37:1b:4c reason=23
+  Sep 17 13:39:32 wpa: CTRL-EVENT-DISCONNECTED bssid=b0:38:6c:XX:XX:XX reason=23
   Sep 17 13:39:32 wpa: CTRL-EVENT-SSID-TEMP-DISABLED id=0 ssid="WEB_DEV_5G" auth_failures=1 duration=10 reason=AUTH_FAILED
   Sep 17 13:39:32 wpa: CTRL-EVENT-SSID-TEMP-DISABLED id=0 ssid="WEB_DEV_5G" auth_failures=2 duration=20 reason=CONN_FAILED
-  Sep 17 13:39:59 wpa: CTRL-EVENT-DISCONNECTED bssid=b0:38:6c:37:1b:4c reason=23
+  Sep 17 13:39:59 wpa: CTRL-EVENT-DISCONNECTED bssid=b0:38:6c:XX:XX:XX reason=23
   Sep 17 13:39:59 wpa: CTRL-EVENT-SSID-TEMP-DISABLED id=0 ssid="WEB_DEV_5G" auth_failures=1 duration=10 reason=AUTH_FAILED
   Sep 17 13:39:59 wpa: CTRL-EVENT-SSID-TEMP-DISABLED id=0 ssid="WEB_DEV_5G" auth_failures=2 duration=20 reason=CONN_FAILED
   Sep 17 13:40:16 NM: device (wlP1p1s0): state change: config -> failed (reason 'no-secrets', sys-iface-state: 'managed')
@@ -203,16 +203,16 @@
   Sep 17 13:40:20 NM: device (wlP1p1s0): Activation: starting connection 'ALOPS_ROBOTICS_5G' (03131df3-82d3-4a56-a1c4-701724c4def8)
   Sep 17 13:40:20 NM: dhcp4 (wlP1p1s0): state changed new lease, address=172.30.1.8
   Sep 17 13:05:13 NM: device (wlP1p1s0): Activation: starting connection 'WEB_DEV_5G' (63c99fd8-f853-4a29-8ff5-0af1b5be2842)
-  Sep 17 13:05:18 wpa: CTRL-EVENT-DISCONNECTED bssid=b0:38:6c:37:1b:4c reason=23
+  Sep 17 13:05:18 wpa: CTRL-EVENT-DISCONNECTED bssid=b0:38:6c:XX:XX:XX reason=23
   Sep 17 13:05:18 wpa: CTRL-EVENT-SSID-TEMP-DISABLED id=0 ssid="WEB_DEV_5G" auth_failures=1 duration=10 reason=AUTH_FAILED
-  Sep 17 13:05:36 wpa: CTRL-EVENT-DISCONNECTED bssid=b0:38:6c:37:1b:4c reason=23
+  Sep 17 13:05:36 wpa: CTRL-EVENT-DISCONNECTED bssid=b0:38:6c:XX:XX:XX reason=23
   Sep 17 13:05:36 wpa: CTRL-EVENT-SSID-TEMP-DISABLED id=0 ssid="WEB_DEV_5G" auth_failures=2 duration=20 reason=AUTH_FAILED
-  Sep 17 13:05:44 wpa: CTRL-EVENT-DISCONNECTED bssid=b0:38:6c:37:1b:4c reason=23
+  Sep 17 13:05:44 wpa: CTRL-EVENT-DISCONNECTED bssid=b0:38:6c:XX:XX:XX reason=23
   Sep 17 13:05:44 wpa: CTRL-EVENT-SSID-TEMP-DISABLED id=0 ssid="WEB_DEV_5G" auth_failures=1 duration=10 reason=AUTH_FAILED
-  Sep 17 13:06:02 wpa: CTRL-EVENT-DISCONNECTED bssid=b0:38:6c:37:1b:4c reason=23
+  Sep 17 13:06:02 wpa: CTRL-EVENT-DISCONNECTED bssid=b0:38:6c:XX:XX:XX reason=23
   Sep 17 13:06:02 wpa: CTRL-EVENT-SSID-TEMP-DISABLED id=0 ssid="WEB_DEV_5G" auth_failures=2 duration=20 reason=AUTH_FAILED
   Sep 17 13:06:02 wpa: CTRL-EVENT-SSID-TEMP-DISABLED id=0 ssid="WEB_DEV_5G" auth_failures=3 duration=30 reason=CONN_FAILED
-  Sep 17 13:06:10 wpa: CTRL-EVENT-DISCONNECTED bssid=b0:38:6c:37:1b:4c reason=23
+  Sep 17 13:06:10 wpa: CTRL-EVENT-DISCONNECTED bssid=b0:38:6c:XX:XX:XX reason=23
   Sep 17 13:06:10 wpa: CTRL-EVENT-SSID-TEMP-DISABLED id=0 ssid="WEB_DEV_5G" auth_failures=1 duration=10 reason=AUTH_FAILED
   Sep 17 13:06:10 wpa: CTRL-EVENT-SSID-TEMP-DISABLED id=0 ssid="WEB_DEV_5G" auth_failures=2 duration=20 reason=CONN_FAILED
   Sep 17 13:06:29 NM: device (wlP1p1s0): state change: config -> failed (reason 'no-secrets', sys-iface-state: 'managed')
@@ -228,9 +228,9 @@
   Sep 10  DISCONNECTED  0 () | TEMP-DISABLED 0 | ASSOC-REJECT 0 | 연결 시작:  2 'WEB_DEV_5G' 
   Sep 11  DISCONNECTED  0 () | TEMP-DISABLED 0 | ASSOC-REJECT 0 | 연결 시작:  1 'WEB_DEV_5G' 
   Sep 14  DISCONNECTED  0 () | TEMP-DISABLED 0 | ASSOC-REJECT 0 | 연결 시작: 
-  Sep 15  DISCONNECTED  6 ( 1 b0:38:6c:37:1b:4c reason=2; 5 b0:38:6c:37:1b:4c reason=23;) | TEMP-DISABLED 8 | ASSOC-REJECT 2 | 연결 시작:  5 'ALOPS_ROBOTICS_5G'  1 'WEB_DEV_5G' 
-  Sep 16  DISCONNECTED  7 ( 1 38:f4:5e:27:87:46 reason=3 locally_generated=1; 1 b0:38:6c:37:1b:4c reason=2; 5 b0:38:6c:37:1b:4c reason=23;) | TEMP-DISABLED 9 | ASSOC-REJECT 2 | 연결 시작:  3 'ALOPS_ROBOTICS_5G'  4 'WEB_DEV_5G' 
-  Sep 17  DISCONNECTED 11 ( 1 b0:38:6c:37:1b:4c reason=2; 10 b0:38:6c:37:1b:4c reason=23;) | TEMP-DISABLED 16 | ASSOC-REJECT 1 | 연결 시작:  2 'ALOPS_ROBOTICS_5G'  2 'WEB_DEV_5G' 
+  Sep 15  DISCONNECTED  6 ( 1 b0:38:6c:XX:XX:XX reason=2; 5 b0:38:6c:XX:XX:XX reason=23;) | TEMP-DISABLED 8 | ASSOC-REJECT 2 | 연결 시작:  5 'ALOPS_ROBOTICS_5G'  1 'WEB_DEV_5G' 
+  Sep 16  DISCONNECTED  7 ( 1 38:f4:5e:XX:XX:XX reason=3 locally_generated=1; 1 b0:38:6c:XX:XX:XX reason=2; 5 b0:38:6c:XX:XX:XX reason=23;) | TEMP-DISABLED 9 | ASSOC-REJECT 2 | 연결 시작:  3 'ALOPS_ROBOTICS_5G'  4 'WEB_DEV_5G' 
+  Sep 17  DISCONNECTED 11 ( 1 b0:38:6c:XX:XX:XX reason=2; 10 b0:38:6c:XX:XX:XX reason=23;) | TEMP-DISABLED 16 | ASSOC-REJECT 1 | 연결 시작:  2 'ALOPS_ROBOTICS_5G'  2 'WEB_DEV_5G' 
   Sep 2   DISCONNECTED  0 () | TEMP-DISABLED 0 | ASSOC-REJECT 0 | 연결 시작: 
   Sep 3   DISCONNECTED  0 () | TEMP-DISABLED 0 | ASSOC-REJECT 0 | 연결 시작: 
   Sep 7   DISCONNECTED  0 () | TEMP-DISABLED 0 | ASSOC-REJECT 0 | 연결 시작: 
@@ -238,9 +238,9 @@
   Sep 9   DISCONNECTED  0 () | TEMP-DISABLED 0 | ASSOC-REJECT 0 | 연결 시작: 
 ######## D. 새 스캔
   IN-USE  SSID               BSSID              CHAN  FREQ      SIGNAL  SECURITY  
-  *       ALOPS_ROBOTICS_5G  38:F4:5E:27:87:46  153   5765 MHz  72      WPA1 WPA2 
+  *       ALOPS_ROBOTICS_5G  38:F4:5E:XX:XX:XX  153   5765 MHz  72      WPA1 WPA2 
   -- iw scan dump (캐시, 5 GHz 포함)
-   38:f4:5e:27:87:46(on 5765 -57.00 dBm 	SSID: ALOPS_ROBOTICS_5G
+   38:f4:5e:XX:XX:XX(on 5765 -57.00 dBm 	SSID: ALOPS_ROBOTICS_5G
       auth: 		 * Authentication suites: PSK
       auth: 		 * Authentication suites: PSK
 ######## E. NM 동작 설정

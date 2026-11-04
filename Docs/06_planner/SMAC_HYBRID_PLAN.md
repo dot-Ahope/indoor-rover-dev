@@ -90,3 +90,9 @@
 - D5 전역 비용 완만화(k 1.0 · 0.5): 경로가 상자에 **더** 붙음(0 cm) — 완만하면 '곁 대 가운데' 비용 차가 줄어 길이가 이김. D5b 패딩 0.03 · 0.05: 적용됐으나 경로 그대로(계획 경로가 이미 그 띠 밖).
 - D1 Lattice(diff 원형): 상자 여유 NavFn 대비 평균 +0.6(해석 확장 3 m) · +2.5 cm(0.5 m, 한 장면 −4.2), 서쪽 통로 남행 실패, cost_penalty · 회전 벌점 효과 없음(1.1.20).
 - 남는 문제는 컨트롤러 추종(굽은 곳 안쪽 깎기)과 서쪽 통로 같은 경계 통로. 계획기 교체는 판 올리기(D6, JetPack 7.2 Phase) 때 같은 도구로 다시 판단.
+
+## 11. 2026-11-04 정정 · 상태 (문제 대장 9 기 smac-hybrid-adoption 카드 대조)
+- §8 · §10 의 10-23 판정(Hybrid 기준 미달 · Phase P 멈춤 · Lattice cp · 회전 벌점 효과 없음)은 10-26 §6.1 에서 무효 — 한 planner_server 의 Smac 변형들이 정적 동작 표를 공유해 변형 차이가 적용되지 않았다. 변형마다 따로 다시 잰 결과(10-26 §6.3)는 RS + 해석 1.0 m 가 최선.
+- 10-26 §4 ~ 10-27 의 결과(포크 analytic_expansion_max_cost · cost_penalty 원인 · tolerance 0.35 · 실주행 f2sh · f2sa · f2st · f2tf · f2tt)는 이 계획서에 없다 → `Docs/issues/smac-hybrid-adoption.md` 가 정리본.
+- §6 'REEDS_SHEPP 는 이 Phase 밖' 은 지금 채택값(`nav2_params.yaml` motion_model_for_search REEDS_SHEPP)과 어긋남. §7 의 `PHASE_P_RESULTS.md` 는 만들지 않았다.
+- 지금 상태: `planner:=smac` 은 시험 구성(launch 기본 navfn · prep 재계획 0.5 Hz). 러너 목표 방향은 여전히 NavFn 에 묻는다(`path_end_yaw.py` 22 행 planner_id GridBased — P2 미해결).

@@ -37,5 +37,5 @@ Sep 23 12:06:12 jetson-desktop NetworkManager[830]: <info>  [1790132772.2047] de
 Sep 23 12:05:23 jetson-desktop kernel: IPv6: ADDRCONF(NETDEV_CHANGE): wlP1p1s0: link becomes ready
 ## 스택: agent 1 camera 1 slam 1 controller 1 nvblox_up 1
 ==== 트레이스(상태 변화만)
-12:06:17 ip=192.168.0.101/24 link=b0:38:6c:37:1b:4c -55  gw=ok neigh=b0:38:6c:37:1b:4c REACHABLE
+12:06:17 ip=192.168.0.101/24 link=b0:38:6c:XX:XX:XX -55  gw=ok neigh=b0:38:6c:XX:XX:XX REACHABLE
 줄 수 74, gw=X 횟수 0

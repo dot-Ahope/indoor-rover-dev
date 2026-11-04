@@ -6,7 +6,7 @@
 #   /var/log/wifi_mon/wpa_debug.log  wpa_supplicant DEBUG 줄(rsyslog 25-wifi-mon.conf 가 기록)
 # 되돌리기: systemctl disable --now wifi-mon; rm /etc/rsyslog.d/25-wifi-mon.conf; systemctl restart rsyslog; wpa_cli log_level INFO
 IF=wlP1p1s0
-AP=b0:38:6c:37:1b:4c          # WEB_DEV_5G (ipTIME AX3000R, 5 GHz ch36 160 MHz)
+AP=b0:38:6c:XX:XX:XX          # WEB_DEV_5G (ipTIME AX3000R, 5 GHz ch36 160 MHz)
 APFREQ=5180
 D=/var/log/wifi_mon; M=$D/mon.log
 mkdir -p $D

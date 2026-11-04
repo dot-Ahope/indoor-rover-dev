@@ -72,7 +72,7 @@ MPPI 가 보여 준 것: 정지 없이(둘레 검사 없음) 부드럽게(부호
   그리고 원격 정지 수단이 없을 때를 대비해 조이스틱/보드 리셋을 현장 정지 수단으로 명시한다.**
 
 ### 3.1 (09-16 오전) 원인 규명 — Wi-Fi AP 가 Jetson 을 끊고 재인증을 거부했다
-syslog(/var/log/syslog, 영속): **09-15 14:03:13 `wpa_supplicant: CTRL-EVENT-DISCONNECTED bssid=b0:38:6c:37:1b:4c reason=2`** (AP 측 deauth) → 재연결 시도 → 14:03:21
+syslog(/var/log/syslog, 영속): **09-15 14:03:13 `wpa_supplicant: CTRL-EVENT-DISCONNECTED bssid=b0:38:6c:XX:XX:XX reason=2`** (AP 측 deauth) → 재연결 시도 → 14:03:21
 **`CTRL-EVENT-SSID-TEMP-DISABLED ssid="WEB_DEV_5G" auth_failures=1 reason=AUTH_FAILED`** → 그 뒤 재연결 실패 상태로 남음. 사용자가 14:41·16:55 에 재부팅했고 16:55 부터는
 다른 저장 SSID **ALOPS_ROBOTICS_5G(172.30.1.8)** 에 붙었다(저장 연결 3개 모두 autoconnect 우선순위 0 이라 어느 쪽에 붙을지 정해져 있지 않았다).
 - 172.30.1.x 는 **이 PC 와 같은 서브넷**(PC 172.30.1.89) → 이중 NAT(192.168.0.101) 경로보다 낫다. 러너 156개의 호스트를 172.30.1.8 로 교체(`run_lan.sh`, `JETSON_HOST`).

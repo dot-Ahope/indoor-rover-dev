@@ -33,3 +33,20 @@
   - 기록: 10-27 §15.1 '튀는 장 두 장'(3 장) · §23 '09-22 이후 전체 영향'(코드상 10-08 ~ 10-27) · §29.2 LinkNearChains 중앙(PL.edges 값을 옮김, 실제 141.2) · §25 '77 s'(66 s) · 10-28 §7.1 등 'arrived N' 에 stop 포함 · §10 첫 메시지 유실이 처음 아님 · 10-29 §2 'f2pl1 37 s 뒤'(움직인 뒤 2 s) · 10-30 작업이 10-29 SUMMARY 에 있음(폴더 없음).
 - Jetson 확인 못 함: 출발 전 검사 ⓐ(`place_server.py`)가 Jetson 에 배포됐는지 — `jobs/chk_place_md5_1104.sh`(읽기만) 를 두 번 돌렸으나 192.168.0.110 핑 50 % 손실 · 'lost connection'. 저장소 판 md5 는 `outputs/chk_place_md5_1104_repo.txt`(place_server 281 줄 f3ec96a4). 다음 접속 때.
 - 남은 결정 · 할 일: MAC 가림 · mp4 2 개 · `prep_fast.sh` SHM 오류 검사 범위 · 주석 수정분 Jetson 배포 · 위 코드 · 문서 어긋남 정정 · 기본 구성(NavFn · 0.5 Hz) + MPPI 28 · 5 조합 미주행 · ⓐ 배포 · d2.
+
+## §5 9 기 어긋남 정정 — 주석 · 문서 (사용자: "주행 후보 빼고 진행하라. 당시 어떤 이유인지는 모르겠지만 필요 없다 판단했겠지")
+- 사용자 판단 기록: 기본 구성(NavFn · 0.5 Hz) + MPPI 28 · 5 조합 미주행은 당시 필요 없다고 판단했을 것 — 주행 후보(그 확인 주행 · d2)는 이번에 안 함.
+- `jobs/up_doc_fix_p9_1104.py`(동작 변경 없음): `nav2_params.yaml` PathAlign 채택 근거에 f2sa3 · 미주행 조합 경고 · RS 줄의 옛 DUBIN 설명 · 09-14 주석 위치 표시 · `places.yaml` 41 행 '첫 도착 f2pl4' · `Docs/06_planner/SMAC_HYBRID_PLAN.md` §11(10-23 판정 무효 · 계획서 밖 결과 · RS 어긋남 · 목표 방향 NavFn) · `TEST_COURSE_AND_GATES.md` 게이트 C 실제 문턱(< 0.5 s · 지연 < 1.0 s) · chk_drive_gate · P 게이트(LOAD_MAX 60 %) 표시 · `Docs/tools/README.md` 에 chk_drive_gate · run_slam_replay · slam_replay_feed 행 + up_tools 설명. YAML 읽기 검사 통과.
+- `Docs/02_hardware/rover.urdf.xacro` 기록 사본을 src 판(10-29 §9 urdf 에 맞춘 것)으로 갱신 · CLAUDE.md 데크 상수 목록에 xacro 추가.
+- 안 고친 것(동작 변경이라 별도): `place_server.py` 종료 예외(RCLError) 처리 · `prep_fast.sh` SHM 오류 검사 범위 · 옛 날짜 jobs 의 낡은 머리 주석(옛 파일은 안 바꿈).
+
+## §6 MAC 가림 (README §4)
+- `jobs/up_mask_mac_1104.py`: 추적 텍스트 파일의 실제 MAC/BSSID 뒤 3 바이트 → `XX`(제조사 앞 3 바이트는 남김). 날짜 · 시각 모양(26-10-23-…)과 00:00:00 은 제외. 결과 "파일 33 · 바꾼 곳 609" + git 이 바이너리로 보는 `2026-10-22/outputs/chk_wifi_1022.txt` 1 곳 따로. 다시 세면 실제 MAC 0.
+- 범위: 지금 판만. git 과거 이력(공개 이력 포함)에는 남음 — 이력 다시 쓰기는 안 함(사용자 결정 필요 시).
+- ⚠ 가린 파일에 옛 jobs 스크립트(`2026-09-18/jobs/wifi_mon.sh` · `job428c_bss.sh` 등)가 있음 — 기록 보관본이라 그대로 다시 돌리면 BSSID 비교가 안 맞음(Jetson 에 깔린 wifi_mon 은 Jetson 쪽 파일이라 영향 없음).
+
+## §7 mp4 2 개 git 제외
+- `git rm --cached` `2026-10-19/figures/f2y1_ir_drive.mp4`(28.8 MB) · `2026-10-21/figures/f2sm2_people_block.mp4`(20.9 MB) — 로컬 파일은 남김. `.gitignore` 에 `Docs/debug_log/*/figures/*.mp4`(예전 규칙은 videos/ 만). 과거 이력 · 공개 이력에는 남음.
+
+## §8 Jetson 배포 · 확인 미실행
+- 주석 수정분(§3 · §5) · pad_relief 기본 off 를 Jetson src 로 올리는 것과 F2.5 판(ⓐ) 확인: 192.168.0.110 핑 손실 50 %(4 중 2) · 전송 'lost connection' 3 회 → 안 함. 다음 접속 때 `jobs/chk_place_md5_1104.sh` 와 배포.

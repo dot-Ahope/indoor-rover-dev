@@ -12,3 +12,5 @@
 | §3 | 기록 어긋남 정정 표시 | `jobs/up_record_marks_1104.py` | 13 곳(표 행 2 곳은 표 아래 줄로) | 원문 유지 | ✔ |
 | §4 | 9 기 카드 링크 · 표 | `jobs/up_issue_links_p9.py` · `jobs/up_issues_table_p9.py` → 색인 · 검사 | 링크 25 장 · RULES_OK | — | ✔ |
 | §4 | Jetson F2.5 파일 판(ⓐ 배포?) | `jobs/chk_place_md5_1104.sh`(읽기만) | 두 번 lost connection(핑 50 % 손실) — 저장소 판만 `outputs/chk_place_md5_1104_repo.txt` | — | 다음 접속 때 |
+| §5 | 9 기 주석 · 문서 정정 | `jobs/up_doc_fix_p9_1104.py` | 6 파일 · YAML 통과 | 동작 변경 없음 | ✔ |
+| §6 | MAC 가림 | `jobs/up_mask_mac_1104.py` | 파일 33 · 609 곳 + 1 | 지금 판만 | ✔ |

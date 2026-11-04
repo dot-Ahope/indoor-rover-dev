@@ -1,11 +1,11 @@
 === syslog Sep 16 15:5x wifi ===
-Sep 16 15:57:34 jetson-desktop wpa_supplicant[902]: wlP1p1s0: CTRL-EVENT-DISCONNECTED bssid=b0:38:6c:37:1b:4c reason=2
+Sep 16 15:57:34 jetson-desktop wpa_supplicant[902]: wlP1p1s0: CTRL-EVENT-DISCONNECTED bssid=b0:38:6c:XX:XX:XX reason=2
 Sep 16 15:57:34 jetson-desktop NetworkManager[852]: <info>  [1789541854.2372] device (wlP1p1s0): supplicant interface state: completed -> disconnected
 Sep 16 15:57:34 jetson-desktop NetworkManager[852]: <info>  [1789541854.2373] device (p2p-dev-wlP1p1s0): supplicant management interface state: completed -> disconnected
 Sep 16 15:57:34 jetson-desktop NetworkManager[852]: <info>  [1789541854.3370] device (wlP1p1s0): supplicant interface state: disconnected -> scanning
 Sep 16 15:57:34 jetson-desktop NetworkManager[852]: <info>  [1789541854.3371] device (p2p-dev-wlP1p1s0): supplicant management interface state: disconnected -> scanning
 Sep 16 15:57:38 jetson-desktop wpa_supplicant[902]: wlP1p1s0: CTRL-EVENT-STARTED-CHANNEL-SWITCH freq=5180 ht_enabled=1 ch_offset=1 ch_width=80 MHz cf1=5210 cf2=0
-Sep 16 15:57:38 jetson-desktop wpa_supplicant[902]: wlP1p1s0: Associated with b0:38:6c:37:1b:4c
+Sep 16 15:57:38 jetson-desktop wpa_supplicant[902]: wlP1p1s0: Associated with b0:38:6c:XX:XX:XX
 Sep 16 15:57:38 jetson-desktop wpa_supplicant[902]: wlP1p1s0: CTRL-EVENT-SUBNET-STATUS-UPDATE status=0
 Sep 16 15:57:38 jetson-desktop NetworkManager[852]: <info>  [1789541858.5362] device (wlP1p1s0): supplicant interface state: associating -> associated
 Sep 16 15:57:38 jetson-desktop NetworkManager[852]: <info>  [1789541858.5364] device (p2p-dev-wlP1p1s0): supplicant management interface state: associating -> associated
