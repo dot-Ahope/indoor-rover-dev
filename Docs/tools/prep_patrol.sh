@@ -9,7 +9,7 @@ VIZ=${1:-lite}; FWD=${2:-15.0}
 case "$VIZ" in off) V="";; lite|true) V="mppi_viz:=$VIZ";; *) echo "VIZ 는 lite|true|off"; exit 1;; esac
 case "${ODOM:-vslam}" in
   vslam) S="emitter_off:=true vslam:=on dds_shm:=true";;
-  rf2o)  S="rf2o:=true shadow:=false gate_v:=on gate_vref:=wheel";;
+  rf2o)  S="rf2o:=true shadow:=false gate_v:=on gate_vref:=wheel vslam:=off emitter_off:=false dds_shm:=false";;   # 11-04: launch 기본이 vslam on · 프로젝터 끔 · SHM 이 돼 옛 구성 값을 명시
   *) echo "ODOM 은 vslam|rf2o"; exit 1;;
 esac
 # 10-19 §16: SENSORS_ADD 로 센서 인자 추가(예: "emitter_flash:=true stereo_fps:=30" — 프로젝터 번갈이 · 분리 노드). 뒤에 오므로 같은 인자는 덮어씀.

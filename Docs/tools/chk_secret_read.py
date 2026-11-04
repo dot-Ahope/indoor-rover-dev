@@ -75,15 +75,31 @@ if tool in ('Grep',):
 
 cmd = ti.get('command', '') or ''
 if not cmd: sys.exit(0)
+# 11-04 보강: heredoc 본문(<<EOF … EOF)은 파일로 쓰일 글이지 지금 실행되는 읽기가 아니므로 뺀다(첫 판이 내 배포 명령을 오탐).
+def strip_heredocs(c):
+    out, lines, i = [], c.split('\n'), 0
+    while i < len(lines):
+        ln = lines[i]; out.append(ln)
+        m = re.search(r"<<-?\s*['\"]?(\w+)['\"]?", ln)
+        if m:
+            tag = m.group(1); i += 1
+            while i < len(lines) and lines[i].strip() != tag: i += 1
+        i += 1
+    return '\n'.join(out)
+cmd = strip_heredocs(cmd)
 READ = re.compile(r'(^|[\s|;&(`$])(cat|head|tail|less|more|grep|egrep|fgrep|rg|sed|awk|cut|tr|sort|uniq|nl|diff|strings|xxd|od|type|Get-Content|gc|Select-String|sls)(\s|$)', re.I)
 if not READ.search(cmd): sys.exit(0)
 if '<PW>' in cmd: sys.exit(0)
-try: words = shlex.split(cmd, posix=(tool != 'PowerShell'))   # PowerShell 경로의 역슬래시를 지우지 않게
-except ValueError: words = cmd.split()
-words = [x for w in words for x in re.split(r'[<>|;&]', w) if x]
-t = secret_targets(words)
-if not t: sys.exit(0)
-# grep 이 개수 · 이름만 낼 때는 통과
-if re.search(r'\bgrep\b[^|;&]*\s-[A-Za-z]*[clLq]', cmd) and not re.search(r'\b(cat|head|tail|sed|awk|less|more|Get-Content|type)\b', cmd):
-    sys.exit(0)
-block('가림 없이 %s 을(를) 읽는 명령' % ', '.join(sorted({Path(x).name for x in t})))
+# 11-04 보강: 파이프 · ; · && · || · 줄바꿈으로 나눈 '조각' 마다 본다 — 읽는 명령어와 비밀 파일이 같은 조각에 있을 때만.
+#   (예: `bash run_jn.sh job.sh | grep -v x` 는 run_jn.sh 를 실행만 하고 grep 은 그 출력을 거를 뿐 → 통과)
+hits = set()
+for seg in re.split(r'\|\||&&|[|;\n]', cmd):
+    if not READ.search(seg): continue
+    if re.search(r'\bgrep\b[^|;&]*\s-[A-Za-z]*[clLq]', seg) and not re.search(r'\b(cat|head|tail|sed|awk|less|more|Get-Content|type)\b', seg):
+        continue                                           # grep 이 개수 · 이름만
+    try: words = shlex.split(seg, posix=(tool != 'PowerShell'))   # PowerShell 경로의 역슬래시를 지우지 않게
+    except ValueError: words = seg.split()
+    words = [x for w in words for x in re.split(r'[<>]', w) if x]
+    hits |= {Path(x).name for x in secret_targets(words)}
+if hits: block('가림 없이 %s 을(를) 읽는 명령' % ', '.join(sorted(hits)))
+sys.exit(0)
