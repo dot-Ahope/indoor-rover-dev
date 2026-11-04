@@ -42,6 +42,7 @@
 | 09-18 §11.3 | §9.4 기준 그대로 판정 | ① −0.71° **불합격(0.01° 초과)** ② −4.6 / −3.2 cm **불합격** ③ dy1 +0.2~+1.3 합격 · dy2 −0.5~−2.3 **경계 불합격** ⑤ 합격 | 거리 비례 옆 드리프트는 제거됨(b ≈ 0, dy 유계, 상자 여유 +1~2 cm). 남은 −3~−5 cm/주행은 거리 · 회전과 무관한 성분. 과보정 증거 없음. **−2.68° 유지** | SUMMARY |
 | 09-18 §13.1 · §13.7 | dy3~dy6 추가(간헐 중단 확인용) | 게걸음 6/6 음수 −0.81 / −0.61 / −0.63 / −0.69 / −0.81 / −1.25°(평균 **−0.80°**, 회차 간 표준편차 0.23°), b 평균 −0.006 m/m | 코스 고유 성분(왼회전 −1.2~−2.8°)과 데크 과보정을 **구별 불가** — 직선 전진 · 후진 교정이 필요(해석 보류) | [`j435_dy3~6_verify.txt`](../debug_log/2026-09-18/outputs/) · [간헐 중단 카드](intermittent-abort-dy.md) |
 | 이후(10-02 · 10-14 · 10-19) | 다음 시기에서 채움 — 포인터만 | 10-02 rf2o 좌표 변환에 π − 0.04677 사용(§13.2 근처), 10-14 §4 '데크 장착 yaw 보정의 잔차' 를 장애물 두께 원인 후보로, 10-19 §9 '카메라 외부 보정 yaw(1.3 m 에서 1° ≈ 2.3 cm)' 를 상자 위치 차 후보로(미검증) | — | 각 날 SUMMARY |
+| 10-29 §9(10-30 작업 — 9 기 끝) | 사용자 "xacro 와 urdf 데크 위치 바뀐 것도 이후 수정 때문 아닌가. urdf 를 쓸 때 문제 없었으므로 xacro 를 수정하자." → 이력 확인 · 비교 도구 · xacro 재작성 | 고치기 전 관절 6 개 다름(라이다 x 0 vs 0.152 · z 0.2858 vs 0.185, 카메라 x 0.0843 vs 0.2341 · z 0.2435 vs 0.143, 트랙 y ±0.095 vs ±0.1225, IMU z 0.08 vs 0.09 · pitch 0 vs −0.0611, base_z 0.025 vs 0.02567), 링크 집합도 다름 → 고친 뒤 링크 8 · 관절 7 같음, 최대 차 3.3e-06 m | xacro 는 08-27 초안이 그대로였다(09-02 첫 커밋 `76c08343` 에 이미 deck_x 0, 09-18 `a42ec0e0` 은 deck_yaw 만) — '이후 수정 탓' 이 아니라 urdf 가 바뀌는 동안 따라가지 않은 것. 기본 실행은 여전히 urdf → 운용 영향 없음 | [`chk_xacro_vs_urdf.py`](../debug_log/2026-10-29/jobs/chk_xacro_vs_urdf.py) → [`_before.txt`](../debug_log/2026-10-29/outputs/chk_xacro_vs_urdf_before.txt) · [`_after.txt`](../debug_log/2026-10-29/outputs/chk_xacro_vs_urdf_after.txt), 커밋 `73cabe09` |
 
 ## 3. 가설과 판별
 | 가설 | 판별 | 결과 | 판정 |
@@ -124,6 +125,7 @@
 - **게걸음 잔여 −0.80°**(6/6 음수, 표준편차 0.23°): 코스 고유 성분인지 미세 과보정인지 미확인. 직선 전진 · 후진 + 스캔 정합 교정이 남은 과제(§11.3 · §13.7).
 - **남은 옆 보정 −3~−5 cm/주행**(거리 · 회전 무관 성분) 원인 미확인.
 - xacro(`deck_x` 0 · `cam_dx` 0.0822)와 rover.urdf 불일치 — 정리할지 사용자 결정(이 카드는 파일을 고치지 않음).
+  - → **10-29 §9 해소**(사용자 결정, 커밋 `73cabe09`): `ros2_ws/src/rover_description/urdf/rover.urdf.xacro` 를 urdf 와 같은 링크 · 관절(sensor_deck_link 포함) · 값으로 다시 씀, 인자 `deck_x/y/z` · `deck_yaw` · `lidar_yaw` 기본 = urdf 확정값(11-04 확인: 14~18 행 `deck_x 0.152 · deck_y 0 · deck_z 0.159 · deck_yaw −0.04677 · lidar_yaw π`). 남은 것: ① **기록 사본 `Docs/02_hardware/rover.urdf.xacro` 는 옛 08-27 판 그대로**(12 행 `deck_x default="0.000"`, CR 뺀 md5 가 저장소 xacro 와 다름 — 카드 작성 중 확인; `Docs/02_hardware/rover.urdf` 는 src 와 같음) ② 메시(sensor_deck.stl) 원점 · 축이 sensor_deck_link 정의와 맞는지(시각화만, 화면 확인 안 함) ③ Jetson 배포 · 실제 xacro 처리기로 펼친 확인 안 함(비교는 저장소 안 작은 전개기) ④ CLAUDE.md 하드웨어 요약 ⚠ '데크를 다시 조립하면 함께 고칠 곳' 목록에 xacro 인자 기본값이 없다(urdf · `stuck_monitor.py` · `rf2o_gate.py` · `nav2_params.yaml` `monotone_escape` 만).
 - 09-18 이전 bag 을 분석하는 도구 중 `LYAW = π` 하드코딩본과 이후 bag 을 섞어 쓰지 않도록 주의(도구에 표시 없음).
 - 이후(10-02 ~): 다음 시기에서 채움 — 10-02 rf2o 좌표 변환, 10-14 §4 · 10-19 §9 의 잔차 후보.
 
@@ -156,6 +158,7 @@
 | job434_base.sh · job434b_rspdedup.sh | base 만 기동 · RSP 중복 정리 | 같은 곳 · `j434_base.txt`(434b 출력 원문 없음) |
 | job416_boxclear.py · job435 러너 | 코스트맵 기준 상자 여유 · 검증 묶음 | `2026-09-17/jobs/job416_boxclear.py` · `2026-09-18/jobs/run_j435*.sh` |
 | run_j431 · 431b · 432 · 432c · 433 · 434 · 435(b~f) · 436(b · c) · 437 | PC 쪽 러너(파일 올리고 ssh 실행) | `2026-09-18/jobs/` |
+| `chk_xacro_vs_urdf.py`(9 기 끝) | xacro 를 펼쳐 urdf 와 관절별 비교 | `2026-10-29/jobs/` · `outputs/chk_xacro_vs_urdf_{before,after}.txt` |
 
 ## 9. 도구 해설
 공통: 분석 도구(job431 계열 · job426 · job416)는 **Jetson** 에서 `/tmp/bag_<이름>` 을 `rosbag2_py.SequentialReader`(sqlite3)로 읽는다 — 로버는 움직이지 않는다. PC 의 `run_j*.sh` 가 (Windows 쪽에서 WSL bash 로) 스크립트의 CR 을 지우고(`tr -d '\r'`) `sshpass -p <PW> scp` 로 `/tmp` 에 올린 뒤 `ssh` 로 실행, 화면 출력을 그대로 받아 `outputs/` 에 저장했다(`grep -av 'Opened database'` 로 rosbag 안내 줄 제거). 시각 기준은 인자 `GOAL_EPOCH`(bt_navigator 'Begin navigating' 의 epoch, nav2 로그에서) — 출력의 t 는 이 시각부터의 초. 러너들의 기본 호스트(192.168.0.101 · 172.30.1.8)와 스크래치패드 경로는 그때 것.
@@ -243,6 +246,26 @@
 ### run_j435.sh ~ run_j435f.sh — 주행 뒤 검증 묶음
 - PC 러너. job416 · 426 · 431 · 431b 를 올리고 한 bag 에 A(게걸음) · B(보정 분해) · C(로컬 vs 전역 상자) · D(코스트맵 여유)를 차례로. 출력 `j435_dy1~6_verify.txt`.
 - 결함: run_j435 ~ j435d 의 절 제목이 전부 '(dy1)' 으로 박혀 있다(복사 흔적) — dy2~dy4 파일의 '(dy1)' 은 무시하고 `==== dyN ====` 줄을 볼 것. dy1 · dy2 판은 job431 버그 수정 전에 돌았다(§5.5).
+
+### chk_xacro_vs_urdf.py (10-29 §9 — 10-30 작업, PC, 로버 안 움직임)
+- 부른 형태: `python Docs/debug_log/2026-10-29/jobs/chk_xacro_vs_urdf.py [xacro 경로] [urdf 경로]`(기본 = 저장소 `ros2_ws/src/rover_description/urdf/`). 고치기 전 · 뒤 두 번 → `outputs/chk_xacro_vs_urdf_{before,after}.txt`.
+- 왜: PC 에 xacro 패키지가 없는데, 사용자 결정(xacro 를 urdf 에 맞춤)을 '같아졌다' 로 확인할 기준이 필요했다.
+- 하는 일(코드 기준): ① xacro 의 `<xacro:arg>` 기본값 · `<xacro:property>` 를 모아 ② `$(arg x)` 와 `${식}`(math 함수 허용, `eval` 에 builtins 없음)을 반복 치환 ③ `<xacro:macro>` 는 한 단계 호출만 펼침 ④ 펼친 트리와 urdf 의 링크 이름 집합 · 관절 이름 집합 · 관절마다 parent · child · origin xyz · rpy 를 비교, 허용 1e-4.
+  ```python
+  ok = a[0] == b[0] and a[1] == b[1] and dx < 1e-4; bad += not ok
+  print('판정: %s' % ('같음' if bad == 0 and lx == lu and set(jx) == set(ju) else '다름 %d' % bad))
+  ```
+- 출력 발췌(고친 뒤):
+  ```
+  링크: xacro 8 · urdf 8 · 한쪽에만 없음
+  관절: xacro 7 · urdf 7 · 한쪽에만 없음
+    lidar_joint            OK   xacro xyz ['0.15200', '0.00000', '0.18500'] rpy ['0.00000', '0.00000', '3.09482'] | urdf … | 최대 차 2.65e-06
+    sensor_deck_joint      OK   xacro xyz ['0.15200', '0.00000', '0.15900'] rpy ['0.00000', '0.00000', '-0.04677'] | urdf … | 최대 차 0.00e+00
+  판정: 같음
+  ```
+  고치기 전: '링크: xacro 9 · urdf 8 · 한쪽에만 ['battery_link', 'computing_board_link', 'sensor_deck_link']' · '판정: 다름 6'.
+- 한계: 진짜 xacro 처리기가 아니다(조건문 · include · 중첩 매크로 · 이름공간 없음 — 이 파일 정도만). 비교는 관절 원점만(관성 · 충돌 · 메시 경로 · 시각 원점은 안 봄 — 메시 정렬 미확인과 같은 범위). 기록 사본 `Docs/02_hardware/rover.urdf.xacro` 는 비교 대상이 아니었다.
+- 지금 다시 쓸 수 있음: 데크를 다시 재서 urdf 를 고친 뒤 xacro 인자를 맞췄는지 확인할 때.
 
 ## 10. 용어
 - **장착 yaw 오차**: 센서가 URDF 에 적힌 방향보다 z 축으로 더 돈 각. 여기선 데크가 −2.68°(위에서 볼 때 시계 방향)로 돌아 있어, 공칭 TF 로 옮긴 점들이 실제보다 +2.68° 돌아가 보였다(옆벽이 +2.67° 로 기울어 보임).

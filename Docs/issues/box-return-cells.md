@@ -2,7 +2,7 @@
 
 | 상태 | 기간 | 처음 본 곳 | 바꾼 파일 · 설정 | 관련 문제 |
 |---|---|---|---|---|
-| **우회(10-22) — 원인 둘은 측정으로 확인, 둘 다 남음.** ① **기억 밀림**: 복귀 길 상자는 차체 옆에서는 시야 밖이라 지도의 상자 = 그 전에 본 것의 odom 기억이고, 그 사이 EKF 오차를 SLAM 이 고칠 때마다 지도에서 통째로 밀린다(f2x1 +2.7~+6.1 cm · f2y1 map→odom +41.7 cm · f2pr1 +4.2~+5.0 cm, 출발 기억은 +9.9 cm) ② **다시 못 봄**: 프로젝터 상시 끔 + 깊이 프리셋 3 에서 복귀 쪽 상자 화소의 83~100 % 가 깊이 0 → 새로 찍지도 비우지도 못함. 둘이 겹쳐 f2lp1 은 세 지도 모두 상자 0 칸인 채 **상자를 침**(10-22 §13). 대응 = 통합 거리 1.4 → 2.0(10-22 §14 ~ §15, [유령 칸 · 프리셋 카드](ghost-cells-depth-preset.md)) — f2pi1 1 회 접촉 0, 단 실제 여유 **1.1 cm**(지도 5.6 cm, §17) | 10-19 §20 ~ §22, 10-22 §11 ~ §11.4 · §13 · §13.1 · §17 (이 카드). 이후(10-23 ~): 경로 추종 · 재계획 쪽 | [10-19 §21](../debug_log/2026-10-19/SUMMARY.md)(사용자 "복귀 시 상자 근처에서 셀 번짐 문제가 있었는지 알수가 없다") · §22("복귀 시 상자 범위 내에 셀이 없는 것 같은데?") · [10-22 §11](../debug_log/2026-10-22/SUMMARY.md)("복귀 시 상자칸 밖에 노란색 칸이 찍힌 것") · §12.1("방금 상자를 치고 돌아가서") | 이 카드에서 바꾼 설정 없음. 통합 거리 2.0 은 `ros2_ws/src/rover_navigation/config/nvblox_local.yaml` 57 행(10-22 §15 — 근거 주석 54~56 행에 이 카드의 f2lp1 §13 · §14.2) | [카메라 상자 칸 과장의 근원](box-exaggeration-source.md)(같은 기전을 출발점 상자 · f2x1 로 분해한 카드) · [상자 옆 정지 — 기전](box-side-stall-cause.md)(10-13 §6.2 '기억 밀림 4~5 cm' 의 앞 줄기) · [상자 옆 정지 — 대책](box-side-stall-remedies.md) · [유령 칸 · 깊이 프리셋 · 통합 거리 2.0](ghost-cells-depth-preset.md)(10-21 ~ 22 결정 — 프리셋 3 의 대가가 이 카드의 '다시 못 봄') · [낮은 상자 기억 · 전역 nvblox](low-box-global-memory.md)(감쇠 약 78 s · 지우기 반경 3.0) · [회전 중 장애물 번짐](rotation-obstacle-smear.md) · [경로 추종 · 재계획 · B0](path-tracking-replan-b0.md)(10-23 — 1.1 cm 근접의 다음 줄기) |
+| **우회(10-22) — 원인 둘은 측정으로 확인, 둘 다 남음.** ① **기억 밀림**: 복귀 길 상자는 차체 옆에서는 시야 밖이라 지도의 상자 = 그 전에 본 것의 odom 기억이고, 그 사이 EKF 오차를 SLAM 이 고칠 때마다 지도에서 통째로 밀린다(f2x1 +2.7~+6.1 cm · f2y1 map→odom +41.7 cm · f2pr1 +4.2~+5.0 cm, 출발 기억은 +9.9 cm) ② **다시 못 봄**: 프로젝터 상시 끔 + 깊이 프리셋 3 에서 복귀 쪽 상자 화소의 83~100 % 가 깊이 0 → 새로 찍지도 비우지도 못함. 둘이 겹쳐 f2lp1 은 세 지도 모두 상자 0 칸인 채 **상자를 침**(10-22 §13). 대응 = 통합 거리 1.4 → 2.0(10-22 §14 ~ §15, [유령 칸 · 프리셋 카드](ghost-cells-depth-preset.md)) — f2pi1 1 회 접촉 0, 단 실제 여유 **1.1 cm**(지도 5.6 cm, §17). **9 기(10-27 §21) 사용자 결정 — 상자 잊기는 기능, 시야는 센서 한계(보류)**: f2tf1 은 복귀 경로가 상자를 카메라 시야 ±43° 밖으로만 지나 **접촉 · 밀림**(세 번째 꼴 '시야 밖'), 같은 구성 f2st1 · f2tt1 · f2tt2 는 14.0~16.3 cm(§7) | 10-19 §20 ~ §22, 10-22 §11 ~ §11.4 · §13 · §13.1 · §17 (이 카드). 이후(10-23 ~): 경로 추종 · 재계획 쪽 | [10-19 §21](../debug_log/2026-10-19/SUMMARY.md)(사용자 "복귀 시 상자 근처에서 셀 번짐 문제가 있었는지 알수가 없다") · §22("복귀 시 상자 범위 내에 셀이 없는 것 같은데?") · [10-22 §11](../debug_log/2026-10-22/SUMMARY.md)("복귀 시 상자칸 밖에 노란색 칸이 찍힌 것") · §12.1("방금 상자를 치고 돌아가서") | 이 카드에서 바꾼 설정 없음. 통합 거리 2.0 은 `ros2_ws/src/rover_navigation/config/nvblox_local.yaml` 57 행(10-22 §15 — 근거 주석 54~56 행에 이 카드의 f2lp1 §13 · §14.2) | [카메라 상자 칸 과장의 근원](box-exaggeration-source.md)(같은 기전을 출발점 상자 · f2x1 로 분해한 카드) · [상자 옆 정지 — 기전](box-side-stall-cause.md)(10-13 §6.2 '기억 밀림 4~5 cm' 의 앞 줄기) · [상자 옆 정지 — 대책](box-side-stall-remedies.md) · [유령 칸 · 깊이 프리셋 · 통합 거리 2.0](ghost-cells-depth-preset.md)(10-21 ~ 22 결정 — 프리셋 3 의 대가가 이 카드의 '다시 못 봄') · [낮은 상자 기억 · 전역 nvblox](low-box-global-memory.md)(감쇠 약 78 s · 지우기 반경 3.0) · [회전 중 장애물 번짐](rotation-obstacle-smear.md) · [경로 추종 · 재계획 · B0](path-tracking-replan-b0.md)(10-23 — 1.1 cm 근접의 다음 줄기) · [nvblox 층 TF 조회 실패 처리](nvblox-layer-tf-drop.md)(9 기 — 같은 f2tf1, 접촉과는 무관) · [PathBlockedAhead 99/100](pathblocked-only-new.md)(f2st1 '잊었다 다시 봄' 막힘) · [MPPI 굽은 곳 · PathAlign 28/5](mppi-corner-cut-pathalign.md) (9 기) |
 
 **한 줄**: 출발점의 라이다보다 낮은 시험 상자는 카메라만 본다. 복귀 길에서 로버는 상자 북쪽을 서쪽으로 지나는데, 그때 상자는 차체 옆이라 **시야 밖** — 지도의 상자는 문 쪽(남동)에서 회전하며 본 것의 odom 기억이다. 10-19 는 그 기억이 EKF 미끄러짐만큼 지도에서 밀려 '상자 안은 비고 둘레에 흩어진 칸' 이 되는 것을 쟀고(f2y1 상자 안 8 → 1 칸), 10-22 는 프리셋 3 주행에서 상자 밖 칸이 '밀린 기억 + 관측 수 cm + 칸 경계' 이며 그 자리를 다시 봐도 깊이가 0 이라 안 지워진다는 것, 그리고 같은 조건에서 상자를 **아예 못 다시 봐서**(1.4 m 통합 거리 안에 들 때는 회전 중 시야 밖) 로버가 상자를 친 것(f2lp1)을 밝혔다. 통합 거리 2.0 으로 접촉 37 s 전부터 상자를 갖게 됐으나(재생), 다음 주행 f2pi1 의 실제 여유는 1.1 cm — 이번엔 기억이 로버 반대쪽으로 약 3 cm 틀려 '여유가 더 있다' 고 본 것.
 
@@ -65,7 +65,7 @@
 | 프로젝터 | 표준 prep `ODOM=vslam` → `emitter_off:=true`(상시 끔) | 10-19 f2x1 켬 · f2y1 번갈이 → 10-21 §20 상시 끔 결정 | `Docs/tools/prep_patrol.sh` 11 행 · `camera.launch.py` 36~38 행 |
 | 데시메이션 | 기본 4(160×120) | 같음 | `camera.launch.py` 120 행 |
 | 오도메트리 | 주 EKF 병진 속도 = cuVSLAM(`vslam:=on`, 10-23 §16) | 이 시기 wheel + IMU(그림자 cuVSLAM 시험) | `prep_patrol.sh` 10~11 행 |
-| 전역 nvblox 층 · inflation | 이진 · `max_obstacle_distance 0.40`, 전역 inflation 0.70 / 2.0 | 같음 | `config/nav2_params.yaml` 569~571 · 720~721 행. 전역 nvblox 층 칸이 map→odom 에 따라 어떻게 바뀌는지는 미확인(§17 정정) — 10-27 호스트 층 TF 실패 시 슬라이스 버림 패치(CLAUDE.md §6 ②)와 관계 미확인 |
+| 전역 nvblox 층 · inflation | 이진 · `max_obstacle_distance 0.40`, 전역 inflation 0.70 / 2.0 | 같음 | `config/nav2_params.yaml` 569~571 · 720~721 행. 전역 nvblox 층 칸이 map→odom 에 따라 어떻게 바뀌는지는 미확인(§17 정정) — 10-27 호스트 층 TF 실패 시 슬라이스 버림 패치(CLAUDE.md §6 ②)와 관계 미확인 → **11-04(9 기) 확인**: 그 패치는 전역 층의 조회 실패 순간만 다룸 — 로컬 층은 슬라이스와 같은 odom 이라 조회를 안 해 무관, 이 카드 f2lp1 접촉(로컬도 0 칸)은 그 결함으로 설명 안 됨(코드 조건 추론, [TF 카드](nvblox-layer-tf-drop.md) §3.1 · §5.3) |
 | MPPI 경로 크리틱 | PathAlign 28 · PathFollow 5(10-26) | 14 · 10 | `nav2_params.yaml` 281 · 285 행 |
 
 ## 5. 내 실수 · 기록 어긋남
@@ -122,6 +122,30 @@
 ## 7. 이후 (10-23 ~)
 - 10-23 §1.1(다른 묶음): 사용자 제안(10-22 §22) 계산 — 전역 감쇠 2 → 3 은 경로를 0~5 cm 만 밀어냄(선언 ≥ 5 cm 미달), 기록된 전역 경로는 이미 상자에서 10~14 cm — [`anal_ginfl_path_f2pi1.txt`](../debug_log/2026-10-23/outputs/anal_ginfl_path_f2pi1.txt). §2 ~ §4 '붙은 것은 로버(추종)' → [경로 추종 · B0](path-tracking-replan-b0.md).
 - 10-23 §10 ~ §11 · §16: cuVSLAM 병진 속도 융합 기본 채택 — 위치 추정은 좋아졌으나 상자 옆 실제 여유 3.3 · 0.3 cm(다른 묶음).
+- **이후 9 기(10-26 ~ 10-28) — 채움(11-04)**. 구성: Smac Hybrid(`planner:=smac` · 재계획 0.01 Hz, 기본 아님 — [Smac 카드](smac-hybrid-adoption.md)) · MPPI PathAlign 28 · PathFollow 5 · 프리셋 3 · 통합 2.0 · vslam. 복귀 상자 실제 최소 여유(`2026-10-22/jobs/anal_contact.py`, 기록 상자 사각형):
+
+  | 주행 | 복귀 최소 | 복귀 때 상자 칸(로컬) | 상자를 다시 봤나 | 데이터 |
+  |---|---|---|---|---|
+  | f2sh1 · f2sh2(10-26, 다른 묶음) | 18.4 · 10.8 cm | — | — | [`fig_box_compare.txt`](../debug_log/2026-10-26/outputs/compare/fig_box_compare.txt) 2 행 |
+  | f2st1(10-27 §11 · §14) | 16.3 cm | 1 | 11:24:32 · 2.1 m 에서 서북 모서리 2 칸(갈 때보다 6~10 cm 서쪽) → 막힘 판정 · Wait 4.7 s · 재계획 | [`anal_contact_f2st1_d30.txt`](../debug_log/2026-10-27/outputs/drives/f2st1/anal_contact_f2st1_d30.txt) · [`anal_block_cell_f2st1.txt`](../debug_log/2026-10-27/outputs/block_cell/anal_block_cell_f2st1.txt) |
+  | **f2tf1(10-27 §19 ~ §21.1)** | **−1.0 cm · 사용자 확인 접촉 · 상자 밀림** | **0** | **못 봄** — 상자 방위 +41~+49° → +55° 이상(시야 반각 43°), 시야 안 다른 것은 매 초 새로 알게 된 칸 7~93 | [`anal_contact_f2tf1_d30.txt`](../debug_log/2026-10-27/outputs/drives/f2tf1/anal_contact_f2tf1_d30.txt) · [`chk_cam_fov_f2tf1_return.txt`](../debug_log/2026-10-27/outputs/drives/f2tf1/box/chk_cam_fov_f2tf1_return.txt) |
+  | f2tt1(10-27 §25 · §26) | 14.4 cm · 사용자 '접촉 없음' | 2 | 봄 — 16:01:39 막힘 (1.24, 0.07) → MonotoneEscape | [`anal_contact_f2tt1_d30.txt`](../debug_log/2026-10-27/outputs/drives/f2tt1/anal_contact_f2tt1_d30.txt) |
+  | f2tt2(10-28 §4) | 14.0 cm | 11 | 봄 — 10:28:34 막힘 (1.50, 0.06) → MonotoneEscape | [`anal_contact_f2tt2_d30.txt`](../debug_log/2026-10-28/outputs/drives/f2tt2/anal_contact_f2tt2_d30.txt) |
+
+  원문 줄(f2tf1 복귀, [`anal_contact_f2tf1_d30.txt`](../debug_log/2026-10-27/outputs/drives/f2tf1/anal_contact_f2tf1_d30.txt)):
+  ```
+   15:06:37.49~15:06:55.36 (t 396.6~414.5 s) 최소 -0.010 m @ 15:06:44.70 t 403.8 · 로버 (1.42, 0.13, -184°) · 지령 v 0.080 ω 0.08 | 상자 영역 칸: 로컬 LETHAL 0 · 전역 LETHAL 0 · 조각 0
+  ```
+  시야 판정 줄(`2026-10-27/jobs/chk_cam_fov.py` 15 행 `HA = math.radians(… 43.0); RR = … 2.0` — camera_link 기준 부채꼴, 깊이 원본은 bag 에 없어 nvblox 슬라이스로만 판단), 출력([`chk_cam_fov_f2tf1_return.txt`](../debug_log/2026-10-27/outputs/drives/f2tf1/box/chk_cam_fov_f2tf1_return.txt)):
+  ```
+  15:06:44 | (1.47, 0.13) +173° | 아는 727 · 장애 100 · 새로 앎 33 · 바뀜 50 · 새 장애 6 | 라이다 126
+  15:06:45 | (1.39, 0.13) +177° | 아는 717 · 장애 96 · 새로 앎 38 · 바뀜 40 · 새 장애 12 | 라이다 98
+  ```
+  - 읽기(9 기): 네 주행 모두 상자는 멀어지면 전역 · nvblox 에서 사라지고(f2st1 은 2.4 m 에서 4 s 만에 — 기전 미확인, 10-27 §14.2 ①), 복귀 경로는 **상자를 잊은 지도**로 계획된다. 접촉 여부는 복귀 길에서 카메라가 상자를 **다시 보느냐**로 갈렸다(본 3 회 14.0~16.3 cm · 못 본 1 회 접촉, 표본 4 — 추정). 8 기의 '다시 못 봄' 은 시야 안인데 깊이 0(프리셋 3 · 프로젝터 끔)이었고, f2tf1 은 **시야 밖**(경로 각도)이라 다른 꼴이다 — 깊이 0 이었는지는 깊이 원본이 bag 에 없어 미확인.
+  - 기억 밀림 쪽: 9 기엔 복귀 상자 기억 밀림을 `anal_memory_shift.py` · `anal_mo_window.py` 로 다시 잰 기록 없음(복귀 때는 '기억' 이 아니라 '잊음' 이 먼저라 잴 대상이 사라짐).
+  - 사용자 결정(10-27 §21): "1 번(상자 잊기)은 기능, 2 번(시야)은 센서 한계" — 해결 대상에서 뺌. 남긴 것은 '카메라가 상자만 못 봤나 아무것도 못 봤나' 확인(§21.1: 상자만). 이 카드는 그래서 **보류 쪽**으로 넘어간다(상태 칸은 8 기 판정 유지, 9 기 결정을 덧붙임).
+  - 같은 f2tf1 의 전역 코스트맵 '틀어진 장' 결함 수정은 이 접촉과 **무관**(슬라이스 원본에 상자 0) — [TF 카드](nvblox-layer-tf-drop.md).
+  - f2tf1 접촉 뒤 상자는 테이프 자리로 되돌렸고(10-27 §20 '다음 주행 전 되돌려야' · §26 사용자 'f2tt1 은 테이프 자리'), f2tt1 갈 때 18.2 cm · 칸 10(f2tf1 17.1 · f2st1 17.7)로 같은 수준.
 
 ## 8. 실험 · 도구 색인
 | 이름 | 무엇 | 위치 |
@@ -134,6 +158,8 @@
 | f2pi1 | 프리셋 3 + 통합 2.0 검증(다른 묶음) — 복귀 상자 영상 | 10-22 §16 · §17, `anal_contact_f2pi1.txt` · `anal_cell_timeline_f2pi1.txt` · `fig_return_video.txt`, bag `bags/bag_f2pi1.tgz` |
 | 도구(10-19) | `fig_ir_drive_video.py` · `fig_box_zoom_cmp.py` · `anal_box_cells_in.py` · `anal_box_points.py` · `anal_slice_box.py`(구간 출력) | `2026-10-19/jobs/`, §9 |
 | 도구(10-22) | `anal_box_outside.py` · `anal_memory_shift.py` · `anal_cell_timeline.py` · `anal_carve.py` · `anal_mo_window.py` · `anal_contact.py` · `anal_box_maps_series.py` · `fig_return_video.py` · `fig_box_cells.py` · `stop_now.sh` · `chk_stop.sh` · `get_bag_f2lp1.sh` | `2026-10-22/jobs/`, §9 |
+| f2st1 · f2tf1 · f2tt1 · f2tt2(9 기) | Smac 구성 no5 — 복귀 상자 16.3 · −1.0(접촉) · 14.4 · 14.0 cm | `2026-10-27/outputs/drives/f2{st1,tf1,tt1}/anal_contact_*_d30.txt` · `2026-10-28/outputs/drives/f2tt2/` · f2tf1 시야 `2026-10-27/outputs/drives/f2tf1/box/` · 영상 `2026-10-27/videos/f2tf1_return_light.mp4`(git 제외) · bag `2026-10-27/bags/bag_f2{st1,tf1,tt1}.tgz` · `2026-10-28/bags/bag_f2tt2.tgz` |
+| 도구(10-27, 9 기) | `chk_cam_fov.py` · `chk_slice_health.py` · `anal_block_cell.py` · `Docs/tools/fig_rviz_video.py` FIG_FOV · FIG_BOX | 해설은 [TF 카드 §10](nvblox-layer-tf-drop.md) |
 
 ## 9. 도구 해설
 공통: 모두 PC `rosbags`(AnyReader, Humble 타입, `nvblox_msgs/DistanceMapSlice` 손 등록). 조각 · 로컬 코스트맵 = odom → 그 시각 map→odom 으로 지도에. 상자(기록) x 1.151~1.261 · y −0.20~−0.02, 중심 (1.206, −0.110). t = 주행 bag 첫 tf(또는 bag 시작) 기준 초. '보임'(시야 판정) = 상자 중심이 ±43° · 1.4 m 안 — **유효 깊이를 뜻하지 않음**(실수 ③). 앞 줄기 도구(`anal_slice_box.py` · `anal_box_points.py` · `run_nvblox_replay.sh`)는 [과장 근원 카드 §9](box-exaggeration-source.md).
