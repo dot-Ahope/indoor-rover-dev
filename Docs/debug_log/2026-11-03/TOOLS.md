@@ -10,4 +10,5 @@
 | §1 | 7 기 카드 머리 표 '관련 문제' 링크 덧붙임 | `jobs/up_issue_links_p7.py`(이미 있으면 건너뜀) | 링크 18 장 | — | ✔ |
 | §9 | 8 기 카드 머리 표 '관련 문제' 링크 덧붙임 | `jobs/up_issue_links_p8.py`(값 줄에 이미 있으면 건너뜀) | 34 장 추가 · 4 장 건너뜀 | — | ✔ |
 | §9 | ISSUES.md 8 기 표 넣기 | `jobs/up_issues_table_p8.py` → `python Docs/tools/anal_record_index.py` · `chk_record_rules.py` | 색인 SECTIONS 1460 · RUNS 123 · JOBS 1895 · RULES_OK | — | ✔ |
-| §11 | 보드 장치 이름이 ttyUSB0 → ttyCH341USB0 로 바뀐 원인 — 드라이버 출처 | `jobs/chk_serial_driver_1103.sh`(Jetson 읽기만, run_jn.sh) | 실행 못 함 — Jetson 핑 100 % 손실 · scp lost connection | — | 다음 접속 때 |
+| §11 | 보드 장치 이름이 ttyUSB0 → ttyCH341USB0 로 바뀐 원인 — 드라이버 출처 | `jobs/chk_serial_driver_1103.sh`(Jetson 읽기만, run_jn.sh) | 실행 못 함 — Jetson 핑 100 % 손실 · scp lost connection | — | ✔ 11-04 실행 → §11.1 |
+| §11.1 | 커널 패키지가 ch341.ko 를 갖나 · 설치 시각 | `jobs/chk_serial_driver_1104b.sh`(읽기만) → `outputs/chk_serial_driver_1104b.txt` | 패키지 모듈 5 개에 ch341 없음 · ch341.ko 2026-02-27 · 커널 설치 2026-02-20 | 벤더 드라이버 손 설치 | ✔ |

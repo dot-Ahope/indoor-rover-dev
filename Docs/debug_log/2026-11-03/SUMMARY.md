@@ -98,4 +98,21 @@
 - Jetson 확인: `jobs/chk_serial_driver_1103.sh`(읽기만 — uname · ls 별칭 · lsmod · modinfo ch341 · 모듈 파일 위치 · dpkg 소유 · sysfs 드라이버 · ~/ch341_build · dmesg) — **실행 못 함**: 11-03 15:42 192.168.0.110 · 172.30.1.8 모두 핑 100 % 손실, scp 'lost connection'(Jetson 꺼짐 또는 망 끊김 추정). 다음 접속 때 이 스크립트 결과를 `outputs/chk_serial_driver_1103.txt` 로 남길 것.
 - 기록 어긋남(정정 표시는 다음에): 09-18 · 09-21 `j434_base*.txt` '보드 장치: /dev/rover /dev/ttyUSB0' 는 `ls` 존재 출력일 뿐(`job434_base.sh` 11 행) · 10-20 §9.7 '`/dev/ttyUSB0` 다시 생김 = 보드 USB 끊김' 은 라이다 장치 · 09-09 `job106_baud.sh` 21 행 `udevadm info -n /dev/ttyUSB0` 는 보드 USB 속도를 보려다 라이다를 봤을 수 있음(미확인) · 세션 메모리 jetson-access 의 '제어보드 CH340 은 /dev/ttyUSB0 로 보여야 base 가 뜬다'(09-16) — 틀림, 메모리 고침.
 - 영향: 동작 영향 없음(별칭 사용). micro-ROS 2 Mbps 회귀 후보 'ch341 드라이버' 와는 시점이 안 맞음(08-26 벤더 드라이버 · 08-27 2 Mbps 정상) — 약한 후보.
-- 정리 페이지: `jobs/report_1103_body.html` + `jobs/fig_report_1103.py` → `figures/day_summary_1103.html`, 게시 https://claude.ai/artifact/9nLJdFNuUQ7ikZJKaY3NSz (1 판).
+- 정리 페이지: `jobs/report_1103_body.html` + `jobs/fig_report_1103.py` → `figures/day_summary_1103.html`, 게시 https://claude.ai/artifact/9nLJdFNuUQ7ikZJKaY3NSz (1 판 · 11-04 §11.1 결과 넣어 2 판).
+
+### §11.1 Jetson 확인 결과 (11-04 09:10 무렵 실행 — 사용자: "jetson 실행했다. 확인 스크립트 실행해라." · 읽기만, 로버 안 움직임)
+원문 `outputs/chk_serial_driver_1103.txt`(스크립트 `jobs/chk_serial_driver_1103.sh`) · 보충 `outputs/chk_serial_driver_1104b.txt`(`jobs/chk_serial_driver_1104b.sh`). 첫 시도는 Jetson 부팅 중이라 빈 출력(덮어씀).
+```
+5.15.185-tegra / R36 REVISION 5.0
+/dev/rover -> ttyCH341USB0   /dev/rplidar -> ttyUSB0
+modinfo ch341: filename …/kernel/drivers/usb/serial/ch341.ko · version V1.9 On 2025.12 · author WCH · vermagic 5.15.185-tegra
+dpkg -S …/usb/serial/ch341.ko → no path found          (어떤 패키지에도 속하지 않음)
+nvidia-l4t-kernel 의 usb/serial 모듈: cp210x ftdi_sio option usb_wwan usbserial   (ch341 없음)
+usb/serial 폴더: ch341.ko 2026-02-27 11:23:25 · 나머지 5 개 2026-01-16 12:42:52
+dpkg.log: 2026-02-20 07:09~07:10 install nvidia-l4t-kernel-headers · oot-headers · oot-modules 5.15.185-tegra-36.5.0
+sysfs: 1-2.1 1a86:7523 -> usb_ch341 · 1-2.4.4 10c4:ea60 -> cp210x (ttyUSB0)
+~/ch341_build 없음 · 홈에 ch34* 흔적 없음 · 시계 동기 yes
+```
+- 확인(측정): 지금 보드에 붙은 것은 **WCH 벤더 드라이버 V1.9**(드라이버 이름 usb_ch341)다. 이 커널(L4T R36.5.0 · 5.15.185)의 커널 패키지에는 **ch341.ko 가 아예 없고**, 벤더 모듈 파일이 커널 기본 자리에 손으로 들어가 있다(패키지 소유 없음, 파일 시각 2026-02-27 11:23 — 커널 설치 2026-02-20 의 1 주 뒤). 그래서 `ttyUSB*` 가 아니라 `ttyCH341USB*` 로 잡힌다.
+- §11 추정 정정: '08-21 ~ 08-26 사이 커널 갱신 뒤 벤더 드라이버가 기본 모듈을 대신했다' 는 틀림 → 기본 모듈은 이 커널에 처음부터 없었고, 벤더 드라이버는 02-27 에 이미 설치돼 있었다. 08-21 의 `ttyUSB0`(5.15.148 · R36.4.4)는 커널 설치 시점(02-20 R36.5)과 맞지 않으므로 **다른 시스템(다른 Jetson 또는 다른 저장 장치)** 의 기록으로 본다(추정 — 그 기기 정체는 미확인; 이전 프로젝트 H104_STATE.md 의 `~/ch341_build` 도 지금 Jetson 엔 없음).
+- 남은 것: 02-27 설치를 누가 했는지는 기록 없음(사용자 기억으로 '드라이버를 설치' 한 것이 이것일 수 있음). 커널을 갱신하면 이 손 설치 모듈은 새 커널 폴더에 없으므로 보드가 안 잡힌다 → 커널 갱신 때 벤더 드라이버 재빌드 필요(JETSON_SETUP_BRIEF 에 적을 후보).

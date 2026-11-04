@@ -79,7 +79,7 @@ ul{margin:0;padding-left:20px;max-width:72ch} li{margin:2px 0}
     <div class="v ok"><b>코드 결함 3 개 고침</b><span>러너 /tf QoS 조건 분리 · prep 의 PreferForward 편집이 설치본 링크를 안 끊게 · pad_relief 기본 off. 오프라인으로 확인, Jetson 실주행은 아직(§3)</span></div>
     <div class="v ok"><b>CLAUDE.md 낡은 줄 정정</b><span>8 곳 + 붙여 주신 평가 4 건 대조(Smac 은 기본 아님 · F2.5 노드는 launch 밖 · rover_msgs 없음)(§4 · §7)</span></div>
     <div class="v no"><b>내 실수: 비밀번호를 대화에 출력</b><span>러너 파일을 가림 없이 grep 했다. 저장소 · 공개물에는 없음. 비밀번호는 바꾸지 않기로 결정(사용자)(§5 · §9)</span></div>
-    <div class="v wait"><b>보드 드라이버 출처 확인 못 함</b><span>확인 스크립트는 만들었지만, 15:42 Jetson 이 두 주소 모두 핑 100 % 손실이라 못 돌렸다(§11)</span></div>
+    <div class="v ok"><b>보드 드라이버 출처 확인(11-04)</b><span>L4T R36.5 커널엔 기본 CH340 드라이버가 없고 WCH V1.9 를 손으로 설치 → ttyCH341USB0. 11-03 의 '커널 갱신 뒤 대신함' 추정은 정정(§11 · §11.1)</span></div>
   </div>
 </section>
 
@@ -164,6 +164,13 @@ lrwxrwxrwx 1 root root  7 Aug 27 17:48 /dev/rplidar -&gt; ttyUSB0  (08-27, outpu
 modinfo ch341 | grep -iE '^(filename|version|author|description|vermagic)'
 find /lib/modules/$(uname -r) -name 'ch34*.ko*' ; dpkg -S …/usb/serial/ch341.ko
 grep -rIl ttyCH341USB ~/ch341_build</pre><span class="note">원문 <span class="mono">Docs/debug_log/2026-11-03/jobs/chk_serial_driver_1103.sh</span>(읽기만 · sudo 없음) — 15:42 Jetson 192.168.0.110 · 172.30.1.8 모두 핑 100 % 손실, 파일 전송 'lost connection' 으로 <b>미실행</b></span></span>
+    <span class="k">Jetson 결과(11-04)</span><span><pre class="code">5.15.185-tegra / R36 REVISION 5.0
+/dev/rover -&gt; ttyCH341USB0   /dev/rplidar -&gt; ttyUSB0
+modinfo ch341: …/kernel/drivers/usb/serial/ch341.ko · version V1.9 On 2025.12 · author WCH
+dpkg -S …/usb/serial/ch341.ko → no path found                 (어떤 패키지에도 속하지 않음)
+nvidia-l4t-kernel 의 usb/serial 모듈: cp210x ftdi_sio option usb_wwan usbserial   (ch341 없음)
+ch341.ko 2026-02-27 11:23 · 커널 패키지 설치(dpkg.log) 2026-02-20 07:10</pre><span class="note">원문 <span class="mono">Docs/debug_log/2026-11-03/outputs/chk_serial_driver_1103.txt</span> · <span class="mono">chk_serial_driver_1104b.txt</span> · 스크립트 <span class="mono">jobs/chk_serial_driver_1103.sh</span> · <span class="mono">jobs/chk_serial_driver_1104b.sh</span></span></span>
+    <span class="k">결론(11-04 정정)</span><span>이 커널(L4T R36.5)에는 기본 CH340 드라이버가 <b>처음부터 없고</b>, WCH 벤더 드라이버가 커널 설치 1 주 뒤(02-27) 기본 자리에 손으로 들어가 있다. 그래서 <span class="mono">ttyCH341USB0</span> 이다. 위 '원인(추정)' 의 '커널 갱신 뒤 대신함' 은 틀렸다. 08-21 의 <span class="mono">ttyUSB0</span>(5.15.148)은 02-20 커널 설치와 맞지 않아 다른 시스템의 기록으로 본다(추정). 커널을 갱신하면 이 모듈이 새 커널 폴더에 없어 보드가 안 잡히므로, 벤더 드라이버를 다시 빌드해야 한다</span>
     <span class="k">함께 찾은 오독</span><span>09-18 · 09-21 <span class="mono">j434_base*.txt</span> 의 '보드 장치: /dev/rover /dev/ttyUSB0' 는 두 파일이 있다는 <span class="mono">ls</span> 출력일 뿐이다. 10-20 §9.7 '<span class="mono">ttyUSB0</span> 다시 생김 = 보드 USB 끊김' 에서 다시 생긴 것은 라이다 장치다. 내 세션 메모리의 '보드는 ttyUSB0 로 보여야 한다'(09-16)도 틀려서 고쳤다</span>
     <span class="k">영향</span><span>동작에는 영향 없다(코드는 별칭만 씀: <span class="mono">base.launch.py</span> 22 행 realpath, <span class="mono">lidar.launch.py</span> 11 행). micro-ROS 2 Mbps 회귀의 'ch341 드라이버' 후보와는 시점이 맞지 않는다(08-26 이미 벤더 드라이버, 08-27 2 Mbps 정상)</span>
   </div>
@@ -181,7 +188,7 @@ grep -rIl ttyCH341USB ~/ch341_build</pre><span class="note">원문 <span class="
   </ul>
   <h2>다음 접속 때</h2>
   <ul>
-    <li><span class="mono">chk_serial_driver_1103.sh</span> 결과를 <span class="mono">outputs/chk_serial_driver_1103.txt</span> 로 저장</li>
+    <li>커널 갱신 때 벤더 CH340 드라이버 재빌드 절차를 <span class="mono">JETSON_SETUP_BRIEF.md</span> 에 적을지</li>
     <li>새 <span class="mono">prep_fast.sh</span> 를 Jetson 에 올리기 · <span class="mono">up_tools.sh</span> 전송 경로 고치기(읽는 스크래치패드 <span class="mono">tools/</span> 폴더가 없음)</li>
   </ul>
 </section>
