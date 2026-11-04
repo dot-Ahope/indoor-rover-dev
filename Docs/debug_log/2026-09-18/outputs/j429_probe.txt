@@ -10,7 +10,7 @@
 == sudo 확인
   sudo OK
 == wpa_cli 상태(root)
-  bssid=<MAC>
+  bssid=b0:38:6c:XX:XX:XX
   freq=5180
   ssid=<WIFI-B>
   id=0
@@ -23,8 +23,8 @@
   mgmt_group_cipher=BIP
   wpa_state=COMPLETED
   ip_address=<LAN-B>.101
-  p2p_device_address=<MAC>
-  address=<MAC>
+  p2p_device_address=58:02:05:XX:XX:XX
+  address=58:02:05:XX:XX:XX
   uuid=2b5e4d19-7d5d-5a55-821c-cb7f06218a42
   ieee80211ac=1
 == 모니터 시험 20 s (level 2 = debug), 5 s 뒤 wpa_cli scan 1 회
@@ -43,7 +43,7 @@
   <수준> 분포: 
 == 단일 채널 스캔(5180) 소요 시간·AP 폭
   136 ms, 결과 BSS 20 개
-    BSS <MAC>(on wlP1p1s0) -- associated
+    BSS b0:38:6c:XX:XX:XX(on wlP1p1s0) -- associated
     	signal: -52.00 dBm
     	last seen: 0 ms ago
     	Country: KR	Environment: bogus
