@@ -16,7 +16,7 @@
 
 ## 2. 버전 · git 전략 (사용자: "NavFn과 분리")
 
-1. **B0 = NavFn 기준선 고정 — ✔ 2026-10-23 확정('결함 기준선', 사용자), 태그 `navfn-baseline-20261023`. 수치: b910 상자 옆 실제 여유 15.4 · 5.5 · 3.1 cm(f2rp1 · f2rp2 · f2rp5), no5 f2rp3 · f2rp4 8/8 — `Docs/debug_log/2026-10-23/SUMMARY.md` §21.** (당초 문구:) 구성 = 깊이 프리셋 3 · nvblox 통합 2.0 · `vslam:=on` · 재계획 0.01 Hz + PathBlockedAhead · PathAlign 14. 기준 주행 = b910 2 회(f2rp1 · f2rp2, 10-23) + no5 1 회(f2rp3, §20). 통과 뒤 원본 브랜치 `feature/nvblox-migration` 커밋에 태그 `navfn-baseline-<날짜>`(push 는 사용자 결정).
+1. **B0 = NavFn 기준선 고정 — ✔ 2026-10-23 확정('결함 기준선', 사용자), 태그 `navfn-baseline-20261023`. 수치: b910 상자 옆 실제 여유 15.4 · 5.5 · 3.1 cm(f2rp1 · f2rp2 · f2rp5), no5 f2rp3 · f2rp4 8/8 — `Docs/debug_log/2026-10-23/SUMMARY.md` §21.** (당초 문구:) 구성 = 깊이 프리셋 3 · nvblox 통합 2.0 · `vslam:=on` · 재계획 0.01 Hz + PathBlockedAhead · PathAlign 14. 기준 주행 = b910 2 회(f2rp1 · f2rp2, 10-23) + no5 1 회(f2rp3, §20). 통과 뒤 원본 브랜치 `feature/nvblox-migration` 커밋에 태그 `navfn-baseline-<날짜>`(push 는 사용자 결정). → 2026-11-04 §3 정정: f2rp1 15.4 는 1 s 표본, 0.1 s 최소 15.2
 2. **작업 브랜치 `feature/smac-hybrid`** 를 그 태그에서 분기. Smac 관련 변경은 모두 여기서.
 3. **같은 코드에서 고를 수 있게**: launch 인자 `planner:=navfn|smac`(기본 navfn — `camera_layer:=nvblox|stvl` 과 같은 방식). BT · 계획기 파라미터 · 러너 조회기 · MPPI 경로 크리틱 값 묶음을 인자로 바꿔 끼움. NavFn 설정은 지우지 않고 대조군으로 남김.
 4. Phase P 종료(§7) 뒤 원본 브랜치로 합칠지 · 기본값을 smac 로 바꿀지는 사용자 결정. `TEST_COURSE_AND_GATES.md` 는 Phase P 판을 새로 씀(CLAUDE.md 규칙).
@@ -65,7 +65,7 @@
 - §5 판정 전부 통과(2 회 이상 재현), B0 대비 상자 옆 여유 개선이 수치로 남음, `planner:=navfn` 로 되돌렸을 때 B0 와 같은 결과(대조군 유지 확인).
 - 결과 요약 `Docs/06_planner/PHASE_P_RESULTS.md`, `TEST_COURSE_AND_GATES.md` Phase P 판, CLAUDE.md §6 갱신.
 
-## 8. 2026-10-23 오프라인 비교 첫 판 결과 · 상태: **Hybrid-A* 기준 미달 → 보류, 다음 후보 Smac Lattice(diff)**
+## 8. 2026-10-23 오프라인 비교 첫 판 결과 · 상태: **Hybrid-A* 기준 미달 → 보류, 다음 후보 Smac Lattice(diff)** → 2026-11-04 §3 정정: 10-26 §6.1 에서 이 비교 무효(Smac 변형이 동작 표를 공유) — 10-26 이후 판정이 대신함
 - 근거 `Docs/debug_log/2026-10-23/SUMMARY.md` §22(도구 `Docs/tools/plan_offline/`, 재구성 지도 일치 1.0000).
 - Hybrid(1.1.20): 상자 옆 차체 여유 NavFn 대비 기본형 −7.1~+0.5 cm, 방향 144 칸형 −1.0~+3.2 cm(기준 +5 미달). cost_penalty 1.2 → 3.0 효과 거의 없음(해석 확장이 경로를 정하는 것으로 추정). 해석 확장 길이 제한(0.5 · 1.0 m)은 즉시 실패 · 'vector::reserve' 예외. 서쪽 통로: 북행 목표 자세가 전역 지도에서 차체 충돌 → 거부, 남행은 경계 통로라 실패(144 칸 + 패딩 0 에선 고리 경로).
 - 상자 옆 틈 0.70~0.90 m(가운데면 양옆 18~28 cm)인데 두 계획기 모두 9~16 cm — 꺾임 안쪽으로 짧게 도는 성질은 계획기 종류와 무관.
