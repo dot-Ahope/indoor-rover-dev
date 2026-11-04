@@ -1,0 +1,5 @@
+f3ec96a4 rover_navigation/scripts/place_server.py
+76e8f8c7 rover_navigation/scripts/place_cmd.py
+b25d8577 rover_navigation/scripts/place_web.py
+c22891d7 rover_navigation/scripts/path_end_yaw.py
+55cc18ce rover_navigation/config/places.yaml
