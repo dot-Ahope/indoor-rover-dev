@@ -114,9 +114,9 @@ def generate_launch_description():
         DeclareLaunchArgument('enable_color', default_value='true'),
         DeclareLaunchArgument('emitter_flash', default_value='false'),
         DeclareLaunchArgument('stereo_fps', default_value='30'),
-        DeclareLaunchArgument('emitter_off', default_value='false'),
+        DeclareLaunchArgument('emitter_off', default_value='true'),   # 11-04: 프로젝터 상시 끔이 기본(10-21 §20 사용자 결정 · 표준 prep 과 같음). 켜려면 emitter_off:=false
         DeclareLaunchArgument('depth_preset', default_value='3', description='깊이 프리셋(-1 = 지정 안 함 → 카메라 기본 0 Custom, 3 = High Accuracy). 10-22 §10 사용자 결정으로 기본 3'),
-        DeclareLaunchArgument('dds_shm', default_value='false', description='10-20 §7.4 카메라 프로세스만 SHM+UDP(cuVSLAM 경로) — ekf.launch 의 cuVSLAM 도 같은 인자로'),
+        DeclareLaunchArgument('dds_shm', default_value='true', description='10-20 §7.4 카메라 프로세스만 SHM+UDP(cuVSLAM 경로) — ekf.launch 의 cuVSLAM 도 같은 인자로'),   # 11-04: 기본 true — 표준 prep 과 같게
         DeclareLaunchArgument('decimation', default_value='4', description='10-20 §8 깊이 데시메이션 배율(4 = 지금, 2, 1 = 끔) — 점군 크기도 같이 바뀜'),
         OpaqueFunction(function=_camera),
         # (2026-09-08 오전) depthimage_to_laserscan 수평 띠 방식은 철회: 10cm 상자가 0.66m 이내로 오면 띠(높이 0.12~0.16m@0.3m)

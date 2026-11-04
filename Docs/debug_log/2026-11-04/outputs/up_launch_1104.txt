@@ -1,0 +1,22 @@
+== 설치본 링크
+링크 navigation.launch.py
+링크 nav2_params.yaml
+링크 ekf.launch.py
+링크 camera.launch.py
+== navigation
+'camera_layer': (default: 'nvblox')
+'replan_hz': (default: '0.5')
+'planner': (default: 'navfn')
+'mppi_viz': (default: 'lite')
+'global_camera': (default: 'nvblox')
+'stuck_shadow': (default: 'true')
+'pad_relief': (default: 'off')
+== ekf
+'rf2o': (default: 'false')
+'dds_shm': (default: 'true')
+'vslam': (default: 'on')
+== camera
+'emitter_flash': (default: 'false')
+'emitter_off': (default: 'true')
+'depth_preset': (default: '3')
+'dds_shm': (default: 'true')

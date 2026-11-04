@@ -105,8 +105,8 @@ def generate_launch_description():
         DeclareLaunchArgument('gate_vref', default_value='wheel',
                               description='G4 판정량: wheel(휠과의 잔차, 10-07 §4 기본) | abs(rf2o |v| 절댓값, 10-06~07 §1)'),
         DeclareLaunchArgument('use_sim_time', default_value='false', description='bag 재생 검증용'),
-        DeclareLaunchArgument('dds_shm', default_value='false', description='10-20 §7.4 cuVSLAM 컨테이너를 SHM+UDP 로(camera.launch dds_shm 과 같이)'),
-        DeclareLaunchArgument('vslam', default_value='off',
-                              description='2026-10-20 §6 cuVSLAM 병진 속도: off | shadow(그림자 EKF /odometry/ekf_vslam) | on(주 EKF 가 rf2o 대신) — emitter_off:=true 필요'),
+        DeclareLaunchArgument('dds_shm', default_value='true', description='10-20 §7.4 cuVSLAM 컨테이너를 SHM+UDP 로(camera.launch dds_shm 과 같이) — 기본 true(표준 prep, 11-04)'),
+        DeclareLaunchArgument('vslam', default_value='on',   # 11-04: 10-23 §16 채택 · 표준 prep 과 같게(옛 기본 off). rf2o 를 주인으로 쓰려면 vslam:=off 도(53 행)
+                              description='2026-10-20 §6 cuVSLAM 병진 속도(기본 on): off | shadow(그림자 EKF /odometry/ekf_vslam) | on(주 EKF 가 rf2o 대신) — emitter_off:=true 필요'),
         OpaqueFunction(function=_nodes),
     ])

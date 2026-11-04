@@ -198,13 +198,13 @@ def generate_launch_description():
         DeclareLaunchArgument('camera_pointcloud', default_value='keep',
                               description="keep(기본: 점군 유지 — 게이트·러너가 씀) | off(모드 N 운용 전용, 계측 불가)"),
         DeclareLaunchArgument('use_sim_time', default_value='false'),
-        DeclareLaunchArgument('replan_hz', default_value='',
-                              description='BT 주기 재계획 Hz(비우면 원본 0.01 = 목표당 1 회). 10-08 §3 A/B'),
+        DeclareLaunchArgument('replan_hz', default_value='0.5',
+                              description='BT 주기 재계획 Hz — 기본 0.5(표준 prep 과 같음, 11-04). 비우면 BT 원본 0.01 = 목표당 1 회(B0 · Smac 시험). 10-08 §3 A/B'),
         DeclareLaunchArgument('planner', default_value='navfn',
                               description='전역 계획: navfn(B0) | smac(Smac Hybrid → 실패 시 NavFn, 10-26 §7)'),
-        DeclareLaunchArgument('mppi_viz', default_value='false',
-                              description='장기 주행 기록용 MPPI 후보·최적 궤적 발행(10-07 §11, 기본 끔)'),
-        DeclareLaunchArgument('global_camera', default_value='obstacle',
+        DeclareLaunchArgument('mppi_viz', default_value='lite',
+                              description='MPPI 궤적 발행: lite(기본 — 표준 prep 과 같음, 11-04) | false | true(206 kB × 10 Hz — 쓰지 않음, 10-12 통신 포화)'),
+        DeclareLaunchArgument('global_camera', default_value='nvblox',   # 11-04: 표준 prep 과 같게(옛 기본 obstacle)
                               description='전역 카메라 표시: obstacle(라이다와 한 격자, 10-01 §8.35) | stvl(10-07 §8, 갱신 불합격) | nvblox(10-08 §3)'),
         DeclareLaunchArgument('nav_map', default_value='',
                               description='전역 정적 층에 쓸 저장 지도 yaml(비우면 slam_toolbox /map). 10-01 §8.33'),
@@ -215,8 +215,9 @@ def generate_launch_description():
         # rover-level 정체/접촉 감시 (2026-09-07). 펌웨어 스톨은 '휠 정지'만 잡으므로 트랙이 헛도는
         # 벽 밀림·긁힘은 여기서 잡는다(라이다 스캔·자이로로 실제 이동 관측).
         # 2026-09-08 활성(기본 false): 실주행 오탐 0 (09-07 46s + 09-08 6회 주행) · 정탐 3/3 (job57) 검증 완료.
-        # 관찰만 하려면 stuck_shadow:=true.
-        DeclareLaunchArgument('stuck_shadow', default_value='false',
+        # → 11-04 기본 true(관찰만): 10-01 §8.11 f2a4 실주행 오판 취소(use_gyro 꺼진 채 문틀 회전 과대) → §8.12 사용자 'F2 순회 동안 그림자',
+        #   10-29 §9 사용자 '자이로 우선은 켜지 마라' — 표준 prep 은 10-01 부터 true. 작동시키려면 stuck_shadow:=false.
+        DeclareLaunchArgument('stuck_shadow', default_value='true',
                               description='stuck_monitor 관찰 전용 모드'),
         Node(package='rover_bringup', executable='stuck_monitor.py', name='stuck_monitor',
              output='screen',
