@@ -1,0 +1,279 @@
+<style>
+.code{margin:0;font-family:var(--f-mono);font-size:12.5px;line-height:1.5;background:var(--bg);border:1px solid var(--line);padding:8px 10px;overflow-x:auto;white-space:pre;max-width:100%}
+.flow > span{min-width:0}
+.c1104{font-weight:600;color:var(--ink);background:var(--tint-warn);border-left:3px solid var(--warn);padding:0 5px;margin-left:3px;border-radius:2px;white-space:normal;font-size:.92em}
+</style>
+<div class="wrap">
+<header>
+  <div class="eyebrow">Indoor Rover · 2026-09-18 · Docs/debug_log/2026-09-18 §0–§18 · 주행 있음(dy1~dy6) · 11-04 사후 작성</div>
+  <h1>09-18 센서 데크 −2.68°</h1>
+  <p class="lead">이 페이지는 2026-11-04 에 그날의 <span class="mono">SUMMARY.md</span> 와 같은 폴더의 <span class="mono">jobs/</span> · <span class="mono">outputs/</span> 를 보고 사후에 만들었습니다. 오전에는 사흘 연속 Wi-Fi 공유기가 Jetson 을 끊은 원인을 공유기 로그 · 설정으로 찾았지만 확정하지 못해 다음 끊김을 잡을 계측 서비스를 설치했고, 쌓인 로그 · 산출물을 조사한 뒤 정리는 미루기로 했습니다. 오후에는 전날 '로컬 코스트맵 상자가 2~8 cm 다가온다' 의 원인이 <b>라이다 · 카메라 데크가 차체보다 −2.68° 틀어져 장착된 것</b>임을 SLAM 보정 분해와 벽 정지 측정으로 밝히고 URDF 를 고쳐 6 번 달렸습니다. 이어 남은 여유 부족을 원경로 · 스무딩 · 실제로 나눠, MPPI ObstaclesCritic 을 CostCritic 으로 바꾸기로 하고 배포했습니다(재기동 전). 나중 기록(문제 대장 카드)에서 원문과 어긋난다고 밝혀진 곳 <b>19 곳</b>은 본문을 그대로 두고 <span class="c1104">11-04 정정</span> 표시를 붙였습니다.</p>
+</header>
+
+<section>
+  <h2>오늘의 판정</h2>
+  <div class="verdicts">
+    <div class="v ok"><b>데크 yaw −2.68° 발견 · URDF 보정</b><span>정지 옆벽 +2.667 / +2.686°, 동적 게걸음 +2.57°(버그 수정판) — 0.1° 안 일치. 보정 뒤 라이다 옆벽 −0.031° (§9 · §11.2)</span></div>
+    <div class="v ok"><b>거리 비례 옆 드리프트 제거</b><span>SLAM 옆 보정 b +0.036~+0.051 → −0.009~+0.001 m/m, map→odom 옆 오프셋 ±2 cm (§11.2 · §13.1)</span></div>
+    <div class="v wait"><b>사전 기준 ①②③ 은 일부 불합격</b><span>게걸음 −0.71°(기준 0.7°) · 옆 보정 −3~−5 cm/주행(기준 2 cm) — 기준을 지표 잡음보다 좁게 잡은 설계 실수 (§11.3)</span></div>
+    <div class="v ok"><b>간헐 중단: 보정 후 6 회 중 1 (≤ 1 합격)</b><span>dy1~dy6 전부 SUCCEEDED. 중단 1 은 dy3 출발 자리 물체(다른 기전). p ≈ 0.12 — 우연 배제엔 약함 (§13.6)</span></div>
+    <div class="v no"><b>복귀 회전 자리 여유 매 회 ≥ 5 cm — 불합격</b><span>5/6, dy4 4.1 cm — 원경로 자체가 상자 쪽으로 붙음 (§13.6 · §15.1)</span></div>
+    <div class="v ok"><b>ObstaclesCritic → CostCritic 결정 · 배포</b><span>1.1.20 ObstaclesCritic 은 옆 여유 1~25 cm 에서 비용 일정. 배포됨, 실행 중 노드엔 다음 prep 때 반영 (§15 ~ §17)</span></div>
+    <div class="v ok"><b>bag 재현 정보 기록</b><span>params.txt(12 노드) · run_meta.txt(파일 해시 10 개) — 다음 주행부터 (§17.3)</span></div>
+    <div class="v wait"><b>Wi-Fi 차단 원인 미확정 · 계측 설치</b><span>공유기는 무선 이벤트를 기록하지 않음. 후보 DFS(끊김) · PMF(재인증 거부) — wifi-mon 이 다음 끊김을 기다림 (§2 ~ §7)</span></div>
+    <div class="v wait"><b>로그 · 산출물 정리 보류(사용자)</b><span>Jetson 193 GB 여유. GB 단위가 아니면 뒤로 — 보류 목록 4 개 (§8)</span></div>
+  </div>
+</section>
+
+<section>
+  <h2>데크 yaw — 옆미끄럼 가설 기각<span class="sec">§9.1 · §11.2</span></h2>
+  <div class="flow">
+    <span class="k">처음 가설</span><span>EKF 가 휠 오도의 vy=0 을 σ 1 cm/s 로 믿어 스키드스티어 회전 중 옆미끄럼을 못 센다(09-17 §15.5)</span>
+    <span class="k">본 것</span><span>mp9~12 의 SLAM 보정(map→odom 갱신)을 몸체 기준으로 분해: 옆 보정 합 <b>항상 왼쪽</b>, 회전량과 무관(R² ≈ 0), 거리에 비례. SLAM 자세로 본 '진행 방향 − 몸체 방향'(게걸음 각)이 주행마다 +2.1~+3.0°</span>
+    <span class="k">추론</span><span>옆미끄럼이면 회전 방향에 따라 부호가 바뀌어야 한다. 회전과 무관한 일정한 각 = 센서가 URDF 보다 돌아가 장착된 모양</span>
+    <span class="k">결론</span><span>옆미끄럼 가설 기각, 장착 오차 가설로 → 정지 벽 측정</span>
+  </div>
+  <p>분해 도구의 같은 stamp 처리(§11.2 버그 수정 뒤 판):</p>
+<pre class="code"># 09-18 버그 수정: slam_toolbox 는 같은 stamp 로 map->odom 을 두 번 보내고, 보정 순간엔 두 값이 다르다(보정 전·후).
+#   stamp 로만 정렬하면 두 값 순서가 뒤바뀌어 한 보정을 두 번 셌다(되돌림은 길이 0 구간이라 버려짐). → 같은 stamp 는 마지막 수신값만.
+mo.sort(key=lambda m: (m[0], m[1])); ded = {}
+for m in mo: ded[m[0]] = (m[0], m[2], m[3], m[4])</pre>
+<pre class="code">run   | 보정 회 | 합 δf  δl(m)  δψ(°) | ... | 회귀 δl = a·Δψ + b·Δs (R²)
+mp9   |  30 | +0.021 +0.092  -2.20 | ... | a +0.006 m/rad, b +0.051 m/m (0.07)
+mp10  |  28 | -0.010 +0.094  -0.80 | ... | a +0.032 m/rad, b +0.044 m/m (0.15)
+mp11  |  29 | +0.031 +0.098  -1.40 | ... | a -0.004 m/rad, b +0.036 m/m (-0.06)
+mp12  |  31 | -0.011 +0.075  -1.00 | ... | a -0.008 m/rad, b +0.039 m/m (0.03)
+dy1   |  30 | +0.005 -0.046  -1.60 | ... | a +0.001 m/rad, b -0.000 m/m (-0.04)
+dy2   |  32 | +0.005 -0.032  -1.40 | ... | a +0.004 m/rad, b -0.009 m/m (-0.01)
+통합 113 구간 7.96 m: SLAM 게걸음 각 +2.57° (거리가중), 중앙 +1.57°, odom 기준선 +0.11°     ← 보정 전 4 회
+통합 60 구간 3.98 m: SLAM 게걸음 각 -0.71° (거리가중), 중앙 -0.72°, odom 기준선 +0.50°      ← 보정 후 2 회</pre>
+  <p class="note">결과 원문 <span class="mono">Docs/debug_log/2026-09-18/outputs/j437_dedup.txt</span>(가운데 열 일부 생략) · 스크립트 원문 <span class="mono">Docs/debug_log/2026-09-18/jobs/job431_odomdrift.py</span> · <span class="mono">job431b_crab.py</span> · 입력 bag mp9~12(09-17) · <span class="mono">bags/bag_dy1.tgz</span> · <span class="mono">bag_dy2.tgz</span>. §9.1 의 처음 수치(게걸음 통합 +2.69°, 옆 보정 +6~+10 cm)는 이 버그를 포함한 값이고 §11.2 에서 위 값으로 정정됐다. <span class="c1104">(11-04 정정: §9.1 의 주행별 '+2.31/+3.06/+2.89/+2.31°' 는 원문 j431b_crab.txt 와 다름 — mp9 는 +2.47°(+2.31 은 mp12). §10 표도 같은 오기. 어느 쪽이든 버그판이라 §11.2 판이 유효 — Docs/issues/sensor-deck-yaw.md §5.5)</span></p>
+</section>
+
+<section>
+  <h2>정지 벽 측정과 보정<span class="sec">§9.2 · §9.3</span></h2>
+  <div class="flow">
+    <span class="k">방법</span><span>로버 오른쪽 옆면을 흰 벽에 붙임(트랙 앞뒤 모두 접촉) — 수직 맞추기 대신 옆면 접촉으로 정렬. 에이전트 미기동이라 모터 명령 경로 없음. 라이다 점에서 RANSAC 으로 벽 직선을 찾고 SVD 로 방향을 맞춤</span>
+    <span class="k">스크립트 핵심</span><span><pre class="code">Q = P[best]; c = Q.mean(0); U, S, Vt = np.linalg.svd(Q - c); d = Vt[0]
+if d[0] &lt; 0:
+    d = -d
+ang = math.degrees(math.atan2(d[1], d[0]))          # 옆벽이 차체 x 축과 이루는 각
+...
+print('  → 장착 오차 e = %+.3f° , 권장 lidar_yaw = π %+.4f rad = %.5f' % (math.degrees(e), e, math.pi + e))</pre></span>
+    <span class="k">나온 결과</span><span><pre class="code">에이전트/주행 스택 실행 여부: 0 개 (0 이어야 모터 명령 경로 없음)
+라이다 벽 각도(base, 공칭 TF): 중앙 +2.667°, 사분위 +2.618~+2.727° (76 스캔), 벽까지 0.240 m, ...
+  → 장착 오차 e = -2.667° , 권장 lidar_yaw = π -0.0465 rad = 3.09505</pre><span class="note">결과 원문 <span class="mono">Docs/debug_log/2026-09-18/outputs/j432_right.txt</span>(재측정 <span class="mono">j432_right2.txt</span> +2.686°) · 스크립트 원문 <span class="mono">Docs/debug_log/2026-09-18/jobs/job432_wallyaw.py</span></span></span>
+    <span class="k">카메라</span><span>같은 옆벽 +2.94°(짧은 구간 x 0.41~0.70, ±0.5° 수준) → 라이다와 0.25° 차 = <b>데크 전체가 함께 틀어짐</b>. 앞면은 두 센서가 다른 면을 잡은 것으로 보고 제외. <span class="c1104">(11-04 정정: 카메라 앞면(−89.187°)은 오차 ≈ 0° 를 가리켜 옆벽 +2.94° 와 모순 — '측정 높이가 달라 다른 면' 이라는 제외 근거는 미확인. 카메라 장착 yaw 의 독립 확인은 남은 과제 — Docs/issues/sensor-deck-yaw.md §3 · §6)</span> <span class="c1104">(11-04 정정: '사분위 ±0.05°' 는 1 회차(+2.618~+2.727)만 맞고, 2 회차는 +2.623~+2.792(−0.063 / +0.106)로 더 넓다 — Docs/issues/sensor-deck-yaw.md §5.5)</span></span>
+    <span class="k">결론</span><span>동적(+2.57°, 정정판)과 정적(+2.667 / +2.686°)이 0.1° 안 일치 → 보정값 −2.68°(−0.04677 rad). '차체가 완벽한 박스가 아님' 의 영향은 무시할 만하고, 옆면이 진행 방향과 나란함도 함께 확인</span>
+  </div>
+  <div class="tbl"><table>
+    <tr><th>관절</th><th>이전</th><th>이후</th></tr>
+    <tr><td>sensor_deck_joint(시각용)</td><td>rpy 0</td><td>yaw −0.04677</td></tr>
+    <tr><td>lidar_joint</td><td>(0.152, 0, 0.185), yaw π</td><td>위치 동일, yaw 3.09482(π − 0.04677)</td></tr>
+    <tr><td>camera_joint</td><td>(0.232, 0.0475, 0.143), yaw 0</td><td>(0.23413, 0.04371, 0.143), yaw −0.04677 — 데크 원점 기준 오프셋 회전</td></tr>
+    <tr><td>stuck_monitor <span class="mono">LIDAR_YAW</span></td><td>π</td><td>π − 0.04677</td></tr>
+  </table></div>
+  <p class="note">바꾼 파일 <span class="mono">ros2_ws/src/rover_description/urdf/rover.urdf</span> · <span class="mono">rover.urdf.xacro</span>(<span class="mono">deck_yaw</span> 인자) · <span class="mono">rover_bringup/scripts/stuck_monitor.py</span> · 배포 <span class="mono">jobs/job433_deploy.sh</span> → <span class="mono">outputs/j433_deploy.txt</span>. <span class="c1104">(11-04 정정: 그때 xacro 기본값은 urdf 와 같지 않았다 — deck_x 0.000(urdf 0.152) · cam_dx 0.0822(urdf 0.080 회전). job433 배포 확인의 xacro 줄이 정규식 불일치로 전부 '-' 라 못 봄. 기본 실행 경로(urdf)엔 영향 없음, 10-30 에 xacro 를 urdf 값으로 다시 씀 — Docs/issues/sensor-deck-yaw.md §5 · §10)</span></p>
+  <div class="flow">
+    <span class="k">보정 뒤 정지 검증</span><span><pre class="code">TF base_link←lidar_link: xyz (0.1520, 0.0000) yaw 3.09482 rad (177.320°)
+라이다 벽 각도(base, 공칭 TF): 중앙 -0.031°, 사분위 -0.076~+0.032° (65 스캔), 벽까지 0.239 m, ...
+  → 남은 오차 +0.031° (0 에 가까우면 보정 적용됨)
+라이다 앞면 각도(base, 공칭 TF): 중앙 -89.310° (65 스캔), 거리 1.014 m, ...
+카메라 옆벽 각도(base 방향): 중앙 +13.686° (8 프레임), 벽까지 0.324 m, ...
+카메라 앞면 각도(base 방향): 중앙 +88.171° (8 프레임), 거리 0.848 m, ...</pre><span class="note">결과 원문 <span class="mono">Docs/debug_log/2026-09-18/outputs/j432c_verify.txt</span> · 스크립트 원문 <span class="mono">jobs/job432c_wallyaw_tf.py</span></span></span>
+    <span class="k">읽기</span><span>라이다는 보정 확인(−0.031°). 카메라 옆벽 +13.7° 는 그사이 로버가 벽을 따라 ≈15 cm 움직여(라이다 앞면 0.863 → 1.014 m) 다른 구조를 잡은 것 — 무효. 카메라 앞면은 적용한 회전만큼(−2.64°) 이동 → '회전이 적용됐다' 까지만, 카메라 확인은 주행으로</span>
+  </div>
+</section>
+
+<section>
+  <h2>보정 후 주행 dy1~dy6<span class="sec">§10 · §11 · §13</span></h2>
+  <p>판정 기준은 주행 전에 §9.4(데크)와 §12.3(간헐 중단)으로 선언했습니다. 같은 코스(상자 옆 통로 → 목표 (2.0, 0)), MPPI, temperature 0.15.</p>
+  <div class="tbl"><table>
+    <tr><th>주행</th><th>결과</th><th>중단</th><th>복귀 회전 자리 여유<br>(x 1.10~1.25, 로컬)</th><th>코스트맵 최소 여유</th><th>게걸음 각</th><th>b (m/m)</th><th>직진 부호반전 /m</th></tr>
+    <tr><td>dy1</td><td>성공 32.3 s</td><td>0</td><td>6.5~7.8 cm</td><td>4.0 cm</td><td>−0.81°</td><td>−0.000</td><td>5.0</td></tr>
+    <tr><td>dy2</td><td>성공 33.4 s</td><td>0</td><td>7.2~8.7</td><td>3.2</td><td>−0.61°</td><td>−0.009</td><td>6.1</td></tr>
+    <tr><td>dy3</td><td>성공 31.6 s</td><td><b>1</b>(출발 0.88 s Optimizer fail)</td><td>5.9~7.7</td><td>5.1</td><td>−0.63°</td><td>+0.001</td><td><b>16.0</b></td></tr>
+    <tr class="bad"><td>dy4</td><td>성공 30.3 s</td><td>0</td><td><b>4.1~4.6</b></td><td>2.5</td><td>−0.69°</td><td>−0.005</td><td><b>17.1</b></td></tr>
+    <tr><td>dy5</td><td>성공 31.9 s</td><td>0</td><td>7.1~8.5</td><td>4.7</td><td>−0.81°</td><td>−0.008</td><td>5.8</td></tr>
+    <tr><td>dy6</td><td>성공 32.3 s</td><td>0</td><td>8.7~10.2</td><td>4.3</td><td>−1.25°</td><td>−0.015</td><td>6.1</td></tr>
+  </table></div>
+  <p class="note">원천 <span class="mono">Docs/debug_log/2026-09-18/outputs/drive_dy1~6.txt</span> · <span class="mono">dy1~6.csv</span> · <span class="mono">j435_dy1~6_verify.txt</span> · <span class="mono">j379_dy1~6.txt</span> · bag <span class="mono">bags/bag_dy1~6.tgz</span>. <span class="c1104">(11-04 정정: j435_dy1_verify · j435_dy2_verify 는 §11.2 버그 수정 전 실행본(dy2 게걸음 +0.02° · 보정 47 회 −9.8 cm) — 표의 dy1 · dy2 게걸음 · b 는 j437_dedup.txt 에서 온다. §10 게이트 수치도 prep_dy1 과 drive_dy1 이 섞임(차 ≤ 3 mm) — Docs/issues/sensor-deck-yaw.md §5.5)</span> <span class="c1104">(11-04 정정: §10 · §11.2 · §11.3 의 표준오차 ±0.55° · ±0.8° · ±1° 는 출력 원문에 없고 계산 방법도 기록 안 됨 — Docs/issues/sensor-deck-yaw.md §5.5)</span></p>
+  <div class="flow">
+    <span class="k">간헐 중단 · 본 것</span><span>보정 전 mp9~12 는 4 회 중 3 회 중단(Optimizer fail 2 · SmoothPath 뒤 TF 외삽 1). Optimizer fail 두 번 모두 로컬 상자 여유 3.0 cm, 로버 x 1.13~1.20 = 복귀 회전 시작 자리</span>
+    <span class="k">dy3 의 한 번</span><span><pre class="code">  0.88 [controller_server-2] [INFO] [...] [controller_server]: Optimizer reset
+  0.88 [controller_server-2] [ERROR] [...] [controller_server]: Optimizer fail to compute path</pre><span class="note">결과 원문 <span class="mono">Docs/debug_log/2026-09-18/outputs/j379_dy3.txt</span> 22~23 행(타임스탬프 생략) · 스크립트 <span class="mono">jobs/job379_navevents.sh</span>. 출발 전 2 s 스캔에 로버 뒷면 4.6~5.2 cm 뒤 물체(폭 ≈ 12 cm, 100 % 스캔) — map 에 고정된 물체, 정체 미확정(사람 발 · 케이블). 복귀 회전 Optimizer fail 과 다른 기전(출발 자세가 장애물 인접)이지만 정의대로 1 회로 셈</span></span>
+    <span class="k">TF 외삽(mp9)은 발행 공백이 아님</span><span><pre class="code">  mp9   map->odom(SLAM)    674 개 | 수신 간격 최대 0.057 s, &gt;0.2 s 0 회  | stamp−수신 +0.050~+0.195 s
+  mp9   odom->base(EKF)   1011 개 | 수신 간격 최대 0.046 s, &gt;0.2 s 0 회  | stamp−수신 -0.027~-0.001 s</pre><span class="note">결과 원문 <span class="mono">outputs/j438_tfgaps.txt</span> · 스크립트 <span class="mono">jobs/job438_tfgaps.py</span>. 저장된 오류 문장이 170 자에서 잘려 기전 확정 불가 → 사후 스크립트가 ERROR/WARN 을 자르지 않게 수정. <span class="c1104">(11-04 정정: §12.2 '항상 0.07~0.18 s 앞' — 원문 사건 창에서는 +0.071~+0.200 s(mp12 최대 +0.200) — Docs/issues/intermittent-abort-dy.md §5.5)</span> <span class="c1104">(11-04 정정: §12.1 mp12 '0.5 s 감속' 은 j379 이벤트 줄에도 1 s 간격 표에도 없음 — 출처 미확인 — 같은 카드 §5.5)</span></span></span>
+    <span class="k">판정</span><span>중단 ≤ 1/6 → <b>합격</b>(1/6). 복귀 회전 여유 매 회 ≥ 5 cm → <b>불합격</b>(dy4 4.1). 통계: 3/4 → 1/6, Fisher 단측 p ≈ 0.12. §12.3 의 '0/6 이면 p ≈ 0.03' 은 다른 비교의 p 였다(§13.6 에서 정정). <span class="c1104">(11-04 정정: §12.2 의 '같은 자리 여유 dy1 7.4~7.8 · dy2 8.7~8.8 cm' 와 §13.1 의 '6.5~7.8 · 7.2~8.7 cm' 는 같은 출력을 다른 x 창으로 읽은 것 — §12.2 의 창은 기록 없음 — Docs/issues/intermittent-abort-dy.md §5.5)</span></span>
+    <span class="k">덧붙여(해석 보류)</span><span>게걸음 6/6 음수, 평균 −0.80° — 코스 고유 성분과 과보정을 이 코스 반복으로는 못 가름(직선 전진 · 후진 교정 필요). dy3 · dy4 만 직진 부호반전 16~17 /m(원인 미조사). 러너 '⑥ 상자 미관측 최대 24~31 s' 는 매 회 비슷. <span class="c1104">(11-04 정정: ⑥ 은 정의상 '마지막 재고정 채택 뒤 경과'(box_age) — 관측이 끊긴 시각은 box_pts 로 봐야 한다. 09-21 기준선에서 이 값을 '상자 미관측' 으로 옮긴 실수가 드러남 — Docs/issues/phase-s-baseline.md §6 M1)</span></span>
+  </div>
+  <p>출발 자세 게이트(§13.3, dy3 뒤 추가) — 차체 외곽과 LETHAL 셀의 거리:</p>
+<pre class="code">HL, HW = 0.25, 0.165                     # 차체 반길이 · 반폭
+return np.hypot(np.maximum(np.abs(rx) - HL, 0), np.maximum(np.abs(ry) - HW, 0))
+# 09-18 dy5: 99(내접)는 '로버 중심이 여기면 충돌' 이라 차체 외곽과 재면 반경을 두 번 센다(09-11 같은 실수) → LETHAL(100)만
+d = np.array(m.data, dtype=np.int16).reshape(m.info.height, m.info.width); jj, ii = np.where(d &gt;= 100)</pre>
+  <p class="note">스크립트 원문 <span class="mono">Docs/debug_log/2026-09-18/jobs/job440_startclear.py</span>(러너가 ≥ 0.10 m 요구) · 러너 <span class="mono">jobs/run_drive_nohup.sh</span>. dy5 첫 시도는 99 셀 6 cm 로 거부됐는데 같은 방향 라이다 점은 21.5 cm — 이 기준 변경은 사용자 확인 없이 검증 도중 바꾼 것(게이트만, Nav2 설정 · 판정 지표는 그대로).</p>
+</section>
+
+<section>
+  <h2>여유는 어디서 줄어드나 — 원경로가 정한다<span class="sec">§15 · §16</span></h2>
+  <div class="flow">
+    <span class="k">방법</span><span>같은 전역 코스트맵으로 차체 ↔ 상자 LETHAL 여유를 세 단계에서: 원경로(로버가 그 x 에 닿기 L 초 전 /plan) → 스무딩(Humble SimpleSmoother 소스를 옮겨 원경로에 적용 — bag 에 스무딩 결과가 없었음) → 실제</span>
+    <span class="k">나온 결과</span><span><pre class="code">==== 통합 (구간별 평균, 단위 cm)
+  복귀 회전 자리 x 1.10~1.25, L=3 s (24 표본): 원경로 9.4 → 스무딩 9.2 → 실제 8.0 | 스무딩 Δ -0.1, 컨트롤러 Δ -1.2
+  복귀 회전 자리 x 1.10~1.25, L=2 s (24 표본): 원경로 9.5 → 스무딩 9.3 → 실제 8.0 | 스무딩 Δ -0.2, 컨트롤러 Δ -1.3
+  상자 뒤 모서리 x 1.35~1.55, L=3 s (18 표본): 원경로 9.5 → 스무딩 9.4 → 실제 6.9 | 스무딩 Δ -0.1, 컨트롤러 Δ -2.5
+  상자 뒤 모서리 x 1.35~1.55, L=2 s (18 표본): 원경로 8.4 → 스무딩 8.2 → 실제 6.9 | 스무딩 Δ -0.1, 컨트롤러 Δ -1.3</pre><span class="note">결과 원문 <span class="mono">Docs/debug_log/2026-09-18/outputs/j446_pathdecomp.txt</span> 마지막 4 줄 · 스크립트 원문 <span class="mono">jobs/job446_pathdecomp.py</span>. <span class="c1104">(11-04 정정: SUMMARY §15.1 은 L = 3 s 줄만 옮겼다. 같은 출력의 L = 2 s 에서 모서리 컨트롤러 Δ 는 −1.3 — §16 판정 기준 'Δ 가 −2.5 cm 보다 작아질 것' 은 L 선택에 민감한 값을 기준으로 삼은 것 — Docs/issues/obstacles-to-costcritic.md §5)</span></span></span>
+    <span class="k">추론</span><span>스무더는 영향 없음(≤ 0.5 cm — 앞서 곡률로 어림한 '3~4 cm 당긴다' 는 틀림). dy4 는 원경로 자체가 4.8~7.1 cm 로 붙었고 컨트롤러가 그대로 따름. 원경로는 6 회 중 5 회 통로 중앙보다 상자 쪽으로 2~6 cm(통로 0.55~0.60 m, 비용 단면의 골이 얕음)</span>
+    <span class="k">왜 컨트롤러가 안 벌리나</span><span>1.1.20 ObstaclesCritic: <span class="mono">consider_footprint</span> 이고 중심 비용 ≥ 외접 비용이면 차체 둘레 최대 비용을 쓰는데, 둘레가 내접 반경 안이면 늘 253 → 거리 0.175 고정. 게다가 거리 역산 파라미터를 크리틱 자기 값(기본 10.0/0.55)에서 읽는데 우리 YAML 에 없었다(설정 누락)</span>
+  </div>
+<pre class="code">def obstacles(c, W, s, R, margin, cw=20.0, rw=1.5, n=32):     # 1.1.20 obstacles_critic.cpp 식
+    center, foot = costs(c, W)
+    if center &gt;= POSS:  cost, fp = foot, True                 # 중심이 외접 비용 이상 → 둘레 최대 비용
+    else:               cost, fp = center, False
+    dist = (s * R_IN - math.log(cost) + math.log(253.0)) / s - (0 if fp else R_IN)
+def costcritic(c, W, w=3.81, critical=300.0, n=32):              # 1.1.20 cost_critic.cpp — 점수는 중심 칸 비용
+    per = critical if center &gt;= 253 else center
+    return (w / 254.0) * n * per / n</pre>
+<pre class="code">==== 통로 폭 W 0.55 (로버 가운데면 양쪽 11.0 cm)
+                                     | 옆 여유 c(cm):     1     3     5     7     9    11    13    15
+  현재 Obstacles(s10,R0.55,m0.05)      | 비용          :  0.56  0.56  0.56  0.56  0.56  0.56  0.56  0.56
+  Obstacles 값 맞춤(s2.5,R0.40,m0.05)   | 비용          :  0.34  0.34  0.34  0.34  0.34  0.34  0.34  0.34
+  CostCritic w3.81                   | 비용          :  3.78  3.60  3.42  3.25  3.09  2.94  3.09  3.25</pre>
+  <p class="note">결과 원문 <span class="mono">Docs/debug_log/2026-09-18/outputs/j449_criticcurve.txt</span>(뒤 열 생략) · 스크립트 원문 <span class="mono">jobs/job449_criticcurve.py</span> · 소스 사본 <span class="mono">Docs/debug_log/2026-09-18/refs/mppi_1.1.20_obstacles_critic.cpp</span> · <span class="mono">mppi_1.1.20_cost_critic.cpp</span> · 설치 버전 <span class="mono">outputs/j447_mppi_ver.txt</span>(nav2-mppi-controller 1.1.20). 결론: 지금 ObstaclesCritic 은 LETHAL 접촉 검사 역할만, 옆 위치는 경로 크리틱이 정함 — 09-17 메모 'inflation = 여유 선호' 는 MPPI 에는 해당하지 않았다(전역 계획에는 해당).</p>
+  <div class="tbl"><table>
+    <tr><th>CostCritic 으로 바꾸면(§16)</th><th>내용</th></tr>
+    <tr><td>얻음(확인)</td><td>통로 안 옆 여유가 점수에 들어감 · 크리틱 파라미터 누락 결함 제거 · <span class="mono">critical_cost</span> 300 작동 · 지도 교체(nvblox)에도 재설정 불필요</td></tr>
+    <tr><td>얻음(추정)</td><td>상자 뒤 모서리 지름길을 막는 반대 힘 · 중앙 선호 1~2 cm — dy4 4.1 cm 를 이것만으로 풀지는 못함</td></tr>
+    <tr><td>잃음(확인)</td><td>미터 단위 손잡이 없음 · 통계 누적이 0 부터(§17.1 에서 '기준선 연속성 손실' 은 실질적으로 없다고 정정 — S5 기준선은 어차피 새로 측정)</td></tr>
+    <tr><td>위험(추정)</td><td>입구 차선 변경 지연 · 5 cm 셀 계단으로 부호반전 증가</td></tr>
+  </table></div>
+  <div class="flow">
+    <span class="k">시뮬(§17.2)</span><span>job419 에 CostCritic 을 더한 job452(dy2 · dy4 · dy6 × 3 장면 × seed 2, 6 s 창): 여유 입구 +1.5 · 복귀 회전 +0.9 · 모서리 −0.3 cm, 입구 진행 −4 %, 정체 없음. <span class="c1104">(11-04 정정: 이 시뮬의 '실측 구동계'(ω 이득 0.7 — 회전만 줄임)는 곡률을 바꾸는 잘못된 형태였고(실제는 바깥 바퀴 0.085 포화로 v · ω 함께 축소), seed 2 비교는 씨앗 간 잡음(ESS 10~20) 안에 있을 수 있다 — 10-26 §10.1 · §10.2, Docs/issues/mppi-offline-simulator.md §3)</span></span>
+    <span class="k">배포(§17.5)</span><span><pre class="code">&lt;       critics: ["ConstraintCritic", "ObstaclesCritic", "GoalCritic", ...]
+&gt;       critics: ["ConstraintCritic", "CostCritic", "GoalCritic", ...]
+&gt;       CostCritic: {enabled: true, cost_power: 1, cost_weight: 3.81, critical_cost: 300.0, consider_footprint: true, collision_cost: 1000000.0, near_goal_distance: 0.5}</pre><span class="note">결과 원문 <span class="mono">Docs/debug_log/2026-09-18/outputs/j454_deploy_cc.txt</span>(목록 뒤쪽 생략) · 스크립트 <span class="mono">jobs/run_deploy_cc.sh</span>. <span class="mono">near_goal_distance</span> 는 0.5 유지(README 예시 1.0 이면 상자 뒤 모서리가 목표 0.65~0.75 m 안이라 기울기가 꺼짐). 실행 중 controller_server 는 옛 목록 — 다음 prep 때 반영</span></span>
+    <span class="k">판정 기준(선언)</span><span>같은 코스 3 회(cc1~cc3): 중단 0 · 1 s 정지 0 / 모서리 Δ &gt; −2.5 cm / 복귀 회전 여유 기록(목표 ≥ 5) / 복귀 회전 도달 dy 범위 + 1 s 안 / 직진 부호반전 ≤ 9 /m / 루프 미달 ≤ 1</span>
+  </div>
+</section>
+
+<section>
+  <h2>러너 상자 모델과 bag 재현 정보<span class="sec">§13.4 · §14 · §17.3 · §17.4 · §18</span></h2>
+  <div class="flow">
+    <span class="k">본 것</span><span>dy3 러너 ① '실제 최근접 0.0 cm(접촉)'. 러너 상자 모델은 재고정 순간의 <b>로버 방향</b>으로 0.18 × 0.11 사각형을 세운다 — dy3 마지막 재고정 t 7.9 s, yaw +16.9°</span>
+    <span class="k">판별</span><span>그 자세로 모델 재구성(job444): 모서리가 로버 쪽으로 9 cm 튀어나와 csv ① 을 t 12~27 s 에서 2 cm 안으로 재현. 독립 근거: 로컬 코스트맵 상자 셀은 dy3 에서도 좌측 끝 셀 중심 y 0.00 을 넘지 않음. 한계: dy4 · dy6 에서는 재구성이 csv 보다 ≈ 6 cm 작음 — 재구성으로 원인을 증명한 것은 아니다</span>
+    <span class="k">결정(사용자)</span><span>1 안: 재고정은 로버 yaw 가 출발 yaw ±5° 안일 때만, 재고정 기록을 <span class="mono">_refix.csv</span> 로. 기각한 2 안(점군 직선 맞춤으로 상자 방향 추정)은 한 시점에서 보이는 면 1~2 개 · 점 수 적어 방향 오차 수 °</span>
+    <span class="k">bag 재현성(§17.3)</span><span>bag 에 어떤 파라미터 · 파일로 달렸는지가 없고(실행 중 값이 바뀔 수 있음, Jetson src 는 git 아님) 스무더 결과도 안 담겼다 → <span class="mono">/plan_smoothed</span> · <span class="mono">/unsmoothed_plan</span> 추가, <span class="mono">BAG_EXTRA</span>, 12 노드 파라미터 스냅샷 <span class="mono">params.txt</span>(5.6 s), 주행 메타 <span class="mono">run_meta.txt</span>(STAGE · NOTE · git HEAD · 파일 sha256 10 개). 시험 <span class="mono">outputs/j453_metatest.txt</span>(9.1 s, 12 노드 전부 응답)</span>
+    <span class="k">마무리(§18, 사용자)</span><span>bag 재현성의 목적은 <b>개선 전후를 시각적으로 보여주기</b> — 이후 주행은 STAGE · NOTE 를 반드시 채우고 같은 코스 · 같은 토픽으로. 시각화 도구는 다음 과제</span>
+    <span class="k">데이터</span><span><span class="mono">jobs/job444_boxmodel.py</span> → <span class="mono">outputs/j444_boxmodel.txt</span> · <span class="mono">jobs/job125_avoid3.py</span>(1 안, 백업 <span class="mono">.bak_0918b</span>) · <span class="mono">jobs/job451_paramsnap.py</span> · <span class="mono">jobs/job453_runmeta.sh</span> · <span class="mono">jobs/job231_drive.sh</span></span>
+  </div>
+</section>
+
+<section>
+  <h2>Wi-Fi 차단 원인 — 공유기 쪽 확인<span class="sec">§0 ~ §7</span></h2>
+  <p>09-15 · 09-16 · 09-17 하루 한 번 <WIFI-B> 공유기가 Jetson 을 먼저 끊고(reason 2) 재인증을 거부(reason 23)했습니다. 사용자 결정은 <WIFI-B> 유지, 로그로 원인 확인. 아침 재부팅(10:15:47) 뒤에는 <LAN-B>.101 에 정상 접속(−50 dBm)해 있었습니다.</p>
+  <div class="flow">
+    <span class="k">공유기 로그(§2)</span><span>사용자가 Chrome 에서 로그인, 나는 화면이 쓰는 조회 RPC 만 읽음(설정 변경 호출 없음). 시스템 로그 1,452 건(DHCP 1,008 · 유선 포트 · DDNS · WAN · 재시작 4 · 로그인 3)에 <b>무선 접속 · 인증 · 차단 · DFS 이벤트가 아예 없다</b> → 공유기 로그로는 확정 불가</span>
+    <span class="k">설정(§3)</span><span>가동 254 일(재부팅 아님) · MAC 필터 off · 접속 수 무제한 · Easy Mesh 꺼짐. 5 GHz 채널 36, <b>160 MHz(DFS 채널 52~64 포함)</b>. 비콘 RSN MFP-capable(PMF 선택)</span>
+    <span class="k">Jetson 로그(§4)</span><span><pre class="code">  -- 종류별 개수
+        42 CTRL-EVENT-STARTED-CHANNEL-SWITCH freq=5180 ht_enabled=1 ch_offset=1 ch_width=80 MHz cf1=5210 cf2=0
+        15 CTRL-EVENT-STARTED-CHANNEL-SWITCH freq=5765 ht_enabled=1 ch_offset=-1 ch_width=80 MHz cf1=5775 cf2=0</pre><span class="note">결과 원문 <span class="mono">Docs/debug_log/2026-09-18/outputs/j428_wifi_dfs.txt</span> 14~19 행 · 스크립트 <span class="mono">jobs/job428_wifi_dfs.sh</span>. 정정(그날): 09-17 에 단서로 본 '재결합 때 80 MHz' 줄은 모든 접속마다 나오는 줄(WEB_DEV 42 · ALOPS 15) — AP 가 폭을 내렸다는 증거가 아니다(Jetson 칩이 80 MHz 까지). <span class="c1104">(11-04 정정: '세 끊김 직전에 CSA · 비콘 손실 · 규제 변경 줄이 없다' 의 유효한 근거는 이 A 절(9 월 전체 종류별 개수에 BEACON-LOSS · CSA · DFS 0)이다. 끊김 −60 ~ +20 s 창을 뽑는 B 절은 시각 변환 실패로 세 사건 모두 빈 출력(도구 결함, 추정) — Docs/issues/jetson-wifi-link.md §5.1-4)</span></span></span>
+    <span class="k">PMF 확인(§7.1)</span><span><pre class="code">  key_mgmt=WPA2-PSK
+  pmf=1
+  mgmt_group_cipher=BIP</pre><span class="note">결과 원문 <span class="mono">outputs/j429_probe.txt</span> 21~23 행 · 스크립트 <span class="mono">jobs/job429_probe.sh</span>(root <span class="mono">wpa_cli status</span>, 사용자 승인 sudo) — §5 후보 2 의 전제가 성립</span></span>
+    <span class="k">판단(§5)</span><span>배제: 공유기 재부팅 · MAC 필터 · 접속 수 · 메시 · WAN · Jetson 드라이버 오류 · 약신호 · 트래픽 · SSH 빈도. 남은 후보(미확정): ① DFS — 끊김(reason 2)은 설명, 이어진 재인증 거부는 설명 못 함 ② PMF + 제조사 드라이버(rtl88x2ce) — 재인증 거부는 설명, 첫 끊김은 아님 ③ AP 펌웨어. 두 현상이 서로 다른 원인일 수 있다. <span class="c1104">(11-04 정정: 실제 모듈 이름은 rtl8822ce — job427b · job428d 가 /sys/module/rtl88x2ce/ 를 읽어 '디렉터리 없음', 드라이버 절전 파라미터는 한 번도 못 읽었다 — Docs/issues/jetson-wifi-link.md §5.1-5)</span></span>
+  </div>
+  <div class="flow">
+    <span class="k">A 안 설치(§7.2, 사용자 승인)</span><span>wpa_supplicant DEBUG 줄만 별도 파일로(syslog 에 안 넣음), <span class="mono">wifi-mon.service</span>: 15 s 마다 링크 · 신호 · pmf, 60 s 마다 AP 채널 스캔으로 비콘 폭, BSSID 가 바뀌거나 끊기면 스냅샷. 첫 비콘 스캔이 98 s 막혀 <span class="mono">timeout</span> 추가 후 재배포</span>
+    <span class="k">스크립트 핵심</span><span><pre class="code">  if [ "$1" = all ]; then out=$(timeout 20 iw dev $IF scan 2&gt;&amp;1); else out=$(timeout 10 iw dev $IF scan freq "$1" 2&gt;&amp;1); fi
+  ...
+    END { ... printf "ap_freq=%s ap_sig=%s vht_w=%s seg1=%s seg2=%s ht2=%s csa=%d quiet=%d\n", ... }'
+  echo "--- wpa_cli status"; wpa_cli -i $IF status 2&gt;&amp;1 | grep -avE 'passphrase|psk|pmk'</pre></span>
+    <span class="k">나온 결과</span><span><pre class="code">2026-09-18 11:03:09 BEACON ap_freq=5180 ap_sig=-52.00 vht_w=1 seg1=42 seg2=50 ht2=above csa=0 quiet=0
+2026-09-18 11:04:10 BEACON ap_freq=5180 ap_sig=-52.00 vht_w=1 seg1=42 seg2=50 ht2=above csa=0 quiet=0</pre><span class="note">결과 원문 <span class="mono">Docs/debug_log/2026-09-18/outputs/j429h_redeploy.txt</span> · 스크립트 원문 <span class="mono">jobs/wifi_mon.sh</span> · 설치 <span class="mono">jobs/job429d_install.sh</span> · <span class="mono">job429h_redeploy.sh</span>. seg2 50 = 160 MHz. <span class="c1104">(11-04 정정: §7.1 '유휴 60 s 에 79 줄' 은 job429c 가 10 s 뒤 스캔을 일부러 한 번 건 창이라 진짜 유휴 양은 더 적다(미측정) — Docs/issues/jetson-wifi-link.md §5.1-7)</span> <span class="c1104">(11-04 정정: 스냅샷 비밀 검사 '1' 을 WPS Device Password ID 단어로 판정한 확인 도구 job429j_secret.sh 의 출력은 저장 안 됨 — 판정의 원문 소실, SUMMARY 문장만 — 같은 카드 §5.1-9)</span></span></span>
+    <span class="k">판정 기준(§7.3 선언)</span><span>끊김 직전 BEACON seg2 50 → 0 또는 CSA=1 → DFS / 폭 그대로 · CSA 0 → DFS 아님 / 재접속 debug 에 msg 1/4 수신 · 2/4 송신 뒤 reason 23 · SA Query → PMF 상태 불일치 / msg 1/4 자체가 없음 → 인증 전 거부. <span class="c1104">(11-04 정정: 09-23 12:05 사건에서 15 s 폴링 순간마다 bssid 가 AP 로 찍혀 EVENT · 스냅샷이 0 — 끊김이 15 s 보다 짧게 끝나면 이 설계는 '사건 순간 debug 400 줄' 을 남기지 못한다 — Docs/issues/jetson-wifi-link.md §5.2-15)</span></span>
+  </div>
+</section>
+
+<section>
+  <h2>로그 · 산출물 누적 조사<span class="sec">§8</span></h2>
+  <div class="flow">
+    <span class="k">Jetson</span><span>233 GB 중 28 GB 사용 · 193 GB 여유. <span class="mono">/var/log/syslog</span> 144.6 MB 가 2 월부터 한 파일 — <b>logrotate 패키지 미설치</b>라 설정이 있어도 한 번도 안 돎</span>
+    <span class="k">스크립트 핵심 · 결과</span><span><pre class="code">== logrotate
+  dpkg: un  logrotate      &lt;none&gt;       &lt;none&gt;       (no description available)
+  ls: cannot access '/usr/sbin/logrotate': No such file or directory
+  ls: cannot access '/lib/systemd/system/logrotate.timer': No such file or directory</pre><pre class="code">== 날짜별 줄·MB (최근 10 일)
+  Sep 14    95482 줄    9.7 MB
+  Sep 15    79870 줄    8.0 MB
+  Sep 16    21033 줄    2.2 MB
+  Sep 17    10557 줄    1.2 MB</pre><span class="note">결과 원문 <span class="mono">Docs/debug_log/2026-09-18/outputs/j430b_logs.txt</span> · <span class="mono">j430c_talkers.txt</span> · 스크립트 <span class="mono">jobs/job430b_logs.sh</span> · <span class="mono">job430c_talkers.sh</span>. 09-16 감소 = mavlink-router(3 s 마다 재시작하던 크래시 루프) 비활성화. 지금 주 발생원은 iio-sensor-proxy · SSH 세션 시작/종료 · 카메라 UVC 조회 실패</span></span>
+    <span class="k">PC</span><span>저장소 <span class="mono">.git</span> pack 7.8 MB(bag 제외 규칙 정상), 작업 트리 bag 186 MB(백업 없음). 세션 작업 폴더 283 MB 중 bag 27 개 160 MB 는 저장소와 중복, <b>10 개 114 MB(09-11 원시 bag)는 저장소에 없음</b>. 평문 비밀번호가 든 러너 사본 257 개(저장소 밖). <span class="c1104">(11-04 정정: PC 쪽 수치(257 · 160 MB · 114 MB)는 대화에서 돌린 du 결과로 출력 원문이 없다 — SUMMARY 문장이 유일한 출처. 또 그 작업 폴더는 09-28 에 저절로 사라져, '옮긴 뒤에만 지운다' 는 순서를 지켰는데도 09-11 원본 bag 을 잃은 것으로 보인다(추정) — Docs/issues/storage-housekeeping.md §5-4 · §5-5)</span></span>
+    <span class="k">결정(사용자)</span><span><b>몇 GB 단위가 아니면 정리는 뒤로.</b> 보류 순서: ① logrotate 설치(현 syslog 보관 먼저) ② 09-11 원본 bag 을 저장소로 옮긴 뒤에만 중복 삭제 ③ 운용 도구를 저장소로 옮기고 비밀번호를 git 제외 파일에서 읽게 한 뒤 평문 사본 삭제(크기가 아니라 보안 항목) ④ <span class="mono">~/.ros/log</span> · apt 캐시 · iio-sensor-proxy</span>
+  </div>
+</section>
+
+<section>
+  <h2>바로잡은 내 오류</h2>
+  <p class="note">그날 SUMMARY 에 정정으로 적힌 것들입니다. 실수 칸 형식(10-20 도입) 전이라 SUMMARY 문장에 있는 정보만 옮겼고, 빈 칸은 기록이 없는 것입니다.</p>
+  <div class="pm">
+    <h3>SLAM 보정을 두 번 셈 — 분해 도구 버그 (§11.2)</h3>
+    <div class="flow">
+      <span class="k">하려 한 것</span><span>map→odom 변화로 SLAM 보정을 몸체 기준 앞 · 옆 · 방향으로 분해(job431 · job431b)</span>
+      <span class="k">본 것</span><span>큰 보정 목록(job431c)에 같은 값이 0.1 s 간격으로 두 번씩. 원시 순서(job431d): 수신 순서로는 값 변경 1 회</span>
+      <span class="k">왜</span><span>slam_toolbox 는 같은 헤더 stamp 로 두 번 보내고(보정 전 · 후 값), 도구가 stamp 로만 정렬해 두 값 순서가 뒤바뀜 → 한 보정을 두 번 세고 되돌림은 길이 0 구간이라 버려짐</span>
+      <span class="k">영향</span><span>§9.1 · §10 수치가 과대(옆 보정 +6.1~+10.3 → 정정 +7.5~+9.8 cm, 게걸음 +2.69 → +2.57°). '도착 뒤 보정이 섞였다' 고 한 설명도 틀림. 보정값 −2.68° 결정 근거(정지 측정)는 유지</span>
+      <span class="k">다음에 알아보는 법</span><span>같은 stamp 는 마지막 수신값만(CLAUDE.md §6 '같은 stamp 를 두 번 발행 — 분석 시 마지막 값만')</span>
+      <span class="k">데이터</span><span><span class="mono">jobs/job431c_bigcorr.py</span> · <span class="mono">job431d_morows.py</span> → <span class="mono">outputs/j436b_bigcorr.txt</span> · <span class="mono">j436c_morows.txt</span> · 정정 값 <span class="mono">outputs/j437_dedup.txt</span></span>
+    </div>
+  </div>
+  <div class="pm">
+    <h3>판정 기준을 지표 잡음보다 좁게 선언 (§9.4 → §11.3)</h3>
+    <div class="flow">
+      <span class="k">하려 한 것</span><span>데크 보정 효과를 ① 게걸음 |평균| &lt; 0.7° ② 옆 보정 &lt; 2 cm/주행 ③ 로컬−전역 상자 차 &lt; 2 cm 로 판정</span>
+      <span class="k">본 것</span><span>① −0.71°(0.01° 초과) ② −4.6 / −3.2 cm — 1 회 보정당 ≈ 1 cm 흔들림의 합(39 회 → ≈ ±6 cm)이 기준보다 큼</span>
+      <span class="k">결론</span><span>판정은 그대로 불합격으로 기록하고, 기준이 잡음보다 좁았던 것은 설계 실수로 적음. 체계적 성분(b)은 사라짐</span>
+      <span class="k">다음에 알아보는 법</span><span>기준을 선언하기 전에 같은 지표의 회차 간 잡음을 먼저 잰다</span>
+    </div>
+  </div>
+  <div class="pm">
+    <h3>'0/6 이면 p ≈ 0.03' (§12.3 → §13.6)</h3>
+    <div class="flow">
+      <span class="k">본 것</span><span>실제 결과로 계산하니 전체 중단 3/4 → 1/6 은 p ≈ 0.12, 데크 연결 Optimizer fail 만 2/4 → 0/6 도 p ≈ 0.13</span>
+      <span class="k">왜</span><span>§12.3 의 0.03 은 전체 중단 기준 계산이었다 — 비교 대상이 다른 p</span>
+      <span class="k">결론</span><span>'간헐 중단 해소' 는 사전 기준으로 합격이지만 우연을 배제할 만큼 강하지 않다</span>
+      <span class="k">데이터</span><span><span class="mono">Docs/issues/intermittent-abort-dy.md</span> §5.1</span>
+    </div>
+  </div>
+  <div class="pm">
+    <h3>그 밖의 그날 정정</h3>
+    <div class="tbl"><table>
+      <tr><th>무엇</th><th>정정</th></tr>
+      <tr><td>'스무더가 3~4 cm 안쪽으로 당긴다'(곡률 어림)</td><td>측정으로 기각 — Δ ≤ 0.5 cm(§15.1)</td></tr>
+      <tr><td>출발 게이트를 99(내접) 셀로 잼</td><td>반폭 이중 계산 → LETHAL(100)만(§13.3, 09-11 과 같은 실수)</td></tr>
+      <tr><td>게이트 정규식이 음수 y 를 버림</td><td><span class="mono">^[0-9.]+$</span> → <span class="mono">^-?[0-9.]+$</span>(창이 nan 으로 오판, §13.3)</td></tr>
+      <tr><td>'기준선 연속성 손실'(§16)</td><td>S5 기준선은 아직 측정 전이라 추가 비용 0 — 사용자 지적이 맞음(§17.1)</td></tr>
+      <tr><td>heredoc 안 <span class="mono">\\n</span></td><td>리터럴 <span class="mono">\n</span> 으로 들어가 토픽 줄이 합쳐질 뻔(<span class="mono">bash -n</span> 통과) → Edit 로 고치고 확장 결과(토픽 18 개)로 검증(§17.3)</td></tr>
+    </table></div>
+  </div>
+</section>
+
+<section>
+  <h2>다음 후보 (그날 §18)</h2>
+  <ul>
+    <li>cc1~cc3 — prep 뒤 <span class="mono">params.txt</span> 로 critics 반영 확인 → §16 기준 판정, 러너 ① vs 코스트맵 여유 일치 확인</li>
+    <li>S2 디시메이션 결정(반나절 한정) → S5 기준선 3 회 → <span class="mono">BASELINE_STVL.md</span></li>
+    <li>단계별 bag 시각화 도구 · Phase N0</li>
+    <li>남은 과제: 직선 전진 · 후진 + 스캔 정합으로 데크 yaw 를 더 조이기 · 카메라 장착 yaw 정지 확인</li>
+  </ul>
+</section>
+
+<section>
+  <h2>이후 · 관련 카드</h2>
+  <ul>
+    <li>09-21: CostCritic 주행 cc1~cc5 — 여유 8~13 cm, Phase S 기준선(<span class="mono">Docs/debug_log/2026-09-21/BASELINE_STVL.md</span>)</li>
+    <li>09-23: wifi-mon 이 있는 상태에서 새 양상(결합 · 인증 성공 뒤 DHCP 무응답) — 09-15~17 형과 다름. 10-14 · 10-15: 다른 서버가 <LAN-B>.101 을 받는 IP 충돌을 사용자가 찾아 .110 예약(09-15~17 형과 같은 원인인지는 미확인)</li>
+    <li>10-29 · 10-30: <span class="mono">rover.urdf.xacro</span> 를 urdf 값으로 다시 씀(<span class="mono">Docs/debug_log/2026-10-29/jobs/chk_xacro_vs_urdf.py</span>)</li>
+    <li>카드: <span class="mono">Docs/issues/sensor-deck-yaw.md</span> · <span class="mono">Docs/issues/intermittent-abort-dy.md</span> · <span class="mono">Docs/issues/obstacles-to-costcritic.md</span> · <span class="mono">Docs/issues/avoid-run-metrics.md</span> · <span class="mono">Docs/issues/mppi-offline-simulator.md</span> · <span class="mono">Docs/issues/jetson-wifi-link.md</span> · <span class="mono">Docs/issues/storage-housekeeping.md</span> · <span class="mono">Docs/issues/phase-s-baseline.md</span></li>
+  </ul>
+</section>
+</div>

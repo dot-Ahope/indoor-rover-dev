@@ -272,3 +272,6 @@
 - 오늘 완료: 절단 4→2 A/B, 감쇠 0.95→0.99(속도 기준 검토), 절차 v2.0→v2.1, N4 주행 5 회(S 2·N2 3), N5 결정(로컬 채택), N6-0 launch 통합(V1~V5), N6-1 전역 이전 + 유령 셀 대응 + 주행 3 회, 조향 지표 재검토, N7(동적)·GPU 확대·자유 이동 로드맵 검토(`NAV2_EXPLORATION_PLAN.md §7`).
 - Jetson 상태: 모드 N(nvblox 전역+로컬, 컨테이너·노드 실행 중), 로버는 목표 지점(2 m 앞), 배터리 11.96 V → 충전 필요. 포크 diff(round→floor) 미커밋 상태 유지. 미푸시 커밋 다수(지시 시 origin·personal).
 - 다음 세션 첫 작업(N6-2): ① 러너 재고정 위치 조건 ② realsense 점군 생성 끄기·릴레이 정지 → CPU 재판정 ③ 게이트 "목표 부근 근거 없는 셀"·"상자 가장자리 차" 추가 ④ 슬라이스 0.03 정지 측정 ⑤ 실제 재부팅 뒤 prep 한 번으로 모드 N 게이트 통과 확인.
+
+## (2026-11-04 추가) 사후 정리 페이지
+- 「09-22 nvblox 전역 이전」 https://claude.ai/artifact/6ag61w9uhik6PYuGQ635Ba — 로컬 `figures/day_summary_0922.html`(본문 `jobs/report_0922_body.html` · 조립 `jobs/fig_report_0922.py`). 이 SUMMARY 를 원천으로 11-04 에 만듦, 뒤 정정은 페이지에 '11-04 정정' 표시(문제 대장 카드 근거). 기록 → `Docs/debug_log/2026-11-04/SUMMARY.md` §11.

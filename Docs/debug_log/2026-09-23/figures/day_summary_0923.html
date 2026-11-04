@@ -1,0 +1,318 @@
+<title>09-23 Phase N 마감</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* 배치: 실험 노트 — 좁은 본문 열(65자) + 넓게 펼치는 그림 · 표, 판정은 왼쪽 띠 색으로(10-20 판과 같은 틀) */
+:root{
+  --bg:#f3f4f6; --paper:#ffffff; --ink:#1b1f24; --muted:#5b6470; --line:#d9dde3;
+  --ir:#b3263e;      /* 프로젝터 켬 · 실패 쪽 */
+  --cool:#1f7a72;    /* 프로젝터 끔 · 통과 쪽 */
+  --warn:#a86a00;
+  --tint-ir:#f8e8eb; --tint-cool:#e4f2f0; --tint-warn:#fbf1df;
+  --f-body:"IBM Plex Sans KR","Malgun Gothic","Apple SD Gothic Neo",sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#111418; --paper:#181c21; --ink:#e6e9ed; --muted:#9aa4b0; --line:#2c333b;
+  --ir:#ef6b80; --cool:#5cc4b8; --warn:#e0a640;
+  --tint-ir:#2b1b1f; --tint-cool:#15292a; --tint-warn:#2a2316; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#111418; --paper:#181c21; --ink:#e6e9ed; --muted:#9aa4b0; --line:#2c333b;
+  --ir:#ef6b80; --cool:#5cc4b8; --warn:#e0a640;
+  --tint-ir:#2b1b1f; --tint-cool:#15292a; --tint-warn:#2a2316; color-scheme:dark}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.65;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:28px 64px}
+.wrap{max-width:980px;margin:0 auto;display:flex;flex-direction:column;gap:34px}
+header{display:flex;flex-direction:column;gap:6px;border-bottom:2px solid var(--ink);padding-bottom:14px}
+.eyebrow{font-family:var(--f-mono);font-size:12px;letter-spacing:.08em;color:var(--muted);text-transform:uppercase}
+h1{font-size:30px;line-height:1.25;margin:0;font-weight:700;text-wrap:balance}
+h2{font-size:20px;margin:0 0 4px;font-weight:700;text-wrap:balance}
+h2 .sec{font-family:var(--f-mono);font-size:13px;color:var(--muted);font-weight:400;margin-left:8px}
+p{margin:0;max-width:68ch}
+section{display:flex;flex-direction:column;gap:12px}
+.lead{color:var(--muted);max-width:72ch}
+.verdicts{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
+.v{background:var(--paper);border:1px solid var(--line);border-left:5px solid var(--muted);padding:12px 14px;display:flex;flex-direction:column;gap:4px;min-width:0}
+.v.ok{border-left-color:var(--cool)} .v.no{border-left-color:var(--ir)} .v.wait{border-left-color:var(--warn)}
+.v b{font-size:15px} .v span{color:var(--muted);font-size:13.5px}
+.pill{display:inline-block;font-family:var(--f-mono);font-size:11.5px;padding:1px 8px;border-radius:999px;white-space:nowrap}
+.pill.ok{background:var(--tint-cool);color:var(--cool)} .pill.no{background:var(--tint-ir);color:var(--ir)} .pill.wait{background:var(--tint-warn);color:var(--warn)}
+.tbl{overflow-x:auto;background:var(--paper);border:1px solid var(--line)}
+table{border-collapse:collapse;width:100%;font-size:13.5px;font-variant-numeric:tabular-nums}
+th,td{padding:7px 10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{font-weight:500;color:var(--muted);font-size:12.5px;white-space:nowrap}
+td.n{font-family:var(--f-mono);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr.hl td{background:var(--tint-cool)} tr.bad td{background:var(--tint-ir)}
+figure{margin:0;background:var(--paper);border:1px solid var(--line);padding:10px;display:flex;flex-direction:column;gap:8px}
+figure img{width:100%;height:auto;display:block}
+figcaption{font-size:13px;color:var(--muted)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media (max-width:720px){.two{grid-template-columns:1fr}}
+ul{margin:0;padding-left:20px;max-width:72ch} li{margin:2px 0}
+.mono{font-family:var(--f-mono);font-size:13px}
+.flow{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;font-size:14px}
+.flow .k{font-family:var(--f-mono);color:var(--muted);font-size:12.5px;padding-top:2px;white-space:nowrap}
+.note{font-size:13px;color:var(--muted)}
+.pm{background:var(--paper);border:1px solid var(--line);padding:12px 14px;display:flex;flex-direction:column;gap:8px}
+.pm h3{font-size:15.5px;margin:0;font-weight:700}
+.pm .flow{grid-template-columns:auto 1fr;gap:6px 14px}
+.pm .flow span:not(.k){max-width:none}
+</style>
+<style>
+.code{margin:0;font-family:var(--f-mono);font-size:12.5px;line-height:1.5;background:var(--bg);border:1px solid var(--line);padding:8px 10px;overflow-x:auto;white-space:pre;max-width:100%}
+.flow > span{min-width:0}
+.c1104{font-weight:600;color:var(--ink);background:var(--tint-warn);border-left:3px solid var(--warn);padding:0 5px;margin-left:3px;border-radius:2px;white-space:normal;font-size:.92em}
+</style>
+<div class="wrap">
+<header>
+  <div class="eyebrow">Indoor Rover · 2026-09-23 · Docs/debug_log/2026-09-23 §0–§20.6 · 주행 있음 · 11-04 사후 작성</div>
+  <h1>09-23 Phase N 마감 · 회전 옆 밀림</h1>
+  <p class="lead">이 페이지는 2026-11-04 에 그날의 SUMMARY(<span class="mono">Docs/debug_log/2026-09-23/SUMMARY.md</span>)와 같은 날짜 폴더의 jobs · outputs 를 원천으로 다시 만든 사후 정리입니다. 페이지에만 있는 판정 · 수치는 없습니다. 오전에는 N6-2(재부팅 복구 · 점군 끄기 · 슬라이스 높이 · 테이프 유령 · 네트워크 끊김)를 거쳐 <b>N6 최종 판정</b>을 냈고, 오후에는 F0 왕복 코스를 시작해 <b>제자리 회전 중 차체가 옆으로 밀린다</b>는 것을 줄자로 확인했습니다. 이후 문제 대장 카드와 09-28 기록에서 원문과 다르다고 확인된 곳은 원래 문장을 그대로 두고 <span class="c1104">(11-04 정정: …)</span> 표시를 붙였습니다 — 이 페이지에 <b>22 곳</b>.</p>
+  <p class="note">이 날의 주제 페이지(수정하지 않음): <span class="mono">Docs/debug_log/2026-09-23/figures/2026-09-23_phase_n_close.html</span>(Phase N 마감 보고) · <span class="mono">Docs/debug_log/2026-09-23/figures/2026-09-23_f0a1_return_abort.html</span>(F0-a 복귀 중단).</p>
+</header>
+
+<section>
+  <h2>오늘의 판정</h2>
+  <div class="verdicts">
+    <div class="v ok"><b>재부팅 복구 B1 통과</b><span>재부팅 뒤 손작업은 보드 리셋뿐, prep 한 번으로 J · K · L · M 통과 (§2)</span></div>
+    <div class="v no"><b>점군 끄기(C1) 철회</b><span>−6 %p 뿐이고, 점군은 게이트 · 러너(계측)의 입력이라 시험 중 끌 수 없음 → <span class="mono">camera_pointcloud:=keep|off</span> 기본 keep (§3 · §7)</span></div>
+    <div class="v ok"><b>슬라이스 최소 높이 0.06 유지</b><span>0.03 은 통합 1.4 m 안에서도 목표 부근 유령 2~3 셀 (§4 H1 불합격)</span></div>
+    <div class="v ok"><b>유령 원인 = 초록 테이프</b><span>덮기 전 지속 1 셀 → 덮은 뒤 0. IR 반사 기전은 추정 (§9 · §10)</span></div>
+    <div class="v wait"><b>N6 최종: 기능 통과 · CPU 동등</b><span>유효 5 회 안전 · 기억 기준 통과, CPU 320~325 % 로 &lt;320 은 1~5 %p 미달, 'CPU 절감' 은 채택 근거가 아님 (§13)</span></div>
+    <div class="v no"><b>F0-a f0a1 복귀 중단</b><span>상자 옆 여유 4.4 cm 에서 풋프린트가 LETHAL 1 칸을 밟아 모든 궤적 충돌 (§18 · §19)</span></div>
+    <div class="v wait"><b>f0a2 판정 불가 → 옆 밀림 발견</b><span>제자리 180° 회전 중 차체가 ≈0.2 m 옆으로 밀림(줄자 = SLAM), EKF 는 못 봄 (§20.1 · §20.2)</span></div>
+  </div>
+</section>
+
+<section>
+  <h2>아침 — Wi-Fi 4 번째 끊김과 재부팅 복구<span class="sec">§0 · §0.1 · §2</span></h2>
+  <div class="flow">
+    <span class="k">본 것</span><span>08:56 부팅 뒤 <WIFI-B> 에 결합 · 4-way 인증은 세 번 성공(9:00:50 · 9:01:41 · 9:03:21)했지만 매번 DHCP 응답 없이 45 s 뒤 <span class="mono">ip-config-unavailable</span> → ALOPS 로 자동 전환(<LAN-A>.8).<span class="c1104">(11-04 정정: 1970 표기 시각은 부팅 기준 시계라 실제 = 표기 − 3 분 4 초 — 세 시도는 실제 ≈ 08:57:46 · 08:58:37 · 09:00:17 이고, 45 s 타임아웃 줄은 세 번째 시도만 원문에 있다 — 근거 Docs/issues/jetson-wifi-link.md 모순 10 · 11)</span></span>
+    <span class="k">나온 결과</span><span><pre class="code">Jan  1 09:03:08 … dhcp4 (wlP1p1s0): activation: beginning transaction (timeout in 45 seconds)
+Jan  1 09:03:53 … device (wlP1p1s0): state change: ip-config -&gt; failed (reason 'ip-config-unavailable', …)</pre><span class="note">결과 원문 <span class="mono">Docs/debug_log/2026-09-23/outputs/j530_wifi_boot.txt</span> · 스크립트 원문 <span class="mono">Docs/debug_log/2026-09-23/jobs/job530_wifi_boot.sh</span> · <span class="mono">wifi_mon_0923/</span> 원본 사본은 소실</span></span>
+    <span class="k">추론</span><span>이전 3 회(AP deauth · PSK 거부)와 달리 인증은 되는데 데이터 경로(DHCP)가 안 됨. 사용자 결정: 공유기에서 Jetson MAC 에 고정 할당(예약) + <span class="mono">dad-timeout 3000</span> · wifi_mon 에 <span class="mono">arping -D</span>. 10:14:35 DHCP 임대 <LAN-B>.101(2 s).</span>
+    <span class="k">재부팅 복구 B1</span><span>스크립트 재전송 → <span class="mono">docker start</span> → prep(보드 리셋만 손작업) 한 번으로 게이트 A~D · J · K · L · M 통과. 새 게이트 N 은 파서 결함으로 값이 비어 판정 불가 → 수정 뒤 재검사(§2.1).<span class="c1104">(11-04 정정: §2 · §4 가 가리키는 '§2.1' 은 없다 — 게이트 N 파서 수정 결과는 §6 에 있다 — 근거 Docs/issues/nvblox-n6-global-ghosts.md §6 항목 7)</span></span>
+  </div>
+</section>
+
+<section>
+  <h2>CPU 회수 — 점군 끄기는 계측을 끊었다<span class="sec">§3 · §7</span></h2>
+  <div class="flow">
+    <span class="k">본 것</span><span>realsense-ros(neon 필터판)의 실제 파라미터는 <span class="mono">pointcloud__neon_.enable</span>. false 로 하면 점군 · 릴레이 0 Hz, 깊이 15 Hz 유지.</span>
+    <span class="k">스크립트 핵심</span><span><pre class="code"># jobs/job531_pcl_toggle.sh 8 · 11 행 — top 2 회(10 s 간격)의 두 번째 표본에서 CPU, nvblox 로그에서 깊이 콜백 Hz
+top -b -n2 -d10 2&gt;/dev/null | awk '/PID +USER/{f++} f==2 &amp;&amp; $9+0&gt;0.5 {print $1, $9, $NF}' &gt; /tmp/top531.txt
+echo "  nvblox 깊이 콜백: $(grep -aA7 'NVBlox Rates' /tmp/nvblox_node.log | grep -aE 'ros/depth_image_callback' | …) Hz | 전체 합(top): …"</pre></span>
+    <span class="k">나온 결과</span><span><pre class="code">## A. 점군 켬(현재)
+  CPU 20 s: sensor_conditioner 42.9% | nvblox_+ 17.3% | planner+ 9.8% | depth_relay 3.7% |
+  top 상위(&gt;3%): python3=42.9 rplidar+=18.8 nvblox_+=17.3 realsen+=15.3 …
+  nvblox 깊이 콜백: 15.1 Hz | 전체 합(top): 201 %
+## B. pointcloud__neon_.enable false
+  점군 Hz:  | 깊이 Hz: 14.974 | 릴레이 출력 Hz:
+  top 상위(&gt;3%): python3=42.8 rplidar+=18.6 nvblox_+=16.7 realsen+=13.9 …
+  nvblox 깊이 콜백: 15.1 Hz | 전체 합(top): 195 %</pre><span class="note">결과 원문 <span class="mono">Docs/debug_log/2026-09-23/outputs/j531c_pcl.txt</span>(1 · 2 차 <span class="mono">j531_b1_c1.txt</span> · <span class="mono">j531b_pcl.txt</span> 는 파라미터 이름 오류) · 스크립트 원문 <span class="mono">Docs/debug_log/2026-09-23/jobs/job531_pcl_toggle.sh</span></span></span>
+    <span class="k">추론</span><span>realsense 15.3 → 13.9, depth_relay 3.7 → 0, 합 −6 %p. 기대(−10 %p)보다 작다 — realsense 비용은 점군보다 USB 수신 · 복호가 대부분(추정).<span class="c1104">(11-04 정정: §1 의 선언 기준 C1 'realsense ≤ 10 %, 릴레이 ≤ 1 %' 로는 <b>불합격</b>인데 SUMMARY 는 '기대보다 작다' 로만 적었다 — 근거 Docs/issues/nvblox-n6-global-ghosts.md §6 항목 8)</span></span>
+    <span class="k">결론(§7)</span><span>n62a 출발 게이트가 '감사 출력 불완전 → 창 −0.221' 로 거부. 게이트 D · E · F 와 러너 job125 의 상자 모델이 <span class="mono">/camera/camera/depth/color/points</span> 를 쓴다 → 점군은 스택이 아니라 <b>계측 도구의 입력</b>. launch 에 <span class="mono">camera_pointcloud:=keep|off</span>(기본 keep), CPU 판정에 '계측 제외' 값을 함께 적기로.</span>
+  </div>
+</section>
+
+<section>
+  <h2>슬라이스 최소 높이 0.03 vs 0.06 — 0.06 유지<span class="sec">§4</span></h2>
+  <div class="flow">
+    <span class="k">나온 결과</span><span><pre class="code">## job315 원출력
+IndexError: list index out of range
+## h06: 슬라이스 min 0.06 실효 0.06
+  표본 1: 상자 셀/프레임 10 | 목표 부근 슬라이스 ≤0 0 · 전역 LETHAL 0 | 코스트맵 상자 최대 y ?
+  표본 2: 상자 셀/프레임 11 | 목표 부근 슬라이스 ≤0 0 · 전역 LETHAL 0 | 코스트맵 상자 최대 y ?
+## h03: 슬라이스 min 0.03 실효 0.03
+  표본 1: 상자 셀/프레임 11 | 목표 부근 슬라이스 ≤0 0 · 전역 LETHAL 2 | 코스트맵 상자 최대 y ?
+  표본 2: 상자 셀/프레임 10 | 목표 부근 슬라이스 ≤0 1 · 전역 LETHAL 3 | 코스트맵 상자 최대 y ?</pre><span class="note">결과 원문 <span class="mono">Docs/debug_log/2026-09-23/outputs/j532_slice_h.txt</span> · 스크립트 원문 <span class="mono">Docs/debug_log/2026-09-23/jobs/job532_slice_h.sh</span></span></span>
+    <span class="k">결론</span><span>H1 불합격 — 0.03 은 유령이 돌아오고 상자 커버는 같다. 09-22 의 '0.03 복귀 가능' 추정 기각.<span class="c1104">(11-04 정정: H1 의 '가장자리 차' 는 재지 못했다 — job315 가 인자 없이 불려 IndexError, 표의 '카메라 상자 y 구간' 은 점군 값이라 슬라이스 설정과 무관. 판정은 유령 셀 수만으로 났다 — 근거 Docs/issues/nvblox-n6-global-ghosts.md §6 항목 9)</span></span>
+  </div>
+</section>
+
+<section>
+  <h2>게이트 M 이 테이프 유령을 잡다<span class="sec">§6 · §9 · §10</span></h2>
+  <div class="flow">
+    <span class="k">본 것</span><span>n62b prep: 목표 여유 0.191 m, 게이트 M 불합격(전역 LETHAL 1 셀 (1.57, −0.26), 라이다 근거 0). 스냅샷 = 통로 우측 바닥 초록 테이프 점선. 1 차(왼쪽 테이프만 제거)는 지속, 2 차(오른쪽 점선도 가림) 0.</span>
+    <span class="k">나온 결과</span><span><pre class="code">M 목표 부근(x 1.5~2.3,|y|&lt;0.45) 전역 LETHAL 7 셀, 라이다 근거 점 0 → 불합격   ← 제거하러 들어온 사람 흔적
+M 목표 부근(x 1.5~2.3,|y|&lt;0.45) 전역 LETHAL 1 셀, 라이다 근거 점 0 → 불합격   ← 왼쪽 테이프만 제거
+L 슬라이스 커버: 상자 띠 셀/프레임 9, 근거리 자취 프레임 0/103 → 통과
+M 목표 부근(x 1.5~2.3,|y|&lt;0.45) 전역 LETHAL 0 셀, 라이다 근거 점 0 → 통과      ← 오른쪽 점선도 가림</pre><span class="note">결과 원문 <span class="mono">Docs/debug_log/2026-09-23/outputs/j538_tape_off.txt</span> · 스냅샷 <span class="mono">outputs/snap_n62b.jpg</span> · <span class="mono">snap_n62b2.jpg</span> · <span class="mono">snap_n62b3.jpg</span> · 게이트 원문 <span class="mono">Docs/debug_log/2026-09-23/jobs/job505_modeN_gate.sh</span><span class="c1104">(11-04 정정: 마지막 '통과' 블록에서 게이트 L 의 상자 띠 최소 x 가 0.875(물리 전면 1.149 → −0.274 m)였는데 L 은 셀 수 · 근거리 자취만 판정해 통과했다. 덮개 · 사람 흔적인지 미확인 — 근거 Docs/issues/nvblox-n6-global-ghosts.md §6 항목 10)</span></span></span>
+    <span class="k">결론</span><span>테이프가 원인임을 확정(유무로 원인 물체만 확정, IR 반사 기전은 추정). 사용자 결정: 통제 벤치마크는 테이프를 치우고, 테이프 사례는 강건성 시험 1 호(R1)로 등록.<span class="c1104">(11-04 정정: 게이트 M 의 구현은 '셀별 라이다 · 카메라 근거 대조' 가 아니라 구역 전체 라이다 점 수가 0 이고 전역 LETHAL ≥ 1 일 때만 불합격 — 구역에 라이다 점이 하나라도 있으면 유령이 있어도 통과(코드 확인, 실사례 없음) — 근거 Docs/issues/nvblox-n6-global-ghosts.md §6 항목 5)</span></span>
+    <span class="k">게이트 N</span><span>§6 수정판 job505 로 J · K · L · M · N 통과, N 은 카메라 가장자리 값이 비어 차를 0.025 로 계산 — '판정은 통과 방향'.<span class="c1104">(11-04 정정: 게이트 N 은 빈 값을 0 으로 계산한다(<span class="mono">awk a-b</span>) — <span class="mono">j510_prep_0923c.txt</span> "0.025 − ? = 0.025 → 통과". '불완전하면 안전하게 거부된다' 는 절차 문서 설명은 N 에 맞지 않는다 — 근거 Docs/issues/nvblox-n6-global-ghosts.md §6 항목 6)</span></span>
+  </div>
+</section>
+
+<section>
+  <h2>오전의 네트워크 끊김 — Jetson 무선은 살아 있었다<span class="sec">§11 · §12</span></h2>
+  <div class="flow">
+    <span class="k">본 것</span><span>11:57~12:06 PC → Jetson 무응답(로버는 안 움직임). Jetson mon.log 는 11:50~12:05:09 내내 WEB_DEV · .101 유지, 링크 속도 정상(rx 390~780), 신호 −56 dBm. 그 뒤 12:05:03 AP deauth(reason 2) → reason 23.<span class="c1104">(11-04 정정: 원문 <span class="mono">j543</span> 은 11:50~12:05 에 rx 6.0 · 175.6 · 1.0 Mbit 로 떨어진 구간을 포함한다(신호 −55~−58) — 끊김 전 4 분의 rx 변화가 SUMMARY 에서 빠졌고, 12:05 사건 뒤엔 DHCP 45 s 무응답까지 이어졌다 — 근거 Docs/issues/jetson-wifi-link.md 모순 12 · 13)</span></span>
+    <span class="k">추론</span><span>IP 충돌: 이 창에서 <span class="mono">ARP_DUP</span> 0 건(15 s 마다 <span class="mono">arping -D</span>). AP 가 전달을 멈췄다면 ARP 응답도 안 오므로 완전 배제는 못 함(추정).<span class="c1104">(11-04 정정: 'ARP_DUP 0' 은 측정이 아니었다 — job535 의 <span class="mono">S cp … &amp;&amp; S systemctl restart wifi-mon</span> 사슬이 grep 종료 코드 1 로 cp 뒤에서 끊겨 서비스가 재시작되지 않았고, mon.log 루프 간격도 15.29 → 15.19 s 로 늘지 않았다. 09-23 의 충돌 여부는 미확인 — 근거 Docs/issues/jetson-wifi-link.md 실수 3)</span></span>
+    <span class="k">12:19 두 번째</span><span>같은 시각 Jetson 온보드 트레이스는 게이트웨이 핑 2 s 마다 성공 → 끊긴 구간은 PC → ALOPS(NAT) → WEB_DEV → Jetson 경로.</span>
+    <span class="k">나온 결과</span><span><pre class="code">12:17:01 ip=<LAN-B>.101/24 link=b0:38:6c:XX:XX:XX -55  gw=ok neigh=b0:38:6c:XX:XX:XX REACHABLE
+12:17:03 ip=<LAN-B>.101/24 link=b0:38:6c:XX:XX:XX -55  gw=ok neigh=b0:38:6c:XX:XX:XX REACHABLE</pre><span class="note">결과 원문 <span class="mono">Docs/debug_log/2026-09-23/outputs/j544_drop2.txt</span> · 트레이스 스크립트 <span class="mono">Docs/debug_log/2026-09-23/jobs/job540_trace.sh</span>(Jetson <span class="mono">/tmp/j540_trace.txt</span> 원천 소실, 발췌만)<span class="c1104">(11-04 정정: 위 줄처럼 게이트웨이 이웃 MAC = 링크 BSSID — 게이트웨이 <LAN-B>.1 은 WEB_DEV AP 자신이다. 이 시험은 Jetson ↔ AP 구간만 보증하고 AP ↔ PC 쪽 공유기 구간은 가르지 못한다 — 근거 Docs/issues/jetson-wifi-link.md 모순 17)</span></span></span>
+  </div>
+</section>
+
+<section>
+  <h2>C2 주행 3 회와 N6 최종 판정<span class="sec">§8 · §12 · §13</span></h2>
+  <div class="tbl"><table>
+    <tr><th>회차</th><th>결과</th><th>미달</th><th>상자 여유</th><th>러너 ① / ②</th><th>CPU 합</th></tr>
+    <tr><td>n62a 10:35</td><td>성공 31.7 s</td><td>0</td><td>16.8 cm</td><td>14.0 / 9.5(유효)</td><td>324 %</td></tr>
+    <tr class="bad"><td>n62b 12:24</td><td>성공 33.2 s</td><td>1</td><td>19.0</td><td>16.9 / 12.9</td><td>(422, 무효 — Wi-Fi 재연결 뒤 DDS 부하 추정)</td></tr>
+    <tr><td>n62c 12:44</td><td>성공 32.3 s</td><td>1</td><td>15.1</td><td>13.8 / 10.3</td><td>321</td></tr>
+  </table></div>
+  <div class="flow">
+    <span class="k">본 것</span><span>n62b 는 구성이 같은데 ekf · slam · bt · planner 가 일제히 2~3 배. n62c 는 스택 재기동 직후 ekf 11.6 · slam 11.6 으로 n62a 와 같음 → n62b 422 는 12:05 재연결 뒤 DDS 부하라는 추정을 뒷받침.</span>
+    <span class="k">R1 러너 재고정</span><span><span class="mono">REFIX_MAX</span> 0.30 → 0.06. "3 회 모두 t≈1.1 s 의 튄 검출이 '점프' 로 거부되고 ① 유효".<span class="c1104">(11-04 정정: <span class="mono">_refix.csv</span> 로는 t≈1.1 s 에 'jump' 로 거부된 것은 n62a 뿐이고, n62b · n62c 는 그 시각 yaw 7.5° · 5.5° 라 'yaw' 로 건너뛰었다 — REFIX_MAX 0.06 이 시험된 것은 1 회 — 근거 Docs/issues/avoid-run-metrics.md §6 항목 16)</span></span>
+    <span class="k">조향 반전</span><span>표의 0.01 · 0.03 · 0.05 문턱 값(n62b 9.29 · 3.61 · 0 등).<span class="c1104">(11-04 정정: 0.03 · 0.05 값은 저장되지 않은 별도 재계산이다. 카드 작성 때 같은 정의로 11 회를 다시 계산해 SUMMARY 값과 일치 확인(n62a 0.03 은 '—' 로 비어 있는데 계산값 0.00) — 근거 Docs/issues/avoid-run-metrics.md §6 항목 14)</span></span>
+    <span class="k">n62c 준비</span><span>prep(스택 전체 재기동)으로 부하 해소를 확인한 뒤 진행.<span class="c1104">(11-04 정정: n62c 첫 prep(<span class="mono">j510_prep_n62c.txt</span>)은 L 7 · M 1 · N −0.028 로 불합격이었고(로버가 출발 테이프로 돌아오기 전 자세로 돈 것으로 추정), 두 번째(<span class="mono">j510_prep_n62c2.txt</span>)가 통과 — SUMMARY §13 에 첫 시도 기록 없음 — 근거 Docs/issues/nvblox-n6-global-ghosts.md §6 항목 11)</span></span>
+    <span class="k">결론</span><span>N6 판정(유효 n61a~c · n62a · n62c 5 회): 안전 · 기억 기준 통과. CPU 합 320~325 — 문자 기준 1~5 %p 미달이고, 기대 '릴레이+STVL 분 ≥ 30 %p 감소' 도 미달성(릴레이 −15 · nvblox +18 상쇄). <b>정직한 결론</b>: nvblox 이전은 CPU 를 줄이지 못했다. 얻은 것 = 회피 여유 증가 · 표면 뒤 기억 · 3D/GPU 경로 · 근거리 사각 제거, 잃은 것 = 반사 바닥 표시 민감도 · 컨테이너 · 포크 유지 비용.</span>
+  </div>
+</section>
+
+<section>
+  <h2>n62b 끝의 좌회전 헛돎 — EKF 는 맞았다<span class="sec">§12.1</span></h2>
+  <div class="flow">
+    <span class="k">스크립트 핵심</span><span><pre class="code"># jobs/job546_scanrot.py — 1 s 간격 스캔 쌍의 range 프로파일(0.5° 재표본)을 원형 이동시켜 상관 최대 각 = 회전량
+grid = np.arange(-math.pi, math.pi, math.radians(0.5)); ok = np.isfinite(rr) &amp; (rr &gt; 0.15) &amp; (rr &lt; 12)
+c = -np.mean(np.abs(np.roll(p0, s) - p1))</pre></span>
+    <span class="k">나온 결과</span><span><pre class="code">  t(끝 기준) | 지령 ω | 휠 Δ° | EKF Δ° | 라이다 스캔 Δ°
+   -2.0 | +0.38 |  +11.1 |   +2.5 |   +2.5
+   -1.0 | +0.37 |  +11.7 |   +6.2 |   +6.0
+합계: 휠 +28.7° / EKF +16.7° / 라이다 +18.5°  (스캔 413 개, 0.5° 분해능)
+stuck @-0.3 s: lvl=b'\x01' msg=STUCK: 지령 12.9cm/41° 인데 관측 2.7cm/8.0° (비율 0.21) ratio=0.209 shadow=True</pre><span class="note">결과 원문 <span class="mono">Docs/debug_log/2026-09-23/outputs/j546_scanrot.txt</span> · <span class="mono">j545_slipyaw.txt</span> · 스크립트 원문 <span class="mono">Docs/debug_log/2026-09-23/jobs/job546_scanrot.py</span> · <span class="mono">job545_slipyaw.py</span></span></span>
+    <span class="k">결론</span><span>마지막 2 s 에 휠은 22.8° 를 보고, 몸체는 8.5°(휠의 37 %). EKF 8.7° 로 실제와 0.2° 안 — 자이로가 휠을 이겼다. stuck_monitor(그림자)도 같은 미끄러짐을 잡음. 순수 휠 오도는 끝 8 s 에 +10.2° 오차.<span class="c1104">(11-04 정정: n62b 는 CPU 422 % 로 bag 의 /tf 수신이 stamp 보다 2.04 s 늦었고 이 도구는 수신 시각으로 1 s 칸을 나눈다 — 8 s 합계는 영향이 작지만 '−2~−1 s 두 칸' 의 37 % 는 영향받을 수 있다(미확인) — 근거 Docs/issues/f0-rotation-side-slip.md §5 뒤 모순 5)</span></span>
+  </div>
+</section>
+
+<section>
+  <h2>sensor_conditioner 는 빼면 안 된다<span class="sec">§15 · §16</span></h2>
+  <div class="flow">
+    <span class="k">본 것</span><span>자이로 yaw 바이어스 부팅 −0.00073 → 지금 −0.00106 rad/s(발열 이동). 보정이 없으면 3.6 °/분, ZUPT 잔차 ≈0.00003 rad/s. 원본 자이로 cov 0.01, 펌웨어 휠 cov 전부 0. CPU 41.8 %(정지). 출력 원문 없음 — <span class="mono">jobs/job549_cond.sh</span> 만 남음, 수치는 SUMMARY 가 전부.</span>
+    <span class="k">결론</span><span>그냥 빼면 안 된다. 대체: 설치된 스택에 같은 기능 없음.<span class="c1104">(11-04 정정: 09-28 §10 에서 '전체를 대신하는 조합은 없고, IMU 공분산만 드라이버 파라미터로 대체 가능 · 바이어스는 정적 보정만 · IMU 단독 ZUPT 는 느린 회전을 흡수할 위험' 으로 부분 정정 — 근거 Docs/issues/sensor-conditioner.md 실수 1)</span> 제안: C++ 이식 + 휠 cov 는 펌웨어로.<span class="c1104">(11-04 정정: 펌웨어 이관안은 09-28 §7.2 에서 철회 — 가변 공분산 · ICR 모델이 들어오면 공분산 로직이 둘로 갈라진다 → 컨디셔너(C++) 한 곳 — 근거 Docs/issues/sensor-conditioner.md 실수 2)</span></span>
+    <span class="k">사용자 결정</span><span>IMU 발행 200 Hz 유지(다운샘플 제안 삭제).</span>
+  </div>
+</section>
+
+<section>
+  <h2>목표 도착 heading — 늘 오른쪽으로 남는 이유<span class="sec">§17</span></h2>
+  <div class="flow">
+    <span class="k">스크립트 핵심</span><span><pre class="code"># jobs/job552_goalyaw.py 11 행 — nav2 로그의 Begin navigating / Reached the goal 시각으로 bag 의 map · odom yaw 를 본다
+EP = {'n62a': (1790127332.547, 1790127364.308), 'n62b': (…), 'n62c': (1790135085.346, 1790135117.662)}
+if tr.header.frame_id == 'map' and tr.child_frame_id == 'odom': mo.append((t, yaw(tr.transform.rotation)))</pre></span>
+    <span class="k">나온 결과</span><span><pre class="code">bag_n62a: "Reached the goal" 순간 heading 오차 … — SLAM(map) -7.45° | EKF(odom) -5.85° | 도착 뒤 0.5/1/2 s map -4.01 / -4.00 / -4.01 | 허용 ±8.6°
+bag_n62c: "Reached the goal" 순간 heading 오차 … — SLAM(map) -8.02° | EKF(odom) -7.02° | 도착 뒤 0.5/1/2 s map -6.79 / -6.78 / -6.78 | 허용 ±8.6°</pre><span class="note">결과 원문 <span class="mono">Docs/debug_log/2026-09-23/outputs/j552_goalyaw.txt</span> · <span class="mono">j553_yawseries.txt</span> · 스크립트 원문 <span class="mono">Docs/debug_log/2026-09-23/jobs/job552_goalyaw.py</span> · <span class="mono">job553_yawseries.py</span></span></span>
+    <span class="k">결론</span><span>stateful 판정기 <span class="mono">yaw_goal_tolerance 0.15 rad = 8.6°</span> 의 가장자리에 들어서는 순간 성공 → 관성으로 1~3° 더 돌고 멈춤 → 계통적으로 오른쪽. 최종 heading 은 명시적으로 '승인' 한 기준이 아니었다(Nav2 설정이 허용한 것).</span>
+  </div>
+</section>
+
+<section>
+  <h2>F0-a f0a1 — 복귀 중 상자 옆에서 중단<span class="sec">§18 · §18.1 · §19</span></h2>
+  <div class="flow">
+    <span class="k">본 것</span><span>목표 1 성공 36.8 s, 목표 2 ABORTED 29.8 s — 상자 옆 map (1.23, 0.21, 172°). 정지 순간 차체 왼쪽 LETHAL 까지 5.3 cm. §18 은 '로컬 상자 LETHAL 가장자리가 왕복 사이 −0.04 → +0.04 로 이동' 을 근거로 odom 고정 층 어긋남으로 해석했다.</span>
+    <span class="k">스크립트 핵심 (§18.1 정정판)</span><span><pre class="code"># jobs/job557_boxdrift.py 29 행 — 로컬 셀을 map→odom 의 회전까지 적용해 map 으로 변환
+_, tx, ty, th = tf; c, s = math.cos(th), math.sin(th); x, y = tx + c * x - s * y, ty + s * x + c * y</pre></span>
+    <span class="k">나온 결과</span><span><pre class="code">   t  | map→odom x    y     yaw  | 로컬 상자(map) x범위 / y범위 / 셀 | 전역 상자(map) x범위 / y범위 / 셀
+  0.0 | -0.000 +0.000 -0.00° | 1.175~1.275 / -0.225~-0.025 / 11 | 1.179~1.279 / -0.233~-0.033 / 11
+ 36.0 | -0.047 +0.033 -1.80° | 1.072~1.228 / -0.182~+0.021 / 15 | 1.148~1.398 / -0.171~-0.021 / 13
+ 48.0 | -0.028 +0.062 -2.20° | 1.089~1.245 / -0.160~-0.007 / 12 | 1.135~1.285 / -0.171~-0.021 / 12</pre><span class="note">결과 원문 <span class="mono">Docs/debug_log/2026-09-23/outputs/j557_boxdrift.txt</span> · 스크립트 원문 <span class="mono">Docs/debug_log/2026-09-23/jobs/job557_boxdrift.py</span></span></span>
+    <span class="k">결론(§18.1)</span><span>로컬과 전역 차이 1.4 cm 뿐 — §18 의 '+0.04' 는 job556 이 map→odom yaw(−2.2°)를 무시한 값(1.25 m × 2.2° ≈ 4.8 cm). odom 고정 층 가설 기각.<span class="c1104">(11-04 정정: 1.4 cm 는 48 s 이후 정착 값이다 — 위 36 s 행은 로컬 y 상단 +0.021 vs 전역 −0.021(4.2 cm)이고, x 범위도 1.089~1.245 vs 1.117~1.267 로 2.2~2.8 cm 어긋나 있다 — 근거 Docs/issues/f0-rotation-side-slip.md §5 뒤 모순 3)</span></span>
+  </div>
+  <div class="flow">
+    <span class="k">원인 2 — 4.4 cm 에서 전부 충돌</span><span>CostCritic 은 중심 비용이 높으면 <span class="mono">footprintCostAtPose</span>(꼭짓점 → 셀 내림, 변을 Bresenham)로 LETHAL 을 본다. 로컬맵 34 프레임 재판정:</span>
+    <span class="k">스크립트 핵심</span><span><pre class="code"># jobs/job559_fpframes.py 37 · 43 행 — 패딩 풋프린트 꼭짓점을 셀로 내리고 변을 따라 최대 비용
+cells = [(int((x + c * a - s * b - ox) / res), int((y + s * a + c * b - oy) / res)) for a, b in FP]
+v = int(d[cy, cx]); mx = max(mx, v); nh += v &gt;= 100</pre></span>
+    <span class="k">나온 결과</span><span><pre class="code">   -3.36 s | 자세 (1.507, 0.179, 174.8°) | 풋프린트 최대  99  | 패딩 풋프린트↔LETHAL 최소 0.050 m | LETHAL 688
+  +10.99 s | 자세 (1.255, 0.197, 174.2°) | 풋프린트 최대 100 ★ LETHAL 밟음 1 셀 | 패딩 풋프린트↔LETHAL 최소 0.044 m | LETHAL 607
+  +13.99 s | 자세 (1.255, 0.197, 174.2°) | 풋프린트 최대 100 ★ LETHAL 밟음 1 셀 | 패딩 풋프린트↔LETHAL 최소 0.044 m | LETHAL 607</pre><span class="note">결과 원문 <span class="mono">Docs/debug_log/2026-09-23/outputs/j559_fpframes.txt</span> · <span class="mono">j558_cause.txt</span> · 스크립트 원문 <span class="mono">Docs/debug_log/2026-09-23/jobs/job559_fpframes.py</span> · <span class="mono">job558_cause.py</span> · 그림 <span class="mono">Docs/04_navigation/figures/2026-09-23_f0a1_return_abort.html</span></span></span>
+    <span class="k">결론</span><span>5 cm 격자의 계단 판정이 기하 거리 0.044 m 인 칸을 밟음 → 현 자세가 충돌이면 1000 개 전부 충돌, 후진 복구도 같은 검사. 원인 1(복귀 때만 붙은 이유): 첫 경로는 오히려 바깥(0.30~0.32) — 계획기 탓 아님, 로버가 경로보다 ≈10 cm 안쪽으로 감(MPPI 코너 깎기 추정).<span class="c1104">(11-04 정정: '현 자세가 충돌이면 전부 충돌' 은 중단 <b>뒤</b> 14 s 를 설명하지만, 첫 Aborting 직전 프레임(−0.37 s)은 풋프린트 최대 99 였고 job558 표에서 곧게 · 왼쪽 회전은 통과였다 — 첫 실패의 기전은 그것만으로 설명되지 않는다 — 근거 Docs/issues/f0-rotation-side-slip.md §5 뒤 모순 2)</span></span>
+  </div>
+</section>
+
+<section>
+  <h2>f0a2 — 회전 중 SLAM 점프는 실제 옆 밀림이었다<span class="sec">§20 · §20.1 · §20.2 · §20.3</span></h2>
+  <div class="flow">
+    <span class="k">본 것</span><span>목표 1 을 x 2.3 으로(비킬 거리 0.78 m). 목표 1 근처 제자리 180° 회전 중 map→odom y 가 +0.03 → +0.23 m 로 점프, EKF odom y 는 5 cm 만. map 상 목표에서 0.206 m(허용 0.15 밖) → MPPI 가 50 s 동안 거의 0 지령 → 한도 초과 취소. H1 판정 불가.</span>
+    <span class="k">나온 결과</span><span><pre class="code">t, goal, map_x, map_y, map_yaw, odom_x, odom_y, odom_yaw, …   (열 이름 = job550 105 행, 이 csv 엔 머리줄 없음)
+39.51,1,2.1647,0.0047,-144.30,2.1928,0.0181,-143.10,…
+40.01,1,2.1382,0.1725,-152.88,2.2058,0.0265,-151.48,…
+40.5, 1,2.1394,0.1730,-166.11,2.2070,0.0271,-164.72,…</pre><span class="note">결과 원문 <span class="mono">Docs/debug_log/2026-09-23/outputs/f0a2_turn_window.csv</span>(소수 넷째 자리에서 자름) · <span class="mono">j561_f0a2.txt</span> · 러너 원문 <span class="mono">Docs/debug_log/2026-09-23/jobs/job550_f0run.py</span><span class="c1104">(11-04 정정: §20.1 의 '38 → 42 s, 2 s 사이 +0.20 m' 는 실제로는 39.51 → 40.01 s 한 갱신에 +0.167 이 몰린 것이다 — 물리적 밀림이 그 0.5 s 에 일어난 것이 아니라 SLAM 이 그때 처리한 것 — 근거 Docs/issues/f0-rotation-side-slip.md §5 뒤 모순 1)</span></span></span>
+    <span class="k">처음 추론</span><span>최대 각속도 회전 중 스캔 정합 실패(추정).</span>
+    <span class="k">줄자(사용자)</span><span>출발 테이프 연장선 ↔ 뒤돌아 선 로버의 왼쪽 트랙 바깥 끝 ≈25 cm → 로버 중심 y ≈ +0.25 m. 예상 EKF +0.04, SLAM +0.20 중 <b>SLAM 쪽</b> → 정합 실패 추정 기각.</span>
+    <span class="k">결론</span><span>로버는 제자리 180° 회전 중 실제로 ≈0.2 m 옆으로 밀렸고 휠 오도 · 자이로(EKF)는 이를 못 본다(휠 vy = 0). 종류 구분: n62b 헛돎형(휠 22.8 vs EKF 8.7) · f0a1 차 23.5° · f0a2 차 2.2°(측면 슬립형). MPPI 가 섞은 후진 몫 ≈5 cm 는 EKF 도 봄, 나머지 ≈15 cm 가 슬립 몫(계산 추정).<span class="c1104">(11-04 정정: '의미 1 — SLAM 이 있으면 map 좌표는 맞다' 는 순수 회전에는 틀렸다 — 09-28 S1 에서 원본 slam_toolbox 는 병진 &lt; 4.5 cm 면 스캔을 버려 순수 회전 밀림을 못 본다. f0a2 에서 잡은 것은 MPPI 가 후진을 섞어 병진이 문턱을 넘었기 때문 — 근거 Docs/issues/f0-rotation-side-slip.md 실수 4, Docs/debug_log/2026-09-28/SUMMARY.md §3.1)</span></span>
+  </div>
+</section>
+
+<section>
+  <h2>슬립 보정 방안 — D(측면 속도 관측) 채택 방향<span class="sec">§20.4 · §20.5 · §20.6</span></h2>
+  <div class="tbl"><table>
+    <tr><th>안</th><th>내용</th><th>판정</th></tr>
+    <tr><td>A</td><td>현행(map→odom 보정)</td><td>유지</td></tr>
+    <tr class="bad"><td>B</td><td>SLAM 자세를 odom EKF 에 직접</td><td>기각 — odom 이 튀어 odom 고정 nvblox · 로컬 번짐</td></tr>
+    <tr><td>C</td><td>이중 EKF</td><td>보류 — 역할 중복</td></tr>
+    <tr class="hl"><td>D</td><td>측면 속도를 재는 입력(rf2o · cuVSLAM)을 odom EKF 에, 가변 공분산과 한 묶음</td><td>채택 방향(사용자)</td></tr>
+  </table></div>
+  <p>근거: "SLAM 갱신 간격은 이미 촘촘(<span class="mono">minimum_travel_distance 0.05 m / heading 0.03 rad</span>) → 주기 문제 아님".<span class="c1104">(11-04 정정: 틀림 — 09-28 §3.1 에서 slam_toolbox 의 <span class="mono">shouldProcessScan</span> 은 병진 거리만 보고 heading 은 그 관문에서 안 쓴다는 것을 소스로 확인. 순수 회전에선 갱신 0 회 — 근거 Docs/issues/slam-fork-rotation.md 흐름 09-23 §20.4, Docs/issues/f0-rotation-side-slip.md 실수 4)</span> 사용자 결정 순서(§20.6): ① 제자리 회전 시험 ② 컨디셔너 C++ 이식(고정값 동일성 · CPU) ③ 가변 공분산 + rf2o ④ cuVSLAM. 컨디셔너 공분산은 전부 고정 상수(휠 vy = 0 을 σ 0.01 로 보고 — 회전 중 옆 밀림을 적극 부정).</p>
+</section>
+
+<section>
+  <h2>바로잡은 내 오류 (그날 SUMMARY 에 적힌 것)</h2>
+  <div class="pm">
+    <h3>'odom 고정 층이 6 cm 어긋났다' — map→odom 회전을 빼먹음 (§18 → §18.1)</h3>
+    <div class="flow">
+      <span class="k">하려 한 것</span><span>f0a1 중단 원인 — 로컬 상자가 복귀 경로 쪽으로 옮겨졌는지</span>
+      <span class="k">본 것</span><span>job556: 로컬 상자 가장자리 map y −0.04 → +0.04, 전역 −0.021 그대로</span>
+      <span class="k">왜 틀렸나</span><span>job556 이 로컬 셀을 map 으로 옮길 때 map→odom 의 평행이동만 더하고 yaw(−2.2°)를 무시 — 1.25 m × 2.2° ≈ 4.8 cm 오차</span>
+      <span class="k">영향</span><span>§18 해석 철회. 차체↔LETHAL 5.3 cm 는 odom 안에서 잰 값이라 유효</span>
+      <span class="k">알아보는 법</span><span>프레임 변환은 회전까지 적용했는지부터 — 거리 × 각 오차로 크기를 먼저 셈</span>
+      <span class="k">데이터</span><span><span class="mono">outputs/j556_abortmap.txt</span> · <span class="mono">j556b_sides.txt</span> · <span class="mono">j557_boxdrift.txt</span> · <span class="mono">jobs/job556_abortmap.py</span> · <span class="mono">job557_boxdrift.py</span></span>
+    </div>
+  </div>
+  <div class="pm">
+    <h3>'SLAM 이 회전 중 정합에 실패했다' (§20.1 → §20.2)</h3>
+    <div class="flow">
+      <span class="k">본 것</span><span>회전 중 map→odom +0.20 m, EKF 는 5 cm</span>
+      <span class="k">처음 추론</span><span>최대 각속도 회전 중 스캔 정합 실패</span>
+      <span class="k">판별 시험</span><span>사용자 줄자 — 중심 y ≈ +0.25 m(SLAM 예상 +0.20 쪽)</span>
+      <span class="k">결론</span><span>실제 옆 밀림. EKF 는 구조상 못 봄</span>
+      <span class="k">알아보는 법</span><span>두 추정이 다르면 '어느 쪽이 틀렸나' 를 물리 측정(줄자)으로 먼저 가린다</span>
+      <span class="k">데이터</span><span><span class="mono">outputs/f0a2_turn_window.csv</span> · <span class="mono">j561_f0a2.txt</span> · 줄자는 SUMMARY §20.2 문장</span>
+    </div>
+  </div>
+  <div class="pm">
+    <h3>그 밖에 그날 스스로 정정 · 기각한 것</h3>
+    <div class="flow">
+      <span class="k">§6 → §7</span><span>prep 의 "상자 x= y=" 를 'job248 파싱 실패, 일시적' 으로 봄 → 원인은 점군 끄기(계측 입력)</span>
+      <span class="k">§18.1 → §19</span><span>'복귀 경로만 붙은 이유 = NavFn · 스무더 코너 깎기' 추정 기각 — 첫 경로가 오히려 바깥</span>
+      <span class="k">§0.1 · §5</span><span>사용자 가설 '다른 IP 트래픽이 내 IP 를 끊는다' 는 로그와 안 맞음 — 가장 가까운 실제 기전은 IP 충돌(가설, 미측정)</span>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>다음 후보 (그날 SUMMARY §19 · §20.6)</h2>
+  <ul>
+    <li>제자리 회전 시험(v = 0 순수 180°, 0.38 vs 0.2 rad/s, 줄자 vs SLAM) — 판정 기준은 주행 전 선언</li>
+    <li>컨디셔너 C++ 이식(고정값 동일성 · CPU) → 가변 공분산 + rf2o → cuVSLAM</li>
+    <li>f0a1 원인 1 재검증(비킬 거리), 원인 2(5 cm 격자 계단 판정 · 현 자세 충돌 탈출)</li>
+    <li>러너 PAUSE 인자(도착 자세로 멈춘 뒤 복귀), 목표에서 자세 맞춤 제자리 회전 피하기</li>
+    <li>사용자 결정 대기: AP 격리 해제 · yaw_goal_tolerance A/B</li>
+  </ul>
+</section>
+
+<section>
+  <h2>이후 · 관련 카드</h2>
+  <ul>
+    <li><span class="mono">Docs/issues/nvblox-n6-global-ghosts.md</span> — N6-2 · 게이트 M · N · 최종 판정, §6 원문 모순</li>
+    <li><span class="mono">Docs/issues/jetson-wifi-link.md</span> — 4 시기(09-23) 흐름 · 실수 3 · 모순 10~17</li>
+    <li><span class="mono">Docs/issues/f0-rotation-side-slip.md</span> — f0a1 · f0a2 · 옆 밀림, 실수 1~4</li>
+    <li><span class="mono">Docs/issues/sensor-conditioner.md</span> — 역할 점검 · 실수 1 · 2</li>
+    <li><span class="mono">Docs/issues/avoid-run-metrics.md</span> — 재고정 REFIX_MAX · 조향 반전 재계산</li>
+    <li><span class="mono">Docs/issues/slam-fork-rotation.md</span> · <span class="mono">Docs/issues/rf2o-introduction.md</span> · <span class="mono">Docs/issues/cuvslam-velocity-fusion.md</span> — D 방향의 이후</li>
+    <li>다음 회전 시험: <span class="mono">Docs/debug_log/2026-09-28/SUMMARY.md</span></li>
+  </ul>
+</section>
+</div>

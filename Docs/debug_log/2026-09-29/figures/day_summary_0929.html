@@ -1,0 +1,356 @@
+<title>09-29 F0 완료 · 정지 수단</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* 배치: 실험 노트 — 좁은 본문 열(65자) + 넓게 펼치는 그림 · 표, 판정은 왼쪽 띠 색으로(10-20 판과 같은 틀) */
+:root{
+  --bg:#f3f4f6; --paper:#ffffff; --ink:#1b1f24; --muted:#5b6470; --line:#d9dde3;
+  --ir:#b3263e;      /* 프로젝터 켬 · 실패 쪽 */
+  --cool:#1f7a72;    /* 프로젝터 끔 · 통과 쪽 */
+  --warn:#a86a00;
+  --tint-ir:#f8e8eb; --tint-cool:#e4f2f0; --tint-warn:#fbf1df;
+  --f-body:"IBM Plex Sans KR","Malgun Gothic","Apple SD Gothic Neo",sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#111418; --paper:#181c21; --ink:#e6e9ed; --muted:#9aa4b0; --line:#2c333b;
+  --ir:#ef6b80; --cool:#5cc4b8; --warn:#e0a640;
+  --tint-ir:#2b1b1f; --tint-cool:#15292a; --tint-warn:#2a2316; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#111418; --paper:#181c21; --ink:#e6e9ed; --muted:#9aa4b0; --line:#2c333b;
+  --ir:#ef6b80; --cool:#5cc4b8; --warn:#e0a640;
+  --tint-ir:#2b1b1f; --tint-cool:#15292a; --tint-warn:#2a2316; color-scheme:dark}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.65;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:28px 64px}
+.wrap{max-width:980px;margin:0 auto;display:flex;flex-direction:column;gap:34px}
+header{display:flex;flex-direction:column;gap:6px;border-bottom:2px solid var(--ink);padding-bottom:14px}
+.eyebrow{font-family:var(--f-mono);font-size:12px;letter-spacing:.08em;color:var(--muted);text-transform:uppercase}
+h1{font-size:30px;line-height:1.25;margin:0;font-weight:700;text-wrap:balance}
+h2{font-size:20px;margin:0 0 4px;font-weight:700;text-wrap:balance}
+h2 .sec{font-family:var(--f-mono);font-size:13px;color:var(--muted);font-weight:400;margin-left:8px}
+p{margin:0;max-width:68ch}
+section{display:flex;flex-direction:column;gap:12px}
+.lead{color:var(--muted);max-width:72ch}
+.verdicts{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
+.v{background:var(--paper);border:1px solid var(--line);border-left:5px solid var(--muted);padding:12px 14px;display:flex;flex-direction:column;gap:4px;min-width:0}
+.v.ok{border-left-color:var(--cool)} .v.no{border-left-color:var(--ir)} .v.wait{border-left-color:var(--warn)}
+.v b{font-size:15px} .v span{color:var(--muted);font-size:13.5px}
+.pill{display:inline-block;font-family:var(--f-mono);font-size:11.5px;padding:1px 8px;border-radius:999px;white-space:nowrap}
+.pill.ok{background:var(--tint-cool);color:var(--cool)} .pill.no{background:var(--tint-ir);color:var(--ir)} .pill.wait{background:var(--tint-warn);color:var(--warn)}
+.tbl{overflow-x:auto;background:var(--paper);border:1px solid var(--line)}
+table{border-collapse:collapse;width:100%;font-size:13.5px;font-variant-numeric:tabular-nums}
+th,td{padding:7px 10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{font-weight:500;color:var(--muted);font-size:12.5px;white-space:nowrap}
+td.n{font-family:var(--f-mono);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr.hl td{background:var(--tint-cool)} tr.bad td{background:var(--tint-ir)}
+figure{margin:0;background:var(--paper);border:1px solid var(--line);padding:10px;display:flex;flex-direction:column;gap:8px}
+figure img{width:100%;height:auto;display:block}
+figcaption{font-size:13px;color:var(--muted)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media (max-width:720px){.two{grid-template-columns:1fr}}
+ul{margin:0;padding-left:20px;max-width:72ch} li{margin:2px 0}
+.mono{font-family:var(--f-mono);font-size:13px}
+.flow{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;font-size:14px}
+.flow .k{font-family:var(--f-mono);color:var(--muted);font-size:12.5px;padding-top:2px;white-space:nowrap}
+.note{font-size:13px;color:var(--muted)}
+.pm{background:var(--paper);border:1px solid var(--line);padding:12px 14px;display:flex;flex-direction:column;gap:8px}
+.pm h3{font-size:15.5px;margin:0;font-weight:700}
+.pm .flow{grid-template-columns:auto 1fr;gap:6px 14px}
+.pm .flow span:not(.k){max-width:none}
+</style>
+
+<style>
+.code{margin:0;font-family:var(--f-mono);font-size:12.5px;line-height:1.5;background:var(--bg);border:1px solid var(--line);padding:8px 10px;overflow-x:auto;white-space:pre;max-width:100%}
+.flow > span{min-width:0}
+.c1104{font-weight:600;color:var(--ink);background:var(--tint-warn);border-left:3px solid var(--warn);padding:0 5px;margin-left:3px;border-radius:2px;white-space:normal;font-size:.92em}
+</style>
+<div class="wrap">
+<header>
+  <div class="eyebrow">Indoor Rover · 2026-09-29 · Docs/debug_log/2026-09-29 §0–§14 · 주행 있음(회전 시험 · F0-a 1 회 · F0-b 2 회 · 받침대 · G1) · 11-04 사후 작성</div>
+  <h1>09-29 F0 완료 · 정지 수단</h1>
+  <p class="lead">이 페이지는 2026-11-04 에 그날의 <span class="mono">SUMMARY.md</span> 와 같은 날짜 폴더의 <span class="mono">jobs/</span> · <span class="mono">outputs/</span> 원문으로 다시 만든 정리입니다. 이날은 회전 밀림 보정 B2 를 재생 · 실주행으로 시험해 기본값으로 켜지 않기로 했고, cuVSLAM 과 프로젝터 문제를 재 본 뒤 '기능 완성 우선' 으로 순서를 정했습니다. 문을 지나는 7 m 왕복(F0-b)을 두 번 통과했고, 온보드 정지 수단(② 단계)을 마감했습니다. 판단마다 스크립트 핵심 줄과 실제 출력 발췌를 붙였습니다. 뒤에 문제 대장 카드 · 다른 날 SUMMARY 가 바로잡은 곳은 원문 문장을 그대로 두고 <span class="c1104">11-04 정정</span> 표시를 달았습니다(<b>12 곳</b> — 정정 11 건, use_gyro 건은 판정 카드와 본문 두 곳). 같은 날의 주제 페이지는 <span class="mono">Docs/debug_log/2026-09-29/figures/2026-09-29_day_summary.html</span>(하루 요약) · <span class="mono">Docs/debug_log/2026-09-29/figures/2026-09-29_f0b_candidate.html</span>(F0-b 코스 후보)이고, 이 페이지는 그것을 바꾸지 않습니다.</p>
+</header>
+
+<section>
+  <h2>오늘의 판정</h2>
+  <div class="verdicts">
+    <div class="v ok"><b>B2 오프라인 A/B — V0 · V1 · V2 통과</b><span>재생 21 회, 완전 회전 16 회 오차 중앙값 off 13.6 → b2 3.5 cm, ≤ 7 cm 14/16. 표본 안 결과라 낙관적 상한 (§1.1)</span></div>
+    <div class="v ok"><b>base 부팅 자동 기동</b><span>systemd 사용자 서비스 + linger. 재부팅 뒤 사람 손 없이 OLED 에 IP 표시(사용자 확인) (§2)</span></div>
+    <div class="v ok"><b>라이브 회전 L-a 통과 · L-b 보류</b><span>완전 회전 4 회 EKF 오차 중앙값 4.4 cm = 보정 없는 이동의 33 %. 선언한 6 회 중 4 회, 부분 회전 93° 는 10.2 cm (§3.1)</span></div>
+    <div class="v ok"><b>F0-a 왕복 f0a7(B2 · B3 켬) 절차 통과</b><span>두 목표 SUCCEEDED, ω 부호 바뀜 0, 상자 옆 y 0.383~0.392. 다만 map→odom 누적 보정 0.199 m = 끈 상태의 2.2 배 (§4)</span></div>
+    <div class="v no"><b>B2 기본값으로 켜지 않음</b><span>Nav2 의 부분 회전(44°)에서 SLAM 이 B2 추가량을 거의 전부 되돌림 — 180° 미만 회전에서 옆 성분이 틀림 (§5)</span></div>
+    <div class="v ok"><b>cuVSLAM 3.2.6 이 JetPack 6.2.2 에서 동작</b><span>V1-a 추적 1784/1784 · V1-b 정지 60 s xy 0.44 cm · V1-d 사람 걸음 1.10 cm. 사람이 있으면 CPU 22.8 → 88.1 % (§9)</span></div>
+    <div class="v ok"><b>프로젝터: O2(항상 끔) 불채택 → O1(번갈이) 선택</b><span>끔의 아래 절반 유효 화소 = 켬의 45 %(기준 90 %). 번갈이 60 Hz 세 스트림 59.5~59.9 Hz (§10.1)</span></div>
+    <div class="v ok"><b>순서 확정(사용자): 기능 완성 우선</b><span>F0 나머지 → 정지 수단 → F1 → F2 → JetPack 7.2 이전 Phase (§11)</span></div>
+    <div class="v ok"><b>F0-b(문 통과 7 m 왕복) 2 회 연속 통과</b><span>f0b1 · f0b2 판정 B-a~d 모두. 문 구간 여유 0.230 · 0.224 m (§12.2 · §12.5)</span></div>
+    <div class="v ok"><b>② 온보드 정지 수단 종결</b><span>G3 오판 0 · G3b 참 정체 0.8~0.9 s · G1 nav_guard 15.12 s 개입. G2 보류 · G4 생략(사용자) (§13)<span class="c1104">(11-04 정정: G3 의 '자이로 우선' 판정은 실주행 노드에서 꺼져 있었다 — <span class="mono">use_gyro</span> 기본 False. 근거 Docs/debug_log/2026-10-01/SUMMARY.md §8.11 · Docs/debug_log/2026-10-29/SUMMARY.md §8)</span></span></div>
+  </div>
+</section>
+
+<section>
+  <h2>회전 밀림 보정 B2 · B3 — 재생에서는 맞고, 짧은 회전에서는 틀림<span class="sec">§1 · §3 · §4 · §5</span></h2>
+  <p>배경: 제자리 180° 회전마다 차체 중심이 옆으로 10~27 cm 밀리는데(09-28), EKF 는 이를 못 봅니다. B2 는 '회전축이 중심에서 고정된 거리 p 만큼 떨어져 있다' 는 모형으로 순수 회전 중에 속도를 더해 주는 컨디셔너 기능이고, B3 은 회전 구간의 속도 분산을 키우는 기능입니다(09-28 구현, 기본 끔).</p>
+  <div class="flow">
+    <span class="k">본 것 ①</span><span>회전 bag 7 개를 컨디셔너(off / b2 / b23) → EKF 로 재생. 오차 = |EKF 중심 이동 − 정지 스캔 직접 정합|. off 는 모든 회 이동을 ≤ 0.2 cm 로 봄(= 못 봄).</span>
+    <span class="k">스크립트 핵심</span><span><pre class="code"># V0: off 재생이 라이브 EKF 를 재현하는가 / V1: b2 효과 (판정식)
+print('V0 ... 차 중앙값 %.2f cm ...' % (..., '통과' if st.median(v0) &lt;= 1.0 else '불통과'))
+ok = med['b2'] &lt;= 7 and med['b2'] &lt;= 0.5 * med['off'] and sum(x &lt;= 7 for x in E) &gt;= 12</pre><span class="note">스크립트 원문 <span class="mono">Docs/debug_log/2026-09-29/jobs/job632_b2ab_eval.py</span> 47 · 61 행 (재생기 <span class="mono">jobs/job627_ekfreplay.py</span>, 일괄 <span class="mono">jobs/job630_b2ab_all.sh</span>)</span></span>
+    <span class="k">나온 결과</span><span><pre class="code">V0 재생 타당성: off 재생 vs 라이브 EKF 차 중앙값 0.00 cm (최대 0.10, n=17) → 통과
+off  완전 회전 n=16: 오차 중앙값 13.6 cm, 평균 14.9, 최대 27.2, ≤7 cm 1/16
+b2   완전 회전 n=16: 오차 중앙값 3.5 cm, 평균 4.1, 최대 11.5, ≤7 cm 14/16
+V1 b2 효과: 중앙값 3.5 cm (off 의 25 %), ≤7 cm 14/16 → 통과
+V2 b23 무해: b23 − b2 중앙값 차 +0.0 cm → 통과</pre><span class="note">결과 원문 <span class="mono">Docs/debug_log/2026-09-29/outputs/j632_b2ab_eval.txt</span></span></span>
+    <span class="k">추론</span><span>b2 는 회전마다 거의 같은 2p(시계 (−5.9, +10.2) cm)를 더한다 → 평균은 맞추지만 회마다 다른 밀림(6~27 cm)은 못 따라간다. B3 은 xy 속도 입력이 휠 하나뿐이라 평균 추정을 바꾸지 못한다(예상대로). V0 해설에 'C++ 컨디셔너가 bag 당시 Python 과 같은 출력' 이라고 적었다.<span class="c1104">(11-04 정정: 재생기는 bag 의 이미 조정된 /imu/data 를 다시 넣으므로 V0 은 '재생 파이프라인이 라이브 EKF 를 재현' 까지만 보인다. Python ↔ C++ 동일성 근거는 09-28 §11 — 근거 Docs/issues/icr-b2-b3.md §5 모순 5)</span></span>
+    <span class="k">결론</span><span>p 를 같은 16 회로 맞췄으므로 표본 안(낙관적) 결과. 라이브에서 켜고 새 회전으로 검증하기로.</span>
+  </div>
+  <div class="flow" style="margin-top:12px">
+    <span class="k">본 것 ②</span><span>라이브 L1(시계 0.38 rad/s × 3) · L2(반시계 × 3). L2 회전 2 는 93° 에서 안전 정지(라이다 0.40 m) → 완전 회전 4 회 + 부분 1 회.</span>
+    <span class="k">나온 결과</span><span><pre class="code">회전   정답(cm)        |정답|  EKF 오차  SLAM 오차
+L1-1  ( -4.9, +7.6)    9.0     2.8       1.1
+L1-3  ( -9.0,+14.5)   17.1     5.2       1.6
+L2-1  ( -9.7,-13.9)   16.9     5.8       1.3
+L2-2  (-10.6, +3.1)   11.0    10.2       3.5  (부분 93°, 안전 정지)
+완전 회전 n=4: EKF 오차 중앙값 4.4 cm (최대 5.8), |정답| 중앙값 13.5 → 비 33 %, ≤7 cm 4/4
+            SLAM 오차 중앙값 1.3 cm (최대 1.6)
+L2-1 반시계 0.38 회전축 p = (-4.6, -7.1) cm (현 반시계 공용 (−2.9, −9.5), 09-28 S2 (+2.4, −7.6))</pre><span class="note">결과 원문 <span class="mono">Docs/debug_log/2026-09-29/outputs/j638_l_eval.txt</span>(L1-2 줄 생략) · 스크립트 <span class="mono">jobs/job638_l_eval.py</span>(값은 러너 <span class="mono">outputs/j636_spin_l1l2.txt</span> · 정합 <span class="mono">outputs/j637_scan_l12.txt</span> 에서 옮김)</span></span>
+    <span class="k">추론</span><span>표본 밖에서도 EKF 오차가 1/3 로 줄었다(L-a 통과). 부분 회전(93°)은 모형이 옆 이동을 반대로 예측(−6.9 vs +3.1 cm) → '원래 방향 복귀' 는 계속 제외(L-b 보류). 새 발견: SLAM 포크가 회전 중 이동을 1.3 cm 로 따라감 — 포크 조건과 B2 의 몫은 가르지 않음(미실시).</span>
+    <span class="k">결론</span><span>기본값 켜기 후보 → F0-a 왕복을 켠 채 한 번 통과시킨 뒤 확정하기로.</span>
+  </div>
+  <div class="flow" style="margin-top:12px">
+    <span class="k">본 것 ③</span><span>f0a7(켬): 절차 §7 판정 모두 통과. 그러나 map→odom 누적 보정 (−0.094, +0.175) = 0.199 m 로, f0a6(끔) 0.091 m 의 2.2 배.</span>
+    <span class="k">나온 결과</span><span><pre class="code">== f0a6_runner.csv (729 행)
+  복귀 상자 옆 중심 y 0.302~0.318 (기준 ≥ 0.26)
+  map→odom 누적 (-0.043, 0.080) m
+== f0a7_runner.csv (726 행)
+  목표 2: xy 진입 → 끝 0.0 s, 진입 뒤 yaw 변화 0.0°, ω 부호 바뀜 0 회 | 출발 회전 0.8 s 동안 map→odom 변화 0.035 m
+  복귀 상자 옆 중심 y 0.383~0.392 (기준 ≥ 0.26)
+  map→odom 누적 (-0.094, 0.175) m</pre><span class="note">결과 원문 <span class="mono">Docs/debug_log/2026-09-29/outputs/j640_f0csv.txt</span> · 스크립트 <span class="mono">jobs/job640_f0csv.py</span> · 러너 <span class="mono">outputs/j641_f0a7.txt</span> · <span class="mono">outputs/f0a7_runner.csv</span></span></span>
+    <span class="k">2.2 배 원인 분석</span><span>F0 bag 에는 컨디셔너 출력이 없어 B2 추가량 A 를 같은 조건 · 식으로 다시 계산하고, 같은 구간의 SLAM 보정 M 과 비교했다.</span>
+    <span class="k">스크립트 핵심</span><span><pre class="code">PCW, PCCW = (-0.029, 0.052), (-0.029, -0.095)   # 시계 / 반시계 회전축 p (m)
+VMAX, WMIN = 0.02, 0.10
+on = abs(wvx) &lt; VMAX and abs(wz) &gt; WMIN            # 순수 회전일 때만 B2 가 켜짐
+px, py = PCW if wz &lt; 0 else PCCW
+ax, ay = wz * py, -wz * px                          # 더하는 속도 (ω·py, −ω·px)</pre><span class="note">스크립트 원문 <span class="mono">Docs/debug_log/2026-09-29/jobs/job642_b2_vs_slam.py</span> 16~17 · 57~60 행</span></span>
+    <span class="k">나온 결과</span><span><pre class="code">== /tmp/bag_f0a7: EKF 2529, 휠 2114, map→odom 1708
+  구간  시각(s)  길이  회전°   B2 A(odom, cm)      |A|   SLAM M(cm)          |M|   M·Â(cm)  EKF vy 평균(m/s)
+    1    55.6   2.0   +44.3  ( -5.6,  -4.9)   7.4  ( +2.9,  +8.4)   8.8   -7.7    +0.012
+    2    59.5   0.7   +12.7  ( +0.6,  -2.1)   2.2  ( -0.9,  +2.4)   2.6   -2.6    +0.008
+  map→odom 경로 길이(1 s 창 크기 합, 상쇄 없음) 94.8 cm — 순 변화 19.4 cm
+(f0a6 은 같은 줄이 88.3 cm — 순 변화 8.7 cm)</pre><span class="note">결과 원문 <span class="mono">Docs/debug_log/2026-09-29/outputs/j643_b2slam.txt</span> · 래퍼 <span class="mono">jobs/job643_b2slam_run.sh</span><span class="c1104">(11-04 정정: §4.1 의 0.091 · 0.199 m(러너 csv 처음 · 끝)와 여기 8.7 · 19.4 cm(bag 첫 · 끝 표본)는 같은 양을 다른 창에서 잰 값, 차 0.4~0.5 cm. '2.2 배' 는 둘 다에서 성립 — 근거 Docs/issues/icr-b2-b3.md §5 모순 7)</span></span></span>
+    <span class="k">추론</span><span>경로 길이는 +7 % 뿐이라 '2.2 배' 는 SLAM 이 더 많이 고친 것이 아니라 방향 상쇄 여부의 차이. 그러나 44° 회전에서 SLAM 이 B2 추가량을 거의 전부 되돌렸다(A 방향 성분 −7.7 / |A| 7.4).<span class="c1104">(11-04 정정: M 은 map→odom 평행이동 차로만 쟀다. 같은 창 SLAM 회전 보정 −0.40° 가 odom 위치에서 만드는 평행이동 ≈ 1.2 cm 가 섞여 '되돌림' 크기는 그만큼 과대, 결론은 유지 — 근거 Docs/issues/icr-b2-b3.md §5 모순 8)</span> §3.1 L2-2(93°) · 09-28 B2-c(105°)와 같은 경향.</span>
+    <span class="k">결론</span><span>B2 는 180° 제자리 회전에서만 맞고 Nav2 에 흔한 부분 회전에서는 틀린 방향을 더한다 → <b>기본값 끔 유지</b>. '180° 이상일 때만 켜기' 는 회전 도중 최종 각도를 몰라 기각. B3 은 두 번째 관측 입력(rf2o)과 함께 다시. B2 는 대조군으로 남김.</span>
+  </div>
+</section>
+
+<section>
+  <h2>base 부팅 자동 기동<span class="sec">§2</span></h2>
+  <div class="flow">
+    <span class="k">본 것</span><span>사용자: "OLED 에 IP 가 안 나온다". Jetson 이 밤사이 재부팅(uptime 1 h 8 min) → 에이전트 · base · <span class="mono">display_info_pub</span> 가 모두 없음.</span>
+    <span class="k">추론</span><span>IP 는 micro-ROS 로만 보드에 가므로 사람이 base 를 띄우기 전엔 표시가 없다 — IP 가 가장 필요한 재부팅 직후에 비는 구조 문제.</span>
+    <span class="k">대안</span><span>① 매번 수동 기동 ② <b>systemd 사용자 서비스 + linger(채택)</b> ③ 부팅 스크립트가 시리얼로 IP 송신 — micro-ROS 와 같은 UART 라 충돌, 기각.</span>
+    <span class="k">나온 결과</span><span>설치(10:28): Linger=yes, enabled, active 15 s 뒤 <span class="mono">/wheel_odom</span> 24.997 Hz, display_info 구독 1, 보드 리셋 없이 연결. 재부팅 뒤 사람 개입 없이 IP 표시(사용자). <span class="note">출력 원문 없음 — SUMMARY 수치가 전부. 코드 <span class="mono">ros2_ws/src/rover_bringup/systemd/rover-base.service</span> · prep 분기 <span class="mono">Docs/debug_log/2026-09-29/jobs/job240_clean.sh</span></span></span>
+  </div>
+</section>
+
+<section>
+  <h2>cuVSLAM · 프로젝터 — 지금 플랫폼에서 되는 것<span class="sec">§6 ~ §11</span></h2>
+  <p>사람이 돌아다니는 실내에서도 강건해야 한다는 사용자 요구(§6.1)를 두고, rf2o 와 cuVSLAM 의 순서를 다시 봤습니다. 버전 · 지원 범위는 웹 출처(저장소에 원문 없음), 플랫폼 · 성능은 측정입니다.</p>
+  <div class="tbl"><table>
+    <tr><th>확인한 것</th><th>내용</th><th>구분</th></tr>
+    <tr><td>사람 마스크</td><td>cuVSLAM 은 분할 마스크로 사람 특징점을 뺄 수 있으나 RealSense 경로는 Isaac ROS 5.0(Jazzy · JetPack 7.2)에서 고쳐짐. 3.2 문서에는 마스크 튜토리얼 없음</td><td>웹</td></tr>
+    <tr><td>우리 플랫폼</td><td>L4T 36.5.0 = JetPack 6.2.2, 컨테이너에 <span class="mono">isaac_ros_visual_slam 3.2.6</span> 이미 설치(실행한 적 없음)</td><td>측정 <span class="mono">outputs/j644_platform.txt</span></td></tr>
+    <tr><td>NITROS</td><td>5.0 에서 deprecated. 우리 영상 경로(호스트 카메라 → DDS → 컨테이너)엔 끼어들 자리 없음, 영상 경로 CPU 합 ≈ 36 % — 도입 안 함</td><td>웹 + 측정</td></tr>
+    <tr><td>Orin Nano 의 JetPack 7</td><td>7.2 부터 지원(최신 7.2.1). 이전 비용 = CH341 드라이버 · librealsense · Jazzy 이식 · 기준선 재측정</td><td>웹 + 추정</td></tr>
+  </table></div>
+  <div class="flow" style="margin-top:12px">
+    <span class="k">본 것</span><span>주행 스택을 내리고 카메라를 IR 640×360×30 · 프로젝터 끔으로 따로 띄운 뒤 cuVSLAM 단독 실행(로버 정지).</span>
+    <span class="k">스크립트 핵심</span><span><pre class="code">dyaw = math.degrees((b[4] - a[4] + math.pi) % (2 * math.pi) - math.pi)
+print('  처음→끝 xy 변화 %.2f cm (z %.2f cm), 최대 이탈 %.2f cm, yaw 변화 %+.3f°' % (100 * dpos, 100 * dz, 100 * mx, dyaw))</pre><span class="note">스크립트 원문 <span class="mono">Docs/debug_log/2026-09-29/jobs/job647_vslam_measure.py</span> 38 · 42 행</span></span>
+    <span class="k">나온 결과</span><span><pre class="code">(V1 정지 · 사람 없음 60 s)
+  odometry 29.7 Hz (1786 개), 최대 간격 0.080 s
+  처음→끝 xy 변화 0.44 cm (z -0.98 cm), 최대 이탈 0.51 cm, yaw 변화 +0.150°
+  component_conta        22.8
+(V1-d 사람이 0.5~2 m 를 35 s 걸음)
+  odometry 28.1 Hz (935 개), 최대 간격 0.340 s
+  처음→끝 xy 변화 1.10 cm (z 0.81 cm), 최대 이탈 1.22 cm, yaw 변화 +0.074°
+  vo_state 분포: {1: 934}
+  component_conta        88.1</pre><span class="note">결과 원문 <span class="mono">Docs/debug_log/2026-09-29/outputs/j646_649_vslam_v1.txt</span> 31~35 · 71~75 행</span></span>
+    <span class="k">추론</span><span>V1-a · V1-b(yaw 0.150° — 기준 0.2° 에 여유 작음) · V1-d 통과. 사람이 있으면 CPU 가 4 배 · 프레임 간격 경고 25 → 133.<span class="c1104">(11-04 정정: 경고 25 · 133 을 센 원천 <span class="mono">/tmp/vslam_node.log</span>(Jetson)은 저장소에 없음 — 원천 소실, 수치는 SUMMARY 기록뿐. 또 §9.2 표의 odometry '934 개' 는 원문 935 개(934 는 vo_state 수) — 근거 Docs/issues/isaac-cuvslam-evaluation.md §5)</span> 원인(움직이는 특징점 · 영상 누락)은 미확정.</span>
+    <span class="k">결론</span><span>cuVSLAM 은 이 플랫폼에서 돈다. 정지 상태에서는 마스크 없이도 1 차 방어. 움직이는 로버 + 사람은 프로젝터 충돌을 푼 뒤.</span>
+  </div>
+  <div class="flow" style="margin-top:12px">
+    <span class="k">프로젝터 충돌</span><span>cuVSLAM 은 IR 에 점 무늬가 없어야 하고, nvblox · 게이트 점군은 프로젝터 켬 깊이를 쓴다. 선택 규칙(선언): O2(항상 끔) 조건 = 끔의 상자 점 ≥ 켬의 80 % 그리고 아래쪽 유효 비율 ≥ 켬의 90 %, 아니면 O1(번갈이 + 분리 노드).</span>
+    <span class="k">스크립트 핵심</span><span><pre class="code">BOX = ((1.10, 1.30), (-0.20, 0.03), (0.02, 0.30))   # base_link 기준 상자 부피
+for k, (lo, hi) in enumerate(BOX): ok &amp;= (P[:, k] &gt;= lo) &amp; (P[:, k] &lt;= hi)</pre><span class="note">스크립트 원문 <span class="mono">Docs/debug_log/2026-09-29/jobs/job653_depth_emit.py</span> 15 · 44 행 · 래퍼 <span class="mono">jobs/job654_emit_m12.sh</span></span></span>
+    <span class="k">나온 결과</span><span><pre class="code">M1 프로젝터=1: 30 프레임 | 유효 화소 전체 61.6 % · 아래 절반 42.9 % | 상자 부피 안 점 평균 2810
+M1 프로젝터=0: 30 프레임 | 유효 화소 전체 24.7 % · 아래 절반 19.2 % | 상자 부피 안 점 평균 3086
+  /camera/camera/depth/image_rect_raw      average rate: 59.528
+  /camera/camera/infra1/image_rect_raw     average rate: 59.876
+"frame_laser_power":0 ... "frame_emitter_mode":0 "frame_laser_power":150 ... "frame_emitter_mode":1 ...
+  카메라 노드 CPU(top 5 회 평균): 9.8 %</pre><span class="note">결과 원문 <span class="mono">Docs/debug_log/2026-09-29/outputs/j651_654_emitter.txt</span> 124~139 행(발췌)</span></span>
+    <span class="k">추론</span><span>끔은 상자 점이 오히려 110 % 이지만 아래 절반 유효가 켬의 45 % → O2 불채택. 번갈이는 세 스트림 60 Hz · 메타 0/1 교대 · CPU 증가 없음 → O1 실현 조건 충족.<span class="c1104">(11-04 정정: 메타가 교대하는 것만 봤고 어느 값이 켬인지는 재지 않았다. 10-19 에 이 카메라에서는 1 = 끔으로 확인 — 근거 Docs/issues/projector-ir-alternation.md §5 실수 1)</span></span>
+    <span class="k">결론</span><span>O1 선택. 남은 일: 분리 노드 소스 빌드, 분리 뒤 30 Hz 깊이 품질, 스택 CPU 예산.</span>
+    <span class="k">결정(§11)</span><span>사용자: "isaac 관련 더 심도 있게 파는 것은 jetpack 업그레이드 후로 넘기고, 우선 지금 상태에서 강건성이 낮아도 기능 구현을 완성" → 순서 ① F0 나머지 ② 온보드 정지 ③ F1 ④ F2 ⑤ JetPack 7.2 이전 Phase. 유지하는 위험: odom 층 회전 밀림, 사람 강건성(F1 · F2 는 '사람 없음' 규칙).</span>
+  </div>
+</section>
+
+<section>
+  <h2>F0-b — 문을 지나 7 m 왕복, 두 번 통과<span class="sec">§12</span></h2>
+  <p>f0a7 지도로 보니 출발 구역 안에서는 5~8 m 직선이 나오지 않아, 남동쪽 문(폭 ≈ 0.85 m) 밖 W3 (5.5, −2.2) 까지 가는 코스로 정했습니다. 사용자 확인: 문턱 없음 · 문 밖은 사람이 다니는 사무실 · 부채꼴은 책상 너머(유리 아님). 경유점 없이 NavFn 이 문을 지나는 경로를 스스로 계획하게 했습니다. 판정(주행 전): B-a 두 목표 SUCCEEDED · B-b 라이다 ↔ 차체 외곽 ≥ 0.05 m · B-c 10 s 무진행 0 · B-d 끝 map ≤ 0.20 m.</p>
+  <div class="tbl"><table>
+    <tr><th>판정</th><th>f0b1 (14:01)</th><th>f0b2 (14:25)</th><th>기준</th></tr>
+    <tr><td>B-a 도달</td><td>91.7 / 106.4 s</td><td>93.9 / 99.9 s</td><td>통과</td></tr>
+    <tr><td>B-b 여유 전체 / 문</td><td>0.144 / 0.230 m</td><td>0.139 / 0.224 m</td><td>≥ 0.05 → 통과</td></tr>
+    <tr><td>B-c 정체</td><td>없음</td><td>없음</td><td>통과</td></tr>
+    <tr><td>B-d 복귀(지도)</td><td>0.140 m</td><td>0.141 m</td><td>≤ 0.20 → 통과</td></tr>
+    <tr><td>줄자(뒤·왼 모서리 ↔ 출발 표시) 세로 / 가로</td><td>미측정(로버를 먼저 옮김)</td><td>11.5 / 9.5 cm (예측 16.7 / 9.3)</td><td>기록</td></tr>
+    <tr><td>map→odom 누적</td><td>0.188 m, −3.75°</td><td>0.082 m, −4.40°</td><td>기록</td></tr>
+  </table></div>
+  <div class="flow" style="margin-top:12px">
+    <span class="k">스크립트 핵심</span><span><pre class="code"># 라이다 점 ↔ 차체 외곽(직사각) 최소 거리
+L2, W2 = 0.25, 0.165                       # 차체 0.50 × 0.33 m, base_link 중심 가정
+dx = np.maximum(np.abs(bx) - L2, 0); dy = np.maximum(np.abs(by) - W2, 0)
+inside = (np.abs(bx) &lt;= L2) &amp; (np.abs(by) &lt;= W2)
+d = np.hypot(dx, dy)[~inside]</pre><span class="note">스크립트 원문 <span class="mono">Docs/debug_log/2026-09-29/jobs/job660_clearance.py</span> 11 · 51~53 행<span class="c1104">(11-04 정정: 09-30 §3 실측은 앞 +0.262 · 뒤 −0.248 — 이 가정으로는 앞쪽 여유가 최대 1.2 cm 과대 — 근거 Docs/issues/f0b-course.md §6)</span></span></span>
+    <span class="k">나온 결과</span><span><pre class="code">(f0b1 러너)
+  목표 1 SUCCEEDED 91.7 s | 도착 map (5.411, -2.054, -25.4°) 목표 대비 0.152 m, -19.0°
+  목표 2 SUCCEEDED 106.4 s | 도착 map (0.134, 0.041, -166.0°) 목표 대비 0.140 m, 0.7°
+  map→odom 누적 보정(SLAM 이 본 오도메트리 드리프트): Δ(-0.155, 0.106) m, Δyaw -3.75°
+  누적 회전: 휠 253.3° vs EKF 197.3° (차 55.9° = 미끄러짐·스크럽 흔적) | stuck 진단 1 회
+(f0b2 여유)
+주행 201 s, 스캔 2014 개 | 전체 최소 여유 0.139 m @ t 23.6 s, 로버 map (1.53, 0.34), 점 차체 (-0.30, +0.29)
+문 구간(중심 0.6 m 안) 스캔 349 개 | 최소 여유 0.224 m @ t 39.7 s, 로버 map (2.24, -0.51), 점 차체 (+0.26, +0.39)</pre><span class="note">결과 원문 <span class="mono">Docs/debug_log/2026-09-29/outputs/j662_f0b1.txt</span> · <span class="mono">outputs/j667_f0b2_anal.txt</span> 2~3 행 · 러너 csv <span class="mono">outputs/f0b1_runner.csv</span> · <span class="mono">f0b2_runner.csv</span><span class="c1104">(11-04 정정: f0b1 의 B-b 수치 0.144 / 0.230 m 는 러너 출력 j662 가 아니라 job660 실행 결과이고 그 출력 파일은 따로 없다(f0b2 는 j667 에 있음) — 근거 Docs/issues/f0b-course.md §5)</span></span></span>
+    <span class="k">추론</span><span>문 통과 여유 22~23 cm 로 넉넉. 가장 좁은 곳은 복귀 때 낮은 상자 옆(계산 ≈ 8~12 cm). 지도 예측 ↔ 줄자 세로가 f0a6 +3.6 · f0a7 +5.5 · f0b2 +5.2 cm 로 매번 같은 방향 → 고정 편차로 보임(후보: 차체 치수 가정 · 출발 표시 해석, 추정).</span>
+    <span class="k">결론</span><span><b>F0-b 2 회 연속 통과 → ① F0 나머지 완료.</b> 편차 원인은 09-30 §2 · §3 에서 이어 봄.</span>
+  </div>
+  <div class="flow" style="margin-top:12px">
+    <span class="k">본 것(전선)</span><span>사용자: "W3 목적지 위치에 긴 전선줄이 있어, 밟으면서 약간의 흔들림과 오차가 있었을 것".</span>
+    <span class="k">스크립트 핵심</span><span><pre class="code">1 s 창마다: ① 기울기 흔들림 = 카메라 IMU 자이로 중 yaw 축(광학 y)이 아닌 두 축(x, z)의 RMS(°/s),
+   ④ 휠 속도 vs map 속도 차(cm/s) = 헛돎·긁힘 흔적. 로버 map 위치와 W3 까지 거리를 같이 적는다.
+W3 = (5.5, -2.2)</pre><span class="note">스크립트 원문 <span class="mono">Docs/debug_log/2026-09-29/jobs/job663_cable.py</span> 3~5 · 13 행(머리 설명) · 래퍼 <span class="mono">jobs/job664_cable_run.sh</span></span></span>
+    <span class="k">나온 결과</span><span><pre class="code">기준(W3 0.8 m 밖, 177 창): 기울기 흔들림 중앙값 3.13 °/s (90 % 4.06), ... map→odom 1 s 변화 중앙값 1.00 cm
+W3 0.8 m 안(27 창): 기울기 흔들림 중앙값 4.73 °/s · 최대 10.44, 가속도 표준편차 최대 1.996, map→odom 1 s 변화 최대 5.59 cm
+    102 | ( 5.22, -1.97) | 0.36 m | 10.44 | 1.415 |  3.63 |  5.6 |  6.9
+     98 | ( 5.42, -2.05) | 0.17 m |  8.60 | 1.996 |  0.00 |  5.2 |  5.3
+    101 | ( 5.26, -1.98) | 0.32 m |  8.18 | 1.493 |  5.59 |  6.0 |  4.6</pre><span class="note">결과 원문 <span class="mono">Docs/debug_log/2026-09-29/outputs/j664_cable.txt</span>(f0b1, 상위 10 창 중 3 줄) · f0b2 는 <span class="mono">outputs/j667_f0b2_anal.txt</span></span></span>
+    <span class="k">추론</span><span>상위 10 창이 모두 W3 에서 0.17~0.68 m 안, f0b2 에서도 10 중 8 → 전선 밟기 흔적으로 보는 것이 타당(전선 위치를 지도에 대조하진 않음). 복귀 0.140 m 는 f0a7 과 같은 수준 → SLAM 이 흡수, 판정 영향 없음. 전선(높이 &lt; 6 cm)은 라이다 · 카메라 슬라이스(≥ 6 cm) 모두 못 본다.<span class="c1104">(11-04 정정: 슬라이스 하한 0.06 은 odom z 기준이고 base_link 원점이 바닥 +0.026 이라 바닥 위로는 약 8.6 cm(계산). 결론은 같음 — 근거 Docs/issues/cable-step-over.md §6 어긋남 2)</span></span>
+    <span class="k">결론</span><span>전선을 치울지(기준 조건) 둘지(교란 조건)는 사용자 결정으로 남김. f0b2 복귀 때 문 직후 (2.27, −0.94) 의 SLAM 보정 9.81 cm/1 s 는 흔들림 기준 수준이라 전선과 무관(원인 미분석).</span>
+  </div>
+</section>
+
+<section>
+  <h2>② 온보드 정지 수단 — PC 와 Wi-Fi 없이도 멈춘다<span class="sec">§13</span></h2>
+  <div class="tbl"><table>
+    <tr><th>층</th><th>내용</th><th>09-29 결과</th></tr>
+    <tr><td>L0 펌웨어</td><td>/cmd_vel 500 ms 워치독 · 스톨 정지 · 래치</td><td>기존 유지</td></tr>
+    <tr><td>L1 보드 전원 스위치</td><td>사용자: 하드웨어 스위치 = 보드 전원 차단(Jetson 도 재부팅)</td><td>G4 생략(사용자 "전원을 끄는 것") — 정지 거리 미측정</td></tr>
+    <tr><td>L2 <span class="mono">nav_guard.py</span>(신규)</td><td>목표별 시간 한도 · 무진행 한도 → 모든 목표 취소 + /cmd_vel 0</td><td>G1 통과 · G2(무진행) 보류</td></tr>
+    <tr><td>L3 stuck_monitor</td><td>휠은 도는데 몸이 안 감</td><td>G3 오판 0 · G3b 검출 0.8~0.9 s → 작동 전환</td></tr>
+    <tr><td>L4 원격 정지</td><td>PC <span class="mono">job156</span></td><td>기존(Wi-Fi 있을 때)</td></tr>
+  </table></div>
+  <div class="flow" style="margin-top:12px">
+    <span class="k">본 것(G3)</span><span>bag 20 개(F0 9 · 회전 9 · 직진 2) 전수 조사에서 판정 1 건: f0b1 t 36.9 s, 문 통과 중 "지령 15.6 cm/10° 인데 관측 2.0 cm/21.0°", 같은 2 s 실제(SLAM) 15.0 cm → 오판.</span>
+    <span class="k">추론</span><span>회전 지령이 문턱(11.5°) 미만이라 병진 비율만 판정 → 병진은 스캔을 회전 보정한 뒤 재는데, 그 회전에 스캔 상관 값을 썼고 문틀에서 과대(−17~−18°, 자이로 −6~−10°) → 병진 과소.</span>
+    <span class="k">스크립트 핵심</span><span><pre class="code">OLD: 회전 보정 roll = 스캔 상관, 회전 관측 = max(|스캔|, 자이로)
+NEW: 자이로가 창 안에 있으면 roll = 자이로 누적(부호 있음), 회전 관측 = |자이로|; 없으면 OLD 와 같음
+            if mode == 'NEW' and len(gw) &gt; 10:
+                roll, rot_obs = g_sig, abs(g_sig) if False else g_abs
+            else:
+                roll, rot_obs = rs, max(abs(rs) if rs is not None else 0.0, g_abs)</pre><span class="note">스크립트 원문 <span class="mono">Docs/debug_log/2026-09-29/jobs/job670_stuck_offline.py</span> 6~7 · 50~53 행(bag 의 <span class="mono">/imu/data</span> 를 직접 읽음)</span></span>
+    <span class="k">나온 결과</span><span><pre class="code">bag_f0b1     자이로 41913 | OLD 1 건 | NEW 0 건
+   OLD t 37.4 s: 지령 15.6cm/8° 관측 1.5cm/18.4° 비율 0.10 (스캔회전 -18.4, 자이로 -9.7°)
+bag_f0b2     자이로 41586 | OLD 1 건 | NEW 0 건
+   OLD t 37.3 s: 지령 15.6cm/8° 관측 1.3cm/17.0° 비율 0.08 (스캔회전 -17.0, 자이로 -5.9°)
+합계 OLD 2 건, NEW 0 건</pre><span class="note">결과 원문 <span class="mono">Docs/debug_log/2026-09-29/outputs/j671_stuck_offline.txt</span> · 전수 조사 <span class="mono">outputs/j669_stuck_all.txt</span></span></span>
+    <span class="k">결론</span><span><span class="mono">stuck_monitor.py</span> 를 자이로 우선으로 고침(커밋 <span class="mono">287a90d3</span>). G3 오판 0 충족.<span class="c1104">(11-04 정정: 노드의 <span class="mono">use_gyro</span> 기본값이 False(09-08 부터)이고 launch 가 켜지 않아, 실주행 노드는 자이로를 구독하지 않고 OLD 경로로 판정했다. 재생기는 bag 을 직접 읽어 이 차이를 못 봄. 10-30 사용자 결정: 켜지 않음 — 근거 Docs/debug_log/2026-10-01/SUMMARY.md §8.11 · Docs/debug_log/2026-10-29/SUMMARY.md §8 · Docs/issues/stuck-monitor.md)</span></span>
+  </div>
+  <div class="flow" style="margin-top:12px">
+    <span class="k">본 것(G3b)</span><span>09-07 벽 밀기 bag 은 소실 → 대체로 받침대(트랙이 공중에서 돎, 몸은 정지).</span>
+    <span class="k">나온 결과</span><span><pre class="code">직진 6 s | 휠 |v| 0.070 m/s |ω| 0.00 rad/s | 자이로 |ω| 0.004 rad/s | 판정 2 건 0.8 s: STUCK: 지령 5.6cm/0° 인데 관측 0.0cm/0.0° (비율 0.00); ...
+회전 6 s | 휠 |v| 0.001 m/s |ω| 0.30 rad/s | 자이로 |ω| 0.004 rad/s | 판정 2 건 0.9 s: STUCK: 지령 0.0cm/17° 인데 관측 0.0cm/0.0° (비율 0.00); ...
+전체 판정 4 건</pre><span class="note">결과 원문 <span class="mono">Docs/debug_log/2026-09-29/outputs/j674_stand.txt</span> · 스크립트 <span class="mono">jobs/job673_stand.py</span> · <span class="mono">job674_stand_run.sh</span> (마지막 정지 구간 0.1 s 판정은 회전 구간 판정과 같은 것 — 집계 창 겹침)</span></span>
+    <span class="k">결론</span><span>참 정체 검출 ≤ 1 s(기준 3 s) → prep 기본 <span class="mono">stuck_shadow:=${STUCK_SHADOW:-false}</span>(작동). 이날 판단의 한계: 받침대에서는 자이로 · 스캔 모두 0° 라 use_gyro 여부를 가르지 못한다(위 정정과 같은 카드).</span>
+  </div>
+  <div class="flow" style="margin-top:12px">
+    <span class="k">본 것(G1)</span><span><span class="mono">time_limit_override 15</span> 로 W3 목표를 보내 시간 한도 개입을 실제로 일으킴. 판정(선언): 취소 ≤ 16 s, 그 뒤 1 s 안 정지.</span>
+    <span class="k">스크립트 핵심</span><span><pre class="code"># 정지 시각: t_end 이후 |v|&lt;0.005 &amp; |ω|&lt;0.02 가 0.5 s 지속된 첫 시각
+ok1 = bool(guard) and (guard[0][0] - t_acc) &lt;= LIM + 1 and st == 5
+ok2 = t_stop is not None and t_end is not None and (t_stop - t_end) &lt;= 1.0</pre><span class="note">스크립트 원문 <span class="mono">Docs/debug_log/2026-09-29/jobs/job677_g1.py</span> 45 · 54~55 행 · 래퍼 <span class="mono">jobs/job678_g1_run.sh</span></span></span>
+    <span class="k">나온 결과</span><span><pre class="code">목표 수락: True, 출발 map None
+nav_guard 진단: 15.12 s: 시간 한도 초과: 15 s &gt; 15 s (남은 거리 시작 7.15 m)
+목표 종료 상태 5 (5 = CANCELED) at 15.18 s
+휠 정지 at 15.55 s (종료 뒤 0.38 s)
+G1 판정: 취소 ≤ 16 s 통과 · 정지 ≤ 1 s 통과
+[nav_guard]: 목표 1a167f03: 남은 거리 7.15 m → 시간 한도 234 s
+[nav_guard]: 목표 1a167f03: 남은 거리 6.09 m → 시간 한도 204 s</pre><span class="note">결과 원문 <span class="mono">Docs/debug_log/2026-09-29/outputs/j678_g1.txt</span></span></span>
+    <span class="k">결론</span><span><b>G1 통과</b>, override 0 으로 원복. SUMMARY 는 이동을 '남은 거리 7.15 → 6.09 m(≈ 1.06 m 전진 뒤 정지)' 로 적었다.<span class="c1104">(11-04 정정: 출력 첫 줄 '출발 map None' — 출발 자세를 못 받아 이동 거리는 미측정. 1.06 m 는 nav_guard 로그의 남은 경로 길이 차다 — 근거 Docs/issues/onboard-stop-nav-guard.md §5 끝)</span> 시간 한도 = 처음 남은 거리 / 0.07 × 2 + 30 s.<span class="c1104">(11-04 정정: '처음 남은 거리' 를 첫 피드백 값으로 잡아, 연속 목표에서는 직전 목표의 남은 거리(0.15 m → 한도 34 s)로 정상 주행을 취소했다. 10-01 §8.13 에 시작 뒤 10 s 안 최대값으로 고침 — 근거 Docs/issues/onboard-stop-nav-guard.md §5 실수 1)</span></span>
+  </div>
+  <p class="note">§14: 사용자 질문 "SLAM 에서 무엇을 고쳤길래 이동 중 오차를 감지한다고 했나" — 오차 감지 기능을 넣은 것이 아니라 <span class="mono">shouldProcessScan()</span> 의 조건을 '거리 또는 회전각(0.03 rad)' 으로 바꿔 제자리 회전 중 스캔도 정합하게 한 것(09-28 §9). 정리 문서 <span class="mono">Docs/04_navigation/SLAM_FORK_ROTATION.md</span>.</p>
+</section>
+
+<section>
+  <h2>내 실수 · 같은 날 바로잡은 것</h2>
+  <div class="pm">
+    <h3>L2 안전 정지 원인을 '오른쪽 물체' 로 예측 (§3 · §3.1 → §3.2)</h3>
+    <div class="flow">
+      <span class="k">하려 한 것</span><span>L2(반시계) 시작 전 주변 여유로 정지 위험 예측</span>
+      <span class="k">본 것</span><span>prep 여유 오른쪽 0.58 m. L2 회전 2 가 93° 에서 0.40 m 로 정지</span>
+      <span class="k">처음 추론</span><span>'반시계는 오른쪽으로 밀어 오른쪽 물체에 걸린다' — §3.1 에 '예상대로 오른쪽 물체' 로 기술</span>
+      <span class="k">의심한 이유</span><span>사용자: "가까운 물체는 내가 앉은 의자이고, 시작 때 나는 왼쪽 뒤에 있었다."</span>
+      <span class="k">스크립트 핵심</span><span><pre class="code"># 스캔 점 → map → L1 첫 정지 자세(첫 시작 차체) 기준 좌표(앞+/왼+)
+d = np.hypot(P0[m, 0], P0[m, 1]); i = np.argmin(d)
+q = nn[0][1]; dd = np.hypot(P0[:, 0] - q[0], P0[:, 1] - q[1]).min()   # 정지 때 최근접 점이 시작 때도 있었나</pre><span class="note">스크립트 원문 <span class="mono">Docs/debug_log/2026-09-29/jobs/job639_nearest.py</span> 81 · 97 행</span></span>
+      <span class="k">나온 결과</span><span><pre class="code">  오른(−90°)     최근접 0.58 m at (-0.17, -0.56)
+  뒤왼(135°)     최근접 0.81 m at (-0.46, +0.67)
+[L2 회전 2 정지 3.8 s] 차체 중심(첫 시작 기준) (-0.162, +0.271), 방향 +97.5°
+    0.40 m at (-0.41, +0.58)
+  → 그 점과 시작 때 스캔의 가장 가까운 점 거리 0.10 m (≤0.05 면 같은 고정 물체)</pre><span class="note">결과 원문 <span class="mono">Docs/debug_log/2026-09-29/outputs/j639_nearest.txt</span></span></span>
+      <span class="k">결론</span><span>180° 마다 차체가 뒤집힌다. L1 시계 3 회(홀수) 뒤 로버는 뒤를 보고 있었고, 그 상태의 반시계(차체 기준 오른쪽 밀림)는 바닥 기준 왼쪽 → 중심이 +0.27 m 왼쪽으로 가 뒤왼 의자에 다가감. 오차 표 수치는 영향 없음(정답은 스캔 정합)</span>
+      <span class="k">다음에 알아보는 법</span><span>블록마다 누적 바닥 이동 방향 = (홀짝 × 회전 방향)으로 미리 계산해 그쪽 여유 ≥ 0.9 m. 관찰자는 라이다 높이 밖(1 m 이상) + 예상 이동 반대쪽</span>
+      <span class="k">데이터</span><span><span class="mono">outputs/j639_nearest.txt</span> · <span class="mono">outputs/j636_spin_l1l2.txt</span> · 카드 <span class="mono">Docs/issues/icr-b2-b3.md</span> 실수 5</span>
+    </div>
+  </div>
+  <div class="pm">
+    <h3>nav_guard 가 취소 직후 늦게 온 피드백으로 같은 목표를 다시 등록 (§13.5)</h3>
+    <div class="flow">
+      <span class="k">본 것</span><span>G1 개입 뒤 로그 "목표 1a167f03: 남은 거리 6.09 m → 시간 한도 204 s"(위 G1 출력 마지막 줄)</span>
+      <span class="k">영향</span><span>상태 CANCELED 수신으로 곧 지워져 이번엔 영향 없음</span>
+      <span class="k">결론</span><span>개입한 목표 id 를 <span class="mono">tripped</span> 에 넣어 무시하도록 수정 · 빌드(<span class="mono">jobs/job679_guard_fix.sh</span>, 다음 prep 부터). 같은 날 기동 확인 때 SIGINT 종료 Traceback 도 예외 처리 추가(<span class="mono">jobs/job675_guard_deploy.sh</span>)</span>
+      <span class="k">데이터</span><span><span class="mono">outputs/j678_g1.txt</span> nav2.log 발췌 줄</span>
+    </div>
+  </div>
+  <div class="pm">
+    <h3>cuVSLAM vo_state 정의를 기억으로 적음 (§9.1, 카드에서 칸 형식으로 정리)</h3>
+    <div class="flow">
+      <span class="k">본 것</span><span>도구 출력 줄 "vo_state 분포: {1: 1784} (3.2 정의: 0 미상, 1 성공, 2 실패, 3 성공+IMU 없음 — 원문 정의는 메시지 주석 확인)"</span>
+      <span class="k">판별</span><span><span class="mono">jobs/job650_vostate.sh</span> 로 메시지 파일을 읽음 — 0 Unknown · 1 Success · 2 Failed(3 없음)</span>
+      <span class="k">결론</span><span>SUMMARY 는 메시지 파일 정의로 적어 판정 영향 없음(분포가 전부 1). 도구 주석만 틀린 채 남음</span>
+      <span class="k">다음에 알아보는 법</span><span>상태 코드 의미는 메시지 정의 파일을 먼저 읽어 도구에 넣는다</span>
+      <span class="k">데이터</span><span><span class="mono">jobs/job647_vslam_measure.py</span> · <span class="mono">outputs/j646_649_vslam_v1.txt</span> · 카드 <span class="mono">Docs/issues/isaac-cuvslam-evaluation.md</span> 실수 1</span>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>다음 후보(09-29 끝 기준)</h2>
+  <ul>
+    <li>③ F1 사무실 매핑(로드맵 <span class="mono">Docs/04_navigation/NAV2_EXPLORATION_PLAN.md §7.4</span>) — 다음 날 시작</li>
+    <li>지도 예측 ↔ 줄자 앞뒤 고정 편차 4~5 cm — 출발 자세에서 base_link ↔ 트랙 끝 실측(09-30 §2)</li>
+    <li>B2: 부분 회전 모형 · 반시계 0.38 표본 보강 / SLAM 1.3 cm 추종의 원인 분리(B2 끔 + 포크)</li>
+    <li>nav_guard 무진행(G2) · 보드 전원 스위치 정지 거리(G4) — 보류 · 생략</li>
+  </ul>
+</section>
+
+<section>
+  <h2>이후 · 관련 카드</h2>
+  <ul>
+    <li><span class="mono">Docs/issues/icr-b2-b3.md</span> — B2 · B3 시험 전체와 원문 대조 9 건</li>
+    <li><span class="mono">Docs/issues/board-oled-autostart.md</span> — base 자동 기동</li>
+    <li><span class="mono">Docs/issues/isaac-cuvslam-evaluation.md</span> · <span class="mono">Docs/issues/projector-ir-alternation.md</span> — 10-19 재개 · 10-21 프로젝터 상시 끔 결정(이날 기각한 O2 를 다시 고름)</li>
+    <li><span class="mono">Docs/issues/f0b-course.md</span> · <span class="mono">Docs/issues/cable-step-over.md</span> — F0-b · W3 전선</li>
+    <li><span class="mono">Docs/issues/onboard-stop-nav-guard.md</span> · <span class="mono">Docs/issues/stuck-monitor.md</span> — 정지 수단 · use_gyro 간극(지금 표준 prep 은 stuck_monitor 그림자)</li>
+    <li><span class="mono">Docs/issues/slam-fork-rotation.md</span> — SLAM 포크</li>
+  </ul>
+</section>
+</div>

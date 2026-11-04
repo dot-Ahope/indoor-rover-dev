@@ -1,0 +1,285 @@
+<title>09-21 STVL 기준선 고정</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* 배치: 실험 노트 — 좁은 본문 열(65자) + 넓게 펼치는 그림 · 표, 판정은 왼쪽 띠 색으로(10-20 판과 같은 틀) */
+:root{
+  --bg:#f3f4f6; --paper:#ffffff; --ink:#1b1f24; --muted:#5b6470; --line:#d9dde3;
+  --ir:#b3263e;      /* 프로젝터 켬 · 실패 쪽 */
+  --cool:#1f7a72;    /* 프로젝터 끔 · 통과 쪽 */
+  --warn:#a86a00;
+  --tint-ir:#f8e8eb; --tint-cool:#e4f2f0; --tint-warn:#fbf1df;
+  --f-body:"IBM Plex Sans KR","Malgun Gothic","Apple SD Gothic Neo",sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#111418; --paper:#181c21; --ink:#e6e9ed; --muted:#9aa4b0; --line:#2c333b;
+  --ir:#ef6b80; --cool:#5cc4b8; --warn:#e0a640;
+  --tint-ir:#2b1b1f; --tint-cool:#15292a; --tint-warn:#2a2316; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#111418; --paper:#181c21; --ink:#e6e9ed; --muted:#9aa4b0; --line:#2c333b;
+  --ir:#ef6b80; --cool:#5cc4b8; --warn:#e0a640;
+  --tint-ir:#2b1b1f; --tint-cool:#15292a; --tint-warn:#2a2316; color-scheme:dark}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.65;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:28px 64px}
+.wrap{max-width:980px;margin:0 auto;display:flex;flex-direction:column;gap:34px}
+header{display:flex;flex-direction:column;gap:6px;border-bottom:2px solid var(--ink);padding-bottom:14px}
+.eyebrow{font-family:var(--f-mono);font-size:12px;letter-spacing:.08em;color:var(--muted);text-transform:uppercase}
+h1{font-size:30px;line-height:1.25;margin:0;font-weight:700;text-wrap:balance}
+h2{font-size:20px;margin:0 0 4px;font-weight:700;text-wrap:balance}
+h2 .sec{font-family:var(--f-mono);font-size:13px;color:var(--muted);font-weight:400;margin-left:8px}
+p{margin:0;max-width:68ch}
+section{display:flex;flex-direction:column;gap:12px}
+.lead{color:var(--muted);max-width:72ch}
+.verdicts{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
+.v{background:var(--paper);border:1px solid var(--line);border-left:5px solid var(--muted);padding:12px 14px;display:flex;flex-direction:column;gap:4px;min-width:0}
+.v.ok{border-left-color:var(--cool)} .v.no{border-left-color:var(--ir)} .v.wait{border-left-color:var(--warn)}
+.v b{font-size:15px} .v span{color:var(--muted);font-size:13.5px}
+.pill{display:inline-block;font-family:var(--f-mono);font-size:11.5px;padding:1px 8px;border-radius:999px;white-space:nowrap}
+.pill.ok{background:var(--tint-cool);color:var(--cool)} .pill.no{background:var(--tint-ir);color:var(--ir)} .pill.wait{background:var(--tint-warn);color:var(--warn)}
+.tbl{overflow-x:auto;background:var(--paper);border:1px solid var(--line)}
+table{border-collapse:collapse;width:100%;font-size:13.5px;font-variant-numeric:tabular-nums}
+th,td{padding:7px 10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{font-weight:500;color:var(--muted);font-size:12.5px;white-space:nowrap}
+td.n{font-family:var(--f-mono);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr.hl td{background:var(--tint-cool)} tr.bad td{background:var(--tint-ir)}
+figure{margin:0;background:var(--paper);border:1px solid var(--line);padding:10px;display:flex;flex-direction:column;gap:8px}
+figure img{width:100%;height:auto;display:block}
+figcaption{font-size:13px;color:var(--muted)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media (max-width:720px){.two{grid-template-columns:1fr}}
+ul{margin:0;padding-left:20px;max-width:72ch} li{margin:2px 0}
+.mono{font-family:var(--f-mono);font-size:13px}
+.flow{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;font-size:14px}
+.flow .k{font-family:var(--f-mono);color:var(--muted);font-size:12.5px;padding-top:2px;white-space:nowrap}
+.note{font-size:13px;color:var(--muted)}
+.pm{background:var(--paper);border:1px solid var(--line);padding:12px 14px;display:flex;flex-direction:column;gap:8px}
+.pm h3{font-size:15.5px;margin:0;font-weight:700}
+.pm .flow{grid-template-columns:auto 1fr;gap:6px 14px}
+.pm .flow span:not(.k){max-width:none}
+</style>
+
+<style>
+.code{margin:0;font-family:var(--f-mono);font-size:12.5px;line-height:1.5;background:var(--bg);border:1px solid var(--line);padding:8px 10px;overflow-x:auto;white-space:pre;max-width:100%}
+.flow > span{min-width:0}
+.c1104{font-weight:600;color:var(--ink);background:var(--tint-warn);border-left:3px solid var(--warn);padding:0 5px;margin-left:3px;border-radius:2px;white-space:normal;font-size:.92em}
+</style>
+<div class="wrap">
+<header>
+  <div class="eyebrow">Indoor Rover · 2026-09-21 · Docs/debug_log/2026-09-21 §0–§10 · BASELINE_STVL.md · 주행 있음(cc1 ~ cc5) · 11-04 사후 작성</div>
+  <h1>09-21 STVL 기준선 고정</h1>
+  <p class="lead">이 페이지는 2026-11-04 에 그날 SUMMARY 와 <span class="mono">BASELINE_STVL.md</span>, 같은 폴더의 <span class="mono">jobs/</span> · <span class="mono">outputs/</span> 원문으로 만들었다. 오전에는 MPPI 장애물 크리틱을 CostCritic 으로 바꾼 구성으로 같은 코스를 다섯 번 달렸다(cc1 ~ cc5). 그중 cc1 의 루프 미달 18 은 주행 직전 메타 스냅숏 탓으로 판정해 절차를 고쳤고, cc2 ~ cc5 를 Phase S(STVL) 기준선으로 고정했다. 오후에는 카메라 근거리 한계를 정지 상태에서 쟀다(S2). 저녁에는 Isaac ROS 3.2 컨테이너에 nvblox 를 띄워 N0 게이트 넷을 통과했고, 호스트 Nav2 에 nvblox 코스트맵 층을 붙였다. 그 과정에서 층의 반 칸 조회 결함(<span class="mono">round</span> → <span class="mono">floor</span>)을 찾아 고쳤다. 이후 문제 대장 카드에서 바로잡은 곳 13 곳과 이 페이지를 만들며 파일을 대조해 찾은 1 곳(BASELINE 의 스크립트 위치 · 옛 문서 경로), 합쳐 <b>14 곳</b>은 원문을 그대로 두고 <span class="c1104">11-04 정정</span> 표시를 붙였다.</p>
+</header>
+
+<section>
+  <h2>오늘의 판정</h2>
+  <div class="verdicts">
+    <div class="v ok"><b>CostCritic 채택</b><span>09-18 에 선언한 기준 6 개 중 5 개 합격. 루프 미달만 cc1 불합격 — 원인은 절차(메타 스냅숏) (§4)</span></div>
+    <div class="v ok"><b>Phase S 기준선 = cc2 ~ cc5</b><span>4/4 성공 31.5 s · 코스트맵 상자 여유 8.4 ~ 12.9 cm · CPU 합 ≈ 320 % · GPU 0 % · 6.6 W (§7, BASELINE)</span></div>
+    <div class="v ok"><b>S2: 센서 근거리 한계 ≤ 0.316 m</b><span>디시메이션 4 유지(2 로 바꿔도 끊김 거리 같음). 코스트맵의 실제 한계는 릴레이 min_range 0.45 (§5)</span></div>
+    <div class="v wait"><b>min_range A/B 보류</b><span>이 코스의 상자 미관측은 옆으로 화각을 벗어나는 것 — min_range 와 무관. Phase N 비교 항목으로 이월 (§6)</span></div>
+    <div class="v ok"><b>nvblox N0 게이트 4/4</b><span>상자 앞면 +0.4 셀 · 근거리 자취 0/311 · 15.1 Hz · CPU ≈ 16 % · GPU 0 ~ 10 % · 복셀 0.03 가능 (§9)</span></div>
+    <div class="v ok"><b>층 결함 round → floor 확정 · 수정</b><span>층 = 슬라이스 외곽, 통과 측 가장자리 0.00(물리 +0.011). 남은 차이는 표면 뒤 절단 띠 0.20 m (§10.4 · §10.5)</span></div>
+    <div class="v wait"><b>main 은 건드리지 않음</b><span>브랜치 push · 태그 로컬, 비공개 저장소 <span class="mono">personal</span> 생성 (§8)</span></div>
+  </div>
+</section>
+
+<section>
+  <h2>cc1 의 루프 미달 18 — 크리틱인가, 절차인가<span class="sec">§1 · §2</span></h2>
+  <div class="flow">
+    <span class="k">본 것</span><span>cc1 은 성공 31.1 s · 정지 0 이었지만 제어 루프 미달 18(12.5 ~ 21.3 s, 상자 옆 구간)과 BT 응답 초과 4 가 났다. EKF 위반은 61 이었다.<span class="c1104">(11-04 정정: 61 은 <span class="mono">sensors.log</span> 누적값이다. 주행 창 증분은 42 → 61 = <b>+19</b>, cc2 는 19 → 20 = +1. 방향(cc1 만 튐)은 같다. 근거 Docs/issues/pre-drive-dds-participants.md §5-①)</span> controller CPU 는 dy6 대비 +4 %p 뿐인데, ekf · planner · bt 처럼 크리틱과 무관한 노드가 함께 올랐다. 주행 뒤 idle 에서도 lifecycle_manager 13.7 % 였다.<span class="c1104">(11-04 정정: 13.7 % 는 cc1 특이값이 아니다 — cc1 주행 중 10.2 · cc2 11.8 · cc4 13.1 % 로 평소 값. 근거 Docs/issues/pre-drive-dds-participants.md §5-④)</span></span>
+    <span class="k">추론</span><span>그날 새로 넣은 메타 스냅숏(job453: 파라미터 조회 노드 + topic list + echo — DDS 참여자 3 개 생성 · 소멸)을 주행 직전에 돌렸다. 그래서 09-17 churn 과 같은 계열의 디스커버리 후폭풍을 의심했다.</span>
+    <span class="k">판별</span><span>스냅숏만 bag 종료 뒤로 옮기고(<span class="mono">job231_drive.sh</span>) cc2 를 달렸다.</span>
+    <span class="k">결론</span><span>미달 18 → 0. controller 41 → 34 · ekf 40 → 12 · planner 23 → 11 · bt 28 → 15 로 dy6 수준이 됐다. 그래서 절차 규칙을 새로 정했다: 주행 30 s 전에는 DDS 참여자를 만들거나 없애지 않는다.<span class="c1104">(11-04 정정: 그날 러너 자신이 규칙을 어겼다 — <span class="mono">job254_s4run.sh</span> 가 주행 직전 <span class="mono">ros2 topic hz</span> · <span class="mono">tf2_echo</span> · 감사 등을 돌렸다. cc2 ~ cc5 도 30 s 규칙을 지키지 않았는데 미달 0 이었다. '30 s' 는 측정 근거가 없는 숫자다. 실제 30 s 대기는 09-23 job551 부터. 근거 Docs/issues/pre-drive-dds-participants.md §5-② · ③)</span></span>
+  </div>
+<pre class="code"># jobs/job231_drive.sh — 바꾼 줄
+bash /tmp/job453_runmeta.sh $NAME $D $TMO   # 09-21: 주행 뒤에 스냅샷(파라미터는 주행 중 안 바뀌므로 재현성 동일)</pre>
+<pre class="code"># outputs/j379_cc1.txt                              # outputs/j379_cc2.txt
+ 12.47 [controller_server] [WARN] Control loop missed its desired rate of 10.0000Hz   (cc1 18 줄 · cc2 0 줄)
+스냅샷 21 (2 s), load 평균 8.6 최대 9.3          스냅샷 22 (2 s), load 평균 7.3 최대 8.4
+  controller_serv   평균  43.1% 최대  82.4%       controller_serv   평균  35.5% 최대  67.5%
+  ekf_node          평균  42.0% 최대  51.5%       ekf_node          평균  11.8% 최대  15.8%
+  bt_navigator      평균  28.5% 최대  32.8%       bt_navigator      평균  15.1% 최대  17.7%
+  planner_server    평균  23.6% 최대  27.6%       planner_server    평균  11.3% 최대  15.8%
+# outputs/drive_cc1_runner.txt (주행 전 · 뒤)
+  EKF 위반 42회 | slam 폐기 34회 | load 4.43 3.14 2.52
+  EKF 위반 61회 | slam 폐기 40회 | load 8.23 4.55 3.04</pre>
+  <p class="note">위 두 열은 각 파일의 같은 절을 나란히 놓은 것(값은 원문 그대로, 경고 줄의 타임스탬프 · 뒤쪽 노드 줄은 생략). 결과 원문 <span class="mono">Docs/debug_log/2026-09-21/outputs/j379_cc1.txt</span> · <span class="mono">j379_cc2.txt</span> · <span class="mono">drive_cc1_runner.txt</span> · <span class="mono">drive_cc2_runner.txt</span> · 스크립트 <span class="mono">jobs/job231_drive.sh</span> · <span class="mono">jobs/run_drive_nohup.sh</span>. SUMMARY 의 'controller 41 · ekf 40' 은 j379 의 43.1 · 42.0 과 2 %p 다르다(집계 창 차이로 보임 — 카드 §5-⑤).</p>
+</section>
+
+<section>
+  <h2>CostCritic 판정 — 09-18 에 선언한 기준으로<span class="sec">§3 · §4</span></h2>
+  <div class="tbl"><table>
+    <tr><th>기준(09-18 §16, 주행 전 선언)</th><th>cc1</th><th>cc2</th><th>cc3</th><th>판정</th></tr>
+    <tr><td>중단 0 · 1 s 정지 0</td><td>0/0</td><td>0/0</td><td>0/0</td><td><span class="pill ok">합격</span></td></tr>
+    <tr><td>뒤 모서리 원경로 대비 Δ &gt; −2.5 cm</td><td>+2.8 ~ +3.0</td><td>+1.8 ~ +1.9</td><td>−1.8 ~ +2.5</td><td><span class="pill ok">합격</span></td></tr>
+    <tr><td>복귀 회전 자리 여유 ≥ 5 cm</td><td>9.3 ~ 10.0</td><td>8.4 ~ 8.5</td><td>10.7 ~ 10.8</td><td><span class="pill ok">3/3 ≥ 8.4</span></td></tr>
+    <tr><td>복귀 회전 자리 도달 ≤ 19.9 s</td><td>15.5</td><td>16.6</td><td>17.1</td><td><span class="pill ok">합격</span></td></tr>
+    <tr><td>직진 부호반전 ≤ 9 /m</td><td>5.2</td><td>2.0</td><td>1.05</td><td><span class="pill ok">합격</span></td></tr>
+    <tr class="bad"><td>루프 미달 ≤ 1</td><td>18</td><td>0</td><td>0</td><td><span class="pill no">cc1 불합격</span> (절차)</td></tr>
+  </table></div>
+  <p>결론은 CostCritic 채택이다. ObstaclesCritic 블록은 YAML 에 남기되 목록에서 뺐다. 코스트맵 기준 최소 여유는 dy(ObstaclesCritic) 2.5 ~ 5.1 cm 에서 8.4 ~ 10.8 cm 가 됐다. 시뮬 예측(+0.9 ~ 1.5 cm)보다 실측 증가가 크다. n = 3 이라 부호반전 감소와 게걸음 각 요동의 해석은 보류했다.<span class="c1104">(11-04 정정: cc2 의 Δ 범위는 x 1.35 행 <b>−0.6</b> 을 빠뜨렸다(어느 행도 −2.5 보다 작지 않아 판정은 그대로). '복귀 회전 자리 여유' 는 로컬 코스트맵(job416) 기준이고, job446 의 같은 자리 '실제' 여유는 전역 기준이라 8.0 · 6.8 · 10.7 로 다르다 — 섞지 말 것. 근거 Docs/issues/obstacles-to-costcritic.md §2.1)</span></p>
+<pre class="code"># outputs/j446_cc2.txt (job446_pathdecomp — 원경로 → 스무딩 → 실제 여유 cm)
+  복귀 회전 자리 x 1.10~1.25, L=3 s (4 표본): 원경로 5.8 → 스무딩 5.5 → 실제 6.8 | 스무딩 Δ -0.3, 컨트롤러 Δ +1.4
+  상자 뒤 모서리 x 1.35~1.55, L=3 s (3 표본): 원경로 10.8 → 스무딩 10.3 → 실제 11.4 | 스무딩 Δ -0.4, 컨트롤러 Δ +1.0</pre>
+  <p class="note">결과 원문 <span class="mono">Docs/debug_log/2026-09-21/outputs/j446_cc1~5.txt</span> · <span class="mono">j435_cc1~5_verify.txt</span>(job416 D 절) · 스크립트 <span class="mono">Docs/debug_log/2026-09-18/jobs/job446_pathdecomp.py</span> · <span class="mono">Docs/debug_log/2026-09-17/jobs/job416_boxclear.py</span>(09-21 폴더엔 감싸개 <span class="mono">run_j435*.sh</span> · <span class="mono">run_j446*.sh</span> 만).</p>
+</section>
+
+<section>
+  <h2>S2 — 카메라는 얼마나 가까이까지 보나<span class="sec">§5 · §6</span></h2>
+  <div class="flow">
+    <span class="k">본 것</span><span>로버 정지, 같은 상자(18×14×11 cm)를 앞단 0.30 ~ 0.50 m 에 두고 원시 점군과 코스트맵 입력(릴레이)을 같은 프레임에서 셌다. 원시는 0.316 m(카메라)까지 매 프레임 검출, 빈 프레임 0 이었다. 릴레이는 0.316 m 에서 0 점, 0.416 m 에서 왼쪽만 남았다. 2.5 cm 의자 다리도 같은 모양이었다.</span>
+    <span class="k">추론</span><span>센서 한계는 ≤ 0.316 m 이다. 코스트맵의 진짜 근거리 한계는 릴레이 <span class="mono">min_range 0.45</span>(유클리드)다. 디시메이션 2 로 바꿔도 끊김 거리는 같고 밀도만 ×3.7 이며, 대가는 릴레이 CPU ×2 · 주기 15 → 10 ~ 12 Hz 다. 픽셀 기하 모델은 상자 · 다리 · 두 배율에서 실측과 ±10 % 안이었다.<span class="c1104">(11-04 정정: '±10 %' 는 상자의 로버 쪽 면을 0.14 m 로 둘 때만 맞고, 0.18 m 면 −17 ~ −24 %. 상자 방향 · 치수 기록이 셋이라 미확인. 근거 Docs/issues/depth-obstacle-costmap.md §5.18)</span></span>
+    <span class="k">결론</span><span>디시메이션 4 유지. 09-09 의 '디시메이션이 최소 거리를 키운다' 가설은 기각했다(측정). EKF 위반 증분은 dec 4 에서 0 ~ 1, dec 2 에서 0 이었다.<span class="c1104">(11-04 정정: 원문 <span class="mono">j458_leg30_dec2.txt</span> 의 증분은 <b>4</b> 다. '누적 30 → 59' 의 59 는 저장된 출력에 없다(원천 소실). 릴레이 CPU 19 ~ 24 · 35 ~ 37 % 는 같은 이름 python3 줄을 값 크기로 나눈 추정 배정이다. 근거 Docs/issues/depth-obstacle-costmap.md §5.18)</span></span>
+  </div>
+<pre class="code"># jobs/job458_nearrange.py (머리 주석 · 구역)
+    릴레이 /camera/depth/points_filtered       → 코스트맵이 받는 것(min_range 0.45·복셀 3점·5중3 지속)
+        sel = P[(P[:, 0] &gt; x0) &amp; (P[:, 0] &lt; x1) &amp; (P[:, 2] &gt; 0.0) &amp; (P[:, 2] &lt; 0.30) &amp; (np.abs(P[:, 1]) &lt; 0.45)]
+# outputs/j458_d30_dec4.txt
+==== d30_dec4: 상자 전면 앞단 0.30 m = 카메라 0.316 m, dec 4, 10 s | 정면 18x14 cm 예상 픽셀 3152
+  raw   프레임 168 (16.8 Hz) | … 상자 구역 점: 중앙  1738  최소  1725  최대  1761  0 인 프레임   0 ( 0%) …
+  relay 프레임 168 (16.8 Hz) | … 상자 구역 점: 중앙     0  최소     0  최대     0  0 인 프레임 168 (100%) …
+# outputs/j460_artifact.txt (앞 0.45 m 비움, 30 s)
+아티팩트 껍질(카메라 0.25~0.45 m, z 0.03~0.30): 프레임 234, 점 있는 프레임 9 (4%), ≥3 점 4 (2%), 프레임당 중앙 0 최대 19</pre>
+  <p class="note">결과 원문 <span class="mono">Docs/debug_log/2026-09-21/outputs/j458_*.txt</span> · <span class="mono">j459_setdec2.txt</span> · <span class="mono">j460_artifact.txt</span> · 스크립트 <span class="mono">jobs/job458_nearrange.py</span> · <span class="mono">run_j458.sh</span> · <span class="mono">job459_setdec.sh</span> · <span class="mono">job460_artifact.py</span>. 출력의 '16.8 Hz' 는 분모 문제로 주기 측정으로 쓰지 않는다(카드 §5.18). '예상 픽셀 3152' 는 H 0.14 전체를 쓴 값이라 모델 검증엔 못 쓴다.</p>
+
+  <h3>min_range 를 내리면 나아지나 — 기대가 틀렸다<span class="sec">§6</span></h3>
+  <p>사용자 질의 "뭐가 더 나은가". §5.5-4 는 min_range 0.45 → 0.35 로 상자 미관측 시간이 줄 것이라 기대했다. 그러나 dy · cc csv 에서 상자 깊이점은 전진 ≈ 0.5 m(t ≈ 8 s)에 0 이 되고, 그때 상자는 카메라 축에서 ≈ −43°(수평 반화각 43.5° 경계)에 있다. 즉 옆으로 화각을 벗어나는 것이라 min_range 와 무관하다. A/B 는 보류하고, 정면 접근 안전 항목으로 Phase N 비교에 이월했다.<span class="c1104">(11-04 정정: '≈ 0.5 m · 8 s' 는 dy3 · dy4 에만 맞고, 12 회 중 10 회는 0.30 ~ 0.41 m · 5.2 ~ 6.9 s 다. 그 자리의 각은 다시 계산하지 않았다(미확인). 결론 'min_range 와 무관' 은 csv <span class="mono">box_pts</span> 가 원시 점군이라는 점만으로 성립. 근거 Docs/issues/depth-obstacle-costmap.md §5.17)</span></p>
+</section>
+
+<section>
+  <h2>S5 기준선 — <span class="mono">BASELINE_STVL.md</span><span class="sec">§7 · BASELINE</span></h2>
+  <p>cc4 · cc5 를 더해 기준선 표본을 cc2 ~ cc5 네 회로 채웠다. 러너에 tegrastats(sudo 불필요)와 노드 RSS 를 추가했다. 이 표가 nvblox 채택 · 기각의 근거로 쓰였다(09-22 N4 에서 S 2 회가 재현).</p>
+  <div class="tbl"><table>
+    <tr><th>지표</th><th>cc2</th><th>cc3</th><th>cc4</th><th>cc5</th><th>기준선</th></tr>
+    <tr class="hl"><td>결과 · 소요</td><td>성공 31.9 s</td><td>31.3</td><td>31.3</td><td>31.3</td><td>4/4, 31.5 s</td></tr>
+    <tr><td>코스트맵(로컬) 상자 최소 여유 cm</td><td>8.4</td><td>10.8</td><td>12.5</td><td>12.9</td><td>8.4 ~ 12.9</td></tr>
+    <tr><td>루프 미달 / EKF 위반</td><td>0 / 20</td><td>0 / 23</td><td>0 / 39</td><td>0 / 19</td><td>0 / 19 ~ 39</td></tr>
+    <tr><td>⑥ 상자 미관측 최대 s</td><td>31.4</td><td>30.8</td><td>30.8</td><td>30.8</td><td>옆 화각 이탈</td></tr>
+    <tr><td>전체 CPU %(top, 600 만점)</td><td>316</td><td>321</td><td>323</td><td>317</td><td>≈ 320</td></tr>
+    <tr><td>GPU · 전력 평균/최대 · tj</td><td>—</td><td>—</td><td>0 % · 6.6/7.8 W</td><td>0 % · 6.6/7.9 W</td><td>GPU 0 · 48.8 °C</td></tr>
+  </table></div>
+  <p class="c1104">(11-04 정정 — BASELINE 표의 세 칸: ① 'EKF 위반 19 ~ 39' 는 누적값이고 주행 창 증분은 cc2 +1 · cc3 +1 · cc4 0 · cc5 0. ② '⑥ 상자 미관측 30.8 ~ 31.4 s' 는 카메라 미관측이 아니라 마지막 <b>재고정 채택 뒤 경과</b>(= 주행 시간 − 0.5 s)다. 실제 관측 끊김은 csv <span class="mono">box_pts</span> 로 전진 0.31 ~ 0.35 m — 괄호 숫자 쪽이 맞다. ③ CPU ≈ 320 % 에는 계측 자신(bag 기록기 ≈ 20 % · 러너 ≈ 40 %)이 들어 있어 '계측 포함 CPU' 기준이다. 근거 Docs/issues/phase-s-baseline.md §5 ① ② ③ · §6 M1)</p>
+<pre class="code"># outputs/j463_tegra_cc4.txt (jobs/job463_tegra.py)
+tegra_cc4.log: 40 s | RAM 1601/1618 MB(최대) | CPU 6코어 평균 59% 최대 88%, 클럭 평균 1187 MHz | GPU(GR3D) 평균 0.0% 최대 0% | 온도 cpu 48.0 gpu 48.4 tj 48.4(최대 48.8) °C | 전력 VDD_IN 평균 6602 최대 7827 mW, CPU+GPU+CV 평균 1744 mW
+# jobs/job463_tegra.py — 판정에 쓴 줄
+        g = re.search(r'GR3D_FREQ (\d+)%', ln); gpu.append(int(g.group(1)) if g else 0)
+        v = re.search(r'VDD_IN (\d+)mW', ln); pin.append(int(v.group(1)) if v else float('nan'))</pre>
+  <p>BASELINE §4 는 nvblox 채택 기준을 주행 전에 수치로 적었다: 같은 코스 3 회 중단 0 · 미달 ≤ 1, 여유 ≥ 8 cm(평균 ≥ 11), CPU 합 &lt; 320 %, GPU · 전력 · 온도 한계 안. §6(09-22 추가)에 판정 결과가 있다 — CPU 기준만 불합격, 로컬 층 nvblox 채택.<span class="c1104">(11-04 정정: 계획서 종료 조건 S4 '직진 부호반전 ≤ 1.0 /m'(실측 1.05 ~ 5.6)와 S6 'load &lt; 6'(게이트 시점 6.45 ~ 10.30)은 기준선 4 회 모두 미달인데, 종결 절에서 언급 없이 넘어갔다. 근거 Docs/issues/phase-s-baseline.md §5 ⑤)</span></p>
+  <p>BASELINE §5 재현 절차는 "스크립트는 <span class="mono">Docs/debug_log/2026-09-21/jobs/</span>" 라고 적는다.<span class="c1104">(11-04 정정 · 이 페이지 작성 중 파일 대조: <span class="mono">run_mp9prep.sh</span> · <span class="mono">job416_boxclear.py</span> 는 <span class="mono">2026-09-17/jobs/</span>, <span class="mono">job446_pathdecomp.py</span> · <span class="mono">job453_runmeta.sh</span> 는 <span class="mono">2026-09-18/jobs/</span> 에만 있다. 또 §1 의 <span class="mono">Docs/NVBLOX_MIGRATION_PLAN.md</span> 와 §5 끝의 <span class="mono">Docs/TEST_COURSE_AND_GATES.md</span> 는 09-21 재구성 전 경로다 — 지금은 <span class="mono">Docs/05_nvblox/</span> · <span class="mono">Docs/04_navigation/</span>)</span></p>
+  <p class="note">원천 <span class="mono">Docs/debug_log/2026-09-21/BASELINE_STVL.md</span> · 결과 <span class="mono">outputs/drive_cc2~5_runner.txt</span> · <span class="mono">cc2~5.csv</span> · <span class="mono">j462_baghz.txt</span> · <span class="mono">j463_tegra_cc4.txt</span> · <span class="mono">j463_tegra_cc5.txt</span> · 스크립트 <span class="mono">jobs/job462_baghz.py</span> · <span class="mono">job463_tegra.py</span> · <span class="mono">job125_avoid3.py</span>(⑥ = <span class="mono">box_age</span>). bag <span class="mono">bags/</span>(git 제외).</p>
+</section>
+
+<section>
+  <h2>Phase N0 — nvblox 단독 정지 측정<span class="sec">§8 · §9</span></h2>
+  <div class="flow">
+    <span class="k">준비</span><span>main 은 손대지 않기로 했다(사용자, 회사 공용 리포). 브랜치 <span class="mono">feature/nvblox-migration</span> 을 만들었다. Isaac ROS 3.2 Dev 컨테이너(NGC 프리빌드 40.3 GB)를 상주로 띄우고 컨테이너 안 apt 로 <span class="mono">ros-humble-isaac-ros-nvblox 3.2.5</span> 를 설치했다. 호스트 ROS 는 건드리지 않았다. CDI 지정이 실패해 레거시 <span class="mono">NVIDIA_VISIBLE_DEVICES=all</span> 로 띄웠다. cuVSLAM 은 이 Phase 에서 뺐다.</span>
+    <span class="k">본 것</span><span>깊이 전용 nvblox(odom, 복셀 0.05, 슬라이스 z 0.03 ~ 0.30): 깊이 통합 15.1 Hz · ESDF 9.6 Hz · nvblox CPU ≈ 16 % · GPU 0 ~ 10 %. 상자 앞면은 물리 1.153 대비 1.175(+0.4 셀)로 프레임 간 변동이 0 이었다. 카메라 0.45 m 안 장애물 셀은 0/311 프레임. 복셀 0.03 에서는 +0.1 셀이었다.</span>
+    <span class="k">결론</span><span>N0 게이트 4 개(앞면 ≤ 1 셀 · 근거리 자취 0 · 15 Hz · CPU 한 코어 미만 · 0.03 가능) 모두 통과, 15 W 그대로. 호스트 깊이 이미지는 디시메이션 4 가 걸린 160×120 이었다 — S2 §5 의 '점군에만' 표현은 틀렸다(그날 정정).<span class="c1104">(11-04 정정: SUMMARY 만 고치고 <span class="mono">jobs/nvblox_n0.yaml</span> 머리 주석 "dec 4 는 점군에만 적용 — 깊이 이미지는 원해상도" 는 그대로 남겼다. 그 주석이 운용본에 복사돼 10-19 에 같은 사실을 다시 쟀다. 근거 Docs/issues/nvblox-migration-n0-n4.md §6.1)</span></span>
+  </div>
+<pre class="code"># outputs/j474_n0a.txt (jobs/job474_n0_measure.py)
+==== n0a: 슬라이스 311 프레임 (30.0 s, TF 실패 1) 토픽 /nvblox_node/static_map_slice
+  (i) 상자 띠 장애물 셀 최소 x(base): 중앙 1.175 최소 1.175 최대 1.175 (프레임당 셀 23) | 물리 전면 1.153 → 차 +0.022 m = +0.4 셀
+  (ii) 카메라 0.45 m 안 장애물 셀: 프레임당 중앙 0 최대 0, 0 이 아닌 프레임 0/311 | 전체 장애물 셀 중앙 162
+# outputs/j477_nvblox_info.txt
+ros/depth               	100    	15.1
+ros/update_esdf         	100    	9.6
+== 컨테이너 nvblox CPU: 16.3%  | load 2.67 2.75 3.07</pre>
+  <p class="note">결과 원문 <span class="mono">Docs/debug_log/2026-09-21/outputs/j464_n0probe.txt</span> · <span class="mono">j472_container.txt</span> · <span class="mono">j476_cdi.txt</span> · <span class="mono">j474_n0a.txt</span> · <span class="mono">j477_nvblox_info.txt</span> · <span class="mono">j483_n0_variants2.txt</span> · 스크립트 <span class="mono">jobs/job472_container.sh</span> · <span class="mono">job473_nvblox_run.sh</span> · <span class="mono">job474_n0_measure.py</span> · <span class="mono">job483_n0_variants2.sh</span> · 설정 <span class="mono">jobs/nvblox_n0.yaml</span> · 벤더 원본 <span class="mono">refs/nvblox_3.2_*.yaml</span>. 절차 사고 2 건(<span class="mono">pkill -f</span> 가 자기 셸을 죽임 · Delays 블록 줄을 Rates 로 읽음)은 job483 에서 고쳤다(SUMMARY 자인).</p>
+</section>
+
+<section>
+  <h2>nvblox 층 연결 — 치명 셀이 왜 두 배인가<span class="sec">§10.1 ~ §10.4</span></h2>
+  <div class="flow">
+    <span class="k">본 것</span><span>호스트에 <span class="mono">nvblox_msgs</span> · <span class="mono">nvblox_nav2</span> 만 소스로 빌드했다(빈 스텁 <span class="mono">isaac_ros_common</span> 으로 CUDA 의존을 피함). 그 층을 로컬 코스트맵의 STVL 자리에 넣고 정지 상태로 A/B 했다. nvblox 층의 LETHAL 은 207 → 308, 상자는 STVL 2 열 → 3 열이었다. 첫 표본에서 통과폭(감사 기준1)은 0.40 → 0.10 이었다. 슬라이스 자체는 물리와 맞으니 '층의 격자 재표본화로 ≤ 1 셀 번짐' 으로 읽었다.<span class="c1104">(11-04 정정: 그 '번짐' 이 바로 결함이었다(§10.4 의 round). 근거 Docs/issues/nvblox-layer-round-floor.md §2)</span></span>
+    <span class="k">추론 ①</span><span>두 번째 표본에서는 통과폭이 0.40 이었다. 그래서 0.10 은 층 전환 직후의 과도 상태로 판정했다(그날 정정). 셀 단위로 겹쳐 보니 nvblox 에만 있는 89 셀은 모두 관측면 <b>뒤쪽</b>에 붙어 있었다. 기전 후보는 TSDF 절단 거리 4 복셀 = 0.20 m 띠(방향 · 두께 일치, 추정)다.<span class="c1104">(11-04 정정: §10.3 이 쓴 'job489_gridcmp.py(JSON 덤프 추가)' 판은 <span class="mono">2026-09-22/jobs/</span> 에만 있다. 09-21 폴더의 job489 는 JSON 이 없는 앞 판이다. 근거 Docs/issues/nvblox-migration-n0-n4.md §6.9-1)</span></span>
+    <span class="k">추론 ②</span><span>사용자 질의 "STVL 이 더 정확해 보인다. 어떻게 해결할 것인가" 에 층 소스를 읽었다. (A) <span class="mono">lookupInSlice()</span> 가 <span class="mono">round()</span> 로 인덱스를 구한다. 그런데 메시지 정의의 origin 은 첫 픽셀의 <b>모서리</b>이므로 맞는 것은 <span class="mono">floor()</span> 다. 그 결과 층이 슬라이스보다 −1 셀 평행이동하고, 상자의 통과 측 가장자리가 6 cm 안쪽에 찍힌다(위험한 방향). 세션마다 방향 · 유무가 달라진다고 적었다.<span class="c1104">(11-04 정정: 슬라이스 프레임 = 코스트맵 프레임(로컬 odom)이면 round 는 언제나 +1 픽셀을 읽으므로 방향은 −x · −y 로 고정이다. 방향이 바뀔 수 있는 것은 전역(map) 코스트맵처럼 회전돼 있을 때뿐이다(코드 추론). 근거 Docs/issues/nvblox-layer-round-floor.md §3 정정 메모)</span> (B) <span class="mono">distance &lt;= 0 → LETHAL</span> 이 이진/기울기 분기 <b>앞</b>에 있으므로, 띠 두께의 손잡이는 nvblox 절단 거리뿐이다. 그래서 §10.3 의 '기울기 모드로 다룬다' 는 틀렸다(그날 정정).</span>
+  </div>
+<pre class="code"># outputs/j492_layersrc.txt (nvblox_costmap_layer.cpp, release-3.2 — 줄 번호는 원문)
+186:        if (distance &lt;= 0.0f) {
+188:          cost = nav2_costmap_2d::LETHAL_OBSTACLE;
+190:          if (convert_to_binary_costmap_) {
+306:  Eigen::Vector2f scaled_position =
+307:    (pos - Eigen::Vector2f(slice_-&gt;origin.x, slice_-&gt;origin.y)) / slice_-&gt;resolution;
+308:  Eigen::Vector2i pos_index = scaled_position.array().round().cast&lt;int&gt;();</pre>
+  <p class="note">결과 원문 <span class="mono">Docs/debug_log/2026-09-21/outputs/j484_hostbuild.txt</span> · <span class="mono">j485_hostbuild2.txt</span> · <span class="mono">j486_pluginchk.txt</span> · <span class="mono">j488_layer_ab.txt</span> · <span class="mono">j489_nvblox_mode.txt</span> · <span class="mono">j489_stvl_mode.txt</span> · <span class="mono">grid_{stvl,nvblox}_costmap.json</span> · <span class="mono">grid_nvblox_slice.json</span> · <span class="mono">j492_layersrc.txt</span> · 스크립트 <span class="mono">jobs/job485_hostbuild2.sh</span> · <span class="mono">job488_layer_ab.sh</span> · <span class="mono">job489_gridcmp.py</span> · <span class="mono">job491_vizgen.py</span>. §10.2 의 STVL 쪽 '(감사 출력 누락)' 은 job488 안에서 job315 가 인자 없이 불려 4 회 모두 <span class="mono">IndexError</span> 가 난 탓이다(카드 §6.8).</p>
+</section>
+
+<section>
+  <h2>round → floor 수정 뒤 재캡처 — 기준을 먼저 선언<span class="sec">§10.5</span></h2>
+  <div class="flow">
+    <span class="k">기준(캡처 전)</span><span><b>V1</b> 층의 상자 LETHAL 외곽 = 슬라이스 ≤ 0 외곽. <b>V2</b> 층만 · 슬라이스만 각 ≤ 5 셀. <b>V3</b> 통과 측 가장자리가 물리 +0.011 의 ±2.5 cm. <b>V4</b> 통과폭 0.40 유지. V1 ~ V3 를 통과하면 결함 확정.</span>
+    <span class="k">본 것</span><span>포크 한 줄을 고치고 재빌드(38 s)했다. 같은 배치에서 STVL → 수정 층 순으로 다시 캡처했다. 층 외곽은 슬라이스 외곽 x 1.15 ~ 1.40 · y −0.25 ~ 0.00 과 같았고, 통과 측 가장자리는 0.00 이었다.</span>
+    <span class="k">결론</span><span>V1 · V3 · V4 통과 → 결함 확정 · 수정 채택. V2 는 선언대로는 평가할 수 없었다. 전체 창에는 라이다 층과 창 밖 슬라이스가 섞인다. 공통 영역(409 셀)으로 한정해 다시 보니 순수 층만 0 · 슬라이스만 0 이었다. 이 정정은 데이터를 본 뒤 한 것이라 기준 강도가 약하다고 SUMMARY 가 스스로 적었다. 남은 차이는 (B) 표면 뒤 절단 띠뿐이다. 포크 diff 는 Jetson 에 미커밋으로 남아 있다.</span>
+  </div>
+<pre class="code"># outputs/j494_viz2.txt (jobs/job494_vizgen2.py)
+상자 LETHAL 외곽 — STVL: x 1.10~1.25, y -0.20~+0.00 (9 셀) | nvblox 층: x 1.15~1.40, y -0.25~+0.00 (20 셀) | nvblox 슬라이스(≤0): x 1.15~1.40, y -0.25~+0.00 (20 셀) | 물리: x 1.153~1.263, y −0.169~+0.011
+공통 영역(슬라이스 기지 ∩ 반경 1.45 m) 409 셀: 둘 다 38 / 층만 1(라이다 귀속 1, 순수 0) / 슬라이스만 0
+V1 층=슬라이스 외곽: True | V2(정정) 공통 영역 순수 층만·슬라이스만 ≤5: True (0, 0) | V3 통과측 가장자리 +0.00 (물리 +0.011): True | V4 기준1 0.40 m (@1.20) · RPP 0.25 m, 3 표본 동일</pre>
+  <p class="note">결과 원문 <span class="mono">Docs/debug_log/2026-09-21/outputs/j493_fixcapture.txt</span> · <span class="mono">j493_ab_nvfix.txt</span> · <span class="mono">j494_viz2.txt</span> · <span class="mono">grid_stvl2_costmap.json</span> · <span class="mono">grid_nvfix_*.json</span> · <span class="mono">j497_endstate.txt</span> · 스크립트 <span class="mono">jobs/job493_fixfloor.sh</span> · <span class="mono">job494_vizgen2.py</span>. 마감 상태는 로컬 STVL 복귀 · nvblox 프로세스 0 · 컨테이너 유지였다.</p>
+  <p><b>이 날의 주제 페이지</b>(수정하지 않음, 경로만):</p>
+  <ul>
+    <li><span class="mono">Docs/debug_log/2026-09-21/figures/2026-09-21_costmap_stvl_vs_nvblox_v1_before_fix.html</span> — 수정 전 셀 비교(§10.3, <span class="mono">outputs/j491_costmap_ab.html</span> 과 같은 판)</li>
+    <li><span class="mono">Docs/debug_log/2026-09-21/figures/2026-09-21_costmap_stvl_vs_nvblox_v2_floor_fix.html</span> — floor 수정 뒤(§10.5, <span class="mono">outputs/j494_costmap_ab_v2.html</span>)</li>
+  </ul>
+</section>
+
+<section>
+  <h2>내 실수 · 정정 (그날 SUMMARY 가 적은 것)</h2>
+  <div class="pm">
+    <h3>주행 직전 메타 스냅숏이 cc1 을 망침 (§1 → §2)</h3>
+    <div class="flow">
+      <span class="k">하려 한 것</span><span>bag 마다 실행 중 파라미터 · 토픽 목록을 남기기(job453, 09-18 §17)</span>
+      <span class="k">본 것</span><span>cc1 루프 미달 18 · ekf 40 % · planner 23 % · bt 28 %</span>
+      <span class="k">왜</span><span>DDS 참여자 3 개를 주행 직전에 만들고 없앴다 → 디스커버리 부하(추정, 스냅숏 위치만 바꾼 cc2 로 판별)</span>
+      <span class="k">영향</span><span>cc1 을 기준선에서 제외. 루프 미달 기준 1 회 불합격으로 기록</span>
+      <span class="k">알아보는 법</span><span>새 계측을 넣은 첫 주행에서 크리틱과 무관한 노드 CPU 가 함께 오르면 계측부터 의심한다</span>
+      <span class="k">데이터</span><span><span class="mono">outputs/j379_cc1.txt</span> · <span class="mono">j379_cc2.txt</span> · <span class="mono">j457_cpustate.txt</span> · <span class="mono">jobs/job231_drive.sh</span></span>
+    </div>
+  </div>
+  <div class="pm">
+    <h3>min_range 를 내리면 상자 미관측이 줄 것이라 기대 (§5.5-4 → §6)</h3>
+    <div class="flow">
+      <span class="k">하려 한 것</span><span>S2 결과로 min_range 0.45 → 0.35 A/B 를 사용자에게 제안</span>
+      <span class="k">본 것</span><span>csv 에서 상자 깊이점이 사라지는 자리는 카메라 수평 반화각 경계</span>
+      <span class="k">왜</span><span>미관측의 원인을 기하(화각)와 파이프라인(릴레이)으로 나누기 전에 기대효과를 적었다</span>
+      <span class="k">결론</span><span>A/B 보류, 정면 접근 항목으로 Phase N 에 이월</span>
+      <span class="k">데이터</span><span><span class="mono">outputs/cc1~5.csv</span>(<span class="mono">box_pts</span>) · <span class="mono">2026-09-18/outputs/dy1~6.csv</span></span>
+    </div>
+  </div>
+  <div class="pm">
+    <h3>과도 상태를 결과로 읽음 · 코드 안 보고 손잡이 제안 (§10.2 → §10.3 → §10.4)</h3>
+    <div class="flow">
+      <span class="k">본 것</span><span>통과폭 0.10 · '기울기 모드로 띠를 다룬다'</span>
+      <span class="k">왜</span><span>층 전환 직후(클리어 뒤 재적분 중) 한 표본만 봤다. 띠 처리는 소스를 읽기 전에 제안했다</span>
+      <span class="k">결론</span><span>두 번째 표본 0.40 → 과도 상태. 소스상 <span class="mono">distance &lt;= 0</span> 이 분기 앞 → 손잡이는 절단 거리뿐</span>
+      <span class="k">알아보는 법</span><span>모드를 바꾼 직후 첫 표본은 버리고 두 번 이상 잰다. 설정 손잡이는 해당 소스 줄을 확인한 뒤 제안한다</span>
+      <span class="k">데이터</span><span><span class="mono">outputs/j488_layer_ab.txt</span> · <span class="mono">j490_griddump.txt</span> · <span class="mono">j492_layersrc.txt</span></span>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>다음 후보 (그날 §10.5)</h2>
+  <ul>
+    <li>② 절단 거리 4 → 2 정지 A/B(같은 표, N0 4 게이트 재측정)</li>
+    <li>절차 문서 v2.0 — Phase 별 bag 프로파일 검토 항목(사용자 결정 대기)</li>
+    <li>③ N4 주행 A/B(<span class="mono">BAG_PROFILE=nvblox</span>)를 <span class="mono">BASELINE_STVL.md</span> 지표로 판정</li>
+    <li>정면 접근 시험(min_range 0.45 사각) — Phase N 비교 항목</li>
+  </ul>
+</section>
+
+<section>
+  <h2>이후 · 관련 카드</h2>
+  <ul>
+    <li><span class="mono">Docs/issues/obstacles-to-costcritic.md</span> — CostCritic 교체 판정표 · 원문 대조</li>
+    <li><span class="mono">Docs/issues/pre-drive-dds-participants.md</span> — cc1 메타 스냅숏 · 30 s 규칙의 어긋남</li>
+    <li><span class="mono">Docs/issues/phase-s-baseline.md</span> — 기준선 표의 칸 정의 · M1</li>
+    <li><span class="mono">Docs/issues/depth-obstacle-costmap.md</span> — S2 원문 대조 §5.17 · §5.18 · §5.19</li>
+    <li><span class="mono">Docs/issues/nvblox-migration-n0-n4.md</span> — N0 ~ N4 흐름 · 실수 §6</li>
+    <li><span class="mono">Docs/issues/nvblox-layer-round-floor.md</span> — round → floor 결함(이후 10-27 에 같은 파일의 두 번째 결함)</li>
+    <li><span class="mono">Docs/05_nvblox/PHASE_N_RESULTS.md</span> — 09-22 N4 판정 · Phase N 요약</li>
+  </ul>
+</section>
+</div>

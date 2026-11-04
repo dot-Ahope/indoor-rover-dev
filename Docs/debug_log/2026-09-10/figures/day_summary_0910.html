@@ -1,0 +1,338 @@
+<title>09-10 계측이 벽을 봤다</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* 배치: 실험 노트 — 좁은 본문 열(65자) + 넓게 펼치는 그림 · 표, 판정은 왼쪽 띠 색으로(10-20 판과 같은 틀) */
+:root{
+  --bg:#f3f4f6; --paper:#ffffff; --ink:#1b1f24; --muted:#5b6470; --line:#d9dde3;
+  --ir:#b3263e;      /* 프로젝터 켬 · 실패 쪽 */
+  --cool:#1f7a72;    /* 프로젝터 끔 · 통과 쪽 */
+  --warn:#a86a00;
+  --tint-ir:#f8e8eb; --tint-cool:#e4f2f0; --tint-warn:#fbf1df;
+  --f-body:"IBM Plex Sans KR","Malgun Gothic","Apple SD Gothic Neo",sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#111418; --paper:#181c21; --ink:#e6e9ed; --muted:#9aa4b0; --line:#2c333b;
+  --ir:#ef6b80; --cool:#5cc4b8; --warn:#e0a640;
+  --tint-ir:#2b1b1f; --tint-cool:#15292a; --tint-warn:#2a2316; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#111418; --paper:#181c21; --ink:#e6e9ed; --muted:#9aa4b0; --line:#2c333b;
+  --ir:#ef6b80; --cool:#5cc4b8; --warn:#e0a640;
+  --tint-ir:#2b1b1f; --tint-cool:#15292a; --tint-warn:#2a2316; color-scheme:dark}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.65;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:28px 64px}
+.wrap{max-width:980px;margin:0 auto;display:flex;flex-direction:column;gap:34px}
+header{display:flex;flex-direction:column;gap:6px;border-bottom:2px solid var(--ink);padding-bottom:14px}
+.eyebrow{font-family:var(--f-mono);font-size:12px;letter-spacing:.08em;color:var(--muted);text-transform:uppercase}
+h1{font-size:30px;line-height:1.25;margin:0;font-weight:700;text-wrap:balance}
+h2{font-size:20px;margin:0 0 4px;font-weight:700;text-wrap:balance}
+h2 .sec{font-family:var(--f-mono);font-size:13px;color:var(--muted);font-weight:400;margin-left:8px}
+p{margin:0;max-width:68ch}
+section{display:flex;flex-direction:column;gap:12px}
+.lead{color:var(--muted);max-width:72ch}
+.verdicts{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
+.v{background:var(--paper);border:1px solid var(--line);border-left:5px solid var(--muted);padding:12px 14px;display:flex;flex-direction:column;gap:4px;min-width:0}
+.v.ok{border-left-color:var(--cool)} .v.no{border-left-color:var(--ir)} .v.wait{border-left-color:var(--warn)}
+.v b{font-size:15px} .v span{color:var(--muted);font-size:13.5px}
+.pill{display:inline-block;font-family:var(--f-mono);font-size:11.5px;padding:1px 8px;border-radius:999px;white-space:nowrap}
+.pill.ok{background:var(--tint-cool);color:var(--cool)} .pill.no{background:var(--tint-ir);color:var(--ir)} .pill.wait{background:var(--tint-warn);color:var(--warn)}
+.tbl{overflow-x:auto;background:var(--paper);border:1px solid var(--line)}
+table{border-collapse:collapse;width:100%;font-size:13.5px;font-variant-numeric:tabular-nums}
+th,td{padding:7px 10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{font-weight:500;color:var(--muted);font-size:12.5px;white-space:nowrap}
+td.n{font-family:var(--f-mono);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr.hl td{background:var(--tint-cool)} tr.bad td{background:var(--tint-ir)}
+figure{margin:0;background:var(--paper);border:1px solid var(--line);padding:10px;display:flex;flex-direction:column;gap:8px}
+figure img{width:100%;height:auto;display:block}
+figcaption{font-size:13px;color:var(--muted)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media (max-width:720px){.two{grid-template-columns:1fr}}
+ul{margin:0;padding-left:20px;max-width:72ch} li{margin:2px 0}
+.mono{font-family:var(--f-mono);font-size:13px}
+.flow{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;font-size:14px}
+.flow .k{font-family:var(--f-mono);color:var(--muted);font-size:12.5px;padding-top:2px;white-space:nowrap}
+.note{font-size:13px;color:var(--muted)}
+.pm{background:var(--paper);border:1px solid var(--line);padding:12px 14px;display:flex;flex-direction:column;gap:8px}
+.pm h3{font-size:15.5px;margin:0;font-weight:700}
+.pm .flow{grid-template-columns:auto 1fr;gap:6px 14px}
+.pm .flow span:not(.k){max-width:none}
+</style>
+
+<style>
+.code{margin:0;font-family:var(--f-mono);font-size:12.5px;line-height:1.5;background:var(--bg);border:1px solid var(--line);padding:8px 10px;overflow-x:auto;white-space:pre;max-width:100%}
+.flow > span{min-width:0}
+.c1104{font-weight:600;color:var(--ink);background:var(--tint-warn);border-left:3px solid var(--warn);padding:0 5px;margin-left:3px;border-radius:2px;white-space:normal;font-size:.92em}
+</style>
+<div class="wrap">
+<header>
+  <div class="eyebrow">Indoor Rover · 2026-09-10 · Docs/debug_log/2026-09-10 §0–§12 · 주행 있음 · 11-04 사후 작성</div>
+  <h1>09-10 계측이 벽을 보고 있었다</h1>
+  <p class="lead">이 페이지는 2026-11-04 에 그날의 <span class="mono">SUMMARY.md</span> 와 같은 폴더의 <span class="mono">jobs/</span> · <span class="mono">outputs/</span> 를 원천으로 사후에 만들었습니다. 이날 출력 원문은 CSV 2 개(<span class="mono">job205.csv</span> · <span class="mono">job216.csv</span>)뿐이라, 나머지 수치는 SUMMARY 가 인용한 발췌가 전부입니다. 하루의 줄기는 셋입니다. ① 관측 도구(Foxglove 클라이언트)가 EKF 를 굶겼다. ② 코스트맵 비용이 내려가는 것을 '감쇠가 잘 된다' 로 읽은 오독. ③ 주행 계측 러너가 벽을 상자로 잡아 지표 다수가 무효였다. 그리고 고친 계측으로 다시 달린 job216 이 '깊이 사각 0.40 m 는 실재' 와 '로컬이 상자를 통째로 버린다' 를 남겼습니다. <span class="c1104">문제 대장 카드 · 뒤 날짜 SUMMARY · 커밋 메시지에서 찾은 뒤의 정정 11 건을 본문 문장 옆에 표시했습니다(원문 문장은 그대로).</span></p>
+</header>
+
+<section>
+  <h2>오늘의 판정</h2>
+  <div class="verdicts">
+    <div class="v ok"><b>S6 기준선 — 깨끗한 부팅에서는 충족</b><span>EKF 위반 0 · slam 폐기 0 · load 2.10 / 30 s. '09-09 CPU 부족은 구조적' 결론을 '긴 세션 열화' 로 바꿈 (§1)<span class="c1104">(11-04 정정: '구조적이라는 결론은 틀렸다' 는 컨디셔너 상시 몫에 대해선 과했다(추정) — 근거 Docs/issues/cpu-load-stalls.md §5)</span></span></div>
+    <div class="v ok"><b>진짜 병목 = Foxglove 클라이언트 연결</b><span>foxglove_bridge 69.6 %, 브리지 정지 뒤 EKF 위반 86 → 0 · slam 폐기 28 → 0 · Nav2 active. 운용 규칙: 측정 주행 중 Foxglove 끄기 (§4)</span></div>
+    <div class="v ok"><b>decay_acceleration 3.0 → 0.0</b><span>job184: 로컬이 상자를 잃은 샘플 147 → 12, 계획이 접촉 경로였던 비율 48 → 0 % (§2)</span></div>
+    <div class="v ok"><b>stuck_monitor 복구 중 보류 수정</b><span>상태는 전이 때만 발행 → <span class="mono">recovery_active</span> 플래그. job192 에서 후진 복구 뒤 취소 없이 완주 (§3 · §5)</span></div>
+    <div class="v wait"><b>S1: 마킹 유지 ✅ · 여유 ≥ 5 cm ❌(job192 3.3 cm)</b><span>job195 기록 주행에서 10.1 cm 로 충족 (§5 · §6)</span></div>
+    <div class="v no"><b>job198 — 지표는 양호, 실제는 접촉</b><span>사용자 육안: 상자가 우측 측면에 오자 제자리 회전 후 상자 쪽으로 틀어 침. lc_box 99 → 79 → 69 는 '상자가 녹는 장면' 이었다 (§7 정정)</span></div>
+    <div class="v ok"><b>job205 로컬 영속 · 전역 90 s → 접촉 없음(육안)</b><span>S4 카운트 1/3 — 다만 §9 에서 그 인과가 약해짐 (§8)<span class="c1104">(11-04 정정: 로컬 영속(−1)은 다음 날 취소 — 삭제 경로는 감쇠가 아니라 BT ClearEntireCostmap 이었다 — 근거 Docs/issues/costmap-clear-recovery.md §5 실수 ①)</span></span></div>
+    <div class="v no"><b>계측 결함 — 러너가 벽을 상자로</b><span>클러스터링 없는 median 으로 52 cm 어긋난 빈 자리를 셈 → 지표 ①②③⑤⑥ 무효 (§9)</span></div>
+    <div class="v ok"><b>자이로 온도 바이어스 → ZUPT</b><span>EKF yaw 1.31 °/분 → 0.02 °/분(65 배) (§0-4, 커밋 <span class="mono">ebc5885</span>)</span></div>
+    <div class="v wait"><b>job216: 사각 0.40 m 실재 · 로컬이 1.3 s 만에 상자를 버림</b><span>영속인데도 사라짐 — 다른 삭제 경로, 원인 미확정으로 마감 (§11)</span></div>
+  </div>
+</section>
+
+<section>
+  <h2>S6 기준선과 Foxglove — 누가 CPU 를 먹었나<span class="sec">§1 · §4</span></h2>
+  <div class="flow">
+    <span class="k">본 것</span><span>재부팅 직후 Nav2 포함 30 s: 위반 0 · 폐기 0 · load 2.10. 그 뒤 stuck_monitor 를 고쳐 재기동하자 Nav2 기동 실패(<span class="mono">planner_server/get_state service client: async_send_request failed</span>), load 6.35 · 위반 86 · 폐기 28, top 에 <span class="mono">foxglove_bridge</span> 69.6 %.</span>
+    <span class="k">추론</span><span>설정 오류가 아니라 부하로 서비스 응답이 늦은 타임아웃. 부팅 직후엔 상위권에 없던 브리지가 올라온 이유 = 8765 포트에 사용자 PC 의 Foxglove Studio 가 붙어 있음.</span>
+    <span class="k">판별</span><span>브리지를 끄고 같은 30 s 창으로 다시 잼 → 위반 86 → 0, 폐기 28 → 0, Nav2 전 노드 active.</span>
+    <span class="k">결론</span><span><span class="mono">viz:=lean</span> 이어도 클라이언트가 붙으면 1 코어 가까이. 측정 주행 중에는 Foxglove 를 닫고, 경로 · 코스트맵은 rosbag 으로 남겨 사후에 본다(§6 job195 부터). 09-09 주행 실패의 인과에도 포함된다고 적음.<span class="c1104">(11-04 정정: 09-09 SUMMARY 에는 그 주행 때 클라이언트 연결 기록이 없다 — 09-09 쪽 인과는 추정 — 근거 Docs/issues/cpu-load-stalls.md §6 모순 2)</span></span>
+  </div>
+  <p>두 측정 도구의 판정 부분(30 s 창 차분 · 이름별 CPU 평균)과 SUMMARY 가 인용한 결과:</p>
+<pre class="code"># job182_s6base.sh — 30 s 전후 로그 줄 수 차분, top 30 화면의 COMMAND 이름별 평균
+A_EKF=$(grep -ac 'Failed to meet update rate' /tmp/sensors.log)
+A_SLAM=$(grep -ac 'Message Filter dropping' /tmp/slam.log)
+top -b -n 30 -d 1 -o %CPU &gt; /tmp/s6top.txt &amp;  ...  sleep 31
+echo "  EKF 주기 위반 : $((B_EKF-A_EKF)) 회 / 30초   ← 종료조건 0"
+awk '/^ *[0-9]+ / {cpu[$12]+=$9; n[$12]++} END {for (c in cpu) printf "  %-18s %6.1f%%\n", c, cpu[c]/n[c]}'
+# job191_nofg.sh — 연결 확인 → 브리지 정지 → 같은 30 s 창
+ss -tn | grep -a ":8765"
+pkill -TERM -f foxglove_bridge</pre>
+<pre class="code">EKF 주기 위반 : 0 회 / 30초   (종료조건 0)  ✅
+slam 스캔 폐기: 0 회 / 30초   (종료조건 0)  ✅
+load 2.10                     (종료조건 &lt;6) ✅
+CPU: rplidar 19.5 / realsense 15.3 / controller 14.8 / python3 14.7 / ekf 12.7
+---
+ESTAB  <LAN-B>.101:8765  ←  <LAN-B>.6:65351     ← 사용자 PC 의 Foxglove Studio
+foxglove_bridge 정지 후 30초 재측정:
+  EKF 주기 위반 : 0 회  (직전 86회)
+  slam 스캔 폐기: 0 회  (직전 28회)
+  Nav2 전 노드 active   (직전 기동 실패)</pre>
+  <p class="note">결과 = 원문 없음 — 위 발췌(SUMMARY §1 · §4 인용)가 전부(<span class="mono">/tmp/s6top.txt</span> 원천 소실) · 스크립트 원문 <span class="mono">Docs/debug_log/2026-09-10/jobs/job182_s6base.sh</span> · <span class="mono">jobs/job191_nofg.sh</span> (기동 실패 확인 <span class="mono">job189_wait.sh</span> · <span class="mono">job190_err.sh</span>)<span class="c1104">(11-04 정정: 'python3 14.7' 은 COMMAND 이름별 평균이라 컨디셔너 · deskew · stuck_monitor 등 python 노드가 한 이름으로 묶여 희석된 값 — 위 awk 식 — 근거 Docs/issues/cpu-load-stalls.md §6 모순 1)</span></p>
+</section>
+
+<section>
+  <h2>감쇠를 바꾼 두 번과, 그 해석<span class="sec">§2 · §7 · §8</span></h2>
+  <div class="flow">
+    <span class="k">§2 본 것</span><span>job183: <span class="mono">voxel_decay 30</span> 인데 상자가 2~3 s 만에 사라짐. t=8 카메라~상자 0.580 m 로 <span class="mono">min_z 0.55</span> 를 넘어 절두체 '안' → 가속 감쇠가 지움. 깊이점 끊김 거리가 장면마다 다름(09-09 0.45~0.51 m, 이날 0.65 m).</span>
+    <span class="k">§2 결론</span><span><span class="mono">decay_acceleration</span> 3.0 → 0.0. job184 로컬 상자 소실 147 → 12, 계획 접촉 48 → 0 %, 최근접 0.0 → 45.6 cm.</span>
+    <span class="k">§7 본 것</span><span>job198: lc_box 최소 69 · gc_box 75, 계획 접촉 0/295, ① 11.5 cm — 전부 '양호'. 처음엔 "99 → 79 → 69 = 선형 감쇠가 눈에 보인다, 만료 직전 완주 = 설계대로" 로 읽음.</span>
+    <span class="k">§7 정정</span><span>사용자 육안: 접촉. t=18 계획 횡 +0.411 → +0.202 꺾임과 RPP 제자리 회전(v 0, ω −0.320)이 같은 순간이고, 그때 lc_box 가 69. 비용이 내접(99) 아래로 내려가면 그 칸은 '비싼 길' 이 되어 플래너가 파고든다.</span>
+    <span class="k">§8 결론</span><span>로컬 <span class="mono">decay_model −1</span>(영속, 롤링 창이 알아서 잊음) · 전역 <span class="mono">voxel_decay 90</span>. job205 SUCCEEDED 38.1 s / 2.09 m, 육안 접촉 없음. ③ "주행 내내 99, t≈35 정지 · 회전 후에만 로컬 89→82".<span class="c1104">(11-04 정정: CSV 마지막 표본(t=38.1)은 80 — 근거 Docs/issues/avoid-run-metrics.md §6 모순 3, 아래 CSV 발췌)</span></span>
+  </div>
+<pre class="code">t,fwd,...,lc_box,gc_box,v,w,box_pts,box_age     (outputs/job205.csv 끝 2 줄, 열 일부)
+38.00  fwd 1.589  ...  lc 82  gc 99  v 0.0  w 0.38  pts 0  box_age 37.5
+38.10  fwd 1.589  ...  lc 80  gc 99  v 0.0  w 0.33  pts 0  box_age 37.6</pre>
+  <p class="note">결과 원문 <span class="mono">Docs/debug_log/2026-09-10/outputs/job205.csv</span> · 러너 <span class="mono">Docs/debug_log/2026-09-10/jobs/job125_avoid3.py</span>(열 정의 317 행). job183 · 184 · 192 · 195 · 196 · 198 출력은 원천 소실(bag 은 <span class="mono">bags/bag_job195</span> · <span class="mono">bag_job198</span> 로컬 보관, git 제외).</p>
+</section>
+
+<section>
+  <h2>stuck_monitor — 상태는 전이 때만 온다<span class="sec">§3 · §5</span></h2>
+  <div class="flow">
+    <span class="k">본 것</span><span>job184 가 0.92 m 에서 CANCELED: RPP 충돌 감지 → 후진 복구 성공 → 직후 stuck_monitor 가 "지령 11.2 cm/9° 인데 관측 1.4 cm/6.0° (비율 0.13)" 로 취소.</span>
+    <span class="k">추론</span><span>09-09 에 넣은 보류 창은 EXECUTING 을 받을 때마다 <span class="mono">now + 2.0 s</span> 로 갱신하는 방식. Nav2 액션 상태는 전이 시점에만 발행되므로 4.5 s 걸린 후진 도중 창이 만료.</span>
+    <span class="k">결론</span><span><span class="mono">recovery_active</span> 플래그(EXECUTING 에 세우고 종료 4/5/6 에 내린 뒤 W 만큼 더 보류). job192 t=11~14 후진 복구 뒤 취소 없이 완주 — 실주행 검증.</span>
+  </div>
+<pre class="code">backup 시작(EXECUTING) 994.3 → recovery_until 996.3
+backup 완료            998.8   (그 사이 EXECUTING 재발행 없음)
+stuck 발동            1000.17  ← 이미 만료</pre>
+  <p class="note">원문 없음 — 위 발췌(SUMMARY §3)가 전부 · 스크립트 <span class="mono">Docs/debug_log/2026-09-10/jobs/job186_stuck.sh</span> · <span class="mono">job187_src.sh</span> · <span class="mono">job188_sm.sh</span>. 노드 소스 변경은 <span class="mono">rover_bringup</span> 의 stuck_monitor(카드 <span class="mono">Docs/issues/stuck-monitor.md</span> 항목 8).</p>
+</section>
+
+<section>
+  <h2>이날의 주행 표<span class="sec">§5 · §6 · §7 · §8 · §11</span></h2>
+  <div class="tbl"><table>
+    <tr><th>주행</th><th>결과</th><th>① 최근접</th><th>② 계획 접촉</th><th>③ 코스트맵</th><th>비고</th></tr>
+    <tr><td class="n">job184</td><td>CANCELED 0.92 m</td><td>45.6 cm</td><td>0 %</td><td>소실 147 → 12</td><td>stuck_monitor 오판(§3)</td></tr>
+    <tr><td class="n">job192</td><td>SUCCEEDED 1.92 m / 38.4 s</td><td>3.3 cm</td><td>0/385</td><td>최소 99</td><td>S1 여유 미달</td></tr>
+    <tr><td class="n">job195</td><td>SUCCEEDED 1.87 m / 42.6 s</td><td>10.1 cm</td><td>41/427 (10 %)</td><td>로컬 · 전역 일부 0</td><td>첫 rosbag 기록 주행 13 MB</td></tr>
+    <tr class="bad"><td class="n">job196</td><td>CANCELED 2.24 m</td><td>0.0 cm (계측 무효)</td><td>26 %</td><td>0</td><td>깊이점 전 구간 0</td></tr>
+    <tr class="bad"><td class="n">job198</td><td>SUCCEEDED 1.71 m / 29.4 s</td><td>11.5 cm</td><td>0 %</td><td>69 이상</td><td><b>육안 접촉</b></td></tr>
+    <tr class="hl"><td class="n">job205</td><td>SUCCEEDED 2.09 m / 38.1 s</td><td>37.1 cm (외삽)</td><td>0/382</td><td>99 유지</td><td>육안 접촉 없음</td></tr>
+    <tr><td class="n">job207</td><td>복귀 주행</td><td>—</td><td>—</td><td>—</td><td>상자 접촉(사용자), §9 발단</td></tr>
+    <tr><td class="n">job216</td><td>SUCCEEDED 2.60 m / 60.5 s</td><td>1.0 cm</td><td>208/606 (34 %)</td><td>로컬 t=30 이후 0</td><td>고친 계측 첫 주행</td></tr>
+  </table></div>
+  <p class="note">수치 원천 = SUMMARY §2 · §5 · §6 · §7 · §8 · §11 (job205 · job216 만 CSV 원문 있음). §9 이후 ①②③⑤⑥ 은 job205 까지 전부 '상자 위치에 의존' 해 무효로 분류됐다(아래).</p>
+</section>
+
+<section>
+  <h2>계측이 벽을 상자로 보고 있었다<span class="sec">§7 · §9</span></h2>
+  <div class="flow">
+    <span class="k">발단</span><span>job196 은 주행 내내 상자 사각형 안 깊이점 0. 처음 설명은 "상자를 출발 때 map 에 한 번만 고정 → SLAM 의 map→odom 보정(11.6 cm)으로 어긋남" → 0.5 s 마다 재고정하는 수정.<span class="c1104">(11-04 정정: 09-18 에 '재고정의 원래 이유(SLAM 보정 추종)는 실제로는 중앙값 버그였다' 로 정리 — job196 에 두 원인이 각각 얼마나 기여했는지는 미확인(bag 소실) — 근거 Docs/debug_log/2026-09-18/SUMMARY.md 272 행 · Docs/issues/avoid-run-metrics.md §6 모순 1)</span></span>
+    <span class="k">본 것</span><span>job207 복귀에서 상자 접촉. job205 CSV 를 다시 보니 로버가 전혀 안 움직인 t=0~1.5 s 에 깊이점이 84 → … → 0 으로 사라짐 — 거리가 안 변했으니 '가까워져 화각을 벗어남' 으로는 설명 안 됨.</span>
+    <span class="k">판별</span><span>로버를 세워 둔 채 <b>base_link 기준</b>(SLAM 무관) 고정 창을 60 s(job209): 121 표본 전부 253~275 점. 카메라는 처음부터 상자를 잘 봤다.</span>
+    <span class="k">원인</span><span><span class="mono">detect_box</span> 가 z 0.05~0.30 · |y| &lt; 0.5 안의 점을 한 덩어리로 보고 median(y). 클러스터링해 보니(job210) 우측 벽 339 점이 상자 210 점보다 많아 중심이 벽으로 끌려갔고, x 는 5 퍼센타일(상자 쪽)이라 <b>벽의 y + 상자의 x</b> 인 빈 자리(52 cm 어긋남)에 사각형이 섰다.<span class="c1104">(11-04 정정: 같은 날 러너 코드 주석은 '우측 벽 487 점 vs 상자 119 점' 으로 SUMMARY 의 339 · 210 과 다르다 — 서로 다른 순간으로 보이나 원천 소실 — 근거 Docs/issues/avoid-run-metrics.md §6 모순 4)</span></span>
+    <span class="k">결론</span><span>y 축 1D 클러스터링(gap 0.08 m) 후 낮은 물체(z 중앙 &lt; 0.20) 중 진행축에 가장 가까운 덩어리를 상자로. ①②③⑤⑥ 무효, ④ 경로 전환 · 조향 부호반전 · 결과 · 육안은 유효. job198 접촉 / job205 비접촉은 사실로 남지만 '감쇠 재설계 때문' 이라는 인과는 약해짐.</span>
+  </div>
+  <p>정지 중 깊이점이 사라진 장면(실제 CSV)과 고친 검출 코드:</p>
+<pre class="code">t 0.0 fwd 0.000 pts 84     t 0.6 fwd -0.000 pts 228
+t 0.1 fwd 0.000 pts 54     t 0.7 fwd -0.000 pts 146
+t 0.2 fwd -0.000 pts 64    t 0.8 fwd -0.000 pts 27
+t 0.3 fwd -0.000 pts 32    t 0.9 fwd -0.000 pts 2
+t 0.4 fwd -0.000 pts 42    t 1.0 fwd -0.000 pts 0   ← 로버는 그대로, 상자 사각형 안 점만 0
+t 0.5 fwd -0.000 pts 105   (outputs/job205.csv 의 t · fwd · box_pts 열)</pre>
+<pre class="code"># job125_avoid3.py detect_box (09-10 고친 판) — 고치기 전에는 sel 전체에 바로 median 을 썼다
+sel = P[(P[:, 2] &gt; 0.05) &amp; (P[:, 2] &lt; 0.30) &amp; (P[:, 0] &gt; 0.5) &amp; (P[:, 0] &lt; 1.5) &amp; (np.abs(P[:, 1]) &lt; 0.5)]
+cl = _clusters_y(sel)                       # y 정렬 뒤 간격 &gt; 0.08 m 면 다른 물체, 최소 25 점
+low = [(abs(float(np.median(c[:, 1]))), c) for c in cl
+       if float(np.median(c[:, 2])) &lt; 0.20]  # 낮은 물체만
+low.sort(key=lambda t: t[0]); sel = low[0][1]  # 진행축(y=0)에 가장 가까운 덩어리
+cy = float(np.median(sel[:, 1]))
+fx = float(np.percentile(sel[:, 0], 5))     # 전면 x</pre>
+<pre class="code">job209 (정지 60 s, base_link 고정 창)
+상자창 점수 : 최소 253  최대 275  중앙 268   ← 121 샘플 전부
+0 인 샘플   : 0 / 121 (0%)
+z중앙 0.069  x중앙 0.917  — 흔들림 없음
+job210 (클러스터링)
+클러스터 #0  339점  y -0.468  z중앙 0.212  x중앙 1.160   ← 우측 벽
+클러스터 #1  210점  y +0.073  z중앙 0.076  x중앙 0.917   ← 상자
+job125 방식 median(y) = -0.445                          ← 벽을 상자로 잡는다</pre>
+  <p class="note">CSV 원문 <span class="mono">Docs/debug_log/2026-09-10/outputs/job205.csv</span> · job209 · job210 결과 원문 없음 — 위 발췌(SUMMARY §9)가 전부 · 스크립트 원문 <span class="mono">jobs/job125_avoid3.py</span> 103~158 행 · <span class="mono">jobs/job209_static.py</span>(117~118 행 판정 출력) · <span class="mono">jobs/job210_cluster.py</span>(64 행 clusters, 104 행 median 비교).</p>
+  <p>§9 는 job207 복귀 접촉을 "목표에서 몇 분 정지하는 동안 전역 90 s 감쇠로 상자 소멸 + 복귀 180° 회전 때 절두체가 '시야 안인데 비었다' 로 로컬을 지움" 이라는 가설로 적고 다음 주행에서 검증하기로 했습니다.<span class="c1104">(11-04 정정: 이 가설은 검증되지 않았고 이후 다시 해석한 기록이 없다 — 그 복귀도 Nav2 운전이었으므로 BT 클리어였을 수 있다(미확인) — 근거 Docs/issues/costmap-clear-recovery.md §6 모순 2)</span></p>
+</section>
+
+<section>
+  <h2>고친 눈으로 본 첫 주행 job216<span class="sec">§11</span></h2>
+  <div class="flow">
+    <span class="k">본 것 1</span><span>진짜 상자 클러스터 기준 거리별 깊이점: 0.52~0.87 m 에서 0 인 비율 0 %, 0.32~0.42 m 24 %, 0.22~0.32 m 96 %. 마지막 관측 t=28.70, 카메라~상자 0.394 m.</span>
+    <span class="k">결론 1</span><span>사각 ≈ 0.40 m 는 실재. §9 의 '카메라 사각 결론 무효' 는 과했다 — 계측 결함이 사각을 0.8~0.9 m 로 두 배 넘게 부풀려 보였을 뿐. S2 목표 = 끊김 ≤ 0.25 m.</span>
+    <span class="k">본 것 2</span><span>깊이 소실 1.3 s 뒤 로컬 lc 100 → 0, 전역은 같은 STVL 설정으로 끝까지 100. 영속(−1)이므로 감쇠가 아니다.</span>
+    <span class="k">추론 2</span><span>후보 셋 — <span class="mono">update_footprint_enabled</span> · 절두체 clearing · rolling_window. '감쇠가 있는 전역이 살고 영속인 로컬이 죽었다' 는 대비가 원인을 좁힌다. 원인 하나를 확정하기 전에는 다른 튜닝을 하지 않는다.<span class="c1104">(11-04 정정: 셋 다 아니었다 — 다음 날 /cmd_vel 직접 발행 대조로 삭제 경로가 BT ClearEntireCostmap 임을 확정(09-11 §0 · §1) — 근거 Docs/issues/costmap-clear-recovery.md §5 실수 ①)</span></span>
+  </div>
+<pre class="code">t       lc_box gc_box  box_pts  clear_geo   (outputs/job216.csv, 열 일부)
+28.70   100    100      9       0.321       ← 마지막 관측
+28.80   100    100      0       0.313
+...
+29.90   100    100      0       0.224
+30.00     0    100      0       0.217       ← 로컬 붕괴 (차체↔상자 21.7 cm)
+30.10     0    100      0       0.210</pre>
+  <p>같은 CSV 의 앞부분에는 SUMMARY 가 다루지 않은 동시 붕괴가 있습니다(0.1 s 표본 중 일부):<span class="c1104">(11-04 정정: §11 은 t=30 하나만 적었으나 CSV 에 t=7.8~10.7 로컬 0 → t=9.1~13.0 전역 0 이 있다 — 로컬이 먼저, 전역이 1.3 s 뒤 0 이 되는 순서는 다음 날 job222 의 BT 클리어 서명과 같다 — 근거 Docs/issues/avoid-run-metrics.md §6 모순 2)</span></p>
+<pre class="code">7.5 lc 100 gc 100 pts 0
+7.8 lc 0 gc 100 pts 0
+9.0 lc 0 gc 100 pts 0
+9.3 lc 0 gc 0 pts 0
+10.5 lc 0 gc 0 pts 6
+10.8 lc 100 gc 0 pts 8
+12.9 lc 99 gc 0 pts 14</pre>
+  <p class="note">결과 원문 <span class="mono">Docs/debug_log/2026-09-10/outputs/job216.csv</span>(<span class="mono">lc_box</span> · <span class="mono">gc_box</span> · <span class="mono">box_pts</span> · <span class="mono">clear_geo</span> 열) · 러너 <span class="mono">jobs/job125_avoid3.py</span>. 거리별 표는 원문 없음 — SUMMARY §11.1 표가 전부. nav2 로그가 없어 t=30 붕괴가 BT 클리어였는지는 미확인.</p>
+</section>
+
+<section>
+  <h2>자이로 바이어스가 온도로 움직였다<span class="sec">§0-4</span></h2>
+  <div class="flow">
+    <span class="k">본 것</span><span>정지 중인데 map→base yaw 가 계속 흐름. 80 분 정지 후 약 105°.<span class="c1104">(11-04 정정: 105° 는 1.31 °/분 × 80 분의 계산값 — 커밋 메시지의 관측은 job208 −2.2° → 약 80 분 뒤 115°(변화 ≈ 117°) — 근거 git 커밋 ebc58859 메시지)</span></span>
+    <span class="k">판별</span><span>job213 정지 30 s: EKF 가 실제로 쓰는 축(광학 −y)의 잔차가 EKF 드리프트와 같음(설명 비율 100 %). 부팅 10 s 캘리브는 차가운 카메라를 잰다. 정지 중엔 slam 이 스캔을 처리하지 않아 오차가 map 자세에 그대로 쌓인다.</span>
+    <span class="k">결론</span><span>sensor_conditioner 에 ZUPT(휠이 정지를 보고하는 구간에서 바이어스 재추정). 1.31 → 0.02 °/분(65 배).</span>
+  </div>
+<pre class="code"># job213_axis.py — EKF 가 보는 축으로 다시 잼(docstring: '앞선 측정은 .z 를 봤다')
+print('    → EKF 가 쓰는 로봇 yaw rate = -wy = %+.6f rad/s = %+.4f °/s = %+.2f °/분' % (-m[1], ...))
+print('  EKF odom-&gt;base yaw 실측 변화: %+.5f rad / %.0f초 = ... = %+.2f °/분' % (d, el, ...))
+print('  자이로 잔차로 예측한 값     : %+.6f rad/s = %+.2f °/분' % (pred, ...))</pre>
+<pre class="code">원본 광학 wy              -0.001126 rad/s
+부팅 시 캘리브한 y 바이어스  -0.00075
+잔차                      -0.000376
+EKF 가 쓰는 yaw rate = -wy 잔차  +0.000380 rad/s = 1.31 °/분
+EKF odom-&gt;base 실측 드리프트     +0.000380 rad/s = 1.31 °/분   ← 정확히 일치
+검증 (job215, 재초기화 후 정지 60초): EKF yaw 드리프트 +1.31 → -0.02 °/분</pre>
+  <p class="note">결과 원문 없음 — 위 발췌는 커밋 <span class="mono">ebc58859</span> 메시지가 전부(SUMMARY 에는 이 주제의 절이 따로 없고 §0-4 요약만) · 스크립트 원문 <span class="mono">Docs/debug_log/2026-09-10/jobs/job213_axis.py</span> 57~67 행. 이후 경과는 <span class="mono">Docs/issues/sensor-conditioner.md</span> · <span class="mono">stationary-yaw-drift.md</span>.</p>
+</section>
+
+<section>
+  <h2>삭제 정책 — 우리 선택과 표준 구현<span class="sec">§10</span></h2>
+  <p>사용자 제안("안 보이면 지우지 말고 기억, 멀어지거나 다시 봤는데 없을 때만 지운다")은 점유 격자의 제1원칙(관측 실패 ≠ 부재)과 같다고 정리했습니다. STVL 의 절두체 clearing 만 가림 · 화각을 모르고 기하로 '없다' 를 추론하며, <span class="mono">decay_model −1</span> 은 시간 삭제만 막을 뿐 이 경로를 막지 않습니다.</p>
+  <div class="tbl"><table>
+    <tr><th>방식</th><th>안 보이면</th><th>가림 처리</th><th>대표</th></tr>
+    <tr><td>레이캐스팅</td><td>유지</td><td>✅ 자동</td><td>Nav2 costmap_2d</td></tr>
+    <tr><td>베이지안 로그오즈</td><td>유지</td><td>✅</td><td>OctoMap</td></tr>
+    <tr><td>TSDF weight</td><td>유지</td><td>✅ 부분적</td><td>Voxblox, nvblox</td></tr>
+    <tr class="bad"><td>절두체 + 시간감쇠</td><td>감쇠 또는 절두체 삭제</td><td>❌ 무시</td><td>STVL (당시)</td></tr>
+  </table></div>
+  <p>계획 조정(사용자 승인): S2 먼저 → STVL 은 S4 3 회 통과만큼 → S5 기준선 → Phase N. S3(동적 망각)는 STVL 의 구조 한계로 문서화만 하고 nvblox 비교 항목으로.</p>
+</section>
+
+<section>
+  <h2>내 실수 · 정정</h2>
+  <div class="pm">
+    <h3>① 비용 하강을 '감쇠가 잘 된다' 로 읽음 (§7 job198 → 같은 날 정정)</h3>
+    <div class="flow">
+      <span class="k">하려 한 것</span><span>상자 기억(③ lc_box)이 주행 동안 유지되는지 확인</span>
+      <span class="k">본 것</span><span>lc_box 99 → 79 → 69, gc_box 최소 75, ⑥ 미관측 28.3 s, 29.4 s 완주</span>
+      <span class="k">처음 추론</span><span>"선형 감쇠가 눈에 보인다 · 만료 직전 완주 = 설계가 의도대로 맞물렸다"</span>
+      <span class="k">의심한 이유</span><span>사용자 육안 "상자가 우측 측면에 오는 순간 제자리 회전 → 상자 쪽으로 틀어 치고 지나감"</span>
+      <span class="k">판별</span><span>t=18 계획 횡 +0.411 → +0.202 · RPP v 0 ω −0.320 이 lc_box 69 와 같은 순간</span>
+      <span class="k">결론</span><span>비용이 내접(99) 아래 = 장애물이 물러짐 = 플래너가 파고듦. 로컬 영속 · 전역 90 s 로(§8)</span>
+      <span class="k">다음에 알아보는 법</span><span>코스트맵 값은 '얼마나 오래' 가 아니라 '통과 가능한가' 로 읽는다 — 99 미만이면 이미 길이다</span>
+      <span class="k">데이터</span><span>job198 출력 원천 소실 · bag <span class="mono">Docs/debug_log/2026-09-10/bags/bag_job198/</span>(로컬, git 제외) · 카드 <span class="mono">Docs/issues/avoid-run-metrics.md</span> §5 실수 ①</span>
+    </div>
+  </div>
+  <div class="pm">
+    <h3>② 클러스터링 없는 median — 그리고 그 정정의 과잉 (§9 → §11.1)</h3>
+    <div class="flow">
+      <span class="k">하려 한 것</span><span>상자 위치를 깊이 점군으로 검출해 ①②③⑤⑥ 을 계산</span>
+      <span class="k">본 것</span><span>job205 정지 구간에 깊이점 0, job209 정지 60 s 에선 253~275 점</span>
+      <span class="k">처음 추론</span><span>(§9) 사각형이 벽 쪽 빈 자리 → '카메라가 근접 시 못 본다(job167)' 결론까지 무효</span>
+      <span class="k">의심한 이유</span><span>job216 고친 계측에서도 0.40 m 안쪽은 0 비율 92~96 %</span>
+      <span class="k">판별</span><span>진짜 상자 클러스터 기준 거리별 0 비율 표(§11.1)</span>
+      <span class="k">결론</span><span>두 문제가 겹쳐 있었다 — 사각 0.40 m 실재 + 계측이 그것을 0.8~0.9 m 로 부풀림. '무효' 판정은 과했다</span>
+      <span class="k">다음에 알아보는 법</span><span>도구 결함을 찾았을 때 그 도구로 낸 결론을 일괄 무효로 하지 말고, 고친 도구로 같은 질문을 다시 잰 뒤 판정한다</span>
+      <span class="k">데이터</span><span><span class="mono">outputs/job205.csv</span> · <span class="mono">outputs/job216.csv</span> · <span class="mono">jobs/job209_static.py</span> · <span class="mono">jobs/job210_cluster.py</span>(결과 원천 소실)</span>
+    </div>
+  </div>
+  <div class="pm">
+    <h3>③ 숨김 토픽을 못 보고 '구독이 안 됐다' 로 읽음 (§3)</h3>
+    <div class="flow">
+      <span class="k">본 것</span><span><span class="mono">ros2 node info /stuck_monitor</span> 구독 목록에 상태 토픽이 없음</span>
+      <span class="k">처음 추론</span><span>구독 자체가 안 됐다</span>
+      <span class="k">판별</span><span><span class="mono">ros2 topic info /backup/_action/status</span> → <span class="mono">Subscription count: 1</span></span>
+      <span class="k">결론</span><span>오독 — <span class="mono">_</span> 로 시작하는 숨김 토픽은 기본 출력에서 빠진다. 진짜 원인은 상태가 전이 때만 발행되는 것</span>
+      <span class="k">다음에 알아보는 법</span><span>액션 상태 토픽은 <span class="mono">topic info</span> 로 직접 구독 수를 본다</span>
+      <span class="k">데이터</span><span>원문 없음 — SUMMARY §3 인용 · <span class="mono">jobs/job186_stuck.sh</span> · 카드 <span class="mono">Docs/issues/stuck-monitor.md</span> §5 실수 ②</span>
+    </div>
+  </div>
+  <div class="pm">
+    <h3>④ base(에이전트) 누락을 'Nav2 활성화가 느리다' 로 읽음 (§8 부수)</h3>
+    <div class="flow">
+      <span class="k">본 것</span><span>재부팅 뒤 <span class="mono">controller_server</span> 가 activate 를 못 끝냄</span>
+      <span class="k">처음 추론</span><span>Nav2 가 느리다 / USB 재열거로 <span class="mono">docker --device</span> 가 끊겼다</span>
+      <span class="k">의심한 이유</span><span>사용자가 재부팅했다고 알려 줌</span>
+      <span class="k">결론</span><span>micro-ROS 에이전트를 안 띄움 → <span class="mono">/wheel_odom</span> 없음 → EKF 입력 0 → odom→base 없음 → 로컬 코스트맵 타임아웃. 순서 base → sensors → slam → nav2</span>
+      <span class="k">다음에 알아보는 법</span><span>Nav2 가 안 뜨면 뿌리 토픽(<span class="mono">/wheel_odom</span> · <span class="mono">/rover/status</span>)부터 본다(다음 날 한 번 더 반복됨)</span>
+      <span class="k">데이터</span><span>원천 소실 · 카드 <span class="mono">Docs/issues/costmap-clear-recovery.md</span> §5 실수 ④</span>
+    </div>
+  </div>
+  <p class="note">그 밖에 이날 적은 작은 오류: <span class="mono">job194_bagdrive.sh</span> 가 <span class="mono">set -u</span> 때문에 ROS <span class="mono">setup.bash</span> 에서 즉사(<span class="mono">AMENT_TRACE_SETUP_FILES: unbound variable</span>) · 재부팅으로 <span class="mono">/tmp</span> 스크립트 소실 · Windows 에서 만든 스크립트의 CRLF 로 원격 bash 가 깨져 <span class="mono">run_j.sh</span> 가 전송 전에 CR 을 지우게 고침(§6 · §8).</p>
+</section>
+
+<section>
+  <h2>다음 후보 (09-10 마감 시점, §12)</h2>
+  <ul>
+    <li>★ 로컬 삭제 경로 규명 — 한 줄씩: <span class="mono">update_footprint_enabled: false</span> · <span class="mono">depth_clear</span> 소스 제거 · rolling 크기 확대. 원인 확정 전 다른 튜닝 금지</li>
+    <li>S2 카메라 사각 축소 — 기준선 끊김 0.40 m, 종료 조건 ≤ 0.25 m(<span class="mono">decimation_filter 4</span> 재검토)</li>
+    <li>S4 반복 검증(0/3) — 위 두 가지 뒤에</li>
+    <li>S3 동적 망각 — 로컬 영속의 대가(유령) · 전역 90 s 실용성 측정</li>
+    <li>S6 CPU — 우선순위 하향, 측정 주행 전 깨끗한 재기동 · Foxglove 끄기</li>
+  </ul>
+</section>
+
+<section>
+  <h2>이후 · 관련 카드</h2>
+  <ul>
+    <li><span class="mono">Docs/issues/avoid-run-metrics.md</span> — 회피 러너의 세 결함(한 번 고정 · median · 조향 지표)과 SUMMARY↔원문 모순 목록</li>
+    <li><span class="mono">Docs/issues/costmap-clear-recovery.md</span> — 로컬이 상자를 버린 진짜 경로 = BT ClearEntireCostmap(09-11)</li>
+    <li><span class="mono">Docs/issues/depth-obstacle-costmap.md</span> — STVL 감쇠 · 절두체 · 이후 nvblox</li>
+    <li><span class="mono">Docs/issues/near-wall-blindspot.md</span> — 근접 깊이 사각 0.40 m</li>
+    <li><span class="mono">Docs/issues/foxglove-snap-cpu.md</span> · <span class="mono">Docs/issues/cpu-load-stalls.md</span> — Foxglove 클라이언트 · 긴 세션 열화 · CPU 집계 방식</li>
+    <li><span class="mono">Docs/issues/stuck-monitor.md</span> — 복구 중 보류 로직</li>
+    <li><span class="mono">Docs/issues/sensor-conditioner.md</span> · <span class="mono">Docs/issues/stationary-yaw-drift.md</span> — ZUPT 와 그 뒤의 정지 중 yaw 드리프트</li>
+    <li><span class="mono">Docs/issues/nvblox-migration-n0-n4.md</span> — §10 절두체 한계가 nvblox 이전 근거가 된 경과</li>
+  </ul>
+</section>
+</div>

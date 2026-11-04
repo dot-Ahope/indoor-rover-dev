@@ -60,3 +60,49 @@
 - 코드 수정 2 — `Docs/tools/prep_fast.sh` 70 행 SHM 오류 집계에 `/tmp/cuvslam.log` · `/tmp/nvblox_node.log` 추가(없으면 무시). 표시 줄이라 판정은 안 바뀜. bash -n 통과.
 - src 배포(`jobs/up_src_1104.sh` → `outputs/up_src_1104.txt`, 빌드 안 함 · 원본 백업 Jetson `/tmp/deploy_backup_1104/`): 11 파일. 설치본은 9 개 중 8 개가 링크(바로 반영), place_server.py · places.yaml · cpp 는 설치본 없음(place_* 는 job 스크립트가 src 에서 직접 띄움 · cpp 는 주석만이라 빌드 불필요). `/tmp/prep_fast.sh` 새 판(cuvslam 줄 1).
 - **확인된 것**: Jetson 의 옛 `place_server.py` md5 fc0962af ≠ 저장소 10-29 판 f3ec96a4 → 출발 전 검사 ⓐ 는 **배포되지 않았었다**(이제 배포됨 — 다음 F2.5 실행부터 ⓐ 가 켜짐). places.yaml 은 저장소 옛 판과 같았음(55cc18ce).
+
+## §11 8 · 9 월 날짜별 정리 페이지 22 장 (사용자: "다음 진행하자" → 선택 "8·9월 정리 페이지")
+- 9 묶음 병렬 작성(브리프 `pg_common.md` — 원천 = 그날 SUMMARY · REPORT.md · BASELINE_STVL.md, 판단마다 스크립트 핵심 줄 · 출력 발췌 · 원문 경로, 원문 없으면 '원문 없음' · '원천 소실', 뒤 정정은 원문 유지 + `.c1104` '11-04 정정' 표시). 머리 = `2026-10-28/jobs/report_1028_head.html`. 09-21 ~ 09-30 의 기존 주제 페이지(11 장 + `2026-09-30/day_0930.html`)는 안 고치고 경로로만 연결.
+- 게시 전 검사(`pg_check.py` — 비밀번호 파일 모든 줄 · 금지 문구 · NUL/U+FFFD · MAC · `sshpass -p 값`): 22 장 모두 0(09-15 의 sshpass 1 건은 `&lt;PW&gt;` 가림 줄). 각 날짜 SUMMARY 끝에 페이지 포인터를 덧붙임.
+- 묶음 1 이 조립 스크립트를 고치다 다른 묶음 `fig_report_0907 ~ 0930.py` 16 개까지 다시 저장함(글로브 범위 실수) → 16 개를 다시 돌려 생성 페이지 md5 가 게시본과 모두 같음을 확인(바뀐 것 없음).
+- 판정 카드 · 정정 표시 합계: 약 160 장 · 약 300 곳(묶음 보고 합).
+
+| 날짜 | 제목 | 게시 | 로컬 |
+|---|---|---|---|
+| 08-26 | 08-26 보드 연결 · 첫 EKF | https://claude.ai/artifact/KnQzRZoLAegfkjAuD3td5t | `Docs/debug_log/2026-08-26/figures/day_summary_0826.html` |
+| 08-27 | 08-27 카메라 자이로 융합 | https://claude.ai/artifact/2Six9th32zSVF5LCQfoVyd | `Docs/debug_log/2026-08-27/figures/day_summary_0827.html` |
+| 08-28 | 08-28 라이다 방향 · 첫 지도 | https://claude.ai/artifact/Rrg2KpuxS7tBsVTBAvKKFc | `Docs/debug_log/2026-08-28/figures/day_summary_0828.html` |
+| 08-31 | 08-31 스캔 끌림 · 휠 스케일 | https://claude.ai/artifact/SVy8iUoKTAnmcfZRFcJfX9 | `Docs/debug_log/2026-08-31/figures/day_summary_0831.html` |
+| 09-02 | 09-02 Nav2 첫 자율주행 | https://claude.ai/artifact/LFgY9MyAaw7Pu3x6Fww29a | `Docs/debug_log/2026-09-02/figures/day_summary_0902.html` |
+| 09-03 | 09-03 데드밴드 · 스톨 래치 | https://claude.ai/artifact/58RrCSYAQ4UswYSjXk7bYC | `Docs/debug_log/2026-09-03/figures/day_summary_0903.html` |
+| 09-07 | 09-07 PWM 정정과 재보정 | https://claude.ai/artifact/3Ta1T3vEaMq1U33pkcwMmB | `Docs/debug_log/2026-09-07/figures/day_summary_0907.html` |
+| 09-08 | 09-08 상자 회피와 오진 | https://claude.ai/artifact/WFX3SBZKcRvtpeATChD6Ag | `Docs/debug_log/2026-09-08/figures/day_summary_0908.html` |
+| 09-09 | 09-09 odom 소실 · STVL 도입 | https://claude.ai/artifact/5w1ddJCQydbgDnrPrPXD7Q | `Docs/debug_log/2026-09-09/figures/day_summary_0909.html` |
+| 09-10 | 09-10 계측이 벽을 봤다 | https://claude.ai/artifact/HzTebGEaLJRTo3heTvdRDS | `Docs/debug_log/2026-09-10/figures/day_summary_0910.html` |
+| 09-11 | 09-11 코스트맵 지우던 BT | https://claude.ai/artifact/19iGrjHGS1gLWfNYN2Rnav | `Docs/debug_log/2026-09-11/figures/day_summary_0911.html` |
+| 09-14 | 09-14 중앙 상자 통로 | https://claude.ai/artifact/YBv2ufj4Cyyv7ZDShQCSgC | `Docs/debug_log/2026-09-14/figures/day_summary_0914.html` |
+| 09-15 | 09-15 MPPI 첫 주행과 망 | https://claude.ai/artifact/LS5rxnfXdAbJPEG6MzNXnD | `Docs/debug_log/2026-09-15/figures/day_summary_0915.html` |
+| 09-16 | 09-16 상자 옆 입구 MPPI | https://claude.ai/artifact/SLbEueXChoH8RRB5tvmog3 | `Docs/debug_log/2026-09-16/figures/day_summary_0916.html` |
+| 09-17 | 09-17 상자 뒤 목표 3/3 | https://claude.ai/artifact/FJN7dU7qpyzr94Z6ahoK35 | `Docs/debug_log/2026-09-17/figures/day_summary_0917.html` |
+| 09-18 | 09-18 센서 데크 −2.68° | https://claude.ai/artifact/3ucoT6vev8uNtSCj78wGh4 | `Docs/debug_log/2026-09-18/figures/day_summary_0918.html` |
+| 09-21 | 09-21 STVL 기준선 고정 | https://claude.ai/artifact/BMPDyhRStznMHcHmZbJtCh | `Docs/debug_log/2026-09-21/figures/day_summary_0921.html` |
+| 09-22 | 09-22 nvblox 전역 이전 | https://claude.ai/artifact/6ag61w9uhik6PYuGQ635Ba | `Docs/debug_log/2026-09-22/figures/day_summary_0922.html` |
+| 09-23 | 09-23 Phase N 마감 | https://claude.ai/artifact/RNHEuhLY8qumLBWXRuzwzB | `Docs/debug_log/2026-09-23/figures/day_summary_0923.html` |
+| 09-28 | 09-28 제자리 회전 슬립 | https://claude.ai/artifact/Lzf781UzFfp8UvTW6sHC1K | `Docs/debug_log/2026-09-28/figures/day_summary_0928.html` |
+| 09-29 | 09-29 F0 완료 · 정지 수단 | https://claude.ai/artifact/1Euj4P58ME3K1jHgXqmHf7 | `Docs/debug_log/2026-09-29/figures/day_summary_0929.html` |
+| 09-30 | 09-30 사무실 첫 지도 | https://claude.ai/artifact/CdMK9sM1WVSd3iwpZsBZDp | `Docs/debug_log/2026-09-30/figures/day_summary_0930.html` |
+- 묶음들이 찾은, 문제 대장 카드에 없던 기록 어긋남(페이지에는 정정 표시, 원문 SUMMARY 는 그대로):
+  - 08-28 SUMMARY 29~30 행 경로 문자열이 백슬래시 이스케이프로 깨짐(`F:` 뒤 제어 문자 0x06 · 줄바꿈).
+  - CLAUDE.md '트랙 게이지 ≈0.29m' ↔ `Docs/02_hardware/WT600_UPDATE_BRIEF.md` 11 행 '0.245 m 실측 확정 · 0.29 계산치 폐기' → **CLAUDE.md 고침**(11-04).
+  - 09-07 `Docs/debug_log/2026-09-07/outputs/job47a_verify.txt` ③ 줄 문구 'EKF(0.783 적용)' 가 VX_SCALE 1.0 배포 뒤에도 그대로(`Docs/debug_log/2026-09-07/jobs/job45_tape.py` 고정 문자열, 동작 영향 없음).
+  - 09-08 Foxglove 추가 토픽 수: SUMMARY 7 개 나열 ↔ `foxglove-snap-cpu.md` '6 개'(미대조).
+  - 09-09 SUMMARY 806 행 '다음' 의 raytrace_min_range 0.35/0.30 이 같은 날 §8.7(0.60) · §8.11(STVL) 뒤 낡음.
+  - 09-10 §0-4 '80 분 정지 후 약 105°' 는 계산값(1.31 °/분 × 80) — 커밋 ebc58859 메시지의 관측은 −2.2° → 115°(약 117°).
+  - 09-11 'ABORTED x m' 의 정의 없음(이동 거리로 보임, s4r1 1.22 m vs CSV 최대 전진 0.29 m).
+  - 09-14 §2.17 tc2 '≥0.07 비율 87 %' 재현 안 됨(`Docs/debug_log/2026-09-14/outputs/tc2.csv` 정지 포함 56 % · 이동만 73 %).
+  - 09-21 `BASELINE_STVL.md` §5 '스크립트는 09-21 jobs/' ↔ 실제 09-17 · 09-18 jobs/, 문서 경로 둘은 09-21 재구성 전 경로.
+  - 09-23 `Docs/debug_log/2026-09-23/outputs/j531c_pcl.txt` 27~28 행: C1 3 차가 게이트 N 불합격으로 끝남 — SUMMARY §3 에 없음, `nvblox-n6-global-ghosts.md` §6-6 'fail-open' 은 '판정이 다른 값에 달림' 이 정확(카드에 표시함).
+  - 09-30 §16 map→odom '서서히' — `Docs/debug_log/2026-09-30/outputs/j718_map2_break.txt` 10 s 요약에선 y 가 +0.38 m 까지 갔다 돌아옴(결론 영향 없음).
+- 크기: 본문 다수가 목표 30 KB 를 넘음(한글 · 정정 표시) — 줄이지 않음.
+- 게시는 비공개(소유자만). push 는 안 함(지시 대기).
+- 규칙 검사 경고 10 건 = 포인터를 덧붙인 9 월 SUMMARY 에 원래 있던 "적힌 경로가 없음"(09-16 · 22 · 28 · 29 · 30 — job312 · job322 · job627 · job562 · job651 · job692 · job697 · j705 · j713/714 · j717, 원천 소실 · 이름만 적힌 것). 예전 결함이라 고치지 않음.

@@ -478,3 +478,6 @@ SUCCEEDED 30.6s / 위치오차 14.9cm / 자세오차 +1.4° / 부호반전 1.0�
 4. "inflation 0.35 가 job61 진동의 원인" → 진짜 원인은 충돌검사 지평. inflation 을 되레 키워야 했다.
 **공통 교훈**: 프레임(odom/map)·통계량(min/max vs 백분위)·역할(경성 차단 vs 연성 비용)을 혼동하면
 그럴듯한 오진이 반복된다. 다음부터 코스트맵 조회는 반드시 해당 코스트맵의 `global_frame` 으로 한다.
+
+## (2026-11-04 추가) 사후 정리 페이지
+- 「09-08 상자 회피와 오진」 https://claude.ai/artifact/WFX3SBZKcRvtpeATChD6Ag — 로컬 `figures/day_summary_0908.html`(본문 `jobs/report_0908_body.html` · 조립 `jobs/fig_report_0908.py`). 이 SUMMARY 를 원천으로 11-04 에 만듦, 뒤 정정은 페이지에 '11-04 정정' 표시(문제 대장 카드 근거). 기록 → `Docs/debug_log/2026-11-04/SUMMARY.md` §11.

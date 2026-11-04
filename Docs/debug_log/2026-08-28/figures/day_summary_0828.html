@@ -1,0 +1,228 @@
+<title>08-28 라이다 방향 · 첫 지도</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* 배치: 실험 노트 — 좁은 본문 열(65자) + 넓게 펼치는 그림 · 표, 판정은 왼쪽 띠 색으로(10-20 판과 같은 틀) */
+:root{
+  --bg:#f3f4f6; --paper:#ffffff; --ink:#1b1f24; --muted:#5b6470; --line:#d9dde3;
+  --ir:#b3263e;      /* 프로젝터 켬 · 실패 쪽 */
+  --cool:#1f7a72;    /* 프로젝터 끔 · 통과 쪽 */
+  --warn:#a86a00;
+  --tint-ir:#f8e8eb; --tint-cool:#e4f2f0; --tint-warn:#fbf1df;
+  --f-body:"IBM Plex Sans KR","Malgun Gothic","Apple SD Gothic Neo",sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#111418; --paper:#181c21; --ink:#e6e9ed; --muted:#9aa4b0; --line:#2c333b;
+  --ir:#ef6b80; --cool:#5cc4b8; --warn:#e0a640;
+  --tint-ir:#2b1b1f; --tint-cool:#15292a; --tint-warn:#2a2316; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#111418; --paper:#181c21; --ink:#e6e9ed; --muted:#9aa4b0; --line:#2c333b;
+  --ir:#ef6b80; --cool:#5cc4b8; --warn:#e0a640;
+  --tint-ir:#2b1b1f; --tint-cool:#15292a; --tint-warn:#2a2316; color-scheme:dark}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.65;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:28px 64px}
+.wrap{max-width:980px;margin:0 auto;display:flex;flex-direction:column;gap:34px}
+header{display:flex;flex-direction:column;gap:6px;border-bottom:2px solid var(--ink);padding-bottom:14px}
+.eyebrow{font-family:var(--f-mono);font-size:12px;letter-spacing:.08em;color:var(--muted);text-transform:uppercase}
+h1{font-size:30px;line-height:1.25;margin:0;font-weight:700;text-wrap:balance}
+h2{font-size:20px;margin:0 0 4px;font-weight:700;text-wrap:balance}
+h2 .sec{font-family:var(--f-mono);font-size:13px;color:var(--muted);font-weight:400;margin-left:8px}
+p{margin:0;max-width:68ch}
+section{display:flex;flex-direction:column;gap:12px}
+.lead{color:var(--muted);max-width:72ch}
+.verdicts{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
+.v{background:var(--paper);border:1px solid var(--line);border-left:5px solid var(--muted);padding:12px 14px;display:flex;flex-direction:column;gap:4px;min-width:0}
+.v.ok{border-left-color:var(--cool)} .v.no{border-left-color:var(--ir)} .v.wait{border-left-color:var(--warn)}
+.v b{font-size:15px} .v span{color:var(--muted);font-size:13.5px}
+.pill{display:inline-block;font-family:var(--f-mono);font-size:11.5px;padding:1px 8px;border-radius:999px;white-space:nowrap}
+.pill.ok{background:var(--tint-cool);color:var(--cool)} .pill.no{background:var(--tint-ir);color:var(--ir)} .pill.wait{background:var(--tint-warn);color:var(--warn)}
+.tbl{overflow-x:auto;background:var(--paper);border:1px solid var(--line)}
+table{border-collapse:collapse;width:100%;font-size:13.5px;font-variant-numeric:tabular-nums}
+th,td{padding:7px 10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{font-weight:500;color:var(--muted);font-size:12.5px;white-space:nowrap}
+td.n{font-family:var(--f-mono);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr.hl td{background:var(--tint-cool)} tr.bad td{background:var(--tint-ir)}
+figure{margin:0;background:var(--paper);border:1px solid var(--line);padding:10px;display:flex;flex-direction:column;gap:8px}
+figure img{width:100%;height:auto;display:block}
+figcaption{font-size:13px;color:var(--muted)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media (max-width:720px){.two{grid-template-columns:1fr}}
+ul{margin:0;padding-left:20px;max-width:72ch} li{margin:2px 0}
+.mono{font-family:var(--f-mono);font-size:13px}
+.flow{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;font-size:14px}
+.flow .k{font-family:var(--f-mono);color:var(--muted);font-size:12.5px;padding-top:2px;white-space:nowrap}
+.note{font-size:13px;color:var(--muted)}
+.pm{background:var(--paper);border:1px solid var(--line);padding:12px 14px;display:flex;flex-direction:column;gap:8px}
+.pm h3{font-size:15.5px;margin:0;font-weight:700}
+.pm .flow{grid-template-columns:auto 1fr;gap:6px 14px}
+.pm .flow span:not(.k){max-width:none}
+</style>
+
+<style>
+.code{margin:0;font-family:var(--f-mono);font-size:12.5px;line-height:1.5;background:var(--bg);border:1px solid var(--line);padding:8px 10px;overflow-x:auto;white-space:pre;max-width:100%}
+.flow > span{min-width:0}
+.c1104{font-weight:600;color:var(--ink);background:var(--tint-warn);border-left:3px solid var(--warn);padding:0 5px;margin-left:3px;border-radius:2px;white-space:normal;font-size:.92em}
+</style>
+<div class="wrap">
+<header>
+  <div class="eyebrow">Indoor Rover · 2026-08-28 · Docs/debug_log/2026-08-28 (§ 번호 없음 — 절 제목으로 인용) · 주행 있음(360° 제자리 회전) · 11-04 사후 작성</div>
+  <h1>08-28 라이다 방향 · 첫 지도</h1>
+  <p class="lead">이 페이지는 2026-11-04 에 그날의 <span class="mono">SUMMARY.md</span>를 원천으로 다시 만든 것입니다. 라이다가 로버의 어느 쪽을 0° 로 보는지(yaw) 정하는 데 하루의 대부분을 썼습니다. 판정이 몇 차례 오갔고, 결국 yaw = π 가 처음부터 맞았으며 혼선의 원인은 Foxglove 의 fixed frame 설정이었습니다. 이어서 360° 제자리 회전으로 첫 SLAM 지도를 만들었고, 회전 때 스캔 점이 끌리는 현상을 스캔 시각(stamp) 문제로 진단해 첫 수정을 넣었습니다. 뒤 기록과 문제 대장이 바로잡은 곳, 그리고 이번에 원문을 다시 읽다 찾은 어긋남을 합해 <b>7 건</b>은 원문을 그대로 두고 <span class="c1104">11-04 정정</span> 표시를 붙였습니다.</p>
+</header>
+
+<section>
+  <h2>오늘의 판정</h2>
+  <div class="verdicts">
+    <div class="v ok"><b>라이다 yaw = π 확정</b><span>두 벽을 거리로 갈라 놓은 배치(job6n · 6o): 정면벽 base +11° · 좌측벽 +94°, 거울 아님. inverted 불필요 (LiDAR yaw 최종 확정)</span></div>
+    <div class="v ok"><b>혼선의 원인 = Foxglove fixed frame</b><span>SLAM 없이 fixed frame 이 <span class="mono">map</span> 이었음 → <span class="mono">base_link</span> 로 바꾸자 정상 (사용자 발견)</span></div>
+    <div class="v ok"><b>첫 SLAM 지도 (360° 제자리)</b><span>59 s, 최소 여유 16.4 cm, 가드 미발동. 215×225 @ 5 cm, 벽 492 칸. 병진 주행 지도는 아직 (★ SLAM 첫 맵 완성)</span></div>
+    <div class="v ok"><b>스캔 stamp 를 스윕 중앙으로</b><span><span class="mono">scan_restamp</span>: now − stamp 100.6 → 52.8 ms. slam 처리 간격 축소 (스캔 포인트 끌림 진단·수정)</span></div>
+    <div class="v ok"><b>HID 모듈 재부팅 뒤 자동 로드</b><span>08:51 재부팅 뒤 <span class="mono">iio:device0/1</span> 생존 — 어제 빌드 영구 적용 (한 일)</span></div>
+    <div class="v wait"><b>camera_link y 부호 미확정</b><span>±0.0475 — 포인트클라우드 정합으로 판정 예정 (판단 2 · 미해결)</span></div>
+  </div>
+</section>
+
+<section>
+  <h2>라이다는 어느 쪽을 보나 — 판정이 오간 과정<span class="sec">한 일 · 판단 1 · LiDAR yaw 최종 확정</span></h2>
+  <div class="flow">
+    <span class="k">본 것 1</span><span>종이 흔들기(<span class="mono">job6d</span> · <span class="mono">6f</span> · <span class="mono">6g</span>)는 S2L 스캔면(지면 +18.5 cm)이 좁고 사방 클러터에 묻혀 신뢰 낮음. 이어 코너 벽 정지 시험(<span class="mono">job6h</span>)으로 "확정"(한 일 · 판단 1).<span class="c1104">(11-04 정정: job6h 출력의 판정 줄은 '최근접 +105° → 좌✗' 였다 — 이 시험은 확정 근거가 못 됐고(코너에서는 더 가까운 옆벽이 이김), 확정 근거는 오후의 job6n · 6o — Docs/issues/lidar-yaw-alignment.md §5.1)</span></span>
+    <span class="k">나온 결과 1</span><span><pre class="code">lidar→base_link yaw=180deg. base_link 30deg bin 중앙거리(가까울수록 벽):
+  [-180..-150]   3.26 m
+  [ -30..  +0]   0.70 m
+  [  +0.. +30]   0.68 m
+  [ +60.. +90]   0.41 m
+  [ +90..+120]   0.41 m
+  [+150..+180]   2.32 m
+=&gt; 최근접(벽) 방향 = +105 deg (0.41m) → 로버 기준 좌✗</pre><span class="note">결과 원문 <span class="mono">Docs/debug_log/2026-08-28/outputs/job6h_corner.txt</span>(가운데 bin 일부 생략) · 스크립트 원문 <span class="mono">jobs/job6h.sh</span></span></span>
+    <span class="k">본 것 2</span><span>좌측 325 mm · 정면 800 mm 로 거리가 갈리는 두 벽을 놓고(<span class="mono">job6n</span>) 원시 각도 차와 base_link 각도를 각각 수치로 봄.</span>
+    <span class="k">추론</span><span><span class="mono">angle_increment</span> = +0.1996°(오른손 표기). 좌측벽 raw −86° · 정면벽 raw −168° → θ<sub>L</sub> − θ<sub>F</sub> = +82° ≈ +90° → 방향이 보존됨 = 회전이지 거울이 아니다. yaw = π 에서 정면벽 +11°(정면) · 좌측벽 +94°(좌측).</span>
+    <span class="k">결론</span><span><span class="mono">Docs/rover.urdf</span> lidar_joint rpy = (0, 0, π) 확정(전날 적용분 유지). <span class="mono">/scan</span> 은 ROS 오른손계와 일치.</span>
+    <span class="k">스크립트 핵심</span><span><pre class="code"># 왼손/오른손 판정: 좌측벽(~325mm)·정면벽(~800mm)의 순수 원시 각도(θ_msg) 측정 → 방향성 판정
+print("거리 밴드로 두 벽 분리:")
+print(f"\nθ_L - θ_F = {d:+.0f} deg   (ROS: 좌측-정면 = +90 이어야 오른손 일치)")
+print("=&gt; 오른손 일치 ✅ — 순수 회전으로 해결. yaw = -θ_F(정면→0) 스냅:")</pre></span>
+    <span class="k">나온 결과 2</span><span><pre class="code">scan: angle_min=-179.0 angle_increment=0.1996deg (부호: +CCW(오른손 표기))
+  좌측벽(~325mm): raw θ=-86deg  (범위 -118..+54, 323 beams, dist 0.40m)
+  정면벽(~800mm): raw θ=-168deg  (범위 -179..+180, 219 beams, dist 0.91m)
+θ_L - θ_F = +82 deg   (ROS: 좌측-정면 = +90 이어야 오른손 일치)
+   lidar_yaw = +3.1416 rad (+180 deg)
+# job6o — base_link 프레임(yaw=180°) 벽 위치
+  좌측벽(325mm) [정답=좌측+90°]: base_link θ=+94deg → 좌측(+y)
+  정면벽(800mm) [정답=정면0°]: base_link θ=+11deg → 정면(+x)</pre><span class="note">결과 원문 <span class="mono">Docs/debug_log/2026-08-28/outputs/job6n_handedness.txt</span> · <span class="mono">job6o_baselink_walls.txt</span> · 스크립트 원문 <span class="mono">jobs/job6n.sh</span> · <span class="mono">job6o.sh</span> · 요약 <span class="mono">outputs/lidar_yaw_CONFIRMED.txt</span></span></span>
+  </div>
+</section>
+
+<section>
+  <h2>화면은 왜 뒤집혀 보였나<span class="sec">LiDAR yaw 최종 확정 · ★ ROOT CAUSE</span></h2>
+  <div class="flow">
+    <span class="k">본 것</span><span>수치(base_link 각도)는 늘 맞는데 Foxglove 화면에서는 스캔이 반전돼 보임.</span>
+    <span class="k">처음 설명</span><span>"Foxglove 반전 착시 = stale tf_static": yaw 를 π → 0 → π 로 바꾸는 동안 클라이언트가 예전 yaw = 0 캐시를 쥐고 있었다. 브라우저 새로고침으로 해소.<span class="c1104">(11-04 정정: stale 캐시는 실제로 있었는지 확인하지 않은 설명이다(미확인). job6o 의 '/tf_static 발행자 2' 도 정상 구성일 가능성(추정) — 원인은 아래 fixed frame — Docs/issues/lidar-yaw-alignment.md §5.2)</span></span>
+    <span class="k">결론 (사용자 발견)</span><span>Foxglove fixed frame 이 <span class="mono">map</span> 이었다. slam_toolbox 가 안 떠 있어 <span class="mono">map</span> 프레임이 없었고, 렌더 기준을 못 잡아 스캔이 엉뚱하게 그려짐. <span class="mono">base_link</span> 로 바꾸니 정상. yaw = π 는 처음부터 맞았다.</span>
+    <span class="k">교훈 (원문)</span><span>라이다 정렬은 거리로 구분되는 2 벽 배치 + base_link 프레임 수치가 최선. Foxglove 육안은 시점 · 캐시 · 프레임 표시에 취약. 최종 증명은 SLAM 주행.</span>
+  </div>
+</section>
+
+<section>
+  <h2>첫 SLAM 지도 — 360° 제자리 회전<span class="sec">★ SLAM 첫 맵 완성</span></h2>
+  <div class="flow">
+    <span class="k">본 것</span><span>detach 실행(Wi-Fi 끊겨도 계속)으로 360° 회전 완주 59 s, 최소 여유 16.4 cm 로 가드 미발동. 지도 215×225 @ 5 cm(10.8×11.3 m), 벽 492 칸. 저장 <span class="mono">ros2_ws/maps/rover_map.{pgm,png,yaml}</span>.</span>
+    <span class="k">기록의 추론</span><span>"결정적 성공 지표: 360° 후 복귀 자세 x = +0.2 cm, y = +0.1 cm, yaw = +1° → yaw(π) · EKF · 자이로융합 · 슬립보정 전 체인 정합 최종 증명."<span class="c1104">(11-04 정정: 증명이 아니다. 이 값은 /odometry/filtered(EKF odom 좌표)이고, 제자리 회전에서는 휠 vx ≈ 0 이라 EKF 위치가 구조상 거의 안 변한다(09-03 '수 회전에 10 cm+ 밀림' 관찰). 회전 누적 +353° 인데 yaw +1° 인 것은 시작 yaw 가 0 이 아니었다는 뜻이고 시작 yaw 는 기록에 없다 → 미확인 — Docs/issues/first-slam-map.md §5 실수 1 · Docs/issues/wheel-odom-scale-slip.md §5 ④)</span></span>
+    <span class="k">스크립트 핵심</span><span><pre class="code">s.create_subscription(OccupancyGrid,'/map',s.mcb,q)
+s.create_subscription(Odometry,'/odometry/filtered',s.ocb,10)    # ← 복귀 자세를 EKF 에서 읽음
+...
+print(f"360도 후 pose: x={p.position.x*100:+.1f}cm y={p.position.y*100:+.1f}cm yaw={yaw:+.0f}deg (시작=0 부근이어야 정상)")</pre></span>
+    <span class="k">나온 결과</span><span><pre class="code"># job7j3 (회전 기록)
+SPIN_START 11:42:20
+START clr=88.7cm
+  ...+111deg minclr=21.9cm
+SPIN_END reason=DONE_360 acc=+353deg minclr=16.4cm
+# job7l (지도 저장 · 분석)
+맵: 215x225 @ 5cm = 10.8x11.3m
+점유(벽) 492셀 / 자유 11895셀 / 미탐사 35988셀 (1.0% 벽)
+360도 후 pose: x=+0.2cm y=+0.1cm yaw=+1deg (시작=0 부근이어야 정상)</pre><span class="note">결과 원문 <span class="mono">Docs/debug_log/2026-08-28/outputs/job7j3_spin_final.txt</span> · <span class="mono">job7l_map_analysis.txt</span> · 스크립트 원문 <span class="mono">jobs/job7l.sh</span>(19 · 30~32 행) · 회전 <span class="mono">jobs/job7j.sh</span></span></span>
+    <span class="k">함께 적은 것</span><span>제자리 회전 = 한 시점에서 본 별 모양 지도 → 방 전체는 병진 주행이 필요. Wi-Fi 끊김은 무관(제어 경로가 Jetson → USB → 보드로 로컬). 배터리 11.71 V — 충전 필요.</span>
+  </div>
+</section>
+
+<section>
+  <h2>회전 때 스캔 점이 끌림<span class="sec">스캔 포인트 끌림 진단·수정 (사용자 관찰)</span></h2>
+  <div class="flow">
+    <span class="k">본 것</span><span>사용자: 회전 때 라이다 점이 회전 방향으로 밀리다가 특징점에 '착' 붙음. 정지 상태 진단: <span class="mono">/scan</span> now − stamp +112 ms, <span class="mono">scan_time</span> 95 ms(10 Hz 스윕), stamp = 스윕 시작, scan − odom stamp 차 −160 ms.</span>
+    <span class="k">추론</span><span>루프 클로저가 아니라 스캔 정합 보정 + 스캔 시각 지연. 10 Hz 스윕을 slam 이 한 순간으로 처리(deskew 없음)하고 stamp 가 스윕 시작이라 약 47 ms 더 과거에 묶인다. 회전 0.28 rad/s 에서 약 1.8° 오차.</span>
+    <span class="k">결론</span><span>(1) <span class="mono">scan_restamp</span> 노드 — stamp + scan_time/2(스윕 중앙), <span class="mono">/scan_raw</span> → <span class="mono">/scan</span>. 지연 100.6 → 52.8 ms(−47.8). (2) slam <span class="mono">minimum_travel_heading</span> 0.08 → 0.03, <span class="mono">minimum_time_interval</span> 0.3 → 0.1("보정 3 배 잦게"). 효과: "밀림 ~1.8° → ~0.85° + 스냅 간격 축소". 실제 화면 확인은 충전 뒤 회전 주행에서.<span class="c1104">(11-04 정정: '밀림 각' 은 화면의 점을 잰 값이 아니라 지연 × 지령 각속도로 낸 계산값이다. 지연 감소(측정)가 점이 바른 자리에 그려진다는 증명도 아니다 — Docs/issues/scan-drag-deskew.md §5.1)</span><span class="c1104">(11-04 정정: '보정 3 배 잦게' 는 측정 없이 파라미터 비율로 쓴 문장이다. 제자리 회전에 대해서는 09-28 에 apt slam_toolbox 가 회전각을 처리 조건에 쓰지 않는다는 것이 밝혀져 틀린 주장이 됨 — Docs/issues/scan-drag-deskew.md §5.3 · Docs/04_navigation/SLAM_FORK_ROTATION.md)</span></span>
+    <span class="k">나온 결과</span><span><pre class="code"># job8a (정지 진단)
+  /scan       : now-stamp mean=+112.0ms max=+354.4 min=+95.6 (n=60)
+  /odom_filtered: now-stamp mean=+12.3ms max=+299.0 min=+3.2 (n=178)
+  scan_time=94.9ms (한 스윕 소요), time_increment=52.8us/점, 1800점
+  scan-odom 스탬프차 = -160.7ms (0 근처여야 정합)
+  minimum_travel_heading: Double value is: 0.08
+  minimum_time_interval: Double value is: 0.3
+# job8b2 (재스탬프 뒤)
+  /scan_raw (원시) now-stamp 평균 = +100.6ms
+  /scan (재스탬프) now-stamp 평균 = +52.8ms  (스윕중앙 보정 → ~47ms 감소 기대)
+  minimum_travel_heading: Double value is: 0.03
+  minimum_time_interval: Double value is: 0.1</pre><span class="note">결과 원문 <span class="mono">Docs/debug_log/2026-08-28/outputs/job8a_scan_timing.txt</span> · <span class="mono">job8b2_restamp.txt</span> · 요약 <span class="mono">outputs/scan_lag_FIX.txt</span> · 스크립트 원문 <span class="mono">jobs/job8a.sh</span> · <span class="mono">job8b.sh</span> · 노드 <span class="mono">ros2_ws/src/rover_bringup/scripts/scan_restamp.py</span></span></span>
+    <span class="k">남은 것</span><span>잔여 53 ms 는 10 Hz 라이다의 근본 한계(deskew 또는 고속 라이다) — 이것은 08-31 <span class="mono">scan_deskew</span> 로 이어짐.</span>
+  </div>
+</section>
+
+<section>
+  <h2>코드 위치 · 기록 위치<span class="sec">코드 위치 이전 (사용자 요청)</span></h2>
+  <div class="flow">
+    <span class="k">한 일</span><span>ros2 패키지 소스를 스크래치패드에서 저장소 <span class="mono">ros2_ws/src/</span> 로 옮겨 정본으로 삼음. <span class="mono">.gitignore</span> 가 이미 <span class="mono">ros2_ws/build · install · log</span> 를 뺌. 이후 여기서 편집 → Jetson 동기화.<span class="c1104">(11-04 정정: SUMMARY 원문 29 행의 이 경로는 글자가 깨져 있다 — 역슬래시 뒤 글자가 제어 문자(0x06)와 줄바꿈으로 바뀌어 "F:_Indoor_Rover\Rover" 다음 줄이 "os2_ws\src\" 로 읽힌다. 뜻한 경로는 F:\6_Indoor_Rover\Rover\ros2_ws\src\ — 원문 Docs/debug_log/2026-08-28/SUMMARY.md 29~30 행, 문제 대장에 없던 어긋남)</span></span>
+    <span class="k">출력 파일 위치</span><span>이 날 실행한 재부팅 뒤 재시작 출력은 08-27 폴더에 있다: <span class="mono">Docs/debug_log/2026-08-27/outputs/job6b_restart.txt</span>(08:51 부팅, HID 모듈 6 개 · <span class="mono">iio:device0 iio:device1</span>). 반대로 08-28 폴더의 <span class="mono">outputs/job8c_status.txt</span>(전 항목 빈 값)는 08-31 아침 충전 중 재부팅 뒤 실행분으로 보인다(추정).<span class="c1104">(11-04 정정: 날짜 폴더 배치 어긋남 2 건 — Docs/issues/board-link-microros-session.md §2 08-28 줄 · Docs/issues/battery-power-ops.md 도구 해설 job8c)</span></span>
+  </div>
+</section>
+
+<section>
+  <h2>바로잡은 내 오류</h2>
+  <div class="pm">
+    <h3>yaw 판정이 π → 0 → π 로 오감 (한 일 · 판단 1 → 오후 최종 확정)</h3>
+    <div class="flow">
+      <span class="k">하려 한 것</span><span>라이다 0° 가 로버 어느 쪽인지 정하기. 처음엔 '움직이는 종이의 분산이 큰 방향 = 물체 방향'(<span class="mono">job6d → 6f → 6g</span>), 다음엔 '가장 가까운 것 = 정면'(<span class="mono">job6h</span> · <span class="mono">6k</span>)</span>
+      <span class="k">본 것</span><span>6d +165°(원시) · 6f −165° · 6g 4 빔 −117° · 6h 최근접 +105° '좌✗' · 6k −77° '+90° 필요' — 같은 질문에 다섯 가지 답</span>
+      <span class="k">처음 추론</span><span>각 출력의 마지막 판정 줄을 그대로 받아 yaw 를 바꿈(π 적용 → 다시 의심 → 0 으로 되돌림, <span class="mono">job6j</span>)</span>
+      <span class="k">의심한 이유</span><span>출력끼리 서로 모순. 판정 줄 바로 위 bin 표(근거리 아크 −30° ~ +150°)는 스크립트 판정('좌✗')과 다른 이야기를 했다</span>
+      <span class="k">판별 시험</span><span>거리로 갈리는 두 벽(325 · 800 mm) → 원시 각도 차 부호 + base_link 각도(<span class="mono">job6n</span> · <span class="mono">6o</span>)</span>
+      <span class="k">결론</span><span>yaw = π. 앞 도구들이 틀린 이유: 종이 점수가 정지 벽 수천 빔에 지배됨 · 코너에서는 옆벽이 더 가까움 · '단일 물체' 가정이 클러터로 깨짐</span>
+      <span class="k">다음에 알아보는 법</span><span>판정 줄보다 bin 표 전체 모양을 먼저 본다. 방향 판정은 '거리로 갈리는 두 기준물 + 원시 각도 차 부호 + base_link 각도' 3 가지가 맞아야 확정</span>
+      <span class="k">데이터</span><span><span class="mono">outputs/job6d_paper_wave.txt</span> · <span class="mono">job6f_verify_front.txt</span> · <span class="mono">job6g_verify2.txt</span> · <span class="mono">job6h_corner.txt</span> · <span class="mono">job6j_yaw0.txt</span> · <span class="mono">job6k_nearest.txt</span> · <span class="mono">job6n_handedness.txt</span> · <span class="mono">job6o_baselink_walls.txt</span> · <span class="mono">Docs/issues/lidar-yaw-alignment.md</span> §5.1</span>
+    </div>
+  </div>
+  <div class="pm">
+    <h3>화면 반전을 'stale tf_static' 으로 설명 (→ 같은 날 사용자가 fixed frame 을 찾음)</h3>
+    <div class="flow">
+      <span class="k">하려 한 것</span><span>수치(π)와 Foxglove 화면(뒤집힘)의 모순 설명</span>
+      <span class="k">본 것</span><span><span class="mono">job6l</span>: TF yaw 0(6j 되돌림 상태) · foxglove 는 일찍 뜬 프로세스 · <span class="mono">job6o</span>: <span class="mono">/tf_static</span> 발행자 2</span>
+      <span class="k">처음 추론</span><span>클라이언트가 예전 yaw = 0 정적 TF 를 쥐고 있었다 → 새로고침 · 전체 재시작(<span class="mono">job6m</span>)으로 해소</span>
+      <span class="k">의심한 이유</span><span>사용자가 fixed frame 이 <span class="mono">map</span> 인 것을 발견 — 그때 SLAM 이 없었다</span>
+      <span class="k">판별 시험</span><span>fixed frame <span class="mono">base_link</span> 로 변경(사용자) → 정상</span>
+      <span class="k">결론</span><span>원인 = fixed frame 에 없는 프레임. stale 캐시는 있었는지조차 미확인</span>
+      <span class="k">다음에 알아보는 법</span><span>시각화가 수치와 다르면 먼저 뷰어의 fixed frame 이 지금 TF 트리에 있는지(<span class="mono">tf2_echo &lt;fixed&gt; base_link</span>) 확인. 화면만으로 센서 장착을 판정하지 않는다</span>
+      <span class="k">데이터</span><span><span class="mono">outputs/job6l_state_check.txt</span> · <span class="mono">job6m_yaw_pi_fullrestart.txt</span> · <span class="mono">job6o_baselink_walls.txt</span>, 사용자 관찰은 SUMMARY 문장만(화면 캡처 없음) · <span class="mono">Docs/issues/lidar-yaw-alignment.md</span> §5.2</span>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>다음 후보 (그날 기록)</h2>
+  <ul>
+    <li>camera_link y 부호: depth 포인트클라우드 vs 스캔 정합(RViz/Foxglove)으로 ±0.0475 판정</li>
+    <li>SLAM 병진 주행 지도(≤ 0.08 m/s · ≤ 0.4 rad/s, 접지 · 안전 확인 뒤 <span class="mono">!</span>) — 지도 일관성이 yaw 최종 증명 + 직진 · 자이로 스케일 기준</li>
+    <li>회전 끌림 수정의 화면 확인(충전 뒤) · Step 5 <span class="mono">full.launch.py</span> + systemd</li>
+  </ul>
+</section>
+
+<section>
+  <h2>이후 · 관련 카드</h2>
+  <ul>
+    <li><span class="mono">Docs/issues/lidar-yaw-alignment.md</span> — yaw = π, fixed frame 원인, 카메라 y 부호 보류. 09-18 데크 −2.68° 틀어짐 발견으로 URDF lidar yaw 는 π − 0.04677 로 바뀜(<span class="mono">Docs/issues/sensor-deck-yaw.md</span>)</li>
+    <li><span class="mono">Docs/issues/first-slam-map.md</span> — 360° 지도 · 08-31 조이스틱 병진 지도, '복귀 0.2 cm' 정정</li>
+    <li><span class="mono">Docs/issues/scan-drag-deskew.md</span> — restamp → 08-31 deskew</li>
+    <li><span class="mono">Docs/issues/jetson-wifi-link.md</span> — 이 날 회전 스크립트가 SSH 와 함께 죽어 detach 실행으로 바꿈(<span class="mono">job7g</span> 재부팅 아님 확인)</li>
+    <li><span class="mono">Docs/issues/script-drive-guards.md</span> §5 ④ — job7c '라이다 거리 &lt; 0.22 m' 가드 → job7d 풋프린트 기준 가드(바꾼 이유는 기록 없음, 추정)</li>
+  </ul>
+</section>
+</div>

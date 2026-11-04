@@ -225,3 +225,6 @@
 6. **DDS IP 변경 면역(미해결)**: 호스트 노드 루프백 화이트리스트는 micro-ROS 에이전트가 프로파일을 받지 않아 실패(job359/360). 다음 후보: 에이전트 `-r refs`(default_xrce_participant 에 화이트리스트) 또는 고정 IP.
 7. CPU: sensor_conditioner.py 36 %(D 후속), relay 19 %.
 8. 이후: S4 표준 코스 재계수, N0 nvblox 정지 측정(sudo 예고), 로컬 해상도 0.025, 영속 journal(sudo).
+
+## (2026-11-04 추가) 사후 정리 페이지
+- 「09-16 상자 옆 입구 MPPI」 https://claude.ai/artifact/SLbEueXChoH8RRB5tvmog3 — 로컬 `figures/day_summary_0916.html`(본문 `jobs/report_0916_body.html` · 조립 `jobs/fig_report_0916.py`). 이 SUMMARY 를 원천으로 11-04 에 만듦, 뒤 정정은 페이지에 '11-04 정정' 표시(문제 대장 카드 근거). 기록 → `Docs/debug_log/2026-11-04/SUMMARY.md` §11.

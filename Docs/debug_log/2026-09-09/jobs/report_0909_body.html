@@ -1,0 +1,290 @@
+
+<style>
+.code{margin:0;font-family:var(--f-mono);font-size:12.5px;line-height:1.5;background:var(--bg);border:1px solid var(--line);padding:8px 10px;overflow-x:auto;white-space:pre;max-width:100%}
+.flow > span{min-width:0}
+.c1104{font-weight:600;color:var(--ink);background:var(--tint-warn);border-left:3px solid var(--warn);padding:0 5px;margin-left:3px;border-radius:2px;white-space:normal;font-size:.92em}
+</style>
+<div class="wrap">
+<header>
+  <div class="eyebrow">Indoor Rover · 2026-09-09 · Docs/debug_log/2026-09-09 §0–§10 · 주행 있음 · 11-04 사후 작성</div>
+  <h1>09-09 odom 소실 · STVL 도입</h1>
+  <p class="lead">이 페이지는 2026-11-04 에 그날의 <span class="mono">SUMMARY.md</span>(859 줄)와 <span class="mono">jobs/</span> 스크립트만으로 사후에 만들었습니다. 이 날의 <span class="mono">outputs/</span> 는 <b>비어 있어</b> 출력 발췌는 모두 SUMMARY 가 인용한 값이고(원천 소실), 스크립트 발췌는 저장소의 원문입니다. 하루에 세 갈래가 겹쳤습니다 — ① micro-ROS 링크에서 <span class="mono">/wheel_odom</span> 이 사라져 EKF 가 8.5 m 발산(보드율 460 800 으로 우회, 근본 원인 미확정), ② 낮은 상자가 코스트맵에서 사라지는 기전을 세 번 잘못 짚은 끝에 '마킹 중단' 으로 가르고 STVL 도입, ③ 내가 만든 DDS 공유메모리 사고와 CPU 부족 정지. 그날 스스로 정정한 것(§6 → §10 등)은 원문대로 두고, <span class="c1104">이후 기록(문제 대장 · 09-10 · 10-20 · 11-03 SUMMARY)이 바로잡은 곳 17 건은 이렇게 표시 — 판정 카드의 3 건은 본문 정정과 같은 내용</span>했습니다(본문 문장은 그대로).</p>
+</header>
+
+<section>
+  <h2>오늘의 판정</h2>
+  <div class="verdicts">
+    <div class="v wait"><b>/wheel_odom 소실 → 460 800 bps 로 우회</b><span>2 Mbps 에서 수신 0~13 Hz · 30 s 단위 전멸 → 460 800 에서 25.0 Hz · 70 s 연속 100 % · 드롭 0. 08-27 엔 같은 2 Mbps 가 ≈ 60 kB/s 정상 → 회귀, 원인 미확정 (§6.5 · §10)</span></div>
+    <div class="v no"><b>'USB 32 B 엔드포인트 상한' 결론은 틀림</b><span>숫자 하나(36.6 kB/s)가 맞아떨어져 단정 → 08-27 의 60 kB/s 가 반증 (§6 → §10)</span></div>
+    <div class="v no"><b>job124 '접촉 0 · 여유 28.0 cm' 는 틀림</b><span>CSV 기하로 실제 최근접 0.0 cm. 전방 카메라로 옆 간격을 잰 계측 설계 결함 → job125 기하 계측 (§8.6)</span></div>
+    <div class="v ok"><b>job152 첫 무접촉 완주</b><span>실제 최근접 4.1 cm · 접촉 경로 샘플 0/234 · 좌우 전환 0 (패딩 0.05 로 경로 양안정성 해소) (§8.8)</span></div>
+    <div class="v ok"><b>상자 소실 기전 = 소거가 아니라 마킹 중단 → STVL</b><span>clearing: false 에서도 100 ↔ 0 (job155). STVL job170: 깊이점 0 인 채 상자 비용 로컬 · 전역 최소 99 유지 (§8.8 · §8.13)<span class="c1104">(11-04 정정: '카메라가 점을 못 만든다'(⑤ 0 %)는 09-10 §9 에서 계측이 벽을 상자로 잡은 결함이 드러나 다시 따졌고, min_z 0.55 는 '그 장면에서만 맞은 값'(09-10 §2) — 근거 Docs/issues/avoid-run-metrics.md 실수 ③ · Docs/debug_log/2026-09-10/SUMMARY.md §2)</span></span></div>
+    <div class="v wait"><b>DDS 공유메모리 사고 2 회 → UDP 전용</b><span>SIGKILL 이 남긴 고아 잠금 파일로 ekf · slam 퍼블리셔 0. UDP 전용 뒤 SHM 재생성 0 · 오류 0 (§8.9 · §8.15)<span class="c1104">(11-04 정정: 'SHM 자체가 원인' 은 과한 일반화 — 확인된 것은 '비정상 종료 · 잔재 강제 삭제가 있으면 깨진다' 까지 — 근거 Docs/debug_log/2026-10-20/SUMMARY.md §7.2)</span></span></div>
+    <div class="v wait"><b>job175 정지 = CPU 부족</b><span>EKF 주기 위반 91 회 · load 9.01 → slam 이 스캔 전부 폐기 → map→odom 미발행 (§8.16)<span class="c1104">(11-04 정정: 09-10 §1 '구조적 CPU 부족은 틀렸다 — 긴 세션 열화', §4 Foxglove 클라이언트 연결이 1 코어. 각 몫은 나눠 재지 않음 — 근거 Docs/issues/cpu-load-stalls.md)</span></span></div>
+  </div>
+</section>
+
+<section>
+  <h2>아침: 좌표만 8.5 m 튀었다<span class="sec">§1 · §2 · §3</span></h2>
+  <div class="flow">
+    <span class="k">목표</span><span>09-08 배포 설정(<span class="mono">footprint_padding 0.02</span>, inflation 로컬 0.40 / 전역 0.35)의 회피 주행 검증. 먼저 무주행 경로 질의(job91): 경로 최대 횡변위 +0.488 m(좌), 비용 최대 71 → 역산 최근접 0.294 m = 패딩 포함 차체 외곽에서 10.9 cm. 계획은 의도대로.</span>
+    <span class="k">본 것</span><span>job92 주행 시작 2 초 뒤 1 초에 전진 +8.543 m. 깊이 여유는 0.57 m 그대로 — 로버는 거의 안 움직임.</span>
+    <span class="k">스크립트 핵심</span><span><pre class="code"># job93_jump.sh — 어느 변환이 튀었나: map→odom(SLAM) 과 odom→base(EKF) 를 따로 본다
+echo -n "map-&gt;odom : "; timeout 5 ros2 run tf2_ros tf2_echo map odom 2&gt;/dev/null | grep -aE "Translation|..." | head -2
+echo -n "odom-&gt;base: "; timeout 5 ros2 run tf2_ros tf2_echo odom base_link 2&gt;/dev/null | grep -aE "Translation|..." | head -2
+timeout 5 ros2 topic echo /wheel_odom --once 2&gt;/dev/null | grep -aE "^      x:|^      y:" | head -2</pre></span>
+    <span class="k">나온 결과</span><span><pre class="code">  t   전진   횡변위  최소여유  상자거리  v_cmd  w_cmd
+  2.0 +0.000 +0.000    0.625    1.004  +0.080 +0.109
+  3.0 +8.543 -1.209    0.574    7.644  +0.000 +0.000   ← 1초에 8.5m
+map-&gt;odom : [1.119, -0.066]      ← SLAM 보정은 1.1m 뿐
+odom-&gt;base: [5.725, 0.618]       ← EKF 가 5.7m 를 만들어냄</pre><span class="note">결과 = SUMMARY §3 인용(원천 소실 — outputs/ 비어 있음) · 스크립트 원문 <span class="mono">Docs/debug_log/2026-09-09/jobs/job92_avoid.py</span> · <span class="mono">jobs/job93_jump.sh</span></span></span>
+    <span class="k">결론</span><span>SLAM 점프가 아니라 EKF 발산. <span class="mono">/wheel_odom</span> 이 죽어 속도 관측 없이 카메라 IMU 가속도만 적분 → planner <span class="mono">failed to create plan</span> → ABORTED.</span>
+  </div>
+  <div class="tbl"><table>
+    <tr><th>기각한 가설 (§4)</th><th>반증</th></tr>
+    <tr><td>시계 스텝(NTP)</td><td>NTP 동기 09:43:18 → 스택 09:49:50 → 주행 09:56. stamp 오프셋 −0.010 s</td></tr>
+    <tr><td>메시지 크기</td><td>큰 <span class="mono">/rover/status</span> 는 4.6 Hz 로 회복, odom 만 0</td></tr>
+    <tr><td><span class="mono">/cmd_vel</span> 트래픽</td><td>실제로 무발행</td></tr>
+    <tr><td>CPU 경합</td><td>idle 56.6 % 에서 odom 0.00 Hz, idle 14.6 % 에서 24.91 Hz — 역상관</td></tr>
+  </table></div>
+</section>
+
+<section>
+  <h2>링크: 용량 경쟁처럼 보였다<span class="sec">§5 · §6</span></h2>
+  <div class="flow">
+    <span class="k">본 것</span><span>중복 프로세스를 걷어낸 뒤 5 초 버킷 관측. odom 과 보드 IMU 가 50 Hz 를 번갈아 차지하고, 작은 status 5.00 · battery 1.00 Hz 는 odom 이 살아 있는 동안 정확히 유지.</span>
+    <span class="k">스크립트 핵심</span><span><pre class="code"># job104_obs2.sh — 토픽별 수신 개수를 5 초마다 차분해 Hz 로
+for b in range(12):
+    base = dict(C); tb = time.time()
+    while time.time()-tb &lt; 5.0: rclpy.spin_once(n, timeout_sec=0.02)
+    print("  %3.0f-%3.0fs  %6.2f %6.2f %7.2f %7.2f %9.2f" % (b*5, b*5+5, (C['odom']-base['odom'])/el, ...))</pre></span>
+    <span class="k">나온 결과</span><span><pre class="code">   구간      odom    imu   status  battery
+    5- 25s   ~49     0.00    ~4.5    1.00     ← odom 이 50Hz 를 독점
+   30- 60s    0.00   ~1.0    ~5.0    1.00     ← odom 소멸
+   40- 50s   odom 50.9 / imu  0.0     status 5.0  bat 1.0
+   60- 70s   odom  0.0 / imu 50.9     status 1.0  bat 1.0</pre><span class="note">결과 = SUMMARY §5 인용(원천 소실) · 스크립트 원문 <span class="mono">Docs/debug_log/2026-09-09/jobs/job104_obs2.sh</span><span class="c1104">(11-04 정정: 첫 표의 4 칸(odom · imu · status · battery)은 job104 가 아니라 job103_obs.sh 의 출력 형식 — job104 는 conditioned 칸이 더 있음. 원문 없어 미확인 — 근거 Docs/issues/microros-baud-regression.md §6 모순 3)</span></span></span>
+    <span class="k">당시 추론</span><span>무작위 손실이 아니라 용량 경쟁. USB 장치를 보니 CH340 이 Full Speed(12 Mbps), 벌크 엔드포인트 32 B → 상한 약 32~40 kB/s 로 계산, odom 단독 50.9 Hz × 720 B = 36.6 kB/s 와 '맞아떨어져' 확신. 커밋 <span class="mono">7cc12d6</span> 까지 함.</span>
+    <span class="k">스크립트 핵심</span><span><pre class="code"># job107_port.sh — 제조사 1a86(CH340) 장치의 엔드포인트 크기
+if [ "$v" = "1a86" ]; then
+  echo "  USB 장치: $d (speed $(cat $d/speed) Mbps)"
+  for ep in $d*/ep_*; do echo "    $(basename $ep): wMaxPacketSize=$(cat $ep/wMaxPacketSize) type=..."; done</pre></span>
+    <span class="k">나온 결과</span><span><pre class="code">/dev/rover → ttyCH341USB0        (CH340, 1a86:7523)   ← 보드
+/dev/rplidar → ttyUSB0           (CP2102N, 10c4:ea60) ← 라이다
+USB 장치 /sys/bus/usb/devices/1-2.1/   speed = 12 Mbps  (Full Speed)
+  ep_02 : wMaxPacketSize = 0x20 (32 B), type Bulk    ← OUT
+  ep_82 : wMaxPacketSize = 0x20 (32 B), type Bulk    ← IN</pre><span class="note">결과 = SUMMARY §6 인용(원천 소실) · 스크립트 원문 <span class="mono">jobs/job107_port.sh</span> · <span class="mono">jobs/job106_baud.sh</span><span class="c1104">(11-04 정정: job106_baud.sh 21 행 <span class="mono">udevadm info -n /dev/ttyUSB0</span> 는 보드 USB 를 보려다 라이다(ttyUSB0)를 봤을 수 있음(미확인). 위 엔드포인트 값은 제조사로 고른 job107 의 것 — 근거 Docs/debug_log/2026-11-03/SUMMARY.md '기록 어긋남')</span></span></span>
+    <span class="k">결론(그날 §10 에서 철회)</span><span>상한은 없었다. 아래 §6.5 · §10.</span>
+  </div>
+  <div class="tbl"><table>
+    <tr><th>대역 수지 (§6, CDR 기준)</th><th>크기</th><th>29 Hz</th><th>50 Hz</th></tr>
+    <tr><td><span class="mono">/wheel_odom</span> (공분산 576 B 가 80 %)</td><td>~720 B<span class="c1104">(11-04 정정: §0 · 코드 주석 · CLAUDE.md 는 732 B. 732 는 -v6 프레임 길이 분포에서 온 값으로 보이나 기록 없음(추정) — 근거 Docs/issues/microros-baud-regression.md §6 모순 4)</span></td><td>20.9 kB/s</td><td>36.0</td></tr>
+    <tr><td><span class="mono">/imu/data_raw</span> · <span class="mono">/imu/mag</span></td><td>~330 · ~130 B</td><td>9.6 · 3.8</td><td>16.5 · 6.5</td></tr>
+    <tr class="bad"><td>합계</td><td></td><td>35.8 ('상한의 ~95 %')</td><td>60.5 ('~150 %')</td></tr>
+  </table></div>
+</section>
+
+<section>
+  <h2>대역 가설의 붕괴와 실제 위치<span class="sec">§6.5 · §7 · §10</span></h2>
+  <div class="flow">
+    <span class="k">본 것</span><span>발행 게이트로 총수요를 22.4 kB/s 로 낮춰도 odom 0, 수요 2 kB/s 구간에서도 0. 대역이 원인이면 불가능.</span>
+    <span class="k">스크립트 핵심</span><span><pre class="code"># job113_txlayer.sh — 보드가 /rover/status 의 TX 키로 보고하는 전송 계층 카운터를 5 초 차분
+# wc=write 호출, wb=gState busy 로 버림, wh=HAL 오류, wt=세마포어 타임아웃, wl=최대 len
+d = {k: (TX.get(k,0)-prev.get(k,0))/el for k in ('ot','wc','wb','wh','wt')}
+r = (C['odom']-pc)/el          # 같은 창의 실제 수신 Hz</pre></span>
+    <span class="k">나온 결과</span><span><pre class="code">agent -v6 로그       recv_message 1020 = DDS write 1020     → agent 는 버리지 않음
+발행 카운터          odom 시도 25/s, 실패 0, rc=0            → rcl/버퍼/MTU 아님
+전송 계층 wb/wh/wf   전부 0, 링 최대 점유 1559/8192 B        → 보드는 모두 송신
+2,000,000 bps : odom 시도 25/s → 수신 0~13 Hz, 30초 단위로 전멸 반복
+  460,800 bps : odom 시도 25/s → 수신 25.0 Hz, 70초 연속 100%, 드롭 0</pre><span class="note">결과 = SUMMARY §6.5 인용(원천 소실, -v6 원본 로그는 job115 가 지움) · 스크립트 원문 <span class="mono">jobs/job112_txdiag.sh</span> · <span class="mono">jobs/job113_txlayer.sh</span> · <span class="mono">jobs/job117_baud.sh</span> · <span class="mono">jobs/job118_verify.sh</span></span></span>
+    <span class="k">추론</span><span>남는 구간은 STM32 UART → CH340 → USB. 흐름 제어 없음(<span class="mono">UART_HWCONTROL_NONE</span>), <span class="mono">dmesg</span> 에 ch341 오류 없음 → 커널이 못 보는 CH340 칩 내부 유실과 일관(측정 아닌 해석).</span>
+    <span class="k">결론</span><span>보드 <span class="mono">usart.c</span> override + agent <span class="mono">-b 460800</span>. 전 토픽 규정 주기 복귀(odom 25.005 · imu 5.000 · status 5.000 · battery 1.000 · filtered 30.003).<span class="c1104">(11-04 정정: 같은 커밋 f1a76d86 에 전송 계층 링 버퍼 재작성도 들어가, '보드율이 고쳤다' 와 '링 버퍼가 고쳤다' 의 기여는 분리 측정되지 않음(옛 전송 + 460 800 조합 미시험) — 근거 Docs/issues/microros-baud-regression.md §6 모순 1)</span></span>
+  </div>
+  <div class="flow">
+    <span class="k">펌웨어 게이트 (§7)</span><span><span class="mono">/wheel_odom</span> 33 ms 게이트(20 ms 루프에서 실효 25 Hz), <span class="mono">/imu/data_raw</span> · <span class="mono">/imu/mag</span> 5 Hz. 수지 18.3 + 1.7 + 0.7 + 1.4 + 0.1 = 22.4 kB/s, 460 800 대비 49 %.<span class="c1104">(11-04 정정: 적힌 항의 합은 22.2, 크기 × 주기로 다시 곱하면 22.1 kB/s(48 %) — 결론 영향 없는 산술 차이 — 근거 Docs/issues/microros-baud-regression.md §4)</span> 기각한 대안: IMU · mag 퍼블리셔 삭제(자이로 원인 규명 때 관측 가능성을 남김).</span>
+    <span class="k">스크립트 핵심</span><span><pre class="code">/* firmware/rover_jupiter_fw/App/microros/microros_task.c (지금 판) */
+/* /wheel_odom 30Hz 게이트 (2026-09-09) — EKF 필터 주기와 일치. */
+if (now_ms - last_odom_ms &gt;= 33u) {
+/* firmware/rover_jupiter_fw/Core/Src/usart.c USER CODE 2 */
+huart1.Init.BaudRate = 460800;</pre></span>
+    <span class="k">나온 결과</span><span><pre class="code">빌드 text 132,920 / data 5,032 / bss 108,744, 경고 없음</pre><span class="note">SUMMARY §7 인용. 코드의 '30Hz' 는 의도값, 실효 25 Hz(실측 25.005) — 문제 대장 카드 §6 모순 5 가 두 숫자 공존을 적어 둠</span></span>
+  </div>
+  <div class="flow">
+    <span class="k">정정의 계기 (§10)</span><span>사용자 질문 "어제까지 잘 되던 데이터 크기가 왜 오늘 이렇게 됐는가".</span>
+    <span class="k">나온 결과</span><span><pre class="code">git log -S"BaudRate = 2000000"  →  a72b369  2026-05-28
+Docs/debug_log/2026-08-27/outputs/job4x_sensors_slam.txt
+  /wheel_odom  average rate: 49.995</pre><span class="note">SUMMARY §10 인용 · 08-27 원문 <span class="mono">Docs/debug_log/2026-08-27/outputs/job4x_sensors_slam.txt</span></span></span>
+    <span class="k">결론</span><span>2 Mbps 는 석 달 넘게 그대로였고 08-26 · 27 에 ≈ 60 kB/s 를 실었다 → 08-27 ~ 09-09 사이의 <b>회귀</b>. 배제: 펌웨어 DMA/타이머(09-01 이후 커밋 없음) · CPU · 크기 · agent · 보드 송신. 남은 후보: ① 커넥터 · 배선(WT-600 이관) ② 09-07 모터 PWM 50 Hz → 20 kHz(단 모터 정지 중에도 발생) ③ CH340 모듈 · ch341 드라이버. 좁히는 절차 ②~④ 미실행.</span>
+    <span class="k">소급 영향</span><span>09-08 의 미해결 이상(1.40 m 목표에 5.79 m 경로 · map yaw 점프 · 상자에 붙는 경로)이 odom 간헐 소실의 약한 증상이었을 가능성 — 오염 가능성 인정, 재검증 필요.</span>
+  </div>
+</section>
+
+<section>
+  <h2>회피 주행: 상자가 왜 사라지나<span class="sec">§8 · §8.6 · §8.7 · §8.8</span></h2>
+  <div class="tbl"><table>
+    <tr><th>주행</th><th>바꾼 것</th><th>결과 (SUMMARY 인용)</th></tr>
+    <tr><td>job119</td><td>RPP min_lookahead 0.35</td><td>CANCELED 0.99 m · RPP 충돌 감지 2 회 → 후진 복구 → stuck_monitor 취소</td></tr>
+    <tr><td>job124</td><td>min_lookahead 0.35 → 0.25 (실효값은 <span class="mono">lookahead_dist</span> 가 아니라 min)<span class="c1104">(11-04 정정: '처음에 lookahead_dist 를 지목' 한 것은 09-08 job70 에서 이미 같은 계산을 했던 것 — 근거 Docs/issues/controller-rpp-vs-mppi.md · Docs/issues/inflation-padding-roles.md)</span></td><td>SUCCEEDED 1.98 m · '최소 여유 28.0 cm' · ω 부호반전 2.0 회/m</td></tr>
+    <tr class="bad"><td>job124 재계산</td><td>사용자 "상자에 너무 붙었다" → CSV 기하</td><td>실제 최근접 <b>0.0 cm</b>(차체 좌단 +0.132, 상자 좌단 +0.134). '코너 컷' 진단도 철회</td></tr>
+    <tr><td>job126 → job128</td><td>패딩 0.02 → 0.05 (원인 A: 경로 좌우 양안정성 — 뒤집힌 경로 여유 0.001 m)</td><td>질의 3 회 같은 경로. 그러나 t=14 상자 소실 → 접촉</td></tr>
+    <tr><td>job134</td><td>레이어 분리(원인 B '라이다가 못 보는 것을 지운다')</td><td>또 접촉 0.0 cm, 전역 t=5 · 로컬 t=9 소실 → 원인 B 아님</td></tr>
+    <tr><td>job152</td><td>depth <span class="mono">raytrace_min_range</span> 0.35/0.30 → 0.60</td><td><b>SUCCEEDED, 최근접 4.1 cm</b>, 접촉 경로 0/234 — 그러나 여전히 소실(카메라~상자 0.518 m &lt; 0.60)</td></tr>
+    <tr><td>job155</td><td><span class="mono">clearing: false</span> (진단 전용, 뒤에 되돌림)</td><td>소거가 불가능한데 lc_box 0 ↔ 100 → <b>마킹 중단</b>이 기전</td></tr>
+  </table></div>
+  <div class="flow">
+    <span class="k">계측을 바꾼 이유</span><span>job92 계측은 '최소 여유' 를 실시간 깊이점으로 쟀다 → 상자가 화각을 벗어나면 먼 물체로 바뀜(t=16 nan, t=17 1.211). job125 는 출발 때 map 에 고정한 상자 사각형 ↔ 차체 사각형 기하 거리.</span>
+    <span class="k">스크립트 핵심</span><span><pre class="code"># job125_avoid3.py — ① 차체 외곽 ↔ 상자 외곽 거리 (카메라 무관)
+def clear_geo(px, py, yaw):
+    rx = dx*c - dy*s; ry = dx*s + dy*c            # 차체 좌표계
+    ex = np.maximum(np.abs(rx) - HL, 0.0)
+    ey = np.maximum(np.abs(ry) - HW, 0.0)
+    return float(np.min(np.hypot(ex, ey)))
+# 출발 때 상자 검출 — 범위 안 점의 median(y)
+sel = P[(P[:, 2] &gt; 0.05) &amp; (P[:, 2] &lt; 0.30) &amp; (P[:, 0] &gt; 0.5) &amp; (P[:, 0] &lt; 1.5) &amp; (np.abs(P[:, 1]) &lt; 0.5)]
+cy = float(np.median(sel[:, 1]))</pre></span>
+    <span class="k">나온 결과</span><span><pre class="code">clearing: false 인데도
+ t=3  lc_box 0   t=6  100   t=11  0   t=12  99   t=13  0  …  t=15 이후 계속 0
+결과 CANCELED, ① 실제 최근접 0.0cm, ② 계획 최소 여유 −16.1cm</pre><span class="note">결과 = SUMMARY §8.8 인용(CSV 는 Jetson /tmp 에만 — 원천 소실) · 스크립트 원문 <span class="mono">Docs/debug_log/2026-09-09/jobs/job125_avoid3.py</span><span class="c1104">(11-04 정정: 이 09-09 판 detect_box 의 median 결함(벽을 상자로 잡음, 09-10 §9 에서 52 cm 어긋남)이 그대로 있어, 09-09 주행의 ①②③⑤ 가 벽을 잡은 채 계산됐는지 확인할 수 없음(원천 소실). job124 의 상자 x 1.033~1.143 · y −0.046~+0.134 는 폭 0.18 과 맞아 상자를 잡은 것으로 보임(추정) — 근거 Docs/issues/depth-obstacle-costmap.md §6)</span></span></span>
+    <span class="k">결론</span><span>'덜 지우게' 가 아니라 '관측이 끊겨도 유지되는 기억' 이 필요 — 스톡 VoxelLayer 에 없는 기능. 레이어 분리는 원인은 아니었지만 설계 원칙('센서는 자기가 감지할 수 있는 것만 지운다')상 유지.</span>
+  </div>
+</section>
+
+<section>
+  <h2>STVL 도입과 S1 확정<span class="sec">§8.10 · §8.11 · §8.13</span></h2>
+  <div class="flow">
+    <span class="k">미해결 모순</span><span>job152 에서 마킹이 끊긴 거리 0.518 m 인데 job71 실측 최소 측정거리는 0.22~0.25 m. '카메라가 점을 못 만든다' 인지 '코스트맵이 점을 안 쓴다' 인지 가르려 지표 ⑤ 추가.</span>
+    <span class="k">스크립트 핵심</span><span><pre class="code"># job125_avoid3.py — ⑤ 로컬이 상자를 잃은 샘플 중 상자 사각형 안 깊이점이 있던 비율
+lost = [r for r in rows if r[6] == 0]          # lc_box == 0
+withpts = sum(1 for r in lost if r[10] &gt; 0)    # box_pts &gt; 0
+print("     (점이 있는데 잃었다 → 코스트맵 쪽 / 점이 없다 → 카메라 쪽)")</pre></span>
+    <span class="k">나온 결과</span><span><pre class="code">job167 (decay 15, min_z 0.25): t=4 깊이점 0 인데 lc_box 99 유지 → t=19 만료(=15초)
+        로컬이 상자를 잃은 81샘플 중 깊이점이 있었던 것 0%
+job169 (decay 30, min_z 0.25): t=5 점 소실 → t=10 마킹 소실 (절두체 안 '볼 수 있는데 없다' → 가속 소거)
+job170 (decay 30, min_z 0.55): ③ 상자 자리 비용: 로컬 최소 99 / 전역 최소 99
+        ④ 경로 좌우 전환 0회, 계획이 접촉 경로였던 샘플 0/140 (0%)</pre><span class="note">결과 = SUMMARY §8.13 인용(원천 소실) · 스크립트 원문 <span class="mono">jobs/job125_avoid3.py</span> · 설치 <span class="mono">jobs/job160_stvlinst.sh</span> · 배포 <span class="mono">jobs/job164_stvlup.sh</span></span></span>
+    <span class="k">결론(그날)</span><span>'코스트맵이 아니라 카메라가 점을 못 만든다'. 끊김 0.51 → 0.45 m 는 <span class="mono">decimation_filter 4</span> 가 유력(추정, S2). <span class="mono">min_z</span> 와 S2 는 짝.<span class="c1104">(11-04 정정: ⑤ 0 % 와 '근접 시 못 본다' 는 09-10 §9 에서 계측 결함으로 무효 처리됐다가 §11.1 에서 '근접 사각 0.40 m 는 실재' 로 다시 고쳐짐. decimation 원인설은 09-21 §5 정지 측정(센서 0.316 m 까지 안 끊김)으로 기각 — 근거 Docs/issues/avoid-run-metrics.md 실수 ③ · Docs/issues/depth-obstacle-costmap.md §6)</span></span>
+    <span class="k">STVL 구성</span><span>공식 실내 예제의 '마킹/소거 소스 분리': <span class="mono">depth_mark</span>(marking only) + <span class="mono">depth_clear</span>(clearing only, 절두체 min_z · 화각 87° × 58°), <span class="mono">voxel_decay</span> · <span class="mono">decay_acceleration 3.0</span>, combination Maximum. 파라미터 이름은 설치본 심볼 · 예제에서 확인.<span class="c1104">(11-04 정정: 09-10 §2 job183 에서 절두체 안 가속 감쇠가 다시 지워 decay_acceleration 3.0 → 0.0 — 근거 Docs/debug_log/2026-09-10/SUMMARY.md §2 · Docs/issues/costmap-clear-recovery.md)</span></span>
+  </div>
+</section>
+
+<section>
+  <h2>저녁: 위치가 멈췄다 — DDS 와 CPU<span class="sec">§8.9 · §8.14 · §8.15 · §8.16</span></h2>
+  <div class="flow">
+    <span class="k">1 회차 본 것</span><span>사용자 "지도를 벗어나 이상하게 움직인다". <span class="mono">ekf_node</span> 는 CPU 20 % 로 살아 있고 입력 정상인데 퍼블리셔 0.</span>
+    <span class="k">스크립트 핵심</span><span><pre class="code"># job148_shm.sh — 고아 SHM 파일과 퍼블리셔 수
+echo "  fastrtps_port*: $(ls /dev/shm 2&gt;/dev/null | grep -c fastrtps_port)"
+for f in fastrtps_port7423 fastrtps_port7427; do ls -l /dev/shm/$f* ; fuser -v /dev/shm/$f ; done
+timeout 8 ros2 topic info /odometry/filtered --verbose | grep -aE "Publisher count|Node name|Reliability"</pre></span>
+    <span class="k">나온 결과</span><span><pre class="code">/odometry/filtered  Publisher count: 0
+[RTPS_TRANSPORT_SHM Error] Failed init_port fastrtps_port7423: open_and_lock_file failed
+/dev/shm/fastrtps_port7423     → 없음
+/dev/shm/fastrtps_port7423_el  → 존재            ← 잠금 파일만 남은 고아
+복구 후: /odometry/filtered 30.007 Hz · /tf 47.4 Hz · /map 0.500 Hz</pre><span class="note">결과 = SUMMARY §8.9 인용(원천 소실) · 스크립트 원문 <span class="mono">jobs/job148_shm.sh</span> · <span class="mono">jobs/job150_recover.sh</span></span></span>
+    <span class="k">결론(1 회차)</span><span>내가 13 개 job 에서 쓴 <span class="mono">pkill -9</span> 가 FastDDS 의 SHM 정리를 막았다 → 정리는 <span class="mono">-TERM</span> → 최대 15 s → 남은 것만 <span class="mono">-9</span>.</span>
+    <span class="k">job170 정지 (§8.14)</span><span>위치가 99 샘플 동안 소수점 17 자리까지 같다가 정확히 9.90 s 뒤(tf2 버퍼 10 s) 조회 실패 → 로버가 아니라 <span class="mono">map→base_link</span> 갱신이 멈춤. 같은 날 앞서 적은 '배터리 때문' 은 근거 없음으로 철회.<span class="c1104">(11-04 정정: §8.13 의 'TF/EKF 정상 · DDS 이상 없음' 은 job171 이 주행이 끝난 뒤 잰 값이라 정지 시각의 근거가 못 됨 — 바로 다음 job173 이 slam 고아를 찾음. job170 정지와 2 회차 SHM 의 연결은 XML 주석 · 커밋 2a4092b2 에만 있고 직접 증거 없음(미확인) — 근거 Docs/issues/cpu-load-stalls.md §6 모순 5 · Docs/issues/dds-shm-incident.md §6 모순 1)</span></span>
+    <span class="k">2 회차 (§8.15)</span><span><span class="mono">slam_toolbox</span> 가 같은 서명(고아 <span class="mono">fastrtps_port7425</span>). "SIGTERM 으로 바꿨는데도 재발 → SHM 을 쓰는 것 자체가 문제" → <span class="mono">config/fastdds_udp_only.xml</span> + 4 개 launch.<span class="c1104">(11-04 정정: 2 회차 전 job156 · 164 · 174 가 <span class="mono">rm -f /dev/shm/fastrtps_*</span> 로 살아 있을 수 있는 참가자(ros2 데몬 · CLI) 파일까지 지웠을 수 있고, 2 회차 서술엔 SHM 오류 줄 인용이 없음. 10-20 시험에서 정리 없이 −9 를 섞어도 15/15 정상 → 'SHM 자체' 는 과한 일반화. UDP 전용 유지는 견고성 선택으로 여전히 합리적 — 근거 Docs/debug_log/2026-10-20/SUMMARY.md §7.2 · Docs/issues/dds-shm-incident.md §5.4)</span></span>
+    <span class="k">스크립트 핵심</span><span><pre class="code"># job156_stop.sh · job174_dds.sh — TERM 뒤 최대 15 s 기다리고, 그다음 잔재를 지움
+for i in $(seq 1 15); do [ "$(pgrep -fc '...')" = "0" ] &amp;&amp; break; sleep 1; done
+ros2 daemon stop &gt;/dev/null 2&gt;&amp;1; sleep 2
+rm -f /dev/shm/fastrtps_* /dev/shm/sem.fastrtps_* 2&gt;/dev/null
+# job174 검증
+echo "  SHM 재생성: $(ls /dev/shm | grep -c fastrtps)개  ← 0 이면 SHM 미사용(의도한 상태)"</pre></span>
+    <span class="k">나온 결과</span><span><pre class="code">검증: /dev/shm fastrtps 재생성 0개, SHM 오류 sensors/slam/nav2 각 0건
+      /tf 45.5Hz(퍼블리셔 3), /map 0.5Hz, slam_toolbox 복귀</pre><span class="note">결과 = SUMMARY §8.15 인용(원천 소실) · 스크립트 원문 <span class="mono">jobs/job156_stop.sh</span> · <span class="mono">jobs/job174_dds.sh</span></span></span>
+    <span class="k">3 번째 정지 (§8.16)</span><span>UDP 전용 뒤에도 job175 가 t=3 동결 · 9.7 s 뒤 실패, SHM 오류 0. ekf "Failed to meet update rate!" 91 회(평균 0.055 s · 최대 0.197 s, 목표 0.033 s), slam 은 스캔을 한 번도 처리 못 함(<span class="mono">Message Filter dropping message: frame 'lidar_link'</span>), load 9.01 / 6 코어 → CPU 부족 연쇄. <span class="mono">gyro_fps 100</span> 은 D455 미지원으로 200 복귀, 절감은 conditioner 다운샘플(S6 신설).<span class="c1104">(11-04 정정: 09-10 §1 재부팅 직후 30 s 에 위반 0 · load 2.10 → '구조적' 은 틀렸고 긴 세션 열화, §4 에서 Foxglove 클라이언트 연결이 1 코어. 09-09 의 Foxglove 연결 인과는 그날 연결 기록이 없어 추정 — 근거 Docs/issues/cpu-load-stalls.md · Docs/issues/foxglove-snap-cpu.md)</span></span>
+  </div>
+  <div class="flow">
+    <span class="k">Foxglove 경량화 (§8.10 · §8.12)</span><span>브리지가 상시 88~95 % 로 1 위 → <span class="mono">viz:=lean</span>(기본) / full / cam, <span class="mono">/imu/data</span> 200 Hz 등 제외, <span class="mono">num_threads 2</span> · <span class="mono">max_qos_depth 1</span> · capabilities 축소.<span class="c1104">(11-04 정정: 토픽 '고정 21 개' 는 09-08 커밋 fe79f1c4 기준 22 개(하나 차이), §8.12 '브리지가 사라졌다' 는 클라이언트 연결 여부를 기록하지 않은 측정 — 09-10 §4 에서 클라이언트가 붙자 lean 이어도 69.6 % — 근거 Docs/issues/foxglove-snap-cpu.md §5.6)</span></span>
+    <span class="k">나온 결과</span><span><pre class="code">이전: foxglov+ 88.2% / ekf_node 41.2% / async_s+ 38.2% / bt_navi+ 31.4% …
+이후: python3 39.2% / rplidar+ 19.6% / control+ 15.7% / realsen+ 14.7% / planner+ 12.7%</pre><span class="note">SUMMARY §8.12 인용(원천 소실) · 스크립트 원문 <span class="mono">jobs/job157_fg.sh</span> · <span class="mono">jobs/job159_fgdeploy.sh</span></span></span>
+  </div>
+</section>
+
+<section>
+  <h2>그날 적은 내 실수</h2>
+  <div class="pm">
+    <h3>'맞아떨어지는 숫자' 하나로 상한을 단정 (§6 → §10)</h3>
+    <div class="flow">
+      <span class="k">하려 한 것</span><span>odom 이 사라지는 원인 구간 찾기 (<span class="mono">job106_baud.sh</span> · <span class="mono">job107_port.sh</span>)</span>
+      <span class="k">본 것</span><span>CH340 벌크 엔드포인트 32 B · Full Speed, 관측 최대 36.6 kB/s</span>
+      <span class="k">처음 추론</span><span>USB FS 32 B 엔드포인트 실효 상한 32~40 kB/s — 수요 60.5 kB/s 가 넘침. 커밋 <span class="mono">7cc12d6</span></span>
+      <span class="k">의심한 이유</span><span>수요를 22.4 kB/s · 2 kB/s 로 낮춰도 0 (§6.5), 사용자 "어제까지 잘 되던 크기"</span>
+      <span class="k">판별 시험</span><span>계층별 계측(agent · rcl · 전송) → 보드율 460 800 A/B, 08-27 로그 대조(49.995 Hz)</span>
+      <span class="k">결론</span><span>상한 아님, 08-27 이후 회귀 — 원인 미확인</span>
+      <span class="k">다음에 알아보는 법</span><span>새 이론을 세우면 과거 측정치와 먼저 대조한다. '어제까지 됐다' 면 회귀인지 한계인지부터 가른다</span>
+      <span class="k">데이터</span><span>SUMMARY §6 · §6.5 · §10, <span class="mono">Docs/debug_log/2026-08-27/outputs/job4x_sensors_slam.txt</span>, 09-09 출력은 원천 소실</span>
+    </div>
+  </div>
+  <div class="pm">
+    <h3><span class="mono">pkill -f "a\|b"</span> 가 아무것도 안 죽임 (§4)</h3>
+    <div class="flow">
+      <span class="k">하려 한 것</span><span>job97 · 100 · 101 에서 스택 정리 후 재기동</span>
+      <span class="k">본 것</span><span><span class="mono">ekf_node</span> 2 개 등 중복 스택, load 16.8, SSH "No route to host" 3 회</span>
+      <span class="k">왜</span><span>pkill 은 ERE — 백슬래시 + 세로줄은 교대가 아니라 리터럴 파이프</span>
+      <span class="k">영향</span><span>그 구간 측정 폐기</span>
+      <span class="k">스크립트 핵심</span><span><pre class="code"># 고친 형태 (job104_obs2.sh) — 이름마다 따로, 정리 뒤 개수를 찍는다
+for p in "navigation_launch" "controller_server" ... "stuck_monitor"; do
+  pkill -9 -f "$p" 2&gt;/dev/null
+done
+for p in controller_server ... foxglove; do printf "  %-20s %s\n" "$p" "$(pgrep -fc "$p" || echo 0)"; done</pre><span class="note">스크립트 원문 <span class="mono">jobs/job97_recover.sh</span>(틀린 판) · <span class="mono">jobs/job104_obs2.sh</span>(고친 판). 이 <span class="mono">-9</span> 가 저녁의 SHM 사고로 이어짐(§8.9)</span></span>
+      <span class="k">다음에 알아보는 법</span><span>정리 직후 반드시 세어서 찍는다. 도구의 정규식 방언을 확인</span>
+    </div>
+  </div>
+  <div class="pm">
+    <h3>옆 간격을 전방 카메라로 잼 — job124 '28.0 cm' (§8.6)</h3>
+    <div class="flow">
+      <span class="k">하려 한 것</span><span>회피 주행 최소 여유 보고 (<span class="mono">job92_avoid.py</span>)</span>
+      <span class="k">본 것</span><span>보고 28.0 cm, CSV 기하로는 0.0 cm. t=16 nan → t=17 1.211</span>
+      <span class="k">왜</span><span>상자 옆을 지날 때 상자가 화각을 벗어나 최근접 점이 다른 물체로 바뀜. '코너 컷' 은 주행 전 경로와 비교한 오류(Nav2 는 계속 재계획)</span>
+      <span class="k">스크립트 핵심</span><span><pre class="code"># job92_avoid.py — 틀린 정의: 차체 외곽 → '실시간' 깊이점 최소 거리
+print("  최소 여유(차체 외곽-&gt;깊이점): %.1fcm  @ t=%.1fs ..." % (min(cl)*100, ...))</pre><span class="note">원문 <span class="mono">jobs/job92_avoid.py</span> 177 행 → 대체 <span class="mono">jobs/job125_avoid3.py</span>(머리 주석에 이 사건)</span></span>
+      <span class="k">결론</span><span>지표 정의 자체가 틀림 → 출발 때 고정한 상자 사각형 기하로 교체</span>
+      <span class="k">다음에 알아보는 법</span><span>지표가 재는 대상이 주행 내내 같은 물체인지 확인한다</span>
+    </div>
+  </div>
+  <div class="tbl"><table>
+    <tr><th>그 밖의 실수 (그날 기록)</th><th>본 것 → 정정</th></tr>
+    <tr><td>교체 스크립트가 <span class="mono">static_layer</span> 블록까지 지움 (§8.11)</td><td><span class="mono">planner_server</span> exit 255 <span class="mono">Can not get 'plugin' param value for static_layer</span> → 플러그인마다 plugin 키 YAML 검증 추가</td></tr>
+    <tr><td><span class="mono">min_z</span> 에 옛 실측값 0.25 (§8.13)</td><td>job169 가 5 초 만에 소실(절두체 안 가속 소거) → 0.55</td></tr>
+    <tr><td>'배터리 때문에 안 움직였다' (§8.13)</td><td>스톨 래치 아님(sc=0), 위치 고정 9.90 s = TF 버퍼 → 철회 (§8.14)</td></tr>
+    <tr><td>'SLAM 정합이 어긋났다' · '보드 odom 대비 헛돌았다' (§8.9)</td><td>SLAM 은 입력 TF 를 못 받음. 보드 odom x=1.614 는 리셋 이후 누적이라 기준이 다름</td></tr>
+    <tr><td><span class="mono">gyro_fps 100</span> (§8.16)</td><td>D455 미지원, 드라이버가 200 으로 되돌림 — 지원 프로파일 미확인</td></tr>
+    <tr><td><span class="mono">pgrep -fc</span> 여러 줄 → 산술 오류 (§8.16)</td><td>'잔존 0' 이 거짓 → 오래된 프로세스가 산 채 측정. 카운트 함수 분리</td></tr>
+    <tr><td><span class="mono">topic info /tf --verbose</span> 를 보고 'slam 중복' (§8.16)</td><td>발행자 · 구독자를 함께 나열 — 판단 취소</td></tr>
+    <tr><td>stuck_monitor 복구 중 보류 '미검증' (§8)</td><td>그날은 복구가 없어 미검증<span class="c1104">(11-04 정정: 09-10 §3 job184 에서 복구 성공 직후 취소 — Nav2 액션 상태가 전이 시점에만 발행돼 보류가 먼저 끝남 → recovery_active 플래그로 고침 — 근거 Docs/issues/stuck-monitor.md)</span></td></tr>
+  </table></div>
+</section>
+
+<section>
+  <h2>그날 배운 것 (§9 요지)</h2>
+  <ul>
+    <li>맞아떨어지는 숫자 하나로 인과를 단정하지 않는다 — 과거 측정치와 먼저 대조.</li>
+    <li>"어제까지 됐다" 는 가설을 절반으로 줄인다 — 회귀인지 한계인지부터.</li>
+    <li>best-effort 는 실패를 알려주지 않는다(rc=0 인데 소실) — 계층별 계측 없이는 모든 가설이 그럴듯함.</li>
+    <li>부분 실패는 크기 순으로 온다 — 작은 메시지는 정확, 큰 메시지만 소실이 가장 강한 단서.</li>
+  </ul>
+</section>
+
+<section>
+  <h2>다음 후보 (그날 §8.5 · §10)</h2>
+  <ul>
+    <li>2 Mbps 회귀 판별: USB 포트 · 케이블 교체 재시험 · 모터 구동 vs 정지 손실률(PWM EMI) · 09-06 펌웨어 A/B — 미실행(문제 대장 기준 이후 재시험 기록 없음)</li>
+    <li>상자 제거 시 동적 장애물 망각 확인 · STVL 실주행 재검증(보드 RESET 필요 상태였음)</li>
+    <li>lookahead 중간값 0.30 탐색(완주 대신 조향 진동 2.0 회/m 를 내줌)</li>
+    <li>CPU: conditioner 다운샘플(S6) · 그 뒤 N2 전체 맵 → N3 프런티어</li>
+  </ul>
+</section>
+
+<section>
+  <h2>이후 · 관련 카드</h2>
+  <ul>
+    <li><span class="mono">Docs/issues/microros-baud-regression.md</span> — 2 Mbps 회귀(우회 · 근본 미확정)</li>
+    <li><span class="mono">Docs/issues/dds-shm-incident.md</span> — SHM 사고 2 회 · 10-20 정정</li>
+    <li><span class="mono">Docs/issues/cpu-load-stalls.md</span> — job170 · 175 정지, 판정이 두 번 바뀜</li>
+    <li><span class="mono">Docs/issues/depth-obstacle-costmap.md</span> · <span class="mono">Docs/issues/costmap-clear-recovery.md</span> — 낮은 상자 마킹 · STVL 감쇠</li>
+    <li><span class="mono">Docs/issues/avoid-run-metrics.md</span> — job125 계측판과 그 결함</li>
+    <li><span class="mono">Docs/issues/controller-rpp-vs-mppi.md</span> · <span class="mono">Docs/issues/inflation-padding-roles.md</span> — lookahead · 패딩</li>
+    <li><span class="mono">Docs/issues/foxglove-snap-cpu.md</span> · <span class="mono">Docs/issues/stuck-monitor.md</span> · <span class="mono">Docs/issues/motor-pwm-50hz.md</span>(회귀 후보 ②)</li>
+    <li>다음 날: <span class="mono">Docs/debug_log/2026-09-10/SUMMARY.md</span>(CPU 정정 · decay_acceleration 0 · 계측 결함)</li>
+  </ul>
+</section>
+</div>

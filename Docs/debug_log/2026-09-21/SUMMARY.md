@@ -206,3 +206,6 @@
 - 결론: **(A) 결함 확정·수정 채택** — 층은 이제 슬라이스를 셀 단위로 그대로 옮긴다. 남은 차이는 (B) 표면 뒤 절단 띠뿐(상자 깊이 0.25 = 앞면 1.153 + 0.20 절단 + 셀 양자화). 상류 보고 후보(isaac_ros_nvblox release-3.2 `nvblox_costmap_layer.cpp` L308). 포크 diff 는 Jetson `~/workspaces/isaac_ros-dev/src/isaac_ros_nvblox` 에 미커밋 상태로 있음(되돌리기 = `git checkout` + 재빌드).
 - 마감 상태(`j497_endstate.txt`): 로컬 plugins STVL, nvblox 프로세스 0(컨테이너·호스트), 스택 controller/planner/slam/relay/agent 각 1, 로드 2.5, 47 °C. 컨테이너 유지. `job488_layer_ab.sh` 에 `QUICK=1`(감사 생략) 추가.
 - 다음 세션: ② 절단 4→2 정지 A/B(같은 표, N0 4 게이트 재측정) → 절차 문서 v2.0(bag 프로파일 항목) → ③ N4 주행 A/B. 미푸시 커밋은 지시 시 origin·personal 양쪽으로.
+
+## (2026-11-04 추가) 사후 정리 페이지
+- 「09-21 STVL 기준선 고정」 https://claude.ai/artifact/BMPDyhRStznMHcHmZbJtCh — 로컬 `figures/day_summary_0921.html`(본문 `jobs/report_0921_body.html` · 조립 `jobs/fig_report_0921.py`). 이 SUMMARY 를 원천으로 11-04 에 만듦, 뒤 정정은 페이지에 '11-04 정정' 표시(문제 대장 카드 근거). 기록 → `Docs/debug_log/2026-11-04/SUMMARY.md` §11.

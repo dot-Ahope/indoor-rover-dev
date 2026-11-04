@@ -542,3 +542,6 @@ NavFn 근사(8-이웃 Dijkstra, 같은 비용 변환)가 실제 /plan 의 상자
 2. ALOPS 프로파일 `802-11-wireless.powersave 2`(절전 끔) — 09-03 조치를 현재 망에도.
 3. 선택: ALOPS 공유기에서 <LAN-A>.8 DHCP 예약(이미 같은 주소를 받고 있으나 보장용), 국가 코드 KR.
 4. <WIFI-B> 를 계속 써야 한다면: AP 관리자 로그로 거부 원인 확인이 먼저. 그리고 DDS 를 IP 변화에 면역시키는 작업(온보드 통신 루프백 한정 — 09-16 에는 에이전트 컨테이너가 화이트리스트를 받지 않아 보류)이 필요하다.
+
+## (2026-11-04 추가) 사후 정리 페이지
+- 「09-17 상자 뒤 목표 3/3」 https://claude.ai/artifact/FJN7dU7qpyzr94Z6ahoK35 — 로컬 `figures/day_summary_0917.html`(본문 `jobs/report_0917_body.html` · 조립 `jobs/fig_report_0917.py`). 이 SUMMARY 를 원천으로 11-04 에 만듦, 뒤 정정은 페이지에 '11-04 정정' 표시(문제 대장 카드 근거). 기록 → `Docs/debug_log/2026-11-04/SUMMARY.md` §11.

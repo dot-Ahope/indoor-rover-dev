@@ -1,0 +1,311 @@
+<title>09-28 제자리 회전 슬립</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* 배치: 실험 노트 — 좁은 본문 열(65자) + 넓게 펼치는 그림 · 표, 판정은 왼쪽 띠 색으로(10-20 판과 같은 틀) */
+:root{
+  --bg:#f3f4f6; --paper:#ffffff; --ink:#1b1f24; --muted:#5b6470; --line:#d9dde3;
+  --ir:#b3263e;      /* 프로젝터 켬 · 실패 쪽 */
+  --cool:#1f7a72;    /* 프로젝터 끔 · 통과 쪽 */
+  --warn:#a86a00;
+  --tint-ir:#f8e8eb; --tint-cool:#e4f2f0; --tint-warn:#fbf1df;
+  --f-body:"IBM Plex Sans KR","Malgun Gothic","Apple SD Gothic Neo",sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#111418; --paper:#181c21; --ink:#e6e9ed; --muted:#9aa4b0; --line:#2c333b;
+  --ir:#ef6b80; --cool:#5cc4b8; --warn:#e0a640;
+  --tint-ir:#2b1b1f; --tint-cool:#15292a; --tint-warn:#2a2316; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#111418; --paper:#181c21; --ink:#e6e9ed; --muted:#9aa4b0; --line:#2c333b;
+  --ir:#ef6b80; --cool:#5cc4b8; --warn:#e0a640;
+  --tint-ir:#2b1b1f; --tint-cool:#15292a; --tint-warn:#2a2316; color-scheme:dark}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.65;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:28px 64px}
+.wrap{max-width:980px;margin:0 auto;display:flex;flex-direction:column;gap:34px}
+header{display:flex;flex-direction:column;gap:6px;border-bottom:2px solid var(--ink);padding-bottom:14px}
+.eyebrow{font-family:var(--f-mono);font-size:12px;letter-spacing:.08em;color:var(--muted);text-transform:uppercase}
+h1{font-size:30px;line-height:1.25;margin:0;font-weight:700;text-wrap:balance}
+h2{font-size:20px;margin:0 0 4px;font-weight:700;text-wrap:balance}
+h2 .sec{font-family:var(--f-mono);font-size:13px;color:var(--muted);font-weight:400;margin-left:8px}
+p{margin:0;max-width:68ch}
+section{display:flex;flex-direction:column;gap:12px}
+.lead{color:var(--muted);max-width:72ch}
+.verdicts{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
+.v{background:var(--paper);border:1px solid var(--line);border-left:5px solid var(--muted);padding:12px 14px;display:flex;flex-direction:column;gap:4px;min-width:0}
+.v.ok{border-left-color:var(--cool)} .v.no{border-left-color:var(--ir)} .v.wait{border-left-color:var(--warn)}
+.v b{font-size:15px} .v span{color:var(--muted);font-size:13.5px}
+.pill{display:inline-block;font-family:var(--f-mono);font-size:11.5px;padding:1px 8px;border-radius:999px;white-space:nowrap}
+.pill.ok{background:var(--tint-cool);color:var(--cool)} .pill.no{background:var(--tint-ir);color:var(--ir)} .pill.wait{background:var(--tint-warn);color:var(--warn)}
+.tbl{overflow-x:auto;background:var(--paper);border:1px solid var(--line)}
+table{border-collapse:collapse;width:100%;font-size:13.5px;font-variant-numeric:tabular-nums}
+th,td{padding:7px 10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{font-weight:500;color:var(--muted);font-size:12.5px;white-space:nowrap}
+td.n{font-family:var(--f-mono);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr.hl td{background:var(--tint-cool)} tr.bad td{background:var(--tint-ir)}
+figure{margin:0;background:var(--paper);border:1px solid var(--line);padding:10px;display:flex;flex-direction:column;gap:8px}
+figure img{width:100%;height:auto;display:block}
+figcaption{font-size:13px;color:var(--muted)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media (max-width:720px){.two{grid-template-columns:1fr}}
+ul{margin:0;padding-left:20px;max-width:72ch} li{margin:2px 0}
+.mono{font-family:var(--f-mono);font-size:13px}
+.flow{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;font-size:14px}
+.flow .k{font-family:var(--f-mono);color:var(--muted);font-size:12.5px;padding-top:2px;white-space:nowrap}
+.note{font-size:13px;color:var(--muted)}
+.pm{background:var(--paper);border:1px solid var(--line);padding:12px 14px;display:flex;flex-direction:column;gap:8px}
+.pm h3{font-size:15.5px;margin:0;font-weight:700}
+.pm .flow{grid-template-columns:auto 1fr;gap:6px 14px}
+.pm .flow span:not(.k){max-width:none}
+</style>
+<style>
+.code{margin:0;font-family:var(--f-mono);font-size:12.5px;line-height:1.5;background:var(--bg);border:1px solid var(--line);padding:8px 10px;overflow-x:auto;white-space:pre;max-width:100%}
+.flow > span{min-width:0}
+.c1104{font-weight:600;color:var(--ink);background:var(--tint-warn);border-left:3px solid var(--warn);padding:0 5px;margin-left:3px;border-radius:2px;white-space:normal;font-size:.92em}
+</style>
+<div class="wrap">
+<header>
+  <div class="eyebrow">Indoor Rover · 2026-09-28 · Docs/debug_log/2026-09-28 §0–§28.2 · 주행 있음 · 11-04 사후 작성</div>
+  <h1>09-28 제자리 회전 슬립 실측</h1>
+  <p class="lead">이 페이지는 2026-11-04 에 그날의 SUMMARY(<span class="mono">Docs/debug_log/2026-09-28/SUMMARY.md</span>)와 같은 날짜 폴더의 jobs · outputs 를 원천으로 다시 만든 사후 정리입니다. 페이지에만 있는 판정 · 수치는 없습니다. 09-23 에 발견한 '제자리 회전 중 옆 밀림' 을 순수 회전 16 번으로 재고, 원본 SLAM 이 순수 회전 중 스캔을 버린다는 것을 찾아 포크로 고쳤고, 컨디셔너를 C++ 로 옮겼으며, F0-a 왕복을 처음 성공시키고 절차를 확정했습니다. 오후에는 직진 전 · 후진 시험, 회전축(ICR) 식별, 보드 OLED 까지 갔습니다. 이후 문제 대장 카드에서 원문과 다르다고 확인된 곳은 원래 문장을 그대로 두고 <span class="c1104">(11-04 정정: …)</span> 표시를 붙였습니다 — 이 페이지에 <b>15 곳</b>.</p>
+  <p class="note">이 날의 주제 페이지(수정하지 않음): <span class="mono">Docs/debug_log/2026-09-28/figures/2026-09-28_spin_slip.html</span>(제자리 회전 슬립) · <span class="mono">Docs/debug_log/2026-09-28/figures/2026-09-28_f0a_confirm.html</span>(F0-a 왕복 확정) · <span class="mono">Docs/debug_log/2026-09-28/figures/2026-09-28_icr_oled.html</span>(회전축 식별과 OLED).</p>
+</header>
+
+<section>
+  <h2>오늘의 판정</h2>
+  <div class="verdicts">
+    <div class="v ok"><b>슬립 재현 확정(M2)</b><span>순수 180° 회전 16 회 모두 중심 이동 ≥ 5 cm(10.4~27.2 cm), 줄자 대조 2 회 1~2 cm 안 (§3 · §4 · §6)</span></div>
+    <div class="v no"><b>속도 의존 없음(M3 불충족)</b><span>시계 0.20 11.5 vs 0.38 12.4 cm — wz_max 하향은 대책 아님 (§6)</span></div>
+    <div class="v ok"><b>SLAM 포크(B1) 채택 · 라이브 적용</b><span>원본은 순수 회전 0/11 포착, 포크(회전 0.03 rad) 11/11 · 오차 평균 1.1 cm, 정지 중 CPU 는 원본과 같음 (§8 · §9 · §13)</span></div>
+    <div class="v ok"><b>컨디셔너 C++ 이식</b><span>결정적 대조 비트 동일, CPU 42.2 → 7.1 % · 기본 cpp (§11)</span></div>
+    <div class="v ok"><b>F0-a 왕복 첫 성공 · 절차 v2.3 §7 확정</b><span>f0a3 성공, f0a4 진동 해소, f0a5 xy 0.07 정체로 원래 방향 복귀 제외(사용자), f0a6 확정 구성 통과 (§14~§22)</span></div>
+    <div class="v ok"><b>모터 정 · 역 비대칭 없음</b><span>같은 60 mm/s 에서 듀티 차 ≤ 0.1 %p, 직진 방향성 거리 차 4 % 는 회전 밀림의 ≈1/10 (§24 · §25)</span></div>
+    <div class="v wait"><b>B2 ICR 모델 채택(기본 꺼짐)</b><span>leave-one-out 잔차 중앙값 3.8 cm(28 %), ≤ 7 cm 는 75 % (§26 · §27)</span></div>
+    <div class="v ok"><b>보드 OLED</b><span>펌웨어 · 보드 수신 정상, 화면 없음 → 첫 모듈 패널 불량, 교체 뒤 정상 (§28)</span></div>
+  </div>
+</section>
+
+<section>
+  <h2>순수 회전에서 원본 SLAM 은 아무것도 보지 않았다<span class="sec">§1 · §3 · §3.1 · §3.2</span></h2>
+  <div class="flow">
+    <span class="k">설계(선언)</span><span>러너 <span class="mono">job562_spin.py</span>: v = 0 순수 회전, EKF 누적 180° − 관성 여유에서 0 지령, 정지 3 s 뒤 기록. M1 SLAM vs 줄자 ≤ 3 cm · M2 0.38 rad/s 6 회 중 4 회 ≥ 5 cm 면 재현 · M3 속도 의존 · M4 방향 비대칭(기록만). 사용자 결정으로 현 배치(오른쪽 0.60 m) 그대로 진행, 안전 문턱을 중심 기준 0.50/0.42 로.</span>
+    <span class="k">본 것</span><span>S1 3 회전 내내 map→odom = (0, 0, 0°), 포즈 그래프 마커 4 개, slam CPU 3.9 %, 러너의 SLAM · EKF 이동 둘 다 0.002 m.</span>
+    <span class="k">추론</span><span>slam_toolbox <span class="mono">shouldProcessScan</span> 은 병진 거리만 본다 — <span class="mono">dist2 &lt; 0.8 * min_dist2</span>(0.0447 m 미만)면 버림. 순수 회전은 EKF 병진 ≈ 0 이라 스캔 0. → M1 성립 안 함 → <b>M1′: 스캔 직접 정합 vs 줄자</b>.<span class="c1104">(11-04 정정: 같은 이유로 <span class="mono">slam.yaml</span> 38 행 주석 '~1.7° 마다 … 보정 잦게' 는 포크에서만 맞고 실제 처리 문턱은 1.375°(0.8 배 반영)다 — 주석은 지금도 그대로 — 근거 Docs/issues/slam-fork-rotation.md §7 항목 4 · §8)</span></span>
+    <span class="k">스크립트 핵심</span><span><pre class="code"># jobs/job567_scanmatch.py 6 · 63 행 — 회전 직전 · 직후 정지 스캔을 점-점 ICP, 초기 회전 = EKF yaw 차, 3 쌍 중앙값
+#   P0 ≈ R(θ)·P1 + t 를 점-점 ICP(가까운 80 % 만, 문턱 0.5 → 0.08 m)로 푼다
+lim = max(0.08, 0.5 * (0.9 ** it)); lim = min(lim, max(0.08, np.percentile(d, 80)))</pre></span>
+    <span class="k">나온 결과</span><span><pre class="code">라이다→차체: x 0.152 y 0.000 yaw 177.32° | 스캔 618 개, KD트리 scipy
+  회전 1: 중심 이동(시작 차체 기준 앞+/왼+) (-0.109, +0.130) = 0.170 m | 회전 스캔 -176.64° vs EKF -176.18° | 잔차 rms 0.029 m …
+  회전 2: 중심 이동(시작 차체 기준 앞+/왼+) (-0.089, +0.130) = 0.157 m | 회전 스캔 -177.98° vs EKF -177.00° | 잔차 rms 0.026 m …
+  회전 3: 중심 이동(시작 차체 기준 앞+/왼+) (-0.043, +0.096) = 0.105 m | 회전 스캔 -177.58° vs EKF -176.72° | 잔차 rms 0.028 m …
+블록 누적(첫 시작 차체 기준 앞+/왼+): 합성 (-0.065, +0.097) m, -172.2° | 처음↔끝 직접 정합 (-0.063, +0.088) m, -172.0°</pre><span class="note">결과 원문 <span class="mono">Docs/debug_log/2026-09-28/outputs/j567_s1_scanmatch.txt</span> · 러너 출력 <span class="mono">j566_s1.txt</span> · 스크립트 원문 <span class="mono">Docs/debug_log/2026-09-28/jobs/job567_scanmatch.py</span> · <span class="mono">job562_spin.py</span></span></span>
+    <span class="k">결론</span><span>시계 회전에서 왼쪽 · 뒤로 밀림(f0a2 와 같은 부호). 잡음 바닥 ≤ 1 mm · ≤ 0.12°. 줄자 M1′: S1 뒤 대각 12 cm vs 예측 13.1~14.1, S1+S2 뒤 27~28 · 25 cm vs 28.2 · 25.5 → 통과. 의미: 순수 회전 슬립은 <b>EKF 도 원본 SLAM 도 못 본다</b>.</span>
+  </div>
+</section>
+
+<section>
+  <h2>16 회의 결과 — 재현되고, 속도와 무관하다<span class="sec">§4 · §5 · §5.1 · §6</span></h2>
+  <div class="flow">
+    <span class="k">나온 결과</span><span><pre class="code">시계 0.38    n=7 | 크기 평균 12.4 cm (σ 3.6, 범위 6.1~17.0) | 앞뒤 평균 -6.2 | 옆 평균 +10.6 cm
+시계 0.20    n=4 | 크기 평균 11.5 cm (σ 1.5, 범위 10.4~13.5) | 앞뒤 평균 -5.5 | 옆 평균 +9.9 cm
+반시계 0.38   n=1 | 크기 평균 16.0 cm (σ nan, 범위 16.0~16.0) | 앞뒤 평균 +4.5 | 옆 평균 -15.4 cm
+반시계 0.20   n=4 | 크기 평균 21.9 cm (σ 4.6, 범위 16.2~27.2) | 앞뒤 평균 -8.7 | 옆 평균 -19.9 cm</pre><span class="note">결과 원문 <span class="mono">Docs/debug_log/2026-09-28/outputs/j579_stats.txt</span> · 블록별 <span class="mono">j568_s2.txt</span> · <span class="mono">j572_r1.txt</span> · <span class="mono">j573_r1b.txt</span> · <span class="mono">j574_r2.txt</span> · <span class="mono">j576_r2b.txt</span> · <span class="mono">j578_r3.txt</span></span></span>
+    <span class="k">판정</span><span>M2 충족 — "0.38 rad/s 8 회 중 7 회 ≥ 5 cm(유일한 미만 6.1 도 5 이상 — 8/8)". 전 조건 16 회 모두 ≥ 5 cm.<span class="c1104">(11-04 정정: 문장 안의 자기모순 — 원문 17.0 · 15.7 · 10.5 · 16.0 · 11.4 · 12.8 · 13.4 · 6.1 cm 로 <b>8/8</b> 가 맞다 — 근거 Docs/issues/f0-rotation-side-slip.md §7.6 항목 1)</span> M3 불충족(시계 0.9 cm 차, 반시계는 0.20 이 더 큼). M4: 시계 = 왼쪽, 반시계 = 오른쪽(거울), 반시계가 0.20 에서 1.9 배.</span>
+    <span class="k">교대 블록의 근거 정정(§5.1)</span><span>R2b 4 회 누적 (−0.020, +0.014) m — "같은 방향 짝수 회 상쇄 확인".<span class="c1104">(11-04 정정: R2b 에만 맞다 — 같은 표의 R3(반시계 × 4) 누적은 합성 (−0.031, +0.165) · 직접 (−0.024, +0.159) m 로 상쇄되지 않았다(회전마다 16.2~27.2 cm 로 달라서) — 근거 Docs/issues/f0-rotation-side-slip.md §7.6 항목 2)</span><span class="c1104">(11-04 정정: SUMMARY 가 쓰지 않은 휠 열 — R3 는 휠 +206~+213° vs EKF +177.6~+178.5°(≈30° 과대), S2 도 +204.8°. 반시계에서는 '헛돎형' 과 '측면 슬립형' 이 같은 회전에 함께 나타났다(미검증) — 근거 같은 카드 §7.6 항목 3)</span></span>
+    <span class="k">원인 해석(추정)</span><span>고정된 회전축 치우침은 기각(옆 성분이 방향에 따라 반대). 유력: 앞으로 구르는 트랙이 더 미끄러지는 방향성 비대칭 — 시간보다 회전각에 비례하는 기구적 원인과 맞음. 가변 σ 근거: 회전 중 측면 속도 ≈ 0.012~0.024 m/s(계산) → 회전 중 휠 vy σ ≥ 0.03 m/s(현재 0.01).</span>
+  </div>
+</section>
+
+<section>
+  <h2>방안의 충돌 검토와 순서<span class="sec">§7</span></h2>
+  <div class="tbl"><table>
+    <tr><th>조합</th><th>충돌</th><th>해결</th></tr>
+    <tr><td>A2 · A3 ↔ B2</td><td>기구 · 모터를 바꾸면 B2 파라미터 무효</td><td>A2 · A3 를 B2 피팅보다 먼저</td></tr>
+    <tr><td>A1 ↔ B2</td><td>B2 는 순수 회전으로 피팅</td><td>|v| 작고 |ω| 클 때만 적용</td></tr>
+    <tr><td>A1 ↔ 좁은 곳 탈출</td><td>MPPI 회전을 막으면 탈출 어려움</td><td>A1 은 러너 수준(목표 자세 요구 제거)까지만</td></tr>
+    <tr><td>B2 ↔ B3</td><td>모델이 vy 를 예측하며 σ 를 작게 주면 취지와 반대</td><td>σ = 모델 잔차 기준</td></tr>
+    <tr class="bad"><td>09-23 '휠 cov 펌웨어 이관' ↔ B2 · B3</td><td>공분산 로직이 둘로 갈라짐</td><td>펌웨어 이관안 철회 — 컨디셔너(C++) 한 곳</td></tr>
+    <tr><td>B4 vyaw ↔ 자이로</td><td>rf2o 회전 속도가 자이로를 흐림</td><td>rf2o 는 vx · vy 만</td></tr>
+  </table></div>
+  <p>확정 순서(09-23 §20.6 대체): ① B1 오프라인 ② A1 ③ A2 · A3 ④ 컨디셔너 C++ ⑤ B2 + B3 ⑥ B4 rf2o ⑦ cuVSLAM. 운영 규칙: 트랙 · 모터 · 펌웨어 상수 · 바닥 중 하나라도 바꾸면 회전 시험을 다시 하고 B2 를 갱신. B2 서지(Martínez · Mandow 등)는 SUMMARY 스스로 '서지 세부 확인 필요' 로 남김.</p>
+</section>
+
+<section>
+  <h2>B1 — slam_toolbox 가 회전각으로도 스캔을 받게<span class="sec">§8 · §9</span></h2>
+  <div class="flow">
+    <span class="k">방법</span><span>회전 시험 bag 을 ROS_DOMAIN_ID 42 에서 sim time 재생(기록 당시 map→odom 제거), 새 slam_toolbox 의 map→base 이동을 스캔 직접 정합(정답)과 비교. 첫 묶음(j582 · j583)은 인자 전달 실패 · 앞 실행의 slam 노드 잔존(SLAM 둘)으로 폐기.</span>
+    <span class="k">스크립트 핵심</span><span><pre class="code">// jobs/slam_toolbox_rover_fork.patch — shouldProcessScan: "거리 또는 회전각"
+-  if (dist2 &lt; 0.8 * min_dist2 || scan_ctr &lt; 5) {
++  const double dheading = std::fabs(karto::math::NormalizeAngle(pose.GetHeading() - last_pose.GetHeading()));
++  const double min_heading = karto::math::DegreesToRadians(smapper_-&gt;getMapper()-&gt;getParamMinimumTravelHeading());
++  if ((dist2 &lt; 0.8 * min_dist2 &amp;&amp; dheading &lt; 0.8 * min_heading) || scan_ctr &lt; 5) {</pre></span>
+    <span class="k">나온 결과</span><span><pre class="code">기본 설정: 11 회전 모두 못 봄(0.1~0.2 cm), CPU 3.4~3.8 %, 마커 4 (s1)
+a (거리0·간격0.5)          n=11 | 오차 평균 1.2 cm, 최대 2.0 cm | 회전 23.5 / 정지 21.4 %, 마커 108 (s1)
+b03 (포크, 회전 0.03)      n=11 | 오차 평균 1.1 cm, 최대 2.1 cm | 회전 42~52 / 정지 4.8~5.5 %, 마커 145 (s1)
+b10 (포크, 회전 0.10)      n= 7 | 오차 평균 2.4 cm, 최대 4.5 cm | 회전 13.7~27.1 / 정지 4.1~4.2 %, 마커 69 (s1)
+b20 (포크, 회전 0.20)      n= 7 | 오차 평균 4.8 cm, 최대 10.3 cm | 회전 8.9~13.3 / 정지 4.0~4.1 %, 마커 30 (s1)</pre><span class="note">결과 원문 <span class="mono">Docs/debug_log/2026-09-28/outputs/j591_b1_compare2.txt</span> · (a) 첫 비교 <span class="mono">j585_b1_compare.txt</span> · 스크립트 원문 <span class="mono">Docs/debug_log/2026-09-28/jobs/job580_slamreplay.py</span> · <span class="mono">job581_b1.sh</span> · 패치 <span class="mono">jobs/slam_toolbox_rover_fork.patch</span></span></span>
+    <span class="k">결론</span><span>(a) 는 정지 중에도 CPU 21 %(§8 추정이 측정으로 확인). (b) 0.03 은 정지 비용이 원본과 같고 정확도는 (a) 와 같음, 회전 중에만 42~52 %. 판단 = (b) + 0.03.<span class="c1104">(11-04 정정: SUMMARY §9.2 표의 (b) 0.03 '정지 중 4.5~5.5 %' 는 원문 4.8~5.5 다(위 출력, <span class="mono">j589</span> 4.8 · 5.5 · 5.5) — 4.5 의 출처 없음. 원본 CPU '3.8 / 3.6 %' 는 s1 값이고 전체 범위는 3.4~3.8 % — 근거 Docs/issues/slam-fork-rotation.md §7 항목 2 · 3)</span> 사용자 결정으로 <span class="mono">slam.launch.py slam_build:=fork|apt</span>(기본 fork) 라이브 적용(§13).</span>
+  </div>
+</section>
+
+<section>
+  <h2>컨디셔너 — 대체 패키지 대신 C++ 이식<span class="sec">§10 · §11</span></h2>
+  <div class="flow">
+    <span class="k">§10 재검토</span><span>IMU 공분산만 realsense <span class="mono">angular_velocity_cov</span> 로 대체 가능, 바이어스는 정적 보정만, imu_complementary_filter 의 ZUPT 는 정지 판정이 IMU 만이라 0.2 rad/s 미만 고른 회전을 바이어스로 흡수할 위험(소스 확인). 사용자 결정: 대체 패키지 쓰지 않음.</span>
+    <span class="k">V1 동일성</span><span>정지 183 s 원시 입력 녹화 → 도메인 42 에서 두 판에 같은 입력. DDS 재생 대조는 Python 판 누락 때문에 각속도 최대 4.2×10⁻⁵ 차 → Python 판을 DDS 없이 콜백 직접 호출로 돌려 비교.</span>
+    <span class="k">나온 결과</span><span><pre class="code">Python(결정적) 출력 IMU 34585, 휠 4557 | C++(재생) IMU 34579, 휠 4557
+C++ 누락 입력 6 개(캘리브 이후), 첫 누락 index 4969 / 34585
+IMU 각속도 최대 차: C++ 누락 이전 4969 개 → 0 | 전체 34579 개 → 4.43e-05 | 완전히 같은 비율(이전 구간) 100.0 %
+휠 짝 4557 개, 완전히 같은 비율 100.0 %</pre><span class="note">결과 원문 <span class="mono">Docs/debug_log/2026-09-28/outputs/j598_cond_det.txt</span> · 재생 대조 <span class="mono">j596_cond_v1_static.txt</span> · <span class="mono">j597_cond_v1_static2.txt</span> · 스크립트 원문 <span class="mono">Docs/debug_log/2026-09-28/jobs/job598_conddet.py</span> · <span class="mono">job594_condab.py</span><span class="c1104">(11-04 정정: 'Python 판이 IMU 입력 약 120~176 개(0.4~0.5 %)' — 원문은 재생 대조 171 · 176 개, 결정적 대조 때 함께 돈 재생은 122 개(위 34,463 수신) = 0.35 %. 또 j596 과 j597 사이에 job594 가 고쳐져 저장소엔 마지막 판만 있다 — 근거 Docs/issues/sensor-conditioner.md §5 뒤 항목 8 · 9)</span></span></span>
+    <span class="k">V2 CPU</span><span><pre class="code">== Python 판 (pid 299641)
+  컨디셔너 CPU 30 s: 42.20 %
+  전체 CPU 합: 202 %
+  /imu/data average rate: 196.528 | /odometry/filtered average rate: 30.232
+== C++ 판 (pid 902780)
+  컨디셔너 CPU 30 s: 7.10 %
+  전체 CPU 합: 166 %
+  /imu/data average rate: 199.134 | /odometry/filtered average rate: 30.001
+  EKF 주기 위반 로그(sensors.log): 교체 전 누적 32 → 지금 32</pre><span class="note">결과 원문 <span class="mono">Docs/debug_log/2026-09-28/outputs/j599_cond_v2_cpu.txt</span> · 코드 <span class="mono">ros2_ws/src/rover_bringup/include/rover_bringup/conditioner_core.hpp</span> · <span class="mono">src/sensor_conditioner.cpp</span></span></span>
+    <span class="k">결론</span><span>논리 동일 · CPU −35 %p → <span class="mono">ekf.launch.py</span> 기본 cpp. gtest Jetson <span class="mono">colcon test</span> 6 tests 0 failures.<span class="c1104">(11-04 정정: §11 에 5 개 · §27 에 3 개를 더해 지금 파일의 <span class="mono">TEST(</span> 는 8 개인데 colcon 은 '6 tests' · '9 tests' — 둘 다 TEST 수 + 1(실행 파일 단위 결과로 추정, colcon 출력 원문 없음) — 근거 Docs/issues/sensor-conditioner.md §5 뒤 항목 7)</span></span>
+  </div>
+</section>
+
+<section>
+  <h2>F0-a 왕복 — 네 번 돌아 절차를 확정<span class="sec">§12~§22</span></h2>
+  <div class="tbl"><table>
+    <tr><th>회차</th><th>바꾼 것</th><th>결과</th><th>판정 · 읽기</th></tr>
+    <tr><td>f0a3</td><td>A1 자동 yaw <span class="mono">a</span>(직선 방향) + B1 포크 + C++ 컨디셔너</td><td>목표 1 35.1 s(0.062 m) · 목표 2 49.0 s(0.021 m) — <b>왕복 첫 성공</b></td><td>A1 불합격(진입 뒤 yaw 20.3° &gt; 15°), H1 보류(y 최소 0.252, 로컬 여유 0.050), 새 사실: 슬립 뒤 odom 층 상자 어긋남</td></tr>
+    <tr><td>f0a4</td><td><span class="mono">p</span>(경로 끝 방향) + yaw 허용 0.15 → 0.35 rad</td><td>77.6 s, 복귀 0.127 m</td><td><span class="mono">p</span> 는 내 버그로 미동작. 진동 기준 통과(ω 부호 0 · 0), 대가 = xy 허용 끝 도착</td></tr>
+    <tr class="bad"><td>f0a5</td><td>xy 0.07 + 목표 3 개(출발점 뒤 x −0.6 에서 방향 전환)</td><td>1 차 러너 무한 대기, 2 차 목표 2 에서 0.131 m 정체 → 취소</td><td>P3 불합격 — 원래 방향 복귀 제외(사용자)</td></tr>
+    <tr class="hl"><td>f0a6</td><td>확정 구성: xy 0.15 · yaw 0.35 · <span class="mono">p</span> · 경로 조회 별도 프로세스</td><td>83.1 s, 두 목표 SUCCEEDED</td><td>절차 v2.3 §7 기본값 통과</td></tr>
+  </table></div>
+  <div class="flow">
+    <span class="k">f0a3 본 것</span><span>목표 2 초반 방향 전환 동안 SLAM(포크)이 map→odom 을 보정하자 로컬 코스트맵 상자(nvblox, odom 고정)가 map 에서 x 1.15 → 0.99 · 윗변 +0.02 → +0.09 로 옮겨진 것처럼 보였다. 전역은 그대로.</span>
+    <span class="k">나온 결과</span><span><pre class="code">   t  | map→odom x    y     yaw  | 로컬 상자(map) x범위 / y범위 / 셀 | 전역 상자(map) x범위 / y범위 / 셀
+ 45.0 | -0.021 +0.040 -1.60° | 1.150~1.397 / -0.373~+0.029 / 15 | 1.160~1.410 / -0.386~+0.014 / 15
+ 57.0 | -0.167 +0.112 -2.20° | 1.003~1.249 / -0.315~+0.088 / 15 | 1.160~1.410 / -0.386~+0.014 / 15</pre><span class="note">결과 원문 <span class="mono">Docs/debug_log/2026-09-28/outputs/j604_f0a3_boxdrift.txt</span> · A1 · H1 · B1 계산 <span class="mono">j602_f0a3_csv.txt</span> · 러너 <span class="mono">j601_f0a3.txt</span> · 스크립트 원문 <span class="mono">Docs/debug_log/2026-09-28/jobs/job603_f0a3.py</span> · <span class="mono">job550_f0run.py</span></span></span>
+    <span class="k">결론</span><span>09-23 §18.1 에서 기각했던 'odom 고정 층 어긋남' 이 슬립 보정량이 커지자 실제로 나타남 → D(odom EKF 에 측면 속도 관측)의 필요를 주행으로 확인. B1 라이브: 방향 전환 동안 map→odom 변화 56 회, 누적 ≈ 0.17 m.<span class="c1104">(11-04 정정: 같은 창(<span class="mono">j602</span>)의 map→odom 변화량은 Δ(−0.175, +0.084) ≈ 0.19 m 다. '(−0.15, +0.08)' 은 t 45~57 s 창 기준이라 값이 다르다 — 근거 Docs/issues/f0-rotation-side-slip.md §7.6 항목 5)</span> CPU 합 평균 299 %.<span class="c1104">(11-04 정정: 같은 출력 <span class="mono">j603</span> 끝 줄 '컨디셔너 평균 nan % | slam 평균 nan %' — C++ 판 프로세스 이름을 옛 패턴으로 찾은 것으로 추정. 합계 299 % 는 유효 — 근거 같은 카드 §7.6 항목 9)</span> 줄자: 뒤끝 ↔ 출발 앞끝 4~5 cm, 보완 가로 3 · 세로 2 cm → 포크 SLAM 위치가 물리와 ≈2 cm 안.<span class="c1104">(11-04 정정: 두 줄자 보고가 같은 측정의 재보고인지 다시 잰 것인지 기록이 없다(미확인) — 근거 같은 카드 §7.6 항목 8)</span></span>
+  </div>
+  <div class="flow">
+    <span class="k">f0a4 <span class="mono">p</span> 버그</span><span>planner 에 계획기가 둘(GridBased · SmacHybrid)이라 <span class="mono">planner_id</span> 를 비우면 거부.</span>
+    <span class="k">나온 결과</span><span><pre class="code">stamp 0: 수락 True
+  상태 6, 경로 점 0, 계획 시간 0.000 s
+[planner_server-4] [ERROR] [1790578064.780521005] [planner_server]: planner  is not a valid planner. Planner names are: GridBased SmacHybrid</pre><span class="note">결과 원문 <span class="mono">Docs/debug_log/2026-09-28/outputs/j610_pathtest.txt</span> · 스크립트 원문 <span class="mono">Docs/debug_log/2026-09-28/jobs/job610_pathtest.py</span></span></span>
+    <span class="k">f0a5 1 차 멈춤</span><span>같은 노드에서 <span class="mono">compute_path_to_pose</span> 직후 <span class="mono">navigate_to_pose</span> 응답 무한 대기(근본 원인 미확인) → 경로 조회를 별도 프로세스로.</span>
+    <span class="k">스크립트 핵심</span><span><pre class="code"># jobs/job613_pathyaw.py 16 · 27 행 — 단독 프로세스, GridBased 로 경로를 받아 끝 0.3 m 구간 방향
+g.use_start = False; g.planner_id = 'GridBased'
+while k &gt; 0 and math.hypot(P[k].pose.position.x - ex, P[k].pose.position.y - ey) &lt; 0.30: k -= 1</pre></span>
+    <span class="k">f0a6 나온 결과</span><span><pre class="code">  경로 자동 yaw: 경로 95 점, 끝 0.313 m 구간 방향 -26.3° (직선 방향 0.2°, 차 -26.5°)
+  목표 1 SUCCEEDED 33.0 s | 도착 map (2.192, 0.104, -31.5°) 목표 대비 0.145 m, -5.2°
+  경로 자동 yaw: 경로 92 점, 끝 0.303 m 구간 방향 -163.0° (직선 방향 -179.8°, 차 16.8°)
+  목표 2 SUCCEEDED 39.9 s | 도착 map (0.138, 0.045, -162.6°) 목표 대비 0.146 m, 0.4°
+결과: 1 SUCCEEDED 33.0s / 2 SUCCEEDED 39.9s | 총 83.1 s</pre><span class="note">결과 원문 <span class="mono">Docs/debug_log/2026-09-28/outputs/j616_f0a6.txt</span> · 계산 <span class="mono">j617_f0a6_csv.txt</span> · f0a5 <span class="mono">j612_f0a5.txt</span> · 절차 <span class="mono">Docs/04_navigation/TEST_COURSE_AND_GATES.md</span> v2.3 §7</span></span>
+    <span class="k">결론</span><span>§21 사용자: "제자리 회전 슬립을 해결하지 못했으니 원래 방향을 바라보게 하는 시도는 빼라." → xy 0.15 복원 · yaw 0.35 유지 · <span class="mono">p</span> 유지, 복귀 정밀도는 xy 0.15 끝(≈12~15 cm)을 기록 · 수용. f0a6 줄자: 뒤 · 왼 모서리 기준 지도 예측과 세로 3.6 · 가로 1.6 cm 차 = SLAM 위치 오차 ≈4 cm.</span>
+  </div>
+</section>
+
+<section>
+  <h2>A2 · A3 — 직진 전 · 후진으로 원인 가르기<span class="sec">§23 · §24 · §25</span></h2>
+  <div class="flow">
+    <span class="k">나온 결과 (s_fb1)</span><span><pre class="code">구간 1 전진: 휠 0.608 m | EKF 0.608 m | 스캔 실제 (+0.615, -0.005) = 0.615 m, rms 0.026 | 휠/실제 0.989 | 방향 변화 EKF -0.47° 스캔 -0.66°
+   L 목표 +70 측정 +70 mm/s 듀티 +76.5 % pps 300 | R 목표 +70 측정 +70 mm/s 듀티 +79.0 % pps 302
+구간 2 후진: 휠 0.607 m | EKF 0.607 m | 스캔 실제 (-0.638, +0.002) = 0.638 m, rms 0.024 | 휠/실제 0.950 | 방향 변화 EKF -1.10° 스캔 -1.08°
+   L 목표 -60 측정 -60 mm/s 듀티 -71.0 % pps 259 | R 목표 -60 측정 -60 mm/s 듀티 -72.8 % pps 259
+전진 평균: 휠/실제 0.992, 방향 변화 EKF -0.37° 스캔 -0.62°
+후진 평균: 휠/실제 0.949, 방향 변화 EKF -1.00° 스캔 -0.96°</pre><span class="note">결과 원문 <span class="mono">Docs/debug_log/2026-09-28/outputs/j623_s_fb1_bag.txt</span>(bag 재분석) · 러너 <span class="mono">j622_s_fb1.txt</span> · 스크립트 원문 <span class="mono">Docs/debug_log/2026-09-28/jobs/job623_straightbag.py</span> · <span class="mono">job618_straight.py</span></span></span>
+    <span class="k">판정</span><span>S1 휠/실제 차 4.3 %(기준 5 %) 경계 미달, 후진이 실제로 더 감. S2 불충족(0.6 m 당 −0.6 · −1.0°). S3 판정 불가(전진 0.07 · 후진 0.06 으로 속도가 달라 — 내 설계 결함). 좌우 차: R 이 듀티 +1.7~2.5 %p.<span class="c1104">(11-04 정정: j623 원문의 차는 2.5 · 1.8 · 2.0 · 1.5 %p(후진 2: 72.5 − 71.0) — 범위 하한이 1.5 — 근거 Docs/issues/icr-b2-b3.md §5 뒤 항목 1)</span></span>
+    <span class="k">s_fb2(같은 0.06)</span><span>듀티 전 · 후진 L 71.1/71.0, R 72.7/72.7 % → 모터 정 · 역 비대칭 없음, A3 받침대 시험 생략. S1 재현 4.0 %. 누적 스캔 정합 예측(세로 5.9 cm 뒤 · 가로 0.5) vs 사용자 줄자(≈6.5 · 0.5, −2.7°) 일치. 트랙 장력 좌우 동일 · 높음(사용자 육안).</span>
+    <span class="k">결론</span><span>직진 방향성 4 % 를 회전에 그대로 적용하면 180° 당 ≈0.9 cm — 실측 10~27 cm 의 1/10. 회전 밀림은 제자리 회전 특유의 측면 긁힘(스크럽) 동역학이 주원인으로 보고 B2 는 회전 데이터로 직접 식별.</span>
+  </div>
+</section>
+
+<section>
+  <h2>B2 — 회전 방향별 회전축 치우침<span class="sec">§26 · §27</span></h2>
+  <div class="flow">
+    <span class="k">스크립트 핵심</span><span><pre class="code"># jobs/job626_icrfit.py 21~26 행 — 회전각 θ 뒤 중심 이동 d = (I − R(θ))·p 를 p 에 대해 푼다
+def p_of(d, th):
+    R = np.array([[math.cos(th), -math.sin(th)], [math.sin(th), math.cos(th)]]); return np.linalg.solve(np.eye(2) - R, d)
+def d_of(p, th):
+    R = np.array([[math.cos(th), -math.sin(th)], [math.sin(th), math.cos(th)]]); return (np.eye(2) - R) @ p</pre></span>
+    <span class="k">나온 결과</span><span><pre class="code">  시계 0.20: n=4  p = ( -2.7 ± 1.3,  +5.0 ± 0.2) cm
+  시계 0.38: n=7  p = ( -3.0 ± 1.6,  +5.4 ± 1.3) cm
+  반시계 0.20: n=4  p = ( -4.2 ± 1.1, -10.0 ± 2.7) cm
+  잔차 중앙값 3.8 cm (평균 4.8, 최대 14.1) | 보정 없는 이동 중앙값 13.5 cm → 비 28 %
+  잔차 ≤ 7 cm 비율 12/16
+  R2 θ -105.4°: 실제 (-8.6, +9.4) cm, 예측 (-8.7, +3.8) cm → 잔차 5.6 cm
+공용 p(보고용): 시계 (-0.029, +0.052) m, 반시계 (-0.029, -0.095) m</pre><span class="note">결과 원문 <span class="mono">Docs/debug_log/2026-09-28/outputs/j626_icrfit.txt</span> · 스크립트 원문 <span class="mono">Docs/debug_log/2026-09-28/jobs/job626_icrfit.py</span></span></span>
+    <span class="k">결론</span><span>B2-a 채택(≤ 7 cm · ≤ 50 % 둘 다), B2-b 시계는 공용(반시계 0.38 은 n=1 로 판정 불가), B2-c 경계 통과(옆 성분은 과소 예측). 앞뒤 성분이 두 방향 모두 ≈ −3 cm → 접지압 중심이 base_link 보다 ≈3 cm 뒤(추정). 컨디셔너 B2 · B3 구현(기본 꺼짐), gtest 3 개 추가.<span class="c1104">(11-04 정정: 이후 B2 는 '보류(기본 꺼짐)' — 180° 회전에서는 맞지만 Nav2 의 부분 회전에서 옆 성분이 틀린 방향을 더함(09-29 §5). B3 는 rf2o · cuVSLAM 이 있으면 σ 0.3 으로 자동 켜짐(지금 기본 스택) — 근거 Docs/issues/icr-b2-b3.md 상태 줄)</span> 오프라인 A/B 는 네트워크 끊김으로 미실행 — p 를 같은 데이터로 식별했으니 결과는 낙관적이라고 미리 적어 둠.</span>
+  </div>
+</section>
+
+<section>
+  <h2>보드 OLED — 펌웨어는 끝까지 돌았고 패널이 불량<span class="sec">§28 · §28.1 · §28.2</span></h2>
+  <div class="flow">
+    <span class="k">구현</span><span>J8(I2C2, 5 V) · SSD1306 128×32. Driver <span class="mono">ssd1306_driver</span> · <span class="mono">battery_adc</span>(뮤텍스), App <span class="mono">display_task</span>(1 Hz, Low), micro-ROS 구독 <span class="mono">rover/display_info</span>(구독 한도 5 중 2 번째). Jetson <span class="mono">display_info_pub.py</span>. 빌드 경고 0, data+bss 123.8 KB.</span>
+    <span class="k">확인 순서</span><span>① SWD: 초기화 16 명령 ACK · 1 Hz 513 B 전송 성공 · 프레임 버퍼 글리프 정상 ② '5 V 미공급' 가설 → J8 3–4 번 5.21 V 로 기각 ③ 진단 펌웨어: I2C2 ACK 는 0x3C 하나, 0xA5(전체 점등)도 ACK 인데 무점등 ④ 전원 끄고 새 모듈 → 정상(사용자).</span>
+    <span class="k">결론</span><span>원인 = 첫 모듈 패널 불량. 진단 훅 제거 뒤 커밋 0075277 과 같은 펌웨어로 재플래시. 알아 둔 한계: 전원을 켠 채 모듈을 바꾸면 재초기화가 안 됨 → 교체는 전원 끄고. 출력 캡처 파일 없음(확인 값은 SUMMARY 원문 문장이 전부).</span>
+  </div>
+</section>
+
+<section>
+  <h2>바로잡은 내 오류 (그날 SUMMARY 에 적힌 것)</h2>
+  <div class="pm">
+    <h3>교대 회전은 상쇄라고 설계함 (§5 → §5.1)</h3>
+    <div class="flow">
+      <span class="k">하려 한 것</span><span>한 방향 반복이 물체 쪽으로 누적되니 시계 · 반시계 교대(DIR=0)로 제자리 유지</span>
+      <span class="k">본 것</span><span>R1 회전 1 뒤 최근접 0.46 &lt; 0.50 → 중단. S1(시계 × 3) 누적 옆 +0.09 뿐인데 S1 뒤 S2 1 회로 +0.23</span>
+      <span class="k">왜</span><span>180° 마다 차체가 뒤집혀, 차체 기준 거울 대칭인 밀림은 바닥 기준으로 같은 쪽 → 교대는 누적, 같은 방향 반복이 짝수 회에서 상쇄</span>
+      <span class="k">영향</span><span>같은 방향 블록으로 복귀(R1b · R2 · R3), 회전 전 문턱 0.50 → 0.45<span class="c1104">(11-04 정정: <span class="mono">job562</span> docstring 은 여전히 '회전 전 &lt; 0.50 m', 코드 25 행은 <span class="mono">PRE_MIN = 0.45</span> — 코드가 맞고 docstring 이 낡음 — 근거 Docs/issues/icr-b2-b3.md §5 뒤 항목 6, Docs/issues/f0-rotation-side-slip.md §7.6 항목 6)</span></span>
+      <span class="k">데이터</span><span><span class="mono">outputs/j572_r1.txt</span> · <span class="mono">jobs/job562_spin.py</span></span>
+    </div>
+  </div>
+  <div class="pm">
+    <h3>포크 첫 빌드 — 도를 라디안으로 비교 (§9.1)</h3>
+    <div class="flow">
+      <span class="k">본 것</span><span>첫 (b) 재생: 회전당 갱신 2 회, R3 회전 3 은 방향까지 틀림(오차 5~26 cm)<span class="c1104">(11-04 정정: 원문 대조로 실제 범위는 1.0~38.0 cm 이고, 방향이 틀린 것은 R3 회전 3 만이 아니라 회전 4 도(정답 옆 −22.8 vs SLAM +11.6 cm) — 근거 Docs/issues/slam-fork-rotation.md §7 항목 1)</span></span>
+      <span class="k">나온 결과</span><span><pre class="code">dist 0.0000 dhead 0.0001 minh 1.7189 pass 0
+ dist 0.0000 dhead 0.0003 minh 1.7189 pass 0</pre><span class="note">결과 원문 <span class="mono">Docs/debug_log/2026-09-28/outputs/j588_b1_diag.txt</span></span></span>
+      <span class="k">왜</span><span>Karto <span class="mono">getParamMinimumTravelHeading()</span> 이 내부 라디안을 도로 바꿔 돌려줌(<span class="mono">Mapper.cpp:2333</span>) → 문턱 1.72 rad</span>
+      <span class="k">결론</span><span><span class="mono">DegreesToRadians</span> 로 변환, 진단 로그 제거 뒤 재빌드 · 최종판 재확인(<span class="mono">j592_b1_s1_final.txt</span>)</span>
+      <span class="k">알아보는 법</span><span>외부 API 반환값 단위는 소스로 확인, 진단 로그로 문턱 값을 한 번 찍어 본다</span>
+    </div>
+  </div>
+  <div class="pm">
+    <h3>그 밖에 그날 스스로 정정한 것</h3>
+    <div class="flow">
+      <span class="k">§2</span><span>'15:17 부팅' 은 동기 전 RTC 시각 — 실제 09-28 09:11</span>
+      <span class="k">§11</span><span>첫 비교 스크립트가 reliable 로 구독해 best-effort 출력을 0 개 받음 → best effort</span>
+      <span class="k">§16 → §18</span><span><span class="mono">p</span> 경로 자동 yaw 가 planner_id 를 비워 거부됨 → 'GridBased' 지정. f0a4 는 사실상 <span class="mono">a</span> + yaw 0.35 조건</span>
+      <span class="k">§20</span><span>러너가 같은 노드에서 경로 조회 뒤 목표 전송 응답을 무한 대기 → 별도 프로세스 · 10 s 제한 · 1 회 재전송</span>
+      <span class="k">§22</span><span>f0a6 직후 안내한 '세로 14 · 가로 5 cm' 는 중심 이동량이었고 줄자가 재는 모서리 예측이 아니었다</span>
+      <span class="k">§24</span><span>직진판 정합이 초기 이동 0 에서 엉뚱한 해로 수렴 → 초기값 = EKF 이동(job623). 러너가 <span class="mono">/rover/status</span> 를 reliable 로 구독해 바퀴 텔레메트리 0 → bag 에서 복원, QoS 수정</span>
+      <span class="k">§27</span><span>자이로 축 파라미터를 loadParams 안에서 대입 → 뒤이은 기본값 초기화가 덮어씀 → 생성자 본문으로(빌드 전 발견)</span>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>다음 후보 (그날 SUMMARY)</h2>
+  <ul>
+    <li>B2 오프라인 A/B(회전 bag → 컨디셔너 off/b2/b23 → EKF, 도메인 42) — 네트워크 끊김으로 미실행</li>
+    <li>새 회전 시험으로 B2 진짜 검증(표본 밖), 반시계 0.38 표본 보강</li>
+    <li>B4 rf2o(vx · vy 만) → cuVSLAM</li>
+    <li>포크의 호 회전 주행 중 CPU · 그래프 크기 — 라이브 A/B</li>
+    <li>후진 vx 스케일 ≈1.055 후보(미적용), OLED 주기적 재초기화(미구현)</li>
+  </ul>
+</section>
+
+<section>
+  <h2>이후 · 관련 카드</h2>
+  <ul>
+    <li><span class="mono">Docs/issues/f0-rotation-side-slip.md</span> — 회전 16 회 · F0-a f0a3~f0a6, §7.5 실수 · §7.6 원문 대조</li>
+    <li><span class="mono">Docs/issues/slam-fork-rotation.md</span> — B1 포크, §6 실수 · §7 모순 · §8 지금 구성(위치 추정 모드 0.15 rad 미측정)</li>
+    <li><span class="mono">Docs/issues/sensor-conditioner.md</span> — 대체 검토 · C++ 이식, §5 실수 3</li>
+    <li><span class="mono">Docs/issues/icr-b2-b3.md</span> — 직진 전 · 후진 · ICR 식별 · 이후 보류</li>
+    <li><span class="mono">Docs/issues/board-oled-autostart.md</span> — OLED · 이후 base 자동 기동</li>
+    <li><span class="mono">Docs/issues/rotation-method-track-ratio.md</span> · <span class="mono">Docs/issues/wheel-odom-scale-slip.md</span> · <span class="mono">Docs/issues/rf2o-introduction.md</span> — 이후 회전 슬립 대응</li>
+    <li>다음 날: <span class="mono">Docs/debug_log/2026-09-29/SUMMARY.md</span>(B2 · B3 오프라인 · 라이브, f0a7)</li>
+  </ul>
+</section>
+</div>

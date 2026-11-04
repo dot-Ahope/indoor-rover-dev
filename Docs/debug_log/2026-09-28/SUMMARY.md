@@ -506,3 +506,6 @@ Jetson: `scripts/display_info_pub.py` — `ip -4 route get 1.1.1.1` 의 src(실�
 - 진단 훅은 제거하고 커밋 0075277 과 같은 펌웨어로 재플래시(text 131,280 B 동일). 재확인: `/wheel_odom` 25.000 Hz, `/battery` 12.21 V, status OK, display_info 구독 1.
 - 알아둔 한계: 전원이 켜진 채 모듈을 바꾸면, 새 모듈이 ACK 하는 한 드라이버가 초기화를 다시 보내지 않아(전송 실패 때만 재초기화) 화면이 안 나온다 → **모듈 교체는 전원 끄고**. 필요하면 주기적 재초기화로 보완(미구현).
 - 보드 전원을 끄면 Jetson 도 함께 재부팅된다(같은 배터리) → base 재기동 뒤 보드 리셋 필요.
+
+## (2026-11-04 추가) 사후 정리 페이지
+- 「09-28 제자리 회전 슬립」 https://claude.ai/artifact/Lzf781UzFfp8UvTW6sHC1K — 로컬 `figures/day_summary_0928.html`(본문 `jobs/report_0928_body.html` · 조립 `jobs/fig_report_0928.py`). 이 SUMMARY 를 원천으로 11-04 에 만듦, 뒤 정정은 페이지에 '11-04 정정' 표시(문제 대장 카드 근거). 기록 → `Docs/debug_log/2026-11-04/SUMMARY.md` §11.

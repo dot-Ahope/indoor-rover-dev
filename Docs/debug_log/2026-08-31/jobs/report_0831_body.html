@@ -1,0 +1,200 @@
+
+<style>
+.code{margin:0;font-family:var(--f-mono);font-size:12.5px;line-height:1.5;background:var(--bg);border:1px solid var(--line);padding:8px 10px;overflow-x:auto;white-space:pre;max-width:100%}
+.flow > span{min-width:0}
+.c1104{font-weight:600;color:var(--ink);background:var(--tint-warn);border-left:3px solid var(--warn);padding:0 5px;margin-left:3px;border-radius:2px;white-space:normal;font-size:.92em}
+</style>
+<div class="wrap">
+<header>
+  <div class="eyebrow">Indoor Rover · 2026-08-31 (+ 09-01 연속 세션 1~3) · Docs/debug_log/2026-08-31 (§ 번호 없음 — 절 제목으로 인용) · 주행 있음 · 11-04 사후 작성</div>
+  <h1>08-31 스캔 끌림 · 휠 스케일</h1>
+  <p class="lead">이 페이지는 2026-11-04 에 <span class="mono">2026-08-31/SUMMARY.md</span>를 원천으로 다시 만든 것입니다. 이 파일에는 09-01 의 연속 세션 세 개도 함께 들어 있습니다(별도 09-01 폴더 없음). 08-31 에는 회전 때 스캔이 끌리는 문제를 <span class="mono">scan_deskew</span> 까지 마무리했고, 조이스틱으로 첫 병진 주행 지도를 만들었습니다. 09-01 에는 직진 보정 ×1.022 를 넣었다가, Foxglove '4 초 스냅' 을 시각화 부하로 규명했습니다. 마지막으로 그 ×1.022 가 측정 실수였고 실제로는 <b>휠 오도가 27.8 % 과대</b>라는 것을 찾았습니다. 뒤 기록과 문제 대장이 바로잡은 곳 <b>8 건</b>은 원문을 그대로 두고 <span class="c1104">11-04 정정</span> 표시를 붙였습니다.</p>
+</header>
+
+<section>
+  <h2>오늘의 판정</h2>
+  <div class="verdicts">
+    <div class="v ok"><b>스캔 끌림 2 단계 수정 완료</b><span>restamp(지연 100 → 52 ms) → deskew(회전 중 9 ms). deskew 활성 · restamp 는 경량 폴백 (판단·결정)</span></div>
+    <div class="v ok"><b>조이스틱 teleop · 병진 주행 지도</b><span><span class="mono">joy_linux</span> 로 해결. 지도 318×220 @ 5 cm, 벽 3190 칸, 탐사 약 58.8 m² (조이스틱 teleop + 병진 주행 맵핑)</span></div>
+    <div class="v ok"><b>'4 초 스냅' = Foxglove 표시 지연</b><span>foxglove_bridge CPU 66 % → 재시작 · 화이트리스트로 8.8 %. ROS 안쪽 TF 는 정상 (09-01 세션 2)</span></div>
+    <div class="v no"><b>×1.022 직진 보정 무효</b><span>줄자가 로버 길이를 포함한 것으로 판단 — 세션 3 에서 철회 (★★ 중대 정정)</span></div>
+    <div class="v ok"><b>휠 오도 27.8 % 과대 발견</b><span>두 속도에서 휠원시/줄자 1.277 · 1.278 — 슬립 아닌 스케일 상수 오류. <span class="mono">VX_SCALE</span> 0.783 적용 (★★ 중대 정정)</span></div>
+    <div class="v wait"><b>0.783 검증은 미완</b><span>검증 주행 직전 배터리 방전으로 Jetson 다운 → 09-02 로 (조치)</span></div>
+    <div class="v ok"><b>라이다 프레임 재확정</b><span>손을 물리 정면에 대니 raw 180° 가 150 → 28 cm — yaw = π. '180° 뒤집힘' 은 마주 보고 선 관점 착시 (09-01 세션 1)</span></div>
+  </div>
+</section>
+
+<section>
+  <h2>스캔 끌림 — restamp 검증 → deskew<span class="sec">결과 (수치) · 판단·결정</span></h2>
+  <div class="flow">
+    <span class="k">본 것</span><span>재부팅 뒤 스택 재시작: udev · HID 모듈 · 워크스페이스 · <span class="mono">scan_restamp</span> 전부 보존, 보드도 전원 사이클로 세션 자동 재수립(RESET 불필요). 회전 0.22 rad/s 180° 주행: <span class="mono">/scan_raw</span> 101 ms → <span class="mono">/scan</span> 54 ms.</span>
+    <span class="k">추론</span><span>남은 지연은 스윕 안 점마다 다른 취득 시각 → 점별 시각으로 EKF ω 를 써서 되돌리고 stamp 를 스윕 끝에 묶는 <span class="mono">scan_deskew</span>.</span>
+    <span class="k">결론</span><span>지연 52 → 9 ms(회전 중), "밀림 0.68° → 0.12°, ~90 % 제거". 정지 무결성 완벽(왜곡 0 mm), 회전 중 slam 드롭 없음, map→odom TF 정상. slam 스캔 정합 3 배 잦게(heading 0.08 → 0.03, time 0.3 → 0.1). 주의: ref = end 라 stamp 가 거의 실시간 → slam 이 TF 를 잠깐 기다림(transform_timeout 0.2 s 안).<span class="c1104">(11-04 정정: 결과 표의 '스캔 끌림 (동적, 회전 0.22rad/s) 1.27° → 0.68°' 와 '0.12°' 는 화면의 점을 잰 값이 아니라 지연 × 명목 0.22 rad/s 로 낸 계산값이다. 같은 출력의 진행 줄(2 s 마다 약 8~9°)로 보면 실제 각속도는 약 0.076 rad/s 라 각은 약 1/3. 측정된 것은 지연(101 → 54 → 9 ms)뿐 — Docs/issues/scan-drag-deskew.md §5.1)</span><span class="c1104">(11-04 정정: '정지 무결성 완벽(0 mm)' 은 정지 때 deskew 가 거리값을 아예 건드리지 않는 분기(|ω| &lt; 0.02)를 탔다는 확인일 뿐, 보정 계산이 맞다는 검사가 아니다 — Docs/issues/scan-drag-deskew.md §5.2)</span></span>
+    <span class="k">스크립트 핵심</span><span><pre class="code">W=0.22; SAFE=0.03; TARGET=math.radians(180); TIMEOUT=40.0
+...
+print(f"  회전중 지연: /scan_raw {rm:.0f}ms(밀림 {math.degrees(rm/1000*0.22):.2f}deg) → /scan {sm:.0f}ms(밀림 {math.degrees(sm/1000*0.22):.2f}deg @0.22rad/s)")
+#                              ↑ '밀림' = 지연 × 0.22 (명목 각속도) — 계산</pre></span>
+    <span class="k">나온 결과</span><span><pre class="code"># job8g (restamp, 회전)
+  ...+6deg
+  ...+14deg
+  ...+23deg
+SPIN_END reason=TIMEOUT acc=+174deg
+  회전중 지연: /scan_raw 101ms(밀림 1.27deg) → /scan 54ms(밀림 0.68deg @0.22rad/s)
+# job8i (deskew, 정지)
+  현재 ω = -0.0000 rad/s (정지 확인)
+  raw 1577점 / deskew 1577점, 공통 최대거리차 0mm
+  → OK(정지 시 동일)
+# job8j (deskew 지연)
+  /scan_raw 101ms → /scan 4ms (deskew)</pre><span class="note">결과 원문 <span class="mono">Docs/debug_log/2026-08-31/outputs/job8g_spin_result.txt</span> · <span class="mono">job8i_deskew_clean.txt</span> · <span class="mono">job8j_deskew_latency.txt</span> · <span class="mono">job8k_deskew_dynamic.txt</span> · 스크립트 원문 <span class="mono">jobs/job8f.sh</span>(59 행) · <span class="mono">job8g.sh</span> · <span class="mono">job8i.sh</span> · <span class="mono">job8k.sh</span> · 노드 <span class="mono">ros2_ws/src/rover_bringup/scripts/scan_deskew.py</span></span></span>
+  </div>
+</section>
+
+<section>
+  <h2>조이스틱 · 병진 주행 지도<span class="sec">조이스틱 teleop + 병진 주행 맵핑 · 조이스틱 속도 상향</span></h2>
+  <div class="flow">
+    <span class="k">본 것</span><span>DragonRise USB 패드를 <span class="mono">joy_node</span>(SDL2)가 인식 못 함. 버튼은 <span class="mono">js0</span> 로 안 들어옴(데드맨 불가).</span>
+    <span class="k">결론</span><span><span class="mono">joy_linux</span>(레거시 js0)로 해결. 축 1 = 전후(양수 전진), 축 2 = 좌우(양수 좌회전), <span class="mono">teleop_twist_joy</span> 0.08 m/s · 0.4 rad/s, 데드존 0.25. 마무리에 사용자 요청으로 0.10 · 0.8 로 올림(다음 세션 적용).</span>
+    <span class="k">안전 시행착오</span><span>① 트리거 축(4 · 5)이 −1.0 이라 전체 축 중립 검사가 오탐 → 제어 축(1 · 2)만 검사 ② 중복 <span class="mono">joy_node</span> 의 옛 풀값 사건 → 단일 인스턴스 강제 + 게이트 실패 시 강제 종료 ③ 시작 때 스틱 값 latch → '중립 안정 대기'. 안전 게이트는 매번 정상 작동(로버 무사).</span>
+    <span class="k">지도</span><span>318×220 @ 5 cm(15.9×11 m), 벽 3190 칸, 탐사 약 58.8 m². "궤적 (0,0) → (4.49, −0.71)". deskew 로 이동 중 스캔 선명. 저장 <span class="mono">ros2_ws/maps/rover_map_drive.*</span>.<span class="c1104">(11-04 정정: 이 궤적 끝점은 /odometry/filtered(EKF odom) 값이고, 그 시각 EKF 는 휠 27.8 % 과대 보정 전이었다 → 실제 변위는 더 작다(추정: 약 1/1.278 배). 실제 값은 SLAM 자세를 남기지 않아 미확인 — Docs/issues/first-slam-map.md §5 실수 2)</span></span>
+    <span class="k">나온 결과</span><span><pre class="code">===현재 로버 위치(주행 후)===
+x: 4.489440269002554
+y: -0.7129421718179416
+===통계 + PNG===
+맵: 318x220 @5cm = 15.9x11.0m, 벽 3190셀, 자유 23514셀
+탐사한 자유공간 ≈ 58.8 m^2</pre><span class="note">결과 원문 <span class="mono">Docs/debug_log/2026-08-31/outputs/job11_map_save.txt</span> · 스크립트 원문 <span class="mono">jobs/job11.sh</span>('현재 로버 위치' = <span class="mono">/odometry/filtered</span>) · 조이스틱 진단 <span class="mono">outputs/job9*.txt</span> · <span class="mono">job10d_neutral_latch.txt</span> · <span class="mono">job10e_neutral_precise.txt</span></span></span>
+    <span class="k">드리프트 재확인</span><span>사용자 정정: 남은 '스캔 따라감 → 스냅' 은 스캔 지연이 아니라 오도메트리 드리프트 + slam 보정. 저장 지도 오프라인 분석: 벽 국소 밀도 평균 5.6/9(중앙 6), 번짐 28 % → 벽 2~3 칸으로 번짐. 원인 순위 ① 직진 스케일(WHEEL_RADIUS 0.02567, 백업 없음) ② 좌/우 비대칭 ③ 자이로 스케일. 이어 배터리 완전 방전 → Jetson 재부팅 · 스택 다운.</span>
+  </div>
+</section>
+
+<section>
+  <h2>09-01 세션 1 — 최고속 · ×1.022 · 라이다 · 사각 루프<span class="sec">(2026-09-01 연속 세션) 드리프트 정량화 + vx 보정</span></h2>
+  <div class="flow">
+    <span class="k">최고속</span><span>V_MAX 0.100 m/s(= 정격 37 rpm, 무부하 45 rpm → 0.121 대비 21 % 여유), 각속도 명시 상수 없음 → 암묵 상한 0.816 rad/s(= V_MAX / HALF_WHEEL_BASE 0.1225). 조이스틱 0.10 / 0.8 정합.<span class="c1104">(11-04 정정: 이 rpm ↔ m/s 환산은 틀린 휠 둘레 0.16130 기준이었다 — 09-07 둘레를 0.12533 으로 고치며 최고속 · KV · Nav2 선속도를 한 쌍으로 함께 바꿈 — Docs/issues/wheel-odom-scale-slip.md §2 09-07 '적용' 줄 · §4 표)</span></span>
+    <span class="k">직진 스케일</span><span>2 m 직진(<span class="mono">job14b</span>): 줄자 2.05 m vs odom 2.005 m → ×1.022(odom 2.2 % 과소), heading −0.1°. 컨디셔너에 반영(가역, 재플래시 불필요). ⚠ 원문에 이미 "본 절의 ×1.022 는 이후 무효" 표시 — 아래 세션 3.</span>
+    <span class="k">라이다 프레임</span><span>사용자 '180° 뒤집힘' 관찰 → 손을 물리 정면에 대니 raw 180° 가 150 → 28 cm ↓ → yaw = π 재확정. 사용자가 로버를 마주 봐서 생긴 좌우 관점 착시.</span>
+    <span class="k">사각 루프</span><span>벽 기반 GT 87 cm 는 사용자가 스캔에 잡힌 아티팩트로 기각 → SLAM-GT 채택. heading 약 0.5~1°/루프, 위치 약 8~10 cm/루프(주로 진행 방향). 삼각 검증: 육안 12°/14 cm ≈ slam 10.7°/16.7 cm ≈ odom 11.2°/6.2 cm. 위치 10 cm = 직진 스케일 약 3.5 cm + 회전 크리프 약 5~6 cm("제자리 회전 때 vx ≈ 0 이라 odom 이 못 봄 = 센서 부재 → 수정 불가, SLAM 담당이 정답 아키텍처"). 원문 '다음 단계' 에 "기존 약 10 cm/루프 수치는 잘못된 스케일 기반이라 무효".</span>
+    <span class="k">나온 결과</span><span><pre class="code"># job14h — 벽 기반 GT (기각된 판)
+odom 이동: 7.0cm (Δx=+7.0, Δy=+0.7), heading +8.5deg
+벽기반 실제이동: 94.6cm (전진+94.6, 좌+2.5)</pre><span class="note">결과 원문 <span class="mono">Docs/debug_log/2026-08-31/outputs/job14h_square_gt.txt</span> · <span class="mono">job14d_square_loop.txt</span> · <span class="mono">job14j_slamdrift.txt</span> · 스크립트 원문 <span class="mono">jobs/job14h_square_gt.sh</span> · <span class="mono">job14k_slamdrift2.sh</span>. job14b(×1.022 근거) 출력은 원천 소실(대화에만)</span></span>
+  </div>
+</section>
+
+<section>
+  <h2>09-01 세션 2 — Foxglove '4 초 스냅'<span class="sec">★ Foxglove 4초 스냅 — 원인 규명·해결 · CPU 최적화</span></h2>
+  <div class="flow">
+    <span class="k">본 것</span><span>회전 · 이동 때 로봇 모델은 멈추고 scan 만 실시간 → 약 4 초 뒤 모델이 실제 자리로 점프. 이동량 · 방향 · 크기와 무관하게 늘 약 4 초.</span>
+    <span class="k">추론 (기각 포함)</span><span>① fixed frame 을 odom 으로 바꿔도 같음 → 표시층으로 좁힘 ② 콜백 안 실측 지연 전부 신선(EKF 13 ms · scan 3 ms · wheel_odom 17 ms), 보드 vs 카메라 시계 −0.002 s → stamp · 시계 기각 ③ 스크립트 회전(202°) 중 odom→base 30 Hz 매끄러움(448 회 / 33 ms), map→odom 고정 → odom TF 정상 ④ 순수 회전 때 map→odom 고정 = 정상(보정할 것 없음)<span class="c1104">(11-04 정정: 이 근거는 heading 만 봤다. 제자리 회전 중 차체 옆 밀림이 있었고, map→odom 이 안 변한 진짜 이유는 apt slam_toolbox 가 이동 거리 문턱만 보고 회전 중 스캔을 버렸기 때문(09-28) — Docs/issues/foxglove-snap-cpu.md §5.3 · Docs/04_navigation/SLAM_FORK_ROTATION.md)</span> ⑥ 프로세스별 CPU: foxglove_bridge 66 %(최대).</span>
+    <span class="k">결론</span><span>"Foxglove 시각화 아티팩트, 로봇 localization 은 건강." bridge 재시작 + 부하 하락 뒤 사용자가 '매끄러워졌다' 확인 → "확정". 제어 · Nav2 무해.<span class="c1104">(11-04 정정: 측정된 것은 ROS 안쪽 TF 정상 · 브리지 CPU 66 % · 재시작 뒤 육안 해소까지다. 클라이언트 쪽 도착 간격은 재지 않았고 09-30 에 같은 증상이 '브리지 큐 깊이 1 이 /tf 를 버림' 으로 다시 설명된다 — 증상 해소는 확인, 기전은 추정 — Docs/issues/foxglove-snap-cpu.md §5.5)</span></span>
+    <span class="k">부수 발견</span><span>slam <span class="mono">transform_publish_period</span> = 0.05(20 Hz)인데 실측 재발행 약 9 Hz(CPU 눌림). slam 'queue full' 간헐. 스크립트 주행 때 joy teleop 이 <span class="mono">/cmd_vel</span> 을 이중 발행 → 주행 전 joy 종료 필요.<span class="c1104">(11-04 정정: 이 도구는 '서로 다른 map→odom stamp 개수' 를 셌고, slam_toolbox 는 그 stamp 를 '마지막 스캔 시각 + transform_timeout' 으로 찍으므로 개수는 스캔 주기(최대 10 Hz)에 묶인다 → 9 Hz 는 정상 쪽, 'CPU 눌림' 은 근거 없음(추정) — Docs/issues/foxglove-snap-cpu.md §5.4)</span></span>
+    <span class="k">나온 결과</span><span><pre class="code"># job16h — 15 s 제자리 회전 + TF 로깅
+  /odometry/filtered yaw 총 변화 = 202deg (실제 회전 확인)
+  odom-&gt;base (로봇 TF): 변화 448회, 간격 평균=33ms 최대=66ms
+  map-&gt;odom (slam 보정): 변화 없음(고정)
+# job16j — 프로세스별 CPU
+  14784 jetson ... S  65.7  0.9  16:19.72 foxglov+
+  14966 jetson ... S  37.3  0.4  10:36.94 ekf_node
+  14964 jetson ... S  35.3  0.8   9:51.24 python3
+# job16l
+  4초간 서로다른 map-&gt;odom stamp 36개 (=재발행 ~9Hz)</pre><span class="note">결과 원문 <span class="mono">Docs/debug_log/2026-08-31/outputs/job16h_rotlog.txt</span> · <span class="mono">job16f_latency.txt</span> · <span class="mono">job16j_cpu.txt</span> · <span class="mono">job16l_fgrestart.txt</span> · 스크립트 원문 <span class="mono">jobs/job16h_rotlog.sh</span> · <span class="mono">job16j_cpu.sh</span> · <span class="mono">job16l_fgrestart.sh</span></span></span>
+    <span class="k">CPU 최적화</span><span>deskew 재분류 루프 → <span class="mono">np.minimum.at</span> 한 줄(동작 동일), foxglove <span class="mono">topic_whitelist</span>(카메라 토픽 제외) → foxglove 66 → 8.8 %. 실제 최대 소비자 = <span class="mono">sensor_conditioner</span> 44 %, "앞서 'deskew 45 %' 는 오인 → 정정"(deskew 약 8 %). 컨디셔너는 손대지 않음(임시 shim · IMU 200 Hz 는 VIO 가 원함 · Isaac 도입 때 역할 축소).<span class="c1104">(11-04 정정: 벡터화 효과는 근거가 없다 — 뒤 측정(17b~17d)의 deskew 0.0 % 는 ros2 run 감싸개 프로세스를 잰 것이고, 실제 전후 비교는 9.0 % vs 7.8 % 로 조건도 달랐다. 17e 의 '중복 인스턴스 2 개' 도 감싸개 + 본체로 보임(추정) — Docs/issues/foxglove-snap-cpu.md §5.2)</span></span>
+    <span class="k">나온 결과</span><span><pre class="code">=== 중복 인스턴스 확인 ===
+  scan_deskew: 19811 19814  (개수 2)
+=== python3 PID별 실체 (cmdline) ===
+  [14964] /home/jetson/ros2_ws/install/rover_bringup/lib/rover_bringup/sensor_conditioner.py
+  [19814] /home/jetson/ros2_ws/install/rover_bringup/lib/rover_bringup/scan_deskew.py
+  pid=14964  cpu= 44.1% cmd=python3
+  pid=20112  cpu=  8.8% cmd=foxglov+
+  pid=19814  cpu=  7.8% cmd=python3</pre><span class="note">결과 원문 <span class="mono">Docs/debug_log/2026-08-31/outputs/job17e_identify.txt</span> · <span class="mono">job17b_optapply.txt</span> · 스크립트 원문 <span class="mono">jobs/job17e_identify.sh</span> · 소스 <span class="mono">scan_deskew.py</span> 의 <span class="mono">np.minimum.at</span> 줄</span></span>
+  </div>
+</section>
+
+<section>
+  <h2>09-01 세션 3 — 휠 오도 27.8 % 과대<span class="sec">★★ 중대 정정</span></h2>
+  <div class="flow">
+    <span class="k">본 것</span><span>×1.022 적용 뒤 직진(<span class="mono">job18c</span>): slam/odom = 0.7428 — 보정이 맞다면 1.00 근처여야 함. 같은 바닥에서 줄자 2 회 + slam + 휠원시를 한 주행에 함께 기록(<span class="mono">job18f</span> 후진 0.10 · <span class="mono">job18g</span> 전진 0.06).</span>
+    <span class="k">추론</span><span>두 속도에서 휠원시/줄자가 소수 셋째 자리까지 같음(1.277 / 1.278) → 슬립 · 속도 · 바닥이 아니라 스케일 상수 오류. slam 은 두 번 다 줄자와 1 % 안팎 → slam 은 직진 지면검증으로 신뢰("직진에선 slam 이 약하다(aperture)" 추정은 철회). job14b 모순: 27.8 % 과대면 그때 실제 이동 ≈ 1.55 m, + 로버 길이 0.5 m = 2.05 m → 줄자가 로버 길이를 포함해 잰 것으로 판단.</span>
+    <span class="k">결론</span><span><span class="mono">VX_SCALE</span> 1.022 → 0.783(= 1/1.2776) 적용 · 재빌드 · EKF/slam 재시작. 검증 주행 직전 배터리 방전으로 Jetson 다운 → 검증 미완. 펌웨어 권고(미적용): <span class="mono">WHEEL_CIRCUMFERENCE_M</span> 0.16130 → 약 0.1262 또는 펄스/회전 542 → 약 693, 교정 때 SLIP 0.46 → 약 0.588 재산정 · VX_SCALE 제거. 시사점: 휠 오도 단독은 믿을 수 없다 — 위치 정확도는 slam 이 담보.</span>
+    <span class="k">나온 결과</span><span><pre class="code"># job18c (×1.022 적용 뒤)
+  odom 이동 = 1.634 m
+  slam 이동 = 1.213 m  (지면검증)
+  ★ 비율 slam/odom = 0.7428
+    → -25.7% 과대보고 — 과보정
+# job18f (후진 0.10 m/s) — 사용자 줄자 1.06 m
+  휠원시(/wheel_odom) 이동 = 1.354 m
+  odom(EKF, ×1.022)   이동 = 1.386 m
+  slam                이동 = 1.073 m
+# job18g (전진 0.06 m/s) — 사용자 줄자 1.015 m
+  휠원시 = 1.297 m
+  odom(EKF) = 1.321 m
+  slam = 1.006 m</pre><span class="note">결과 원문 <span class="mono">Docs/debug_log/2026-08-31/outputs/job18c_vxverify.txt</span> · <span class="mono">job18f_drive_B.txt</span> · <span class="mono">job18g_speed_F006.txt</span> · <span class="mono">job19a_apply783.txt</span> · 스크립트 원문 <span class="mono">jobs/job18c_vxverify.sh</span> · <span class="mono">job18f_drive.sh</span> · <span class="mono">job18g_speed.sh</span> · <span class="mono">job19a_apply783.sh</span>. 줄자 값은 출력 파일이 아니라 사용자 답(SUMMARY 표)</span></span>
+    <span class="k">부수</span><span>사용자: 바닥 재질 같음 · 같은 넓은 공간 · 헛도는 느낌 없음. 주행 때 우측으로 미세 편향 = 좌우 트랙 경미한 비대칭.</span>
+  </div>
+</section>
+
+<section>
+  <h2>바로잡은 내 오류</h2>
+  <div class="pm">
+    <h3>줄자 직진 보정 ×1.022 — 로버 길이 포함 (세션 1 → 세션 3 ★★ 중대 정정)</h3>
+    <div class="flow">
+      <span class="k">하려 한 것</span><span>휠 직진 스케일 보정. <span class="mono">job14b_straight.sh</span>(0.06 m/s, odom 2.0 m 도달 시 정지) 뒤 사용자가 줄자로 이동 거리를 잼</span>
+      <span class="k">본 것</span><span>odom(EKF) 2.005 m, 줄자 2.05 m, heading −0.1°</span>
+      <span class="k">처음 추론</span><span>odom 이 2.2 % 과소 → <span class="mono">VX_SCALE</span> ×1.022(<span class="mono">job15a</span> 배포)</span>
+      <span class="k">의심한 이유</span><span><span class="mono">job18c</span> slam/odom 0.7428 — '2 % 보정 오차' 로는 25 % 차이를 설명할 수 없다</span>
+      <span class="k">판별 시험</span><span>같은 바닥에서 줄자 2 회 + SLAM + 휠원시를 한 주행에(<span class="mono">job18f</span> · <span class="mono">job18g</span>)</span>
+      <span class="k">결론</span><span>휠원시/줄자 1.277 · 1.278 → 실제는 27.8 % 과대. job14b 는 '실제 ≈ 1.55 m + 로버 길이 0.5 m' 를 잰 것으로 판단(측정 방법 자체는 기록 없음 — 수치 정합에 근거한 추정). 오차는 08-26 부터 있었음</span>
+      <span class="k">다음에 알아보는 법</span><span>줄자 기준점을 차체의 같은 점(앞 범퍼 끝 → 앞 범퍼 끝)으로 정해 기록에 적는다. 보정값은 독립 기준 2 개(줄자 + SLAM)로 교차 확인한 뒤 배포. 보정 크기가 작아도 다른 지표와 25 % 어긋나면 측정부터 의심</span>
+      <span class="k">데이터</span><span>job14b 출력 원천 소실(대화에만) · <span class="mono">outputs/job18c_vxverify.txt</span> · <span class="mono">job18f_drive_B.txt</span> · <span class="mono">job18g_speed_F006.txt</span> · <span class="mono">Docs/issues/wheel-odom-scale-slip.md</span> §5 ①</span>
+    </div>
+  </div>
+  <div class="pm">
+    <h3>"직진에서는 SLAM 이 약하다(aperture)" 주장 · 철회 (세션 3)</h3>
+    <div class="flow">
+      <span class="k">하려 한 것</span><span><span class="mono">job18c</span> 의 slam/odom 0.7428 해석</span>
+      <span class="k">본 것</span><span>slam 1.213 m vs odom 1.634 m, <span class="mono">job18d</span> map→odom −0.370 m, slam 'queue is full' 드롭</span>
+      <span class="k">처음 추론</span><span>앞뒤 특징이 적은 직진에서는 스캔 정합이 이동 방향을 덜 잡는다 → slam 이 짧게 본다(원문엔 '철회' 로만 남음)</span>
+      <span class="k">의심한 이유</span><span>제3의 기준(줄자)이 없었다 — 'slam 이 틀렸다' 와 '휠이 틀렸다' 를 같은 데이터로 가를 수 없음</span>
+      <span class="k">판별 시험</span><span><span class="mono">job18f</span> · <span class="mono">job18g</span> — 줄자와 slam 을 같은 주행에서</span>
+      <span class="k">결론</span><span>slam 1.073 vs 줄자 1.06(+1.2 %), 1.006 vs 1.015(−0.9 %) → 직진에서 slam 신뢰, 주장 철회</span>
+      <span class="k">다음에 알아보는 법</span><span>두 측정이 어긋날 때 한쪽의 약점 이론을 세우기 전에 세 번째 독립 기준을 먼저 붙인다</span>
+      <span class="k">데이터</span><span>위와 같음 · <span class="mono">Docs/issues/wheel-odom-scale-slip.md</span> §5 ②</span>
+    </div>
+  </div>
+  <div class="pm">
+    <h3>CPU 35~45 % 를 deskew 로 오인 (세션 2 '정정')</h3>
+    <div class="flow">
+      <span class="k">하려 한 것</span><span>프로세스별 CPU 로 과부하 원인 찾기(<span class="mono">job16j</span>) · 최적화 대상 고르기(<span class="mono">job17a</span>)</span>
+      <span class="k">본 것</span><span><span class="mono">top</span> 의 COMMAND 가 <span class="mono">python3</span> 인 줄 두 개: pid 14964 35.3 %(16j) · 45.5 %(17a), pid 14782 7.8 %</span>
+      <span class="k">처음 추론</span><span>큰 python3 = 방금 만든 scan_deskew → 'deskew(py) 35 %', 최적화 대상 'deskew 45 %' → 벡터화</span>
+      <span class="k">의심한 이유</span><span>벡터화 뒤에도 큰 python3(43.6 · 42.2 %)가 그대로</span>
+      <span class="k">판별 시험</span><span><span class="mono">/proc/&lt;pid&gt;/cmdline</span> 으로 실제 스크립트 확인(<span class="mono">job17e</span>)</span>
+      <span class="k">결론</span><span>14964 = <span class="mono">sensor_conditioner.py</span>(200 Hz 카메라 IMU) 44.1 %, deskew 는 처음부터 큰 소비자가 아니었다</span>
+      <span class="k">다음에 알아보는 법</span><span><span class="mono">python3</span> · <span class="mono">ros2</span> 같은 해석기 이름은 반드시 pid → cmdline 으로 풀어 적는다. 08-27 기록에 이미 'conditioner CPU 41 %' 가 있었다 — 같은 크기의 python 소비자를 보면 그 기록부터 대조</span>
+      <span class="k">데이터</span><span><span class="mono">outputs/job16j_cpu.txt</span> · <span class="mono">job17a_camcheck.txt</span> · <span class="mono">job17d_clean.txt</span> · <span class="mono">job17e_identify.txt</span> · <span class="mono">Docs/issues/foxglove-snap-cpu.md</span> §5.1</span>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>다음 후보 (그날 기록 — 09-02 이후)</h2>
+  <ul>
+    <li>★ <span class="mono">VX_SCALE=0.783</span> 검증(최우선, 미완) — 충전 뒤 직진 1~2 m, 줄자 ≈ odom 이면 확정</li>
+    <li>펌웨어 스케일 교정 여부 결정(스프로킷 · 트랙 실측) — 교정 때 SLIP 재산정 + VX_SCALE 제거</li>
+    <li>회전 · 루프 드리프트 재측정(기존 수치는 잘못된 스케일 기반)</li>
+    <li>Nav2 스택 구성(<span class="mono">rover_navigation</span> 비어 있음) · Isaac ROS Visual SLAM 검토 · Step 5</li>
+    <li>배터리 운용: 방전으로 Jetson 다운 반복 → 작업 전 충전 확인 · 조이스틱은 버튼이 되는 패드 권장(데드맨)</li>
+  </ul>
+</section>
+
+<section>
+  <h2>이후 · 관련 카드</h2>
+  <ul>
+    <li><span class="mono">Docs/issues/wheel-odom-scale-slip.md</span> — 27.8 % 과대 → 09-02 검증 +0.47 % → 09-07 둘레 0.12533 교정</li>
+    <li><span class="mono">Docs/issues/scan-drag-deskew.md</span> — restamp · deskew, '밀림 각' 계산값</li>
+    <li><span class="mono">Docs/issues/foxglove-snap-cpu.md</span> — 4 초 스냅, CPU 오인 2 건, 09-30 재설명</li>
+    <li><span class="mono">Docs/issues/first-slam-map.md</span> — 병진 지도 · 궤적 값 정정</li>
+    <li><span class="mono">Docs/issues/joystick-teleop.md</span> — joy_linux · 안전 게이트 시행착오 3 건(실수 1~3)</li>
+    <li><span class="mono">Docs/issues/battery-power-ops.md</span> — 방전으로 Jetson 다운(08-31 저녁 · 09-01 세션 3)</li>
+    <li><span class="mono">Docs/issues/board-link-microros-session.md</span> §5.1 — <span class="mono">job8d</span> · <span class="mono">job14a</span> 출력이 50 Hz 바로 다음 줄에 고정 문구 'NEXT: 보드 RESET' 을 찍음(SUMMARY 는 'RESET 불필요' 로 바르게 적음)</li>
+  </ul>
+</section>
+</div>

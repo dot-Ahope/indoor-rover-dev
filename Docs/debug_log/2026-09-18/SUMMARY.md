@@ -371,3 +371,6 @@
 - 오늘 상태: Jetson 에 CostCritic YAML 배포됨(**아직 재기동 안 함** — 다음 prep 이 반영), 러너 1안·메타 기록은 다음 주행부터. 로버는 dy6 목표 지점에 있음. wifi-mon 계측 계속 동작 중.
 - 내일: (1) cc1~cc3 — prep 뒤 `params.txt` 로 critics 반영 확인 → §16 기준 판정, ① vs job416 일치 확인 (2) S2 디시메이션 결정(반나절 한정) (3) S5 기준선 3 회 → `BASELINE_STVL.md` → main 병합·태그(푸시는 지시 시) (4) 단계별 bag 시각화 도구 (5) Phase N0.
 - CLAUDE.md 점검 결과는 대화에 보고(사용자 미커밋 수정 있음 — 건드리지 않음).
+
+## (2026-11-04 추가) 사후 정리 페이지
+- 「09-18 센서 데크 −2.68°」 https://claude.ai/artifact/3ucoT6vev8uNtSCj78wGh4 — 로컬 `figures/day_summary_0918.html`(본문 `jobs/report_0918_body.html` · 조립 `jobs/fig_report_0918.py`). 이 SUMMARY 를 원천으로 11-04 에 만듦, 뒤 정정은 페이지에 '11-04 정정' 표시(문제 대장 카드 근거). 기록 → `Docs/debug_log/2026-11-04/SUMMARY.md` §11.

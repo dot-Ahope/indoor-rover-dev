@@ -547,3 +547,6 @@ inf2 bag(이동 2.13 m, yaw 102°)도 같음: σ<1 cm 인덱스 0개, 차체 고
 5. 목표 D=2.0 이 끝 벽에 0.3 m 라 도착 회전이 걸린다(inf4 E4) → D 1.9 또는 목표 heading 유지.
 6. S6 CPU: 릴레이 42 ms/프레임(np.unique) — bincount 또는 decimation 2 배.
 7. 좌측 물체 정체(사용자 확인 예정). 손 배치 뒤엔 반드시 `job240_clean.sh` 재기동(SLAM 자세가 옛 자리에 남는다).
+
+## (2026-11-04 추가) 사후 정리 페이지
+- 「09-14 중앙 상자 통로」 https://claude.ai/artifact/YBv2ufj4Cyyv7ZDShQCSgC — 로컬 `figures/day_summary_0914.html`(본문 `jobs/report_0914_body.html` · 조립 `jobs/fig_report_0914.py`). 이 SUMMARY 를 원천으로 11-04 에 만듦, 뒤 정정은 페이지에 '11-04 정정' 표시(문제 대장 카드 근거). 기록 → `Docs/debug_log/2026-11-04/SUMMARY.md` §11.

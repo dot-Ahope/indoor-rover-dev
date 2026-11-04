@@ -1,0 +1,305 @@
+<title>09-30 사무실 첫 지도</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* 배치: 실험 노트 — 좁은 본문 열(65자) + 넓게 펼치는 그림 · 표, 판정은 왼쪽 띠 색으로(10-20 판과 같은 틀) */
+:root{
+  --bg:#f3f4f6; --paper:#ffffff; --ink:#1b1f24; --muted:#5b6470; --line:#d9dde3;
+  --ir:#b3263e;      /* 프로젝터 켬 · 실패 쪽 */
+  --cool:#1f7a72;    /* 프로젝터 끔 · 통과 쪽 */
+  --warn:#a86a00;
+  --tint-ir:#f8e8eb; --tint-cool:#e4f2f0; --tint-warn:#fbf1df;
+  --f-body:"IBM Plex Sans KR","Malgun Gothic","Apple SD Gothic Neo",sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#111418; --paper:#181c21; --ink:#e6e9ed; --muted:#9aa4b0; --line:#2c333b;
+  --ir:#ef6b80; --cool:#5cc4b8; --warn:#e0a640;
+  --tint-ir:#2b1b1f; --tint-cool:#15292a; --tint-warn:#2a2316; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#111418; --paper:#181c21; --ink:#e6e9ed; --muted:#9aa4b0; --line:#2c333b;
+  --ir:#ef6b80; --cool:#5cc4b8; --warn:#e0a640;
+  --tint-ir:#2b1b1f; --tint-cool:#15292a; --tint-warn:#2a2316; color-scheme:dark}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.65;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:28px 64px}
+.wrap{max-width:980px;margin:0 auto;display:flex;flex-direction:column;gap:34px}
+header{display:flex;flex-direction:column;gap:6px;border-bottom:2px solid var(--ink);padding-bottom:14px}
+.eyebrow{font-family:var(--f-mono);font-size:12px;letter-spacing:.08em;color:var(--muted);text-transform:uppercase}
+h1{font-size:30px;line-height:1.25;margin:0;font-weight:700;text-wrap:balance}
+h2{font-size:20px;margin:0 0 4px;font-weight:700;text-wrap:balance}
+h2 .sec{font-family:var(--f-mono);font-size:13px;color:var(--muted);font-weight:400;margin-left:8px}
+p{margin:0;max-width:68ch}
+section{display:flex;flex-direction:column;gap:12px}
+.lead{color:var(--muted);max-width:72ch}
+.verdicts{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
+.v{background:var(--paper);border:1px solid var(--line);border-left:5px solid var(--muted);padding:12px 14px;display:flex;flex-direction:column;gap:4px;min-width:0}
+.v.ok{border-left-color:var(--cool)} .v.no{border-left-color:var(--ir)} .v.wait{border-left-color:var(--warn)}
+.v b{font-size:15px} .v span{color:var(--muted);font-size:13.5px}
+.pill{display:inline-block;font-family:var(--f-mono);font-size:11.5px;padding:1px 8px;border-radius:999px;white-space:nowrap}
+.pill.ok{background:var(--tint-cool);color:var(--cool)} .pill.no{background:var(--tint-ir);color:var(--ir)} .pill.wait{background:var(--tint-warn);color:var(--warn)}
+.tbl{overflow-x:auto;background:var(--paper);border:1px solid var(--line)}
+table{border-collapse:collapse;width:100%;font-size:13.5px;font-variant-numeric:tabular-nums}
+th,td{padding:7px 10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{font-weight:500;color:var(--muted);font-size:12.5px;white-space:nowrap}
+td.n{font-family:var(--f-mono);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr.hl td{background:var(--tint-cool)} tr.bad td{background:var(--tint-ir)}
+figure{margin:0;background:var(--paper);border:1px solid var(--line);padding:10px;display:flex;flex-direction:column;gap:8px}
+figure img{width:100%;height:auto;display:block}
+figcaption{font-size:13px;color:var(--muted)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media (max-width:720px){.two{grid-template-columns:1fr}}
+ul{margin:0;padding-left:20px;max-width:72ch} li{margin:2px 0}
+.mono{font-family:var(--f-mono);font-size:13px}
+.flow{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;font-size:14px}
+.flow .k{font-family:var(--f-mono);color:var(--muted);font-size:12.5px;padding-top:2px;white-space:nowrap}
+.note{font-size:13px;color:var(--muted)}
+.pm{background:var(--paper);border:1px solid var(--line);padding:12px 14px;display:flex;flex-direction:column;gap:8px}
+.pm h3{font-size:15.5px;margin:0;font-weight:700}
+.pm .flow{grid-template-columns:auto 1fr;gap:6px 14px}
+.pm .flow span:not(.k){max-width:none}
+</style>
+
+<style>
+.code{margin:0;font-family:var(--f-mono);font-size:12.5px;line-height:1.5;background:var(--bg);border:1px solid var(--line);padding:8px 10px;overflow-x:auto;white-space:pre;max-width:100%}
+.flow > span{min-width:0}
+.c1104{font-weight:600;color:var(--ink);background:var(--tint-warn);border-left:3px solid var(--warn);padding:0 5px;margin-left:3px;border-radius:2px;white-space:normal;font-size:.92em}
+</style>
+<div class="wrap">
+<header>
+  <div class="eyebrow">Indoor Rover · 2026-09-30 · Docs/debug_log/2026-09-30 §0–§17 · 주행 있음(SLAM 치우침 직진 · 후진, 패드 매핑 3 회) · 11-04 사후 작성</div>
+  <h1>09-30 사무실 첫 지도</h1>
+  <p class="lead">이 페이지는 2026-11-04 에 그날의 <span class="mono">SUMMARY.md</span> 와 같은 날짜 폴더의 <span class="mono">jobs/</span> · <span class="mono">outputs/</span> 원문으로 다시 만든 정리입니다. 이날은 ③ F1 사무실 매핑을 시작했습니다. 차체 치수를 실측해 footprint 에 넣었고, SLAM 이 직선 이동을 치우침 없이 잰다는 것을 줄자로 확인했습니다. 첫 지도 <span class="mono">office_v1</span> 을 저장해 루프 닫힘 · 이중 벽 · 복원 · 정확도 판정을 통과했습니다. 그런데 지도를 넓히려고 이어 그린 두 번은 모두 루프 클로저 오정합으로 지도가 깨져 저장하지 않았습니다. 매핑 중 '로버가 멈췄다 점프' 하던 현상은 메모리가 아니라 CPU 과부하였고, 매핑 전용 모드로 해소했습니다. 전날 F0-b 주행 영상도 만들었습니다. 판단마다 스크립트 핵심 줄과 실제 출력 발췌를 붙였습니다. 뒤에 바로잡힌 곳은 원문 문장을 그대로 두고 <span class="c1104">11-04 정정</span> 표시를 달았습니다(<b>5 곳</b>, 그중 1 곳은 이 페이지를 만들며 원문과 대조해 찾음). 같은 날의 주제 페이지는 <span class="mono">Docs/debug_log/2026-09-30/day_0930.html</span> 이고, 이 페이지는 그것을 바꾸지 않습니다.</p>
+</header>
+
+<section>
+  <h2>오늘의 판정</h2>
+  <div class="verdicts">
+    <div class="v ok"><b>footprint 실측 반영</b><span>앞 +0.262 · 뒤 −0.248 · 폭 ±0.165(이전 ±0.25). 치수로는 복귀 편차 1.2 cm 만 설명 (§2 · §3)</span></div>
+    <div class="v ok"><b>S-a: SLAM 직선 이동에 앞뒤 치우침 없음</b><span>0.70 m 전진 1.5 cm · 후진 0.1 cm 차, 부호 일정하지 않음 (§3.2)</span></div>
+    <div class="v ok"><b>F1-0 무선 패드 끊김 합격</b><span>사용자 관찰: 스틱을 민 채 패드 전원 끔 → /joy 축 0. 기록 도구는 동작을 못 잡음 (§4.1)</span></div>
+    <div class="v ok"><b>office_v1 저장 · F1-1a · F1-1b 통과</b><span>15.1 × 10.7 m. 루프 닫힘 줄자 차 ≈ 1.3 · 1.0 cm, 동쪽 굵은 띠 = 실제 20 cm 벽 (§4.2 · §4.3)</span></div>
+    <div class="v ok"><b>F1-2 복원 통과 · 재확인 통과</b><span>그 자리 불러오기 1.16 cm, 테이프에 다시 놓고 0.33 cm — 세션 간 같은 좌표계 (§4.4 · §10)</span></div>
+    <div class="v ok"><b>F1-3 지도 정확도 통과(문 폭은 경계)</b><span>방 폭 1 cm · 벽 두께 0 · 문 폭 3.7 / 8.7 cm (§8.1)</span></div>
+    <div class="v ok"><b>매핑 중 '멈췄다 점프' = CPU 과부하 → 매핑 전용 모드로 해소</b><span>메모리 여유 5.1 GB. 모드 적용 뒤 부하 10.9 → 2.7, EKF 미달 0 (§5 · §11 · §11.1)</span></div>
+    <div class="v no"><b>이어 그리기 2 회 모두 지도 깨짐 — 저장 안 함</b><span>17:10:34 약 4.2 m 평행 이동, 17:36:18 1.67 m · +33.2°. 루프 창 8 → 3 m 로는 못 막음 (§13 · §14 · §16)</span></div>
+    <div class="v wait"><b>점프 전까지 지도 되살리기 — 준비만 하고 중단</b><span>bag 재생이 5 분 넘게 무출력, 사용자 "멈추고 내일" (§17)</span></div>
+    <div class="v ok"><b>최종 목표 · 위치 결정(사용자)</b><span>장소 이름 + 온디바이스 LLM(텍스트 입력), 로드맵 F2 다음 'F2.5' (§9)</span></div>
+  </div>
+</section>
+
+<section>
+  <h2>지도 ↔ 줄자 앞뒤 편차 — 치수인가, SLAM 인가<span class="sec">§2 · §3</span></h2>
+  <div class="flow">
+    <span class="k">본 것</span><span>복귀 시험에서 지도 예측 세로가 줄자보다 매번 크다(f0a6 +3.6 · f0a7 +5.5 · f0b2 +5.2 cm, 09-29 §12.5). 사용자 실측: 라이다 중심 → 뒤 트랙 끝 ≈ 0.40 m, → 앞 트랙 끝 ≈ 0.11 m.</span>
+    <span class="k">추론</span><span>URDF lidar x +0.152 → 뒤끝 −0.248(가정 −0.25, 2 mm 차), 앞끝 +0.262(가정 +0.25, 1.2 cm 차). 앞끝을 고친 예측 vs 줄자 = +2.4 · +4.3 · +4.0 cm → 평균 ≈ 3.6 cm 가 같은 방향으로 남는다.</span>
+    <span class="k">시험 설계</span><span>남은 후보 ① SLAM 의 앞뒤 치우침 ② 측정 기준 차이. 1.00 m 는 앞끝이 낮은 상자에 닿아 0.70 m 로, 손으로 옮기면 SLAM 정합이 오염될 수 있어 로버가 0.07 m/s 로 직진. 판정(선언): S-a |SLAM 예측 − 줄자| ≤ 1.0 cm · S-b ≥ 1.5 cm · 그 사이는 1 회 반복.</span>
+    <span class="k">스크립트 핵심</span><span><pre class="code">FX, FY = 0.262, -0.165                    # 오른쪽 앞 모서리(base_link) — 09-30 §2 실측
+while d &lt; DIST - 0.005 and time.time() - ts &lt; DIST / abs(V) * 2 + 5:   # 09-30: 후진(V&lt;0) 때 한도가 음수가 되던 결함 수정
+    try: o = pose('odom'); d = math.hypot(o[0] - O0[0], o[1] - O0[1])</pre><span class="note">스크립트 원문 <span class="mono">Docs/debug_log/2026-09-30/jobs/job680_slambias.py</span> 12 · 45 · 49 행(수정판만 남음) · 래퍼 <span class="mono">jobs/job682_slambias_run.sh</span> · <span class="mono">job683_slambias_rev.sh</span></span></span>
+    <span class="k">나온 결과</span><span><pre class="code">(1 회차 전진)
+  footprint(local): String value is: [[0.262, 0.165], [0.262, -0.165], [-0.248, -0.165], [-0.248, 0.165]]
+주행 11.1 s, EKF 이동 0.6987 m 에서 정지 지령
+SLAM 이동(출발 방향 기준): 세로 0.6977 m, 가로 -0.0077 m, 방향 -0.86°
+줄자 예측: 오른쪽 앞 모서리가 출발 표시에서 세로 0.6952 m 앞, 가로 -0.0116 m(+ 왼쪽)
+(2 회차 후진)
+주행 12.7 s, EKF 이동 0.6954 m 에서 정지 지령
+도착 map (-0.0334, -0.0002, -2.53°) [250 표본]
+SLAM 이동(출발 방향 기준): 세로 -0.7312 m, 가로 -0.0009 m, 방향 -2.03°
+EKF 이동 0.7014 m (SLAM 대비 -0.0299)</pre><span class="note">결과 원문 <span class="mono">Docs/debug_log/2026-09-30/outputs/j682_slambias.txt</span> · <span class="mono">outputs/j683_slambias_rev.txt</span></span></span>
+    <span class="k">줄자 대조</span><span>1 회차 SLAM 69.5 cm vs 줄자 ≈ 71 cm → 1.5 cm(줄자 ±0.5 cm 읽기라 보류 → 1 회 반복). 2 회차는 처음 출발 표시 기준 SLAM 4.1 cm 뒤 · 1.2 cm 오른쪽 vs 줄자 4 cm 뒤 · 1 cm 오른쪽 → 0.1 · 0.2 cm. 후진에서 EKF 는 SLAM 보다 3.0 cm 적음(후진 휠 과소, 09-28 과 같은 성질).</span>
+    <span class="k">결론</span><span><b>S-a</b> — 복귀 잔차 ≈ 3.6 cm 는 직선 SLAM 오차가 아니다. 남은 후보(추정): 목표에서 ~180° 도는 동안의 SLAM 위치 오차, 대각 측정 기준. 가를 시험(제자리 180° → 줄자)은 미실시.</span>
+  </div>
+</section>
+
+<section>
+  <h2>③ F1 사무실 매핑 — 첫 지도 office_v1<span class="sec">§1 · §4 · §8 · §10</span></h2>
+  <p>사용자 결정: 이어 그리기로 넓혀 가기 · USB 무선 패드(DragonRise, 동글은 Jetson)로 조종 · Foxglove 로 지도를 보며 조종 · 유리 있음. 지도 수정은 pgm 손 편집보다 Nav2 Costmap Filter 마스크를 권했습니다(§1, 결정은 나중). 준비: <span class="mono">slam.launch.py map_file:=</span> · <span class="mono">map_start_pose:=</span>, 패드 <span class="mono">profile:=mapping</span>(0.07 m/s · 0.3 rad/s — 빠른 회전 = 트랙 밀림), 저장 <span class="mono">jobs/job684_map_save.sh</span>(포즈 그래프 + pgm/yaml, Jetson <span class="mono">~/maps/office/</span>).</p>
+  <div class="tbl"><table>
+    <tr><th>판정(주행 전 선언)</th><th>결과</th><th>근거</th></tr>
+    <tr><td>F1-0 무선 끊김: 3 s 동안 0 아닌 지령이 이어지면 불합격</td><td>합격 — 사용자가 /joy 를 보며 전원 끔 → 0. 기록(<span class="mono">j691</span>)엔 유지 구간 · 공백 둘 다 없음</td><td><span class="mono">outputs/j691_joydrop.txt</span> · <span class="mono">jobs/job690_joydrop.py</span></td></tr>
+    <tr><td>F1-1a 루프 닫힘: 출발 테이프 복귀 줄자 ≤ 5 cm</td><td>줄자 세로 ≈ 2 · 가로 ≈ 1.5 cm vs SLAM 0.75 · 0.55 cm → 차 ≈ 1.3 · 1.0 cm — 통과</td><td><span class="mono">outputs/j693_f1_save.txt</span> · 사용자 줄자</td></tr>
+    <tr><td>F1-1b 이중 벽 0</td><td>동쪽 15~20 cm 굵은 띠 = 두 방을 가르는 실제 ≈ 20 cm 벽(사용자) — 통과</td><td>그림 <span class="mono">Docs/04_navigation/figures/2026-09-30_office_v1.png</span></td></tr>
+    <tr><td>F1-2 복원: 원점에서 ≤ 5 cm, 5 s 안 안정</td><td>그 자리 1.16 cm · 16 s 흔들림 0.00 cm, 테이프 재정렬 뒤 0.33 cm — 통과</td><td><span class="mono">outputs/j698_f1_restore.txt</span> · <span class="mono">outputs/j704_f1v2_prep.txt</span></td></tr>
+    <tr><td>F1-3 줄자 3 구간 ±5 cm</td><td>방 폭 1.97 vs 1.96 · 벽 0.20 vs 0.20 · 문 0.90 vs 0.86 / 0.81 m(경계)</td><td>지도 측정 원문 없음(아래)</td></tr>
+    <tr><td>F1-5 유리(기록)</td><td>출발 오른쪽 벽(map y ≈ −0.65)이 필름 붙은 유리 → 라이다가 벽으로 인식</td><td>사용자 관찰</td></tr>
+  </table></div>
+  <div class="flow" style="margin-top:12px">
+    <span class="k">지도</span><span>office_v1: 301 × 213 셀(5 cm) = 15.1 × 10.7 m, 원점 (−5.09, −6.96), 출발 방 · 문 밖 책상 구역 · 북동쪽 방까지. pgm · yaml 은 저장소 <span class="mono">Docs/04_navigation/maps/office_v1.{pgm,yaml}</span>, 포즈 그래프(50.3 + 38.4 MB)는 Jetson <span class="mono">~/maps/office/</span>.</span>
+    <span class="k">스크립트 핵심</span><span><pre class="code">판정: 첫 안정값이 원점에서 ≤ 5 cm, 5 s 안 안정(연속 변화 ≤ 1 cm).
+    last = ok[-5:]; spread = max(math.hypot(a[1] - b[1], a[2] - b[2]) for a in last for b in last)</pre><span class="note">스크립트 원문 <span class="mono">Docs/debug_log/2026-09-30/jobs/job697_restore_chk.py</span> 3 · 37 행 · 래퍼 <span class="mono">jobs/job698_f1_restore.sh</span></span></span>
+    <span class="k">나온 결과</span><span><pre class="code">[async_slam_toolbox_node-1] Load From File /home/jetson/maps/office/office_v1.posegraph
+/map 301×213, 해상도 0.050, 원점 (-5.09, -6.96) — 저장본 301×213, (−5.09, −6.96)
+   1.0 s  map (-0.0112, -0.0032, +0.26°)  원점 거리 1.16 cm
+  16.0 s  map (-0.0112, -0.0032, +0.26°)  원점 거리 1.16 cm
+마지막 5 표본 흔들림 0.00 cm, 원점 거리 1.16 cm
+(재확인, 로버를 테이프에 다시 놓고)
+   3.0 s  map (+nan, +nan, +nan°)  원점 거리 nan cm
+   4.0 s  map (-0.0014, -0.0030, +0.19°)  원점 거리 0.33 cm</pre><span class="note">결과 원문 <span class="mono">Docs/debug_log/2026-09-30/outputs/j698_f1_restore.txt</span> · <span class="mono">outputs/j704_f1v2_prep.txt</span>(TF 가 4 s 에 처음 나옴)</span></span>
+    <span class="k">F1-3 측정</span><span>저장 pgm 에서 한 점부터 빈 셀을 따라 양쪽 점유 셀까지(벽 안쪽 면 사이, 불확도 ±1 셀).<pre class="code">for x in (-0.5, 0.0, 0.5, 1.0):
+    a, b, w = width(x, 0.0, 'y'); print('출발 방 남북 폭 @ x=%+.1f: ...' % ...)
+for y in (-0.60, -0.65, -0.70):
+    a, b, w = width(2.25, y, 'x'); print('문 폭 @ y=%.2f (x=2.25 에서): ...' % ...)</pre><span class="note">스크립트 원문 <span class="mono">Docs/debug_log/2026-09-30/jobs/job703_map_spans.py</span> 45~48 행 · 출력 원문 없음 — SUMMARY 표(방 폭 1.96 · 문 0.81~0.86 · 벽 0.20 m)가 전부</span></span>
+    <span class="k">결론</span><span>방 폭이 벽 절대 위치까지 1 cm 안 → 지도 원점 · 스케일 정확. 문 폭이 지도에서 좁은 것은 라이다 높이(0.185 m)에서 열린 문짝 · 문막이가 찍힌 것으로 추정 — 계획에는 안전 측. F1 남은 것: 금지 구역 마스크(사용자: 사무실 전체 매핑 뒤로) · F1-4 위치 추정 모드.</span>
+  </div>
+</section>
+
+<section>
+  <h2>매핑 중 '멈췄다 점프' — 메모리가 아니라 CPU 과부하<span class="sec">§5 · §11 · §11.1 · §12</span></h2>
+  <div class="flow">
+    <span class="k">본 것</span><span>사용자: Foxglove 에서 로버 위치가 멈췄다가 점프. prep 뒤 ≈ 40 분 로그: 부하 평균 11.3(코어 6), EKF "Failed to meet update rate" 760 회, SLAM "Message Filter dropping" 106 회.</span>
+    <span class="k">스크립트 핵심</span><span><pre class="code">e0=$(grep -ac 'Failed to meet update rate' /tmp/sensors.log); s0=$(grep -ac 'Message Filter dropping' /tmp/slam.log)
+  (30 s 대기 · top)
+e1=$(grep -ac 'Failed to meet update rate' /tmp/sensors.log); s1=$(grep -ac 'Message Filter dropping' /tmp/slam.log)
+echo "[$L] 30 s: EKF 주기 미달 +$((e1-e0)) · SLAM 스캔 버림 +$((s1-s0)) · load 1분 ..."</pre><span class="note">스크립트 원문 <span class="mono">Docs/debug_log/2026-09-30/jobs/job695_loadab.sh</span> 4 · 7~8 행(가운데 줄은 요약) · 누계 <span class="mono">jobs/job694_lagchk.sh</span> → <span class="mono">outputs/j694_lagchk.txt</span></span></span>
+    <span class="k">나온 결과</span><span><pre class="code">[A_fox_on] 30 s: EKF 주기 미달 +12 · SLAM 스캔 버림 +0 · load 1분 10.09(시작 10.77)
+  브리지 클라이언트 연결 수: 1
+  foxglove_bridge        62.4
+  ekf_node               48.6
+  bt_navigator           28.9
+[B_fox_off] 30 s: EKF 주기 미달 +0 · SLAM 스캔 버림 +0 · load 1분 5.55(시작 7.24)
+  브리지 클라이언트 연결 수: 0
+  ekf_node               12.1
+  bt_navigator           10.0</pre><span class="note">결과 원문 <span class="mono">Docs/debug_log/2026-09-30/outputs/j695_load_A.txt</span> · <span class="mono">outputs/j695_load_B.txt</span>(줄 발췌)</span></span>
+    <span class="k">추론</span><span>Foxglove 연결이 브리지(62 %)뿐 아니라 EKF(×4) · 대기 Nav2 CPU 를 끌어올림 → EKF 주기 놓침 → odom TF 지연 → SLAM 이 스캔을 버림 → 멈췄다 점프(수치는 측정, 연결 인과는 추정).</span>
+    <span class="k">1 차 조치</span><span><span class="mono">foxglove.launch.py viz:=map</span> 세트(tf · tf_static · robot_description · map · map_metadata · scan, capabilities 는 clientPublish 만). 개선 측정 C 는 사용자 결정으로 재발 시에.<span class="c1104">(11-04 정정: 적용 확인 출력의 'topic_whitelist:' 라벨 줄은 실제로는 max_qos_depth 를 찍는다(다음 줄이 진짜 whitelist). 출력 원문은 남지 않음 — 근거 Docs/issues/f1-office-mapping.md §5.4)</span></span>
+    <span class="k">재발(§11)</span><span>이어 그리기 중 viz:=map 인데도 같은 증상. 메모리 available 5.1 / 7.6 GB · 스왑 0, 부하 10.6~10.9, 24 s 에 EKF 미달 +25. CPU slam 56.6 · ekf 50.3 · nvblox 35.3 · planner 25.8 · bt 25.8 · 브리지 18.1 %(대기 Nav2 합 ≈ 130 %). <span class="note">결과 원문 <span class="mono">outputs/j705_jumpchk.txt</span> · <span class="mono">outputs/j706_cputop.txt</span></span></span>
+    <span class="k">조치 · 결과</span><span>prep <span class="mono">MAPPING=1</span> = 매핑 전용 모드(Nav2 · nvblox 생략, stuck_monitor 단독 · 펌웨어 안전 그대로).<pre class="code">[mapping_mode2] 30 s: EKF 주기 미달 +0 · SLAM 스캔 버림 +0 · load 1분 2.72(시작 2.61)
+  async_slam_tool        57.5
+  ekf_node               53.6
+  foxglove_bridge        28.7</pre><span class="note">결과 원문 <span class="mono">Docs/debug_log/2026-09-30/outputs/j710_mapmode_teleop.txt</span> · prep <span class="mono">jobs/job709_mapmode_prep_full.sh</span>(첫 시도 <span class="mono">job707</span> 은 prep 이 'Terminated' 로 끊김, 원인 미확정)</span></span>
+    <span class="k">§12 '스캔만 돈다'</span><span>매핑 모드에서도 회전하면 스캔만 돌고 로버는 안 움직임(사용자). 로버 쪽 TF 를 15 s 봄:<pre class="code"> t   odom→base yaw  map→odom yaw  map→base yaw | ω 휠 / 휠(컨디셔너) / 자이로 / EKF  | 수신(1 s) 휠·컨디·IMU·EKF
+ 3     -118.9°       -3.1°     -122.0°  | -0.30 / -0.30 / -0.28 / -0.29 | 25·25·198·30
+ 4     -132.7°       -2.8°     -135.5°  | -0.30 / -0.30 / -0.19 / -0.19 | 25·26·202·30
+ 5     -148.5°       -2.7°     -151.2°  | -0.30 / -0.30 / -0.39 / -0.29 | 25·25·200·30</pre><span class="note">결과 원문 <span class="mono">Docs/debug_log/2026-09-30/outputs/j712_rotchk.txt</span> · 스크립트 <span class="mono">jobs/job711_rotchk.py</span></span> → 로버 쪽 TF 정상. 원인 추정: 브리지 <span class="mono">max_qos_depth 1</span> 이 여러 발행자가 섞인 /tf 에서 로버 변환을 버림 → map 세트만 10 으로(클라이언트 쪽 도착 간격은 재지 않음).</span>
+  </div>
+</section>
+
+<section>
+  <h2>F0-b 주행 영상 · 속도 명령이 정해지는 길<span class="sec">§7</span></h2>
+  <div class="flow">
+    <span class="k">영상</span><span>f0b1 · f0b2 bag → 10 Hz 프레임(<span class="mono">jobs/job699_bag2frames.py</span>) → matplotlib · ffmpeg 1280×720 실제 속도(<span class="mono">jobs/render_f0b.py</span>), 사용자 촬영본과 좌우 결합(<span class="mono">jobs/sidebyside.sh</span>). 동기 = 문 통과 순간. 결과 <span class="mono">Docs/debug_log/2026-09-30/videos/</span>(git 제외) · 확인 프레임 <span class="mono">Docs/04_navigation/figures/2026-09-30_f0b1_sbs_door_return_v3.png</span>. v3 에서 f0b1 이 W3 에서 후진으로 복귀를 시작한 것이 드러남.</span>
+    <span class="k">속도 경로</span><span>MPPI 10 Hz(vx_max 0.08, wz_max 0.38) → velocity_smoother 20 Hz(측정 중앙값 20 Hz) → /cmd_vel → 펌웨어(<span class="mono">MAX_LINEAR_SPEED_MPS 0.085</span>, 한쪽 트랙이 넘으면 두 트랙을 같은 비율로 축소). 회전 상한 0.38 = 2 × 0.085 / B_eff 0.443.</span>
+    <span class="k">§7.3 측정</span><span>EKF 직진이 명령보다 낮은 이유 — 회전 중 펌웨어 비례 축소. 평균 |EKF − 명령| 1.04~1.09 cm/s → 펌웨어 규칙으로 계산한 |EKF − 예상| 0.32~0.33 cm/s(SUMMARY 표, 별도 출력 없음).</span>
+    <span class="k">스크립트 핵심</span><span><pre class="code">전진 주행 전체(명령 v ≥ 0.075)에서 신호마다 1 s 이동평균을 뺀 **빠른 흔들림**의 σ · 주된 주파수
+    t, x = X[:, 0], X[:, col]; dt = np.median(np.diff(t)); n = max(3, int(round(1.0 / dt)))
+    sp = np.abs(np.fft.rfft(np.where(m, y, 0))); f = np.fft.rfftfreq(len(y), dt)</pre><span class="note">스크립트 원문 <span class="mono">Docs/debug_log/2026-09-30/jobs/job701_vx_jitter.py</span> 2 · 30 · 32 행(머리 '(v2)') · 래퍼 <span class="mono">jobs/job702_vx_jitter_run.sh</span></span></span>
+    <span class="k">나온 결과</span><span><pre class="code">== f0b1
+원본 휠 vx     25.0 Hz | ... 빠른 흔들림 σ 0.0037 | 주된 주파수 0.84 Hz
+EKF vx      30.0 Hz | ... 빠른 흔들림 σ 0.0037 | 주된 주파수 1.23 Hz
+자이로 ω      200.7 Hz | ... 빠른 흔들림 σ 0.0525 | 주된 주파수 8.02 Hz
+EKF ω       30.0 Hz | ... 빠른 흔들림 σ 0.0478 | 주된 주파수 8.02 Hz
+같은 시각 EKF vx − 휠 vx: 평균 +0.0000, σ 0.0015 m/s
+== f0b2
+EKF ω       30.0 Hz | ... 빠른 흔들림 σ 0.0491 | 주된 주파수 1.40 Hz</pre><span class="note">결과 원문 <span class="mono">Docs/debug_log/2026-09-30/outputs/j702_vx_jitter.txt</span>(줄 발췌)</span></span>
+    <span class="k">추론</span><span>vx 흔들림의 주원인 = MPPI 조향 명령의 ≈ 1 Hz 흔들림 → 펌웨어 비례 축소. 명령으로 계산한 예상 v 와 지연 0.1 s 에서 상관 0.93~0.94, 빼면 σ 1.5 mm/s 만 남음(86~88 % 설명).<span class="c1104">(11-04 정정: 상관 계산은 저장된 도구 · 출력에 없다 — 앞판(v1)은 남지 않아 원천 소실. j702 의 σ 0.0015 m/s 는 '같은 시각 EKF vx − 휠 vx' 로 다른 양. 1 Hz 라는 방향은 주파수 원문으로 지지 — 근거 Docs/issues/f0b-course.md §5)</span> ω 흔들림은 자이로가 차체 진동(≈ 8 Hz)을 잡은 것.<span class="c1104">(11-04 정정: EKF ω 8 Hz 는 f0b1 만, f0b2 는 1.40 Hz(위 출력). 자이로 ω 는 두 회 모두 8.0~8.2 Hz — 근거 Docs/issues/f0b-course.md §5)</span></span>
+    <span class="k">결론</span><span>개선 불필요(정상적인 조향 미세 보정, 폭 ≈ 속도의 5 %, 경로 추종 양호, 위치는 SLAM 이 보정). 필요해지면 MPPI 조향 평활 · 자이로 저역 필터.</span>
+  </div>
+</section>
+
+<section>
+  <h2>지도 넓히기 2 회 — 루프 클로저 오정합<span class="sec">§13 ~ §17</span></h2>
+  <div class="flow">
+    <span class="k">본 것 ①</span><span>17:10 경 이어 그리기 중 로버가 지도 위 엉뚱한 자리로 점프(사용자). bag 을 안 떠서 점프 순간 기록은 없음.</span>
+    <span class="k">나온 결과</span><span><pre class="code">map→odom (+4.171, +0.644) yaw -2.7° | odom→base_link (-2.506, +0.081) yaw +78.6° | map→base_link (+1.672, +0.845) yaw +75.9°
+Ceres 경고(최적화 실행 흔적) 2건:
+16:59:10.108861
+17:10:34.690649
+slam 버림 전체 73회</pre><span class="note">결과 원문 <span class="mono">Docs/debug_log/2026-09-30/outputs/j713_jump2.txt</span> · <span class="mono">outputs/j714_jump2b.txt</span> · 스크립트 <span class="mono">jobs/job713_jump2.sh</span> · <span class="mono">job714_jump2b.sh</span></span></span>
+    <span class="k">추론</span><span>각도는 3° 만 다르고 위치만 4 m 넘게 어긋남 + 최적화 시각이 보고 시점과 일치 → 비슷한 구조(책상 · 칸막이 줄)에 잘못 맞춘 루프 클로저가 가장 유력(추정). 사용자 확인: "slam 이 틀리고 바퀴+자이로가 맞다" → 확정.</span>
+    <span class="k">조치(§14)</span><span>한 개만 바꿈: <span class="mono">loop_search_space_dimension</span> 8 → 3 m(±1.5 m — 정상 보정은 180° 당 10~27 cm 수준). 기각: 루프 클로저 끔(새 구역 누적 오차를 못 잡음) · 응답 문턱 상향(bag 없이 수치 근거 없음). 매핑 prep 에 경량 bag 자동 기록, 매핑 중 stuck_monitor 는 관찰 모드(사람 조종 회전 중 3 회 0 지령을 끼워 넣음). 다음 매핑 판정(선언): map→odom 이 1 회에 0.5 m 넘게 뛰면 실패.</span>
+  </div>
+  <div class="flow" style="margin-top:12px">
+    <span class="k">본 것 ②</span><span>17:24~17:37 두 번째 매핑(창 3 m · 패드 최대속도 0.085 / 0.38 — §15 사용자 요청)도 지도 깨짐. 이번엔 bag <span class="mono">map_0930_1724</span>(780 s)가 있음.</span>
+    <span class="k">스크립트 핵심</span><span><pre class="code">- map→odom 연속 표본 사이 변화 &gt; 5 cm 또는 &gt; 2° 를 점프로 표시(정상 보정은 스캔마다 mm~cm)
+d = np.hypot(np.diff(mo[:, 1]), np.diff(mo[:, 2])); da = np.degrees(np.abs((np.diff(mo[:, 3]) + np.pi) % (2 * np.pi) - np.pi))</pre><span class="note">스크립트 원문 <span class="mono">Docs/debug_log/2026-09-30/jobs/job718_ana.py</span> 3 · 42 행 · 래퍼 <span class="mono">jobs/job718_map2_break.sh</span></span></span>
+    <span class="k">나온 결과</span><span><pre class="code">== SLAM 최적화(Ceres) 흔적:
+17:24:13.691
+17:30:34.921
+17:31:34.158  … (17:31:39.855 까지 10 줄)
+17:36:18.421
+  slam 버림 47회 | EKF 미달 2회 | load 1.36 2.09 2.56
+== map→odom 점프(&gt;5 cm 또는 &gt;2°): 19 건
+17:36:15 (+698.9 s) 점프 0.06 m -0.6° | map→odom (+0.02,+0.06,-11.1°)→(+0.08,+0.09,-11.7°) | ...
+17:36:18 (+701.8 s) 점프 1.67 m +33.2° | map→odom (+0.06,+0.08,-11.5°)→(-1.14,-1.08,+21.6°) | 직전3s 휠v최대 0.089 휠ω최대 0.19 자이로ω최대 0.24 | odom (+4.26,-4.24,+97°)
+17:36:21 (+705.1 s) 점프 1.04 m +10.4° | map→odom (-1.26,-1.36,+24.7°)→(-1.49,-2.38,+35.1°) | ...</pre><span class="note">결과 원문 <span class="mono">Docs/debug_log/2026-09-30/outputs/j718_map2_break.txt</span>(줄 발췌)</span></span>
+    <span class="k">추론</span><span>17:28:50~17:36:16 동안 map→odom 은 서서히 (0,0,0°) → (+0.02,+0.05,−11.1°), 17:31:34~39 최적화 10 회는 map→odom 변화가 없어 정상 루프 클로저로 판단.<span class="c1104">(11-04 정정 · 이 페이지 작성 중 원문 대조: 같은 출력의 최적화 흔적에는 17:30:34.921 한 줄이 더 있고(SUMMARY 에 없음), 10 s 요약을 보면 그 사이 map→odom y 가 17:30~17:32 에 +0.38 m 까지 갔다가 돌아온다 — 처음 · 끝 값만으로는 이 출렁임이 보이지 않는다. 한 번에 5 cm 넘는 변화는 17:34:32 전까지 없어 '서서히' 는 맞음 — 근거 Docs/debug_log/2026-09-30/outputs/j718_map2_break.txt '10 s 요약' 줄)</span> 추측항법 방향 누적 오차가 11 분에 11° 인데 한 번에 33° 보정은 물리적으로 맞지 않음 → <b>오정합</b>. 입력 이상 없음(EKF 미달 2, 휠ω−자이로ω ≤ 0.03 rad/s).</span>
+    <span class="k">결론</span><span>탐색 창 ±1.5 m 는 위치 창일 뿐 — 각도 탐색(±20°)과 그래프 최적화가 합쳐져 1.67 m · 33° 가 나왔다. 창 축소만으로는 불충분.</span>
+    <span class="k">§17 되살리기</span><span>slam_toolbox 는 그래프를 되감을 수 없으므로, bag 을 점프 3 s 전(+699 s)까지만 도메인 42 · sim time 으로 재생해 office_v1 위에 다시 그리기로(<span class="mono">jobs/job719_cut.sh</span> · <span class="mono">job719_cutreplay.py</span>). bag 은 Jetson <span class="mono">~/bags/map_0930_1724</span>(219 MB)로 복사. 재생이 5 분 넘게 "재생: 앞 …" 을 내지 않아 사용자 요청으로 중단(<span class="mono">job720</span>), 후보 지도 없음. SUMMARY 는 원인을 bag 읽기(700 s 분량 /tf 39 k · 스캔 7.8 k 역직렬화)로 추정했다.<span class="c1104">(11-04 정정: 10-01 에 <span class="mono">python3 -u</span> + <span class="mono">grep --line-buffered</span> 로 바꾸자 정상 진행 · 완주 — 무출력의 주원인은 파이프의 grep 이 출력을 모아 둔 것으로 추정(읽기 시간 자체는 안 잼) — 근거 Docs/issues/f1-office-mapping.md §5.3 · Docs/debug_log/2026-10-01/outputs/j719b_cutreplay.txt)</span></span>
+  </div>
+</section>
+
+<section>
+  <h2>최종 목표 — 장소 이름으로 이동<span class="sec">§9</span></h2>
+  <p>사용자: 특정 구역에 이름을 붙이고 온디바이스 LLM 에 "그 지역으로 이동해" · "돌아와" 라고 하면 움직이는 메커니즘. 제안 구조: LLM 은 문장을 고정 형식(<span class="mono">{"action": "go_to", "place": &lt;등록 이름&gt;}</span>)으로만 바꾸고 좌표는 장소 등록부(yaml)에서 — 오인식이 '엉뚱한 곳' 이 아니라 '모르는 장소 → 정지' 로 끝나게. 선행: 전체 매핑 → F1-4 위치 추정 모드(세션 간 같은 좌표계 — §10 의 0.33 cm 가 그 전제 확인) → F2 순회 → 서비스 호출로 장소 이동 → LLM 앞단. 결정(사용자): 입력 = 텍스트, 위치 = F2 다음 'F2.5'. 위험(추정): Orin Nano 8 GB 공유 메모리 · 지금 CPU ≈ 320 % → 1.5B~3B 4 bit 후보, 실측 필요.</p>
+</section>
+
+<section>
+  <h2>내 실수 · 같은 날 바로잡은 것</h2>
+  <div class="pm">
+    <h3>후진 시험 시간 한도가 음수 — 로버가 안 움직임 (§3.2)</h3>
+    <div class="flow">
+      <span class="k">하려 한 것</span><span>0.70 m 후진으로 SLAM 치우침 2 회차 — <span class="mono">job680_slambias.py 0.70 -0.06</span></span>
+      <span class="k">본 것</span><span>첫 시도에서 로버가 움직이지 않고 바로 정지 지령 출력</span>
+      <span class="k">판별</span><span>루프 조건 <span class="mono">DIST/V*2 + 5</span> 를 V = −0.06 으로 계산 → −18.3 s, 첫 비교에서 거짓</span>
+      <span class="k">결론</span><span><span class="mono">abs(V)</span> 로 수정(위 §3 발췌 45 행)</span>
+      <span class="k">다음에 알아보는 법</span><span>속도 · 거리 인자를 받는 러너는 부호가 바뀌는 쪽으로 한 번 마른 실행. 한도식에는 크기를 쓴다</span>
+      <span class="k">데이터</span><span><span class="mono">jobs/job680_slambias.py</span>(수정판만) · <span class="mono">outputs/j683_slambias_rev.txt</span>(수정 뒤) · 첫 시도 출력은 원천 소실 · 카드 <span class="mono">Docs/issues/f1-office-mapping.md</span> §5.1</span>
+    </div>
+  </div>
+  <div class="pm">
+    <h3>직진 속도 흔들림의 원인을 엔코더 · PID 로 추정 (§7.3 → §7.4)</h3>
+    <div class="flow">
+      <span class="k">처음 추론</span><span>비례 축소를 빼고 남은 σ 3.2~3.6 mm/s = 엔코더 0.231 mm/카운트 × 25 Hz 해상도 + PID 맥동</span>
+      <span class="k">의심한 이유</span><span>사용자 질문(무엇이 진동을 만드나)으로 신호별 주파수를 봄 — 해상도 잡음이면 넓은 대역이어야 하는데 휠 · EKF vx 모두 ≈ 1 Hz 에 몰림(위 j702 출력)</span>
+      <span class="k">결론</span><span>주원인 = MPPI 조향 1 Hz 흔들림 → 펌웨어 비례 축소. 엔코더 · PID 몫은 σ 1.5 mm/s 수준(이 수치의 출처는 위 정정 참고)</span>
+      <span class="k">다음에 알아보는 법</span><span>'잡음' 으로 돌리기 전에 스펙트럼을 본다 — 좁은 주파수에 몰리면 어떤 입력의 응답이다</span>
+      <span class="k">데이터</span><span><span class="mono">jobs/job701_vx_jitter.py</span> · <span class="mono">outputs/j702_vx_jitter.txt</span> · 카드 <span class="mono">Docs/issues/f0b-course.md</span> 실수 2</span>
+    </div>
+  </div>
+  <div class="pm">
+    <h3>루프 창 축소를 '대책' 으로 믿음 (§14 → §16)</h3>
+    <div class="flow">
+      <span class="k">하려 한 것</span><span>17:10 오정합 재발 방지 — <span class="mono">loop_search_space_dimension</span> 8 → 3(<span class="mono">jobs/job715_slamcfg_deploy.sh</span>)</span>
+      <span class="k">본 것</span><span>2 차 매핑에서 한 번의 최적화로 1.67 m · +33.2°(위 j718 출력)</span>
+      <span class="k">의심한 이유</span><span>위치 차는 창 경계와 비슷했지만 각도 33° 는 창이 다루지 않는 축</span>
+      <span class="k">결론</span><span>창은 위치 창일 뿐. 4.2 m 건을 막았는지도 재현 시험이 없어 미확인</span>
+      <span class="k">다음에 알아보는 법</span><span>설정 하나로 '막았다' 고 하기 전에 실패를 담은 bag 을 그 설정으로 재생해 재현이 사라지는지 본다. 오정합 서명 = 추측항법 누적 각도보다 큰 한 번의 각도 보정</span>
+      <span class="k">데이터</span><span><span class="mono">jobs/job718_ana.py</span> · <span class="mono">outputs/j718_map2_break.txt</span> · bag Jetson <span class="mono">~/bags/map_0930_1724</span> · 카드 <span class="mono">Docs/issues/f1-office-mapping.md</span> §5.2</span>
+    </div>
+  </div>
+  <div class="pm">
+    <h3>사용자 영상을 f0b2 로 가정해 결합 (§7.1 → §7.5)</h3>
+    <div class="flow">
+      <span class="k">본 것</span><span>카카오톡 전송본이라 촬영 시각 메타 없음. 회차를 가를 간격(f0b1 68.1 · f0b2 62.1 s)을 흔들리는 영상에서 ±2 s 로 못 읽음</span>
+      <span class="k">처음 추론</span><span>f0b2 로 가정(미확정이라고 적고 원본 촬영 시각을 요청)</span>
+      <span class="k">결론</span><span>사용자: 실제 영상은 f0b1 → 재동기(데이터 시작 8.5 · 65.5 s), f0b2 결합본 삭제</span>
+      <span class="k">다음에 알아보는 법</span><span>두 회차를 가를 질적 사건(여기선 f0b1 의 W3 후진 출발)을 bag 에서 먼저 찾아 영상에서 확인</span>
+      <span class="k">데이터</span><span><span class="mono">jobs/sidebyside.sh</span> · <span class="mono">videos/</span>(로컬, git 제외) · 카드 <span class="mono">Docs/issues/f0b-course.md</span> 실수 1</span>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>다음 후보(09-30 끝 기준)</h2>
+  <ul>
+    <li><span class="mono">job719</span> 재실행으로 점프 전까지 지도 되살리기 → 확인 · 승인 → office_v2</li>
+    <li>오정합 대책: 같은 bag 전체 재생으로 17:36:18 재현 뒤 응답 문턱 상향 · 각도 창 축소 · 루프 클로저 끔 A/B(판정 = 그 시점 점프 ≤ 0.5 m · 5° 이면서 17:31 정상 루프 클로저 유지)</li>
+    <li>F1-4 위치 추정 모드 비교 · 금지 구역 마스크(전체 매핑 뒤)</li>
+    <li>복귀 앞뒤 잔차 ≈ 3.6 cm — 제자리 180° → 줄자</li>
+  </ul>
+</section>
+
+<section>
+  <h2>이후 · 관련 카드</h2>
+  <ul>
+    <li><span class="mono">Docs/issues/f1-office-mapping.md</span> — F1 전체, 10-01 bag 재생으로 office_v2 · 10-02 office_v3</li>
+    <li><span class="mono">Docs/issues/foxglove-snap-cpu.md</span> · <span class="mono">Docs/issues/cpu-load-stalls.md</span> — Foxglove 연결 부하 · map 세트</li>
+    <li><span class="mono">Docs/issues/f0b-course.md</span> — F0-b 영상 · 속도 설명</li>
+    <li><span class="mono">Docs/issues/joystick-teleop.md</span> — mapping 프로필 · F1-0</li>
+    <li><span class="mono">Docs/issues/stuck-monitor.md</span> — 매핑 중 stuck_monitor 발동(관찰 모드)</li>
+    <li><span class="mono">Docs/issues/f2-patrol-loc-jump.md</span> — 재생기 계보(<span class="mono">job719_cutreplay.py</span> → 상시 도구)</li>
+    <li><span class="mono">Docs/issues/f25-place-navigation.md</span> — §9 최종 목표의 구현(10-28 ~)</li>
+  </ul>
+</section>
+</div>

@@ -857,3 +857,6 @@ agent 드롭 · 보드 전송 실패.
    비대칭이 원인 구간을 좁히는 가장 강한 단서였다.
 5. **도구의 정규식 방언을 확인할 것.** `pkill -f "a\|b"` 는 ERE 에서 리터럴이다. 정리 스크립트가
    조용히 실패해 측정 두 건을 오염시켰다.
+
+## (2026-11-04 추가) 사후 정리 페이지
+- 「09-09 odom 소실 · STVL 도입」 https://claude.ai/artifact/5w1ddJCQydbgDnrPrPXD7Q — 로컬 `figures/day_summary_0909.html`(본문 `jobs/report_0909_body.html` · 조립 `jobs/fig_report_0909.py`). 이 SUMMARY 를 원천으로 11-04 에 만듦, 뒤 정정은 페이지에 '11-04 정정' 표시(문제 대장 카드 근거). 기록 → `Docs/debug_log/2026-11-04/SUMMARY.md` §11.

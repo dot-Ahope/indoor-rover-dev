@@ -1,0 +1,238 @@
+<title>09-15 MPPI 첫 주행과 망</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* 배치: 실험 노트 — 좁은 본문 열(65자) + 넓게 펼치는 그림 · 표, 판정은 왼쪽 띠 색으로(10-20 판과 같은 틀) */
+:root{
+  --bg:#f3f4f6; --paper:#ffffff; --ink:#1b1f24; --muted:#5b6470; --line:#d9dde3;
+  --ir:#b3263e;      /* 프로젝터 켬 · 실패 쪽 */
+  --cool:#1f7a72;    /* 프로젝터 끔 · 통과 쪽 */
+  --warn:#a86a00;
+  --tint-ir:#f8e8eb; --tint-cool:#e4f2f0; --tint-warn:#fbf1df;
+  --f-body:"IBM Plex Sans KR","Malgun Gothic","Apple SD Gothic Neo",sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#111418; --paper:#181c21; --ink:#e6e9ed; --muted:#9aa4b0; --line:#2c333b;
+  --ir:#ef6b80; --cool:#5cc4b8; --warn:#e0a640;
+  --tint-ir:#2b1b1f; --tint-cool:#15292a; --tint-warn:#2a2316; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#111418; --paper:#181c21; --ink:#e6e9ed; --muted:#9aa4b0; --line:#2c333b;
+  --ir:#ef6b80; --cool:#5cc4b8; --warn:#e0a640;
+  --tint-ir:#2b1b1f; --tint-cool:#15292a; --tint-warn:#2a2316; color-scheme:dark}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.65;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:28px 64px}
+.wrap{max-width:980px;margin:0 auto;display:flex;flex-direction:column;gap:34px}
+header{display:flex;flex-direction:column;gap:6px;border-bottom:2px solid var(--ink);padding-bottom:14px}
+.eyebrow{font-family:var(--f-mono);font-size:12px;letter-spacing:.08em;color:var(--muted);text-transform:uppercase}
+h1{font-size:30px;line-height:1.25;margin:0;font-weight:700;text-wrap:balance}
+h2{font-size:20px;margin:0 0 4px;font-weight:700;text-wrap:balance}
+h2 .sec{font-family:var(--f-mono);font-size:13px;color:var(--muted);font-weight:400;margin-left:8px}
+p{margin:0;max-width:68ch}
+section{display:flex;flex-direction:column;gap:12px}
+.lead{color:var(--muted);max-width:72ch}
+.verdicts{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
+.v{background:var(--paper);border:1px solid var(--line);border-left:5px solid var(--muted);padding:12px 14px;display:flex;flex-direction:column;gap:4px;min-width:0}
+.v.ok{border-left-color:var(--cool)} .v.no{border-left-color:var(--ir)} .v.wait{border-left-color:var(--warn)}
+.v b{font-size:15px} .v span{color:var(--muted);font-size:13.5px}
+.pill{display:inline-block;font-family:var(--f-mono);font-size:11.5px;padding:1px 8px;border-radius:999px;white-space:nowrap}
+.pill.ok{background:var(--tint-cool);color:var(--cool)} .pill.no{background:var(--tint-ir);color:var(--ir)} .pill.wait{background:var(--tint-warn);color:var(--warn)}
+.tbl{overflow-x:auto;background:var(--paper);border:1px solid var(--line)}
+table{border-collapse:collapse;width:100%;font-size:13.5px;font-variant-numeric:tabular-nums}
+th,td{padding:7px 10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{font-weight:500;color:var(--muted);font-size:12.5px;white-space:nowrap}
+td.n{font-family:var(--f-mono);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr.hl td{background:var(--tint-cool)} tr.bad td{background:var(--tint-ir)}
+figure{margin:0;background:var(--paper);border:1px solid var(--line);padding:10px;display:flex;flex-direction:column;gap:8px}
+figure img{width:100%;height:auto;display:block}
+figcaption{font-size:13px;color:var(--muted)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media (max-width:720px){.two{grid-template-columns:1fr}}
+ul{margin:0;padding-left:20px;max-width:72ch} li{margin:2px 0}
+.mono{font-family:var(--f-mono);font-size:13px}
+.flow{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;font-size:14px}
+.flow .k{font-family:var(--f-mono);color:var(--muted);font-size:12.5px;padding-top:2px;white-space:nowrap}
+.note{font-size:13px;color:var(--muted)}
+.pm{background:var(--paper);border:1px solid var(--line);padding:12px 14px;display:flex;flex-direction:column;gap:8px}
+.pm h3{font-size:15.5px;margin:0;font-weight:700}
+.pm .flow{grid-template-columns:auto 1fr;gap:6px 14px}
+.pm .flow span:not(.k){max-width:none}
+</style>
+
+<style>
+.code{margin:0;font-family:var(--f-mono);font-size:12.5px;line-height:1.5;background:var(--bg);border:1px solid var(--line);padding:8px 10px;overflow-x:auto;white-space:pre;max-width:100%}
+.flow > span{min-width:0}
+.c1104{font-weight:600;color:var(--ink);background:var(--tint-warn);border-left:3px solid var(--warn);padding:0 5px;margin-left:3px;border-radius:2px;white-space:normal;font-size:.92em}
+</style>
+<div class="wrap">
+<header>
+  <div class="eyebrow">Indoor Rover · 2026-09-15 · Docs/debug_log/2026-09-15 §0–§3.1 · 주행 있음 · 11-04 사후 작성</div>
+  <h1>09-15 MPPI 첫 주행과 끊긴 망</h1>
+  <p class="lead">이 페이지는 2026-11-04 에 그날의 <span class="mono">SUMMARY.md</span> 와 같은 폴더의 <span class="mono">jobs/</span> · <span class="mono">outputs/</span>(<span class="mono">mp1.csv</span> · 스냅샷 1 장)을 원천으로 사후에 만들었습니다. 전날(09-14) 상자 뒤 목표에서 계획이 상자 옆에서 일찍 복귀선으로 꺾여 RPP 둘레 검사가 멈칫거렸고, 이날은 ① Smac 파라미터로 복귀를 상자 뒤로 미룰 수 있는지 ② 안 되면 MPPI 로 둘레 검사 정지 자체를 없앨 수 있는지를 봤습니다. ①은 효과 없음, ②의 첫 주행 mp1 은 MPPI 가 아니라 Smac 재계획 거부로 중단, 두 번째 시도 mp2 는 게이트 통과 직후 Jetson 망이 끊겨 주행 여부를 알 수 없게 됐습니다. §3.1 은 다음 날(09-16) 오전에 이 문서에 덧붙인 망 사고 원인 기록입니다. <span class="c1104">문제 대장 카드에서 찾은 뒤의 정정 4 건을 본문 문장 옆에 표시했습니다(원문 문장은 그대로).</span></p>
+</header>
+
+<section>
+  <h2>오늘의 판정</h2>
+  <div class="verdicts">
+    <div class="v ok"><b>세션 누적 오차 없음</b><span>가동 3 h 19 min, 정지 30 s: 휠 · EKF 위치 0.0000 m, EKF yaw +0.05 °/분(ZUPT 작동), map→odom 변화 0, EKF 위반 0 (§0.5)</span></div>
+    <div class="v no"><b>Smac 스윕 — 복귀를 상자 뒤로 못 미룸</b><span>R {0.10, 0.15} × cost {1.2, 2.0, 3.0} 6 조합 모두 x 1.0 부근 정점, x 1.2 부터 하강. Smac R 0.10 / cost 1.2 유지 (§1)</span></div>
+    <div class="v no"><b>mp1(Smac + MPPI) ABORTED 48 s</b><span>MPPI 가 아니라 계획기: 'no valid path found' ×15 — 시작 footprint 가 좌측 가구 LETHAL 에 닿자 Smac 이 재계획 거부 (§2)</span></div>
+    <div class="v ok"><b>MPPI 진입 자체는 부드러웠다</b><span>v 0.04~0.05, 부호반전 0, 충돌감지 0, 실여유 최소 0.20 m(RPP 0.03~0.10) — 대가는 속도 · CPU (§2)</span></div>
+    <div class="v wait"><b>게이트 띠를 왼쪽 통로로 좁힘</b><span>상자 오른쪽 유리 칸막이의 반사 · 투과 셀이 게이트를 3 회 막음 → y −0.10~+0.50 만 셈 (§3)</span></div>
+    <div class="v no"><b>mp2 시도 — 망 소실, 주행 시작 여부 미확인</b><span>게이트 통과 직후 ssh 무출력 → No route to host, 20 분 넘게 무응답 (§3)</span></div>
+    <div class="v ok"><b>(09-16 오전) 원인 = AP deauth + 재인증 거부</b><span>mavlink-router 비활성, Wi-Fi 우선순위 <WIFI-B> 20 &gt; ALOPS 5 &gt; PTR 0 → <LAN-B>.101 복귀 (§3.1)</span></div>
+  </div>
+</section>
+
+<section>
+  <h2>세션에 오차가 쌓였나 — 정지 30 s 점검<span class="sec">§0.5</span></h2>
+  <div class="flow">
+    <span class="k">하려 한 것</span><span>사용자 우려 "시간이 지나 ROS 세션에 오차가 쌓였나" 를 그날 첫 주행 전에 확인</span>
+    <span class="k">본 것</span><span>아래 표. 깊이 지연 103 ms(최대 383)는 드라이버 + 릴레이(37.8 ms) 파이프라인 — 0.08 m/s 에서 8 mm 라 허용, S6 항목에 기록</span>
+    <span class="k">결론</span><span>기반 계층(보드 · 에이전트 · EKF · SLAM)에 누적 오차 없음. 손 배치로 낡은 것은 SLAM 자세뿐 → <span class="mono">job240</span> 재기동으로 해소</span>
+  </div>
+<pre class="code"># job321_drift.py — 수신률 · stamp 지연, 정지 중 변화(2 s 마다 TF 조회)
+print('  %-20s %5.1f Hz  지연 중앙 %6.1f ms  최대 %6.1f ms' % (name, len(A) / DUR, 1e3 * np.median(A[:, 1]), 1e3 * A[:, 1].max()))
+print('  %s 정지 %.0f s: 위치 변화 %.4f m, yaw 변화 %+.3f° (%+.2f °/min)' % (name, DUR, dxy, dyaw, dyaw * 60 / DUR))
+a = buf.lookup_transform('map', 'odom', rclpy.time.Time()); b = buf.lookup_transform('odom', 'base_link', rclpy.time.Time())</pre>
+  <div class="tbl"><table>
+    <tr><th>항목</th><th>값</th><th>판정</th></tr>
+    <tr><td><span class="mono">/wheel_odom</span></td><td>25.1 Hz, stamp 지연 중앙 5.6 ms(최대 59)</td><td>정상</td></tr>
+    <tr><td><span class="mono">/odometry/filtered</span></td><td>27.6 Hz, 7.9 ms(최대 93)</td><td>정상</td></tr>
+    <tr><td><span class="mono">/scan</span></td><td>9.2 Hz, 3.7 ms</td><td>정상</td></tr>
+    <tr><td>깊이(필터 후)</td><td>15.0 Hz, <b>103 ms</b>(최대 383)</td><td>허용(S6 기록)</td></tr>
+    <tr><td>EKF 정지 드리프트</td><td>위치 0.0000 m, yaw <b>+0.05 °/min</b></td><td>ZUPT 작동(09-10 1.31 → 0.02~0.05)</td></tr>
+    <tr><td>map→odom (정지)</td><td>변화 0 / 0 / 0.000°</td><td>정상</td></tr>
+    <tr><td>카운터</td><td>EKF 위반 0, nav2 ERROR 0, slam 폐기 27(정지 중 필터), 에이전트 세션 1</td><td>정상</td></tr>
+  </table></div>
+  <p class="note">결과 원문 없음 — 위 표(SUMMARY §0.5)가 전부 · 스크립트 원문 <span class="mono">Docs/debug_log/2026-09-15/jobs/job321_drift.py</span> 41~58 행 · 러너 <span class="mono">jobs/run_j321.sh</span>.</p>
+</section>
+
+<section>
+  <h2>계획 쪽 — Smac 으로 복귀를 늦출 수 있나<span class="sec">§1</span></h2>
+  <div class="flow">
+    <span class="k">하려 한 것</span><span>상자 뒤 목표(1.8, 0)에서 계획이 상자를 완전히 지난 뒤 복귀하게(전날 §2.27 의 (1))</span>
+    <span class="k">배치</span><span>상자 1.21 / −0.185(가장자리 −0.10), 좌측 가구 셀 최소 +0.35 → 로버 중심 띠 [+0.075, +0.175] = 0.10 m. 정지 · 상자 살아 있음</span>
+    <span class="k">본 것</span><span>어느 조합도 x 1.0 부근에서 정점, x 1.2 부터 하강(상자 뒷면 1.32). cost 2.0 은 x 0.8 에서 +0.32 로 더 나가지만 진입각 46° 로 꺾여 좌측 가구 쪽 0.29 로 붙음</span>
+    <span class="k">결론</span><span>계획기는 '길이 + 셀 비용' 을 최소화할 뿐 '상자를 완전히 지난 뒤 복귀' 라는 형상 제약을 모른다 → 이 배치 · 이 목표에서 효과 없음. 남은 것은 컨트롤러(MPPI)</span>
+  </div>
+<pre class="code"># run_ab_bk.sh — 같은 시작 자세 · 같은 목표로 NavFn 1 회 + Smac 6 조합 (주행 없음)
+python3 /tmp/job317_plan_ab2.py $SX $SY $SYAW 1.8 0.0 $BX $BY GridBased
+for R in 0.10 0.15; do for CP in 1.2 2.0 3.0; do
+  ros2 param set /planner_server SmacHybrid.minimum_turning_radius $R
+  ros2 param set /planner_server SmacHybrid.cost_penalty $CP
+  python3 /tmp/job317_plan_ab2.py $SX $SY $SYAW 1.8 0.0 $BX $BY SmacHybrid | grep -aE 'SmacHybrid|전진:횡'
+done; done</pre>
+  <div class="tbl"><table>
+    <tr><th>계획기</th><th>R</th><th>cost</th><th>x 0.8 횡</th><th>x 1.0</th><th>x 1.2</th><th>x 1.4</th><th>x 1.6</th><th>상자 셀 최소</th><th>좌측 셀 최소</th></tr>
+    <tr><td>NavFn</td><td>—</td><td>—</td><td>+0.14</td><td>+0.20</td><td>+0.23</td><td>+0.22</td><td>+0.13</td><td>0.28</td><td>0.37</td></tr>
+    <tr><td>Smac</td><td>0.10</td><td>1.2</td><td>+0.15</td><td>+0.20</td><td>+0.19</td><td>+0.13</td><td>+0.05</td><td>0.24</td><td>0.37</td></tr>
+    <tr class="bad"><td>Smac</td><td>0.10</td><td>2.0</td><td>+0.32</td><td>+0.30</td><td>+0.23</td><td>+0.14</td><td>+0.05</td><td>0.27</td><td>0.29</td></tr>
+    <tr><td>Smac</td><td>0.10</td><td>3.0</td><td>+0.22</td><td>+0.24</td><td>+0.20</td><td>+0.13</td><td>+0.05</td><td>0.25</td><td>0.35</td></tr>
+    <tr><td>Smac</td><td>0.15</td><td>1.2</td><td>+0.12</td><td>+0.19</td><td>+0.20</td><td>+0.15</td><td>+0.05</td><td>0.26</td><td>0.36</td></tr>
+    <tr><td>Smac</td><td>0.15</td><td>2.0</td><td>+0.19</td><td>+0.22</td><td>+0.19</td><td>+0.12</td><td>+0.04</td><td>0.24</td><td>0.37</td></tr>
+    <tr><td>Smac</td><td>0.15</td><td>3.0</td><td>+0.22</td><td>+0.26</td><td>+0.21</td><td>+0.13</td><td>+0.04</td><td>0.25</td><td>0.34</td></tr>
+  </table></div>
+  <p class="note">결과 원문 없음 — 위 표(SUMMARY §1)가 전부 · 러너 원문 <span class="mono">Docs/debug_log/2026-09-15/jobs/run_ab_bk.sh</span>(비밀번호 가림) · 계획 비교 도구 <span class="mono">job317_plan_ab2.py</span> 는 09-14 판(이 폴더에 사본 없음, 카드 <span class="mono">Docs/issues/global-planner-choice.md</span> 도구 절).</p>
+</section>
+
+<section>
+  <h2>mp1 — MPPI 첫 주행은 계획기에서 멈췄다<span class="sec">§2</span></h2>
+  <div class="flow">
+    <span class="k">배치</span><span>로버를 20 cm 우측 평행 이동 후 상자 1.14 / +0.02(가장자리 +0.11), 좌측 가구 셀 +0.55. 게이트: 띠 근거 없는 셀 3 → 60 s 뒤 1 → 통과, 창 0.231<span class="c1104">(11-04 정정: 게이트 창 = 좌측 경계 − (상자 셀 최대 y + 0.195) 의 0.195 는 패딩 0.03 때 내접반경 — 09-14 §2.23 패딩 0.01(내접 0.175) 뒤에도 그대로라 창 값은 상자 쪽으로 2 cm 보수적(의도였는지 기록 없음, 미확인) — 근거 Docs/issues/mppi-passage-tuning.md §6)</span></span>
+    <span class="k">본 것</span><span>진입 t 2~20: v 0.04~0.05, ω 0.03~0.05 로 횡 0 → +0.40 차선 변경, 부호반전 0, 실여유 최소 0.20 m. 정체 t 20~48: (0.79, +0.40)에서 v → 0, nav2.log 'SmacHybrid: failed to create plan, no valid path found' ×15 → 클리어 · 재계획 반복 → BackUp 2 회 → Goal failed. 'Behavior Tree tick rate exceeded' ×3</span>
+    <span class="k">추론</span><span>MPPI 가 상자(깊이 셀 다수)와 좌측 가구(라이다 셀 소수) 사이에서 좌측으로 치우쳐(+0.40, 기하 중앙 +0.33) 지나갔고, 그 자세에서 패딩 footprint 좌측 가장자리 +0.575 가 가구 LETHAL 셀(0.525~0.575)과 겹친다. BT 는 1 Hz 재계획, Smac Hybrid-A* 는 시작 footprint 가 LETHAL 에 닿으면 계획을 거부(NavFn 은 시작 셀만 봄)</span>
+    <span class="k">결론</span><span>실패는 MPPI 의 회피가 아니라 "Smac + 좁은 띠(유효 중심 폭 ≈ 6 cm) + 1 Hz 재계획" 의 조합. 다음 변수 하나: BT planner_id → GridBased(NavFn) + MPPI 유지</span>
+    <span class="k">현장 정지</span><span>주행 중 사용자 "사람이 앞에 있다" — 이미 ABORTED 정지 상태였고 0 속도 명령을 추가 송신, 휠 odom 0.0 확인. 절차: 시야에 사람이 들어오면 즉시 정지 명령(<span class="mono">job156</span>)</span>
+  </div>
+  <p>러너 CSV 에서 진입 · 정체 구간(열 일부):<span class="c1104">(11-04 정정: SUMMARY 는 실여유 0.20 m 만 적었지만 같은 CSV 의 러너 ②(plan_clear)는 482 행 중 248 행이 음수(t 10.4 s ~ 끝, 최소 −5.3 cm @ 28.5 s) — 러너 상자 모델(재고정 · 외삽, 그 시각 box_age 19.5 s) 기준이라 실제 계획이 상자를 지났다는 뜻인지는 미확인 — 근거 Docs/issues/mppi-passage-tuning.md §6, 아래 발췌로 재확인)</span></p>
+<pre class="code">t 2.0  fwd 0.070 lat +0.002 clear_geo 0.767 plan_clear +0.152 v 0.051 w +0.034 box_age 0.4
+t 10.0 fwd 0.445 lat +0.108 clear_geo 0.369 plan_clear +0.002 v 0.052 w +0.046 box_age 1.0
+t 19.9 fwd 0.788 lat +0.391 clear_geo 0.223 plan_clear +0.040 v 0.018 w +0.055 box_age 10.9
+t 28.5 fwd 0.730 lat +0.271 clear_geo 0.219 plan_clear -0.053 v 0.003 w +0.005 box_age 19.5
+t 48.1 fwd 0.689 lat +0.154 clear_geo 0.204 plan_clear -0.053 v 0.000 w +0.000 box_age 39.1
+# 집계(awk): 행 482 · plan_clear &lt; 0 인 행 248 · 최소 -0.0530 @ t 28.5</pre>
+  <p class="note">결과 원문 <span class="mono">Docs/debug_log/2026-09-15/outputs/mp1.csv</span>(러너 <span class="mono">job125_avoid3.py</span> 의 열 <span class="mono">t,fwd,lat,clear_geo,plan_clear,…,box_age</span>) · bag <span class="mono">bags/bag_mp1.tgz</span>(git 제외) · nav2.log 원문 없음 — 'no valid path ×15' 는 SUMMARY 인용. t 28.5 이후 fwd · lat 이 줄어든 것은 BackUp 2 회와 맞다.</p>
+</section>
+
+<section>
+  <h2>mp2 시도 — 게이트, 그리고 망이 끊겼다<span class="sec">§3</span></h2>
+  <div class="flow">
+    <span class="k">게이트</span><span>NavFn + MPPI 배포 · 손 배치 · 재기동, 상자 1.17 / +0.06. 게이트 B 가 3 회 거부: 배치 직후 사람 자취 7~8 셀 → 60 s 뒤에도 상자 <b>오른쪽</b>(1.12~1.28, −0.28~−0.54) 3 셀</span>
+    <span class="k">판별</span><span>컬러 스냅샷: 상자 앞엔 아무것도 없음, 오른쪽은 유리 칸막이(뒤 방 의자 · 책상이 비침), 바닥 광택. 깊이 12 s 표본에서 상자 우측 띠 z 0.39~0.40 점이 15 % 프레임 → 유리 너머 · 반사 물체 또는 사람 다리. 통로(왼쪽)와 무관</span>
+    <span class="k">조치</span><span>게이트 띠를 y −0.10~+0.50(왼쪽 통로)로 좁힘 → 근거 없는 셀 0, 창 0.232 로 통과</span>
+    <span class="k">사고</span><span>통과 직후 주행 단계 ssh 무출력 → "No route to host". Windows 직접 핑: 공유기 · AP OK, Jetson FAIL → 'Jetson 측(Wi-Fi 소실 또는 다운)'. PC 의 WSL 망도 동시에 죽어(<span class="mono">wsl --shutdown</span> 으로 복구) 첫 폴링은 무효. 20 분 넘게 무응답<span class="c1104">(11-04 정정: Jetson 은 끊긴 지 98 s 만에 다른 저장 망 <LAN-A>.8 로 살아 있었다 — '무응답' 은 옛 주소 <LAN-B>.101 만 두드린 것(아래 run_recon.sh) — 근거 Docs/issues/jetson-wifi-link.md §5.1 실수 1 · Docs/debug_log/2026-09-17/outputs/j427b_wifi.txt)</span></span>
+    <span class="k">결론</span><span>주행 시작 여부 미확인: job254 는 원격 <span class="mono">| tail -70</span> 이라 출력이 끝에만 나옴. 교훈 — 주행은 원격 <span class="mono">nohup</span> + 로그 파일로 띄우고 결과는 파일로 회수, 원격 정지 수단이 없을 때의 현장 정지 수단(조이스틱 · 보드 리셋)을 명시</span>
+  </div>
+<pre class="code"># run_inf1.sh — 게이트 B: 왼쪽 통로 띠 안의 '센서 근거 없는' 로컬 LETHAL 셀만 센다 (09-15 수정)
+NB=$(... | awk -F, '$1&gt;0.3 &amp;&amp; $1&lt;1.6 &amp;&amp; $2&gt;-0.10 &amp;&amp; $2&lt;0.50' | wc -l)
+[ "$NB" -le 1 ] || { echo "★ 코스 띠에 근거 없는 셀 ${NB}개 — 유령/자취. 60 s 뒤 재감사. 주행하지 않음"; exit 1; }
+W2=$(awk -v lb="$LB" -v bm="$BM" 'BEGIN{ printf "%.3f", lb - (bm + 0.195) }')
+awk -v w="$W2" 'BEGIN{exit !(w+0 &gt;= 0.20)}' || { echo "★ 창 &lt; 0.20 m ... 주행하지 않음"; exit 1; }
+timeout 560 sshpass -p &lt;PW&gt; ssh ... "bash /tmp/job254_s4run.sh $NAME $D $BX $BY $TOL 2&gt;&amp;1 | tail -70"
+# run_recon.sh — 복구 감시: 옛 주소 하나만 5 s 마다 ping
+if ping -c 1 -W 2 <LAN-B>.101 &gt;/dev/null 2&gt;&amp;1; then echo "핑 복구 ..."; ... bash /tmp/job323_state.sh; fi</pre>
+  <p class="note">스크립트 원문 <span class="mono">Docs/debug_log/2026-09-15/jobs/run_inf1.sh</span> · <span class="mono">jobs/run_recon.sh</span> · <span class="mono">jobs/job323_state.sh</span>(비밀번호 가림) · 스냅샷 <span class="mono">outputs/snap_mp2_start.jpg</span>(도구 <span class="mono">jobs/job322_snap.py</span>) · 깊이 12 s 표본 · 게이트 거부 출력은 원문 없음(SUMMARY 인용).</p>
+</section>
+
+<section>
+  <h2>(09-16 오전) 망 사고 원인<span class="sec">§3.1</span></h2>
+  <div class="flow">
+    <span class="k">본 것</span><span>영속 syslog: 14:03:13 AP 측 deauth(reason 2) → 14:03:21 <WIFI-B> 재인증 실패로 임시 비활성. 사용자가 14:41 · 16:55 재부팅, 16:55 부터 다른 저장 SSID <WIFI-A>(<LAN-A>.8). 저장 연결 셋 모두 우선순위 0 이라 어느 쪽에 붙을지 정해져 있지 않았다</span>
+    <span class="k">추론</span><span>"그 뒤 재연결 실패 상태로 남음"<span class="c1104">(11-04 정정: 같은 syslog 에 14:04:51 ALOPS 연결 · DHCP <LAN-A>.8, 이후 30 분마다 갱신이 있다 — 재연결 실패 상태가 아니었다. 그때 <LAN-A>.8 로 붙었으면 재부팅 전 /tmp/nav2.log · bag 을 회수할 수 있었다(추정) — 근거 Docs/issues/jetson-wifi-link.md §5.1 실수 1, Docs/debug_log/2026-09-17/outputs/j427b_wifi.txt 91~128 줄)</span></span>
+    <span class="k">함께 본 것</span><span>메모리 · OOM 아님(부팅 직후 766 MB 사용, journal 비영속이라 어제 부팅 OOM 여부는 모름). <span class="mono">mavlink-router.service</span>(PX4 잔재) enabled 크래시 루프. <span class="mono">/dev/ttyUSB*</span> 없음 = 제어보드 미연결(사용자가 확장보드 분리). 사용자가 본 'Connection reset' 은 sshd 로그상 키 교환 단계 리셋, 내 쪽 3/3 재현 안 됨</span>
+    <span class="k">결론</span><span>/tmp 의 어제 nav2.log · bag_mp2 없음 → mp2 시작 여부는 끝내 미확인(사용자 현장 진술로 기록). 09:36 사용자 지시 · sudo 동의로 mavlink-router 비활성, 우선순위 <WIFI-B> 20 &gt; ALOPS 5 &gt; PTR 0, <span class="mono">nmcli con up</span>(nohup) → <LAN-B>.101 복귀. 이후 규칙: 접속 전 두 주소 다 핑</span>
+  </div>
+<pre class="code"># job325_post_incident.sh — 어제 13~14 시 syslog 에서 망 이벤트 앞 20 줄
+grep -aE '^Sep 15 1(3|4):' /var/log/syslog | grep -aiE 'NetworkManager.*(wlP1p1s0|WEB_DEV|ALOPS|disconnect|deactivat|activat|dhcp4|roam|supplicant)|wpa_supplicant.*(disconnect|CTRL-EVENT|roam)|...' | head -20
+ls -d /tmp/bag_mp2 2&gt;/dev/null &amp;&amp; echo "bag_mp2 존재" || echo "bag_mp2 없음 → 주행 시작 안 됨"   # (job323_state.sh)
+# job326_net_fix.sh — (sudo, 사용자 승인 09-16)
+echo &lt;PW&gt; | sudo -S systemctl disable --now mavlink-router
+echo &lt;PW&gt; | sudo -S nmcli con modify <WIFI-B> connection.autoconnect-priority 20
+echo &lt;PW&gt; | sudo -S nmcli con modify <WIFI-A> connection.autoconnect-priority 5
+nohup bash -c "sleep 5; echo &lt;PW&gt; | sudo -S nmcli con up <WIFI-B> &gt; /tmp/nm_switch.log 2&gt;&amp;1; ..." &amp;</pre>
+<pre class="code">09-15 14:03:13 wpa_supplicant: CTRL-EVENT-DISCONNECTED bssid=b0:38:6c:XX:XX:XX reason=2
+09-15 14:03:21 CTRL-EVENT-SSID-TEMP-DISABLED ssid="<WIFI-B>" auth_failures=1 reason=AUTH_FAILED</pre>
+  <p class="note">syslog 결과 원문 없음 — 위 두 줄(SUMMARY §3.1 인용, MAC 가림)이 전부 · 스크립트 원문 <span class="mono">Docs/debug_log/2026-09-15/jobs/job325_post_incident.sh</span> · <span class="mono">jobs/job324_diag.sh</span> · <span class="mono">jobs/job326_net_fix.sh</span> · <span class="mono">jobs/run_lan.sh</span>(러너 156 개 호스트를 <LAN-A>.8 로 바꾼 도구) · <span class="mono">jobs/run_usb.sh</span>(USB 192.168.55.1 경로). 원천 Jetson <span class="mono">/var/log/syslog</span>.</p>
+</section>
+
+<section>
+  <h2>내 실수 · 정정</h2>
+  <div class="pm">
+    <h3>'20 분 무응답 = Jetson 이 망을 잃었다 · 재연결 실패 상태로 남았다' (§3 · §3.1 — 기록에 정정 문장 없음, 문제 대장에서 처음 짚음)</h3>
+    <div class="flow">
+      <span class="k">하려 한 것</span><span>mp2 결과 회수, 끊긴 뒤 복구 감시(<span class="mono">run_recon.sh</span>)</span>
+      <span class="k">본 것</span><span><LAN-B>.101 이 20 분 넘게 무응답 · 공유기 · AP 는 응답. 다음 날 syslog 에서 14:03:13 reason 2 · 14:03:21 AUTH_FAILED 까지 읽음</span>
+      <span class="k">처음 추론</span><span>Jetson 측 Wi-Fi 소실 또는 다운 → 재연결 실패 상태로 남음 → 16:55 재부팅부터 ALOPS</span>
+      <span class="k">의심한 이유</span><span>(당시엔 없음) 09-17 <span class="mono">job427b</span> 9 월 타임라인에 같은 날 14:04:51 ALOPS · DHCP <LAN-A>.8</span>
+      <span class="k">결론</span><span>98 s 만에 다른 망으로 살아 있었다. 감시 스크립트가 옛 주소 하나만 봤다</span>
+      <span class="k">다음에 알아보는 법</span><span>'Jetson 무응답 + 공유기 · AP 응답' 이면 다른 저장 망 주소와 USB 192.168.55.1 을 먼저 핑. 로그는 끊김 줄에서 멈추지 말고 그 뒤 '활성화 · DHCP 주소' 줄까지 읽는다</span>
+      <span class="k">스크립트 핵심</span><span><pre class="code">if ping -c 1 -W 2 <LAN-B>.101 &gt;/dev/null 2&gt;&amp;1; then ...   # run_recon.sh — 다른 주소는 안 봄</pre></span>
+      <span class="k">데이터</span><span><span class="mono">Docs/debug_log/2026-09-15/jobs/run_recon.sh</span> · <span class="mono">Docs/debug_log/2026-09-17/outputs/j427b_wifi.txt</span> · 카드 <span class="mono">Docs/issues/jetson-wifi-link.md</span> §5.1</span>
+    </div>
+  </div>
+  <p class="note">SUMMARY 가 스스로 적은 교훈(실수 칸 형식은 아님): 원격 <span class="mono">| tail -70</span> 으로 주행을 띄워 끊기면 아무것도 모름 → 원격 nohup + 파일 로그(§3), 게이트 통과 뒤 목표 전송 직전에 링크 재확인 · SSID 하나로 고정(§3.1).</p>
+</section>
+
+<section>
+  <h2>다음 후보 (이날 기록 기준)</h2>
+  <ul>
+    <li>mp2: BT GridBased(NavFn) + MPPI — 주행은 원격 nohup 으로(→ 09-16 mp2)</li>
+    <li>그 뒤 MPPI 속도(ObstaclesCritic repulsion/critical, vx_max 0.08 유지) · CPU(batch 1000 → 600, controller 20 → 15 Hz) 측정 조정</li>
+    <li>Wi-Fi: 두 SSID 중 하나로 고정(우선순위 · 고정 IP), 영속 journal(sudo)</li>
+  </ul>
+</section>
+
+<section>
+  <h2>이후 · 관련 카드</h2>
+  <ul>
+    <li><span class="mono">Docs/issues/global-planner-choice.md</span> — NavFn vs Smac 첫 비교, '시작 footprint 거부' 는 10-26 BT 'Smac 실패 시 NavFn' 으로 처리</li>
+    <li><span class="mono">Docs/issues/mppi-passage-tuning.md</span> — mp1 ~ mp11 상자 옆 통로 MPPI 튜닝 전체, 게이트 창 0.195 · mp1 계획 여유 대조</li>
+    <li><span class="mono">Docs/issues/controller-rpp-vs-mppi.md</span> — RPP 결정이 MPPI 로 뒤집힌 경과</li>
+    <li><span class="mono">Docs/issues/jetson-wifi-link.md</span> — <WIFI-B> 끊김 세 사건과 이후 <LAN-B>.110 예약</li>
+    <li><span class="mono">Docs/issues/passage-width-analysis.md</span> — 게이트 · 통과 폭 도구 계보</li>
+    <li><span class="mono">Docs/issues/stationary-yaw-drift.md</span> — §0.5 정지 점검이 이후 드리프트 조사의 기준값으로 인용됨</li>
+  </ul>
+</section>
+</div>

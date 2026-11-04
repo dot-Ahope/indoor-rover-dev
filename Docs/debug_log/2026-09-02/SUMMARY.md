@@ -350,3 +350,6 @@ t=40~54s RPP 재개하나 각속도 진동 후 포기
 2. `MIN_WHEEL_SPEED_MPS` 실측 조정 (0.015~0.030)
 3. `xy_goal_tolerance` 0.25 → 0.15 복원
 4. RPP/MPPI 재벤치마크 → 컨트롤러 확정 → N1 게이트 → 계획 N1.5 이후 진행
+
+## (2026-11-04 추가) 사후 정리 페이지
+- 「09-02 Nav2 첫 자율주행」 https://claude.ai/artifact/LFgY9MyAaw7Pu3x6Fww29a — 로컬 `figures/day_summary_0902.html`(본문 `jobs/report_0902_body.html` · 조립 `jobs/fig_report_0902.py`). 이 SUMMARY 를 원천으로 11-04 에 만듦, 뒤 정정은 페이지에 '11-04 정정' 표시(문제 대장 카드 근거). 기록 → `Docs/debug_log/2026-11-04/SUMMARY.md` §11.

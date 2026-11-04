@@ -402,3 +402,6 @@ prep(`job676`): stuck_monitor **ACTIVE**, nav_guard 기동, B2·B3 False, 배터
 ## §14 SLAM 포크 설명 문서화 (사용자 질문: "SLAM 에서 무엇을 고쳤길래 이동 중 오차를 감지한다고 했나")
 답: 오차 감지 기능을 추가한 것이 아니라, slam_toolbox `shouldProcessScan()` 의 "odom 이동 거리만 보고 스캔을 버리는" 조건을 "거리 **또는** 회전각(0.03 rad)" 으로 바꿔 **제자리 회전 중 스캔도 정합**하게 한 것(09-28 §9). 그 결과 실제 밀림이 map 포즈에 반영되고 map→odom 보정으로 드러난다. 내가 "SLAM 이 회전 밀림을 1~2 cm 로 따라간다" 고 쓴 것은 이 map 포즈의 오차(스캔 직접 정합 대비)를 뜻한다.
 정리 문서 `Docs/04_navigation/SLAM_FORK_ROTATION.md` — 문제(원본 0/11 포착)·수정 코드·단위 버그·측정 근거(재생 11/11·1.1 cm, 실주행 1.3 cm)·한계(09-29 실주행은 B2 켠 상태라 효과 분리 안 됨, 주행 중 CPU 미측정, odom 층은 여전히 못 봄)·운용(`slam_build:=fork|apt`). CLAUDE.md §6 지도 줄에 포크 언급 추가.
+
+## (2026-11-04 추가) 사후 정리 페이지
+- 「09-29 F0 완료 · 정지 수단」 https://claude.ai/artifact/1Euj4P58ME3K1jHgXqmHf7 — 로컬 `figures/day_summary_0929.html`(본문 `jobs/report_0929_body.html` · 조립 `jobs/fig_report_0929.py`). 이 SUMMARY 를 원천으로 11-04 에 만듦, 뒤 정정은 페이지에 '11-04 정정' 표시(문제 대장 카드 근거). 기록 → `Docs/debug_log/2026-11-04/SUMMARY.md` §11.
