@@ -1,0 +1,247 @@
+<style>
+.code{margin:0;font-family:var(--f-mono);font-size:12.5px;line-height:1.5;background:var(--bg);border:1px solid var(--line);padding:8px 10px;overflow-x:auto;white-space:pre;max-width:100%}
+.flow > span{min-width:0}
+.c1104{font-weight:600;color:var(--ink);background:var(--tint-warn);border-left:3px solid var(--warn);padding:0 5px;margin-left:3px;border-radius:2px;white-space:normal;font-size:.92em}
+</style>
+<div class="wrap">
+<header>
+  <div class="eyebrow">Indoor Rover · 2026-09-14 · Docs/debug_log/2026-09-14 §0–§4 · 주행 있음 · 11-04 사후 작성</div>
+  <h1>09-14 중앙 상자 통로</h1>
+  <p class="lead">이 페이지는 2026-11-04 에 그날의 <span class="mono">SUMMARY.md</span> 와 같은 폴더의 스크립트 · CSV 를 보고 사후에 만들었습니다. 이날은 상자 하나를 통로 가운데 두고(로버 중심이 지날 수 있는 창 0.16~0.33 m) Nav2 로 같은 코스를 14 번 달렸습니다. 전역 inflation 변경을 검증하고, 입구에서 로버를 세우던 '근거 없는 셀' 세 종류를 깊이 점군 필터로 없애고, 통로가 느린 이유(RPP 비용 감속)와 그 뒤에 드러난 충돌검사 거리 문제를 차례로 풀어, 마지막에 패딩 0.01 로 0.08 m/s 로 멈추지 않고 지나갔습니다. 이 무렵 기록에는 출력 캡처가 거의 없어서 결과는 SUMMARY 가 인용한 수치와 남은 CSV 가 근거입니다. 나중 기록(문제 대장 카드)에서 원문과 어긋난다고 밝혀진 곳 <b>10 곳</b>은 본문을 그대로 두고 <span class="c1104">11-04 정정</span> 표시를 붙였습니다.</p>
+</header>
+
+<section>
+  <h2>오늘의 판정</h2>
+  <div class="verdicts">
+    <div class="v ok"><b>전역 inflation 0.55/2.0 — 통로 S 자 소멸</b><span>inf1~inf4 4/4 SUCCEEDED(0.03 m/s 시절). 계획 횡 = 창 중앙 ±0.04 (§2 · §2.6 · §2.11)</span></div>
+    <div class="v ok"><b>깊이 릴레이로 '근거 없는 셀' 3 종 제거</b><span>근거리 0.45 m · 복셀 3 점 · 지속성 5 중 3. 정면 아티팩트 75/432 → 0/454 프레임, 상자 앞 점 24.9 → 0.2 %, 코스트맵 상자 43 → 11 셀 (§2.9 · §2.10 · §2.21)</span></div>
+    <div class="v ok"><b>통로가 느린 원인 = RPP 비용 기반 감속</b><span>통로 v 0.032~0.039 → cost_scaling_dist 0.25 로 0.080 (§2.12 · §2.17)</span></div>
+    <div class="v ok"><b>패딩 0.01 + Smac BT + 통로선 목표 — 2/2 정지 0</b><span>pd1 24.3 s · pd2 25.1 s, 충돌감지 0 · 복구 0, 통로 v 0.080 (§2.25)</span></div>
+    <div class="v wait"><b>상자 뒤 목표(bk1)는 완주, 정지 2 회</b><span>계획이 상자 옆에서 벌써 복귀선으로 꺾임 — 'U 턴 비용' (§2.26 · §2.27)</span></div>
+    <div class="v no"><b>ABORTED 7 회</b><span>spd1 · spd2 · tc1 · tc2 · tc3 · tc4 · sm1 — 검사 거리 · 유령 셀 · 창 0.16 · 끝 벽 · 창 0.23 · 계획 코너 컷 · 계획기 교체 무효로 각각 설명 (§2.13 ~ §2.23)</span></div>
+    <div class="v no"><b>절차 실수로 상자 접촉 1 회</b><span>복귀 ABORT 뒤 여유 검사 없는 180° 제자리 회전 — 코스 주행 집계 외 (§2.8)</span></div>
+    <div class="v ok"><b>라이다 '고정점' 없음</b><span>주행 bag 2/2 에서 차체에 붙은 반환 · 마킹 0 (§3)</span></div>
+  </div>
+  <p class="note">오늘 코스 주행 중 접촉은 0(전부 사용자 확인 — pd2 는 '확인 대기' 로 남음). <span class="c1104">(11-04 정정: §2.17 은 '오늘 코스 주행 10회' 라 쓰고 9 개만 나열, §4 결산은 '5회' 로 spd1 시점에 쓴 뒤 안 고침. 이날 outputs/ 의 주행 CSV 는 14 개(inf1~4 · spd1~2 · tc1~4 · sm1 · pd1~2 · bk1) + 복귀 inf2_ret(bag 만) — Docs/issues/passage-width-analysis.md §6-6)</span></p>
+</section>
+
+<section>
+  <h2>배치와 창<span class="sec">§0 · §1</span></h2>
+  <p>재부팅으로 Jetson <span class="mono">/tmp</span> 가 비어 09-11 의 bag v1~v5 가 전부 사라졌습니다. 그래서 이날부터 주행 직후 bag 을 <span class="mono">Docs/debug_log/&lt;날짜&gt;/bags/</span>(git 제외)로 회수하는 규칙이 생겼습니다(<span class="mono">run_post.sh</span>). 상자를 '가운데' 두는 것도 쉽지 않았습니다. 상자 중심이 ±7 cm 움직이면 로버 중심이 지날 수 있는 창이 절반으로 바뀝니다.</p>
+  <div class="tbl"><table>
+    <tr><th>상자 중심 y</th><th>RPP 기준 창(x 0.9~1.3)</th><th>비고</th></tr>
+    <tr><td>+0.03</td><td>0.15 m</td><td>1 차 배치 — v5 보다 7 cm 좌측</td></tr>
+    <tr><td>−0.15</td><td>0.25~0.35 m</td><td>2 차 — 게이트 거부(dy −0.11)</td></tr>
+    <tr><td><b>−0.05</b></td><td><b>≈ 0.27 m</b>(창 중앙 +0.37)</td><td>3 차 — v5 재현, 게이트 통과</td></tr>
+  </table></div>
+  <p class="note">좌측 경계 물체(라이다에 잡히는 가는 다리 모양)는 §2.20 에서 사용자가 <b>의자 · 책상 다리(고정 가구)</b>라고 확인.</p>
+</section>
+
+<section>
+  <h2>inflation 검증 — S 자는 사라지고 입구 정지는 남음<span class="sec">§2 · §2.6</span></h2>
+  <div class="flow">
+    <span class="k">본 것</span><span>inf1 SUCCEEDED 66.9 s. 통로 구간(전진 0.9~1.45) 계획 횡 +0.326~+0.341 직선(09-11 v5 는 +0.37 → +0.27 → +0.47 의 S 자). 그러나 입구에서 충돌감지 6 · BackUp 1 · Wait 2. 입구 LETHAL 군집 #0(7 셀, 상자 앞 0.2~0.4 m)은 <b>라이다 근거 0 %</b>, bag 시작부터 있었다.</span>
+    <span class="k">추론</span><span>출발 횡 0 → 계획 +0.33 으로 0.7 m 안에 차선을 바꾸느라 heading +21~25°. 그 자세의 패딩 footprint 횡 폭 = 0.39·cos25° + 0.56·sin25° = 0.59 m 인데 좌측 물체(+0.63)와 군집 #0 사이는 0.52 m → 둘레 LETHAL. 군집 #0 이 30 s 감쇠로 사라진 뒤(t≈36) 통과.</span>
+    <span class="k">결론</span><span>inflation 의 목표(S 자 제거)는 달성. 남은 입구 정지는 (a) 근거리 아티팩트 자취 (b) 상자 가장자리 연장 셀 (c) 로컬 감쇠 30 s — 다음 변수는 이 셋 중 하나씩. inf2 도 SUCCEEDED 50.0 s(v5 조건 0/1 → 2/2).</span>
+    <span class="k">데이터</span><span><span class="mono">Docs/debug_log/2026-09-14/outputs/inf1.csv</span> · <span class="mono">inf2.csv</span> · <span class="mono">bags/bag_inf1.tgz</span> · 에피소드 사후 <span class="mono">jobs/run_epi.sh</span>(job303/304 — 출력 캡처 없음, SUMMARY 수치가 전부)</span>
+  </div>
+  <p>러너가 0.1 s 마다 남긴 CSV 의 열(이후 모든 표의 원천):</p>
+<pre class="code">t,fwd,lat,clear_geo,plan_clear,plan_lat_at_box,lc_box,gc_box,v,w,box_pts,box_age
+0.0005972385406494141,0.0,0.0,0.8470000691413877,nan,nan,99,99,0.0,0.0,191,0.0005972385406494141</pre>
+  <p class="note">결과 원문 <span class="mono">Docs/debug_log/2026-09-14/outputs/pd1.csv</span> 첫 두 줄 · 스크립트 원문 <span class="mono">Docs/debug_log/2026-09-14/jobs/job125_avoid3.py</span>(이날 마지막 판 — <span class="mono">GOAL_LAT</span> 추가). <span class="mono">clear_geo</span> = ① 기하 최근접, <span class="mono">plan_clear</span> = ② 계획 여유(둘 다 러너 상자 모델 0.18 × 0.11 기준), <span class="mono">lc_box/gc_box</span> = ③ 로컬 · 전역 상자 셀 비용.</p>
+</section>
+
+<section>
+  <h2>'근거 없는 셀' 세 종류와 깊이 릴레이<span class="sec">§2.5 · §2.7 · §2.9 · §2.21</span></h2>
+  <p>STVL 은 <span class="mono">mark_threshold 0</span>(점 1 개면 LETHAL)이고 감쇠가 30~60 s 라, 몇 프레임에만 찍히는 점도 사실상 영구 장애물이 됩니다. 셋을 모두 로버를 세운 채 정지 표본으로 재고 위치 · 높이 · 프레임 비율로 갈랐습니다.</p>
+  <div class="tbl"><table>
+    <tr><th>종류</th><th>정지 측정(본 것)</th><th>판단</th><th>필터</th></tr>
+    <tr><td>① 정면 바닥 근거리</td><td>432 프레임 중 75(17.4 %), 전방 0.59~0.61 · z 0.102~0.118, 카메라 거리 <b>0.36~0.38 m</b>(사각지대 0.40 바로 안)</td><td>근거리 스테레오 아티팩트. 절두체 근평면 안이라 소거도 안 됨</td><td>카메라 거리 &lt; 0.45 m 제거</td></tr>
+    <tr><td>② 상자 실루엣 비산점</td><td>상자 뒤 x 1.46~1.68 · z ≈ 0.10, 100 % 프레임에 2~4 점, <b>고립 99 %</b> / 우측 74 % · 고립 98 %</td><td>윗모서리 · 옆모서리 혼합 화소(flying pixel)</td><td>5 cm 복셀당 3 점 미만 제거</td></tr>
+    <tr><td>③ 상자 앞 바닥 한 점</td><td>(0.79~0.80, +0.07~+0.09, z 0.07~0.08), 원본 23.7 % · 릴레이 후 24.9 % 프레임, 한 셀에 961 회 집중</td><td>바닥의 실제 특징(광택 · 이음매)으로 추정 — 사용자 확인 안 됨. spd2 · tc3 · inf1 #0 과 같은 자리</td><td>최근 5 프레임 중 3 프레임 이상 같은 복셀</td></tr>
+  </table></div>
+  <p>① 을 잰 정지 스크립트의 판정 부분:</p>
+<pre class="code"># 정면 바닥 영역(전방 0.45~1.0, |횡|&lt;0.3, z≥0.06)의 점을 프레임마다 센다
+sel = (x &gt; 0.45) &amp; (x &lt; 1.0) &amp; (np.abs(y) &lt; 0.3) &amp; (z &gt;= 0.06) &amp; (z &lt; 0.40)
+per.append(int(sel.sum()))
+for p in P[sel]:
+    hits.append((k, p[0], p[1], p[2], math.hypot(p[0] - T[0], p[1] - T[1])))   # 마지막 = 카메라 수평 거리
+print('  → 1점이라도 있으면 mark_threshold 0 인 STVL 이 30 s 동안 LETHAL 로 둔다')</pre>
+<pre class="code">(출력 캡처 없음 — SUMMARY §2.5 인용)
+432 프레임 중 75 프레임(17.4 %) … 전방 0.59~0.61·횡 +0.00~+0.06·z 0.102~0.118 … 카메라 거리 0.36~0.38 m
+5 cm 셀 (0.60, +0.05)×252, (0.60, 0.00)×84</pre>
+  <p class="note">스크립트 원문 <span class="mono">Docs/debug_log/2026-09-14/jobs/job311_floor_noise.py</span> · 결과 원문 없음 — 발췌가 전부. ② 는 <span class="mono">jobs/job312_box_edge.py</span>, ③ 은 <span class="mono">jobs/job320_boxfront.py</span>(둘 다 결과 원문 없음). <span class="c1104">(11-04 정정: §2.7 표는 저장된 job312 보다 앞 판으로 돌린 결과 — 저장 판에 있는 '앞쪽 연장' 띠 · ZTH 열 · '모서리광선 %' 열이 §2.7 표에 없음, 앞 판은 저장 안 됨 — Docs/issues/depth-relay-artifacts.md §6-6)</span></p>
+  <p>릴레이의 지속성 필터(커밋 <span class="mono">a3882db9</span> 판):</p>
+<pre class="code"># 시간 지속성: 이 프레임을 포함한 최근 pf 프레임 중 pm 프레임 이상에 같은 복셀이 있어야 남긴다
+ukeys = np.unique(key)
+cnt = np.ones(ukeys.size, dtype=np.int32)
+for hk in self.hist[-(self.pf - 1):]:
+    cnt += np.isin(ukeys, hk, assume_unique=True)
+ok = ukeys[cnt &gt;= self.pm]          # persist_frames 5 · persist_min 3</pre>
+  <div class="tbl"><table>
+    <tr><th>항목</th><th>필터 전</th><th>필터 후</th></tr>
+    <tr><td>정면 바닥 아티팩트(30 s)</td><td>75/432 프레임</td><td><b>0/454</b></td></tr>
+    <tr><td>상자 본체(job312)</td><td>100 점/프레임, 100 %</td><td>93 점, 100 % — 유지</td></tr>
+    <tr><td>상자 앞 한 점(60 s)</td><td>24.9 % 프레임</td><td><b>0.2 %(2/895)</b> <span class="c1104">(11-04 정정: 60 s 에 2 프레임이 남으면 mark_threshold 0 · 감쇠 60 s 에서 그 셀이 다시 켜질 수 있다(산술). 남은 2 프레임이 같은 셀이었는지는 미확인 — Docs/issues/depth-relay-artifacts.md §6-5)</span></td></tr>
+    <tr><td>처리 시간</td><td>—</td><td>42~43 ms/프레임 → 지속성 추가 뒤 40 ms(np.unique 정렬 · tobytes, 한 코어 ≈65 %)</td></tr>
+  </table></div>
+  <p class="note">스크립트 원문 <span class="mono">ros2_ws/src/rover_bringup/scripts/depth_relay.py</span>(근거리 · 복셀 = 커밋 <span class="mono">66565aae</span>, 지속성 = 커밋 <span class="mono">a3882db9</span>) · 기동 <span class="mono">Docs/debug_log/2026-09-14/jobs/run_relay.sh</span>(<span class="mono">-p min_range:=0.45 -p voxel:=0.05 -p min_points_per_voxel:=3</span>) · 결과 원문 없음 — 수치는 SUMMARY §2.9 · §2.21. 재기동 뒤 독립 실행 릴레이가 살아남아 발행자 2 개가 된 것은 <span class="mono">jobs/job313_relay_dedup.sh</span> · <span class="mono">job314_relay_orphan.sh</span> 로 정리.</p>
+  <div class="flow">
+    <span class="k">inf3 (릴레이 뒤)</span><span>SUCCEEDED 51.4 s, 충돌감지 2 · 복구 0. 로컬 상자 군집 43 → <b>11 셀(횡 −0.10~+0.10) = 실물</b></span>
+    <span class="k">inf4 (+ 로컬 감쇠 60 s)</span><span>SUCCEEDED 74.8 s 지만 충돌감지 11 · BackUp 실패 2. 감쇠 60 s 가 상자를 통과 내내 기억하게 하자, 코스트맵 상자가 실물보다 한 셀(5 cm) 넓은 것이 그대로 드러남 — inf3 의 '정지 2 회' 는 기억 소실 덕이었다</span>
+    <span class="k">판정</span><span>중앙 상자 4/4 SUCCEEDED · 접촉 0. 남은 정지 = 창 0.2 m 에서 5 cm 격자 + 3 cm 패딩 + 추종 ±5 cm 가 겹치는 이 스택의 정밀도 한계</span>
+  </div>
+</section>
+
+<section>
+  <h2>상자 폭과 min_obstacle_height 0.08 기각<span class="sec">§2.14 · §2.24</span></h2>
+  <div class="flow">
+    <span class="k">하려 한 것</span><span>상자 가장자리의 낮은 점(z 0.07)을 빼려고 <span class="mono">min_obstacle_height</span> 0.06 → 0.08</span>
+    <span class="k">본 것</span><span>본체 점 147 개 중 z &lt; 0.08 이 <b>51 %</b>. 0.08 적용 · 재기동 뒤에도 로컬 상자 y −0.08~+0.17 그대로(z 0.085 점 0.2 점/프레임이면 충분히 켜짐)</span>
+    <span class="k">결론</span><span>기각 · 0.06 복원. y +0.15~+0.16 띠는 상자 실물의 낮은 가장자리, 상자 폭 ≈ 0.22 m — '과대표현' 의 대부분은 실물 + 격자 바깥 반올림(도구 결함 12: 가장자리를 5~95 % 백분위로 잡아 3~4 cm 좁게 봄). <span class="c1104">(11-04 정정: 러너 상자 모델은 사용자 실측 0.18 × 0.11, 09-21 §5.1 도 같은 상자를 18×14×11 cm 로 적음 — 깊이점 y 범위에서 낸 0.22 와 4 cm 가 설명 안 됨(비스듬한 배치 · 가장자리 번짐 · 검출 오차, 미확인). '과대표현의 대부분이 실물' 은 과한 결론일 수 있다 — Docs/issues/passage-width-analysis.md §6-7 · Docs/issues/depth-relay-artifacts.md §6-1)</span></span>
+    <span class="k">§2.24 덧붙임</span><span>옆으로 돌며 상자가 커지는가(사용자 질문): 릴레이 전 inf2 는 43 셀 · +0.21 까지 자랐고, 릴레이 + 지속성 뒤 sm1 · tc4 는 왼쪽으로 한 셀(+0.13 → +0.15)만 는다. 정면에서 본 크기가 과소이고 비스듬히 본 크기가 실물에 가깝다</span>
+    <span class="k">데이터</span><span><span class="mono">jobs/run_moh.sh</span> · <span class="mono">jobs/job312_box_edge.py</span> · <span class="mono">jobs/run_boxgrow.sh</span>(job304) — 결과 원문 없음</span>
+  </div>
+</section>
+
+<section>
+  <h2>통로가 느린 이유와, 속도를 올리자 드러난 것<span class="sec">§2.12 · §2.13 · §2.15 · §2.17 · §2.18</span></h2>
+  <p>사용자 질문: "통로를 지날 때 속도가 매우 느리고 부드럽지 못하다 — 새 센서? 소프트웨어?" 네 주행 CSV 로 통로 구간(전진 0.6~1.5 m)을 쟀습니다. 그날 표를 만든 스크립트는 남아 있지 않아, 11-04 에 같은 CSV 로 다시 셌습니다.</p>
+<pre class="code"># 11-04 재계산(PC, 원천 = outputs/&lt;이름&gt;.csv) — 통로 = 0.6 ≤ fwd ≤ 1.5
+seg = [r for r in R if 0.6 &lt;= float(r['fwd']) &lt;= 1.5]
+v   = [float(r['v']) for r in seg if abs(float(r['v'])) &gt;= 0.01]      # 움직이는 표본
+print(n, 'moving v_med %.3f' % median(v), '&gt;=0.07 %.0f%%' % (100*sum(x &gt;= 0.07 for x in v)/len(v)))</pre>
+<pre class="code">inf1 moving v_med 0.039 &gt;=0.07 8%
+inf2 moving v_med 0.032 &gt;=0.07 3%
+inf3 moving v_med 0.033 &gt;=0.07 2%
+inf4 moving v_med 0.033 &gt;=0.07 3%
+tc2  moving v_med 0.080 &gt;=0.07 73%
+pd1  moving v_med 0.080 &gt;=0.07 100%
+(같은 창 소요: inf1 27.9 · inf2 27.2 · inf3 26.9 · inf4 39.8 · pd1 12.3 s)</pre>
+  <p class="note">원천 <span class="mono">Docs/debug_log/2026-09-14/outputs/inf1.csv</span> ~ <span class="mono">pd1.csv</span>. 중앙값 · 소요는 SUMMARY §2.12 · §2.17 · §2.25 표와 같다. tc2 의 '≥0.07 비율' 만 SUMMARY 87 % 와 다르게 나왔다(정지 포함 56 %, 움직이는 표본 73 %) — 그날 비율의 정의가 기록되지 않아 어느 쪽이 맞는지 가릴 수 없다(11-04 확인, 문제 대장 카드에 없는 어긋남).</p>
+  <div class="flow">
+    <span class="k">추론</span><span>진입 전엔 0.08(설정 최대)로 달리다 통로에서 0.032~0.039 — <span class="mono">regulated_linear_scaling_min_speed 0.03</span> 바로 위. RPP <span class="mono">use_cost_regulated_linear_velocity_scaling</span>: 중심 셀 비용에서 거리 d 를 역산해 d &lt; <span class="mono">cost_scaling_dist</span>(기본 0.6)면 v = 0.08 × d/0.6 → d ≈ 0.25 에서 0.033. 폭 0.33 로버에게 '0.6 m 안에 장애물' 은 폭 1.2 m 미만 모든 통로에서 참</span>
+    <span class="k">결론</span><span>센서가 아니라 컨트롤러 정책. 조향 부호반전 0 이라 '부드럽지 못함' 은 저속 + 멈춤-출발. <span class="mono">cost_scaling_dist</span> 0.6 → 0.25, <span class="mono">inflation_cost_scaling_factor</span> 2.5(로컬과 일치), min_speed 0.05</span>
+    <span class="k">spd1 (적용 뒤)</span><span>입구까지 v 0.080 유지 — 의도대로. 그러나 <b>ABORTED</b> 30.7 s. 충돌검사 거리 = <span class="mono">max_allowed_time_to_collision</span> 1.5 s × v 라 4.5 → <b>12 cm</b>. inf1~4 가 0.03 으로 통과한 것은 검사가 4.5 cm 밖에 못 봐서였다</span>
+    <span class="k">spd2 · tc1</span><span>spd2 ABORTED 32.6 s — 회전 정렬 뒤 상자 앞 1~2 셀(§2.21 ③ 과 같은 자리). <span class="c1104">(11-04 정정: SUMMARY 의 'ABORTED … 1.33 m' 는 job125 의 '주행' = 표본 간 이동 누적(후진 · 횡 포함). spd2 의 전진 최대는 0.54 m(CSV) — '1.33 m 지점에서 멈춤' 으로 읽으면 틀린다 — Docs/issues/passage-width-analysis.md §6-9)</span> tc1(검사 0.75 s) ABORTED — 창 0.16 m 배치라 판정 보류</span>
+    <span class="k">tc2 · tc3</span><span>tc2(창 0.28 m): 통로를 <b>0.080 으로 통과</b>, 목표 근처 끝 벽 0.3 m 에서 ABORTED → 목표 D 2.0 → 1.8. tc3(창 0.23): 정체</span>
+    <span class="k">창별 결론</span><span>통과 가능 창은 속도에 따라 0.03 m/s → ≈0.22 m, 0.08 m/s → ≈0.28 m. 창 게이트 문턱을 속도에 맞춘다(0.08 주행은 ≥ 0.28)</span>
+    <span class="k">데이터</span><span><span class="mono">outputs/spd1.csv</span> · <span class="mono">spd2.csv</span> · <span class="mono">tc1~tc3.csv</span> · 게이트 <span class="mono">jobs/run_inf1.sh</span> · <span class="mono">jobs/job315_boxcells.py</span></span>
+  </div>
+</section>
+
+<section>
+  <h2>전역 코스트맵 '흔들림' — SLAM 이 아니었다<span class="sec">§2.19 · §2.20</span></h2>
+  <div class="flow">
+    <span class="k">본 것</span><span>정지 계획 A/B(job317) 사이에 전역 상자 셀이 18 셀 y −0.12~+0.23 → 15 셀 y −0.22~+0.08 로 옮겨 감(로컬은 +0.173 고정). NavFn 이 시행 1 에서 오른쪽, 시행 2 에서 왼쪽으로 감</span>
+    <span class="k">처음 추론</span><span>slam_toolbox 의 map→odom 보정이 정지 중에도 흔들리고 전역 STVL(90 s)이 자취를 누적 → 전역 감쇠 30 s · odom rolling · nvblox 후보</span>
+    <span class="k">판별</span><span>정지 3 분 × 2(job318 · job319): map→odom 변동 <b>0.000 m, 0.000 m, 0.00°</b>(두 번 다). 2 차(관찰자 시야 밖)에선 감쇠 시간 뒤 두 코스트맵 모두 실물 상자(7~10 셀)로 고정</span>
+    <span class="k">결론</span><span>SLAM 원인은 <b>철회</b>(확정). 버스트는 몇 초 관측된 일시 물체가 60/90 s 남는 것 — 관찰자(사람 다리)일 가능성이 크지만, 1 차 때 사용자는 멀리 있었다고 해 <b>확정 아님</b>. 절차: 관찰자는 클리어 전 시야(로버 앞 2 m 부채꼴) 밖, 게이트 B '코스 띠 안 근거 없는 LETHAL ≤ 1'. <span class="c1104">(11-04 정정: run_inf1.sh 게이트 B 는 job248 출력의 '근거 없는 셀 위치' 예시 목록에서 좌표를 grep 해 센다 — 목록이 잘리면 실제보다 적게 셀 수 있음(코드 기준 추정, 사례 기록 없음) — Docs/issues/passage-width-analysis.md §6-10)</span></span>
+  </div>
+<pre class="code">"""전역 코스트맵 흔들림 정량 (2026-09-14 §2.19 후속). 로버 정지, 주행 없음.
+  DUR 초 동안 10 s 마다:
+    - map→odom (x, y, yaw)  — slam_toolbox 보정이 정지 중에 움직이는가
+    - 전역 코스트맵 상자 LETHAL 셀: map 좌표 범위(셀 자체가 번지는가) 와 차체좌표 범위(계획기가 보는 상자)
+    - 로컬 코스트맵 상자 LETHAL 셀: 차체좌표 범위 (odom 프레임, 대조군)"""</pre>
+<pre class="code">(출력 캡처 없음 — SUMMARY §2.20 표 인용)
+1차 (관찰자 위치 미통제) | map→odom 0.000 m, 0.000 m, 0.00° | 전역 7 → 30(+0.38) → 9(−0.22) | 로컬 10 → 53 → 11 → 46 → 11
+2차 (관찰자 시야 밖)     | map→odom 0.000 m, 0.000 m, 0.00° | 전역 28 → t 50 에 7~8 고정    | 로컬 77 → t 20 에 8~10 고정</pre>
+  <p class="note">스크립트 원문 <span class="mono">Docs/debug_log/2026-09-14/jobs/job318_gwobble.py</span> · <span class="mono">job319_gwobble2.py</span> · 결과 원문 없음 — 발췌가 전부.</p>
+</section>
+
+<section>
+  <h2>계획의 코너 컷 → 계획기 교체로는 안 되고 패딩으로 풀림<span class="sec">§2.19 · §2.22 · §2.23 · §2.25</span></h2>
+  <div class="tbl"><table>
+    <tr><th>주행</th><th>바꾼 것</th><th>결과</th><th>읽기</th></tr>
+    <tr><td>tc4</td><td>지속성 릴레이, 코스트맵 깨끗</td><td>ABORTED 30.1 s · 계획 여유 0.2 cm</td><td>NavFn 이 상자 앞왼쪽 모서리를 대각선으로 자름(x 0.6~0.9 에서 +0.27~+0.31). 사용자 실측: 정체 시 모서리 사이 약 16 cm — 코스트맵 기준 4~6 cm 와 10 cm 차</td></tr>
+    <tr><td>sm1</td><td>BT → SmacHybrid, 목표 통로선 (1.8, +0.35)</td><td>ABORTED 30.0 s · 계획 여유 −4.9 cm</td><td>Smac 도 같은 띠(+0.26~+0.34). 모서리에서 갈 수 있는 띠 자체가 0.10~0.14 m — 계획기 · 목표로는 더 얻을 게 없다</td></tr>
+    <tr><td><b>pd1</b></td><td><span class="mono">footprint_padding</span> 0.03 → 0.01</td><td><b>SUCCEEDED 24.3 s · 충돌감지 0 · 통로 v 0.080 (100 %)</b></td><td>모서리 옆 패딩면 ↔ 상자 셀 6~7 cm(0.03 이면 4~5 cm, 검사 6 cm 에 걸림)</td></tr>
+    <tr><td><b>pd2</b></td><td>같은 설정</td><td><b>SUCCEEDED 25.1 s · ① 10.5 cm · ② 9.8 cm</b></td><td>계획 접촉 샘플 0/252</td></tr>
+    <tr><td>bk1</td><td>목표만 상자 뒤 (1.8, 0)</td><td>SUCCEEDED 38.6 s · 정지 2 회</td><td>tc4 와 같은 기하가 완주로. 단 계획이 x 1.15~1.45 에서 벌써 +0.23 으로 복귀</td></tr>
+  </table></div>
+  <p class="note">원천 <span class="mono">outputs/tc4.csv</span> · <span class="mono">sm1.csv</span> · <span class="mono">pd1.csv</span> · <span class="mono">pd2.csv</span> · <span class="mono">bk1.csv</span> · 정지 A/B <span class="mono">jobs/job317_plan_ab2.py</span>(결과 원문 없음). <span class="c1104">(11-04 정정: SUMMARY 는 pd1 · bk1 의 ② 를 적지 않았다 — CSV plan_clear 최소 pd1 −3.3 cm(음수 101/243, 42 %) · bk1 −5.7 cm(132/386, 34 %). 성공 주행의 음수 ② 는 러너 상자 모델(폭 0.18, 출발 때 검출 중심)과 실제 셀의 차이로 보이나 미확인 — Docs/issues/passage-width-analysis.md §6-8 · Docs/issues/global-planner-choice.md §6-4)</span> <span class="c1104">(11-04 정정: §2.25 의 'pd1 ① 0.0 cm 는 모델 폭 과대' 는 방향이 반대 — 모델(0.18)이 SUMMARY 가 말한 실물(0.22)보다 좁다. ① 이 0 이 된 이유는 검출 중심 쪽일 수 있다(미확인) — Docs/issues/passage-width-analysis.md §6-7)</span></p>
+  <p>정지 계획 A/B 의 읽기(§2.19): Smac 은 회전반경 · 비용 가중에 매우 민감했습니다 — R 0.20 은 4.3 m 루프, R 0.05 는 반대편 우회 4.96 m, R 0.10 만 정상. <span class="c1104">(11-04 정정: 시행 1 은 R 0.20 · cost_penalty 2.0 · non_straight 1.2 를 함께 바꾸고 그 사이 지도도 변한 시행 — SUMMARY 는 루프 원인을 R 에만 돌렸다. nav2_params.yaml cost_penalty 옛 주석도 cost 2.0 만의 효과로 읽히게 쓰여 11-02 에 정정 — Docs/issues/global-planner-choice.md §6-1 · §6-2 · Docs/debug_log/2026-11-02/SUMMARY.md)</span></p>
+  <div class="flow">
+    <span class="k">사용자 목표(§2.27)</span><span>"상자 뒤로 갈 때, 카메라에서 상자가 사라진 뒤에도 머뭇거리지 않고 자연스럽게"</span>
+    <span class="k">사실 확인</span><span>bk1 에서 상자가 시야를 벗어난 뒤에도(미관측 최대 32.9 s) 로컬 · 전역 상자 셀은 끝까지 남음(③ 99/99 · 99/100). 머뭇거림은 '잊어서' 가 아니라 '기억한 채 계획이 상자 옆에서 꺾여 둘레 검사가 모서리에서 걸린 것'</span>
+    <span class="k">설계 노트</span><span>① 계획: 복귀를 상자 뒤(x ≥ 1.6)로 미룸 — Smac cost_penalty 2.0~3.0 · R 0.15 ② 컨트롤러: 둘레 검사로 멈추는 RPP 대신 비용으로 비켜 가는 MPPI ③ 하지 않을 것: 감쇠 단축 · 충돌검사 해제 · 패딩 0 · 검사 시간 추가 단축</span>
+  </div>
+</section>
+
+<section>
+  <h2>라이다 '고정점'<span class="sec">§3</span></h2>
+  <div class="flow">
+    <span class="k">사용자 관찰</span><span>우측 전방에 로버 이동과 무관하게 같은 거리에 찍히는 점</span>
+    <span class="k">판정 규칙</span><span><pre class="code">(1) /scan: 각도 인덱스별 거리 σ — 로버가 ≥0.3 m 움직였는데 σ &lt; 1 cm 이고 80 % 이상 스캔에 있으면 차체 고정 반환
+(2) /local_costmap/costmap: LETHAL 셀을 차체좌표(5 cm 반올림)로 옮겨 프레임 간 지속률 — 80 % 이상이면 차체 고정 마킹
+판정: 실제 물체라면 로버가 움직일 때 차체좌표가 변해야 한다. 변하지 않으면 자기반사/아티팩트다.</pre></span>
+    <span class="k">나온 결과</span><span><pre class="code">(출력 캡처 없음 — SUMMARY §3 인용)
+이동 2.39 m, yaw 87°: σ&lt;1 cm 이면서 지속 ≥80 % 인덱스 0개 (대조: 지속 ≥80 % · σ ≥1 cm = 정지 물체 472개)
+로컬 코스트맵 128 프레임: 차체좌표 80 % 이상 LETHAL 셀 0개
+inf2 bag(이동 2.13 m, yaw 102°)도 0개 / 0개</pre></span>
+    <span class="k">결론</span><span>차체에 붙어 다니는 반환 · 마킹은 없다(2/2 bag). 정지 측정에서 본 두 점은 모두 <b>좌측</b> 정지 물체. RViz 고정 프레임(lidar_link 는 yaw 180°라 좌우가 뒤집혀 보임) 문제일 수 있음 — 다시 보이면 시각 · 프레임을 알려 달라고 함</span>
+    <span class="k">데이터</span><span>스크립트 원문 <span class="mono">Docs/debug_log/2026-09-14/jobs/job310_bodyfixed.py</span> · 정지 측정 <span class="mono">job309_lidar_fixed.py</span> · bag <span class="mono">bags/bag_inf1.tgz</span> · <span class="mono">bag_inf2.tgz</span> · 결과 원문 없음</span>
+  </div>
+</section>
+
+<section>
+  <h2>바로잡은 내 오류</h2>
+  <p class="note">이 시기 SUMMARY 는 실수 칸 형식(10-20 도입) 전이라, SUMMARY 문장에 있는 정보만 칸에 옮겼습니다. 빈 칸은 기록이 없는 것입니다.</p>
+  <div class="pm">
+    <h3>여유 검사 없는 제자리 회전으로 상자 접촉 (§2.8)</h3>
+    <div class="flow">
+      <span class="k">하려 한 것</span><span>복귀 Nav2 가 (1.23, +0.21) 에서 ABORTED 된 뒤, 로버를 출발 방향으로 돌리려고 <span class="mono">job225_face.py -4.4</span> 로 180° 제자리 회전</span>
+      <span class="k">본 것</span><span>사용자 확인: <b>닿았다 / 상자가 밀렸다</b>. SLAM 자세로 로버 중심 ↔ 상자 가장자리 12 cm — 회전 반경 0.30 m 안. 회전 뒤 검출기가 잡은 '상자 x 1.00 · 3927 점' 은 끝 벽 밑동(알려진 결함)</span>
+      <span class="k">왜</span><span>회전 명령에 회전 반경 안 LETHAL · 라이다 · 깊이점 검사가 없었다. 반대편에서 접근하면 상자 연장 셀이 복귀 경로 위라 입구가 닫혀 보여 ABORT 가 먼저 났다</span>
+      <span class="k">영향</span><span>코스 주행이 아니라 절차 실수로 분류(S4 카운트 외)</span>
+      <span class="k">다음에 알아보는 법</span><span>제자리 회전 전에 회전 반경(0.30 m + 패딩) 안 검사(<span class="mono">job228</span> 회전 투영 / <span class="mono">job301</span> 스윕 게이트) 통과. <span class="mono">job225_face.py</span> 에 게이트를 넣기 전까지 상자 1 m 안 회전 금지</span>
+      <span class="k">데이터</span><span><span class="mono">Docs/debug_log/2026-09-14/jobs/job225_face.py</span> · <span class="mono">bags/bag_inf2_ret.tgz</span> · 복귀 러너 job288(이 폴더에 사본 없음)</span>
+    </div>
+  </div>
+  <div class="pm">
+    <h3>'SLAM 보정 × STVL 누적' 원인 추정 (§2.19 → §2.20 철회)</h3>
+    <div class="flow">
+      <span class="k">본 것</span><span>정지 A/B 사이 전역 상자 셀이 10 cm 이동, 같은 시각 SLAM 로그에 '폐기' 수십 회</span>
+      <span class="k">처음 추론</span><span>map→odom 보정이 정지 중에도 흔들려 전역 상자가 번진다 → 해법 후보(감쇠 30 s · odom rolling · nvblox)까지 적음</span>
+      <span class="k">판별 시험</span><span>정지 3 분 × 2 동안 map→odom 직접 추적 → 0.000</span>
+      <span class="k">결론</span><span>SLAM 원인 철회. 세 후보도 '이 현상의 해법이 아니다' 로 정정. 실제 출처는 확정 못 함(관찰자 가설)</span>
+      <span class="k">다음에 알아보는 법</span><span>원인 후보를 적기 전에 그 신호(여기선 map→odom)를 같은 창에서 직접 잰다</span>
+      <span class="k">데이터</span><span><span class="mono">jobs/job318_gwobble.py</span> · <span class="mono">job319_gwobble2.py</span> · 결과 원문 없음</span>
+    </div>
+  </div>
+  <div class="pm">
+    <h3>도구 · 게이트 결함 (§0 · §2.13 · §2.14 · §2.16 · §2.17)</h3>
+    <div class="tbl"><table>
+      <tr><th>결함</th><th>본 것</th><th>고친 것</th></tr>
+      <tr><td>YAML 배포 경로(§0)</td><td>src/install 에 직접 넣어도 재기동이 반영 안 함</td><td><span class="mono">job249_nav2only.sh</span> 는 <span class="mono">/tmp/nav2_params.yaml</span> 을 검증해 배포 — 그 경로로 재실행</td></tr>
+      <tr><td>11 — 게이트가 상자 위치만 봄(§2.13)</td><td>사전 표(기준1 최소폭 0.05 m)가 통로가 닫혔음을 보였는데 spd1 을 통과시킴</td><td>기준1 최소폭 ≥ 0.20 → §2.16 에서 '창 = 기준1 좌측 경계 − (상자 최대 y + 0.195) ≥ 0.20' 으로</td></tr>
+      <tr><td>12 — 가장자리를 5~95 % 백분위로(§2.14)</td><td>상자 가장자리를 3~4 cm 좁게 봄</td><td>(위 11-04 정정 참조 — 이 '정정' 자체가 실측 0.18 과 모순)</td></tr>
+      <tr><td>상자 파싱(§2.16)</td><td><span class="mono">job254</span> 가 <span class="mono">y=+0.008</span> 의 '+' 를 못 읽음(처음 상자가 좌측)</td><td>정규식 수정, 창 게이트는 감사 출력 재사용</td></tr>
+      <tr><td>창 계산 · 전송 줄(§2.17)</td><td>기준2 괄호를 집음 · job315 전송 줄 <span class="mono">tr -d</span> 깨짐</td><td>행의 2 번째 필드만 · 상자 셀 조회 재시도</td></tr>
+      <tr><td>정렬 회전 부호(§2.14)</td><td>+0.036 → −3.7° 명령 → +0.112 — 두 번 반대로 넣음</td><td>차체를 +Δ 돌리면 전방 물체는 y' = y − x·Δ 로 오른쪽. 검출 중심도 시야각 따라 ±0.1 m 뛰므로 다시 읽으며 반복, 이후 정렬은 회전 대신 평행 이동</td></tr>
+    </table></div>
+    <p class="note">저장된 판의 job315 전송 줄은 <span class="mono">tr -d ''</span>(빈 문자열)로 남아 있어, 고친 뒤인지 앞인지 확인할 수 없다(Docs/issues/passage-width-analysis.md §6-10).</p>
+  </div>
+</section>
+
+<section>
+  <h2>다음 후보 (그날 §4 · §2.27)</h2>
+  <ul>
+    <li>상자 뒤 목표에서 Smac <span class="mono">cost_penalty</span> 2.0(및 R 0.15) 정지 A/B — 상자가 살아 있는 상태에서 → 주행 1 회</li>
+    <li>S4 표준 코스(창 ≥ 0.5 m) 재카운트, 중앙 상자는 '창 0.2 m 스트레스 시험' 으로 분리</li>
+    <li>MPPI 컨트롤러 주행 A/B(U 턴 정지가 어떻게 달라지나) · N0 nvblox 정지 측정</li>
+    <li>로컬 해상도 0.025 · <span class="mono">job225_face</span> 회전 게이트 · <span class="mono">job248</span> A) 수정 · S6 CPU(릴레이 42 ms)</li>
+  </ul>
+</section>
+
+<section>
+  <h2>이후 · 관련 카드</h2>
+  <ul>
+    <li>09-15 §1: Smac cost · R 스윕은 상자 뒤 목표의 U 턴 비용을 못 풀었다 → 09-15 부터 RPP → MPPI. mp1 은 Smac 시작 footprint 거부로 ABORT, BT 를 NavFn 으로(<span class="mono">Docs/issues/global-planner-choice.md</span> · <span class="mono">Docs/issues/mppi-passage-tuning.md</span>)</li>
+    <li>09-16: 전역 inflation 0.70 + SmoothPath, STVL 월드 정렬 복셀 필터 · 감쇠 120/180, 릴레이 setter 병목 수정 · max_range 4 m(<span class="mono">Docs/issues/depth-relay-artifacts.md</span> §7)</li>
+    <li>09-22 ~ 09-23: nvblox 층으로 옮긴 뒤 릴레이는 <span class="mono">camera_layer:=stvl</span> 대조군에만</li>
+    <li>10-23 ~ 10-27 Phase P: Smac Hybrid 를 다시 시험해 10-27 <span class="mono">planner:=smac</span>(시험 인자, 기본 아님)</li>
+    <li>카드: <span class="mono">Docs/issues/passage-width-analysis.md</span> · <span class="mono">Docs/issues/depth-relay-artifacts.md</span> · <span class="mono">Docs/issues/global-planner-choice.md</span> · <span class="mono">Docs/issues/avoid-run-metrics.md</span> · <span class="mono">Docs/issues/mppi-passage-tuning.md</span></li>
+  </ul>
+</section>
+</div>

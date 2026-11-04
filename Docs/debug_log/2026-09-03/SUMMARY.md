@@ -92,3 +92,6 @@
 3. RPP Run 2(복귀 180°, `job30_goalabs.sh 0 0 180 150`) → Run 3 → MPPI 동일 코스 A/B → 컨트롤러 결정 → N1 게이트.
 4. Wi-Fi 간헐 무응답 재발 관찰 (절전 OFF 상태). 재발 시 2.4GHz SSID 또는 유선 검토.
 5. 펌웨어 후속(계획 §6): 휠별 duty/target/엔코더 텔레메트리 → 스톨 순간 근거 확보. ROS 측 fault clear 서비스.
+
+## (2026-11-04 추가) 사후 정리 페이지
+- 「09-03 데드밴드 · 스톨 래치」 https://claude.ai/artifact/58RrCSYAQ4UswYSjXk7bYC — 로컬 `figures/day_summary_0903.html`(본문 `jobs/report_0903_body.html` · 조립 `jobs/fig_report_0903.py`). 이 SUMMARY 를 원천으로 11-04 에 만듦, 뒤 정정은 페이지에 '11-04 정정' 표시(문제 대장 카드 근거). 기록 → `Docs/debug_log/2026-11-04/SUMMARY.md` §11.

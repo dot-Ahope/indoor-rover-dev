@@ -55,3 +55,6 @@
 - **직진 스케일 재실측**(선택, 실익 큼): 줄자 2~3m vs `/odometry/filtered` x.
 - **Step 5**: `full.launch.py`(base+sensors) + systemd 자동기동(사용자 확인 후).
 - 사소: 카메라 `initial_reset:=true` 기동 시 accel set_power 경고 1회(무영향, 재현 시 false 검토). `sensor_conditioner` CPU 41%(양산 전 C++/다운샘플).
+
+## (2026-11-04 추가) 사후 정리 페이지
+- 「08-27 카메라 자이로 융합」 https://claude.ai/artifact/2Six9th32zSVF5LCQfoVyd — 로컬 `figures/day_summary_0827.html`(본문 `jobs/report_0827_body.html` · 조립 `jobs/fig_report_0827.py`). 이 SUMMARY 를 원천으로 11-04 에 만듦, 뒤 정정은 페이지에 '11-04 정정' 표시(문제 대장 카드 근거). 기록 → `Docs/debug_log/2026-11-04/SUMMARY.md` §11.

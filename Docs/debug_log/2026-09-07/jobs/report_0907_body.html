@@ -1,0 +1,263 @@
+
+<style>
+.code{margin:0;font-family:var(--f-mono);font-size:12.5px;line-height:1.5;background:var(--bg);border:1px solid var(--line);padding:8px 10px;overflow-x:auto;white-space:pre;max-width:100%}
+.flow > span{min-width:0}
+.c1104{font-weight:600;color:var(--ink);background:var(--tint-warn);border-left:3px solid var(--warn);padding:0 5px;margin-left:3px;border-radius:2px;white-space:normal;font-size:.92em}
+</style>
+<div class="wrap">
+<header>
+  <div class="eyebrow">Indoor Rover · 2026-09-07 · Docs/debug_log/2026-09-07 SUMMARY 전체(§ 번호 없음 — 절 제목으로 적음) · REPORT.md · 주행 있음 · 11-04 사후 작성</div>
+  <h1>09-07 PWM 정정과 재보정</h1>
+  <p class="lead">이 페이지는 2026-11-04 에 그날의 <span class="mono">SUMMARY.md</span> 와 같은 폴더의 <span class="mono">REPORT.md</span>(그날 쓴 한 장 보고)를 원천으로 사후에 만들었습니다. 수치와 판정은 모두 그 두 문서와 <span class="mono">outputs/</span> 원문에서 왔습니다. 하루의 줄기는 이렇습니다. 스톨 보호를 받침대에서 검증하려 했는데 감지가 되지 않았습니다. 원인을 파 보니 모터 PWM 이 50 Hz 로 잘못 걸려 있었고, 20 kHz 로 고치자 감지가 설계대로 동작했습니다. 이어서 휠 둘레 상수의 오류와 회전 모델 부재가 차례로 드러나 펌웨어와 ROS 를 한 쌍으로 다시 보정했습니다. 마지막으로 Nav2 컨트롤러를 벤치마크해 RPP 를 채택했습니다. 나중에 문제 대장(<span class="mono">Docs/issues/</span>)이 원문과 대조해 찾은 어긋남과 정정은 원래 문장을 그대로 두고 <span class="c1104">11-04 정정</span> 표시로 덧붙였습니다(<b>20 곳</b>).</p>
+</header>
+
+<section>
+  <h2>오늘의 판정</h2>
+  <div class="verdicts">
+    <div class="v ok"><b>모터 PWM 50 Hz → 20 kHz</b><span>이관 계획 T1 이 빠져 있었음. 20 kHz 에서 구속 바퀴 펄스 0 → 스톨 감지 · 1.5 s 자동 복구 · 3 회 하드 래치 전 경로 첫 검증(Run J)</span></div>
+    <div class="v ok"><b>휠 둘레 0.16130 → 0.12533 m</b><span>라이다 벽 GT 3 회 비 1.297 · 1.275 · 1.289 → 교정 뒤 직진 1.0006(오차 0.06 %)</span></div>
+    <div class="v wait"><b>유효 게이지 0.443 m</b><span>자이로 기준 13 회 평균 0.429 ± 0.044. 지령 ω = 실제 ω 가 되었으나 회전 오도는 ±15 %(바닥 의존) — 반복 중단</span></div>
+    <div class="v ok"><b>Nav2: RPP 채택 3 : 0</b><span>RPP 19.7 · 25.1 · 10.7 s 성공, MPPI 150.6 · 120.6 s 시간 초과.<span class="c1104">(11-04 정정: MPPI 의 긴 정지는 펌웨어가 6~7 mm/s 명령을 정지로 버린 것이라 비교가 오염됨 — 근거 Docs/issues/controller-rpp-vs-mppi.md §5 실수 ①)</span></span></div>
+    <div class="v no"><b>MPPI 주행 중 벽 접촉 1 건</b><span>54e. 바퀴가 계속 돌아 펌웨어 스톨은 안 걸림(정상) → Jetson 측 <span class="mono">stuck_monitor</span> 신설(그림자, 46 s 오탐 0)</span></div>
+    <div class="v no"><b>UART5 디버그 콘솔 불가</b><span>배선 없음 — 한 번도 검증된 적 없는 경로였음. 09-03 의 'CLI c 로 래치 해제' 도 실제로는 없었음</span></div>
+  </div>
+</section>
+
+<section>
+  <h2>받침대 스톨 검증 — 감지되지 않았다<span class="sec">「받침대 스톨 검증」 · 「텔레메트리 펌웨어 + 서명 수집」</span></h2>
+  <div class="flow">
+    <span class="k">본 것</span><span>Run 3: 좌측 트랙을 나무토막으로 고정하고 0.02 m/s 30 s. 좌 보고 속도 0.014~0.028, 이벤트 없음. Run 2(손으로 누름)는 "보고 속도 0.011~0.018 유지".<span class="c1104">(11-04 정정: 원문 v 는 0.0113~0.0312, 10 s 이후 0.016~0.031 — 범위가 좁게 적힘, '이벤트 없음' 은 같음 — 근거 Docs/issues/motor-pwm-50hz.md §6.5 ⑦)</span></span>
+    <span class="k">추론</span><span>트랙이 서 있어도 펌웨어는 ~0.02 m/s 로 보고 → 600 ms 에 ~12 mm → '3 mm 미만' 판정에 못 걸린다. FG 펄스에는 방향이 없어 지령 부호를 넣으므로, 구속된 모터의 떨림 펄스가 전부 '전진' 으로 쌓인다(코드 확인).</span>
+    <span class="k">스크립트 핵심</span><span><pre class="code">/* fg_encoder_driver.c — FG 에는 방향이 없어 지령 방향 부호를 주입 */
+s_count[ch] += (bldc_last_dir_sign((MotorChannel)ch) &gt;= 0) ? 1 : -1;</pre><span class="note">지금 판 151 행(SUMMARY 는 그날 판 125 · 144 행으로 적음) · <span class="mono">firmware/rover_jupiter_fw/App/drivers/fg_encoder_driver.c</span></span></span>
+    <span class="k">나온 결과</span><span><pre class="code">cmd_vel vx=0.02 wz=0.0 for 30.0s  (20Hz)
+[  4.06s] v=0.0135 w=-0.011  → L=0.0149 R=0.0122
+[ 29.56s] v=0.0180 w=-0.010  → L=0.0192 R=0.0168
+=== 정지. 이벤트 요약 ===
+  [  2.54s] status level=0 'OK'
+최종 status: (0, 'OK')</pre><span class="note">결과 원문 <span class="mono">Docs/debug_log/2026-09-07/outputs/job40a_run3.txt</span> · 스크립트 원문 <span class="mono">Docs/debug_log/2026-09-07/jobs/job40a_stalltest.py</span>(저장본은 휠별 텔레메트리 판 — Run 1~3 을 낸 앞판은 원천 소실, <span class="mono">Docs/issues/stall-latch.md</span> §5.3)</span></span>
+    <span class="k">다음 시험</span><span>휠별 텔레메트리 <span class="mono">/rover/status.values[]</span>(<span class="mono">tgt v d pps T cv w sc</span>)를 펌웨어에 넣고(플래시 2 회) 구속 서명을 모음. 구속 바퀴의 펄스 주기가 <b>정확히 20.0 ms(50 Hz) · 10.0 ms(100 Hz)</b> 로 고정되고, duty 94~98 % 에서야 펄스가 끊겨 그때만 600 ms 판정이 걸렸다(Run F · G).</span>
+    <span class="k">나온 결과</span><span><pre class="code">[  3.66s] L=0.0073 … L[tgt=50 v=14 d=92 pps=65 T=12467 cv=46 …]
+[  3.86s] L=0.0000 … L[tgt=50 v=7  d=98 pps=29 T=31467 cv=0  …]
+[  4.26s] L=0.0000 … L[tgt=50 v=0  d=98 pps=0  T=0     cv=0  …]
+[  4.51s] status level=1 'STALL — auto-recovering'
+[  5.91s] status level=0 'OK'
+[  7.71s] status level=1 'STALL — auto-recovering'</pre><span class="note">결과 원문 <span class="mono">Docs/debug_log/2026-09-07/outputs/job41g_blockL005_10s.txt</span>(Run G, 좌 구속 · 지령 0.05) · 같은 도구</span></span>
+    <span class="k">결론(오전)</span><span>"FG 이동거리 기반 스톨 감지는 하드 구속을 못 잡는다" → Jetson 측 정체 감지를 N1 전제조건으로 격상. 이 결론은 같은 날 오후에 <b>50 Hz 에 한정</b>으로 정정됐다(아래 '내 실수' ①).</span>
+    <span class="k">부수</span><span>「결론」 5 "미해결 이상: 0.05 m/s 유지에 duty 93 % 필요, 원인 미상".<span class="c1104">(11-04 정정: 08-26 에 이미 "50 mm/s 유지에 duty 92~93 %" — 새 이상이 아니라 50 Hz 곡선의 한 점, 20 kHz 에서 58~59 % — 근거 Docs/issues/motor-pwm-50hz.md §6.5 ④)</span></span>
+  </div>
+</section>
+
+<section>
+  <h2>근본 원인 — 모터 PWM 이 50 Hz 였다<span class="sec">「★ 근본 원인」 · 「Run J」 · 「20kHz 정착점」</span></h2>
+  <div class="flow">
+    <span class="k">본 것</span><span>Run H(지령 0.03): 구속 바퀴 주기가 10.0 ms(100 Hz 모드)에 고정, 가짜 속도 33 mm/s 가 목표 30 을 채워 적분이 멈춤 → 10 s 감지 없음. 펄스 폭 10~21 ms 의 정상 논리 펄스라 누화는 기각.</span>
+    <span class="k">추론</span><span>구속 펄스가 PWM 주기에 묶여 있다 → PWM 설정을 확인. <span class="mono">MOTOR_1TO90_MIGRATION_PLAN.md</span> §3.1 · T1 은 새 1:90 모터에 20 kHz(권장 15~25 kHz)인데, 드라이버는 옛 모터 값 50 Hz 그대로("git: 06-26 이후 미변경").<span class="c1104">(11-04 정정: PWM 매크로는 맞지만 파일은 07-01 · 08-26(모터 교체일)에 수정됐다 — 교체 때 같은 파일을 만지며 T1 을 빠뜨림 — 근거 Docs/issues/motor-pwm-50hz.md §6.5 ③ · 실수 ④)</span></span>
+    <span class="k">스크립트 핵심</span><span><pre class="code">/* 2026-09-07: 50Hz → 20kHz. 근거: MOTOR_1TO90_MIGRATION_PLAN.md §3.1
+ *   RIGHT TIM3 84MHz  PSC=0 → 84MHz tick,  ARR=4199 → 20kHz, 4200 step
+ *   LEFT  TIM1 168MHz PSC=1 → 84MHz tick,  ARR=4199 → 20kHz, 4200 step
+ * 롤백: PWM_FREQ_HZ 50u, PSC 167/83, ARR 19999 (1MHz tick) */</pre><span class="note">코드 <span class="mono">firmware/rover_jupiter_fw/App/drivers/integrated_bldc_driver.c</span> 33~38 행(커밋 <span class="mono">8fd76182</span>)</span></span>
+    <span class="k">나온 결과</span><span><pre class="code">[  2.07s] L=0.0000 R=0.0516 | L[tgt=40 v=1 d=68 pps=39 …] R[tgt=40 v=52 d=60 pps=184 T=5718 cv=0 …]
+[  2.27s] L=0.0000 R=0.0494 | L[tgt=40 v=0 d=73 pps=0 …]   R[tgt=40 v=50 d=59 pps=170 …]
+[  2.41s] status level=1 'STALL — auto-recovering'
+[  5.21s] status level=1 'STALL — auto-recovering'
+[  7.81s] status level=2 'STALL latched — reset required'</pre><span class="note">결과 원문 <span class="mono">Docs/debug_log/2026-09-07/outputs/job42a_20k_blockL.txt</span>(Run J, 20 kHz · 좌 구속) · 스크립트 <span class="mono">jobs/job40a_stalltest.py</span> · <span class="mono">jobs/run_sig.sh</span></span></span>
+  </div>
+  <div class="tbl"><table>
+    <tr><th></th><th>50 Hz (Run I)</th><th>20 kHz (Run J)</th></tr>
+    <tr><td>자유 바퀴(목표 0.04)</td><td>duty 64~82 % · pps 50~100 · cv 30 %</td><td>duty 57~61 % · pps 150~184 · cv 0~1 %</td></tr>
+    <tr><td>구속 바퀴 펄스</td><td>50 / 100 Hz 기저 펄스(가짜 15~33 mm/s)</td><td>pps 0(간헐 단발)</td></tr>
+    <tr class="hl"><td>스톨 감지</td><td>duty 98 % 도달 후 ~3 s<span class="c1104">(11-04 정정: 원문은 98 % 도달 0.5 s · 0.1 s 미만 뒤 판정, '~3 s' 는 출발 · 재무장 뒤 시간 — 근거 Docs/issues/motor-pwm-50hz.md §6.5 ①)</span></td><td>2.4 s → 5.2 s → 7.8 s 하드 래치<span class="c1104">(11-04 정정: 스크립트 시작 기준 시각. 첫 status 1.81 s 기준이면 0.6 · 3.4 · 6.0 s — 근거 Docs/issues/stall-latch.md §5.3)</span></td></tr>
+  </table></div>
+  <p>20 kHz 무부하 정착점은 10 · 20 · 30 · 50 · 100 mm/s 에 duty 40 · 45 · 49~50 · 58~59 · 81~82 % 로, <b>duty ≈ 0.36 + 4.5·v</b> 의 직선이 되었고 모두 1 s 안에 따라갔습니다. 50 Hz 시절의 강한 비선형이 사라져 FF 를 <span class="mono">DEADZONE</span> 0.13 → 0.34, <span class="mono">KV_DUTY_PER_MPS</span> 12 → 4.5 로 다시 맞췄습니다. 98 % 포화 시 무부하 최고속은 "≈117~120 mm/s" 로 적었습니다.<span class="c1104">(11-04 정정: 원문상 좌 122~124 · 우 117~118, 목표를 넘긴 포화 상태 — 근거 Docs/issues/motor-pwm-50hz.md §6.5 ② · outputs/job42b_20k_free_010.txt)</span></p>
+  <p class="note">결과 원문 <span class="mono">Docs/debug_log/2026-09-07/outputs/job42b_20k_free_*.txt</span>(구 FF) · <span class="mono">job42c_20k_tuned_*.txt</span>(재튜닝 FF). 같은 표가 두 펌웨어 결과를 섞은 것이라는 지적은 <span class="mono">Docs/issues/start-deadband.md</span> §5.5.</p>
+</section>
+
+<section>
+  <h2>바닥 재실측 — 데드밴드 소멸 · 직진 스케일은 상수 오류<span class="sec">「데드밴드 스윕」 · 「★ 직진 스케일 재캘리브레이션」 · 「✅ 직진 검증」</span></h2>
+  <div class="flow">
+    <span class="k">데드밴드</span><span>지령 5~30 mm/s 를 3 s 씩. 10 mm/s 에서도 좌우 대칭으로 따라감(duty 41 %) → 09-03 의 '0.012~0.016 불가 · 0.020 확정' 은 50 Hz 산물. "EKF 변위/지령시간 ≈ 0.70~0.73 — 가감속 포함이라 스케일 판단엔 부적합".<span class="c1104">(11-04 정정: 원문 비율은 0.70 · 0.73 · 0.75 · 0.73 이고, 그때 EKF 에 아직 VX_SCALE 0.783 이 걸려 있어 비율 대부분이 그것으로 설명됨 — 근거 Docs/issues/start-deadband.md §5.5)</span><span class="c1104">(11-04 정정: 지령 5 는 MIN 0.010 으로 승격돼 10 으로 돌았으므로 구 10 mm/s(= 실 7.8) 미만은 미검증 — '데드밴드 없음' 은 일반화 — 근거 Docs/issues/start-deadband.md 실수 ④)</span></span>
+    <span class="k">나온 결과</span><span><pre class="code">    지령 |  L v  L d L pps |  R v  R d R pps | EKF Δ(cm)    실속도 | 판정
+    5  |   10   41    33 |   10   41    32 |       nan    nan | 기동
+   10  |   10   41    33 |   10   41    33 |       2.0      7 | 기동
+   20  |   20   45    68 |   20   45    67 |       4.4     15 | 기동
+   30  |   30   50   100 |   30   50   100 |       6.6     22 | 기동</pre><span class="note">결과 원문 <span class="mono">Docs/debug_log/2026-09-07/outputs/job44a_deadband.txt</span> · 스크립트 원문 <span class="mono">Docs/debug_log/2026-09-07/jobs/job44_deadband.py</span></span></span>
+    <span class="k">직진 — 본 것</span><span>20 kHz 로 바꿔도 원시 휠 오도가 라이다 전방벽 GT 보다 1.297 · 1.275 · 1.289 배(0.06 · −0.06 · 0.10 m/s). 속도 · 방향과 무관.</span>
+    <span class="k">스크립트 핵심</span><span><pre class="code"># 정면 ±5° 유효거리 중앙값 (라이다 yaw=pi 장착 → 정면은 스캔각 ±pi)
+if d &lt;= math.radians(5): vals.append(r)
+front[0] = st.median(vals)
+d_lid = abs(f1 - f0)       # 라이다 GT = 전방벽 거리 변화
+print(f"④ 라이다 전방벽 : {d_lid*100:7.1f} cm (원시/라이다 = {d_raw/d_lid:.4f} …)")</pre><span class="note">스크립트 원문 <span class="mono">Docs/debug_log/2026-09-07/jobs/job45_tape.py</span> 30~38 · 66~75 행</span></span>
+    <span class="k">나온 결과</span><span><pre class="code">① 지령 적산      :   150.0 cm
+② 원시 휠 오도    :   149.9 cm   (지령 대비 0.9996)
+③ EKF(0.783 적용) :   117.4 cm   (지령 대비 0.7828)
+④ 라이다 전방벽   :   115.6 cm   (원시/라이다 = 1.2971  ← 새 VX_SCALE 후보 = 0.7710)</pre><span class="note">결과 원문 <span class="mono">Docs/debug_log/2026-09-07/outputs/job45a_tape.txt</span>(b · c 는 <span class="mono">job45b_tape_rev.txt</span> · <span class="mono">job45c_tape_010.txt</span>)</span></span>
+    <span class="k">추론</span><span>슬립이면 속도에 따라 변해야 한다 → 상수 오류. 0.16130 / 1.2870 = <b>0.12533 m</b>, 공칭 Ø40 둘레 0.12566 과 0.3 % 일치 → 08-26 의 '3.720 m / 12500 카운트' 합산이 틀렸다. "FG 542 펄스/회전(손으로 20턴 실측)은 유효".<span class="c1104">(11-04 정정: 펌웨어 주석은 '전원구동 실측, 손 회전 불가' — SUMMARY 표현이 틀린 것으로 판단 — 근거 Docs/issues/wheel-odom-scale-slip.md §2.1 ②)</span></span>
+    <span class="k">결론 · 배포</span><span>둘레 0.12533 · 반경 0.01995 · 최고속 0.085 · KV 5.8 · MIN 0.008 · VX_SCALE 1.0 · SLIP_PTS 0.46 → 0.592 · Nav2 0.08 을 <b>펌웨어 + Jetson 동시 배포</b>(한쪽만 바꾸면 이중 보정 0.61 또는 무보정 1.29).<span class="c1104">(11-04 정정: 표의 SLIP 0.592 는 예측값으로 배포되지 않음 — 3 분 뒤 job46 결과 ((0.19,0.620),(0.31,0.694)) 가 배포됨 — 근거 Docs/issues/wheel-odom-scale-slip.md §2.1 ①)</span></span>
+    <span class="k">검증</span><span><pre class="code">② 원시 휠 오도    :   150.0 cm   (지령 대비 0.9998)
+③ EKF(0.783 적용) :   150.0 cm   (지령 대비 0.9999)
+④ 라이다 전방벽   :   149.9 cm   (원시/라이다 = 1.0006  ← 새 VX_SCALE 후보 = 0.9994)</pre><span class="note">결과 원문 <span class="mono">Docs/debug_log/2026-09-07/outputs/job47a_verify.txt</span>(③ 의 '0.783 적용' 은 도구 문구가 낡은 것 — 이때 VX_SCALE 은 1.0) · 같은 도구</span></span>
+  </div>
+</section>
+
+<section>
+  <h2>회전 — 유효 게이지 0.443 에서 반복을 멈췄다<span class="sec">「회전 캘리브레이션」 · 「회전 슬립 — 자이로 기준」 · 「B_eff 적용」 · 「job51」 · 「job52」</span></h2>
+  <div class="flow">
+    <span class="k">본 것 ①</span><span>라이다 스캔 정합(1° 빈 range 프로파일을 돌려 |rA−rB| 중앙값 최소)으로 잰 회전이 지령의 절반 수준. EKF yaw 는 GT 대비 0.937~0.952 → "기존 SLIP 0.46 이 과소보정이라 EKF 가 낮게 끌린 것".<span class="c1104">(11-04 정정: EKF 는 자이로를 따랐고(48c 에서 EKF −85.8° = 자이로 +85.7°), SLIP 을 올린 뒤에도 EKF/GT 가 그대로 → 5 % 는 라이다 GT 쪽 오차로 보는 것이 맞다 — 근거 Docs/issues/wheel-odom-scale-slip.md §5 ⑧)</span></span>
+    <span class="k">스크립트 핵심</span><span><pre class="code"># 각도 상관: B 를 d 만큼 돌려 A 와 맞추는 d 탐색 (뒤에 포물선 세밀화)
+for d in range(-179, 180):
+    Br = np.roll(B, d)
+    m = np.isfinite(A) &amp; np.isfinite(Br)
+    cost = float(np.median(np.abs(A[m] - Br[m])))
+# 자이로 3 축 적분 중 최대축을 로버 yaw 로
+best_ax = max((abs(gx_d),'x',gx_d), (abs(gy_d),'y',gy_d), (abs(d_gyro),'z',d_gyro))</pre><span class="note">스크립트 원문 <span class="mono">Docs/debug_log/2026-09-07/jobs/job46_rot.py</span> 74~86 · 106 행</span></span>
+    <span class="k">본 것 ②</span><span>"중대 발견: D455f IMU 프레임에서 로버 요 회전은 y축(부호 반대)".<span class="c1104">(11-04 정정: 08-27 job5b 와 컨디셔너 주석에 이미 있던 사실 — 새 발견이 아니라 재발견 — 근거 Docs/issues/wheel-odom-scale-slip.md §2.1 ③)</span></span>
+    <span class="k">나온 결과</span><span><pre class="code">② 원시 휠 적분      :   -135.2°   (지령 대비 0.9831)
+③ EKF yaw          :    -85.8°   (자이로+휠 융합, ±180 랩)
+③' 자이로 적분(D455f 프레임): x=   -1.1°  y=  +85.7°  z=   +3.0°
+   → 최대축 y = +85.7°   휠/자이로 = -1.5768 → SLIP -0.634
+④ 라이다 정합 GT    :    -89.6°   잔차 20.9cm, 유효빈 345/360</pre><span class="note">결과 원문 <span class="mono">Docs/debug_log/2026-09-07/outputs/job48c_axis.txt</span></span></span>
+    <span class="k">추론</span><span>자이로 기준 SLIP 7 회 평균 0.600(σ 7 %), ω 의존성 없음. 라이다 GT 는 자이로 대비 "−4.7 %(합계 기준)" 로 보조 지표로 격하.<span class="c1104">(11-04 정정: 같은 7 회 원문을 다시 더하면 라이다 520.1° / 자이로 537.2° = −3.2 % — −4.7 % 의 묶음은 미확인, 격하 결론엔 영향 없음 — 근거 Docs/issues/wheel-odom-scale-slip.md §2.1 ⑤)</span> 지령 ω 가 실제의 60 % 이므로 유효 게이지 B_eff = 0.245 / 0.600 = 0.409 로 펌웨어에 넣어(기하값 0.245 는 <span class="mono">TRACK_GAUGE_GEOM_M</span> 으로 보존) 지령 ω = 실제 ω 로 만들고 SLIP 은 1.0.</span>
+    <span class="k">재측정</span><span>job50 은 사용자가 로버를 손으로 옮겨 오염 가능 → job51 재측정. 7 회 종합 0.400 · 0.410 · 0.426 · 0.444 · 0.459 · 0.472 · 0.487 → 중앙값 · 평균 0.443, "job50 은 참고용으로 격하".<span class="c1104">(11-04 정정: 7 회 중 0.410 · 0.426 · 0.487 이 job50 값 — 격하했다면서 통계에 넣음. 50b 를 빼면 6 회 0.435, 결론(산포 안)은 같음 — 근거 Docs/issues/wheel-odom-scale-slip.md §2.1 ④)</span></span>
+    <span class="k">검증</span><span><pre class="code">② 원시 휠 적분      :   +136.5°   (지령 대비 0.9927)
+③' 자이로 적분(D455f 프레임): x=   -0.5°  y= -142.6°  z=   -5.9°
+   → 최대축 y = -142.6°   휠/자이로 = -0.9575</pre><span class="note">결과 원문 <span class="mono">Docs/debug_log/2026-09-07/outputs/job52a.txt</span>(52a ~ 52f 6 회, 다른 바닥 지점)</span></span>
+    <span class="k">결론</span><span>휠/자이로 0.815~1.145(±15 %), B 13 회 평균 0.429 · σ 10.2 % · 표준오차 2.8 %. 0.443 은 평균과 3 % 차이로 산포 안 → "추가 반복은 노이즈를 쫓는 것" 으로 중단. ω 0.40 은 휠 포화(실 상한 0.384 rad/s) → Nav2 각속도 상한 0.38. 「오늘 최종 상태」 의 "회전 평균 오차 −6.6 %".<span class="c1104">(11-04 정정: −6.6 % 는 job52 6 회(한 지점)의 휠/자이로 평균 0.934 만의 값, 13 회 평균 기준이면 0.443 은 +3.3 % — 근거 Docs/issues/wheel-odom-scale-slip.md §2.1 ⑥)</span></span>
+  </div>
+</section>
+
+<section>
+  <h2>Nav2 컨트롤러 벤치마크 — RPP 채택<span class="sec">「Nav2 컨트롤러 벤치마크」 · 「MPPI 원인 분석」 · 「⚠ 사고」</span></h2>
+  <p>속도 단위가 전부 실단위로 바뀌어 09-03 측정치는 폐기하고 새로 쟀습니다. 컨트롤러는 재시작 없이 목표의 <span class="mono">behavior_tree</span> 필드로 바꿨습니다(배터리 12.04 V).</p>
+  <div class="flow">
+    <span class="k">스크립트 핵심</span><span><pre class="code">if BT: g.behavior_tree = BTDIR + BT        # 재시작 없이 컨트롤러 전환
+print(f"  경로 {path:.2f}m / 직선 {straight:.2f}m = 효율 {straight/path …:.3f}")
+print(f"  지령 급변합 {jerk:.1f} … 전후반전 {rev}회  샘플 {len(cmds)}")</pre><span class="note">스크립트 원문 <span class="mono">Docs/debug_log/2026-09-07/jobs/job53_bench.py</span> 55 · 105 · 109 행</span></span>
+    <span class="k">나온 결과</span><span><pre class="code">[RPP(기본)] … → 목표 (1.60,0.00) hd=0°  직선거리 1.60m
+결과: SUCCEEDED  소요 19.7s
+  경로 1.59m / 직선 1.60m = 효율 1.007
+  |v| 평균 0.077 최대 0.080 m/s | … 전후반전 0회
+---
+[nav_to_pose_mppi.xml] … → 목표 (0.00,0.00) hd=180°  직선거리 1.49m
+  t= 72.1s (+0.19,-0.32) hd=-179.0° 남은=0.37m cmd(v=+0.006 w=-0.005)
+  …(t=116.1s 까지 같은 자리 · 같은 명령)
+결과: TIMEOUT  소요 120.6s
+  |v| 평균 0.018 최대 0.054 m/s | … 전후반전 7회</pre><span class="note">결과 원문 <span class="mono">Docs/debug_log/2026-09-07/outputs/job54a_rpp1.txt</span> · <span class="mono">job54e_mppi2.txt</span>(나머지 <span class="mono">job54b_rpp2</span> · <span class="mono">job54c_mppi1</span> · <span class="mono">job54d_rpp3</span>)</span></span>
+  </div>
+  <div class="tbl"><table>
+    <tr><th>#</th><th>컨트롤러</th><th>코스</th><th>결과</th><th>소요</th><th>위치오차</th><th>전후반전</th></tr>
+    <tr><td>54a</td><td>RPP</td><td>직진 1.60 m</td><td><span class="pill ok">SUCCEEDED</span></td><td>19.7 s</td><td>14.8 cm</td><td>0</td></tr>
+    <tr><td>54b</td><td>RPP</td><td>180° 선회 + 1.47 m</td><td><span class="pill ok">SUCCEEDED</span></td><td>25.1 s</td><td>14.9 cm</td><td>0</td></tr>
+    <tr class="bad"><td>54c</td><td>MPPI</td><td>180° 선회 + 1.46 m</td><td><span class="pill no">TIMEOUT</span></td><td>150.6 s</td><td>36.8 cm</td><td>21</td></tr>
+    <tr><td>54d</td><td>RPP</td><td>54c 실패 자리 → 0.37 m</td><td><span class="pill ok">SUCCEEDED</span></td><td>10.7 s</td><td>13.6 cm</td><td>0</td></tr>
+    <tr class="bad"><td>54e</td><td>MPPI</td><td>54b 와 같은 코스</td><td><span class="pill no">TIMEOUT</span></td><td>120.6 s</td><td>37.2 cm</td><td>7</td></tr>
+  </table></div>
+  <div class="flow">
+    <span class="k">판정(그때)</span><span>RPP 3 전 3 승, |v| 평균 0.077 로 지령 0.08 을 거의 유지, 경로 효율 ~1.0.<span class="c1104">(11-04 정정: 효율 = 직선/실제 경로라 15 cm 앞에서 멈춘 54a 는 1.007 로 1 을 넘는다 — '덜 간 비율' 이 섞인 값 — 근거 Docs/issues/controller-rpp-vs-mppi.md §6)</span> MPPI 는 "목표 0.37 m 앞에서 수렴 실패하고 제자리 진동".<span class="c1104">(11-04 정정: 원문은 진동이 아니라 정지 — 54e 는 t 68~116 s 한 자리에서 v +0.006 명령. 그날 펌웨어가 3~8 mm/s 를 8 mm/s 로 승격한 뒤 |target| &lt; 10 mm/s 를 정지로 처리 → MPPI 0/2 는 오염된 비교. '전후반전' 은 BackUp 후진도 셈 — 근거 Docs/issues/controller-rpp-vs-mppi.md §5 실수 ① · §6, 09-17 §7 · §8)</span></span>
+    <span class="k">MPPI 원인(사용자 요청)</span><span>신뢰도 순 ① [높음] 제자리 회전 부재 → U 턴이 호(최소 회전반경 0.08/0.38 = 0.21 m, 횡변위 실측 ±0.31~0.32) ② [중상] 목표 0.4 m 안 경로 크리틱 공백 ③ [중] 직사각 풋프린트 회전 봉쇄 ④ [중] 지평 1.6 s × 0.08 = 12.8 cm ⑤ [중하] 노이즈가 경계에 클리핑 ⑥ [기각] CPU(20 Hz 미달 3 회 / 약 5,400 사이클).<span class="c1104">(11-04 정정: 이후 ② 는 09-17 시뮬 · 문턱 0.2 뒤 mp9 성공으로 일부 지지, ④ 는 09-16 mp3 에서 지평만 늘려도 정체가 안 풀려 기각 쪽, ① 은 이후 시험 안 됨 — 근거 Docs/issues/controller-rpp-vs-mppi.md §7.1)</span></span>
+    <span class="k">사고</span><span>54e 에서 사용자 보고 "벽을 향해 달려서 벽을 긁었다". y −0.32 횡드리프트 뒤 정지. 펌웨어 스톨은 안 걸렸고 그것이 맞다(바퀴가 계속 돎). 코스트맵이 못 막은 이유는 추정(라이다 0.2 m 사각 + inflation 0.25). 조치: 목표 취소 + <span class="mono">/cmd_vel</span> 0 + Nav2 강제 종료. 원천은 사용자 육안과 위 출력뿐(nav2.log 원천 소실).</span>
+    <span class="k">다음 작업 1</span><span>"stuck_monitor 노드 구현(N1 게이트 전 필수) — 지령 |v|&gt;0.015 or |ω|&gt;0.1 이 2 s 지속인데 EKF 변위 &lt;1 cm · yaw &lt;2° → … 이번 사고가 정확히 이 케이스".<span class="c1104">(11-04 정정: 긁으며 움직이는 동안은 스캔도 움직임을 보고, 정지 구간 명령 0.006 m/s 는 판정 문턱 아래라 판정 자체를 안 함 → 54e 는 이 노드가 잡을 예가 아닐 가능성이 큼(미확인). 또 실제 구현은 EKF 가 아니라 라이다 스캔 비율 — 근거 Docs/issues/stuck-monitor.md 실수 ③ · Docs/issues/controller-rpp-vs-mppi.md §6)</span></span>
+  </div>
+</section>
+
+<section>
+  <h2>stuck_monitor 신설 · 측면 여유<span class="sec">「구현 (1·2번)」 · 「구현 검증 주행 job55」</span></h2>
+  <div class="flow">
+    <span class="k">설계</span><span>휠과 무관한 관측(라이다 스캔 상관 = 회전, 섹터 range 변화 = 병진, 자이로)으로 지령 대비 실제 이동을 봄. 기본 그림자(로그 · <span class="mono">/rover/stuck</span>), <span class="mono">stuck_shadow:=false</span> 면 목표 취소 + 정지. 함께 local inflation 0.25 → 0.35 · cost_scaling 3.0 → 2.5, <span class="mono">depth_layer</span> 블록 예비(미활성).</span>
+    <span class="k">스크립트 핵심</span><span><pre class="code">want_move = dist_cmd &gt;= self.v_thr * self.W or ang_cmd &gt;= self.w_thr * self.W
+if dist_cmd &gt;= self.v_thr * self.W and trans_valid: ratios.append(trans_obs / dist_cmd)
+if ang_cmd &gt;= self.w_thr * self.W: ratios.append(rot_obs / math.degrees(ang_cmd))
+r = max(ratios)
+self.hits = self.hits + 1 if r &lt; self.ratio else 0    # window 2.0 s, ratio 0.25</pre><span class="note">스크립트 원문 <span class="mono">Docs/debug_log/2026-09-07/jobs/stuck_monitor.py</span> 118 · 138~142 행(그날 사본)</span></span>
+    <span class="k">나온 결과</span><span><pre class="code">결과: SUCCEEDED  소요 19.7s
+  경로 1.58m / 직선 1.60m = 효율 1.013
+  위치오차 14.1cm  자세오차 -1.5°
+  지령 급변합 1.6 (0.08/s)  정지비율 0%  전후반전 0회  샘플 393</pre><span class="note">결과 원문 <span class="mono">Docs/debug_log/2026-09-07/outputs/job55a_rpp_sm.txt</span> · <span class="mono">job55b_rpp_sm.txt</span>(26.3 s, −12.0°)</span></span>
+    <span class="k">결론</span><span>inflation 0.35 에서도 RPP 성능 같음. 직진 · 제자리 180° · 근접 감속 포함 약 46 s 동안 그림자 오탐 0. 정탐(받침대 헛돎 재현)은 다음 세션.</span>
+  </div>
+</section>
+
+<section>
+  <h2>UART5 디버그 콘솔은 배선이 없었다<span class="sec">「UART5 디버그 콘솔」</span></h2>
+  <div class="flow">
+    <span class="k">본 것</span><span>COM5 · COM6 를 열고 <span class="mono">-rst</span> 로 리셋해도 수신 0 바이트. 부팅 때 <span class="mono">[cli] 시리얼 모터 제어 준비</span> 가 반드시 나가야 하므로 TX 미도달 확정. 저장소 기록 전체에 <span class="mono">[cli]</span> 출력이 한 번도 없음.</span>
+    <span class="k">추론</span><span>펌웨어 설정(huart5 115200, PC12/PD2 AF8, CLI 태스크)은 정상 → ST-Link 를 SWD 4 선만 연결해 VCP 2 선이 안 감(추정).</span>
+    <span class="k">결론</span><span>09-03 에 "스톨 래치 해제는 CLI 'c' 뿐" 이라 적었으나 그 경로도 없었다(해제는 리셋뿐). 오늘 자동 복구 정책으로 실질 해소. 시도 도구 <span class="mono">Docs/debug_log/2026-09-07/jobs/rover_cli.ps1</span>, 출력 원문 없음 — 위 서술이 전부.</span>
+  </div>
+</section>
+
+<section>
+  <h2>내 실수 · 같은 날 정정</h2>
+  <div class="pm">
+    <h3>① 50 Hz 에서 본 현상을 'FG 방식의 근본 한계' 로 일반화 (「판단」 · 「설계 결정」 → 「정정 (오늘 오전 결론)」)</h3>
+    <div class="flow">
+      <span class="k">하려 한 것</span><span>받침대에서 스톨 정책 검증(<span class="mono">job40a_stalltest.py</span>)</span>
+      <span class="k">본 것</span><span>구속해도 좌 바퀴 ~0.02 m/s 보고, 이벤트 0(Run 1~3)</span>
+      <span class="k">처음 추론</span><span>"FG 이동거리 기반 스톨 감지는 하드 구속을 못 잡는다(지령 문턱이든 duty 문턱이든 동일)" → Jetson 정체 감지를 'CLAUDE.md 원칙의 예외' 로 N1 전제조건에 격상. PWM 주파수 변경은 "드라이버 사양 미확인 · 위험" 으로 기각</span>
+      <span class="k">의심한 이유</span><span>구속 펄스 주기가 20.0 / 10.0 ms 로 PWM 50 Hz 에 정확히 묶임(Run C · H)</span>
+      <span class="k">판별 시험</span><span>이관 계획 §3.1 확인 → 20 kHz 플래시 → Run J</span>
+      <span class="k">결론</span><span>50 Hz 아티팩트에 한정된 결론. 20 kHz 에서는 구속 시 펄스 0 → 감지 · 복구 · 래치 모두 정상. Jetson 감지는 '필수 전제' 에서 '보조(트랙 슬립 · 벽 밀림)' 로 격하</span>
+      <span class="k">나온 결과</span><span><pre class="code">[  7.81s] status level=2 'STALL latched — reset required'
+최종 status: (2, 'STALL latched — reset required')</pre><span class="note">결과 원문 <span class="mono">Docs/debug_log/2026-09-07/outputs/job42a_20k_blockL.txt</span></span></span>
+      <span class="k">다음에 알아보는 법</span><span>(문제 대장) 사양이 우리 문서에 있는지 먼저 찾는다 — 'PWM 변경 = 사양 미확인' 은 이관 계획서에 사양이 있었는데 두 번 기각한 것(<span class="mono">Docs/issues/motor-pwm-50hz.md</span> 실수 ②). 반대로 정정하면서 '모든 이상 = 50 Hz' 로 넘겨짚지 않는다 — 직진 28.7 % 과대는 50 Hz 가 아니었다(같은 카드 실수 ③)</span>
+      <span class="k">데이터</span><span><span class="mono">outputs/job40a_run{1,2,3}.txt</span> · <span class="mono">job41*.txt</span> · <span class="mono">job42a_20k_blockL.txt</span>, 커밋 <span class="mono">bdbb9a8f</span> · <span class="mono">8fd76182</span></span>
+    </div>
+  </div>
+  <div class="pm">
+    <h3>② 승격값 0.030 을 '즉시 적용 가능한 개선안' 으로 냄 (「Run G」 개선안 → 「Run H」 철회)</h3>
+    <div class="flow">
+      <span class="k">하려 한 것</span><span>저 duty 구속에서도 적분이 쌓이게 <span class="mono">MIN_WHEEL_SPEED_MPS</span> 0.020 → 0.030</span>
+      <span class="k">본 것</span><span>Run H(목표 30, 플래시 실패로 구 펌웨어 MIN 0.020 이지만 지령 0.03 이라 바퀴 목표는 30): 구속 바퀴 T = 10.0 ms 고정, 가짜 속도 33 이 목표 30 을 채움</span>
+      <span class="k">결론</span><span>기저 펄스에 100 Hz 모드(≈30 mm/s)가 있어 0.030 은 정확히 겹치는 최악 → 철회. 근본 원인(PWM)을 고친 뒤 승격으로 우회할 필요 자체가 없어짐</span>
+      <span class="k">나온 결과</span><span><pre class="code">[  3.67s] L=0.0312 … L[tgt=30 v=33 d=57 pps=100 T=9981 cv=27 …]
+[  3.87s] L=0.0310 … L[tgt=30 v=33 d=56 pps=100 T=9926 cv=26 …]</pre><span class="note">결과 원문 <span class="mono">Docs/debug_log/2026-09-07/outputs/job41h_blockL003_min030.txt</span>(이름의 'min030' 은 플래시 실패로 사실과 다름 — <span class="mono">Docs/issues/motor-pwm-50hz.md</span> §6.5 ⑥)</span></span>
+      <span class="k">다음에 알아보는 법</span><span>아티팩트의 구조(모드가 몇 개인지)를 모른 채 문턱으로 피하려 하지 않는다(<span class="mono">Docs/issues/start-deadband.md</span> 실수 ③)</span>
+    </div>
+  </div>
+  <div class="pm">
+    <h3>③ 손으로 옮긴 로버의 회전 데이터(job50) (「⚠ job50 계열 오염 신고 + 재측정」)</h3>
+    <div class="flow">
+      <span class="k">본 것</span><span>사용자가 job50 중 로버를 손으로 옮겼다고 알림</span>
+      <span class="k">조치</span><span>세션 초기화 뒤 job51 4 회 재측정 — 평균 0.444 로 job50(0.441)과 거의 같아 "오염이 결론을 바꾸지 않음", job50 은 참고용으로 격하</span>
+      <span class="k">남은 문제</span><span>격하했다면서 0.443 을 낸 7 회 종합에 job50 셋이 들어감(위 회전 절의 11-04 정정)</span>
+      <span class="k">데이터</span><span><span class="mono">outputs/job50a_beff.txt</span> ~ <span class="mono">job50c_beff.txt</span> · <span class="mono">job51a.txt</span> ~ <span class="mono">job51d.txt</span></span>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>이 날의 다른 기록</h2>
+  <ul>
+    <li><span class="mono">Docs/debug_log/2026-09-07/REPORT.md</span> — 같은 날 쓴 한 장 보고(헤드라인 표 · 추론 흐름 7 단계 · 확정값). 이 페이지의 판정 카드와 확정값은 SUMMARY 와 이 보고가 같은 값을 적은 것만 썼다.</li>
+    <li>이 날의 주제 페이지는 없다(<span class="mono">figures/</span> 없음).</li>
+    <li>확정값(REPORT §5): PWM 20 kHz · 둘레 0.12533 · 유효 게이지 0.443(기하 0.245 보존) · 최고속 0.085 m/s / 0.384 rad/s · MIN 0.008 · DEADZONE 0.34 / KV 5.8 · VX_SCALE 1.0 / SLIP 1.0 · Nav2 0.08 / 0.38 · RPP · local inflation 0.35.</li>
+  </ul>
+</section>
+
+<section>
+  <h2>다음 후보 (그날 적은 순서)</h2>
+  <ul>
+    <li>stuck_monitor 정탐 검증 — 받침대에 올려 <span class="mono">job40a_stalltest.py 10 0.05</span>(휠은 돌고 스캔은 정지) → 통과하면 <span class="mono">stuck_shadow:=false</span></li>
+    <li>N1.5: D455f depth 스트림 → CPU 확인 → <span class="mono">depth_layer</span> 활성 → 낮은 장애물 실주행</li>
+    <li>N2 전체 지도 작성(RPP) · N3 프론티어 탐사</li>
+    <li>RPP 목표 자세오차(−12°): <span class="mono">yaw_goal_tolerance</span> 0.25 → 0.15</li>
+    <li>보류: MPPI(N4 이후) · 회전 슬립 속도 의존 모델 · UART5 배선</li>
+  </ul>
+</section>
+
+<section>
+  <h2>이후 · 관련 카드</h2>
+  <ul>
+    <li><span class="mono">Docs/issues/motor-pwm-50hz.md</span> — PWM 50 Hz 오적용, 원문 대조 어긋남 §6.5</li>
+    <li><span class="mono">Docs/issues/stall-latch.md</span> — 스톨 보호 래치, 09-07 받침대 검증 · §5.3</li>
+    <li><span class="mono">Docs/issues/start-deadband.md</span> — 데드밴드 · 승격값, §5.5 · 실수 ③ ④</li>
+    <li><span class="mono">Docs/issues/wheel-odom-scale-slip.md</span> — 휠 둘레 · 유효 게이지, §2.1 기록 간 어긋남 ①~⑨</li>
+    <li><span class="mono">Docs/issues/controller-rpp-vs-mppi.md</span> — 벤치마크와 MPPI 원인, 실수 ① · §6 · §7.1(이후 MPPI 로 돌아온 경위)</li>
+    <li><span class="mono">Docs/issues/stuck-monitor.md</span> — 정체 감시, 실수 ① ③</li>
+    <li><span class="mono">Docs/issues/sensor-conditioner.md</span> — VX_SCALE · SLIP 이 1.0 이 된 이유</li>
+    <li><span class="mono">Docs/issues/flash-safety.md</span> — 이 날 ST-Link 타깃 미인식 실패 2 회</li>
+    <li><span class="mono">Docs/issues/microros-baud-regression.md</span> — 09-09 통신 회귀의 후보 2 가 이 날의 PWM 변경</li>
+    <li><span class="mono">Docs/issues/track-asymmetry.md</span> · <span class="mono">Docs/issues/near-wall-blindspot.md</span> · <span class="mono">Docs/issues/nav2-first-setup.md</span></li>
+  </ul>
+</section>
+</div>

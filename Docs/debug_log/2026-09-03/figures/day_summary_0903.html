@@ -1,0 +1,261 @@
+<title>09-03 데드밴드 · 스톨 래치</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* 배치: 실험 노트 — 좁은 본문 열(65자) + 넓게 펼치는 그림 · 표, 판정은 왼쪽 띠 색으로(10-20 판과 같은 틀) */
+:root{
+  --bg:#f3f4f6; --paper:#ffffff; --ink:#1b1f24; --muted:#5b6470; --line:#d9dde3;
+  --ir:#b3263e;      /* 프로젝터 켬 · 실패 쪽 */
+  --cool:#1f7a72;    /* 프로젝터 끔 · 통과 쪽 */
+  --warn:#a86a00;
+  --tint-ir:#f8e8eb; --tint-cool:#e4f2f0; --tint-warn:#fbf1df;
+  --f-body:"IBM Plex Sans KR","Malgun Gothic","Apple SD Gothic Neo",sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#111418; --paper:#181c21; --ink:#e6e9ed; --muted:#9aa4b0; --line:#2c333b;
+  --ir:#ef6b80; --cool:#5cc4b8; --warn:#e0a640;
+  --tint-ir:#2b1b1f; --tint-cool:#15292a; --tint-warn:#2a2316; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#111418; --paper:#181c21; --ink:#e6e9ed; --muted:#9aa4b0; --line:#2c333b;
+  --ir:#ef6b80; --cool:#5cc4b8; --warn:#e0a640;
+  --tint-ir:#2b1b1f; --tint-cool:#15292a; --tint-warn:#2a2316; color-scheme:dark}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.65;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:28px 64px}
+.wrap{max-width:980px;margin:0 auto;display:flex;flex-direction:column;gap:34px}
+header{display:flex;flex-direction:column;gap:6px;border-bottom:2px solid var(--ink);padding-bottom:14px}
+.eyebrow{font-family:var(--f-mono);font-size:12px;letter-spacing:.08em;color:var(--muted);text-transform:uppercase}
+h1{font-size:30px;line-height:1.25;margin:0;font-weight:700;text-wrap:balance}
+h2{font-size:20px;margin:0 0 4px;font-weight:700;text-wrap:balance}
+h2 .sec{font-family:var(--f-mono);font-size:13px;color:var(--muted);font-weight:400;margin-left:8px}
+p{margin:0;max-width:68ch}
+section{display:flex;flex-direction:column;gap:12px}
+.lead{color:var(--muted);max-width:72ch}
+.verdicts{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
+.v{background:var(--paper);border:1px solid var(--line);border-left:5px solid var(--muted);padding:12px 14px;display:flex;flex-direction:column;gap:4px;min-width:0}
+.v.ok{border-left-color:var(--cool)} .v.no{border-left-color:var(--ir)} .v.wait{border-left-color:var(--warn)}
+.v b{font-size:15px} .v span{color:var(--muted);font-size:13.5px}
+.pill{display:inline-block;font-family:var(--f-mono);font-size:11.5px;padding:1px 8px;border-radius:999px;white-space:nowrap}
+.pill.ok{background:var(--tint-cool);color:var(--cool)} .pill.no{background:var(--tint-ir);color:var(--ir)} .pill.wait{background:var(--tint-warn);color:var(--warn)}
+.tbl{overflow-x:auto;background:var(--paper);border:1px solid var(--line)}
+table{border-collapse:collapse;width:100%;font-size:13.5px;font-variant-numeric:tabular-nums}
+th,td{padding:7px 10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{font-weight:500;color:var(--muted);font-size:12.5px;white-space:nowrap}
+td.n{font-family:var(--f-mono);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr.hl td{background:var(--tint-cool)} tr.bad td{background:var(--tint-ir)}
+figure{margin:0;background:var(--paper);border:1px solid var(--line);padding:10px;display:flex;flex-direction:column;gap:8px}
+figure img{width:100%;height:auto;display:block}
+figcaption{font-size:13px;color:var(--muted)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media (max-width:720px){.two{grid-template-columns:1fr}}
+ul{margin:0;padding-left:20px;max-width:72ch} li{margin:2px 0}
+.mono{font-family:var(--f-mono);font-size:13px}
+.flow{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;font-size:14px}
+.flow .k{font-family:var(--f-mono);color:var(--muted);font-size:12.5px;padding-top:2px;white-space:nowrap}
+.note{font-size:13px;color:var(--muted)}
+.pm{background:var(--paper);border:1px solid var(--line);padding:12px 14px;display:flex;flex-direction:column;gap:8px}
+.pm h3{font-size:15.5px;margin:0;font-weight:700}
+.pm .flow{grid-template-columns:auto 1fr;gap:6px 14px}
+.pm .flow span:not(.k){max-width:none}
+</style>
+
+<style>
+.code{margin:0;font-family:var(--f-mono);font-size:12.5px;line-height:1.5;background:var(--bg);border:1px solid var(--line);padding:8px 10px;overflow-x:auto;white-space:pre;max-width:100%}
+.flow > span{min-width:0}
+.c1104{font-weight:600;color:var(--ink);background:var(--tint-warn);border-left:3px solid var(--warn);padding:0 5px;margin-left:3px;border-radius:2px;white-space:normal;font-size:.92em}
+</style>
+<div class="wrap">
+<header>
+  <div class="eyebrow">Indoor Rover · 2026-09-03 · Docs/debug_log/2026-09-03 (§ 번호 없음 — 절 제목으로 인용) · 주행 있음(제자리 회전 스윕 · Nav2) · 11-04 사후 작성</div>
+  <h1>09-03 데드밴드 · 스톨 래치</h1>
+  <p class="lead">이 페이지는 2026-11-04 에 그날의 <span class="mono">SUMMARY.md</span>를 원천으로 다시 만든 것입니다. 오전에는 펌웨어 빌드 환경을 복원해 데드밴드 보상을 플래시했고, 최소 휠 속도(<span class="mono">MIN_WHEEL_SPEED_MPS</span>)를 스윕해 0.020 으로 정했습니다. 오후 Nav2 재벤치마크에서는 로버가 물리 접촉 없이 잠겼습니다. 원인은 보상으로 올린 0.020 이 펌웨어 스톨 감지 문턱 바로 위라서 생긴 스톨 래치였습니다. 그래서 스톨 판정을 '인가 duty 기준 · 자동 복구 · 재발 래치' 로 바꿔 플래시했습니다. 주행 검증은 다음 날로 넘겼습니다. 뒤 기록과 문제 대장이 바로잡은 곳 <b>6 건</b>은 원문을 그대로 두고 <span class="c1104">11-04 정정</span> 표시를 붙였습니다.</p>
+</header>
+
+<section>
+  <h2>오늘의 판정</h2>
+  <div class="verdicts">
+    <div class="v ok"><b>펌웨어 빌드 환경 복원 · 플래시</b><span>utils clone + 이전 <span class="mono">libmicroros.a</span>(7.4 MB) 재사용. text 124,536 · data 5,020 · bss 108,696. ST-LINK V3 검증 OK (한 일 1~3)</span></div>
+    <div class="v ok"><b>MIN_WHEEL_SPEED 0.020 확정</b><span>0.012 는 '되다 말다', 0.016 · 0.020 전 구간 반응 → 여유 있는 0.020. ω = 0.05 데드락 지점 해소 (한 일 4 · 5 · 판단)</span></div>
+    <div class="v ok"><b>RPP 직선 1.6 m SUCCEEDED</b><span>20 s, 위치 오차 14.9 cm, heading ±2°, 최고속 0.10 유지 (벤치마크 재개 결과)</span></div>
+    <div class="v no"><b>스톨 래치가 자율주행을 막음</b><span>MPPI Run 1 · RPP Run 2 둘 다 접촉 없이 <span class="mono">/rover/status</span> level 2 "STALL fault — reset required" (오후 세션)</span></div>
+    <div class="v wait"><b>새 스톨 정책 — 플래시만, 주행 검증 전</b><span>duty ≥ 0.60 AND 600 ms 무이동 · 1.5 s 자동 재무장 · 10 s 안 3 회면 하드 래치 (펌웨어 수정 — 스톨 정책 · 마무리)</span></div>
+    <div class="v wait"><b>Jetson Wi-Fi 간헐 무응답</b><span>절전 끄기 뒤 60 s 중 57 회 응답(5 % 손실). 원인 미확정 (플래시 + Jetson Wi-Fi)</span></div>
+  </div>
+</section>
+
+<section>
+  <h2>최소 휠 속도 스윕<span class="sec">한 일 4 · 5 · 판단</span></h2>
+  <div class="flow">
+    <span class="k">방법</span><span>MIN 값을 바꿔 빌드 · 플래시 · 리셋 → ω = 0.05 / 0.08 / 0.12 / 0.20 / 0.30 rad/s 를 각 8 s 지령 → 회전량. 회전 여유가 스윕 반경 + 3 cm 보다 작아지면 그 단계를 끊음.</span>
+    <span class="k">본 것</span><span>0.020: 20.0 · 18.5 · 21.9 · 28.6 · 46.9° ✅. 0.012: 7.9 · <b>0.3</b> · 8.3 · 39.7 · 47.4° ❌(임계 경계, 불규칙). 0.016: 23.8 · 18.6 · 15.0 · 28.9 · 49.4° ✅. (0.016 1 차는 반복 회전으로 로버가 좌측 벽 32 cm 까지 밀려 가드가 조기 중단 → 무효, 재배치 뒤 재측정.)<span class="c1104">(11-04 정정: 표에 없는 회차가 하나 더 있다 — MIN 0.012 의 첫 회차 job32c 는 다섯 지령 전부 −0.0° 였고 '보드 재연결:' 칸이 비어 있었다. 데드밴드가 아니라 보드 세션이 없어 지령이 안 들어간 것으로 보인다(추정 — 세션 부재를 직접 찍은 줄은 빈칸뿐). 재연결 줄의 파이프는 종료 코드가 head 의 것이라 무발행이어도 '실패!' 가 안 찍혔다 — Docs/issues/start-deadband.md §5 실수 ② · Docs/issues/board-link-microros-session.md §5.2)</span></span>
+    <span class="k">추론</span><span>기동 임계 ≈ 0.012~0.016 m/s(휠 속도). 0.012 는 정지마찰 경계라 '되다 말다'. 임계가 전압 · 바닥 · 트랙 장력에 따라 움직이므로 마진 있는 0.020. 승격 구간에선 지령 크기와 무관하게 같은 속도라 0.016 의 분해능 이득은 실질적으로 없음.<span class="c1104">(11-04 정정: 이 임계는 모터 PWM 50 Hz 오적용 조건에서 잰 값이다 — 09-07 20 kHz 로 바로잡은 뒤 바닥 직진이 구 10 mm/s 까지 추종해 기계적 층은 사라졌고, 승격은 하한 0.008(환산값)만 남음 — Docs/issues/start-deadband.md 상태 칸 · Docs/issues/motor-pwm-50hz.md)</span></span>
+    <span class="k">결론</span><span>0.020 확정 플래시(움직임 없음), 소스에 실측 근거 · 한계 · <span class="mono">TODO(improve)</span>. 플래시 전 데드락 지점(ω = 0.05) 해소 → Nav2 의 미세 명령이 실행됨.</span>
+    <span class="k">스크립트 핵심</span><span><pre class="code"># cycle.sh (PC Git Bash) — MIN 바꿔 빌드 → 플래시 → ST-Link 리셋
+sed -i "s|^#define MIN_WHEEL_SPEED_MPS       [0-9.]*f|#define MIN_WHEEL_SPEED_MPS       ${MIN}f|" firmware/rover_jupiter_fw/App/app/rover_platform.h
+"$CLI" -c port=SWD reset=HWrst -w "...\rover_jupiter_fw.elf" -v -rst
+# job32b_deadband.sh — 각 ω 8 s, 여유가 문턱 아래면 break
+for W in [0.05, 0.08, 0.12, 0.20, 0.30]:
+    while time.time()-t1&lt;8.0:
+        pub.publish(tw); rclpy.spin_once(n,timeout_sec=0.02)
+        if st['cen'] is not None and st['cen']&lt;SWEEP+0.03: break
+    d=dw(st['o']-h0); rate=math.radians(d)/8.0
+    ok = abs(d) &gt; 2.0
+    print(f"{W:8.2f} {d:&gt;10.1f}도 {rate:&gt;9.3f}  {'✓ 회전함' if ok else '✗ 무반응'}")</pre></span>
+    <span class="k">나온 결과</span><span><pre class="code"># job32c (MIN 0.012 1 차 — SUMMARY 표에 없음)
+보드 재연결: [sensor_conditioner.py-1] [INFO] ... gyro bias calibrated: ...
+    0.05       -0.0도    -0.000  ✗ 무반응
+    0.20       -0.1도    -0.000  ✗ 무반응
+    0.30       -0.1도    -0.000  ✗ 무반응
+# job32d (MIN 0.012 — 표의 값)
+    0.05        7.9도     0.017  ✓ 회전함
+    0.08        0.3도     0.001  ✗ 무반응
+    0.20       39.7도     0.087  ✓ 회전함
+# job32e (MIN 0.016 1 차 — 시작 여유 36 cm, 무효)
+    0.20        6.6도     0.014  ✓ 회전함
+    0.30        0.0도     0.000  ✗ 무반응
+# job33b (MIN 0.016 재배치 — 시작 여유 60 cm)
+    0.05       23.8도     0.052  ✓ 회전함
+    0.30       49.4도     0.108  ✓ 회전함
+  무반응 지령: 없음 (전 구간 반응)</pre><span class="note">결과 원문 <span class="mono">Docs/debug_log/2026-09-03/outputs/job32c_min012.txt</span> · <span class="mono">job32d_min012.txt</span> · <span class="mono">job32e_min016.txt</span> · <span class="mono">job33b_min016_clean.txt</span> · <span class="mono">job32b_deadband.txt</span>(0.020) · 스크립트 원문 <span class="mono">jobs/cycle.sh</span> · <span class="mono">job32b_deadband.sh</span> · <span class="mono">job32c_reagent.sh</span>(8 행 재연결 파이프)</span></span>
+  </div>
+</section>
+
+<section>
+  <h2>부수 발견 (운영)<span class="sec">부수 발견 (운영)</span></h2>
+  <div class="flow">
+    <span class="k">플래시 뒤 재연결</span><span>"플래시 후 보드가 agent 에 자동 재연결되지 않음(agent 가동 중이어도). ST-Link <span class="mono">-rst</span> 로 해결. 디버거 없으면 물리 RESET 필요."<span class="c1104">(11-04 정정: 원인을 가르지 못한 관찰이다 — 순서는 플래시(-rst 포함) → job32c 가 agent 를 지우고 다시 띄움 → 빈칸 → 다시 -rst → 정상. 끊김이 플래시 때문인지, agent 재시작(08-26 규칙) 때문인지 구분 안 됨 → 미확인 — Docs/issues/board-link-microros-session.md §3 '모순 2')</span></span>
+    <span class="k">회전 밀림</span><span>제자리 회전 반복 때 로버가 유의미하게 밀림(수 회전에 10 cm+, ICR 오프셋) → 회전 시험은 사방 55 cm+ 확보, Nav2 spin 복구 설계에도 감안.</span>
+    <span class="k">배터리</span><span>12.09~12.33 V. "어제 관찰대로 12.0 V 아래로 가면 데드밴드가 커질 수 있음."<span class="c1104">(11-04 정정: 그런 관찰은 09-02 · 09-03 기록 어디에도 없다. 09-02 에는 전압 12.28 V 한 줄과 비대칭 후보 목록의 '전압 강하 시 한쪽 모터 약화' 한 줄뿐 — '12.0 V' 는 근거 없는 경계값이고 전압 → 데드밴드 관계는 미확인 — Docs/issues/battery-power-ops.md §5)</span></span>
+  </div>
+</section>
+
+<section>
+  <h2>로버가 접촉 없이 잠김 — 스톨 래치<span class="sec">오후 세션 — 경과 · 메커니즘 (설계 충돌)</span></h2>
+  <div class="flow">
+    <span class="k">경과</span><span>Jetson 재부팅 뒤 full 기동, <span class="mono">xy_goal_tolerance</span> 0.15 복원. 기동 때 Nav2 오류 "inflation smaller than inscribed"(패딩 0.05 로 내접반경 0.215 &gt; 0.20) → inflation 0.25. 좁은 복도(정면 2.3 m 트임, 좌우 62~74 cm)에서 MPPI Run 1(1.6 m 전방) → 타임아웃, 목표까지 59.5 cm. t = 0~30 s v 0.05 · w +0.04 로 줄곧 좌회전(좌 38 cm 이탈, 원인은 추정). t ≈ 48 s 부터 v −0.02 · w −0.20 지령을 100 s 반복 → 로버 무반응, 벽과 14 cm · 물리 접촉 없음(사용자).</span>
+    <span class="k">본 것</span><span><span class="mono">/rover/status</span> = level 2 "STALL fault — reset required" — 펌웨어 스톨 보호 래치, 이후 지령 전부 차단.</span>
+    <span class="k">추론</span><span><span class="mono">safety_monitor.c</span>: 지령 ≥ <span class="mono">V_TARGET_THRESH</span> 0.015 m/s 인 휠이 600 ms 동안 3 mm 미만 이동 → STALL → latch. 승격값 0.020 은 이 문턱 바로 위 → 부하(한쪽 휠 역회전 선회 · 근접 기동)에서 승격된 휠이 정지마찰을 못 이기면 정확히 STALL 조건. 무부하 스윕에선 안 걸렸고 Nav2 실주행 부하에서 재현. 해제 경로는 UART5 CLI 'c' 뿐 — 자율주행 중엔 회복 불가.</span>
+    <span class="k">원문 정정 (09-07)</span><span>"⚠ 정정(2026-09-07): 그 CLI 경로조차 물리적으로 없음 — ST-Link VCP 가 UART5(PC12/PD2)에 배선돼 있지 않아 콘솔 수신 0 바이트. 해제 수단은 보드 리셋뿐." — 이 정정은 SUMMARY 원문에 이미 있다.</span>
+    <span class="k">나온 결과</span><span><pre class="code"># job34b (기동 직후)
+  /bt_navigator        미기동
+[controller_server-1] [ERROR] ... The configured inflation radius (0.200) is smaller than the computed inscribed radius (0.215) ...
+# job34e (MPPI Run 1 정체 중)
+      좌(90) :    28cm  ← 회전 방해!
+[controller_server-1] [ERROR] ... Failed to make progress
+[behavior_server-4] [INFO] ... Turning 1.57 for spin behavior.</pre><span class="note">결과 원문 <span class="mono">Docs/debug_log/2026-09-03/outputs/job34b_nav2_space.txt</span> · <span class="mono">job34c_nav2fix_space.txt</span> · <span class="mono">job34d_mppi_run1.txt</span> · <span class="mono">job34e_stuckdiag.txt</span> · 스크립트 원문 <span class="mono">jobs/job34c_verify.sh</span> · <span class="mono">job34e_stuckdiag.sh</span>. MPPI Run 1 의 level 2 status 줄은 출력 파일에 없고 SUMMARY 문장이 출처</span></span>
+  </div>
+</section>
+
+<section>
+  <h2>리셋 · 재배치 뒤 RPP A/B<span class="sec">벤치마크 재개 결과 (RESET·재배치 후, RPP + no-spin BT)</span></h2>
+  <div class="flow">
+    <span class="k">준비</span><span>컨트롤러 RPP 전환, Spin 을 뺀 커스텀 BT(<span class="mono">config/nav_to_pose_no_spin.xml</span>, BackUp 0.15 m / 0.05 m/s 우선) — 벽 근접 실패 때 spin 이 접촉을 부른 2 건이 근거.</span>
+    <span class="k">본 것</span><span>RPP 1(정면 1.6 m) SUCCEEDED 20 s, 오차 14.9 cm, 최고속 0.10 유지, heading ±2°. RPP 2(복귀 180° + 1.46 m) TIMEOUT, 잔여 122 cm — 180° 회전은 성공(21 s), 주행 중 선회에서 STALL 래치(사방 ≥ 55 cm, 접촉 없음). 선회 때 안쪽 휠 0.0245 m/s(승격값 · 스톨 문턱 바로 위) → 부하로 정지 → 600 ms / 3 mm → 래치. BackUp 복구도 "Collision Ahead" 로 거부.</span>
+    <span class="k">결론</span><span>스톨 래치 정책이 자율주행의 차단 항목. RPP 직선 우수는 유효 데이터지만 선회 포함 비교는 펌웨어 수정 뒤 재실행.</span>
+    <span class="k">나온 결과</span><span><pre class="code"># job35b (RPP Run 1)
+  t= 15.0s (+1.16,+0.02) hd=  -1.2 목표까지=0.44m cmd(v=+0.10 w=+0.01)
+결과: SUCCEEDED
+최종 (+1.454,+0.030) hd=-3.7 | 위치오차 14.9cm 자세오차 -3.7deg | 소요 20s
+# job35c (RPP Run 2)
+  t=147.2s (+1.22,+0.06) hd=+157.7 목표까지=1.22m cmd(v=+0.03 w=+0.29)
+타임아웃 — 취소
+최종 (+1.218,+0.063) hd=157.6 | 위치오차 122.0cm 자세오차 -22.4deg | 소요 151s
+# job35d (진단)
+message: STALL fault — reset required
+[behavior_server-4] [WARN] ... Collision Ahead - Exiting DriveOnHeading</pre><span class="note">결과 원문 <span class="mono">Docs/debug_log/2026-09-03/outputs/job35b_rpp_run1.txt</span> · <span class="mono">job35c_rpp_run2.txt</span> · <span class="mono">job35d_diag.txt</span> · <span class="mono">job35a_prep.txt</span> · 스크립트 원문 <span class="mono">jobs/job35a_prep.sh</span> · 목표 송신 <span class="mono">Docs/debug_log/2026-09-02/jobs/job30_goalabs.sh</span></span></span>
+  </div>
+</section>
+
+<section>
+  <h2>스톨 정책 다시 설계<span class="sec">펌웨어 수정 — 스톨 정책 (빌드 완료, 플래시 대기)</span></h2>
+  <div class="flow">
+    <span class="k">처음 안 (철회)</span><span>지령 문턱 0.015 → 0.040 — '드라이버 내장 3A 차단' 에 기대는 설계였는데, 사용자 확인 결과 판매 페이지 · 문서 어디에도 3A 사양이 없음. 08-26 커밋에서 출처 없이 적힌 값 → 문서 전체에서 삭제, 모델명 CHR-GM37-BLDC3650 기재.<span class="c1104">(11-04 정정: '문서 전체에서 삭제' 에서 코드 주석 한 곳이 빠졌다 — safety_monitor.c 17 행 "진짜 구속 시엔 드라이버 내장 3A 차단이 1차 방어" 가 같은 커밋(42ea9579)에 남아 같은 파일 27 행의 "출처 불명 '3A' 삭제" 와 모순됐고, 10-29 커밋 595eec44 에서 주석 정정 — Docs/issues/stall-latch.md §5 '남은 흔적')</span></span>
+    <span class="k">결론</span><span>스톨 판정을 지령 속도 → 인가 duty 기준으로: 비정지 지령 AND |duty| ≥ 0.60 AND 600 ms 무이동. 정지한 휠은 PID 적분으로 duty 가 오르므로 그래도 안 움직이면 진짜 구속. 승격값 0.020 의 초기 duty 약 0.37 은 판정 밖. 래치 → 1.5 s 일시정지 뒤 자동 재무장, 10 s 안 3 회 재발 시 하드 래치. status level 2 "STALL latched — reset required" / level 1 "STALL — auto-recovering". 기대: Nav2 progress checker(25 s) 안에서 회복.</span>
+    <span class="k">스크립트 핵심</span><span><pre class="code">/* safety_monitor.c (커밋 42ea9579) */
+#define STALL_DUTY_THRESH  0.60f  /* |duty| 이상 인가 중 무이동이면 stall 의심 */
+#define STALL_HOLD_MS         1500u  /* 스톨 후 강제 정지 유지 → 이후 자동 재무장 */
+#define STALL_LATCH_COUNT     3u     /* 이 횟수가 */
+#define STALL_LATCH_WINDOW_MS 10000u /* 이 시간 내 재발하면 하드 래치(clear/리셋 필요) */
+        if (fabsf(tgt) &gt; V_TARGET_THRESH &amp;&amp; fabsf(duty) &gt;= STALL_DUTY_THRESH) {
+            if (s_mon[i].stall_counter == 0u) {
+                s_mon[i].win_start_dist = dist;   /* 감지창 시작 */
+            }
+            if (++s_mon[i].stall_counter &gt;= STALL_WIN_SAMPLES) {
+                if (fabsf(dist - s_mon[i].win_start_dist) &lt; STALL_DIST_M) {
+                    s_mon[i].stalled = true;      /* 창 내 이동 3mm 미만 = 구속 */
+/* 같은 파일 17 행에 남은 옛 주석 */
+ * 진짜 구속 시엔 드라이버 내장 3A 차단이 1차 방어 → 600ms 지연 허용 가능. */</pre></span>
+    <span class="k">나온 결과</span><span><pre class="code">(SUMMARY '플래시 + Jetson Wi-Fi' 에서 — 출력 원문 없음)
+새 펌웨어 플래시·검증 성공(ST-Link V3), -rst 후 /rover/status level 0 "OK", /wheel_odom 50Hz, 배터리 11.99V.</pre><span class="note">펌웨어 원문 <span class="mono">git show 42ea9579:firmware/rover_jupiter_fw/App/app/safety_monitor.c</span>(17 · 31 · 35~37 · 129~135 행) · 지금 판 <span class="mono">firmware/rover_jupiter_fw/App/app/safety_monitor.c</span>. 주행 검증은 이 날 하지 않음(마무리)</span></span>
+  </div>
+</section>
+
+<section>
+  <h2>Jetson Wi-Fi 간헐 무응답<span class="sec">플래시 + Jetson Wi-Fi 간헐 무응답 (18:30~18:45)</span></h2>
+  <div class="flow">
+    <span class="k">본 것</span><span>플래시 직후 PC → Jetson ping 100 % 손실이 수 분간 반복. PC 쪽 공유기(WAN <LAN-B>.6)가 'host unreachable' 회신 = .6 의 ARP 실패. Jetson 쪽: <WIFI-B> ch36 · −53 dBm · 단일 AP · NM 끊김 로그 없음 · 커널 로그 없음 · 트래픽 ≈ 0 · Power save: on.</span>
+    <span class="k">조치</span><span>(sudo, 사용자 고지) <span class="mono">iw … set power_save off</span> + NM <span class="mono">802-11-wireless.powersave 2</span>(영구). 직후 30 s ping 83 % 손실 → 약 2 분 뒤 각 15 회 0 % → 60 s 중 57 회 응답(5 % 손실, 최대 308 ms).</span>
+    <span class="k">결론</span><span>원인 미확정 — 절전 해제와 회복이 시간상 겹치지만 즉시 회복은 아님. 재발 후보: RTL8822CE 5 GHz 드라이버, PC 쪽 공유기 WAN ARP.<span class="c1104">(11-04 정정: 10-14 에 사용자가 원인 하나를 찾았다 — 다른 서버가 Jetson 과 같은 <LAN-B>.101 을 받아 IP 충돌. 이 날의 '링크는 유지되는데 ping 100 % 손실' 과는 맞을 수 있으나 이 날에 대해선 가설 · 미측정 — Docs/issues/jetson-wifi-link.md 상태 칸 · 09-23 §5 줄)</span></span>
+    <span class="k">스크립트 핵심</span><span><pre class="code"># wifi_fix.sh — 근거: 절약모드 ON + NM 끊김 로그 없음 + 간헐 무응답
+IF=wlP1p1s0
+echo &lt;PW&gt; | sudo -S iw dev $IF set power_save off
+echo &lt;PW&gt; | sudo -S nmcli con modify "$CON" 802-11-wireless.powersave 2</pre><span class="note">스크립트 원문 <span class="mono">Docs/debug_log/2026-09-03/jobs/wifi_fix.sh</span> · <span class="mono">wifi_diag.sh</span> · <span class="mono">wifi_diag2.sh</span> · 출력 원문 없음(대화에만) — 수치는 SUMMARY 문장이 유일한 출처</span></span>
+  </div>
+</section>
+
+<section>
+  <h2>바로잡은 내 오류</h2>
+  <div class="pm">
+    <h3>출처 없는 '드라이버 3A 차단' 에 기댄 설계 (펌웨어 수정 — 스톨 정책 '처음 안 철회')</h3>
+    <div class="flow">
+      <span class="k">하려 한 것</span><span>승격(0.020)과 스톨 감지 충돌을 없애기</span>
+      <span class="k">본 것</span><span>래치 2 회(<span class="mono">job34d</span> · <span class="mono">job35c</span>), 둘 다 접촉 없음</span>
+      <span class="k">처음 추론</span><span>지령 문턱을 0.040 으로 올리면 승격 구간은 감시 밖. 그 아래에서 진짜로 끼이면 '드라이버 내장 3A 차단' 이 1 차로 막아 준다(08-26 에 쓴 주석과 CLAUDE.md 를 그대로 믿음)</span>
+      <span class="k">의심한 이유</span><span>사용자 확인: 판매 페이지 · 문서 어디에도 3A 사양이 없음. 추적하니 08-26 커밋에서 출처 없이 적힌 값</span>
+      <span class="k">판별 시험</span><span>문서 근거 확인(사용자) — CHR-GM37-BLDC3650, 과전류 보호 사양 미확인</span>
+      <span class="k">결론</span><span>0.040 안 철회 → 펌웨어가 저속 지령의 진짜 구속도 잡아야 함 → duty 기준 판정. '3A' 문구 삭제(커밋 <span class="mono">42ea9579</span>)</span>
+      <span class="k">다음에 알아보는 법</span><span>안전 설계의 전제가 되는 사양 수치는 출처(데이터시트 · 판매 페이지 · 실측)를 옆에 적는다. 출처 없는 수치를 근거로 보호 기능을 약하게 하지 않는다. 지울 때는 <span class="mono">git grep</span> 으로 코드 주석까지 찾는다</span>
+      <span class="k">데이터</span><span><span class="mono">git show 1cefd2c8</span>(3A 첫 기재) · <span class="mono">git show 42ea9579</span> · <span class="mono">Docs/issues/stall-latch.md</span> §5</span>
+    </div>
+  </div>
+  <div class="pm">
+    <h3>스윕 가드가 '단계만 끊고 계속' — 끊긴 단계를 '무반응' 으로 찍음 (MIN 0.016 1 차 무효)</h3>
+    <div class="flow">
+      <span class="k">하려 한 것</span><span>MIN 0.016 에서 ω 0.05~0.30 각 8 s 회전량(<span class="mono">job32b</span>)</span>
+      <span class="k">본 것</span><span><span class="mono">job32e</span>: 시작 여유 36 cm, 17.3 · 13.6 · 9.6 · 6.6 · 0.0° → 'ω 0.30 무반응'</span>
+      <span class="k">의심한 이유</span><span>회전량이 단계마다 줄어듦 · 시작 여유가 가드 문턱(약 33 cm)에 가까움</span>
+      <span class="k">판별 시험</span><span>재배치(시작 60 cm) 뒤 재측정(<span class="mono">job33b</span>) — 전 구간 반응</span>
+      <span class="k">결론</span><span>반복 회전으로 로버가 좌측 벽 쪽으로 밀려 가드가 단계를 끊었고, 스크립트는 끊긴 단계를 '무반응' 으로 찍음(원문 '조기 중단 → 무효')</span>
+      <span class="k">스크립트 핵심</span><span><pre class="code">        if st['cen'] is not None and st['cen']&lt;SWEEP+0.03: break   # 단계만 끊음
+    ...
+    print(... '✓ 회전함' if ok else '✗ 무반응')                     # 끊긴 단계도 같은 표시</pre></span>
+      <span class="k">다음에 알아보는 법</span><span>가드 정지는 측정값과 다른 표시(사유 · 중단)로 찍고 이후 단계를 멈춘다. 같은 자리 반복 회전 시험은 시작 여유를 문턱 + 밀림 예상(10 cm+)보다 크게</span>
+      <span class="k">데이터</span><span><span class="mono">outputs/job32e_min016.txt</span> · <span class="mono">job33b_min016_clean.txt</span> · <span class="mono">jobs/job32b_deadband.sh</span> · <span class="mono">Docs/issues/script-drive-guards.md</span> §5 ③</span>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>다음 후보 (그날 기록 — 내일 할 일)</h2>
+  <ul>
+    <li>ST-Link 분리 확인 → <span class="mono">job33a_reset_noagent.sh</span> 또는 <span class="mono">job20a_boot.sh</span> → <span class="mono">job25e_nav2start.sh</span> (Jetson 재부팅됐으면 <span class="mono">/tmp</span> 스크립트 재전송)</li>
+    <li>스톨 정책 검증(받침대): 저속 지령 중 휠을 잡아 level 1 → 1.5 s 뒤 재개 → 3 회째 level 2. duty 0.60 문턱 조정</li>
+    <li>RPP Run 2 → Run 3 → MPPI 같은 코스 A/B → 컨트롤러 결정 → N1 게이트</li>
+    <li>Wi-Fi 재발 관찰(절전 끔 상태) · 펌웨어 후속: 휠별 duty/target/엔코더 텔레메트리 · ROS 측 fault clear 서비스</li>
+  </ul>
+</section>
+
+<section>
+  <h2>이후 · 관련 카드</h2>
+  <ul>
+    <li><span class="mono">Docs/issues/stall-latch.md</span> — 09-07 받침대: PWM 20 kHz 로 바로잡은 뒤 600 ms 판정 · 1.5 s 복구 · 3 회 래치 전 경로 확인(50 Hz 에선 회전자 떨림 펄스가 가짜 속도가 되어 감지 불가)</li>
+    <li><span class="mono">Docs/issues/start-deadband.md</span> — 0.020 승격, 정지 문턱 0.010 층, 09-07 · 09-17 후속</li>
+    <li><span class="mono">Docs/issues/board-link-microros-session.md</span> — job32c 빈칸 · 플래시 뒤 재연결 '모순 2'</li>
+    <li><span class="mono">Docs/issues/controller-rpp-vs-mppi.md</span> — 09-07 RPP 채택 → 이후 MPPI 로</li>
+    <li><span class="mono">Docs/issues/jetson-wifi-link.md</span> — 09-15 ~ 이후 재발, 10-14 IP 충돌 발견, 10-15 부터 <LAN-B>.110 예약</li>
+    <li><span class="mono">Docs/issues/battery-power-ops.md</span> — '12.0 V' 경계 근거 없음</li>
+    <li><span class="mono">Docs/issues/nav2-first-setup.md</span> §5 실수 ③ — 패딩 0.05 뒤 inflation 0.25</li>
+  </ul>
+</section>
+</div>

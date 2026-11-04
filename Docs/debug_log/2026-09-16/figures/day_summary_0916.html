@@ -1,0 +1,323 @@
+<title>09-16 상자 옆 입구 MPPI</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* 배치: 실험 노트 — 좁은 본문 열(65자) + 넓게 펼치는 그림 · 표, 판정은 왼쪽 띠 색으로(10-20 판과 같은 틀) */
+:root{
+  --bg:#f3f4f6; --paper:#ffffff; --ink:#1b1f24; --muted:#5b6470; --line:#d9dde3;
+  --ir:#b3263e;      /* 프로젝터 켬 · 실패 쪽 */
+  --cool:#1f7a72;    /* 프로젝터 끔 · 통과 쪽 */
+  --warn:#a86a00;
+  --tint-ir:#f8e8eb; --tint-cool:#e4f2f0; --tint-warn:#fbf1df;
+  --f-body:"IBM Plex Sans KR","Malgun Gothic","Apple SD Gothic Neo",sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#111418; --paper:#181c21; --ink:#e6e9ed; --muted:#9aa4b0; --line:#2c333b;
+  --ir:#ef6b80; --cool:#5cc4b8; --warn:#e0a640;
+  --tint-ir:#2b1b1f; --tint-cool:#15292a; --tint-warn:#2a2316; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#111418; --paper:#181c21; --ink:#e6e9ed; --muted:#9aa4b0; --line:#2c333b;
+  --ir:#ef6b80; --cool:#5cc4b8; --warn:#e0a640;
+  --tint-ir:#2b1b1f; --tint-cool:#15292a; --tint-warn:#2a2316; color-scheme:dark}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.65;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:28px 64px}
+.wrap{max-width:980px;margin:0 auto;display:flex;flex-direction:column;gap:34px}
+header{display:flex;flex-direction:column;gap:6px;border-bottom:2px solid var(--ink);padding-bottom:14px}
+.eyebrow{font-family:var(--f-mono);font-size:12px;letter-spacing:.08em;color:var(--muted);text-transform:uppercase}
+h1{font-size:30px;line-height:1.25;margin:0;font-weight:700;text-wrap:balance}
+h2{font-size:20px;margin:0 0 4px;font-weight:700;text-wrap:balance}
+h2 .sec{font-family:var(--f-mono);font-size:13px;color:var(--muted);font-weight:400;margin-left:8px}
+p{margin:0;max-width:68ch}
+section{display:flex;flex-direction:column;gap:12px}
+.lead{color:var(--muted);max-width:72ch}
+.verdicts{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
+.v{background:var(--paper);border:1px solid var(--line);border-left:5px solid var(--muted);padding:12px 14px;display:flex;flex-direction:column;gap:4px;min-width:0}
+.v.ok{border-left-color:var(--cool)} .v.no{border-left-color:var(--ir)} .v.wait{border-left-color:var(--warn)}
+.v b{font-size:15px} .v span{color:var(--muted);font-size:13.5px}
+.pill{display:inline-block;font-family:var(--f-mono);font-size:11.5px;padding:1px 8px;border-radius:999px;white-space:nowrap}
+.pill.ok{background:var(--tint-cool);color:var(--cool)} .pill.no{background:var(--tint-ir);color:var(--ir)} .pill.wait{background:var(--tint-warn);color:var(--warn)}
+.tbl{overflow-x:auto;background:var(--paper);border:1px solid var(--line)}
+table{border-collapse:collapse;width:100%;font-size:13.5px;font-variant-numeric:tabular-nums}
+th,td{padding:7px 10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{font-weight:500;color:var(--muted);font-size:12.5px;white-space:nowrap}
+td.n{font-family:var(--f-mono);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr.hl td{background:var(--tint-cool)} tr.bad td{background:var(--tint-ir)}
+figure{margin:0;background:var(--paper);border:1px solid var(--line);padding:10px;display:flex;flex-direction:column;gap:8px}
+figure img{width:100%;height:auto;display:block}
+figcaption{font-size:13px;color:var(--muted)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media (max-width:720px){.two{grid-template-columns:1fr}}
+ul{margin:0;padding-left:20px;max-width:72ch} li{margin:2px 0}
+.mono{font-family:var(--f-mono);font-size:13px}
+.flow{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;font-size:14px}
+.flow .k{font-family:var(--f-mono);color:var(--muted);font-size:12.5px;padding-top:2px;white-space:nowrap}
+.note{font-size:13px;color:var(--muted)}
+.pm{background:var(--paper);border:1px solid var(--line);padding:12px 14px;display:flex;flex-direction:column;gap:8px}
+.pm h3{font-size:15.5px;margin:0;font-weight:700}
+.pm .flow{grid-template-columns:auto 1fr;gap:6px 14px}
+.pm .flow span:not(.k){max-width:none}
+</style>
+
+<style>
+.code{margin:0;font-family:var(--f-mono);font-size:12.5px;line-height:1.5;background:var(--bg);border:1px solid var(--line);padding:8px 10px;overflow-x:auto;white-space:pre;max-width:100%}
+.flow > span{min-width:0}
+.c1104{font-weight:600;color:var(--ink);background:var(--tint-warn);border-left:3px solid var(--warn);padding:0 5px;margin-left:3px;border-radius:2px;white-space:normal;font-size:.92em}
+</style>
+<div class="wrap">
+<header>
+  <div class="eyebrow">Indoor Rover · 2026-09-16 · Docs/debug_log/2026-09-16 §1.1–§2 · 주행 있음(mp2 ~ mp5) · 11-04 사후 작성</div>
+  <h1>09-16 상자 옆 입구의 MPPI</h1>
+  <p class="lead">이 페이지는 2026-11-04 에 그날의 <span class="mono">SUMMARY.md</span> 와 같은 폴더의 <span class="mono">jobs/</span> · <span class="mono">outputs/</span> 를 원천으로 사후에 만들었습니다(오전 망 사고 원인은 09-15 §3.1 에 있고 09-15 페이지에서 다룸). 상자 뒤 목표로 MPPI 를 네 번 달렸습니다. mp2 · mp3 · mp4 는 상자 앞 왼쪽 통로 입구 같은 자리에서 굳었고, 그때마다 원인 가설을 하나씩 세워 고쳤습니다(지평 · 표본 붕괴 · 당근 거리). 오프라인 MPPI 시뮬레이터로 찾은 'PathFollow 당근 10/20' 을 넣은 mp5 가 입구를 정지 없이 지났고, 이번엔 상자 뒤 복귀 회전에서 멈췄습니다. 그 사이 코스트맵 상자 가장자리 깜빡임(STVL 복셀 필터) · 계획 꺾임(inflation 0.70 + SmoothPath) · 릴레이 CPU(53~60 → 13~20 %) · Wi-Fi 전환이 갈라 놓은 DDS 를 손봤습니다. <span class="c1104">문제 대장 카드에서 찾은 뒤의 정정 15 건을 본문 문장 옆에 표시했습니다(원문 문장은 그대로). 이날 세운 원인 가설 셋 중 둘(지평 · 표본 붕괴)은 뒤에 '원인 아님' 으로 정리됐습니다.</span></p>
+</header>
+
+<section>
+  <h2>오늘의 판정</h2>
+  <div class="verdicts">
+    <div class="v no"><b>mp2(NavFn + MPPI) TIMEOUT 90 s · 1.23 m</b><span>통로 입구에서 경로는 오른쪽, 로버는 제자리 좌회전 → 60 s 정체. 접촉 없음 (§1.1 ~ §1.3)</span></div>
+    <div class="v no"><b>mp3(지평 56 step · offset 3 · angle 0.5 + 복셀 필터)</b><span>같은 자리 정체 42 s + CPU 과부하(load 11.8) + 기억 소실 뒤 러너 ① 0 cm → RPP 복귀 (§1.9)</span></div>
+    <div class="v ok"><b>상자 가장자리 셀 깜빡임 해결</b><span>STVL <span class="mono">filter: voxel</span> · <span class="mono">voxel_min_points 3</span> → 24 회 / 160 s 동안 0.164~0.168, 0.22 셀 0 회 (§1.8)</span></div>
+    <div class="v ok"><b>계획 꺾임 78° → 16.6°</b><span>정지 A/B: 전역 inflation 0.70 + SmoothPath 함께 채택 (§1.12)</span></div>
+    <div class="v ok"><b>릴레이 CPU 53~60 → 13~20 %</b><span>PointCloud2 <span class="mono">data</span> setter 병목 → <span class="mono">array.array('B')</span> 한 줄 + <span class="mono">max_range 4.0</span> (§1.11 D)</span></div>
+    <div class="v wait"><b>decay 로컬 120 · 전역 180 s</b><span>세 bag 에서 왼쪽 통로를 막는 깊이 전용 셀 0 — 이 장면 한정 (§1.11 C)</span></div>
+    <div class="v no"><b>mp4(10 Hz · inflation 0.70 · SmoothPath) CANCELED 18 s</b><span>부드러운 진입 뒤 같은 입구에서 정지, stuck_monitor 가 데드밴드 아래 떨림을 갇힘으로 오판 (§1.13)</span></div>
+    <div class="v ok"><b>오프라인 MPPI — 원인은 '당근이 짧은 추종'</b><span>PathFollow 10 · offset 20 이 6 s 0.250 m 진행(mp4 값 0.072 m / 4 s) (§1.14)</span></div>
+    <div class="v wait"><b>mp5 — 입구 통과(정지 0), 복귀 회전에서 정지</b><span>TIMEOUT 90 s · 2.54 m · 접촉 없음. 직진 중 부호반전 36 회(14 /m) (§1.15)</span></div>
+    <div class="v no"><b>DDS IP 변경 면역 — 미해결</b><span>루프백 화이트리스트를 에이전트가 받지 않아 되돌림 (§1.13 · §1.15)</span></div>
+  </div>
+</section>
+
+<section>
+  <h2>mp2 — 경로는 오른쪽, 로버는 왼쪽<span class="sec">§1.1 ~ §1.4</span></h2>
+  <div class="flow">
+    <span class="k">사용자 관찰</span><span>"상자를 피해서 공간을 통과해야 하는 상황에, 오른쪽으로 꺾어야 하는데 왼쪽으로 계속 방향을 튼다. 왼쪽에는 책상 다리 같은 장애물."</span>
+    <span class="k">본 것</span><span>t 5~17 정상 추종(경로 자체가 왼쪽 통로 y +0.44 로 가는 +39° 사선, 횡편차 ≤ 2 cm). t 18~20 경로는 −0.5 → −14°(오른쪽)를 요구하는데 v 0 · ω +0.08~+0.10 제자리 좌회전 +15°. t 27~72 (0.72, +0.42) 정지, ω 떨림이 + 쪽으로 편중. 진행 실패 2 회 → ClearCostmapExceptRegion → 재계획된 직진 경로에서도 회전 없음</span>
+    <span class="k">판별</span><span>t=18 헤딩별 '제자리 회전 뒤 0.15 m 전진' 최대 비용: 앞-왼쪽(+10°, +20°) 89/96, 정면 96, 앞-오른쪽(−10°, −20°) 99(내접) → 코스트맵 기울기가 왼쪽을 가리킴. <span class="mono">Optimizer fail</span> · collision 없음</span>
+  </div>
+<pre class="code"># job327_mp2why.py — 대안 헤딩 실현가능성: dθ 만큼 제자리 회전 스윕 최대비용 / 회전 후 0.15 m 전진 최대비용
+for dth in range(-50, 51, 10):
+    th = yaw + math.radians(dth)
+    rot = max(perim_max(g, rx, ry, yaw + math.radians(s)) for s in np.linspace(0, dth, max(2, abs(dth) // 5 + 1)))
+    fwd = max(perim_max(g, rx, ry, th, d) for d in np.arange(0.025, 0.151, 0.025))
+def sym(c):  # '#' ≥ 100, 'o' = 99(내접)</pre>
+<pre class="code">    t |     전진      횡   yaw° |      v      w |    접선° carrot°    횡편차 |   둘레 | ... | 대안 dθ:회전/전진 (# ≥100, o 99)
+ 17.0 | +0.553 +0.166  +36.3 | +0.046 +0.052 |   +3.7   +0.0 +0.003 |   89 | ... | -20:96o -10:90o +0:89o +10:8989 +20:8989
+ 18.0 | +0.578 +0.195  +39.5 | +0.012 +0.083 |   -0.0   -5.8 +0.007 |   86 | ... | -20:91o -10:91o +0:8696 +10:8989 +20:8996
+ 20.0 | +0.583 +0.198  +48.5 | +0.002 +0.096 |   -3.6  -14.0 +0.012 |   89 | ... | -20:91o -10:9096 +0:8989 +10:8996 +20:96o</pre>
+  <p class="note">결과 원문 <span class="mono">Docs/debug_log/2026-09-16/outputs/job327_mp2why.txt</span>(헤더 139 행, 표 140 행~, 열 일부 생략) · 스크립트 원문 <span class="mono">jobs/job327_mp2why.py</span> 145~162 행 · bag <span class="mono">bags/bag_mp2.tgz</span>(git 제외) · nav2.log 추출 <span class="mono">jobs/job328_navlog.sh</span>.</p>
+  <div class="tbl"><table>
+    <tr><th>기각한 가설</th><th>근거</th><th>결과</th></tr>
+    <tr><td>SLAM · 오도메트리 오차로 경로를 놓침</td><td>정체 전 경로 대비 횡편차 ≤ 3.5 cm</td><td>기각</td></tr>
+    <tr><td>상자 기억 소실(decay 60 s)</td><td>정체 시작 t 27, 상자 셀 소멸 t 70</td><td>기각</td></tr>
+    <tr><td>모든 샘플 충돌(MPPI fail)</td><td>로그에 Optimizer fail 없음, ±40° 전진에 LETHAL 없음</td><td>기각</td></tr>
+    <tr><td>NavFn 이 잘못된 통로 선택</td><td>경로 y +0.44 = 창 중앙, 좌우 전환 0 회</td><td>기각</td></tr>
+    <tr><td>왼쪽 물체 = 관찰자</td><td>사용자 "책상 다리 등 고정 가구"</td><td>기각</td></tr>
+  </table></div>
+</section>
+
+<section>
+  <h2>첫 가설 — 지평 0.13 m 라 경로 크리틱이 안 켜진다<span class="sec">§1.3 · §1.5</span></h2>
+  <div class="flow">
+    <span class="k">추론</span><span>(Humble 소스 의미론, <span class="mono">visualize: false</span> 라 내부값 미기록) 지평 = 32 × 0.05 = 1.6 s → 0.08 m/s 에서 0.128 m. 경로 점간격 0.026~0.047 m 라 furthest index ≤ 5 → PathAlign(offset 20) 은 한 번도 안 켜짐, PathAngle(57°) 은 간헐, 남는 건 PathFollow(5) 뿐 → 상자 앞면 반발을 못 이겨 왼쪽으로 틀고, 오차가 커진 뒤엔 제자리 회전을 보상할 크리틱이 없다<span class="c1104">(11-04 정정: '경로 크리틱이 안 켜짐' 은 정체의 원인이 아니었다 — 같은 날 job354 · job355 재구성에서 PathAlign 은 offset 3 이면 켜지고, 켜져도 브레이크로 작동했다. 진행을 바꾼 것은 PathFollow 당근 거리 — 근거 Docs/issues/mppi-passage-tuning.md §5 실수 ①)</span></span>
+    <span class="k">조치</span><span>mp3 용 세 손잡이: <span class="mono">time_steps</span> 32 → 56(≈ 0.22 m) · <span class="mono">PathAlignCritic.offset_from_furthest</span> 20 → 3("0.22 m / 점간격 ~0.04 = index 5~6. 3 이면 0.1 m 만 나아가도 켜진다") · <span class="mono">PathAngleCritic.max_angle_to_furthest</span> 1.0 → 0.5 rad<span class="c1104">(11-04 정정: 컨트롤러가 실제로 본 경로(/transformed_global_plan)의 점간격은 0.025 m(job355 머리 줄) — offset 3 은 0.1 m 가 아니라 7.5 cm 에서 켜진다. 0.026~0.047 은 mp2 의 NavFn /plan 값 — 근거 Docs/issues/mppi-passage-tuning.md §6)</span></span>
+    <span class="k">기각한 대안</span><span><span class="mono">model_dt 0.1</span>(1/controller_frequency 0.05 와 어긋남) · Smac(시작 footprint 거부, 09-15) · 지금 RPP 복귀(가설 검증 전 접는 것) — <b>사전 규칙: mp3 가 다시 정체하면 RPP 복귀</b></span>
+  </div>
+</section>
+
+<section>
+  <h2>게이트가 흔들렸다 — 상자 가장자리 셀 깜빡임<span class="sec">§1.7 · §1.8</span></h2>
+  <div class="flow">
+    <span class="k">본 것</span><span>재기동 뒤 상자 전면 x 1.159 · 중심 y +0.054. 준비 단계 상자 셀 최대 y 0.169(창 0.235), 3 분 뒤 러너 게이트 0.219(창 0.186 &lt; 0.20, 거부). job331 6 회 0.169 → 곧바로 러너 3/3 0.218 → 또 거부<span class="c1104">(11-04 정정: job331 의 '상자 주변 셀 값 표' 는 heredoc 안 '\x' 때문에 SyntaxError 로 실행되지 않았다 — SUMMARY 는 이 실패를 적지 않았고 판별은 job312 · job333 으로 했다 — 근거 Docs/issues/mppi-passage-tuning.md §6, 아래 출력)</span></span>
+    <span class="k">재기동 기록</span><span>"재기동(job240, 에이전트 유지 · 보드 리셋 1 회)"<span class="c1104">(11-04 정정: 직전 §1.6 의 job156 이 agent 컨테이너를 지웠으므로 '유지' 할 agent 가 없었다 — job240 이 base 를 새로 띄운 뒤 보드를 리셋한 것으로 추정(prep_mp3.txt 에 base 단계 줄 없음) — 근거 Docs/issues/board-link-microros-session.md §5.5)</span></span>
+    <span class="k">계측</span><span>job312 · job333(raw · filtered 동시 180 s, odom 0.05 m 정렬 복셀): '좌측 연장 띠' y +0.18 점은 상자 왼쪽 옆면의 실물 점(프레임 66~72 %). y ≥ 0.20 점은 9/2694 프레임(0.3 %), 각 1~2 점, 같은 복셀 최대 2 점 — 릴레이(카메라 복셀당 ≥ 3 점 · 5 중 3 프레임)는 못 거름</span>
+    <span class="k">정의</span><span>한 점이 한 번 찍히면 로컬 decay 60 s 동안 셀이 켜진다 → 사건 간격 ~20 s 와 수명 60 s 가 '대부분 켜져 있고 가끔 꺼지는' 깜빡임을 만든다</span>
+    <span class="k">해결</span><span>STVL <span class="mono">depth_mark.filter: passthrough → voxel</span>, <span class="mono">voxel_min_points 0 → 3</span>(로컬 · 전역). 2 는 사건 3/9 통과, 3 은 9/9 차단 · 가장자리 셀 유지. 기각: mark_threshold 상향 · min_obstacle_height 0.08 · 릴레이 재작성 · decay 단축</span>
+  </div>
+<pre class="code">(gate_mp3_refused.txt)
+상자 셀 최대 y 표본 3회: 0.218 0.218 0.218  → 중앙값 0.218
+통로 띠 근거 없는 셀 0 (≤1) | 창 0.187 m (≥0.20; 좌측 0.6, 상자 셀 최대 y 0.218)
+★ 창 &lt; 0.20 — 주행하지 않음
+(job331_boxflicker.txt)
+11:03:36  상자 셀 최대 y: 0.169   … 11:04:12 까지 6 회 모두 0.169
+--- 로컬 코스트맵 상자 주변 셀 (y 0.15~0.30, x 1.05~1.35) 값 ---
+SyntaxError: (unicode error) 'unicodeescape' codec can't decode bytes in position 4-5: truncated \xXX escape
+(j333b.txt — FILTERED)
+--- 사건: y ≥ 0.20 점이 있던 프레임 9 / 2694 ---
+  t=  39.4 s  점 2  같은복셀최대 2  (1.19,0.20,0.08) (1.19,0.20,0.07)
+  t=  49.2 s  점 1  같은복셀최대 1  (1.20,0.20,0.08)
+(job331_after_voxelfilter.txt — 필터 적용 뒤)
+11:26:58  상자 셀 최대 y: 0.164   …   11:29:38  상자 셀 최대 y: 0.168   (24 회, 0.22 셀 0 회)</pre>
+  <p class="note">결과 원문 <span class="mono">Docs/debug_log/2026-09-16/outputs/gate_mp3_refused.txt</span> · <span class="mono">outputs/job331_boxflicker.txt</span> · <span class="mono">outputs/j312.txt</span> · <span class="mono">outputs/j333.txt</span> · <span class="mono">outputs/j333b.txt</span> · <span class="mono">outputs/job331_after_voxelfilter.txt</span> · <span class="mono">outputs/prep_mp3.txt</span> · 스크립트 원문 <span class="mono">jobs/job333_voxstat.py</span>(54 · 93~95 행 사건 기록) · <span class="mono">jobs/job331_boxflicker.sh</span> · 게이트 러너 <span class="mono">jobs/run_drive_nohup.sh</span> · <span class="mono">jobs/run_gate.sh</span>. 부작용: 통과폭 기준1 0.30 → 0.35 m(앞-왼쪽 약한 셀 소멸). 게이트 수정 2 건 — 좌측 경계 행 선택 · 상자 셀 최대 y 3 표본 중앙값.<span class="c1104">(11-04 정정: 게이트 창 공식의 0.195 는 패딩 0.03 때 내접반경이라 패딩 0.01(내접 0.175) 뒤의 이 날 창 값들(0.186 · 0.235 · 0.232 · 0.238)은 상자 쪽으로 2 cm 보수적 — 의도였는지 기록 없음(미확인) — 근거 Docs/issues/mppi-passage-tuning.md §6)</span></p>
+</section>
+
+<section>
+  <h2>mp3 — 같은 자리, 같은 모양<span class="sec">§1.9</span></h2>
+  <div class="flow">
+    <span class="k">본 것</span><span>게이트 상자 1.161 / +0.049, 창 0.238. 0~11 s 0.50 m 전진, 제어 루프 20 Hz 미달 경고가 첫 1 s 부터("goal 후 6~95 s 사이 306 건"). 29~71 s (0.741, 0.301) yaw 43~47° 정지 42 s, 경로 접선 −22~−26°(우회전 요구). 진행 실패 47.3 · 72.3 s<span class="c1104">(11-04 정정: job334 의 기준 시각 LOGT=1789525870 은 bag T0 이지 goal 이 아니다 — 출력 라벨 '(goal 후 …)' 가 잘못. 같은 출력의 진행 실패 53.4 · 78.4 s 를 SUMMARY 가 goal 기준으로 옮겨 적은 것(차 6.1 s = 목표 수신 시각) — 근거 Docs/issues/mppi-passage-tuning.md §6)</span></span>
+    <span class="k">본 것 2</span><span>~71 s 로컬 상자 기억 소멸(마지막 관측 ~11 s + decay 60 s) → 우회전 후 y +0.33~0.35 로 전진 → ① 기하 최근접 0.0 cm(t 84.8), ② 계획 최소 여유 −3.7 cm. 부하 load 7.7 → 11.8, EKF 위반 32 → 91</span>
+    <span class="k">결론</span><span>지평 · 크리틱 변경은 모서리 정체를 바꾸지 못했다. CPU 과부하 · 기억 소실이 겹쳐 '상자 접촉(기하 0 cm)'. 사전 규칙대로 RPP 복귀(BT controller_id → FollowPath), time_steps 56 → 32 원복, offset 3 · angle 0.5 는 유지<span class="c1104">(11-04 정정: ① 0.0 cm 는 ⑥ 상자 미관측 최대 79.6 s 동안의 외삽값이고(아래 출력), 접촉을 사용자가 확인했다는 기록은 어디에도 없다 — 근거 Docs/issues/mppi-passage-tuning.md §6 · outputs/drive_mp3.txt)</span></span>
+  </div>
+<pre class="code">(drive_mp3.txt)
+  EKF 위반 32회 | slam 폐기 53회 | load 7.74 6.48 4.75          ← 주행 전
+결과 TIMEOUT  소요 90.0s  주행 2.17m  샘플 901
+  ① 실제 최근접(차체↔상자 기하): 0.0 cm @ t=84.8s 전진 0.92 횡 +0.337   ← 0 이면 접촉
+  ② 계획의 최소 여유: -3.7 cm (최근접 시점 3.8 cm)   ← 음수면 계획 자체가 접촉 경로
+  ③ 상자 자리 비용 — 로컬 최소/최근접시 0/0, 전역 최소/최근접시 -1/99  ← 0 이면 기억 소실
+  ⑥ 상자 미관측 최대 79.6초 — 이 구간의 ①·⑤ 는 마지막 관측의 외삽이다
+  EKF 위반 91회 | slam 폐기 66회 | load 11.75 8.11 5.51         ← 주행 후
+(job327_mp3.txt 머리)
+루프 지연 경고 306 건 (goal 후 6.3 ~ 95.3 s)
+진행 실패: 53.4 78.4</pre>
+  <p class="note">결과 원문 <span class="mono">Docs/debug_log/2026-09-16/outputs/drive_mp3.txt</span> · <span class="mono">outputs/job327_mp3.txt</span> · <span class="mono">outputs/mp3.csv</span> · 루프 지연 집계 <span class="mono">jobs/job334_rate.sh</span>(3 행 <span class="mono">LOGT=${1:-1789525870}</span>) · bag <span class="mono">bags/bag_mp3.tgz</span>. MPPI 재도전 조건(기록): CPU(batch 500 이하 또는 10 Hz) · 큰 heading 오차의 제자리 회전 장치를 정지 실험으로 먼저 · 기억 60 s 보다 짧은 정체 한계.</p>
+</section>
+
+<section>
+  <h2>재정의 · 사용자 결정 · 계획 A/B<span class="sec">§1.10 · §1.11 · §1.12</span></h2>
+  <div class="flow">
+    <span class="k">재정의</span><span>문제는 '컨트롤러 A vs B' 가 아니라 통로 입구 기동 설계(횡이동을 얼마나 일찍 · 어떤 곡률로 끝내나) + 기억 지속(60 s). 격자 경로가 입구에 35~50° 를 남기고, 그 자리 제자리 회전은 스윕 φ0.74 m 라 불가 → 분석 문서 <span class="mono">Docs/PASSAGE_PROBLEM_ANALYSIS_2026-09-16.md</span><span class="c1104">(11-04 정정: 09-21 문서 재구성으로 지금 경로는 Docs/04_navigation/PASSAGE_PROBLEM_ANALYSIS_2026-09-16.md — 근거 Docs/INDEX.md 옛 경로 표)</span></span>
+    <span class="k">사용자 결정</span><span>MPPI 유지 · A 진행 · C 검토 · D 위임. Humble MPPI 는 CPU(xtensor) → controller 10 Hz · model_dt 0.1 · 32 step(지평 3.2 s ≈ 0.26 m, 연산량 mp2 의 절반), <span class="mono">visualize: true</span> 로 후보 궤적을 bag 에</span>
+    <span class="k">C (decay)</span><span>job338: 깊이 전용 셀 중 왼쪽 통로를 막는 것은 mp2 · mp3 · bk1 세 bag 모두 0(120 · 180 상한 시뮬에서도). 누적되는 것은 낮은 가구 · 6~7 m 원거리 잡음 · 상자 앞 오른쪽 바닥점 → 로컬 120 · 전역 180 s, 원거리는 릴레이 <span class="mono">max_range 4.0</span></span>
+    <span class="k">A (계획) 결론</span><span>입구 접선각은 기하 한계로 어느 변형도 28~31°. 대신 격자 사선 봉우리 +64° → +37°, 0.1 m 창 최대 꺾임 78° → 16.6°. SmoothPath 단독은 효과 거의 없음 → inflation 0.70 + SmoothPath 함께 채택. 상자셀 최소 0.269 → 0.260(−0.9 cm)<span class="c1104">(11-04 정정: SUMMARY 표의 '최대 진행방향 +64°(사선) / −119°(복귀)' 중 도구가 '최대 진행방향' 으로 찍는 것은 절댓값 최대 하나(−118.6°)뿐이고 +64° · +37° 는 같은 출력의 '헤딩 프로파일' 줄 값 — 내용은 일치 — 근거 Docs/issues/mppi-passage-tuning.md §6 · Docs/issues/inflation-padding-roles.md)</span></span>
+  </div>
+<pre class="code">(job340_planab.txt, 줄 일부)
+navfn                 ... 입구(x=0.64) 접선 +30.9° | 최대 진행방향 -118.6° | 0.1 m 창 최대 꺾임 78.0° | 통로 계획횡 +0.412 | 상자셀 최소 0.269
+      헤딩 프로파일 s:heading  0.0:-12° 0.2:+3° 0.4:+64° 0.5:+46° 0.7:+35° ...
+navfn@infl0.70+smooth ... 입구(x=0.64) 접선 +28.3° | 최대 진행방향 -46.4° | 0.1 m 창 최대 꺾임 16.6° | 통로 계획횡 +0.385 | 상자셀 최소 0.260
+      헤딩 프로파일 s:heading  0.0:-3° 0.1:+5° 0.3:+25° 0.4:+35° 0.6:+33° ...
+(job338 mp3 로컬)
+  동시 생존 깊이 전용 셀: decay 60 최대 70개 → 120(상한) 최대 165개 | 통로 띠: 1 → 2개</pre>
+<pre class="code"># depth_relay.py — D: cProfile 12 s 중 10.5 s 가 PointCloud2 data setter(바이트마다 isinstance 검사)
+out.data = array.array('B', buf[idx].tobytes())</pre>
+  <p class="note">결과 원문 <span class="mono">Docs/debug_log/2026-09-16/outputs/job340_planab.txt</span> · <span class="mono">outputs/j338.txt</span> · <span class="mono">outputs/j338b.txt</span> · 스크립트 <span class="mono">jobs/job340_smooth_ab.py</span> · <span class="mono">jobs/job338_ghost_decay.py</span> · <span class="mono">jobs/job339_relay_prof.sh</span> · <span class="mono">jobs/job341_relay_cpu.sh</span>(cProfile · CPU 출력 원문 없음 — SUMMARY 인용) · 릴레이 소스 <span class="mono">ros2_ws/src/rover_bringup/scripts/depth_relay.py</span> 120~121 행(지금 판).</p>
+</section>
+
+<section>
+  <h2>mp4 — 부드러운 진입, 같은 입구<span class="sec">§1.13</span></h2>
+  <div class="flow">
+    <span class="k">본 것</span><span>0~12 s 차선변경을 부드럽게(ω 최대 0.15, 부호반전 0, 루프 미달 0). 12~18 s yaw 29~38° 에서 v 0.038 → 0.006. 18.0 s stuck_monitor "지령 1.3 cm/14° 인데 관측 0.3 cm/1.4° (비율 0.10)" → CANCELED. 데드밴드 아래 떨림 명령을 갇힘으로 오판</span>
+    <span class="k">새로 본 것</span><span>① <span class="mono">/trajectories</span>: 명령 평균이 0 으로 내려가자 '앞 &gt; 5 cm' 후보 78 → 55 → 32 → 13 → 6 → 2 %, 끝단 거리 중앙 0.105 → 0.011 m → '정체의 기제 = 저속 탐색 부족(표본 붕괴)'. ② BT 배선 결함 — <span class="mono">{path}</span> 를 원경로 · 스무딩 결과로 두 번 써 FollowPath 가 매초 목표를 두 번 보냄(<span class="mono">Aborting handle</span> 17 건) → <span class="mono">{raw_path}</span> → SmoothPath → <span class="mono">{path}</span></span>
+    <span class="k">조치</span><span>'표본 붕괴' 가설의 네 손잡이: <span class="mono">vx_std</span> 0.05 → 0.08 · <span class="mono">wz_std</span> 0.3 → 0.4 · <span class="mono">iteration_count</span> 1 → 2 · <span class="mono">temperature</span> 0.3 → 0.15. stuck_monitor 는 튜닝 동안 shadow<span class="c1104">(11-04 정정: 표본 붕괴는 정체의 결과(평균 제어가 0 근처면 분포도 0 근처)였다 — job355 A vs B 에서 네 손잡이는 4 s 0.072 → 0.087 m 뿐, 진행을 바꾼 것은 PathFollow. 네 값은 되돌리지 않아 mp5 부호반전 14 /m 의 후보가 됐고 지금도 그대로 — 근거 Docs/issues/mppi-passage-tuning.md §5 실수 ③)</span></span>
+  </div>
+<pre class="code">(j345_mp4.txt, 열 일부)
+t= 14.0 로버 (0.498,0.164) yaw +38.6° cmd v +0.079 | 후보 끝단 2232개: 앞&gt;5cm  78% | 끝단 거리 중앙 0.105
+t= 17.0 로버 (0.660,0.268) yaw +32.2° cmd v +0.035 | 후보 끝단 2232개: 앞&gt;5cm  55% | 끝단 거리 중앙 0.054
+t= 18.0 로버 (0.686,0.286) yaw +35.7° cmd v +0.025 | 후보 끝단 2232개: 앞&gt;5cm  32% | 끝단 거리 중앙 0.035
+t= 19.0 로버 (0.704,0.299) yaw +38.8° cmd v +0.019 | 후보 끝단 2232개: 앞&gt;5cm  13% | 끝단 거리 중앙 0.021
+t= 20.0 로버 (0.716,0.308) yaw +31.8° cmd v +0.010 | 후보 끝단 2232개: 앞&gt;5cm   6% | 끝단 거리 중앙 0.014
+t= 22.0 로버 (0.729,0.317) yaw +38.0° cmd v -0.002 | 후보 끝단 2232개: 앞&gt;5cm   2% | 끝단 거리 중앙 0.011
+(drive_mp4.txt)
+결과 CANCELED  소요 18.0s  주행 0.86m  샘플 181
+  ① 실제 최근접(차체↔상자 기하): 17.0 cm @ t=11.1s</pre>
+  <p class="note">결과 원문 <span class="mono">Docs/debug_log/2026-09-16/outputs/j345_mp4.txt</span> · <span class="mono">outputs/drive_mp4.txt</span> · <span class="mono">outputs/job327_mp4.txt</span> · 스크립트 <span class="mono">jobs/job345_traj.py</span> · bag <span class="mono">bags/bag_mp4.tgz</span>(<span class="mono">/trajectories</span> 포함).</p>
+  <div class="flow">
+    <span class="k">Wi-Fi 재발</span><span>15:57:34 <WIFI-B> deauth(reason 2) → 16:00:58 ALOPS(<LAN-A>.8). 주행은 원격 nohup 이라 영향 없었으나(15:56 종료) <b>IP 변경이 DDS 를 갈랐다</b> — 전환 전에 뜬 참가자가 옛 IP 로케이터를 광고해 새 셸 · 새 노드가 /scan · /wheel_odom 0, nav2 재기동 뒤 controller_server activating 정지</span>
+    <span class="k">조치 → 되돌림</span><span><span class="mono">fastdds_udp_only.xml</span> 에 <span class="mono">interfaceWhiteList 127.0.0.1</span>(ROS_LOCALHOST_ONLY 는 rmw 가 SHM 을 다시 켜 기각) → 에이전트가 프로파일을 받지 않아 <span class="mono">/wheel_odom</span> 0(job359/360) → 되돌림, 그 여파로 RSP 정적 TF 가 안 보여 SLAM 스캔 폐기 → job361~363 복구. IP 변경 면역은 미해결</span>
+  </div>
+</section>
+
+<section>
+  <h2>무엇이 충돌하는가 — 크리틱 재구성과 오프라인 MPPI<span class="sec">§1.14</span></h2>
+  <div class="flow">
+    <span class="k">사용자 질문</span><span>"회피 로직과 추종 로직이 충돌하는가, 과한 값인가"</span>
+    <span class="k">도구</span><span><span class="mono">job354_critics.py</span>(대표 후보의 크리틱 비용표) · <span class="mono">job355_mppi_sim.py</span>(Humble MPPI 의 배치 · 크리틱 · softmax 를 bag 정지 장면 위에서 재현, 1000 × 32 step × 0.1 s). A(mp4 값)가 실제 '기어감'(v 0.035 → 0.012, 4 s 7 cm)을 재현 → 크기 순서는 신뢰<span class="c1104">(11-04 정정: 이 시뮬은 09-17 §14.1 에서 실제 Humble 1.1.20 과 네 가지(고정 잡음 · 후보 clip · 롤아웃 첫 속도 · SG 필터)가 다른 것으로 확인됐다 — §1.14 의 정량 예측은 신뢰도를 낮춰 본다. 방향은 mp5 통과로 맞음 — 근거 Docs/issues/mppi-offline-simulator.md §2 · §3)</span></span>
+    <span class="k">읽기</span><span>PathFollow(5, offset 5)는 가속기지만 당근이 furthest+5 점 = 12.5 cm 앞이라 진행해도 비용이 거의 안 준다. 브레이크 둘(PathAlign 14 · ObstaclesCritic rep 1.5 / crit 20)만 이동에 비례해 커져 평형이 v ≈ 0.02 에 생긴다. "과한 값" 이 아니라 <b>우리 스케일에서 너무 작은 값</b><span class="c1104">(11-04 정정: 재구성은 ObstaclesCritic 의 거리 역산을 로컬 코스트맵 값 2.5/0.40 로 했으나, 실제 컨트롤러는 크리틱 자기 파라미터 기본 10/0.55 로 돌고 있었다(09-18 §16, 실행 중 값) — 반발 크기 절대값은 재구성과 다르다. '반발이 원인 아님' 은 상대 비교라 유지(추정) — 근거 Docs/issues/mppi-passage-tuning.md §5 실수 ②)</span></span>
+    <span class="k">결론</span><span>회피 가중 · 정렬 가중은 과하지 않다("반으로 줄여도 결과 동일"). 충돌의 실체는 '당근이 짧은 추종' → <span class="mono">PathFollowCritic</span> <span class="mono">cost_weight 5 → 10</span>, <span class="mono">offset_from_furthest 5 → 20</span>(0.5 m), 다른 크리틱은 그대로<span class="c1104">(11-04 정정: '반으로 줄여도 결과 동일' 은 F 계열(F 0.250 vs L 0.258)에만 해당 — 표에 없는 D(follow offset 20 + align 6) 0.135 m vs G(D + rep 0.5) 0.178 m 는 4 cm 차이 — 근거 Docs/issues/mppi-passage-tuning.md §6 · outputs/j355_cdefgh.txt)</span></span>
+  </div>
+<pre class="code"># job355_mppi_sim.py — PathFollow: 끝단 ↔ path[furthest + offset] 거리 × w (목표 문턱 안이면 0)
+tf_ = path[min(furthest + P['follow_off'], len(path) - 1)]
+follow = P['follow_w'] * np.hypot(ex - tf_[0], ey - tf_[1]) if dgoal &gt;= P['follow_thr'] else np.zeros(B)</pre>
+<pre class="code">(j355_ab.txt)    A mp4 값          → 40 주기(4.0 s) 후: 전진 +0.072 횡 -0.001 회전 -3.7°,  최종 cmd v +0.012
+                 B 배포값          → 40 주기(4.0 s) 후: 전진 +0.087 횡 -0.008 회전 -12.2°, 최종 cmd v +0.020
+(j355_cdefgh.txt) C follow_off20   → 60 주기(6.0 s) 후: 전진 +0.143 횡 -0.026 회전 -21.2°, 최종 cmd v +0.035
+F_B+follow_w10_off20 bag bag_mp4 t=17.0 | 경로 41점(간격 0.025) | ... follow_w=10 follow_off=20 ... rep_w=1.5
+                 F                 → 60 주기(6.0 s) 후: 전진 +0.250 횡 -0.070 회전 -26.0°, 최종 cmd v +0.041
+                 G (D + rep 0.5)   → 60 주기(6.0 s) 후: 전진 +0.178 ...    D → +0.135 ...</pre>
+  <p class="note">결과 원문 <span class="mono">Docs/debug_log/2026-09-16/outputs/j355_ab.txt</span> · <span class="mono">outputs/j355_cdefgh.txt</span> · <span class="mono">outputs/j355_ijkl.txt</span> · <span class="mono">outputs/j354_mp4.txt</span> · 스크립트 원문 <span class="mono">jobs/job355_mppi_sim.py</span> 126~127 행 · <span class="mono">jobs/job354_critics.py</span> · 배치 <span class="mono">jobs/job356_variants.sh</span> ~ <span class="mono">job358_variants3.sh</span>. 변형 이름(C · D · F · G)은 출력 각 블록 머리 줄 기준.</p>
+</section>
+
+<section>
+  <h2>mp5 — 입구는 지났고, 복귀 회전에서 멈췄다<span class="sec">§1.15</span></h2>
+  <div class="flow">
+    <span class="k">본 것</span><span>게이트 상자 1.174 / −0.013(이전보다 9 cm 멀리), 창 0.232. 0~12 s 입구 (0.77, +0.27)를 v 0.04~0.08 로 통과 — mp2 · mp3 · mp4 가 굳던 자리. 24~29 s 상자 뒤로 나와 우회전, (1.49, +0.26). 29~90 s 정지(v ±0.02, ω ±0.1~0.2 떨림), 뒤우 모서리 ↔ 상자 뒤 모서리 0.07 m. 최근접 10.5 cm, 접촉 없음<span class="c1104">(11-04 정정: 러너 ①(기하 최근접)은 상자 모델 재고정 · 외삽에 따라 0 으로도 19 cm 로도 나오는 값이라 주행 간 비교 지표가 못 된다고 09-17 §13.4 에서 정리(mp9~11 코스트맵 기준 1.4~2.2 cm). mp5 의 ⑥ 상자 미관측 최대는 86.4 s, mp4 · mp5 의 코스트맵 기준 여유는 다시 재지 않았다 — 근거 Docs/issues/mppi-passage-tuning.md §5 실수 ⑥ · outputs/drive_mp5.txt)</span></span>
+    <span class="k">복귀 정체 분석</span><span>후보 '앞 &gt; 5 cm' 76 % (t24) → 44 % (t29) → 8 % (t31~). 크리틱 재구성(t29): 정지 0.96 최저, 좌회전 후보 전부 LETHAL, 제자리 우회전 −0.38 도 25 스텝에서 LETHAL. "목표까지 0.40 m 라 PathFollow(문턱 0.6) · PathAlign(0.4) 은 꺼지고 GoalCritic · GoalAngle 만 남는 교대 구간"<span class="c1104">(11-04 정정: 이 재구성 표는 job354 의 mp4 상수(FOLLOW 5/5, 문턱 · Goal · GoalAngle 처리 없음)로 계산돼 mp5 의 실제 크리틱이 아니다 — 같은 표에 Align · Follow 가 0 이 아닌 값으로 찍힘. LETHAL 판정은 가중과 무관해 유효, 비용 크기 비교만 무효 — 근거 Docs/issues/mppi-passage-tuning.md §5 실수 ⑤)</span></span>
+    <span class="k">판정</span><span>입구 문제 해결(정지 0). 복귀 정지 = 목표 위치가 만든 기하(상자 뒤 0.3 m · 중심선 → 회전이 상자 뒤 모서리 7 cm 에서) + 목표 근처 크리틱 교대. 다음 mp6 은 목표만 (2.2, 0) 으로. 조향 품질은 나빠짐 — 직진 중 부호반전 36 회(14 /m, mp4 는 0)</span>
+  </div>
+<pre class="code">(drive_mp5.txt)
+결과 TIMEOUT  소요 90.0s  주행 2.54m  샘플 901
+  ① 실제 최근접(차체↔상자 기하): 10.5 cm @ t=29.4s 전진 1.49 횡 +0.263   ← 0 이면 접촉
+  ③ 상자 자리 비용 — 로컬 최소/최근접시 99/99, 전역 최소/최근접시 99/100
+  ⑥ 상자 미관측 최대 86.4초 — 이 구간의 ①·⑤ 는 마지막 관측의 외삽이다
+  조향(주행구간 2.54m, 목표부근 0샘플 제외): 직진 중 |ω| 평균 0.092 최대 0.304 rad/s, 부호반전 36회 = 14.16회/m
+(j366_mp5_return.txt, 열 일부)
+t= 24.0 로버 (1.190,0.342) yaw +1.8°  cmd v +0.071 | 앞&gt;5cm  76% | 끝단 거리 중앙 0.105
+t= 29.0 로버 (1.450,0.276) yaw -26.8° cmd v +0.047 | 앞&gt;5cm  44% | 끝단 거리 중앙 0.043
+t= 31.0 로버 (1.521,0.240) yaw -24.9° cmd v +0.018 | 앞&gt;5cm   8% | 끝단 거리 중앙 0.018
+  정지                   0.34   0.00   0.62   0.00  0.00  0.00 |    0.96  (+0.00,+0.00,+0°) f=0
+  → 최저 비용: 정지 (0.96) | PathAngle 활성 기준각 0.50 rad(현재 0.39)</pre>
+  <p class="note">결과 원문 <span class="mono">Docs/debug_log/2026-09-16/outputs/drive_mp5.txt</span> · <span class="mono">outputs/j366_mp5_return.txt</span> · <span class="mono">outputs/job327_mp5.txt</span> · <span class="mono">outputs/mp5.csv</span> · 스크립트 <span class="mono">jobs/job366_mp5sim.sh</span> · <span class="mono">jobs/job354_critics.py</span> · bag <span class="mono">bags/bag_mp5.tgz</span>. 시뮬 M(현재값) 은 6 s 0.23 m 진행이라 실제 정지와 다름 — SUMMARY 가 스스로 '정적 장면 · 1 Hz 재계획 부재의 한계' 로 적음.</p>
+</section>
+
+<section>
+  <h2>이날의 주행 요약</h2>
+  <div class="tbl"><table>
+    <tr><th>주행</th><th>구성(바뀐 것)</th><th>결과</th><th>정체</th><th>러너 ①</th></tr>
+    <tr class="bad"><td class="n">mp2</td><td>NavFn + MPPI(20 Hz · 32 step · 0.05)</td><td>TIMEOUT 90 s · 1.23 m</td><td>입구 60 s</td><td>— (접촉 없음)</td></tr>
+    <tr class="bad"><td class="n">mp3</td><td>+ 56 step · offset 3 · angle 0.5 · 복셀 필터</td><td>TIMEOUT 90 s · 2.17 m</td><td>입구 42 s</td><td>0.0 cm (외삽)</td></tr>
+    <tr class="bad"><td class="n">mp4</td><td>10 Hz · dt 0.1 · 32 step · inflation 0.70 · SmoothPath · decay 120</td><td>CANCELED 18 s · 0.86 m</td><td>입구(stuck 취소)</td><td>17.0 cm</td></tr>
+    <tr class="hl"><td class="n">mp5</td><td>+ 탐색 네 손잡이 + PathFollow 10/20</td><td>TIMEOUT 90 s · 2.54 m</td><td>입구 통과, 복귀 61 s</td><td>10.5 cm</td></tr>
+  </table></div>
+  <p class="note">수치 원천 = SUMMARY §1.2 · §1.9 · §1.13 · §1.15 와 <span class="mono">outputs/drive_mp3.txt</span> · <span class="mono">drive_mp4.txt</span> · <span class="mono">drive_mp5.txt</span>. ① 은 위 정정대로 비교 지표가 아니다.</p>
+</section>
+
+<section>
+  <h2>내 실수 · 정정</h2>
+  <div class="pm">
+    <h3>정지 요청에 전체 종료 스크립트를 실행 (§1.6)</h3>
+    <div class="flow">
+      <span class="k">하려 한 것</span><span>사용자 보고 직후 '잔여 목표 취소'</span>
+      <span class="k">한 것</span><span><span class="mono">job156_stop.sh</span> — 실제로는 전체 종료(센서 · SLAM · Nav2 · micro-ROS agent 컨테이너 삭제)</span>
+      <span class="k">영향</span><span>로버는 이미 정지 상태라 안전 문제 없음. 다음 기동은 <span class="mono">job240_clean.sh</span> 가 base 부터 띄우고 보드 리셋 필요(에이전트 재시작 → 보드 리셋 규칙)</span>
+      <span class="k">다음에 알아보는 법</span><span>목표만 멈출 때는 액션 cancel(<span class="mono">job207_return.py</span> 계열의 <span class="mono">_cancel_goal_async</span>) 또는 <span class="mono">/cmd_vel</span> 0 발행. <span class="mono">job156</span> 은 하루 마감(충전 전)에만</span>
+      <span class="k">데이터</span><span>스크립트 <span class="mono">Docs/debug_log/2026-09-16/jobs/job156_stop.sh</span> · 출력 원문 없음(대화에만) · 카드 <span class="mono">Docs/issues/board-link-microros-session.md</span> §5.5</span>
+    </div>
+  </div>
+  <div class="pm">
+    <h3>정지 스크립트가 8 분 무한 대기 (§1.13)</h3>
+    <div class="flow">
+      <span class="k">본 것</span><span>Wi-Fi 전환 뒤 <span class="mono">job156_stop.sh</span> 가 <span class="mono">ros2 topic pub -1 /cmd_vel</span> 에서 멈춤</span>
+      <span class="k">왜</span><span><span class="mono">pub -1</span> 은 구독자 매칭을 기다린다 — 새 셸이 옛 IP 를 광고하는 참가자와 매칭되지 않음</span>
+      <span class="k">조치</span><span>죽이고 job240 으로 진행. 이후 정지는 <span class="mono">job353_stop2.sh</span>(그 단계를 뺀 판, 펌웨어 watchdog 500 ms 에 맡김)</span>
+      <span class="k">다음에 알아보는 법</span><span><span class="mono">ros2 topic pub -1</span> 에는 timeout 을 씌운다</span>
+      <span class="k">데이터</span><span><span class="mono">jobs/job156_stop.sh</span> · <span class="mono">jobs/job353_stop2.sh</span> · 출력 원문 없음</span>
+    </div>
+  </div>
+  <p class="note">문제 대장이 이날 기록에서 찾아 칸 형식으로 쓴 실수(위 정정 표시의 원천): 실수 ① 지평 가설로 바로 로버 시험 · ② '정지가 최저 비용 구조' · ③ 표본 붕괴를 기제로 · ⑤ mp5 재구성에 mp4 상수 — <span class="mono">Docs/issues/mppi-passage-tuning.md</span> §5.</p>
+</section>
+
+<section>
+  <h2>다음 후보 (09-16 마감 시점, §2)</h2>
+  <ul>
+    <li>mp6: 목표만 (2.2, 0) 으로(회전 지점을 상자 뒤 가장자리에서 ≥ 0.4 m), 파라미터는 mp5 그대로, n=3 목표</li>
+    <li>목표 근처 크리틱 교대 A/B: PathFollow · PathAlign · PathAngle 문턱 0.6/0.4/0.4 → 0.2, GoalCritic 5 → 10 (시뮬 0.23 → 0.26~0.31 m / 6 s)</li>
+    <li>조향 부호반전(mp5 14 /m vs mp4 0): <span class="mono">wz_std</span> 0.4 → 0.3 단일 변수</li>
+    <li>기동 절차: 손 배치 → job240 → 게이트 → "시작". 정지는 <span class="mono">job353_stop2.sh</span></li>
+    <li>Wi-Fi(사용자 지시로 추후 분석): deauth reason 2 이틀 연속(09-15 14:03, 09-16 15:57) · DDS IP 변경 면역(에이전트 <span class="mono">-r refs</span> 또는 고정 IP)</li>
+    <li>CPU: sensor_conditioner 36 %, relay 19 %</li>
+  </ul>
+</section>
+
+<section>
+  <h2>이후 · 관련 카드</h2>
+  <ul>
+    <li><span class="mono">Docs/issues/mppi-passage-tuning.md</span> — mp1 ~ mp11 전체, 이날 가설의 판별 · SUMMARY↔원문 대조(§6). 09-17 mp9~11 3/3 로 이 코스 해결</li>
+    <li><span class="mono">Docs/issues/mppi-offline-simulator.md</span> — job355 첫 판부터 지금 <span class="mono">Docs/tools/anal_mppi_sim.py</span> 까지, 판마다 실주행과 맞았나</li>
+    <li><span class="mono">Docs/issues/controller-rpp-vs-mppi.md</span> — mp3 뒤 RPP 복귀 → 사용자 결정으로 MPPI 유지</li>
+    <li><span class="mono">Docs/issues/depth-relay-artifacts.md</span> — 릴레이 CPU 원인 정정(정렬 → data setter)</li>
+    <li><span class="mono">Docs/issues/inflation-padding-roles.md</span> — 전역 inflation 0.70 의 단독 효과는 주행으로 가른 적 없음</li>
+    <li><span class="mono">Docs/issues/board-link-microros-session.md</span> · <span class="mono">Docs/issues/dds-shm-incident.md</span> — job156 오용 · 루프백 화이트리스트 되돌림</li>
+    <li><span class="mono">Docs/issues/jetson-wifi-link.md</span> — 15:57 두 번째 끊김</li>
+    <li><span class="mono">Docs/issues/obstacles-to-costcritic.md</span> — ObstaclesCritic 자기 파라미터 문제 → 09-21 CostCritic</li>
+  </ul>
+</section>
+</div>

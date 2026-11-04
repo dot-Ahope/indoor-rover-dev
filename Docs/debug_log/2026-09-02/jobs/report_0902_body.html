@@ -1,0 +1,229 @@
+
+<style>
+.code{margin:0;font-family:var(--f-mono);font-size:12.5px;line-height:1.5;background:var(--bg);border:1px solid var(--line);padding:8px 10px;overflow-x:auto;white-space:pre;max-width:100%}
+.flow > span{min-width:0}
+.c1104{font-weight:600;color:var(--ink);background:var(--tint-warn);border-left:3px solid var(--warn);padding:0 5px;margin-left:3px;border-radius:2px;white-space:normal;font-size:.92em}
+</style>
+<div class="wrap">
+<header>
+  <div class="eyebrow">Indoor Rover · 2026-09-02 · Docs/debug_log/2026-09-02 (§ 번호 없음 — 절 제목으로 인용) · 주행 있음(직진 · 루프 · Nav2) · 11-04 사후 작성</div>
+  <h1>09-02 Nav2 첫 자율주행</h1>
+  <p class="lead">이 페이지는 2026-11-04 에 그날의 <span class="mono">SUMMARY.md</span>를 원천으로 다시 만든 것입니다. 오전에는 전날 찾은 휠 스케일 보정 <span class="mono">VX_SCALE=0.783</span> 을 줄자로 검증했고, 회전을 포함한 드리프트와 좌우 트랙 비대칭을 쟀습니다. 오후에는 <span class="mono">rover_navigation</span> 패키지를 새로 만들어 Nav2 로 첫 자율주행에 성공했습니다. 이어 180° 회전 목표에서 로버가 꼼짝 않던 데드락을 풀었습니다. 좁은 곳 벤치마크(RPP · MPPI)는 전부 실패했고, 공통 원인을 '기동 데드밴드' 로 보고 펌웨어 보상 코드를 썼습니다. 뒤 기록과 문제 대장이 바로잡은 곳 <b>6 건</b>은 원문을 그대로 두고 <span class="c1104">11-04 정정</span> 표시를 붙였습니다.</p>
+</header>
+
+<section>
+  <h2>오늘의 판정</h2>
+  <div class="verdicts">
+    <div class="v ok"><b>VX_SCALE 0.783 검증</b><span>휠원시 2.177 m → odom 1.708 m vs 줄자 1.70 m, 잔여 +0.47 %. 과대율 3 회 1.2774 · 1.2778 · 1.2806(±0.25 %) (결과)</span></div>
+    <div class="v ok"><b>회전 포함 루프 드리프트 약 1 %</b><span>1.2 m + 377° 루프: odom 8.4 cm vs 줄자 6~8 cm. 교정 전 약 5 % (A항목)</span></div>
+    <div class="v wait"><b>트랙 비대칭 — 간헐 · 원인 판별 불가</b><span>평소 0.1~0.4 °/m, 6 회 중 1 회 1.93 °/m. 휠별 텔레메트리 없음 (A-2)</span></div>
+    <div class="v ok"><b>Nav2 첫 자율주행 SUCCEEDED</b><span>정면 0.5 m, 잔여 14.5 cm(허용 15). 180° 회전 목표 · 구석 탈출(후방 1.0 m)도 SUCCEEDED (Nav2 도입 · B-1 · B-2)</span></div>
+    <div class="v ok"><b>Nav2 버그 2 건 수정</b><span>진행 검사기가 회전을 무시 → <span class="mono">PoseProgressChecker</span>. RPP 각가속 클램프 × 기동 데드밴드 데드락 → <span class="mono">max_angular_accel</span> 1 → 4 (B-1)</span></div>
+    <div class="v no"><b>N1 벤치마크 1 차 RPP 0/1 · MPPI 0/2</b><span>공통 원인 = 기동 데드밴드 → 펌웨어 보상(<span class="mono">MIN_WHEEL_SPEED_MPS 0.020</span>) 소스 완료, 플래시 대기 (N1 벤치마크 1차)</span></div>
+    <div class="v no"><b>근접 회전 중 벽 접촉</b><span>라이다 최소 0.2 m + 장착 위치 → 앞 약 10 cm 사각. <span class="mono">footprint_padding</span> 0.02 → 0.05 로 완화 (⚠ 안전 결함)</span></div>
+  </div>
+</section>
+
+<section>
+  <h2>스케일 검증 — 그리고 가드가 직진을 막던 이유<span class="sec">결과 (수치) · 개선: 주행 가드를 경로방향 방식으로</span></h2>
+  <div class="flow">
+    <span class="k">본 것</span><span>기존 가드는 사방 중 최소 여유를 봐서 오른쪽 5 cm 장애물이 직진을 막았다. 각도 섹터 방식은 옆 물체까지 앞으로 세어 '전방 113 cm' 로 오판.</span>
+    <span class="k">추론</span><span>순수 직진은 옆 여유가 변하지 않는다 → 로버 폭 띠(±(YMAX + 3 cm)) 안에서 진행 방향에 실제로 있는 점만 보면 된다.</span>
+    <span class="k">결론</span><span>경로 여유 203 cm 를 정확히 인식 → 1.7 m 주행 성공. 휠원시 2.177 m, odom(×0.783) 1.708 m, 줄자 1.70 m → 잔여 +0.47 %. 평균 과대율 1.2786 → 정밀 계수 0.7821, 적용값과 0.1 % 차이 → 0.783 확정. 직진 전역 비상 정지는 미사용(오탐 방지), 회전에는 여전히 전역 판정 필요.</span>
+    <span class="k">스크립트 핵심</span><span><pre class="code"># 직진 검증 v2 — 경로방향 가드(로버 폭 밴드 내 진행방향 장애물만)
+LX,LYAW=0.152,math.pi; XMIN,XMAX,YMIN,YMAX=-0.25,0.25,-0.165,0.165
+band=np.abs(py)&lt;=(YMAX+0.03)          # 로버 폭 + 3cm 밴드
+sel=(band &amp; (px&gt;XMAX)) if DIR=='F' else (band &amp; (px&lt;XMIN))</pre></span>
+    <span class="k">나온 결과</span><span><pre class="code">전진 경로여유 203cm (전역최소 5cm) → 목표 1.68m, 속도 0.06 m/s
+정지: 목표도달
+  휠원시     = 2.177 m
+  odom(×0.783) = 1.708 m   ← 줄자와 비교
+  slam       = nan m</pre><span class="note">결과 원문 <span class="mono">Docs/debug_log/2026-09-02/outputs/job20d_pathdrive_F.txt</span> · 막힌 판 <span class="mono">job20b_clearance.txt</span> · 첫 판 <span class="mono">job20c_pathdrive_F.txt</span> · 스크립트 원문 <span class="mono">jobs/job20c_pathdrive.sh</span>(첫 판의 '전역 비상 3 cm' 코드는 덮어써져 원본 소실 — <span class="mono">Docs/issues/script-drive-guards.md</span> §5 ②). 줄자 1.70 m 은 사용자 답(SUMMARY 표)</span></span>
+  </div>
+</section>
+
+<section>
+  <h2>회전 포함 드리프트 재측정<span class="sec">A항목</span></h2>
+  <div class="flow">
+    <span class="k">방법</span><span>직진 0.30 m → 제자리 좌회전 90° × 4(총 1.2 m + 377°), 0.06 m/s. 직진 = 경로 띠, 회전 = 스윕 반경(중심 기준 34 cm), 측정 = 0.5 백분위(스퍼리어스 점 무시). 회전 감속(목표 15° 전부터 ω × 0.35)으로 4 회 합 392° → 377°. 지면검증 = 줄자(시작 자세 바닥 표시).</span>
+    <span class="k">본 것</span><span>odom 이동 8.4 cm · heading +18.1° vs 줄자 6~8 cm · 육안 약 20° → 차이 약 1.4 cm(경로의 약 1 %). 교정 전(08-31) 약 8 cm / 1.6 m(약 5 %).</span>
+    <span class="k">결론</span><span><span class="mono">VX_SCALE=0.783</span> 이 회전 포함 전체 정확도를 크게 개선 — 이전에 '회전 스크럽 드리프트' 로 본 것의 상당 부분이 스케일 오류. "slam 의 신뢰 구간이 갈린다: 직진은 줄자와 1 % 일치, 회전이 많은 구간은 부정확(첫 루프에서 46.1 cm 로 과대 보고 → 실제 약 7 cm)."<span class="c1104">(11-04 정정: 46.1 cm 는 첫 루프(v1, job21d)의 slam 값이고, 약 7 cm 는 두 번째 루프(v2, job21f)의 줄자다. v1 의 줄자 값은 어디에도 없다 → 다른 주행끼리의 비교라 'slam 이 회전 많은 구간에서 과대 보고' 는 미확인 — Docs/issues/wheel-odom-scale-slip.md §5 ⑤)</span> 스크립트 버그: 루프 시작 때 map→base TF 를 기다리지 않아 slam 기록 실패.</span>
+    <span class="k">나온 결과</span><span><pre class="code"># job21d (v1)
+=== 결과 (4변 완주) ===
+  odom 이동 18.0cm, heading +38.7deg
+  slam 이동 46.1cm, heading +33.9deg  (지면검증)
+# job21f (v2 — 줄자 6~8 cm · 육안 ~20° 는 이 주행)
+(주의) slam TF 미확보 — odom만 기록됨
+=== 결과 (4변 완주) ===
+  odom 이동 8.4cm, heading +18.1deg
+  slam TF 미확보 — 드리프트 비교 불가</pre><span class="note">결과 원문 <span class="mono">Docs/debug_log/2026-09-02/outputs/job21d_loop.txt</span> · <span class="mono">job21f_loop_v2.txt</span> · 스크립트 원문 <span class="mono">jobs/job21d_loop.sh</span> · <span class="mono">job21d_loop_v2.sh</span></span></span>
+    <span class="k">'슬립 0.46' 분해</span><span>0.46 ≈ 스케일 오류(0.782) × 실제 트랙 스크럽(0.588). 지금은 vx 만 보정하고 vyaw 는 0.46 그대로 = 기능상 정상, 펌웨어 교정 때만 재산정.<span class="c1104">(11-04 정정: 0.588 은 계산값이다 — 둘레를 고친 09-07 펌웨어에서 D455f 자이로 기준 7 회 직접 측정 평균 0.600 — Docs/issues/wheel-odom-scale-slip.md §3 · §5 ⑥)</span></span>
+  </div>
+</section>
+
+<section>
+  <h2>좌/우 트랙 비대칭<span class="sec">A-2 · ⚠ 진단 한계</span></h2>
+  <div class="flow">
+    <span class="k">본 것</span><span>사용자: 첫 90° 회전 직후 전진에서 '좌측 바퀴가 느려 좌로 과회전'. 측정 1(회전 없는 0.9 m × 4): −0.39 · +1.93 · −0.23 · −0.33 °/m. 측정 2(90° 회전 → 직진 × 4, 2 회만 직진): +0.18 · +0.11 °/m.</span>
+    <span class="k">추론</span><span>'회전 직후' 는 트리거가 아니다 — 오히려 가장 곧았다. 6 회 중 1 회(평범한 후진)만 이상치 → 진짜 간헐성. 회전 감속 로직 덕에 회전 정확도 91~93°(이전 98~107°).</span>
+    <span class="k">결론</span><span>규모가 작고 드물어 Nav2 진행에 지장 없음. 그러나 보드가 좌/우 바퀴를 따로 내지 않아(<span class="mono">/rover/status.values[]</span> 비어 있음, <span class="mono">/wheel_odom</span> 은 융합된 vx · vyaw 만) "엔코더가 차이를 못 잡는 것" 과 "실제로 같이 도는 것" 을 가를 수 없다 → 앞선 '바퀴는 같이 돈다' 추론은 정정. 펌웨어 권고: 좌/우 FG 펄스율 · PWM duty · PID 목표 vs 실측을 status 에.</span>
+    <span class="k">나온 결과</span><span><pre class="code"># job22b
+  회차   방향     거리m      자이로휨°      휠오도휨°     자이로°/m
+   1    F   0.931      -0.37      +0.05      -0.39   [완료]
+   2    B   0.930      +1.80      +0.23      +1.93   [완료]
+   3    F   0.930      -0.22      +0.10      -0.23   [완료]
+   4    B   0.931      -0.31      +0.41      -0.33   [완료]
+# job23b
+   2      92.2   0.531      +0.10      -0.13    +0.18  [완료]
+   4      92.9   0.531      +0.06      -0.10    +0.11  [완료]
+# job23a — 보드 발행 토픽
+    /battery /imu/data_raw /imu/mag /rover/f5b_heartbeat /rover/status /wheel_odom</pre><span class="note">결과 원문 <span class="mono">Docs/debug_log/2026-09-02/outputs/job22b_asym.txt</span> · <span class="mono">job23b_turnstraight.txt</span> · <span class="mono">job23a_topics.txt</span> · 스크립트 원문 <span class="mono">jobs/job22b_asym.sh</span> · <span class="mono">job23b_turnstraight.sh</span></span></span>
+  </div>
+</section>
+
+<section>
+  <h2>Nav2 도입 — 첫 자율주행<span class="sec">Nav2 도입 — 첫 자율주행 성공</span></h2>
+  <div class="flow">
+    <span class="k">구성</span><span><span class="mono">rover_navigation</span> 신규(<span class="mono">config/nav2_params.yaml</span> · <span class="mono">launch/navigation.launch.py</span>). Nav2 1.1.20 은 Jetson 에 이미 설치. AMCL · map_server 미사용 — slam_toolbox 가 <span class="mono">map→odom</span> + <span class="mono">/map</span> 제공. 컨트롤러 RPP, 계획 NavFn, footprint 0.5×0.33 사각형, desired_linear_vel 0.10, inflation 0.35, 진행 검사 0.25 m / 20 s(저속이라 기본 0.5 m / 10 s 는 오탐), 목표 허용 xy 0.15 · yaw 0.25.</span>
+    <span class="k">본 것</span><span>lifecycle 전부 active, 오류 로그 없음, 코스트맵 발행 local 1.67 Hz · global 0.67 Hz(설정 2.0 / 1.0 미달 — CPU). 정면 0.5 m 목표 → SUCCEEDED, 잔여 14.5 cm, heading −4.0°. (스크립트의 상태 매핑 오류로 'UNKNOWN' 표시 — <span class="mono">GoalStatus</span> 4 = SUCCEEDED, 수정)</span>
+    <span class="k">나온 결과</span><span><pre class="code">=== 결과 ===
+  최종 위치 map=(0.245,0.080) hd=-11.4deg
+  이동 거리 0.362 m (목표 0.5m)
+  목표까지 잔여 오차 14.5 cm  (허용 15cm)
+  heading 변화 -4.0deg (허용 ±14deg)
+  판정: ✅ 목표 도달</pre><span class="note">결과 원문 <span class="mono">Docs/debug_log/2026-09-02/outputs/job24b_goal.txt</span> · <span class="mono">job24a_nav2up.txt</span> · 스크립트 원문 <span class="mono">jobs/job24b_goal.sh</span> · <span class="mono">job24a_nav2up.sh</span></span></span>
+    <span class="k">관찰</span><span>허용 오차가 헐거움(14.5 cm 못 미쳐 '도달') · Nav2 기동 뒤 load 7.13(6 코어), 상위 conditioner 47 % · foxglove 27 % · rplidar 19 %.</span>
+  </div>
+</section>
+
+<section>
+  <h2>180° 회전 목표에서 꼼짝 않음 — 데드락<span class="sec">B-1</span></h2>
+  <div class="flow">
+    <span class="k">본 것</span><span>1 차: 목표 수락 뒤 약 100 s 정지, 그 뒤 회전 — 회전시킨 것은 컨트롤러가 아니라 spin 복구. 진행 검사기 <span class="mono">SimpleProgressChecker</span> 는 병진만 진행으로 인정 → <span class="mono">PoseProgressChecker</span>(+ <span class="mono">required_movement_angle</span> 0.5)로 바꿨지만 정지는 그대로.</span>
+    <span class="k">추론</span><span><span class="mono">/cmd_vel_nav</span>(RPP)와 <span class="mono">/cmd_vel</span>(스무더)을 같이 보니 둘 다 w = 0.05 rad/s 를 68 s 내내 냄, heading 176.9 → 176.4°. RPP <span class="mono">rotateToHeading()</span> 은 각속도를 '현재 측정 속도 ± max_angular_accel × dt' 로 클램프 → 1.0 × 0.05 = 첫 명령 상한 0.05 rad/s = 바퀴 ±6 mm/s → "정지마찰 · PWM 데드밴드 이하라 안 움직임" → 측정 속도 0 → 다음 주기도 0.05 → 영구 데드락. 직진이 됐던 이유: RPP 는 선속도엔 이 클램프를 안 건다.<span class="c1104">(11-04 정정: 직접 원인은 기계가 아니라 펌웨어였다 — 같은 펌웨어의 speed_controller.c TARGET_THRESH 0.01 m/s 미만 목표는 '정지 명령' 으로 처리돼, 6 mm/s 명령은 목표 0 · duty 0 이 된다(코드 읽기 + 09-17 mp8 실측). 기계적 기동 문턱(09-03 스윕 0.012~0.016)은 그 위의 두 번째 층 — Docs/issues/start-deadband.md §5 실수 ①)</span></span>
+    <span class="k">결론</span><span><span class="mono">max_angular_accel</span> 1.0 → 4.0(첫 명령 0.2 rad/s). 수정 뒤 t = 2 s 에 w +0.243 으로 즉시 회전 → SUCCEEDED, 실제 회전 +178.8°(오차 1.2°), 위치 오차 14.8 cm, 약 28 s. 교훈(원문): 측정 속도 기반 램프업은 '이미 움직이는 로봇' 을 가정한다 — 첫 명령이 기동 임계를 넘도록 가속 한계를 잡아야 한다.</span>
+    <span class="k">스크립트 핵심</span><span><pre class="code"># nav2_params.yaml (커밋 76c08343)
+      # ⚠ RPP 는 rotateToHeading 각속도를 '현재 측정속도 ± max_angular_accel×dt' 로 클램프한다.
+      max_angular_accel: 4.0
+      plugin: "nav2_controller::PoseProgressChecker"
+      required_movement_angle: 0.5      # rad — 이만큼 회전해도 '진행'으로 인정</pre></span>
+    <span class="k">나온 결과</span><span><pre class="code"># job26a (수정 전)
+  t=  2.0s hd= +176.9 | RPP(v=+0.000 w=+0.050 n=  40) | OUT(v=+0.000 w=+0.050 n=  40)
+  t= 30.1s hd= +176.6 | RPP(v=+0.000 w=+0.050 n= 598) | OUT(v=+0.000 w=+0.050 n= 601)
+  t= 68.1s hd= +176.4 | RPP(v=+0.000 w=+0.052 n=1259) | OUT(v=+0.000 w=+0.052 n=1281)
+타임아웃 — 취소
+# job26b (수정 뒤)
+  t=  2.0s hd= +179.1 | RPP(v=+0.000 w=+0.243 n=  40) | OUT(v=+0.000 w=+0.243 n=  40)
+  t= 24.0s hd=  -25.3 | RPP(v=+0.067 w=+0.286 n= 481) | OUT(v=+0.067 w=+0.286 n= 480)
+  t= 26.0s hd=   -8.2 | RPP(v=+0.100 w=+0.274 n= 521) | OUT(v=+0.100 w=+0.276 n= 520)
+결과: SUCCEEDED</pre><span class="note">결과 원문 <span class="mono">Docs/debug_log/2026-09-02/outputs/job26a_goalmon.txt</span> · <span class="mono">job26b_goal180_fixed.txt</span> · <span class="mono">job25b_goal180.txt</span> · <span class="mono">job25f_goal180_retry.txt</span> · 스크립트 원문 <span class="mono">jobs/job26a_goalmon.sh</span> · 설정 원문 <span class="mono">git show 76c08343:ros2_ws/src/rover_navigation/config/nav2_params.yaml</span>(77 · 37 · 39 행). 모터 수치는 PWM 50 Hz 조건<span class="c1104">(11-04 정정: 08-26 ~ 09-07 모터 · 데드밴드 수치는 PWM 50 Hz 오적용 조건이다 — 09-07 20 kHz 로 바로잡은 뒤 바닥 직진이 10 mm/s 까지 추종해 기계적 층은 사라짐 — CLAUDE.md 하드웨어 요약 · Docs/issues/motor-pwm-50hz.md · Docs/issues/start-deadband.md 상태 칸)</span></span></span>
+  </div>
+</section>
+
+<section>
+  <h2>장애물 회피 · 좁은 구석<span class="sec">B-2 · inflation_radius 축소 · 좁은 구석 탈출</span></h2>
+  <div class="flow">
+    <span class="k">본 것</span><span>정면 108 cm 에 폭 약 38 cm 장애물, 목표 정면 1.7 m → 우측 선회로 우회 시작 → backup · spin 복구 → ABORTED(잔여 104.9 cm). 로버는 좁은 구석(정면 42 · 좌30 41 · 우90 47 cm)으로 감.</span>
+    <span class="k">추론</span><span>inflation 0.35 는 실내 좁은 공간에서 과대(양쪽 팽창이 겹쳐 통로 소멸) → 0.20. "로버 내접반경 0.165 보다는 크게 두되 통로를 남기는 값."<span class="c1104">(11-04 정정: 내접반경은 패딩을 더해야 한다. 이날 저녁 패딩을 0.05 로 키우면서 0.165 + 0.05 = 0.215 &gt; 0.20 이 되어 09-03 기동 때 Nav2 가 'inflation radius (0.200) is smaller than … inscribed radius (0.215)' ERROR 를 내고 bt_navigator 가 안 뜸 → 0.25 로 올림 — Docs/issues/nav2-first-setup.md §5 실수 ③)</span></span>
+    <span class="k">사용자 지적</span><span>"갇힌 상태에서 탈출하지 못하는가? 지금 뒤로는 공간이 넓은 상태잖는가." — 전 방위 프로파일: 후면 172 cm, 최근접 41 cm &gt; 스윕 30 cm → 회전 가능. 후방 1.0 m 목표 → SUCCEEDED(회전 166°, 위치 오차 14.5 cm, 32 s).</span>
+    <span class="k">나온 결과</span><span><pre class="code">현재 hd=-2.8 → 목표 hd=177.2 (180도 회전 후 1.0m)
+  t=  2.0s hd=   -7.7 | RPP(v=+0.000 w=-0.240 n=  40) | OUT(v=+0.000 w=-0.233 n=  39)
+  t= 18.0s hd= -164.2 | RPP(v=+0.087 w=-0.286 n= 360) | OUT(v=+0.087 w=-0.286 n= 360)
+  t= 20.0s hd= -177.5 | RPP(v=+0.100 w=+0.063 n= 400) | OUT(v=+0.100 w=+0.063 n= 400)
+결과: SUCCEEDED
+최종 hd=163.2, 회전량 +166.0deg, 위치오차 14.5cm</pre><span class="note">결과 원문 <span class="mono">Docs/debug_log/2026-09-02/outputs/job27f_escape.txt</span> · <span class="mono">job27e_360.txt</span> · <span class="mono">job27c_obstacle.txt</span> · <span class="mono">job27d_profile2.txt</span> · 스크립트 원문 <span class="mono">jobs/job26a_goalmon.sh</span> · <span class="mono">job21c_where.sh</span>(전 방위) · <span class="mono">job27b_profile.sh</span>(정면 ±70° 만)</span></span>
+    <span class="k">교훈 (원문)</span><span>① 목표 도달 가능성을 먼저 확인 ② <span class="mono">allow_reversing: false</span> 는 좁은 곳에서 제약 → <span class="mono">true</span> 검토 ③ 회피 시험엔 장애물 옆 실제 여유 50~60 cm 이상.</span>
+  </div>
+</section>
+
+<section>
+  <h2>N1 벤치마크 1 차 · 펌웨어 보상 · 벽 접촉<span class="sec">N1 사전 작업 · N1 벤치마크 1차 · ⚠ 안전 결함</span></h2>
+  <div class="flow">
+    <span class="k">사전 작업</span><span>RPP <span class="mono">allow_reversing: true</span>(NavFn 경로엔 후진 cusp 이 없어 실효 제한적). MPPI 병렬 구성 <span class="mono">FollowPathMPPI</span>: <span class="mono">vx_min -0.08</span> · <span class="mono">vx_max 0.10</span> · <span class="mono">wz_max 0.6</span>, DiffDrive, batch 1000 × 32 step, "<span class="mono">ObstaclesCritic.consider_footprint: true</span> — 직사각 풋프린트(0.5×0.33) 정확 반영".<span class="c1104">(11-04 정정: 풋프린트를 넣어도 ObstaclesCritic 은 17.5 cm 안쪽 여유를 구분하지 못해 직사각 차체 옆 여유를 제대로 다루지 못했다(09-18) → 09-21 CostCritic 채택 — Docs/issues/obstacles-to-costcritic.md · CLAUDE.md 컨트롤러 항목)</span></span>
+    <span class="k">본 것</span><span>장애물(폭 약 40 cm)을 정면 약 1 m, 좌우 우회로 확보. RPP Run 1 ABORTED(잔여 93 cm). MPPI Run 2(복귀) TIMEOUT — 후진 v −0.05 실사용 · 장애물 구간 통과, 목표 23 cm 앞에서 v −0.01 미세 명령 55 s 정체. MPPI Run 3(전진) TIMEOUT — 장애물 부근 60 s 배회.</span>
+    <span class="k">추론</span><span>RPP 0/1 · MPPI 0/2, 공통 근본 원인 = 기동 데드밴드. 미세 명령이 무반응 구간에 갇힌다. <span class="mono">xy_goal_tolerance</span> 0.15 → 0.25 우회는 목표 근접 정체만 완화.</span>
+    <span class="k">결론</span><span>N1 게이트는 펌웨어 데드밴드 보상 플래시 뒤에만 통과 가능. 소스: <span class="mono">MIN_WHEEL_SPEED_MPS 0.020</span> · <span class="mono">WHEEL_SPEED_EPS_MPS 0.003</span>, <span class="mono">apply_min_wheel_speed()</span> — |v| &lt; EPS → 0, EPS ≤ |v| &lt; MIN → MIN 으로 승격(부호 보존). 플래시는 사용자 진행 예정.</span>
+    <span class="k">스크립트 핵심</span><span><pre class="code">/* microros_task.c — 이 날 쓴 소스, 커밋은 09-03 42ea9579 */
+static float apply_min_wheel_speed(float v)
+{
+    if (fabsf(v) &lt; WHEEL_SPEED_EPS_MPS) return 0.0f;
+    if (fabsf(v) &lt; MIN_WHEEL_SPEED_MPS) return copysignf(MIN_WHEEL_SPEED_MPS, v);
+    return v;
+}</pre></span>
+    <span class="k">나온 결과</span><span><pre class="code"># job29c (RPP Run 1)
+  t=  8.0s hd=  -25.4 | RPP(v=+0.000 w=+0.000 n= 154) | OUT(v=+0.005 w=+0.000 n= 160)
+  t= 10.0s hd=  -23.1 | RPP(v=+0.000 w=+0.000 n= 169) | OUT(v=+0.000 w=+0.600 n= 208)
+결과: ABORTED
+최종 hd=-18.3, 회전량 -17.8deg, 위치오차 92.6cm
+# job30a (MPPI Run 2 복귀)
+  t=  3.0s (+0.61,-0.25) hd= -42.0 목표까지=0.66m cmd(v=-0.05 w=-0.24)
+  t= 21.0s (+0.47,+0.16) hd=-116.3 목표까지=0.49m cmd(v=+0.02 w=+0.02)
+최종 (+0.058,+0.226) hd=-0.3 | 위치오차 23.4cm 자세오차 -0.3deg | 소요 151s
+# job30b (MPPI Run 3 전진)
+최종 (+0.754,-0.218) hd=-104.6 | 위치오차 87.4cm 자세오차 -104.6deg | 소요 151s</pre><span class="note">결과 원문 <span class="mono">Docs/debug_log/2026-09-02/outputs/job29c_rpp_run1.txt</span> · <span class="mono">job30a_mppi_return.txt</span> · <span class="mono">job30b_mppi_fwd.txt</span> · <span class="mono">job28a_mppi_verify.txt</span> · 스크립트 원문 <span class="mono">jobs/job30_goalabs.sh</span> · 펌웨어 <span class="mono">git show 42ea9579:firmware/rover_jupiter_fw/App/microros/microros_task.c</span>(128~133 행)</span></span>
+    <span class="k">벽 접촉 (사용자 보고)</span><span>Run 3 중 로버가 전방 벽에 닿은 채 회전 시도, 트랙 헛돎 — 텔레메트리의 '배회' 일부는 벽에 눌린 채 헛돈 것. S2L 최소 감지 0.2 m + 라이다가 중심 +15.2 cm → 앞면 약 10 cm 이내는 원천 사각. 완화 <span class="mono">footprint_padding</span> 0.02 → 0.05. 후속 후보: 근접 시 저속 · 회전 억제 · 펌웨어 접촉 감지(지령 대비 자이로 무반응) · D455f depth(최소 깊이 약 0.4 m 라 초근접은 역시 사각). 헛도는 동안 휠 오도에 가짜 회전, 자이로는 실제 회전만.</span>
+  </div>
+</section>
+
+<section>
+  <h2>바로잡은 내 오류</h2>
+  <div class="pm">
+    <h3>막힌 방향으로 목표를 주고 '갇혔다' 로 읽음 (좁은 구석 탈출 — 사용자 지적)</h3>
+    <div class="flow">
+      <span class="k">하려 한 것</span><span>장애물 회피 시험. <span class="mono">job26a_goalmon.sh 1.7 0</span>(정면 1.7 m) ABORTED 뒤 다음 행동 정하기</span>
+      <span class="k">본 것</span><span><span class="mono">job27d_profile2.txt</span>: 직진 경로 최근접 14 cm, ±10~50° 41~51 cm — 정면만 보는 프로파일</span>
+      <span class="k">처음 추론</span><span>좁은 구석에 갇혔다 — Nav2 가 탈출을 못 한다</span>
+      <span class="k">의심한 이유</span><span>사용자: "지금 뒤로는 공간이 넓은 상태잖는가." 정면 ±70° 만 재는 <span class="mono">job27b_profile.sh</span> 는 뒤쪽을 원천적으로 못 봄</span>
+      <span class="k">판별 시험</span><span>전 방위 <span class="mono">job21c_where.sh</span>(<span class="mono">job27e_360.txt</span>): 후면 172 cm → 후방 1.0 m 목표(<span class="mono">job27f_escape.txt</span>) SUCCEEDED</span>
+      <span class="k">결론</span><span>실패 원인은 Nav2 가 아니라 내가 막힌 방향을 목표로 준 것. 복구 반복 후 포기는 Nav2 의 정상 동작</span>
+      <span class="k">다음에 알아보는 법</span><span>목표를 주기 전에 전 방위 여유와 목표 방향 통로 폭(로버 폭 33 cm + 양쪽 여유)을 먼저 본다</span>
+      <span class="k">데이터</span><span><span class="mono">outputs/job27c_obstacle.txt</span> · <span class="mono">job27d_profile2.txt</span> · <span class="mono">job27e_360.txt</span> · <span class="mono">job27f_escape.txt</span> · <span class="mono">Docs/issues/nav2-first-setup.md</span> §5 실수 ①</span>
+    </div>
+  </div>
+  <div class="pm">
+    <h3>치환 스크립트가 한 곳만 바꿈 (inflation_radius 축소)</h3>
+    <div class="flow">
+      <span class="k">하려 한 것</span><span><span class="mono">inflation_radius</span> 0.35 → 0.20 을 로컬 · 전역 두 곳에</span>
+      <span class="k">본 것</span><span>치환 뒤 확인에서 한 곳만 바뀜(어느 쪽이었는지 기록 없음)</span>
+      <span class="k">처음 추론</span><span>치환 한 번으로 두 블록 모두 바뀌었다고 가정</span>
+      <span class="k">판별 시험</span><span>소스 · 설치본 양쪽에서 값 확인 → 두 곳 모두 반영</span>
+      <span class="k">다음에 알아보는 법</span><span>같은 키가 여러 블록에 있는 YAML 은 치환 뒤 <span class="mono">grep -n 키</span> 로 개수를 세고, 실행 중 두 노드 모두 <span class="mono">ros2 param get</span></span>
+      <span class="k">데이터</span><span><b>원천 소실</b> — 치환 도구 · 확인 출력은 대화에만 · <span class="mono">Docs/issues/nav2-first-setup.md</span> §5 실수 ②</span>
+    </div>
+  </div>
+  <div class="pm">
+    <h3>"바퀴는 같이 돈다" 추론 · 정정 (⚠ 진단 한계)</h3>
+    <div class="flow">
+      <span class="k">하려 한 것</span><span>사용자의 '좌측 바퀴가 느리다' 관찰 해석</span>
+      <span class="k">본 것</span><span>휠 오도 heading 이 거의 안 변함(+0.05 ~ +0.41°)</span>
+      <span class="k">처음 추론</span><span>엔코더상 두 바퀴는 같이 돈다 → 휨은 바퀴 속도 차가 아니라 슬립 · 바닥 쪽(대화에서의 추론)</span>
+      <span class="k">의심한 이유</span><span><span class="mono">/wheel_odom</span> 은 융합된 vx · vyaw 만, <span class="mono">/rover/status.values[]</span> 는 빈 배열 — 좌/우를 따로 볼 수 없다</span>
+      <span class="k">결론</span><span>판별 불가. '같이 돈다' 는 근거가 못 되므로 철회(원문 "정정함")</span>
+      <span class="k">다음에 알아보는 법</span><span>간헐 현상은 발생 순간의 데이터가 있어야 잡힌다 — 휠별 텔레메트리를 먼저 확보</span>
+      <span class="k">데이터</span><span><span class="mono">outputs/job23a_topics.txt</span> · <span class="mono">job22b_asym.txt</span> · <span class="mono">Docs/issues/track-asymmetry.md</span> §5</span>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>다음 후보 (그날 기록 — 플래시 뒤)</h2>
+  <ul>
+    <li>ω = 0.05 데드락 재현 시험으로 보상 검증 → <span class="mono">MIN_WHEEL_SPEED_MPS</span> 실측 조정(0.015~0.030)</li>
+    <li><span class="mono">xy_goal_tolerance</span> 0.25 → 0.15 복원 → RPP/MPPI 재벤치마크 → 컨트롤러 확정 → N1 게이트</li>
+    <li>펌웨어 스케일 교정 여부 결정 · 회전 주행용 가드도 스윕 영역 기반으로 정리</li>
+    <li>계획 문서 <span class="mono">Docs/NAV2_EXPLORATION_PLAN.md</span> 작성(지금 위치 <span class="mono">Docs/04_navigation/NAV2_EXPLORATION_PLAN.md</span>) — N1~N5</li>
+  </ul>
+</section>
+
+<section>
+  <h2>이후 · 관련 카드</h2>
+  <ul>
+    <li><span class="mono">Docs/issues/nav2-first-setup.md</span> — 첫 구축 · 진행 검사기 · inflation · 첫 벤치마크</li>
+    <li><span class="mono">Docs/issues/start-deadband.md</span> — 데드락의 두 층(펌웨어 정지 문턱 · 기계), 09-07 20 kHz 로 기계적 층 소멸</li>
+    <li><span class="mono">Docs/issues/wheel-odom-scale-slip.md</span> — 0.783 검증 · 루프 드리프트 · '46.1 cm' 비교 정정</li>
+    <li><span class="mono">Docs/issues/track-asymmetry.md</span> · <span class="mono">Docs/issues/script-drive-guards.md</span> · <span class="mono">Docs/issues/near-wall-blindspot.md</span></li>
+    <li><span class="mono">Docs/issues/controller-rpp-vs-mppi.md</span> — 09-07 RPP 채택 → 이후 MPPI 로 뒤집힘</li>
+    <li><span class="mono">Docs/issues/stall-latch.md</span> — 이 날 쓴 승격 0.020 이 09-03 스톨 래치를 부름</li>
+  </ul>
+</section>
+</div>

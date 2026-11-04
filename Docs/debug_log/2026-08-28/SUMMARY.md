@@ -46,3 +46,6 @@ os2_ws\src\`** 로 이전(정본). `.gitignore`가 이미 ros2_ws/build·install
 - **camera_link y 부호**: depth 포인트클라우드 vs scan 정합(RViz/Foxglove)으로 ±0.0475 판정.
 - **SLAM 맵핑**(Step 4 마무리): yaw 확정됐으니 진행 가능. 저속 주행(≤0.08 m/s, ≤0.4 rad/s), 접지·안전 확인 후 `!`. 맵 일관성이 yaw 최종 증명 + 직진/자이로 스케일 재캘리브레이션 기준.
 - **Step 5**: `full.launch.py` + systemd(사용자 확인 후).
+
+## (2026-11-04 추가) 사후 정리 페이지
+- 「08-28 라이다 방향 · 첫 지도」 https://claude.ai/artifact/Rrg2KpuxS7tBsVTBAvKKFc — 로컬 `figures/day_summary_0828.html`(본문 `jobs/report_0828_body.html` · 조립 `jobs/fig_report_0828.py`). 이 SUMMARY 를 원천으로 11-04 에 만듦, 뒤 정정은 페이지에 '11-04 정정' 표시(문제 대장 카드 근거). 기록 → `Docs/debug_log/2026-11-04/SUMMARY.md` §11.

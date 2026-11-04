@@ -1,0 +1,348 @@
+<title>09-17 상자 뒤 목표 3/3</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* 배치: 실험 노트 — 좁은 본문 열(65자) + 넓게 펼치는 그림 · 표, 판정은 왼쪽 띠 색으로(10-20 판과 같은 틀) */
+:root{
+  --bg:#f3f4f6; --paper:#ffffff; --ink:#1b1f24; --muted:#5b6470; --line:#d9dde3;
+  --ir:#b3263e;      /* 프로젝터 켬 · 실패 쪽 */
+  --cool:#1f7a72;    /* 프로젝터 끔 · 통과 쪽 */
+  --warn:#a86a00;
+  --tint-ir:#f8e8eb; --tint-cool:#e4f2f0; --tint-warn:#fbf1df;
+  --f-body:"IBM Plex Sans KR","Malgun Gothic","Apple SD Gothic Neo",sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#111418; --paper:#181c21; --ink:#e6e9ed; --muted:#9aa4b0; --line:#2c333b;
+  --ir:#ef6b80; --cool:#5cc4b8; --warn:#e0a640;
+  --tint-ir:#2b1b1f; --tint-cool:#15292a; --tint-warn:#2a2316; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#111418; --paper:#181c21; --ink:#e6e9ed; --muted:#9aa4b0; --line:#2c333b;
+  --ir:#ef6b80; --cool:#5cc4b8; --warn:#e0a640;
+  --tint-ir:#2b1b1f; --tint-cool:#15292a; --tint-warn:#2a2316; color-scheme:dark}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.65;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:28px 64px}
+.wrap{max-width:980px;margin:0 auto;display:flex;flex-direction:column;gap:34px}
+header{display:flex;flex-direction:column;gap:6px;border-bottom:2px solid var(--ink);padding-bottom:14px}
+.eyebrow{font-family:var(--f-mono);font-size:12px;letter-spacing:.08em;color:var(--muted);text-transform:uppercase}
+h1{font-size:30px;line-height:1.25;margin:0;font-weight:700;text-wrap:balance}
+h2{font-size:20px;margin:0 0 4px;font-weight:700;text-wrap:balance}
+h2 .sec{font-family:var(--f-mono);font-size:13px;color:var(--muted);font-weight:400;margin-left:8px}
+p{margin:0;max-width:68ch}
+section{display:flex;flex-direction:column;gap:12px}
+.lead{color:var(--muted);max-width:72ch}
+.verdicts{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
+.v{background:var(--paper);border:1px solid var(--line);border-left:5px solid var(--muted);padding:12px 14px;display:flex;flex-direction:column;gap:4px;min-width:0}
+.v.ok{border-left-color:var(--cool)} .v.no{border-left-color:var(--ir)} .v.wait{border-left-color:var(--warn)}
+.v b{font-size:15px} .v span{color:var(--muted);font-size:13.5px}
+.pill{display:inline-block;font-family:var(--f-mono);font-size:11.5px;padding:1px 8px;border-radius:999px;white-space:nowrap}
+.pill.ok{background:var(--tint-cool);color:var(--cool)} .pill.no{background:var(--tint-ir);color:var(--ir)} .pill.wait{background:var(--tint-warn);color:var(--warn)}
+.tbl{overflow-x:auto;background:var(--paper);border:1px solid var(--line)}
+table{border-collapse:collapse;width:100%;font-size:13.5px;font-variant-numeric:tabular-nums}
+th,td{padding:7px 10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{font-weight:500;color:var(--muted);font-size:12.5px;white-space:nowrap}
+td.n{font-family:var(--f-mono);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr.hl td{background:var(--tint-cool)} tr.bad td{background:var(--tint-ir)}
+figure{margin:0;background:var(--paper);border:1px solid var(--line);padding:10px;display:flex;flex-direction:column;gap:8px}
+figure img{width:100%;height:auto;display:block}
+figcaption{font-size:13px;color:var(--muted)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media (max-width:720px){.two{grid-template-columns:1fr}}
+ul{margin:0;padding-left:20px;max-width:72ch} li{margin:2px 0}
+.mono{font-family:var(--f-mono);font-size:13px}
+.flow{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;font-size:14px}
+.flow .k{font-family:var(--f-mono);color:var(--muted);font-size:12.5px;padding-top:2px;white-space:nowrap}
+.note{font-size:13px;color:var(--muted)}
+.pm{background:var(--paper);border:1px solid var(--line);padding:12px 14px;display:flex;flex-direction:column;gap:8px}
+.pm h3{font-size:15.5px;margin:0;font-weight:700}
+.pm .flow{grid-template-columns:auto 1fr;gap:6px 14px}
+.pm .flow span:not(.k){max-width:none}
+</style>
+
+<style>
+.code{margin:0;font-family:var(--f-mono);font-size:12.5px;line-height:1.5;background:var(--bg);border:1px solid var(--line);padding:8px 10px;overflow-x:auto;white-space:pre;max-width:100%}
+.flow > span{min-width:0}
+.c1104{font-weight:600;color:var(--ink);background:var(--tint-warn);border-left:3px solid var(--warn);padding:0 5px;margin-left:3px;border-radius:2px;white-space:normal;font-size:.92em}
+</style>
+<div class="wrap">
+<header>
+  <div class="eyebrow">Indoor Rover · 2026-09-17 · Docs/debug_log/2026-09-17 §0–§17 · 주행 있음(mp6 ~ mp12 · 저속 실측) · 11-04 사후 작성</div>
+  <h1>09-17 상자 뒤 목표 3/3</h1>
+  <p class="lead">이 페이지는 2026-11-04 에 그날 SUMMARY 와 같은 폴더의 <span class="mono">jobs/</span> · <span class="mono">outputs/</span> 원문만으로 만들었다. 이날 상자 옆 좁은 통로(창 0.23 m)를 지나 상자 뒤 목표 (2.0, 0) 에 처음으로 같은 구성으로 세 번 연속 도착했다(mp9 ~ mp11). 거기까지 가며 네 가지 결함을 차례로 걷어 냈다. 상자 거리 감사 스크립트의 군집 결함, SLAM 을 멈춘 Fast DDS 데드락, 펌웨어 정지 문턱 불일치, 목표 근처에서 경로 크리틱이 꺼지는 설정이다. 오후에는 조향 흔들림을 분석했는데, 첫 가설(temperature)은 실주행에서 맞지 않았고 저녁에 시뮬레이터 결함 네 가지를 찾았다. 이후 문제 대장 카드와 다음 날 SUMMARY 에서 바로잡은 곳 <b>16 건</b>은 원문을 그대로 두고 <span class="c1104">11-04 정정</span> 표시를 붙였다.</p>
+</header>
+
+<section>
+  <h2>오늘의 판정</h2>
+  <div class="verdicts">
+    <div class="v ok"><b>상자 뒤 목표 3/3 (mp9 ~ mp11)</b><span>33.1 ~ 33.7 s, 목표 오차 0.117 ~ 0.140 m(허용 0.15). 09-11 이후 처음 반복 도달 (§9 ~ §11)</span></div>
+    <div class="v ok"><b>펌웨어 정지 문턱 결함 해소</b><span>MIN 0.008 &lt; STOP 0.010 → 휠 지령 3 ~ 10 mm/s 를 버림. STOP 5 mm/s · 헤더 한 곳 · <span class="mono">#error</span> 불변식, 정지 출발 8 mm/s 실측 (§7.1 · §8)</span></div>
+    <div class="v ok"><b>SLAM 정지 = Fast DDS 2.6.11 데드락</b><span>gdb 역추적 → 2.6.12 설치, 유발 시험 3 라운드 정지 0(보조 증거) (§5 · §6)</span></div>
+    <div class="v ok"><b>상자 오측정 원인 = 감사 스크립트</b><span>y 로만 묶은 군집에 바닥 잡음점이 섞임. 0.957 → 고친 뒤 1.342(다른 네 측정과 일치) (§1)</span></div>
+    <div class="v no"><b>temperature 0.3 흔들림 기준 불합격</b><span>mp12 반전 8.8 /m(기준 ≤ 5) · RMS 0.059(≤ 0.045). 0.15 로 복귀, ESS 기제는 가설로 강등 (§12 · §13 · §14)</span></div>
+    <div class="v wait"><b>코스트맵 기준 상자 여유 ≈ 2 cm</b><span>mp9 ~ mp12 1.4 ~ 2.6 cm. 러너 '기하 9 ~ 19 cm' 는 대표값 아님 — 그날 정정 (§13.4)</span></div>
+    <div class="v no"><b>플래시 직후 로버 자체 회전 (사고)</b><span><span class="mono">-rst</span> 없이 플래시 → MCU 정지 중 모터 구동. 리셋으로 멈춤, 원인 선은 미측정 (§8.6)</span></div>
+    <div class="v wait"><b>Wi-Fi 끊김은 AP 쪽 거부</b><span>세 번 모두 AP 가 reason 2 → 23 반복, Jetson 쪽 흔적 없음. 조치는 사용자 결정 대기 (§17)</span></div>
+  </div>
+</section>
+
+<section>
+  <h2>상자는 어디 있었나 — 감사 스크립트 결함<span class="sec">§1</span></h2>
+  <div class="flow">
+    <span class="k">본 것</span><span>아침 게이트가 상자 전면 x <b>1.056</b>(어제 1.174). 어제에 맞추려 로버를 12 cm 뒤로 옮기게 했더니 게이트는 <b>0.957</b>, 옮긴 방향과 반대로 더 가까워졌다.</span>
+    <span class="k">추론</span><span>주행을 보류하고 다른 네 경로로 같은 상자를 쟀다: 원시 깊이 영상 1.346 · 원시 구름 1.345 · 필터 구름 1.345 · 컬러 영상 기하 ≈ 1.38. 게이트만 틀렸다. 감사 코드는 점을 y 간격으로만 묶고 5 % 분위 x 를 전면으로 썼다. 그래서 같은 가로 띠에 있는 바닥 잡음점(0.3 ~ 0.8 m)이 군집에 섞이면 전면이 앞으로 끌려 나온다.</span>
+    <span class="k">결론</span><span>군집을 x 로 다시 정렬해 10 cm 간격에서 나누고 가장 큰 조각만 쓴다(감사 job248 · 러너 job125 둘 다). 고친 감사 1.342. 내 안내 때문에 로버는 어제보다 17 cm 뒤에서 mp6 을 달렸다.<span class="c1104">(11-04 정정: '17 cm 뒤' 는 ICP 결과가 아니라 상자 거리(1.342 vs 1.174)로 낸 계산이다 — <span class="mono">j369_370.txt</span> 의 정합 절은 비어 있음. 근거 Docs/issues/avoid-run-metrics.md §6-8)</span></span>
+  </div>
+<pre class="code"># jobs/job248_audit.py — 09-17 에 넣은 x 분할
+def split_x(c):
+    o = c[np.argsort(c[:, 0])]; parts, cur2 = [], [o[0]]
+    for q in o[1:]:
+        if q[0] - cur2[-1][0] &gt; 0.10:          # 10 cm 넘는 x 간격에서 나눔
+            parts.append(np.array(cur2)); cur2 = [q]
+        else:
+            cur2.append(q)
+    parts.append(np.array(cur2))
+    best = max(parts, key=len)                  # 점이 가장 많은 조각만
+    return best, len(c) - len(best)</pre>
+<pre class="code">(1) 원시 깊이: 낮은 화소 238개 … 거리 히스토그램(0.1 m): 0.3:4 0.4:3 0.5:8 0.7:4 1.1:153 …
+    → base x 로 환산(카메라 x 0.232 + 거리): 중앙값 1.346
+(2) filt 구름 낮은 점 147개: base x 중앙값 1.345 … x 히스토그램 1.3:147
+=== 고친 감사 ===
+  (x 분할: 군집 120점 중 11점 제거, 남은 조각 x 1.34~1.38)
+상자: 전면 x=1.342  중심 y=-0.047  (109점)
+오늘 로컬 코스트맵(로버 odom 0,0): 상자 셀 x 0.925~1.425, y -0.225~+0.075 (11셀)</pre>
+  <p class="note">결과 원문 <span class="mono">Docs/debug_log/2026-09-17/outputs/j369_370.txt</span> · <span class="mono">outputs/j371.txt</span> · 스크립트 원문 <span class="mono">Docs/debug_log/2026-09-17/jobs/job248_audit.py</span> · <span class="mono">jobs/job369_boxrange.py</span>. SUMMARY 표의 '로컬 코스트맵 상자 셀 1.325 ~ 1.425 + 우측 바닥점 2 셀' 은 위 마지막 줄 한 줄을 나눠 읽은 것이다.<span class="c1104">(11-04 정정: 상자 셀과 바닥점 셀을 나눈 근거 출력은 없다 — SUMMARY 쪽 해석. 근거 Docs/issues/avoid-run-metrics.md §6-10)</span></p>
+</section>
+
+<section>
+  <h2>mp6 · mp7 — 목표 자리와 SLAM 굶주림<span class="sec">§2 · §3 · §5</span></h2>
+  <div class="flow">
+    <span class="k">mp6 본 것</span><span>목표 (2.2, 0) TIMEOUT 90 s. 상자 옆 · 뒤는 통과했지만 (2.079, +0.219) 에서 v 0.009 로 36 s 동안 기었다. 목표 앞 x ≈ 2.55 에 벽/문틀 LETHAL 열이 있고, 목표와의 거리는 0.367 m. 목표 자세에 풋프린트를 놓으면 여유는 0.098 m 였다.<span class="c1104">(11-04 정정: SUMMARY 의 '러너(패딩 포함 다각형) 0.0 cm' 에서 러너 코드는 패딩을 빼고 잰다. '조향 부호반전 14 회(5.6/m; mp5 14/m)' 는 횟수와 /m 를 섞은 비교 — mp5 는 36 회 = 14.16 /m. 근거 Docs/issues/mppi-passage-tuning.md §6)</span></span>
+    <span class="k">결론(내 실수)</span><span>게이트가 통로 폭만 보고 목표 자리의 여유는 보지 않았다 → 목표 여유 게이트(풋프린트 ↔ 전역 LETHAL ≥ 0.20 m)를 새로 넣었다. BT 는 SmoothPath 가 실패하면 새 원경로를 쓰도록 바꿨다(<span class="mono">TODO(improve)</span>: TruncatePath 가 끝 방향을 0° 로 덮어씀).</span>
+    <span class="k">mp7 본 것</span><span>목표 (2.0, 0) 은 게이트(0.249)를 통과했지만 27 s 에 ABORTED. 주행 뒤 map→odom 이 없었고, slam_toolbox 는 프로세스는 살아 있는데 그래프에서 사라져 있었다. bag 에는 map→odom 이 +6.8 s 에 5.1 s 공백, 그 뒤에도 1.2 ~ 3.1 s 공백이 있었다.</span>
+    <span class="k">추론</span><span>map 프레임 공백이 끝날 무렵 BT 의 20 ms ack 타임아웃이 연달아 났다. 그래서 '주행 로직이 아니라 계산 자원 · SLAM 가용성 문제' 로 봤다.<span class="c1104">(11-04 정정: '공백이 끝나는 11.4 s' 는 공백 끝 ≈ +11.9 s · 첫 ack 타임아웃 11.55 s — 타임아웃은 공백 끝 직전. 결론(시간 일치)은 그대로. 근거 Docs/issues/slam-dds-deadlock.md §6.3)</span></span>
+  </div>
+<pre class="code"># outputs/prep_mp7.txt — 목표 여유 게이트(jobs/job377_goalclear.py, 기준 ≥ 0.20)
+  2.2 0.0   (2.20, 0.00) yaw 0° | 풋프린트↔LETHAL 최소 0.145 m (셀 map 2.61, 0.13)
+  2.0 0.0   (2.00, 0.00) yaw 0° | 풋프린트↔LETHAL 최소 0.249 m (셀 map 1.71, -0.42)
+  2.0 0.2   (2.00, 0.20) yaw 0° | 풋프린트↔LETHAL 최소 0.345 m (셀 map 2.61, 0.13)
+# outputs/j379_mp7_events.txt
+ 11.55 [bt_navigator] [WARN] Timed out while waiting for action server to acknowledge goal request for comp…
+ 27.08 [bt_navigator] [WARN] Timed out while waiting for action server to acknowledge goal request for smoo…</pre>
+  <p class="note">결과 원문 <span class="mono">Docs/debug_log/2026-09-17/outputs/j376_mp6.txt</span> · <span class="mono">prep_mp7.txt</span> · <span class="mono">j379_mp7_events.txt</span> · 스크립트 <span class="mono">jobs/job377_goalclear.py</span> · <span class="mono">job379_navevents.sh</span>. map→odom 공백 목록(job383)은 원문 없음 — SUMMARY 서술이 전부.</p>
+</section>
+
+<section>
+  <h2>SLAM 은 왜 멈췄나 — 역추적과 전력 모드<span class="sec">§6</span></h2>
+  <div class="flow">
+    <span class="k">본 것</span><span>사용자 승인으로 정지한 slam_toolbox 에 gdb 역추적(읽기 전용)을 걸었다. 22 스레드 중 6 개가 뮤텍스 대기(<span class="mono">__lll_lock_wait</span>)였고, 그중 하나는 SLAM 의 map→odom 발행 경로였다. 발견(EDP) 스레드는 '떠난 원격 구독자 제거' 중이었다.</span>
+    <span class="k">추론</span><span>원격 구독자가 떠나는 순간 StatefulWriter 의 락 순서가 뒤집힌 데드락으로 봤다. 2.6.12 릴리스 노트의 "Fix lock order inversion in StatefulWriter"(#6463) 경로와 강하게 일치한다. 최종 정지는 bag 기록기(/tf · /map 구독자) 종료 직후였다.<span class="c1104">(11-04 정정: '스레드 6 이 쥔 락' 같은 보유 관계는 경로로 읽은 것이다 — 뮤텍스 <span class="mono">__owner</span> 는 찍지 않았다(추정). 근거 Docs/issues/slam-dds-deadlock.md §6.1)</span></span>
+    <span class="k">결론</span><span>ros-humble-fastrtps 2.6.11 → 2.6.12(바뀐 패키지 1 개). 유발 시험(bag 해체 + 단발 구독자 16 개 × 3 라운드)에서 정지 0. 2.6.11 대조 시험이 없어 증명이 아니라 보조 증거다(SUMMARY 자인). SLAM 생존 게이트(job386)를 새로 넣었다.</span>
+    <span class="k">전력 모드</span><span>"25 W 면 CPU +15 %" 는 확인 없이 한 추정이었다(내 오류). 전환해 보니 CPU 상한이 1344 MHz 로 오히려 낮아, 같은 승인 범위 안에서 15 W 로 되돌렸다.<span class="c1104">(11-04 정정: 잰 것은 <span class="mono">scaling_max_freq</span> 상한뿐이고 25 W 에서 부하 처리 속도는 재지 않았다. 루프 미달 mp5 0 → mp7 60+ 는 같은 15 W 에서 늘었으니 전력 모드는 변수가 아니었다. 근거 Docs/issues/cpu-load-stalls.md §6-6 · §6-7)</span></span>
+  </div>
+<pre class="code"># outputs/slam_bt.txt (발췌 — 스레드 16 과 6)
+#1  __GI___lll_lock_wait (futex=futex@entry=0xaaaade155530, …)
+#13 … in slam_toolbox::SlamToolbox::publishTransformLoop(double const&amp;) ()
+#1  __GI___lll_lock_wait (futex=futex@entry=0xaaaaddfb4a78, …)
+#10 … in eprosima::fastrtps::rtps::StatefulWriter::matched_reader_remove(…) () from …libfastrtps.so.2.6
+# outputs/j390_pmrevert.txt
+ID=0 NAME=15W :: CPU_A78_0 MAX_FREQ 1497600
+ID=1 NAME=25W :: CPU_A78_0 MAX_FREQ 1344000</pre>
+<pre class="code"># jobs/job386_slamalive.py — 생존 게이트 판정
+gap = max(rx[i][0] - rx[i - 1][0] for i in range(1, len(rx))); lag = max(r[1] for r in rx)
+print('OK' if (gap &lt; 0.5 and lag &lt; 1.0) else 'FAIL')
+# outputs/j392_393.txt — 2.6.12 에서 유발 시험
+slam lib: /opt/ros/humble/lib/libfastrtps.so.2.6.12
+라운드 2 (bag 해체 + 구독자 16 회): map->odom 57 개/5 s, 최대 간격 0.05 s, 최대 stamp 지연 0.16 s OK
+라운드 3 (bag 해체 + 구독자 16 회): map->odom 98 개/5 s, 최대 간격 0.07 s, 최대 stamp 지연 0.16 s OK</pre>
+  <p class="note">결과 원문 <span class="mono">Docs/debug_log/2026-09-17/outputs/slam_bt.txt</span> · <span class="mono">j390_pmrevert.txt</span> · <span class="mono">j392_393.txt</span> · 스크립트 <span class="mono">jobs/job387_slambt.sh</span> · <span class="mono">job386_slamalive.py</span> · <span class="mono">job393_churn.sh</span>. 지연 문턱 0.5 → 1.0 s 는 정상 SLAM 의 지연 흔들림(−0.08 ~ +0.55 s) 때문(§6.3).</p>
+</section>
+
+<section>
+  <h2>mp8 목표 앞 정지 — 펌웨어 문턱과 크리틱 문턱<span class="sec">§7 · §8</span></h2>
+  <div class="flow">
+    <span class="k">본 것</span><span>그날 조치를 전부 넣은 mp8(BT 타임아웃 · 루프 미달 · 스무딩 실패 0)도 목표 0.243 m 옆 (1.960, +0.241) 에서 52 s 동안 섰다. <span class="mono">/rover/status</span> 를 보면 /cmd_vel 0.009 m/s 가 계속 들어오는데 양 휠 목표 0 · duty 0 이었다.</span>
+    <span class="k">추론 ①</span><span><span class="mono">apply_min_wheel_speed()</span> 는 3 ~ 8 mm/s 를 8 mm/s 로 승격한다. 그런데 속도 제어기는 |target| &lt; 0.010 을 정지 명령으로 처리한다. 그래서 3 ~ 10 mm/s 지령은 전부 조용히 버려진다. 09-07 에 MIN 을 새 단위로 환산하면서 STOP 문턱은 환산하지 않아 MIN &lt; STOP 이 됐다.<span class="c1104">(11-04 정정: 37.3 ~ 37.9 s 는 'L 10 · R 0' 한 번이 아니라 한쪽 휠만 10 ~ 11 이고 다른 쪽은 0 인 상태가 번갈아 나온다 — 그동안 한 바퀴로만 구동. 근거 Docs/issues/start-deadband.md §5.6-2)</span></span>
+    <span class="k">추론 ②</span><span>오프라인 MPPI 시뮬(bag_mp8 t = 33 s)로 보면 펌웨어만 고쳐서는 0.232 m 로 그대로였다. 경로 크리틱 문턱을 0.6/0.4 → 0.2 로 낮춰야 0.144, GoalCritic 10 을 더하면 0.116 이 됐다. 주 원인은 목표 0.6/0.4 m 안에서 경로 크리틱이 꺼지는 설정이고, 펌웨어는 '기어가기' 를 영원한 정지로 만든 보조 원인이라고 판정했다.<span class="c1104">(11-04 정정: 시뮬의 '펌웨어 수정' 변형(승격 0.012 · 정지 0.010)은 실제 배포한 수정(승격 0.008 · 정지 0.005)이 아니다. 또 S1 좌표는 odom, 실측은 러너 출발 프레임이라 같은 것은 목표 거리뿐이다. 근거 Docs/issues/start-deadband.md §5.6-3 · Docs/issues/mppi-passage-tuning.md §6)</span></span>
+    <span class="k">결론</span><span>(1) 문턱 체계를 <span class="mono">rover_platform.h</span> 한 곳으로 모았다. STOP 10 → 5 mm/s, <span class="mono">EPS &lt; STOP ≤ MIN</span> 을 컴파일 시 <span class="mono">#error</span> 로 검사한다. (2) Nav2 경로 크리틱 문턱 0.2 · GoalCritic 10. 0.010 의 출처는 05-21 F4 PID 도입 때였다.<span class="c1104">(11-04 정정: <span class="mono">V_TARGET_THRESH</span> 이력은 0.05(05-21) → <b>0.015(08-26 새 모터 커밋)</b> → 0.010(09-03). '09-03 에 0.015 → 0.010' 처럼 읽히는 문장은 시점이 틀렸다. 근거 Docs/issues/start-deadband.md §5.6-1)</span></span>
+  </div>
+<pre class="code"># outputs/j395_mp8.txt (bag /rover/status, 0.2 s 간격)
+  37.3  cmd +0.010/-0.000 | L=tgt=10 v=0 d=41 … R=tgt=0 v=11 d=0 …
+  37.7  cmd +0.009/+0.003 | L=tgt=0 v=7 d=0 …  R=tgt=10 v=0 d=41 …
+  38.1  cmd +0.009/-0.000 | L=tgt=0 v=0 d=0 …  R=tgt=0 v=0 d=0 …
+# outputs/j396_goalsim8.txt — 12 s 뒤 목표 거리 (S1 · S2 · S3 · S4 · S5 각 줄의 값만)
+     목표(경로 끝, prune 창 안이면) 까지 거리 0.234 m (xy tol 0.15), 로버 odom (1.961, 0.191)   ← S1
+     … 0.232 m (S2 펌웨어수정) · 0.144 m (S3 문턱 0.2) · 0.140 m (S4) · 0.116 m (S5 +goal_w10)</pre>
+<pre class="code">/* firmware/rover_jupiter_fw/App/app/rover_platform.h (09-17 판 그대로, 10-30 대장 확인) */
+#define WHEEL_SPEED_EPS_UMPS          3000   /* 3 mm/s */
+#define SPEED_CTRL_STOP_THRESH_UMPS   5000   /* 5 mm/s — 2026-09-17: 10 → 5 */
+#define MIN_WHEEL_SPEED_UMPS          8000   /* 8 mm/s */
+#if !(SPEED_CTRL_STOP_THRESH_UMPS &lt;= MIN_WHEEL_SPEED_UMPS)
+#error "… 승격된 지령이 정지로 처리됨 (2026-09-17 mp8 사고)"
+#endif</pre>
+  <p class="note">결과 원문 <span class="mono">Docs/debug_log/2026-09-17/outputs/j395_mp8.txt</span> · <span class="mono">outputs/j396_goalsim8.txt</span> · 스크립트 <span class="mono">jobs/job395_status.py</span> · <span class="mono">jobs/job396_goalsim8.sh</span>(<span class="mono">FWFIX="eps=0.003 promote=0.012 db=0.010"</span>) · 펌웨어 원문 <span class="mono">firmware/rover_jupiter_fw/App/app/rover_platform.h</span>.</p>
+
+  <h3>새 펌웨어 정지 출발 실측<span class="sec">§8.8</span></h3>
+<pre class="code"># outputs/j397_lowspeed.txt (스텝마다 정지 1 s → 지령 3 s, 바닥, 12.10 V)
+지령         | L tgt/v/duty/pps       | R tgt/v/duty/pps       | EKF mm/s  yaw °/s | 판정
+v=0.008   |    8/   8/ 41/  34     |    8/   8/ 41/  34     |      6.6      0.0 | 기동
+v=0.015   |   15/  15/ 45/  64     |   15/  14/ 45/  62     |     13.3     -0.0 | 기동
+w=0.050   |  -11/ -11/-44/  45     |   11/  11/ 44/  46     |      0.1      2.6 | 기동</pre>
+  <p>정지 상태에서 8 mm/s 로 직진 · 제자리 회전 모두 양 휠이 기동했다. 그래서 MIN 0.008 이 09-07 의 환산값에서 실측값이 됐다. 스톨 이벤트는 0(duty 41 ~ 45 % &lt; 0.60). EKF 병진은 FG 의 0.82 ~ 0.89 배였다.<span class="c1104">(11-04 정정: 원문으로 계산하면 0.81 ~ 0.92 배. 판단에는 쓰지 않은 값. 근거 Docs/issues/start-deadband.md §5.6-5)</span></p>
+  <p class="note">결과 원문 <span class="mono">Docs/debug_log/2026-09-17/outputs/j397_lowspeed.txt</span>(ssh 재시도 뒤 감싸개가 Jetson 로그를 통째로 회수한 판) · 스크립트 <span class="mono">jobs/job397_lowspeed.py</span>. 펌웨어 백업 <span class="mono">bags/fw_backup_before_0917_stopthresh.bin</span>(git 제외).</p>
+</section>
+
+<section>
+  <h2>mp9 ~ mp11 — 같은 구성 3/3<span class="sec">§9 · §10 · §11</span></h2>
+  <div class="tbl"><table>
+    <tr><th>지표</th><th>mp9</th><th>mp10</th><th>mp11</th></tr>
+    <tr class="hl"><td>결과 / 시간</td><td>성공 33.7 s</td><td>성공 33.1 s</td><td>성공 33.6 s</td></tr>
+    <tr><td>목표 오차 (tol 0.15)</td><td>0.124 m · −6.0°</td><td>0.140 m · −6.1°</td><td>0.117 m · −5.9°</td></tr>
+    <tr><td>중단 · 재시작</td><td>TF 외삽 3 회 → 1 ~ 2 s 정지</td><td>Optimizer fail 1 회(정지 없음)</td><td>없음</td></tr>
+    <tr><td>SmoothPath 실패</td><td>3</td><td>0</td><td>0</td></tr>
+    <tr><td>러너 상자 최근접(기하)</td><td>10.3 cm</td><td>19.3 cm</td><td>9.2 cm</td></tr>
+    <tr class="bad"><td>코스트맵 기준 상자 여유 (§13.4)</td><td>1.4 cm</td><td>2.2 cm</td><td>2.2 cm</td></tr>
+  </table></div>
+  <p>구성: 새 펌웨어 + MPPI 10 Hz · PathFollow 10/20 · 경로 크리틱 문턱 0.2 · GoalCritic 10 + SmoothPath fallback + BT timeout 100 ms + Fast DDS 2.6.12 · 15 W. mp11 은 nav2 로그가 두 줄뿐이었다.</p>
+<pre class="code"># outputs/j379_mp11.txt
+  0.00 [bt_navigator] Begin navigating from current location (0.00, 0.00) to (2.00, 0.01)
+ 33.58 [controller_server] Reached the goal!
+=== SLAM 생존(주행 후) ===
+map->odom 100 개/5 s, 최대 간격 0.08 s, 최대 stamp 지연 0.07 s
+OK</pre>
+  <p class="note">결과 원문 <span class="mono">Docs/debug_log/2026-09-17/outputs/j379_mp9~11.txt</span> · <span class="mono">drive_mp9~11_runner.txt</span> · <span class="mono">j404_mp9.txt</span>(휠 목표 8 ~ 9 mm/s 12 샘플 — 새 펌웨어가 쓰인 구간) · 스크립트 <span class="mono">jobs/job379_navevents.sh</span>, bag <span class="mono">bags/bag_mp9~11.tgz</span>(git 제외).</p>
+
+  <h3>그날 저녁 바로잡은 것 — '상자 최근접' 은 여유가 아니었다<span class="sec">§13.4</span></h3>
+  <div class="flow">
+    <span class="k">본 것</span><span>mp12 에서 러너 ① 이 '0.0 cm' 로 나왔다. 원인은 t ≈ 8 s(yaw +40°)에 마지막으로 재고정된 상자 모델이 왼쪽으로 약 13 cm 밀린 것이었다.</span>
+    <span class="k">추론</span><span>러너 ① 은 깊이점으로 다시 고정한 상자 모델과 외삽에 의존한다. 그래서 컨트롤러가 실제로 보는 것, 즉 bag 의 로컬 코스트맵 LETHAL 셀 ↔ 차체 외곽 거리를 새 지표로 쟀다(job416).</span>
+    <span class="k">결론</span><span>mp9 ~ mp12 모두 상자 옆 · 뒤 모서리를 코스트맵 기준 1.4 ~ 2.6 cm 로 지났다. §11.1 의 '9.2 ~ 19.3 cm' 는 대표값이 아니다(그날 정정). 접촉 보고는 없었다.</span>
+  </div>
+<pre class="code"># outputs/j416_mp12_boxclear.txt (끝)
+상자 LETHAL ↔ 차체 최소: 0.026 m @ t=20.2 (셀 중심 거리 − 반셀 0.025, 셀 양자화 ±2.5 cm)
+주행 스크립트 상자 모델(게이트 1.173/−0.052, 폭 0.18): y -0.142~+0.038, x 1.173~1.283</pre>
+  <p class="note">결과 원문 <span class="mono">Docs/debug_log/2026-09-17/outputs/j416_mp12_boxclear.txt</span> · <span class="mono">outputs/j417_compare.txt</span>(job416 절) · 스크립트 <span class="mono">jobs/job416_boxclear.py</span>(반길이 0.25 · 반폭 0.165). 모델 방향 자체는 이날 고치지 않아 다음 날 dy3 에서 재발했다 → <span class="mono">Docs/issues/avoid-run-metrics.md</span> 실수 ⑨.</p>
+</section>
+
+<section>
+  <h2>조향 흔들림 — 가설을 세우고, 실주행에서 무너뜨림<span class="sec">§12 · §13 · §14</span></h2>
+  <div class="flow">
+    <span class="k">본 것</span><span>bag 에서 흔들림은 통로 구간(x 0.6 ~ 1.45)에 몰려 있고, 명령 ω 와 실제 yaw rate 가 같은 크기였다. 재계획 · map→odom 점프와는 시간이 맞지 않았다. 구동계는 지연 0.1 s, 회전 이득 0.6 ~ 0.75 였다(트랙 미끄럼 추정).<span class="c1104">(11-04 정정: 휠 오도 이득(0.60 ~ 0.62)이 EKF(0.68 ~ 0.75)보다 작으니 '바퀴가 명령한 속도 차를 못 냈다(바퀴 포화)' 가 먼저다. 근거 Docs/issues/mppi-wobble-temperature.md §5)</span></span>
+    <span class="k">처음 추론</span><span>시뮬(job410/413)에서 softmax 유효 표본 수(ESS)가 1000 개 중 ≈ 10 개라 매 주기 wz_std/√ESS ≈ 0.12 rad/s 의 잡음이 섞인다고 봤다. 그래서 temperature 0.15 → 0.3 이면 반전 0 /m 이 될 것으로 예측하고, 판정 기준을 주행 전에 선언했다.</span>
+    <span class="k">판별</span><span>mp12(T 0.3) 실주행: 성공 31.9 s 지만 통로 반전 8.8 /m · RMS 0.059. 기준(≤ 5 · ≤ 0.045) 불합격이고, '15 ~ 23 % 느려짐' 예측도 빗나갔다.</span>
+    <span class="k">재분석</span><span>1.1.20 소스와 대조하니 시뮬레이터가 네 가지(잡음 재사용 · 후보 clip · 롤아웃 첫 속도 · SG 필터 출력)에서 달랐다. 고친 Humble 모드(job419)는 속도가 실제와 맞았다. 흔들림 크기는 '매 반복 새 잡음' 모델과 맞았다(주기마다 교란이 있다는 추정, 교란원 미확정).</span>
+    <span class="k">결론</span><span>temperature 0.15 복귀(사용자 결정). ESS 기제는 실측으로 확인되지 않은 가설로 강등했다. 흔들림의 위치 영향은 0.1 mm 미만이라 우선순위를 내렸다.<span class="c1104">(11-04 정정: '위치 영향 &lt; 0.1 mm' 는 odom 궤적으로 쟀다. EKF 가 전진 속도 + yaw rate 만 적분하니 odom 에는 정의상 옆방향 운동이 없다. 실제 옆미끄럼은 이 방법으로 볼 수 없다(미확인). yaw 잔차는 실측. 근거 Docs/issues/mppi-wobble-temperature.md §5)</span></span>
+  </div>
+<pre class="code"># outputs/j417_compare.txt — job407 방식, 통로 0.6~1.45
+run      구간           |   명령ω 반전/m (|ω|&gt;.01 .05 .10) | … | 고주파 RMS 명령/실제
+mp9      통로 0.6~1.45  |     14.9     10.3      5.7   | … | 0.058 / 0.061 rad/s
+mp11     통로 0.6~1.45  |     26.3     14.8      8.0   | … | 0.061 / 0.060 rad/s
+mp12     통로 0.6~1.45  |     15.4      8.8      2.2   | … | 0.059 / 0.062 rad/s   ← T 0.3
+# outputs/j424_latwobble.txt — 1 s 창 2 차식 제거 잔차
+mp12 통로 300 점(20 Hz): 횡 잔차 RMS 0.018 mm, 최대 0.063 mm | yaw 잔차 RMS 0.156°, 최대 0.639°</pre>
+  <p class="note">결과 원문 <span class="mono">Docs/debug_log/2026-09-17/outputs/j407_wobble.txt</span> · <span class="mono">j413_wobblecause.txt</span> · <span class="mono">j417_compare.txt</span> · <span class="mono">j418_mppisrc.txt</span> · <span class="mono">j423_regensim.txt</span> · <span class="mono">j424_latwobble.txt</span> · 스크립트 <span class="mono">jobs/job410_mppi_sim_lag.py</span> · <span class="mono">jobs/job419_mppi_sim_humble.py</span> · <span class="mono">jobs/job424_latwobble.py</span>. 무효 실행 <span class="mono">j411</span> · <span class="mono">j421</span> 은 SUMMARY 가 스스로 '쓰지 않음'.</p>
+</section>
+
+<section>
+  <h2>상자를 왜 크게 돌아가나<span class="sec">§15</span></h2>
+  <p>사용자 질문. 측면 간격 13 ~ 15 cm 는 코스트맵 상자 부풀림 2 ~ 7 + 내접 여유 ≈ 4 + NavFn 비용 골짜기 1 ~ 9 + MPPI 2 ~ 4 cm 가 쌓인 것이고, S 자는 상자가 출발 → 목표 직선 위에 있는 코스 탓이다. inflation 을 바꿔 다시 팽창해도 경로는 붙지 않았다(가장 가까운 통과 자리 비용이 자유 공간의 3 ~ 5 배).</p>
+<pre class="code"># outputs/j425_detour.txt — NavFn 근사, mp12 LETHAL 셀 재팽창
+   근사: 재팽창 R0.70 k2.0  차선변경 시작 x 0.6 | 상자옆 횡 +0.308
+   근사: 재팽창 R0.70 k4.0  차선변경 시작 x 0.6 | 상자옆 횡 +0.358
+     R0.70 k2.0: d0.20→239  d0.30→196  d0.40→160  d0.50→131 …
+     R0.40 k2.0: d0.20→239  d0.30→196  d0.40→160  d0.50→  0 …</pre>
+  <p>로컬(odom) 코스트맵의 상자가 전역(map)보다 2 ~ 8 cm 로버 쪽에 있었다. 이를 '차선변경 중 odom 이 옆이동을 덜 셈 — 스키드스티어 옆미끄럼 추정' 으로 적었다.<span class="c1104">(11-04 정정: 다음 날 뒤집혔다. 옆 보정은 회전량과 무관하고 거리에 비례하며 항상 왼쪽이었다 → 센서 데크가 −2.68° 틀어져 장착된 것. URDF 로 보정. 근거 Docs/debug_log/2026-09-18/SUMMARY.md §9 · Docs/issues/sensor-deck-yaw.md)</span></p>
+  <p class="note">결과 원문 <span class="mono">Docs/debug_log/2026-09-17/outputs/j425_detour.txt</span> · <span class="mono">outputs/j426_boxframes.txt</span> · 스크립트 <span class="mono">jobs/job425_detour.py</span> · <span class="mono">jobs/job426_boxframes.py</span>. 오늘은 손잡이를 바꾸지 않았다.</p>
+</section>
+
+<section>
+  <h2>Wi-Fi — AP 가 먼저 끊고 재인증을 거부<span class="sec">§8.7 · §17</span></h2>
+  <div class="flow">
+    <span class="k">본 것</span><span>저속 실측 준비 중 SSH 가 끊겼고, Jetson 은 <WIFI-B> → ALOPS(<LAN-A>.8)로 넘어갔다. 새 IP 로 뜬 노드와 옛 노드가 갈리는 DDS 분리가 났다. 이틀 사이 세 번째였다.<span class="c1104">(11-04 정정: §8.7 의 '13:35:45 전환' 을 낸 출력은 저장되지 않았다. syslog 로는 끊김 13:38:42 · ALOPS 13:40:20 이고, 5 분 차이의 원인은 미확인. 근거 Docs/issues/jetson-wifi-link.md §5.1 모순 1)</span></span>
+    <span class="k">추론</span><span>세 사건 모두 AP 가 reason 2 로 끊고(<span class="mono">locally_generated</span> 없음) 재접속마다 reason 23 으로 거부, NM 이 포기하고 ALOPS 로 넘어갔다. 같은 PSK 로 앞뒤엔 접속됐으니 비밀번호가 아니라 AP 가 일정 시간 거부한 것으로 봤다. 재결합 때 채널 5180 MHz · 80 MHz 로 결합했다.<span class="c1104">(11-04 정정: '80 MHz' 줄은 접속마다 드라이버가 내는 줄이라 단서가 아니다(WEB_DEV 42 · ALOPS 15 회). 근거 Docs/debug_log/2026-09-18/SUMMARY.md §4)</span></span>
+    <span class="k">결론</span><span>트리거는 AP 쪽이고 Jetson 로그로는 알 수 없다. 드라이버 · 신호 · 트래픽 · SSH 폴링 후보는 증거가 없다.<span class="c1104">(11-04 정정: SSH 폴링 기각 근거는 09-17 한 날뿐이다(그날 거의 0 회). 09-15 · 09-16 은 끊김 전에 바빴으니 '방아쇠를 거들었을 가능성' 은 배제되지 않는다. 근거 Docs/issues/jetson-wifi-link.md §5.1 모순 2)</span> 제안(ALOPS 고정 · 절전 끔 · 국가 코드)은 sudo 가 필요해 사용자 결정으로 남겼다.</span>
+  </div>
+<pre class="code"># outputs/j427b_wifi.txt
+  Sep 17 13:38:42 wpa: CTRL-EVENT-DISCONNECTED bssid=b0:38:6c:XX:XX:XX reason=2
+  Sep 17 13:38:50 wpa: CTRL-EVENT-DISCONNECTED bssid=b0:38:6c:XX:XX:XX reason=23
+  Sep 17 13:38:50 wpa: CTRL-EVENT-SSID-TEMP-DISABLED id=0 ssid="<WIFI-B>" auth_failures=1 duration=10 reason=AUTH_FAILED
+# outputs/j427c_wifi.txt — 전체 기간 집계
+        7 bssid=38:f4:5e:XX:XX:XX reason=3 locally_generated=1
+        3 bssid=b0:38:6c:XX:XX:XX reason=2
+       24 bssid=b0:38:6c:XX:XX:XX reason=23</pre>
+  <p class="note">결과 원문 <span class="mono">Docs/debug_log/2026-09-17/outputs/j427b_wifi.txt</span> · <span class="mono">j427c_wifi.txt</span> · 스크립트 <span class="mono">jobs/job427b_wifi.sh</span> · <span class="mono">job427c_wifi.sh</span>(읽기 전용). MAC 은 가린 그대로.</p>
+</section>
+
+<section>
+  <h2>내 실수 · 사고 (그날 SUMMARY 가 적은 것)</h2>
+  <div class="pm">
+    <h3>감사 수치만 믿고 로버를 옮기게 함 (§1)</h3>
+    <div class="flow">
+      <span class="k">하려 한 것</span><span>어제 mp5 배치에 맞춰 출발점을 다시 잡기</span>
+      <span class="k">본 것</span><span>게이트 1.056 → 12 cm 옮긴 뒤 0.957(반대 방향)</span>
+      <span class="k">왜</span><span>감사 코드의 y 단독 군집 + 5 % 분위가 바닥 잡음점에 끌렸다. 다른 측정과 교차 확인하기 전에 사용자에게 행동을 요청했다</span>
+      <span class="k">영향</span><span>mp6 은 어제보다 17 cm 뒤에서 달렸다(계산). 이 배치를 기준선으로 삼기로 했다</span>
+      <span class="k">알아보는 법</span><span>사용자에게 로버를 옮기게 하기 전에, 독립된 측정 둘 이상(원시 깊이 · 필터 구름 · 영상)이 같은 값을 내는지 본다</span>
+      <span class="k">데이터</span><span><span class="mono">outputs/j369_370.txt</span> · <span class="mono">outputs/j371.txt</span> · <span class="mono">outputs/prep_mp6_before_move.txt</span> · <span class="mono">prep_mp6_after_move.txt</span></span>
+    </div>
+  </div>
+  <div class="pm">
+    <h3>목표를 벽 0.367 m 앞에 둠 (§2)</h3>
+    <div class="flow">
+      <span class="k">하려 한 것</span><span>상자 뒤 0.75 m 에 목표를 둬 '상자 뒤 즉시 정지' 를 피하기</span>
+      <span class="k">본 것</span><span>목표 풋프린트 여유 0.098 m, 데드밴드 아래 속도로 36 s 정체</span>
+      <span class="k">왜</span><span>게이트가 통로 폭만 보고 목표 자리 여유를 보지 않았다</span>
+      <span class="k">결론</span><span>목표 여유 게이트 ≥ 0.20 m(job377) 신설 — (2.2, 0) 은 0.145 로 거부됐을 것</span>
+      <span class="k">데이터</span><span><span class="mono">outputs/j376_mp6.txt</span> · <span class="mono">jobs/job377_goalclear.py</span></span>
+    </div>
+  </div>
+  <div class="pm">
+    <h3>'25 W 면 CPU +15 %' 로 승인을 받음 (§5 → §6.2)</h3>
+    <div class="flow">
+      <span class="k">하려 한 것</span><span>SLAM 굶주림 대책으로 CPU 여유 늘리기</span>
+      <span class="k">본 것</span><span>25 W 에서 CPU 상한 1344 MHz(15 W 는 1497)</span>
+      <span class="k">왜</span><span>모드 이름만 보고 conf 를 읽지 않았다. 이 JetPack 의 25 W 는 GPU · 메모리에 예산을 준다</span>
+      <span class="k">영향</span><span>같은 승인 범위 안에서 즉시 15 W 로 원복. 실제 원인은 DDS 데드락이었다</span>
+      <span class="k">알아보는 법</span><span>설정 변경을 승인받기 전에 <span class="mono">/etc/nvpmodel.conf</span> 로 모드별 상한 표를 먼저 본다</span>
+      <span class="k">데이터</span><span><span class="mono">outputs/j388_pm25.txt</span> · <span class="mono">outputs/j390_pmrevert.txt</span></span>
+    </div>
+  </div>
+  <div class="pm">
+    <h3><span class="mono">-rst</span> 없이 플래시 → MCU 정지 중 로버가 스스로 회전 (§8.6)</h3>
+    <div class="flow">
+      <span class="k">하려 한 것</span><span>사용자가 직접 리셋하겠다고 해서 <span class="mono">-w -v</span> 만으로 플래시</span>
+      <span class="k">본 것</span><span>플래시 직후부터 제자리 회전. /cmd_vel 3 s 동안 0 건, Nav2 동작 없음, /rover/status 도 없음(펌웨어 미실행). SLAM yaw +0.6° → +104°. 리셋으로 멈춤</span>
+      <span class="k">왜(확정)</span><span>ROS 명령이 아니다. 펌웨어가 돌지 않는 동안 모터가 구동됐다</span>
+      <span class="k">왜(추정)</span><span>코어 정지 상태에서 속도 PWM · 방향선이 입력(부동)으로 떠, 통합 컨트롤러가 구동으로 해석했다. 어느 선이 어떤 레벨이었는지는 측정하지 않았다</span>
+      <span class="k">내 실수</span><span>메모의 플래시 절차(<span class="mono">-v -rst</span>)에서 <span class="mono">-rst</span> 를 빼면서 MCU 정지 시 모터 상태를 확인 · 경고하지 않았다</span>
+      <span class="k">알아보는 법</span><span>플래시는 항상 <span class="mono">-rst</span> 로 바로 실행, 가능하면 모터 전원을 끄거나 트랙을 띄운 상태에서. 하드웨어 풀다운은 <span class="mono">TODO(production)</span></span>
+      <span class="k">데이터</span><span><span class="mono">jobs/job398_cmdsrc.sh</span> · <span class="mono">jobs/job399_afterflash.sh</span> — 두 출력은 저장되지 않음(원문 없음 — SUMMARY 서술이 전부)</span>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>다음 후보 (그날 §16)</h2>
+  <ul>
+    <li>로컬 코스트맵 상자 드리프트 확인 · 대책 → 다음 날 데크 yaw 로 해소</li>
+    <li>간헐 중단(Optimizer fail · TF 외삽) 원인 — mp12 19.16 s fail 은 로컬 여유 3 cm 시점</li>
+    <li>대표 코스(상자를 직선에서 비킨 배치) · 자유 이동 확장</li>
+    <li>Wi-Fi/DDS(추후), 흔들림 교란원(필요 시 <span class="mono">/cmd_vel_nav</span> · IMU 원자료 기록)</li>
+  </ul>
+</section>
+
+<section>
+  <h2>이후 · 관련 카드</h2>
+  <ul>
+    <li><span class="mono">Docs/issues/start-deadband.md</span> — 정지 문턱 결함과 저속 실측, 이 날 기록 어긋남 §5.6</li>
+    <li><span class="mono">Docs/issues/slam-dds-deadlock.md</span> — Fast DDS 데드락 역추적 · 2.6.12</li>
+    <li><span class="mono">Docs/issues/cpu-load-stalls.md</span> — 전력 모드 §4.1 · 실수 §5.5</li>
+    <li><span class="mono">Docs/issues/mppi-passage-tuning.md</span> — mp6 ~ mp11 통로 조율, 실수 ④ · ⑥</li>
+    <li><span class="mono">Docs/issues/avoid-run-metrics.md</span> — 러너 계측 결함 실수 ⑧ · ⑨</li>
+    <li><span class="mono">Docs/issues/mppi-wobble-temperature.md</span> · <span class="mono">Docs/issues/mppi-offline-simulator.md</span> — 흔들림 · 시뮬 충실도</li>
+    <li><span class="mono">Docs/issues/sensor-deck-yaw.md</span> — §15.5 옆미끄럼 가설의 후속(09-18)</li>
+    <li><span class="mono">Docs/issues/jetson-wifi-link.md</span> — AP 거부 분석 · 실수 2</li>
+    <li><span class="mono">Docs/issues/bt-copypath-end-yaw.md</span> — §3 의 TruncatePath <span class="mono">TODO</span> 가 10-14 CopyPath 로 해결</li>
+  </ul>
+</section>
+</div>

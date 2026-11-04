@@ -270,3 +270,6 @@ prep(`jobs/job704_f1v2_prep.sh`, `outputs/j704_f1v2_prep.txt`): `map_file:=offic
   - 근거: 라이브 SLAM 그래프는 이미 오정합이 들어가 되돌릴 수 없음(slam_toolbox 는 노드 삭제·그래프 되감기 기능 없음) → 기록된 입력으로 점프 전까지만 다시 만드는 것이 유일한 경로. 한계: 재생 SLAM 처리 순서·타이밍이 라이브와 조금 달라 같은 지도가 된다는 보장은 없음 → 위 대조로 확인.
 - 진행: bag 을 `~/bags/map_0930_1724`(219 MB, 재부팅 보존)로 복사, 라이브(깨진) SLAM 정지, 재생 SLAM 기동까지. **bag 읽기 단계(5 분 넘게 "재생: 앞 …" 미출력)에서 사용자 요청으로 중단**(`job720`) — 후보 지도 파일 없음, 재생 프로세스 0. 라이브 센서·EKF·에이전트는 유지.
 - 내일: ① job719 재실행(읽기가 느린 원인 확인 — 700 s 분량 /tf 39k·스캔 7.8k 역직렬화 추정, 필요하면 진행 출력 추가) ② 되살린 지도 확인·승인 ③ 오정합 대책(§16: 위치 창만으로 불충분) — 같은 bag 을 전체 재생해 17:36:18 오정합을 재현한 뒤 후보 설정(loop_match_minimum_response_fine 상향·coarse_search_angle_offset 축소·루프 클로저 끔)을 A/B 로 비교, 판정 = 그 시점 map→odom 점프 ≤ 0.5 m·5° 이면서 17:31 정상 루프 클로저는 유지.
+
+## (2026-11-04 추가) 사후 정리 페이지
+- 「09-30 사무실 첫 지도」 https://claude.ai/artifact/CdMK9sM1WVSd3iwpZsBZDp — 로컬 `figures/day_summary_0930.html`(본문 `jobs/report_0930_body.html` · 조립 `jobs/fig_report_0930.py`). 이 SUMMARY 를 원천으로 11-04 에 만듦, 뒤 정정은 페이지에 '11-04 정정' 표시(문제 대장 카드 근거). 기록 → `Docs/debug_log/2026-11-04/SUMMARY.md` §11.

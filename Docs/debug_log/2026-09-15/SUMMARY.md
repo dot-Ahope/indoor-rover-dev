@@ -85,3 +85,6 @@ syslog(/var/log/syslog, 영속): **09-15 14:03:13 `wpa_supplicant: CTRL-EVENT-DI
 - 교훈 추가: Wi-Fi 두 SSID 중 하나로 고정(우선순위/고정 IP), 주행 러너는 원격 nohup + 파일 로그(§3), 게이트 통과 후 목표 전송 직전에 링크 재확인.
 - (09-16 09:36, 사용자 지시·sudo 동의) `mavlink-router` disable+stop 완료. Wi-Fi autoconnect 우선순위 **<WIFI-B> 20 > <WIFI-A> 5 > PTR 0**, `nmcli con up <WIFI-B>`(nohup) →
   **<LAN-B>.101 복귀 확인**(ssh OK). 러너 호스트 <LAN-B>.101 로 복원(157개). 이후 규칙: 접속 전 <LAN-B>.101·<LAN-A>.8 둘 다 핑.
+
+## (2026-11-04 추가) 사후 정리 페이지
+- 「09-15 MPPI 첫 주행과 망」 https://claude.ai/artifact/LS5rxnfXdAbJPEG6MzNXnD — 로컬 `figures/day_summary_0915.html`(본문 `jobs/report_0915_body.html` · 조립 `jobs/fig_report_0915.py`). 이 SUMMARY 를 원천으로 11-04 에 만듦, 뒤 정정은 페이지에 '11-04 정정' 표시(문제 대장 카드 근거). 기록 → `Docs/debug_log/2026-11-04/SUMMARY.md` §11.

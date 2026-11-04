@@ -390,3 +390,6 @@ B_actual = (v_r−v_l) / ω_gyro 로 환산하면:
 3. N2 전체 지도 작성 주행(RPP), N3 프론티어 탐사 패키지 도입.
 4. RPP 목표 자세오차(−12°) 개선: `yaw_goal_tolerance` 0.25 → 0.15 + 최종 회전 동작 확인.
 5. 보류: MPPI(N4 이후), 회전 슬립 속도 의존 모델, UART5 배선.
+
+## (2026-11-04 추가) 사후 정리 페이지
+- 「09-07 PWM 정정과 재보정」 https://claude.ai/artifact/3Ta1T3vEaMq1U33pkcwMmB — 로컬 `figures/day_summary_0907.html`(본문 `jobs/report_0907_body.html` · 조립 `jobs/fig_report_0907.py`). 이 SUMMARY 를 원천으로 11-04 에 만듦, 뒤 정정은 페이지에 '11-04 정정' 표시(문제 대장 카드 근거). 기록 → `Docs/debug_log/2026-11-04/SUMMARY.md` §11.

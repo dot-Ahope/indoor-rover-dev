@@ -40,3 +40,6 @@
 
 ## 미해결·다음
 - Step 4: LiDAR(S2L) + D455f + SLAM — 센서 데크 3D 프린트 후. 사전 조사·준비는 2026-08-27로.
+
+## (2026-11-04 추가) 사후 정리 페이지
+- 「08-26 보드 연결 · 첫 EKF」 https://claude.ai/artifact/KnQzRZoLAegfkjAuD3td5t — 로컬 `figures/day_summary_0826.html`(본문 `jobs/report_0826_body.html` · 조립 `jobs/fig_report_0826.py`). 이 SUMMARY 를 원천으로 11-04 에 만듦, 뒤 정정은 페이지에 '11-04 정정' 표시(문제 대장 카드 근거). 기록 → `Docs/debug_log/2026-11-04/SUMMARY.md` §11.

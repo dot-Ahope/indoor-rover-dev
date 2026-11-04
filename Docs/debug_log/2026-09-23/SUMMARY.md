@@ -310,3 +310,6 @@ D 비용·위험(추정): rf2o 는 CPU 가벼운 편으로 알려짐(실측 필�
 3. **가변 공분산 + rf2o** A/B(§20.5).
 4. **cuVSLAM** 추가 A/B(§20.5, 이미터 충돌 확인이 첫 항목).
 각 단계 판정 기준은 시험 전 선언.
+
+## (2026-11-04 추가) 사후 정리 페이지
+- 「09-23 Phase N 마감」 https://claude.ai/artifact/RNHEuhLY8qumLBWXRuzwzB — 로컬 `figures/day_summary_0923.html`(본문 `jobs/report_0923_body.html` · 조립 `jobs/fig_report_0923.py`). 이 SUMMARY 를 원천으로 11-04 에 만듦, 뒤 정정은 페이지에 '11-04 정정' 표시(문제 대장 카드 근거). 기록 → `Docs/debug_log/2026-11-04/SUMMARY.md` §11.

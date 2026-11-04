@@ -149,3 +149,6 @@
 6. **배터리 운용**: 방전으로 Jetson 다운이 반복됨 → 작업 전 충전 확인, 장시간 테스트 시 전원 대책 필요.
 - 직진 vx×1.022 실주행 효과 검증 (충전 후).
 - Step 5 (full.launch + systemd).
+
+## (2026-11-04 추가) 사후 정리 페이지
+- 「08-31 스캔 끌림 · 휠 스케일」 https://claude.ai/artifact/SVy8iUoKTAnmcfZRFcJfX9 — 로컬 `figures/day_summary_0831.html`(본문 `jobs/report_0831_body.html` · 조립 `jobs/fig_report_0831.py`). 이 SUMMARY 를 원천으로 11-04 에 만듦, 뒤 정정은 페이지에 '11-04 정정' 표시(문제 대장 카드 근거). 기록 → `Docs/debug_log/2026-11-04/SUMMARY.md` §11.

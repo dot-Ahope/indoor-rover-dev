@@ -509,3 +509,6 @@ t=30.00  카메라~상자 0.290 m  깊이점    0   lc   0  gc 100   ← 로컬 
   유령이 남는지, 전역 90초가 실용적인지 실제로 재야 한다. `decay_acceleration 0` 의 대가도 함께.
 - **S6 CPU** — 우선순위 하향. 다만 **세션 열화는 실재**하므로 측정 주행 전에는
   스택을 깨끗이 재기동하고, Foxglove 를 끈다.
+
+## (2026-11-04 추가) 사후 정리 페이지
+- 「09-10 계측이 벽을 봤다」 https://claude.ai/artifact/HzTebGEaLJRTo3heTvdRDS — 로컬 `figures/day_summary_0910.html`(본문 `jobs/report_0910_body.html` · 조립 `jobs/fig_report_0910.py`). 이 SUMMARY 를 원천으로 11-04 에 만듦, 뒤 정정은 페이지에 '11-04 정정' 표시(문제 대장 카드 근거). 기록 → `Docs/debug_log/2026-11-04/SUMMARY.md` §11.

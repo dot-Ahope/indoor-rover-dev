@@ -838,3 +838,6 @@ A 는 0.4→0.6 m 에서 +0.18 → +0.38 로 꺾여 물체 inflation 이 끝나�
 - **S4 반복 검증 (0/3)** — 위가 끝난 뒤. 접촉 0, 완주, 좌우 전환 0.
 - **복귀 절차 개선** — 위치+자세 동시 복원. 실험 재현성의 전제다.
 - S2 카메라 사각지대(끊김 0.40 m), S5 기준선, Phase N(nvblox) 는 그대로.
+
+## (2026-11-04 추가) 사후 정리 페이지
+- 「09-11 코스트맵 지우던 BT」 https://claude.ai/artifact/19iGrjHGS1gLWfNYN2Rnav — 로컬 `figures/day_summary_0911.html`(본문 `jobs/report_0911_body.html` · 조립 `jobs/fig_report_0911.py`). 이 SUMMARY 를 원천으로 11-04 에 만듦, 뒤 정정은 페이지에 '11-04 정정' 표시(문제 대장 카드 근거). 기록 → `Docs/debug_log/2026-11-04/SUMMARY.md` §11.
