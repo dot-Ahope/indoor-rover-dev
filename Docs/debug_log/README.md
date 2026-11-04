@@ -168,6 +168,7 @@ exec python "$(git rev-parse --show-toplevel)/Docs/tools/chk_commit_gate.py" --g
   - `origin` 에는 올리지 않는다.
 - 커밋 메시지 끝에 세션 지침이 주는 공동 작성자 줄을 붙인다.
 - **커밋 전 점검** `python Docs/tools/chk_record_rules.py` (경고만 — 훅이 커밋 때 개수를 알림; `--all` = 10-13 이후 전부, `--strict` = 경고 시 종료 코드 1).
+- **(11-04) 새 경고는 커밋을 막는다**: 두 훅(Claude `chk_commit_gate.py` · git pre-commit)이 `chk_record_rules.py --new-only` 를 돌려 기준선 `Docs/tools/rules_baseline.txt`(11-04 의 옛 결함 110 건)에 없는 경고가 있으면 막음. 고쳐서 다시 커밋한다. 기준선을 다시 쓰는 것(`--every --write-baseline`)은 사용자 확인 뒤에만 — 새 결함을 기준선에 넣어 피하지 않는다.
   보는 것: TOOLS.md 누락 · 도구 앞머리 · 스크립트 설명 주석 · 깨진 링크 · SUMMARY/TOOLS 에 적힌 `jobs/` `outputs/` 경로 존재 · 비밀번호 게이트. 경고는 고치거나, 고치지 않을 이유를 그날 SUMMARY 에 적는다.
 - **기계적 차단**(`.claude/settings.json` deny): `git push origin …` · `git push public …`(공개는 점검이 있는 `publish_public.sh` 로만) · `sudo …`. 막히면 우회하지 말고 사용자에게 묻는다. 한계: ssh 문자열 안의 `sudo` 같은 간접 실행은 못 잡는다.
 
@@ -204,3 +205,5 @@ exec python "$(git rev-parse --show-toplevel)/Docs/tools/chk_commit_gate.py" --g
 | 2026-11-02 | 정리 페이지 만드는 때 · 로컬 사본 위치 · SUMMARY 기록 · 공개 주의(§7.1) | 사용자 질문 '규약에 아티팩트 관련 내용 있는지', 11-02 SUMMARY §10 |
 | 2026-11-02 | 설명에 스크립트 핵심 · 나온 결과 발췌를 함께(실수 칸 2 개 추가) | 사용자, 11-02 SUMMARY §11 |
 | 2026-11-02 | 주제 폴더 페이지는 날짜 폴더 figures/ 에 같은 사본(점검 C) · 09 월 11 장 복사 | 사용자, 11-02 SUMMARY §13 |
+
+| 2026-11-04 | 기록 규칙 새 경고는 커밋 차단(기준선 110 건 · `--new-only` · 두 훅) | 사용자 "1번부터 순서대로", 11-04 SUMMARY §12 |

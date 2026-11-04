@@ -42,9 +42,11 @@ if bad:
     print('커밋 게이트: Jetson 비밀번호가 커밋될 수 있는 곳에 있다 — 커밋 금지, <PW> 로 가리거나 추적에서 뺀 뒤 다시: %s' % ', '.join(sorted(bad)), file=sys.stderr)
     sys.exit(BLOCK)
 
-if not GIT_HOOK:
-    w = subprocess.run([sys.executable, str(root / 'Docs/tools/chk_record_rules.py')], cwd=root, capture_output=True, text=True, encoding='utf-8')
-    last = (w.stdout.strip().splitlines() or [''])[-1]
-    if last.startswith('RULES_WARN'):
-        print(json.dumps({'systemMessage': '커밋 게이트 통과(비밀번호 0). 규약 점검 경고 %s 건 — python Docs/tools/chk_record_rules.py 로 확인' % last.split()[-1]}, ensure_ascii=False))
+# 11-04: 기록 규칙 — 기준선(Docs/tools/rules_baseline.txt, 옛 결함)에 없는 **새 경고**가 있으면 막는다(①② 둘 다).
+#   예전(11-02 ~ 11-03)엔 ① 에서 경고 개수만 알렸다. 우회: 새 경고를 고치거나, 사용자 확인 뒤 기준선을 다시 씀(README §8).
+w = subprocess.run([sys.executable, str(root / 'Docs/tools/chk_record_rules.py'), '--new-only'], cwd=root, capture_output=True, text=True, encoding='utf-8')
+lines = w.stdout.strip().splitlines()
+if w.returncode != 0:
+    print('커밋 게이트: 기록 규칙 새 경고 %s — 고친 뒤 다시 커밋(기준선에 없는 경고만 막음):\n%s' % ((lines or ['?'])[-1].split()[-1], '\n'.join(lines[:-1][:20])), file=sys.stderr)
+    sys.exit(BLOCK)
 sys.exit(0)
