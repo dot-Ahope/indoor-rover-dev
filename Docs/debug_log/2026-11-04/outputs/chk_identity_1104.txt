@@ -1,0 +1,5 @@
+host jetson-desktop · user jetson · 5.15.185-tegra · # R36 (release), REVISION: 5.0
+rover -> ttyCH341USB0 · rplidar -> ttyUSB0 · ws /home/jetson/ros2_ws/src/rover_navigation
+주소: wlP1p1s0 <LAN-A>.8/24 docker0 172.17.0.1/16 
+SSID: <WIFI-A>
+up 2 hours, 52 minutes

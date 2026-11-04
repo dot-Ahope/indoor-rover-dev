@@ -14,3 +14,5 @@
 | §4 | Jetson F2.5 파일 판(ⓐ 배포?) | `jobs/chk_place_md5_1104.sh`(읽기만) | 두 번 lost connection(핑 50 % 손실) — 저장소 판만 `outputs/chk_place_md5_1104_repo.txt` | — | 다음 접속 때 |
 | §5 | 9 기 주석 · 문서 정정 | `jobs/up_doc_fix_p9_1104.py` | 6 파일 · YAML 통과 | 동작 변경 없음 | ✔ |
 | §6 | MAC 가림 | `jobs/up_mask_mac_1104.py` | 파일 33 · 609 곳 + 1 | 지금 판만 | ✔ |
+| §10 | 새 주소 기기 신원 | `jobs/chk_identity_1104.sh` → `outputs/chk_identity_1104.txt` | jetson-desktop · ALOPS <LAN-A>.8 | 우리 Jetson | ✔ |
+| §10 | 저장소 판 src 배포 | `jobs/up_src_1104.sh` → `outputs/up_src_1104.txt` | 11 파일 · 링크 8 · place_server 옛 판 fc0962af | ⓐ 미배포였음 → 배포 | ✔ |

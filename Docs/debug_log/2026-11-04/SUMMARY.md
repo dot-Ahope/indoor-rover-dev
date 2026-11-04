@@ -53,3 +53,10 @@
 
 ## §9 push
 - 원본 8ec8aa13..c27c770b(personal 두 가지) · 공개 dev 120cf0f..bf406f3 — 점검 "문구 0 · 옛 이메일 0 · 비공개 경로 0 · 비밀번호 0". 규칙 검사 경고 3 = 10-21 · 10-22 · 10-23 TOOLS.md 없음(예전부터의 결함, 문제 대장 record-conventions-evolution — 사후 작성은 안 함).
+
+## §10 Jetson 주소 <LAN-A>.8 · 코드 2 건 수정 · src 배포 (사용자: "<LAN-A>.8가 맞다. 두 코드 수정은 진행하라.")
+- 신원 확인(`jobs/chk_identity_1104.sh` → `outputs/chk_identity_1104.txt`): host jetson-desktop · 5.15.185-tegra · R36.5 · /dev/rover → ttyCH341USB0 · ws 있음 · wlP1p1s0 <LAN-A>.8 · SSID <WIFI-A> · up 2 h 52 m(09:09 부팅과 맞음). 핑 3/3. → <WIFI-B>(<LAN-B>.110)가 끊겨 ALOPS 로 넘어간 것(원인 미확인 — §4 · §8 의 50 % 손실이 그 전조로 보임, 추정).
+- 코드 수정 1 — `ros2_ws/src/rover_navigation/scripts/place_server.py` main: `except _rclpy.RCLError` 추가, 메시지에 'context is not valid' 가 있을 때만 정상 종료로 보고 다른 RCLError 는 다시 올림(`rclpy.impl.implementation_singleton.rclpy_implementation` — Humble 경로). 근거: f2pl4 · f2pl5 서버 로그 끝 traceback(`2026-10-28/outputs/drives/f2pl5/place_server_s1.log`). py_compile 통과, 실행 확인은 다음 F2.5 실행 때.
+- 코드 수정 2 — `Docs/tools/prep_fast.sh` 70 행 SHM 오류 집계에 `/tmp/cuvslam.log` · `/tmp/nvblox_node.log` 추가(없으면 무시). 표시 줄이라 판정은 안 바뀜. bash -n 통과.
+- src 배포(`jobs/up_src_1104.sh` → `outputs/up_src_1104.txt`, 빌드 안 함 · 원본 백업 Jetson `/tmp/deploy_backup_1104/`): 11 파일. 설치본은 9 개 중 8 개가 링크(바로 반영), place_server.py · places.yaml · cpp 는 설치본 없음(place_* 는 job 스크립트가 src 에서 직접 띄움 · cpp 는 주석만이라 빌드 불필요). `/tmp/prep_fast.sh` 새 판(cuvslam 줄 1).
+- **확인된 것**: Jetson 의 옛 `place_server.py` md5 fc0962af ≠ 저장소 10-29 판 f3ec96a4 → 출발 전 검사 ⓐ 는 **배포되지 않았었다**(이제 배포됨 — 다음 F2.5 실행부터 ⓐ 가 켜짐). places.yaml 은 저장소 옛 판과 같았음(55cc18ce).

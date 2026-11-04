@@ -266,10 +266,15 @@ class PlaceServer(Node):
         self.say(rid, 'canceled', nm, '정지 요청 — Nav2 목표 전부 취소')
 
 
+from rclpy.impl.implementation_singleton import rclpy_implementation as _rclpy   # RCLError 의 Humble 공식 경로(11-04)
+
+
 def main():
     rclpy.init(); n = PlaceServer()
     try: rclpy.spin(n)
     except (KeyboardInterrupt, rclpy.executors.ExternalShutdownException): pass
+    except _rclpy.RCLError as e:   # 11-04: 러너가 끌 때 ROS 가 먼저 내려가면 spin 이 'context is not valid' 로 끝남(f2pl4 · f2pl5 로그 끝 traceback)
+        if 'context is not valid' not in str(e): raise   # 그 경우만 정상 종료로 보고, 다른 RCLError 는 그대로 올림
     finally:
         try:
             if n.py and n.py.poll() is None: n.py.stdin.close(); n.py.wait(timeout=3)
