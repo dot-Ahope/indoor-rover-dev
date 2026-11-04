@@ -113,3 +113,10 @@
 - `Docs/tools/chk_commit_gate.py`: 비밀번호 검사 뒤 `--new-only` 를 돌려 새 경고가 있으면 막음(Claude 훅 종료 2 · git 훅 1). 예전 개수 알림은 뺌.
 - 시험: 이름 · 머리 주석 없는 시험 스크립트(jobs 아래 badname_test.sh, 시험 뒤 지움)를 만들어 두 경로 모두 '새 경고 2'(H · N)로 막힘 확인 → 지우고 깨끗한 상태 통과(종료 0). README §8 · 변경 이력에 적음.
 - 첫 실전: 이 § 를 커밋할 때 게이트가 내 SUMMARY 의 지운 시험 파일 경로(P 경고)를 잡아 막음 → 문구를 고쳐 통과. 훅은 명령 실행 전에 검사하므로 고치는 명령과 커밋은 따로 실행해야 한다.
+
+## §13 강제 장치 ② — 비밀 읽기 차단 훅
+- 왜: 11-03 §5 — 러너를 가림 없이 grep 해 비밀번호가 대화에 출력됨(규칙은 문장뿐).
+- `Docs/tools/chk_secret_read.py`(PreToolUse: Bash · PowerShell · Read · Grep, `.claude/settings.json` 에 등록 — 백업은 스크래치패드 settings_backup_1104.json): 명령 · 경로 낱말을 펼쳐 비밀번호 파일의 아무 줄이라도 든 파일이면 '비밀 파일'(변수 경로는 이름으로), 읽는 명령어가 있고 `<PW>` 가림 · grep 개수/이름만이 아니면 종료 2 로 막음. 값은 출력 안 함.
+- 시험(`jobs/chk_secret_read_cases.py` → `outputs/chk_secret_read_cases.txt`): 13 경우 ALL_OK — 11-03 실수 재현(Git Bash · Windows 현재 폴더) · 비밀번호 파일 · 변수 경로 · Read · Grep 내용 · PowerShell 은 막힘, 가림 · 개수 · 실행만 · Grep 개수 · 일반 파일 · 무관 명령은 통과. 첫 판은 Git Bash 현재 폴더(/c/…)와 PowerShell 역슬래시를 놓쳐 고침.
+- 실세션 확인: 비밀번호 없는 미끼 `run_jn.sh` 를 cat → 훅이 막음(시험 뒤 미끼 지움).
+- 한계: 명령이 아닌 스크립트 안에서 읽어 출력하는 경우(예: 내가 만든 .sh 가 러너를 cat)는 못 막는다 — 출력 쪽(PostToolUse)은 이미 대화에 들어간 뒤라 막을 수 없음.

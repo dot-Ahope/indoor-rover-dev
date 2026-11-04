@@ -36,6 +36,11 @@
             "type": "command",
             "command": "python \"$CLAUDE_PROJECT_DIR/Docs/tools/chk_commit_gate.py\"",
             "timeout": 60
+          },
+          {
+            "type": "command",
+            "command": "python \"$CLAUDE_PROJECT_DIR/Docs/tools/chk_secret_read.py\"",
+            "timeout": 20
           }
         ]
       },
@@ -46,6 +51,31 @@
             "type": "command",
             "command": "python \"$CLAUDE_PROJECT_DIR/Docs/tools/chk_commit_gate.py\"",
             "timeout": 60
+          },
+          {
+            "type": "command",
+            "command": "python \"$CLAUDE_PROJECT_DIR/Docs/tools/chk_secret_read.py\"",
+            "timeout": 20
+          }
+        ]
+      },
+      {
+        "matcher": "Read",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python \"$CLAUDE_PROJECT_DIR/Docs/tools/chk_secret_read.py\"",
+            "timeout": 20
+          }
+        ]
+      },
+      {
+        "matcher": "Grep",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python \"$CLAUDE_PROJECT_DIR/Docs/tools/chk_secret_read.py\"",
+            "timeout": 20
           }
         ]
       }

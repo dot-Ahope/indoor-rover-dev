@@ -17,3 +17,4 @@
 | §10 | 새 주소 기기 신원 | `jobs/chk_identity_1104.sh` → `outputs/chk_identity_1104.txt` | jetson-desktop · ALOPS <LAN-A>.8 | 우리 Jetson | ✔ |
 | §10 | 저장소 판 src 배포 | `jobs/up_src_1104.sh` → `outputs/up_src_1104.txt` | 11 파일 · 링크 8 · place_server 옛 판 fc0962af | ⓐ 미배포였음 → 배포 | ✔ |
 | §11 | 8 · 9 월 정리 페이지 22 장 게시 전 검사 | `jobs/chk_page_secrets.py`(브리프 `jobs/pg_brief_1104.md`) | 22 장 모두 0 | — | ✔ |
+| §13 | 비밀 읽기 차단 훅 판정 | `jobs/chk_secret_read_cases.py` → `outputs/chk_secret_read_cases.txt` | 13/13 | 훅 작동 | ✔ |
