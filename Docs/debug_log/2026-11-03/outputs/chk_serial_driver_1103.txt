@@ -1,0 +1,36 @@
+== 커널 · L4T
+5.15.185-tegra
+# R36 (release), REVISION: 5.0, GCID: 43688277, BOARD: generic, EABI: aarch64, DATE: Fri Jan 16 03:50:45 UTC 2026
+== 별칭 · 실장치
+lrwxrwxrwx 1 root root 12 Nov  3 15:45 /dev/rover -> ttyCH341USB0
+lrwxrwxrwx 1 root root  7 Nov  3 15:45 /dev/rplidar -> ttyUSB0
+crw-rw---- 1 root dialout 169, 0 Nov  3 15:45 /dev/ttyCH341USB0
+crw-rw-rw- 1 root dialout 188, 0 Nov  3 15:45 /dev/ttyUSB0
+== 실린 모듈
+cp210x                 28672  0
+usbserial              40960  1 cp210x
+ch341                  28672  2
+== modinfo ch341
+filename:       /lib/modules/5.15.185-tegra/kernel/drivers/usb/serial/ch341.ko
+version:        V1.9 On 2025.12
+description:    USB serial driver for CH340, CH341, etc.
+author:         WCH
+srcversion:     57FD63F129289E6FD69EFC7
+vermagic:       5.15.185-tegra SMP preempt mod_unload modversions aarch64
+== 모듈 파일 위치 (커널 기본 자리 · updates · extra)
+-rw-r--r-- 1 root root 169832 Feb 27  2026 /lib/modules/5.15.185-tegra/kernel/drivers/usb/serial/ch341.ko
+/lib/modules/5.15.185-tegra/kernel/drivers/usb/serial/ch341.ko  2026-02-27 11:23:25
+== 커널 기본 모듈 목록에 ch341 이 있는가 (modules.builtin · 패키지 소유)
+0
+dpkg-query: no path found matching pattern /lib/modules/5.15.185-tegra/kernel/drivers/usb/serial/ch341.ko
+== 장치에 붙은 드라이버 (sysfs)
+1-2.1 1a86:7523
+   1-2.1:1.0 -> usb_ch341  tty: tty 
+1-2.4.4 10c4:ea60
+   1-2.4.4:1.0 -> cp210x  tty: ttyUSB0 
+== ~/ch341_build
+ls: cannot access '/home/jetson/ch341_build': No such file or directory
+== 부팅 뒤 커널 로그 (sudo 없이 읽히면)
+== udev 규칙 파일
+-rw-r--r-- 1 root root   169 Aug 26 14:59 99-rover.rules
+-rw-r--r-- 1 root root   167 Aug 27 10:18 99-rplidar.rules

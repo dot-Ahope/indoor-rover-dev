@@ -1,0 +1,22 @@
+== 시각 · 부팅
+2026-11-04 09:14:35 KST
+up 5 minutes
+                 RTC time: Wed 2026-11-04 00:14:36
+System clock synchronized: yes
+== 커널 패키지가 가진 usb/serial 모듈
+cp210x 소유 패키지: nvidia-l4t-kernel
+cp210x.ko ftdi_sio.ko option.ko usb_wwan.ko usbserial.ko 
+== usb/serial 폴더 파일 시각
+total 528
+-rw-r--r-- 1 root root 169832 2026-02-27_11:23:25 ch341.ko
+-rw-r--r-- 1 root root  39833 2026-01-16_12:42:52 cp210x.ko
+-rw-r--r-- 1 root root 102913 2026-01-16_12:42:52 ftdi_sio.ko
+-rw-r--r-- 1 root root 130113 2026-01-16_12:42:52 option.ko
+-rw-r--r-- 1 root root  63569 2026-01-16_12:42:52 usbserial.ko
+-rw-r--r-- 1 root root  21481 2026-01-16_12:42:52 usb_wwan.ko
+== 커널 패키지 설치 시각
+2026-02-20 07:09:59 install nvidia-l4t-kernel-headers:arm64 <none> 5.15.185-tegra-36.5.0-20260115194252
+2026-02-20 07:10:10 install nvidia-l4t-kernel-oot-headers:arm64 <none> 5.15.185-tegra-36.5.0-20260115194252
+2026-02-20 07:10:11 install nvidia-l4t-kernel-oot-modules:arm64 <none> 5.15.185-tegra-36.5.0-20260115194252
+== 홈의 드라이버 소스 흔적
+(없음)
