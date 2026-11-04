@@ -50,3 +50,6 @@
 
 ## §8 Jetson 배포 · 확인 미실행
 - 주석 수정분(§3 · §5) · pad_relief 기본 off 를 Jetson src 로 올리는 것과 F2.5 판(ⓐ) 확인: <LAN-B>.110 핑 손실 50 %(4 중 2) · 전송 'lost connection' 3 회 → 안 함. 다음 접속 때 `jobs/chk_place_md5_1104.sh` 와 배포.
+
+## §9 push
+- 원본 8ec8aa13..c27c770b(personal 두 가지) · 공개 dev 120cf0f..bf406f3 — 점검 "문구 0 · 옛 이메일 0 · 비공개 경로 0 · 비밀번호 0". 규칙 검사 경고 3 = 10-21 · 10-22 · 10-23 TOOLS.md 없음(예전부터의 결함, 문제 대장 record-conventions-evolution — 사후 작성은 안 함).
