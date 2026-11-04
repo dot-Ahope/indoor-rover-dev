@@ -49,6 +49,8 @@
 | `anal_traj_size.py` | bag → MPPI 궤적 메시지 크기 · 기록 주기 | `traj_size.py` |
 | `anal_reverse.py` | 러너 csv → 목표별 후진 거리 · 시간 | `rev_eval.py` |
 | `anal_record_index.py` | (PC) 실험 기록 자동 색인 → `Docs/issues/index/`(§ 제목 · 실험 이름 · 도구 사전), 2026-10-29 | — |
-| `up_tools.sh` | 위 Jetson 쪽 도구와 주행 보조 스크립트를 /tmp 로 전송 | `up950.sh` 등 |
+| `chk_drive_gate.py` | (Jetson) 주행 직전 게이트 B(/wheel_odom) · C(map→odom 간격 < 0.5 s · stamp 지연 < 1.0 s) · G2(출발 자세 여유) 를 한 노드로, 마지막 줄 `GATE …` 를 러너가 읽음(10-27) | job254 · job386 · job440 |
+| `run_slam_replay.sh` · `slam_replay_feed.py` | (Jetson) SLAM 위치 추정 재생 A/B — 도메인 42 · sim time 으로 bag 을 먹여 설정별 map→odom 정체 비교(10-27). ⚠ 설정값을 스크립트에 손으로 다시 적어 둠 — slam.launch.py 를 바꾸면 같이 | — |
+| `up_tools.sh` | (PC) 저장소 판 Jetson 쪽 도구(prep_fast · prep_patrol · chk_prep · chk_drive_gate · anal_rtps_*)를 /tmp 로 전송(11-04 고침 — 예전엔 스크래치패드 tools/ 를 읽음) | `up950.sh` 등 |
 
 주행 러너(`run_f0.sh` · `run_f2c.sh` · `job551_f0drive.sh` · `job550_f0run.py`)와 범용 러너 `run_jn.sh` 는 접속 정보가 들어 있어 작업 폴더에 두고, 가린 사본을 날짜 폴더 `jobs/` 에 남긴다(이름은 다음 정리 때 `run_` 로 맞춘다).

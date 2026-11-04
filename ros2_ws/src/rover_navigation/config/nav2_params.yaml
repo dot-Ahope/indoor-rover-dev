@@ -278,6 +278,8 @@ controller_server:
       # ★ 2026-10-26 §11~§14(사용자 채택, Smac 구성): PathAlign 14 → 28 · PathFollow 10 → 5 — 굽은 곳 안쪽 깎기 10.7 · 15.7 → 4.6 · 1.6 cm,
       #   상자 옆 실제 최소 18.4 · 10.8 → 14.6 · 14.9 cm, 정지 0(f2sa1 · f2sa2 대 f2sh1 · f2sh2). 시뮬(씨앗 10)도 같은 방향(최악 19.8 → 11.2). 근거 Docs/debug_log/2026-10-26/SUMMARY.md §10~§13.
       #   10-23 NavFn 판 28 단독은 f2pa2 에서 5.5 s 정지 1 회(목표 · 경로 방향 57° 어긋남) — Smac 판 2 회엔 없음.
+#   (11-04 추가) 채택 뒤 f2sa3(no5): 서쪽 통로 NavFn 대체 경로에서 최소 여유 0.8 cm · 정지 15.3 s(10-26 §15). ⚠ 28 · 5 로 달린 7 회는 모두 planner:=smac · 재계획 0.01 —
+#   기본 구성(NavFn · 0.5 Hz) + 28 · 5 조합은 아직 달린 적 없음(문제 대장 mppi-corner-cut-pathalign).
       PathAlignCritic: {enabled: true, cost_power: 1, cost_weight: 28.0, max_path_occupancy_ratio: 0.05, trajectory_point_step: 3, threshold_to_consider: 0.20, offset_from_furthest: 3}
       # ★ 2026-09-16 §1.14 (job354/355 재구성·시뮬레이션): 입구 기어감의 실체는 '당근이 짧은 추종'. offset 5 점 = 경로 점간격 0.025 m 에서
       #   12.5 cm 뿐이라 진행해도 비용이 거의 안 줄고, 브레이크(PathAlign·Obstacles)만 이동에 비례해 커져 v≈0.02 에서 평형.
@@ -745,8 +747,9 @@ planner_server:
       max_iterations: 1000000
       max_on_approach_iterations: 1000
       max_planning_time: 2.0                 # 10-26 §7: 실패 시 NavFn 대체로 넘어가는 시간 상한(오프라인 성공 판은 모두 ≤ 0.04 s)
-      motion_model_for_search: "REEDS_SHEPP"   # 10-26 §6.3: 변형별 오프라인 최선(설치판 RS + 해석 1.0 m, 상자 +3.1 cm · 나빠짐 0). 이전 DUBIN       # 전진만. 스키드스티어라 제자리 회전은 되지만 경로에 후진 cusp 을 넣지 않는다(RPP/MPPI 전진 추종)
+      motion_model_for_search: "REEDS_SHEPP"   # 10-26 §6.3: 변형별 오프라인 최선(설치판 RS + 해석 1.0 m, 상자 +3.1 cm · 나빠짐 0). 이전 DUBIN(전진만) 의 옛 설명(후진 cusp 을 넣지 않음)은 RS 에선 맞지 않음 — RS 는 후진 구간을 낼 수 있다(11-04 주석 정정)
       angle_quantization_bins: 72            # 5°
+      # (아래 3 줄은 09-14 첫 비교 당시 이야기 — 지금 값의 근거는 10-26 §6.3 · 10-27 §8, 11-04 표시)
       # 2026-09-14 정지 A/B(09-14 §2.19): R 0.20/cost 2.0 은 목표 heading 제약으로 4.3 m 루프, R 0.05 는 틈을 파고들어 4.96 m 반대편 우회.
       #   R 0.10/cost 1.2 만 정상(길이 2.0~2.1). 목표가 통로선(+0.35)이면 모서리 heading 7.7°(NavFn 18.7°)·상자 셀 0.40 으로 우세,
       #   목표가 상자 선상(0)이면 상자 쪽으로 잘라 들어가(0.16) NavFn 보다 못하다. 주행 A/B 는 목표를 통로선에 두고.
