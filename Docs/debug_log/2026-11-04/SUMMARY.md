@@ -120,3 +120,8 @@
 - 시험(`jobs/chk_secret_read_cases.py` → `outputs/chk_secret_read_cases.txt`): 13 경우 ALL_OK — 11-03 실수 재현(Git Bash · Windows 현재 폴더) · 비밀번호 파일 · 변수 경로 · Read · Grep 내용 · PowerShell 은 막힘, 가림 · 개수 · 실행만 · Grep 개수 · 일반 파일 · 무관 명령은 통과. 첫 판은 Git Bash 현재 폴더(/c/…)와 PowerShell 역슬래시를 놓쳐 고침.
 - 실세션 확인: 비밀번호 없는 미끼 `run_jn.sh` 를 cat → 훅이 막음(시험 뒤 미끼 지움).
 - 한계: 명령이 아닌 스크립트 안에서 읽어 출력하는 경우(예: 내가 만든 .sh 가 러너를 cat)는 못 막는다 — 출력 쪽(PostToolUse)은 이미 대화에 들어간 뒤라 막을 수 없음.
+
+## §14 강제 장치 ③ — README 절을 Skill 로 (필요할 때만 불림)
+- `.claude/skills/` 6 개: rover-day-record(§1 · §2 · §9) · rover-tools(§3) · rover-jetson-run(§4) · rover-drive(§4 · §5 · §6) · rover-record-pages(§7 · §2.3) · rover-commit-push(§8). 각 SKILL.md = 언제 쓰는지(description) + '읽을 절' + 요지 3 줄. 규칙 본문은 README 하나에만(복사 안 함 — 두 곳 어긋남 방지).
+- 점검 K(`chk_record_rules.py`): Skill 의 '읽을 절' 제목이 README 에 있는지. 시험: rover-drive 의 `## 5. 주행` 을 일부러 틀리게 → 'RULES_NEW 1'(K) → 되돌려 0.
+- README §0 · 변경 이력, CLAUDE.md §1 에 한 줄씩. 한계: Skill 은 모델이 설명을 보고 부르는 것이라 강제는 아님(훅과 다름). 이 세션의 Skill 목록에는 아직 안 보임 — 다음 세션부터 불릴 것으로 예상(미확인). `.claude/skills/` 는 공개 저장소로도 나감(비밀 · 개인 계획 표현 없음 확인).

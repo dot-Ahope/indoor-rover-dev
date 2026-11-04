@@ -9,6 +9,7 @@
     S  staged · 추적 작업 트리에 Jetson 비밀번호(지금 값 · 옛 값)가 있음  (§8; 저장소 밖 ~/.config/rover_jetson/pw 또는 ROVER_PW_FILE, 값은 출력 안 함)
     D  README §0 표와 CLAUDE.md 의 사본 표가 다름                       (11-02; 표지 RULES_TABLE_BEGIN/END)
     C  주제 폴더 Docs/0*/figures/<날짜>_*.html 의 날짜 폴더 사본이 없거나 다름 (§7.1)
+    K  .claude/skills/*/SKILL.md 의 "읽을 절" 이 README 에 없는 절 제목 (11-04)
   대상: 기본 = git 에서 바뀐 파일(staged + unstaged + 새 파일)과 그 날짜 폴더. --all = 10-13 이후 날짜 폴더 전부.
   인자: [--all] [--strict(경고가 있으면 종료 코드 1)]
         [--every(추적 · 새 파일 전부 — 기준선용)] [--write-baseline(--every 결과를 BASELINE 에 씀)] [--new-only(기준선에 없는 경고만 내고, 있으면 종료 코드 1)]
@@ -119,6 +120,13 @@ def table(p):   # RULES_TABLE_BEGIN ~ END 사이 표 줄
 ta, tb = table(DL / 'README.md'), table(ROOT / 'CLAUDE.md')
 if ta is None or tb is None: warn('D', 'CLAUDE.md', '규약 표 표지(RULES_TABLE_BEGIN/END)를 못 찾음')
 elif ta != tb: warn('D', 'CLAUDE.md', 'README §0 표와 CLAUDE.md 사본이 다름 — 둘을 맞출 것')
+
+# K (11-04): .claude/skills/*/SKILL.md 의 '읽을 절: `## …`' 가 README 에 실제로 있는 절 제목인지(README 절 이름을 바꾸면 Skill 도)
+try: readme_heads = set(l.strip() for l in (DL / 'README.md').read_text(encoding='utf-8').splitlines() if l.startswith('#'))
+except OSError: readme_heads = set()
+for sk in sorted((ROOT / '.claude/skills').glob('*/SKILL.md')):
+    for h in re.findall(r'읽을 절: `([^`]+)`', sk.read_text(encoding='utf-8')):
+        if h.strip() not in readme_heads: warn('K', sk, 'README 에 없는 절 제목 %s' % h)
 
 # 주제 폴더(Docs/0*/figures/)의 날짜 이름 정리 페이지는 날짜 폴더 figures/ 에도 같은 사본이 있어야 한다(README §7.1)
 for fp in sorted(ROOT.glob('Docs/0*/figures/20??-??-??_*.html')):
