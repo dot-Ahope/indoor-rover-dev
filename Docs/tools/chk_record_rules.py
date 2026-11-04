@@ -11,7 +11,10 @@
     C  주제 폴더 Docs/0*/figures/<날짜>_*.html 의 날짜 폴더 사본이 없거나 다름 (§7.1)
   대상: 기본 = git 에서 바뀐 파일(staged + unstaged + 새 파일)과 그 날짜 폴더. --all = 10-13 이후 날짜 폴더 전부.
   인자: [--all] [--strict(경고가 있으면 종료 코드 1)]
-  출력: 표준 출력에 '[분류] 경로 — 내용' 한 줄씩, 마지막 줄 'RULES_OK' 또는 'RULES_WARN <개수>'."""
+        [--every(추적 · 새 파일 전부 — 기준선용)] [--write-baseline(--every 결과를 BASELINE 에 씀)] [--new-only(기준선에 없는 경고만 내고, 있으면 종료 코드 1)]
+  출력: 표준 출력에 '[분류] 경로 — 내용' 한 줄씩, 마지막 줄 'RULES_OK' 또는 'RULES_WARN <개수>'(--new-only 는 'RULES_NEW 0|<개수>').
+  기준선(11-04): Docs/tools/rules_baseline.txt = 그때 있던 경고(옛 기록 결함). 커밋 훅(chk_commit_gate.py)은 --new-only 로 새 경고만 막는다.
+    옛 결함을 고치면 기준선에서 저절로 빠질 뿐 막지 않는다. 기준선을 다시 쓰는 것은 사용자 확인 뒤(--every --write-baseline)."""
 import os, re, subprocess, sys
 from pathlib import Path
 
@@ -84,7 +87,14 @@ def check_secret():
         for h in set(git('grep', '--cached', '-l', '-F', pw).split() + git('grep', '-l', '-F', pw).split()):
             warn('S', h, '커밋될 수 있는 곳(staged · 추적 작업 트리)에 비밀번호 있음 — 커밋 금지')
 
-if '--all' in ARGS:
+BASELINE = ROOT / 'Docs/tools/rules_baseline.txt'
+def tracked():
+    out = git('ls-files', '-co', '--exclude-standard')
+    return [ROOT / p for p in out.splitlines() if (ROOT / p).is_file()]
+if '--every' in ARGS:
+    files = [p for p in tracked() if p.relative_to(ROOT).as_posix().startswith('Docs/') and 'bags' not in p.parts]
+    days = date_dirs()
+elif '--all' in ARGS:
     files = [p for d in date_dirs() for p in d.rglob('*') if p.is_file() and 'bags' not in p.parts]
     files += [p for p in (ROOT / 'Docs/tools').glob('*') if p.is_file()]
     days = date_dirs()
@@ -117,6 +127,17 @@ for fp in sorted(ROOT.glob('Docs/0*/figures/20??-??-??_*.html')):
     elif cp.read_bytes() != fp.read_bytes(): warn('C', fp, '날짜 폴더 사본과 내용이 다름 — 같은 판으로 맞출 것')
 check_secret()
 
+warns = sorted(set(warns))
+if '--write-baseline' in ARGS:
+    NL = chr(10)
+    BASELINE.write_text('# chk_record_rules 기준선 — 이 목록에 있는 경고는 커밋을 막지 않는다(옛 결함). 손으로 고치지 말고 --every --write-baseline 으로 다시 씀.' + NL + ''.join(w + NL for w in warns), encoding='utf-8')
+    print('기준선 %d 건 → %s' % (len(warns), BASELINE.relative_to(ROOT).as_posix())); sys.exit(0)
+if '--new-only' in ARGS:
+    try: base = set(l for l in BASELINE.read_text(encoding='utf-8').splitlines() if l and not l.startswith('#'))
+    except OSError: base = set()
+    new = [w for w in warns if w not in base]
+    for w in new: print(w)
+    print('RULES_NEW %d' % len(new)); sys.exit(1 if new else 0)
 for w in warns: print(w)
 print('RULES_OK' if not warns else 'RULES_WARN %d' % len(warns))
 sys.exit(1 if warns and '--strict' in ARGS else 0)
