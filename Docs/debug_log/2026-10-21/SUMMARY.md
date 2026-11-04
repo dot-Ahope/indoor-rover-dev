@@ -96,7 +96,7 @@
 - ⚠ 분석 도구 첫 판 오류: 코스트맵 메시지 값은 0~100 으로 바뀌어 있는데(100 = LETHAL, 99 = INSCRIBED) ≥ 253 으로 LETHAL 을 세어 늘 0 이 나왔다. 서명 = 'LETHAL 0' 인데 nav2 는 '비용 99' 를 말함. 고친 판으로 위 표를 냄.
 
 ## §11 사용자 요청: 출발점 복귀(f2sm2h) · f2sm2 영상 · 복귀 중 멈춤 분석
-### §11.1 f2sm2 영상 (`Docs/tools/fig_run_video.py`, 2 배속, 로컬 `figures/f2sm2_people_block.mp4` — mp4 는 git 제외)
+### §11.1 f2sm2 영상 (`Docs/tools/fig_run_video.py`, 2 배속, 로컬 `figures/f2sm2_people_block.mp4` — mp4 는 git 제외) → 2026-11-04 §3 정정: 아님 — figures/f2sm2_people_block.mp4 는 git 추적 중(커밋 30581757)
 - 장면 `figures/f2sm2_frame_60.png`(12:17:46): 목표 (5.5, −2.2) 바로 옆 (5.3, −2.2) 에 라이다 점 호(사람 다리로 봄) · 둘레 전역 LETHAL.
 - 장면 `figures/f2sm2_frame_67.png`(12:18:01): 그 자리 라이다 점 없음, (5.0~5.3, −2.2~−2.5) 빨간 칸은 그대로 → 6 s 뒤 Goal failed. §10 표와 같은 이야기.
 ### §11.2 복귀 주행 f2sm2h (`run_f2c.sh` 에 `home` = `0,0,p` 추가; 원문 `outputs/run_f2sm2h.txt`)
