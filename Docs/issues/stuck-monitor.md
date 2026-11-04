@@ -123,6 +123,16 @@
 - 벽시계 기준이라 bag 재생 평가가 그대로는 안 됨 → 09-29 에 판정 로직을 bag 시간으로 다시 구현한 오프라인 평가기(`job670`).
 - 취소가 '모든 목표' 를 취소하고, 쿨다운 5 s 동안은 다시 판정하지 않는다.
 - **이후(09-18 ~)**: 09-18 §9 데크 yaw 보정에 맞춰 `LIDAR_YAW = π − 0.04677` 동기화(커밋 `a42ec0e0`, `job433_deploy.sh`) → [09-29 §13.1](../debug_log/2026-09-29/SUMMARY.md) 오판 전수 조사: 문틀에서 스캔 상관 회전 과대(−17~−18° vs 자이로 −6~−10°) → 병진 과소, **자이로 우선**으로 수정(20 bag 재생 오판 2 → 0, 커밋 `287a90d3`) · §13.2 받침대 참 정체 검출(`job673_stand.py`) → [10-01 §8.11](../debug_log/2026-10-01/SUMMARY.md) f2a4 실주행 오판 취소('지령 15.6 cm/10° 인데 관측 0.1 cm/8.9°'), 오프라인 재현은 안 됨(`job748_sector.py` 비율 0.5) · **실행 중 `use_gyro = False`** 였음(런치가 `shadow_mode` 만 넘김 — 09-08 의 기본 끔이 남아 09-29 수정이 실주행에 안 걸림) → §8.12 사용자 결정: F2 순회 동안 그림자. 현재 `prep_patrol.sh` 가 `STUCK_SHADOW=true` 로 기동(CLAUDE.md §6). 다음 시기 카드에서 채움.
+- **이후(9 기 끝, 10-29 §8 · §9 — 날짜는 10-30 작업이 10-29 SUMMARY 에 들어감)**: 문제 대장 2 기 작성 중 '자이로 우선 수정이 실주행에서 꺼져 있다' 를 원본으로 확인 → 사용자 결정 **켜지 않음**.
+  - 확인한 코드(지금도 같음, 11-04): `ros2_ws/src/rover_bringup/scripts/stuck_monitor.py` 84~85 행 `('shadow_mode', True), ('rate', 5.0), ('use_gyro', False)])   # 2026-09-08: 200Hz IMU 구독이 rclpy 역직렬화만으로 CPU ~25% → 기본 off` · 102 행 `if bool(g('use_gyro')):` 일 때만 `/imu/data` 구독 → 끄면 창 안 자이로 표본 0 → 스캔 상관 회전으로 대체. `ros2_ws/src/rover_navigation/launch/navigation.launch.py` 221~223 행은 `parameters=[{'shadow_mode': LaunchConfiguration('stuck_shadow')}]` 만 넘긴다 · `Docs/tools/prep_patrol.sh` 17 행 `STUCK_SHADOW=true` → `prep_fast.sh` 63 행 `stuck_shadow:=${STUCK_SHADOW:-true}`. use_gyro 를 켜는 곳은 launch · `Docs/tools/prep_*.sh` 어디에도 없다(10-29 §8 grep).
+  - 이력(10-29 §9, `git log -p -- …/stuck_monitor.py`): `use_gyro` 기본 False 는 09-08 `9782f851` 부터 바뀐 적 없고, 자이로 우선 판정은 09-29 `287a90d3` 이 그 위에 얹었다 → 간극은 **09-29 수정 때 함께 생긴 것**(사용자는 '이후 작업에서 바뀐 것' 으로 봤으나 이력은 아님). 09-29 오프라인 재생(`job670`)은 bag 의 `/imu/data` 를 직접 읽어 노드의 구독 조건과 무관했으므로 그때 드러나지 않았다(추정).
+  - 10-29 §8 의 미확인 'G3b 받침대 시험이 use_gyro 를 켜고 돌았나' (카드 작성 중 확인): [`job673_stand.py`](../debug_log/2026-09-29/jobs/job673_stand.py) 는 `/cmd_vel` 만 내고 `/rover/stuck` · `/wheel_odom` · `/imu/data` 를 읽을 뿐 stuck_monitor 파라미터를 건드리지 않는다. [`job674_stand_run.sh`](../debug_log/2026-09-29/jobs/job674_stand_run.sh) 는 prep(`job657_prep_f0b.sh`)으로 띄운 스택의 노드를 썼고, 모드를 찍으려던 grep 줄은 정규식 오류로 실패했다(`outputs/j674_stand.txt` '`stuck_monitor 모드: grep: Invalid regular expression`'). 따라서 그 시험도 **use_gyro False 로 돌았을 것**(코드 · launch 근거 추정). 다만 받침대는 몸이 안 돌아 자이로 · 스캔 상관 모두 0° 이므로 use_gyro 여부가 결과(직진 0.8 s · 회전 0.9 s 검출)를 바꾸지 못한다 — **G3b 는 이 간극을 시험하지 않는 시험**이었다(추론).
+    ```
+    직진 6 s | 휠 |v| 0.070 m/s |ω| 0.00 rad/s | 자이로 |ω| 0.004 rad/s | 판정 2 건 0.8 s: STUCK: 지령 5.6cm/0° 인데 관측 0.0cm/0.0° (비율 0.00); …
+    회전 6 s | 휠 |v| 0.001 m/s |ω| 0.30 rad/s | 자이로 |ω| 0.004 rad/s | 판정 2 건 0.9 s: STUCK: 지령 0.0cm/17° 인데 관측 0.0cm/0.0° (비율 0.00); …
+    ```
+  - 사용자 결정(10-29 §9): "자이로 우선 판정 같은 간극은 이후 작업에서 바뀌어서 그런 것으로 보인다. 켜지 마라." → 코드 변경 없음. 켜면 CPU 비용(09-08 기준 ~25 %, 지금 C++ 컨디셔너 · 다른 부하 구성에서는 다시 재야 함 — 10-29 §8)이 있고, 표준 prep 은 관찰(그림자)만이라 지금 주행에는 조치가 걸리지 않는다.
+  - **지금 코드 영향(11-04)**: 표준 순회에서 stuck_monitor = 그림자 · use_gyro 끔 → 09-29 이 고친 '문틀에서 스캔 상관 회전 과대 → 병진 과소' 오판 기전이 판정 로직에 그대로 살아 있다. 그림자라 주행을 끊지는 않지만, `/rover/stuck` 진단 · 로그의 STUCK 줄을 분석에 쓸 때는 '자이로 우선 아님' 을 전제로 읽어야 한다. 작동 모드로 되돌리려면 use_gyro 를 켤지(CPU 재측정) 같이 정해야 한다. CLAUDE.md §6 은 11-03 정정으로 '`use_gyro` 기본 끔 · 표준 prep 은 관찰만' 이라 적혀 있어 코드와 맞다.
 
 ## 8. 실험 · 도구 색인
 | 이름 | 무엇 | 위치 |

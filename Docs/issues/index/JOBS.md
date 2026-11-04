@@ -30,7 +30,7 @@
 | [`chk_jetson_state.sh`](../../tools/chk_jetson_state.sh) | 상태 확인(로버 안 움직임): 재부팅 여부·IP·스택·/tmp 스크립트·캡처 도구 권한. 10-13 세션 시작용 | 10-13 §0 |
 | [`chk_padding_dynamic.py`](../../tools/chk_padding_dynamic.py) | chk_padding_dynamic — 실행 중에 코스트맵 footprint_padding 을 바꾸면 실제로 반영되는지 본다. 로버는 움직이지 않는다(명령을 내지 않음). (2026-10-14) | 10-14 §7 · 10-14 §7.1 · 11-03 §1 · … +1 |
 | [`chk_prep.py`](../../tools/chk_prep.py) | prep 확인을 한 프로세스(DDS 참여자 1 개)로 (2026-10-12 §13). | 10-15 §1 · 10-15 §1.1 · 10-20 §7.4 · … +11 |
-| [`chk_record_rules.py`](../../tools/chk_record_rules.py) | chk_record_rules — 작업 규약(Docs/debug_log/README.md)의 기계로 볼 수 있는 부분을 점검하고 **경고만** 한다 (2026-11-02, PC, 로버 안 움직임). | 11-02 §13 · 11-02 §4 · 11-02 §5 · … +2 |
+| [`chk_record_rules.py`](../../tools/chk_record_rules.py) | chk_record_rules — 작업 규약(Docs/debug_log/README.md)의 기계로 볼 수 있는 부분을 점검하고 **경고만** 한다 (2026-11-02, PC, 로버 안 움직임). | 11-02 §13 · 11-02 §4 · 11-02 §5 · … +3 |
 | [`fig_bag_reception.py`](../../tools/fig_bag_reception.py) | fig_bag_reception — bag 기록기가 토픽별로 '제때 받았는지'를 시간축으로 그린다. (2026-10-13) | 10-13 §3 |
 | [`fig_box_approach_video.py`](../../tools/fig_box_approach_video.py) | fig_box_approach_video — 로버가 장애물(상자)에 다가가 멈추기까지를 지도 좌표 영상으로 만든다. (2026-10-13) | 10-13 §4.6 |
 | [`fig_drive_video.py`](../../tools/fig_drive_video.py) | fig_drive_video — 주행 한 구간을 영상으로(1920 × 1080). fig_run_video · 10-23 fig_replan_video 의 화면 재설계판 (2026-10-23 §20.5). | 10-23 §20.5 · 10-23 §20.6 · 10-23 §20.7 · … +3 |
@@ -39,20 +39,20 @@
 | [`fig_run_video.py`](../../tools/fig_run_video.py) | fig_run_video — 주행 한 구간을 지도 좌표 영상으로 만든다(특정 장애물 없이 주행 전체를 보는 일반판). (2026-10-14) | 10-14 19.3 · 10-14 §10 · 10-14 §13.4 · … +2 |
 | [`fig_rviz_video.py`](../../tools/fig_rviz_video.py) | fig_rviz_video — 주행 구간을 RViz 스타일(어두운 바탕 · 1 m 격자 · costmap 색표 · 초록 경로 · 빨간 라이다 · 차체 외곽 · 좌표축)로 정사각 영상 (2026-10-26 §17). | 10-26 §17 · 10-26 §18.1 · 10-27 §12 · … +3 |
 | [`fig_stop_costmap.py`](../../tools/fig_stop_costmap.py) | fig_stop_costmap — 로버가 멈춘 순간의 로컬 코스트맵·차체 풋프린트·라이다 점을 겹쳐 그리고, 풋프린트에 걸린 비용과 실제 여유(라이다)를 수치로 낸다. (2026-10-13) | 10-13 §4.5 · 10-14 §9.2 |
-| [`prep_fast.sh`](../../tools/prep_fast.sh) | prep_fast — 순회용 빠른 기동(정리 → 센서 → SLAM 위치 추정 → Nav2 → 준비 확인). 로버 안 움직임. 옛 이름 job972_prep_fast.sh(10-12 §13) | 10-14 §25 · 10-15 §1 · 10-15 §1.1 · … +15 |
+| [`prep_fast.sh`](../../tools/prep_fast.sh) | prep_fast — 순회용 빠른 기동(정리 → 센서 → SLAM 위치 추정 → Nav2 → 준비 확인). 로버 안 움직임. 옛 이름 job972_prep_fast.sh(10-12 §13) | 10-14 §25 · 10-15 §1 · 10-15 §1.1 · … +19 |
 | [`prep_patrol.sh`](../../tools/prep_patrol.sh) | prep_patrol — 순회 구성으로 빠른 prep. 로버 안 움직임. 인자: VIZ(lite\|true\|off, 기본 lite) [FWD=15.0] | 10-13 §1 · 10-13 §1.1 · 10-15 §1 · … +18 |
-| [`README.md`](../../tools/README.md) | Docs/tools — 계속 쓰는 도구 (2026-10-13~) | 08-27 한 일 · 08-28 코드 위치 이전 (사용자 요청) · 09-18 15.3 · … +20 |
+| [`README.md`](../../tools/README.md) | Docs/tools — 계속 쓰는 도구 (2026-10-13~) | 08-27 한 일 · 08-28 코드 위치 이전 (사용자 요청) · 09-18 15.3 · … +21 |
 | [`run_slam_replay.sh`](../../tools/run_slam_replay.sh) | run_slam_replay — 위치 추정 SLAM 을 주행 bag 입력으로 다시 돌려 map→odom stamp 정체를 잰다 (2026-10-27 §26, Jetson, 로버 안 움직임). | 10-27 §26.2 · 10-27 §29 |
 | [`slam_replay_feed.py`](../../tools/slam_replay_feed.py) | slam_replay_feed — 주행 bag 의 /scan · /tf(map→odom 뺌) · /tf_static 을 실시간 1 배로 다시 내보내고(/clock 포함), | 10-27 §26.2 |
-| [`up_tools.sh`](../../tools/up_tools.sh) | up_tools — Jetson /tmp 로 도구 전송(실행 안 함). 비밀번호는 run_jn.sh 에서 읽는다. 재부팅 뒤 한 번. | 10-14 §7.1 · 11-02 §3 · 11-02 §6 · … +1 |
+| [`up_tools.sh`](../../tools/up_tools.sh) | up_tools — 저장소 Docs/tools 의 Jetson 쪽 도구를 Jetson /tmp 로 전송(실행 안 함 · 로버 안 움직임). Jetson 재부팅 뒤 한 번. | 10-14 §7.1 · 11-02 §3 · 11-02 §6 · … +4 |
 
 ## 2026-08-26 (28)
 
 | 파일 | 설명 | 언급 |
 |---|---|---|
 | [`job0.sh`](../../debug_log/2026-08-26/jobs/job0.sh) | Step 0 추가 점검: L4T/JetPack 버전, USB 장치, CH340 인식 여부 | 08-26 (머리) |
-| [`job0b.sh`](../../debug_log/2026-08-26/jobs/job0b.sh) | CH340이 ttyUSB로 안 잡히는 원인 조사: 커널 로그 + brltty 여부 | — |
-| [`job0c.sh`](../../debug_log/2026-08-26/jobs/job0c.sh) | udev 규칙: CH340(1a86:7523) -> /dev/rover 심볼릭 링크 고정 | — |
+| [`job0b.sh`](../../debug_log/2026-08-26/jobs/job0b.sh) | CH340이 ttyUSB로 안 잡히는 원인 조사: 커널 로그 + brltty 여부 | 11-03 §11 |
+| [`job0c.sh`](../../debug_log/2026-08-26/jobs/job0c.sh) | udev 규칙: CH340(1a86:7523) -> /dev/rover 심볼릭 링크 고정 | 11-03 §11 |
 | [`job1.sh`](../../debug_log/2026-08-26/jobs/job1.sh) | Step 1: micro-ros-agent 컨테이너 실행 (심볼릭 링크 resolve 후 전달) | — |
 | [`job1b.sh`](../../debug_log/2026-08-26/jobs/job1b.sh) | Step 1 검증: 토픽 목록, 발행 주기, 배터리 전압 | — |
 | [`job1c.sh`](../../debug_log/2026-08-26/jobs/job1c.sh) | Step 1 검증(계속): Humble hz는 QoS 플래그 없음 → 플레인 hz 시도, 실패 시 echo 카운트로 측정 | — |
@@ -87,7 +87,7 @@
 | [`job4b.sh`](../../debug_log/2026-08-27/jobs/job4b.sh) | D455 camera_link 오프셋 (Intel realsense2_description xacro) | — |
 | [`job4c.sh`](../../debug_log/2026-08-27/jobs/job4c.sh) | (단계) JOINT_CHAIN | — |
 | [`job4d.sh`](../../debug_log/2026-08-27/jobs/job4d.sh) | 현재 Jetson의 RealSense 준비 상태 진단 (JETSON_REALSENSE_INSTALL.md 게이트 기준) | 08-27 한 일 |
-| [`job4e.sh`](../../debug_log/2026-08-27/jobs/job4e.sh) | Step 4 준비 (저리스크): rplidar_ros 설치, RealSense 패키지 업그레이드, udev 규칙 2종 | 08-27 한 일 |
+| [`job4e.sh`](../../debug_log/2026-08-27/jobs/job4e.sh) | Step 4 준비 (저리스크): rplidar_ros 설치, RealSense 패키지 업그레이드, udev 규칙 2종 | 08-27 한 일 · 11-03 §11 |
 | [`job4f.sh`](../../debug_log/2026-08-27/jobs/job4f.sh) | JetsonHacks 저장소 2종 클론 + 빌드 스크립트 원문 확인 | — |
 | [`job4g.sh`](../../debug_log/2026-08-27/jobs/job4g.sh) | RealSense IMU용 HID 센서 커널 모듈 소스 빌드 (root로 실행, 백그라운드, 로그 /tmp/hid_build.log) | 08-27 한 일 |
 | [`job4g_diag.sh`](../../debug_log/2026-08-27/jobs/job4g_diag.sh) | (단계) PROCS · TOP · MEM | — |
@@ -338,7 +338,7 @@
 | [`job103_obs.sh`](../../debug_log/2026-09-09/jobs/job103_obs.sh) | 깨끗한 상태(base+sensors+slam, 중복 없음)에서 보드 링크 60초 연속 관측. 아무것도 죽이지 않는다. | — |
 | [`job104_obs2.sh`](../../debug_log/2026-09-09/jobs/job104_obs2.sh) | 고아 Nav2 프로세스 제거(에이전트·보드 세션은 건드리지 않음) 후 링크 재관측. | — |
 | [`job105_bytes.sh`](../../debug_log/2026-09-09/jobs/job105_bytes.sh) | 결정적 측정: 보드->젯슨 UART 실바이트 유입량과 토픽 수신량을 같은 5초 버킷으로 동시 기록. | — |
-| [`job106_baud.sh`](../../debug_log/2026-09-09/jobs/job106_baud.sh) | (단계) agent 실행 인자 · /dev/ttyUSB0 실제 termios (호스트) · io 카운터 접근 시도 | — |
+| [`job106_baud.sh`](../../debug_log/2026-09-09/jobs/job106_baud.sh) | (단계) agent 실행 인자 · /dev/ttyUSB0 실제 termios (호스트) · io 카운터 접근 시도 | 11-03 §11 |
 | [`job107_port.sh`](../../debug_log/2026-09-09/jobs/job107_port.sh) | (단계) 시리얼 장치 전체 · by-id · 각 ttyUSB 의 드라이버/USB 장치 | — |
 | [`job108_rchar.sh`](../../debug_log/2026-09-09/jobs/job108_rchar.sh) | 결정적 측정: agent 가 시리얼에서 실제로 읽어들이는 바이트 수(rchar)를 토픽 수신량과 같은 버킷으로 기록. | — |
 | [`job109_inside.sh`](../../debug_log/2026-09-09/jobs/job109_inside.sh) | 문제 위치 판별: 컨테이너 내부(agent 와 같은 DDS 참가자 호스트)에서 본 주기 vs 젯슨 호스트에서 본 주기 | — |
@@ -817,7 +817,7 @@
 | [`job432c_run.sh`](../../debug_log/2026-09-18/jobs/job432c_run.sh) | 장착 yaw 측정 실행 (정지, 모터 경로 없음): 라이다 노드 단독 + 카메라(IMU·컬러 끔) → 측정 → 두 노드 종료 | — |
 | [`job432c_wallyaw_tf.py`](../../debug_log/2026-09-18/jobs/job432c_wallyaw_tf.py) | [job432c] 보정 URDF 검증판 — 공칭값 대신 robot_state_publisher 의 TF(base_link←lidar_link, base_link←카메라 구름 프레임)를 쓴다. 기대: 옆벽 ≈ 0°. | 09-18 9.3 |
 | [`job433_deploy.sh`](../../debug_log/2026-09-18/jobs/job433_deploy.sh) | 데크 yaw 보정 배포 (2026-09-18): rover.urdf·rover.urdf.xacro·stuck_monitor.py 를 src+install 에. 기존본은 ~/ros2_ws/.bak_20260918/ 에 백업. | 09-18 9.3 |
-| [`job434_base.sh`](../../debug_log/2026-09-18/jobs/job434_base.sh) | base(micro-ROS 에이전트 + robot_state_publisher)만 기동 — 이후 사용자 보드 리셋 | — |
+| [`job434_base.sh`](../../debug_log/2026-09-18/jobs/job434_base.sh) | base(micro-ROS 에이전트 + robot_state_publisher)만 기동 — 이후 사용자 보드 리셋 | 11-03 §11 |
 | [`job434b_rspdedup.sh`](../../debug_log/2026-09-18/jobs/job434b_rspdedup.sh) | robot_state_publisher 중복 정리: base.launch 의 자식이 아닌 것(벽 측정 때 description.launch 로 띄운 것)만 종료 | 09-18 10 |
 | [`job434c_temp.sh`](../../debug_log/2026-09-18/jobs/job434c_temp.sh) |  | — |
 | [`job438_tfgaps.py`](../../debug_log/2026-09-18/jobs/job438_tfgaps.py) | TF 발행 공백·시각 어긋남 점검 (2026-09-18, 간헐 중단 원인). 인자: BAG GOAL_EPOCH T_END [EVENT_T ...] 반복은 '--' 로 구분 | 09-18 12.2 |
@@ -1058,7 +1058,7 @@
 | [`job547_cpuidle.sh`](../../debug_log/2026-09-23/jobs/job547_cpuidle.sh) |  | — |
 | [`job549_cond.sh`](../../debug_log/2026-09-23/jobs/job549_cond.sh) |  | 09-23 15 |
 | [`job550_f0run.py`](../../debug_log/2026-09-23/jobs/job550_f0run.py) | F0 코스 확장 러너 (2026-09-23): 상자 코스와 무관한 연속 목표 주행 + 왕복 복귀 오차 계측. | 09-23 16 · 09-28 §12 · 09-28 §16 · … +5 |
-| [`job551_f0drive.sh`](../../debug_log/2026-09-23/jobs/job551_f0drive.sh) | F0 주행 래퍼(Jetson, 2026-09-23): 일반 게이트(A 프로세스·B 보드·J nvblox·C SLAM·G2 출발 자세) → bag·tegrastats·top·RSS → job550 → 메타(job453). | 09-23 16 · 10-07 §2.2 · 10-12 §3.4 · … +11 |
+| [`job551_f0drive.sh`](../../debug_log/2026-09-23/jobs/job551_f0drive.sh) | F0 주행 래퍼(Jetson, 2026-09-23): 일반 게이트(A 프로세스·B 보드·J nvblox·C SLAM·G2 출발 자세) → bag·tegrastats·top·RSS → job550 → 메타(job453). | 09-23 16 · 10-07 §2.2 · 10-12 §3.4 · … +13 |
 | [`job552_goalyaw.py`](../../debug_log/2026-09-23/jobs/job552_goalyaw.py) | 목표 도착 뒤 최종 heading 확인 (09-23): bag 끝(목표 도달 시점)의 map yaw·EKF(odom) yaw 와 출발 yaw 의 차, 그리고 라이다 스캔 상관으로 잰 출발→도착 실제 회전. | 09-23 §17 |
 | [`job553_yawseries.py`](../../debug_log/2026-09-23/jobs/job553_yawseries.py) | 목표 도달 전후 yaw 시계열 (09-23): map yaw·EKF yaw·지령 ω 를 'Reached the goal' 전 6 s ~ 후 3 s, 0.5 s 간격으로. | 09-23 §17 |
 | [`job556_abortmap.py`](../../debug_log/2026-09-23/jobs/job556_abortmap.py) | F0-a 복귀 중단 분석 (09-23): 지정 시각들에서 로컬 코스트맵(odom) 치명 셀(OccupancyGrid 100 = LETHAL, 99 = 내접)과 차체 풋프린트(0.5×0.33) 최소 거리·위치, | 09-23 §18 |
@@ -1216,7 +1216,7 @@
 | [`fit_scan2.py`](../../debug_log/2026-10-01/jobs/fit_scan2.py) | 10-01 §8.40: 국소(±0.3 m, ±4°) 격자 탐색 — 책상 반복 구조 때문에 Powell 이 1.3~2.7 m 옆 칸으로 빠지는 것(fit_scan.py) 방지 | 10-01 §8.40 |
 | [`job240_clean.sh`](../../debug_log/2026-10-01/jobs/job240_clean.sh) | ── 깨끗한 기동 절차 (2026-09-11 제정) ─────────────────────────────────────── | 09-11 5.4 · 09-11 5.7 · 09-11 절차 (확정) · … +10 |
 | [`job550_f0run.py`](../../debug_log/2026-10-01/jobs/job550_f0run.py) | F0 코스 확장 러너 (2026-09-23): 상자 코스와 무관한 연속 목표 주행 + 왕복 복귀 오차 계측. | 09-23 16 · 09-28 §12 · 09-28 §16 · … +5 |
-| [`job551_f0drive.sh`](../../debug_log/2026-10-01/jobs/job551_f0drive.sh) | F0 주행 래퍼(Jetson, 2026-09-23): 일반 게이트(A 프로세스·B 보드·J nvblox·C SLAM·G2 출발 자세) → bag·tegrastats·top·RSS → job550 → 메타(job453). | 09-23 16 · 10-07 §2.2 · 10-12 §3.4 · … +11 |
+| [`job551_f0drive.sh`](../../debug_log/2026-10-01/jobs/job551_f0drive.sh) | F0 주행 래퍼(Jetson, 2026-09-23): 일반 게이트(A 프로세스·B 보드·J nvblox·C SLAM·G2 출발 자세) → bag·tegrastats·top·RSS → job550 → 메타(job453). | 09-23 16 · 10-07 §2.2 · 10-12 §3.4 · … +13 |
 | [`job697_restore_chk.py`](../../debug_log/2026-10-01/jobs/job697_restore_chk.py) | 09-30 §4 F1-2 복원 확인: 불러온 /map 크기·원점(저장본 office_v1 = 301×213, 원점 (−5.09, −6.96))과 | 10-01 §6 |
 | [`job719_cut.sh`](../../debug_log/2026-10-01/jobs/job719_cut.sh) | 09-30 §17: 점프 전(bag +699 s, 17:36:15)까지만 지도 되살리기 — 도메인 42 에서 office_v1 이어 그리기 slam(현 slam.yaml)을 sim time 으로 띄우고 | 09-30 §17 |
 | [`job719_cutreplay.py`](../../debug_log/2026-10-01/jobs/job719_cutreplay.py) | 09-30 §17: 점프 전까지만 지도 되살리기 — 매핑 bag 을 **도메인 42**·sim time 으로 CUT 초까지만 재생해 | 09-30 §17 |
@@ -1305,7 +1305,7 @@
 | [`clear_cand.py`](../../debug_log/2026-10-02/jobs/clear_cand.py) | 10-02 §5: 경로 계획용 격자에서 지울 후보(움직이는 물체) 찾기 — office_v3 점유 칸 중 이후 주행에서 "비어 있음" 증거가 쌓인 칸 | 10-02 §5 |
 | [`cmp_maps.py`](../../debug_log/2026-10-02/jobs/cmp_maps.py) | 10-02 §1: 후보 지도 판정 H-1(구멍)·H-3(옛 지도 보존)·H-4(남쪽 벽) — 기준 office_v2(·v1) | 10-02 §1.1 |
 | [`get803.sh`](../../debug_log/2026-10-02/jobs/get803.sh) |  | — |
-| [`job551_f0drive.sh`](../../debug_log/2026-10-02/jobs/job551_f0drive.sh) | F0 주행 래퍼(Jetson, 2026-09-23): 일반 게이트(A 프로세스·B 보드·J nvblox·C SLAM·G2 출발 자세) → bag·tegrastats·top·RSS → job550 → 메타(job453). | 09-23 16 · 10-07 §2.2 · 10-12 §3.4 · … +11 |
+| [`job551_f0drive.sh`](../../debug_log/2026-10-02/jobs/job551_f0drive.sh) | F0 주행 래퍼(Jetson, 2026-09-23): 일반 게이트(A 프로세스·B 보드·J nvblox·C SLAM·G2 출발 자세) → bag·tegrastats·top·RSS → job550 → 메타(job453). | 09-23 16 · 10-07 §2.2 · 10-12 §3.4 · … +13 |
 | [`job726_prep_map.sh`](../../debug_log/2026-10-02/jobs/job726_prep_map.sh) | 10-01 §5·§7: 지도 불러오기 prep — 기본 office_v3(10-02 §4, 이전 office_v2)(출발 테이프 = 0,0,0). 인자/환경: | 10-01 §5 · 10-01 §7 · 10-02 §4 · … +1 |
 | [`job731_f2_prep.sh`](../../debug_log/2026-10-02/jobs/job731_f2_prep.sh) | 10-01 §8.1 F2 첫 주행 prep: office_v3(10-02 §4, MAP= 로 바꿈) + slam_toolbox 위치 추정 모드(LOC=slamloc), 전체 스택 → 시작 자세 확인(L-d) | 10-01 §8.1 · 10-02 §4 |
 | [`job760_nav2_restart.sh`](../../debug_log/2026-10-02/jobs/job760_nav2_restart.sh) | 10-01 §8.18: Nav2 만 재시작(새 BT 적용) — 센서·EKF·위치 추정(slam_toolbox)·에이전트는 그대로(로버가 손으로 옮겨지지 않아 위치 추정 유효). | 10-01 §8.18 · 10-02 §4 |
@@ -1429,7 +1429,7 @@
 | [`get901.sh`](../../debug_log/2026-10-07/jobs/get901.sh) |  | — |
 | [`get915.sh`](../../debug_log/2026-10-07/jobs/get915.sh) | 10-07 §4: 재생 결과 회수(인자 = 파일 이름들) | — |
 | [`job550_f0run.py`](../../debug_log/2026-10-07/jobs/job550_f0run.py) | F0 코스 확장 러너 (2026-09-23): 상자 코스와 무관한 연속 목표 주행 + 왕복 복귀 오차 계측. | 09-23 16 · 09-28 §12 · 09-28 §16 · … +5 |
-| [`job551_f0drive.sh`](../../debug_log/2026-10-07/jobs/job551_f0drive.sh) | F0 주행 래퍼(Jetson, 2026-09-23): 일반 게이트(A 프로세스·B 보드·J nvblox·C SLAM·G2 출발 자세) → bag·tegrastats·top·RSS → job550 → 메타(job453). | 09-23 16 · 10-07 §2.2 · 10-12 §3.4 · … +11 |
+| [`job551_f0drive.sh`](../../debug_log/2026-10-07/jobs/job551_f0drive.sh) | F0 주행 래퍼(Jetson, 2026-09-23): 일반 게이트(A 프로세스·B 보드·J nvblox·C SLAM·G2 출발 자세) → bag·tegrastats·top·RSS → job550 → 메타(job453). | 09-23 16 · 10-07 §2.2 · 10-12 §3.4 · … +13 |
 | [`job726_prep_map.sh`](../../debug_log/2026-10-07/jobs/job726_prep_map.sh) | 10-01 §5·§7: 지도 불러오기 prep — 기본 office_v3(10-02 §4, 이전 office_v2)(출발 테이프 = 0,0,0). 인자/환경: | 10-01 §5 · 10-01 §7 · 10-02 §4 · … +1 |
 | [`job876_g4.sh`](../../debug_log/2026-10-07/jobs/job876_g4.sh) | 10-06 §12.1: G4(회전 중 병진 타당성) 켜고 5 조건, 도메인 81~85 — 1 분마다 진행 줄(current.log 에 보이게) | 10-06 §12 · 10-06 §13 · 10-07 §1 |
 | [`job900_chk.sh`](../../debug_log/2026-10-07/jobs/job900_chk.sh) | 10-07 시작 점검: 가동 시간, 스택 프로세스, 재생에 필요한 파일 | — |
@@ -1529,7 +1529,7 @@
 | [`fig_f2f1.py`](../../debug_log/2026-10-12/jobs/fig_f2f1.py) | 10-12 §2 그림: f2f1 복귀 상자 구간 — 위 = 그 순간의 로컬 코스트맵(RViz 색)·차체·경로·MPPI 최적 궤적 4 장면, 아래 = 시간축(지령 속도, TF 끊김·사건, CPU) | 10-12 §2 |
 | [`gap_eval.py`](../../debug_log/2026-10-12/jobs/gap_eval.py) | 10-12 §2: 토픽·TF 끊김 찾기 — bag 기록 시각(수신) 간격과 메시지 stamp 간격. 인자: bag [최소 간격 s=0.5] | 10-12 §2 · 10-12 §3 |
 | [`get960.sh`](../../debug_log/2026-10-12/jobs/get960.sh) | 10-12 §3.3: Nav2·센서 로그 통째 회수(재부팅 전에) | — |
-| [`job551_f0drive.sh`](../../debug_log/2026-10-12/jobs/job551_f0drive.sh) | F0 주행 래퍼(Jetson, 2026-09-23): 일반 게이트(A 프로세스·B 보드·J nvblox·C SLAM·G2 출발 자세) → bag·tegrastats·top·RSS → job550 → 메타(job453). | 09-23 16 · 10-07 §2.2 · 10-12 §3.4 · … +11 |
+| [`job551_f0drive.sh`](../../debug_log/2026-10-12/jobs/job551_f0drive.sh) | F0 주행 래퍼(Jetson, 2026-09-23): 일반 게이트(A 프로세스·B 보드·J nvblox·C SLAM·G2 출발 자세) → bag·tegrastats·top·RSS → job550 → 메타(job453). | 09-23 16 · 10-07 §2.2 · 10-12 §3.4 · … +13 |
 | [`job947_state.sh`](../../debug_log/2026-10-12/jobs/job947_state.sh) |  | 10-12 §1 |
 | [`job951_chk.sh`](../../debug_log/2026-10-12/jobs/job951_chk.sh) | 10-12 §1: prep 뒤 확인(로버 안 움직임) — Nav2 수명 주기, 실행 중 PreferForward 가중, 원점, nvblox | 10-12 §1.1 |
 | [`job952_navlog.sh`](../../debug_log/2026-10-12/jobs/job952_navlog.sh) | 10-12 §2: f2f1 주행 중 Nav2·EKF·SLAM 로그의 경고·오류(10:32~10:36) — 로버 안 움직임 | — |
@@ -1561,7 +1561,7 @@
 | [`tf_rate.py`](../../debug_log/2026-10-12/jobs/tf_rate.py) | 10-12 §3.3: bag 의 /tf 발행량 추이 — 10 s 칸마다 프레임 쌍별 변환 수(Hz)와 /tf 메시지 수. 인자: bag | 10-12 §3.3 · 10-12 §4 |
 | [`top_eval.py`](../../debug_log/2026-10-12/jobs/top_eval.py) | 10-12 §2: top 기록(2 s 간격)에서 구간별 부하 — load average, 유휴 %, 프로세스별 CPU 평균. 인자: top.log HH:MM:SS HH:MM:SS [..구간 더] | 10-12 §2 · 10-12 §3 |
 | [`traj_size.py`](../../debug_log/2026-10-12/jobs/traj_size.py) | 10-12 §7.3: /trajectories(MPPI 궤적 발행) 메시지의 크기·주기 추이 — 10 s 칸마다 메시지 수, 직렬화 크기(kB), 마커 수. 인자: bag... | 10-12 §7.3 |
-| [`up950.sh`](../../debug_log/2026-10-12/jobs/up950.sh) | 10-12 §1: 재부팅 뒤 스크립트 재전송 + nav2_params(PreferForward 15) 배포·빌드. 실행은 안 함. 비밀번호는 run_jn.sh 에서 읽음. | 10-12 §1 |
+| [`up950.sh`](../../debug_log/2026-10-12/jobs/up950.sh) | 10-12 §1: 재부팅 뒤 스크립트 재전송 + nav2_params(PreferForward 15) 배포·빌드. 실행은 안 함. 비밀번호는 run_jn.sh 에서 읽음. | 10-12 §1 · 11-04 §1 |
 | [`up958.sh`](../../debug_log/2026-10-12/jobs/up958.sh) | 10-12 §3.2: navigation.launch(지도 서버 관리 노드 3 s 지연) 배포·빌드 + 확인 스크립트 전송 | — |
 | [`up963.sh`](../../debug_log/2026-10-12/jobs/up963.sh) |  | — |
 | [`up972.sh`](../../debug_log/2026-10-12/jobs/up972.sh) |  | — |
@@ -1587,7 +1587,7 @@
 | [`fetch_one.sh`](../../debug_log/2026-10-13/jobs/fetch_one.sh) | (PC·WSL) Jetson /tmp 의 파일 하나를 PC 로 회수. 인자: 원격 파일명, 받을 폴더(/mnt/...). 비밀번호는 run_jn.sh 에서 읽는다(여기에 적지 않음). | — |
 | [`fig_report.py`](../../debug_log/2026-10-13/jobs/fig_report.py) | fig_report — 10-13 하루 기록을 한 장짜리 HTML 로 만든다(그림은 data URI 로 넣음). (2026-10-13, PC 에서 실행) | 10-13 §15 |
 | [`job550_f0run.py`](../../debug_log/2026-10-13/jobs/job550_f0run.py) | F0 코스 확장 러너 (2026-09-23): 상자 코스와 무관한 연속 목표 주행 + 왕복 복귀 오차 계측. | 09-23 16 · 09-28 §12 · 09-28 §16 · … +5 |
-| [`job551_f0drive.sh`](../../debug_log/2026-10-13/jobs/job551_f0drive.sh) | F0 주행 래퍼(Jetson, 2026-09-23): 일반 게이트(A 프로세스·B 보드·J nvblox·C SLAM·G2 출발 자세) → bag·tegrastats·top·RSS → job550 → 메타(job453). | 09-23 16 · 10-07 §2.2 · 10-12 §3.4 · … +11 |
+| [`job551_f0drive.sh`](../../debug_log/2026-10-13/jobs/job551_f0drive.sh) | F0 주행 래퍼(Jetson, 2026-09-23): 일반 게이트(A 프로세스·B 보드·J nvblox·C SLAM·G2 출발 자세) → bag·tegrastats·top·RSS → job550 → 메타(job453). | 09-23 16 · 10-07 §2.2 · 10-12 §3.4 · … +13 |
 | [`job613_pathyaw.py`](../../debug_log/2026-10-13/jobs/job613_pathyaw.py) | 경로 끝 방향 조회(단독 프로세스, 2026-09-28 §20): 현재 위치 → (GX, GY) 경로를 planner(GridBased)에서 받아 끝 0.3 m 구간 방향(rad)을 출력. | 09-28 §20 · 10-13 §4 · 10-21 §3 |
 | [`prep_deploy_costw.sh`](../../debug_log/2026-10-13/jobs/prep_deploy_costw.sh) | (10-13 §12) MPPI CostCritic cost_weight 를 Jetson 의 nav2_params.yaml(소스·설치본)에 반영 → 순회 prep(lite, 15) → 실행 중 값 확인. 인자: 값(기본 11.43). 로버 안 움직임 | 10-13 §12.1 |
 | [`prep_deploy_ginfl.sh`](../../debug_log/2026-10-13/jobs/prep_deploy_ginfl.sh) | (10-13 §5.3) 전역 inflation 감쇠 계수를 Jetson 의 nav2_params.yaml(소스·설치본)에 반영 → 순회 prep → 실행 중 값 확인. 인자: 값(기본 3.0). 로버 안 움직임 | 10-13 §5.6 |
@@ -1754,7 +1754,7 @@
 | [`get_f2z1.sh`](../../debug_log/2026-10-19/jobs/get_f2z1.sh) |  | — |
 | [`get_replays.sh`](../../debug_log/2026-10-19/jobs/get_replays.sh) | (PC·WSL, 10-19 §6) 재생 출력 tgz 회수 — 인자: 꼬리표 ... | — |
 | [`get_vso.sh`](../../debug_log/2026-10-19/jobs/get_vso.sh) |  | — |
-| [`job551_f0drive.sh`](../../debug_log/2026-10-19/jobs/job551_f0drive.sh) | F0 주행 래퍼(Jetson, 2026-09-23): 일반 게이트(A 프로세스·B 보드·J nvblox·C SLAM·G2 출발 자세) → bag·tegrastats·top·RSS → job550 → 메타(job453). | 09-23 16 · 10-07 §2.2 · 10-12 §3.4 · … +11 |
+| [`job551_f0drive.sh`](../../debug_log/2026-10-19/jobs/job551_f0drive.sh) | F0 주행 래퍼(Jetson, 2026-09-23): 일반 게이트(A 프로세스·B 보드·J nvblox·C SLAM·G2 출발 자세) → bag·tegrastats·top·RSS → job550 → 메타(job453). | 09-23 16 · 10-07 §2.2 · 10-12 §3.4 · … +13 |
 | [`mk_vslam_bag.py`](../../debug_log/2026-10-19/jobs/mk_vslam_bag.py) | mk_vslam_bag — IR bag(§17 프로세스 안 기록)을 cuVSLAM 오프라인 입력 bag 으로: 프로젝터 끔 / 켬 프레임을 다른 토픽으로 나누고 IMU · tf_static 을 붙인다. (2026-10-19 §23, Jetson 호스트 | — |
 | [`pack_replay.sh`](../../debug_log/2026-10-19/jobs/pack_replay.sh) | (10-19 §6) ~/bags 의 재생 출력을 /tmp 에 tgz 로 묶음(PC 회수용) — 인자: 꼬리표 ... 로버 안 움직임 | — |
 | [`prep_eoff.sh`](../../debug_log/2026-10-19/jobs/prep_eoff.sh) | 10-19 §25: 프로젝터 상시 끔 구성 prep(로버 정지) | — |
@@ -1849,7 +1849,7 @@
 | [`fig_day_summary_1021.py`](../../debug_log/2026-10-21/jobs/fig_day_summary_1021.py) | 10-21 하루 정리 페이지 생성기 — 본문 수치는 SUMMARY.md §0~§22 에서 옮김, 그림은 figures/ 의 PNG 를 그대로 넣음 | 10-21 §22 |
 | [`fig_mx2_page.py`](../../debug_log/2026-10-21/jobs/fig_mx2_page.py) | 10-21 §19.3 mx2 결과 정리 페이지 생성기 — 수치는 outputs/run_mx2.txt · anal_mx2_leak.txt 에서 옮김, 그림은 mx_img/*.png 를 그대로 넣음 | 10-21 §19.3 |
 | [`job550_f0run.py`](../../debug_log/2026-10-21/jobs/job550_f0run.py) | F0 코스 확장 러너 (2026-09-23): 상자 코스와 무관한 연속 목표 주행 + 왕복 복귀 오차 계측. | 09-23 16 · 09-28 §12 · 09-28 §16 · … +5 |
-| [`job551_f0drive.sh`](../../debug_log/2026-10-21/jobs/job551_f0drive.sh) | F0 주행 래퍼(Jetson, 2026-09-23): 일반 게이트(A 프로세스·B 보드·J nvblox·C SLAM·G2 출발 자세) → bag·tegrastats·top·RSS → job550 → 메타(job453). | 09-23 16 · 10-07 §2.2 · 10-12 §3.4 · … +11 |
+| [`job551_f0drive.sh`](../../debug_log/2026-10-21/jobs/job551_f0drive.sh) | F0 주행 래퍼(Jetson, 2026-09-23): 일반 게이트(A 프로세스·B 보드·J nvblox·C SLAM·G2 출발 자세) → bag·tegrastats·top·RSS → job550 → 메타(job453). | 09-23 16 · 10-07 §2.2 · 10-12 §3.4 · … +13 |
 | [`job613_pathyaw.py`](../../debug_log/2026-10-21/jobs/job613_pathyaw.py) | 경로 끝 방향 조회(단독 프로세스, 2026-09-28 §20): 현재 위치 → (GX, GY) 경로를 planner(GridBased)에서 받아 끝 0.3 m 구간 방향(rad)을 출력. | 09-28 §20 · 10-13 §4 · 10-21 §3 |
 | [`mx_cam.launch.py`](../../debug_log/2026-10-21/jobs/mx_cam.launch.py) | 10-21 §19 mx1 — 시험 컨테이너(isaac_rs_test, 드라이버 4.51.1 · librealsense 2.55.1 RSUSB) 안 카메라만. | 10-21 §19 · 10-21 §23 |
 | [`nv_static.launch.py`](../../debug_log/2026-10-21/jobs/nv_static.launch.py) | 10-21 §18 3번 정지 시험 nv1 — NVIDIA 권장 구성 그대로: RealSense 드라이버(4.51.1-isaac) + realsense_splitter + cuVSLAM 을 한 component container 에. | 10-21 §18 · 10-21 §18.2 · 10-21 §23 |
@@ -2053,7 +2053,7 @@
 | [`get_logs_f2st1.sh`](../../debug_log/2026-10-27/jobs/get_logs_f2st1.sh) | (PC·WSL) 10-27 f2st1 nav2 · slam · sensors 로그 회수(prep 이 덮기 전) — 비밀번호는 run_jn.sh 에서 읽음(값 출력 안 함) | 10-27 §11 |
 | [`get_logs_f2tf1.sh`](../../debug_log/2026-10-27/jobs/get_logs_f2tf1.sh) | (PC·WSL) 10-27 f2tf1 nav2 · slam · sensors 로그 회수(prep 이 덮기 전) — 비밀번호는 run_jn.sh 에서 읽음(값 출력 안 함) | 10-27 §19 |
 | [`get_logs_f2tt1.sh`](../../debug_log/2026-10-27/jobs/get_logs_f2tt1.sh) | (PC·WSL) 10-27 f2tt1 nav2 · slam · sensors 로그 회수(prep 이 덮기 전) — 비밀번호는 run_jn.sh 에서 읽음(값 출력 안 함) | 10-27 §25 |
-| [`job551_f0drive.sh`](../../debug_log/2026-10-27/jobs/job551_f0drive.sh) | F0 주행 래퍼(Jetson, 2026-09-23): 일반 게이트(A 프로세스·B 보드·J nvblox·C SLAM·G2 출발 자세) → bag·tegrastats·top·RSS → job550 → 메타(job453). | 09-23 16 · 10-07 §2.2 · 10-12 §3.4 · … +11 |
+| [`job551_f0drive.sh`](../../debug_log/2026-10-27/jobs/job551_f0drive.sh) | F0 주행 래퍼(Jetson, 2026-09-23): 일반 게이트(A 프로세스·B 보드·J nvblox·C SLAM·G2 출발 자세) → bag·tegrastats·top·RSS → job550 → 메타(job453). | 09-23 16 · 10-07 §2.2 · 10-12 §3.4 · … +13 |
 | [`prep_nvlayer_tffix_1027.sh`](../../debug_log/2026-10-27/jobs/prep_nvlayer_tffix_1027.sh) | §17 결함 수정 (2026-10-27 §15~16): nvblox_nav2 층 slice 콜백 — lookupTransform 예외 때 경고만 찍고 계속 진행해 | 10-27 §17 |
 | [`prep_slam_dbg_1027.sh`](../../debug_log/2026-10-27/jobs/prep_slam_dbg_1027.sh) | §29 SLAM 포크 단계별 시간 계측 판(기록만, 동작 불변) — 운용 ~/slam_ws 는 건드리지 않고 사본 ~/slam_dbg_ws 에 넣어 빌드. 로버 안 움직임. | 10-27 §29 |
 | [`prep_smac_1027.sh`](../../debug_log/2026-10-27/jobs/prep_smac_1027.sh) | 10-27 §10 f2st1 prep(10-26 prep_smac_1026.sh + tolerance 확인) — 운용 기본(prep_patrol: vslam on · 프로젝터 끔 · SHM) + 재계획 0.01 + planner:=smac(Smac H | 10-27 §10 · 10-27 §17 · 10-27 §24 |
@@ -2144,9 +2144,29 @@
 | [`report_1102_body.html`](../../debug_log/2026-11-02/jobs/report_1102_body.html) |  | 11-02 §10 |
 | [`up_pw_old_1102.py`](../../debug_log/2026-11-02/jobs/up_pw_old_1102.py) | up_pw_old_1102 — settings.local.json 의 옛 sshpass 값을 저장소 밖 ~/.config/rover_jetson/pw 둘째 줄부터 더함(값 출력 없음, 11-02 §6 · README §8). 저장소 루트에서 실행. | 11-02 §10 |
 
-## 2026-11-03 (2)
+## 2026-11-03 (9)
 
 | 파일 | 설명 | 언급 |
 |---|---|---|
 | [`chk_prep_sed_1103.sh`](../../debug_log/2026-11-03/jobs/chk_prep_sed_1103.sh) | prep_fast.sh 의 PreferForward 블록만 떼어 임시 링크 파일에 돌려 본다(Linux 심볼릭 링크 유지 확인, 11-03) | 11-03 §3 |
-| [`job551_f0drive.sh`](../../debug_log/2026-11-03/jobs/job551_f0drive.sh) | F0 주행 래퍼(Jetson, 2026-09-23): 일반 게이트(A 프로세스·B 보드·J nvblox·C SLAM·G2 출발 자세) → bag·tegrastats·top·RSS → job550 → 메타(job453). | 09-23 16 · 10-07 §2.2 · 10-12 §3.4 · … +11 |
+| [`chk_serial_driver_1103.sh`](../../debug_log/2026-11-03/jobs/chk_serial_driver_1103.sh) | 보드 CH340 장치 이름(ttyCH341USB0 vs ttyUSB*)과 ch341 드라이버 출처(커널 기본 vs WCH 벤더) 확인 — 11-03 §11 | 11-03 §11 · 11-03 §11.1 |
+| [`chk_serial_driver_1104b.sh`](../../debug_log/2026-11-03/jobs/chk_serial_driver_1104b.sh) | 11-04 §11 보충: 커널 패키지가 ch341.ko 를 갖고 있나 · 시계 · 설치 흔적(읽기만, sudo 없음, 로버 안 움직임) | 11-03 §11.1 |
+| [`fig_report_1103.py`](../../debug_log/2026-11-03/jobs/fig_report_1103.py) | fig_report_1103 — 11-03 정리 페이지 조립: 머리(10-28 틀, 제목만 바꿈) + 본문 → figures/day_summary_1103.html (로컬 사본 = 게시 원본, 그림 없음). PC, 로버 안 움직임. | 11-03 §11 |
+| [`job551_f0drive.sh`](../../debug_log/2026-11-03/jobs/job551_f0drive.sh) | F0 주행 래퍼(Jetson, 2026-09-23): 일반 게이트(A 프로세스·B 보드·J nvblox·C SLAM·G2 출발 자세) → bag·tegrastats·top·RSS → job550 → 메타(job453). | 09-23 16 · 10-07 §2.2 · 10-12 §3.4 · … +13 |
+| [`report_1103_body.html`](../../debug_log/2026-11-03/jobs/report_1103_body.html) |  | 11-03 §11 |
+| [`up_issue_links_p7.py`](../../debug_log/2026-11-03/jobs/up_issue_links_p7.py) | 6 기 묶음 보고의 '다른 카드에 넣을 링크' 를 머리 표 '관련 문제' 칸(마지막 칸)에 덧붙임 — 이미 링크가 있으면 건너뜀 | — |
+| [`up_issue_links_p8.py`](../../debug_log/2026-11-03/jobs/up_issue_links_p8.py) | 8 기 묶음 보고의 '관련 문제' 링크를 머리 표 값 줄 마지막 칸에 덧붙임 — 그 줄에 이미 있으면 건너뜀 | — |
+| [`up_issues_table_p8.py`](../../debug_log/2026-11-03/jobs/up_issues_table_p8.py) | ISSUES.md 에 8 기 카드 표를 '### 10 월 (형식 시범)' 앞에 넣는다(11-03 §9). PC 에서 한 번 실행 · 로버 안 움직임 · 인자 없음 · 출력 'ok'(이미 8 기 표가 있으면 assert 로 멈춤) | — |
+
+## 2026-11-04 (8)
+
+| 파일 | 설명 | 언급 |
+|---|---|---|
+| [`anal_src_strip_md5.py`](../../debug_log/2026-11-04/jobs/anal_src_strip_md5.py) | anal_src_strip_md5 — 주석(# · """ · <!-- -->)을 뺀 파일 내용의 md5 앞 8 자. 인자: 뿌리 폴더 + 상대 경로들. PC · Jetson 양쪽에서 같은 코드로 저장소 판과 Jetson src 를 비교(11-04).  | 11-04 §1 |
+| [`chk_install_links_1104.sh`](../../debug_log/2026-11-04/jobs/chk_install_links_1104.sh) | 11-04: 설치본 설정 파일이 src 를 가리키는 링크인지(prep 옛 sed -i 가 끊었는지) 확인 — 읽기만, 로버 안 움직임 | 11-04 §1 |
+| [`chk_src_md5_1104.sh`](../../debug_log/2026-11-04/jobs/chk_src_md5_1104.sh) | 11-04: Jetson src 파일 md5(CR 제거) — 저장소와 비교용, 읽기만 | 11-04 §1 |
+| [`chk_src_strip_1104.sh`](../../debug_log/2026-11-04/jobs/chk_src_strip_1104.sh) | 11-04: 주석 뺀 md5 비교(읽기만) | 11-04 §1 |
+| [`up_comment_fix_1104.py`](../../debug_log/2026-11-04/jobs/up_comment_fix_1104.py) | up_comment_fix_1104 — 11-04 §3: 8 기 문제 대장이 찾은 낡은 주석 정정(동작 변경 없음 · 정확한 문자열 치환 · 한 번씩). PC, 로버 안 움직임. 인자 없음, 출력 'ok'. | 11-04 §3 |
+| [`up_install_link_1104.sh`](../../debug_log/2026-11-04/jobs/up_install_link_1104.sh) | 11-04: 설치본 nav2_params.yaml 을 src 링크로 되돌림(10-15 §30 · 옛 prep sed -i 가 끊은 것). 내용이 src 와 같을 때만. 로버 안 움직임 · sudo 없음. | 11-04 §1 |
+| [`up_issues_table_p9.py`](../../debug_log/2026-11-04/jobs/up_issues_table_p9.py) | up_issues_table_p9 — ISSUES.md 에 9 기 카드 표를 넣고 '10 월 (형식 시범)' 두 줄을 9 기 표로 옮김(11-04 §4). PC 한 번 · 로버 안 움직임 · 인자 없음 · 출력 'ok'. | — |
+| [`up_record_marks_1104.py`](../../debug_log/2026-11-04/jobs/up_record_marks_1104.py) | up_record_marks_1104 — 11-04 §3: 8 기 문제 대장이 찾은 기록 어긋남에 정정 표시를 줄 끝에 덧붙임(원문은 지우지 않음, README §2.1). PC, 로버 안 움직임. 출력 'ok'. | 11-04 §3 |
