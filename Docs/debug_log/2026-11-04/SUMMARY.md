@@ -125,3 +125,9 @@
 - `.claude/skills/` 6 개: rover-day-record(§1 · §2 · §9) · rover-tools(§3) · rover-jetson-run(§4) · rover-drive(§4 · §5 · §6) · rover-record-pages(§7 · §2.3) · rover-commit-push(§8). 각 SKILL.md = 언제 쓰는지(description) + '읽을 절' + 요지 3 줄. 규칙 본문은 README 하나에만(복사 안 함 — 두 곳 어긋남 방지).
 - 점검 K(`chk_record_rules.py`): Skill 의 '읽을 절' 제목이 README 에 있는지. 시험: rover-drive 의 `## 5. 주행` 을 일부러 틀리게 → 'RULES_NEW 1'(K) → 되돌려 0.
 - README §0 · 변경 이력, CLAUDE.md §1 에 한 줄씩. 한계: Skill 은 모델이 설명을 보고 부르는 것이라 강제는 아님(훅과 다름). 이 세션의 Skill 목록에는 아직 안 보임 — 다음 세션부터 불릴 것으로 예상(미확인). `.claude/skills/` 는 공개 저장소로도 나감(비밀 · 개인 계획 표현 없음 확인).
+
+## §15 강제 장치 ④ — CLAUDE.md 줄이기 (§6 · 하드웨어 경위를 별도 문서로)
+- 새 문서 `Docs/04_navigation/CURRENT_STACK.md`: 옛 CLAUDE.md §6(자율주행 구성 14 줄)과 하드웨어 경위(데크 yaw · 보드율 회귀 · 스톨 이력)를 **글자 그대로** 옮김 — 머리에 '진실은 코드' · 경위는 문제 대장 카드 · 바꾸면 여기 고침. 공개 저장소로 나감(금지 문구 0 확인).
+- CLAUDE.md: 23 380 → 12 503 바이트(−47 %, 167 → 약 140 줄). §6 은 'CURRENT_STACK 안내 + 운용 주의 5 줄'(표준 prep 구성 · mppi_viz:=true 금지 · pad_relief 끔/풋프린트 바꾸면 재기동 · 장시간 정지 뒤 prep · DDS 30 s · Jetson 주소/신원 · git 공개 규칙)로, 하드웨어는 현재 값 + '데크 재조립 때 함께 고칠 곳' 목록 + 경위 링크, 스톨은 규칙만, 디렉토리 트리는 두 줄 목록(실제 폴더 06_planner · 07_language · tools · issues 반영, 없는 rover_msgs 뺌). 규칙 표(README §0 사본)와 응답 지침 · 설계 원칙은 그대로.
+- 목표(5~7 KB)보다 큼: 한글 UTF-8(글자당 3 바이트) 탓 — 글자 수로는 약 6 천. 남은 큰 덩어리는 §1 규칙 표 2.5 KB · 하드웨어 2 KB · 핵심 문서 1.3 KB.
+- 남은 것: CURRENT_STACK 은 옮긴 원문이라 길다 — 다음에 '지금 값 + 근거 카드' 형태로 다듬을 것.
