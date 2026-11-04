@@ -132,3 +132,8 @@
 - 목표(5~7 KB)보다 큼: 한글 UTF-8(글자당 3 바이트) 탓 — 글자 수로는 약 6 천. 남은 큰 덩어리는 §1 규칙 표 2.5 KB · 하드웨어 2 KB · 핵심 문서 1.3 KB.
 - 남은 것: CURRENT_STACK 은 옮긴 원문이라 길다 — 다음에 '지금 값 + 근거 카드' 형태로 다듬을 것.
 - (§14 보충) Skill 6 개가 이 세션의 Skill 목록에도 바로 나타남을 확인 — §14 의 "다음 세션부터(미확인)" 는 틀림.
+
+## §16 CURRENT_STACK.md 다듬기 (사용자: "CURRENT_STACK.md를 다듬자")
+- 옮긴 원문(날짜별 긴 서술, 13.3 KB)을 '값 · 정하는 파일:줄 · 결정 날 · 근거 카드' 표로 다시 씀(9.7 KB). 값은 이날 코드에서 다시 읽음(`nav2_params.yaml` · `nvblox_local.yaml` · launch 4 개 · `prep_patrol.sh` · `prep_fast.sh`). 옛 판은 커밋 29895107.
+- 표를 만들며 원문에 없던 것: ① **launch 기본과 표준 prep 이 다름** — launch 만 띄우면 vslam off · 프로젝터 켬 · dds_shm off · 전역 카메라 obstacle · mppi_viz false · stuck 작동 → 첫 표로 나눔. ② MPPI 크리틱 목록(255 행)에 ClearanceBand 가 `enabled: false` 로 남아 있고 ObstaclesCritic 블록(266 행)은 목록 밖(안 쓰임). ③ `nav2_params.yaml` 328 · 563 행 `plugins` 는 stvl 판 — launch 가 nvblox 로 바꿔 씀(파일만 보면 오해 소지).
+- 근거 카드 이름 전부 `Docs/issues/` 에 있음 확인, 태그 navfn-baseline-20261023 있음, 금지 문구 0.

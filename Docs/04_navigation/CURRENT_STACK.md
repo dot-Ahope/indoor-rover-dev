@@ -1,42 +1,77 @@
-# 현재 구성 · 운용 기록 (CURRENT_STACK)
+# 현재 구성 (CURRENT_STACK)
 
-2026-11-04 에 `CLAUDE.md` 의 '§6 현재 자율주행 구성' 과 하드웨어 경위 줄을 **글자 그대로 옮겨** 만든 문서(CLAUDE.md 를 공통 규칙 위주로 줄이기 위해 — 11-04 SUMMARY §15).
-- **진실은 코드다**: `ros2_ws/src/rover_navigation/config/` · launch 파일 · `Docs/tools/prep_*.sh`. 이 문서는 '지금 값이 왜 그런가' 를 찾아가는 안내이고, 값이 어긋나면 코드가 맞다.
-- 문제별 경위는 문제 대장 `Docs/issues/ISSUES.md` 카드가 정리본. 여기에는 지금 값 · 결정 날짜 · 근거 § 만 남기는 쪽으로 다듬어 간다(옮긴 직후라 옛 글이 길다).
-- 구성을 바꾸면 이 문서의 해당 줄을 고치고 그날 SUMMARY 에 적는다. CLAUDE.md 에는 운용 주의 몇 줄만 둔다.
+지금 로버 스택의 **값 · 그 값을 정하는 파일 · 결정한 날 · 근거 카드**를 한 표로 모은 안내다(2026-11-04 판, 값은 이날 저장소 코드에서 다시 읽음).
+- **진실은 코드다.** 값이 이 문서와 다르면 코드가 맞다. 이 문서를 고치는 일은 구성을 바꾼 날의 일이다(그날 SUMMARY 와 함께).
+- 경위(왜 이 값이 됐나, 무엇을 기각했나)는 문제 대장 카드 `Docs/issues/` 에 있다. 여기에는 한 줄 이유와 카드 이름만.
+- 칸 'launch 기본' = launch 인자를 안 줬을 때, '표준 prep' = `Docs/tools/prep_patrol.sh`(→ `prep_fast.sh`)가 실제로 띄우는 구성. **주행은 표준 prep 기준**이다.
+- 옛 판(CLAUDE.md §6 원문을 옮긴 것, 날짜별 서술)은 커밋 `29895107` 의 이 파일에 있다.
 
-## 1. 자율주행 구성 (옮긴 원문 — CLAUDE.md §6, 2026-09-23 판부터 11-04 까지 고쳐 온 것)
-- 지도: slam_toolbox **포크**(`~/slam_ws`, 2.6.10 + 제자리 회전 중에도 스캔 처리 — `Docs/04_navigation/SLAM_FORK_ROTATION.md`, `slam.launch.py slam_build:=fork|apt` 기본 fork)(map→odom, 같은 stamp 를 두 번 발행 — 분석 시 마지막 값만) · 로컬/전역 코스트맵 = **nvblox 층**(컨테이너 nvblox 3.2.5, `config/nvblox_local.yaml`: 절단 2.0·감쇠 0.99·통합 **2.0 m**(10-22 §15 사용자 결정: 프리셋 3 + 1.4 m 는 복귀 때 낮은 상자를 못 보고 접촉(f2lp1) → 2.0 재생에서 상자 칸 회복 · 유령 소폭, f2pi1 · f2sm3 3/3. 그 전 이력: 10-14 에 1.4 — 멀리서 처음 볼 때 한 줄 두껍게 찍힘·각 오차가 거리에 비례)·슬라이스 z 0.06~0.30, 호스트 `nvblox_nav2` 포크 round→floor 수정; **카메라 깊이 프리셋 3 High Accuracy**(10-22 사용자 결정, `camera.launch.py depth_preset` 기본 — 프로젝터 상시 끔에서 맨바닥 유령이 경로를 막아 주행 중단(f2dr1) → 유령 0, 대가 출발점 낮은 상자 칸 절반, `Docs/debug_log/2026-10-22/SUMMARY.md` §6~§10)) + ObstacleLayer(라이다) + inflation(로컬 0.40/2.5·전역 0.70/2.0), footprint_padding 0.01
-- 기동: `navigation.launch.py camera_layer:=nvblox|stvl`(기본 nvblox — 컨테이너 nvblox 까지 함께 기동·정리), `camera_pointcloud:=keep|off`(기본 keep, 게이트·러너가 점군 사용). `stvl` = Phase S 대조군(설정 블록 보존)
-- 계획: NavFn + SimpleSmoother(실패 시 원경로 — 10-14 부터 우리 BT 노드 `CopyPath` 로 끝 방향까지 그대로 복사; 전엔 TruncatePath 가 끝 방향을 0° 로 덮어 좁은 곳 목표에서 엉뚱한 회전을 요구했음), BT `nav_to_pose_no_spin.xml`(ClearCostmapExceptRegion, 우리 노드 PathBlockedAhead · CopyPath)
-- 컨트롤러: **MPPI**(10 Hz, 32 step × 0.1 s, batch 1000, temperature 0.15), 장애물 크리틱 **CostCritic**(09-21 채택; ObstaclesCritic 은 직사각 차체 옆 여유를 구분 못 함, 09-18 §15~16), **PreferForwardCritic 15**(10-12: 앞 회전 우선 — W3 출발 후진 2.93 → 0.2~0.4 m)
-- **오도메트리(10-23 §16 사용자 결정)**: 주 EKF 병진 속도 = **cuVSLAM**(`ekf.launch vslam:=on`, rf2o 안 띄움) + 프로젝터 상시 끔 + 카메라↔cuVSLAM SHM — `Docs/tools/prep_patrol.sh` 기본(`ODOM=vslam`, 예전 rf2o 구성은 `ODOM=rf2o`). 근거 f2von1 · f2von2: W3 회전 창 13.2~16.8 cm(rf2o 21.5~30.7) · 멈칫 5(12~14) · CPU 70 %(75~76). 상자 옆 근접은 이것으로 안 풀림(경로 추종 · 재계획 누적, `Docs/debug_log/2026-10-23/SUMMARY.md` §10~§14).
-- **10-27 구성 변경**(`Docs/debug_log/2026-10-27/SUMMARY.md` §8~§31): ① 계획 = `planner:=smac`(Smac Hybrid RS · cp 3.0 · 해석 1.0 m · **tolerance 0.35**, 실패 시 NavFn — BT `PlanSmacOrNavFn`) — ⚠ **기본 아님**: `navigation.launch.py` planner 기본 navfn · `prep_patrol.sh` 기본 재계획 0.5 Hz. Smac 주행(10-26 ~ 28)은 매번 `NAV_ADD="planner:=smac" REPLAN_HZ=0.01`(목표당 1 회 + PathBlockedAhead)로 따로 줬다(11-03 정정) + MPPI PathAlign 28 · PathFollow 5(10-26) ② 호스트 nvblox 층 `nvblox_costmap_layer.cpp` TF 조회 실패 시 슬라이스 버림(상위 결함: 단위 변환으로 odom 슬라이스를 map 에 적어 장애물이 0.5 m 틀어짐 — 패치 `Docs/05_nvblox/nvblox_nav2_rover.patch`) ③ SLAM 위치 추정 **transform_timeout 1.5**(`slam.launch.py`; map→odom stamp 가 정합 처리 중 0.5~1.3 s 멈춰 nav2 odom→map 조회 실패 → 컨트롤러 중단 · 문 앞 정지. 정체 원인 = 위치 추정 정합의 LinkNearChains 64 %, 미해결) ④ 주행 전 검사 = 러너 게이트 한 노드 `Docs/tools/chk_drive_gate.py` · 파라미터 확인 `chk_prep.py` 한 노드 · 대화 쪽 별도 30 s 대기 없음(러너가 함). 재생 A/B 도구 `Docs/tools/run_slam_replay.sh`(도메인 42).
-- 순회 운용(10-12 확정): `global_camera:=nvblox replan_hz:=0.5 mppi_viz:=lite` + `ekf.launch shadow:=false`. ⚠ `mppi_viz:=true`(206 kB × 10 Hz)는 PreferForward 15 와 함께 6/6 주행에서 UDP 통신 폭증 → /tf 지연 → Nav2 중단. prep 은 `Docs/tools/prep_patrol.sh`(→ `prep_fast.sh`, ≈ 60 s; 옛 이름 job972). 근거 `Docs/debug_log/2026-10-12/SUMMARY.md`
-- 10-13 확정·미해결: 통신 포화의 정체 = bag 기록기가 reliable `/tf` 를 못 따라가 생긴 HEARTBEAT 폭주 → 러너가 기록기 `/tf` 를 best effort 로(기본), 경로 조회기 상주. **복귀 길 상자 끝 옆은 코스트맵 여유 2~5 cm 로 지나는 자리**(원인: 경로 근접 0.22~0.29 m · nvblox 가 odom 좌표라 기억된 상자가 4~5 cm 밀림(출발점 상자 기준 — 서쪽 통로는 2.1 · 2.3 cm, 10-15 §24.1) · Nav2 칸 단위 충돌 검사 약 5 cm(10-15 §28 실측 띠 2.7~4.4 cm, 주행 중 카메라 과장 +5~10 cm) — 카드 `Docs/issues/box-side-stall-cause.md`) — 전역 감쇠·cost_weight 3 배·패딩 0·BT 후진은 시험 뒤 기각. 근거 `Docs/debug_log/2026-10-13/SUMMARY.md` §12.2·§15
-- 갇힘 해제 `pad_relief`(10-14): 컨트롤러 '후보 전부 충돌' 3 회/3 s 면 로컬 패딩 0, 0.15 m 또는 15 s 뒤 복귀. launch `pad_relief:=off|on|shadow`(기본 off; 지금 표준 prep 은 노드를 띄우지 않는다 — shadow 는 10-14 ~ 15 래퍼 `prep_patrol_pad.sh` 때 이야기, 11-03 정정). ⚠ **켜지 않는다** — 실행 중 패딩을 한 번 바꿨다 되돌리면 주행 끝까지 MPPI 가 멈칫·좌우 틀기(A/B: 새 스택 10~20 /분 → 토글 뒤 64~98 /분, 기전 모름. 범위: 토글은 잔떨림의 충분 조건일 뿐 — 패딩을 안 바꾼 f2v2 에도 잔떨림, 10-15 §15 · §16). 실행 중 코스트맵 풋프린트 값을 바꿨다면 주행 전 prep 으로 재기동. 근거 `Docs/debug_log/2026-10-14/SUMMARY.md` §8·§18·§21·§23. prep 은 직전 nav2·slam·sensors 기록을 `/tmp/logkeep` 에 보관(§25). 출발점 근처 작은 상자는 라이다 아래 물체 감지 시험용(사용자)
-- 계측·게이트: `Docs/04_navigation/TEST_COURSE_AND_GATES.md` v2.3(단일 출처, 게이트 A~N). 러너 `job125_avoid3.py`(재고정 yaw ±5°·위치 ±0.06), `stuck_monitor`(09-29 자이로 우선 수정 · 작동 가능, 단 `use_gyro` 기본 끔 · 표준 prep 은 `STUCK_SHADOW=true` 라 **관찰만** — 11-02 확인) · `nav_guard`(목표 시간·무진행 한도, 09-29). 주행 30 s 전 DDS 참여자 생성 금지, Wi-Fi 재연결 뒤엔 스택 재기동
-- 상태: Phase S 종료(기준선 `Docs/debug_log/2026-09-21/BASELINE_STVL.md`) → **Phase N(nvblox) 종료(09-23)** — 기능 기준 통과, CPU 는 STVL 과 동등(320~325 %, 절감 기대 미달성 → 채택 근거는 회피 여유·기억·3D/GPU 경로). 요약 `Docs/05_nvblox/PHASE_N_RESULTS.md`, 계획 `Docs/05_nvblox/NVBLOX_MIGRATION_PLAN.md`. 다음: **기능 완성 우선(09-29 확정)** — F0 나머지 → 온보드 정지 수단 → F1 매핑 → F2 웨이포인트(기준선 고정) → **F2.5 장소 이름 이동 + 온디바이스 LLM(텍스트 입력, 최종 목표)** → JetPack 7.2 이전 Phase(cuVSLAM+사람 마스크·rf2o·사람 환경). `Docs/04_navigation/NAV2_EXPLORATION_PLAN.md §7.4`. 컨디셔너 B2(회전축)는 기본 끔(`ekf.launch.py icr:=`, 09-29 §5). B3(회전 구간 vx·vy σ 0.3)는 vslam 또는 rf2o 를 켜면 자동으로 켜짐(`ekf.launch.py` 39~40, 10-06 R3 — 지금 기본 vslam 이라 켜져 있음, 11-02 확인)
-- **F2.5 장소 이름 이동(10-28 S0 · S1)**: 등록부 `config/places.yaml`(좌표의 유일한 출처) → `place_server`(명령 `go_to`·`return`·`stop`·`list`·`where`, 경로 끝 방향 · 목표 여유 검사 뒤 NavigateToPose) · 보내기 `place_cmd` · 휴대폰 창구 `place_web.py`(8080, 키 `~/.config/rover_web/key` — 출력 · 커밋 금지). LLM 은 아직 미실행(S2 부터). ⚠ `place_server` · `place_web` 은 어떤 launch 에도 없다 — 10-28 · 29 job 스크립트가 따로 올려 띄운 시험 단계(11-03 확인). 설계 `Docs/07_language/F25_PLACE_LLM_DESIGN.md` v0.2. ⚠ **오래 세워 둔 스택은 odom yaw 가 돌아감**(43 분 +16.6°, SLAM 은 정지 중 안 고침 → 돌아간 벽이 출구를 막음, `Docs/debug_log/2026-10-28/SUMMARY.md` §16.1) — 대책 결정 전까지 정지가 길었으면 출발 전 prep.
-- 네트워크: **10-15 부터 Jetson <WIFI-B> <LAN-B>.110**(사용자가 DHCP 서버에 예약, 스크립트는 `JETSON_HOST=<LAN-B>.110`; PC 는 ALOPS <LAN-A>.89 에서 그대로 닿음). ⚠ 11-04: <WIFI-B> 가 끊겨 <WIFI-A> **<LAN-A>.8** 로 넘어감(사용자 확인 · 신원 확인 `Docs/debug_log/2026-11-04/outputs/chk_identity_1104.txt`) — 그동안 `JETSON_HOST=<LAN-A>.8`. 이전: 10-14 ALOPS <LAN-A>.8, 그 전 <WIFI-B> <LAN-B>.101(다른 서버와 IP 충돌로 사용자가 예약 제거 — 그 주소로는 신원 확인 없이 붙지 않음). ⚠ Jetson 재부팅하면 `/tmp` 의 prep 스크립트(prep_fast · prep_patrol · prep_patrol_pad · pad_relief.py · chk_prep.py)가 지워진다 → 저장소 판을 다시 올린다(러너 스크립트는 러너가 스스로 올림). PC 는 ALOPS 경유(WEB_DEV 에 직접 붙으면 무선 클라이언트 간 통신이 막힘 — AP 격리 추정, 09-23). 끊김 기록 `/var/log/wifi_mon`
-- git(2026-10-07~): **원본 = 로컬 `feature/nvblox-migration` → 비공개 `personal`(`dot-Ahope/indoor-rover`)**, 모든 것(이 파일 포함) 커밋·push. **공개 = `bash private/publish_public.sh`** 가 원본에서 CLAUDE.md·`private/`·개인 계획 문구를 빼고 이메일을 익명화해 `public`(`dot-Ahope/indoor-rover-dev`)의 `dev` 로 push(`--push-main` 은 사용자 결정 때만). 공개 파일에 개인 계획 표현을 쓰지 않는다. origin(회사, main 금지)은 10-07 이후 미정 — 지시 전엔 올리지 않음
+## 1. 기동 구성 — launch 기본과 표준 prep 이 다른 것
 
-## 2. 하드웨어 경위 (옮긴 원문 — CLAUDE.md 하드웨어 요약 · 안전 원칙)
-### 2.1 센서 데크 yaw (09-18)
-  - ⚠ **2026-09-18: 데크(라이다+카메라)가 차체 진행 방향보다 −2.68° 틀어져 장착됨** → URDF 에 보정(lidar yaw π−0.04677, camera/deck yaw −0.04677, `stuck_monitor.py LIDAR_YAW` 동기). 같은 데크 상수를 코드에 직접 가진 곳: `rf2o_gate.py`(라이다 yaw · x 0.152). 차체 · 패딩 치수를 손으로 가진 곳: `nav2_params.yaml` `monotone_escape` footprint_*(11-03 추가). xacro(`rover.urdf.xacro` 인자 deck_x/y/z · deck_yaw · lidar_yaw 기본값 — 10-29 urdf 에 맞춤, 기록 사본 `Docs/02_hardware/` 도 함께, 11-04 추가).
-    이 오차가 SLAM↔odom 옆 드리프트(≈4.7 cm/m)와 로컬 코스트맵 상자 드리프트의 원인이었다. **데크를 다시 조립·조정하면 반드시 재측정**하고 위 파일들을 함께 고친다(옆면을 벽에 붙이고 정지, `Docs/debug_log/2026-09-18/jobs/job432c_wallyaw_tf.py`, 근거 §9).
+| 항목 | launch 기본 | 표준 prep | 정하는 곳 | 결정 · 카드 |
+|---|---|---|---|---|
+| 계획기 | `planner:=navfn` | navfn(같음). Smac 시험은 `NAV_ADD="planner:=smac" REPLAN_HZ=0.01` | `navigation.launch.py` 203 · `prep_patrol.sh` 16~17 | 10-27 시험 구성 채택(기본 아님) · `smac-hybrid-adoption` |
+| 주기 재계획 | `replan_hz:=`(BT 값) | **0.5 Hz** | `prep_patrol.sh` 17 | 10-12 운용 · `path-tracking-replan-b0`(0.01 Hz 는 B0 시험) |
+| 오도메트리(EKF 병진 속도) | `vslam:=off` · `rf2o:=false` | **cuVSLAM**(`ODOM=vslam` → `emitter_off:=true vslam:=on dds_shm:=true`) | `ekf.launch.py` 98 · 109 · `prep_patrol.sh` 10~13 | 10-23 §16 · `cuvslam-velocity-fusion` |
+| 카메라 프로젝터 | 켬(`emitter_off:=false`) | **상시 끔** | `camera.launch.py` 117 · `prep_patrol.sh` 11 | 10-21 §20 · `projector-ir-alternation` |
+| 카메라 ↔ cuVSLAM 전송 | UDP(`dds_shm:=false`) | **SHM+UDP** | `camera.launch.py` 119 · `fastdds_shm_udp.xml` | 10-20 §9 · `camera-container-shm` |
+| 전역 카메라 층 | `global_camera:=obstacle` | **nvblox**(map 프레임) | `navigation.launch.py` 207 · `prep_patrol.sh` 17 | 09-22 N6 · `nvblox-n6-global-ghosts` · `nvblox-layer-tf-drop` |
+| MPPI 궤적 발행 | `mppi_viz:=false` | **lite**(28 kB) — `true`(206 kB) 금지 | `navigation.launch.py` 205 · `prep_patrol.sh` 8~9 | 10-12 · `network-saturation-mppi-viz` |
+| 정체 감시 stuck_monitor | 작동(`stuck_shadow:=false`) | **관찰만**(`STUCK_SHADOW=true`), `use_gyro` 기본 끔 | `navigation.launch.py` 219 · `prep_fast.sh` 63 | 10-29 §9 사용자(자이로 우선 켜지 않음) · `stuck-monitor` |
+| 갇힘 해제 pad_relief | `off` | 띄우지 않음 — **켜지 않는다** | `navigation.launch.py` 231 · `pad_relief.py`(기본 off, 11-03) | 10-14 · `pad-relief-runtime-padding` |
+| 지도 · SLAM | — | `office_v3`, slam_toolbox 포크 위치 추정 모드 | `prep_fast.sh` 9 · 61 · `slam.launch.py` 88(`slam_build:=fork`) | 10-02 · `f2-patrol-loc-jump` · `slam-fork-rotation` |
 
-### 2.1b micro-ROS 보드율 (09-09)
-  - ⚠ **2026-09-09: 2,000,000 → 460,800 으로 낮춤**(원래 설계값은 2 Mbps).
-    2 Mbps 에서 `/wheel_odom`(732 B) 이 수십 초씩 통째로 사라져 EKF 가 발산했다(→ Nav2 ABORTED).
-    460800 에서는 70 s 연속 100% 전달·드롭 0. 실수요는 약 22.4 kB/s(=224 kbps) 이므로 2 배 여유.
-  - ⚠ **이건 우회이지 근본 해결이 아니다.** 같은 2 Mbps 설정으로 2026-08-27 에는
-    `/wheel_odom` 49.995 Hz + `/imu/data_raw` 49.999 Hz(≈60 kB/s)가 안정적으로 나왔다
-    (`Docs/debug_log/2026-08-27/outputs/job4x_sensors_slam.txt`). 즉 용량 한계가 아니라
-    **08-27 이후 생긴 회귀**이며 원인 미확정. 후보: 물리 배선/커넥터, 09-07 모터 PWM 50Hz→20kHz,
-    CH340 모듈·ch341 드라이버 상태. 자세한 것은 `Docs/debug_log/2026-09-09/SUMMARY.md`
+## 2. 고정 값 (launch · prep 과 무관)
 
-### 2.2 스톨 보호 이력
-  - 2026-09-07 받침대 검증: **모터 PWM 을 50Hz→20kHz 로 바로잡은 뒤** 구속 휠 펄스 0 → 600ms 감지·1.5s 자동복구·3회 래치 전 경로 정상. (50Hz 에서는 회전자 떨림 펄스가 15~33mm/s 가짜 속도로 잡혀 감지 불가였음 — `Docs/debug_log/2026-09-07/SUMMARY.md`)
-  - 스톨 감지 창 600 ms(08-26 에 200 ms → 600 ms, 판정 기준은 위 duty 규칙 — 09-03 에 '지령 vs 엔코더' 에서 바뀜)
-  - (구 AM2861 구성 한정: 스톨 2.3A > 드라이버 한계 → PWM 최대 80% 제한)
+### 2.1 SLAM · 위치 추정
+| 값 | 정하는 곳 | 결정 · 카드 |
+|---|---|---|
+| 위치 추정 `transform_timeout 1.5` · 처리 문턱 0.30 m / 0.15 rad · 지도 갱신 10 s | `slam.launch.py` 75~77 | 10-27 §21 · `slam-stamp-freeze`(정체 자체는 남음) |
+| map→odom 은 같은 stamp 를 두 번 발행 — 분석은 마지막 값만 | (slam_toolbox 동작) | 10-01 · `slam-stamp-freeze` |
+
+### 2.2 코스트맵
+| 값 | 정하는 곳 | 결정 · 카드 |
+|---|---|---|
+| 카메라 층 = nvblox(`camera_layer:=nvblox` 기본, 컨테이너 nvblox 3.2.5 함께 기동). yaml 의 `plugins` 줄은 stvl 판이고 launch 가 바꿔 씀 | `navigation.launch.py` 196 · `nav2_params.yaml` 328 · 563 | 09-22 N6-0 · `nvblox-migration-n0-n4` |
+| nvblox 복셀 0.05 · 절단 2.0 칸 · 감쇠 0.99 · **통합 거리 2.0 m** · 슬라이스 z 0.06~0.30 · min_weight 0.1 · 지우기 반경 3.0 m · 깊이 전처리 끔 | `nvblox_local.yaml` 17 · 42 · 48 · 57 · 58 · 61 · 69~71 | 통합 2.0 = 10-22 §15 · `ghost-cells-depth-preset` · `box-return-cells` |
+| 카메라 깊이 프리셋 **3 (High Accuracy)** · 데시메이션 ×4 | `camera.launch.py` 118 · 120 | 10-22 §10 · `ghost-cells-depth-preset`(데시메이션은 10-20 §8.3 대책 아님) |
+| inflation 로컬 0.40 / 2.5 · 전역 0.70 / 2.0 · footprint_padding 0.01(둘 다) | `nav2_params.yaml` 527~528 · 722~723 · 323 · 558 | `inflation-padding-roles` |
+| nvblox 층 TF 조회 실패 시 슬라이스 버림(호스트 `nvblox_nav2` 포크, round→floor 수정 포함) | `Docs/05_nvblox/nvblox_nav2_rover.patch` | 10-27 §17 · `nvblox-layer-tf-drop` · `nvblox-layer-round-floor` |
+
+### 2.3 계획 · BT
+| 값 | 정하는 곳 | 결정 · 카드 |
+|---|---|---|
+| NavFn(tolerance 0.25) + SimpleSmoother, 실패 시 원경로 — `CopyPath` 가 끝 방향까지 복사 | `nav2_params.yaml` 735~736 · 779 · BT `nav_to_pose_no_spin.xml` | 10-14 · `bt-copypath-end-yaw` |
+| Smac Hybrid(시험 구성): REEDS_SHEPP · 최소 회전반경 0.10 · cost_penalty 3.0 · 해석 확장 1.0 m · tolerance 0.35, 실패 시 NavFn(BT `PlanSmacOrNavFn`) | `nav2_params.yaml` 740~763 | 10-26 §6.3 · 10-27 §8 · `smac-hybrid-adoption` |
+| 막힘 판정 `PathBlockedAhead`(min_cost 99 · `only_new` 켬) | BT 108 · `path_blocked_ahead_condition.cpp` | 10-23 §20 · `pathblocked-only-new`(⚠ 0.5 Hz 와의 조합 미시험) |
+| 복구: ClearCostmapExceptRegion · `monotone_escape`(풋프린트 손 입력값) | BT · `nav2_params.yaml` 791 | 09-11 · `costmap-clear-recovery` · `box-side-stall-remedies` |
+| 러너 목표 방향은 NavFn 경로 끝에서 구함(`planner_id GridBased`) | `path_end_yaw.py` 22 | `smac-hybrid-adoption`(P2 미해결) |
+
+### 2.4 컨트롤러 MPPI (BT `controller_id="FollowPathMPPI"`, `FollowPath`=RPP 는 남겨 둔 대조군)
+| 값 | 정하는 곳 | 결정 · 카드 |
+|---|---|---|
+| 10 Hz · 32 step × 0.1 s · batch 1000 · temperature 0.15 | `nav2_params.yaml` 83 · 210~212 · 244 | `mppi-wobble-temperature`(0.3 시험 뒤 0.15 복귀) |
+| 크리틱: Constraint · **Cost** · Goal · GoalAngle · **PathAlign 28** · **PathFollow 5** · PathAngle 2 · **PreferForward 15** · ClearanceBand(목록에 있으나 `enabled: false`). ObstaclesCritic 은 목록 밖 | `nav2_params.yaml` 255 · 264 · 269 · 276 · 283 · 287 · 290 | CostCritic 09-21 · `obstacles-to-costcritic` / PreferForward 10-12 · `rotation-method-track-ratio` / 28 · 5 10-26 · `mppi-corner-cut-pathalign` |
+
+### 2.5 하드웨어 · 통신 운용 값
+| 값 | 정하는 곳 | 결정 · 카드 |
+|---|---|---|
+| micro-ROS 460 800 bps(보드 · 에이전트 양쪽) — 2 Mbps 회귀 우회, 원인 미확정 | 보드 `usart.c` · `base.launch.py` 36 | 09-09 · `microros-baud-regression` |
+| 데크 yaw −2.68° 보정(lidar π−0.04677 · camera/deck −0.04677) — 재조립 때 재측정, 함께 고칠 곳은 CLAUDE.md 하드웨어 요약 | `rover.urdf` · xacro · `stuck_monitor.py` · `rf2o_gate.py` | 09-18 · `sensor-deck-yaw` |
+| 모터 PWM 20 kHz · 스톨 = duty ≥ 0.60 & 600 ms 무이동 → 1.5 s 자동 복구 · 10 s 3 회 래치 · `/cmd_vel` 500 ms 워치독 | 펌웨어 `safety_monitor.c` | 09-07 · `motor-pwm-50hz` · `stall-latch` |
+| 보드 CH340 = WCH 벤더 드라이버(`ttyCH341USB0` → `/dev/rover`) — L4T R36.5 커널엔 기본 ch341 없음, 커널 갱신 때 재빌드 | Jetson `/lib/modules/…/ch341.ko` | 11-03 §11.1 · `board-link-microros-session` |
+
+## 3. 운용 · 네트워크 · git
+
+| 항목 | 지금 | 근거 · 카드 |
+|---|---|---|
+| Jetson 주소 | **<LAN-A>.8**(<WIFI-A>, 11-04) — 예약 주소 <LAN-B>.110(<WIFI-B>)은 끊긴 상태. <LAN-B>.101 은 다른 서버와 충돌 이력, 신원 확인 없이 붙지 않음 | 11-04 §10 · `jetson-wifi-link` |
+| 재부팅 뒤 | `/tmp` 의 prep 도구가 지워짐 → `bash Docs/tools/up_tools.sh`(저장소 판 7 개) | 11-04 §1 · `prep-fast-startup` |
+| 주행 전 검사 | 러너 게이트 `chk_drive_gate.py` 한 노드(B · C · G2) + 정지 부하 P(≤ 60 %) · 파라미터 확인 `chk_prep.py` · 출발 위치 검사 `PREP_POSE` | 10-27 §24 · `drive-gate-consolidation` · `drive-ops-1019-1023` |
+| 장시간 정지 | 정지가 길었으면 출발 전 prep(odom yaw 드리프트). F2.5 는 출발 전 위치 검사 ⓐ(11-04 첫 배포) | 10-28 §16.1 · `stationary-yaw-drift` |
+| F2.5 장소 이동 | 등록부 `places.yaml` → `place_server` · `place_cmd` · `place_web.py`(키는 저장소 밖) — **launch 에 없음**, job 스크립트로 띄우는 시험 단계. LLM 미실행 | 10-28 · `f25-place-navigation` |
+| git | 원본 `feature/nvblox-migration` → 비공개 `personal` · 공개 `bash private/publish_public.sh` → public `dev`(CLAUDE.md · `private/` 제외). push 는 지시 때만, origin 금지 | README §8 · `repo-public-ops` |
+
+## 4. 상태 (Phase)
+- Phase S 종료(기준선 `Docs/debug_log/2026-09-21/BASELINE_STVL.md`) → Phase N(nvblox) 종료 09-23(`Docs/05_nvblox/PHASE_N_RESULTS.md`) → 기능 완성 우선(09-29): F0 · 정지 수단 · F1 지도 · F2 순회(기준선 no5 · B0 `navfn-baseline-20261023`) 완료 → **F2.5 장소 이름 이동(S1 완료, S2 LLM 부터)** → JetPack 7.2 이전 Phase. 순서 근거 `Docs/04_navigation/NAV2_EXPLORATION_PLAN.md` §7.4 · `Docs/06_planner/SMAC_HYBRID_PLAN.md`.
+- 열린 큰 문제: 상자 옆 근접(`box-side-stall-cause` · `path-tracking-replan-b0`) · SLAM stamp 정체(`slam-stamp-freeze`) · 정지 yaw 드리프트(`stationary-yaw-drift`) · micro-ROS 2 Mbps 회귀(`microros-baud-regression`).
