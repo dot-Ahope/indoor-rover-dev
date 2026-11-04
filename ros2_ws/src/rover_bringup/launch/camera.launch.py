@@ -23,7 +23,7 @@ def _camera(context):
     enable_depth = LaunchConfiguration('enable_depth')
     enable_color = LaunchConfiguration('enable_color')
     flash = LaunchConfiguration('emitter_flash').perform(context).lower() in ('1', 'true', 'on')
-    # (10-19 §25) emitter_off:=true — 프로젝터 상시 끔 + IR 좌우 켬(같은 15 fps). cuVSLAM 오프라인 확인용 기록 주행.
+    # (10-19 §25) emitter_off:=true — 프로젝터 상시 끔 + IR 좌우 켬(같은 15 fps). 처음엔 cuVSLAM 오프라인 확인용 기록 주행이었으나 10-21 §20 결정 뒤 운용 기본(prep_patrol.sh ODOM=vslam — launch 기본값은 false 그대로, 11-04 정정).
     #   깊이는 수동 스테레오(무늬 없는 면에 구멍 — 09-29 M1) → 카메라만 보는 낮은 물체는 놓칠 수 있다. 원시 IR 만 /camera/raw 로 옮겨 분리 노드가 기록.
     eoff = LaunchConfiguration('emitter_off').perform(context).lower() in ('1', 'true', 'on')
     fps = int(LaunchConfiguration('stereo_fps').perform(context))
@@ -59,8 +59,8 @@ def _camera(context):
         'pointcloud__neon_.enable': True,
         'pointcloud__neon_.allow_no_texture_points': True,
         'decimation_filter.enable': int(LaunchConfiguration('decimation').perform(context)) > 1,
-        # 10-20 §8: decimation:= 인자(기본 4 = 지금). 4 이상은 4×4 블록 '0 아닌 값 평균'(2~3 은 중앙값 — librealsense 설명, 기억 · 시험으로 확인 중)이라
-        #   상자 모서리에서 상자 · 배경 깊이가 섞인 점이 면 밖에 찍히는지(10-20 §8.1 북 면 +6 cm) 정지 A/B 로 본다. 1 = 데시메이션 끔(640×480).
+        # 10-20 §8: decimation:= 인자(기본 4 = 지금). 4 이상은 4×4 블록 '0 아닌 값 평균'(2~3 은 중앙값 — librealsense 설명, 기억 — 미확인)이라
+        #   상자 모서리에서 상자 · 배경 깊이가 섞인 점이 면 밖에 찍히는지(10-20 §8.1 북 면 +6 cm) 정지 A/B 로 봤다 → 10-20 §8.3: ×2 · 끔 모두 상자 칸 번짐 차이 < 1 cm, 대책 아님(4 유지, 11-04 정정). 1 = 데시메이션 끔(640×480).
         'decimation_filter.filter_magnitude': int(LaunchConfiguration('decimation').perform(context)),
         'enable_gyro': enable_imu,
         'enable_accel': enable_imu,

@@ -37,7 +37,7 @@ TOPICS="$TOPICS ${EXTRA_TOPICS:-}"
 # 10-19 §3: BAG_DEPTH=1 이면 nvblox 입력(깊이 160×120 · camera_info, 약 0.6 MB/s)도 기록 — 오프라인 nvblox 재생 A/B 용(run_nvblox_replay.sh)
 [ "${BAG_IR:-0}" = 1 ] && BAG_DEPTH=1   # 10-19 §16: IR 기록은 깊이 기록을 포함
 [ "${BAG_DEPTH:-0}" = 1 ] && TOPICS="$TOPICS /camera/camera/depth/image_rect_raw /camera/camera/depth/camera_info"
-# 10-19 §16 · §17: BAG_IR=1(BAG_DEPTH 포함) — prep 에 SENSORS_ADD="emitter_flash:=true" 필요. 원시 IR 좌우(켬 · 끔 모두) · IR 메타데이터 · IR camera_info ·
+# 10-19 §16 · §17: BAG_IR=1(BAG_DEPTH 포함) — prep 에 SENSORS_ADD="emitter_flash:=true" 또는 emitter_off:=true(지금 prep 기본, 10-19 f2z1 이 이 조합 — 11-04 정정) 필요. 원시 IR 좌우(켬 · 끔 모두) · IR 메타데이터 · IR camera_info ·
 #   카메라 IMU 는 ros2 bag record 가 아니라 카메라와 같은 프로세스의 분리 노드가 직접 쓴다(/home/jetson/bags/bag_<NAME>_ir) — §16 S2: 별도 기록기는
 #   CPU 77 % · IR 8 Hz 로 불합격. 시작 · 끝 = 분리 노드 record_path 파라미터.
 [ "${LONG_REC:-0}" = 1 ] && TOPICS="$TOPICS /trajectories /transformed_global_plan"   # 10-07 §11: 장기 주행만 — MPPI 후보·최적 궤적(prep 에 mppi_viz:=true 필요)   # 10-07 §2: rf2o 비교 주행 — /odometry/ekf_a /odom_rf2o /odom_rf2o/gated
