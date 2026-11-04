@@ -1,0 +1,10 @@
+링크  amcl.yaml -> /home/jetson/ros2_ws/src/rover_navigation/config/amcl.yaml
+파일  nav2_params.yaml  src 와 같음  2026-10-29 15:52:35
+링크  nvblox_local.yaml -> /home/jetson/ros2_ws/src/rover_navigation/config/nvblox_local.yaml
+링크  nav_to_pose_mppi.xml -> /home/jetson/ros2_ws/src/rover_navigation/config/nav_to_pose_mppi.xml
+링크  nav_to_pose_no_spin.xml -> /home/jetson/ros2_ws/src/rover_navigation/config/nav_to_pose_no_spin.xml
+== PreferForward 값(src · 설치본)
+PreferForwardCritic: {enabled: true, cost_power: 1, cost_weight: 15.0, threshold_to_consider: 0.4}
+PreferForwardCritic: {enabled: true, cost_power: 1, cost_weight: 15.0, threshold_to_consider: 0.4}
+== 저장소 커밋(Jetson src)
+(src 는 git 아님)

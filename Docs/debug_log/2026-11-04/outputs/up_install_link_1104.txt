@@ -1,0 +1,1 @@
+링크로 복구: /home/jetson/ros2_ws/src/rover_navigation/config/nav2_params.yaml (백업 /tmp/nav2_params_install_backup_1104.yaml)
