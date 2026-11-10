@@ -1,0 +1,45 @@
+===== rover_description/launch/description.launch.py  (- HEAD / + Jetson)
+@@ -1,4 +1,4 @@
+-# robot_state_publisher — 기본: 저장소 확정본 Docs/02_hardware/rover.urdf (WT-600, 2026-08-27) 그대로 로드.
++# robot_state_publisher — 기본: 저장소 확정본 Docs/rover.urdf (WT-600, 2026-08-27) 그대로 로드.
+===== rover_description/urdf/rover.urdf.xacro  (- HEAD / + Jetson)
+@@ -1,35 +1,37 @@
+-<!-- Jupiter rover URDF (xacro) — 확정본 rover.urdf 와 같은 TF 트리 · 같은 값 + 데크 인자화 · 데크 메시 시각화.
+-     2026-10-30 재작성: 이전 판(08-27 초안)은 WT-600 개정 전 값(데크 x 0 · 카메라 dx 0.0822 · 트랙 y ±0.095 ·
+-     base_z 0.025 · sensor_deck_link 없음)이 남아 있어 use_xacro:=true 로 띄우면 라이다 · 카메라가 x 로 약 15 cm 어긋났다
+-     (Docs/issues/sensor-deck-yaw.md). 값의 근거는 rover.urdf 주석 — 여기서는 그 값을 기본으로 쓴다.
+-     좌표: ROS(X전방/Y좌/Z상). base_footprint = 지면, base_link = +0.02567(휠 유효 구름 반경).
+-     인자(기본 = rover.urdf 확정값; 데크를 다시 조립하면 재측정 — CLAUDE.md 하드웨어 요약 ⚠):
+-       deck_x, deck_y : 데크 원점(라이다 마운트 중심, 판 하면) 의 base_link 기준 위치 [m]
+-       deck_z         : 같은 원점의 높이 [m] (= 판 하면 지면高 0.185 − 0.02567)
+-       deck_yaw       : 데크 장착 yaw [rad] (2026-09-18 실측 −2.68°)
+-       lidar_yaw      : 데크 기준 라이다 yaw [rad] (π — RPLidar 하드웨어 0° = 로버 후방, 2026-08-28) -->
++<!-- Jupiter rover URDF (xacro) — 센서 데크(FUSED_ROVER) 반영판. 2026-08-27
++     좌표: ROS(X전방/Y좌/Z상). base_footprint = 지면, base_link = +0.025 (휠 유효반경 0.02567 근사)
++     데크 프레임: 원점 = LiDAR 마운트 중심·데크 하면 (gen_rover_deck.py 기준)
++     장착 후 실측 인자 (TODO: 측정 전까지 기본값은 추정치):
++       lidar_mount_h : 지면 → LiDAR 하면(=데크 상면) 높이 [m]
++       deck_x, deck_y: LiDAR 마운트 중심의 base_link 기준 전후/좌우 오프셋 [m] (트랙 길이 중점 기준)
++       lidar_yaw     : rplidar_ros x축이 하드웨어 후방을 향하므로 보통 π (h_axis_check 절차로 실측 확정) -->
+-  <xacro:arg name="deck_x"    default="0.152"/>
+-  <xacro:arg name="deck_y"    default="0.0"/>
+-  <xacro:arg name="deck_z"    default="0.159"/>
+-  <xacro:arg name="deck_yaw"  default="-0.04677"/>
+-  <xacro:arg name="lidar_yaw" default="3.14159265"/>
+-
+-  <xacro:property name="base_z"   value="0.02567"/>
+-  <xacro:property name="deck_x"   value="$(arg deck_x)"/>
+-  <xacro:property name="deck_y"   value="$(arg deck_y)"/>
+-  <xacro:property name="deck_z"   value="$(arg deck_z)"/>
+-  <xacro:property name="deck_yaw" value="$(arg deck_yaw)"/>
+-  <!-- 데크 원점 기준 센서 오프셋 (rover.urdf 확정값: 라이다 z 0.185 − 0.159, 카메라 (0.080, 0.0475, 0.143 − 0.159)) -->
+===== rover_navigation/launch/localization.launch.py  (- HEAD / + Jetson)
+@@ -1,7 +1,7 @@
+-# 실행: ros2 launch rover_navigation localization.launch.py map:=/home/jetson/maps/office/office_v3.yaml   (10-02 부터 office_v3 — 옛 예시 office_v2)
++# 실행: ros2 launch rover_navigation localization.launch.py map:=/home/jetson/maps/office/office_v2.yaml
+===== rover_navigation/scripts/place_web.py  (- HEAD / + Jetson)
+@@ -18,7 +18,6 @@
+-import rclpy.executors
+@@ -164,7 +163,7 @@
+-    except (KeyboardInterrupt, rclpy.executors.ExternalShutdownException): pass
++    except KeyboardInterrupt: pass
