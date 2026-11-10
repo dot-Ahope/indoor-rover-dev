@@ -1,0 +1,8 @@
+== base.launch 부모 사슬 (시작 PID 2567)
+   2567    1388 jetson   /usr/bin/python3 /opt/ros/humble/bin/ros2 launch rover_bringup base.launch.py
+   1388       1 jetson   /lib/systemd/systemd --user
+      1 /sbin/init 2
+== systemd(시스템 · 사용자)
+  user: rover-base.service                                                enabled   enabled
+== autostart
+== crontab

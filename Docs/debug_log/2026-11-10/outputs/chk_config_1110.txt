@@ -1,0 +1,166 @@
+wsl: ���� $����ƹ� ��ܴ|� ����`� L��� wsl2.localhostForwarding $��t� ȩ���� Jŵ�Ȳ�.
+== ① 신원
+host jetson-desktop · user jetson · 5.15.185-tegra · # R36 (release), REVISION: 5.0
+rover -> ttyCH341USB0 · rplidar -> ttyUSB0
+주소: wlP1p1s0 <LAN-B>.110/24 docker0 172.17.0.1/16 
+SSID: <WIFI-B>
+가동 up 25 minutes · 부팅 2026-11-10 14:25:17 · 디스크 / 남음 122G
+== ② src md5
+SRC 398159326466 rover_bringup/CMakeLists.txt
+SRC 1782f52d064b rover_bringup/CMakeLists.txt.bak_1019_140604
+SRC e42490280c4c rover_bringup/CMakeLists.txt.bak_1019_140745
+SRC e42490280c4c rover_bringup/CMakeLists.txt.bak_1019_141157
+SRC e42490280c4c rover_bringup/CMakeLists.txt.bak_1019_143135
+SRC e42490280c4c rover_bringup/CMakeLists.txt.bak_1019_145449
+SRC 39e1549631f8 rover_bringup/CMakeLists.txt.bak_1019_175723
+SRC 39e1549631f8 rover_bringup/CMakeLists.txt.bak_1020_134050
+SRC cfbc497dd9d6 rover_bringup/config/ekf.yaml
+SRC d44de9fef836 rover_bringup/config/fastdds_shm_udp.xml
+SRC 05268228643a rover_bringup/config/fastdds_udp_only.xml
+SRC 1144761f4f42 rover_bringup/config/joy_teleop.yaml
+SRC a0e66e41cc37 rover_bringup/config/rf2o.yaml
+SRC fa380164a478 rover_bringup/config/slam.yaml
+SRC 6fd4d92e1fc1 rover_bringup/include/rover_bringup/conditioner_core.hpp
+SRC 148f511dc441 rover_bringup/launch/base.launch.py
+SRC ac8f2cd956f3 rover_bringup/launch/camera.launch.py
+SRC d4b207981bed rover_bringup/launch/camera.launch.py.bak_1019_143135
+SRC 91c1f5b7fbcc rover_bringup/launch/camera.launch.py.bak_1019_145449
+SRC 18ef09487f44 rover_bringup/launch/camera.launch.py.bak_1019_175723
+SRC 683b14caa980 rover_bringup/launch/camera.launch.py.bak_1020_162900
+SRC 98b5a98114b7 rover_bringup/launch/camera.launch.py.bak_1020_165100
+SRC 7b6d01a255a1 rover_bringup/launch/cuvslam_container.launch.py
+SRC e395ab8722f0 rover_bringup/launch/ekf.launch.py
+SRC 6977f2dd4ccc rover_bringup/launch/ekf.launch.py.bak_1020_134050
+SRC edf50575e787 rover_bringup/launch/ekf.launch.py.bak_1020_165100
+SRC 2036a689a98c rover_bringup/launch/foxglove.launch.py
+SRC 92578b3f456c rover_bringup/launch/full.launch.py
+SRC e40de55f674b rover_bringup/launch/joy_teleop.launch.py
+SRC 007af7ab17e6 rover_bringup/launch/lidar.launch.py
+SRC 84d1c7c8156b rover_bringup/launch/sensors.launch.py
+SRC 0d1ef0499359 rover_bringup/launch/slam.launch.py
+SRC 07c1e0c60b3a rover_bringup/package.xml
+SRC 57640469db6f rover_bringup/package.xml.bak_1019_140604
+SRC f2fef75abe50 rover_bringup/package.xml.bak_1019_140745
+SRC f2fef75abe50 rover_bringup/package.xml.bak_1019_141157
+SRC f2fef75abe50 rover_bringup/package.xml.bak_1019_143135
+SRC f2fef75abe50 rover_bringup/package.xml.bak_1019_145449
+SRC 07c1e0c60b3a rover_bringup/package.xml.bak_1019_175723
+SRC 558aaf2c8633 rover_bringup/scripts/cuvslam_up.sh
+SRC 666ec4efecb7 rover_bringup/scripts/cuvslam_up.sh.bak_1020_165100
+SRC 49af7d4be47a rover_bringup/scripts/depth_relay.py
+SRC 625eaf9c4ca8 rover_bringup/scripts/display_info_pub.py
+SRC dfda1ecab140 rover_bringup/scripts/install_rover_base_service.sh
+SRC 37ed27b42764 rover_bringup/scripts/nav_guard.py
+SRC 3f4a2f1ce046 rover_bringup/scripts/pad_relief.py
+SRC a2ca68353daf rover_bringup/scripts/__pycache__/depth_relay.cpython-310.pyc
+SRC 3233c777c9c0 rover_bringup/scripts/__pycache__/nav_guard.cpython-310.pyc
+SRC 87a6c7e21d3b rover_bringup/scripts/__pycache__/sensor_conditioner.cpython-310.pyc
+SRC 7e3b3a147cbb rover_bringup/scripts/rf2o_gate.py
+SRC 84757c214a62 rover_bringup/scripts/scan_deskew.py
+SRC 121b8dbbf7e7 rover_bringup/scripts/scan_restamp.py
+SRC 3614c6b45801 rover_bringup/scripts/sensor_conditioner.py
+SRC a1c94a54b2ca rover_bringup/scripts/stuck_monitor.py
+SRC 311dc1ebaf11 rover_bringup/scripts/vslam_twist.py
+SRC f5410c443d76 rover_bringup/src/emitter_splitter.cpp
+SRC 53d833777f7b rover_bringup/src/sensor_conditioner.cpp
+SRC 954a0fcfea4a rover_bringup/systemd/rover-base.service
+SRC e19510af5c73 rover_bringup/test/test_conditioner_core.cpp
+SRC 247984def732 rover_description/CMakeLists.txt
+SRC c9875dad9be3 rover_description/launch/description.launch.py
+SRC 26afd5a13395 rover_description/package.xml
+SRC ae3790391582 rover_description/urdf/rover.urdf
+SRC 66a215c66060 rover_description/urdf/rover.urdf.xacro
+SRC fa7d3fc90ae2 rover_navigation/behavior_plugins.xml
+SRC d10ea58ee9de rover_navigation/CMakeLists.txt
+SRC 2d97b6c6a83c rover_navigation/CMakeLists.txt.bak_1015_154321
+SRC 8ebe27039eef rover_navigation/CMakeLists.txt.bak_1015_165938
+SRC 9261f8926e54 rover_navigation/CMakeLists.txt.bak_1015_171646
+SRC b1c174c207b9 rover_navigation/config/amcl.yaml
+SRC 1e0a26021d53 rover_navigation/config/nav2_params.yaml
+SRC c78dfe8de7d9 rover_navigation/config/nav2_params.yaml.bak_1015_154321
+SRC c399c17b13ae rover_navigation/config/nav2_params.yaml.bak_1015_165938
+SRC 9ef077a8a2d1 rover_navigation/config/nav2_params.yaml.bak_1015_171646
+SRC 9ef077a8a2d1 rover_navigation/config/nav2_params.yaml.bak_1015_174700
+SRC 6cdc2078dc26 rover_navigation/config/nav2_params.yaml.bak_1015_174745
+SRC 6cdc2078dc26 rover_navigation/config/nav2_params.yaml.bak_1015_175456
+SRC 18643ca7700a rover_navigation/config/nav_to_pose_mppi.xml
+SRC 4ae9fdb3ce7d rover_navigation/config/nav_to_pose_no_spin.xml
+SRC 4c29706f9bf1 rover_navigation/config/nav_to_pose_no_spin.xml.bak_1015_154321
+SRC 4d7a85f5c46a rover_navigation/config/nvblox_local.yaml
+SRC 058979b05dd8 rover_navigation/config/nvblox_local.yaml.bak_1015_141006
+SRC 058979b05dd8 rover_navigation/config/nvblox_local.yaml.bak_1015_154321
+SRC 1ea2704bb1c6 rover_navigation/config/nvblox_local.yaml.bak_1015_174700
+SRC 45f4c37d18ac rover_navigation/config/nvblox_local.yaml.bak_1015_174745
+SRC 45f4c37d18ac rover_navigation/config/nvblox_local.yaml.bak_1015_175456
+SRC 51b73276beaa rover_navigation/config/nvblox_local.yaml.site1_1015_143932
+SRC 6ad6e706efce rover_navigation/config/places.yaml
+SRC 2d18fd84331f rover_navigation/launch/localization.launch.py
+SRC 8bad1e72190a rover_navigation/launch/navigation.launch.py
+SRC 153f83568559 rover_navigation/launch/nvblox.launch.py
+SRC 73e94cd315c0 rover_navigation/mppi_critic_plugins.xml
+SRC a84437fe892e rover_navigation/package.xml
+SRC 0c9e8f0e5dca rover_navigation/package.xml.bak_1015_154321
+SRC d2e8e2885b62 rover_navigation/package.xml.bak_1015_165938
+SRC a84437fe892e rover_navigation/package.xml.bak_1015_171646
+SRC c8482f57f950 rover_navigation/scripts/nvblox_up.sh
+SRC c22891d77f71 rover_navigation/scripts/path_end_yaw.py
+SRC 76e8f8c71b10 rover_navigation/scripts/place_cmd.py
+SRC 469c3e235f1c rover_navigation/scripts/place_server.py
+SRC 3be294e227c4 rover_navigation/scripts/place_web.py
+SRC 751660f0b40a rover_navigation/src/clearance_band_critic.cpp
+SRC a63b5f989bfd rover_navigation/src/copy_path_action.cpp
+SRC 9448d0e95556 rover_navigation/src/monotone_escape_behavior.cpp
+SRC dd0dcf3c730a rover_navigation/src/path_blocked_ahead_condition.cpp
+src git: (git 아님)
+== ③ 설치본
+  종류별 개수      32 LINK
+-- C++ 빌드물(설치 시각) vs 소스(수정 시각)
+  BIN 2026-09-28 13:10 rover_bringup/lib/rover_bringup/sensor_conditioner_node
+  BIN 2026-10-19 14:56 rover_bringup/lib/libemitter_splitter_component.so
+  BIN 2026-10-01 17:28 rover_navigation/lib/librover_path_blocked_ahead_bt_node.so
+  BIN 2026-10-14 14:44 rover_navigation/lib/librover_copy_path_bt_node.so
+  BIN 2026-10-15 15:44 rover_navigation/lib/librover_monotone_escape_behavior.so
+  BIN 2026-10-15 16:59 rover_navigation/lib/librover_clearance_band_critic.so
+  CPP 2026-10-19 17:57 rover_bringup/src/emitter_splitter.cpp
+  CPP 2026-09-28 17:30 rover_bringup/src/sensor_conditioner.cpp
+  CPP 2026-10-15 17:16 rover_navigation/src/clearance_band_critic.cpp
+  CPP 2026-10-26 12:37 rover_navigation/src/copy_path_action.cpp
+  CPP 2026-10-15 15:43 rover_navigation/src/monotone_escape_behavior.cpp
+  CPP 2026-11-04 12:01 rover_navigation/src/path_blocked_ahead_condition.cpp
+== ④ /tmp prep 도구
+TMP 없음 prep_fast.sh
+TMP 없음 prep_patrol.sh
+TMP 없음 chk_prep.py
+TMP 없음 chk_drive_gate.py
+TMP 없음 anal_rtps_pcap.py
+TMP 없음 anal_rtps_onset.py
+TMP 없음 anal_rtps_acklag.py
+== ⑤ 실행 상태
+  micro_ros_agent        2
+  robot_state_publisher  1
+  realsense2_camera      0
+  rplidar_node           0
+  sensor_conditioner     0
+  ekf_node               0
+  vslam_twist            0
+  slam_toolbox           0
+  controller_server      0
+  planner_server         0
+  bt_navigator           0
+  nvblox                 0
+  stuck_monitor          0
+  nav_guard              0
+  place_server           0
+  place_web              0
+  foxglove_bridge        0
+  ros2                   5
+  컨테이너: microros_agent(Up 5 days) 
+  에이전트 세션 수립 기록 1 건
+  rover-base 서비스: inactive · 사용 설정 
+  /tmp/nav2_params_active.yaml: 
+== ⑥ 지도 · 포크
+  /home/jetson/maps/office/office_v3.data
+  /home/jetson/maps/office/office_v3.pgm
+  /home/jetson/maps/office/office_v3.posegraph
+  /home/jetson/maps/office/office_v3.yaml
+  slam 포크: /home/jetson/slam_ws/install/slam_toolbox/lib/slam_toolbox/localization_slam_toolbox_node
