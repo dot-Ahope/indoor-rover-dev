@@ -17,7 +17,7 @@
 | 도구 | 하는 일 | 옛 이름 |
 |---|---|---|
 | `prep_fast.sh` | 정리 → 센서 → SLAM(위치 추정) → Nav2 기동, 준비될 때까지 확인. 환경 변수로 구성을 받는다. 약 60~70 s. 10-14: 비우기 전 직전 nav2·slam·sensors 기록을 `/tmp/logkeep/<시각>_*.log` 로 보관(최근 8 벌) | `job972_prep_fast.sh` |
-| `prep_patrol.sh` | 순회 구성(그림자 EKF 끔 · 전역 nvblox · 재계획 0.5 Hz)으로 `prep_fast.sh` 를 부른다. 인자: 궤적 발행 `lite`/`true`/`off`, 후진 벌점 | `job973_prep_lite_fast.sh` 등 |
+| `prep_patrol.sh` | 순회(표준) 구성(그림자 EKF 끔 · 전역 nvblox · 계획 Smac → 실패 시 NavFn · 재계획 0.01 Hz — 11-11 부터, 그 전 navfn · 0.5)으로 `prep_fast.sh` 를 부른다. 인자: 궤적 발행 `lite`/`true`/`off`, 후진 벌점. 환경: `ODOM` · `PLANNER` · `REPLAN_HZ` · `SENSORS_ADD` · `NAV_ADD` | `job973_prep_lite_fast.sh` 등 |
 | `chk_prep.py` | prep 확인 노드 1 개: Nav2 상태 · 좌표 변환 · 보드/EKF 주기 · 전역 지도 · 실행 중 설정값 · 배터리. 마지막 줄 `PREP_OK`/`PREP_FAIL` | `job971_prepchk.py` |
 | `chk_commit_gate.py` | (PC) Claude Code 커밋 훅 — staged 에 Jetson 비밀번호(저장소 밖 `~/.config/rover_jetson/pw`)가 있거나 파일이 없으면 `git commit` 을 막음, 규약 경고 개수 알림 | (11-02 신규) |
 | `chk_record_rules.py` | (PC) 작업 규약 점검 — TOOLS.md 누락 · 도구 앞머리 · 설명 주석 · 깨진 링크 · 적힌 출력 경로 · 비밀번호(선택). 경고만, `--all` · `--strict` | (11-02 신규) |
@@ -25,6 +25,7 @@
 | `chk_padding_dynamic.py` | 실행 중 코스트맵 footprint_padding 을 0 으로 내렸다 되돌리며 발행 풋프린트 · 코스트맵 칸 수 확인(로버 안 움직임). ⚠ 돌린 뒤엔 주행 전 prep 으로 재기동(10-14 §21 — 되돌려도 잔떨림 남음) | (10-14 신규) |
 | `anal_tf_rate.py` | bag → 10 s 칸마다 /tf 수신 Hz(포화 판정 지표: 정상 50) | `tf_rate.py` |
 | `anal_navlog.py` | Nav2 로그 → 사건 종류별 횟수 · 10 s 분포 · 원문 | `navlog_pc.py` |
+| `anal_drive_results.py` | (PC) 09-23 이후 F0 러너 로그 전부 → 주행 · 목표별 결과 csv, 날짜 · 구간 · 기간별 성공률 · 사이클타임 표(중복 주행 하나로, SUCCEEDED_XY = 성공) | (11-10 신규) |
 | `anal_proc_cpu.py` | 전 프로세스 CPU 기록 → 구간별 비교 표 | `proc_cmp2.py` |
 | `anal_top.py` | top 기록 → 구간의 CPU 여유 · 상위 프로세스 | `top_eval.py` |
 | `anal_udp_drops.py` | `net_<이름>.log` → 포화 전후 초당 UDP 수신 · 손실, 프로세스별 소켓 손실 | `net_anal.py` |

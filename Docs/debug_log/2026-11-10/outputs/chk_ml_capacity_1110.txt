@@ -1,0 +1,20 @@
+== 판
+L4T # R36 (release), REVISION: 5.0, GCID: 43
+  nvidia-l4t-core 36.5.0-20260115194252
+  전원 모드: NV Power Mode: 15W 0 
+== 메모리 · 디스크(스택 미기동 상태)
+                 total        used        free      shared  buff/cache   available
+  Mem:            7607         911        4599          29        2096        6435
+  Swap:           3803           0        3803
+  Filesystem      Size  Used Avail Use% Mounted on
+  /dev/nvme0n1p1  233G   99G  122G  45% /
+== Isaac ROS 이미지 · 컨테이너
+  isaac_ros_dev-aarch64-rs:apt 43.8GB 2 weeks ago
+  isaac_ros_dev-aarch64-rs:latest 43.2GB 2 weeks ago
+  isaac_ros_dev-aarch64:latest 40.3GB 12 months ago
+  nvcr.io/nvidia/isaac/ros:aarch64-ros2_humble_4c0c55dddd2bbcc3e8d5f9753bee634c 40.3GB 12 months ago
+  microros/micro-ros-agent:humble 627MB 14 months ago
+  src: isaac_ros_common
+  src: isaac_ros_nvblox
+== tegrastats 1 회
+11-10-2026 15:33:10 RAM 1022/7607MB (lfb 13x4MB) SWAP 0/3804MB (cached 0MB) CPU [3%@729,1%@729,1%@729,0%@729,0%@729,0%@729] GR3D_FREQ 0% cpu@46.718C soc2@46.281C soc0@47C gpu@47.5C tj@48C soc1@48C VDD_IN 4940mW/4940mW VD

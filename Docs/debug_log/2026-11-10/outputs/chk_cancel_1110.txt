@@ -1,0 +1,96 @@
+== nav2.log 줄 수 1238
+== nav_guard · stuck_monitor 전체(WARN 이상 · 판정 줄)
+[stuck_monitor.py-1] [INFO] [1794299075.714235917] [stuck_monitor]: stuck_monitor 시작 (window 2.0s, ratio 0.25, SHADOW(로그만))
+[nav_guard.py-2] [INFO] [1794299076.915640590] [nav_guard]: nav_guard 시작 (시간 = d0/0.07×2.0+30 s, 무진행 0.25 m/45 s)
+[nav_guard.py-2] [INFO] [1794299213.311240288] [nav_guard]: 목표 f270d8da: 남은 거리 4.00 m → 시간 한도 144 s (시작 뒤 0.0 s)
+[stuck_monitor.py-1] [WARN] [1794299255.529466899] [stuck_monitor]: STUCK: 지령 3.3cm/9° 인데 관측 0.3cm/3.1° (비율 0.10) [shadow — 조치 없음]
+[nav_guard.py-2] [INFO] [1794299299.094844273] [nav_guard]: 목표 5358fb7e: 남은 거리 0.16 m → 시간 한도 34 s (시작 뒤 0.0 s)
+[nav_guard.py-2] [INFO] [1794299299.147748294] [nav_guard]: 목표 5358fb7e: 남은 거리 3.99 m → 시간 한도 144 s (시작 뒤 0.1 s)
+[nav_guard.py-2] [INFO] [1794299354.167195016] [nav_guard]: 목표 8f7cbda3: 남은 거리 0.14 m → 시간 한도 34 s (시작 뒤 0.0 s)
+[nav_guard.py-2] [INFO] [1794299354.217370824] [nav_guard]: 목표 8f7cbda3: 남은 거리 1.86 m → 시간 한도 83 s (시작 뒤 0.1 s)
+[nav_guard.py-2] [INFO] [1794299381.360664419] [nav_guard]: 목표 adf7cb00: 남은 거리 0.18 m → 시간 한도 35 s (시작 뒤 0.0 s)
+[nav_guard.py-2] [INFO] [1794299381.406327188] [nav_guard]: 목표 adf7cb00: 남은 거리 2.02 m → 시간 한도 88 s (시작 뒤 0.0 s)
+[nav_guard.py-2] [INFO] [1794299411.461132213] [nav_guard]: 목표 0b19e1b2: 남은 거리 0.14 m → 시간 한도 34 s (시작 뒤 0.0 s)
+[nav_guard.py-2] [INFO] [1794299411.513964204] [nav_guard]: 목표 0b19e1b2: 남은 거리 1.72 m → 시간 한도 79 s (시작 뒤 0.1 s)
+[stuck_monitor.py-1] [WARN] [1794299413.330686483] [stuck_monitor]: STUCK: 지령 6.1cm/7° 인데 관측 0.1cm/1.3° (비율 0.02) [shadow — 조치 없음]
+[nav_guard.py-2] [ERROR] [1794299461.261653846] [nav_guard]: nav_guard 개입 — 무진행: 45 s 동안 최대 0.25 m 이동 < 0.25 m → 모든 목표 취소·정지
+[nav_guard.py-2] [INFO] [1794299724.256110156] [nav_guard]: 목표 e63d4295: 남은 거리 1.56 m → 시간 한도 75 s (시작 뒤 0.0 s)
+== bt_navigator · controller · planner · behavior 경고/오류(끝 60)
+[planner_server-5] [WARN] [1794299724.167793594] [planner_server]: GridBased: failed to create plan with tolerance 0.25.
+[planner_server-5] [WARN] [1794299724.179048626] [planner_server]: Planning algorithm GridBased failed to generate a valid path to (-1.65, -3.70)
+[planner_server-5] [WARN] [1794299724.181006152] [planner_server]: [compute_path_to_pose] [ActionServer] Aborting handle.
+[planner_server-5] [WARN] [1794299724.244974647] [planner_server]: GridBased: failed to create plan with tolerance 0.25.
+[planner_server-5] [WARN] [1794299724.253570054] [planner_server]: Planning algorithm GridBased failed to generate a valid path to (-1.65, -3.70)
+[planner_server-5] [WARN] [1794299724.255923015] [planner_server]: [compute_path_to_pose] [ActionServer] Aborting handle.
+[bt_navigator-7] [WARN] [1794299724.290753582] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[bt_navigator-7] [WARN] [1794299724.295658934] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[planner_server-5] [WARN] [1794299724.603569750] [planner_server]: GridBased: failed to create plan with tolerance 0.25.
+[planner_server-5] [WARN] [1794299724.603716250] [planner_server]: Planning algorithm GridBased failed to generate a valid path to (-1.65, -3.70)
+[planner_server-5] [WARN] [1794299724.603759899] [planner_server]: [compute_path_to_pose] [ActionServer] Aborting handle.
+[bt_navigator-7] [WARN] [1794299724.763270981] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[planner_server-5] [WARN] [1794299729.658054588] [planner_server]: GridBased: failed to create plan with tolerance 0.25.
+[planner_server-5] [WARN] [1794299729.659875054] [planner_server]: Planning algorithm GridBased failed to generate a valid path to (-1.65, -3.70)
+[planner_server-5] [WARN] [1794299729.660628899] [planner_server]: [compute_path_to_pose] [ActionServer] Aborting handle.
+[planner_server-5] [WARN] [1794299730.598831588] [planner_server]: GridBased: failed to create plan with tolerance 0.25.
+[planner_server-5] [WARN] [1794299730.598999785] [planner_server]: Planning algorithm GridBased failed to generate a valid path to (-1.65, -3.70)
+[planner_server-5] [WARN] [1794299730.599047018] [planner_server]: [compute_path_to_pose] [ActionServer] Aborting handle.
+[planner_server-5] [WARN] [1794299731.595603459] [planner_server]: GridBased: failed to create plan with tolerance 0.25.
+[planner_server-5] [WARN] [1794299731.595752231] [planner_server]: Planning algorithm GridBased failed to generate a valid path to (-1.65, -3.70)
+[planner_server-5] [WARN] [1794299731.595798504] [planner_server]: [compute_path_to_pose] [ActionServer] Aborting handle.
+[planner_server-5] [WARN] [1794299732.597840508] [planner_server]: GridBased: failed to create plan with tolerance 0.25.
+[planner_server-5] [WARN] [1794299732.598001248] [planner_server]: Planning algorithm GridBased failed to generate a valid path to (-1.65, -3.70)
+[planner_server-5] [WARN] [1794299732.598048481] [planner_server]: [compute_path_to_pose] [ActionServer] Aborting handle.
+[behavior_server-6] [INFO] [1794299732.614849300] [behavior_server]: Running monotone_escape
+[behavior_server-6] [INFO] [1794299732.616773385] [behavior_server]: [monotone_escape] 시작 최근접 29.0 cm · 목표 5.0 cm · 모의 결과(닿는 양 m/rad): 앞:없음(끝 29.0 cm) 뒤:0.010 좌회전:없음(끝 29.0 cm) �
+[behavior_server-6] [INFO] [1794299732.618532346] [behavior_server]: [monotone_escape] 성공: 최근접 29.0 cm
+[behavior_server-6] [INFO] [1794299732.618610172] [behavior_server]: monotone_escape completed successfully
+[planner_server-5] [WARN] [1794299732.635889116] [planner_server]: GridBased: failed to create plan with tolerance 0.25.
+[planner_server-5] [WARN] [1794299732.636038944] [planner_server]: Planning algorithm GridBased failed to generate a valid path to (-1.65, -3.70)
+[planner_server-5] [WARN] [1794299732.636079330] [planner_server]: [compute_path_to_pose] [ActionServer] Aborting handle.
+[planner_server-5] [WARN] [1794299733.595474104] [planner_server]: GridBased: failed to create plan with tolerance 0.25.
+[planner_server-5] [WARN] [1794299733.595635036] [planner_server]: Planning algorithm GridBased failed to generate a valid path to (-1.65, -3.70)
+[planner_server-5] [WARN] [1794299733.595675645] [planner_server]: [compute_path_to_pose] [ActionServer] Aborting handle.
+[bt_navigator-7] [WARN] [1794299735.785491771] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[planner_server-5] [WARN] [1794299738.639665508] [planner_server]: GridBased: failed to create plan with tolerance 0.25.
+[planner_server-5] [WARN] [1794299738.639820840] [planner_server]: Planning algorithm GridBased failed to generate a valid path to (-1.65, -3.70)
+[planner_server-5] [WARN] [1794299738.639858377] [planner_server]: [compute_path_to_pose] [ActionServer] Aborting handle.
+[planner_server-5] [WARN] [1794299739.597354299] [planner_server]: GridBased: failed to create plan with tolerance 0.25.
+[planner_server-5] [WARN] [1794299739.597612066] [planner_server]: Planning algorithm GridBased failed to generate a valid path to (-1.65, -3.70)
+[planner_server-5] [WARN] [1794299739.597658627] [planner_server]: [compute_path_to_pose] [ActionServer] Aborting handle.
+[bt_navigator-7] [WARN] [1794299740.603625019] [BehaviorTreeEngine]: Behavior Tree tick rate 100.00 was exceeded!
+[planner_server-5] [WARN] [1794299740.604175979] [planner_server]: GridBased: failed to create plan with tolerance 0.25.
+[planner_server-5] [WARN] [1794299740.604302158] [planner_server]: Planning algorithm GridBased failed to generate a valid path to (-1.65, -3.70)
+[planner_server-5] [WARN] [1794299740.604337327] [planner_server]: [compute_path_to_pose] [ActionServer] Aborting handle.
+[planner_server-5] [WARN] [1794299741.600252882] [planner_server]: GridBased: failed to create plan with tolerance 0.25.
+[planner_server-5] [WARN] [1794299741.600395734] [planner_server]: Planning algorithm GridBased failed to generate a valid path to (-1.65, -3.70)
+[planner_server-5] [WARN] [1794299741.600432055] [planner_server]: [compute_path_to_pose] [ActionServer] Aborting handle.
+[behavior_server-6] [INFO] [1794299741.616074954] [behavior_server]: Running monotone_escape
+[behavior_server-6] [INFO] [1794299741.617982079] [behavior_server]: [monotone_escape] 시작 최근접 29.0 cm · 목표 5.0 cm · 모의 결과(닿는 양 m/rad): 앞:없음(끝 29.0 cm) 뒤:0.010 좌회전:없음(끝 29.0 cm) �
+[behavior_server-6] [INFO] [1794299741.622296855] [behavior_server]: [monotone_escape] 성공: 최근접 29.0 cm
+[behavior_server-6] [INFO] [1794299741.623898852] [behavior_server]: monotone_escape completed successfully
+[planner_server-5] [WARN] [1794299741.647972449] [planner_server]: GridBased: failed to create plan with tolerance 0.25.
+[planner_server-5] [WARN] [1794299741.648181319] [planner_server]: Planning algorithm GridBased failed to generate a valid path to (-1.65, -3.70)
+[planner_server-5] [WARN] [1794299741.648233416] [planner_server]: [compute_path_to_pose] [ActionServer] Aborting handle.
+[planner_server-5] [WARN] [1794299742.602669709] [planner_server]: GridBased: failed to create plan with tolerance 0.25.
+[planner_server-5] [WARN] [1794299742.602843282] [planner_server]: Planning algorithm GridBased failed to generate a valid path to (-1.65, -3.70)
+[planner_server-5] [WARN] [1794299742.602896115] [planner_server]: [compute_path_to_pose] [ActionServer] Aborting handle.
+[bt_navigator-7] [WARN] [1794299742.633487590] [bt_navigator]: [navigate_to_pose] [ActionServer] Aborting handle.
+[bt_navigator-7] [ERROR] [1794299742.634063414] [bt_navigator]: Goal failed
+== planner_server 시작/목표 칸 관련(끝 20)
+[INFO] [planner_server-5]: process started with pid [49645]
+[planner_server-5] [INFO] [1794299108.576509923] [global_costmap.global_costmap]: start
+[planner_server-5] [WARN] [1794299724.167793594] [planner_server]: GridBased: failed to create plan with tolerance 0.25.
+[planner_server-5] [WARN] [1794299724.244974647] [planner_server]: GridBased: failed to create plan with tolerance 0.25.
+[planner_server-5] [WARN] [1794299724.603569750] [planner_server]: GridBased: failed to create plan with tolerance 0.25.
+[planner_server-5] [WARN] [1794299729.658054588] [planner_server]: GridBased: failed to create plan with tolerance 0.25.
+[planner_server-5] [WARN] [1794299730.598831588] [planner_server]: GridBased: failed to create plan with tolerance 0.25.
+[planner_server-5] [WARN] [1794299731.595603459] [planner_server]: GridBased: failed to create plan with tolerance 0.25.
+[planner_server-5] [WARN] [1794299732.597840508] [planner_server]: GridBased: failed to create plan with tolerance 0.25.
+[planner_server-5] [WARN] [1794299732.635889116] [planner_server]: GridBased: failed to create plan with tolerance 0.25.
+[planner_server-5] [WARN] [1794299733.595474104] [planner_server]: GridBased: failed to create plan with tolerance 0.25.
+[planner_server-5] [WARN] [1794299738.639665508] [planner_server]: GridBased: failed to create plan with tolerance 0.25.
+[planner_server-5] [WARN] [1794299739.597354299] [planner_server]: GridBased: failed to create plan with tolerance 0.25.
+[planner_server-5] [WARN] [1794299740.604175979] [planner_server]: GridBased: failed to create plan with tolerance 0.25.
+[planner_server-5] [WARN] [1794299741.600252882] [planner_server]: GridBased: failed to create plan with tolerance 0.25.
+[planner_server-5] [WARN] [1794299741.647972449] [planner_server]: GridBased: failed to create plan with tolerance 0.25.
+[planner_server-5] [WARN] [1794299742.602669709] [planner_server]: GridBased: failed to create plan with tolerance 0.25.
