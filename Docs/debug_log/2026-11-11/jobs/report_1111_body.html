@@ -1,0 +1,173 @@
+
+<style>
+.code{margin:0;font-family:var(--f-mono);font-size:12.5px;line-height:1.5;background:var(--bg);border:1px solid var(--line);padding:8px 10px;overflow-x:auto;white-space:pre;max-width:100%}
+.flow > span{min-width:0}
+.figs{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px;margin:12px 0}
+.figs figure{margin:0}
+.figs img{width:100%;height:auto;border:1px solid var(--line);display:block}
+.figs figcaption{font-size:12.5px;line-height:1.5;margin-top:4px}
+</style>
+<div class="wrap">
+<header>
+  <div class="eyebrow">Indoor Rover · 2026-11-11 · Docs/debug_log/2026-11-11 §0–§8 · 주행 1 회(f2rr1)</div>
+  <h1>11-11 Smac 구성을 표준으로</h1>
+  <p class="lead">어제(11-10) 강제 종료로 bag 을 잃은 f2dm2 를 Jetson 에 남은 노드별 로그로 다시 맞춰 봤고, 사람이 경로를 막았을 때 로버가 어떤 순서로 움직였는지 풀었습니다. 이어서 "어제 설정이 가장 안정적인가" 를 지난 완주 기록과 비교했고, 그 구성으로 반복 시험 f2rr1 을 한 번 돌렸습니다(8/8, 접촉 0). 같은 구성으로 연속 3 회 완주한 기록을 근거로, 사용자 결정에 따라 표준 prep 과 launch 기본값을 <b>Smac Hybrid(실패 시 NavFn) · 재계획 0.01 Hz</b> 로 바꾸고 Jetson 에 배포한 뒤 비공개 원격에 push 했습니다. 판단마다 스크립트 핵심 · 실제 출력 · 저장소 원문 경로를 붙였습니다.</p>
+</header>
+
+<section>
+  <h2>오늘의 판정</h2>
+  <div class="verdicts">
+    <div class="v no"><b>f2dm2 bag · 러너 원문 소실</b><span>PC 러너가 출발 직후 끊겼고 Jetson 재부팅으로 /tmp 가 지워짐. 남은 원천은 ~/.ros/log 노드별 로그뿐 → 목표 1 · 2 성공, 3 미완 = 판정 불가(§0 · §1)</span></div>
+    <div class="v ok"><b>사람이 막을 때의 동작 설명</b><span>정지 → 3 m 밖 정리 → 재계획 → 재출발 순서, 정지 약 1.9 s. 막은 것이 사람이라 이 구간은 상자 회피 판별에서 뺌(§3, 사용자 정정)</span></div>
+    <div class="v ok"><b>'가장 좋은 기록' 은 맞음, '가장 안정적' 은 확정 못 함</b><span>완주 표본이 적고 B0 도 2/2 완주 · 접촉 0. 11-04 '표준'(NavFn · 0.5 Hz)은 미검증 조합이었음(§4)</span></div>
+    <div class="v ok"><b>반복 시험 f2rr1 통과</b><span>8/8 · 총 434.4 s · 주행 중 TF 실패 0 · 접촉 0 · 개입 0(사용자). 반복은 1 회로 끝냄(사용자 결정, §5.1 · §5.2)</span></div>
+    <div class="v ok"><b>탈출 장면 시각화</b><span>막힘 정지에서 새 경로를 받기까지 0.15 s. 탈출 동작은 여유가 이미 18.5 cm 라 움직이지 않음(§6)</span></div>
+    <div class="v ok"><b>표준 변경 · 배포 · push</b><span>prep_patrol · launch 기본 = smac · 0.01 Hz, 문서 4 곳, Jetson md5 일치, 비공개 원격만 push(§7 · §8). 새 기본값으로 실제 주행은 아직</span></div>
+  </div>
+</section>
+
+<section>
+  <h2>f2dm2 기록 회수 — 남은 것은 노드 로그뿐<span class="sec">§0 · §1</span></h2>
+  <p>11-10 f2dm2 는 사정상 주행 중에 로버를 강제 종료했습니다. 러너는 bag 을 Jetson <span class="mono">/tmp/bag_&lt;이름&gt;</span> 에 쓰고 끝에 묶어 PC 로 가져오는데, PC 러너가 출발 직후 끊겨 회수를 못 했고 재부팅으로 <span class="mono">/tmp</span> 가 지워졌습니다.</p>
+  <div class="flow">
+    <span class="k">본 것</span><span><pre class="code">== 부팅 2026-11-11 10:51:52 · 지금 2026-11-11 10:53:21 · 가동 up 1 minute
+== /tmp 의 f2dm2
+  -rw------- 1142 11-11_10:53 /tmp/chk_f2dm2_left_1111.sh
+== bag 폴더
+== 홈 bags</pre><span class="note">결과 <span class="mono">outputs/chk_f2dm2_left_1111.txt</span> · 스크립트 <span class="mono">jobs/chk_f2dm2_left_1111.sh</span></span></span>
+    <span class="k">추론</span><span>launch.log 는 17 줄뿐(노드 출력은 <span class="mono">/tmp/nav2.log</span> 로만 가서 소실). 대신 재부팅에도 남는 노드별 rcl 로그(<span class="mono">&lt;노드&gt;_&lt;pid&gt;_&lt;ms&gt;.log</span>)를 시간순으로 합쳤다 — 17:55:00 ~ 17:58:05 에 130 줄</span>
+    <span class="k">한계</span><span>마지막 줄 17:57:43. 종료 직전 몇 초는 버퍼에 남아 안 쓰였을 수 있음(미확인). 궤적 · 코스트맵 · 경로 · 목표별 도착 오차는 없음</span>
+  </div>
+  <div class="tbl"><table>
+    <tr><th>목표</th><th>시작 → 끝</th><th>결과</th><th>그 사이</th></tr>
+    <tr><td>1 출발 → B (2.25, −1.6)</td><td>17:55:26.0 → 17:56:16.9</td><td>성공 50.9 s</td><td>컨트롤러 주기 놓침 8</td></tr>
+    <tr><td>2 B → C (−1.6, −2.0)</td><td>17:56:16.9 → 17:57:31.3</td><td>성공 74.4 s(f2dm1 같은 구간 55.0 s)</td><td>막힘 정지 2 · Smac 실패 · 스무더 충돌 · 탈출 동작 1 · 주기 놓침 15</td></tr>
+    <tr><td>3 C → 서쪽 통로 (−1.65, −3.7)</td><td>17:57:31.3 → (기록 끝)</td><td>미완(강제 종료)</td><td>막힘 정지 1</td></tr>
+    <tr><td>4 ~ 8</td><td>—</td><td>시도 안 함</td><td>—</td></tr>
+  </table></div>
+  <p class="note">원문 <span class="mono">outputs/chk_roslog_window_1111.txt</span> · 스크립트 <span class="mono">jobs/chk_roslog_window_1111.sh 17:55:00 17:58:05</span>. 판정(11-10 §10 선언 기준): 도착 · 접촉 · 가설 ② 판별 모두 <b>판정 불가</b>.</p>
+</section>
+
+<section>
+  <h2>사람이 길을 막았을 때 — 정지 → 정리 → 재계획<span class="sec">§3</span></h2>
+  <div class="flow">
+    <span class="k">처음 적은 것(§1)</span><span>출발 방 B → C (0.76 ~ 0.89, −1.46 ~ −1.87) 막힘을 '어느 물체인지 미확인' 으로 두고, '검증 구성이면 상자 문제가 사라진다' 를 지지하지 않는 관찰로 적었다</span>
+    <span class="k">정정(사용자)</span><span>막은 것은 움직이는 사람. 이 구간은 상자 회피 판별에 쓸 수 없다 — 판별은 그대로 '판정 불가'</span>
+    <span class="k">동작 규칙</span><span><pre class="code">&lt;PathBlockedAhead path="{path}" lookahead="1.5" skip_near="0.30"
+                  hold_time="2.0" min_cost="99" only_new="true"/&gt;
+  → 앞 0.3 ~ 1.5 m 경로 점이 전역 비용 ≥ 99 로 2 s 이어지면 FollowPath 정지
+바깥 복구 RoundRobin: ① 로컬 2.5 m · 전역 3.0 m 밖만 정리 ② monotone_escape ③ Wait 5 s
+  → 하나 하고 파이프라인 재시작 = 재계획 (주기 재계획 0.01 Hz 라 재계획은 이 길로만)</pre><span class="note">원문 <span class="mono">ros2_ws/src/rover_navigation/config/nav_to_pose_no_spin.xml</span> 108 행(감지) · 117 ~ 127 행(복구)</span></span>
+    <span class="k">나온 결과</span><span><pre class="code">17:56:30.286 PathBlockedAhead: 앞 경로 (0.83, -1.87) 비용 99 — 2.0 s 지속되면 재계획
+17:56:32.286 PathBlockedAhead: 앞 경로 (0.89, -1.86) 비용 99 가 2.0 s 지속 → 주행 중단·재계획
+17:56:34.186 [planner_server]: SmacHybrid: failed to create plan, no valid path found.
+17:56:34.238 [smoother_server]: Smoothed path leads to a collision at x: 0.766291, y: -1.471106, theta: 0.067195
+17:57:07.389 [monotone_escape] 시작 최근접 15.9 cm · 목표 5.0 cm · 모의 결과: 앞:없음(끝 15.9 cm) 뒤:0.010 …</pre><span class="note">결과 <span class="mono">outputs/chk_roslog_window_1111.txt</span>(발췌)</span></span>
+    <span class="k">읽기</span><span>정리는 3 m 밖만 지워 가까운 사람은 지도에 남음 → Smac(차체 충돌 검사)은 경로를 못 찾음 → NavFn 경로를 스무더가 충돌로 거름 → 다듬지 않은 원경로로 재출발(정지 약 1.9 s). 원경로는 사람 옆 비용 99 칸을 지나고, 실제로 비키는 것은 실시간 지도를 보는 MPPI 몫. 연속 추종이 아니라 막힐 때마다 '정지 → 재계획'</span>
+    <span class="k">미확인</span><span>(−0.70, −1.84) 두 번째 정지가 사람인지, nvblox 가 사람이 지나간 자리를 얼마나 기억했는지 — bag 소실로 판별 불가</span>
+    <span class="k">다음에 알아보는 법</span><span>판별 주행 중 사람이 경로에 들어오면 그 구간은 판정에서 뺀다고 주행 전에 선언하고, 사용자에게 시각을 받아 적는다</span>
+  </div>
+</section>
+
+<section>
+  <h2>"어제 설정이 가장 안정적인가"<span class="sec">§4</span></h2>
+  <p>no5 코스(8 목표) 완주 · 시도 기록을 구성별로 늘어놓았습니다. 원천은 각 날짜 SUMMARY 결과 § 와 <span class="mono">2026-11-10/outputs/anal_drive_results_runs.csv</span>.</p>
+  <div class="tbl"><table>
+    <tr><th>구성</th><th>주행</th><th>결과</th><th>총 시간</th><th>1 s 넘는 정지</th><th>통로 최소 여유</th><th>TF 실패</th><th>접촉</th></tr>
+    <tr><td>B0 NavFn + 0.01 Hz</td><td>f2rp3 10-23</td><td>8/8</td><td>450 s</td><td>Wait 2</td><td>—</td><td>—</td><td>0</td></tr>
+    <tr><td>〃 + only_new</td><td>f2rp4 10-23</td><td>8/8</td><td>417.9 s</td><td>0</td><td>2.9 cm</td><td>1</td><td>0</td></tr>
+    <tr><td>Smac · tol 0.25</td><td>f2sa3 10-26</td><td>8/8</td><td>448.0 s</td><td>5 번 15.3 s</td><td>0.8 cm</td><td>—</td><td>기록상 0</td></tr>
+    <tr><td>+ tol 0.35</td><td>f2st1 10-27</td><td>8/8</td><td>427.5 s</td><td>1 번 4.7 s</td><td>2.9 cm</td><td>23</td><td>미확인</td></tr>
+    <tr><td>+ nvblox 층 수정</td><td>f2tf1 10-27</td><td>8/8</td><td>412.8 s</td><td>1 번 5.1 s</td><td>3.8 cm</td><td>33</td><td>상자 밀림</td></tr>
+    <tr><td><b>+ transform_timeout 1.5</b></td><td>f2tt1 10-27</td><td>8/8</td><td>412.2 s</td><td>0</td><td>3.1 cm</td><td>0</td><td>0</td></tr>
+    <tr><td>〃</td><td>f2tt2 10-28</td><td>8/8</td><td>413.7 s</td><td>1 번 4.9 s</td><td>4.2 cm</td><td>0</td><td>기록상 0</td></tr>
+    <tr><td>NavFn + 0.5 Hz(11-04 '표준')</td><td>f2dm1 11-10</td><td>목표 5 취소</td><td>—</td><td>45 s 무진행</td><td>—</td><td>—</td><td>상자</td></tr>
+  </table></div>
+  <div class="flow">
+    <span class="k">결론</span><span>'시험한 구성 중 기록이 가장 좋다' 는 맞다 — 완주 2 회 모두 8/8 · 접촉 0 · TF 실패 0 · 최단 시간, 단계별로 고친 문제(통로 여유 0.8 → 3 ~ 4 cm, TF 실패 23 · 33 → 0)가 실제로 사라짐</span>
+    <span class="k">확정 못 한 것</span><span>① 표본 2 회, B0 도 2/2 · 접촉 0 ② SLAM stamp 정체는 timeout 이 가린 것(f2tt2 &gt; 0.5 s 31 번 · 최대 0.996 s) ③ 통로 여유가 cm 단위, 낮은 상자는 카메라 시야 의존 ④ 조건 하나(같은 코스 · 사람 없음)</span>
+    <span class="k">분명해진 것</span><span>11-04 '표준 prep'(NavFn + 0.5 Hz)은 미검증 조합이었고 첫 주행에서 실패 → 표준을 이 구성으로 바꾸는 쪽이 기록에 맞다</span>
+  </div>
+</section>
+
+<section>
+  <h2>반복 시험 f2rr1<span class="sec">§5 · §5.1 · §5.2</span></h2>
+  <p>주행 전에 판정을 선언했습니다: ① 8 목표 성공 · ABORT 0 · nav_guard 0 ② 접촉 0(사용자) ③ 주행 중 TF 외삽 실패 0 ④ 사람 개입 0. 구성은 f2tt1 · f2tt2 와 같은 <span class="mono">NAV_ADD="planner:=smac" REPLAN_HZ=0.01 bash /tmp/prep_patrol.sh lite</span>, 코스 no5, 속도 0.07.</p>
+  <div class="flow">
+    <span class="k">러너 결과</span><span><pre class="code">결과: 1 SUCCEEDED 52.2s / 2 SUCCEEDED 54.7s / 3 SUCCEEDED 31.0s / 4 SUCCEEDED 28.7s /
+      5 SUCCEEDED 33.8s / 6 SUCCEEDED 25.3s / 7 SUCCEEDED 103.9s / 8 SUCCEEDED 104.4s | 총 434.4 s
+  출발 대비 최종 map: Δ(0.125, 0.054) m = 0.136 m, Δyaw -169.5° | 마지막 목표 대비 0.135 m</pre><span class="note">결과 <span class="mono">outputs/run_f2rr1.txt</span> · 원문 <span class="mono">outputs/f0_f2rr1.log</span> · bag <span class="mono">bags/f0_f2rr1/bag_f2rr1.tgz</span>(70 MB, git 제외)</span></span>
+    <span class="k">nav2 로그</span><span><pre class="code">== /tmp/nav2.log 780 줄
+  TF 외삽(extrapolat)        1
+  Goal failed · ABORT         0
+  막힘 정지(지속 → 중단) 4      ← 한 번에 두 줄 → 실제 2 번
+  monotone_escape 실행       1
+  Smac 실패                  1
+  nav_guard 개입             0</pre><span class="note">결과 <span class="mono">outputs/chk_nav2_f2rr1.txt</span> · 스크립트 <span class="mono">jobs/chk_nav2_run_1111.sh</span></span></span>
+    <span class="k">TF 1 줄의 정체</span><span><span class="mono">1794376320.228 [NvbloxCostmapLayer] Can't transform: map to odom … extrapolation</span> — 첫 목표(1794376428.215)보다 108 s 전, Nav2 설정 중 → <b>주행 중 TF 실패 0</b>(<span class="mono">outputs/chk_tf_line_f2rr1.txt</span>)</span>
+    <span class="k">판정</span><span>① ✔ ② ✔ ③ ✔ ④ ✔(②④ 사용자 "접촉 없음, 개입 없음"). 참고: 총 시간 +21 s(목표 7 103.9 s, f2tt 96.6 · 94.0)</span>
+    <span class="k">선언 변경</span><span>§5 는 유효 3 회(앞 2 회와 합쳐 연속 5 회)를 확정 기준으로 선언했으나, 사용자 결정으로 1 회에서 끝냄. 근거는 <b>같은 구성 연속 3 회</b>(f2tt1 · f2tt2 · f2rr1). '여러 번 시험한 설정' 은 정정 — 10-26 뒤 Smac 계열 7 회 중 지금과 완전히 같은 구성은 이 3 회, 나머지는 값을 바꾸던 중간 구성</span>
+  </div>
+  <h3>시작 명령 → 첫 목표까지 약 2 분 25 초</h3>
+  <div class="tbl"><table>
+    <tr><th>구간</th><th>시각</th><th>걸린 시간</th><th>내용</th></tr>
+    <tr><td>prep</td><td>14:51:24 → 14:52:49</td><td>85 s</td><td>정리 5 · 자이로 캘리브 20 · Nav2 활성 대기 42 · 확인</td></tr>
+    <tr><td>대화 쪽</td><td>→ 14:53:00</td><td>11 s</td><td>러너 호출</td></tr>
+    <tr><td>게이트</td><td>14:53:01 → 14:53:40</td><td>39 s</td><td>정지 부하 P 측정 30 s 포함</td></tr>
+    <tr><td>첫 목표</td><td>→ 14:53:48.2</td><td>8 s</td><td>경로 끝 방향 조회 뒤 <span class="mono">Begin navigating</span></td></tr>
+  </table></div>
+  <p class="note">원문 <span class="mono">outputs/chk_live_marks_1111.txt</span> · 스크립트 <span class="mono">jobs/chk_live_marks_1111.sh</span>. 바퀴가 실제로 돈 시각은 bag 의 <span class="mono">/cmd_vel</span> 로 볼 것(미확인).</p>
+</section>
+
+<section>
+  <h2>탈출 장면 — 막힘에서 새 경로까지 0.15 s<span class="sec">§6</span></h2>
+  <p>마지막 목표(출발점 복귀)에서 출발점 낮은 상자 근처를 지날 때 막힘 정지가 났습니다. 그 35 초를 영상으로 만들어 세 장면을 골랐습니다.</p>
+  <div class="figs">
+    <figure><img src="@@IMG_t11_8@@" alt="15:00:21.7 옛 경로가 상자 내접 띠 위 비용 99 점을 지남"><figcaption><b>15:00:21.7</b> 옛 경로가 낮은 상자 띠 윗가장자리 (1.23, 0.11) 를 지남 → 검사 구간 안 비용 99 점(빨강). 명령 속도 +0.069 m/s</figcaption></figure>
+    <figure><img src="@@IMG_t12_2@@" alt="15:00:22.1 새 경로가 y 0.32 로 돌아감"><figcaption><b>15:00:22.1</b> 새 경로(보라)는 y ≈ 0.32 로 돌아 띠를 피함, 옛 경로는 회색 점선</figcaption></figure>
+    <figure><img src="@@IMG_t16_0@@" alt="15:00:25.9 로버가 새 경로를 따라 왼쪽으로 돎"><figcaption><b>15:00:25.9</b> 로버가 새 경로를 따라 왼쪽으로 돌아 들어감</figcaption></figure>
+  </div>
+  <div class="flow">
+    <span class="k">사건 순서</span><span><pre class="code">15:00:19.70 PathBlockedAhead: 앞 경로 (1.23, 0.11) 비용 99 — 2.0 s 지속되면 재계획
+15:00:21.71 PathBlockedAhead: 앞 경로 (1.23, 0.11) 비용 99 가 2.0 s 지속 → 주행 중단·재계획
+15:00:21.81 controller_server Goal was canceled. Stopping the robot.
+15:00:21.82 [monotone_escape] 시작 최근접 18.5 cm · 목표 5.0 cm · … → 성공: 최근접 18.5 cm
+15:00:21.86 controller_server Received a goal, begin computing control effort.</pre><span class="note">결과 <span class="mono">outputs/nav_events_f2rr1.txt</span>(<span class="mono">jobs/up_nav_events_1111.sh</span>) · 영상 <span class="mono">Docs/tools/fig_drive_video.py</span> → <span class="mono">videos/f2rr1_escape_1500.mp4</span>(git 제외) · 그림 <span class="mono">figures/f2rr1_escape_t*.png</span></span></span>
+    <span class="k">읽기</span><span>탈출 동작은 여유가 이미 18.5 cm(목표 5 cm 이상)라 움직이지 않고 즉시 성공 → 파이프라인 재시작 = 곧바로 Smac 재계획 → 컨트롤러가 새 경로를 받음. 21.7 에 명령 속도가 0.069 m/s 였으니 실제 멈춘 시간은 매우 짧다(정확한 값은 bag <span class="mono">/cmd_vel</span> — 미확인)</span>
+    <span class="k">왜 옛 경로가 띠 위였나(추정)</span><span>목표 8 을 계획할 때는 낮은 상자가 라이다 아래라 카메라에 아직 안 보여 전역 지도에 띠가 없었고, 다가가 카메라가 본 19.7 에 띠가 생김. 10-27 f2tt1 복귀의 (1.24, 0.07) 장면과 같은 '보고 나서 재계획'. 확인은 그 칸이 언제 99 가 됐는지(<span class="mono">Docs/tools/anal_box_history.py</span>)</span>
+  </div>
+</section>
+
+<section>
+  <h2>표준을 Smac · 0.01 Hz 로<span class="sec">§7 · §8</span></h2>
+  <div class="flow">
+    <span class="k">바꾼 코드</span><span><pre class="code"># Docs/tools/prep_patrol.sh 20 행
+export EXTRA_SENSORS="$S ${SENSORS_ADD:-}" EXTRA_NAV="global_camera:=nvblox planner:=${PLANNER:-smac} replan_hz:=${REPLAN_HZ:-0.01} $V ${NAV_ADD:-}" …
+# ros2_ws/src/rover_navigation/launch/navigation.launch.py 203 · 205 행
+DeclareLaunchArgument('replan_hz', default_value='0.01', …)   # 그 전 '0.5'
+DeclareLaunchArgument('planner',   default_value='smac', …)   # 그 전 'navfn'</pre><span class="note">B0 로 돌리려면 <span class="mono">PLANNER=navfn</span>. 효과는 검증 주행이 넘긴 인자와 같음(인자 순서만 다름)</span></span>
+    <span class="k">문서</span><span><span class="mono">Docs/04_navigation/CURRENT_STACK.md</span> §1 · §2.3(검증 주행 줄 · 줄 번호 갱신), <span class="mono">CLAUDE.md</span> 운용 주의, <span class="mono">Docs/tools/README.md</span>, <span class="mono">Docs/debug_log/README.md</span> §2.2 — 새 규칙 '표준에는 그 조합으로 성공한 주행 이름을, 없으면 미검증'</span>
+    <span class="k">Jetson 배포</span><span><pre class="code">== md5: nav 8b6463867f50(PC 8b6463867f50) · prep 89889adfb917(PC 89889adfb917)
+== 설치본 링크 -&gt; /home/jetson/ros2_ws/src/rover_navigation/launch/navigation.launch.py
+  'replan_hz': (default: '0.01')
+  'planner': (default: 'smac')</pre><span class="note">결과 <span class="mono">outputs/up_std_1111.txt</span> · 스크립트 <span class="mono">jobs/up_std_1111.sh</span>(두 파일을 base64 로 담아 한 번에, 백업 <span class="mono">/tmp/deploy_backup_1111</span>)</span></span>
+    <span class="k">커밋 · push</span><span>커밋 98a05824 → 비공개 원격의 원본 · 작업 브랜치 두 곳(c27c770b..98a05824), 로컬과 차이 0. 공개 저장소 게시는 하지 않음</span>
+    <span class="k">아직 안 한 것</span><span>새 기본값(인자 없이)으로 실제 주행. 다음 prep 출력의 <span class="mono">BT RateController hz="0.01"</span> · planner 줄로 확인</span>
+  </div>
+</section>
+
+<section>
+  <h2>결정 대기</h2>
+  <ul>
+    <li><b>공개 저장소 게시</b>(<span class="mono">private/publish_public.sh</span>) — 오늘 커밋은 비공개 원격에만 있음</li>
+    <li>bag 이 러너 끊김 · 재부팅에도 남게 — 홈 사본(<span class="mono">BAG_DEPTH=1</span>) 또는 처음부터 홈 폴더에 쓰기(§2)</li>
+    <li>f2dm1 과 f2dm2 의 B → C 구간을 나란히 보기 — f2dm1 bag 은 PC 에 있음(§2)</li>
+    <li>11-10 에 상자에 닿은 주행 · 시각 · 출발 방 근처 물체(사용자 확인, §2)</li>
+  </ul>
+  <h2>다음 접속 때</h2>
+  <ul>
+    <li>새 기본값으로 첫 주행 — 그 이름을 CURRENT_STACK 의 '검증 주행' 줄에 더함</li>
+    <li>f2rr1 bag 으로 실제 출발 시각 · 탈출 때 멈춘 시간(<span class="mono">/cmd_vel</span>) 재기</li>
+  </ul>
+</section>
+</div>

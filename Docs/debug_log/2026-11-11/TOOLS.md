@@ -14,3 +14,4 @@
 | §6 | 탈출 장면 사건 | `jobs/up_nav_events_1111.sh` → `outputs/nav_events_f2rr1.txt` | 127 줄 · 막힘 → 탈출 → 새 목표 0.15 s | 움직임 없는 탈출 | ✔ |
 | §6 | 탈출 장면 영상 | `Docs/tools/fig_drive_video.py` → `videos/f2rr1_escape_1500.mp4` · `figures/f2rr1_escape_t*.png` | BT 경로 1 · Smac 경로 10 · 350 프레임 | 상자 띠를 크게 돌아가는 새 경로 | ✔ |
 | §7 | 표준 변경 배포 · 기본값 확인 | `jobs/up_std_1111.sh`(base64 내장) → `outputs/up_std_1111.txt` | md5 PC = Jetson · 설치본 링크 · `replan_hz` 0.01 · `planner` smac | 배포 반영 | ✔ |
+| §8 | 하루 정리 페이지 조립 | `jobs/fig_report_1111.py`(머리 `2026-10-28/jobs/report_1028_head.html` + 본문 `jobs/report_1111_body.html` + 그림 3 장 data URI) → `figures/day_summary_1111.html` | 902 kB | 게시 원본 | ✔ |

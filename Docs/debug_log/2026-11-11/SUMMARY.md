@@ -138,3 +138,8 @@
   'planner': (default: 'smac')
 ```
   - 재부팅 뒤에는 `Docs/tools/up_tools.sh` 가 저장소 판 prep_patrol 을 올리므로 그대로 유지. 지금 떠 있는 스택은 f2rr1 prep(같은 값) 그대로.
+
+## §8 커밋 · push · 하루 정리 (사용자: "커밋해" · "push 해" · "오늘 일 마무리하고, 아티팩트로도 정리해줘.")
+- 커밋 98a05824(§0 ~ §7 · 11-10 기록 · 표준 변경). push = 비공개 원격 `personal` 의 원본 `feature/nvblox-migration` · 작업 `feature/smac-hybrid` 를 c27c770b..98a05824 로(먼저 원본을 작업 브랜치 위치로 맞춤), 로컬과 차이 0. 공개 저장소 게시(`private/publish_public.sh`) · origin 은 안 함.
+- 정리 페이지: 본문 `jobs/report_1111_body.html` + 조립 `jobs/fig_report_1111.py`(머리 = `2026-10-28/jobs/report_1028_head.html`, 제목만 바꿈) → `figures/day_summary_1111.html`(902 kB), 게시 https://claude.ai/artifact/BuWBvLTArdbi9hQwk5L46N (1 판). 쓴 그림 `figures/f2rr1_escape_t11_8.png` · `_t12_2.png` · `_t16_0.png`(§6). 내용은 이 SUMMARY §0 ~ §7 만.
+- 남은 것(사용자 결정 · 다음 접속): 공개 게시 · bag 이 재부팅에도 남게(§2) · f2dm1 ↔ f2dm2 B → C 비교(§2) · 새 기본값(인자 없이)으로 첫 주행 → CURRENT_STACK '검증 주행' 줄에 이름 추가 · f2rr1 bag `/cmd_vel` 로 출발 · 탈출 정지 시간.
