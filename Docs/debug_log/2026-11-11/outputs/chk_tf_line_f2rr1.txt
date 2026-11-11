@@ -1,0 +1,9 @@
+235-[planner_server-5] [INFO] [1794376320.201667797] [planner_server]: Created global planner plugin GridBased of type nav2_navfn_planner/NavfnPlanner
+236-[planner_server-5] [INFO] [1794376320.201794361] [planner_server]: Configuring plugin GridBased of type NavfnPlanner
+237-[planner_server-5] [INFO] [1794376320.206983498] [global_costmap.global_costmap]: StaticLayer: Resizing costmap to 333 X 242 at 0.050000 m/pix
+238:[planner_server-5] [WARN] [1794376320.228094520] [global_costmap.global_costmap]: [NvbloxCostmapLayer] Can't transform: map to odom. Error: Lookup would require extrapolation at time 1794376320.021981, but only time 1794376320.393903 is in the buffer, when
+239-[planner_server-5] [INFO] [1794376320.252337906] [planner_server]: Created global planner plugin SmacHybrid of type nav2_smac_planner/SmacPlannerHybrid
+240-[planner_server-5] [INFO] [1794376320.252715039] [planner_server]: Configuring SmacHybrid of type SmacPlannerHybrid
+241-[planner_server-5] [INFO] [1794376320.306678060] [planner_server]: Even sized heuristic lookup table size set 400.000000, increasing size by 1 to make odd
+== 첫 목표 시각
+[bt_navigator-7] [INFO] [1794376428.215085384] [bt_navigator]: Begin navigating from current location (-0.00, 0.00) to (

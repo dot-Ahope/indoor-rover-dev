@@ -1,0 +1,5 @@
+부팅 2026-11-11 10:51:52 · <LAN-B>.110/24 · rover -> ttyCH341USB0 · 디스크 남음 122G
+rover-base(사용자 서비스): active
+컨테이너: microros_agent 
+보드 세션 수립 1 건 · 발행자 생성 6 건
+/tmp prep 도구: 4/4

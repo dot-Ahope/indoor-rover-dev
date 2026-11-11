@@ -1,0 +1,18 @@
+== map base_link
+- Translation: [-1.626, -5.206, 0.000]
+- Rotation: in RPY (degree) [0.000, -0.000, 51.039]
+== odom base_link
+- Translation: [-1.443, -5.382, 0.000]
+- Rotation: in RPY (degree) [0.000, -0.000, 24.693]
+== map odom
+- Translation: [-2.723, 0.257, 0.000]
+- Rotation: in RPY (degree) [0.000, -0.000, 26.369]
+== slam 마지막 처리 · 경고(끝 8)
+[localization_slam_toolbox_node-1] [INFO] [1794299401.584006751] [slam_toolbox]: Message Filter dropping message: frame 'lidar_link' at time 1794299401.381 for reason 'discarding message because the q
+[localization_slam_toolbox_node-1] [INFO] [1794299419.112954008] [slam_toolbox]: Message Filter dropping message: frame 'lidar_link' at time 1794299418.661 for reason 'discarding message because the q
+[localization_slam_toolbox_node-1] [INFO] [1794299438.870341195] [slam_toolbox]: Message Filter dropping message: frame 'lidar_link' at time 1794299438.149 for reason 'discarding message because the q
+[localization_slam_toolbox_node-1] [INFO] [1794299454.863931056] [slam_toolbox]: Message Filter dropping message: frame 'lidar_link' at time 1794299454.637 for reason 'discarding message because the q
+[localization_slam_toolbox_node-1] [INFO] [1794299464.832210922] [slam_toolbox]: Message Filter dropping message: frame 'lidar_link' at time 1794299464.742 for reason 'discarding message because the q
+[localization_slam_toolbox_node-1] [INFO] [1794299571.474204364] [slam_toolbox]: Message Filter dropping message: frame 'lidar_link' at time 1794299571.330 for reason 'discarding message because the q
+[localization_slam_toolbox_node-1] [INFO] [1794299577.236276161] [slam_toolbox]: Message Filter dropping message: frame 'lidar_link' at time 1794299577.146 for reason 'discarding message because the q
+[localization_slam_toolbox_node-1] [INFO] [1794299583.430905005] [slam_toolbox]: Message Filter dropping message: frame 'lidar_link' at time 1794299583.323 for reason 'discarding message because the q

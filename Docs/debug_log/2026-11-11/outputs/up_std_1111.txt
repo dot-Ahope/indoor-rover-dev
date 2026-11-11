@@ -1,0 +1,8 @@
+== md5: nav 8b6463867f50(PC 8b6463867f50) · prep 89889adfb917(PC 89889adfb917)
+== 설치본 링크 -> /home/jetson/ros2_ws/src/rover_navigation/launch/navigation.launch.py
+  'replan_hz': (default: '0.01')
+  'planner': (default: 'smac')
+  'mppi_viz': (default: 'lite')
+  'global_camera': (default: 'nvblox')
+== prep_patrol 기본 줄
+export EXTRA_SENSORS="$S ${SENSORS_ADD:-}" EXTRA_NAV="global_camera:=nvblox planner:=${PLANNER:-smac} replan_hz:=${REPLAN_HZ:-0.01} $V ${NAV_ADD:-}" STUCK_SHADOW=true FWD

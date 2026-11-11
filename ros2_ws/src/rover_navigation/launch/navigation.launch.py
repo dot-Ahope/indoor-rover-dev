@@ -198,10 +198,12 @@ def generate_launch_description():
         DeclareLaunchArgument('camera_pointcloud', default_value='keep',
                               description="keep(기본: 점군 유지 — 게이트·러너가 씀) | off(모드 N 운용 전용, 계측 불가)"),
         DeclareLaunchArgument('use_sim_time', default_value='false'),
-        DeclareLaunchArgument('replan_hz', default_value='0.5',
-                              description='BT 주기 재계획 Hz — 기본 0.5(표준 prep 과 같음, 11-04). 비우면 BT 원본 0.01 = 목표당 1 회(B0 · Smac 시험). 10-08 §3 A/B'),
-        DeclareLaunchArgument('planner', default_value='navfn',
-                              description='전역 계획: navfn(B0) | smac(Smac Hybrid → 실패 시 NavFn, 10-26 §7)'),
+        # 2026-11-11 §7(사용자 "표준으로 바꿔"): 기본 = smac · 0.01 Hz(표준 prep 과 같음). 근거 = 같은 구성 연속 3 회 8/8 · TF 실패 0 · 접촉 0
+        #   (f2tt1 · f2tt2 · f2rr1, Docs/debug_log/2026-11-11/SUMMARY.md §4 · §5). 그 전 기본 navfn · 0.5(11-04)는 미검증 조합 — 첫 주행 f2dm1 실패(11-10 §9).
+        DeclareLaunchArgument('replan_hz', default_value='0.01',
+                              description='BT 주기 재계획 Hz — 기본 0.01 = 목표당 1 회 + PathBlockedAhead(표준 prep 과 같음, 11-11). 비우면 BT 원본(같은 0.01). 10-08 §3 A/B'),
+        DeclareLaunchArgument('planner', default_value='smac',
+                              description='전역 계획: smac(기본, Smac Hybrid → 실패 시 NavFn, 10-26 §7 · 11-11 표준) | navfn(B0)'),
         DeclareLaunchArgument('mppi_viz', default_value='lite',
                               description='MPPI 궤적 발행: lite(기본 — 표준 prep 과 같음, 11-04) | false | true(206 kB × 10 Hz — 쓰지 않음, 10-12 통신 포화)'),
         DeclareLaunchArgument('global_camera', default_value='nvblox',   # 11-04: 표준 prep 과 같게(옛 기본 obstacle)

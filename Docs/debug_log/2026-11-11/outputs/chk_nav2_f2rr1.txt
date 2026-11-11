@@ -1,0 +1,16 @@
+== /tmp/nav2.log 780 줄
+  TF 외삽(extrapolat)        1
+  Goal failed · ABORT         0
+  막힘 정지(지속 → 중단) 4
+  monotone_escape 실행       1
+  Wait 실행                  0
+  주기 놓침                43
+  Smac 실패                  1
+  스무더 충돌             1
+  nav_guard 개입             0
+== 막힘 정지 · 복구 줄
+[WARN] [1794376545.409694558] [bt_navigator_navigate_to_pose_rclcpp_node]: PathBlockedAhead: 앞 경로 (-1.74, -2.93) 비용 99 가 2.0 s 지속 → 주행 중단·재계획
+[WARN] [1794376545.492399339] [bt_navigator_navigate_to_pose_rclcpp_node]: PathBlockedAhead: 앞 경로 (-1.74, -2.93) 비용 99 가 2.0 s 지속 → 주행 중단·재계획
+[WARN] [1794376821.715512979] [bt_navigator_navigate_to_pose_rclcpp_node]: PathBlockedAhead: 앞 경로 (1.23, 0.11) 비용 99 가 2.0 s 지속 → 주행 중단·재계획
+[WARN] [1794376821.816734397] [bt_navigator_navigate_to_pose_rclcpp_node]: PathBlockedAhead: 앞 경로 (1.23, 0.11) 비용 99 가 2.0 s 지속 → 주행 중단·재계획
+[INFO] [1794376821.824153585] [behavior_server]: Running monotone_escape

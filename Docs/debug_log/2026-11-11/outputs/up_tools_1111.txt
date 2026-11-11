@@ -1,0 +1,2 @@
+  저장소 판 8f54300f → C:/Users/magma/AppData/Local/Temp/claude/F--6-Indoor-Rover-Rover/21d4aa9f-8412-4905-b23d-17554af330ea/scratchpad/tools (7 개)
+  Jetson /tmp: 7 개 · prep_fast --follow-symlinks 줄 2

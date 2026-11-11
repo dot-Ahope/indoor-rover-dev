@@ -1,0 +1,131 @@
+17:55:02.655 [INFO] [1794300902.655033491] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+17:55:04.174 [INFO] [1794300904.174107229] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨
+17:55:06.730 [INFO] [1794300906.730343648] [sensor_conditioner]: ZUPT #101: bias y -0.000670 → -0.000680 (관측 -0.000772), 잔차 yaw rate +0.000092 rad/s = +0.32 °/분
+17:55:12.655 [INFO] [1794300912.655036651] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+17:55:14.173 [INFO] [1794300914.173807790] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨
+17:55:16.266 [INFO] [1794300916.266208372] [rosbag2_recorder]: Press SPACE for pausing/resuming
+17:55:16.281 [INFO] [1794300916.281312270] [rosbag2_storage]: Opened database '/tmp/bag_f2dm2/bag_f2dm2_0.db3' for READ_WRITE.
+17:55:16.302 [INFO] [1794300916.302822700] [rosbag2_recorder]: Listening for topics...
+17:55:16.407 [INFO] [1794300916.407823913] [rosbag2_recorder]: Event publisher thread: Starting
+17:55:16.441 [INFO] [1794300916.441258832] [rosbag2_recorder]: Subscribed to topic '/wheel_odom'
+17:55:16.522 [INFO] [1794300916.522160146] [rosbag2_recorder]: Subscribed to topic '/odometry/filtered'
+17:55:16.547 [INFO] [1794300916.547459672] [rosbag2_recorder]: Overriding subscription profile for /tf
+17:55:16.894 [INFO] [1794300916.894742092] [rosbag2_recorder]: Subscribed to topic '/tf'
+17:55:16.964 [INFO] [1794300916.964256601] [rosbag2_recorder]: Subscribed to topic '/rover/status'
+17:55:17.040 [INFO] [1794300917.040032836] [rosbag2_recorder]: Subscribed to topic '/nvblox_node/static_map_slice'
+17:55:17.088 [INFO] [1794300917.088582181] [rosbag2_recorder]: Subscribed to topic '/cmd_vel'
+17:55:17.287 [INFO] [1794300917.287820958] [rosbag2_recorder]: Subscribed to topic '/battery'
+17:55:17.293 [INFO] [1794300917.293764754] [rosbag2_recorder]: Recording...
+17:55:17.479 [INFO] [1794300917.479899991] [rosbag2_recorder]: Subscribed to topic '/global_costmap/costmap'
+17:55:17.585 [INFO] [1794300917.585363300] [rosbag2_recorder]: Subscribed to topic '/imu/data'
+17:55:17.628 [INFO] [1794300917.628588551] [rosbag2_recorder]: Subscribed to topic '/tf_static'
+17:55:17.649 [INFO] [1794300917.649330794] [rosbag2_recorder]: Subscribed to topic '/plan'
+17:55:17.708 [INFO] [1794300917.708481445] [rosbag2_recorder]: Subscribed to topic '/rover/stuck'
+17:55:17.732 [INFO] [1794300917.732830952] [rosbag2_recorder]: Subscribed to topic '/scan'
+17:55:17.887 [INFO] [1794300917.887132832] [rosbag2_recorder]: Subscribed to topic '/plan_smoothed'
+17:55:18.008 [INFO] [1794300918.008840943] [rosbag2_recorder]: Subscribed to topic '/map'
+17:55:18.831 [INFO] [1794300918.831047534] [rosbag2_recorder]: Subscribed to topic '/local_costmap/costmap'
+17:55:18.833 [INFO] [1794300918.833247453] [rosbag2_recorder]: Overriding subscription profile for /trajectories
+17:55:18.853 [INFO] [1794300918.853485421] [rosbag2_recorder]: Subscribed to topic '/trajectories'
+17:55:18.890 [INFO] [1794300918.890496691] [rosbag2_recorder]: Subscribed to topic '/transformed_global_plan'
+17:55:22.660 [INFO] [1794300922.660482169] [vslam_twist]: 출력 146 · 버림 0 (최근 10 s)
+17:55:24.173 [INFO] [1794300924.173656186] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 149 · 키없음 0 | IR1(끔) 입력 148 · 켬 148 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 148 · 키없음 0 | IR2(끔) 입력 148 · 켬 148 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨
+17:55:26.012 [INFO] [1794300926.012426369] [bt_navigator]: Begin navigating from current location (-0.02, 0.00) to (2.25, -1.60)
+17:55:26.038 [INFO] [1794300926.038886094] [controller_server]: Received a goal, begin computing control effort.
+17:55:26.039 [WARN] [1794300926.039053428] [controller_server]: No goal checker was specified in parameter 'current_goal_checker'. Server will use only plugin loaded general_goal_checker . This warning will appear once.
+17:55:26.041 [INFO] [1794300926.041251170] [controller_server]: Optimizer reset
+17:55:26.047 [INFO] [1794300926.047239415] [nav_guard]: 목표 2418e934: 남은 거리 3.80 m → 시간 한도 139 s (시작 뒤 0.0 s)
+17:55:32.654 [INFO] [1794300932.654649049] [vslam_twist]: 출력 153 · 버림 0 (최근 10 s)
+17:55:34.174 [INFO] [1794300934.174711959] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 151 · 켬 151 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 151 · 키없음 0 | IR2(끔) 입력 151 · 켬 151 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨
+17:55:42.654 [INFO] [1794300942.654875907] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+17:55:43.658 [WARN] [1794300943.658352055] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+17:55:43.787 [WARN] [1794300943.787846081] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+17:55:43.860 [WARN] [1794300943.860046462] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+17:55:43.947 [WARN] [1794300943.947336497] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+17:55:44.139 [WARN] [1794300944.139567912] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+17:55:44.174 [INFO] [1794300944.174869706] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨
+17:55:44.247 [WARN] [1794300944.247965062] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+17:55:45.846 [WARN] [1794300945.846657564] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+17:55:46.243 [WARN] [1794300946.243166062] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+17:55:52.654 [INFO] [1794300952.654538460] [vslam_twist]: 출력 147 · 버림 0 (최근 10 s)
+17:55:54.174 [INFO] [1794300954.174854715] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 149 · 키없음 0 | IR1(끔) 입력 147 · 켬 147 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 147 · 키없음 0 | IR2(끔) 입력 147 · 켬 147 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨
+17:56:02.654 [INFO] [1794300962.654604595] [vslam_twist]: 출력 149 · 버림 0 (최근 10 s)
+17:56:04.176 [INFO] [1794300964.176504249] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 149 · 키없음 0 | IR1(끔) 입력 149 · 켬 149 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 149 · 키없음 0 | IR2(끔) 입력 149 · 켬 149 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨
+17:56:12.655 [INFO] [1794300972.655340834] [vslam_twist]: 출력 149 · 버림 0 (최근 10 s)
+17:56:14.177 [INFO] [1794300974.177703977] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 149 · 키없음 0 | IR1(끔) 입력 149 · 켬 149 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 149 · 키없음 0 | IR2(끔) 입력 149 · 켬 149 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨
+17:56:16.857 [INFO] [1794300976.857206043] [controller_server]: Reached the goal!
+17:56:16.895 [INFO] [1794300976.895352856] [bt_navigator]: Goal succeeded
+17:56:16.928 [INFO] [1794300976.928500710] [bt_navigator]: Begin navigating from current location (2.24, -1.44) to (-1.60, -2.00)
+17:56:16.936 [INFO] [1794300976.936311225] [nav_guard]: 목표 525c6f34: 남은 거리 0.14 m → 시간 한도 34 s (시작 뒤 0.0 s)
+17:56:16.950 [INFO] [1794300976.950677234] [controller_server]: Received a goal, begin computing control effort.
+17:56:16.961 [INFO] [1794300976.961486254] [nav_guard]: 목표 525c6f34: 남은 거리 3.95 m → 시간 한도 143 s (시작 뒤 0.0 s)
+17:56:22.654 [INFO] [1794300982.654966295] [vslam_twist]: 출력 149 · 버림 0 (최근 10 s)
+17:56:24.175 [INFO] [1794300984.175797948] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 149 · 키없음 0 | IR1(끔) 입력 149 · 켬 149 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 149 · 키없음 0 | IR2(끔) 입력 149 · 켬 149 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨
+17:56:30.286 [INFO] [1794300990.286364680] [bt_navigator_navigate_to_pose_rclcpp_node]: PathBlockedAhead: 앞 경로 (0.83, -1.87) 비용 99 — 2.0 s 지속되면 재계획
+17:56:32.286 [WARN] [1794300992.286380219] [bt_navigator_navigate_to_pose_rclcpp_node]: PathBlockedAhead: 앞 경로 (0.89, -1.86) 비용 99 가 2.0 s 지속 → 주행 중단·재계획
+17:56:32.351 [INFO] [1794300992.351500038] [controller_server]: Goal was canceled. Stopping the robot.
+17:56:32.351 [INFO] [1794300992.351662956] [controller_server]: [follow_path] [ActionServer] Client requested to cancel the goal. Cancelling.
+17:56:32.352 [INFO] [1794300992.352940025] [local_costmap.local_costmap]: Received request to clear except a region the local_costmap
+17:56:32.353 [WARN] [1794300992.353930395] [bt_navigator_navigate_to_pose_rclcpp_node]: PathBlockedAhead: 앞 경로 (0.89, -1.86) 비용 99 가 2.0 s 지속 → 주행 중단·재계획
+17:56:32.354 [INFO] [1794300992.354679478] [local_costmap.local_costmap]: Received request to clear except a region the local_costmap
+17:56:32.362 [INFO] [1794300992.362015255] [global_costmap.global_costmap]: Received request to clear except a region the global_costmap
+17:56:32.654 [INFO] [1794300992.654440418] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+17:56:34.176 [INFO] [1794300994.176924663] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨
+17:56:34.186 [WARN] [1794300994.186124377] [planner_server]: SmacHybrid: failed to create plan, no valid path found.
+17:56:34.187 [WARN] [1794300994.187658191] [planner_server]: Planning algorithm SmacHybrid failed to generate a valid path to (-1.60, -2.00)
+17:56:34.188 [WARN] [1794300994.188393289] [planner_server]: [compute_path_to_pose] [ActionServer] Aborting handle.
+17:56:34.230 [INFO] [1794300994.230255140] [smoother_server]: Received a path to smooth.
+17:56:34.238 [ERROR] [1794300994.238457635] [smoother_server]: Smoothed path leads to a collision at x: 0.766291, y: -1.471106, theta: 0.067195
+17:56:34.238 [WARN] [1794300994.238643082] [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+17:56:34.258 [INFO] [1794300994.258362397] [controller_server]: Received a goal, begin computing control effort.
+17:56:34.263 [INFO] [1794300994.263906143] [controller_server]: Optimizer reset
+17:56:40.286 [INFO] [1794301000.286896549] [bt_navigator_navigate_to_pose_rclcpp_node]: PathBlockedAhead: 앞 경로 (0.76, -1.46) 비용 99 — 2.0 s 지속되면 재계획
+17:56:42.654 [INFO] [1794301002.654428265] [vslam_twist]: 출력 148 · 버림 0 (최근 10 s)
+17:56:44.179 [INFO] [1794301004.179068737] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 149 · 키없음 0 | IR1(끔) 입력 148 · 켬 148 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 148 · 키없음 0 | IR2(끔) 입력 149 · 켬 148 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨
+17:56:45.314 [WARN] [1794301005.314240469] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+17:56:45.393 [WARN] [1794301005.393945496] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+17:56:50.006 [WARN] [1794301010.006881421] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+17:56:50.124 [WARN] [1794301010.124453080] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+17:56:50.203 [WARN] [1794301010.203488129] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+17:56:50.293 [WARN] [1794301010.293343461] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+17:56:50.391 [WARN] [1794301010.391734226] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+17:56:50.496 [WARN] [1794301010.496536415] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+17:56:50.589 [WARN] [1794301010.589639635] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+17:56:50.690 [WARN] [1794301010.690231437] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+17:56:50.771 [WARN] [1794301010.771942644] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+17:56:50.967 [WARN] [1794301010.967712139] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+17:56:52.656 [INFO] [1794301012.656137091] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+17:56:54.176 [INFO] [1794301014.176833706] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 149 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 149 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨
+17:56:54.867 [WARN] [1794301014.867813091] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+17:56:55.065 [WARN] [1794301015.065879620] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+17:56:55.294 [WARN] [1794301015.294152419] [controller_server]: Control loop missed its desired rate of 10.0000Hz
+17:57:02.656 [INFO] [1794301022.656667864] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+17:57:04.177 [INFO] [1794301024.177243127] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨
+17:57:05.293 [INFO] [1794301025.293585572] [bt_navigator_navigate_to_pose_rclcpp_node]: PathBlockedAhead: 앞 경로 (-0.70, -1.84) 비용 99 — 2.0 s 지속되면 재계획
+17:57:07.293 [WARN] [1794301027.293611585] [bt_navigator_navigate_to_pose_rclcpp_node]: PathBlockedAhead: 앞 경로 (-0.70, -1.84) 비용 99 가 2.0 s 지속 → 주행 중단·재계획
+17:57:07.363 [INFO] [1794301027.363545796] [controller_server]: Goal was canceled. Stopping the robot.
+17:57:07.363 [INFO] [1794301027.363710186] [controller_server]: [follow_path] [ActionServer] Client requested to cancel the goal. Cancelling.
+17:57:07.364 [INFO] [1794301027.364661963] [local_costmap.local_costmap]: Received request to clear except a region the local_costmap
+17:57:07.365 [WARN] [1794301027.365405189] [bt_navigator_navigate_to_pose_rclcpp_node]: PathBlockedAhead: 앞 경로 (-0.70, -1.84) 비용 99 가 2.0 s 지속 → 주행 중단·재계획
+17:57:07.387 [INFO] [1794301027.387647563] [behavior_server]: Running monotone_escape
+17:57:07.389 [INFO] [1794301027.389309061] [behavior_server]: [monotone_escape] 시작 최근접 15.9 cm · 목표 5.0 cm · 모의 결과(닿는 양 m/rad): 앞:없음(끝 15.9 cm) 뒤:0.010 좌회전:0.018 우회전:없음(끝 15.9 cm)
+17:57:07.393 [INFO] [1794301027.393659485] [behavior_server]: [monotone_escape] 성공: 최근접 15.9 cm
+17:57:07.393 [INFO] [1794301027.393790497] [behavior_server]: monotone_escape completed successfully
+17:57:07.442 [INFO] [1794301027.442554339] [controller_server]: Received a goal, begin computing control effort.
+17:57:12.654 [INFO] [1794301032.654526529] [vslam_twist]: 출력 149 · 버림 0 (최근 10 s)
+17:57:14.177 [INFO] [1794301034.177724856] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨
+17:57:22.654 [INFO] [1794301042.654398894] [vslam_twist]: 출력 151 · 버림 0 (최근 10 s)
+17:57:24.177 [INFO] [1794301044.177918992] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 149 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨
+17:57:31.300 [INFO] [1794301051.300167142] [bt_navigator]: Goal succeeded
+17:57:31.323 [INFO] [1794301051.323322761] [bt_navigator]: Begin navigating from current location (-1.49, -1.90) to (-1.65, -3.70)
+17:57:32.656 [INFO] [1794301052.656267402] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+17:57:34.178 [INFO] [1794301054.178423389] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨
+17:57:36.294 [INFO] [1794301056.294471200] [bt_navigator_navigate_to_pose_rclcpp_node]: PathBlockedAhead: 앞 경로 (-1.74, -2.93) 비용 99 — 2.0 s 지속되면 재계획
+17:57:38.304 [WARN] [1794301058.304220550] [bt_navigator_navigate_to_pose_rclcpp_node]: PathBlockedAhead: 앞 경로 (-1.74, -2.93) 비용 99 가 2.0 s 지속 → 주행 중단·재계획
+17:57:38.375 [WARN] [1794301058.375490858] [bt_navigator_navigate_to_pose_rclcpp_node]: PathBlockedAhead: 앞 경로 (-1.74, -2.93) 비용 99 가 2.0 s 지속 → 주행 중단·재계획
+17:57:42.656 [INFO] [1794301062.656558534] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+17:57:43.439 [INFO] [1794301063.439330481] [bt_navigator_navigate_to_pose_rclcpp_node]: PathBlockedAhead: 새 경로 점 1 개가 받을 때 이미 비용 ≥ 99 — 값이 더 커질 때만 막힘으로 셈
+17:57:44.178 [INFO] [1794301064.178588184] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨
+17:57:52.654 [INFO] [1794301072.654441840] [vslam_twist]: 출력 150 · 버림 0 (최근 10 s)
+17:57:54.179 [INFO] [1794301074.179024447] [emitter_splitter]: 10 s: 깊이(켬) 입력 0 · 켬 0 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR1(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨짐 150 · 키없음 0 | IR2(끔) 입력 150 · 켬 150 · 끔 0 · 내보냄 0 · 짝없음 0 · 교대깨
+== 줄 수 130

@@ -1,0 +1,41 @@
+rc 0
+  [  4.0 s] 기다리는 것: controller_server planner_server bt_navigator behavior_server nav_map_server map→base TF /wheel_odom /odometry/filtered 전역 지도
+  [  4.7 s] 기다리는 것: controller_server planner_server bt_navigator behavior_server map→base TF /wheel_odom /odometry/filtered 전역 지도
+  [  8.9 s] 기다리는 것: controller_server planner_server bt_navigator behavior_server map→base TF /wheel_odom 전역 지도
+  [  8.9 s] 기다리는 것: controller_server planner_server bt_navigator behavior_server map→base TF /wheel_odom /odometry/filtered 전역 지도
+  [  9.0 s] 기다리는 것: controller_server planner_server bt_navigator behavior_server map→base TF /wheel_odom 전역 지도
+  [  9.0 s] 기다리는 것: controller_server planner_server bt_navigator behavior_server map→base TF /wheel_odom /odometry/filtered 전역 지도
+  [  9.6 s] 기다리는 것: controller_server planner_server bt_navigator behavior_server /wheel_odom /odometry/filtered 전역 지도
+  [  9.8 s] 기다리는 것: controller_server planner_server bt_navigator behavior_server /wheel_odom 전역 지도
+  [  9.9 s] 기다리는 것: controller_server planner_server bt_navigator behavior_server /wheel_odom /odometry/filtered 전역 지도
+  [  9.9 s] 기다리는 것: controller_server planner_server bt_navigator behavior_server /wheel_odom 전역 지도
+  [ 10.3 s] 기다리는 것: controller_server planner_server bt_navigator behavior_server 전역 지도
+  [ 40.1 s] 기다리는 것: planner_server bt_navigator behavior_server 전역 지도
+  [ 41.3 s] 기다리는 것: planner_server bt_navigator behavior_server
+  [ 41.4 s] 기다리는 것: bt_navigator behavior_server
+  [ 41.5 s] 기다리는 것: bt_navigator
+  [ 42.4 s] 기다리는 것: 없음
+  clear_entirely_local_costmap: 완료
+  clear_entirely_global_costmap: 완료
+  위치 추정 검사(기대 0,0,0): 위치 차 0.005 m · yaw 차 -0.9° → 통과
+  준비까지 42.4 s | Nav2 controller=active planner=active bt_navigator=active behavior=active nav_map=active
+  /wheel_odom 25.0 Hz · /odometry/filtered 30.0 Hz · /tf 49.7 Hz · 배터리 12.27 V
+  map→base: (-0.005, 0.002) yaw -0.9°
+  전역 코스트맵: 333×242 · 치명/내접 24968 칸
+  /controller_server: PreferForward=15.0 · vx_min=-0.06 · visualize=True · trajectory_step=100 · time_step=4 · PathAlign=28.0 · PathFollow=5.0
+  /global_costmap/global_costmap: plugins=['static_layer', 'nvblox_layer', 'obstacle_layer', 'inflation_layer'] · nav2_costmap_global_frame=map · observation_sources=scan
+  /stuck_monitor: shadow_mode=True
+  /planner_server: tolerance=0.35 · motion_model_for_search=REEDS_SHEPP · cost_penalty=3.0 · analytic_expansion_max_length=1.0 · max_planning_time=2.0 · cache_obstacle_heuristic=False
+  /camera/camera: visual_preset=3
+  /ekf_filter_node: odom1=/vslam/odom
+  /slam_toolbox: mode=localization · transform_timeout=1.5
+  /bt_navigator: default_nav_to_pose_bt_xml=/tmp/nav_to_pose_active.xml
+PREP_OK
+  ⏱ +85 s 확인 끝
+########## 7. 로그·프로세스(DDS 조회 없음) ##########
+  설치본 PreferForward cost_weight: 15.0 · BT RateController hz="0.01" · # 자동 생성(navigation.launch.py, camera_layer=nvblox, global_camera=nvblox) — 원�
+  navmap_ensure: active (1) · no map 경고 0 · SHM 오류 0(cuvslam · nvblox 로그 포함 11-04)
+  EKF 위반 21회 · slam 폐기 1회 · load 6.81 2.47 0.88
+  프로세스: rplidar=1 realsense2_camera=0 sensor_conditioner=1 ekf=1 rf2o_laser_odometry=0 rf2o_gate.py=0 localization_slam=1 controller_server=1 planner_server=1 bt_navigator=1 nav_map_server=1 s
+  nvblox(컨테이너): 1 개 · cuVSLAM(컨테이너): 1 개 · vslam_twist 1 · ekf_vslam 0
+  ⏱ +85 s prep 끝 — PREP_OK

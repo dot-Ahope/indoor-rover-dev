@@ -1,0 +1,92 @@
+date,time,name,plan,tried,succeeded,not_tried,verdict,first_fail,total_s,contact,touched,src
+2026-09-23,14:37:43,f0a1,2,2,1,0,실패,2:ABORTED,66.7,UNKNOWN,-,Docs/debug_log/2026-09-23/outputs/j555_f0a1.txt
+2026-09-23,15:09:19,f0a2,2,1,0,1,실패,1:CANCELED_LIMIT,95.8,UNKNOWN,-,Docs/debug_log/2026-09-23/outputs/j561_f0a2.txt
+2026-09-28,15:11:39,f0a3,2,2,2,0,성공,,87.2,UNKNOWN,-,Docs/debug_log/2026-09-28/outputs/j601_f0a3.txt
+2026-09-28,15:45:26,f0a4,2,2,2,0,성공,,77.6,UNKNOWN,-,Docs/debug_log/2026-09-28/outputs/j608_f0a4.txt
+2026-09-28,16:17:28,f0a5,3,2,1,1,실패,2:CANCELED_LIMIT,161.1,UNKNOWN,-,Docs/debug_log/2026-09-28/outputs/j612_f0a5.txt
+2026-09-28,16:35:51,f0a6,2,2,2,0,성공,,83.1,UNKNOWN,-,Docs/debug_log/2026-09-28/outputs/j616_f0a6.txt
+2026-09-29,11:31:52,f0a7,2,2,2,0,성공,,79.9,UNKNOWN,-,Docs/debug_log/2026-09-29/outputs/j641_f0a7.txt
+2026-09-29,14:01:14,f0b1,2,2,2,0,성공,,208.3,FLOOR,W3 바닥 전선(밟음),Docs/debug_log/2026-09-29/outputs/j662_f0b1.txt
+2026-09-29,14:25:25,f0b2,2,2,2,0,성공,,204.0,FLOOR,"W3 바닥 전선(밟음, 추정)",Docs/debug_log/2026-09-29/outputs/j666_f0b2.txt
+2026-10-01,11:05:38,f2a1,5,1,0,4,실패,1:ABORTED,38.6,UNKNOWN,-,Docs/debug_log/2026-10-01/outputs/f0_f2a1_runner.log
+2026-10-01,12:58:48,f2a2,1,1,1,0,성공,,55.5,UNKNOWN,-,Docs/debug_log/2026-10-01/outputs/f0_f2a2_runner.log
+2026-10-01,13:41:09,f2a3,5,1,0,4,실패,1:ABORTED,30.7,UNKNOWN,-,Docs/debug_log/2026-10-01/outputs/f0_f2a3_runner.log
+2026-10-01,14:01:29,f2a4,5,2,1,3,실패,2:CANCELED_OTHER,79.2,UNKNOWN,-,Docs/debug_log/2026-10-01/outputs/f0_f2a4_runner.log
+2026-10-01,14:18:08,f2a5,5,2,1,3,실패,2:CANCELED_OTHER,96.4,UNKNOWN,-,Docs/debug_log/2026-10-01/outputs/f0_f2a5_runner.log
+2026-10-01,14:30:18,f2a6,5,3,2,2,실패,3:CANCELED_LIMIT,288.2,UNKNOWN,-,Docs/debug_log/2026-10-01/outputs/f0_f2a6_runner.log
+2026-10-01,14:54:30,f2a7,3,1,0,2,실패,1:ABORTED,87.6,UNKNOWN,-,Docs/debug_log/2026-10-01/outputs/f0_f2a7_runner.log
+2026-10-01,15:05:04,f2a8,3,1,0,2,실패,1:CANCELED_LIMIT,204.9,UNKNOWN,-,Docs/debug_log/2026-10-01/outputs/f0_f2a8_runner.log
+2026-10-01,15:37:09,f2a9,1,1,1,0,성공,,70.1,FLOOR,"케이블 가드(걸림, 사람이 발로 밀어 줌)",Docs/debug_log/2026-10-01/outputs/f0_f2a9_runner.log
+2026-10-01,15:47:26,f2a10,5,2,1,3,실패,2:CANCELED_OTHER,129.6,UNKNOWN,-,Docs/debug_log/2026-10-01/outputs/f0_f2a10_runner.log
+2026-10-01,16:40:32,f2a11,10,1,0,9,실패,1:CANCELED_OTHER,57.2,UNKNOWN,-,Docs/debug_log/2026-10-01/outputs/f0_f2a11_runner.log
+2026-10-01,16:59:08,f2a12,10,7,6,3,실패,7:CANCELED_OTHER,338.9,NO_CONTACT,-,Docs/debug_log/2026-10-01/outputs/f0_f2a12_runner.log
+2026-10-02,13:14:37,f2b1,1,1,1,0,성공,,57.0,UNKNOWN,-,Docs/debug_log/2026-10-02/outputs/f0_f2b1_runner.log
+2026-10-02,13:21:49,f2b3,9,5,4,4,실패,5:CANCELED_OTHER,292.8,CONTACT,의자 다리(밀고 감),Docs/debug_log/2026-10-02/outputs/f0_f2b3_runner.log
+2026-10-02,13:49:13,f2b4,1,1,1,0,성공,,160.4,CONTACT,출발 방 낮은 상자,Docs/debug_log/2026-10-02/outputs/f0_f2b4_runner.log
+2026-10-07,10:58:16,f2c1,10,4,3,6,실패,4:CANCELED_OTHER,227.0,UNKNOWN,-,Docs/debug_log/2026-10-07/outputs/f0_f2c1_runner.log
+2026-10-07,11:08:14,f2c2,6,6,6,0,성공,,427.9,CONTACT,복귀 길 낮은 상자 ②(밀기),Docs/debug_log/2026-10-07/outputs/f0_f2c2_runner.log
+2026-10-07,13:02:46,f2d1,10,4,3,6,실패,4:CANCELED_OTHER,224.4,UNKNOWN,-,Docs/debug_log/2026-10-07/outputs/f0_f2d1_runner.log
+2026-10-07,13:11:37,f2d2,6,6,5,0,실패,6:CANCELED_OTHER,426.8,NO_CONTACT,-,Docs/debug_log/2026-10-07/outputs/f0_f2d2_runner.log
+2026-10-08,13:33:00,f2e1,3,3,3,0,성공,,237.6,CONTACT,복귀 길 상자 ②,Docs/debug_log/2026-10-08/outputs/f0_f2e1_runner.log
+2026-10-08,14:36:30,f2e2,3,3,3,0,성공,,220.3,NO_CONTACT,-,Docs/debug_log/2026-10-08/outputs/f0_f2e2_runner.log
+2026-10-12,10:31:56,f2f1,3,3,3,0,성공,,224.6,NO_CONTACT,-,Docs/debug_log/2026-10-12/outputs/f0_f2f1_runner.log
+2026-10-12,11:16:24,f2f2,3,1,0,2,실패,1:CANCELED_OTHER,55.0,NO_CONTACT,-,Docs/debug_log/2026-10-12/outputs/f0_f2f2_runner.log
+2026-10-12,11:30:03,f2f3,3,3,2,0,실패,3:ABORTED,245.5,UNKNOWN,-,Docs/debug_log/2026-10-12/outputs/f0_f2f3_runner.log
+2026-10-12,11:55:30,f2g1,3,3,3,0,성공,,226.2,UNKNOWN,-,Docs/debug_log/2026-10-12/outputs/f0_f2g1_runner.log
+2026-10-12,12:16:03,f2g2,3,3,2,0,실패,3:ABORTED,192.5,UNKNOWN,-,Docs/debug_log/2026-10-12/outputs/f0_f2g2_runner.log
+2026-10-12,13:32:39,f2h1,3,3,3,0,성공,,208.8,NO_CONTACT,-,Docs/debug_log/2026-10-12/outputs/f0_f2h1_runner.log
+2026-10-12,13:52:44,f2i1,3,3,2,0,실패,3:ABORTED,239.6,UNKNOWN,-,Docs/debug_log/2026-10-12/outputs/f0_f2i1_runner.log
+2026-10-12,15:02:51,f2j1,3,3,2,0,실패,3:ABORTED,205.1,UNKNOWN,-,Docs/debug_log/2026-10-12/outputs/f0_f2j1_runner.log
+2026-10-12,15:24:21,f2k1,3,2,1,1,실패,2:ABORTED,85.4,UNKNOWN,-,Docs/debug_log/2026-10-12/outputs/f0_f2k1_runner.log
+2026-10-12,15:42:03,f2l1,3,3,3,0,성공,,208.3,NO_CONTACT,-,Docs/debug_log/2026-10-12/outputs/f0_f2l1_runner.log
+2026-10-12,15:54:28,f2l2,3,3,3,0,성공,,212.7,NO_CONTACT,-,Docs/debug_log/2026-10-12/outputs/f0_f2l2_runner.log
+2026-10-13,10:19:26,f2m1,3,2,1,1,실패,2:ABORTED,155.3,NO_CONTACT,-,Docs/debug_log/2026-10-13/outputs/run_f2m1.txt
+2026-10-13,10:52:04,f2n1,3,3,3,0,성공,,211.3,NO_CONTACT,-,Docs/debug_log/2026-10-13/outputs/run_f2n1.txt
+2026-10-13,13:30:16,f2o1,3,3,2,0,실패,3:ABORTED,200.1,NO_CONTACT,-,Docs/debug_log/2026-10-13/outputs/run_f2o1.txt
+2026-10-13,14:11:39,f2p1,3,3,2,0,실패,3:ABORTED,201.3,UNKNOWN,-,Docs/debug_log/2026-10-13/outputs/run_f2p1.txt
+2026-10-13,17:47:35,f2q1,3,3,2,0,실패,3:CANCELED_OTHER,242.6,UNKNOWN,-,Docs/debug_log/2026-10-13/outputs/run_f2q1.txt
+2026-10-14,11:23:29,f2r1,3,3,3,0,성공,,204.0,NO_CONTACT,-,Docs/debug_log/2026-10-14/outputs/run_f2r1.txt
+2026-10-14,11:42:54,f2r2,3,3,3,0,성공,,224.1,NO_CONTACT,-,Docs/debug_log/2026-10-14/outputs/run_f2r2.txt
+2026-10-14,13:45:22,f2s1,8,3,2,5,실패,3:CANCELED_OTHER,177.8,NO_CONTACT,-,Docs/debug_log/2026-10-14/outputs/run_f2s1.txt
+2026-10-14,13:54:01,f2s2,5,5,5,0,성공,,315.0,NO_CONTACT,-,Docs/debug_log/2026-10-14/outputs/run_f2s2.txt
+2026-10-14,15:20:56,f2t1,8,8,8,0,성공,,605.5,NO_CONTACT,-,Docs/debug_log/2026-10-14/outputs/run_f2t1.txt
+2026-10-14,16:20:11,f2u1,3,3,3,0,성공,,200.8,NO_CONTACT,-,Docs/debug_log/2026-10-14/outputs/run_f2u1.txt
+2026-10-14,16:26:39,f2u2,3,3,3,0,성공,,232.0,UNKNOWN,-,Docs/debug_log/2026-10-14/outputs/run_f2u2.txt
+2026-10-14,16:47:57,f2u3,3,3,3,0,성공,,201.5,NO_CONTACT,-,Docs/debug_log/2026-10-14/outputs/run_f2u3.txt
+2026-10-15,10:13:17,f2v1,8,4,3,4,실패,4:ABORTED,159.7,UNKNOWN,-,Docs/debug_log/2026-10-15/outputs/run_f2v1.txt
+2026-10-15,10:25:11,f2v1r,2,2,2,0,성공,,144.1,UNKNOWN,-,Docs/debug_log/2026-10-15/outputs/run_f2v1r.txt
+2026-10-15,12:16:58,f2v2,8,8,8,0,성공,,427.4,NO_CONTACT,-,Docs/debug_log/2026-10-15/outputs/run_f2v2.txt
+2026-10-15,13:21:43,f2v3,8,4,3,4,실패,4:ABORTED,153.8,UNKNOWN,-,Docs/debug_log/2026-10-15/outputs/run_f2v3.txt
+2026-10-15,13:33:19,f2v3r,2,2,2,0,성공,,136.5,UNKNOWN,-,Docs/debug_log/2026-10-15/outputs/run_f2v3r.txt
+2026-10-15,13:58:50,f2v4,3,3,2,0,실패,3:ABORTED,203.3,NO_CONTACT,-,Docs/debug_log/2026-10-15/outputs/run_f2v4.txt
+2026-10-15,17:09:36,f2w1,3,3,3,0,성공,,206.3,NO_CONTACT,-,Docs/debug_log/2026-10-15/outputs/run_f2w1.txt
+2026-10-15,17:33:51,f2w2,8,8,8,0,성공,,429.8,UNKNOWN,-,Docs/debug_log/2026-10-15/outputs/run_f2w2.txt
+2026-10-19,11:13:09,f2x1,3,3,3,0,성공,,203.6,UNKNOWN,-,Docs/debug_log/2026-10-19/outputs/run_f2x1.txt
+2026-10-20,14:24:06,f2v1,3,3,3,0,성공,,203.9,UNKNOWN,-,Docs/debug_log/2026-10-20/outputs/f0_f2v1_1020.log
+2026-10-21,11:40:01,f2sm1,3,3,3,0,성공,,209.2,UNKNOWN,-,Docs/debug_log/2026-10-21/outputs/run_f2sm1.txt
+2026-10-21,12:15:46,f2sm2,3,2,1,1,실패,2:ABORTED,128.6,UNKNOWN,-,Docs/debug_log/2026-10-21/outputs/run_f2sm2.txt
+2026-10-21,12:30:16,f2sm2h,1,1,1,0,성공,,113.0,UNKNOWN,-,Docs/debug_log/2026-10-21/outputs/run_f2sm2h.txt
+2026-10-22,11:34:18,f2pr1,3,3,3,0,성공,,213.7,FLOOR,W3 바닥 전선(밟음),Docs/debug_log/2026-10-22/outputs/run_f2pr1.txt
+2026-10-22,13:50:24,f2dr1_2,3,1,0,2,실패,1:ABORTED,29.1,UNKNOWN,-,Docs/debug_log/2026-10-22/outputs/run_f2dr1_2.txt
+2026-10-22,14:03:14,f2dr2,3,3,3,0,성공,,206.9,UNKNOWN,-,Docs/debug_log/2026-10-22/outputs/run_f2dr2.txt
+2026-10-22,15:45:00,f2lp1,6,4,4,2,실패,,,CONTACT,출발 낮은 상자(밀림),Docs/debug_log/2026-10-22/outputs/run_f2lp1.txt
+2026-10-22,16:50:39,f2pi1,3,3,3,0,성공,,207.5,NO_CONTACT,-,Docs/debug_log/2026-10-22/outputs/run_f2pi1.txt
+2026-10-22,17:50:48,f2sm3,3,3,3,0,성공,,207.6,NO_CONTACT,-,Docs/debug_log/2026-10-22/outputs/run_f2sm3.txt
+2026-10-23,10:24:48,f2pa1,3,3,3,0,성공,,210.7,NO_CONTACT,-,Docs/debug_log/2026-10-23/outputs/run_f2pa1.txt
+2026-10-23,10:37:00,f2pa2,3,3,3,0,성공,,210.1,NO_CONTACT,-,Docs/debug_log/2026-10-23/outputs/run_f2pa2.txt
+2026-10-23,12:27:37,f2von1,3,3,3,0,성공,,204.3,NO_CONTACT,-,Docs/debug_log/2026-10-23/outputs/run_f2von1.txt
+2026-10-23,12:40:22,f2von2,3,3,3,0,성공,,204.3,NO_CONTACT,-,Docs/debug_log/2026-10-23/outputs/run_f2von2.txt
+2026-10-23,14:03:27,f2rp1,3,3,3,0,성공,,210.3,NO_CONTACT,-,Docs/debug_log/2026-10-23/outputs/run_f2rp1.txt
+2026-10-23,14:15:38,f2rp2,3,3,3,0,성공,,207.8,NO_CONTACT,-,Docs/debug_log/2026-10-23/outputs/run_f2rp2.txt
+2026-10-23,14:44:46,f2rp3,8,8,8,0,성공,,450.5,UNKNOWN,-,Docs/debug_log/2026-10-23/outputs/run_f2rp3.txt
+2026-10-23,15:32:33,f2rp4,8,8,8,0,성공,,417.9,UNKNOWN,-,Docs/debug_log/2026-10-23/outputs/f0_f2rp4/f0_f2rp4.log
+2026-10-23,17:19:49,f2rp5,3,3,3,0,성공,,202.8,NO_CONTACT,-,Docs/debug_log/2026-10-23/outputs/f0_f2rp5/f0_f2rp5.log
+2026-10-26,12:47:08,f2sh1,3,3,3,0,성공,,205.8,NO_CONTACT,-,Docs/debug_log/2026-10-26/outputs/drives/f2sh1/f0_f2sh1/f0_f2sh1.log
+2026-10-26,13:15:26,f2sh2,3,3,3,0,성공,,201.7,NO_CONTACT,-,Docs/debug_log/2026-10-26/outputs/drives/f2sh2/f0_f2sh2/f0_f2sh2.log
+2026-10-26,15:11:31,f2sa1,3,3,3,0,성공,,205.8,NO_CONTACT,-,Docs/debug_log/2026-10-26/outputs/drives/f2sa1/f0_f2sa1/f0_f2sa1.log
+2026-10-26,15:33:45,f2sa2,3,3,3,0,성공,,199.1,NO_CONTACT,-,Docs/debug_log/2026-10-26/outputs/drives/f2sa2/f0_f2sa2/f0_f2sa2.log
+2026-10-26,16:09:33,f2sa3,8,8,8,0,성공,,448.0,NO_CONTACT,-,Docs/debug_log/2026-10-26/outputs/drives/f2sa3/f0_f2sa3/f0_f2sa3.log
+2026-10-27,11:18:15,f2st1,8,8,8,0,성공,,427.5,NO_CONTACT,-,Docs/debug_log/2026-10-27/outputs/drives/f2st1/f0_f2st1/f0_f2st1.log
+2026-10-27,15:00:01,f2tf1,8,8,8,0,성공,,412.8,CONTACT,출발 낮은 상자(밀림),Docs/debug_log/2026-10-27/outputs/drives/f2tf1/f0_f2tf1/f0_f2tf1.log
+2026-10-27,15:55:20,f2tt1,8,8,8,0,성공,,412.2,NO_CONTACT,-,Docs/debug_log/2026-10-27/outputs/drives/f2tt1/f0_f2tt1/f0_f2tt1.log
+2026-10-28,10:22:23,f2tt2,8,8,8,0,성공,,413.7,NO_CONTACT,-,Docs/debug_log/2026-10-28/outputs/drives/f2tt2/f0_f2tt2/f0_f2tt2.log

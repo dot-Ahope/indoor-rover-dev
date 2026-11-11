@@ -6,21 +6,23 @@
 - 칸 'launch 기본' = launch 인자를 안 줬을 때, '표준 prep' = `Docs/tools/prep_patrol.sh`(→ `prep_fast.sh`)가 실제로 띄우는 구성. **주행은 표준 prep 기준**이다.
 - 옛 판(CLAUDE.md §6 원문을 옮긴 것, 날짜별 서술)은 커밋 `29895107` 의 이 파일에 있다.
 
-## 1. 기동 구성 — launch 기본 = 표준 prep (11-04 부터)
+## 1. 기동 구성 — launch 기본 = 표준 prep (11-04 부터, 계획 · 재계획은 11-11 에 바꿈)
 11-04 §17 에 launch 기본값을 표준 prep 구성과 같게 바꿨다 — 인자 없이 `ros2 launch` 해도 최신 스택이 뜬다(Jetson `--show-args` 확인 `Docs/debug_log/2026-11-04/outputs/up_launch_1104.txt`). 아래 '옛 launch 기본' 칸은 그 전 값(옛 기록을 읽을 때 참고).
+**11-11 §7(사용자 "표준으로 바꿔")**: 계획 · 재계획을 **Smac · 0.01 Hz** 로. 11-04 에 적은 'navfn · 0.5 Hz' 는 그 사이 바뀐 MPPI 28 · 5 · timeout 1.5 와 함께 달린 적이 없는 조합이었고 첫 주행 f2dm1 에서 실패(`Docs/debug_log/2026-11-10/SUMMARY.md` §9).
+**검증 주행(이 표 전체 조합)**: f2tt1(10-27) · f2tt2(10-28) · f2rr1(11-11) — no5 연속 3 회 8/8 · 주행 중 TF 실패 0 · 접촉 0(`Docs/debug_log/2026-11-11/SUMMARY.md` §4 · §5). 값을 바꾸면 이 줄도 고치고, 바꾼 조합으로 성공한 주행 이름이 생길 때까지 '미검증' 으로 적는다(11-10 §9 규칙).
 
 
 | 항목 | 옛 launch 기본(~11-03) | 지금 기본(= 표준 prep) | 정하는 곳 | 결정 · 카드 |
 |---|---|---|---|---|
-| 계획기 | `planner:=navfn` | navfn(같음). Smac 시험은 `NAV_ADD="planner:=smac" REPLAN_HZ=0.01` | `navigation.launch.py` 203 · `prep_patrol.sh` 16~17 | 10-27 시험 구성 채택(기본 아님) · `smac-hybrid-adoption` |
-| 주기 재계획 | `replan_hz:=`(BT 원본 0.01) | **0.5 Hz**(BT 원본 0.01 은 `replan_hz:=` 빈 값) | `prep_patrol.sh` 17 | 10-12 운용 · `path-tracking-replan-b0`(0.01 Hz 는 B0 시험) |
-| 오도메트리(EKF 병진 속도) | `vslam:=off` · `rf2o:=false` | **cuVSLAM**(`vslam:=on` · `dds_shm:=true`). 옛 rf2o 구성은 `prep_patrol.sh` `ODOM=rf2o`(vslam off · 프로젝터 켬 · SHM 끔을 명시) | `ekf.launch.py` 98 · 109 · `prep_patrol.sh` 10~13 | 10-23 §16 · `cuvslam-velocity-fusion` |
-| 카메라 프로젝터 | 켬(`emitter_off:=false`) | **상시 끔** | `camera.launch.py` 117 · `prep_patrol.sh` 11 | 10-21 §20 · `projector-ir-alternation` |
+| 계획기 | `planner:=navfn` | **smac**(Smac Hybrid → 실패 시 NavFn, BT `PlanSmacOrNavFn`). B0 는 `PLANNER=navfn` | `navigation.launch.py` 205 · `prep_patrol.sh` 20 | 11-11 §7 표준(10-27 시험 구성) · `smac-hybrid-adoption` |
+| 주기 재계획 | `replan_hz:=`(BT 원본 0.01) | **0.01 Hz**(목표당 1 회 + PathBlockedAhead · 목표 변경 때만). 11-04 ~ 11-10 기본 0.5 는 폐기 | `navigation.launch.py` 203 · `prep_patrol.sh` 20 | 11-11 §7 · `path-tracking-replan-b0` |
+| 오도메트리(EKF 병진 속도) | `vslam:=off` · `rf2o:=false` | **cuVSLAM**(`vslam:=on` · `dds_shm:=true`). 옛 rf2o 구성은 `prep_patrol.sh` `ODOM=rf2o`(vslam off · 프로젝터 켬 · SHM 끔을 명시) | `ekf.launch.py` 98 · 109 · `prep_patrol.sh` 13~16 | 10-23 §16 · `cuvslam-velocity-fusion` |
+| 카메라 프로젝터 | 켬(`emitter_off:=false`) | **상시 끔** | `camera.launch.py` 117 · `prep_patrol.sh` 14 | 10-21 §20 · `projector-ir-alternation` |
 | 카메라 ↔ cuVSLAM 전송 | UDP(`dds_shm:=false`) | **SHM+UDP** | `camera.launch.py` 119 · `fastdds_shm_udp.xml` | 10-20 §9 · `camera-container-shm` |
-| 전역 카메라 층 | `global_camera:=obstacle` | **nvblox**(map 프레임) | `navigation.launch.py` 207 · `prep_patrol.sh` 17 | 09-22 N6 · `nvblox-n6-global-ghosts` · `nvblox-layer-tf-drop` |
-| MPPI 궤적 발행 | `mppi_viz:=false` | **lite**(28 kB) — `true`(206 kB) 금지 | `navigation.launch.py` 205 · `prep_patrol.sh` 8~9 | 10-12 · `network-saturation-mppi-viz` |
-| 정체 감시 stuck_monitor | 작동(`stuck_shadow:=false`) | **관찰만**(`stuck_shadow:=true`), `use_gyro` 기본 끔 — 작동 모드는 10-01 f2a4 오판 · 10-29 사용자 '자이로 우선 켜지 마라' 로 쓰지 않음 | `navigation.launch.py` 219 · `prep_fast.sh` 63 | 10-29 §9 사용자(자이로 우선 켜지 않음) · `stuck-monitor` |
-| 갇힘 해제 pad_relief | `off` | 띄우지 않음 — **켜지 않는다** | `navigation.launch.py` 231 · `pad_relief.py`(기본 off, 11-03) | 10-14 · `pad-relief-runtime-padding` |
+| 전역 카메라 층 | `global_camera:=obstacle` | **nvblox**(map 프레임) | `navigation.launch.py` 209 · `prep_patrol.sh` 20 | 09-22 N6 · `nvblox-n6-global-ghosts` · `nvblox-layer-tf-drop` |
+| MPPI 궤적 발행 | `mppi_viz:=false` | **lite**(28 kB) — `true`(206 kB) 금지 | `navigation.launch.py` 207 · `prep_patrol.sh` 11~12 | 10-12 · `network-saturation-mppi-viz` |
+| 정체 감시 stuck_monitor | 작동(`stuck_shadow:=false`) | **관찰만**(`stuck_shadow:=true`), `use_gyro` 기본 끔 — 작동 모드는 10-01 f2a4 오판 · 10-29 사용자 '자이로 우선 켜지 마라' 로 쓰지 않음 | `navigation.launch.py` 222 · `prep_fast.sh` 63 | 10-29 §9 사용자(자이로 우선 켜지 않음) · `stuck-monitor` |
+| 갇힘 해제 pad_relief | `off` | 띄우지 않음 — **켜지 않는다** | `navigation.launch.py` 234 · `pad_relief.py`(기본 off, 11-03) | 10-14 · `pad-relief-runtime-padding` |
 | 지도 · SLAM | — | `office_v3`, slam_toolbox 포크 위치 추정 모드 | `prep_fast.sh` 9 · 61 · `slam.launch.py` 88(`slam_build:=fork`) | 10-02 · `f2-patrol-loc-jump` · `slam-fork-rotation` |
 
 ## 2. 고정 값 (launch · prep 과 무관)
@@ -43,9 +45,9 @@
 ### 2.3 계획 · BT
 | 값 | 정하는 곳 | 결정 · 카드 |
 |---|---|---|
-| NavFn(tolerance 0.25) + SimpleSmoother, 실패 시 원경로 — `CopyPath` 가 끝 방향까지 복사 | `nav2_params.yaml` 735~736 · 779 · BT `nav_to_pose_no_spin.xml` | 10-14 · `bt-copypath-end-yaw` |
-| Smac Hybrid(시험 구성): REEDS_SHEPP · 최소 회전반경 0.10 · cost_penalty 3.0 · 해석 확장 1.0 m · tolerance 0.35, 실패 시 NavFn(BT `PlanSmacOrNavFn`) | `nav2_params.yaml` 740~763 | 10-26 §6.3 · 10-27 §8 · `smac-hybrid-adoption` |
-| 막힘 판정 `PathBlockedAhead`(min_cost 99 · `only_new` 켬) | BT 108 · `path_blocked_ahead_condition.cpp` | 10-23 §20 · `pathblocked-only-new`(⚠ 0.5 Hz 와의 조합 미시험) |
+| Smac Hybrid(**표준, 11-11**): REEDS_SHEPP · 최소 회전반경 0.10 · cost_penalty 3.0 · 해석 확장 1.0 m · tolerance 0.35, 실패 시 NavFn(BT `PlanSmacOrNavFn`, `navigation.launch.py` 가 BT 사본을 만듦) | `nav2_params.yaml` 740~763 | 10-26 §6.3 · 10-27 §8 · 11-11 §7 · `smac-hybrid-adoption` |
+| NavFn(tolerance 0.25) + SimpleSmoother, 실패 시 원경로 — `CopyPath` 가 끝 방향까지 복사. 지금은 Smac 실패 때의 대체(B0 에선 주 계획기) | `nav2_params.yaml` 735~736 · 779 · BT `nav_to_pose_no_spin.xml` | 10-14 · `bt-copypath-end-yaw` |
+| 막힘 판정 `PathBlockedAhead`(min_cost 99 · `only_new` 켬) — 0.01 Hz 에선 재계획이 이 판정 · 목표 변경 때만 일어남 | BT 108 · `path_blocked_ahead_condition.cpp` | 10-23 §20 · `pathblocked-only-new` |
 | 복구: ClearCostmapExceptRegion · `monotone_escape`(풋프린트 손 입력값) | BT · `nav2_params.yaml` 791 | 09-11 · `costmap-clear-recovery` · `box-side-stall-remedies` |
 | 러너 목표 방향은 NavFn 경로 끝에서 구함(`planner_id GridBased`) | `path_end_yaw.py` 22 | `smac-hybrid-adoption`(P2 미해결) |
 

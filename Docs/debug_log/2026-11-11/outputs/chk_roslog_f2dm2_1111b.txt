@@ -1,0 +1,72 @@
+== 11-10 17:40 이후 launch 폴더
+  .   B
+  ./2026-11-10-17-46-27-823706-jetson-desktop-2647  453 B
+  ./2026-11-10-17-51-23-388286-jetson-desktop-181081  1249 B
+  ./2026-11-10-17-51-42-651695-jetson-desktop-181799  636 B
+  ./2026-11-10-17-51-43-715839-jetson-desktop-181868  1435 B
+== 노드별 로그 파일(11-10 17:40 ~ 11-11 10:00 수정)
+  ./behavior_server_181898_1794300705559.log 2359 B 17:57:45
+  ./behavior_server_49647_1794299069700.log 5287 B 17:40:34
+  ./bt_navigator_181902_1794300704887.log 23137 B 17:57:54
+  ./bt_navigator_49649_1794299070036.log 43891 B 17:42:40
+  ./component_container_mt_181099_1794300683663.log 19657 B 17:57:58
+  ./component_container_mt_48814_1794299048508.log 65659 B 17:51:13
+  ./controller_server_181890_1794300704712.log 11853 B 17:57:59
+  ./controller_server_49641_1794299069863.log 42400 B 17:42:39
+  ./ekf_node_181356_1794300691746.log 0 B 17:51:31
+  ./foxglove_bridge_181109_1794300683785.log 751 B 17:51:48
+  ./lifecycle_manager_181934_1794300705566.log 2873 B 17:52:25
+  ./lifecycle_manager_181946_1794300705104.log 911 B 17:51:55
+  ./lifecycle_manager_49668_1794299070134.log 1418 B 17:51:15
+  ./localization_slam_toolbox_node_181805_1794300702807.log 5768 B 17:57:57
+  ./localization_slam_toolbox_node_49554_1794299067760.log 12142 B 17:42:42
+  ./map_server_181937_1794300705011.log 1477 B 17:51:55
+  ./map_server_49660_1794299070571.log 1772 B 17:51:15
+  ./planner_server_181894_1794300704733.log 9297 B 17:56:35
+  ./python3_124739_1794299977253.log 2421 B 17:42:36
+  ./python3_140952_1794300158471.log 0 B 17:42:38
+  ./python3_141251_1794300161676.log 0 B 17:42:41
+  ./python3_181081_1794300683504.log 0 B 17:51:23
+  ./python3_181101_1794300684277.log 113 B 17:51:29
+  ./python3_181105_1794300684309.log 120 B 17:51:29
+  ./python3_181360_1794300692274.log 3230 B 17:57:57
+  ./python3_181870_1794300703873.log 0 B 17:51:43
+  ./python3_181886_1794300711056.log 113 B 17:51:56
+  ./python3_181888_1794300705848.log 729 B 17:57:36
+  ./python3_183377_1794300725897.log 0 B 17:52:05
+  ./python3_194922_1794300878265.log 0 B 17:54:38
+  ./python3_198228_1794300915893.log 2152 B 17:55:20
+  ./python3_198434_1794300921339.log 0 B 17:55:21
+  ./python3_198634_1794300920603.log 0 B 17:55:20
+  ./python3_2673_1794300388380.log 0 B 17:46:28
+  ./python3_49051_1794299057066.log 13316 B 17:51:12
+  ./python3_49637_1794299072336.log 669 B 17:41:22
+  ./python3_49639_1794299075890.log 1988 B 17:40:15
+  ./robot_state_publisher_2671_1794300388068.log 633 B 17:46:33
+  ./rplidar_node_181103_1794300683671.log 678 B 17:51:28
+  ./sensor_conditioner_node_181354_1794300691718.log 2062 B 17:57:41
+== 합친 줄 수 2752
+17:57:07 [INFO] [1794301027.387647563] [behavior_server]: Running monotone_escape
+17:55:26 [INFO] [1794300926.012426369] [bt_navigator]: Begin navigating from current location (-0.02, 0.00) to (2.25, -1.60)
+17:56:16 [INFO] [1794300976.895352856] [bt_navigator]: Goal succeeded
+17:56:16 [INFO] [1794300976.928500710] [bt_navigator]: Begin navigating from current location (2.24, -1.44) to (-1.60, -2.00)
+17:57:31 [INFO] [1794301051.300167142] [bt_navigator]: Goal succeeded
+17:57:31 [INFO] [1794301051.323322761] [bt_navigator]: Begin navigating from current location (-1.49, -1.90) to (-1.65, -3.70)
+17:55:26 [INFO] [1794300926.038886094] [controller_server]: Received a goal, begin computing control effort.
+17:56:16 [INFO] [1794300976.857206043] [controller_server]: Reached the goal!
+17:56:16 [INFO] [1794300976.950677234] [controller_server]: Received a goal, begin computing control effort.
+17:56:32 [INFO] [1794300992.351500038] [controller_server]: Goal was canceled. Stopping the robot.
+17:56:32 [INFO] [1794300992.351662956] [controller_server]: [follow_path] [ActionServer] Client requested to cancel the goal. Cancelling.
+17:56:34 [INFO] [1794300994.258362397] [controller_server]: Received a goal, begin computing control effort.
+17:57:07 [INFO] [1794301027.363545796] [controller_server]: Goal was canceled. Stopping the robot.
+17:57:07 [INFO] [1794301027.363710186] [controller_server]: [follow_path] [ActionServer] Client requested to cancel the goal. Cancelling.
+17:57:07 [INFO] [1794301027.442554339] [controller_server]: Received a goal, begin computing control effort.
+17:56:34 [WARN] [1794300994.187658191] [planner_server]: Planning algorithm SmacHybrid failed to generate a valid path to (-1.60, -2.00)
+17:56:34 [WARN] [1794300994.188393289] [planner_server]: [compute_path_to_pose] [ActionServer] Aborting handle.
+17:55:26 [INFO] [1794300926.047239415] [nav_guard]: 목표 2418e934: 남은 거리 3.80 m → 시간 한도 139 s (시작 뒤 0.0 s)
+17:56:16 [INFO] [1794300976.936311225] [nav_guard]: 목표 525c6f34: 남은 거리 0.14 m → 시간 한도 34 s (시작 뒤 0.0 s)
+17:56:16 [INFO] [1794300976.961486254] [nav_guard]: 목표 525c6f34: 남은 거리 3.95 m → 시간 한도 143 s (시작 뒤 0.0 s)
+17:55:17 [INFO] [1794300917.708481445] [rosbag2_recorder]: Subscribed to topic '/rover/stuck'
+17:56:34 [ERROR] [1794300994.238457635] [smoother_server]: Smoothed path leads to a collision at x: 0.766291, y: -1.471106, theta: 0.067195
+17:56:34 [WARN] [1794300994.238643082] [smoother_server]: [smooth_path] [ActionServer] Aborting handle.
+== 마지막 줄 11-10 17:52:24 [INFO] [1794300744.428457610] [waypoint_follower]: Creating bond (waypoint_follower) to lifecycle manager.
