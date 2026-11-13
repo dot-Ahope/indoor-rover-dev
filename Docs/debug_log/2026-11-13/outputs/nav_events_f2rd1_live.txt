@@ -1,0 +1,347 @@
+15:46:07.79 bt_navigator Begin navigating from current location (-0.01, -0.00) to (2.25, -1.60)
+15:46:07.82 controller_server Received a goal, begin computing control effort.
+15:46:07.82 controller_server No goal checker was specified in parameter 'current_goal_checker'. Server will use only plugin loaded general_goal_checker . This warning will appear once.
+15:46:07.82 controller_server Optimizer reset
+15:46:07.83 nav_guard 목표 bd480f09: 남은 거리 3.84 m → 시간 한도 140 s (시작 뒤 0.0 s)
+15:46:23.93 controller_server Control loop missed its desired rate of 10.0000Hz
+15:46:29.14 controller_server Control loop missed its desired rate of 10.0000Hz
+15:46:47.65 controller_server Control loop missed its desired rate of 10.0000Hz
+15:46:47.74 controller_server Control loop missed its desired rate of 10.0000Hz
+15:46:59.55 controller_server Reached the goal!
+15:46:59.58 bt_navigator Goal succeeded
+15:46:59.61 bt_navigator Begin navigating from current location (2.23, -1.42) to (-1.60, -2.00)
+15:46:59.62 nav_guard 목표 02b02212: 남은 거리 0.15 m → 시간 한도 34 s (시작 뒤 0.0 s)
+15:46:59.64 controller_server Received a goal, begin computing control effort.
+15:46:59.64 nav_guard 목표 02b02212: 남은 거리 3.97 m → 시간 한도 143 s (시작 뒤 0.0 s)
+15:47:05.74 controller_server Control loop missed its desired rate of 10.0000Hz
+15:47:19.05 controller_server Control loop missed its desired rate of 10.0000Hz
+15:47:19.18 controller_server Control loop missed its desired rate of 10.0000Hz
+15:47:28.22 stuck_monitor STUCK: 지령 15.6cm/4° 인데 관측 2.7cm/0.3° (비율 0.17) [shadow — 조치 없음]
+15:47:54.07 controller_server Reached the goal!
+15:47:54.11 bt_navigator Goal succeeded
+15:47:54.14 bt_navigator Begin navigating from current location (-1.47, -1.98) to (-1.65, -3.70)
+15:47:54.15 nav_guard 목표 a45679ca: 남은 거리 0.16 m → 시간 한도 35 s (시작 뒤 0.0 s)
+15:47:54.16 controller_server Received a goal, begin computing control effort.
+15:47:54.17 nav_guard 목표 a45679ca: 남은 거리 1.85 m → 시간 한도 83 s (시작 뒤 0.0 s)
+15:48:00.63 controller_server Control loop missed its desired rate of 10.0000Hz
+15:48:00.68 controller_server Control loop missed its desired rate of 10.0000Hz
+15:48:00.78 controller_server Control loop missed its desired rate of 10.0000Hz
+15:48:00.88 controller_server Control loop missed its desired rate of 10.0000Hz
+15:48:00.97 controller_server Control loop missed its desired rate of 10.0000Hz
+15:48:01.08 controller_server Control loop missed its desired rate of 10.0000Hz
+15:48:03.01 bt_navigator_navigate_to_pose_rclcpp_node PathBlockedAhead: 앞 경로 (-1.82, -2.87) 비용 99 — 2.0 s 지속되면 재계획
+15:48:03.27 controller_server Control loop missed its desired rate of 10.0000Hz
+15:48:03.52 controller_server Control loop missed its desired rate of 10.0000Hz
+15:48:03.60 controller_server Control loop missed its desired rate of 10.0000Hz
+15:48:03.69 controller_server Control loop missed its desired rate of 10.0000Hz
+15:48:03.77 controller_server Control loop missed its desired rate of 10.0000Hz
+15:48:05.02 bt_navigator_navigate_to_pose_rclcpp_node PathBlockedAhead: 앞 경로 (-1.82, -2.87) 비용 99 가 2.0 s 지속 → 주행 중단·재계획
+15:48:05.06 controller_server Goal was canceled. Stopping the robot.
+15:48:05.06 controller_server [follow_path] [ActionServer] Client requested to cancel the goal. Cancelling.
+15:48:05.06 local_costmap.local_costmap Received request to clear except a region the local_costmap
+15:48:05.06 bt_navigator_navigate_to_pose_rclcpp_node PathBlockedAhead: 앞 경로 (-1.82, -2.87) 비용 99 가 2.0 s 지속 → 주행 중단·재계획
+15:48:05.06 local_costmap.local_costmap Received request to clear except a region the local_costmap
+15:48:05.06 global_costmap.global_costmap Received request to clear except a region the global_costmap
+15:48:06.03 controller_server Received a goal, begin computing control effort.
+15:48:06.03 controller_server Optimizer reset
+15:48:08.67 controller_server Control loop missed its desired rate of 10.0000Hz
+15:48:08.82 controller_server Control loop missed its desired rate of 10.0000Hz
+15:48:08.96 controller_server Control loop missed its desired rate of 10.0000Hz
+15:48:11.16 controller_server Control loop missed its desired rate of 10.0000Hz
+15:48:11.27 controller_server Control loop missed its desired rate of 10.0000Hz
+15:48:11.38 controller_server Control loop missed its desired rate of 10.0000Hz
+15:48:11.47 controller_server Control loop missed its desired rate of 10.0000Hz
+15:48:11.78 controller_server Control loop missed its desired rate of 10.0000Hz
+15:48:11.88 controller_server Control loop missed its desired rate of 10.0000Hz
+15:48:14.07 controller_server Control loop missed its desired rate of 10.0000Hz
+15:48:14.16 controller_server Control loop missed its desired rate of 10.0000Hz
+15:48:16.29 controller_server Control loop missed its desired rate of 10.0000Hz
+15:48:16.39 controller_server Control loop missed its desired rate of 10.0000Hz
+15:48:21.57 controller_server Control loop missed its desired rate of 10.0000Hz
+15:48:26.01 bt_navigator_navigate_to_pose_rclcpp_node PathBlockedAhead: 앞 경로 (-1.97, -2.97) 비용 99 — 2.0 s 지속되면 재계획
+15:48:27.83 stuck_monitor STUCK: 지령 8.8cm/34° 인데 관측 2.1cm/1.5° (비율 0.24) [shadow — 조치 없음]
+15:48:28.02 bt_navigator_navigate_to_pose_rclcpp_node PathBlockedAhead: 앞 경로 (-1.97, -2.97) 비용 99 가 2.0 s 지속 → 주행 중단·재계획
+15:48:28.06 controller_server Goal was canceled. Stopping the robot.
+15:48:28.06 controller_server [follow_path] [ActionServer] Client requested to cancel the goal. Cancelling.
+15:48:28.06 local_costmap.local_costmap Received request to clear except a region the local_costmap
+15:48:28.06 bt_navigator_navigate_to_pose_rclcpp_node PathBlockedAhead: 앞 경로 (-1.97, -2.97) 비용 99 가 2.0 s 지속 → 주행 중단·재계획
+15:48:28.06 behavior_server Running monotone_escape
+15:48:28.06 behavior_server [monotone_escape] 시작 최근접 15.1 cm · 목표 5.0 cm · 모의 결과(닿는 양 m/rad): 앞:0.010 뒤:없음(끝 15.1 cm) 좌회전:없음(끝 15.1 cm) 우회전:없음(끝 15.1 cm)
+15:48:28.07 behavior_server [monotone_escape] 성공: 최근접 15.1 cm
+15:48:28.07 behavior_server monotone_escape completed successfully
+15:48:28.08 planner_server SmacHybrid: failed to create plan, invalid use: Starting point in lethal space! Cannot create feasible plan..
+15:48:28.08 planner_server Planning algorithm SmacHybrid failed to generate a valid path to (-1.65, -3.70)
+15:48:28.08 planner_server [compute_path_to_pose] [ActionServer] Aborting handle.
+15:48:28.13 smoother_server Received a path to smooth.
+15:48:28.13 smoother_server Smoother simple_smoother did not complete smoothing in specified time limit(1.000000 seconds) and was interrupted after 0.003245 seconds
+15:48:28.13 smoother_server Smoothed path leads to a collision at x: -1.890121, y: -2.760001, theta: 1.571380
+15:48:28.13 smoother_server [smooth_path] [ActionServer] Aborting handle.
+15:48:28.15 controller_server Received a goal, begin computing control effort.
+15:48:29.27 controller_server Control loop missed its desired rate of 10.0000Hz
+15:48:31.59 controller_server Control loop missed its desired rate of 10.0000Hz
+15:48:31.70 controller_server Control loop missed its desired rate of 10.0000Hz
+15:48:31.76 controller_server Control loop missed its desired rate of 10.0000Hz
+15:48:34.06 controller_server Control loop missed its desired rate of 10.0000Hz
+15:48:34.27 controller_server Control loop missed its desired rate of 10.0000Hz
+15:48:34.39 controller_server Control loop missed its desired rate of 10.0000Hz
+15:48:34.54 controller_server Control loop missed its desired rate of 10.0000Hz
+15:48:34.69 controller_server Control loop missed its desired rate of 10.0000Hz
+15:48:36.84 controller_server Control loop missed its desired rate of 10.0000Hz
+15:48:36.96 controller_server Control loop missed its desired rate of 10.0000Hz
+15:48:37.09 controller_server Control loop missed its desired rate of 10.0000Hz
+15:48:38.01 controller_server Control loop missed its desired rate of 10.0000Hz
+15:48:47.41 controller_server Reached the goal!
+15:48:47.44 bt_navigator Goal succeeded
+15:48:47.49 bt_navigator Begin navigating from current location (-1.76, -3.61) to (-1.60, -5.50)
+15:48:47.49 nav_guard 목표 d7a150b1: 남은 거리 0.13 m → 시간 한도 34 s (시작 뒤 0.0 s)
+15:48:47.53 controller_server Received a goal, begin computing control effort.
+15:48:47.53 nav_guard 목표 d7a150b1: 남은 거리 1.86 m → 시간 한도 83 s (시작 뒤 0.0 s)
+15:48:52.01 bt_navigator_navigate_to_pose_rclcpp_node PathBlockedAhead: 앞 경로 (-1.58, -4.53) 비용 99 — 2.0 s 지속되면 재계획
+15:48:54.02 bt_navigator_navigate_to_pose_rclcpp_node PathBlockedAhead: 앞 경로 (-1.58, -4.53) 비용 99 가 2.0 s 지속 → 주행 중단·재계획
+15:48:54.03 controller_server Goal was canceled. Stopping the robot.
+15:48:54.03 controller_server [follow_path] [ActionServer] Client requested to cancel the goal. Cancelling.
+15:48:54.03 local_costmap.local_costmap Received request to clear except a region the local_costmap
+15:48:54.03 bt_navigator_navigate_to_pose_rclcpp_node PathBlockedAhead: 앞 경로 (-1.58, -4.53) 비용 99 가 2.0 s 지속 → 주행 중단·재계획
+15:48:54.03 behavior_server Running wait
+15:48:59.03 behavior_server wait completed successfully
+15:48:59.21 bt_navigator_navigate_to_pose_rclcpp_node PathBlockedAhead: 새 경로 점 2 개가 받을 때 이미 비용 ≥ 99 — 값이 더 커질 때만 막힘으로 셈
+15:48:59.21 controller_server Received a goal, begin computing control effort.
+15:48:59.21 controller_server Optimizer reset
+15:49:01.82 controller_server Control loop missed its desired rate of 10.0000Hz
+15:49:01.93 controller_server Control loop missed its desired rate of 10.0000Hz
+15:49:02.14 controller_server Control loop missed its desired rate of 10.0000Hz
+15:49:02.23 controller_server Control loop missed its desired rate of 10.0000Hz
+15:49:04.01 bt_navigator_navigate_to_pose_rclcpp_node PathBlockedAhead: 앞 경로 (-1.97, -2.95) 비용 99 — 2.0 s 지속되면 재계획
+15:49:06.02 bt_navigator_navigate_to_pose_rclcpp_node PathBlockedAhead: 앞 경로 (-2.01, -3.09) 비용 99 가 2.0 s 지속 → 주행 중단·재계획
+15:49:06.02 controller_server Optimizer reset
+15:49:06.03 controller_server Optimizer reset
+15:49:06.03 controller_server Optimizer fail to compute path
+15:49:06.03 controller_server [follow_path] [ActionServer] Client requested to cancel the goal. Cancelling.
+15:49:06.03 local_costmap.local_costmap Received request to clear except a region the local_costmap
+15:49:06.03 bt_navigator_navigate_to_pose_rclcpp_node PathBlockedAhead: 앞 경로 (-2.01, -3.09) 비용 99 가 2.0 s 지속 → 주행 중단·재계획
+15:49:06.03 local_costmap.local_costmap Received request to clear except a region the local_costmap
+15:49:06.04 global_costmap.global_costmap Received request to clear except a region the global_costmap
+15:49:07.01 planner_server SmacHybrid: failed to create plan, invalid use: Starting point in lethal space! Cannot create feasible plan..
+15:49:07.01 planner_server Planning algorithm SmacHybrid failed to generate a valid path to (-1.60, -5.50)
+15:49:07.01 planner_server [compute_path_to_pose] [ActionServer] Aborting handle.
+15:49:07.05 smoother_server Received a path to smooth.
+15:49:07.05 smoother_server Smoother simple_smoother did not complete smoothing in specified time limit(1.000000 seconds) and was interrupted after 0.002326 seconds
+15:49:07.05 smoother_server Smoothed path leads to a collision at x: -1.743542, y: -3.735101, theta: -1.549310
+15:49:07.05 smoother_server [smooth_path] [ActionServer] Aborting handle.
+15:49:07.07 bt_navigator_navigate_to_pose_rclcpp_node PathBlockedAhead: 새 경로 점 1 개가 받을 때 이미 비용 ≥ 99 — 값이 더 커질 때만 막힘으로 셈
+15:49:07.08 controller_server Received a goal, begin computing control effort.
+15:49:07.08 controller_server Optimizer reset
+15:49:08.18 controller_server Control loop missed its desired rate of 10.0000Hz
+15:49:11.78 controller_server Control loop missed its desired rate of 10.0000Hz
+15:49:12.09 controller_server Control loop missed its desired rate of 10.0000Hz
+15:49:14.22 controller_server Control loop missed its desired rate of 10.0000Hz
+15:49:14.31 controller_server Control loop missed its desired rate of 10.0000Hz
+15:49:14.40 controller_server Control loop missed its desired rate of 10.0000Hz
+15:49:14.50 controller_server Control loop missed its desired rate of 10.0000Hz
+15:49:14.61 controller_server Control loop missed its desired rate of 10.0000Hz
+15:49:16.80 controller_server Control loop missed its desired rate of 10.0000Hz
+15:49:16.92 controller_server Control loop missed its desired rate of 10.0000Hz
+15:49:16.98 controller_server Control loop missed its desired rate of 10.0000Hz
+15:49:19.59 controller_server Control loop missed its desired rate of 10.0000Hz
+15:49:21.93 controller_server Control loop missed its desired rate of 10.0000Hz
+15:49:22.07 controller_server Control loop missed its desired rate of 10.0000Hz
+15:49:22.23 controller_server Control loop missed its desired rate of 10.0000Hz
+15:49:22.63 controller_server Control loop missed its desired rate of 10.0000Hz
+15:49:22.78 controller_server Control loop missed its desired rate of 10.0000Hz
+15:49:22.89 controller_server Control loop missed its desired rate of 10.0000Hz
+15:49:22.96 controller_server Control loop missed its desired rate of 10.0000Hz
+15:49:23.53 controller_server Control loop missed its desired rate of 10.0000Hz
+15:49:24.56 controller_server Control loop missed its desired rate of 10.0000Hz
+15:49:24.64 controller_server Control loop missed its desired rate of 10.0000Hz
+15:49:24.83 controller_server Control loop missed its desired rate of 10.0000Hz
+15:49:26.24 stuck_monitor STUCK: 지령 15.4cm/9° 인데 관측 1.8cm/9.0° (비율 0.12) [shadow — 조치 없음]
+15:49:33.35 controller_server Control loop missed its desired rate of 10.0000Hz
+15:49:33.43 controller_server Control loop missed its desired rate of 10.0000Hz
+15:49:33.54 controller_server Control loop missed its desired rate of 10.0000Hz
+15:49:36.46 controller_server Control loop missed its desired rate of 10.0000Hz
+15:49:37.23 controller_server Control loop missed its desired rate of 10.0000Hz
+15:49:37.89 controller_server Reached the goal!
+15:49:37.93 bt_navigator Goal succeeded
+15:49:37.96 bt_navigator Begin navigating from current location (-1.56, -5.36) to (-1.65, -3.70)
+15:49:37.96 planner_server SmacHybrid: failed to create plan, invalid use: Starting point in lethal space! Cannot create feasible plan..
+15:49:37.96 planner_server Planning algorithm SmacHybrid failed to generate a valid path to (-1.65, -3.70)
+15:49:37.96 planner_server [compute_path_to_pose] [ActionServer] Aborting handle.
+15:49:37.96 nav_guard 목표 9103e5ca: 남은 거리 0.23 m → 시간 한도 36 s (시작 뒤 0.0 s)
+15:49:38.01 smoother_server Received a path to smooth.
+15:49:38.02 smoother_server Smoothed path leads to a collision at x: -1.640000, y: -3.710000, theta: 0.000000
+15:49:38.02 smoother_server [smooth_path] [ActionServer] Aborting handle.
+15:49:38.03 controller_server Received a goal, begin computing control effort.
+15:49:38.04 nav_guard 목표 9103e5ca: 남은 거리 1.75 m → 시간 한도 80 s (시작 뒤 0.1 s)
+15:49:38.34 controller_server Control loop missed its desired rate of 10.0000Hz
+15:49:38.54 controller_server Control loop missed its desired rate of 10.0000Hz
+15:49:38.97 controller_server Control loop missed its desired rate of 10.0000Hz
+15:49:39.05 controller_server Control loop missed its desired rate of 10.0000Hz
+15:49:40.24 controller_server Control loop missed its desired rate of 10.0000Hz
+15:49:41.19 controller_server Control loop missed its desired rate of 10.0000Hz
+15:49:41.30 controller_server Control loop missed its desired rate of 10.0000Hz
+15:49:41.36 controller_server Control loop missed its desired rate of 10.0000Hz
+15:49:41.46 controller_server Control loop missed its desired rate of 10.0000Hz
+15:49:46.44 controller_server Control loop missed its desired rate of 10.0000Hz
+15:49:55.45 controller_server Optimizer reset
+15:49:55.46 controller_server Optimizer reset
+15:49:55.47 controller_server Optimizer fail to compute path
+15:49:55.47 controller_server [follow_path] [ActionServer] Aborting handle.
+15:49:55.49 local_costmap.local_costmap Received request to clear except a region the local_costmap
+15:49:55.49 controller_server Received a goal, begin computing control effort.
+15:49:57.40 controller_server Optimizer reset
+15:49:57.41 controller_server Optimizer reset
+15:49:57.42 controller_server Optimizer fail to compute path
+15:49:57.42 controller_server [follow_path] [ActionServer] Aborting handle.
+15:49:57.43 behavior_server Running monotone_escape
+15:49:57.44 behavior_server [monotone_escape] 시작 최근접 5.5 cm · 목표 5.0 cm · 모의 결과(닿는 양 m/rad): 앞:0.010 뒤:없음(끝 5.5 cm) 좌회전:없음(끝 5.5 cm) 우회전:0.018
+15:49:57.44 behavior_server [monotone_escape] 성공: 최근접 5.5 cm
+15:49:57.44 behavior_server monotone_escape completed successfully
+15:49:57.45 planner_server SmacHybrid: failed to create plan, invalid use: Starting point in lethal space! Cannot create feasible plan..
+15:49:57.46 planner_server Planning algorithm SmacHybrid failed to generate a valid path to (-1.65, -3.70)
+15:49:57.46 planner_server [compute_path_to_pose] [ActionServer] Aborting handle.
+15:49:57.49 smoother_server Received a path to smooth.
+15:49:57.49 smoother_server Smoothed path leads to a collision at x: -1.640000, y: -3.710000, theta: 0.000000
+15:49:57.49 smoother_server [smooth_path] [ActionServer] Aborting handle.
+15:49:57.51 controller_server Received a goal, begin computing control effort.
+15:49:57.52 controller_server Optimizer reset
+15:49:57.53 controller_server Optimizer reset
+15:49:57.53 controller_server Optimizer fail to compute path
+15:49:57.53 controller_server [follow_path] [ActionServer] Aborting handle.
+15:49:57.54 local_costmap.local_costmap Received request to clear except a region the local_costmap
+15:49:57.55 controller_server Received a goal, begin computing control effort.
+15:49:57.74 controller_server Optimizer reset
+15:49:57.75 controller_server Optimizer reset
+15:49:57.75 controller_server Optimizer fail to compute path
+15:49:57.75 controller_server [follow_path] [ActionServer] Aborting handle.
+15:49:57.76 behavior_server Running wait
+15:50:02.76 behavior_server wait completed successfully
+15:50:02.80 planner_server SmacHybrid: failed to create plan, invalid use: Starting point in lethal space! Cannot create feasible plan..
+15:50:02.80 planner_server Planning algorithm SmacHybrid failed to generate a valid path to (-1.65, -3.70)
+15:50:02.80 planner_server [compute_path_to_pose] [ActionServer] Aborting handle.
+15:50:02.83 smoother_server Received a path to smooth.
+15:50:02.84 smoother_server Smoothed path leads to a collision at x: -1.590000, y: -5.310000, theta: 1.426589
+15:50:02.84 smoother_server [smooth_path] [ActionServer] Aborting handle.
+15:50:02.85 controller_server Received a goal, begin computing control effort.
+15:50:02.86 controller_server Optimizer reset
+15:50:02.86 controller_server Optimizer reset
+15:50:02.87 controller_server Optimizer reset
+15:50:02.87 controller_server Optimizer fail to compute path
+15:50:02.87 controller_server [follow_path] [ActionServer] Aborting handle.
+15:50:02.89 local_costmap.local_costmap Received request to clear except a region the local_costmap
+15:50:02.89 controller_server Received a goal, begin computing control effort.
+15:50:02.94 controller_server Optimizer reset
+15:50:02.94 controller_server Optimizer reset
+15:50:02.94 controller_server Optimizer fail to compute path
+15:50:02.94 controller_server [follow_path] [ActionServer] Aborting handle.
+15:50:02.96 local_costmap.local_costmap Received request to clear except a region the local_costmap
+15:50:02.96 global_costmap.global_costmap Received request to clear except a region the global_costmap
+15:50:03.03 planner_server SmacHybrid: failed to create plan, invalid use: Starting point in lethal space! Cannot create feasible plan..
+15:50:03.03 planner_server Planning algorithm SmacHybrid failed to generate a valid path to (-1.65, -3.70)
+15:50:03.03 planner_server [compute_path_to_pose] [ActionServer] Aborting handle.
+15:50:03.07 smoother_server Received a path to smooth.
+15:50:03.07 smoother_server Smoothed path leads to a collision at x: -1.590000, y: -5.310000, theta: 1.426589
+15:50:03.07 smoother_server [smooth_path] [ActionServer] Aborting handle.
+15:50:03.08 controller_server Received a goal, begin computing control effort.
+15:50:03.13 controller_server Optimizer reset
+15:50:03.14 controller_server Optimizer reset
+15:50:03.14 controller_server Optimizer fail to compute path
+15:50:03.14 controller_server [follow_path] [ActionServer] Aborting handle.
+15:50:03.15 local_costmap.local_costmap Received request to clear except a region the local_costmap
+15:50:03.15 controller_server Received a goal, begin computing control effort.
+15:50:03.34 controller_server Optimizer reset
+15:50:03.35 controller_server Optimizer reset
+15:50:03.35 controller_server Optimizer fail to compute path
+15:50:03.35 controller_server [follow_path] [ActionServer] Aborting handle.
+15:50:03.36 behavior_server Running monotone_escape
+15:50:03.37 behavior_server [monotone_escape] 시작 최근접 3.1 cm · 목표 5.0 cm · 모의 결과(닿는 양 m/rad): 앞:0.070 뒤:없음(끝 3.1 cm) 좌회전:0.088 우회전:없음(끝 3.1 cm)
+15:50:03.37 behavior_server [monotone_escape] 선택: 좌회전 0.088
+15:50:03.77 behavior_server [monotone_escape] 성공: 최근접 5.3 cm
+15:50:03.77 behavior_server monotone_escape completed successfully
+15:50:03.79 planner_server SmacHybrid: failed to create plan, no valid path found.
+15:50:03.79 planner_server Planning algorithm SmacHybrid failed to generate a valid path to (-1.65, -3.70)
+15:50:03.79 planner_server [compute_path_to_pose] [ActionServer] Aborting handle.
+15:50:03.82 smoother_server Received a path to smooth.
+15:50:03.83 smoother_server Smoothed path leads to a collision at x: -1.590000, y: -5.310000, theta: 1.426589
+15:50:03.83 smoother_server [smooth_path] [ActionServer] Aborting handle.
+15:50:03.87 controller_server Received a goal, begin computing control effort.
+15:50:03.97 controller_server Control loop missed its desired rate of 10.0000Hz
+15:50:05.40 controller_server Control loop missed its desired rate of 10.0000Hz
+15:50:05.49 controller_server Control loop missed its desired rate of 10.0000Hz
+15:50:05.57 controller_server Control loop missed its desired rate of 10.0000Hz
+15:50:06.45 controller_server Control loop missed its desired rate of 10.0000Hz
+15:50:06.56 controller_server Control loop missed its desired rate of 10.0000Hz
+15:50:06.68 controller_server Control loop missed its desired rate of 10.0000Hz
+15:50:07.29 controller_server Control loop missed its desired rate of 10.0000Hz
+15:50:07.49 controller_server Control loop missed its desired rate of 10.0000Hz
+15:50:14.10 controller_server Control loop missed its desired rate of 10.0000Hz
+15:50:14.48 controller_server Control loop missed its desired rate of 10.0000Hz
+15:50:16.49 controller_server Control loop missed its desired rate of 10.0000Hz
+15:50:16.92 controller_server Control loop missed its desired rate of 10.0000Hz
+15:50:26.13 controller_server Reached the goal!
+15:50:26.16 bt_navigator Goal succeeded
+15:50:26.19 bt_navigator Begin navigating from current location (-1.71, -3.83) to (-1.60, -2.10)
+15:50:26.21 nav_guard 목표 3cd2596d: 남은 거리 0.16 m → 시간 한도 35 s (시작 뒤 0.0 s)
+15:50:26.22 controller_server Received a goal, begin computing control effort.
+15:50:26.25 nav_guard 목표 3cd2596d: 남은 거리 1.81 m → 시간 한도 82 s (시작 뒤 0.0 s)
+15:50:31.01 bt_navigator_navigate_to_pose_rclcpp_node PathBlockedAhead: 앞 경로 (-1.87, -3.10) 비용 99 — 2.0 s 지속되면 재계획
+15:50:33.02 bt_navigator_navigate_to_pose_rclcpp_node PathBlockedAhead: 앞 경로 (-1.87, -3.10) 비용 99 가 2.0 s 지속 → 주행 중단·재계획
+15:50:33.12 controller_server Goal was canceled. Stopping the robot.
+15:50:33.12 controller_server [follow_path] [ActionServer] Client requested to cancel the goal. Cancelling.
+15:50:33.12 local_costmap.local_costmap Received request to clear except a region the local_costmap
+15:50:33.12 bt_navigator_navigate_to_pose_rclcpp_node PathBlockedAhead: 앞 경로 (-1.87, -3.10) 비용 99 가 2.0 s 지속 → 주행 중단·재계획
+15:50:33.12 behavior_server Running wait
+15:50:38.12 behavior_server wait completed successfully
+15:50:38.16 controller_server Received a goal, begin computing control effort.
+15:50:38.17 controller_server Optimizer reset
+15:50:43.81 controller_server Control loop missed its desired rate of 10.0000Hz
+15:50:43.89 controller_server Control loop missed its desired rate of 10.0000Hz
+15:50:43.99 controller_server Control loop missed its desired rate of 10.0000Hz
+15:50:44.11 controller_server Control loop missed its desired rate of 10.0000Hz
+15:50:44.25 controller_server Control loop missed its desired rate of 10.0000Hz
+15:50:44.35 controller_server Control loop missed its desired rate of 10.0000Hz
+15:50:44.41 controller_server Control loop missed its desired rate of 10.0000Hz
+15:50:44.50 controller_server Control loop missed its desired rate of 10.0000Hz
+15:50:44.57 controller_server Control loop missed its desired rate of 10.0000Hz
+15:50:46.37 controller_server Control loop missed its desired rate of 10.0000Hz
+15:50:46.59 controller_server Control loop missed its desired rate of 10.0000Hz
+15:50:46.67 controller_server Control loop missed its desired rate of 10.0000Hz
+15:50:46.78 controller_server Control loop missed its desired rate of 10.0000Hz
+15:50:47.21 controller_server Control loop missed its desired rate of 10.0000Hz
+15:50:47.30 controller_server Control loop missed its desired rate of 10.0000Hz
+15:50:47.37 controller_server Control loop missed its desired rate of 10.0000Hz
+15:50:48.87 controller_server Control loop missed its desired rate of 10.0000Hz
+15:50:49.09 controller_server Control loop missed its desired rate of 10.0000Hz
+15:50:49.47 controller_server Control loop missed its desired rate of 10.0000Hz
+15:50:50.49 controller_server Control loop missed its desired rate of 10.0000Hz
+15:50:51.77 controller_server Optimizer reset
+15:50:51.78 controller_server Optimizer reset
+15:50:51.78 controller_server Optimizer fail to compute path
+15:50:51.78 controller_server [follow_path] [ActionServer] Aborting handle.
+15:50:51.80 local_costmap.local_costmap Received request to clear except a region the local_costmap
+15:50:51.81 controller_server Received a goal, begin computing control effort.
+15:50:51.94 controller_server Optimizer reset
+15:50:51.95 controller_server Optimizer reset
+15:50:51.95 controller_server Optimizer fail to compute path
+15:50:51.95 controller_server [follow_path] [ActionServer] Aborting handle.
+15:50:51.97 local_costmap.local_costmap Received request to clear except a region the local_costmap
+15:50:51.99 global_costmap.global_costmap Received request to clear except a region the global_costmap
+15:50:52.02 controller_server Received a goal, begin computing control effort.
+15:50:52.19 controller_server Control loop missed its desired rate of 10.0000Hz
+15:50:52.25 controller_server Control loop missed its desired rate of 10.0000Hz
+15:50:52.75 controller_server Control loop missed its desired rate of 10.0000Hz
+15:50:54.98 controller_server Control loop missed its desired rate of 10.0000Hz
+15:50:57.19 controller_server Control loop missed its desired rate of 10.0000Hz
+15:50:57.31 controller_server Control loop missed its desired rate of 10.0000Hz
+15:51:00.90 controller_server Reached the goal!
+15:51:00.93 bt_navigator Goal succeeded
+15:51:00.99 bt_navigator Begin navigating from current location (-1.67, -2.22) to (5.50, -2.20)
+15:51:00.99 nav_guard 목표 4d807482: 남은 거리 0.15 m → 시간 한도 34 s (시작 뒤 0.0 s)
+15:51:01.02 controller_server Received a goal, begin computing control effort.
+15:51:01.02 nav_guard 목표 4d807482: 남은 거리 7.23 m → 시간 한도 237 s (시작 뒤 0.0 s)
+15:51:20.14 controller_server Control loop missed its desired rate of 10.0000Hz
+15:52:38.04 controller_server Reached the goal!
+15:52:38.08 bt_navigator Goal succeeded
+15:52:38.14 bt_navigator Begin navigating from current location (5.34, -2.15) to (0.00, 0.00)
+15:52:38.14 nav_guard 목표 87640b10: 남은 거리 0.16 m → 시간 한도 34 s (시작 뒤 0.0 s)
+15:52:38.24 controller_server Received a goal, begin computing control effort.
+15:52:38.25 nav_guard 목표 87640b10: 남은 거리 6.51 m → 시간 한도 216 s (시작 뒤 0.1 s)

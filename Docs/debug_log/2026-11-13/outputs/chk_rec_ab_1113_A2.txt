@@ -1,0 +1,33 @@
+== 스택: realsense 1 · slam 1 · controller 1 · bt 1 · nvblox 1
+== 카메라 컬러 프로파일 파라미터: String value is: 640x480x5
+
+########## A2 15:13:09 — 프로파일 fastdds_udp_only.xml · 토픽 18 개 · 60 s ##########
+  CPU realsense2_camera 19 %(코어 1 = 100)
+  CPU ros2.bag.record 18 %(코어 1 = 100)
+  CPU slam_toolbox 9 %(코어 1 = 100)
+  CPU controller_server 12 %(코어 1 = 100)
+  CPU nvblox_node 35 %(코어 1 = 100)
+  CPU ekf_node 13 %(코어 1 = 100)
+  CPU 전체 47.3 %(6 코어 평균)
+  크기 30M
+  기록 길이 67.0 s
+  /battery                                     66    0.98 Hz
+  /cmd_vel                                      0    0.00 Hz
+  /global_costmap/costmap                      43    0.64 Hz
+  /imu/data                                 13139  196.05 Hz
+  /local_costmap/costmap                      110    1.64 Hz
+  /map                                          7    0.10 Hz
+  /nvblox_node/static_map_slice               638    9.52 Hz
+  /odometry/filtered                         1977   29.50 Hz
+  /plan                                         0    0.00 Hz
+  /plan_smoothed                                0    0.00 Hz
+  /rover/status                               327    4.88 Hz
+  /rover/stuck                                  0    0.00 Hz
+  /scan                                       646    9.64 Hz
+  /tf                                        3301   49.26 Hz
+  /tf_static                                    2    0.03 Hz
+  /trajectories                                 0    0.00 Hz
+  /transformed_global_plan                      0    0.00 Hz
+  /wheel_odom                                1639   24.46 Hz
+
+== /dev/shm fastrtps 20 · 끝 15:14:19

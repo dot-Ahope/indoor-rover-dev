@@ -1,0 +1,77 @@
+== 스택: realsense 1 · slam 1 · controller 1 · bt 1 · nvblox 1
+== 카메라 컬러 프로파일 파라미터: String value is: 640x480x5
+
+########## A 15:09:35 — 프로파일 fastdds_udp_only.xml · 토픽 18 개 · 60 s ##########
+  CPU realsense2_camera 19 %(코어 1 = 100)
+  CPU ros2.bag.record 19 %(코어 1 = 100)
+  CPU slam_toolbox 9 %(코어 1 = 100)
+  CPU controller_server 12 %(코어 1 = 100)
+  CPU nvblox_node 35 %(코어 1 = 100)
+  CPU ekf_node 13 %(코어 1 = 100)
+  CPU 전체 47.3 %(6 코어 평균)
+  크기 30M
+  기록 길이 67.6 s
+  /battery                                     67    0.99 Hz
+  /cmd_vel                                      0    0.00 Hz
+  /global_costmap/costmap                      41    0.61 Hz
+  /imu/data                                 13265  196.35 Hz
+  /local_costmap/costmap                      111    1.64 Hz
+  /map                                          7    0.10 Hz
+  /nvblox_node/static_map_slice               639    9.46 Hz
+  /odometry/filtered                         1990   29.46 Hz
+  /plan                                         0    0.00 Hz
+  /plan_smoothed                                0    0.00 Hz
+  /rover/status                               338    5.00 Hz
+  /rover/stuck                                  0    0.00 Hz
+  /scan                                       674    9.98 Hz
+  /tf                                        3286   48.64 Hz
+  /tf_static                                    2    0.03 Hz
+  /trajectories                                 0    0.00 Hz
+  /transformed_global_plan                      0    0.00 Hz
+  /wheel_odom                                1690   25.02 Hz
+
+########## B 15:10:55 — 프로파일 fastdds_shm_udp.xml · 토픽 30 개 · 60 s ##########
+  CPU realsense2_camera 20 %(코어 1 = 100)
+  CPU ros2.bag.record 41 %(코어 1 = 100)
+  CPU slam_toolbox 9 %(코어 1 = 100)
+  CPU controller_server 12 %(코어 1 = 100)
+  CPU nvblox_node 58 %(코어 1 = 100)
+  CPU ekf_node 13 %(코어 1 = 100)
+  CPU 전체 51.8 %(6 코어 평균)
+  크기 345M
+  기록 길이 66.2 s
+  /battery                                     66    1.00 Hz
+  /behavior_tree_log                            0    0.00 Hz
+  /camera/camera/color/camera_info            313    4.73 Hz
+  /camera/camera/color/image_raw              313    4.73 Hz
+  /camera/camera/depth/camera_info            977   14.77 Hz
+  /camera/camera/depth/image_rect_raw         977   14.77 Hz
+  /cmd_vel                                      0    0.00 Hz
+  /global_costmap/costmap                      41    0.62 Hz
+  /imu/data                                 12908  195.11 Hz
+  /local_costmap/costmap                      111    1.68 Hz
+  /local_costmap/published_footprint          332    5.02 Hz
+  /map                                          8    0.12 Hz
+  /nvblox_node/static_map_slice               617    9.33 Hz
+  /odometry/filtered                         1943   29.37 Hz
+  /plan                                         0    0.00 Hz
+  /plan_smoothed                                0    0.00 Hz
+  /rover/guard                                  0    0.00 Hz
+  /rover/status                               330    4.99 Hz
+  /rover/stuck                                  0    0.00 Hz
+  /scan                                       655    9.90 Hz
+  /tf                                        3243   49.02 Hz
+  /tf_static                                    2    0.03 Hz
+  /trajectories                                 0    0.00 Hz
+  /transformed_global_plan                      0    0.00 Hz
+  /visual_slam/tracking/odometry              980   14.81 Hz
+  /vslam/odom                                 974   14.72 Hz
+  /wheel_odom                                1639   24.77 Hz
+  /wheel_odom/conditioned                    1619   24.47 Hz
+  기록기 로그: [WARN] [1794550258.304081586] [ROSBAG2_TRANSPORT]: Topic '/visual_slam/status' has unknown type 'isaac_ros_visual_slam_interfaces/msg/VisualSlamStatus' . Only topics with known type are supported. Reason: 'package 'isaac_ros_visual_slam_interfaces' not found, searching: [/home/jetson/ros2_ws/install/rover_navigation, /home/jetson/ros2_ws/install/rover_bringup, /home/jetson/ros2_ws/install/rover_description, /home/jetson/ros2_ws/install/nvblox_nav2, /home/jetson/ros2_ws/install/nvblox_msgs, /home/jetson/ros2_ws/install/isaac_ros_common, /opt/ros/humble]
+  기록기 로그: [WARN] [1794550258.504339361] [ROSBAG2_TRANSPORT]: Topic '/visual_slam/status' has unknown type 'isaac_ros_visual_slam_interfaces/msg/VisualSlamStatus' . Only topics with known type are supported. Reason: 'package 'isaac_ros_visual_slam_interfaces' not found, searching: [/home/jetson/ros2_ws/install/rover_navigation, /home/jetson/ros2_ws/install/rover_bringup, /home/jetson/ros2_ws/install/rover_description, /home/jetson/ros2_ws/install/nvblox_nav2, /home/jetson/ros2_ws/install/nvblox_msgs, /home/jetson/ros2_ws/install/isaac_ros_common, /opt/ros/humble]
+  기록기 로그: [WARN] [1794550258.758305219] [ROSBAG2_TRANSPORT]: Topic '/visual_slam/status' has unknown type 'isaac_ros_visual_slam_interfaces/msg/VisualSlamStatus' . Only topics with known type are supported. Reason: 'package 'isaac_ros_visual_slam_interfaces' not found, searching: [/home/jetson/ros2_ws/install/rover_navigation, /home/jetson/ros2_ws/install/rover_bringup, /home/jetson/ros2_ws/install/rover_description, /home/jetson/ros2_ws/install/nvblox_nav2, /home/jetson/ros2_ws/install/nvblox_msgs, /home/jetson/ros2_ws/install/isaac_ros_common, /opt/ros/humble]
+  기록기 로그: [WARN] [1794550258.908461469] [ROSBAG2_TRANSPORT]: Topic '/visual_slam/status' has unknown type 'isaac_ros_visual_slam_interfaces/msg/VisualSlamStatus' . Only topics with known type are supported. Reason: 'package 'isaac_ros_visual_slam_interfaces' not found, searching: [/home/jetson/ros2_ws/install/rover_navigation, /home/jetson/ros2_ws/install/rover_bringup, /home/jetson/ros2_ws/install/rover_description, /home/jetson/ros2_ws/install/nvblox_nav2, /home/jetson/ros2_ws/install/nvblox_msgs, /home/jetson/ros2_ws/install/isaac_ros_common, /opt/ros/humble]
+  기록기 로그: [ERROR] [1794550259.106577534] [ROSBAG2_TRANSPORT]: Topic '/pose' has more than one type associated. Only topics with one type are supported
+
+== /dev/shm fastrtps 22 · 끝 15:12:04

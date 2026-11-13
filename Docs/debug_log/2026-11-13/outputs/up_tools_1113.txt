@@ -1,0 +1,3 @@
+  ì €ì¥ì†Œ íŒ 8f54300f â†’ C:/Users/magma/AppData/Local/Temp/claude/F--6-Indoor-Rover-Rover/21d4aa9f-8412-4905-b23d-17554af330ea/scratchpad/tools (7 ê°œ)
+wsl: ø»ì·´ $±¸ÒÌÆ¹Ğ ¨ºÜ´|¹ ¬À©Æ`Õ Lµ”² wsl2.localhostForwarding $ÁÈtÇ È©Æ´ÀÉ JÅµÂÈ²ä².
+  Jetson /tmp: 7 ê°œ Â· prep_fast --follow-symlinks ì¤„ 2
