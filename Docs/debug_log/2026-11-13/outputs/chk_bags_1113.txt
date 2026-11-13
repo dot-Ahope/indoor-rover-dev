@@ -1,0 +1,50 @@
+wsl: ø»ì·´ $±¸ÒÌÆ¹Ğ ¨ºÜ´|¹ ¬À©Æ`Õ Lµ”² wsl2.localhostForwarding $ÁÈtÇ È©Æ´ÀÉ JÅµÂÈ²ä².
+== ë””ìŠ¤í¬
+/dev/nvme0n1p1  233G  108G  113G  49% /
+== ì˜¤ëŠ˜ bag
+2.9G	/tmp/bag_f2rd1
+1.4G	/tmp/bag_f2rd2
+30M	/tmp/bag_rab_A
+345M	/tmp/bag_rab_B
+30M	/tmp/bag_rab_A2
+2.9G	/home/jetson/bags/bag_f2rd1
+1.4G	/home/jetson/bags/bag_f2rd2
+== í™ˆ bags ì „ì²´
+21G	/home/jetson/bags
+bag_f2a12
+bag_f2dr1
+bag_f2dr2
+bag_f2lp1
+bag_f2pi1
+bag_f2rd1
+bag_f2rd2
+bag_f2x1
+bag_f2x1_edge
+bag_f2x1_noturn
+bag_f2y1
+bag_f2y1_ir
+bag_f2z1
+bag_f2z1_ir
+bag_f2z2
+bag_f2z2_ir
+bt_off
+bt_on
+dc_d1
+dc_d2
+dc_d4a
+dc_d4b
+depth_test_1019_110301
+f2
+f2y1_vis
+logs_f2dr1
+map_0930_1724
+replay_f2dr2_int2
+replay_f2dr2_mw01
+replay_f2dr2_mw1
+== f2rd1 í† í”½ë³„ ë°”ì´íŠ¸(ìƒìœ„ 6)
+  /camera/camera/color/image_raw              2403 ê°œ   2214.8 MB
+  /camera/camera/depth/image_rect_raw         7489 ê°œ    288.1 MB
+  /nvblox_node/static_map_slice               4721 ê°œ    201.3 MB
+  /trajectories                               4675 ê°œ    129.9 MB
+  /scan                                       5002 ê°œ     72.3 MB
+  /imu/data                                  99238 ê°œ     33.7 MB

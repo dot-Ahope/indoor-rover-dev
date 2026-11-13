@@ -1,0 +1,4 @@
+/camera/camera/color/image_raw: 313 개 · 수신 첫~끝 64.88 s → 4.809 Hz · stamp 간격 중앙 208.0 ms · 최소 207.6 · 최대 208.9 · 중앙의 1.5 배 넘는 간격 0 개
+  컬러 640x480 rgb8 · 921600 B/장
+/camera/camera/depth/image_rect_raw: 977 개 · 수신 첫~끝 64.90 s → 15.039 Hz · stamp 간격 중앙 66.7 ms · 최소 33.4 · 최대 100.0 · 중앙의 1.5 배 넘는 간격 0 개
+/visual_slam/tracking/odometry: 980 개 · 수신 첫~끝 65.11 s → 15.036 Hz · stamp 간격 중앙 66.7 ms · 최소 33.4 · 최대 100.0 · 중앙의 1.5 배 넘는 간격 0 개

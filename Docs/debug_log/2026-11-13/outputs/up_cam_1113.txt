@@ -1,0 +1,5 @@
+== md5: cam 87af89ff04b8(PC 87af89ff04b8)
+== 설치본 링크 -> /home/jetson/ros2_ws/src/rover_bringup/launch/camera.launch.py
+  'color_fps':
+  11-13 §0 컬러 fps(640x480, 지원 60/30/15/5) — 기본 15 = 그 전과 같음
+  (default: '15')

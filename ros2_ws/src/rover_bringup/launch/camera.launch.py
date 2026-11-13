@@ -48,7 +48,9 @@ def _camera(context):
         'enable_depth': enable_depth,
         'enable_color': enable_color,
         **stereo,
-        'rgb_camera.color_profile': '640x480x15',
+        # 11-13 §0: color_fps 인자(기본 15 = 그 전과 같음). 5 = README 시각화용 컬러 기록(기록기 SHM, 4.6 MB/s 계산) — 컬러는 Nav2 · nvblox(use_color false) 가 안 씀.
+        #   카메라 지원 640x480 RGB8 @ 60/30/15/5 Hz(11-13 rs-enumerate-devices 실측, outputs/chk_color_ready_1113.txt)
+        'rgb_camera.color_profile': '640x480x%d' % int(LaunchConfiguration('color_fps').perform(context)),
         'align_depth.enable': False,
         # 2026-09-08 N1.5: 포인트클라우드 ON + 데시메이션 ×4 (640×480 → 160×120 = 19.2k pt/frame @15fps)
         #   → Nav2 VoxelLayer 가 실제 높이로 마킹/3D 소거. 바닥은 min_obstacle_height 로 배제.
@@ -113,6 +115,7 @@ def generate_launch_description():
         DeclareLaunchArgument('enable_depth', default_value='true'),
         DeclareLaunchArgument('enable_color', default_value='true'),
         DeclareLaunchArgument('emitter_flash', default_value='false'),
+        DeclareLaunchArgument('color_fps', default_value='15', description='11-13 §0 컬러 fps(640x480, 지원 60/30/15/5) — 기본 15 = 그 전과 같음'),
         DeclareLaunchArgument('stereo_fps', default_value='30'),
         DeclareLaunchArgument('emitter_off', default_value='true'),   # 11-04: 프로젝터 상시 끔이 기본(10-21 §20 사용자 결정 · 표준 prep 과 같음). 켜려면 emitter_off:=false
         DeclareLaunchArgument('depth_preset', default_value='3', description='깊이 프리셋(-1 = 지정 안 함 → 카메라 기본 0 Custom, 3 = High Accuracy). 10-22 §10 사용자 결정으로 기본 3'),

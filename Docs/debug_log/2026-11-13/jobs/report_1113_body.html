@@ -1,0 +1,148 @@
+
+<style>
+.code{margin:0;font-family:var(--f-mono);font-size:12.5px;line-height:1.5;background:var(--bg);border:1px solid var(--line);padding:8px 10px;overflow-x:auto;white-space:pre;max-width:100%}
+.flow > span{min-width:0}
+.figs{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px;margin:12px 0}
+.figs figure{margin:0}
+.figs img{width:100%;height:auto;border:1px solid var(--line);display:block}
+.figs figcaption{font-size:12.5px;line-height:1.5;margin-top:4px}
+.wide img{max-width:100%;height:auto;border:1px solid var(--line);display:block}
+</style>
+<div class="wrap">
+<header>
+  <div class="eyebrow">Indoor Rover · 2026-11-13 · Docs/debug_log/2026-11-13 §0–§11 · 주행 2 회(f2rd1 · f2rd2)</div>
+  <h1>11-13 시각화 기록과 통로 교착</h1>
+  <p class="lead">README 에 스택별 GIF 를 넣으려고, 기존 기록에 컬러 영상(5 fps) · 깊이 · 융합 · BT 토픽을 더해 bag 을 남기는 작업을 시작했습니다. 정지 시험으로 기록 부하를 확인한 뒤 no5 를 두 번 돌렸습니다. f2rd1 은 8/8 이었지만 서쪽 통로 입구 배치가 달라 막힘이 잦았고, 입구를 정리한 f2rd2 는 통로 안쪽에서 교착에 빠져 무진행 감시가 목표를 취소했습니다. bag 으로 교착 기전을 풀었고, 수정은 계획만 세웠습니다. 판단마다 스크립트 핵심 · 실제 출력 · 저장소 원문 경로를 붙였습니다.</p>
+</header>
+
+<section>
+  <h2>오늘의 판정</h2>
+  <div class="verdicts">
+    <div class="v ok"><b>컬러 5 fps 기록 정지 시험 통과</b><span>기록기만 SHM+UDP 로 띄워 컬러 손실 0(간격 208 ms) · /tf 49.0 Hz · CPU +4.5 %p. 첫 판정 계산(개수 ÷ 길이 = 4.73 Hz)은 미달이라 방법을 바꿔 판정한 사실을 기록(§1)</span></div>
+    <div class="v ok"><b>f2rd1 8/8, 서쪽 통로만 느림</b><span>총 488.7 s(f2rr1 434.4). 통로 목표 3~6 이 119 → 187 s, 막힘 정지 5 · Smac '출발점 치명 칸' 6. 원인 = 통로 입구 동쪽 배치(사용자 확인), 기록 부하는 근거 약함(§3 · §4)</span></div>
+    <div class="v no"><b>f2rd2 목표 5 에서 교착 → nav_guard 취소</b><span>입구 정리 뒤 목표 3 · 4 는 27.0 · 33.2 s 로 회복. 남쪽 끝 → 북쪽 복귀 중 45 s 무진행(§5)</span></div>
+    <div class="v ok"><b>교착 기전 규명(bag)</b><span>바퀴는 지령대로 돎. 충돌 판정된 원경로를 붙잡은 채 진행 실패 25 s × 2 &gt; nav_guard 45 s — 재계획 · 탈출이 한 번도 못 돎(§6 · §8)</span></div>
+    <div class="v no"><b>내 실수: 안쪽 폭 비교 시각</b><span>f2rr1 의 '지나가기 전' 코스트맵과 비교해 안쪽 차이를 15 cm 로 과장. 지나간 뒤끼리는 5 ~ 10 cm(§7)</span></div>
+    <div class="v ok"><b>수정 계획 · bag 처리안</b><span>진행 검사 시간 단축(A1) + 탈출 동작 최소 이득(A2), 근거 측정 먼저. bag 은 컬러가 76 % — JPEG 경량판 제안, 아무것도 안 지움(§9 · §10)</span></div>
+  </div>
+</section>
+
+<section>
+  <h2>기록 토픽을 늘리기 전 — 정지 시험<span class="sec">§0 · §1</span></h2>
+  <p>SHM 은 지금까지 카메라 프로세스 ↔ cuVSLAM 컨테이너 사이에만 켜 두었고(10-20 §7.4), 기록기는 UDP 전용이었습니다. 컬러 원본(921.6 kB/장)을 UDP 로 받으면 IR 때와 같은 버퍼 초과가 날 수 있어, 기록기만 SHM+UDP 프로파일로 띄우는 방식을 처음 시험했습니다. 5 fps 는 throttle 노드가 없어(설치는 sudo) 카메라 프로파일 인자 <span class="mono">color_fps</span>(기본 15 그대로)로 만들었습니다.</p>
+  <div class="tbl"><table>
+    <tr><th>지표</th><th>A 18 토픽 · UDP</th><th>B 30 토픽 · SHM+UDP</th><th>A2 (B 뒤 A 다시)</th></tr>
+    <tr><td>/tf</td><td>48.64 Hz</td><td>49.02</td><td>49.26</td></tr>
+    <tr><td>CPU 전체(6 코어 평균)</td><td>47.3 %</td><td>51.8 %</td><td>47.3 %</td></tr>
+    <tr><td>nvblox_node(pgrep 합)</td><td>35 %</td><td>58 %</td><td>35 %</td></tr>
+    <tr><td>크기</td><td>30 MB</td><td>345 MB (5.2 MB/s)</td><td>30 MB</td></tr>
+  </table></div>
+  <div class="flow">
+    <span class="k">컬러 간격</span><span><pre class="code">/camera/camera/color/image_raw: 313 개 · 수신 첫~끝 64.88 s → 4.809 Hz · stamp 간격 중앙 208.0 ms · 최소 207.6 · 최대 208.9 · 중앙의 1.5 배 넘는 간격 0 개
+  컬러 640x480 rgb8 · 921600 B/장</pre><span class="note">결과 <span class="mono">outputs/anal_color_gaps_1113.txt</span> · 스크립트 <span class="mono">jobs/anal_color_gaps_1113.py</span> · 정지 시험 <span class="mono">jobs/chk_rec_ab_1113.sh</span></span></span>
+    <span class="k">읽기</span><span>손실 0, 카메라의 '5 fps' 는 실제 4.81 Hz. 선언한 계산(개수 ÷ bag 전체 길이)이 기록기 시작 구간까지 넣어 4.73 Hz 로 낮게 나왔고, 결과를 본 뒤 계산 방법을 바꿨다는 사실을 SUMMARY 에 남김</span>
+    <span class="k">미확인</span><span>B 조건에서 nvblox CPU 35 → 58 % — A2 에서 돌아와 B 와 같이 움직임. 기록기는 nvblox 와 데이터를 주고받지 않아 기전 모름</span>
+  </div>
+</section>
+
+<section>
+  <h2>f2rd1 — 서쪽 통로 입구가 좁아져 있었다<span class="sec">§3 · §4</span></h2>
+  <div class="tbl"><table>
+    <tr><th></th><th>f2rr1 (11-11)</th><th>f2rd1 (11-13)</th></tr>
+    <tr><td>컨트롤러 주기 놓침</td><td>43</td><td>127 (통로 2 분에 120)</td></tr>
+    <tr><td>막힘 정지 줄</td><td>4</td><td>10</td></tr>
+    <tr><td>Smac 'Starting point in lethal space'</td><td>0</td><td>6</td></tr>
+    <tr><td>MPPI 'Optimizer fail'</td><td>1</td><td>11</td></tr>
+    <tr><td>통로 구간 CPU 전체</td><td>68.1 %</td><td>70.5 %</td></tr>
+    <tr><td>목표 3 ~ 6 시간</td><td>119 s</td><td>187 s</td></tr>
+  </table></div>
+  <div class="wide"><img src="@@IMG_corr@@" alt="서쪽 통로 전역 코스트맵 f2rr1 대 f2rd1, 궤적 · 막힘 지점"></div>
+  <p class="note">그림 <span class="mono">figures/corridor_cmp_f2rr1_f2rd1.png</span>(<span class="mono">jobs/fig_corridor_cmp_1113.py</span>, f2rd1 코스트맵은 Jetson 의 bag 에서 <span class="mono">jobs/anal_costmap_crop_1113.py</span> 로 통로 창만 잘라 옴). 주황 = 비용 ≥ 99 경계, 검은 점 = 후진, 빨간 X = 막힘 정지.</p>
+  <div class="flow">
+    <span class="k">본 것</span><span><pre class="code">y      | 저장지도 빈 폭(x 범위)  | f2rr1 14:55:44 (<99)  | f2rd1 15:48:03       | f2rd1 15:49:06
+-2.70  | 1.05 (-2.15~-1.15) | 0.55 (-2.04~-1.54) | 0.00 (-1.74~-1.74) | 0.45 (-2.04~-1.64)
+-2.60  | 1.10 (-2.20~-1.15) | 0.70 (-2.04~-1.39) | 0.00 (-1.74~-1.74) | 0.45 (-2.04~-1.64)</pre><span class="note">결과 <span class="mono">outputs/anal_corridor_width_1113.txt</span> · 스크립트 <span class="mono">jobs/anal_corridor_width_1113.py</span></span></span>
+    <span class="k">추론</span><span>저장 지도는 같고 통로 <b>동쪽 가장자리만</b> 안으로 들어옴, 서쪽은 같음 → 위치가 통째로 어긋난 것이 아니라 그 자리에 무언가가 있음. CPU 는 2.4 %p 차이라 기록 부하 가설은 약함</span>
+    <span class="k">결론</span><span>사용자: "통로 입구 및 안쪽 장애물 구성이 달랐을 것이다" → 원인 = 입구 배치. 입구를 정리하고 다시 기록(f2rd2)</span>
+  </div>
+  <div class="figs">
+    <figure><img src="@@IMG_c1@@" alt="15:48:02 통로 입구 로버 시점, 왼쪽 아래 종이 상자"><figcaption><b>f2rd1 15:48:02</b> 통로 입구, 로버 ≈ (−1.74, −2.26) · yaw ≈ −114°(추정). 화면 왼쪽(통로 동쪽) 아래 가까이 종이 상자</figcaption></figure>
+    <figure><img src="@@IMG_c2@@" alt="16:10:49 통로 남쪽 끝, 오른쪽 가까이 검은 천 가방과 공구 상자"><figcaption><b>f2rd2 16:10:49</b> 통로 남쪽 끝, 목표 5 시작. 오른쪽 아주 가까이 검은 천 가방 · 회색 공구 상자</figcaption></figure>
+  </div>
+</section>
+
+<section>
+  <h2>f2rd2 — 통로 안쪽 교착<span class="sec">§5 · §6 · §8</span></h2>
+  <p>입구를 정리하자 목표 3 · 4 는 27.0 · 33.2 s 로 f2rr1(31.0 · 28.7 s)과 비슷해졌습니다. 그러나 남쪽 끝에서 북쪽으로 돌아오는 목표 5 에서 로버가 (−1.50, −4.75) 에 선 채 45 s 를 보냈고, 무진행 감시 nav_guard 가 목표를 모두 취소했습니다. 사용자는 걸린 것이 없었다고 확인했습니다.</p>
+  <div class="flow">
+    <span class="k">바퀴는 정상</span><span><pre class="code">시각      지령v   지령w | L목표 L측정 L듀티 | R목표 R측정 R듀티 | EKFw  map yaw
+16:10:49  -0.025  0.360 |   -85   -84   -86 |    47    41    62 |  0.38   -71.9   ← 남쪽 끝 제자리 반바퀴
+16:11:03   0.080  0.214 |    21    23    47 |    85    86    90 |  0.15    90.5   ← 약 200° 돌아 북쪽
+16:11:10   0.005 -0.182 |    48    46    65 |   -32   -32   -45 | -0.19    92.3   ← v ≈ 0, w 가 ± 로 번갈아
+16:11:25   0.013  0.286 |   -37   -24   -45 |    57    48    55 |  0.24    90.2</pre><span class="note">결과 <span class="mono">outputs/anal_series_bins_f2rd2_goal5.txt</span> · 스크립트 <span class="mono">jobs/anal_series_1113.py</span>(Jetson 의 bag 에서 시계열만) · <span class="mono">jobs/anal_series_bins_1113.py</span>. 보드 필드 tgt · v · d = 목표 mm/s · 측정 mm/s · duty %(<span class="mono">microros_task.c</span> 111 행)</span></span>
+    <span class="k">'회전 안 됨' 경보의 정체</span><span>stuck_monitor 는 지령을 ∫|ω|dt(절댓값 합, 145 행)로, 관측을 순 변화(172 행)로 셈 → 좌우로 떨면 '지령 19° · 관측 1.7°' 처럼 보임. 실제 회전 고장 아님</span>
+    <span class="k">교착 순서</span><span><pre class="code">16:11:02.20 planner_server SmacHybrid: failed to create plan, no valid path found.
+16:11:02.27 smoother_server Smoothed path leads to a collision at x: -1.521952, y: -4.742779
+16:11:02.29 controller_server Received a goal, begin computing control effort.   ← 원경로(CopyPath)
+            (16:11:50 까지 새 계획 0 개 — PathBlockedAhead only_new: 받을 때 이미 99 인 점은 안 셈)
+16:11:32.69 controller_server Failed to make progress                             ← 0.25 m · 0.5 rad / 25 s
+16:11:32.71 local_costmap … clear except a region                                 ← 안쪽 재시도 = 같은 경로 다시
+16:11:50.49 nav_guard 개입 — 무진행: 45 s 동안 최대 0.24 m 이동 &lt; 0.25 m → 모든 목표 취소·정지</pre><span class="note">결과 <span class="mono">outputs/nav_events_f2rd2.txt</span> · BT <span class="mono">ros2_ws/src/rover_navigation/config/nav_to_pose_no_spin.xml</span> · 진행 검사 <span class="mono">nav2_params.yaml</span> 96 ~ 99 행</span></span>
+    <span class="k">결론</span><span>① 스무더가 충돌로 판정한 원경로를 따름 ② 그 막힘은 only_new 로 안 셈 ③ 진행 실패 25 s + 같은 경로 재시도 25 s = 50 s &gt; nav_guard 45 s → 재계획 · 탈출 · 대기 복구가 한 번도 못 돎 ④ 앞서 돈 탈출 동작은 여유 13.9 cm ≥ 5 cm 라 '이미 괜찮음' 으로 움직이지 않음(<span class="mono">monotone_escape_behavior.cpp</span> 106 행)</span>
+    <span class="k">큰 방향 전환</span><span>이상 없음 — 목표 3 진입 왼쪽 약 88°(코스대로), 목표 4 의 ±30 ~ 35° S 자는 f2rr1 도 같음(통로가 남쪽으로 동쪽으로 꺾임), 목표 5 시작의 제자리 약 200° 는 f2rr1 도 같음(<span class="mono">outputs/anal_goal4_yaw_cmp.txt</span> · <span class="mono">anal_goal5_turn_cmp.txt</span>)</span>
+  </div>
+</section>
+
+<section>
+  <h2>내 실수 — 안쪽 비교에 '지나가기 전' 코스트맵을 씀<span class="sec">§7</span></h2>
+  <div class="flow">
+    <span class="k">하려 한 것</span><span>f2rr1 과 f2rd1 의 통로 폭 비교(<span class="mono">jobs/anal_corridor_width_1113.py</span>)</span>
+    <span class="k">본 것</span><span>f2rr1 14:55:44 대 f2rd1 15:49:06, 안쪽 y −4.0 ~ −4.5 동쪽 끝 −1.54 대 −1.69</span>
+    <span class="k">처음 추론</span><span>안쪽도 약 15 cm 좁다 → 안쪽 배치도 다르다(사용자에게 그렇게 말함)</span>
+    <span class="k">의심한 이유</span><span>f2rd2 16:09:00(지나가기 전) 코스트맵이 f2rr1 14:55:44 와 안쪽이 칸 단위로 같고, 지나간 뒤에야 좁아짐 — 센서가 지나가며 채우는 지도</span>
+    <span class="k">판별 시험</span><span>f2rr1 도 지나간 뒤(14:56:35 · 14:57:00)로 다시 비교(<span class="mono">jobs/anal_corridor_rows_1113.py --rr1t</span>)</span>
+    <span class="k">결론</span><span>안쪽 차이 5 ~ 10 cm. 사용자의 "안쪽은 비슷할 것" 이 더 가까웠음</span>
+    <span class="k">다음에 알아보는 법</span><span>센서가 채우는 전역 코스트맵을 주행 간 비교할 때는 같은 자리를 지나간 뒤 같은 상대 시점끼리</span>
+    <span class="k">나온 결과</span><span><pre class="code">y      | f2rr1 14:56:35        | f2rd2 16:10:49
+-4.50  | 0.25 (-1.79~-1.59) | 0.20 (-1.79~-1.64)
+-4.30  | 0.35 (-1.94~-1.64) | 0.25 (-1.94~-1.74)</pre><span class="note">원문 <span class="mono">outputs/anal_corridor_rows_f2rd2_after.txt</span></span></span>
+  </div>
+</section>
+
+<section>
+  <h2>교착 수정 계획 — 구현 안 함<span class="sec">§9</span></h2>
+  <div class="tbl"><table>
+    <tr><th>단계</th><th>내용</th></tr>
+    <tr><td>0 근거</td><td>성공 주행(f2tt1 · f2tt2 · f2rr1 · f2rd2 목표 1 ~ 4)의 '0.25 m · 0.5 rad 무진행' 구간 길이 분포 → 진행 검사 시간을 줄일 수 있는 한도</td></tr>
+    <tr><td>1 오프라인 모의</td><td>f2rd2 bag 의 로컬 코스트맵으로 교착 자세에서 '여유가 줄지 않으며 δ(2 · 3 · 5 cm) 더 넓히는' 앞 · 뒤 · 좌 · 우 움직임이 있는지</td></tr>
+    <tr><td>2 구현</td><td>A1 진행 검사 25 → (0 의 값) s · A2 탈출 동작 <span class="mono">min_gain</span>(기본 0 = 지금과 같음) — 기각: 스무더 충돌 시 원경로 안 쓰기(f2dm2 사람 구간) · only_new 끄기(10-23 거짓 막힘 5 회)</td></tr>
+    <tr><td>3 시험</td><td>재현(오늘 배치, (−1.50, −4.75) 에서 북쪽 목표 · 60 s 안 도착 · nav_guard 0) → no5 회귀 1 회 → 표준 갱신은 같은 구성 연속 3 회 뒤</td></tr>
+  </table></div>
+</section>
+
+<section>
+  <h2>bag 처리 방안 — 아무것도 안 지움<span class="sec">§10</span></h2>
+  <div class="flow">
+    <span class="k">현황</span><span><pre class="code">/dev/nvme0n1p1  233G  108G  113G  49% /
+2.9G	/tmp/bag_f2rd1          2.9G	/home/jetson/bags/bag_f2rd1   ← 같은 내용
+1.4G	/tmp/bag_f2rd2          1.4G	/home/jetson/bags/bag_f2rd2   ← 같은 내용
+  /camera/camera/color/image_raw              2403 개   2214.8 MB    (f2rd1 의 76 %)
+  /camera/camera/depth/image_rect_raw         7489 개    288.1 MB</pre><span class="note">결과 <span class="mono">outputs/chk_bags_1113.txt</span> · 스크립트 <span class="mono">jobs/chk_bags_1113.sh</span></span></span>
+    <span class="k">제안</span><span>① /tmp 중복 4.3 G · 정지 시험 0.4 G 삭제(사용자 확인 뒤, 재부팅 때도 지워짐) ② 컬러만 JPEG(품질 80, 장당 28 ~ 46 kB)로 바꾼 경량판 → f2rd1 ≈ 0.8 GB · f2rd2 ≈ 0.4 GB(계산), PC 로 가져오고 원본은 시각화 → 확인 → 삭제(README §6) ③ 다음 기록부터 압축 구독 또는 424×240 — 둘 다 미시험</span>
+  </div>
+</section>
+
+<section>
+  <h2>결정 대기</h2>
+  <ul>
+    <li>bag: /tmp 중복 삭제 · 경량판 만들기 여부(§10)</li>
+    <li>교착 수정 §9 의 0 · 1 진행 → A1 · A2 구현</li>
+    <li>커밋: <span class="mono">camera.launch.py</span>(color_fps) · 오늘 기록 — 사람이 찍힌 사진 2 장과 컬러 base64 원문은 <span class="mono">bags/</span>(git 제외)로 옮겨 둠</li>
+  </ul>
+  <h2>다음 접속 때</h2>
+  <ul>
+    <li>로버는 서쪽 통로 안 (−1.50, −4.75) 에 정지 — 오래 세워 둔 스택이라 주행 전 prep</li>
+    <li>§9 재현 시험은 오늘 배치를 그대로 두면 바로 가능</li>
+  </ul>
+</section>
+</div>
