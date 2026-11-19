@@ -1,3 +1,4 @@
+# [대체됨 2026-11-19] → anal_bag_rates.py --bins 10 --topic /tf --tf-pairs (tf_rate) · --topic /trajectories (traj_size), 같은 수치 확인(11-19 SUMMARY §3). 옛 기록 재현용으로만 둠.
 # 10-12 §7.3: /trajectories(MPPI 궤적 발행) 메시지의 크기·주기 추이 — 10 s 칸마다 메시지 수, 직렬화 크기(kB), 마커 수. 인자: bag...
 import sys, time, collections, numpy as np
 from pathlib import Path

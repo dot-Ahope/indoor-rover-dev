@@ -1,3 +1,4 @@
+# [대체됨 2026-11-19] → anal_bag_rates.py --bins 10 --topic /tf --tf-pairs (tf_rate) · --topic /trajectories (traj_size), 같은 수치 확인(11-19 SUMMARY §3). 옛 기록 재현용으로만 둠.
 # 10-12 §3.3: bag 의 /tf 발행량 추이 — 10 s 칸마다 프레임 쌍별 변환 수(Hz)와 /tf 메시지 수. 인자: bag
 import sys, time, collections
 from pathlib import Path

@@ -12,7 +12,8 @@ description: 스크립트(도구)를 새로 만들거나 고칠 때 — Docs/deb
 
 
 요지(원본은 README — 어긋나면 README 가 맞다):
-- 이름은 용도 앞머리 prep_ · chk_ · anal_ · fig_ · up_ · run_ 중 하나.
+- 이름은 용도 앞머리 prep_ · chk_ · anal_ · fig_ · up_ · run_ · lib_(import 전용 부품, 11-19) 중 하나.
+- 새로 쓰기 전에 `Docs/tools/lib_rover.py`(bag 읽기 · tf · 지도 · 색표 · nav2 사건)와 겹치는 도구(README 표)부터 본다 — 복사하지 않는다.
 - 첫 10 줄 머리 주석: 무엇을 · 왜 · 로버 움직임 여부 · 인자 · 출력.
 - 쓴 도구는 그날 TOOLS.md 에 작업 중에 한 줄씩. 커밋 훅이 이름 · 머리 주석 · 없는 경로를 새 경고로 막는다.
 

@@ -8,10 +8,9 @@ import sys, time, collections
 from pathlib import Path
 import numpy as np, matplotlib
 matplotlib.use('Agg'); import matplotlib.pyplot as plt
-from rosbags.highlevel import AnyReader
-from rosbags.typesys import Stores, get_typestore
+sys.path.insert(0, str(Path(__file__).resolve().parent)); import lib_rover as L   # 11-19 §3: bag 열기만 lib_rover
 plt.rcParams['font.family'] = 'Malgun Gothic'; plt.rcParams['axes.unicode_minus'] = False
-TS = get_typestore(Stores.ROS2_HUMBLE); STEP = 2.0
+STEP = 2.0
 out, ref = sys.argv[1], sys.argv[2]; runs = []
 for a in sys.argv[3:]:
     name, rest = a.split('=', 1); mark = None
@@ -20,7 +19,7 @@ for a in sys.argv[3:]:
 D = {}
 for name, path, mark in runs:
     stamps = collections.defaultdict(list)
-    with AnyReader([Path(path)], default_typestore=TS) as rd:
+    with L.open_bag(path) as rd:
         for c, t, raw in rd.messages(): stamps[c.topic].append(t / 1e9)
     t0 = min(v[0] for v in stamps.values()); t1 = max(v[-1] for v in stamps.values())
     D[name] = dict(st={k: np.array(v) for k, v in stamps.items()}, t0=t0, n=int((t1 - t0) / STEP))

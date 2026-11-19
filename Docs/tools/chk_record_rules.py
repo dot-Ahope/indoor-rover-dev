@@ -21,7 +21,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 DL = ROOT / 'Docs/debug_log'
-PREFIX = ('prep_', 'chk_', 'anal_', 'fig_', 'up_', 'run_')
+PREFIX = ('prep_', 'chk_', 'anal_', 'fig_', 'up_', 'run_', 'lib_')   # lib_ = import 전용 부품(11-19)
 SINCE = '2026-10-13'          # 도구 규약 적용 시작(10-12 결정, 다음 세션부터)
 ARGS = set(sys.argv[1:])
 sys.stdout.reconfigure(encoding="utf-8")

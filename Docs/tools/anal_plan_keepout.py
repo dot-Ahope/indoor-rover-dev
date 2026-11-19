@@ -9,44 +9,29 @@
   출력: D 별로 — 경로가 안 나온 시각 수(부작용), 경로 길이 증가, 경로가 카메라 칸에 가장 가까이 간 거리, 지정 시각(정지 직전)의 상자 끝까지 거리.
   한계: 로버가 그 경로를 따라갔을 때 달라질 관측(다른 자리에서 보면 지도도 달라짐)은 반영 못 한다. 계획 한 번씩의 정지 비교다.
   사용: anal_plan_keepout.py bag [--step 8] [--box HH:MM:SS(정지 시각)] [--at HH:MM:SS ...(상자 거리를 볼 계획 시각)]"""
+# 11-19 §3: 읽기(nvblox 타입 등록) · 변환 · 상자 정의는 lib_rover 로(계획기 · 표본 규칙 L.last 그대로 — 옛 판과 출력 비교)
 import sys, time, math, heapq
 from pathlib import Path
 import numpy as np
 from scipy import ndimage
-from rosbags.highlevel import AnyReader
-from rosbags.typesys import Stores, get_typestore, get_types_from_msg
+sys.path.insert(0, str(Path(__file__).resolve().parent)); import lib_rover as L; L_ = L   # 아래 camera_mask 는 L 을 칸 목록 이름으로 씀
 args = sys.argv[1:]; bag = args.pop(0); STEP = 8.0; BOXT = None; ATS = []
 while args:
     a = args.pop(0)
     if a == '--step': STEP = float(args.pop(0))
     elif a == '--box': BOXT = args.pop(0)
     elif a == '--at': ATS.append(args.pop(0))
-DS = [0.175, 0.25, 0.30, 0.35, 0.40]; RINS, RAD, K = 0.175, 0.70, 2.0; FP = np.array([[0.262, 0.165], [0.262, -0.165], [-0.248, -0.165], [-0.248, 0.165]])
-ts_ = get_typestore(Stores.ROS2_HUMBLE)
-ts_.register(get_types_from_msg('std_msgs/Header header\nfloat32 resolution\nuint32 width\nuint32 height\ngeometry_msgs/Point origin\nfloat32 unknown_value\nfloat32[] data\n', 'nvblox_msgs/msg/DistanceMapSlice'))
-def T2(tr):
-    q = tr.rotation; yaw = math.atan2(2 * (q.w * q.z + q.x * q.y), 1 - 2 * (q.y * q.y + q.z * q.z)); c, s = math.cos(yaw), math.sin(yaw); return np.array([[c, -s, tr.translation.x], [s, c, tr.translation.y], [0, 0, 1]])
-ob = []; mo = []; glo = []; sl = []; plans = []; loc = []
-with AnyReader([Path(bag)], default_typestore=ts_) as rd:
-    for c, t, raw in rd.messages(connections=[c for c in rd.connections if c.topic in ('/tf', '/global_costmap/costmap', '/nvblox_node/static_map_slice', '/plan', '/local_costmap/costmap')]):
-        ts = t / 1e9; m = rd.deserialize(raw, c.msgtype)
-        if c.topic == '/tf':
-            for tr in m.transforms:
-                if tr.child_frame_id == 'base_link' and tr.header.frame_id == 'odom': ob.append((ts, T2(tr.transform)))
-                elif tr.child_frame_id == 'odom' and tr.header.frame_id == 'map': mo.append((ts, T2(tr.transform)))
-        elif c.topic == '/plan':
-            if len(m.poses) > 1: plans.append((ts, np.array([[q.pose.position.x, q.pose.position.y] for q in m.poses])))
-        elif c.topic == '/nvblox_node/static_map_slice': sl.append((ts, m.origin.x, m.origin.y, m.resolution, m.unknown_value, np.asarray(m.data, np.float32).reshape(m.height, m.width)))
-        else:
-            g = (ts, m.info.origin.position.x, m.info.origin.position.y, m.info.resolution, np.array(m.data, dtype=np.int16).reshape(m.info.height, m.info.width)); (glo if c.topic.startswith('/global') else loc).append(g)
-def last(L, t): return L[max(np.searchsorted([x[0] for x in L], t, side='right') - 1, 0)]
-day = time.strftime('%Y-%m-%d ', time.localtime(ob[0][0])); ep = lambda s: time.mktime(time.strptime(day + s, '%Y-%m-%d %H:%M:%S'))
+DS = [0.175, 0.25, 0.30, 0.35, 0.40]; RINS, RAD, K = 0.175, 0.70, 2.0
+Db = L.read_bag(bag, ['/tf', '/global_costmap/costmap', '/nvblox_node/static_map_slice', '/plan', '/local_costmap/costmap'])
+ob, mo, glo, loc = Db['ob'], Db['mo'], Db['glo'], Db['loc']; plans = [q for q in Db['raws'] if len(q[1]) > 1]
+sl = [s[:1] + s[2:] for s in Db['slice']]   # (t, ox, oy, res, 미관측 값, 격자) — 옛 판과 같은 칸 순서
+last = L.last; ep = lambda s: L.hms_epoch(Db['day'], s)
 
 
 def camera_mask(t, g):   # 전역 격자와 같은 모양: nvblox 슬라이스가 장애물이라 한 자리(지도 좌표로 옮겨 ±1 칸 넓힘) ∩ 전역 치명
     _, gx, gy, res, G = g; s = last(sl, t); Mmo = last(mo, t)[1]; L = np.argwhere(s[5] <= 0); cam = np.zeros(G.shape, bool)
     if len(L):
-        P = (Mmo @ np.c_[s[1] + (L[:, 1] + 0.5) * s[3], s[2] + (L[:, 0] + 0.5) * s[3], np.ones(len(L))].T).T; i = ((P[:, 1] - gy) / res).astype(int); j = ((P[:, 0] - gx) / res).astype(int)
+        P = L_.w2(Mmo, np.c_[s[1] + (L[:, 1] + 0.5) * s[3], s[2] + (L[:, 0] + 0.5) * s[3]]); i = ((P[:, 1] - gy) / res).astype(int); j = ((P[:, 0] - gx) / res).astype(int)
         ok = (i >= 0) & (i < G.shape[0]) & (j >= 0) & (j < G.shape[1]); cam[i[ok], j[ok]] = True; cam = ndimage.binary_dilation(cam, structure=np.ones((3, 3)))
     return cam & (G >= 100)
 
@@ -78,12 +63,10 @@ def plan(g, cam, D, start, goal, goal_relief=False):
 
 BOX = None
 if BOXT:   # 상자 끝 = 정지 때 로컬 코스트맵에서 차체에 가장 가까운 치명 칸의 연결 덩어리(10-13 정의)
-    tB = ep(BOXT); _, ox, oy, res, G = last(loc, tB); Mob = last(ob, tB)[1]; L = np.argwhere(G >= 100); Lo = np.c_[ox + (L[:, 1] + 0.5) * res, oy + (L[:, 0] + 0.5) * res, np.ones(len(L))]; pb = (np.linalg.inv(Mob) @ Lo.T).T
-    d = np.hypot(np.maximum.reduce([FP[:, 0].min() - pb[:, 0], np.zeros(len(pb)), pb[:, 0] - FP[:, 0].max()]), np.maximum.reduce([FP[:, 1].min() - pb[:, 1], np.zeros(len(pb)), pb[:, 1] - FP[:, 1].max()]))
-    lab, _ = ndimage.label(G >= 100, structure=np.ones((3, 3))); sel = lab[L[:, 0], L[:, 1]] == lab[L[int(np.argmin(d)), 0], L[int(np.argmin(d)), 1]]; BOX = (last(mo, tB)[1] @ Lo[sel].T).T[:, :2]
+    tB = ep(BOXT); BOX = L_.box_cells(last(loc, tB), last(ob, tB)[1], last(mo, tB)[1])
 t0 = plans[0][0] + 1; t1 = min(ob[-1][0], plans[-1][0] + 60); times = list(np.arange(t0, t1, STEP)); R = {D: [] for D in DS}; ncam = []
 for t in times:
-    g = last(glo, t); cam = camera_mask(t, g); ncam.append(int(cam.sum())); Mmb = last(mo, t)[1] @ last(ob, t)[1]; start = Mmb[:2, 2]; goal = last(plans, t)[1][-1]
+    g = last(glo, t); cam = camera_mask(t, g); ncam.append(int(cam.sum())); Mmb = last(mo, t)[1] @ last(ob, t)[1]; start = Mmb[:2, 3]; goal = last(plans, t)[1][-1]
     if np.hypot(*(goal - start)) < 0.5: continue
     for D in DS:
         xy, inband = plan(g, cam, D, start, goal); why = ''
@@ -98,7 +81,7 @@ for D in DS:
 for h in ATS:
     t = ep(h); g = last(glo, t); cam = camera_mask(t, g); Mmb = last(mo, t)[1] @ last(ob, t)[1]; goal = last(plans, t)[1][-1]; row = []
     for D in DS:
-        xy, _ = plan(g, cam, D, Mmb[:2, 2], goal)
+        xy, _ = plan(g, cam, D, Mmb[:2, 3], goal)
         row.append('없음' if xy is None else '%.2f m(길이 %.2f)' % (np.hypot(xy[:, None, 0] - BOX[None, :, 0], xy[:, None, 1] - BOX[None, :, 1]).min() if BOX is not None else float('nan'), np.hypot(*np.diff(xy, axis=0).T).sum()))
     inbox = int(cam[((BOX[:, 1] - g[2]) / g[3]).astype(int), ((BOX[:, 0] - g[1]) / g[3]).astype(int)].sum()) if BOX is not None else -1
     print('계획 %s — 경로 ↔ 상자 끝: %s | 그때 전역 지도의 상자 끝 중 카메라 칸 %d / %d' % (h, ' · '.join('D %.3f → %s' % (D, r) for D, r in zip(DS, row)), inbox, len(BOX) if BOX is not None else 0))

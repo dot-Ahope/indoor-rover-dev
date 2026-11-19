@@ -10,30 +10,21 @@
         yaw 는 모두 EKF(자이로) 것을 쓴다 — 병진 재료만 비교하려는 것. SLAM 은 참값이 아니라 기준이다(스캔 정합 오차 수 cm).
   구간: --win 길이(s, 기본 25) 를 --hop(기본 10) 씩 밀며 SLAM 이동 0.5 m 이상인 것 전부 + 지정 구간(이름@HH:MM:SS~HH:MM:SS).
   사용: anal_odom_drift.py bag [--win 25 --hop 10] [이름@HH:MM:SS~HH:MM:SS ...]"""
-import sys, time, math
+# 11-19 §3: bag 읽기는 lib_rover 로(계산 · 표본 규칙은 그대로 — 옛 판과 출력 비교, 11-19 SUMMARY §3)
+import sys, math
 from pathlib import Path
 import numpy as np
-from rosbags.highlevel import AnyReader
-from rosbags.typesys import Stores, get_typestore
+sys.path.insert(0, str(Path(__file__).resolve().parent)); import lib_rover as L
 args = sys.argv[1:]; bag = args.pop(0); WIN, HOP = 25.0, 10.0; named = []
 while args:
     a = args.pop(0)
     if a == '--win': WIN = float(args.pop(0))
     elif a == '--hop': HOP = float(args.pop(0))
     else: named.append(a)
-yawq = lambda q: math.atan2(2 * (q.w * q.z + q.x * q.y), 1 - 2 * (q.y * q.y + q.z * q.z))
-ob = []; mo = []; tw = {'/wheel_odom': [], '/odom_rf2o': [], '/odom_rf2o/gated': []}
-with AnyReader([Path(bag)], default_typestore=get_typestore(Stores.ROS2_HUMBLE)) as rd:
-    for c, t, raw in rd.messages(connections=[c for c in rd.connections if c.topic in tw or c.topic == '/tf']):
-        ts = t / 1e9; m = rd.deserialize(raw, c.msgtype)
-        if c.topic == '/tf':
-            for tr in m.transforms:
-                v = (ts, tr.transform.translation.x, tr.transform.translation.y, yawq(tr.transform.rotation))
-                if tr.child_frame_id == 'base_link' and tr.header.frame_id == 'odom': ob.append(v)
-                elif tr.child_frame_id == 'odom' and tr.header.frame_id == 'map': mo.append(v)
-        else: tw[c.topic].append((ts, m.twist.twist.linear.x, m.twist.twist.linear.y, m.twist.twist.angular.z))
-ob = np.array(ob); mo = np.array(mo); TW = {k: np.array(v) for k, v in tw.items()}
-day = time.strftime('%Y-%m-%d ', time.localtime(ob[0, 0])); ep = lambda s: time.mktime(time.strptime(day + s, '%Y-%m-%d %H:%M:%S'))
+D = L.read_bag(bag, ['/tf', '/wheel_odom', '/odom_rf2o', '/odom_rf2o/gated'])
+ob = np.array([(s[0],) + L.xyyaw(s[1]) for s in D['ob']]); mo = np.array([(s[0],) + L.xyyaw(s[1]) for s in D['mo']])   # (t, x, y, yaw)
+TW = {tp: np.array([(s[0], s[2], s[4], s[3]) for s in D[k]]) for tp, k in (('/wheel_odom', 'wheel'), ('/odom_rf2o', 'rf2o'), ('/odom_rf2o/gated', 'rf2o_gated'))}   # (t, vx, vy, ω)
+ep = lambda s: L.hms_epoch(D['day'], s)
 def at(A, t): return A[min(np.searchsorted(A[:, 0], t), len(A) - 1)]
 def mapbase(t):
     o = at(ob, t); m = at(mo, t); c, s = math.cos(m[3]), math.sin(m[3]); return np.array([m[1] + c * o[1] - s * o[2], m[2] + s * o[1] + c * o[2], m[3] + o[3]])

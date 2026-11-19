@@ -14,8 +14,7 @@ matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 from matplotlib.gridspec import GridSpec
 from pathlib import Path
-from rosbags.highlevel import AnyReader
-from rosbags.typesys import Stores, get_typestore
+sys.path.insert(0, str(Path(__file__).resolve().parent)); import lib_rover as L   # 11-19 §3: yaw · last · bag 열기만 lib_rover(나머지는 이 도구만의 것)
 
 plt.rcParams.update({'font.family': 'Malgun Gothic', 'axes.unicode_minus': False})
 INK, INK2, MUTED, GRID = '#1d232b', '#4a5360', '#8a929c', '#e3e6ea'
@@ -26,9 +25,9 @@ STATE_MK = {'accepted': ('o', 'none'), 'moving': ('>', None), 'arrived': ('*', N
 bag, reg_path, out = Path(sys.argv[1]), sys.argv[2], sys.argv[3]
 title = sys.argv[4] if len(sys.argv) > 4 else bag.name
 reg = yaml.safe_load(open(reg_path, encoding='utf-8'))
-yaw = lambda q: math.atan2(2 * (q.w * q.z + q.x * q.y), 1 - 2 * (q.y * q.y + q.z * q.z))
+yaw = L.q2yaw
 CMD, ST, mo, ob, cv, MAP = [], [], [], [], [], None
-with AnyReader([bag], default_typestore=get_typestore(Stores.ROS2_HUMBLE)) as rd:
+with L.open_bag(bag) as rd:
     for c, t, raw in rd.messages(connections=[c for c in rd.connections if c.topic in ('/place/command', '/place/status', '/tf', '/map', '/cmd_vel')]):
         ts = t * 1e-9; m = rd.deserialize(raw, c.msgtype)
         if c.topic == '/place/command':
@@ -57,7 +56,7 @@ for ts, rid, txt in CMD:
 T0 = runs[0]['t0'] if runs else cv[0][0]
 T1 = max([r['t1'] for r in runs] + [T0 + 1])
 
-last = lambda L, t: L[max(np.searchsorted([x[0] for x in L], t, side='right') - 1, 0)]
+last = L.last
 def pose(t):
     _, mx, my, ma = last(mo, t); _, ox, oy, oa = last(ob, t); c, s = math.cos(ma), math.sin(ma)
     return mx + c * ox - s * oy, my + s * ox + c * oy, ma + oa

@@ -11,8 +11,18 @@
 | `anal_` | 주행 기록 분석 | PC (일부 Jetson) |
 | `fig_` | 그림 | PC |
 | `up_` | 파일 전송 | PC |
+| `lib_` | import 전용 공통 부품(실행 안 함, 11-19) | — |
 
 ## 목록
+
+**겹침 정리(11-19)**: 장면 영상은 `fig_scene.py` 하나, bag 을 읽는 PC 도구는 `lib_rover` 를 import(SUMMARY 11-19 §2 · §3). **예외(일부러 사본 유지)**: Jetson 에서 /tmp 로 한 파일씩 올려 돌리는 `anal_mppi_sim` · `chk_drive_gate` · `chk_prep` · `slam_replay_feed` — lib 를 함께 올려야 하고 주행 게이트가 그 파일에 기대게 되므로 옮기지 않음. `[대체됨]` 도구는 옛 기록이 다시 돌릴 수 있게 지우지 않지만 고치거나 늘리지 않는다 — 옛 도구에만 있던 화면(아래 표)이 필요하면 `fig_scene` 에 옵션으로 더한다.
+
+| 옛 도구 | fig_scene 으로 옮긴 것 | 아직 옮기지 않은 것 |
+|---|---|---|
+| fig_run_video | 전역 코스트맵 · 전역 경로 + 직전 경로 3 s · 로컬 치명 칸 · 라이다 · 차체 · 시야 (`--frame map`) | 왼쪽 구역 전체 판 · 끝의 경로 급변 시각 표 |
+| fig_box_approach_video | 위와 같음 + 상자 사각형(`--box`) | 정지 때 상자 칸 십자 · 아래 수치 글 |
+| fig_drive_video | BT 경로 고르기(스무더 · CopyPath · Smac) · 사건 | 1920×1080 판짜기(미니맵 · 상태 수치 · 사건 시간줄) · 막힘 검사 구간 띠 · 경로 끝 방향 화살표 |
+| fig_rviz_video | RViz 색표 근사 · light 색 · 경로 출처별 색(Smac/NavFn) · 막힘 판정 점 | 어두운 화면의 1 m 격자 선 · base_link 축 · 왼쪽 위 상태 글 · camera 프레임 기준 시야(FIG_FOV) |
 
 | 도구 | 하는 일 | 옛 이름 |
 |---|---|---|
@@ -23,7 +33,7 @@
 | `chk_record_rules.py` | (PC) 작업 규약 점검 — TOOLS.md 누락 · 도구 앞머리 · 설명 주석 · 깨진 링크 · 적힌 출력 경로 · 비밀번호(선택). 경고만, `--all` · `--strict` | (11-02 신규) |
 | `chk_jetson_state.sh` | 재부팅 여부 · IP · /tmp 스크립트 · 캡처 권한 · 수신 버퍼 | `job947_state.sh` |
 | `chk_padding_dynamic.py` | 실행 중 코스트맵 footprint_padding 을 0 으로 내렸다 되돌리며 발행 풋프린트 · 코스트맵 칸 수 확인(로버 안 움직임). ⚠ 돌린 뒤엔 주행 전 prep 으로 재기동(10-14 §21 — 되돌려도 잔떨림 남음) | (10-14 신규) |
-| `anal_tf_rate.py` | bag → 10 s 칸마다 /tf 수신 Hz(포화 판정 지표: 정상 50) | `tf_rate.py` |
+| `anal_tf_rate.py` | **[대체됨 11-19 → `anal_bag_rates.py --bins`]** bag → 10 s 칸마다 /tf 수신 Hz(포화 판정 지표: 정상 50) | `tf_rate.py` |
 | `anal_navlog.py` | Nav2 로그 → 사건 종류별 횟수 · 10 s 분포 · 원문 | `navlog_pc.py` |
 | `anal_drive_results.py` | (PC) 09-23 이후 F0 러너 로그 전부 → 주행 · 목표별 결과 csv, 날짜 · 구간 · 기간별 성공률 · 사이클타임 표(중복 주행 하나로, SUCCEEDED_XY = 성공) | (11-10 신규) |
 | `anal_proc_cpu.py` | 전 프로세스 CPU 기록 → 구간별 비교 표 | `proc_cmp2.py` |
@@ -32,22 +42,27 @@
 | `anal_rtps_pcap.py` | 루프백 캡처 → DDS 패킷을 종류 · 쓰는 쪽(토픽) · 받는 프로세스별로 집계(평상 창 vs 포화 창) | (10-13 신규) |
 | `anal_rtps_onset.py` | 포화 시작 몇 초를 0.2 s 칸으로 — 토픽(기본 `rt/tf`)의 DATA·HEARTBEAT·ACKNACK 보낸 곳 | (10-13 신규) |
 | `anal_rtps_acklag.py` | 쓰는 쪽 HEARTBEAT(보관 번호)와 읽는 쪽 ACKNACK(받은 번호)을 맞춰 뒤처진 읽는 쪽 찾기 | (10-13 신규) |
-| `anal_bag_rates.py` | bag 여러 개의 토픽별 수신 주기 · 크기 · kB/s 를 나란히 비교 | (10-13 신규) |
+| `anal_bag_rates.py` | bag 여러 개의 토픽별 수신 주기 · 크기 · kB/s 를 나란히 비교 — 11-19: `--bins 초 --topic 토픽 [--tf-pairs]` 로 시간 칸별 Hz · 크기(옛 anal_tf_rate · anal_traj_size, Git Bash 에선 `MSYS_NO_PATHCONV=1`) | (10-13 신규) |
 | `anal_recorder_cpu.py` | proc 로그에서 bag 기록기 CPU 를 시간순으로(전체 사용률 · 주요 노드와 함께, 주행 간 비교) | (10-13 신규) |
-| `fig_bag_reception.py` | 토픽 × 시간 수신 부족률 그림 + `/tf` 최대 간격(주행 간 비교) | (10-13 신규) |
-| `fig_stop_costmap.py` | 지정 시각의 로컬 코스트맵 + 차체 + 라이다 점, 정지 전 풋프린트 비용 · 여유 시간열 | (10-13 신규) |
-| `anal_box_history.py` | 정지 때 차체 옆 치명 칸 덩어리가 로컬 · 전역 코스트맵에 언제부터 있었는지, 로버 · 전역 경로가 얼마나 가까이 갔는지 시간순 | (10-13 신규) |
-| `anal_box_layers.py` | 그 칸을 어느 층이 채웠나 — nvblox 슬라이스 값 · 라이다 점 수 · 로컬 치명 · map→odom 보정 차를 시간순 | (10-13 신규) |
-| `anal_box_pass.py` | 여러 주행이 같은 구역을 지날 때의 차체 ↔ 치명 칸 여유 · 정지 여부를 나란히 | (10-13 신규) |
-| `anal_odom_drift.py` | 구간별로 EKF · 휠만 · rf2o 적분이 SLAM 이동과 얼마나 어긋났나(미끄러짐 인지 평가) | (10-13 신규) |
-| `anal_plan_keepout.py` | 전역 지도에서 카메라(nvblox) 장애물 둘레를 통과 금지 띠로 두껍게 했을 때의 재계획 — 경로 없음 횟수 · 상자와의 거리 | (10-14 신규) |
+| `fig_bag_reception.py` | 토픽 × 시간 수신 부족률 그림 + `/tf` 최대 간격(주행 간 비교) · 11-19 lib_rover 로 옮김(출력 같음) | (10-13 신규) |
+| `fig_stop_costmap.py` | 지정 시각의 로컬 코스트맵 + 차체 + 라이다 점, 정지 전 풋프린트 비용 · 여유 시간열 · 11-19 lib_rover 로 옮김(출력 같음) | (10-13 신규) |
+| `anal_box_history.py` | 정지 때 차체 옆 치명 칸 덩어리가 로컬 · 전역 코스트맵에 언제부터 있었는지, 로버 · 전역 경로가 얼마나 가까이 갔는지 시간순 · 11-19 lib_rover 로 옮김(출력 같음) | (10-13 신규) |
+| `anal_box_layers.py` | 그 칸을 어느 층이 채웠나 — nvblox 슬라이스 값 · 라이다 점 수 · 로컬 치명 · map→odom 보정 차를 시간순 · 11-19 lib_rover 로 옮김(출력 같음) | (10-13 신규) |
+| `anal_box_pass.py` | 여러 주행이 같은 구역을 지날 때의 차체 ↔ 치명 칸 여유 · 정지 여부를 나란히 · 11-19 lib_rover 로 옮김(출력 같음) | (10-13 신규) |
+| `anal_odom_drift.py` | 구간별로 EKF · 휠만 · rf2o 적분이 SLAM 이동과 얼마나 어긋났나(미끄러짐 인지 평가) · 11-19 lib_rover 로 옮김(출력 같음) | (10-13 신규) |
+| `anal_plan_keepout.py` | 전역 지도에서 카메라(nvblox) 장애물 둘레를 통과 금지 띠로 두껍게 했을 때의 재계획 — 경로 없음 횟수 · 상자와의 거리 · 11-19 lib_rover 로 옮김(출력 같음) | (10-14 신규) |
 | `anal_mppi_sim.py` | MPPI 오프라인 시뮬(bag 의 경로 · 로컬 코스트맵 재생, CostCritic, `fpchk=1` = Nav2 방식 칸 단위 둘레 검사 · 후보 전부 충돌 집계). Jetson 에서 실행 | `job776_mppi_sim_ack.py`(10-01) |
-| `fig_box_approach_video.py` | 위 내용을 지도 좌표 영상으로(전역 코스트맵 · 로컬 치명 칸 · 경로 · 카메라 시야 · 차체) | (10-13 신규) |
-| `fig_run_video.py` | 주행 구간 영상(일반판): 전역 코스트맵 · 전역 경로(바뀌면 직전 경로를 점선으로) · 로컬 치명 칸 · 라이다 · 차체, 끝에 경로 급변 시각 표 | (10-14 신규) |
-| `fig_drive_video.py` | 주행 구간 영상 **재설계판**(1920×1080): 로버 따라가는 확대 판 · 미니맵 · 상태 수치 · 범례 · 사건 시간줄, 막힘 검사 구간 · 비용 ≥ 99 점. 인자 bag 출력 시작 끝 [배속] [nav_events] [제목] — 영상은 이것을 기본으로 | (10-23 신규, 사용자: 옛 화면 디자인 별로) |
-| `fig_rviz_video.py` | 주행 구간 RViz 스타일 정사각 영상(720×720, 어두운 바탕 · costmap 색표 · 초록 경로 · 빨간 라이다 · 차체 · 축) — 실제 촬영과 옆으로 붙이기용 | (10-26 신규, 사용자 요청) |
+| `fig_box_approach_video.py` | **[대체됨 11-19 → `fig_scene.py`]** 위 내용을 지도 좌표 영상으로(전역 코스트맵 · 로컬 치명 칸 · 경로 · 카메라 시야 · 차체) | (10-13 신규) |
+| `fig_run_video.py` | **[대체됨 11-19 → `fig_scene.py`]** 주행 구간 영상(일반판): 전역 코스트맵 · 전역 경로(바뀌면 직전 경로를 점선으로) · 로컬 치명 칸 · 라이다 · 차체, 끝에 경로 급변 시각 표 | (10-14 신규) |
+| `fig_drive_video.py` | **[대체됨 11-19 → `fig_scene.py`]** 주행 구간 영상 **재설계판**(1920×1080): 로버 따라가는 확대 판 · 미니맵 · 상태 수치 · 범례 · 사건 시간줄, 막힘 검사 구간 · 비용 ≥ 99 점. 인자 bag 출력 시작 끝 [배속] [nav_events] [제목] — 영상은 이것을 기본으로 | (10-23 신규, 사용자: 옛 화면 디자인 별로) |
+| `fig_rviz_video.py` | **[대체됨 11-19 → `fig_scene.py`]** 주행 구간 RViz 스타일 정사각 영상(720×720, 어두운 바탕 · costmap 색표 · 초록 경로 · 빨간 라이다 · 차체 · 축) — 실제 촬영과 옆으로 붙이기용 | (10-26 신규, 사용자 요청) |
 | `fig_patrol_goals.py` | 순회 코스 목표 지점을 저장 지도(office_v3) 위에 순서 · 위치만/방향까지 구분으로 | (10-14 신규) |
-| `anal_traj_size.py` | bag → MPPI 궤적 메시지 크기 · 기록 주기 | `traj_size.py` |
+| `fig_place_run.py` | 장소 이름 명령 주행(F2.5 place_server) 한 번을 그림 한 장으로 — 지도 위 궤적 · 명령 목록 · 상태 사건 시간축 · /cmd_vel. 인자 bag 등록부(places.yaml) 출력.png [제목] [nav2.log] · 11-19 lib_rover 로 옮김(출력 같음) | (10-28 신규, 11-19 표에 늦게 넣음) |
+| `lib_rover.py` | (import 전용) 공통 부품 — 4×4 변환 · tf_static 사슬 · bag 읽기(`read_bag`: tf · 코스트맵 · 경로 · MPPI 궤적 · 스캔 · 지령 · 휠 · EKF) · nav2 사건(nav2.log epoch · nav_events 둘 다) · BT 경로 고르기 · 저장 지도 · 코스트맵 색표(d · light · rviz) · 스타일 D · GIF/mp4 저장기. **새 도구는 이것을 import 하고 복사하지 않는다** | (11-19 신규) |
+| `fig_scene.py` | 주행 구간 '로버 주변 장면' GIF/mp4 — `--frame odom`(로컬 코스트맵 · /transformed_global_plan · MPPI 후보와 고른 궤적, README 판) / `--frame map`(전역 코스트맵 · BT 경로 + 직전 경로 3 s · 로컬 치명 칸 · 막힘 판정 점), `--style d`(기본) · `light` · `rviz`, `--events` · `--box` · `--view` · `--px`. 옛 장면 영상 4 개 + 11-19 jobs/fig_readme_scene_1119 를 합친 것 | (11-19 신규) |
+| `fig_odom.py` | 오도메트리 GIF/mp4(스타일 D): `fusion`(휠만 · EKF · 지도 위치, 끝 · 최대 거리 출력) · `loc`(같은 스캔을 EKF 만 / slam_toolbox 로 지도에) · `fw`(/cmd_vel vs /wheel_odom) | 11-19 jobs/fig_readme_odom_1119 |
+| `fig_patrol_run.py` | 순회 한 번(러너 csv + 로그)을 저장 지도 위 GIF/mp4 로(스타일 D, 목표 도착 표시). 인자 = 주행 폴더 | 11-19 jobs/fig_readme_patrol_1119 |
+| `anal_traj_size.py` | **[대체됨 11-19 → `anal_bag_rates.py --bins`]** bag → MPPI 궤적 메시지 크기 · 기록 주기 | `traj_size.py` |
 | `anal_reverse.py` | 러너 csv → 목표별 후진 거리 · 시간 | `rev_eval.py` |
 | `anal_record_index.py` | (PC) 실험 기록 자동 색인 → `Docs/issues/index/`(§ 제목 · 실험 이름 · 도구 사전), 2026-10-29 | — |
 | `chk_drive_gate.py` | (Jetson) 주행 직전 게이트 B(/wheel_odom) · C(map→odom 간격 < 0.5 s · stamp 지연 < 1.0 s) · G2(출발 자세 여유) 를 한 노드로, 마지막 줄 `GATE …` 를 러너가 읽음(10-27) | job254 · job386 · job440 |
