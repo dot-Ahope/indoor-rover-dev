@@ -7,7 +7,7 @@
 | [`01_firmware/`](01_firmware/) | STM32F405 펌웨어 F0~F8, 빌드·플래시, micro-ROS | [FIRMWARE_DEV_PLAN.md](01_firmware/FIRMWARE_DEV_PLAN.md) | 2026-05~09 |
 | [`02_hardware/`](02_hardware/) | 차체(WT-600)·모터(1:90)·URDF·배치도 | [WT600_UPDATE_BRIEF.md](02_hardware/WT600_UPDATE_BRIEF.md), [MOTOR_1TO90_MIGRATION_PLAN.md](02_hardware/MOTOR_1TO90_MIGRATION_PLAN.md) | 2026-08 |
 | [`03_jetson/`](03_jetson/) | Jetson Orin Nano 설정, 센서 드라이버 | [JETSON_SETUP_BRIEF.md](03_jetson/JETSON_SETUP_BRIEF.md) | 2026-05·08 |
-| [`04_navigation/`](04_navigation/) | SLAM·Nav2·코스·게이트·절차 | [NAV2_EXPLORATION_PLAN.md](04_navigation/NAV2_EXPLORATION_PLAN.md), [TEST_COURSE_AND_GATES.md](04_navigation/TEST_COURSE_AND_GATES.md) | 2026-09 |
+| [`04_navigation/`](04_navigation/) | SLAM·Nav2·코스·게이트·절차 | [NAV2_EXPLORATION_PLAN.md](04_navigation/NAV2_EXPLORATION_PLAN.md), [TEST_COURSE_AND_GATES.md](04_navigation/TEST_COURSE_AND_GATES.md) | 2026-11 |
 | [`05_nvblox/`](05_nvblox/) | Isaac ROS nvblox 이전(Phase N) | [NVBLOX_MIGRATION_PLAN.md](05_nvblox/NVBLOX_MIGRATION_PLAN.md) | 2026-09~ |
 | [`06_planner/`](06_planner/) | 전역 계획기 전환 NavFn → Smac Hybrid-A*(Phase P) | [SMAC_HYBRID_PLAN.md](06_planner/SMAC_HYBRID_PLAN.md) | 2026-10~ |
 | [`07_language/`](07_language/) | F2.5 장소 이름 이동 + 온디바이스 LLM(텍스트) | [F25_PLACE_LLM_DESIGN.md](07_language/F25_PLACE_LLM_DESIGN.md) | 2026-10-28~ |
@@ -42,7 +42,7 @@
 - [Jetson/](03_jetson/Jetson/) — 설치 자료
 
 ## 04_navigation
-- [TEST_COURSE_AND_GATES.md](04_navigation/TEST_COURSE_AND_GATES.md) — **코스 배치·게이트 표·주행 절차·운영 규칙의 단일 출처**(Phase S v1.0). Phase 전환 시 절 단위 재검토
+- [TEST_COURSE_AND_GATES.md](04_navigation/TEST_COURSE_AND_GATES.md) — **코스 배치·게이트 표·주행 절차·운영 규칙의 단일 출처**(v3.0 F2 순회 no5, 2026-11-19 — 상자 코스·F0-a 는 v2.3, 커밋 8c225597). Phase 전환 시 절 단위 재검토
 - [NAV2_EXPLORATION_PLAN.md](04_navigation/NAV2_EXPLORATION_PLAN.md) — Nav2 도입 계획(2026-09-08)
 - [PASSAGE_PROBLEM_ANALYSIS_2026-09-16.md](04_navigation/PASSAGE_PROBLEM_ANALYSIS_2026-09-16.md) — 통로 정체 분석(계획·컨트롤러·지도 3 계층)
 - 기준선: [debug_log/2026-09-21/BASELINE_STVL.md](debug_log/2026-09-21/BASELINE_STVL.md)
