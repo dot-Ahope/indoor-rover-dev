@@ -3,7 +3,7 @@
 [← 첫 페이지](../../README.md)
 
 <p align="center">
-  <img src="../media/2026-11-19_patrol.gif" width="49%"/>
+  <img src="../media/2026-11-23_patrol.gif" width="49%"/>
   <img src="../media/2026-11-19_block_escape.gif" width="44%"/>
 </p>
 <p align="center"><sub>왼쪽: 8 목표 순회 한 번(f2rr1, 40배속) · 오른쪽: 복귀 중 출발점 앞 낮은 상자를 다시 봄 → <code>PathBlockedAhead</code> → <code>MonotoneEscape</code> → 재계획(f2tt1, 4배속, 오른쪽 위 = Nav2 사건)</sub></p>

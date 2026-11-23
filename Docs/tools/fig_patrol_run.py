@@ -37,7 +37,8 @@ with w.saving(fig, A.out, 100):
     for tf in np.r_[np.arange(t[0], t[-1], A.speed / A.fps), [t[-1]] * A.fps]:
         j = min(np.searchsorted(t, tf), len(t) - 1); last = j == len(t) - 1
         trail.set_data(x[:j + 1], y[:j + 1])
-        c, s = math.cos(yaw[j]), math.sin(yaw[j]); body.set_xy(L.FP @ np.array([[c, s], [-s, c]]) + [x[j], y[j]])
+        # 11-23: 러너 csv 의 map_yaw 는 도(°) — 라디안으로 바꿔야 함. 11-19 판은 그대로 써서 차체 사각형이 매 장 엉뚱한 각도로 빙글빙글 돌았다(사용자 지적)
+        c, s = math.cos(math.radians(yaw[j])), math.sin(math.radians(yaw[j])); body.set_xy(L.FP @ np.array([[c, s], [-s, c]]) + [x[j], y[j]])
         for i, mk in enumerate(gm):
             mk.set_markerfacecolor('tab:green' if (i + 1 < g[j] or last) else 'white')
             mk.set_markeredgecolor('tab:orange' if (i + 1 == g[j] and not last) else 'k')

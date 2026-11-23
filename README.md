@@ -19,7 +19,7 @@
 | 장애물 인식 | nvblox(GPU) 깊이 3D 재구성 + 라이다 — 라이다 아래 낮은 물체까지 | [자세히](Docs/stack/obstacles.md) |
 | 자율주행 | Nav2 Smac Hybrid-A* + MPPI, 직접 작성한 BT · 복구 플러그인 | [자세히](Docs/stack/navigation.md) |
 
-<p align="center"><img src="Docs/media/2026-11-19_patrol.gif" width="60%"/><br/><sub>사무실 8 목표 순회 한 번(f2rr1, 40배속)</sub></p>
+<p align="center"><img src="Docs/media/2026-11-23_patrol.gif" width="60%"/><br/><sub>사무실 8 목표 순회 한 번(f2rr1, 40배속)</sub></p>
 
 ## 작업 절차
 
