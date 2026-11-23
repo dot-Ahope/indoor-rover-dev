@@ -4,9 +4,9 @@
 
 <p align="center">
   <img src="../media/2026-11-23_patrol.gif" width="49%"/>
-  <img src="../media/2026-11-19_block_escape.gif" width="44%"/>
+  <img src="../media/2026-11-23_box_replan.gif" width="44%"/>
 </p>
-<p align="center"><sub>왼쪽: 8 목표 순회 한 번(f2rr1, 40배속) · 오른쪽: 복귀 중 출발점 앞 낮은 상자를 다시 봄 → <code>PathBlockedAhead</code> → <code>MonotoneEscape</code> → 재계획(f2tt1, 4배속, 오른쪽 위 = Nav2 사건)</sub></p>
+<p align="center"><sub>왼쪽: 8 목표 순회 한 번(f2rr1, 40배속) · 오른쪽: 복귀 길 낮은 상자 — 상자를 지나던 경로 → 카메라가 상자를 잡음(채운 보라) → <code>PathBlockedAhead</code> → <code>MonotoneEscape</code> → 상자를 비켜 간 새 경로(점선 = 직전 경로, 빈 보라 = 시야를 벗어나 기억으로 남은 칸). 3배속, 오른쪽 위 = Nav2 사건</sub></p>
 
 ## 하는 일
 - 전역 계획 = Smac Hybrid-A*(실패하면 NavFn), 경로 추종 = MPPI. 재계획은 목표마다 한 번과, 경로가 막혔을 때만.

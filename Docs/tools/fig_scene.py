@@ -23,7 +23,14 @@ ap.add_argument('--speed', type=float, default=2.0); ap.add_argument('--events')
 ap.add_argument('--frame', choices=('odom', 'map'), default='odom'); ap.add_argument('--style', choices=('d', 'light', 'rviz'), default='d')
 ap.add_argument('--view', type=float, default=1.4); ap.add_argument('--fps', type=int, default=5); ap.add_argument('--px', type=int, default=560)
 ap.add_argument('--box'); ap.add_argument('--no-mppi', action='store_true')
-A = ap.parse_args(); MAPF = A.frame == 'map'; RUN = A.title or Path(A.bag).name.replace('bag_', '')
+# 11-23 §7: --seen = '라이다엔 없는데 카메라가 잡은 칸' 표시(사용자: 라이다 스캔에 없던 상자를 카메라가 잡고 계획기가 경로를 고치는 모습).
+#   카메라 칸 = 로컬 치명 칸 중 라이다 점이 0.1 m 안에 없는 것(3 m 안). 지금 카메라 시야(±43° · 2.0 m = nvblox 통합 거리) 안 = 채운 칸, 밖 = 빈 칸(기억).
+#   시야 부채꼴도 2.0 m 로(기본 1.4 m 는 10-22 전 통합 거리), 전역 경로가 바뀌면 직전 경로를 3 s 점선으로(odom 판에도).
+#   --seen x0,x1,y0,y1(지도) 를 주면 그 영역 칸만 표시 — 벽 · 가구도 라이다 평면 밖은 '카메라만' 으로 잡혀 화면이 어지러움(11-23 1 차 렌더).
+ap.add_argument('--seen', nargs='?', const='all')
+A = ap.parse_args(); MAPF = A.frame == 'map'; RUN = A.title if A.title is not None else Path(A.bag).name.replace('bag_', '')
+FOVR = 2.0 if A.seen else L.CAMR; HOLD = 6.0 if A.seen else 3.0   # 직전 경로 점선 유지 시간
+SEENR = None if A.seen in (None, 'all') else np.array([float(v) for v in A.seen.split(',')])
 
 # 스타일별 색(D = 11-19 사용자 선택 · light = 10-27 §13 · rviz = 10-26 §17 의 근사)
 S = {'d': dict(bg='white', ink='k', plan='tab:green', navfn='tab:green', trail='tab:blue', body='tab:blue', cand='tab:orange', opt='k',
@@ -34,11 +41,11 @@ S = {'d': dict(bg='white', ink='k', plan='tab:green', navfn='tab:green', trail='
                   scan='#ff2a2a', local='#ffd400', fov='#f59f00', ev='#ffd400')}[A.style]
 L.style_d(); CM = L.costmap_cmap(A.style)
 
-topics = ['/tf', '/scan', '/local_costmap/costmap'] + (['/global_costmap/costmap', '/plan', '/plan_smoothed'] if MAPF else ['/transformed_global_plan'])
+topics = ['/tf', '/scan', '/local_costmap/costmap'] + (['/global_costmap/costmap', '/plan', '/plan_smoothed'] if MAPF else ['/transformed_global_plan'] + (['/plan', '/plan_smoothed'] if A.seen else []))
 if not A.no_mppi: topics.append('/trajectories')
 D = L.read_bag(A.bag, topics, A.start, A.end); tA, tB = D['tA'], D['tB']
 EV, BT, BLK = L.nav_events(A.events, D['day'], tA, tB)
-PL = L.bt_plans(D, BT) if MAPF else []
+PL = L.bt_plans(D, BT) if (MAPF or A.seen) else []
 print('pose', len(D['ob']), 'map->odom', len(D['mo']), 'local', len(D['loc']), 'global', len(D['glo']), 'plan', len(PL) if MAPF else len(D['tplan']),
       'traj', len(D['traj']), 'scan', len(D['scan']), 'static', len(D['static']), 'events', len(EV))
 for e in EV: print('  ', L.hms(e[0], 2), e[1])
@@ -51,6 +58,9 @@ BOX = np.array([float(v) for v in A.box.split(',')]) if A.box else None
 leg = [Line2D([], [], color=S['plan'], lw=1.6, label='global plan'), Line2D([], [], color=S['trail'], lw=1.4, label=A.frame)]
 if not A.no_mppi: leg += [Line2D([], [], color=S['cand'], lw=0.9, label='MPPI samples'), Line2D([], [], color=S['opt'], lw=1.6, label='MPPI optimal')]
 if MAPF: leg += [Line2D([], [], marker='s', ls='', mfc='none', mec=S['local'], label='local lethal')]
+if A.seen: leg += [Line2D([], [], marker='s', ls='', mfc=S['local'], mec=S['local'], label='camera only: in view'),
+                   Line2D([], [], marker='s', ls='', mfc='none', mec=S['local'], label='camera only: remembered'),
+                   Line2D([], [], color=S['ink'], lw=1.0, ls=(0, (4, 3)), alpha=0.6, label='previous plan')]
 leg += [Line2D([], [], color=S['scan'], marker='.', ls='', label='scan')]
 if MAPF and A.style == 'light': leg[0] = Line2D([], [], color=S['plan'], lw=1.6, label='plan (Smac)'); leg.insert(1, Line2D([], [], color=S['navfn'], lw=1.6, ls='--', label='plan (NavFn)'))
 
@@ -71,12 +81,28 @@ with w.saving(fig, A.out, 100):
                 P = L.w2(Tmo, L.lethal_cells(lc))
                 if len(P): ax.scatter(P[:, 0], P[:, 1], s=cell_pt, marker='s', facecolors='none', edgecolors=S['local'], linewidths=0.7, zorder=3)
         cx, cy = x + L.CAMX * math.cos(yaw), y + L.CAMX * math.sin(yaw)
-        ax.add_patch(Wedge((cx, cy), L.CAMR, math.degrees(yaw - L.HFOV), math.degrees(yaw + L.HFOV), fc=S['fov'], ec='none', alpha=0.12))
-        sc = L.last(D['scan'], tf)
+        ax.add_patch(Wedge((cx, cy), FOVR, math.degrees(yaw - L.HFOV), math.degrees(yaw + L.HFOV), fc=S['fov'], ec='none', alpha=0.2 if A.seen else 0.12))
+        if A.seen: ax.add_patch(Wedge((cx, cy), FOVR, math.degrees(yaw - L.HFOV), math.degrees(yaw + L.HFOV), fill=False, ec=S['fov'], lw=0.8, alpha=0.7, zorder=3))
+        sc = L.last(D['scan'], tf); SP = None
         if sc and tf - sc[0] < 0.5:
             Tl = L.chain(D['static'], sc[1])
             if Tl is not None:
-                P = L.w2(T @ Tl, sc[2]); ax.scatter(P[:, 0], P[:, 1], s=3, c=S['scan'], linewidths=0, zorder=4)
+                SP = L.w2(T @ Tl, sc[2]); ax.scatter(SP[:, 0], SP[:, 1], s=3, c=S['scan'], linewidths=0, zorder=4)
+        if A.seen:   # 카메라만 잡은 칸 — 라이다 점 0.1 m 안에 없는 로컬 치명 칸(3 m 안)
+            lc = L.last(D['loc'], tf)
+            if lc:
+                P = L.w2(Tmo, L.lethal_cells(lc)); P = P[np.hypot(P[:, 0] - x, P[:, 1] - y) < 3.0] if len(P) else P
+                if SEENR is not None and len(P) and D['mo']:   # 지도 영역 안 칸만
+                    Q = L.w2(L.last(D['mo'], tf)[1] @ np.linalg.inv(Tmo), P)
+                    P = P[(Q[:, 0] >= SEENR[0]) & (Q[:, 0] <= SEENR[1]) & (Q[:, 1] >= SEENR[2]) & (Q[:, 1] <= SEENR[3])]
+                if len(P) and SP is not None and len(SP):
+                    dmin = np.min(np.hypot(P[:, None, 0] - SP[None, :, 0], P[:, None, 1] - SP[None, :, 1]), axis=1); P = P[dmin > 0.1]
+                if len(P):
+                    dx, dy = P[:, 0] - cx, P[:, 1] - cy; br = np.abs((np.arctan2(dy, dx) - yaw + math.pi) % (2 * math.pi) - math.pi)
+                    inv = (br <= L.HFOV) & (np.hypot(dx, dy) <= FOVR)
+                    # 칸 크기 그대로면 상자(2 ~ 4 칸)가 점처럼 안 보여(11-23 1 차) 약 2 배로
+                    ax.scatter(P[inv, 0], P[inv, 1], s=cell_pt * 4, marker='s', c=S['local'], edgecolors='white', linewidths=0.6, zorder=6)
+                    ax.scatter(P[~inv, 0], P[~inv, 1], s=cell_pt * 4, marker='s', facecolors='white', edgecolors=S['local'], linewidths=1.4, zorder=6)
         if MAPF:   # BT 경로 — 바뀐 뒤 3 s 는 직전 경로를 점선
             p = L.last([q for q in PL if q[0] <= tf], tf)
             if p is not None and (cur is None or p[0] != cur[0]):
@@ -87,8 +113,19 @@ with w.saving(fig, A.out, 100):
                 nav = cur[3] == 'NavFn' and A.style == 'light'
                 ax.plot(cur[1][:, 0], cur[1][:, 1], color=S['navfn'] if nav else S['plan'], lw=1.6, ls='--' if nav else '-', zorder=3)
         else:
-            pl = L.last(D['tplan'], tf)
-            if pl is not None and len(pl[1]): ax.plot(pl[1][:, 0], pl[1][:, 1], color=S['plan'], lw=1.6, zorder=3)
+            if A.seen and D['mo']:   # 전역 경로 전체(지도 → odom) — 잘린 /transformed_global_plan 은 상자까지 안 닿아 '상자를 지나던 경로' 가 안 보임(11-23)
+                Mom = np.linalg.inv(L.last(D['mo'], tf)[1])
+                p = L.last([q for q in PL if q[0] <= tf], tf)
+                if p is not None and (cur is None or p[0] != cur[0]):
+                    if cur is not None: prev, chg = cur, tf
+                    cur = p
+                if prev is not None and tf - chg < HOLD:   # 바뀐 뒤 HOLD 초는 직전 경로를 점선
+                    P = L.w2(Mom, prev[1]); ax.plot(P[:, 0], P[:, 1], color=S['ink'], lw=1.0, ls=(0, (4, 3)), alpha=0.6, zorder=3)
+                if cur is not None:
+                    P = L.w2(Mom, cur[1]); ax.plot(P[:, 0], P[:, 1], color=S['plan'], lw=1.6, zorder=3)
+            else:
+                pl = L.last(D['tplan'], tf)
+                if pl is not None and len(pl[1]): ax.plot(pl[1][:, 0], pl[1][:, 1], color=S['plan'], lw=1.6, zorder=3)
         tr_ = np.array(trail); ax.plot(tr_[:, 0], tr_[:, 1], color=S['trail'], lw=1.4, zorder=3)
         ax.add_patch(Polygon(L.w2(T, L.FP), closed=True, fill=False, ec=S['body'], lw=1.2, zorder=5))
         tj = L.last(D['traj'], tf)
