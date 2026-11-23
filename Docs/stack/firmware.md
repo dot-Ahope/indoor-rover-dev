@@ -2,7 +2,7 @@
 
 [← 첫 페이지](../../README.md)
 
-<p align="center"><img src="../media/2026-11-19_firmware.gif" width="80%"/><br/><sub>Nav2 속도 지령(<code>/cmd_vel</code>)과 휠 엔코더로 잰 속도(<code>/wheel_odom</code>), 실주행 f2rr1, 2배속</sub></p>
+<p align="center"><img src="../media/2026-11-23_firmware.png" width="85%"/><br/><sub>Nav2 속도 지령(<code>/cmd_vel</code>)과 휠 엔코더로 잰 속도(<code>/wheel_odom</code>) — 실주행 첫 60 초(위 병진 v, 아래 회전 ω)</sub></p>
 
 ## 하는 일
 - 보드(STM32F405)가 직접 ROS 2 노드가 된다 — micro-ROS 로 `/cmd_vel` 을 받고 `/wheel_odom` · `/rover/status` · `/battery` 를 낸다. Jetson 쪽은 에이전트만 띄운다(변환 노드 없음).

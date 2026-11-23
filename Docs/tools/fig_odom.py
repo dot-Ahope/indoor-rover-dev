@@ -3,7 +3,7 @@
   왜: README '펌웨어 · 센서 융합 · 위치 추정' 그림을 다시 만들 수 있게, 그리고 bag 읽기 · 지도 · 좌표 변환을 lib_rover 하나로(도구 겹침 정리).
   모드: fusion = 휠만 · EKF · 지도 위치(map→odom ∘ EKF) 경로를 출발 자세만 맞춰 겹침, 제목 오른쪽 = 그 순간 지도 위치와의 거리
         loc    = 같은 라이다 스캔을 EKF 만(첫 map→odom 고정) / slam_toolbox(그때 map→odom)로 저장 지도에 얹은 두 판
-        fw     = /cmd_vel 지령 vs /wheel_odom 속도(v · ω), 20 s 창이 흐름
+        fw     = /cmd_vel 지령 vs /wheel_odom 속도(v · ω), 20 s 창이 흐름. 출력을 .png 로 주면 --from ~ --to 전체를 정지 그림 한 장으로(11-23)
   로버 움직임: 없음. 입력: bag(/tf · /wheel_odom · /odometry/filtered · /cmd_vel · /scan), 저장 지도 --map(기본 office_v3).
   사용: fig_odom.py fusion|loc|fw bag 출력.gif [--speed 40] [--title 이름] [--map office_v3] [--from 0 --to 60(fw, bag 시작 기준 초)] [--fps 5]
   출력: 지정 파일 + 표준 출력에 읽은 개수, fusion 은 끝 · 최대 거리(휠만 · EKF)."""
@@ -18,7 +18,7 @@ ap = argparse.ArgumentParser()
 ap.add_argument('mode', choices=('fusion', 'loc', 'fw')); ap.add_argument('bag'); ap.add_argument('out')
 ap.add_argument('--speed', type=float, default=40.0); ap.add_argument('--title'); ap.add_argument('--map', default='office_v3')
 ap.add_argument('--from', dest='a0', type=float, default=0.0); ap.add_argument('--to', dest='a1', type=float, default=60.0); ap.add_argument('--fps', type=int, default=5)
-A = ap.parse_args(); RUN = A.title or Path(A.bag).name.replace('bag_', ''); L.style_d()
+A = ap.parse_args(); RUN = A.title if A.title is not None else Path(A.bag).name.replace('bag_', ''); L.style_d()
 D = L.read_bag(A.bag, ['/tf', '/wheel_odom', '/odometry/filtered', '/cmd_vel'] + (['/scan'] if A.mode == 'loc' else []), scan_max=8.0)
 t0 = D['t0']; rel = lambda seq: [(s[0] - t0,) + tuple(s[1:]) for s in seq]   # bag 시작 기준 초
 mo, wo, ek, cmd, scan = rel(D['mo']), rel(D['wheel']), rel(D['ekf']), rel(D['cmd']), rel(D['scan'])
@@ -66,6 +66,19 @@ elif A.mode == 'loc':
             d = np.hypot(*(xy(Tmo0 @ Tob) - xy(L.last(mo, ts)[1] @ Tob)))
             axs[1].set_title(f't = {ts:3.0f} s (x{A.speed:g})   offset {d:.2f} m', loc='right')
             w.grab_frame()
+elif A.out.lower().endswith('.png'):
+    # 11-23 §5: fw 정지 그림 — 출력이 .png 면 --from ~ --to 구간 전체를 한 장에(사용자: 펌웨어 페이지는 GIF 대신 이미지)
+    C = np.array(cmd); Wt = np.array([(s[0], s[2], s[3]) for s in wo])
+    mc = (C[:, 0] >= A.a0) & (C[:, 0] <= A.a1); mw = (Wt[:, 0] >= A.a0) & (Wt[:, 0] <= A.a1)
+    fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(7.2, 4.4), dpi=130, sharex=True)
+    for ax, k, lab, lim in ((ax1, 1, 'v (m/s)', (-0.02, 0.11)), (ax2, 2, 'ω (rad/s)', (-0.5, 0.5))):
+        ax.step(C[mc, 0], C[mc, k], where='post', color='tab:blue', lw=1.4, label='/cmd_vel')
+        ax.plot(Wt[mw, 0], Wt[mw, k], color='tab:orange', lw=1.1, label='/wheel_odom')
+        ax.set_xlim(A.a0, A.a1); ax.set_ylim(*lim); ax.set_ylabel(lab); ax.grid(alpha=0.3)
+    ax1.legend(loc='lower left', fontsize=7.5, ncol=2); ax2.set_xlabel('t (s)')
+    # --title '' 이면 주행 이름 없이 구간만(11-23 사용자: 'f2rr1' 이름도 지우자)
+    ax1.set_title(f'{RUN}  t = {A.a0:g}–{A.a1:g} s'.strip(), loc='left'); fig.tight_layout(); fig.savefig(A.out)
+    print('cmd', int(mc.sum()), 'wheel', int(mw.sum()), 'in window')
 else:
     WIN = 20.0; C = np.array(cmd); Wt = np.array([(s[0], s[2], s[3]) for s in wo])
     fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(6.4, 4.4), dpi=100, sharex=True)
