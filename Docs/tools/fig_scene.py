@@ -28,6 +28,10 @@ ap.add_argument('--box'); ap.add_argument('--no-mppi', action='store_true')
 #   시야 부채꼴도 2.0 m 로(기본 1.4 m 는 10-22 전 통합 거리), 전역 경로가 바뀌면 직전 경로를 3 s 점선으로(odom 판에도).
 #   --seen x0,x1,y0,y1(지도) 를 주면 그 영역 칸만 표시 — 벽 · 가구도 라이다 평면 밖은 '카메라만' 으로 잡혀 화면이 어지러움(11-23 1 차 렌더).
 ap.add_argument('--seen', nargs='?', const='all')
+# 11-23 §9: --depth = 다른 저장소(Nav2-with-Isaac-ROS-GEMs · isaac_ros_nvblox README) 방식 — 그려 넣은 기호 없이 원자료로.
+#   카메라 깊이로 만든 nvblox 거리 지도(/nvblox_node/static_map_slice)의 장애물 칸(값 ≤ 0)을 '지금 카메라 시야(±43° · 2.0 m) 안' 것만 점으로 →
+#   시야 모양이 점 분포로 드러남(부채꼴 안 그림). 막힘 ×, 직전 경로 점선, 사건 글자 없음 — 경로는 전역 경로 한 줄이 바뀌는 것으로만.
+ap.add_argument('--depth', action='store_true')
 A = ap.parse_args(); MAPF = A.frame == 'map'; RUN = A.title if A.title is not None else Path(A.bag).name.replace('bag_', '')
 FOVR = 2.0 if A.seen else L.CAMR; HOLD = 6.0 if A.seen else 3.0   # 직전 경로 점선 유지 시간
 SEENR = None if A.seen in (None, 'all') else np.array([float(v) for v in A.seen.split(',')])
@@ -41,11 +45,13 @@ S = {'d': dict(bg='white', ink='k', plan='tab:green', navfn='tab:green', trail='
                   scan='#ff2a2a', local='#ffd400', fov='#f59f00', ev='#ffd400')}[A.style]
 L.style_d(); CM = L.costmap_cmap(A.style)
 
-topics = ['/tf', '/scan', '/local_costmap/costmap'] + (['/global_costmap/costmap', '/plan', '/plan_smoothed'] if MAPF else ['/transformed_global_plan'] + (['/plan', '/plan_smoothed'] if A.seen else []))
+topics = ['/tf', '/scan', '/local_costmap/costmap'] + (['/global_costmap/costmap', '/plan', '/plan_smoothed'] if MAPF else ['/transformed_global_plan'] + (['/plan', '/plan_smoothed'] if (A.seen or A.depth) else []))
+if A.depth: topics.append('/nvblox_node/static_map_slice')
 if not A.no_mppi: topics.append('/trajectories')
 D = L.read_bag(A.bag, topics, A.start, A.end); tA, tB = D['tA'], D['tB']
 EV, BT, BLK = L.nav_events(A.events, D['day'], tA, tB)
-PL = L.bt_plans(D, BT) if (MAPF or A.seen) else []
+PL = L.bt_plans(D, BT) if (MAPF or A.seen or A.depth) else []
+if A.depth and not D['slice']: sys.exit('--depth: bag 에 /nvblox_node/static_map_slice 없음')
 print('pose', len(D['ob']), 'map->odom', len(D['mo']), 'local', len(D['loc']), 'global', len(D['glo']), 'plan', len(PL) if MAPF else len(D['tplan']),
       'traj', len(D['traj']), 'scan', len(D['scan']), 'static', len(D['static']), 'events', len(EV))
 for e in EV: print('  ', L.hms(e[0], 2), e[1])
@@ -62,6 +68,7 @@ if A.seen: leg += [Line2D([], [], marker='s', ls='', mfc=S['local'], mec=S['loca
                    Line2D([], [], marker='s', ls='', mfc='none', mec=S['local'], label='camera only: remembered'),
                    Line2D([], [], color=S['ink'], lw=1.0, ls=(0, (4, 3)), alpha=0.6, label='previous plan')]
 leg += [Line2D([], [], color=S['scan'], marker='.', ls='', label='scan')]
+if A.depth: leg += [Line2D([], [], color='tab:purple', marker='.', ls='', label='depth camera (nvblox)')]
 if MAPF and A.style == 'light': leg[0] = Line2D([], [], color=S['plan'], lw=1.6, label='plan (Smac)'); leg.insert(1, Line2D([], [], color=S['navfn'], lw=1.6, ls='--', label='plan (NavFn)'))
 
 fig, ax = plt.subplots(figsize=(A.px / 100, A.px / 100), dpi=100, facecolor=S['bg'])
@@ -81,7 +88,19 @@ with w.saving(fig, A.out, 100):
                 P = L.w2(Tmo, L.lethal_cells(lc))
                 if len(P): ax.scatter(P[:, 0], P[:, 1], s=cell_pt, marker='s', facecolors='none', edgecolors=S['local'], linewidths=0.7, zorder=3)
         cx, cy = x + L.CAMX * math.cos(yaw), y + L.CAMX * math.sin(yaw)
-        ax.add_patch(Wedge((cx, cy), FOVR, math.degrees(yaw - L.HFOV), math.degrees(yaw + L.HFOV), fc=S['fov'], ec='none', alpha=0.2 if A.seen else 0.12))
+        if not A.depth: ax.add_patch(Wedge((cx, cy), FOVR, math.degrees(yaw - L.HFOV), math.degrees(yaw + L.HFOV), fc=S['fov'], ec='none', alpha=0.2 if A.seen else 0.12))
+        if A.depth:   # nvblox 거리 지도의 장애물 칸(≤ 0) 중 지금 카메라 시야 안 것만 점으로
+            sl = L.last(D['slice'], tf)
+            if sl is not None:
+                _, sfr, sox, soy, sres, sunk, SG = sl
+                ii, jj = np.nonzero((SG <= 0.0) & (SG != sunk))
+                if len(ii):
+                    Q = np.c_[sox + (jj + 0.5) * sres, soy + (ii + 0.5) * sres]
+                    if sfr == 'map' and D['mo']: Q = L.w2(np.linalg.inv(L.last(D['mo'], tf)[1]), Q)   # 그리는 프레임(odom)으로
+                    dx, dy = Q[:, 0] - cx, Q[:, 1] - cy; r = np.hypot(dx, dy)
+                    br = np.abs((np.arctan2(dy, dx) - yaw + math.pi) % (2 * math.pi) - math.pi)
+                    Q = Q[(br <= L.HFOV) & (r <= 2.0) & (r >= 0.3)]
+                    if len(Q): ax.scatter(Q[:, 0], Q[:, 1], s=12, c="tab:purple", linewidths=0, zorder=4)
         if A.seen: ax.add_patch(Wedge((cx, cy), FOVR, math.degrees(yaw - L.HFOV), math.degrees(yaw + L.HFOV), fill=False, ec=S['fov'], lw=0.8, alpha=0.7, zorder=3))
         sc = L.last(D['scan'], tf); SP = None
         if sc and tf - sc[0] < 0.5:
@@ -113,7 +132,11 @@ with w.saving(fig, A.out, 100):
                 nav = cur[3] == 'NavFn' and A.style == 'light'
                 ax.plot(cur[1][:, 0], cur[1][:, 1], color=S['navfn'] if nav else S['plan'], lw=1.6, ls='--' if nav else '-', zorder=3)
         else:
-            if A.seen and D['mo']:   # 전역 경로 전체(지도 → odom) — 잘린 /transformed_global_plan 은 상자까지 안 닿아 '상자를 지나던 경로' 가 안 보임(11-23)
+            if A.depth and D['mo']:   # 전역 경로 한 줄(지도 → odom), 바뀌면 그대로 바뀜 — 직전 경로 점선 없음
+                p = L.last([q for q in PL if q[0] <= tf], tf)
+                if p is not None:
+                    P = L.w2(np.linalg.inv(L.last(D['mo'], tf)[1]), p[1]); ax.plot(P[:, 0], P[:, 1], color=S['plan'], lw=1.6, zorder=3)
+            elif A.seen and D['mo']:   # 전역 경로 전체(지도 → odom) — 잘린 /transformed_global_plan 은 상자까지 안 닿아 '상자를 지나던 경로' 가 안 보임(11-23)
                 Mom = np.linalg.inv(L.last(D['mo'], tf)[1])
                 p = L.last([q for q in PL if q[0] <= tf], tf)
                 if p is not None and (cur is None or p[0] != cur[0]):
@@ -132,7 +155,7 @@ with w.saving(fig, A.out, 100):
         if tj and tf - tj[0] < 0.5:   # /trajectories 는 odom 프레임
             for k in tj[1]: P = L.w2(Tmo, k); ax.plot(P[:, 0], P[:, 1], color=S['cand'], lw=0.9, alpha=0.9, zorder=6)
             if len(tj[2]): P = L.w2(Tmo, tj[2]); ax.plot(P[:, 0], P[:, 1], color=S['opt'], lw=1.6, zorder=7)
-        bk = [q for q in BLK if tf - 2.5 <= q[0] <= tf]
+        bk = [q for q in BLK if tf - 2.5 <= q[0] <= tf] if not A.depth else []
         if bk:   # 막힘 판정 점은 map 좌표
             P = L.w2(np.linalg.inv(L.last(D['mo'], tf)[1]), [bk[-1][1:]]) if not MAPF and D['mo'] else (np.array([bk[-1][1:]]) if MAPF else None)
             if P is not None: ax.plot(P[:, 0], P[:, 1], 'x', color=S['ev'], ms=9, mew=2, zorder=8)
@@ -148,6 +171,6 @@ with w.saving(fig, A.out, 100):
         ax.legend(handles=leg, loc='lower left', fontsize=7)
         e = max((e for e in EV if e[0] <= tf and tf - e[0] < 2.5), key=lambda e: e[0], default=None)
         ax.set_title(f'{RUN}  {L.hms(tf)}  (x{A.speed:g})', loc='left', color=S['ink'])
-        ax.set_title(e[1] if e else '', loc='right', color=S['ev'])
+        ax.set_title(e[1] if (e and not A.depth) else '', loc='right', color=S['ev'])
         fig.tight_layout(); w.grab_frame()
 print('->', A.out)
