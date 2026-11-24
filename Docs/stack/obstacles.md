@@ -2,21 +2,29 @@
 
 [← 첫 페이지](../../README.md)
 
-<p align="center"><img src="../media/2026-11-23_box_seen.gif" width="70%"/><br/><sub>복귀 길의 낮은 상자(시안 — 새 주행 영상으로 바꿀 예정): 라이다 점(빨강)은 상자에 하나도 없고, 깊이 카메라가 만든 nvblox 지도(보라 점 — 지금 카메라 시야 안 것만)에만 잡힘 → 상자를 지나던 전역 경로(초록)가 상자 위쪽으로 바뀜. 3배속. 회색 = 비용, 진회색 = 치명</sub></p>
+<p align="center"><img src="../media/2026-11-23_box_seen.gif" width="70%"/><br/><sub>복귀 길의 낮은 상자: 라이다 점(빨강)은 상자에 하나도 없고, 깊이 카메라가 만든 nvblox 지도(보라 점 — 지금 카메라 시야 안 것만)에만 잡힘 → 상자를 지나던 전역 경로(초록)가 상자 위쪽으로 바뀜. 3 배속. 회색 = 비용, 진회색 = 치명</sub></p>
 
 ## 하는 일
-- RealSense 깊이 영상을 Isaac ROS nvblox 로 GPU 에서 3D 재구성하고, 바닥 위 높이 띠를 잘라 로컬 · 전역 코스트맵 층으로 넣는다. 라이다(2D)는 그대로 함께.
-- 라이다 높이보다 낮은 물체도 피한다. 출발점 앞에 낮은 상자를 늘 두고 매 순회마다 이것을 시험한다.
+- RealSense 깊이 영상을 Isaac ROS nvblox 로 GPU 에서 3D 재구성하고, 바닥 위 높이 띠를 잘라 코스트맵 층으로 넣는다. 로컬(`odom`) · 전역(`map`) 코스트맵 둘 다.
+- 라이다(2D) 층도 함께 쓴다. 라이다 높이보다 낮은 물체는 카메라 층으로만 잡힌다.
+- 관측이 끊긴 뒤에도 일정 시간 기억해, 지나온 낮은 물체를 돌아올 때까지 피한다.
 
-## 왜 이렇게 했나
-- 처음 구성(STVL 층)으로 기준선을 고정한 뒤 nvblox 로 옮겼다 — 같은 코스 · 같은 지표로 나란히 비교해 채택 → [nvblox 이전 N0~N4](../issues/nvblox-migration-n0-n4.md) · [결과](../05_nvblox/PHASE_N_RESULTS.md)
-- 층이 nvblox 원자료보다 x · y 모두 정확히 한 칸(5 cm) 밀려 있었다 — 칸 번호를 반올림으로 구한 결함, 내림으로 고친 포크를 씀 → [round → floor](../issues/nvblox-layer-round-floor.md)
-- 전역 코스트맵이 낮은 상자를 잊어 계획 경로가 상자를 지났다 → 전역에도 nvblox 층 → [낮은 상자 기억](../issues/low-box-global-memory.md)
-- 카메라 프로젝터를 끈 뒤 맨바닥에 없는 장애물(유령 칸)이 쌓였다 — 출처를 nvblox(카메라 깊이)로 확정하고 깊이 프리셋과 통합 거리를 바꿔 대응 → [유령 칸](../issues/ghost-cells-depth-preset.md)
+## 주요 값
 
-## 남은 것
-- 낮은 물체 옆 여유는 주행마다 몇 cm 씩 다르다(카메라 칸이 매번 6~14 칸으로 들쭉날쭉) → [상자 옆 정지 원인](../issues/box-side-stall-cause.md)
+| 항목 | 지금 |
+|---|---|
+| 칸 크기 | 5 cm |
+| 표면 뒤 절단 | 2 복셀(0.10 m) |
+| 감쇠 | 0.99 — 관측이 끊긴 뒤 약 81 s 유지(벤더 기본 0.95 는 17 s) |
+| 통합 거리 | 2.0 m |
+| 깊이 프리셋 | High Accuracy, 프로젝터 끔 |
+| 층 칸 번호 | `round` → `floor` 로컬 수정(원점이 첫 픽셀 모서리라서, 상류 보고 안 함) |
 
-## 더 보기
-- 지금 값(층 · 복셀 · 감쇠 · 프리셋 · inflation): [CURRENT_STACK §2.2](../04_navigation/CURRENT_STACK.md)
-- 이전 계획: [NVBLOX_MIGRATION_PLAN.md](../05_nvblox/NVBLOX_MIGRATION_PLAN.md)
+처음 구성은 STVL 층이었다. 같은 코스 비교에서 코스트맵 상자 여유 nvblox 12.3 · 13.4 · 14.6 cm, STVL 9.3 · 11.7 cm, CPU 는 같은 수준이었다.
+
+## 알려진 한계
+- 낮은 물체 옆 여유가 주행마다 몇 cm 씩 다르다(카메라 칸이 매번 6 ~ 14 칸으로 들쭉날쭉). → [상자 옆 정지 원인](../issues/box-side-stall-cause.md)
+
+## 관련 기록
+- [nvblox 이전 N0 ~ N4](../issues/nvblox-migration-n0-n4.md) · [결과](../05_nvblox/PHASE_N_RESULTS.md) · [round → floor](../issues/nvblox-layer-round-floor.md) · [낮은 상자 전역 기억](../issues/low-box-global-memory.md) · [유령 칸 · 깊이 프리셋](../issues/ghost-cells-depth-preset.md)
+- 지금 값(층 · 복셀 · 감쇠 · 프리셋 · inflation): [CURRENT_STACK §2.2](../04_navigation/CURRENT_STACK.md) · 이전 계획: [NVBLOX_MIGRATION_PLAN.md](../05_nvblox/NVBLOX_MIGRATION_PLAN.md)
